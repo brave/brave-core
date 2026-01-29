@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import { onEyeIconClicked } from './brave_account_common.js'
 import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
@@ -12,19 +11,13 @@ import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.j
 export function getHtml(this: BraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      dialog-description="${loadTimeData.getString(
-        S.BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION,
-      )}"
-      dialog-title="${loadTimeData.getString(
-        S.BRAVE_ACCOUNT_CREATE_DIALOG_TITLE,
-      )}"
+      dialog-description="$i18n{BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION}"
+      dialog-title="$i18n{BRAVE_ACCOUNT_CREATE_DIALOG_TITLE}"
       show-back-button
     >
       <div slot="inputs">
         <leo-input
-          placeholder="${loadTimeData.getString(
-            S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER,
-          )}"
+          placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
           showErrors
           @input=${this.onEmailInput}
         >
@@ -34,7 +27,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
               ? 'error'
               : ''}"
           >
-            ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
+            $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
           </div>
           <div
             class="dropdown ${this.isEmailValid && this.isEmailBraveAlias
@@ -44,25 +37,17 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
             slot="errors"
           >
             <leo-icon name="warning-triangle-filled"></leo-icon>
-            <div>
-              ${loadTimeData.getString(
-                S.BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE,
-              )}
-            </div>
+            <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
           </div>
         </leo-input>
         <leo-input
-          placeholder="${loadTimeData.getString(
-            S.BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER,
-          )}"
+          placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           showErrors
           type="password"
           @input=${this.onPasswordInput}
         >
           <div class="label">
-            ${loadTimeData.getString(
-              S.BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL,
-            )}
+            $i18n{BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL}
           </div>
           <leo-icon
             name="eye-off"
@@ -80,9 +65,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           </div>
         </leo-input>
         <leo-input
-          placeholder="${loadTimeData.getString(
-            S.BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER,
-          )}"
+          placeholder="$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER}"
           showErrors
           type="password"
           @input=${this.onConfirmPasswordInput}
@@ -93,9 +76,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
               ? 'error'
               : ''}"
           >
-            ${loadTimeData.getString(
-              S.BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL,
-            )}
+            $i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL}
           </div>
           <leo-icon
             name="eye-off"
@@ -113,12 +94,8 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
             <leo-icon name=${this.getIconName()}></leo-icon>
             <div>
               ${this.icon === 'check-circle-filled'
-                ? html`${loadTimeData.getString(
-                    S.BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE,
-                  )}`
-                : html`${loadTimeData.getString(
-                    S.BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE,
-                  )}`}
+                ? html`$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE}`
+                : html`$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE}`}
             </div>
           </div>
         </leo-input>
@@ -135,7 +112,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
         || !this.isCheckboxChecked}
         @click=${this.onCreateAccountButtonClicked}
       >
-        ${loadTimeData.getString(S.BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL)}
+        $i18n{BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL}
       </leo-button>
     </brave-account-dialog>
     <!--_html_template_end_-->`

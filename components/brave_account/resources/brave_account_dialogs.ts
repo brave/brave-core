@@ -11,7 +11,6 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
 import { Error } from './brave_account_common.js'
-import './brave_account_strings.js'
 
 export type Dialog =
   | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }

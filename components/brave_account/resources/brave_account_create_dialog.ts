@@ -10,6 +10,7 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
+import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { Error, isEmailValid } from './brave_account_common.js'
@@ -86,10 +87,10 @@ class PasswordStrengthMeter extends CrLitElement {
       <div class="text">
         ${loadTimeData.getString(
           this.category === 'Weak'
-            ? S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK
+            ? BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK
             : this.category === 'Medium'
-              ? S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM
-              : S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG,
+              ? BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM
+              : BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG,
         )}
       </div>
     `

@@ -4,43 +4,38 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import './brave_account_dialog.js'
 import { BraveAccountForgotPasswordDialogElement } from './brave_account_forgot_password_dialog.js'
 
 export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
-  return html`<brave-account-dialog
-    alert-message="${loadTimeData.getString(S.BRAVE_ACCOUNT_ALERT_MESSAGE)}"
-    dialog-description="${loadTimeData.getString(
-      S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION,
-    )}"
-    dialog-title="${loadTimeData.getString(
-      S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE,
-    )}"
-    show-back-button
-  >
-    <div slot="inputs">
-      <leo-input
-        placeholder="${loadTimeData.getString(
-          S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER,
-        )}"
-        @input=${this.onEmailInput}
-      >
-        <div
-          class="label ${this.email.length !== 0 && !this.isEmailValid
-            ? 'error'
-            : ''}"
-        >
-          ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
-        </div>
-      </leo-input>
-    </div>
-    <leo-button
-      slot="buttons"
-      ?isDisabled=${!this.isEmailValid}
+  return html`<!--_html_template_start_-->
+    <brave-account-dialog
+      alert-message="$i18n{BRAVE_ACCOUNT_ALERT_MESSAGE}"
+      dialog-description="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION}"
+      dialog-title="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE}"
+      show-back-button
     >
-      ${loadTimeData.getString(S.BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL)}
-    </leo-button>
-  </brave-account-dialog>`
+      <div slot="inputs">
+        <leo-input
+          placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
+          @input=${this.onEmailInput}
+        >
+          <div
+            class="label ${this.email.length !== 0 && !this.isEmailValid
+              ? 'error'
+              : ''}"
+          >
+            $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
+          </div>
+        </leo-input>
+      </div>
+      <leo-button
+        slot="buttons"
+        ?isDisabled=${!this.isEmailValid}
+      >
+        $i18n{BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL}
+      </leo-button>
+    </brave-account-dialog>
+    <!--_html_template_end_-->`
 }

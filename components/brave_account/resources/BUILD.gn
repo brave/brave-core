@@ -30,7 +30,6 @@ build_webui("build") {
     "brave_account_forgot_password_dialog.ts",
     "brave_account_sign_in_dialog.html.ts",
     "brave_account_sign_in_dialog.ts",
-    "brave_account_strings.ts",
   ]
 
   css_files = [
