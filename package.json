@@ -82,6 +82,7 @@
           "url": "https://github.com/brave/chromium"
         },
         "custom_deps": {
+          "src/brave/third_party/gn": "https://gn.googlesource.com/gn.git@6e0b557db44b3c164094e57687d20ba036a80667",
           "src/testing/libfuzzer/fuzzers/wasm_corpus": null,
           "src/third_party/chromium-variations": null
         },

@@ -48,6 +48,12 @@ async function applyPatches(printPatchFailuresInJson) {
     'search_engines_data',
     'resources',
   )
+  const braveGnPatchesPath = path.join(
+    patchesPath,
+    'brave',
+    'third_party',
+    'gn',
+  )
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
@@ -68,6 +74,11 @@ async function applyPatches(printPatchFailuresInJson) {
     'search_engines_data',
     'resources',
   )
+  const braveGnRepoPath = path.join(
+    coreRepoPath,
+    'third_party',
+    'gn',
+  )
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
@@ -80,6 +91,7 @@ async function applyPatches(printPatchFailuresInJson) {
     searchEngineDataPatchesPath,
     searchEngineDataRepoPath,
   )
+  const braveGnPatcher = new GitPatcher(braveGnPatchesPath, braveGnRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
@@ -88,6 +100,7 @@ async function applyPatches(printPatchFailuresInJson) {
     await devtoolsFrontendPatcher.applyPatches()
   const searchEngineDataPatchStatus =
     await searchEngineDataPatcher.applyPatches()
+  const braveGnPatchStatus = await braveGnPatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
@@ -105,6 +118,7 @@ async function applyPatches(printPatchFailuresInJson) {
     ...catapultPatchStatus,
     ...devtoolsFrontendPatchStatus,
     ...searchEngineDataPatchStatus,
+    ...braveGnPatchStatus,
   ]
   if (printPatchFailuresInJson) {
     Log.printFailedPatchesInJsonFormat(allPatchStatus, config.braveCoreDir)
