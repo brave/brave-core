@@ -14,6 +14,9 @@ class DarkModeTests: XCTestCase {
     let blockList = [
       "twitter.com",
       "m.twitter.com",
+      "instagram.com",
+      "www.instagram.com",
+      "m.instagram.com",
       "youtube.com",
       "m.youtube.com",
       "www.youtube.com",

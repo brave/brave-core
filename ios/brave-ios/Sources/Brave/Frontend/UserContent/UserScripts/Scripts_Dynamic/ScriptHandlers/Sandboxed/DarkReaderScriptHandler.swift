@@ -129,7 +129,7 @@ extension DarkReaderScriptHandler {
       "twitter", "youtube", "twitch",
       "soundcloud", "github", "netflix",
       "imdb", "mail.proton", "amazon",
-      "x", "search.brave",
+      "x", "instagram",
 
       // Search Engines
       "search.brave", "google", "qwant",
