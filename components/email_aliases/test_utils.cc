@@ -6,8 +6,7 @@
 #include "brave/components/email_aliases/test_utils.h"
 
 #include "base/test/run_until.h"
-#include "base/test/test_future.h"
-#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "brave/components/email_aliases/email_aliases_endpoints.h"
 #include "gtest/gtest.h"
 
 namespace email_aliases::test {
@@ -59,10 +58,11 @@ void AuthStateObserver::OnAuthStateChanged(
 void AuthStateObserver::OnAliasesUpdated(
     std::vector<email_aliases::mojom::AliasPtr>) {}
 
-os_crypt_async::Encryptor GetEncryptor(os_crypt_async::OSCryptAsync* os_crypt) {
-  base::test::TestFuture<os_crypt_async::Encryptor> result;
-  os_crypt->GetInstance(result.GetCallback());
-  return result.Take();
+MockBraveAccountAuthentication::MockBraveAccountAuthentication() = default;
+MockBraveAccountAuthentication::~MockBraveAccountAuthentication() = default;
+
+GURL GetEmailAliasesServiceURL() {
+  return endpoints::GenerateAlias::URL();
 }
 
 }  // namespace email_aliases::test
