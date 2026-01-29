@@ -343,17 +343,6 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
-  permission_settings_registry_->Unregister(ContentSettingsType::HTTP_ALLOWED);
-  website_settings_registry_->Unregister(ContentSettingsType::HTTP_ALLOWED);
-  website_settings_registry_->Register(
-      ContentSettingsType::HTTP_ALLOWED, "http-allowed", base::Value(),
-      WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
-      WebsiteSettingsInfo::GENERIC_SINGLE_ORIGIN_SCOPE,
-      WebsiteSettingsRegistry::DESKTOP |
-          WebsiteSettingsRegistry::PLATFORM_ANDROID |
-          WebsiteSettingsRegistry::PLATFORM_IOS,
-      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
-
   for (auto settings_type = ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
        settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_ALL;
        settings_type = static_cast<ContentSettingsType>(
