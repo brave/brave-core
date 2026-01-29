@@ -93,8 +93,4 @@ export const ActionBox = styled.div`
   padding: 0 40px;
   max-width: 450px;
   margin: 0 auto 40px auto;
-
-  button {
-    color: white;
-  }
 `
