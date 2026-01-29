@@ -57,6 +57,19 @@
   }
 }
 
+.learnMoreLink {
+  font: var(--leo-font-default-link);
+  color: var(--leo-color-text-secondary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}
+
 .closeButton {
   --leo-button-color: color-mix(
     in srgb,

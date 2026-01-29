@@ -49,13 +49,12 @@ function SearchSummary(props: { searchQueries: string[] }) {
     $1: props.searchQueries.map((query, i, a) => (
       <React.Fragment key={i}>
         "
-        <a
+        <button
           className={styles.searchQueryLink}
-          href='#'
           onClick={(e) => handleOpenSearchQuery(e, query)}
         >
           {query}
-        </a>
+        </button>
         "{i < a.length - 1 ? ', ' : null}
       </React.Fragment>
     )),
@@ -66,13 +65,12 @@ function SearchSummary(props: { searchQueries: string[] }) {
       <Icon name='brave-icon-search-color' />
       <span data-test-id='search-summary'>
         {message}{' '}
-        <a
+        <button
           className={styles.searchLearnMoreLink}
-          href='#'
           onClick={handleLearnMore}
         >
           {getLocale(S.CHAT_UI_LEARN_MORE)}
-        </a>
+        </button>
       </span>
     </div>
   )
