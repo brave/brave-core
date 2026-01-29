@@ -4,19 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "build/buildflag.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #include <array>
 
 #include "base/memory/raw_ptr.h"
-#include "base/test/mock_callback.h"
-#include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/types/zip.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/permissions/brave_permission_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
@@ -29,11 +26,10 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/network_session_configurator/common/network_switches.h"
-#include "components/permissions/content_setting_permission_context_base.h"
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permissions_client.h"
+#include "components/permissions/request_type.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -43,6 +39,7 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
+using base::test::TestFuture;
 using testing::ElementsAreArray;
 
 namespace permissions {
@@ -81,10 +78,7 @@ class PermissionRequestManagerObserver
 class PermissionManagerBrowserTest : public InProcessBrowserTest {
  public:
   PermissionManagerBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~PermissionManagerBrowserTest() override = default;
 
@@ -94,12 +88,6 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
-    SetPermissionManagerForProfile(browser()->profile());
-  }
-
-  void SetPermissionManagerForProfile(Profile* profile) {
-    permission_manager_ = static_cast<permissions::BravePermissionManager*>(
-        PermissionManagerFactory::GetForProfile(profile));
   }
 
   PermissionRequestManager* GetPermissionRequestManager() {
@@ -119,70 +107,9 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
-  BravePermissionManager* permission_manager() { return permission_manager_; }
-
-  bool IsPendingGroupedRequestsEmpty(ContentSettingsType type) {
-    PermissionContextBase* context =
-        permission_manager()->GetPermissionContextForTesting(type);
-    return context->IsPendingGroupedRequestsEmptyForTesting();
-  }
-
-  void TestRequestPermissionsDoNotLeak(Profile* profile1, Profile* profile2) {
-    SetPermissionManagerForProfile(profile1);
-    auto* permission_request_manager = GetPermissionRequestManager();
-    const std::string address = "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A";
-    ContentSettingsType type = ContentSettingsType::BRAVE_ETHEREUM;
-    blink::PermissionType permission = blink::PermissionType::BRAVE_ETHEREUM;
-
-    RequestType request_type = ContentSettingsTypeToRequestType(type);
-    auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
-        request_type, GetLastCommitedOrigin(), address);
-    ASSERT_TRUE(sub_request_origin);
-
-    auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
-        GetLastCommitedOrigin(), {address});
-    ASSERT_TRUE(origin);
-
-    auto observer = std::make_unique<PermissionRequestManagerObserver>(
-        permission_request_manager);
-
-    base::MockCallback<
-        base::OnceCallback<void(const std::vector<content::PermissionResult>&)>>
-        callback;
-
-    permission_manager()->RequestPermissionsForOrigin(
-        {permission}, web_contents()->GetPrimaryMainFrame(), origin->GetURL(),
-        true, callback.Get());
-
-    content::RunAllTasksUntilIdle();
-    permissions::BraveWalletPermissionContext::AcceptOrCancel(
-        {address}, brave_wallet::mojom::PermissionLifetimeOption::kForever,
-        web_contents());
-
-    EXPECT_TRUE(observer->IsRequestsFinalized());
-    EXPECT_TRUE(!observer->IsShowingBubble());
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(type));
-
-    // Verify the permission has changed for profile1
-    EXPECT_EQ(host_content_settings_map(profile1)->GetContentSetting(
-                  sub_request_origin->GetURL(),
-                  GetLastCommitedOrigin().GetURL(), type),
-              ContentSetting::CONTENT_SETTING_ALLOW);
-
-    // Verify the permission hasn't leaked to profile2
-    EXPECT_EQ(host_content_settings_map(profile2)->GetContentSetting(
-                  sub_request_origin->GetURL(),
-                  GetLastCommitedOrigin().GetURL(), type),
-              ContentSetting::CONTENT_SETTING_ASK);
-  }
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<BravePermissionManager, DanglingUntriaged> permission_manager_ =
-      nullptr;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
@@ -213,10 +140,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     const std::vector<std::string>& addresses = test_case.addresses;
     RequestType request_type = ContentSettingsTypeToRequestType(test_case.type);
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(test_case.type));
 
-    std::vector<blink::PermissionType> permissions(addresses.size(),
-                                                   test_case.permission);
     std::vector<url::Origin> sub_request_origins;
     for (auto& address : addresses) {
       SCOPED_TRACE(testing::Message() << address);
@@ -226,31 +150,13 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
       sub_request_origins.push_back(*sub_request_origin);
     }
 
-    auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
-        GetLastCommitedOrigin(), addresses);
-    ASSERT_TRUE(origin);
-
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    base::MockCallback<
-        base::OnceCallback<void(const std::vector<content::PermissionResult>&)>>
-        callback;
-    EXPECT_CALL(
-        callback,
-        Run(ElementsAreArray(
-            {content::PermissionResult(
-                 content::PermissionStatus::ASK,
-                 content::PermissionStatusSource::UNSPECIFIED,
-                 PermissionSetting(ContentSetting(CONTENT_SETTING_ASK))),
-             content::PermissionResult(
-                 content::PermissionStatus::ASK,
-                 content::PermissionStatusSource::UNSPECIFIED,
-                 PermissionSetting(ContentSetting(CONTENT_SETTING_ASK)))})))
-        .Times(1);
-    permission_manager()->RequestPermissionsForOrigin(
-        permissions, web_contents()->GetPrimaryMainFrame(), origin->GetURL(),
-        true, callback.Get());
+    TestFuture<std::vector<std::string>> request_permissions_future;
+    BraveWalletPermissionContext::RequestWalletPermissions(
+        addresses, test_case.permission, web_contents()->GetPrimaryMainFrame(),
+        request_permissions_future.GetCallback());
 
     content::RunAllTasksUntilIdle();
 
@@ -259,7 +165,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     // update anchor should not dismiss the bubble
     permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble());
-    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(test_case.type));
 
     // Check sub-requests are created as expected.
     EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
@@ -273,10 +178,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     // Test dismissing request.
     permissions::BraveWalletPermissionContext::Cancel(web_contents());
-    testing::Mock::VerifyAndClearExpectations(&callback);
+    EXPECT_TRUE(request_permissions_future.Take().empty());
     EXPECT_TRUE(observer->IsRequestsFinalized());
     EXPECT_TRUE(!observer->IsShowingBubble());
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(test_case.type));
 
     for (const auto& sub_request_origin : sub_request_origins) {
       SCOPED_TRACE(testing::Message() << sub_request_origin);
@@ -289,21 +193,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     }
 
     observer->Reset();
-    EXPECT_CALL(
-        callback,
-        Run(ElementsAreArray(
-            {content::PermissionResult(
-                 content::PermissionStatus::ASK,
-                 content::PermissionStatusSource::UNSPECIFIED,
-                 PermissionSetting(ContentSetting(CONTENT_SETTING_ASK))),
-             content::PermissionResult(
-                 content::PermissionStatus::GRANTED,
-                 content::PermissionStatusSource::UNSPECIFIED,
-                 PermissionSetting(ContentSetting(CONTENT_SETTING_ALLOW)))})))
-        .Times(1);
-    permission_manager()->RequestPermissionsForOrigin(
-        permissions, web_contents()->GetPrimaryMainFrame(), origin->GetURL(),
-        true, callback.Get());
+    BraveWalletPermissionContext::RequestWalletPermissions(
+        addresses, test_case.permission, web_contents()->GetPrimaryMainFrame(),
+        request_permissions_future.GetCallback());
 
     content::RunAllTasksUntilIdle();
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
@@ -311,7 +203,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     // update anchor should not dismiss the bubble
     permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble());
-    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(test_case.type));
 
     // Check sub-requests are created as expected.
     EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
@@ -328,13 +219,13 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
         std::vector<std::string>{test_case.addresses[1]},
         brave_wallet::mojom::PermissionLifetimeOption::kForever,
         web_contents());
-    testing::Mock::VerifyAndClearExpectations(&callback);
+    EXPECT_THAT(request_permissions_future.Take(),
+                ElementsAreArray({test_case.addresses[1]}));
     std::vector<ContentSetting> expected_settings(
         {ContentSetting::CONTENT_SETTING_ASK,
          ContentSetting::CONTENT_SETTING_ALLOW});
     EXPECT_TRUE(observer->IsRequestsFinalized());
     EXPECT_TRUE(!observer->IsShowingBubble());
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(test_case.type));
 
     for (const auto [setting, sub_request_origin] :
          base::zip(expected_settings, sub_request_origins)) {
@@ -347,29 +238,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
                 setting);
     }
   }
-}
-
-IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
-                       IncognitoPermissionsDoNotLeak) {
-  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  auto* profile = browser()->profile();
-  auto* incognito_profile =
-      CreateIncognitoBrowser(browser()->profile())->profile();
-
-  // Verify permissions do not leak from incognito profile into normal profile.
-  TestRequestPermissionsDoNotLeak(incognito_profile, profile);
-}
-
-IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, PermissionsDoNotLeak) {
-  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  auto* profile = browser()->profile();
-  auto* incognito_profile =
-      CreateIncognitoBrowser(browser()->profile())->profile();
-
-  // Verify permissions do not leak from normal profile into incognito profile.
-  TestRequestPermissionsDoNotLeak(profile, incognito_profile);
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
@@ -402,7 +270,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
     const std::vector<std::string>& addresses = test_case.addresses;
     RequestType request_type = ContentSettingsTypeToRequestType(test_case.type);
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(test_case.type));
 
     std::vector<blink::PermissionType> permissions(addresses.size(),
                                                    test_case.permission);
@@ -415,17 +282,12 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       sub_request_origins.push_back(*sub_request_origin);
     }
 
-    auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
-        GetLastCommitedOrigin(), addresses);
-    ASSERT_TRUE(origin);
-
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    permission_manager()->RequestPermissionsForOrigin(
-        permissions, web_contents()->GetPrimaryMainFrame(), origin->GetURL(),
-        true, base::DoNothing());
-
+    BraveWalletPermissionContext::RequestWalletPermissions(
+        addresses, test_case.permission, web_contents()->GetPrimaryMainFrame(),
+        base::DoNothing());
     content::RunAllTasksUntilIdle();
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
@@ -433,7 +295,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     // update anchor should not dismiss the bubble
     permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble());
-    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(test_case.type));
 
     // Check sub-requests are created as expected.
     EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
@@ -453,7 +314,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     browser()->tab_strip_model()->CloseWebContentsAt(0,
                                                      TabCloseTypes::CLOSE_NONE);
     tab_destroyed_watcher.Wait();
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(test_case.type));
   }
 }
 
@@ -479,16 +339,108 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.type);
 
-    auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
-        GetLastCommitedOrigin(), test_case.addresses);
-    ASSERT_TRUE(origin);
+    for (auto& address : test_case.addresses) {
+      auto origin = brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(test_case.type),
+          GetLastCommitedOrigin(), address);
+      ASSERT_TRUE(origin);
 
-    EXPECT_EQ(origin->GetURL(), permissions::PermissionUtil::GetCanonicalOrigin(
-                                    test_case.type, origin->GetURL(),
-                                    GetLastCommitedOrigin().GetURL()))
-        << "GetCanonicalOrigin should return requesting_origin for Ethereum "
-           "permission.";
+      EXPECT_EQ(origin->GetURL(),
+                permissions::PermissionUtil::GetCanonicalOrigin(
+                    test_case.type, origin->GetURL(),
+                    GetLastCommitedOrigin().GetURL()))
+          << "GetCanonicalOrigin should return requesting_origin for Ethereum "
+             "permission.";
+    }
   }
+}
+
+class PermissionManagerIncognitoBrowserTest : public InProcessBrowserTest {
+ public:
+  PermissionManagerIncognitoBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+
+  ~PermissionManagerIncognitoBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
+    ASSERT_TRUE(https_server()->Start());
+  }
+
+  net::EmbeddedTestServer* https_server() { return &https_server_; }
+
+  void TestRequestPermissionsDoNotLeak(Browser* browser1, Browser* browser2) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser1, https_server()->GetURL("a.test", "/empty.html")));
+
+    auto* web_contents = browser1->tab_strip_model()->GetActiveWebContents();
+    auto active_origin =
+        url::Origin::Create(web_contents->GetLastCommittedURL());
+
+    const std::string address = "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A";
+    ContentSettingsType type = ContentSettingsType::BRAVE_ETHEREUM;
+    blink::PermissionType permission = blink::PermissionType::BRAVE_ETHEREUM;
+
+    RequestType request_type = ContentSettingsTypeToRequestType(type);
+    auto sub_request_origin =
+        brave_wallet::GetSubRequestOrigin(request_type, active_origin, address);
+    ASSERT_TRUE(sub_request_origin);
+
+    auto observer = std::make_unique<PermissionRequestManagerObserver>(
+        PermissionRequestManager::FromWebContents(web_contents));
+
+    TestFuture<std::vector<std::string>> request_permissions_future;
+
+    BraveWalletPermissionContext::RequestWalletPermissions(
+        {address}, permission, web_contents->GetPrimaryMainFrame(),
+        request_permissions_future.GetCallback());
+
+    content::RunAllTasksUntilIdle();
+    permissions::BraveWalletPermissionContext::AcceptOrCancel(
+        {address}, brave_wallet::mojom::PermissionLifetimeOption::kForever,
+        web_contents);
+
+    EXPECT_THAT(request_permissions_future.Take(), ElementsAreArray({address}));
+
+    EXPECT_TRUE(observer->IsRequestsFinalized());
+    EXPECT_TRUE(!observer->IsShowingBubble());
+
+    // Verify the permission has changed for profile1
+    EXPECT_EQ(
+        HostContentSettingsMapFactory::GetForProfile(browser1->GetProfile())
+            ->GetContentSetting(sub_request_origin->GetURL(),
+                                active_origin.GetURL(), type),
+        ContentSetting::CONTENT_SETTING_ALLOW);
+
+    // Verify the permission hasn't leaked to profile2
+    EXPECT_EQ(
+        HostContentSettingsMapFactory::GetForProfile(browser2->GetProfile())
+            ->GetContentSetting(sub_request_origin->GetURL(),
+                                active_origin.GetURL(), type),
+        ContentSetting::CONTENT_SETTING_ASK);
+  }
+
+ protected:
+  net::test_server::EmbeddedTestServer https_server_;
+};
+
+IN_PROC_BROWSER_TEST_F(PermissionManagerIncognitoBrowserTest,
+                       IncognitoPermissionsDoNotLeak) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+
+  // Verify permissions do not leak from incognito profile into normal profile.
+  TestRequestPermissionsDoNotLeak(incognito_browser, browser());
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionManagerIncognitoBrowserTest,
+                       PermissionsDoNotLeak) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+
+  // Verify permissions do not leak from normal profile into incognito profile.
+  TestRequestPermissionsDoNotLeak(browser(), incognito_browser);
 }
 
 }  // namespace permissions

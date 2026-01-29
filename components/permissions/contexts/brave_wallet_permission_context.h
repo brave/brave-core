@@ -6,13 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 
-#include <map>
 #include <optional>
-#include <queue>
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/content_setting_permission_context_base.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/request_type.h"
@@ -24,12 +21,18 @@ class BrowserContext;
 class WebContents;
 }  // namespace content
 
+namespace brave_wallet::mojom {
+enum class PermissionLifetimeOption;
+}
+
 namespace permissions {
 
 class BraveWalletPermissionContext
     : public ContentSettingPermissionContextBase {
  public:
-  // using ContentSettingPermissionContextBase::RequestPermission;
+  using RequestWalletPermissionsCallback =
+      base::OnceCallback<void(std::vector<std::string> allowed_addresses)>;
+
   explicit BraveWalletPermissionContext(
       content::BrowserContext* browser_context,
       ContentSettingsType content_settings_type);
@@ -39,22 +42,11 @@ class BraveWalletPermissionContext
   BraveWalletPermissionContext& operator=(const BraveWalletPermissionContext&) =
       delete;
 
-  /**
-   * This is called by PermissionManager::RequestPermissions, for each
-   * permission request ID, we will parse the requesting_frame URL to get the
-   * ethereum address list to be used for each sub-request. Each sub-request
-   * will then consume one address from the saved list and call
-   * ContentSettingPermissionContextBase::RequestPermission with it.
-   */
-  void RequestPermission(std::unique_ptr<PermissionRequestData> request_data,
-                         BrowserPermissionCallback callback) override;
-
-  static void RequestPermissions(
+  static void RequestWalletPermissions(
+      const std::vector<std::string>& addresses,
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
-      const std::vector<std::string>& addresses,
-      base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
-          callback);
+      RequestWalletPermissionsCallback callback);
   static bool HasRequestsInProgress(content::RenderFrameHost* rfh,
                                     permissions::RequestType request_type);
   static void AcceptOrCancel(
@@ -98,9 +90,6 @@ class BraveWalletPermissionContext
 
  protected:
   bool IsRestrictedToSecureOrigins() const override;
-
- private:
-  std::map<std::string, std::queue<std::string>> request_address_queues_;
 };
 
 }  // namespace permissions
