@@ -124,6 +124,11 @@ public struct WalletConstants {
       if FeatureList.kBraveWalletZCashFeature?.enabled == true {
         result.append(.zec)
       }
+      if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
+        FeatureList.kBraveWalletCardanoEnabled?.enabled == true
+      {
+        result.append(.ada)
+      }
     case .dapps:
       return [.eth, .sol]
     }
