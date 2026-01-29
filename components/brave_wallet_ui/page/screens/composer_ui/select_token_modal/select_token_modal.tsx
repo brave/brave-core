@@ -206,6 +206,11 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       )
     const [selectedAccountFilter, setSelectedAccountFilter] =
       React.useState<BraveWallet.AccountInfo>(AllAccountsOption)
+    // Defer heavy data fetches (tokens registry, combined tokens, balances,
+    // spot prices) until after modal has painted to avoid blocking the main
+    // thread when opening.
+    const [shouldFetchModalData, setShouldFetchModalData] =
+      React.useState<boolean>(false)
     const [pendingSelectedAssetState, setPendingSelectedAssetState] =
       React.useState<BraveWallet.BlockchainToken | undefined>(undefined)
     const [tokenDetails, setTokenDetails] = React.useState<
@@ -246,7 +251,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const {
       data: combinedTokenRegistry,
       isLoading: isLoadingCombinedTokenRegistry,
-    } = useGetCombinedTokensRegistryQuery()
+    } = useGetCombinedTokensRegistryQuery(undefined, {
+      skip: !shouldFetchModalData,
+    })
 
     const fullVisibleFungibleTokensList = React.useMemo(() => {
       if (!combinedTokenRegistry) {
@@ -260,6 +267,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const { userVisibleFungibleTokens, userVisibleNfts } =
       useGetUserTokensRegistryQuery(undefined, {
+        skip: !shouldFetchModalData,
         selectFromResult: (result) => ({
           userVisibleFungibleTokens:
             selectAllVisibleFungibleUserAssetsFromQueryResult(result),
@@ -307,10 +315,11 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       modalType === 'send' ? visibleNetworks : bridgeAndSwapNetworks
 
     const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
-      useBalancesFetcher({
-        accounts,
-        networks,
-      })
+      useBalancesFetcher(
+        shouldFetchModalData && accounts.length && networks.length
+          ? { accounts, networks }
+          : skipToken,
+      )
 
     // Methods
     const getAllAccountsWithBalance = React.useCallback(
@@ -338,12 +347,12 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       }
 
       if (selectedSendOption === SendPageTabHashes.nft) {
-        return userVisibleNfts.filter(
+        return (userVisibleNfts ?? []).filter(
           (token) => getAllAccountsWithBalance(token).length > 0,
         )
       }
 
-      return userVisibleFungibleTokens.filter(
+      return (userVisibleFungibleTokens ?? []).filter(
         (token) => getAllAccountsWithBalance(token).length > 0,
       )
     }, [
@@ -404,7 +413,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
       useGetTokenSpotPricesQuery(
-        !isLoadingBalances
+        shouldFetchModalData
+          && !isLoadingBalances
           && tokenPriceRequests.length
           && defaultFiatCurrency
           && selectedSendOption !== '#nft'
@@ -671,12 +681,18 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       setPendingSelectedAssetState(undefined)
     }, [clearParams, needsAccount])
 
+    // Effects
+    React.useEffect(() => {
+      const id = requestAnimationFrame(() => setShouldFetchModalData(true))
+      return () => cancelAnimationFrame(id)
+    }, [])
+
     // Computed & Memos
     const emptyTokensList =
       !isLoadingBalances && tokensBySearchValue.length === 0
 
     const tokenList = React.useMemo(() => {
-      if (isLoadingCombinedTokenRegistry) {
+      if (!shouldFetchModalData || isLoadingCombinedTokenRegistry) {
         return (
           <TokenListItemSkeleton
             isNFT={selectedSendOption === SendPageTabHashes.nft}
@@ -711,6 +727,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         />
       )
     }, [
+      shouldFetchModalData,
       emptyTokensList,
       selectedSendOption,
       handleSelectAsset,
