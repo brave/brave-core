@@ -55,8 +55,8 @@
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
-    : ui::MojoWebUIController(web_ui,
-                              true /* Needed for webui browser tests */) {
+    : TopChromeWebUIController(web_ui,
+                               true /* Needed for webui browser tests */) {
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
@@ -207,7 +207,7 @@ void WalletPageUI::CreatePageHandler(
 }
 
 WalletPageUIConfig::WalletPageUIConfig()
-    : DefaultWebUIConfig(content::kChromeUIScheme, kWalletPageHost) {}
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kWalletPageHost) {}
 
 bool WalletPageUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {

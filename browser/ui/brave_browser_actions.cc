@@ -7,6 +7,7 @@
 
 #include "base/types/to_address.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,6 +22,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
 namespace {
@@ -68,6 +73,17 @@ void BraveBrowserActions::InitializeBrowserActions() {
         SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
                         IDS_CHAT_UI_TITLE, kLeoProductBraveLeoIcon,
                         kActionSidePanelShowChatUI, bwi, true)
+            .Build());
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (brave_wallet::IsAllowed(profile_->GetPrefs())) {
+    root_action_item_->AddChild(
+        SidePanelAction(
+            SidePanelEntryId::kWallet, IDS_SIDEBAR_WALLET_ITEM_TITLE,
+            IDS_SIDEBAR_WALLET_ITEM_TITLE, kLeoProductBraveWalletIcon,
+            kActionSidePanelShowWallet, bwi, true)
             .Build());
   }
 #endif
