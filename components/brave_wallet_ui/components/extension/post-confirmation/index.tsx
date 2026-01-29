@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
-import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// Redux
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 
 // Constants
 import { BraveWallet, TransactionInfoLookup } from '../../../constants/types'
@@ -61,8 +63,8 @@ export function TransactionStatus({ transactionLookup }: Props) {
   const [showCancelTransaction, setShowCancelTransaction] =
     React.useState(false)
 
-  // hooks
-  const dispatch = useDispatch()
+  // redux
+  const dispatch = useAppDispatch()
 
   // methods
   const onClickViewInActivity = React.useCallback(() => {

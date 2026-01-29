@@ -7,8 +7,10 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { Redirect, useParams, useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // Selectors
 import {
@@ -187,7 +189,7 @@ export const Account = () => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // queries
   const { accounts } = useAccountsQuery()

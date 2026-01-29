@@ -7,7 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // redux
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 
 // actions
 import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
@@ -121,7 +121,7 @@ export const AccountListItem = ({
   isShieldingAvailable,
 }: Props) => {
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)

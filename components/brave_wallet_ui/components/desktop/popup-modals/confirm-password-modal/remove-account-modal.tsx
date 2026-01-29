@@ -4,8 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import * as leo from '@brave/leo/tokens/css/variables'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
+
+// types
 import { type InputEventDetail } from '@brave/leo/react/input'
 
 // actions
@@ -38,7 +43,7 @@ import {
 
 export const RemoveAccountModal = () => {
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
