@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/containers/core/browser/storage_partition_constants.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -243,7 +243,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-a",
+      browser()->profile(), kContainersStoragePartitionDomain, "container-a",
       browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
@@ -306,7 +306,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-b",
+      browser()->profile(), kContainersStoragePartitionDomain, "container-b",
       browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
 
@@ -326,6 +326,95 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
                                            GetSessionStorageJS("test_key")));
   EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_b,
                                            GetIndexedDBJS("test_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       LinkNavigationInheritsContainerStoragePartition) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to base URL with a container
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain,
+      "container-for-links", browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* container_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(container_web_contents);
+
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetCookieJS("container_cookie", "container_value")));
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetLocalStorageJS("container_key", "container_value")));
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetSessionStorageJS("container_key", "container_value")));
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetIndexedDBJS("container_key", "container_value")));
+
+  // Inject a link that opens in new tab
+  std::string inject_new_tab_link_js = content::JsReplace(
+      "const link = document.createElement('a');"
+      "link.href = $1;"
+      "link.textContent = 'New Tab Link';"
+      "link.id = 'new-tab-link';"
+      "link.target = '_blank';"
+      "document.body.appendChild(link);"
+      "link.click();",
+      url);
+
+  content::WebContentsAddedObserver new_tab_observer;
+  EXPECT_TRUE(content::ExecJs(container_web_contents, inject_new_tab_link_js));
+  content::WebContents* new_tab_contents = new_tab_observer.GetWebContents();
+  ASSERT_TRUE(new_tab_contents);
+
+  ASSERT_NE(new_tab_contents, container_web_contents);
+
+  // Wait for the new tab to load
+  EXPECT_TRUE(content::WaitForLoadStop(new_tab_contents));
+
+  // Verify the new tab is on the correct URL
+  EXPECT_EQ(url, new_tab_contents->GetLastCommittedURL());
+
+  // Verify the new tab has access to the same container storage partition
+  content::EvalJsResult cookie_result =
+      content::EvalJs(new_tab_contents, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "container_cookie=container_value") != std::string::npos);
+  EXPECT_EQ(
+      "container_value",
+      content::EvalJs(new_tab_contents, GetLocalStorageJS("container_key")));
+  EXPECT_EQ(
+      base::Value(),
+      content::EvalJs(new_tab_contents, GetSessionStorageJS("container_key")));
+  EXPECT_EQ("container_value",
+            content::EvalJs(new_tab_contents, GetIndexedDBJS("container_key")));
+
+  // Verify that setting storage in the new tab affects the container
+  EXPECT_TRUE(content::ExecJs(new_tab_contents,
+                              SetCookieJS("new_tab_cookie", "new_tab_value")));
+  EXPECT_TRUE(content::ExecJs(
+      new_tab_contents, SetLocalStorageJS("new_tab_key", "new_tab_value")));
+  EXPECT_TRUE(content::ExecJs(
+      new_tab_contents, SetSessionStorageJS("new_tab_key", "new_tab_value")));
+  EXPECT_TRUE(content::ExecJs(new_tab_contents,
+                              SetIndexedDBJS("new_tab_key", "new_tab_value")));
+
+  // Verify the original container tab can see the new storage
+  cookie_result = content::EvalJs(container_web_contents, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "new_tab_cookie=new_tab_value") != std::string::npos);
+  EXPECT_EQ("new_tab_value", content::EvalJs(container_web_contents,
+                                             GetLocalStorageJS("new_tab_key")));
+  EXPECT_EQ(base::Value(), content::EvalJs(container_web_contents,
+                                           GetSessionStorageJS("new_tab_key")));
+  EXPECT_EQ("new_tab_value", content::EvalJs(container_web_contents,
+                                             GetIndexedDBJS("new_tab_key")));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
@@ -352,11 +441,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   EXPECT_EQ(1, content::EvalJs(web_contents_default,
                                GetServiceWorkerRegistrationCountJS()));
 
-  // Open a new tab with a different storage partition (container-a)
+  // Open a new tab with a different storage partition (container_a)
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-a",
+      browser()->profile(), kContainersStoragePartitionDomain, "container-a",
       browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
@@ -397,11 +486,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   EXPECT_EQ(1, content::EvalJs(web_contents_default,
                                GetServiceWorkerRegistrationCountJS()));
 
-  // Open another container (container-b)
+  // Open another container (container_b)
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-b",
+      browser()->profile(), kContainersStoragePartitionDomain, "container-b",
       browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
 

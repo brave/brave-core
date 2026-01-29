@@ -1,0 +1,10 @@
+include_rules = [
+    "+content/public/browser",
+    "+content/public/test",
+]
+
+specific_include_rules = {
+    ".*test.cc": [
+        "+content/test",
+    ],
+}
