@@ -105,6 +105,9 @@ class ConversationAPIV2Client {
   void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 
+  std::optional<std::string> GetLeoModelKeyFromResponse(
+      const base::Value::Dict& response);
+
   const std::string model_name_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   raw_ptr<AIChatCredentialManager> credential_manager_;

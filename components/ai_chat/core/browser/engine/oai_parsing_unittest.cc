@@ -14,15 +14,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
-#include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -655,13 +652,13 @@ TEST(OAIParsingTest, ParseOAICompletionResponse_ValidStreamingResponse) {
   })";
 
   auto response_dict = base::test::ParseJsonDict(kResponseJson);
-  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+  auto result = ParseOAICompletionResponse(response_dict, "model_key");
 
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE(result->event);
   ASSERT_TRUE(result->event->is_completion_event());
   EXPECT_EQ(result->event->get_completion_event()->completion, "Hello, world!");
-  EXPECT_FALSE(result->model_key.has_value());
+  EXPECT_EQ(result->model_key, "model_key");
 }
 
 TEST(OAIParsingTest, ParseOAICompletionResponse_ValidNonStreamingResponse) {
@@ -676,33 +673,12 @@ TEST(OAIParsingTest, ParseOAICompletionResponse_ValidNonStreamingResponse) {
   })";
 
   auto response_dict = base::test::ParseJsonDict(kResponseJson);
-  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+  auto result = ParseOAICompletionResponse(response_dict, std::nullopt);
 
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE(result->event);
   ASSERT_TRUE(result->event->is_completion_event());
   EXPECT_EQ(result->event->get_completion_event()->completion, "Test response");
-  EXPECT_FALSE(result->model_key.has_value());
-}
-
-TEST(OAIParsingTest, ParseOAICompletionResponse_MissingModelField) {
-  // Test response without model field - should still work
-  constexpr char kResponseJson[] = R"({
-    "choices": [{
-      "delta": {
-        "content": "Content without model"
-      }
-    }]
-  })";
-
-  auto response_dict = base::test::ParseJsonDict(kResponseJson);
-  auto result = ParseOAICompletionResponse(response_dict, nullptr);
-
-  ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event);
-  ASSERT_TRUE(result->event->is_completion_event());
-  EXPECT_EQ(result->event->get_completion_event()->completion,
-            "Content without model");
   EXPECT_FALSE(result->model_key.has_value());
 }
 
@@ -718,63 +694,9 @@ TEST(OAIParsingTest, ParseOAICompletionResponse_EmptyContent) {
   })";
 
   auto response_dict = base::test::ParseJsonDict(kResponseJson);
-  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+  auto result = ParseOAICompletionResponse(response_dict, std::nullopt);
 
   ASSERT_FALSE(result.has_value());
-}
-
-TEST(OAIParsingTest, ParseOAICompletionResponse_WithModelService) {
-  TestingPrefServiceSimple pref_service;
-  prefs::RegisterProfilePrefs(pref_service.registry());
-  ModelService::RegisterProfilePrefs(pref_service.registry());
-  ModelService model_service(&pref_service);
-
-  // Test with invalid model name - should return nullopt for model_key
-  {
-    constexpr char kResponseJson[] = R"({
-      "model": "unknown-model",
-      "choices": [{
-        "delta": {
-          "content": "Test content"
-        }
-      }]
-    })";
-
-    auto response_dict = base::test::ParseJsonDict(kResponseJson);
-    auto result = ParseOAICompletionResponse(response_dict, &model_service);
-
-    ASSERT_TRUE(result.has_value());
-    ASSERT_TRUE(result->event);
-    ASSERT_TRUE(result->event->is_completion_event());
-    EXPECT_EQ(result->event->get_completion_event()->completion,
-              "Test content");
-    // Model key should be nullopt since the model name was not found
-    EXPECT_FALSE(result->model_key.has_value());
-  }
-
-  // Test with valid model name - should return model_key
-  {
-    constexpr char kResponseJson[] = R"({
-      "model": "claude-3-sonnet",
-      "choices": [{
-        "message": {
-          "content": "Valid model response"
-        }
-      }]
-    })";
-
-    auto response_dict = base::test::ParseJsonDict(kResponseJson);
-    auto result = ParseOAICompletionResponse(response_dict, &model_service);
-
-    ASSERT_TRUE(result.has_value());
-    ASSERT_TRUE(result->event);
-    ASSERT_TRUE(result->event->is_completion_event());
-    EXPECT_EQ(result->event->get_completion_event()->completion,
-              "Valid model response");
-    // Model key should be present since the model name was found
-    ASSERT_TRUE(result->model_key.has_value());
-    EXPECT_EQ(result->model_key.value(), "chat-claude-sonnet");
-  }
 }
 
 struct InvalidResponseTestCase {
@@ -788,7 +710,7 @@ class ParseOAICompletionResponseInvalidTest
 TEST_P(ParseOAICompletionResponseInvalidTest, ReturnsNullopt) {
   const InvalidResponseTestCase& test_case = GetParam();
   auto response_dict = base::test::ParseJsonDict(test_case.response_json);
-  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+  auto result = ParseOAICompletionResponse(response_dict, std::nullopt);
   EXPECT_FALSE(result.has_value());
 }
 
