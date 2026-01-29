@@ -215,6 +215,7 @@ const Config = function () {
   ])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.is_asan = getEnvConfig(['is_asan'])
   this.is_msan = getEnvConfig(['is_msan'])
   this.is_ubsan = getEnvConfig(['is_ubsan'])
   this.use_no_gn_gen = getEnvConfig(['use_no_gn_gen'])
@@ -335,10 +336,15 @@ Config.prototype.enableCDMHostVerification = function () {
 }
 
 Config.prototype.isAsan = function () {
-  if (this.is_asan) {
-    return true
+  if (this.is_asan !== undefined) {
+    return this.is_asan
   }
   return false
+}
+
+Config.prototype.isLsan = function () {
+  // LSAN only works with ASAN and has very low overhead.
+  return this.isAsan() && ['android', 'linux'].includes(this.targetOS)
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -369,6 +375,7 @@ Config.prototype.buildArgs = function () {
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
     is_asan: this.isAsan(),
+    is_lsan: this.isLsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     is_ubsan: this.is_ubsan,
@@ -561,11 +568,6 @@ Config.prototype.buildArgs = function () {
       // https://github.com/brave/brave-browser/issues/1024#issuecomment-1175397914
       args.use_vaapi = true
     }
-  }
-
-  if (['android', 'linux', 'mac'].includes(this.targetOS)) {
-    // LSAN only works with ASAN and has very low overhead.
-    args.is_lsan = args.is_asan
   }
 
   // Devtools: Now we patch devtools frontend, so it is useful to see
@@ -845,8 +847,6 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.is_asan) {
     this.is_asan = true
-  } else {
-    this.is_asan = false
   }
 
   if (options.use_clang_coverage) {
