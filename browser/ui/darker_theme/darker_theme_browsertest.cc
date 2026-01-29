@@ -22,14 +22,10 @@
 using DarkerThemeWithFlagDisabledBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(DarkerThemeWithFlagDisabledBrowserTest,
-                       PreferenceNotRegistered) {
-  // By default, the darker theme feature flag should be off.
-  EXPECT_FALSE(
+                       FeatureFlagEnabledByDefault) {
+  // By default, the darker theme feature flag should be enabled.
+  EXPECT_TRUE(
       base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme));
-
-  // When the flag is off, the pref should not be registered.
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->FindPreference(
-      darker_theme::prefs::kBraveDarkerMode));
 }
 
 class DarkerThemeBrowserTest : public InProcessBrowserTest {
