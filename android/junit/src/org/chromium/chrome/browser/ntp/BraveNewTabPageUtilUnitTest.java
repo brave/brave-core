@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils;
 import org.chromium.components.browser_ui.widget.displaystyle.HorizontalDisplayStyle;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig.DisplayStyle;
@@ -39,6 +40,6 @@ public class BraveNewTabPageUtilUnitTest {
         assertTrue(
                 "Brave overridden isInNarrowWindowOnTablet on tablet when displayStyleWide =="
                         + " HorizontalDisplayStyle.WIDE.",
-                BraveNewTabPageLayout.isInNarrowWindowOnTablet(true, uiConfig));
+                BraveNtpCustomizationUtils.isInNarrowWindowOnTablet(true, uiConfig));
     }
 }

@@ -51,7 +51,6 @@
     *** initializeSiteSectionView(...);
     *** calculateTabletMvtWidth(...);
     *** updateMvtOnTablet(...);
-    *** isInNarrowWindowOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -112,6 +111,14 @@
 
 -keep class org.chromium.base.CommandLineInitUtil {
     *** initCommandLine(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
+    *** isInNarrowWindowOnTablet(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
+    *** isInNarrowWindowOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
