@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+# Brave override for NtpCustomizationUtils.isInNarrowWindowOnTablet (bytecode
+# redirects calls to this). Depends only on UiConfig to avoid circular deps
+# with //chrome/browser/ntp_customization:java.
+android_library("java") {
+  sources = [ "java/src/org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils.java" ]
+
+  deps = [ "//components/browser_ui/widget/android:java" ]
+}

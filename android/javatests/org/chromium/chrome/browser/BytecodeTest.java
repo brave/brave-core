@@ -274,6 +274,11 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(
                 classExists(
@@ -484,7 +489,7 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
                         "isInNarrowWindowOnTablet",
                         MethodModifier.STATIC,
                         boolean.class,
