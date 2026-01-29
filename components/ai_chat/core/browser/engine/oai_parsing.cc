@@ -5,12 +5,10 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 
-#include <string>
 #include <utility>
 
 #include "base/logging.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
 namespace ai_chat {
@@ -157,7 +155,7 @@ const base::Value::Dict* GetOAIContentContainer(
 
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     const base::Value::Dict& response,
-    ModelService* model_service) {
+    std::optional<std::string> model_key) {
   const base::Value::Dict* content_container = GetOAIContentContainer(response);
   if (!content_container) {
     VLOG(2) << "No delta or message info found in first completion choice.";
@@ -167,16 +165,6 @@ std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
   const std::string* content = content_container->FindString("content");
   if (!content || content->empty()) {
     return std::nullopt;
-  }
-
-  // Handle model lookup if model_service provided, only supports Leo models
-  // and not custom models for now.
-  std::optional<std::string> model_key = std::nullopt;
-  if (model_service) {
-    const std::string* model = response.FindString("model");
-    if (model) {
-      model_key = model_service->GetLeoModelKeyByName(*model);
-    }
   }
 
   auto event = mojom::ConversationEntryEvent::NewCompletionEvent(

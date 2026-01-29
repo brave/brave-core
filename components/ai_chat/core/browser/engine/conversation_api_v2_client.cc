@@ -421,6 +421,7 @@ void ConversationAPIV2Client::OnQueryCompleted(
   // Handle successful request
   if (success) {
     std::optional<bool> is_near_verified = std::nullopt;
+    std::optional<std::string> model_key = std::nullopt;
     const auto& headers = result.headers();
     if (const auto* header_value =
             base::FindOrNull(headers, kBraveNearVerifiedHeader)) {
@@ -429,8 +430,10 @@ void ConversationAPIV2Client::OnQueryCompleted(
 
     // Parse OAI-format response for non-streaming API results
     if (result.value_body().is_dict()) {
-      if (auto parsed_result = ParseOAICompletionResponse(
-              result.value_body().GetDict(), model_service_)) {
+      auto& result_dict = result.value_body().GetDict();
+      model_key = GetLeoModelKeyFromResponse(result_dict);
+      if (auto parsed_result =
+              ParseOAICompletionResponse(result_dict, model_key)) {
         parsed_result->is_near_verified = is_near_verified;
         std::move(callback).Run(base::ok(std::move(*parsed_result)));
         return;
@@ -440,7 +443,7 @@ void ConversationAPIV2Client::OnQueryCompleted(
     // Return null event if no completion was provided in response body, can
     // happen when server send them all via OnQueryDataReceived.
     std::move(callback).Run(
-        GenerationResultData{nullptr, std::nullopt, is_near_verified});
+        GenerationResultData{nullptr, std::move(model_key), is_near_verified});
     return;
   }
 
@@ -471,8 +474,10 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   }
 
   auto& result_params = result->GetDict();
-  if (auto result_data =
-          ParseOAICompletionResponse(result_params, model_service_)) {
+  std::optional<std::string> model_key =
+      GetLeoModelKeyFromResponse(result_params);
+
+  if (auto result_data = ParseOAICompletionResponse(result_params, model_key)) {
     callback.Run(std::move(*result_data));
   }
 
@@ -489,10 +494,20 @@ void ConversationAPIV2Client::OnQueryDataReceived(
            ToolUseEventFromToolCallsResponse(tool_calls)) {
         auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
             std::move(tool_use_event));
-        callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
+        callback.Run(GenerationResultData(std::move(tool_event), model_key));
       }
     }
   }
+}
+
+std::optional<std::string> ConversationAPIV2Client::GetLeoModelKeyFromResponse(
+    const base::Value::Dict& response) {
+  const std::string* model = response.FindString("model");
+  if (!model_service_ || !model) {
+    return std::nullopt;
+  }
+
+  return model_service_->GetLeoModelKeyByName(*model);
 }
 
 }  // namespace ai_chat

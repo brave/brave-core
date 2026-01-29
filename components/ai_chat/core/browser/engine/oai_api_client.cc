@@ -294,7 +294,7 @@ void OAIAPIClient::OnQueryCompleted(
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
       if (auto result_data = ParseOAICompletionResponse(
-              result.value_body().GetDict(), nullptr /* model_service */)) {
+              result.value_body().GetDict(), std::nullopt /* model_key */)) {
         std::move(callback).Run(base::ok(std::move(*result_data)));
         return;
       }
@@ -340,7 +340,7 @@ void OAIAPIClient::OnQueryDataReceived(
   }
 
   if (auto result_data = ParseOAICompletionResponse(
-          result->GetDict(), nullptr /* model_service */)) {
+          result->GetDict(), std::nullopt /* model_key */)) {
     callback.Run(std::move(*result_data));
   }
 }

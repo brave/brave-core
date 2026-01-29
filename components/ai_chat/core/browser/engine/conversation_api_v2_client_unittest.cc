@@ -777,6 +777,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
         {
           // Send response with both content and tool calls
           auto chunk = base::test::ParseJsonDict(R"({
+            "model": "llama-3-8b-instruct",
             "choices": [{
               "delta": {
                 "content": "This is a test completion",
@@ -820,6 +821,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   "This is a test completion");
+        EXPECT_EQ(result.model_key, "chat-basic");
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -831,6 +833,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
                         mojom::ToolUseEvent::New("get_weather", "call_123",
                                                  "{\"location\":\"New York\"}",
                                                  std::nullopt, nullptr));
+        EXPECT_EQ(result.model_key, "chat-basic");
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -843,6 +846,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
             mojom::ToolUseEvent::New("search_web", "call_456",
                                      "{\"query\":\"Hello, world!\"}",
                                      std::nullopt, nullptr));
+        EXPECT_EQ(result.model_key, "chat-basic");
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))

@@ -471,8 +471,7 @@ void ConversationAPIClient::OnQueryDataReceived(
       auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_use_event));
 
-      callback.Run(GenerationResultData(std::move(tool_event),
-                                        std::optional<std::string>(model_key)));
+      callback.Run(GenerationResultData(std::move(tool_event), model_key));
     }
   }
 }

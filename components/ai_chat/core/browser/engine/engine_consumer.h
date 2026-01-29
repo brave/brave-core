@@ -44,7 +44,7 @@ class EngineConsumer {
 
   struct GenerationResultData {
     GenerationResultData(mojom::ConversationEntryEventPtr event,
-                         std::optional<std::string>&& model_key,
+                         std::optional<std::string> model_key,
                          std::optional<bool> is_near_verified = std::nullopt);
     ~GenerationResultData();
 
