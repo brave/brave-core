@@ -15,10 +15,18 @@ import { Tabs } from 'brave-ui/components'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import * as torInternalsActions from '../actions/tor_internals_actions'
+import {
+  getTorGeneralInfo,
+  getTorLog
+} from '../slices/tor_internals.slice'
+
+const torInternalsActions = {
+  getTorGeneralInfo,
+  getTorLog
+}
 
 interface Props {
-  actions: any
+  actions: typeof torInternalsActions
   torInternalsData: TorInternals.State
 }
 
