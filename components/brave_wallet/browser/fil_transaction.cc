@@ -112,10 +112,10 @@ std::optional<FilTransaction> FilTransaction::FromTxData(
   auto address = FilAddress::FromAddress(tx_data->to);
   if (address.IsEmpty()) {
     auto eth_address = EthAddress::FromHex(tx_data->to);
-    if (!eth_address.IsValid()) {
+    if (!eth_address) {
       return std::nullopt;
     }
-    address = FilAddress::FromFEVMAddress(is_mainnet, eth_address);
+    address = FilAddress::FromFEVMAddress(is_mainnet, *eth_address);
     if (address.IsEmpty()) {
       return std::nullopt;
     }

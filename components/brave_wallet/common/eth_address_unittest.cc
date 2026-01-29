@@ -21,52 +21,37 @@ TEST(EthAddressUnitTest, FromPublicKey) {
       "3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf0"
       "66d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d",
       &public_key));
-  EthAddress address = EthAddress::FromPublicKey(public_key);
-  EXPECT_EQ(address.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-
-  public_key.clear();
-  EXPECT_TRUE(base::HexStringToBytes(
-      "3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf0"
-      "66d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae744",
-      &public_key));
-  address = EthAddress::FromPublicKey(public_key);
-  EXPECT_TRUE(address.IsEmpty());
-
-  public_key.clear();
-  EXPECT_TRUE(base::HexStringToBytes(
-      "3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf0"
-      "66d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1dffff",
-      &public_key));
-  address = EthAddress::FromPublicKey(public_key);
-  EXPECT_TRUE(address.IsEmpty());
+  auto address = EthAddress::FromPublicKey(
+      base::span(public_key).to_fixed_extent<64>().value());
+  EXPECT_EQ(address->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
 }
 
 TEST(EthAddressUnitTest, FromHex) {
-  EthAddress address =
+  auto address =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  EthAddress address2 =
+  auto address2 =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  EXPECT_EQ(address.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  EXPECT_EQ(address2.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EXPECT_EQ(address->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EXPECT_EQ(address2->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EXPECT_EQ(address, address2);
-  EthAddress address3 =
+  auto address3 =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
-  EXPECT_EQ(address3.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  EXPECT_EQ(address3->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
   EXPECT_NE(address, address3);
 
   // checksum address
-  EthAddress address4 =
+  auto address4 =
       EthAddress::FromHex("0x3599689E6292b81B2d85451025146515070129Bb");
-  EXPECT_EQ(address4.ToHex(), "0x3599689e6292b81b2d85451025146515070129bb");
+  EXPECT_EQ(address4->ToHex(), "0x3599689e6292b81b2d85451025146515070129bb");
 
   address = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb");
-  EXPECT_TRUE(address.IsEmpty());
+  EXPECT_FALSE(address);
 
   address = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a11");
-  EXPECT_TRUE(address.IsEmpty());
+  EXPECT_FALSE(address);
 
   address = EthAddress::FromHex("0x123");
-  EXPECT_TRUE(address.IsEmpty());
+  EXPECT_FALSE(address);
 }
 
 TEST(EthAddressUnitTest, IsValidAddress) {
@@ -82,6 +67,9 @@ TEST(EthAddressUnitTest, IsValidAddress) {
       EthAddress::IsValidAddress("0x3599689E6292b81B2d85451025146515070129Bb"));
   EXPECT_TRUE(
       EthAddress::IsValidAddress("0x3599689e6292b81b2d85451025146515070129bb"));
+  // Checksum mismatch
+  EXPECT_FALSE(
+      EthAddress::IsValidAddress("0x3599689e6292b81B2d85451025146515070129Bb"));
 }
 
 TEST(EthAddressUnitTest, ToChecksumAddress) {
@@ -100,8 +88,8 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
   };
 
   for (auto* eip55_case : eip55_cases) {
-    EthAddress address = EthAddress::FromHex(base::ToLowerASCII(eip55_case));
-    EXPECT_EQ(address.ToChecksumAddress(), eip55_case);
+    auto address = EthAddress::FromHex(base::ToLowerASCII(eip55_case));
+    EXPECT_EQ(address->ToChecksumAddress(), eip55_case);
   }
 
   const struct {
@@ -167,9 +155,9 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
   };
 
   for (const auto& eip1191_case : eip1191_cases) {
-    EthAddress address =
+    auto address =
         EthAddress::FromHex(base::ToLowerASCII(eip1191_case.address));
-    EXPECT_EQ(address.ToChecksumAddress(eip1191_case.chain_id),
+    EXPECT_EQ(address->ToChecksumAddress(eip1191_case.chain_id),
               eip1191_case.address);
   }
 }

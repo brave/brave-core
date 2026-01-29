@@ -51,11 +51,11 @@ bool ParseAddressResult(const base::Value& json_value, std::string* address) {
   *address = "0x" + result->substr(offset);
 
   auto eth_addr = EthAddress::FromHex("0x" + result->substr(offset));
-  if (eth_addr.IsEmpty()) {
+  if (!eth_addr) {
     return false;
   }
 
-  *address = eth_addr.ToChecksumAddress();
+  *address = eth_addr->ToChecksumAddress();
   return true;
 }
 

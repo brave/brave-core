@@ -83,6 +83,10 @@ export const addressEndpoints = ({
           const { checksumAddress } =
             await api.keyringService.getChecksumEthAddress(addressArg)
 
+          if (!checksumAddress) {
+            throw new Error('Failed to get checksum address')
+          }
+
           return {
             data: checksumAddress,
           }

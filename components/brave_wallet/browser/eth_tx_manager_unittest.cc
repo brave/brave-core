@@ -2150,7 +2150,7 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   EXPECT_EQ(tx_meta->tx()->nonce(), orig_tx_meta->tx()->nonce());
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), "0x6");
   EXPECT_EQ(tx_meta->tx()->gas_price(), 176000000000ULL);  // 160*1.1 gwei
-  EXPECT_EQ(tx_meta->tx()->to().ToChecksumAddress(),
+  EXPECT_EQ(tx_meta->tx()->GetToChecksumAddress(),
             orig_tx_meta->from()->address);
   EXPECT_EQ(tx_meta->tx()->value(), 0u);
   EXPECT_TRUE(tx_meta->tx()->data().empty());
@@ -2173,7 +2173,7 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   EXPECT_EQ(tx_meta->tx()->nonce(), orig_tx_meta->tx()->nonce());
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), "0x7");
   EXPECT_EQ(tx_meta->tx()->gas_price(), 0x17fcf18321ULL);  // 0x17fcf18321
-  EXPECT_EQ(tx_meta->tx()->to().ToChecksumAddress(),
+  EXPECT_EQ(tx_meta->tx()->GetToChecksumAddress(),
             orig_tx_meta->from()->address);
   EXPECT_EQ(tx_meta->tx()->value(), 0u);
   EXPECT_TRUE(tx_meta->tx()->data().empty());
@@ -2198,7 +2198,7 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   EXPECT_EQ(tx1559_ptr->max_priority_fee_per_gas(),
             2200000000ULL);                                  // 2*1.1 gwei
   EXPECT_EQ(tx1559_ptr->max_fee_per_gas(), 52800000000ULL);  // 48*1.1 gwei
-  EXPECT_EQ(tx_meta->tx()->to().ToChecksumAddress(),
+  EXPECT_EQ(tx_meta->tx()->GetToChecksumAddress(),
             orig_tx_meta->from()->address);
   EXPECT_EQ(tx_meta->tx()->value(), 0u);
   EXPECT_TRUE(tx_meta->tx()->data().empty());

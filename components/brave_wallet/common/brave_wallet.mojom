@@ -1550,7 +1550,7 @@ interface KeyringService {
   ValidatePassword(string password) => (bool result);
 
   // Get the checksume'd EthAddress for the specified address
-  GetChecksumEthAddress(string address) => (string checksum_address);
+  GetChecksumEthAddress(string address) => (string? checksum_address);
 
   // Obtains if there's a pending unlock request
   // Note that there is no need for an API to notify unlocked

@@ -1808,10 +1808,10 @@ void BraveWalletService::ConvertFEVMToFVMAddress(
   base::flat_map<std::string, std::string> result;
   for (const auto& fevm_address : fevm_addresses) {
     auto eth_address = EthAddress::FromHex(fevm_address);
-    if (!eth_address.IsValid()) {
+    if (!eth_address) {
       continue;
     }
-    auto address = FilAddress::FromFEVMAddress(is_mainnet, eth_address);
+    auto address = FilAddress::FromFEVMAddress(is_mainnet, *eth_address);
     DCHECK(result.find(fevm_address) == result.end());
     if (!address.IsEmpty()) {
       result[fevm_address] = address.EncodeAsString();

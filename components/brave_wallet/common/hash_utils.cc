@@ -42,7 +42,8 @@ KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
 }
 
 std::string GetFunctionHash(std::string_view input) {
-  return ToHex(GetFunctionHashBytes4(input));
+  auto a = ToHex(GetFunctionHashBytes4(input));
+  return a;
 }
 
 eth_abi::Bytes4 GetFunctionHashBytes4(std::string_view input) {

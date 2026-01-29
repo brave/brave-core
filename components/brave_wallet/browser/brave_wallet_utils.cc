@@ -652,7 +652,9 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 
 std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  LOG(ERROR) << "XXXZZZ GetEnsRegistryContractAddress 1";
   DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
+  LOG(ERROR) << "XXXZZZ GetEnsRegistryContractAddress 1";
   return kEnsRegistryContractAddress;
 }
 

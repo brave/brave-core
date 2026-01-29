@@ -2281,8 +2281,12 @@ bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
   if (!keyring) {
     return false;
   }
+  auto addr = EthAddress::FromHex(account_id->address);
+  if (!addr) {
+    return false;
+  }
   return keyring->GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      EthAddress::FromHex(account_id->address).ToChecksumAddress(), key);
+      addr->ToChecksumAddress(), key);
 }
 
 std::optional<std::vector<uint8_t>>
@@ -2692,7 +2696,14 @@ void KeyringService::ValidatePassword(const std::string& password,
 void KeyringService::GetChecksumEthAddress(
     const std::string& address,
     GetChecksumEthAddressCallback callback) {
-  std::move(callback).Run(EthAddress::FromHex(address).ToChecksumAddress());
+  auto addr = EthAddress::FromHex(address);
+  LOG(ERROR) << "XXXZZZ  GetChecksumEthAddress 1";
+  if (!addr) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  LOG(ERROR) << "XXXZZZ GetChecksumEthAddress 2";
+  std::move(callback).Run(addr->ToChecksumAddress());
 }
 
 void KeyringService::HasPendingUnlockRequest(

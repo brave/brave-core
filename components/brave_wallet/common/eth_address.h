@@ -16,41 +16,41 @@
 namespace brave_wallet {
 
 inline constexpr size_t kEthAddressLength = 20u;
+inline constexpr size_t kEthPublicKeyLength = 64u;
 
 class EthAddress {
  public:
+  EthAddress(const EthAddress& other);
+  ~EthAddress();
+  bool operator==(const EthAddress& other) const;
+
+  explicit EthAddress(base::span<const uint8_t, kEthAddressLength> bytes);
+
   // public key must be uncompressed and no header byte so its length is 64
   // bytes
-  static EthAddress FromPublicKey(base::span<const uint8_t> public_key);
+  static std::optional<EthAddress> FromPublicKey(
+      base::span<const uint8_t, kEthPublicKeyLength> public_key);
+  static std::optional<EthAddress> FromBytes(
+      base::span<const uint8_t, kEthAddressLength> bytes);
+
   // input should be a valid address with 20 bytes hex representation starting
   // with 0x
-  static EthAddress FromHex(std::string_view input);
-  static EthAddress FromBytes(base::span<const uint8_t> bytes);
+  static std::optional<EthAddress> FromHex(std::string_view input);
   static EthAddress ZeroAddress();
   static bool IsValidAddress(std::string_view input);
   static std::optional<std::string> ToEip1191ChecksumAddress(
       std::string_view address,
       std::string_view chain_id);
 
-  EthAddress();
-  EthAddress(const EthAddress& other);
-  ~EthAddress();
-  bool operator==(const EthAddress& other) const;
-
-  bool IsEmpty() const;
-  bool IsValid() const;
   bool IsZeroAddress() const;
-  const std::vector<uint8_t>& bytes() const { return bytes_; }
+  base::span<const uint8_t, kEthAddressLength> bytes() const { return bytes_; }
 
   std::string ToHex() const;
   // EIP55 + EIP1191
   std::string ToChecksumAddress(uint256_t eip1191_chaincode = 0) const;
 
  private:
-  explicit EthAddress(std::vector<uint8_t> bytes);
-  explicit EthAddress(base::span<const uint8_t> bytes);
-
-  std::vector<uint8_t> bytes_;
+  std::array<uint8_t, kEthAddressLength> bytes_ = {};
 };
 
 }  // namespace brave_wallet
