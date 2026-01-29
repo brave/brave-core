@@ -92,8 +92,9 @@ def BraveModifyPartsForSigning(parts, config):
         # We should instead use upstream's channel_customize mechanism.
         # See https://github.com/brave/brave-browser/issues/39347.
         privileged_helper = parts['privileged-helper']
-        channel_re = 'com.brave.Browser(.*).UpdaterPrivilegedHelper'
-        replacement = 'com.brave.Browser.UpdaterPrivilegedHelper'
+        channel_re = (r'com\.brave\.Browser(\.origin)?(.*)'
+                      r'\.UpdaterPrivilegedHelper')
+        replacement = r'com.brave.Browser\1.UpdaterPrivilegedHelper'
         privileged_helper.path = re.sub(channel_re, replacement,
                                         privileged_helper.path)
         privileged_helper.identifier = re.sub(channel_re, replacement,

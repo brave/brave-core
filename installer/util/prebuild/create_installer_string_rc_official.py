@@ -19,6 +19,7 @@ MODE_SPECIFIC_STRINGS = {
         'brave_origin': [
             'IDS_APP_SHORTCUTS_SUBDIR_NAME',
             'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
             'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
         ],
     },
@@ -32,6 +33,7 @@ MODE_SPECIFIC_STRINGS = {
         'brave_origin': [
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
             'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
         ],
     },
@@ -45,6 +47,7 @@ MODE_SPECIFIC_STRINGS = {
         'brave_origin': [
             'IDS_INBOUND_MDNS_RULE_NAME',
             'IDS_INBOUND_MDNS_RULE_NAME_BETA',
+            'IDS_INBOUND_MDNS_RULE_NAME_DEV',
             'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
         ],
     },
@@ -58,6 +61,7 @@ MODE_SPECIFIC_STRINGS = {
         'brave_origin': [
             'IDS_PRODUCT_NAME',
             'IDS_SHORTCUT_NAME_BETA',
+            'IDS_SHORTCUT_NAME_DEV',
             'IDS_SXS_SHORTCUT_NAME',
         ],
     },

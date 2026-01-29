@@ -23,6 +23,7 @@
 #include "brave/browser/update_util.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
@@ -465,7 +466,12 @@ std::string GetDescriptionFromAppcastItem(id item) {
   }
 
   return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
-                                    @"sparkle/Brave-Browser/%s/appcast.xml",
+                                    @"sparkle/%@/%s/appcast.xml",
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+                                    @"Brave-Origin",
+#else
+                                    @"Brave-Browser",
+#endif
                                     GetUpdateChannel().c_str()];
 }
 @end

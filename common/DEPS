@@ -19,4 +19,7 @@ specific_include_rules = {
   "brave_content_client_unittest\.cc": [
     "+content/common/url_schemes.h",
   ],
+  "brave_channel_info_unittest\.cc": [
+    "+brave/components/brave_origin/buildflags",
+  ],
 }
