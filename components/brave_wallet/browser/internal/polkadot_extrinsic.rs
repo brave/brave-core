@@ -118,7 +118,7 @@ mod ffi {
             sender_nonce: u32,
         ) -> Vec<u8>;
 
-        fn parse_fee_info(mut input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
+        fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
     }
 }
 
@@ -466,7 +466,13 @@ fn make_signed_extrinsic(
 // weight = {ref_time (as Compact<u64>), proof_size (as Compact<u64>)}
 // class = 0x00, 0x01, or 0x02
 // partial_fee = LE bytes representing U128
-fn parse_fee_info(mut input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
+fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
+    // Normally in C++, a reference is an immutable thing that once it's bound to an
+    // object, it can never re-alias. In Rust, a reference _is_ a pointer. The
+    // parity-scale-codec crate takes advantage of this and its API mutates the
+    // input pointer, advancing it as it parses.
+    let mut input = input;
+
     let ref_time = <Compact<u64>>::decode(&mut input);
     if ref_time.is_err() {
         return false;
