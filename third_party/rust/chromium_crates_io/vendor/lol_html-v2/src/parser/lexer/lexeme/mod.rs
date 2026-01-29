@@ -1,22 +1,32 @@
 mod token_outline;
 
+use crate::base::Spanned;
 use crate::base::{Bytes, Range};
 use std::fmt::{self, Debug};
 
 pub(crate) use self::token_outline::*;
 
 pub(crate) struct Lexeme<'i, T> {
+    /// number of bytes before the input
+    previously_consumed_byte_count: usize,
     input: Bytes<'i>,
     raw_range: Range,
     pub(super) token_outline: T,
 }
 
 pub type TagLexeme<'i> = Lexeme<'i, TagTokenOutline>;
+/// The `NonTagContentTokenOutline` is `None` for CDATA markup, which is emitted, but not via tokens
 pub type NonTagContentLexeme<'i> = Lexeme<'i, Option<NonTagContentTokenOutline>>;
 
 impl<'i, T> Lexeme<'i, T> {
-    pub const fn new(input: Bytes<'i>, token_outline: T, raw_range: Range) -> Self {
+    pub const fn new(
+        previously_consumed_byte_count: usize,
+        input: Bytes<'i>,
+        token_outline: T,
+        raw_range: Range,
+    ) -> Self {
         Lexeme {
+            previously_consumed_byte_count,
             input,
             raw_range,
             token_outline,
@@ -46,6 +56,14 @@ impl<'i, T> Lexeme<'i, T> {
     #[inline]
     pub fn opt_part(&self, range: Option<Range>) -> Option<Bytes<'_>> {
         self.input.opt_slice(range)
+    }
+
+    #[inline]
+    pub fn spanned(&self) -> Spanned<Bytes<'_>> {
+        Spanned::new(
+            self.previously_consumed_byte_count + self.raw_range.start,
+            self.raw(),
+        )
     }
 
     #[inline]

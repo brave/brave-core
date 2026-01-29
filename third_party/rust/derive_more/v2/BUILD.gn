@@ -1,0 +1,78 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "derive_more"
+  epoch = "2"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/add.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/as.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/convert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/fmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/ops.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/try_unwrap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/vendor/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/vendor/thiserror/aserror.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/vendor/thiserror/mod.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/src/vendor/thiserror/README.md" ]
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "Jelte Fennema <github-tech@jeltef.nl>"
+  cargo_pkg_name = "derive_more"
+  cargo_pkg_description = "Adds #[derive(x)] macros for more traits"
+  cargo_pkg_repository = "https://github.com/JelteF/derive_more"
+  cargo_pkg_version = "2.0.1"
+
+  deps = [ "//brave/third_party/rust/derive_more_impl/v2:lib" ]
+  features = [
+    "add",
+    "add_assign",
+    "default",
+    "std",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

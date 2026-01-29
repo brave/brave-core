@@ -351,7 +351,7 @@ version = "1.0.0"
 dependencies = [
  "challenge-bypass-ristretto",
  "cxx",
- "derive_more",
+ "derive_more 0.99.17",
  "hmac 0.12.1",
  "lazy_static",
  "rand 0.8.5",
@@ -564,6 +564,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "cssparser"
+version = "0.35.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "cssparser-macros",
+ "dtoa-short",
+ "itoa",
+ "phf 0.11.3",
+ "smallvec",
+]
+
+[[package]]
 name = "cssparser-macros"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -684,6 +696,24 @@ dependencies = [
  "quote",
  "rustc_version",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "derive_more"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "derive_more-impl",
+]
+
+[[package]]
+name = "derive_more-impl"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.104",
 ]
 
 [[package]]
@@ -1262,17 +1292,18 @@ version = "0.4.28"
 
 [[package]]
 name = "lol_html"
-version = "2.2.0"
+version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 2.10.0",
  "cfg-if",
- "cssparser 0.29.6",
+ "cssparser 0.35.0",
  "encoding_rs",
  "hashbrown 0.15.5",
  "memchr",
  "mime",
- "selectors 0.24.0",
+ "precomputed-hash",
+ "selectors 0.30.0",
  "thiserror 2.0.11",
 ]
 
@@ -1687,7 +1718,7 @@ dependencies = [
  "bincode",
  "bitvec",
  "curve25519-dalek",
- "derive_more",
+ "derive_more 0.99.17",
  "rand 0.8.5",
  "rand_core 0.6.4",
  "serde",
@@ -1972,7 +2003,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 1.3.2",
  "cssparser 0.29.6",
- "derive_more",
+ "derive_more 0.99.17",
  "fxhash",
  "log",
  "phf 0.8.0",
@@ -1989,7 +2020,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 2.10.0",
  "cssparser 0.34.0",
- "derive_more",
+ "derive_more 0.99.17",
+ "fxhash",
+ "log",
+ "new_debug_unreachable",
+ "phf 0.11.3",
+ "phf_codegen 0.11.3",
+ "precomputed-hash",
+ "servo_arc 0.4.0",
+ "smallvec",
+]
+
+[[package]]
+name = "selectors"
+version = "0.30.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "bitflags 2.9.1",
+ "cssparser 0.35.0",
+ "derive_more 2.0.1",
  "fxhash",
  "log",
  "new_debug_unreachable",

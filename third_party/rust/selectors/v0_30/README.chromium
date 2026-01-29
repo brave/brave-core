@@ -1,0 +1,10 @@
+Name: selectors
+URL: https://crates.io/crates/selectors
+Version: 0.30.0
+Revision: 31a2c9cfa9a8fe8e980ada1a7502d07397a03873
+License: Mozilla-Public-License-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_30/../../../../../common/licenses/MPL-2.0
+Shipped: yes
+Security Critical: yes
+
+Description: CSS Selectors matching for Rust

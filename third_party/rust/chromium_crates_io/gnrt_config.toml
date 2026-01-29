@@ -349,6 +349,9 @@ extra_kv = { allow_unsafe = false }
 [crate.dtoa]
 extra_kv = { allow_unsafe = true }
 
+[crate.derive_more-impl]
+extra_input_roots = [ "../README.md", "../doc/add.md", "../doc/add_assign.md" ]
+
 [crate.dtoa-short]
 license_files = ['LICENSE']
 extra_kv = { allow_unsafe = true }

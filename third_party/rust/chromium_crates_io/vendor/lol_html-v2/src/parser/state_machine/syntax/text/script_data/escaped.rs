@@ -2,7 +2,7 @@ define_state_group!(script_data_escaped_states_group = {
 
     script_data_escape_start_state {
         [ "--" ] => ( --> script_data_escaped_dash_dash_state )
-        eof      => ( emit_text?; emit_eof?; )
+        eof      => ( emit_text_and_eof?; )
         _        => ( emit_text?; reconsume in script_data_state )
     }
 
@@ -10,27 +10,27 @@ define_state_group!(script_data_escaped_states_group = {
         b'-' => ()
         b'<' => ( emit_text?; mark_tag_start; --> script_data_escaped_less_than_sign_state )
         b'>' => ( emit_text?; reconsume in script_data_state )
-        eof  => ( emit_text?; emit_eof?; )
+        eof  => ( emit_text_and_eof?; )
         _    => ( --> script_data_escaped_state )
     }
 
     script_data_escaped_state {
         [ "--" ] => ( --> script_data_escaped_dash_dash_state )
         b'<'     => ( emit_text?; mark_tag_start; --> script_data_escaped_less_than_sign_state )
-        eof      => ( emit_text?; emit_eof?; )
+        eof      => ( emit_text_and_eof?; )
         _        => ()
     }
 
     script_data_escaped_less_than_sign_state {
         [ "SCRIPT"; ignore_case ] => ( unmark_tag_start; --> script_data_double_escaped_start_state )
-        b'/'                      => ( --> script_data_escaped_end_tag_open_state )
-        eof                       => ( emit_text?; emit_eof?; )
+        b'/'                      => ( --> #[inline] script_data_escaped_end_tag_open_state )
+        eof                       => ( emit_text_and_eof?; )
         _                         => ( unmark_tag_start; emit_text?; reconsume in script_data_escaped_state )
     }
 
     script_data_escaped_end_tag_open_state {
         alpha => ( create_end_tag; start_token_part; update_tag_name_hash; --> script_data_escaped_end_tag_name_state )
-        eof   => ( emit_text?; emit_eof?; )
+        eof   => ( emit_text_and_eof?; )
         _     => ( unmark_tag_start; emit_text?; reconsume in script_data_escaped_state )
     }
 
@@ -57,7 +57,7 @@ define_state_group!(script_data_escaped_states_group = {
         )
 
         alpha => ( update_tag_name_hash; )
-        eof   => ( emit_text?; emit_eof?; )
+        eof   => ( emit_text_and_eof?; )
         _     => ( emit_text?; reconsume in script_data_escaped_state )
     }
 
