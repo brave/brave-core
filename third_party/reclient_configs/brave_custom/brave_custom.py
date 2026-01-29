@@ -66,7 +66,6 @@ def merge_rewrapper_large_cfg(rewrapper_cfg, tool, host_os):
 
 def post_configure():
     generate_python_remote_wrapper()
-    configure_sisorc()
 
 
 # Python remote wrapper sets PYTHONPATH during remote execution.
@@ -102,33 +101,3 @@ def generate_python_remote_wrapper():
          'python_remote_wrapper'),
         ShellTemplate(python_remote_wrapper_template).substitute(
             template_vars))
-
-
-def configure_sisorc():
-    ninja_flags = []
-    if os.environ.get('RBE_service'):
-        # `-reapi_keep_exec_stream` to keep exec stream alive during remote
-        # execution, otherwise siso terminates it each minute which aborts
-        # remote exec in EngFlow backend.
-        ninja_flags.append('-reapi_keep_exec_stream')
-        # Increase fs_min_flush_timeout to allow for more time for blobs to be
-        # downloaded on slow connection.
-        ninja_flags.append('-fs_min_flush_timeout 300s')
-        # Use byte stream for most files as it is compression-aware.
-        ninja_flags.append('-reapi_byte_stream_read_threshold 1024')
-
-    if cache_dir := os.environ.get('SISO_CACHE_DIR'):
-        # `-cache_dir` and `-local_cache_enable` to use a local disk cache for
-        # remote execution. Cache is disabled if `SISO_CACHE_DIR` is not set.
-        ninja_flags.append(f'-cache_dir "{cache_dir}" -local_cache_enable')
-        os.makedirs(cache_dir, exist_ok=True)
-
-    if reapi_priority := os.environ.get('SISO_REAPI_PRIORITY'):
-        # `-reapi_priority` to set the priority of the reapi requests.
-        assert reapi_priority.isdigit(), \
-            f'SISO_REAPI_PRIORITY must be an integer, got {reapi_priority}'
-        ninja_flags.append(f'-reapi_priority {reapi_priority}')
-
-    FileUtils.write_text_file(
-        f'{Paths.src_dir}/build/config/siso/.sisorc',
-        f'ninja {" ".join(ninja_flags)}\n' if ninja_flags else '')
