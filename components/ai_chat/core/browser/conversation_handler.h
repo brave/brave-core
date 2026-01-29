@@ -239,7 +239,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // mojom::UntrustedConversationHandler
   void RespondToToolUseRequest(
       const std::string& tool_id,
-      std::vector<mojom::ContentBlockPtr> output_json) override;
+      std::vector<mojom::ContentBlockPtr> output_json,
+      std::vector<mojom::ToolArtifactPtr> artifacts) override;
   void ProcessPermissionChallenge(const std::string& tool_use_id,
                                   bool user_result) override;
 

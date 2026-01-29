@@ -198,6 +198,12 @@ struct SimpleRequestContentBlock {
   SimpleRequestType type;
 };
 
+// Artifact generated from tool call
+struct ToolArtifact {
+  string type;
+  string content_json;
+};
+
 union ContentBlock {
   // Standard OpenAI content blocks
   ImageContentBlock image_content_block;
@@ -251,6 +257,9 @@ struct ToolUseEvent {
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
   array<ContentBlock>? output;
+
+  // Artifacts generated from the Tool.
+  array<ToolArtifact>? artifacts;
 
   // Permission challenge that blocks execution until user approves.
   // Can be set by server (alignment check) or client tool.

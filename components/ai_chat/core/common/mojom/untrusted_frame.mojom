@@ -66,7 +66,7 @@ interface UntrustedConversationHandler {
 
   // Allows a client to provide an answer to a tool use request
   // as a result of a user action.
-  RespondToToolUseRequest(string tool_id, array<ContentBlock> output_json);
+  RespondToToolUseRequest(string tool_id, array<ContentBlock> output_json, array<ToolArtifact> artifacts);
 
   // Called when user responds to a permission challenge.
   // user_result: true if user approved, false if denied.
