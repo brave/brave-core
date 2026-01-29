@@ -15,71 +15,80 @@ import {
 } from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountErrorDialogElement) {
-  return html`
-    <brave-account-dialog
-      alert-message=${(() => {
-        const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
-          [LoginErrorCode.kIncorrectEmail]:
-            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL),
-          [LoginErrorCode.kIncorrectPassword]:
-            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD),
+  return html`<brave-account-dialog
+    alert-message=${(() => {
+      const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
+        [LoginErrorCode.kIncorrectEmail]: loadTimeData.getString(
+          S.BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL,
+        ),
+        [LoginErrorCode.kIncorrectPassword]: loadTimeData.getString(
+          S.BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD,
+        ),
+      }
+
+      const REGISTER_ERROR_STRINGS: Partial<Record<RegisterErrorCode, string>> =
+        {
+          [RegisterErrorCode.kAccountExists]: loadTimeData.getString(
+            S.BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS,
+          ),
+          [RegisterErrorCode.kEmailDomainNotSupported]: loadTimeData.getString(
+            S.BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED,
+          ),
+          [RegisterErrorCode.kTooManyVerifications]: loadTimeData.getString(
+            S.BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS,
+          ),
         }
 
-        const REGISTER_ERROR_STRINGS: Partial<
-          Record<RegisterErrorCode, string>
-        > = {
-          [RegisterErrorCode.kAccountExists]:
-            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS),
-          [RegisterErrorCode.kEmailDomainNotSupported]:
-            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED),
-          [RegisterErrorCode.kTooManyVerifications]:
-            loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS),
-        }
+      const getErrorMessage = <T extends LoginErrorCode | RegisterErrorCode>(
+        errorStrings: Partial<Record<T, string>>,
+        details: { statusCode: number | null; errorCode: T | null },
+      ): string => {
+        const { statusCode, errorCode } = details
 
-        const getErrorMessage = <T extends LoginErrorCode | RegisterErrorCode>(
-          errorStrings: Partial<Record<T, string>>,
-          details: { statusCode: number | null; errorCode: T | null },
-        ): string => {
-          const { statusCode, errorCode } = details
-
-          if (statusCode == null) {
-            // client-side error
-            return loadTimeData.getStringF(
-              S.BRAVE_ACCOUNT_CLIENT_ERROR,
-              errorCode != null
-                ? ` (${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR)}=${errorCode})`
-                : '',
-            )
-          }
-
-          // server-side error
-          return (
-            (errorCode != null ? errorStrings[errorCode] : null)
-            ?? loadTimeData.getStringF(
-              S.BRAVE_ACCOUNT_SERVER_ERROR,
-              statusCode,
-              errorCode != null
-                ? `, ${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR)}=${errorCode}`
-                : '',
-            )
+        if (statusCode == null) {
+          // client-side error
+          return loadTimeData.getStringF(
+            S.BRAVE_ACCOUNT_CLIENT_ERROR,
+            errorCode != null
+              ? ` (${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR)}=${
+                  errorCode
+                })`
+              : '',
           )
         }
 
-        switch (this.error.flow) {
-          case 'login':
-            return getErrorMessage(LOGIN_ERROR_STRINGS, this.error.details)
-          case 'register':
-            return getErrorMessage(REGISTER_ERROR_STRINGS, this.error.details)
-        }
-      })()}
-      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION)}"
-      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_TITLE)}"
+        // server-side error
+        return (
+          (errorCode != null ? errorStrings[errorCode] : null)
+          ?? loadTimeData.getStringF(
+            S.BRAVE_ACCOUNT_SERVER_ERROR,
+            statusCode,
+            errorCode != null
+              ? `, ${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR)}=${
+                  errorCode
+                }`
+              : '',
+          )
+        )
+      }
+
+      switch (this.error.flow) {
+        case 'login':
+          return getErrorMessage(LOGIN_ERROR_STRINGS, this.error.details)
+        case 'register':
+          return getErrorMessage(REGISTER_ERROR_STRINGS, this.error.details)
+      }
+    })()}
+    dialog-description="${loadTimeData.getString(
+      S.BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION,
+    )}"
+    dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_ERROR_DIALOG_TITLE)}"
+  >
+    <leo-button
+      slot="buttons"
+      @click=${() => this.fire('back-button-clicked')}
     >
-      <leo-button
-        slot="buttons"
-        @click=${() => this.fire('back-button-clicked')}
-      >
-        ${loadTimeData.getString(S.BRAVE_ACCOUNT_BACK_BUTTON_LABEL)}
-      </leo-button>
-    </brave-account-dialog>`
+      ${loadTimeData.getString(S.BRAVE_ACCOUNT_BACK_BUTTON_LABEL)}
+    </leo-button>
+  </brave-account-dialog>`
 }

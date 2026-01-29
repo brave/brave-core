@@ -12,21 +12,29 @@ import { BraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
 export function getHtml(this: BraveAccountEntryDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION)}"
-      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE)}"
+      dialog-description="${loadTimeData.getString(
+        S.BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION,
+      )}"
+      dialog-title="${loadTimeData.getString(
+        S.BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE,
+      )}"
     >
       <leo-button
         slot="buttons"
         @click=${() => this.fire('create-button-clicked')}
       >
-        ${loadTimeData.getString(S.BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL)}
+        ${loadTimeData.getString(
+          S.BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL,
+        )}
       </leo-button>
       <leo-button
         slot="buttons"
         kind="outline"
         @click=${() => this.fire('sign-in-button-clicked')}
       >
-        ${loadTimeData.getString(S.BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL)}
+        ${loadTimeData.getString(
+          S.BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL,
+        )}
       </leo-button>
       <div slot="footer">
         <div class="footer-text">

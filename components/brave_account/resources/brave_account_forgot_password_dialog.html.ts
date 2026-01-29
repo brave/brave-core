@@ -10,32 +10,37 @@ import './brave_account_dialog.js'
 import { BraveAccountForgotPasswordDialogElement } from './brave_account_forgot_password_dialog.js'
 
 export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
-  return html`
-    <brave-account-dialog
-      alert-message="${loadTimeData.getString(S.BRAVE_ACCOUNT_ALERT_MESSAGE)}"
-      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION)}"
-      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE)}"
-      show-back-button
-    >
-      <div slot="inputs">
-        <leo-input
-          placeholder="${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER)}"
-          @input=${this.onEmailInput}
-        >
-          <div
-            class="label ${this.email.length !== 0 && !this.isEmailValid
-              ? 'error'
-              : ''}"
-          >
-            ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
-          </div>
-        </leo-input>
-      </div>
-      <leo-button
-        slot="buttons"
-        ?isDisabled=${!this.isEmailValid}
+  return html`<brave-account-dialog
+    alert-message="${loadTimeData.getString(S.BRAVE_ACCOUNT_ALERT_MESSAGE)}"
+    dialog-description="${loadTimeData.getString(
+      S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION,
+    )}"
+    dialog-title="${loadTimeData.getString(
+      S.BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE,
+    )}"
+    show-back-button
+  >
+    <div slot="inputs">
+      <leo-input
+        placeholder="${loadTimeData.getString(
+          S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER,
+        )}"
+        @input=${this.onEmailInput}
       >
-        ${loadTimeData.getString(S.BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL)}
-      </leo-button>
-    </brave-account-dialog>`
+        <div
+          class="label ${this.email.length !== 0 && !this.isEmailValid
+            ? 'error'
+            : ''}"
+        >
+          ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
+        </div>
+      </leo-input>
+    </div>
+    <leo-button
+      slot="buttons"
+      ?isDisabled=${!this.isEmailValid}
+    >
+      ${loadTimeData.getString(S.BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL)}
+    </leo-button>
+  </brave-account-dialog>`
 }

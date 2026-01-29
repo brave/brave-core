@@ -89,7 +89,7 @@ class PasswordStrengthMeter extends CrLitElement {
             ? S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK
             : this.category === 'Medium'
               ? S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM
-              : S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG
+              : S.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG,
         )}
       </div>
     `

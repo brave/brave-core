@@ -11,49 +11,60 @@ import { onEyeIconClicked } from './brave_account_common.js'
 import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
 
 export function getHtml(this: BraveAccountSignInDialogElement) {
-  return html`
-    <brave-account-dialog
-      dialog-description="${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION)}"
-      dialog-title="${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE)}"
-      show-back-button
-    >
-      <div slot="inputs">
-        <leo-input
-          placeholder="${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER)}"
-          @input=${this.onEmailInput}
-        >
-          <div class="label ${this.shouldShowEmailError ? 'error' : ''}">
-            ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
-          </div>
-        </leo-input>
-        <leo-input
-          placeholder="${loadTimeData.getString(S.BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER)}"
-          type="password"
-          @input=${this.onPasswordInput}
-        >
-          <div class="password">
-            <div class="label">${loadTimeData.getString(S.BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL)}</div>
-            <div
-              class="forgot-password"
-              @click=${() => this.fire('forgot-password-button-clicked')}
-            >
-              ${loadTimeData.getString(S.BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL)}
-            </div>
-          </div>
-          <leo-icon
-            name="eye-off"
-            slot="right-icon"
-            @click=${onEyeIconClicked}
-          >
-          </leo-icon>
-        </leo-input>
-      </div>
-      <leo-button
-        slot="buttons"
-        ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
-        @click=${this.onSignInButtonClicked}
+  return html`<brave-account-dialog
+    dialog-description="${loadTimeData.getString(
+      S.BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION,
+    )}"
+    dialog-title="${loadTimeData.getString(
+      S.BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE,
+    )}"
+    show-back-button
+  >
+    <div slot="inputs">
+      <leo-input
+        placeholder="${loadTimeData.getString(
+          S.BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER,
+        )}"
+        @input=${this.onEmailInput}
       >
-        ${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL)}
-      </leo-button>
-    </brave-account-dialog>`
+        <div class="label ${this.shouldShowEmailError ? 'error' : ''}">
+          ${loadTimeData.getString(S.BRAVE_ACCOUNT_EMAIL_INPUT_LABEL)}
+        </div>
+      </leo-input>
+      <leo-input
+        placeholder="${loadTimeData.getString(
+          S.BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER,
+        )}"
+        type="password"
+        @input=${this.onPasswordInput}
+      >
+        <div class="password">
+          <div class="label">
+            ${loadTimeData.getString(S.BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL)}
+          </div>
+          <div
+            class="forgot-password"
+            @click=${() => this.fire('forgot-password-button-clicked')}
+          >
+            ${loadTimeData.getString(
+              S.BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL,
+            )}
+          </div>
+        </div>
+        <leo-icon
+          name="eye-off"
+          slot="right-icon"
+          @click=${onEyeIconClicked}
+        >
+        </leo-icon>
+      </leo-input>
+    </div>
+    <leo-button
+      slot="buttons"
+      ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
+      @click=${this.onSignInButtonClicked}
+    >
+      ${loadTimeData.getString(S.BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL)}
+    </leo-button>
+  </brave-account-dialog>`
 }
