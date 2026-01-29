@@ -82,7 +82,10 @@ public class OnboardingStepAdapter
 
     @Override
     public void onBindViewHolder(OnboardingBaseViewHolder holder, int position) {
-        /* Unused. */
+        if (holder instanceof MakeBraveBetterViewHolder makeBraveBetterViewHolder) {
+            makeBraveBetterViewHolder.bind(
+                    mCrashReportingManaged, mCrashReportingChecked, mP3aManaged, mP3aChecked);
+        }
     }
 
     @Override
@@ -215,6 +218,26 @@ public class OnboardingStepAdapter
                 mSendP3a.setOnCheckedChangeListener(
                         (buttonView, isChecked) ->
                                 WelcomeOnboardingActivity.setP3aConsent(isChecked));
+            }
+        }
+
+        private void bind(
+                boolean crashReportingManaged,
+                boolean crashReportingChecked,
+                boolean p3aManaged,
+                boolean p3aChecked) {
+            if (crashReportingManaged) {
+                mSendCrashReports.setVisibility(View.INVISIBLE);
+            } else {
+                mSendCrashReports.setVisibility(View.VISIBLE);
+                mSendCrashReports.setChecked(crashReportingChecked);
+            }
+
+            if (p3aManaged) {
+                mSendP3a.setVisibility(View.INVISIBLE);
+            } else {
+                mSendP3a.setVisibility(View.VISIBLE);
+                mSendP3a.setChecked(p3aChecked);
             }
         }
 
