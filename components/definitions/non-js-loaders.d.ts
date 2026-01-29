@@ -20,6 +20,10 @@ declare module '*.gif' {
   const url: any
   export default url
 }
+declare module '*.mp4' {
+  const url: any
+  export default url
+}
 declare module '*.woff2' {
   const url: any
   export default url
