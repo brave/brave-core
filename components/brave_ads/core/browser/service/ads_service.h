@@ -33,6 +33,7 @@ namespace brave_ads {
 // nullptr and no ads functionality should be available.
 class AdsService : public KeyedService {
  public:
+  // TODO(tmancey): Decouple.
   class Delegate {
    public:
     virtual ~Delegate() = default;
