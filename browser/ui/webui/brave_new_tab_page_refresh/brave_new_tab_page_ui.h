@@ -10,8 +10,12 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -29,9 +33,11 @@ namespace ntp_background_images {
 class NTPSponsoredRichMediaAdEventHandler;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 namespace brave_rewards {
 class RewardsPageHandler;
 }
+#endif
 
 namespace contextual_search {
 class ContextualSearchSessionHandle;
@@ -57,8 +63,10 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
   void BindInterface(
       mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver);
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   void BindInterface(
@@ -85,7 +93,9 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
       rich_media_ad_event_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::RewardsPageHandler> rewards_page_handler_;
+#endif
   bool was_restored_ = false;
 
   WEB_UI_CONTROLLER_TYPE_DECL();

@@ -8,6 +8,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
@@ -28,7 +29,9 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
+#endif
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
@@ -94,7 +97,9 @@ void RegisterChromeWebUIConfigs() {
   RemoveOverridenWebUIs(map);
 
 #if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPageTopUIConfig>());
+#endif
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveWelcomePageUIConfig>());

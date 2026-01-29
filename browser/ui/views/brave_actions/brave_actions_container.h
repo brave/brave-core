@@ -8,6 +8,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -16,13 +17,18 @@
 
 class BraveActionViewController;
 class BraveActionsContainerTest;
-class BraveRewardsActionView;
 class BraveShieldsActionView;
-class RewardsBrowserTest;
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+class BraveRewardsActionView;
+class RewardsBrowserTest;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 namespace policy {
 FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 }
+#endif
 
 namespace views {
 class Button;
@@ -53,19 +59,20 @@ class BraveActionsContainer : public views::View {
   BraveShieldsActionView* GetShieldsActionView() { return shields_action_btn_; }
 
  private:
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
   bool ShouldShowBraveRewardsAction() const;
   void AddActionViewForRewards();
+  // Brave Rewards preferences change observers callback.
+  void OnBraveRewardsPreferencesChanged();
+#endif
   void AddActionViewForShields();
 
   void UpdateVisibility();
   gfx::Size GetActionSize() const;
-
-  // Brave Rewards preferences change observers callback.
-  void OnBraveRewardsPreferencesChanged();
 
   bool should_hide_ = false;
 
@@ -75,10 +82,12 @@ class BraveActionsContainer : public views::View {
   raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
 
   raw_ptr<BraveShieldsActionView> shields_action_btn_ = nullptr;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   raw_ptr<BraveRewardsActionView> rewards_action_btn_ = nullptr;
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember show_brave_rewards_button_;
+#endif
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_{this};
 };

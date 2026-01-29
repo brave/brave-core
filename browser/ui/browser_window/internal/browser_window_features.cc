@@ -7,16 +7,15 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
@@ -25,8 +24,19 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_REWARDS)
+namespace brave_rewards {
+class RewardsPanelCoordinator {};
+}  // namespace brave_rewards
 #endif
 
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -36,6 +46,15 @@ class BraveVPNController {};
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
 BrowserWindowFeatures::~BrowserWindowFeatures() = default;
+
+brave_rewards::RewardsPanelCoordinator*
+BrowserWindowFeatures::rewards_panel_coordinator() {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  return rewards_panel_coordinator_.get();
+#else
+  NOTREACHED();
+#endif
+}
 
 BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -49,10 +68,13 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
   auto* profile = browser->GetProfile();
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::RewardsServiceFactory::GetForProfile(profile)) {
     rewards_panel_coordinator_ =
         std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
   }
+#endif
 
   brave_shields_ui_contents_cache_ =
       std::make_unique<BraveShieldsUIContentsCache>();

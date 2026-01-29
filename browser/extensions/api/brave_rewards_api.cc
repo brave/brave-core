@@ -15,12 +15,12 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -40,10 +40,17 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #endif
 
-using brave_rewards::RewardsPanelCoordinator;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#endif
+
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+using brave_rewards::RewardsPanelCoordinator;
+#endif
 
 namespace {
 
@@ -62,6 +69,7 @@ RewardsTabHelper* GetRewardsTabHelperForTabId(
   return RewardsTabHelper::FromWebContents(web_contents);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
@@ -77,6 +85,7 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
   }
   return GetPanelCoordinator(web_contents);
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 std::string StringifyResult(
     brave_rewards::mojom::CreateRewardsWalletResult result) {
@@ -131,9 +140,11 @@ BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (auto* coordinator = GetPanelCoordinator(this)) {
     coordinator->OpenRewardsPanel();
   }
+#endif
   return RespondNow(NoArguments());
 }
 

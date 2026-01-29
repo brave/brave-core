@@ -8,7 +8,10 @@
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "url/gurl.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
 class BrowserWindowInterface;
 

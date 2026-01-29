@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 # Tests that do not run on Android
@@ -75,7 +76,6 @@ android_test_exception_deps = [
   "//brave/browser/autoplay:browser_tests",
   "//brave/browser/brave_ads:browser_tests",
   "//brave/browser/brave_news:browser_tests",
-  "//brave/browser/brave_rewards/test:browser_tests",
   "//brave/browser/browsing_data:browser_tests",
   "//brave/browser/extensions",
   "//brave/browser/extensions:test_support",
@@ -97,6 +97,11 @@ android_test_exception_deps = [
   "//extensions/common:test_support",
   "//ui/views",
 ]
+
+if (enable_brave_rewards) {
+  android_test_exception_deps +=
+      [ "//brave/browser/brave_rewards/test:browser_tests" ]
+}
 
 if (enable_brave_wallet) {
   android_test_exception_deps += [

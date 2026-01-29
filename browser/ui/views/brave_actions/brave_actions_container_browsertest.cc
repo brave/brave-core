@@ -10,6 +10,7 @@
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -28,6 +29,8 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
 class BraveActionsContainerTest : public InProcessBrowserTest {
  public:

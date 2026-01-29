@@ -11,17 +11,15 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -53,6 +51,12 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
@@ -93,8 +97,12 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   source->AddBoolean("rewardsFeatureEnabled",
                      brave_rewards::IsSupportedForProfile(profile));
+#else
+  source->AddBoolean("rewardsFeatureEnabled", false);
+#endif
   source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
@@ -111,6 +119,7 @@ void WalletPageUI::BindInterface(
   page_factory_receiver_.Bind(std::move(receiver));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void WalletPageUI::BindInterface(
     mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
@@ -126,6 +135,7 @@ void WalletPageUI::BindInterface(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       nullptr, profile->GetPrefs());
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,

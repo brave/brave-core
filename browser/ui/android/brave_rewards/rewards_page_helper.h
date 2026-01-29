@@ -8,6 +8,10 @@
 
 #include <string>
 
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
+
 namespace brave_rewards {
 
 // Opens any other URL

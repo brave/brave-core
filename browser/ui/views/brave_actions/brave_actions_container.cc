@@ -9,12 +9,10 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -23,6 +21,12 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif
 
 BraveActionsContainer::BraveActionsContainer(
     BrowserWindowInterface* browser_window_interface,
@@ -55,10 +59,13 @@ void BraveActionsContainer::Init() {
       gfx::Insets::TLBR(0, kSeparatorMargin, 0, kSeparatorMargin)));
   // Just in case the extensions load before this function does (not likely!)
   // add children to the front in reverse order.
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   AddActionViewForRewards();
+#endif
   AddActionViewForShields();
   AddChildViewAt(brave_button_separator_, 0);
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
       brave_rewards::prefs::kShowLocationBarButton,
@@ -66,8 +73,10 @@ void BraveActionsContainer::Init() {
       base::BindRepeating(
           &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
           base::Unretained(this)));
+#endif
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
   if (!brave_rewards::IsSupportedForProfile(
           browser_window_interface_->GetProfile())) {
@@ -77,6 +86,7 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
       browser_window_interface_->GetProfile()->GetPrefs();
   return prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton);
 }
+#endif
 
 void BraveActionsContainer::AddActionViewForShields() {
   // Do not create the shields button if the shields UI is displayed in the Page
@@ -90,6 +100,7 @@ void BraveActionsContainer::AddActionViewForShields() {
   shields_action_btn_->Init();
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void BraveActionsContainer::AddActionViewForRewards() {
   auto button =
       std::make_unique<BraveRewardsActionView>(browser_window_interface_);
@@ -98,15 +109,18 @@ void BraveActionsContainer::AddActionViewForRewards() {
   rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
   rewards_action_btn_->Update();
 }
+#endif
 
 void BraveActionsContainer::Update() {
   if (shields_action_btn_) {
     shields_action_btn_->Update();
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (rewards_action_btn_) {
     rewards_action_btn_->Update();
   }
+#endif
 
   UpdateVisibility();
   DeprecatedLayoutImmediately();
@@ -119,9 +133,11 @@ void BraveActionsContainer::UpdateVisibility() {
     can_show = shields_action_btn_->GetVisible();
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (rewards_action_btn_) {
     can_show = can_show || rewards_action_btn_->GetVisible();
   }
+#endif
 
   // If no buttons are visible, then we want to hide this view so that the
   // separator is not displayed.
@@ -142,6 +158,7 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
   PreferredSizeChanged();
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 // Brave Rewards preferences change observers callback
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
   if (rewards_action_btn_) {
@@ -149,6 +166,7 @@ void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
     UpdateVisibility();
   }
 }
+#endif
 
 BEGIN_METADATA(BraveActionsContainer)
 END_METADATA

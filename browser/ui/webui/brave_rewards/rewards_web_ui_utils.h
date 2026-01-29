@@ -6,6 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_REWARDS_WEB_UI_UTILS_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_REWARDS_WEB_UI_UTILS_H_
 
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
+
 namespace content {
 class BrowserContext;
 }

@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
@@ -34,6 +33,7 @@
 #include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -76,6 +76,10 @@
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -226,8 +230,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isBlockElementFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsElementPicker));
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
+#else
+  html_source->AddBoolean("isBraveRewardsSupported", false);
+#endif
   html_source->AddBoolean(
       "areShortcutsSupported",
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
