@@ -14,6 +14,8 @@ __HOST_OS_IS_WINDOWS = runtime.os == "windows"
 
 # Rules to remove from handling.
 __RULES_TO_REMOVE = [
+    # We don't currently support remote execution of grit.
+    "grit/chrome_app_generated_resources",
     # We have chromium_src mangling which requires additional inputs/outputs
     # handling. This is not trivial and require careful configuration. Can be
     # revisited when SISO becomes first class citizen in Brave.
