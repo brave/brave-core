@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include "base/bit_cast.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
@@ -646,11 +647,8 @@ void PolkadotSubstrateRpc::OnGetPaymentInfo(GetPaymentInfoCallback callback,
         base::unexpected(WalletParsingErrorMessage()));
   }
 
-  uint128_t partial_fee = 0;
-  base::byte_span_from_ref(partial_fee)
-      .copy_from_nonoverlapping(partial_fee_bytes);
-
-  return std::move(callback).Run(base::ok(partial_fee));
+  return std::move(callback).Run(
+      base::ok(base::bit_cast<uint128_t>(partial_fee_bytes)));
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
