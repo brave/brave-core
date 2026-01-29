@@ -1301,6 +1301,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   // subscribed to `accountChanged` event.
   ASSERT_TRUE(browser_content_client_->WaitForSolanaProviderBinding(
       web_contents()->GetPrimaryMainFrame()));
+  // Ensure Init() has been processed by making a sync mojo call through
+  // SolanaProvider. The race is on the browser side: GetInterface() and Init()
+  // are separate IPC messages. WaitForSolanaProviderBinding returns after
+  // GetInterface() creates SolanaProviderImpl, but Init() (which binds
+  // events_listener_) may not have been processed yet. If
+  // SelectedDappAccountChanged fires before Init(), the event is silently
+  // dropped because events_listener_ is not bound. Since mojo processes
+  // messages in order, completing this sync call guarantees Init() ran.
+  std::ignore = EvalJs(web_contents(), "window.braveSolana.isConnected");
 
   content::DOMMessageQueue message_queue;
   RegisterSolAccountChanged();
