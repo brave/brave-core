@@ -484,13 +484,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables the Tree Tab feature",                                    \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                           \
-      },                                                                     \
-      {                                                                      \
-          "brave-renaming-tabs",                                             \
-          "Brave Renaming Tabs",                                             \
-          "Enables renaming tabs via tab context menu.",                     \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveRenamingTabs),                      \
       })
 
 #else

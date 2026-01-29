@@ -22,8 +22,6 @@ class BraveTabStrip : public TabStrip {
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
 
-  void EnterTabRenameModeAt(int index);
-
   bool ShouldShowPinnedTabsInGrid() const;
 
   // TabStrip:
@@ -36,9 +34,6 @@ class BraveTabStrip : public TabStrip {
   void AddedToWidget() override;
   std::optional<int> GetCustomBackgroundId(
       BrowserFrameActiveState active_state) const override;
-  void SetCustomTitleForTab(
-      Tab* tab,
-      const std::optional<std::u16string>& title) override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
   bool CanPaintThrobberToLayer() const override;

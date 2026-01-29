@@ -19,7 +19,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
-#include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
@@ -201,24 +200,8 @@ std::optional<int> BraveTabStrip::GetCustomBackgroundId(
   return TabStrip::GetCustomBackgroundId(active_state);
 }
 
-void BraveTabStrip::SetCustomTitleForTab(
-    Tab* tab,
-    const std::optional<std::u16string>& title) {
-  auto index = GetModelIndexOf(tab);
-  CHECK(index);
-
-  static_cast<BraveBrowserTabStripController*>(controller_.get())
-      ->SetCustomTitleForTab(*index, title);
-}
-
 bool BraveTabStrip::ShouldAlwaysHideCloseButton() const {
   return *always_hide_close_button_;
-}
-
-void BraveTabStrip::EnterTabRenameModeAt(int index) {
-  auto* tab = tab_at(index);
-  CHECK(tab);
-  static_cast<BraveTab*>(tab)->EnterRenameMode();
 }
 
 bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
