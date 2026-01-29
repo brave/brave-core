@@ -1,0 +1,12 @@
+Name: num
+URL: https://crates.io/crates/num
+Version: 0.4.3
+Revision: 1fec8524c4eaa27cbdf4bb3eb46782d2ff40b2ed
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/num-v0_4/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: A collection of numeric types and traits for Rust, including bigint,
+complex, rational, range iterators, generic integers, and more!
+

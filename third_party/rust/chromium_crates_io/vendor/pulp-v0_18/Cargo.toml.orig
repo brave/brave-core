@@ -1,0 +1,42 @@
+[package]
+name = "pulp"
+version = "0.18.22"
+edition = "2021"
+authors = ["sarah <>"]
+description = "Safe generic simd"
+readme = "../README.md"
+repository = "https://github.com/sarah-ek/pulp/"
+license = "MIT"
+keywords = ["simd"]
+
+[dependencies]
+pulp-macro = { version = "0.1.1", path = "../pulp-macro", optional = true }
+bytemuck = { version = "1.15", features = ["aarch64_simd"] }
+num-complex = { version = "0.4.4", default-features = false, features = ["bytemuck"] }
+libm = { version = "0.2", default-features = false }
+reborrow = "0.5"
+
+[features]
+default = ["std"]
+std = []
+nightly = ["bytemuck/nightly_stdsimd"]
+macro = ["dep:pulp-macro"]
+
+[dev-dependencies]
+aligned-vec = "0.6.0"
+assert_approx_eq = "1.1.0"
+criterion = "0.5.0"
+diol = { version = "0.8.3", default-features = false }
+rand = "0.8.5"
+
+[[bench]]
+name = "bench"
+harness = false
+
+[[bench]]
+name = "maskload"
+harness = false
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

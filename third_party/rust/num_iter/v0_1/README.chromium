@@ -1,0 +1,10 @@
+Name: num-iter
+URL: https://crates.io/crates/num-iter
+Version: 0.1.45
+Revision: 3f9c189bddc6ecbacddc298adaa0da3d73397070
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/num-iter-v0_1/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: External iterators for generic mathematics

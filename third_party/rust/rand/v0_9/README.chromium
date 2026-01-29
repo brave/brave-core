@@ -1,0 +1,11 @@
+Name: rand
+URL: https://crates.io/crates/rand
+Version: 0.9.2
+Revision: 98473ee6f9b44eb85154b59b67adade7f2a9b8a1
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/rand-v0_9/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Random number generators and other randomness functionality.
+

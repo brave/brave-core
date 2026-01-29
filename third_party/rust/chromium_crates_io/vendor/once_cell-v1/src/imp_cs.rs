@@ -1,7 +1,7 @@
 use core::panic::{RefUnwindSafe, UnwindSafe};
 
-use atomic_polyfill::{AtomicBool, Ordering};
 use critical_section::{CriticalSection, Mutex};
+use portable_atomic::{AtomicBool, Ordering};
 
 use crate::unsync;
 
@@ -63,7 +63,7 @@ impl<T> OnceCell<T> {
     pub(crate) unsafe fn get_unchecked(&self) -> &T {
         debug_assert!(self.is_initialized());
         // SAFETY: The caller ensures that the value is initialized and access synchronized.
-        crate::unwrap_unchecked(self.value.borrow(CriticalSection::new()).get())
+        self.value.borrow(CriticalSection::new()).get().unwrap_unchecked()
     }
 
     #[inline]

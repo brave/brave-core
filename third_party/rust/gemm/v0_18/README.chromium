@@ -1,0 +1,10 @@
+Name: gemm
+URL: https://crates.io/crates/gemm
+Version: 0.18.2
+Revision: a9d8ed36e51ba039ffe8cb2512925202612e19fd
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/gemm-v0_18/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Playground for matrix multiplication algorithms
