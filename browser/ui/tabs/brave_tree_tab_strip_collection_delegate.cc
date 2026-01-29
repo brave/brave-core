@@ -71,7 +71,7 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
     std::unique_ptr<tabs::TabInterface> tab,
     size_t index,
     tabs::TabInterface* opener) const {
-  if (!opener || index <= 0) {
+  if (!opener || index == 0) {
     return base::unexpected(std::move(tab));
   }
 
