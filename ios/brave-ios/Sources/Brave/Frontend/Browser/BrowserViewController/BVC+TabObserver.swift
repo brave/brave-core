@@ -172,8 +172,6 @@ extension BrowserViewController: TabObserver {
         updateURLBarWalletButton()
       }
     }
-
-    hideToastsOnNavigationStartIfNeeded(tabManager)
   }
 
   public func tabDidCommitNavigation(_ tab: some TabState) {

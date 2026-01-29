@@ -58,10 +58,7 @@ class InfoBar: Toast, UITextViewDelegate {
     }
 
     addSubview(toastView)
-    toastView.snp.makeConstraints { make in
-      make.left.right.height.equalTo(self)
-      self.animationConstraint = make.top.equalTo(self.snp.bottom).constraint
-    }
+    setupInitialToastConstraints()
   }
 
   required init?(coder aDecoder: NSCoder) {
