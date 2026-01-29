@@ -10,7 +10,6 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/crypto.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
@@ -20,7 +19,6 @@ namespace brave_page_graph {
 
 class GraphNode;
 class NodeResource;
-class ResponseMetadata;
 
 struct RequestInstance {
   GraphNode* requester;
@@ -58,9 +56,6 @@ class TrackedRequest {
   void SetIsError(const FrameId& frame_id);
   void SetCompleted(const FrameId& frame_id);
 
-  ResponseMetadata& GetResponseMetadata();
-  const ResponseMetadata& GetResponseMetadata() const;
-
   const blink::String& GetResponseBodyHash() const;
   void UpdateResponseBodyHash(base::span<const char> data);
 
@@ -85,7 +80,6 @@ class TrackedRequest {
 
   mutable bool is_complete_ = false;
 
-  ResponseMetadata response_metadata_;
   int64_t size_ = -1;
   blink::Digestor body_digestor_{blink::kHashAlgorithmSha256};
   blink::String hash_;

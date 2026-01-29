@@ -16,16 +16,13 @@ EdgeRequestResponse::EdgeRequestResponse(GraphItemContext* context,
                                          GraphNode* in_node,
                                          const InspectorId request_id,
                                          const FrameId& frame_id,
-                                         const RequestStatus request_status,
-                                         const ResponseMetadata& metadata)
+                                         const RequestStatus request_status)
     : EdgeRequest(context,
                   out_node,
                   in_node,
                   request_id,
                   frame_id,
-                  request_status),
-      response_header_string_(metadata.GetResponseHeaderSummary()),
-      response_data_length_(metadata.EncodedDataLength()) {}
+                  request_status) {}
 
 EdgeRequestResponse::~EdgeRequestResponse() = default;
 
@@ -35,16 +32,6 @@ NodeResource* EdgeRequestResponse::GetResourceNode() const {
 
 GraphNode* EdgeRequestResponse::GetRequestingNode() const {
   return GetInNode();
-}
-
-void EdgeRequestResponse::AddGraphMLAttributes(xmlDocPtr doc,
-                                               xmlNodePtr parent_node) const {
-  EdgeRequest::AddGraphMLAttributes(doc, parent_node);
-  GraphMLAttrDefForType(kGraphMLAttrDefHeaders)
-      ->AddValueNode(doc, parent_node, response_header_string_);
-  GraphMLAttrDefForType(kGraphMLAttrDefSize)
-      ->AddValueNode(doc, parent_node,
-                     base::NumberToString(response_data_length_));
 }
 
 bool EdgeRequestResponse::IsEdgeRequestResponse() const {

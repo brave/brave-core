@@ -13,7 +13,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/wtf/text/base64.h"
 
@@ -102,10 +101,8 @@ void TrackedRequest::AddRequestRedirect(
     const blink::ResourceResponse& redirect_response,
     NodeResource* resource,
     const FrameId& frame_id) {
-  ResponseMetadata metadata;
-  metadata.ProcessResourceResponse(redirect_response);
-  page_graph_context_->AddEdge<EdgeRequestRedirect>(
-      resource_, resource, request_id_, frame_id, metadata);
+  page_graph_context_->AddEdge<EdgeRequestRedirect>(resource_, resource,
+                                                    request_id_, frame_id);
 
   request_instances_.push_back(RequestInstance{resource, frame_id});
   resource_ = resource;
@@ -120,8 +117,7 @@ void TrackedRequest::SetIsError(const FrameId& frame_id) {
   FinishResponseBodyHash();
   if (status_was_empty) {
     page_graph_context_->AddEdge<EdgeRequestError>(
-        resource_, request_instances_.front().requester, request_id_, frame_id,
-        GetResponseMetadata());
+        resource_, request_instances_.front().requester, request_id_, frame_id);
   }
 }
 
@@ -135,16 +131,8 @@ void TrackedRequest::SetCompleted(const FrameId& frame_id) {
   if (status_was_empty) {
     page_graph_context_->AddEdge<EdgeRequestComplete>(
         resource_, request_instances_.front().requester, request_id_, frame_id,
-        resource_type_, GetResponseMetadata(), GetResponseBodyHash());
+        resource_type_, GetResponseBodyHash());
   }
-}
-
-ResponseMetadata& TrackedRequest::GetResponseMetadata() {
-  return response_metadata_;
-}
-
-const ResponseMetadata& TrackedRequest::GetResponseMetadata() const {
-  return response_metadata_;
 }
 
 const blink::String& TrackedRequest::GetResponseBodyHash() const {

@@ -3,6 +3,19 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.6
+
+Remove all header and request-size handling code. Handling this correctly
+requires information outside the render process, and so was difficult (to
+impossible) to do correctly in PageGraph's current implementation.
+Instead, always create stub records in the generated GraphML data,
+and the `pagegraph-crawl` logic will populate those fields using information
+captured in devtools / puppeteer.
+
+Correctly add `size` and `headers` attributes for all request records
+in the generated graphml (previously were only generated for edges describing
+responses to requests).
+
 ## Version 0.7.5
 
 Fix crashing issue where a disconnected document can cause a crash because

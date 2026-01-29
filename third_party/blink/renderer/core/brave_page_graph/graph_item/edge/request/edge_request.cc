@@ -7,6 +7,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -36,6 +37,18 @@ void EdgeRequest::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node, RequestStatusToString(request_status_));
   GraphMLAttrDefForType(kGraphMLAttrDefEdgeFrameId)
       ->AddValueNode(doc, parent_node, frame_id_);
+
+  // For these two attributes ("headers" and "size")
+  // we create them in the generated XML / GraphML files
+  // with stub values, which are then populated with their
+  // true values in the `pagegraph-crawl` automation-side code.
+  // This allows us to not need to reach into the network process
+  // in blink / chromium (which we'd otherwise need to do to correctly
+  // populate these values).
+  GraphMLAttrDefForType(kGraphMLAttrDefHeaders)
+      ->AddValueNode(doc, parent_node, blink::String(""));
+  GraphMLAttrDefForType(kGraphMLAttrDefSize)
+      ->AddValueNode(doc, parent_node, -1);
 }
 
 bool EdgeRequest::IsEdgeRequest() const {

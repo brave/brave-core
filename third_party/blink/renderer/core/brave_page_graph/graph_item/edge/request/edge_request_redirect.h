@@ -7,7 +7,6 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_REDIRECT_H_
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_response.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace brave_page_graph {
@@ -20,8 +19,7 @@ class EdgeRequestRedirect final : public EdgeRequestResponse {
                       NodeResource* out_node,
                       NodeResource* in_node,
                       const InspectorId request_id,
-                      const FrameId& frame_id,
-                      const ResponseMetadata& metadata);
+                      const FrameId& frame_id);
   ~EdgeRequestRedirect() override;
 
   ItemName GetItemName() const override;

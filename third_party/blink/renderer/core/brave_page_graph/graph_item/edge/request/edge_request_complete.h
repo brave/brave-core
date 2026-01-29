@@ -7,7 +7,6 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_COMPLETE_H_
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_response.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
@@ -24,7 +23,6 @@ class EdgeRequestComplete final : public EdgeRequestResponse {
                       const InspectorId request_id,
                       const FrameId& frame_id,
                       const blink::String& resource_type,
-                      const ResponseMetadata& metadata,
                       const blink::String& hash);
 
   ~EdgeRequestComplete() override;
@@ -33,9 +31,6 @@ class EdgeRequestComplete final : public EdgeRequestResponse {
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
-
-  void AddGraphMLAttributes(xmlDocPtr doc,
-                            xmlNodePtr parent_node) const override;
 
   bool IsEdgeRequestComplete() const override;
 

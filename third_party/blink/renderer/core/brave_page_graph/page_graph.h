@@ -87,7 +87,6 @@ struct ResourceLoaderOptions;
 class ResourceResponse;
 class CoreProbeSink;
 class ResourceRequest;
-class Resource;
 class BlobDataHandle;
 class ClassicScript;
 class EventTarget;
@@ -156,10 +155,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                        blink::ResourceType resource_type,
                        blink::RenderBlockingBehavior render_blocking_behavior,
                        base::TimeTicks timestamp);
-  void DidReceiveResourceResponse(uint64_t identifier,
-                                  blink::DocumentLoader* loader,
-                                  const blink::ResourceResponse& response,
-                                  const blink::Resource* cached_resource);
   void DidReceiveData(uint64_t identifier,
                       blink::DocumentLoader* loader,
                       base::SpanOrSize<const char> data);

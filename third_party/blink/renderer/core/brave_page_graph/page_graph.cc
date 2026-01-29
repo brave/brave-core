@@ -95,7 +95,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "brave/v8/include/v8-isolate-page-graph-utils.h"
 #include "third_party/blink/public/mojom/script/script_type.mojom-shared.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -197,7 +196,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.7.5";
+constexpr char kPageGraphVersion[] = "0.7.6";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -637,29 +636,6 @@ void PageGraph::WillSendRequest(
              << " resource type: " << page_graph_resource_type
              << " url: " << request.Url() << "\n"
              << base::debug::StackTrace().ToString();
-}
-
-void PageGraph::DidReceiveResourceResponse(
-    uint64_t identifier,
-    blink::DocumentLoader* loader,
-    const blink::ResourceResponse& response,
-    const blink::Resource* cached_resource) {
-  if (TrackedRequestRecord* request_record =
-          request_tracker_.GetTrackingRecord(identifier)) {
-    if (TrackedRequest* request = request_record->request.get()) {
-      request->GetResponseMetadata().ProcessResourceResponse(response);
-    }
-    return;
-  }
-
-  if (DocumentRequest* document_request =
-          request_tracker_.GetDocumentRequestInfo(identifier)) {
-    document_request->response_metadata.ProcessResourceResponse(response);
-    return;
-  }
-
-  LOG(ERROR) << "DidReceiveResourceResponse) untracked request id: "
-             << identifier;
 }
 
 void PageGraph::DidReceiveData(uint64_t identifier,
