@@ -2,6 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { ChromiumElementPickerAPI } from './element_picker_api_chromium'
+
 const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
@@ -12,58 +15,7 @@ let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
 
-const api = {
-  cosmeticFilterCreate: (selector: string) => {
-    cf_worker.addSiteCosmeticFilter(selector)
-  },
-  cosmeticFilterManage: () => {
-    cf_worker.manageCustomFilters()
-  },
-  getElementPickerThemeInfo: (
-    callback: (isDarkModeEnabled: boolean, bgcolor: number) => void,
-  ) => {
-    cf_worker
-      .getElementPickerThemeInfo()
-      .then((val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
-        callback(val.isDarkModeEnabled, val.bgcolor)
-      })
-  },
-  getLocalizedTexts: (
-    callback: (
-      btnCreateDisabledText: string,
-      btnCreateEnabledText: string,
-      btnManageText: string,
-      btnShowRulesBoxText: string,
-      btnHideRulesBoxText: string,
-      btnQuitText: string,
-    ) => void,
-  ) => {
-    cf_worker
-      .getLocalizedTexts()
-      .then(
-        (val: {
-          btnCreateDisabledText: string
-          btnCreateEnabledText: string
-          btnManageText: string
-          btnShowRulesBoxText: string
-          btnHideRulesBoxText: string
-          btnQuitText: string
-        }) => {
-          callback(
-            val.btnCreateDisabledText,
-            val.btnCreateEnabledText,
-            val.btnManageText,
-            val.btnShowRulesBoxText,
-            val.btnHideRulesBoxText,
-            val.btnQuitText,
-          )
-        },
-      )
-  },
-  getPlatform: (): string => {
-    return cf_worker.getPlatform()
-  },
-}
+const api = new ChromiumElementPickerAPI()
 
 // When the picker is activated, it eats all pointer events and takes up the
 // entire screen. All calls to document.elementFromPoint(..) will return the
