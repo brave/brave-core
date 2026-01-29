@@ -1217,47 +1217,9 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
-  if (!brave_account::features::IsBraveAccountEnabled()) {
-    return;
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    html_source->AddLocalizedStrings(webui::kBraveAccountStrings);
   }
-
-  webui::LocalizedString localized_strings[] = {
-      {"braveAccountLoggedOutRowTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE},
-      {"braveAccountLoggedOutRowDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION},
-      {"braveAccountGetStartedButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-      {"braveAccountVerificationRowTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE},
-      {"braveAccountVerificationRowDescription1",
-       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1},
-      {"braveAccountVerificationRowDescription2",
-       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2},
-      {"braveAccountResendConfirmationEmailButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL},
-      {"braveAccountCancelRegistrationButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL},
-      {"braveAccountLoggedInRowTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE},
-      {"braveAccountLogOutButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL},
-      {"braveAccountError", IDS_BRAVE_ACCOUNT_ERROR},
-      {"braveAccountClientError", IDS_BRAVE_ACCOUNT_CLIENT_ERROR},
-      {"braveAccountServerError", IDS_BRAVE_ACCOUNT_SERVER_ERROR},
-      {"braveAccountResendConfirmationEmailSuccessTitle",
-       IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE},
-      {"braveAccountResendConfirmationEmailSuccess",
-       IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS},
-      {"braveAccountResendConfirmationEmailErrorTitle",
-       IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE},
-      {"braveAccountResendConfirmationEmailMaximumSendAttemptsExceeded",
-       IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED},
-      {"braveAccountResendConfirmationEmailAlreadyVerified",
-       IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED},
-  };
-
-  html_source->AddLocalizedStrings(localized_strings);
 }
 
 }  // namespace
