@@ -180,6 +180,100 @@ function Main() {
       + SCROLL_BOTTOM_PADDING
   }
 
+  // Edge scroll constants
+  const EDGE_THRESHOLD = 40
+  const BASE_SCROLL_SPEED = 10
+  const MAX_SCROLL_MULTIPLIER = 3
+  const SCROLL_INTERVAL = 16
+
+  const scrollIntervalRef = React.useRef<ReturnType<typeof setInterval> | null>(
+    null,
+  )
+  const currentScrollDeltaRef = React.useRef(0)
+
+  const stopEdgeScrolling = React.useCallback(() => {
+    if (scrollIntervalRef.current !== null) {
+      clearInterval(scrollIntervalRef.current)
+      scrollIntervalRef.current = null
+      currentScrollDeltaRef.current = 0
+    }
+  }, [])
+
+  const startEdgeScrolling = React.useCallback((delta: number) => {
+    currentScrollDeltaRef.current = delta
+
+    scrollIntervalRef.current ??= setInterval(() => {
+      if (scrollElement.current && currentScrollDeltaRef.current !== 0) {
+        scrollElement.current.scrollTop += currentScrollDeltaRef.current
+      }
+    }, SCROLL_INTERVAL)
+  }, [])
+
+  const handleSelectionMouseMove = React.useCallback(
+    (mouseY: number, _iframeHeight: number) => {
+      if (!scrollElement.current || !scrollAnchor.current) {
+        return
+      }
+
+      // Get the iframe container's offset within the scroller
+      // This accounts for content before the iframe (ModelIntro, etc.)
+      const iframeOffsetInScroller = scrollAnchor.current.offsetTop
+
+      // Get scroller dimensions
+      const scrollTop = scrollElement.current.scrollTop
+      const scrollerHeight = scrollElement.current.clientHeight
+
+      // Calculate mouse position in scroller content coordinates
+      // mouseY is relative to iframe document (0 = top of iframe)
+      // Add iframe's offset to get position in scroller content coordinates
+      const mouseYInScrollerContent = mouseY + iframeOffsetInScroller
+
+      // Calculate distance from the visible edges
+      // Visible area is from scrollTop to (scrollTop + scrollerHeight)
+      const distanceFromVisibleTop = mouseYInScrollerContent - scrollTop
+      const distanceFromVisibleBottom =
+        scrollTop + scrollerHeight - mouseYInScrollerContent
+
+      if (
+        distanceFromVisibleTop >= 0
+        && distanceFromVisibleTop < EDGE_THRESHOLD
+      ) {
+        // Near top edge - scroll up (negative delta)
+        const intensity =
+          1
+          + ((EDGE_THRESHOLD - distanceFromVisibleTop) / EDGE_THRESHOLD)
+            * (MAX_SCROLL_MULTIPLIER - 1)
+        const scrollDelta = Math.round(-BASE_SCROLL_SPEED * intensity)
+        startEdgeScrolling(scrollDelta)
+      } else if (
+        distanceFromVisibleBottom >= 0
+        && distanceFromVisibleBottom < EDGE_THRESHOLD
+      ) {
+        // Near bottom edge - scroll down (positive delta)
+        const intensity =
+          1
+          + ((EDGE_THRESHOLD - distanceFromVisibleBottom) / EDGE_THRESHOLD)
+            * (MAX_SCROLL_MULTIPLIER - 1)
+        const scrollDelta = Math.round(BASE_SCROLL_SPEED * intensity)
+        startEdgeScrolling(scrollDelta)
+      } else {
+        stopEdgeScrolling()
+      }
+    },
+    [startEdgeScrolling, stopEdgeScrolling],
+  )
+
+  const handleSelectionEnded = React.useCallback(() => {
+    stopEdgeScrolling()
+  }, [stopEdgeScrolling])
+
+  // Cleanup edge scroll interval on unmount
+  React.useEffect(() => {
+    return () => {
+      stopEdgeScrolling()
+    }
+  }, [stopEdgeScrolling])
+
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
     !aiChatContext.hasAcceptedAgreement
@@ -360,6 +454,8 @@ function Main() {
                   <aiChatContext.conversationEntriesComponent
                     onIsContentReady={setIsContentReady}
                     onHeightChanged={handleConversationEntriesHeightChanged}
+                    onSelectionMouseMove={handleSelectionMouseMove}
+                    onSelectionEnded={handleSelectionEnded}
                   />
                 )}
               </div>

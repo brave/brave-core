@@ -50,6 +50,15 @@ interface ParentUIFrame {
   // model to Regenerate an answer. We need to display the
   // premium suggestion.
   ShowPremiumSuggestionForRegenerate(bool is_visible);
+
+  // Notify the parent of mouse position during text selection so the parent
+  // can determine if scrolling is needed based on its visible viewport.
+  // mouse_y: mouse Y position relative to the iframe's top
+  // iframe_height: total height of the iframe content
+  SelectionMouseMove(int32 mouse_y, int32 iframe_height);
+
+  // Notify the parent that text selection has ended (mouse released)
+  SelectionEnded();
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying

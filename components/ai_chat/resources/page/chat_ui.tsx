@@ -153,6 +153,30 @@ function ConversationEntries(props: ConversationEntriesProps) {
     }
   }, [])
 
+  // Handle mouse position updates from the iframe during text selection
+  React.useEffect(() => {
+    const mouseMoveListener = (mouseY: number, iframeHeight: number) => {
+      props.onSelectionMouseMove(mouseY, iframeHeight)
+    }
+    const mouseMoveId =
+      api.conversationEntriesFrameObserver.selectionMouseMove.addListener(
+        mouseMoveListener,
+      )
+
+    const selectionEndedListener = () => {
+      props.onSelectionEnded()
+    }
+    const selectionEndedId =
+      api.conversationEntriesFrameObserver.selectionEnded.addListener(
+        selectionEndedListener,
+      )
+
+    return () => {
+      api.conversationEntriesFrameObserver.removeListener(mouseMoveId)
+      api.conversationEntriesFrameObserver.removeListener(selectionEndedId)
+    }
+  }, [props.onSelectionMouseMove, props.onSelectionEnded])
+
   return (
     <iframe
       sandbox='allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox'
