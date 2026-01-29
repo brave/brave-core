@@ -136,6 +136,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void ResetRewards(ResetRewardsCallback callback) override;
   void RecordOfferView(RecordOfferViewCallback callback) override;
   void RecordOfferClick(RecordOfferClickCallback callback) override;
+  void RecordNewTabOnboardingClick(
+      RecordNewTabOnboardingClickCallback callback) override;
 
  private:
   class UpdateObserver;

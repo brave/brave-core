@@ -45,6 +45,7 @@ function getPayoutMonth() {
 }
 
 export function RewardsWidget() {
+  const actions = useRewardsActions()
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
   const externalWallet = useRewardsState((s) => s.rewardsExternalWallet)
   const rewardsBalance = useRewardsState((s) => s.rewardsBalance)
@@ -86,7 +87,10 @@ export function RewardsWidget() {
           <div className='actions'>
             <Button
               size='small'
-              onClick={() => openLink(urls.settingsURL)}
+              onClick={() => {
+                actions.recordNewTabOnboardingClick()
+                openLink(urls.settingsURL)
+              }}
             >
               {getString(S.NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL)}
             </Button>
