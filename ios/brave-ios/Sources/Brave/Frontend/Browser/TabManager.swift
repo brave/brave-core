@@ -279,6 +279,8 @@ class TabManager: NSObject {
     configuration.preferences.isFraudulentWebsiteWarningEnabled =
       Preferences.Shields.googleSafeBrowsing.value
     configuration.allowsInlineMediaPlayback = true
+    // Prevent autoplay of media (videos, audio) without user interaction
+    configuration.mediaTypesRequiringUserActionForPlayback = .all
     // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
     configuration.ignoresViewportScaleLimits = true
     configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
