@@ -600,9 +600,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 0 && maybeRequestDefaultBrowser()) {
-                            return;
-                        } else {
+                        if (mCurrentStep != 0 || !maybeRequestDefaultBrowser()) {
                             enableWebDiscoverPreference();
                             nextOnboardingStepForDefaultVariant();
                         }
