@@ -90,6 +90,9 @@ class EphemeralStorageService : public KeyedService {
       const GURL& url,
       const content::StoragePartitionConfig& storage_partition_config,
       const bool enforced_by_user);
+#if BUILDFLAG(IS_ANDROID)
+  void TriggerCurrentAppStateNotification();
+#endif  // BUILDFLAG(IS_ANDROID)
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EphemeralStorageServiceAutoShredForgetFirstPartyTest,

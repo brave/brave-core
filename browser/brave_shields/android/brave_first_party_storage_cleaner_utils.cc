@@ -6,10 +6,13 @@
 #include <cstddef>
 
 #include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "brave/browser/brave_shields/android/jni_headers/BraveFirstPartyStorageCleanerUtils_jni.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace brave_shields {
 
@@ -37,6 +40,31 @@ static void JNI_BraveFirstPartyStorageCleanerUtils_CleanupTLDFirstPartyStorage(
   }
 
   brave_shields_tab_helper->EnforceSiteDataCleanup();
+}
+
+static void
+JNI_BraveFirstPartyStorageCleanerUtils_TriggerCurrentAppStateNotification(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  CHECK(env);
+  Profile* profile = Profile::FromJavaObject(j_profile);
+  if (!profile) {
+    return;
+  }
+
+  auto* ephemeral_storage_service =
+      EphemeralStorageServiceFactory::GetForContext(
+          static_cast<content::BrowserContext*>(profile));
+  if (!ephemeral_storage_service) {
+    return;
+  }
+
+  ephemeral_storage_service->TriggerCurrentAppStateNotification();
+}
+
+bool IsAppInTaskStack() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  return Java_BraveFirstPartyStorageCleanerUtils_isAppInTaskStack(env);
 }
 
 }  // namespace brave_shields

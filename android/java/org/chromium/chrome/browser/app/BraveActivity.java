@@ -1081,6 +1081,12 @@ public abstract class BraveActivity extends ChromeActivity
             ApplicationStatus.registerApplicationStateListener(mApplicationStateListener);
         }
 
+        Profile profile = getCurrentProfile();
+        if (profile != null) {
+            // Triggers notification of current app state on Android.
+            BraveFirstPartyStorageCleanerUtils.triggerCurrentAppStateNotification(profile);
+        }
+
         super.onStartWithNative();
     }
 

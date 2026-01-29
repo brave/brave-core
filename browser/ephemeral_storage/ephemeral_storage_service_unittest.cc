@@ -181,9 +181,8 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
   const std::string ephemeral_domain = url.GetHost();
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -199,9 +198,8 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
     task_environment_.FastForwardBy(base::Seconds(10));
   }
 
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Reopen tld ephemeral lifetime while the keepalive is active.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -238,12 +236,13 @@ TEST_F(EphemeralStorageServiceTest,
   const auto second_storage_partition_config =
       content::StoragePartitionConfig::Create(&profile_, "partition_domain",
                                               "partition_name", false);
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification()).Times(2);
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime in a different storage partition.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         second_storage_partition_config);
@@ -297,9 +296,8 @@ TEST_F(EphemeralStorageServiceNoKeepAliveTest, ImmediateCleanup) {
   const std::string ephemeral_domain = url.GetHost();
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -365,9 +363,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
         test_case.forget_first_party ? CONTENT_SETTING_BLOCK
                                      : CONTENT_SETTING_ALLOW);
 
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
     EXPECT_EQ(
@@ -411,9 +408,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
       CONTENT_SETTING_BLOCK);
 
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -472,9 +468,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
       CONTENT_SETTING_BLOCK);
 
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -497,12 +492,11 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
                                              &mock_observer_);
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
         1u);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
     EXPECT_EQ(
@@ -531,9 +525,9 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
       CONTENT_SETTING_BLOCK);
 
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification()).Times(2);
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .Times(2)
+      .WillRepeatedly(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -564,9 +558,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
         2u);
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
     EXPECT_EQ(
@@ -599,9 +592,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
       CONTENT_SETTING_BLOCK);
 
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
@@ -676,9 +668,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
           url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
           CONTENT_SETTING_BLOCK);
 
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url)).Times(0);
   // Create tld ephemeral lifetime.
   otr_service->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                            storage_partition_config);
@@ -840,9 +830,8 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
           test_case.auto_shred_mode.value(), url);
     }
 
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
     EXPECT_EQ(
@@ -945,9 +934,8 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
           test_case.auto_shred_mode.value(), url);
     }
 
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification());
-#endif
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(test_case.auto_shred_mode));
     // Create tld ephemeral lifetime.
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
