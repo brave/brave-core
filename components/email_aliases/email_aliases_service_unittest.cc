@@ -18,13 +18,13 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -37,38 +37,9 @@
 
 namespace email_aliases {
 
+using ::testing::_;
+
 using AuthenticationStatus = email_aliases::mojom::AuthenticationStatus;
-
-class EmailAliasesServiceTest : public ::testing::Test {
- protected:
-  EmailAliasesServiceTest() {
-    feature_list_.InitWithFeatures({email_aliases::features::kEmailAliases,
-                                    brave_account::features::kBraveAccount},
-                                   {});
-    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
-    brave_account::prefs::RegisterPrefs(prefs_.registry());
-  }
-
-  void SetUp() override {
-    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
-    keyed_service_ = std::make_unique<EmailAliasesService>(
-        test_url_loader_factory_.GetSafeWeakWrapper(), &prefs_,
-        os_crypt_.get());
-
-    keyed_service_->BindInterface(service_.BindNewPipeAndPassReceiver());
-    observer_ = email_aliases::test::AuthStateObserver::Setup(
-        keyed_service_.get(), true);
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-  network::TestURLLoaderFactory test_url_loader_factory_;
-  TestingPrefServiceSimple prefs_;
-  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  std::unique_ptr<EmailAliasesService> keyed_service_;
-  mojo::Remote<mojom::EmailAliasesService> service_;
-  base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<test::AuthStateObserver> observer_;
-};
 
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
@@ -104,7 +75,7 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 class EmailAliasesAPITest : public ::testing::Test {
  public:
   void AddManageResponseFor(const std::optional<std::string>& body) {
-    const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
+    const GURL manage_url = test::GetEmailAliasesServiceURL();
     if (body.has_value()) {
       url_loader_factory_.AddResponse(manage_url.spec(), *body,
                                       base::Contains(*body, "error")
@@ -119,9 +90,10 @@ class EmailAliasesAPITest : public ::testing::Test {
 
   void AddRefreshResponseFor(
       const std::optional<std::string>& refresh_body = std::nullopt) {
-    const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
-    url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
-                                    refresh_body.value_or("[]"));
+    const GURL manage_url = test::GetEmailAliasesServiceURL();
+    url_loader_factory_.AddResponse(
+        manage_url.Resolve("?status=active").spec(),
+        refresh_body.value_or("{ \"result\": [] }"));
   }
 
   template <typename T, typename InvokeFn>
@@ -169,24 +141,24 @@ class EmailAliasesAPITest : public ::testing::Test {
     return result_out;
   }
 
-  void SetupAuth(bool auth = true) {
-    EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()));
-    if (auth) {
-      settings.SetAuthForTesting("token456");
-    } else {
-      settings.SetAuthForTesting({});
-    }
-  }
-
  protected:
   void SetUp() override {
     EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
     brave_account::prefs::RegisterPrefs(prefs_.registry());
-    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
-    SetupAuth();
+
+    brave_account_auth_ = std::make_unique<
+        testing::NiceMock<test::MockBraveAccountAuthentication>>();
+    ON_CALL(*brave_account_auth_,
+            GetServiceToken(brave_account::mojom::Service::kEmailAliases, _))
+        .WillByDefault([](auto service, auto callback) {
+          auto token = brave_account::mojom::GetServiceTokenResult::New();
+          token->serviceToken = "email-aliases-token";
+          std::move(callback).Run(base::ok(std::move(token)));
+        });
 
     service_ = std::make_unique<EmailAliasesService>(
-        url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
+        brave_account_auth_.get(), url_loader_factory_.GetSafeWeakWrapper(),
+        &prefs_);
     email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
 
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
@@ -199,8 +171,9 @@ class EmailAliasesAPITest : public ::testing::Test {
   base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
-  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   TestingPrefServiceSimple prefs_;
+  std::unique_ptr<testing::NiceMock<test::MockBraveAccountAuthentication>>
+      brave_account_auth_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 };
@@ -269,8 +242,8 @@ INSTANTIATE_TEST_SUITE_P(
              .expected_result = base::ok("mock-1234@bravealias.com")}},
         GenerateAliasTestCase{
             {.name = "BackendError",
-             .body = R"({ "message": "alias_unavailable" })",
-             .expected_result = base::unexpected("alias_unavailable")}},
+             .body = R"({ "message": "alias_unavailable_error" })",
+             .expected_result = base::unexpected("alias_unavailable_error")}},
         GenerateAliasTestCase{
             {.name = "NoBody",
              .body = std::nullopt,
@@ -280,11 +253,12 @@ INSTANTIATE_TEST_SUITE_P(
             {.name = "InvalidJSON",
              .body = "not a json",
              .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY)}},
+                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
         GenerateAliasTestCase{
             {.name = "UnexpectedPayload",
              .body = R"({ "message": "ok_but_no_alias" })",
-             .expected_result = base::unexpected("ok_but_no_alias")}}),
+             .expected_result = base::unexpected(
+                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}}),
     GenerateAliasTestCase::kNameGenerator);
 
 // ================= UpdateAlias (parameterized) =================
@@ -316,7 +290,8 @@ INSTANTIATE_TEST_SUITE_P(
         UpdateAliasTestCase{
             {.name = "NonUpdatedMessage",
              .body = "{\"message\":\"not_updated\"}",
-             .expected_result = base::unexpected("not_updated")}},
+             .expected_result = base::unexpected(
+                 IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY)}},
         UpdateAliasTestCase{
             {.name = "NoBody",
              .body = std::nullopt,
@@ -326,7 +301,7 @@ INSTANTIATE_TEST_SUITE_P(
             {.name = "InvalidJSON",
              .body = "not a json",
              .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY)}}),
+                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}}),
     UpdateAliasTestCase::kNameGenerator);
 
 // ================= DeleteAlias (parameterized) =================
@@ -364,6 +339,11 @@ INSTANTIATE_TEST_SUITE_P(
             {.name = "InvalidJSON",
              .body = "not a json",
              .expected_result = base::unexpected(
+                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
+        DeleteAliasTestCase{
+            {.name = "InvalidAnswer",
+             .body = "{\"message\":\"updated\"}",
+             .expected_result = base::unexpected(
                  IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY)}}),
     DeleteAliasTestCase::kNameGenerator);
 
@@ -373,10 +353,11 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
       alias_email,
       /*put_body=*/R"({"message":"updated"})",
       /*refresh_body=*/
-      std::string("[{\"email\":\"dest@example.com\",\"alias\":\"") +
+      std::string(
+          "{ \"result\":[{\"email\":\"dest@example.com\",\"alias\":\"") +
           alias_email +
           "\",\"created_at\":\"2025-01-01T00:00:00Z\",\"last_used\":\"\","
-          "\"status\":\"active\"}]");
+          "\"status\":\"active\"}] }");
   ASSERT_TRUE(result_out.has_value());
   ASSERT_FALSE(observer_.get_last_aliases().empty());
   EXPECT_EQ(observer_.get_last_aliases()[0]->email, alias_email);
@@ -393,16 +374,8 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
 }
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
-  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
-                        base::BindLambdaForTesting([&]() {}));
-  auth.SetAuthForTesting("auth456");
-
-  // Wait until auth token is set by the session poll response.
-  EXPECT_TRUE(base::test::RunUntil(
-      [&]() { return service_->GetAuthTokenForTesting() == "auth456"; }));
-
   // Intercept the next manage request to capture headers.
-  const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
+  const GURL manage_url = test::GetEmailAliasesServiceURL();
   std::string seen_authorization;
   std::string seen_api_key;
   url_loader_factory_.SetInterceptor(
@@ -426,7 +399,7 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   auto gen_result = CallGenerateAliasWith(std::nullopt);
   // The helper enqueues the request body separately; here we just ensure it
   // ran. Validate headers captured by the interceptor.
-  EXPECT_EQ(seen_authorization, "Bearer auth456");
+  EXPECT_EQ(seen_authorization, "Bearer email-aliases-token");
   EXPECT_EQ(seen_api_key, BUILDFLAG(BRAVE_SERVICES_KEY));
 }
 

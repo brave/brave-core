@@ -11,6 +11,10 @@ namespace email_aliases {
 // Email Aliases – aliases management JSON types
 // Base URL: https://aliases.bravesoftware.com/manage
 
+// Request body for POST /manage (generate alias)
+dictionary GenerateAliasRequest {
+};
+
 // Response of POST /manage (generate alias)
 // Expected when alias is successfully created.
 dictionary GenerateAliasResponse {
@@ -52,6 +56,10 @@ dictionary AliasListEntry {
   DOMString last_used;
   // Status of alias
   DOMString status;
+};
+
+// Request to GET /manage?status=active (alias list result)
+dictionary AliasListRequest {
 };
 
 // Response to GET /manage?status=active (alias list result)

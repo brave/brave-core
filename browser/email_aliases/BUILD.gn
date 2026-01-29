@@ -13,6 +13,8 @@ static_library("email_aliases") {
 
   deps = [
     "//base",
+    "//brave/browser/brave_account",
+    "//brave/components/brave_account",
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
     "//chrome/browser:browser_process",
@@ -32,6 +34,7 @@ source_set("unit_tests") {
   deps = [
     ":email_aliases",
     "//base",
+    "//brave/components/brave_account",
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
     "//chrome/browser/profiles",
@@ -52,7 +55,9 @@ if (toolkit_views) {
 
     deps = [
       ":email_aliases",
+      "//brave/browser/brave_account",
       "//brave/browser/ui/email_aliases",
+      "//brave/components/brave_account",
       "//brave/components/brave_account/endpoints",
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",

@@ -8,32 +8,21 @@
 
 #include <optional>
 #include <string>
-#include <string_view>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_auth.h"
+#include "brave/components/email_aliases/email_aliases_endpoints.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
-#include "url/gurl.h"
-
-namespace os_crypt_async {
-class Encryptor;
-class OSCryptAsync;
-}  // namespace os_crypt_async
 
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
-
-namespace brave_account {
-class BraveAccountService;
-}
 
 namespace email_aliases {
 
@@ -48,10 +37,9 @@ class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
   EmailAliasesService(
-      brave_account::BraveAccountService* brave_account_service,
+      brave_account::mojom::Authentication* brave_account_auth,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* pref_service,
-      os_crypt_async::OSCryptAsync* os_crypt_async);
+      PrefService* pref_service);
   ~EmailAliasesService() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -87,67 +75,46 @@ class EmailAliasesService : public KeyedService,
   void BindInterface(
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
 
-  // Returns the current auth token for tests. Empty when unauthenticated.
-  std::string GetAuthTokenForTesting();
-
-  // Returns the base URL for the Email Aliases service.
-  static GURL GetEmailAliasesServiceURL();
+  EmailAliasesAuth* GetAuth();
 
  private:
   // Callback that receives the response body as an optional string.
-  using BodyAsStringCallback =
-      base::OnceCallback<void(std::optional<std::string> response_body)>;
-
-  void OnEncryptorReady(os_crypt_async::Encryptor encryptor);
-
-  void OnServiceToken(
+  using TokenResult =
       base::expected<brave_account::mojom::GetServiceTokenResultPtr,
-                     brave_account::mojom::GetServiceTokenErrorPtr> result);
+                     brave_account::mojom::GetServiceTokenErrorPtr>;
 
   std::string GetAuthEmail() const;
-  std::string GetServiceToken();
 
   mojom::AuthenticationStatus GetCurrentStatus();
 
   void OnAuthChanged();
 
-  // Notifies all registered observers of an authentication state change.
-  void NotifyObserversAuthStateChanged(mojom::AuthenticationStatus status);
-
-  // Fetch helper for Email Aliases backend. Specifically for GET/HEAD.
-  void ApiFetch(const GURL& url,
-                const std::string_view method,
-                BodyAsStringCallback download_to_string_callback);
-
-  // Fetch helper which uploads |body_value|. Specifically for POST/PUT/DELETE.
-  void ApiFetch(const GURL& url,
-                const std::string_view method,
-                const base::Value::Dict& body_value,
-                BodyAsStringCallback download_to_string_callback);
-
-  // Shared implementation used by the two ApiFetch overloads to make a network
-  // request.
-  void ApiFetchInternal(const GURL& url,
-                        const std::string_view method,
-                        std::optional<std::string> serialized_body,
-                        BodyAsStringCallback download_to_string_callback);
-
   // Refreshes the aliases list from the server and notifies observers.
-  void RefreshAliases();
+  void RefreshAliasesWithToken(TokenResult token);
+
+  void GenerateAliasWithToken(GenerateAliasCallback user_callback,
+                              TokenResult token);
+  void UpdateAliasWithToken(const std::string& alias_email,
+                            const std::optional<std::string>& note,
+                            UpdateAliasCallback callback,
+                            TokenResult token);
+  void DeleteAliasWithToken(const std::string& alias_email,
+                            DeleteAliasCallback callback,
+                            TokenResult token);
 
   // Parses and applies the aliases list received from the backend.
-  void OnRefreshAliasesResponse(std::optional<std::string> response_body);
+  void OnRefreshAliasesResponse(endpoints::AliasList::Response response);
 
   // Processes the server response for a generate-alias request.
   void OnGenerateAliasResponse(GenerateAliasCallback user_callback,
-                               std::optional<std::string> response_body);
+                               endpoints::GenerateAlias::Response response);
 
   // Common handler for alias edit responses (update/delete).
   void OnEditAliasResponse(
       base::OnceCallback<void(base::expected<std::monostate, std::string>)>
           user_callback,
       bool update_expected,
-      std::optional<std::string> response_body);
+      endpoints::UpdateAlias::Response response);
 
   // Bound Mojo receivers for the EmailAliasesService interface.
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
@@ -156,18 +123,14 @@ class EmailAliasesService : public KeyedService,
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
 
   std::optional<EmailAliasesAuth> auth_;
-  std::string service_token_;
 
-  const raw_ptr<brave_account::BraveAccountService> brave_account_service_ =
+  const raw_ptr<brave_account::mojom::Authentication> brave_account_auth_ =
       nullptr;
 
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
-
-  // Cached fully-qualified email aliases service base URL.
-  const GURL email_aliases_service_base_url_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

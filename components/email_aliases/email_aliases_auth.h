@@ -6,8 +6,9 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 
+#include <optional>
+
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 
@@ -20,26 +21,29 @@ class EmailAliasesAuth {
  public:
   using OnChangedCallback = base::RepeatingClosure;
 
-  explicit EmailAliasesAuth(PrefService* prefs_service,
-
-                            os_crypt_async::Encryptor encryptor,
-                            OnChangedCallback on_changed = base::DoNothing());
+  explicit EmailAliasesAuth(
+      PrefService* prefs_service,
+      brave_account::mojom::Authentication* brave_account_auth,
+      OnChangedCallback on_changed = base::DoNothing());
   ~EmailAliasesAuth();
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   bool IsAuthenticated() const;
   std::string GetAuthEmail() const;
-  std::string GetAuthToken() const;
+  void GetServiceToken(
+      brave_account::mojom::Authentication::GetServiceTokenCallback callback);
 
-  void SetAuthForTesting(const std::string& auth_token);
+  void SetAuthEmailForTesting(const std::string& email);
 
  private:
   void OnPrefChanged(const std::string& pref_name);
 
-  const raw_ptr<PrefService> prefs_service_ = nullptr;
+  std::optional<std::string> auth_email_for_testing_;
 
-  os_crypt_async::Encryptor encryptor_;
+  const raw_ptr<PrefService> prefs_service_ = nullptr;
+  const raw_ptr<brave_account::mojom::Authentication> brave_account_auth_ =
+      nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
   OnChangedCallback on_changed_;
