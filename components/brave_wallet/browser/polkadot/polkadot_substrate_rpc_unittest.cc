@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -1838,6 +1839,298 @@ TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
 
     EXPECT_EQ(error, WalletParsingErrorMessage());
     EXPECT_EQ(transaction_hash, std::nullopt);
+  }
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetPaymentInfo) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  std::string_view extrinsic_hex =
+      R"(0x3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010155034c00000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a486641f102)";
+
+  std::vector<uint8_t> extrinsic;
+  EXPECT_TRUE(PrefixedHexStringToBytes(extrinsic_hex, &extrinsic));
+
+  {
+    // Successful RPC call.
+
+    // We cannot use TestFuture because uint128_t is too large as an individual
+    // type for ToString, which TestFuture seems to require.
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.value(), uint128_t{15937408476});
+              quit_closure.Run();
+            }));
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    // The important thing to note here is that we're using state_call method
+    // and that our extrinsic is the exact same as above _except_ it also has
+    // the length of the extrinsic in little endian bytes append as a uint32_t.
+    // i.e. 0x91000000 => 145 as this is really 0x00000091 in normal notation.
+    // It is important to note that our above extrinsic is 290 hex digits (sans
+    // the leading 0x), which is 145 * 2 which matches perfectly. The trailing
+    // length has no need for SCALE-encoding.
+    std::string_view expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_call",
+        "params": [
+          "TransactionPaymentApi_query_info",
+          "3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010155034c00000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a486641f10291000000"
+        ]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        R"({"jsonrpc":"2.0","id":18,"result":"0x82ab80766da800dc8df1b5030000000000000000000000"})");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Success, theoretical maximum fee of u128::MAX
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.value(),
+                        std::numeric_limits<uint128_t>::max());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "result":"0x82ab80766da800ffffffffffffffffffffffffffffffff"
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, we typed in an incorrect destination address or one that doesn't
+    // exist on the target parachain.
+    // Note that the RPC nodes will give a literal dump of the Rust panic
+    // running in the wasm module on the blockchain, which is an interesting bit
+    // of trivia.
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "error":{
+          "code":4003,
+          "message":"Client error: Execution failed: Execution aborted due to trap: wasm trap: wasm `unreachable` instruction executed
+          WASM backtrace:\nerror while executing at wasm backtrace:
+              0: 0x9a52fc - asset_hub_westend_runtime.wasm!__rustc[4794b31dd7191200]::rust_begin_unwind
+              1:   0x5211 - asset_hub_westend_runtime.wasm!core::panicking::panic_fmt::hd534225921b41838
+              2: 0x90c4b5 - asset_hub_westend_runtime.wasm!TransactionPaymentApi_query_info"
+        }
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, empty body.
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, ref_time exceeds u64 numeric limits.
+    // SCALE u128::MAX is 0x33ffffffffffffffffffffffffffffffff
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "result":"0x33ffffffffffffffffffffffffffffffff6da800dc8df1b5030000000000000000000000"
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, proof_size exceeds u64 numeric limits.
+    // SCALE u128::MAX is 0x33ffffffffffffffffffffffffffffffff
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "result":"0x82ab807633ffffffffffffffffffffffffffffffff00dc8df1b5030000000000000000000000"
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, invalid class value (not 0, 1, or 2).
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "result":"0x82ab80766da8ffdc8df1b5030000000000000000000000"
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, fee exceeded numeric limits.
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "result":"0x82ab80766da800ffffffffffffffffffffffffffffffffffff"
+      })");
+
+    task_environment_.RunUntilQuit();
+  }
+
+  {
+    // Error, message was truncated.
+
+    url_loader_factory_.ClearResponses();
+
+    auto quit_closure = task_environment_.QuitClosure();
+
+    polkadot_substrate_rpc_->GetPaymentInfo(
+        chain_id, extrinsic,
+        base::BindLambdaForTesting(
+            [&](base::expected<uint128_t, std::string> partial_fee) {
+              EXPECT_EQ(partial_fee.error(), WalletParsingErrorMessage());
+              quit_closure.Run();
+            }));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":18,
+        "result":"0x82ab80766da800"
+      })");
+
+    task_environment_.RunUntilQuit();
   }
 }
 
