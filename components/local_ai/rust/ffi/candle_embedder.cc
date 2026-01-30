@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -14,7 +15,26 @@
 
 namespace local_ai {
 
-CandleEmbedder::CandleEmbedder() : rust_thread_("CandleRustThread") {
+CandleEmbedder::InitCallbackData::InitCallbackData(
+    raw_ptr<CandleEmbedder> wrapper,
+    InitCallback callback,
+    scoped_refptr<base::SequencedTaskRunner> origin_task_runner)
+    : wrapper(wrapper),
+      callback(std::move(callback)),
+      origin_task_runner(std::move(origin_task_runner)) {}
+
+CandleEmbedder::InitCallbackData::~InitCallbackData() = default;
+
+CandleEmbedder::EmbedCallbackData::EmbedCallbackData(
+    EmbedCallback callback,
+    scoped_refptr<base::SequencedTaskRunner> origin_task_runner)
+    : callback(std::move(callback)),
+      origin_task_runner(std::move(origin_task_runner)) {}
+
+CandleEmbedder::EmbedCallbackData::~EmbedCallbackData() = default;
+
+CandleEmbedder::CandleEmbedder(PrivateConstructorTag)
+    : rust_thread_("CandleRustThread") {
   base::Thread::Options options;
   rust_thread_.StartWithOptions(std::move(options));
 }
@@ -36,7 +56,7 @@ void CandleEmbedder::Create(std::vector<uint8_t> weights,
                             InitCallback callback) {
   auto origin_task_runner = base::SequencedTaskRunner::GetCurrentDefault();
 
-  auto embedder = std::make_unique<CandleEmbedder>();
+  auto embedder = std::make_unique<CandleEmbedder>(PrivateConstructorTag{});
   auto* embedder_ptr = embedder.get();
 
   embedder_ptr->rust_thread_.task_runner()->PostTask(
@@ -60,7 +80,7 @@ void CandleEmbedder::CreateOnRustThread(
     InitCallback callback,
     scoped_refptr<base::SequencedTaskRunner> origin_task_runner) {
   auto* callback_data =
-      new InitCallbackData{wrapper, std::move(callback), origin_task_runner};
+      new InitCallbackData(wrapper, std::move(callback), origin_task_runner);
 
   candle_embedder_new(weights.data(), weights.size(), weights_dense1.data(),
                       weights_dense1.size(), weights_dense2.data(),
@@ -108,14 +128,13 @@ void CandleEmbedder::EmbedOnRustThread(
     EmbedCallback callback,
     scoped_refptr<base::SequencedTaskRunner> origin_task_runner) {
   if (!embedder_) {
-    std::vector<float> empty;
     origin_task_runner->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), std::ref(empty)));
+        FROM_HERE, base::BindOnce(std::move(callback), std::vector<float>()));
     return;
   }
 
   auto* callback_data =
-      new EmbedCallbackData{std::move(callback), origin_task_runner};
+      new EmbedCallbackData(std::move(callback), origin_task_runner);
 
   candle_embedder_embed(embedder_.get(), text.c_str(),
                         &CandleEmbedder::OnEmbedCallback, callback_data);
@@ -128,12 +147,14 @@ void CandleEmbedder::OnEmbedCallback(void* user_data,
 
   std::vector<float> result;
   if (embeddings && length > 0) {
-    result.assign(embeddings, embeddings + length);
+    // SAFETY: embeddings points to a buffer of `length` floats from Rust FFI
+    auto span = UNSAFE_BUFFERS(base::span(embeddings, length));
+    result.assign(span.begin(), span.end());
   }
 
   callback_data->origin_task_runner->PostTask(
       FROM_HERE,
-      base::BindOnce(std::move(callback_data->callback), std::ref(result)));
+      base::BindOnce(std::move(callback_data->callback), std::move(result)));
 
   delete callback_data;
 }

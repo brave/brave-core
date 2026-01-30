@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_RUST_FFI_CANDLE_EMBEDDER_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_RUST_FFI_CANDLE_EMBEDDER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -26,6 +27,14 @@ class CandleEmbedder {
                               const std::string& error_message)>;
   using EmbedCallback = base::OnceCallback<void(const std::vector<float>&)>;
 
+  // Private token for factory construction pattern
+  struct PrivateConstructorTag {
+   private:
+    friend class CandleEmbedder;
+    PrivateConstructorTag() = default;
+  };
+
+  explicit CandleEmbedder(PrivateConstructorTag);
   ~CandleEmbedder();
 
   CandleEmbedder(const CandleEmbedder&) = delete;
@@ -41,7 +50,6 @@ class CandleEmbedder {
   void Embed(const std::string& text, EmbedCallback callback);
 
  private:
-  CandleEmbedder();
 
   static void CreateOnRustThread(
       CandleEmbedder* wrapper,
@@ -65,12 +73,21 @@ class CandleEmbedder {
                               size_t length);
 
   struct InitCallbackData {
-    CandleEmbedder* wrapper;
+    InitCallbackData(raw_ptr<CandleEmbedder> wrapper,
+                     InitCallback callback,
+                     scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
+    ~InitCallbackData();
+
+    raw_ptr<CandleEmbedder> wrapper;
     InitCallback callback;
     scoped_refptr<base::SequencedTaskRunner> origin_task_runner;
   };
 
   struct EmbedCallbackData {
+    EmbedCallbackData(EmbedCallback callback,
+                      scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
+    ~EmbedCallbackData();
+
     EmbedCallback callback;
     scoped_refptr<base::SequencedTaskRunner> origin_task_runner;
   };
