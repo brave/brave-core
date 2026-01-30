@@ -29,6 +29,7 @@
 #undef DEFINE_JNI
 #define DEFINE_JNI(...)
 #include <components/browser_ui/site_settings/android/website_preference_bridge.cc>
+#undef DEFINE_JNI
 #pragma pop_macro("DEFINE_JNI")
 #undef BACKGROUND_SYNC
 #undef CLIPBOARD_READ_WRITE

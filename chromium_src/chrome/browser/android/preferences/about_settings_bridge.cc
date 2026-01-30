@@ -15,6 +15,7 @@
 #undef DEFINE_JNI
 #define DEFINE_JNI(...)
 #include <chrome/browser/android/preferences/about_settings_bridge.cc>
+#undef DEFINE_JNI
 #pragma pop_macro("DEFINE_JNI")
 #undef JNI_AboutSettingsBridge_GetApplicationVersion
 

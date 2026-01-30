@@ -27,6 +27,7 @@
 #undef DEFINE_JNI
 #define DEFINE_JNI(...)
 #include <components/external_intents/android/intercept_navigation_delegate_impl.cc>
+#undef DEFINE_JNI
 #pragma pop_macro("DEFINE_JNI")
 #undef JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents
 
