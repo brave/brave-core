@@ -19,6 +19,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -29,6 +30,7 @@
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -191,6 +193,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
+
+  if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
+    serp_metrics::SerpMetricsTabHelper::MaybeCreateForWebContents(web_contents);
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);

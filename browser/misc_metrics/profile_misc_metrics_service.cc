@@ -17,6 +17,8 @@
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -108,6 +110,13 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     autofill_metrics_ =
         std::make_unique<AutofillMetrics>(personal_data_manager);
   }
+
+  if (local_state && profile_prefs_ &&
+      base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
+    serp_metrics_ = std::make_unique<serp_metrics::SerpMetrics>(local_state,
+                                                                profile_prefs_);
+  }
+
   ReportSimpleMetrics();
 }
 
@@ -153,5 +162,9 @@ ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
   return ai_chat_metrics_.get();
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+serp_metrics::SerpMetrics* ProfileMiscMetricsService::GetSerpMetrics() {
+  return serp_metrics_.get();
+}
 
 }  // namespace misc_metrics
