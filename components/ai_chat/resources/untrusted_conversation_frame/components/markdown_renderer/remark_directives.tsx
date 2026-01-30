@@ -3,25 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { CONTINUE, SKIP, visit } from 'unist-util-visit'
-import type { Node } from 'unist'
+import type { Data, Node } from 'unist'
 
 export const ALLOWED_DIRECTIVES = ['search'] as const
+type NodeType = Node<Data> & {
+  name: string
+  attributes: Record<string, string>
+}
 
 export function remarkDirectives() {
-  return (tree: Node) => {
+  return (tree: NodeType) => {
     // Note: Currently, we only support leaf directives, but there's no
     // technical limitation its just the only thing we need so far.
     visit(tree, ['leafDirective'], (node) => {
-      const name = (node as any).name
+      const name = node.name
 
       // Only allow whitelisted directives.
-      if (!ALLOWED_DIRECTIVES.includes(name)) {
+      if (!(ALLOWED_DIRECTIVES as readonly string[]).includes(name)) {
         return SKIP
       }
 
       node.data = {
         hName: name,
-        hProperties: (node as any).attributes,
+        hProperties: node.attributes,
         ...node.data,
       }
 
