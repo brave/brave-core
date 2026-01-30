@@ -179,6 +179,12 @@ extra_kv = { allow_unsafe = false }
 [crate.bincode]
 extra_kv = { allow_unsafe = true }
 
+[crate.bit-set]
+extra_kv = { allow_unsafe = true }
+
+[crate.bit-vec]
+extra_kv = { allow_unsafe = true }
+
 [crate.bitflags]
 extra_kv = { allow_unsafe = false }
 
@@ -285,6 +291,7 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = true }
 
 [crate.compact_str]
+extra_input_roots = [ "../README.md" ]
 extra_kv = { allow_unsafe = true }
 
 [crate.console]
@@ -325,6 +332,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.crossbeam-utils]
+extra_build_script_src_roots = [ "../build-common.rs", "../no_atomic.rs" ]
 extra_kv = { allow_unsafe = true }
 
 [crate.crunchy]
@@ -445,6 +453,9 @@ extra_kv = { allow_unsafe = false }
 [crate.esaxx-rs]
 extra_kv = { allow_unsafe = true }
 
+[crate.fancy-regex]
+extra_kv = { allow_unsafe = false }
+
 [crate.feed-rs]
 extra_kv = { allow_unsafe = false }
 
@@ -518,7 +529,7 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.gemm]
-extra_kv = { allow_unsafe = false }
+extra_kv = { allow_unsafe = true }
 
 [crate.gemm-c32]
 extra_kv = { allow_unsafe = true }
@@ -533,10 +544,10 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.gemm-f32]
-extra_kv = { allow_unsafe = false }
+extra_kv = { allow_unsafe = true }
 
 [crate.gemm-f64]
-extra_kv = { allow_unsafe = false }
+extra_kv = { allow_unsafe = true }
 
 [crate.generic-array]
 extra_kv = { allow_unsafe = true }
@@ -546,6 +557,7 @@ extra_kv = { allow_unsafe = false }
 
 [crate.getrandom]
 license_files = ['LICENSE-APACHE']
+extra_input_roots = [ "../README.md" ]
 extra_kv = { allow_unsafe = true }
 
 [crate.getrandom_or_panic]
@@ -945,12 +957,15 @@ license_files = ['LICENSE-APACHE']
 extra_kv = { allow_unsafe = false }
 
 [crate.rustversion]
+extra_build_script_src_roots = [ "../build/rustc.rs" ]
+build_script_outputs = [ "version.expr" ]
 extra_kv = { allow_unsafe = false }
 
 [crate.ryu]
 extra_kv = { allow_unsafe = true }
 
 [crate.safetensors]
+extra_input_roots = [ "../README.md" ]
 extra_kv = { allow_unsafe = false }
 
 [crate.schnorrkel]
@@ -1119,6 +1134,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.typed-path]
+extra_input_roots = [ "../README.md" ]
 extra_kv = { allow_unsafe = true }
 
 [crate.typenum]

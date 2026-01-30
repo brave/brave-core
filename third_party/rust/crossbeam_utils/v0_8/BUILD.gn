@@ -46,6 +46,10 @@ cargo_crate("lib") {
   ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/crossbeam-utils-v0_8/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/crossbeam-utils-v0_8/build.rs" ]
+  build_script_inputs = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/crossbeam-utils-v0_8/src/../build-common.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/crossbeam-utils-v0_8/src/../no_atomic.rs",
+  ]
   rustenv = []
   rustflags = []
 

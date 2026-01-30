@@ -7,4 +7,4 @@ license = "MPL-2.0"
 [dependencies]
 candle-core = "0.9.1"
 candle-nn = "0.9.1"
-tokenizers = "0.21.0"
+tokenizers = { version = "0.21.0", default-features = false, features = ["fancy-regex"] }

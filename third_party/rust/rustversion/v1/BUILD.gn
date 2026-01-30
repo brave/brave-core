@@ -43,6 +43,8 @@ cargo_crate("lib") {
 
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/rustversion-v1/build/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/rustversion-v1/build/build.rs" ]
+  build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/rustversion-v1/src/../build/rustc.rs" ]
+  build_script_outputs = [ "version.expr" ]
   rustenv = []
   rustflags = []
 
@@ -111,6 +113,8 @@ cargo_crate("buildrs_support") {
 
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/rustversion-v1/build/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/rustversion-v1/build/build.rs" ]
+  build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/rustversion-v1/src/../build/rustc.rs" ]
+  build_script_outputs = [ "version.expr" ]
   rustenv = []
   rustflags = []
 

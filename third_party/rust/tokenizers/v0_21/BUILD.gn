@@ -106,13 +106,12 @@ cargo_crate("lib") {
     "//brave/third_party/rust/dary_heap/v0_3:lib",
     "//brave/third_party/rust/derive_builder/v0_20:lib",
     "//brave/third_party/rust/esaxx_rs/v0_1:lib",
+    "//brave/third_party/rust/fancy_regex/v0_14:lib",
     "//brave/third_party/rust/getrandom/v0_3:lib",
-    "//brave/third_party/rust/indicatif/v0_17:lib",
     "//brave/third_party/rust/itertools/v0_14:lib",
     "//brave/third_party/rust/log/v0_4:lib",
     "//brave/third_party/rust/macro_rules_attribute/v0_2:lib",
     "//brave/third_party/rust/monostate/v0_1:lib",
-    "//brave/third_party/rust/onig/v6:lib",
     "//brave/third_party/rust/paste/v1:lib",
     "//brave/third_party/rust/rand/v0_9:lib",
     "//brave/third_party/rust/rayon/v1:lib",
@@ -127,13 +126,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/unicode_normalization_alignments/v0_1:lib",
     "//brave/third_party/rust/unicode_segmentation/v1:lib",
   ]
-  features = [
-    "default",
-    "esaxx_fast",
-    "indicatif",
-    "onig",
-    "progressbar",
-  ]
+  features = [ "fancy-regex" ]
   rustenv = []
   rustflags = []
 
