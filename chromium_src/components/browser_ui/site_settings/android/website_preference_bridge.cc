@@ -24,16 +24,17 @@
 
 #define JNI_WebsitePreferenceBridge_ClearCookieData \
   JNI_WebsitePreferenceBridge_ClearCookieData_ChromiumImpl
-
+// Suppress DEFINE_JNI in included file - we call it ourselves at the end
+#pragma push_macro("DEFINE_JNI")
+#undef DEFINE_JNI
+#define DEFINE_JNI(...)
 #include <components/browser_ui/site_settings/android/website_preference_bridge.cc>
-
+#pragma pop_macro("DEFINE_JNI")
 #undef BACKGROUND_SYNC
 #undef CLIPBOARD_READ_WRITE
 #undef JNI_WebsitePreferenceBridge_ClearCookieData
 
-// We can't use DEFINE_JNI when override upstream's JNI method as it causes
-// class redefinition issues. So we use [[maybe_unused]] to suppress the error.
-[[maybe_unused]] static void JNI_WebsitePreferenceBridge_ClearCookieData(
+static void JNI_WebsitePreferenceBridge_ClearCookieData(
     JNIEnv* env,
     const jni_zero::JavaRef<jobject>& jbrowser_context_handle,
     const jni_zero::JavaRef<jstring>& jorigin) {
@@ -59,3 +60,6 @@
         ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());
   }
 }
+
+DEFINE_JNI(GeolocationSetting)
+DEFINE_JNI(WebsitePreferenceBridge)
