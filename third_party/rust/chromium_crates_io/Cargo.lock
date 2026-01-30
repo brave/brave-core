@@ -361,6 +361,8 @@ version = "0.1.0"
 dependencies = [
  "candle-core",
  "candle-nn",
+ "serde",
+ "serde_json",
  "tokenizers",
 ]
 

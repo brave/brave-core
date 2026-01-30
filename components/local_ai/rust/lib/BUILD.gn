@@ -22,5 +22,7 @@ rust_static_library("lib") {
     "//brave/third_party/rust/candle_core/v0_9:lib",
     "//brave/third_party/rust/candle_nn/v0_9:lib",
     "//brave/third_party/rust/tokenizers/v0_21:lib",
+    "//third_party/rust/serde/v1:lib",
+    "//third_party/rust/serde_json/v1:lib",
   ]
 }

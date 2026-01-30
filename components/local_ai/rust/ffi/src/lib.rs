@@ -6,7 +6,7 @@
 use candle_embedder::Gemma3Embedder;
 use libc::{c_char, c_void, size_t};
 use std::ffi::CStr;
-use std::panic;
+use std::panic::{self, AssertUnwindSafe};
 use std::slice;
 
 #[repr(C)]
@@ -32,7 +32,7 @@ pub extern "C" fn candle_embedder_new(
     init_cb: InitCallback,
     user_data: *mut c_void,
 ) {
-    let result = panic::catch_unwind(|| {
+    let result = panic::catch_unwind(AssertUnwindSafe(|| {
         let weights_slice = unsafe { slice::from_raw_parts(weights, weights_len) };
         let weights_dense1_slice =
             unsafe { slice::from_raw_parts(weights_dense1, weights_dense1_len) };
@@ -48,7 +48,7 @@ pub extern "C" fn candle_embedder_new(
             tokenizer_slice.to_vec(),
             config_slice.to_vec(),
         )
-    });
+    }));
 
     match result {
         Ok(Ok(embedder)) => {
@@ -75,13 +75,13 @@ pub extern "C" fn candle_embedder_embed(
     embed_cb: EmbedCallback,
     user_data: *mut c_void,
 ) {
-    let result = panic::catch_unwind(|| {
+    let result = panic::catch_unwind(AssertUnwindSafe(|| {
         let embedder = unsafe { &*embedder };
         let text_cstr = unsafe { CStr::from_ptr(text) };
         let text_str = text_cstr.to_str().unwrap();
 
         embedder.embedder.embed(text_str)
-    });
+    }));
 
     match result {
         Ok(Ok(embedding)) => {
@@ -96,8 +96,8 @@ pub extern "C" fn candle_embedder_embed(
 #[no_mangle]
 pub extern "C" fn candle_embedder_destroy(embedder: *mut CCandleEmbedder) {
     if !embedder.is_null() {
-        let _ = panic::catch_unwind(|| unsafe {
+        let _ = panic::catch_unwind(AssertUnwindSafe(|| unsafe {
             let _ = Box::from_raw(embedder);
-        });
+        }));
     }
 }
