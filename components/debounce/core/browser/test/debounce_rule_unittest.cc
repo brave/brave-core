@@ -414,4 +414,33 @@ TEST(DebounceRuleUnitTest, CatchMultiplePathsForSameInclude) {
   }
 }
 
+// Test case where the extracted URL has query params but no path.
+// See: https://github.com/brave/brave-browser/issues/52168
+TEST(DebounceRuleUnitTest, QueryStringWithoutPath) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://www.example.com/*"
+          ],
+          "exclude": [],
+          "action": "redirect",
+          "param": "url"
+      }]
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  auto* tracker_url =
+      "https://www.example.com/8005?url=https%3A%2F%2Ftarget.com%3Futm_"
+      "source%3Dsource1%26utm_medium%3Dcpc%26utm_content%3DContent1%26utm_"
+      "campaign%3DCampaign1%2B%2528Test%2BCampaign%2529&referrer=&"
+      "widget=&instance=";
+  auto* target_url =
+      "https://target.com/?utm_source=source1&utm_medium=cpc&utm_content="
+      "Content1&utm_campaign=Campaign1+%28Test+Campaign%29";
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL(tracker_url), target_url, false);
+  }
+}
+
 }  // namespace debounce
