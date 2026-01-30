@@ -39,6 +39,7 @@ static_library("misc_metrics_impl") {
   ]
 
   deps = [
+    "//base",
     "//brave/browser:browser_process",
     "//brave/browser/brave_stats",
     "//brave/browser/misc_metrics",

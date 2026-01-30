@@ -25,6 +25,10 @@ class AIChatMetrics;
 }  // namespace ai_chat
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+namespace serp_metrics {
+class SerpMetrics;
+}  // namespace serp_metrics
+
 namespace misc_metrics {
 
 #if BUILDFLAG(IS_ANDROID)
@@ -61,6 +65,7 @@ class ProfileMiscMetricsService : public KeyedService {
 #if BUILDFLAG(IS_ANDROID)
   MiscAndroidMetrics* GetMiscAndroidMetrics();
 #endif
+  serp_metrics::SerpMetrics* GetSerpMetrics();
 
  private:
   void ReportSimpleMetrics();
@@ -81,6 +86,7 @@ class ProfileMiscMetricsService : public KeyedService {
   std::unique_ptr<ThemeMetrics> theme_metrics_;
   std::unique_ptr<ProfileNewTabMetrics> new_tab_metrics_;
 #endif
+  std::unique_ptr<serp_metrics::SerpMetrics> serp_metrics_;
 };
 
 }  // namespace misc_metrics
