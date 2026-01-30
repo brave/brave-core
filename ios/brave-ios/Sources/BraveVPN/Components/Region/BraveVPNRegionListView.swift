@@ -5,6 +5,7 @@
 
 import BraveShared
 import BraveStrings
+import BraveUI
 import GuardianConnect
 import SwiftUI
 
@@ -39,6 +40,8 @@ public struct BraveVPNRegionListView: View {
 
   @State
   private var regionModificationTimer: Timer?
+
+  @State private var isServerSelectedPopupPresented: Bool = false
 
   private var onServerRegionSet: ((_ region: GRDRegion?) -> Void)?
 
@@ -106,6 +109,36 @@ public struct BraveVPNRegionListView: View {
       self.isVPNEnabled = BraveVPN.isConnected
       if self.isVPNEnabled {
         cancelTimer()
+      }
+    }
+    .overlay {
+      if isServerSelectedPopupPresented {
+        Color.black.opacity(0.3)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+          .ignoresSafeArea()
+          .transition(.opacity)
+      }
+    }
+    .overlay {
+      if isServerSelectedPopupPresented {
+        PopupView {
+          BraveVPNRegionConfirmationView(
+            country: BraveVPN.serverLocationDetailed.country,
+            city: BraveVPN.serverLocationDetailed.city,
+            countryISOCode: BraveVPN.serverLocation.isoCode
+          )
+        } onBackgroundTap: {
+          withAnimation {
+            isServerSelectedPopupPresented = false
+          }
+        }
+        .transition(.move(edge: .bottom))
+        .task {
+          try? await Task.sleep(for: .seconds(2))
+          withAnimation {
+            isServerSelectedPopupPresented = false
+          }
+        }
       }
     }
   }
@@ -269,6 +302,10 @@ public struct BraveVPNRegionListView: View {
       if success {
         selectedRegion = region
         onServerRegionSet?(region)
+        withAnimation(.snappy) {
+          isServerSelectedPopupPresented = true
+        }
+
         // Changing vpn server settings takes lot of time,
         // and nothing we can do about it as it relies on Apple apis.
         // Here we observe vpn status and we show success alert if it connected,

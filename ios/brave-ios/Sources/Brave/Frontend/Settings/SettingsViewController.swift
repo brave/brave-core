@@ -1119,11 +1119,13 @@ class SettingsViewController: TableViewController {
             guard BraveVPN.vpnState.isPaywallEnabled else { return }
             self.presentVPNPaywall()
           case .purchased:
-            let vpnSettingsVC = BraveVPNSettingsViewController(iapObserver: BraveVPN.iapObserver)
-            vpnSettingsVC.openURL = { [unowned self] url in
-              self.settingsDelegate?.settingsOpenURLInNewTab(url)
-              self.dismiss(animated: true)
-            }
+            let vpnSettingsVC = BraveVPNSettingsViewController(
+              skusService: Skus.SkusServiceFactory.get(profile: braveCore.profile),
+              openURL: { [unowned self] url in
+                self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                self.dismiss(animated: true)
+              }
+            )
             self.navigationController?.pushViewController(vpnSettingsVC, animated: true)
           }
         } else {

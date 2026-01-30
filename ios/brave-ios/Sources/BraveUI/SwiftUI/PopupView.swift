@@ -117,8 +117,9 @@ public struct PopupView<Content: View>: View {
   public var content: Content
   public var onBackgroundTap: (() -> Void)?
 
-  public init(@ViewBuilder _ content: () -> Content) {
+  public init(@ViewBuilder _ content: () -> Content, onBackgroundTap: (() -> Void)? = nil) {
     self.content = content()
+    self.onBackgroundTap = onBackgroundTap
   }
 
   public var body: some View {
