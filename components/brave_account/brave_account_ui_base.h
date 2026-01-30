@@ -72,10 +72,6 @@ class BraveAccountUIBase {
  private:
   static inline constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
       u"https://search.brave.com";
-  static inline constexpr char16_t kBraveAccountTermsOfServiceURL[] =
-      u"https://brave.com/terms-of-use/";
-  static inline constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
-      u"https://brave.com/privacy/browser/";
 
   void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(
@@ -99,11 +95,6 @@ class BraveAccountUIBase {
         "BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION",
         l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION,
                                    kBraveAccountSelfCustodyLearnMoreURL));
-    source->AddString(
-        "BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL",
-        l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL,
-                                   kBraveAccountTermsOfServiceURL,
-                                   kBraveAccountPrivacyAgreementURL));
 
     source->AddResourcePath("full_brave_brand.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);

@@ -138,7 +138,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   static override get properties() {
     return {
       email: { type: String },
-      isCheckboxChecked: { type: Boolean },
       isEmailBraveAlias: { type: Boolean },
       isEmailValid: { type: Boolean },
       password: { type: String },
@@ -165,10 +164,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
   protected onConfirmPasswordInput(detail: { value: string }) {
     this.passwordConfirmation = detail.value
-  }
-
-  protected onCheckboxChanged(detail: { checked: boolean }) {
-    this.isCheckboxChecked = detail.checked
   }
 
   // The reason this happens here (rather than in BraveAccountService) is that
@@ -237,7 +232,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
   protected icon: string = 'warning-triangle-filled'
   protected accessor email: string = ''
-  protected accessor isCheckboxChecked: boolean = false
   protected accessor isEmailBraveAlias: boolean = false
   protected accessor isEmailValid: boolean = false
   protected accessor password: string = ''
