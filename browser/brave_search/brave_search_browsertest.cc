@@ -8,6 +8,7 @@
 #include "base/functional/callback.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -24,6 +25,8 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_terms_data.h"
+#include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/web_contents.h"
@@ -71,20 +74,21 @@ constexpr char kBackupSearchContent[] =
 
 constexpr char kScriptDefaultAPIExists[] =
     "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
-// Use setTimeout to allow opensearch xml to be fetched
-// and template url created.
-// If this is flakey, consider making TemplateURL manually,
-// or observing the TemplateURLService for changes.
+// Script to call getCanSetDefaultSearchProvider without any delay.
+// The caller should ensure the TemplateURL exists before calling this.
 constexpr char kScriptDefaultAPIGetValue[] = R"(
-  new Promise(resolve => {
-    setTimeout(function () {
-    brave.getCanSetDefaultSearchProvider()
-    .then((canSet) => {
-      resolve(canSet)
-    })
-    }, 1200)
-  });
+  brave.getCanSetDefaultSearchProvider()
 )";
+
+// Helper function to check if a TemplateURL exists for a given host.
+bool HasTemplateURLForHost(TemplateURLService* service, std::string_view host) {
+  for (const TemplateURL* template_url : service->GetTemplateURLs()) {
+    if (template_url->url_ref().GetHost(SearchTermsData()) == host) {
+      return true;
+    }
+  }
+  return false;
+}
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
@@ -268,26 +272,26 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
   EXPECT_EQ(base::Value(false), result_first);
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29631): Test flaky on
-// master for the mac and linux build.
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#define MAYBE_DefaultAPIVisibleKnownHost DISABLED_DefaultAPIVisibleKnownHost
-#else
-#define MAYBE_DefaultAPIVisibleKnownHost DefaultAPIVisibleKnownHost
-#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
-                       MAYBE_DefaultAPIVisibleKnownHost) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
-  search_test_utils::WaitForTemplateURLServiceToLoad(
-      TemplateURLServiceFactory::GetForProfile(browser()->profile()));
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
   EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
+
+  // Wait for the opensearch XML to be fetched and the TemplateURL to be
+  // created. This replaces the unreliable setTimeout(1200) in JavaScript.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return HasTemplateURLForHost(template_url_service, kAllowedDomain);
+  }));
+
   EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIGetValue));
 }
 
