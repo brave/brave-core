@@ -443,4 +443,36 @@ TEST(DebounceRuleUnitTest, QueryStringWithoutPath) {
   }
 }
 
+// Test that debouncing is rejected when the destination URL lacks a valid
+// eTLD+1 (e.g., single-part hostname like "foo")
+// From https://github.com/brave/brave-browser/issues/23580
+TEST(DebounceRuleUnitTest, RejectUrlsWithoutValidEtldPlusOne) {
+  // Simulate AMP debouncing rule that prepends scheme
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://*.ampproject.org/c/s/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "param": "^/c/s/(.*)$"
+      }]
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // Single-part hostname "foo" should be rejected,
+    // no valid eTLD+1.
+    CheckApplyResult(rule.get(),
+                     GURL("https://theguardian.ampproject.org/c/s/foo"), "",
+                     true);
+
+    // Valid eTLD+1 should still work
+    CheckApplyResult(rule.get(),
+                     GURL("https://example.ampproject.org/c/s/brave.com"),
+                     "https://brave.com/", false);
+  }
+}
+
 }  // namespace debounce
