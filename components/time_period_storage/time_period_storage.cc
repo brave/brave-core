@@ -113,7 +113,8 @@ void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
 uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
     const base::Time& start_time,
     const base::Time& end_time) const {
-  base::Time start_midnight = start_time.LocalMidnight();
+  base::Time start_midnight =
+      start_time.is_null() ? start_time : start_time.LocalMidnight();
   base::Time end_midnight = (end_time + base::Days(1)).LocalMidnight();
   // We only record values between the specified time range (inclusive).
   return std::accumulate(
