@@ -23,11 +23,9 @@
 #include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 
 // Template base class for Brave Account WebUI controllers.
@@ -70,9 +68,6 @@ class BraveAccountUIBase {
   }
 
  private:
-  static inline constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
-      u"https://search.brave.com";
-
   void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ScriptSrc,
@@ -91,10 +86,6 @@ class BraveAccountUIBase {
     source->AddResourcePath("", IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
 
     source->AddLocalizedStrings(webui::kBraveAccountStrings);
-    source->AddString(
-        "BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION",
-        l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION,
-                                   kBraveAccountSelfCustodyLearnMoreURL));
 
     source->AddResourcePath("full_brave_brand.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);

@@ -19,7 +19,6 @@ export function getHtml(this: BraveAccountDialogs) {
       <brave-account-entry-dialog
         @close-dialog=${this.onCloseDialog}
         @create-button-clicked=${() => (this.dialog = { type: 'CREATE' })}
-        @self-custody-button-clicked=${() => (this.dialog = { type: 'ENTRY' })}
         @sign-in-button-clicked=${() => (this.dialog = { type: 'SIGN_IN' })}
       >
       </brave-account-entry-dialog>

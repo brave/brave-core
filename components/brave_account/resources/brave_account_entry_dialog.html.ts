@@ -27,17 +27,6 @@ export function getHtml(this: BraveAccountEntryDialogElement) {
       >
         $i18n{BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL}
       </leo-button>
-      <div slot="footer">
-        <div class="footer-text">
-          $i18nRaw{BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION}
-        </div>
-        <leo-button
-          kind="plain-faint"
-          @click=${() => this.fire('self-custody-button-clicked')}
-        >
-          $i18n{BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL}
-        </leo-button>
-      </div>
     </brave-account-dialog>
     <!--_html_template_end_-->`
 }

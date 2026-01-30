@@ -7,25 +7,6 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
-[slot='footer'] {
-  align-items: center;
-  display: flex;
-  gap: var(--leo-spacing-xl);
-  justify-content: space-between;
-  padding: var(--leo-spacing-2xl);
-}
-
-.footer-text {
-  color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-small-regular);
-}
-
-.footer-text a {
-  color: var(--leo-color-text-secondary);
-  font: var(--leo-font-small-link);
-  text-underline-offset: 2.5px;
-}
-
 leo-button {
   flex: none;
 }
