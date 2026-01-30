@@ -384,6 +384,14 @@ bool DebounceRule::Apply(const GURL& original_url,
     return false;
   }
 
+  // Failsafe: ensure the destination URL has a valid eTLD+1 (e.g., reject
+  // single-part hostnames like "foo"). See
+  // https://github.com/brave/brave-browser/issues/23580
+  std::string etld_plus_one = GetETLDForDebounce(new_url.host());
+  if (etld_plus_one.empty()) {
+    return false;
+  }
+
   *final_url = new_url;
   return true;
 }
