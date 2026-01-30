@@ -62,7 +62,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletSolana, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
-  registry->RegisterIntegerPref(prefs::kTosVersion, 1);
+  registry->RegisterIntegerPref(prefs::kTosVersion, 0);
   registry->RegisterListPref(prefs::kRewardsPageViewCount);
 }
 

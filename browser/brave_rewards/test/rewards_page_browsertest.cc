@@ -327,6 +327,14 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
   // Finally, perform any desired assertions on browser/profile state.
   ASSERT_FALSE(GetPrefs().GetString(prefs::kWalletBrave).empty());
   ASSERT_EQ(GetPrefs().GetString(prefs::kDeclaredGeo), "US");
+
+  // The TOS version pref will be unset (zero) until the parameters have been
+  // saved.
+  ASSERT_EQ(GetPrefs().GetInteger(prefs::kTosVersion), 0);
+  auto params =
+      base::test::ParseJsonDict(R"({ "rate": 0.25, "tos_version": 2 })");
+  GetPrefs().SetDict(prefs::kParameters, std::move(params));
+  ASSERT_EQ(GetPrefs().GetInteger(prefs::kTosVersion), 2);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewardsFromPanel) {

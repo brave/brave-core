@@ -281,8 +281,13 @@ void RewardsServiceImpl::Init(
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
   profile_pref_change_registrar_.Init(prefs_);
+  profile_pref_change_registrar_.Add(
+      prefs::kParameters,
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   profile_pref_change_registrar_.Add(
       brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
@@ -300,6 +305,16 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
+  if (key == prefs::kParameters) {
+    // Set the user's current ToS version if not already set.
+    if (prefs_->GetUserPrefValue(prefs::kEnabled) &&
+        !prefs_->GetInteger(prefs::kTosVersion)) {
+      if (auto params = RewardsParametersFromPrefs(*prefs_)) {
+        prefs_->SetInteger(prefs::kTosVersion, params->tos_version);
+      }
+    }
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (key == ntp_background_images::prefs::
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
@@ -441,11 +456,6 @@ void RewardsServiceImpl::CreateRewardsWallet(
         self->prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
                                  true);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-        // Set the user's current ToS version.
-        self->prefs_->SetInteger(
-            prefs::kTosVersion,
-            RewardsParametersFromPrefs(*(self->prefs_))->tos_version);
       }
 
       // Notify observers that the Rewards wallet has been created.
@@ -492,7 +502,7 @@ bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
   }
   int params_version = RewardsParametersFromPrefs(*prefs_)->tos_version;
   int user_version = prefs_->GetInteger(prefs::kTosVersion);
-  return user_version < params_version;
+  return user_version > 0 && user_version < params_version;
 }
 
 void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
