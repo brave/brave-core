@@ -140,7 +140,7 @@
     "csstype": "2.6.21",
     "diff": "7.0.0",
     "emptykit.css": "1.0.1",
-    "eslint": "9.39.2",
+    "eslint": "8.57.1",
     "eslint-config-love": "43.1.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.27.5",
@@ -245,7 +245,6 @@
     "axios": "1.8.2",
     "elliptic": "6.6.1",
     "esbuild": "0.25.0",
-    "eslint": "9.39.2",
     "js-yaml": "4.1.1",
     "prismjs": "1.30.0",
     "tiny-secp256k1": "1.1.7"
