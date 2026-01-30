@@ -15,6 +15,7 @@
 #include "brave/components/p3a/managed/percentage_intermediate.h"
 #include "brave/components/p3a/managed/pref_intermediate.h"
 #include "brave/components/p3a/managed/probe_intermediate.h"
+#include "brave/components/p3a/managed/time_period_events_intermediate.h"
 #include "components/prefs/pref_service.h"
 
 namespace p3a {
@@ -25,6 +26,7 @@ constexpr char kMinVersionKey[] = "min_version";
 constexpr char kTypeKey[] = "type";
 constexpr char kProbeIntermediateType[] = "probe";
 constexpr char kPrefIntermediateType[] = "pref";
+constexpr char kTimePeriodEventsIntermediateType[] = "time_period_events";
 constexpr char kBucketIntermediateType[] = "bucket";
 constexpr char kPercentageIntermediateType[] = "percentage";
 
@@ -149,6 +151,16 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
     }
     return std::make_unique<PrefIntermediate>(
         std::move(definition), local_state_, profile_prefs_, this);
+  }
+
+  if (*type == kTimePeriodEventsIntermediateType) {
+    TimePeriodEventsIntermediateDefinition definition;
+    base::JSONValueConverter<TimePeriodEventsIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<TimePeriodEventsIntermediate>(std::move(definition),
+                                                          this);
   }
 
   if (*type == kBucketIntermediateType) {
