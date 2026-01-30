@@ -18,9 +18,10 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace {
-// Used to compensate for DST-related differences. i.e. time
-// method arguments not matching up with stored time values.
-constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
+// Helper function to calculate local noon from a given time.
+base::Time LocalNoon(const base::Time& time) {
+  return time.LocalMidnight() + base::Hours(12);
+}
 }  // namespace
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
@@ -91,17 +92,20 @@ void TimePeriodStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
 void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
                                                 uint64_t value) {
   FilterToPeriod();
-  base::Time date_mn = date.LocalMidnight();
+  base::Time date_end_midnight = (date + base::Days(1)).LocalMidnight();
   std::list<DailyValue>::iterator day_insert_it = std::ranges::find_if(
-      daily_values_,
-      [date_mn](const DailyValue& val) { return val.day <= date_mn; });
-  if (day_insert_it != daily_values_.end() && day_insert_it->day == date_mn) {
+      daily_values_, [date_end_midnight](const DailyValue& val) {
+        return val.day < date_end_midnight;
+      });
+  if (day_insert_it != daily_values_.end() &&
+      day_insert_it->day < date_end_midnight &&
+      day_insert_it->day >= date.LocalMidnight()) {
     // update daily value if it exists for date
     if (value > day_insert_it->value) {
       day_insert_it->value = value;
     }
   } else {
-    daily_values_.insert(day_insert_it, {date_mn, value});
+    daily_values_.insert(day_insert_it, {LocalNoon(date), value});
   }
   Save();
 }
@@ -109,23 +113,24 @@ void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
 uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
     const base::Time& start_time,
     const base::Time& end_time) const {
+  base::Time start_midnight = start_time.LocalMidnight();
+  base::Time end_midnight = (end_time + base::Days(1)).LocalMidnight();
   // We only record values between the specified time range (inclusive).
-  return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
-                         [start_time, end_time](uint64_t acc, const auto& u2) {
-                           uint64_t add = 0;
-                           // Check only last continious days.
-                           if (u2.day >= start_time - kPotentialDSTOffset &&
-                               u2.day <= end_time + kPotentialDSTOffset) {
-                             add = u2.value;
-                           }
-                           return acc + add;
-                         });
+  return std::accumulate(
+      daily_values_.begin(), daily_values_.end(), 0ull,
+      [start_midnight, end_midnight](uint64_t acc, const auto& u2) {
+        uint64_t add = 0;
+        // Check only last continious days.
+        if (u2.day >= start_midnight && u2.day < end_midnight) {
+          add = u2.value;
+        }
+        return acc + add;
+      });
 }
 
 uint64_t TimePeriodStorage::GetPeriodSum() const {
   const base::Time now = clock_->Now();
-  const base::Time n_days_ago =
-      now.LocalMidnight() - base::Days(period_days_ - 1);
+  const base::Time n_days_ago = LocalNoon(now) - base::Days(period_days_ - 1);
   return GetPeriodSumInTimeRange(n_days_ago, now);
 }
 
@@ -156,30 +161,29 @@ bool TimePeriodStorage::IsOnePeriodPassed() const {
 }
 
 void TimePeriodStorage::FilterToPeriod() {
-  base::Time now_midnight = clock_->Now().LocalMidnight();
-  base::Time last_saved_midnight;
+  base::Time now_noon = LocalNoon(clock_->Now());
+  base::Time last_saved_noon;
 
   if (!daily_values_.empty()) {
-    last_saved_midnight = daily_values_.front().day;
+    // Convert old midnight-indexed values to noon, if necessary.
+    last_saved_noon = daily_values_.front().day;
   }
 
-  // Push daily values for new days. In loop condition, add one hour
-  // to now_midnight to account for DST changes.
-  for (base::Time day_midnight = last_saved_midnight + base::Days(1);
-       day_midnight <= (now_midnight + kPotentialDSTOffset);
-       day_midnight += base::Days(1)) {
+  // Push daily values for new days.
+  for (base::Time day_noon = last_saved_noon + base::Days(1);
+       day_noon <= now_noon; day_noon += base::Days(1)) {
     // Day changed. Since we consider only small incoming intervals, lets just
     // save it with a new timestamp.
-    if (last_saved_midnight.is_null()) {
+    if (last_saved_noon.is_null()) {
       // If this is a brand new list, insert one daily value
-      // with now_midnight...
-      day_midnight = now_midnight;
+      // with now_noon...
+      day_noon = now_noon;
     }
-    daily_values_.push_front({day_midnight, 0});
+    daily_values_.push_front({day_noon, 0});
     if (daily_values_.size() > period_days_) {
       daily_values_.pop_back();
     }
-    if (last_saved_midnight.is_null()) {
+    if (last_saved_noon.is_null()) {
       // ...and break, so we only insert one element. We only want
       // to insert multiple elements to make up for inactive days on
       // existing lists, so that IsOnePeriodPassed works correctly.
@@ -212,8 +216,9 @@ void TimePeriodStorage::Load() {
     if (daily_values_.size() == period_days_) {
       break;
     }
-    daily_values_.push_back({base::Time::FromSecondsSinceUnixEpoch(*day),
-                             static_cast<uint64_t>(*value)});
+    daily_values_.push_back(
+        {LocalNoon(base::Time::FromSecondsSinceUnixEpoch(*day)),
+         static_cast<uint64_t>(*value)});
   }
 }
 

@@ -16,10 +16,16 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+namespace {
+
 constexpr char kListPrefName[] = "brave.weekly_test";
 constexpr char kDictPrefName[] = "brave.weekly_dict_test";
 constexpr char kDictKey1[] = "key1";
 constexpr char kDictKey2[] = "key2";
+constexpr char kDayKey[] = "day";
+constexpr char kValueKey[] = "value";
+
+}  // namespace
 
 class TimePeriodStorageTest : public ::testing::Test {
  public:
@@ -28,14 +34,12 @@ class TimePeriodStorageTest : public ::testing::Test {
     pref_service_.registry()->RegisterDictionaryPref(kDictPrefName);
   }
 
-  void InitStorage(size_t days, const char* dict_key = nullptr) {
-    std::unique_ptr<base::SimpleTestClock> clock =
-        std::make_unique<base::SimpleTestClock>();
-
-    base::Time future_mock_time;
-    // Set to fixed date to avoid DST related issues
-    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
-    clock->SetNow(future_mock_time.LocalMidnight() - base::Hours(4));
+  void InitStorage(size_t days,
+                   const char* dict_key = nullptr,
+                   std::unique_ptr<base::SimpleTestClock> clock = nullptr) {
+    if (!clock) {
+      clock = InitClock();
+    }
     clock_ = clock.get();
 
     const char* pref_name = dict_key ? kDictPrefName : kListPrefName;
@@ -44,6 +48,15 @@ class TimePeriodStorageTest : public ::testing::Test {
   }
 
  protected:
+  std::unique_ptr<base::SimpleTestClock> InitClock() {
+    std::unique_ptr<base::SimpleTestClock> clock =
+        std::make_unique<base::SimpleTestClock>();
+    base::Time future_mock_time;
+    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
+    clock->SetNow(future_mock_time.LocalMidnight() - base::Hours(4));
+    return clock;
+  }
+
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<TimePeriodStorage> state_;
   raw_ptr<base::SimpleTestClock> clock_ = nullptr;
@@ -94,8 +107,8 @@ TEST_F(TimePeriodStorageTest, SubDelta) {
 }
 
 TEST_F(TimePeriodStorageTest, GetSumInCustomPeriod) {
-  base::TimeDelta start_time_delta = base::Days(9) + base::Hours(1);
-  base::TimeDelta end_time_delta = base::Days(4) - base::Hours(1);
+  base::TimeDelta start_time_delta = base::Days(9);
+  base::TimeDelta end_time_delta = base::Days(4);
   uint64_t saving = 10000;
 
   InitStorage(14);
@@ -310,4 +323,62 @@ TEST_F(TimePeriodStorageTest, SegregatedListsInDictionary) {
 
   InitStorage(7, kDictKey2);
   EXPECT_EQ(state_->GetPeriodSum(), 33U);
+}
+
+TEST_F(TimePeriodStorageTest, ReadsOldMidnightFormat) {
+  // Manually create old format data with midnight timestamps
+  base::Value::List old_format_list;
+
+  std::unique_ptr<base::SimpleTestClock> clock = InitClock();
+
+  // Create old format entries at midnight (3 days ago, 2 days ago, yesterday)
+  base::Time two_days_ago_midnight =
+      (clock->Now() - base::Days(2)).LocalMidnight();
+  base::Time yesterday_midnight =
+      (clock->Now() - base::Days(1)).LocalMidnight();
+  base::Time today_midnight = clock->Now().LocalMidnight();
+
+  base::Value::Dict day1;
+  day1.Set(kDayKey, today_midnight.InSecondsFSinceUnixEpoch());
+  day1.Set(kValueKey, 300.0);
+  old_format_list.Append(std::move(day1));
+
+  base::Value::Dict day2;
+  day2.Set(kDayKey, yesterday_midnight.InSecondsFSinceUnixEpoch());
+  day2.Set(kValueKey, 200.0);
+  old_format_list.Append(std::move(day2));
+
+  base::Value::Dict day3;
+  day3.Set(kDayKey, two_days_ago_midnight.InSecondsFSinceUnixEpoch());
+  day3.Set(kValueKey, 100.0);
+  old_format_list.Append(std::move(day3));
+
+  pref_service_.SetList(kListPrefName, std::move(old_format_list));
+
+  // Load the old format and verify it works
+  InitStorage(7, nullptr, std::move(clock));
+
+  EXPECT_EQ(state_->GetPeriodSum(), 600U);
+
+  // Add new value today
+  state_->AddDelta(50);
+  EXPECT_EQ(state_->GetPeriodSum(), 650U);
+
+  // Advance one day and add again
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(75);
+  EXPECT_EQ(state_->GetPeriodSum(), 725U);
+
+  // Verify all entries are stored at noon
+  const base::Value::List& stored_list = pref_service_.GetList(kListPrefName);
+  ASSERT_EQ(stored_list.size(), 4u);
+
+  for (const auto& item : stored_list) {
+    const base::Value::Dict& entry = item.GetDict();
+    base::Time entry_time =
+        base::Time::FromSecondsSinceUnixEpoch(*entry.FindDouble(kDayKey));
+    base::Time entry_midnight = entry_time.LocalMidnight();
+    base::TimeDelta offset = entry_time - entry_midnight;
+    EXPECT_EQ(offset, base::Hours(12));
+  }
 }
