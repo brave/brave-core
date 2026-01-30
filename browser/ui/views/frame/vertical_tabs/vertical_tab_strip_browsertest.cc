@@ -604,6 +604,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
                           tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing;
   EXPECT_EQ(contents_view_height, region_view->original_region_view_->height());
 
+  // Check first unpinned tab's position in floating mode.
+  region_view->SetState(BraveVerticalTabStripRegionView::State::kFloating);
+  browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  EXPECT_EQ(contents_view_height, region_view->original_region_view_->height());
+  region_view->SetState(BraveVerticalTabStripRegionView::State::kExpanded);
+  browser_view()->tabstrip()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
   // Check if separator is laid out correctly
   EXPECT_TRUE(brave_tab_container->separator_->GetVisible());
   EXPECT_EQ(brave_tab_container->separator_->bounds().y(),
