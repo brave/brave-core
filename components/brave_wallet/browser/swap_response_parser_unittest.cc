@@ -1975,7 +1975,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
           "expiresAt": null,
           "slippagePercentage": "0.5",
           "transactionParams": null,
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2000,7 +1999,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   EXPECT_FALSE(route->deposit_address.has_value());
   EXPECT_FALSE(route->deposit_memo.has_value());
   EXPECT_FALSE(route->expires_at.has_value());
-  EXPECT_TRUE(route->has_post_submit_hook);
   EXPECT_FALSE(route->requires_token_allowance);
   EXPECT_TRUE(route->requires_firm_route);
   EXPECT_FALSE(route->transaction_params);
@@ -2103,7 +2101,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2220,7 +2217,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2322,7 +2318,6 @@ TEST(SwapResponseParserUnitTest,
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2411,7 +2406,6 @@ TEST(SwapResponseParserUnitTest,
             },
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2499,7 +2493,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithZCashTransaction) {
               "refundTo": "t1sender123456789"
             }
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2577,7 +2570,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseInvalidJson) {
           "sourceAmount": "1000000",
           "destinationAmount": "714449",
           "destinationAmountMin": "710876",
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }

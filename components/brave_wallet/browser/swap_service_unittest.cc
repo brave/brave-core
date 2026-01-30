@@ -1543,7 +1543,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
           "expiresAt": null,
           "slippagePercentage": "0.5",
           "transactionParams": null,
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -1660,7 +1659,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -1723,7 +1721,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   expected_route->transaction_params =
       mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
           std::move(expected_evm_params));
-  expected_route->has_post_submit_hook = true;
   expected_route->requires_token_allowance = false;
   expected_route->requires_firm_route = true;
 

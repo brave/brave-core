@@ -732,7 +732,6 @@ struct Gate3SwapRoute {
 
   Gate3SwapTransactionParamsUnion? transaction_params;
 
-  bool has_post_submit_hook;
   bool requires_token_allowance;
   bool requires_firm_route;
 };

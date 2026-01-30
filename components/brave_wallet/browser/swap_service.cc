@@ -253,8 +253,8 @@ void HandleGate3Quote(
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SwapService::OnGetGate3Quote, service, std::move(callback));
+  auto internal_callback = base::BindOnce(&SwapService::OnGetGate3Quote,
+                                          service, std::move(callback));
 
   api_request_helper.Request(net::HttpRequestHeaders::kPostMethod,
                              SwapService::GetGate3QuoteURL(/*is_firm=*/false),

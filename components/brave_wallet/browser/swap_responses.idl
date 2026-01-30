@@ -411,7 +411,6 @@ namespace swap_responses {
     any transactionParams;
 
     // Provider-specific requirements
-    boolean hasPostSubmitHook;
     boolean requiresTokenAllowance;
     boolean requiresFirmRoute;
   };

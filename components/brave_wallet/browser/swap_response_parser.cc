@@ -1282,7 +1282,6 @@ mojom::Gate3SwapRoutePtr ParseRoute(
     result->transaction_params = std::move(transaction_params);
   }
 
-  result->has_post_submit_hook = value.has_post_submit_hook;
   result->requires_token_allowance = value.requires_token_allowance;
   result->requires_firm_route = value.requires_firm_route;
 
