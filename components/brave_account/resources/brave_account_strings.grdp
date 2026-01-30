@@ -6,9 +6,6 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccount">
     Sign in or create a Brave account
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION" translateable="false" desc="Description explaining the benefits of a Brave Account" formatter_data="webui=BraveAccount">
-    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
-  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccount android_java">
     Get Started
   </message>
@@ -38,9 +35,6 @@
   <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can choose to create a Brave Account, or sign in" formatter_data="webui=BraveAccount">
     Get started with your Brave account
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can choose to create a Brave Account, or sign in" formatter_data="webui=BraveAccount">
-    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
-  </message>
   <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Create' dialog" formatter_data="webui=BraveAccount">
     Create a Brave account
   </message>
@@ -57,9 +51,6 @@
   <!-- 'Create' dialog: -->
   <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can create their Brave Account" formatter_data="webui=BraveAccount">
     Create your account
-  </message>
-  <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can create their Brave Account" formatter_data="webui=BraveAccount">
-    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE" translateable="false" desc="Error message for when the user tries to use a @bravealias.com email address when creating their Brave Account" formatter_data="webui=BraveAccount">
     You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.
@@ -95,9 +86,6 @@
   <!-- 'Sign In' dialog: -->
   <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can sign in to their Brave Account" formatter_data="webui=BraveAccount">
     Sign in to your account
-  </message>
-  <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can sign in to their Brave Account" formatter_data="webui=BraveAccount">
-    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Password' input field" formatter_data="webui=BraveAccount">
     Password
@@ -156,6 +144,9 @@
   </message>
 
   <!-- Common: -->
+  <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" translateable="false" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+    A Brave account will allow you to easily access Brave services.
+  </message>
   <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button" formatter_data="webui=BraveAccount">
     Go back
   </message>

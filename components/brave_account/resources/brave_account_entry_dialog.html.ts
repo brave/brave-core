@@ -11,7 +11,7 @@ import { BraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
 export function getHtml(this: BraveAccountEntryDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      dialog-description="$i18n{BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION}"
+      dialog-description="$i18n{BRAVE_ACCOUNT_DESCRIPTION}"
       dialog-title="$i18n{BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE}"
     >
       <leo-button

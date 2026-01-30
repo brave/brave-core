@@ -12,7 +12,7 @@ import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.
 export function getHtml(this: BraveAccountSignInDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      dialog-description="$i18n{BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION}"
+      dialog-description="$i18n{BRAVE_ACCOUNT_DESCRIPTION}"
       dialog-title="$i18n{BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE}"
       show-back-button
     >

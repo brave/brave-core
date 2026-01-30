@@ -11,7 +11,7 @@ import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.j
 export function getHtml(this: BraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      dialog-description="$i18n{BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION}"
+      dialog-description="$i18n{BRAVE_ACCOUNT_DESCRIPTION}"
       dialog-title="$i18n{BRAVE_ACCOUNT_CREATE_DIALOG_TITLE}"
       show-back-button
     >

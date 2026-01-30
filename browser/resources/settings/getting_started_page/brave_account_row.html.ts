@@ -90,7 +90,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
                .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE),
       this.i18n(
           BraveAccountStrings
-               .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION),
+               .BRAVE_ACCOUNT_DESCRIPTION),
       html`
         <leo-button kind="filled"
                     size="small"
