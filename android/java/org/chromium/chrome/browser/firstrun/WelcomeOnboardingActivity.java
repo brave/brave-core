@@ -216,7 +216,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             return;
         }
         if ((isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE)
-                || mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
+                || isVariantB()) {
             UserPrefs.get(profileProvider.getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
         }
@@ -268,7 +268,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
 
         mCurrentOnboardingPage = CurrentOnboardingPage.WDP_PAGE;
-        if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT) && mIvBrave != null) {
+        if (isDefaultVariant() && mIvBrave != null) {
             mIvBrave.setVisibility(View.VISIBLE);
         }
         showWDPPage();
@@ -409,7 +409,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     private void showWDPPage() {
-        if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
+        if (isDefaultVariant()) {
             int margin = mIsTablet ? 250 : 60;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
@@ -500,7 +500,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE) {
-            if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
+            if (isDefaultVariant()) {
                 nextOnboardingStepForDefaultVariant();
             }
         }
@@ -510,7 +510,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         assert requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE;
-        if (mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT)) {
+        if (isDefaultVariant()) {
             nextOnboardingStepForDefaultVariant();
         }
     }
@@ -642,7 +642,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             mDayZeroVariant = DAY_ZERO_DEFAULT_VARIANT;
         }
 
-        if (mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
+        if (isVariantB()) {
             if (!mIsCrashReportingManaged) {
                 // Handle crash reporting consent based on installation status
                 if (PackageUtils.isFirstInstall(this)
@@ -695,6 +695,14 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             mDefaultConstraintLayout.setVisibility(View.VISIBLE);
             nextOnboardingStepForDefaultVariant();
         }
+    }
+
+    private boolean isDefaultVariant() {
+        return mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT);
+    }
+
+    private boolean isVariantB() {
+        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_B);
     }
 
     private AnimatedVectorDrawable getAnimatedVectorDrawable() {

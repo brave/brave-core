@@ -70,16 +70,12 @@
         android:textColor="@color/text_primary"
         android:gravity="start"
         android:background="@color/schemes_surface_container"
-
         android:paddingTop="12dp"
         android:paddingHorizontal="24dp"
-
         app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
         app:layout_constraintBottom_toTopOf="@+id/send_crash_reports_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <FrameLayout
@@ -87,7 +83,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/schemes_surface_container"
-
         app:layout_constraintTop_toBottomOf="@+id/send_crash_reports_title"
         app:layout_constraintBottom_toTopOf="@+id/send_p3a_reports_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,13 +95,11 @@
             android:textColor="@color/text_secondary"
             android:paddingHorizontal="8dp"
             android:layout_marginVertical="8dp"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:text="@string/send_reports"
-            android:gravity="top|start"
-            />
+            android:gravity="top|start" />
     </FrameLayout>
 
     <TextView
@@ -118,16 +111,12 @@
         android:textColor="@color/text_primary"
         android:gravity="start"
         android:background="@color/schemes_surface_container"
-
         android:paddingTop="8dp"
         android:paddingHorizontal="24dp"
-
         app:layout_constraintTop_toBottomOf="@+id/send_crash_reports_container"
         app:layout_constraintBottom_toTopOf="@+id/send_p3a_reports_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
         android:id="@+id/send_p3a_reports_container"
@@ -135,7 +124,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/onboarding_bottom_rounded_corners"
         android:paddingBottom="8dp"
-
         app:layout_constraintTop_toBottomOf="@+id/send_p3a_reports_title"
         app:layout_constraintBottom_toTopOf="@+id/onboarding_start_browsing"
         app:layout_constraintStart_toStartOf="parent"
@@ -146,16 +134,13 @@
             style="@style/BraveCheckBox"
             android:layoutDirection="rtl"
             android:textColor="@color/text_secondary"
-
             android:layout_marginVertical="8dp"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
             android:layout_marginHorizontal="16dp"
             android:text="@string/send_p3a"
-            android:gravity="top|start"
-            />
+            android:gravity="top|start" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
