@@ -49,6 +49,8 @@ class TimePeriodStorage {
   void SubDelta(uint64_t delta);
   void ReplaceTodaysValueIfGreater(uint64_t value);
   void ReplaceIfGreaterForDate(const base::Time& date, uint64_t value);
+  // Returns sum of values in range, inclusive of both start and end calendar
+  // days in local time.
   uint64_t GetPeriodSumInTimeRange(const base::Time& start_time,
                                    const base::Time& end_time) const;
   uint64_t GetPeriodSum() const;

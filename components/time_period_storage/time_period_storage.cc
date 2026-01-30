@@ -18,9 +18,10 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace {
-// Used to compensate for DST-related differences. i.e. time
-// method arguments not matching up with stored time values.
-constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
+// Offset to noon to account for timezone and DST differences when comparing
+// dates. Since we store midnight times, adding 12 hours ensures we're
+// comparing within the same calendar day regardless of timezone shifts.
+constexpr base::TimeDelta kNoonOffset = base::Hours(12);
 }  // namespace
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
@@ -109,17 +110,20 @@ void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
 uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
     const base::Time& start_time,
     const base::Time& end_time) const {
+  // Convert to local midnight to make them time agnostic.
+  base::Time start_time_offset = start_time.LocalMidnight() - kNoonOffset;
+  base::Time end_time_offset = end_time.LocalMidnight() + kNoonOffset;
   // We only record values between the specified time range (inclusive).
-  return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
-                         [start_time, end_time](uint64_t acc, const auto& u2) {
-                           uint64_t add = 0;
-                           // Check only last continious days.
-                           if (u2.day >= start_time - kPotentialDSTOffset &&
-                               u2.day <= end_time + kPotentialDSTOffset) {
-                             add = u2.value;
-                           }
-                           return acc + add;
-                         });
+  return std::accumulate(
+      daily_values_.begin(), daily_values_.end(), 0ull,
+      [start_time_offset, end_time_offset](uint64_t acc, const auto& u2) {
+        uint64_t add = 0;
+        // Check only last continious days.
+        if (u2.day >= start_time_offset && u2.day <= end_time_offset) {
+          add = u2.value;
+        }
+        return acc + add;
+      });
 }
 
 uint64_t TimePeriodStorage::GetPeriodSum() const {
@@ -163,10 +167,9 @@ void TimePeriodStorage::FilterToPeriod() {
     last_saved_midnight = daily_values_.front().day;
   }
 
-  // Push daily values for new days. In loop condition, add one hour
-  // to now_midnight to account for DST changes.
+  // Push daily values for new days.
   for (base::Time day_midnight = last_saved_midnight + base::Days(1);
-       day_midnight <= (now_midnight + kPotentialDSTOffset);
+       day_midnight <= now_midnight + kNoonOffset;
        day_midnight += base::Days(1)) {
     // Day changed. Since we consider only small incoming intervals, lets just
     // save it with a new timestamp.
