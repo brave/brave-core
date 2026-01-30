@@ -353,21 +353,44 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
 
   NavigateToConversationUI(uuid);
 
+  // Inject a mock tool so that we can control when the tool execution completes
+  // and avoid race conditions between tool completion and pause button clicks.
+  auto* mock_tool = static_cast<NiceMock<MockTool>*>(
+      content_agent_tool_provider_->AddToolForTesting(
+          std::make_unique<NiceMock<MockTool>>("mock_tool", "Mock tool")));
+
+  testing::Sequence tool_call_seq;
+  base::OnceClosure tool_execute;
+
   // Submit first message
   {
     EngineConsumer::GenerationDataCallback data_callback;
     EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate =
-        SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
+    auto wait_for_generate = SetupMockGenerateAssistantResponse(
+        &data_callback, &completed_callback, &tool_call_seq);
     conversation_handler_->SubmitHumanConversationEntry(
         "Navigate to example.com", std::nullopt);
     std::move(wait_for_generate).Run();
-    // Send first message response
+
+    // Set up the mock tool to capture its callback so we control execution
+    // timing.
+    EXPECT_CALL(*mock_tool, UseTool)
+        .InSequence(tool_call_seq)
+        .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+          // Store the callback but don't call it yet - we'll call it after
+          // clicking pause.
+          tool_execute = base::BindOnce(
+              [](Tool::UseToolCallback callback) {
+                std::move(callback).Run(
+                    CreateContentBlocksForText("tool result"));
+              },
+              std::move(callback));
+        }));
+
     // Simulate tool use event
-    GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
     data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
-            CreateNavigateToolUseEvent("tool_id_1", test_url)),
+            CreateToolUseEvent("mock_tool", "tool_id_1")),
         std::nullopt));
     // Complete first message response
     std::move(completed_callback)
@@ -380,9 +403,6 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
     return GetConversationState()->tool_use_task_state ==
            mojom::TaskState::kRunning;
   }));
-
-  // Tool output should not be sent because we are going to pause
-  EXPECT_CALL(*mock_engine_, GenerateAssistantResponse).Times(0);
 
   // Wait for task state actions to appear
   EXPECT_TRUE(VerifyElementState("task-state-actions"));
@@ -412,27 +432,24 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
   // Verify the actor task has given control to the user
   EXPECT_TRUE(GetActorTask()->IsUnderUserControl());
 
-  // Handle the tool execution response
+  // Now complete the tool execution while we're paused.
+  // Tool output should not trigger GenerateAssistantResponse while paused.
+  EXPECT_CALL(*mock_engine_, GenerateAssistantResponse)
+      .Times(0)
+      .InSequence(tool_call_seq);
+  std::move(tool_execute).Run();
+
+  // Handle the tool execution response after resuming
   {
     EngineConsumer::GenerationDataCallback data_callback;
     EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate =
-        SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
+    auto wait_for_generate = SetupMockGenerateAssistantResponse(
+        &data_callback, &completed_callback, &tool_call_seq);
 
     // Use the resume button
     ClickElement("resume-task-button");
 
     std::move(wait_for_generate).Run();
-
-    // If the tool output is sent, we can verify that the tool performed
-    // its action successfully.
-    EXPECT_TRUE(base::test::RunUntil([this]() {
-      return GetContentAgentTabHandle()
-                 .Get()
-                 ->GetContents()
-                 ->GetLastCommittedURL()
-                 .path() == "/actor/link.html";
-    }));
 
     EXPECT_EQ(GetConversationState()->tool_use_task_state,
               mojom::TaskState::kRunning);
@@ -441,7 +458,6 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
     // user.
     EXPECT_TRUE(GetActorTask()->IsUnderActorControl());
 
-    // Send first message response
     // Simulate no more tool use requests, which should trigger task
     // completion.
     data_callback.Run(EngineConsumer::GenerationResultData(
@@ -461,22 +477,6 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
 
   // Task state buttons should not exist anymore
   EXPECT_FALSE(VerifyElementState("task-state-actions", false));
-
-  // EXPECT_TRUE(base::test::RunUntil([this]() {
-  //   return !VerifyElementState("task-state-actions", false);
-  // }));
-
-  // When a task is complete, the actor task should be back in a ready state.
-  // Instead of checking the actor task state directly, we should simply
-  // check that the tab is  no longer controlled by a Task.
-  EXPECT_TRUE(GetActorService()
-                  ->GetTaskFromTab(*GetContentAgentTabHandle().Get())
-                  .is_null())
-      << "Actor task state: "
-      << GetActorService()
-             ->GetTask(GetActorService()->GetTaskFromTab(
-                 *GetContentAgentTabHandle().Get()))
-             ->GetState();
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
@@ -564,6 +564,16 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
 
   // Task state buttons should not exist anymore
   EXPECT_FALSE(VerifyElementState("task-state-actions", false));
+
+  // After stopping, verify the tab is no longer controlled by a task
+  EXPECT_TRUE(GetActorService()
+                  ->GetTaskFromTab(*GetContentAgentTabHandle().Get())
+                  .is_null())
+      << "Actor task state: "
+      << GetActorService()
+             ->GetTask(GetActorService()->GetTaskFromTab(
+                 *GetContentAgentTabHandle().Get()))
+             ->GetState();
 
   // After stopping, submit a new human message to verify that the task can be
   // re-started with new state.
