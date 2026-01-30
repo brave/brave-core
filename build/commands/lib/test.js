@@ -202,9 +202,12 @@ const runTests = async (
       )
 
       if (!options.manual_android_test_device) {
-        runArgs.push(
-          `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`,
+        const avdConfigPath = path.join(
+          config.srcDir,
+          'tools/android/avd/proto',
+          `${options.android_test_emulator_name}.textpb`,
         )
+        runArgs.push(`--avd-config=${avdConfigPath}`)
       }
     }
 
