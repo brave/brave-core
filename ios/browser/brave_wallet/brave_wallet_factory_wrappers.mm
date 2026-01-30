@@ -181,3 +181,18 @@
       initWithZCashWalletService:std::move(pending_remote)];
 }
 @end
+
+@implementation BraveWalletCardanoWalletServiceFactory
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
+  if (!brave_wallet_service) {
+    return nil;
+  }
+  mojo::PendingRemote<brave_wallet::mojom::CardanoWalletService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
+  return [[BraveWalletCardanoWalletServiceMojoImpl alloc]
+      initWithCardanoWalletService:std::move(pending_remote)];
+}
+
+@end

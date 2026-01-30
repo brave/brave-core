@@ -139,7 +139,29 @@ enum TransactionParser {
         gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
       }
     case .ada:
-      break
+      guard let cardanoTxData = transaction.txDataUnion.cardanoTxData,
+        case let formatter = WalletAmountFormatter(
+          decimalFormatStyle: .decimals(precision: Int(network.decimals))
+        ),
+        let gasFeeString = formatter.decimalString(
+          for: "\(cardanoTxData.fee)",
+          radix: .decimal,
+          decimals: Int(network.decimals)
+        )
+      else { return nil }
+      if let doubleValue = Double(gasFeeString) {
+        let assetRatio =
+          Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
+        if let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) {
+          gasFee = .init(fee: gasFeeString, fiat: fiat)
+        } else {
+          gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+        }
+      } else {
+        gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+      }
+    case .dot:
+      fallthrough
     @unknown default:
       break
     }
@@ -341,6 +363,55 @@ enum TransactionParser {
           toAddress: zecTxData.to,
           network: txNetwork,
           details: .zecSend(
+            .init(
+              fromToken: fromToken,
+              fromValue: fromValue,
+              fromAmount: fromValueFormatted,
+              fromFiat: fromFiat,
+              fromTokenMetadata: nil,
+              gasFee: gasFee(
+                from: transaction,
+                network: txNetwork,
+                assetRatios: assetRatios,
+                currencyFormatter: currencyFormatter
+              )
+            )
+          )
+        )
+      } else if let cardanoTxData = transaction.txDataUnion.cardanoTxData {
+        // Example:
+        // Send 1 ADA
+        //
+        // fromValue="1000000"
+        // fromValueFormatted="1"
+        // toAddress="addr1qx723u2c3tku3mlq720m0qrpass8ppppkfksmd3trxvsay7dd5"
+        let namedFromAccount = fromAccountInfo.name
+        let fromValue = "\(cardanoTxData.amount)"
+        let fromValueFormatted =
+          formatter.decimalString(
+            for: fromValue,
+            radix: .decimal,
+            decimals: Int(txNetwork.decimals)
+          )?.trimmingTrailingZeros ?? ""
+        let fromFiat =
+          currencyFormatter.string(
+            from: NSNumber(
+              value: (Double(assetRatios.getTokenPrice(for: txNetwork.nativeToken)?.price ?? "0")
+                ?? 0)
+                * (Double(fromValueFormatted) ?? 0)
+            )
+          ) ?? "$0.00"
+        let fromToken = (allTokens + userAssets).first(where: {
+          $0.coin == transaction.coin && $0.chainId == transaction.chainId
+        })
+        return .init(
+          transaction: transaction,
+          namedFromAddress: namedFromAccount,
+          fromAccountInfo: fromAccountInfo,
+          namedToAddress: "",
+          toAddress: cardanoTxData.to,
+          network: txNetwork,
+          details: .adaSend(
             .init(
               fromToken: fromToken,
               fromValue: fromValue,
@@ -1066,6 +1137,7 @@ struct ParsedTransaction: Equatable {
     case filSend(FilSendDetails)
     case btcSend(SendDetails)
     case zecSend(SendDetails)
+    case adaSend(SendDetails)
     case other
   }
 
@@ -1110,7 +1182,8 @@ struct ParsedTransaction: Equatable {
     case .filSend(let details):
       return details.gasFee
     case .btcSend(let details),
-      .zecSend(let details):
+      .zecSend(let details),
+      .adaSend(let details):
       return details.gasFee
     case .other:
       return nil
@@ -1179,7 +1252,8 @@ struct ParsedTransaction: Equatable {
       .solSystemTransfer(let sendDetails),
       .solSplTokenTransfer(let sendDetails),
       .btcSend(let sendDetails),
-      .zecSend(let sendDetails):
+      .zecSend(let sendDetails),
+      .adaSend(let sendDetails):
       return sendDetails.fromToken?.matches(query) == true
     case .ethSwap(let ethSwapDetails):
       return ethSwapDetails.fromToken?.matches(query) == true
@@ -1403,7 +1477,8 @@ extension ParsedTransaction {
         return [token]
       }
     case .btcSend(let details),
-      .zecSend(let details):
+      .zecSend(let details),
+      .adaSend(let details):
       if let token = details.fromToken {
         return [token]
       }

@@ -301,7 +301,8 @@ private struct TransactionDetailsSendContent: View {
       .solSystemTransfer(let details),
       .solSplTokenTransfer(let details),
       .btcSend(let details),
-      .zecSend(let details):
+      .zecSend(let details),
+      .adaSend(let details):
       if let fromToken = details.fromToken {
         if fromToken.isNft || fromToken.isErc721 || fromToken.isErc1155 {
           return fromToken.name

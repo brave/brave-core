@@ -220,6 +220,27 @@ extension BraveWallet.BlockchainToken {
     coin: .zec,
     isShielded: false
   )
+  
+  static let mockAdaToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "",
+    name: "Ada",
+    logo: "",
+    isCompressed: false,
+    isErc20: false,
+    isErc721: false,
+    isErc1155: false,
+    splTokenProgram: .unsupported,
+    isNft: false,
+    isSpam: false,
+    symbol: "ADA",
+    decimals: 6,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: BraveWallet.CardanoMainnet,
+    coin: .ada,
+    isShielded: false
+  )
 }
 
 extension BraveWallet.AccountInfo {

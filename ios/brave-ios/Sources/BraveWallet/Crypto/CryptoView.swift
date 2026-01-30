@@ -97,13 +97,21 @@ public struct CryptoView: View {
                   dismissAction()
                 },
                 onViewInActivity: {
-                  store.selectedTab = .activity
+                  if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+                    openWalletURLAction?(.webUI.wallet.activity)
+                  } else {
+                    store.selectedTab = .activity
+                  }
                 }
               )
               .onDisappear {
                 // onDisappear allows us to catch all cases (swipe, cancel, confirm/approve/sign)
                 store.isPresentingPendingRequest = false
                 store.prepare()
+                // dismiss the whole view if WebUI is enalbed
+                if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+                  dismissAction()
+                }
               }
             case .requestPermissions(let request, let onPermittedAccountsUpdated):
               NewSiteConnectionView(

@@ -177,6 +177,8 @@ class TransactionConfirmationStoreTests: XCTestCase {
 
     let zcashWalletService = BraveWallet.TestZCashWalletService()
 
+    let cardanoWalletService = BraveWallet.TestCardanoWalletService()
+
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
       rpcService: rpcService,
@@ -188,6 +190,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      cardanoWalletService: cardanoWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )

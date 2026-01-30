@@ -26,7 +26,8 @@ extension WalletStore {
       walletP3A: TestBraveWalletP3A(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService(),
       zcashWalletService: BraveWallet.TestZCashWalletService(),
-      meldIntegrationService: BraveWallet.TestMeldIntegrationService()
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService(),
+      cardanoWalletService: BraveWallet.TestCardanoWalletService()
     )
   }
 }
@@ -47,7 +48,8 @@ extension CryptoStore {
       walletP3A: TestBraveWalletP3A(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
-      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
+      cardanoWalletService: BraveWallet.TestCardanoWalletService.previewCardanoWalletService
     )
   }
 }
@@ -236,6 +238,7 @@ extension TransactionConfirmationStore {
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
+      cardanoWalletService: BraveWallet.TestCardanoWalletService.previewCardanoWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()
     )
@@ -385,6 +388,12 @@ extension BraveWallet.TestZCashWalletService {
 extension BraveWallet.TestMeldIntegrationService {
   static var previewMeldIntegrationService: BraveWallet.TestMeldIntegrationService {
     return BraveWallet.TestMeldIntegrationService()
+  }
+}
+
+extension BraveWallet.TestCardanoWalletService {
+  static var previewCardanoWalletService: BraveWallet.TestCardanoWalletService {
+    return BraveWallet.TestCardanoWalletService()
   }
 }
 

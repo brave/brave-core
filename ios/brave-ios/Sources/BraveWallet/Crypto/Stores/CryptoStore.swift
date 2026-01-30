@@ -126,6 +126,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
   private let meldIntegrationService: BraveWalletMeldIntegrationService
+  private let cardanoWalletService: BraveWalletCardanoWalletService
   private let userAssetManager: WalletUserAssetManager
   private var isUpdatingUserAssets: Bool = false
   private var autoDiscoveredAssets: [BraveWallet.BlockchainToken] = []
@@ -150,6 +151,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     meldIntegrationService: BraveWalletMeldIntegrationService,
+    cardanoWalletService: BraveWalletCardanoWalletService,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
@@ -166,6 +168,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.meldIntegrationService = meldIntegrationService
+    self.cardanoWalletService = cardanoWalletService
     self.userAssetManager = WalletUserAssetManager(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -593,6 +596,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      cardanoWalletService: cardanoWalletService,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )

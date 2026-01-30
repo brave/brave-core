@@ -285,6 +285,19 @@ extension BraveWallet.NetworkInfo {
     coin: .zec,
     supportedKeyrings: [BraveWallet.KeyringId.zCashTestnet.rawValue].map(NSNumber.init(value:))
   )
+  static let mockCardanoMainnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.CardanoMainnet,
+    chainName: "Cardano Mainnet",
+    blockExplorerUrls: ["https://preprod.cexplorer.io"],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://cardano-preprod.wallet.brave.com/")!],
+    symbol: "ADA",
+    symbolName: "Cardano",
+    decimals: 6,
+    coin: .ada,
+    supportedKeyrings: [BraveWallet.KeyringId.cardanoMainnet.rawValue].map(NSNumber.init(value:))
+  )
 }
 
 #endif

@@ -193,6 +193,8 @@ struct TransactionStatusView: View {
       return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "BTC")"
     case .zecSend(let detail):
       return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "ZEC")"
+    case .adaSend(let detail):
+      return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "ADA")"
     case .ethErc20Approve(let detail):
       return "\(detail.approvalAmount) \(detail.token?.symbol ?? "")"
     case .ethSwap(let detail):

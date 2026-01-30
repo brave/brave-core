@@ -17,7 +17,8 @@ struct TransactionSummaryViewContainer: View {
       .solSystemTransfer(let details),
       .solSplTokenTransfer(let details),
       .btcSend(let details),
-      .zecSend(let details):
+      .zecSend(let details),
+      .adaSend(let details):
       SendTransactionSummaryView(
         sentFromAccountName: parsedTransaction.namedFromAddress,
         token: details.fromToken,

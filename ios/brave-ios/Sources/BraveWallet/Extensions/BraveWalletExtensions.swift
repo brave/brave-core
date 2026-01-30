@@ -353,6 +353,8 @@ extension BraveWallet.TransactionInfo {
       return .btc
     } else if txDataUnion.zecTxData != nil {
       return .zec
+    } else if txDataUnion.cardanoTxData != nil {
+      return .ada
     } else {
       return .eth
     }

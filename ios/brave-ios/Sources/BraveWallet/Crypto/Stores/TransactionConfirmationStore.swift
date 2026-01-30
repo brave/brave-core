@@ -156,6 +156,22 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         return [outputLine, valueLine, addressLines].joined(separator: "\n")
       }.joined(separator: "\n\n")
       return inputs + "\n\n" + outputs
+    } else if activeParsedTransaction.transaction.coin == .ada,
+      let cardanoTxData = activeParsedTransaction.transaction.txDataUnion.cardanoTxData
+    {
+      let inputs = cardanoTxData.inputs.enumerated().map { (index, input) in
+        let inputLine = "\(Strings.Wallet.inputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(input.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(input.address)"
+        return [inputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
+      let outputs = cardanoTxData.outputs.enumerated().map { (index, output) in
+        let outputLine = "\(Strings.Wallet.outputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(output.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(output.address)"
+        return [outputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
+      return inputs + "\n\n" + outputs
     } else {
       let functionType = String.localizedStringWithFormat(
         Strings.Wallet.inputDataPlaceholderTx,
@@ -198,6 +214,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
+  private let cardanoWalletService: BraveWalletCardanoWalletService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
@@ -219,6 +236,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
+    cardanoWalletService: BraveWalletCardanoWalletService,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
@@ -232,6 +250,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.solTxManagerProxy = solTxManagerProxy
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
+    self.cardanoWalletService = cardanoWalletService
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
@@ -572,6 +591,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       ) {
         gasBalancesForChain[account.id] = availableBTCBalance
       }
+    } else if token.coin == .ada {
+      let adaBalance = await cardanoWalletService.fetchADABalances(accountId: account.accountId)
+      gasBalancesForChain[account.id] = adaBalance
     } else {
       if let assetBalance = assetManager.getAssetBalances(
         for: token,
@@ -678,7 +700,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       .solSystemTransfer(let details),
       .solSplTokenTransfer(let details),
       .btcSend(let details),
-      .zecSend(let details):
+      .zecSend(let details),
+      .adaSend(let details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
       fiat = details.fromFiat ?? ""

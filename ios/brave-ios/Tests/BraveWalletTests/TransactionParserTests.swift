@@ -68,10 +68,11 @@ class TransactionParserTests: XCTestCase {
     },
     BraveWallet.AccountInfo.mockBtcAccount,
     BraveWallet.AccountInfo.mockZcashAccount,
+    BraveWallet.AccountInfo.mockAdaAccount,
   ]
   private let tokens: [BraveWallet.BlockchainToken] = [
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken,
-    .mockSolanaNFTToken, .mockFilToken, .mockBTCToken, .mockZecToken,
+    .mockSolanaNFTToken, .mockFilToken, .mockBTCToken, .mockZecToken, .mockAdaToken,
   ]
   let assetRatios: [BraveWallet.AssetPrice] = [
     .init(
@@ -159,6 +160,16 @@ class TransactionParserTests: XCTestCase {
       chainId: BraveWallet.ZCashMainnet,
       address: "",
       price: "35",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .ada,
+      chainId: BraveWallet.CardanoMainnet,
+      address: "",
+      price: "0.3",
       vsCurrency: "usd",
       cacheStatus: .hit,
       source: .coingecko,
@@ -1441,6 +1452,88 @@ class TransactionParserTests: XCTestCase {
       case .zecSend(let parsedDetails) = parsedTransaction.details
     else {
       XCTFail("Incorrectly parsed zecSend transaction")
+      return
+    }
+
+    XCTAssertEqual(expectedDetails.fromValue, parsedDetails.fromValue)
+    XCTAssertEqual(expectedDetails.fromAmount, parsedDetails.fromAmount)
+    XCTAssertEqual(expectedDetails.fromFiat, parsedDetails.fromFiat)
+    XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
+
+  }
+
+  @MainActor func testCardanoSend() async {
+    let network = BraveWallet.NetworkInfo.mockCardanoMainnet
+    let mockFromAccount = accountInfos[8]
+    let mockToAccountAddress = "addr1qx723u2c3tku3mlq720m0qrpass8ppppkfksmd3trxvsay7dd5"
+
+    let transactionData: BraveWallet.CardanoTxData = .init(
+      to: mockToAccountAddress,
+      amount: 1_000_000,
+      sendingMaxAmount: false,
+      fee: 100_000,
+      inputs: [],
+      outputs: []
+    )
+    let transaction = mockTransaction(
+      fromAccount: mockFromAccount,
+      txDataUnion: .init(cardanoTxData: transactionData),
+      txType: .other,
+      chainId: network.chainId,
+      effectiveRecipient: mockToAccountAddress
+    )
+
+    let expectedParsedTransaction = ParsedTransaction(
+      transaction: transaction,
+      namedFromAddress: mockFromAccount.name,
+      fromAccountInfo: mockFromAccount,
+      namedToAddress: "",
+      toAddress: mockToAccountAddress,
+      network: network,
+      details: .adaSend(
+        .init(
+          fromToken: .mockAdaToken,
+          fromValue: "1000000",
+          fromAmount: "1",
+          fromFiat: "$0.30",
+          fromTokenMetadata: nil,
+          gasFee: GasFee(
+            fee: "0.100000",
+            fiat: "$0.03"
+          )
+        )
+      )
+    )
+
+    guard
+      let parsedTransaction = TransactionParser.parseTransaction(
+        transaction: transaction,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
+        accountInfos: accountInfos,
+        userAssets: tokens,
+        allTokens: tokens,
+        assetRatios: assetRatios,
+        nftMetadata: [:],
+        solEstimatedTxFee: nil,
+        currencyFormatter: currencyFormatter
+      )
+    else {
+      XCTFail("Failed to parse adaSend transaction")
+      return
+    }
+
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountInfo.id,
+      parsedTransaction.fromAccountInfo.id
+    )
+    XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
+    XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
+    XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
+
+    guard case .adaSend(let expectedDetails) = expectedParsedTransaction.details,
+      case .adaSend(let parsedDetails) = parsedTransaction.details
+    else {
+      XCTFail("Incorrectly parsed adaSend transaction")
       return
     }
 
