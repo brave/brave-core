@@ -19,11 +19,16 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
-#define JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents \
-  JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl
-
+#define JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents        \
+  JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl \
+      [[maybe_unused]]
+// Suppress DEFINE_JNI in included file - we call it ourselves at the end
+#pragma push_macro("DEFINE_JNI")
+#undef DEFINE_JNI
+#define DEFINE_JNI(...)
 #include <components/external_intents/android/intercept_navigation_delegate_impl.cc>
-
+#undef DEFINE_JNI
+#pragma pop_macro("DEFINE_JNI")
 #undef JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents
 
 namespace external_intents {
@@ -75,10 +80,7 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
 
 }  // namespace
 
-// We can't use DEFINE_JNI when override upstream's JNI method as it causes
-// class redefinition issues. So we use [[maybe_unused]] to suppress the error.
-[[maybe_unused]] static void
-JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
+static void JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& jdelegate,
     const base::android::JavaRef<jobject>& jweb_contents) {
@@ -93,3 +95,5 @@ JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
 }
 
 }  // namespace external_intents
+
+DEFINE_JNI(InterceptNavigationDelegateImpl)
