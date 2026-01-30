@@ -24,6 +24,7 @@ export const style = scoped.css`
 
   .icon {
     --leo-icon-size: 24px;
+    --leo-icon-color: ${color.systemfeedback.warningIcon};
 
     padding: 16px;
     border-radius: 50%;
