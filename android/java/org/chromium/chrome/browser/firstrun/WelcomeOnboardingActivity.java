@@ -383,7 +383,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
     }
 
-    public static void setMetricsReportingConsent(
+    private void setMetricsReportingConsent(
             final boolean consent, final boolean markAsShown) {
         try {
             // Updates reporting consent for first run.
@@ -398,7 +398,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
     }
 
-    public static void setP3aConsent(final boolean consent) {
+    private void setP3aConsent(final boolean consent) {
         try {
             BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, consent);
             BraveLocalState.get().setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
@@ -822,6 +822,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     @Override
     public void onWebDiscoverPreferenceEnabled() {
         enableWebDiscoverPreference();
+    }
+
+    @Override
+    public void onCrashReportingPreferenceChanged(final boolean enabled) {
+        setMetricsReportingConsent(enabled, false);
+    }
+
+    @Override
+    public void onP3aPreferenceChanged(final boolean enabled) {
+        setP3aConsent(enabled);
     }
 
     @VisibleForTesting

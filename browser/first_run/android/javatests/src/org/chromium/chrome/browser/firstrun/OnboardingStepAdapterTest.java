@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.chrome.R;
+import org.chromium.brave.browser.firstrun.R;
 
 /** Unit tests for {@link OnboardingStepAdapter}. */
 @RunWith(BaseRobolectricTestRunner.class)
@@ -193,6 +193,10 @@ public class OnboardingStepAdapterTest {
         int mRequestedPage = -1;
         int mDismissCount;
         int mWebDiscoverEnabledCount;
+        int mCrashReportingChangeCount;
+        int mP3aChangeCount;
+        boolean mLastCrashReportingEnabled;
+        boolean mLastP3aEnabled;
 
         @Override
         public void onRequestPageChange(int position) {
@@ -209,10 +213,26 @@ public class OnboardingStepAdapterTest {
             mWebDiscoverEnabledCount++;
         }
 
+        @Override
+        public void onCrashReportingPreferenceChanged(final boolean enabled) {
+            mCrashReportingChangeCount++;
+            mLastCrashReportingEnabled = enabled;
+        }
+
+        @Override
+        public void onP3aPreferenceChanged(final boolean enabled) {
+            mP3aChangeCount++;
+            mLastP3aEnabled = enabled;
+        }
+
         void reset() {
             mRequestedPage = -1;
             mDismissCount = 0;
             mWebDiscoverEnabledCount = 0;
+            mCrashReportingChangeCount = 0;
+            mP3aChangeCount = 0;
+            mLastCrashReportingEnabled = false;
+            mLastP3aEnabled = false;
         }
     }
 }

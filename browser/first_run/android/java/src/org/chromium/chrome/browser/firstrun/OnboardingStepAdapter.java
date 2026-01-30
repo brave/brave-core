@@ -18,7 +18,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.R;
+import org.chromium.brave.browser.firstrun.R;
 
 /**
  * RecyclerView adapter for the variant-B onboarding ViewPager2, inflating one layout per step and
@@ -39,6 +39,10 @@ public class OnboardingStepAdapter
         void onDismiss();
 
         void onWebDiscoverPreferenceEnabled();
+
+        void onCrashReportingPreferenceChanged(final boolean enabled);
+
+        void onP3aPreferenceChanged(final boolean enabled);
     }
 
     private static final int[] STEPS = {
@@ -206,8 +210,7 @@ public class OnboardingStepAdapter
                 mSendCrashReports.setChecked(crashReportingChecked);
                 mSendCrashReports.setOnCheckedChangeListener(
                         (buttonView, isChecked) ->
-                                WelcomeOnboardingActivity.setMetricsReportingConsent(
-                                        isChecked, false));
+                                listener.onCrashReportingPreferenceChanged(isChecked));
             }
 
             mSendP3a = itemView.findViewById(R.id.send_p3a_reports);
@@ -216,8 +219,7 @@ public class OnboardingStepAdapter
             } else {
                 mSendP3a.setChecked(p3aChecked);
                 mSendP3a.setOnCheckedChangeListener(
-                        (buttonView, isChecked) ->
-                                WelcomeOnboardingActivity.setP3aConsent(isChecked));
+                        (buttonView, isChecked) -> listener.onP3aPreferenceChanged(isChecked));
             }
         }
 

@@ -114,19 +114,6 @@ if (is_android) {
     ]
   }
 
-  robolectric_library(
-      "brave_junit_tests_org.chromium.chrome.browser.firstrun") {
-    sources = [
-      "src/org/chromium/chrome/browser/firstrun/OnboardingStepAdapterTest.java",
-      "src/org/chromium/chrome/browser/firstrun/WelcomeOnboardingDefaultBrowserTest.java",
-    ]
-
-    deps = [
-      "//chrome/android/junit:chrome_junit_tests_helper",
-      "//third_party/androidx:androidx_viewpager2_viewpager2_java",
-    ]
-  }
-
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ntp") {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
