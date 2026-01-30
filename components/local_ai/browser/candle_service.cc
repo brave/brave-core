@@ -99,8 +99,12 @@ CandleService::CandleService() {
   // Check if model is already ready
   const base::FilePath& model_dir =
       LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModelDir();
+  DVLOG(1) << "CandleService: model_dir at construction = " << model_dir;
   if (!model_dir.empty()) {
+    DVLOG(1) << "CandleService: model_dir is set, calling OnComponentReady";
     OnComponentReady(model_dir);
+  } else {
+    DVLOG(1) << "CandleService: model_dir is empty, waiting for component";
   }
 }
 

@@ -50,7 +50,6 @@ class CandleEmbedder {
   void Embed(const std::string& text, EmbedCallback callback);
 
  private:
-
   static void CreateOnRustThread(
       CandleEmbedder* wrapper,
       std::vector<uint8_t> weights,
@@ -73,9 +72,10 @@ class CandleEmbedder {
                               size_t length);
 
   struct InitCallbackData {
-    InitCallbackData(raw_ptr<CandleEmbedder> wrapper,
-                     InitCallback callback,
-                     scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
+    InitCallbackData(
+        raw_ptr<CandleEmbedder> wrapper,
+        InitCallback callback,
+        scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
     ~InitCallbackData();
 
     raw_ptr<CandleEmbedder> wrapper;
@@ -84,8 +84,9 @@ class CandleEmbedder {
   };
 
   struct EmbedCallbackData {
-    EmbedCallbackData(EmbedCallback callback,
-                      scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
+    EmbedCallbackData(
+        EmbedCallback callback,
+        scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
     ~EmbedCallbackData();
 
     EmbedCallback callback;

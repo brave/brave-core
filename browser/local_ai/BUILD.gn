@@ -3,24 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("history_embeddings") {
+source_set("local_ai") {
   sources = [
-    "brave_embedder.cc",
-    "brave_embedder.h",
-    "brave_passage_embeddings_service_controller.cc",
-    "brave_passage_embeddings_service_controller.h",
+    "candle_service_factory.cc",
+    "candle_service_factory.h",
   ]
 
   deps = [
     "//base",
-    "//brave/browser/local_ai",
-    "//brave/components/constants",
     "//brave/components/local_ai/browser",
+    "//brave/components/local_ai/common",
     "//chrome/browser/profiles",
-    "//components/history_embeddings",
-    "//components/passage_embeddings",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
     "//content/public/browser",
-    "//services/passage_embeddings/public/mojom",
-    "//ui/base",
   ]
 }
