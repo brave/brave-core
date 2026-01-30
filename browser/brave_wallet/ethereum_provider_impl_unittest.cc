@@ -62,7 +62,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/display/test/test_screen.h"
 #include "url/origin.h"
 
 using base::test::ParseJson;
@@ -196,7 +195,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
 
   void TearDown() override {
-    display::Screen::SetScreenInstance(nullptr);
     provider_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
@@ -204,8 +202,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    display::Screen::SetScreenInstance(&test_screen_);
-
     // Resetting this test callback, as it gets stored in a discreet global, and
     // in some cases it was causing stack-use-after-return.
     SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
@@ -912,7 +908,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::unique_ptr<EthereumProviderImpl> provider_;
 
  private:
-  display::test::TestScreen test_screen_;
   TestingPrefServiceSimple local_state_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;

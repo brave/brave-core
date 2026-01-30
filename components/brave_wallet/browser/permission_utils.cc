@@ -65,15 +65,19 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
 
   // Split host part in origin into original host and address parts.
   std::string pattern;
-  if (type == permissions::RequestType::kBraveEthereum) {
-    pattern = "(.*)(0x[[:xdigit:]]{40})";
-  } else if (type == permissions::RequestType::kBraveCardano) {
-    // AccountId->unique_key is used as account identifier for cardano.
-    pattern = "(.*)__([0-9_]+)";
-  } else if (type == permissions::RequestType::kBraveSolana) {
-    pattern = "(.*)__([[:alnum:]]{1,128})";
-  } else {
-    NOTREACHED();
+  switch (type) {
+    case permissions::RequestType::kBraveEthereum:
+      pattern = "(.*)(0x[[:xdigit:]]{40})";
+      break;
+    case permissions::RequestType::kBraveCardano:
+      // AccountId->unique_key is used as account identifier for cardano.
+      pattern = "(.*)__([0-9_]+)";
+      break;
+    case permissions::RequestType::kBraveSolana:
+      pattern = "(.*)__([[:alnum:]]{1,128})";
+      break;
+    default:
+      NOTREACHED();
   }
   RE2 full_pattern(pattern);
   if (!re2::RE2::FullMatch(origin.host(), full_pattern, &host_group,
