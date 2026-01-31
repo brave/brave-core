@@ -18,13 +18,11 @@ DraggingTabsSession::DraggingTabsSession(
     DragSessionData drag_data,
     TabDragContext& attached_context,
     TabDragPositioningDelegate& drag_position_delegate,
-    float offset_to_width_ratio,
     bool initial_move,
     gfx::Point point_in_screen)
     : DraggingTabsSessionChromium(drag_data,
                                   attached_context,
                                   drag_position_delegate,
-                                  offset_to_width_ratio,
                                   initial_move,
                                   point_in_screen) {}
 
