@@ -539,7 +539,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
   func updateMainStackViewConstraints() {
     mainStackView.snp.remakeConstraints { make in
       make.top.bottom.equalTo(self)
-      make.leading.trailing.equalTo(self.osAvailableHorizontalSafeAreaLayoutGuide)
+      if #available(iOS 26.0, *) {
+        make.leading.trailing.equalTo(layoutGuide(for: .safeArea(cornerAdaptation: .horizontal)))
+      } else {
+        make.leading.trailing.equalTo(safeAreaLayoutGuide)
+      }
     }
   }
 
