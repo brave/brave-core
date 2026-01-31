@@ -55,6 +55,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
+                                mojom::SwapInfoPtr swap_info,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
@@ -169,11 +170,13 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                 mojom::TxDataPtr tx_data,
                                 const mojom::AccountIdPtr& from,
                                 const url::Origin& origin,
+                                mojom::SwapInfoPtr swap_info,
                                 AddUnapprovedTransactionCallback);
   void AddUnapproved1559Transaction(const std::string& chain_id,
                                     mojom::TxData1559Ptr tx_data,
                                     const mojom::AccountIdPtr& from,
                                     const url::Origin& origin,
+                                    mojom::SwapInfoPtr swap_info,
                                     AddUnapprovedTransactionCallback);
 
   void NotifyUnapprovedTxUpdated(TxMeta* meta);
@@ -207,6 +210,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      std::unique_ptr<EthTransaction> tx,
                      AddUnapprovedTransactionCallback callback,
                      bool sign_only,
+                     mojom::SwapInfoPtr swap_info,
                      const std::string& result,
                      mojom::ProviderError error,
                      const std::string& error_message);
@@ -217,6 +221,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       bool sign_only,
+      mojom::SwapInfoPtr swap_info,
       const std::string& result,
       mojom::ProviderError error,
       const std::string& error_message);
@@ -240,6 +245,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       std::unique_ptr<Eip1559Transaction> tx,
       AddUnapprovedTransactionCallback callback,
       bool sign_only,
+      mojom::SwapInfoPtr swap_info,
       mojom::GasEstimation1559Ptr gas_estimation);
   void UpdatePendingTransactions(
       const std::optional<std::string>& chain_id) override;

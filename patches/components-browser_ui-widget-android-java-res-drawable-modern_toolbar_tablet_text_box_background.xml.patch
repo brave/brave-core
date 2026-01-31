@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml b/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml
+index 976e3ccd56399140d23ac1a16d6f5e20502959f8..4763efc65b0cea536a5fdb0960bd9128991222c8 100644
+--- a/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml
++++ b/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml
+@@ -5,7 +5,7 @@ Use of this source code is governed by a BSD-style license that can be
+ found in the LICENSE file.
+ -->
+ <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+-  <item android:drawable="@drawable/modern_toolbar_text_box_background"
++  <item android:drawable="@drawable/brave_modern_toolbar_text_box_background"
+     android:top="@dimen/modern_toolbar_background_vertical_offset"
+     android:bottom="@dimen/modern_toolbar_background_vertical_offset" />
+ </layer-list>

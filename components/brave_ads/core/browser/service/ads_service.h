@@ -8,18 +8,15 @@
 
 #include <cstdint>
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -28,6 +25,12 @@ class GURL;
 
 namespace brave_ads {
 
+// AdsService is the key interface for the Brave Ads component, managing ad
+// serving, user interactions, and ad-related events. It handles all ad types
+// including notification ads, new tab page ads, and search result ads.
+// Note: This header can be included even when Brave Ads is disabled by build
+// flag. When Brave Ads is disabled, the pointer to AdsService should be
+// nullptr and no ads functionality should be available.
 class AdsService : public KeyedService {
  public:
   class Delegate {
@@ -109,7 +112,7 @@ class AdsService : public KeyedService {
   virtual void PrefetchNewTabPageAd() = 0;
 
   // Called to get the prefetched new tab page ad for display.
-  virtual std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() = 0;
+  virtual mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() = 0;
 
   // Called when failing to prefetch a new tab page ad for the specified
   // `placement_id` and `creative_instance_id`.
@@ -124,9 +127,9 @@ class AdsService : public KeyedService {
       ParseAndSaveNewTabPageAdsCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -
-  // `NewTabPageAdInfo` containing the info for the ad.
+  // `mojom::NewTabPageAdInfoPtr` containing the info for the ad.
   virtual void MaybeServeNewTabPageAd(
-      MaybeServeNewTabPageAdCallback callback) = 0;
+      MaybeServeMojomNewTabPageAdCallback callback) = 0;
 
   // Called when a user views or interacts with a new tab page ad to trigger a
   // `mojom_ad_event_type` event for the specified `placement_id` and

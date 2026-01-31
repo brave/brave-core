@@ -29,7 +29,6 @@
   case PermissionType::BRAVE_SPEEDREADER:               \
   BRAVE_WALLET_PERMISSION_TYPES                         \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::NUM
 

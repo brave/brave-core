@@ -8,12 +8,14 @@ import BraveCore
 
 public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
   private(set) weak var tab: (any TabState)?
+  private var showApprovePanelUIHandler: (((_ tab: (any TabState)?) -> Void))?
   private var showWalletBackUpHandler: (() -> Void)?
   private var unlockWalletHandler: (() -> Void)?
   private var showOnboardingHandler: ((Bool) -> Void)?
 
   public init?(
     tab: some TabState,
+    showApprovePanelUIHandler: ((_ tab: (any TabState)?) -> Void)?,
     showWalletBackUpHandler: (() -> Void)?,
     unlockWalletHandler: (() -> Void)?,
     showOnboardingHandler: ((Bool) -> Void)?
@@ -22,6 +24,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
       return nil
     }
     self.tab = tab
+    self.showApprovePanelUIHandler = showApprovePanelUIHandler
     self.showWalletBackUpHandler = showWalletBackUpHandler
     self.unlockWalletHandler = unlockWalletHandler
     self.showOnboardingHandler = showOnboardingHandler
@@ -44,6 +47,10 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
   }
 
   // MARK: - WalletPageHandler
+  public func showApprovePanelUI() {
+    showApprovePanelUIHandler?(tab)
+  }
+
   public func showWalletBackupUI() {
     showWalletBackUpHandler?()
   }

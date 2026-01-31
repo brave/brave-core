@@ -270,7 +270,8 @@ static_library("internal") {
     "ad_units/new_tab_page_ad/new_tab_page_ad_handler.cc",
     "ad_units/new_tab_page_ad/new_tab_page_ad_handler.h",
     "ad_units/new_tab_page_ad/new_tab_page_ad_info.cc",
-    "ad_units/new_tab_page_ad/new_tab_page_ad_value_util.cc",
+    "ad_units/new_tab_page_ad/new_tab_page_ad_prefetcher.cc",
+    "ad_units/new_tab_page_ad/new_tab_page_ad_util.cc",
     "ad_units/notification_ad/notification_ad_feature.cc",
     "ad_units/notification_ad/notification_ad_handler.cc",
     "ad_units/notification_ad/notification_ad_handler.h",
@@ -393,6 +394,7 @@ static_library("internal") {
     "common/logging_util.h",
     "common/logging_util_internal.cc",
     "common/logging_util_internal.h",
+    "common/net/http/http_status_code_class_types.h",
     "common/net/http/http_status_code_util.cc",
     "common/net/http/http_status_code_util.h",
     "common/platform/platform_helper.cc",
@@ -1149,6 +1151,7 @@ static_library("internal") {
 
   deps = [
     "//base",
+    "//brave/components/brave_ads/core/browser/service",
     "//brave/components/brave_rewards/core",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/constants",

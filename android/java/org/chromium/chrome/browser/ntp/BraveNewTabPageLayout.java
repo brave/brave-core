@@ -47,7 +47,6 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -93,13 +92,17 @@ import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -279,8 +282,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
 
-        mIsDisplayNewsOptin = BraveNewsUtils.shouldDisplayNewsOptin();
-        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed();
+        mIsDisplayNewsOptin = BraveNewsUtils.shouldDisplayNewsOptin(mProfile);
+        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed(mProfile);
 
         initPreferenceObserver();
         if (mPreferenceListener != null) {
@@ -1089,7 +1092,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void refreshFeed() {
         boolean isShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
-        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed();
+        mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed(mProfile);
         if (!isShowNewsOn) {
             mNtpAdapter.setDisplayNewsFeed(false);
 
@@ -1183,8 +1186,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             ActivityLifecycleDispatcher lifecycleDispatcher,
             Profile profile,
             WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
+            BottomSheetController bottomSheetController,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            SnackbarManager snackbarManager,
             boolean isTablet,
-            ObservableSupplier<Integer> tabStripHeightSupplier,
+            Supplier<Integer> tabStripHeightSupplier,
             Supplier<GURL> composeplateUrlSupplier) {
         super.initialize(
                 manager,
@@ -1198,6 +1205,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 lifecycleDispatcher,
                 profile,
                 windowAndroid,
+                activityResultTracker,
+                bottomSheetController,
+                modalDialogManagerSupplier,
+                snackbarManager,
                 isTablet,
                 tabStripHeightSupplier,
                 composeplateUrlSupplier);
@@ -1223,7 +1234,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         ((BraveActivity) mActivity).setNewTabPageManager(manager);
         mFeedHash = "";
         initBraveNewsController(null);
-        if (BraveNewsUtils.shouldDisplayNewsFeed() && ((BraveActivity) mActivity).isLoadedFeed()) {
+        if (BraveNewsUtils.shouldDisplayNewsFeed(mProfile)
+                && ((BraveActivity) mActivity).isLoadedFeed()) {
             CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
                     ((BraveActivity) mActivity).getNewsItemsFeedCards();
             if (existingNewsFeedObject != null) {

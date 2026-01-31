@@ -54,7 +54,7 @@ MATCHER_P(EqId, id, "") {
 }
 
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
-  MockContainerMenuModelDelegate delegate;
+  MockContainersMenuModelDelegate delegate;
 
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
@@ -77,7 +77,7 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
 }
 
 TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
-  MockContainerMenuModelDelegate delegate;
+  MockContainersMenuModelDelegate delegate;
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());
@@ -87,49 +87,68 @@ TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
 }
 
 TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
-  MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model =
-      test::ContainersMenuModelTestApi::CreateContainersMenuModel(
-          delegate, GetContainers());
-
   auto containers = GetContainers();
 
   // Test with the first container ID
-  EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(
-          testing::Return((base::flat_set<std::string>{containers[0].id()})));
-  EXPECT_TRUE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
-  EXPECT_FALSE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  {
+    MockContainersMenuModelDelegate delegate;
+    EXPECT_CALL(delegate, GetCurrentContainerIds())
+        .WillOnce(
+            testing::Return((base::flat_set<std::string>{containers[0].id()})));
+    ContainersMenuModel model =
+        test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+            delegate, GetContainers());
+    EXPECT_TRUE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+    EXPECT_FALSE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  }
 
   // Now test with the second container ID
-  EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(
-          testing::Return(base::flat_set<std::string>{containers[1].id()}));
-  EXPECT_FALSE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
-  EXPECT_TRUE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  {
+    MockContainersMenuModelDelegate delegate;
+    EXPECT_CALL(delegate, GetCurrentContainerIds())
+        .WillOnce(
+            testing::Return(base::flat_set<std::string>{containers[1].id()}));
+    ContainersMenuModel model =
+        test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+            delegate, GetContainers());
+    EXPECT_FALSE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+    EXPECT_TRUE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  }
 
   // Test with no container selected
-  EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(testing::Return<base::flat_set<std::string>>({}));
-  EXPECT_FALSE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
-  EXPECT_FALSE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  {
+    MockContainersMenuModelDelegate delegate;
+    EXPECT_CALL(delegate, GetCurrentContainerIds())
+        .WillOnce(testing::Return<base::flat_set<std::string>>({}));
+    ContainersMenuModel model =
+        test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+            delegate, GetContainers());
+    EXPECT_FALSE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+    EXPECT_FALSE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  }
 
   // Test with multiple containers selected
-  EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(testing::Return(
-          base::flat_set<std::string>{containers[0].id(), containers[1].id()}));
-  EXPECT_TRUE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
-  EXPECT_TRUE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
-  EXPECT_FALSE(model.IsCommandIdChecked(
-      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 2)));
+  {
+    MockContainersMenuModelDelegate delegate;
+    EXPECT_CALL(delegate, GetCurrentContainerIds())
+        .WillOnce(testing::Return(base::flat_set<std::string>{
+            containers[0].id(), containers[1].id()}));
+    ContainersMenuModel model =
+        test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+            delegate, GetContainers());
+    EXPECT_TRUE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+    EXPECT_TRUE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+    EXPECT_FALSE(model.IsCommandIdChecked(
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 2)));
+  }
 }
 
 }  // namespace containers

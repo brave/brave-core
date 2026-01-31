@@ -14,10 +14,10 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 class PrefService;
 
@@ -29,7 +29,6 @@ namespace brave_ads {
 
 class Ads;
 class AdsClient;
-struct NewTabPageAdInfo;
 class NewTabPageAdPrefetcher;
 class AdsServiceImplIOS : public AdsService {
  public:
@@ -82,7 +81,7 @@ class AdsServiceImplIOS : public AdsService {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
+  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
@@ -90,7 +89,8 @@ class AdsServiceImplIOS : public AdsService {
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
+  void MaybeServeNewTabPageAd(
+      MaybeServeMojomNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

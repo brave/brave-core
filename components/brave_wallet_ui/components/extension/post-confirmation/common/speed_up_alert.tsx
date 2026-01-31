@@ -4,7 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import { useDispatch } from 'react-redux'
+
+// Redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // Actions
 import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
@@ -36,7 +38,7 @@ export const SpeedUpAlert = (props: Props) => {
 
   // Hooks
   const [speedupTx] = useSpeedupTransactionMutation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // Methods
   const onClickSpeedUpTransaction = () => {

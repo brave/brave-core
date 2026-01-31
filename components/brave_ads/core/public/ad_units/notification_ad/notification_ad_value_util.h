@@ -8,6 +8,9 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 

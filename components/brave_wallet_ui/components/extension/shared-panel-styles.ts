@@ -257,6 +257,21 @@ export const ConfirmationButtonLink = styled(WalletButton)`
   color: ${leo.color.text.interactive};
 `
 
+export const ConfirmationIconButton = styled(WalletButton)`
+  --leo-icon-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background: none;
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  color: ${leo.color.text.primary};
+`
+
 export const ScrollableColumn = styled(Column)`
   overflow-x: hidden;
   overflow-y: auto;

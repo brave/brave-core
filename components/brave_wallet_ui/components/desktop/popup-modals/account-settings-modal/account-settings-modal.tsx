@@ -49,6 +49,7 @@ import {
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import { usePasswordStrength } from '../../../../common/hooks/use-password-strength'
 import {
   useGetQrCodeImageQuery,
   useGetZCashAccountInfoQuery,
@@ -254,12 +255,23 @@ export const AccountSettingsModal = () => {
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [isCorrectPassword, setIsCorrectPassword] =
     React.useState<boolean>(true)
+  const [showEncryptionPassword, setShowEncryptionPassword] =
+    React.useState<boolean>(false)
 
   // mutations
   const [updateAccountName] = useUpdateAccountNameMutation()
 
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
+  const {
+    hasConfirmedPasswordError,
+    hasPasswordError,
+    password: encryptionPassword,
+    confirmedPassword: encryptionPasswordConfirm,
+    onPasswordChanged: handleEncryptionPasswordChanged,
+    setConfirmedPassword: handleEncryptionPasswordConfirmChanged,
+    isValid: isEncryptionPasswordValid,
+  } = usePasswordStrength()
 
   // Helper function to download JSON file
   const downloadJsonFile = React.useCallback(
@@ -277,7 +289,40 @@ export const AccountSettingsModal = () => {
     [],
   )
 
-  // Handler for downloading Polkadot account export
+  // Handler for confirming encryption password and showing key
+  const onConfirmEncryptionPassword = React.useCallback(async () => {
+    if (!isEncryptionPasswordValid || !selectedAccount) {
+      return
+    }
+
+    // Get the encrypted key with the provided password
+    const { privateKey: encryptedKey } =
+      await getAPIProxy().keyringService.encodePolkadotKeyForExport(
+        selectedAccount.accountId,
+        password,
+        encryptionPassword,
+      )
+
+    if (encryptedKey && isMounted) {
+      // Show the key
+      setPrivateKey(encryptedKey)
+      // Reset encryption password state
+      setShowEncryptionPassword(false)
+      handleEncryptionPasswordChanged('')
+      handleEncryptionPasswordConfirmChanged('')
+      setPassword('')
+    }
+  }, [
+    isEncryptionPasswordValid,
+    selectedAccount,
+    password,
+    encryptionPassword,
+    isMounted,
+    handleEncryptionPasswordChanged,
+    handleEncryptionPasswordConfirmChanged,
+  ])
+
+  // Handler for downloading the already-encrypted key
   const onDownloadPolkadotKey = React.useCallback(() => {
     if (!privateKey || !selectedAccount) {
       return
@@ -287,6 +332,15 @@ export const AccountSettingsModal = () => {
     const filename = `${sanitizedAccountName}_export.json`
     downloadJsonFile(privateKey, filename)
   }, [privateKey, selectedAccount, downloadJsonFile])
+
+  const onCancelEncryptionPassword = React.useCallback(() => {
+    setShowEncryptionPassword(false)
+    handleEncryptionPasswordChanged('')
+    handleEncryptionPasswordConfirmChanged('')
+    // Also clear the wallet password state
+    setPassword('')
+    setIsCorrectPassword(true)
+  }, [handleEncryptionPasswordChanged, handleEncryptionPasswordConfirmChanged])
 
   // methods
   const onViewPrivateKey = React.useCallback(
@@ -302,10 +356,6 @@ export const AccountSettingsModal = () => {
     },
     [password, isMounted],
   )
-
-  const onDoneViewingPrivateKey = React.useCallback(() => {
-    setPrivateKey('')
-  }, [])
 
   const handleAccountNameChanged = (detail: InputEventDetail) => {
     setFullLengthAccountName(detail.value)
@@ -347,6 +397,18 @@ export const AccountSettingsModal = () => {
       return // need valid password to continue
     }
 
+    // For Polkadot accounts, ask for encryption password first
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.DOT) {
+      // Clear any existing private key first
+      setPrivateKey('')
+      setIsCorrectPassword(true)
+      // Show encryption password input
+      setShowEncryptionPassword(true)
+      handleEncryptionPasswordChanged('')
+      handleEncryptionPasswordConfirmChanged('')
+      return
+    }
+
     // clear entered password & error
     setPassword('')
     setIsCorrectPassword(true)
@@ -354,10 +416,12 @@ export const AccountSettingsModal = () => {
     onViewPrivateKey(selectedAccount.accountId)
   }
 
-  const onHidePrivateKey = () => {
-    onDoneViewingPrivateKey()
+  const onHidePrivateKey = React.useCallback(() => {
     setPrivateKey('')
-  }
+    setShowEncryptionPassword(false)
+    handleEncryptionPasswordChanged('')
+    handleEncryptionPasswordConfirmChanged('')
+  }, [handleEncryptionPasswordChanged, handleEncryptionPasswordConfirmChanged])
 
   const onClickClose = () => {
     onHidePrivateKey()
@@ -375,6 +439,20 @@ export const AccountSettingsModal = () => {
     setIsCorrectPassword(true) // clear error
     setPassword(value)
   }
+
+  const onEncryptionPasswordChange = React.useCallback(
+    (value: string) => {
+      handleEncryptionPasswordChanged(value)
+    },
+    [handleEncryptionPasswordChanged],
+  )
+
+  const onEncryptionPasswordConfirmChange = React.useCallback(
+    (value: string) => {
+      handleEncryptionPasswordConfirmChanged(value)
+    },
+    [handleEncryptionPasswordConfirmChanged],
+  )
 
   const handlePasswordKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>,
@@ -448,7 +526,58 @@ export const AccountSettingsModal = () => {
             <Alert type='warning'>
               {getLocale('braveWalletAccountSettingsDisclaimer')}
             </Alert>
-            {privateKey ? (
+            {selectedAccount
+            && selectedAccount.accountId.coin === BraveWallet.CoinType.DOT
+            && showEncryptionPassword
+            && !privateKey ? (
+              // Show encryption password input for Polkadot
+              <>
+                <Alert type='info'>
+                  {getLocale(
+                    'braveWalletAccountSettingsEnterPasswordToEncrypt',
+                  )}
+                </Alert>
+                <PasswordInput
+                  placeholder={getLocale(
+                    'braveWalletAccountSettingsEncryptionPassword',
+                  )}
+                  onChange={onEncryptionPasswordChange}
+                  hasError={hasPasswordError}
+                  error={
+                    hasPasswordError
+                      ? getLocale(
+                          'braveWalletAccountSettingsEncryptionPasswordTooShort',
+                        )
+                      : ''
+                  }
+                  autoFocus={true}
+                  value={encryptionPassword}
+                />
+                <VerticalSpacer space={16} />
+                <PasswordInput
+                  placeholder={getLocale(
+                    'braveWalletAccountSettingsConfirmEncryptionPassword',
+                  )}
+                  onChange={onEncryptionPasswordConfirmChange}
+                  hasError={hasConfirmedPasswordError}
+                  error={
+                    hasConfirmedPasswordError
+                      ? getLocale(
+                          'braveWalletAccountSettingsPasswordsDoNotMatch',
+                        )
+                      : ''
+                  }
+                  autoFocus={false}
+                  value={encryptionPasswordConfirm}
+                  onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (event.key === 'Enter' && isEncryptionPasswordValid) {
+                      onConfirmEncryptionPassword()
+                    }
+                  }}
+                />
+              </>
+            ) : privateKey ? (
+              // Show the key
               <>
                 {selectedAccount?.accountId.coin
                   === BraveWallet.CoinType.FIL && (
@@ -462,6 +591,7 @@ export const AccountSettingsModal = () => {
                 </CopyTooltip>
               </>
             ) : (
+              // Show wallet password input
               <PasswordInput
                 placeholder={getLocale(
                   'braveWalletEnterYourBraveWalletPassword',
@@ -475,7 +605,28 @@ export const AccountSettingsModal = () => {
               />
             )}
             <ButtonWrapper>
-              {privateKey ? (
+              {selectedAccount
+              && selectedAccount.accountId.coin === BraveWallet.CoinType.DOT
+              && showEncryptionPassword
+              && !privateKey ? (
+                // Show Cancel and Confirm buttons for encryption password
+                <ButtonRow>
+                  <LeoSquaredButton
+                    onClick={onCancelEncryptionPassword}
+                    kind='outline'
+                  >
+                    {getLocale('braveWalletButtonCancel')}
+                  </LeoSquaredButton>
+                  <LeoSquaredButton
+                    onClick={onConfirmEncryptionPassword}
+                    kind='filled'
+                    isDisabled={!isEncryptionPasswordValid}
+                  >
+                    {getLocale('braveWalletAccountSettingsShowKey')}
+                  </LeoSquaredButton>
+                </ButtonRow>
+              ) : privateKey ? (
+                // Show Download and Hide buttons when key is visible
                 <ButtonRow>
                   {selectedAccount?.accountId.coin
                     === BraveWallet.CoinType.DOT && (
@@ -494,6 +645,7 @@ export const AccountSettingsModal = () => {
                   </LeoSquaredButton>
                 </ButtonRow>
               ) : (
+                // Show "Show Key" button when no key is visible
                 <LeoSquaredButton
                   onClick={onShowPrivateKey}
                   kind='filled'

@@ -24,16 +24,13 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void,
               GenerateQuestionSuggestions,
-              (PageContents page_contents,
-               const std::string& selected_language,
-               SuggestedQuestionsCallback callback),
+              (PageContents page_contents, SuggestedQuestionsCallback callback),
               (override));
 
   MOCK_METHOD(void,
               GenerateAssistantResponse,
               (PageContentsMap && page_contents,
                const ConversationHistory& conversation_history,
-               const std::string& selected_language,
                bool is_temporary_chat,
                const std::vector<base::WeakPtr<Tool>>& tools,
                std::optional<std::string_view> preferred_tool_name,
@@ -46,7 +43,6 @@ class MockEngineConsumer : public EngineConsumer {
               GenerateRewriteSuggestion,
               (const std::string& text,
                mojom::ActionType action_type,
-               const std::string& selected_language,
                GenerationDataCallback received_callback,
                GenerationCompletedCallback completed_callback),
               (override));
@@ -55,7 +51,6 @@ class MockEngineConsumer : public EngineConsumer {
               GenerateConversationTitle,
               (const PageContentsMap& page_contents,
                const ConversationHistory& conversation_history,
-               const std::string& selected_language,
                GenerationCompletedCallback completed_callback),
               (override));
 

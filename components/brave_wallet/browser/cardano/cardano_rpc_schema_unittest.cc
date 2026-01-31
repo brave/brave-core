@@ -210,4 +210,22 @@ TEST(CardanoRpcSchema, Transaction) {
   EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
 }
 
+TEST(CardanoRpcSchema, AssetInfo) {
+  EXPECT_FALSE(AssetInfo::FromBlockfrostApiValue(std::nullopt));
+
+  blockfrost_api::Asset valid;
+  valid.asset = base::HexEncodeLower(GetMockTokenId("foo"));
+  valid.metadata.decimals = 6;
+  valid.metadata.name = "Foo token";
+  valid.metadata.ticker = "foo";
+
+  AssetInfo expected_asset;
+  expected_asset.asset = base::HexEncodeLower(GetMockTokenId("foo"));
+  expected_asset.decimals = 6;
+  expected_asset.name = "Foo token";
+  expected_asset.ticker = "foo";
+
+  EXPECT_EQ(*AssetInfo::FromBlockfrostApiValue(valid.Clone()), expected_asset);
+}
+
 }  // namespace brave_wallet::cardano_rpc

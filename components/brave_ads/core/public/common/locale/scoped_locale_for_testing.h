@@ -8,6 +8,10 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
 namespace brave_ads::test {
 
 // Set the current language code for testing, restoring the original language

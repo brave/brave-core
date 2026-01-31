@@ -8,14 +8,18 @@
 #include "base/check_deref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/views/page_info/brave_page_info_bubble_view.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/user_education/browser_user_education_interface.h"
 #include "chrome/browser/ui/views/location_bar/location_icon_view.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_specification.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
+#include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/feature_engagement/public/feature_constants.h"
+#include "components/page_info/page_info.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/view_utils.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -30,36 +34,37 @@ brave_shields::BraveShieldsTabHelper* GetShieldsHelper(
 }  // namespace
 
 BraveShieldsPageInfoController::BraveShieldsPageInfoController(
-    TabStripModel* tab_strip_model,
     LocationIconView* location_icon_view)
-    : tab_strip_model_(CHECK_DEREF(tab_strip_model)),
-      location_icon_view_(CHECK_DEREF(location_icon_view)) {
-  tab_strip_model_->AddObserver(this);
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (auto* shields_helper = GetShieldsHelper(web_contents)) {
-    shields_helper->AddObserver(this);
-  }
-}
+    : location_icon_view_(CHECK_DEREF(location_icon_view)) {}
 
 BraveShieldsPageInfoController::~BraveShieldsPageInfoController() {
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (auto* shields_helper = GetShieldsHelper(web_contents)) {
+  if (auto* shields_helper = GetShieldsHelper(web_contents())) {
     shields_helper->RemoveObserver(this);
   }
 }
 
-void BraveShieldsPageInfoController::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  if (selection.active_tab_changed()) {
-    if (auto* shields_helper = GetShieldsHelper(selection.old_contents)) {
-      shields_helper->RemoveObserver(this);
-    }
-    if (auto* shields_helper = GetShieldsHelper(selection.new_contents)) {
-      shields_helper->AddObserver(this);
-    }
+void BraveShieldsPageInfoController::UpdateWebContents(
+    content::WebContents* contents) {
+  if (!contents || contents == web_contents()) {
+    return;
   }
+
+  // Stop observing the shields tab helper for the old WebContents.
+  if (auto* shields_helper = GetShieldsHelper(web_contents())) {
+    shields_helper->RemoveObserver(this);
+  }
+
+  // Start observing the new WebContents and its shields helper.
+  Observe(contents);
+  if (auto* shields_helper = GetShieldsHelper(contents)) {
+    shields_helper->AddObserver(this);
+  }
+
+  MaybeShowShieldsIPH();
+}
+
+void BraveShieldsPageInfoController::PrimaryPageChanged(content::Page& page) {
+  MaybeShowShieldsIPH();
 }
 
 void BraveShieldsPageInfoController::OnResourcesChanged() {}
@@ -76,14 +81,40 @@ void BraveShieldsPageInfoController::OnRepeatedReloadsDetected() {
           weak_factory_.GetWeakPtr()));
 }
 
-void BraveShieldsPageInfoController::ShowBubbleForRepeatedReloads() {
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (!web_contents) {
+void BraveShieldsPageInfoController::MaybeShowShieldsIPH() {
+  if (!web_contents()) {
     return;
   }
 
   content::NavigationEntry* entry =
-      web_contents->GetController().GetVisibleEntry();
+      web_contents()->GetController().GetVisibleEntry();
+  if (entry->IsInitialEntry()) {
+    return;
+  }
+
+  // Only attempt to show the IPH if the "normal" PageInfo bubble will be
+  // displayed for this URL.
+  GURL url = entry->GetVirtualURL();
+  if (PageInfo::IsFileOrInternalPage(url) ||
+      url.SchemeIs(content_settings::kExtensionScheme)) {
+    return;
+  }
+
+  if (auto* user_education =
+          BrowserUserEducationInterface::MaybeGetForWebContentsInTab(
+              web_contents())) {
+    user_education->MaybeShowFeaturePromo(
+        feature_engagement::kIPHBraveShieldsInPageInfoFeature);
+  }
+}
+
+void BraveShieldsPageInfoController::ShowBubbleForRepeatedReloads() {
+  if (!web_contents()) {
+    return;
+  }
+
+  content::NavigationEntry* entry =
+      web_contents()->GetController().GetVisibleEntry();
   if (!entry || entry->IsInitialEntry()) {
     return;
   }
@@ -91,7 +122,7 @@ void BraveShieldsPageInfoController::ShowBubbleForRepeatedReloads() {
   std::unique_ptr<PageInfoBubbleSpecification> specification =
       PageInfoBubbleSpecification::Builder(
           &location_icon_view_.get(),
-          location_icon_view_->GetWidget()->GetNativeWindow(), web_contents,
+          location_icon_view_->GetWidget()->GetNativeWindow(), web_contents(),
           entry->GetVirtualURL())
           .Build();
 

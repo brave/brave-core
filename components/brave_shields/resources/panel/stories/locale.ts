@@ -22,7 +22,7 @@ provideStrings({
   braveShieldsIsThisSiteWorkingCorrectlyNowLooksGood: 'Looks good',
   braveShieldsIsThisSiteWorkingCorrectlyNowReportSite: 'Report site',
   braveShieldsAdBlockOnlyModeEnabledTitle: 'Adblock-Only mode enabled',
-  braveShieldsAdBlockOnlyModeEnabledDesc: 'You\'re currently using Adblock-Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.',
+  braveShieldsAdBlockOnlyModeEnabledDesc: 'You\'re currently using Adblock-Only mode. This mode only offers ad blocking protection (if Shields are UP). If you wish to return to full Shields mode, disable this mode from settings.',
   braveShieldsAdsBlockedNote: 'Ads blocked $1Learn more/$1',
   braveShieldsBlockedNote: 'Trackers, ads, and more blocked $1Learn more$1',
   braveShieldsNOTBlockedNote: 'Not protected by Brave Shields $1Learn more$1',

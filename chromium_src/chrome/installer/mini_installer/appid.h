@@ -10,7 +10,6 @@
 namespace google_update {
 
 extern const wchar_t kAppGuid[];
-extern const wchar_t kMultiInstallAppGuid[];
 
 #if defined(OFFICIAL_BUILD)
 extern const wchar_t kBetaAppGuid[];

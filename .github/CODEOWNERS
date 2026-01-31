@@ -115,10 +115,10 @@ browser/ui/views/infobars/brave_wayback_machine_* @simonhong
 components/brave_wayback_machine @simonhong
 
 # Licensing of third-party components
-common/licenses/ @fmarier
-script/brave_license_helper.py @fmarier
-script/check_npm_licenses.py @fmarier
-script/generate_licenses.py @fmarier
+common/licenses/ @brave/license-reviewer
+script/brave_license_helper.py @brave/license-reviewer
+script/check_npm_licenses.py @brave/license-reviewer
+script/generate_licenses.py @brave/license-reviewer
 
 # Crypto Wallets
 browser/brave_wallet/ @brave/crypto-wallets-core
@@ -194,7 +194,7 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 
 # GitHub configuration
 /.github/ @brave/devops-team
-/.github/CODEOWNERS @bridiver @bsclifton
+/.github/CODEOWNERS @brave/codeowners
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
 
 # Semgrep configuration
@@ -220,7 +220,7 @@ browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
 
 # Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
-third_party/rust @bridiver @cdesouza-chromium
+third_party/rust @brave/3p-rust
 
 # include_rules
 DEPS @brave/deps-reviewers
@@ -265,7 +265,7 @@ build/dotfile_settings.gni @brave/brave-core-owners
 docs/gni_sources.md @bridiver
 docs/keyed_services.md @bridiver
 
-build/commands/lib/branding.js @bridiver
+build/commands/lib/branding.js @brave/branding-code-reviewer
 
 # Deprecated - these should go in the appropriate component/feature directory.
 # brave/common is also ok for constants/prefs that don't neatly fit anywhere

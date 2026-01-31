@@ -19,15 +19,16 @@ CI/run-network-audit:
 CI/run-perf-smoke-tests:
   - changed-files:
     - any-glob-to-any-file:
-      - brave/patches/third_party/catapult/*
-      - brave/patches/tools-perf-*
-      - brave/tools/perf/*
+      - patches/third_party/catapult/*
+      - patches/tools-perf-*
+      - tools/perf/*
 
 CI/run-upstream-tests:
   - changed-files:
     - any-glob-to-any-file:
       - browser/about_flags.cc
       - chromium_src/**/*features.cc
+      - test/filters/*.filter
 
 CI/storybook-url:
   - changed-files:

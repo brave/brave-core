@@ -5,8 +5,10 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
 import useMediaQuery from '$web-common/useMediaQuery'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // images
 import CompleteGraphicLight from './images/complete_light.svg'
@@ -38,7 +40,7 @@ export const OnboardingSuccess = () => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // mutations
   const [report] = useReportOnboardingActionMutation()

@@ -4,9 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { EntityId } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
+
 import Checkbox from '@brave/leo/react/checkbox'
 import ProgressRing from '@brave/leo/react/progressRing'
 import * as leo from '@brave/leo/tokens/css/variables'
@@ -145,7 +148,7 @@ export const OnboardingNetworkSelection = () => {
   const onboardingType = getOnboardingTypeFromPath(path)
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // state
   const [searchText, setSearchText] = React.useState('')

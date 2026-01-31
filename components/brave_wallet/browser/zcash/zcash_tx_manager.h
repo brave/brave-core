@@ -58,6 +58,7 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
+                                mojom::SwapInfoPtr swap_info,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
@@ -75,6 +76,7 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   void ContinueAddUnapprovedTransaction(
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
+      mojom::SwapInfoPtr swap_info,
       AddUnapprovedTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> zcash_transaction);
 

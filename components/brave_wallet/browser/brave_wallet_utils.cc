@@ -46,6 +46,8 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr size_t kCardanoScriptHashSize = 28u;
+
 bool IsDisabledByPolicy(PrefService* prefs) {
 #if BUILDFLAG(IS_ANDROID)
   return false;
@@ -96,6 +98,14 @@ std::optional<std::string> GetUserAssetAddress(const std::string& address,
       return std::nullopt;
     }
     return address;
+  }
+
+  if (coin == mojom::CoinType::ADA) {
+    std::vector<uint8_t> bytes;
+    if (base::HexStringToBytes(address, &bytes) &&
+        bytes.size() >= kCardanoScriptHashSize + 1) {
+      return address;
+    }
   }
 
   return std::nullopt;
@@ -423,6 +433,8 @@ std::string EncodeSwapProvider(mojom::SwapProvider provider) {
       return "SQUID";
     case mojom::SwapProvider::kNearIntents:
       return "NEAR_INTENTS";
+    case mojom::SwapProvider::kCowSwap:
+      return "COW_SWAP";
     default:
       return "AUTO";
   }
@@ -451,6 +463,10 @@ mojom::SwapProvider DecodeSwapProvider(const std::string& provider_str) {
 
   if (provider_str == "NEAR_INTENTS") {
     return mojom::SwapProvider::kNearIntents;
+  }
+
+  if (provider_str == "COW_SWAP") {
+    return mojom::SwapProvider::kCowSwap;
   }
 
   return mojom::SwapProvider::kAuto;
@@ -484,6 +500,7 @@ base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info) {
 
   dict.Set("recipient", swap_info->recipient);
   dict.Set("provider", EncodeSwapProvider(swap_info->provider));
+  dict.Set("route_id", swap_info->route_id);
 
   return dict;
 }
@@ -570,6 +587,12 @@ mojom::SwapInfoPtr ValueToSwapInfo(const base::Value::Dict& value) {
   }
 
   swap_info->provider = DecodeSwapProvider(*provider_str);
+
+  const std::string* route_id = value.FindString("route_id");
+  if (!route_id) {
+    return nullptr;
+  }
+  swap_info->route_id = *route_id;
 
   return swap_info;
 }

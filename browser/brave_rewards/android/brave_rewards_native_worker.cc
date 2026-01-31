@@ -16,12 +16,10 @@
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
@@ -34,6 +32,12 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 #define DEFAULT_ADS_PER_HOUR 2
 
@@ -137,7 +141,7 @@ bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& country_code) {
+    const base::android::JavaRef<jstring>& country_code) {
   if (brave_rewards_service_) {
     brave_rewards_service_->CreateRewardsWallet(
         base::android::ConvertJavaStringToUTF8(env, country_code),
@@ -241,7 +245,7 @@ void BraveRewardsNativeWorker::OnBalance(
 void BraveRewardsNativeWorker::GetPublisherInfo(
     JNIEnv* env,
     int tabId,
-    const base::android::JavaParamRef<jstring>& host) {
+    const base::android::JavaRef<jstring>& host) {
   if (brave_rewards_service_) {
     brave_rewards_service_->NotifyPublisherPageVisit(
         tabId, base::android::ConvertJavaStringToUTF8(env, host), "", "");
@@ -308,8 +312,8 @@ BraveRewardsNativeWorker::GetPublisherFavIconURL(JNIEnv* env, uint64_t tabId) {
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetCaptchaSolutionURL(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& paymentId,
-    const base::android::JavaParamRef<jstring>& captchaId) {
+    const base::android::JavaRef<jstring>& paymentId,
+    const base::android::JavaRef<jstring>& captchaId) {
   const std::string path =
       absl::StrFormat("/v3/captcha/solution/%s/%s",
                       base::android::ConvertJavaStringToUTF8(env, paymentId),
@@ -332,7 +336,7 @@ BraveRewardsNativeWorker::GetAttestationURL(JNIEnv* env) {
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetAttestationURLWithPaymentId(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& paymentId) {
+    const base::android::JavaRef<jstring>& paymentId) {
   const std::string path =
       base::StrCat({"/v1/attestations/android/",
                     base::android::ConvertJavaStringToUTF8(env, paymentId)});
@@ -436,6 +440,7 @@ BraveRewardsNativeWorker::GetExternalWalletType(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (!ads_service) {
@@ -444,6 +449,7 @@ void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
   ads_service->GetStatementOfAccounts(
       base::BindOnce(&BraveRewardsNativeWorker::OnGetAdsAccountStatement,
                      weak_factory_.GetWeakPtr()));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
@@ -536,7 +542,7 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
 
 void BraveRewardsNativeWorker::Donate(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher_key,
+    const base::android::JavaRef<jstring>& publisher_key,
     double amount,
     bool recurring) {
   if (brave_rewards_service_) {
@@ -560,8 +566,9 @@ void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {
   }
 }
 
-void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& notification_id) {
+void BraveRewardsNativeWorker::DeleteNotification(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& notification_id) {
   if (rewards_notification_service_observation_.IsObserving()) {
     rewards_notification_service_observation_.GetSource()->DeleteNotification(
         base::android::ConvertJavaStringToUTF8(env, notification_id));
@@ -590,7 +597,7 @@ void BraveRewardsNativeWorker::OnGetRecurringTips(
 
 bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher) {
+    const base::android::JavaRef<jstring>& publisher) {
   return map_recurrent_publishers_.find(
     base::android::ConvertJavaStringToUTF8(env, publisher)) !=
       map_recurrent_publishers_.end();
@@ -630,7 +637,7 @@ void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
 
 double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher) {
+    const base::android::JavaRef<jstring>& publisher) {
   double amount(0.0);
   auto it = map_recurrent_publishers_.find(
     base::android::ConvertJavaStringToUTF8(env, publisher));
@@ -641,8 +648,9 @@ double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
   return  amount;
 }
 
-void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher) {
+void BraveRewardsNativeWorker::RemoveRecurring(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& publisher) {
   if (brave_rewards_service_) {
     brave_rewards_service_->RemoveRecurringTip(
         base::android::ConvertJavaStringToUTF8(env, publisher));
@@ -717,20 +725,26 @@ void BraveRewardsNativeWorker::OnNotificationDeleted(
 }
 
 int BraveRewardsNativeWorker::GetAdsPerHour(JNIEnv* env) {
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
-  if (!ads_service_) {
+  if (!ads_service) {
     return DEFAULT_ADS_PER_HOUR;
   }
-  return ads_service_->GetMaximumNotificationAdsPerHour();
+  return ads_service->GetMaximumNotificationAdsPerHour();
+#else
+  return DEFAULT_ADS_PER_HOUR;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   ProfileManager::GetActiveUserProfile()
       ->GetOriginalProfile()
       ->GetPrefs()
       ->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
                  static_cast<int64_t>(value));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
@@ -796,7 +810,7 @@ void BraveRewardsNativeWorker::OnGetPublishersVisitedCount(int count) {
 
 void BraveRewardsNativeWorker::GetPublisherBanner(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher_key) {
+    const base::android::JavaRef<jstring>& publisher_key) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetPublisherBanner(
         base::android::ConvertJavaStringToUTF8(env, publisher_key),
@@ -895,7 +909,7 @@ void BraveRewardsNativeWorker::OnExternalWalletReconnected() {
 
 void BraveRewardsNativeWorker::RefreshPublisher(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher_key) {
+    const base::android::JavaRef<jstring>& publisher_key) {
   if (!brave_rewards_service_) {
     return;
   }
@@ -924,9 +938,11 @@ void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
 
 static void JNI_BraveRewardsNativeWorker_Init(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    const base::android::JavaRef<jobject>& jcaller) {
   new BraveRewardsNativeWorker(env, jcaller);
 }
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveRewardsNativeWorker)

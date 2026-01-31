@@ -18,6 +18,7 @@ class TabGridViewModel {
   private(set) var tabs: [any TabState] = []
   private(set) var isPrivateTabsLocked: Bool = false
   var onModeSwitchComplete: (() -> Void)?
+  private(set) var isSceneActive: Bool = true
 
   var isPrivateBrowsing: Bool {
     get {
@@ -344,6 +345,33 @@ class TabGridViewModel {
         }
       }
       .store(in: &cancellables)
+
+    let willDeactivate = NotificationCenter.default.addObserver(
+      forName: UIScene.willDeactivateNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      MainActor.assumeIsolated {
+        self.isSceneActive = false
+      }
+    }
+
+    let didActivate = NotificationCenter.default.addObserver(
+      forName: UIScene.didActivateNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      MainActor.assumeIsolated {
+        self.isSceneActive = true
+      }
+    }
+
+    cancellables.formUnion([
+      .init { _ = willDeactivate },
+      .init { _ = didActivate },
+    ])
   }
 
   private class TabManagerObserver: NSObject, TabManagerDelegate {

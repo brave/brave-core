@@ -119,6 +119,14 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   }
   meta->set_chain_id(*chain_id_string);
 
+  const base::Value::Dict* swap_info_value = value.FindDict("swap_info");
+  if (swap_info_value) {
+    auto swap_info = ValueToSwapInfo(*swap_info_value);
+    if (swap_info) {
+      meta->set_swap_info(std::move(swap_info));
+    }
+  }
+
   return true;
 }
 

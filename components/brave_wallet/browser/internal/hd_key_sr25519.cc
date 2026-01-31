@@ -11,6 +11,7 @@
 #include "base/containers/span_rust.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/internal/sr25519.rs.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
@@ -33,10 +34,25 @@ HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
 
 HDKeySr25519::~HDKeySr25519() = default;
 
+// static
 HDKeySr25519 HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t, kSr25519SeedSize> seed) {
   auto bytes = base::SpanToRustSlice(seed);
   auto mk = generate_sr25519_keypair_from_seed(bytes);
+  return HDKeySr25519(std::move(mk));
+}
+
+// static
+std::optional<HDKeySr25519> HDKeySr25519::CreateFromPkcs8(
+    base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key) {
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8_array;
+  base::span(pkcs8_array).copy_from_nonoverlapping(pkcs8_key);
+  auto result = create_sr25519_keypair_from_pkcs8(pkcs8_array);
+  crypto::internal::SecureZeroBuffer(pkcs8_array);
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+  auto mk = result->unwrap();
   return HDKeySr25519(std::move(mk));
 }
 

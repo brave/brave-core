@@ -35,6 +35,8 @@ class GetCardanoUtxosTask {
                       std::vector<CardanoAddress> addresses);
   ~GetCardanoUtxosTask();
 
+  const std::string& chain_id() const { return chain_id_; }
+
   void Start(Callback callback);
 
  private:

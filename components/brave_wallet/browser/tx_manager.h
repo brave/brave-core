@@ -48,6 +48,7 @@ class TxManager : public TxStateManager::Observer,
       mojom::TxDataUnionPtr tx_data_union,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
+      mojom::SwapInfoPtr swap_info,
       AddUnapprovedTransactionCallback) = 0;
   virtual void ApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback) = 0;

@@ -22,9 +22,13 @@
 #define JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents        \
   JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl \
       [[maybe_unused]]
-
+// Suppress DEFINE_JNI in included file - we call it ourselves at the end
+#pragma push_macro("DEFINE_JNI")
+#undef DEFINE_JNI
+#define DEFINE_JNI(...)
 #include <components/external_intents/android/intercept_navigation_delegate_impl.cc>
-
+#undef DEFINE_JNI
+#pragma pop_macro("DEFINE_JNI")
 #undef JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents
 
 namespace external_intents {
@@ -78,8 +82,8 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
 
 static void JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jdelegate,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jdelegate,
+    const base::android::JavaRef<jobject>& jweb_contents) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
@@ -91,3 +95,5 @@ static void JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
 }
 
 }  // namespace external_intents
+
+DEFINE_JNI(InterceptNavigationDelegateImpl)

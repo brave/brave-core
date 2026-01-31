@@ -1,8 +1,8 @@
 diff --git a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
-index 4b9bdb8e9e9ca116703461fa0917673acec144cf..8eceea5dbbe68d59241055d2393b7c93333d0098 100644
+index c464f0888f4e1e03be1837fedccd75a250f7ddbb..838202125a4867076be7db7d054b7e09e090749f 100644
 --- a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
 +++ b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
-@@ -2003,6 +2003,7 @@ void ExtractUnderlines(NSAttributedString* string,
+@@ -2084,6 +2084,7 @@ static NSWindow* __weak _deferredResignKeyWindow;
  }
  
  - (id)accessibilityParent {

@@ -17,10 +17,12 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
-using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
+using GetPublishersCallback = base::OnceCallback<void(
+    const absl::flat_hash_map<std::string, mojom::PublisherPtr>&)>;
 using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
 class SubscriptionsSnapshot;

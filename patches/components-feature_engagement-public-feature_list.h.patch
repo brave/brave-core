@@ -1,0 +1,19 @@
+diff --git a/components/feature_engagement/public/feature_list.h b/components/feature_engagement/public/feature_list.h
+index 6f0fb2131cd0bf5df13ed8a3bc8a41ac099c5ed4..059aa779dd2cdcc966bc3a1881c9906a75a3cdc4 100644
+--- a/components/feature_engagement/public/feature_list.h
++++ b/components/feature_engagement/public/feature_list.h
+@@ -558,12 +558,14 @@ DEFINE_VARIATION_PARAM(kIPHiOSLensPromoDesktopFeature,
+ DEFINE_VARIATION_PARAM(kIPHiOSEnhancedBrowsingDesktopFeature,
+                        "IPH_iOSEnhancedBrowsingDesktop");
+ #endif  // !BUILDFLAG(IS_ANDROID)
++BRAVE_FEATURE_ENGAGEMENT_VARIATION_PARAMS
+ 
+ // Defines the array of which features should be listed in the chrome://flags
+ // UI to be able to select them alone for demo-mode. The features listed here
+ // are possible to enable on their own in demo mode.
+ inline constexpr flags_ui::FeatureEntry::FeatureVariation
+     kIPHDemoModeChoiceVariations[] = {
++        BRAVE_FEATURE_ENGAGEMENT_VARIATION_ENTRIES
+ #if BUILDFLAG(IS_ANDROID)
+         VARIATION_ENTRY(kIPHAccountSettingsHistorySync),
+         VARIATION_ENTRY(

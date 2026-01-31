@@ -22,6 +22,7 @@ struct EpochParameters;
 struct Block;
 struct UnspentOutput;
 struct Transaction;
+struct Asset;
 }  // namespace blockfrost_api
 
 using TokenId = std::vector<uint8_t>;  // 28-bytes policy_id and non-empty name.
@@ -83,6 +84,26 @@ struct Transaction {
 
   static std::optional<Transaction> FromBlockfrostApiValue(
       std::optional<blockfrost_api::Transaction> api_epoch_parameters);
+};
+
+// Adapter of Blockfrost's Asset struct for wallet's use.
+struct AssetInfo {
+  AssetInfo();
+  AssetInfo(const AssetInfo&);
+  AssetInfo(AssetInfo&&);
+  AssetInfo& operator=(const AssetInfo&);
+  AssetInfo& operator=(AssetInfo&&);
+  ~AssetInfo();
+
+  bool operator==(const AssetInfo& other) const = default;
+
+  std::string asset;
+  std::string name;
+  std::string ticker;
+  uint32_t decimals = 0;
+
+  static std::optional<AssetInfo> FromBlockfrostApiValue(
+      std::optional<blockfrost_api::Asset> api_epoch_parameters);
 };
 
 }  // namespace brave_wallet::cardano_rpc

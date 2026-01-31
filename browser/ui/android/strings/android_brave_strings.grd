@@ -332,33 +332,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
         Support
       </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT" translateable="false" desc="Title for the Brave Account section in settings">
-        Brave Account
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_EMAIL_ADDRESS" translateable="false" desc="Title shown when user is logged in">
-        Email address
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_SIGN_OUT" translateable="false" desc="Label for the button that signs the user out of their account when clicked">
-        Sign out
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_ALMOST_THERE" translateable="false" desc="Title shown when user has registered but is awaiting email verification">
-        Almost there!
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_ALMOST_THERE_DETAIL" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account">
-        A confirmation email is on the way. Click the button in that email to activate your account.
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL" translateable="false" desc="Label for the button that resends the confirmation email when clicked">
-        Resend confirmation email
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_DETAIL" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it">
-        Don't see the email? Check your spam folder or click on the button to resend the confirmation email.
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_CANCEL_REGISTRATION" translateable="false" desc="Label for the button that cancels the pending registration when clicked">
-        Cancel registration
-      </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT_GET_STARTED" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked">
-        Get started
-      </message>
       <message name="IDS_PREFS_SECTION_FEATURES" desc="Title for Brave-specific features section">
         Features
       </message>
@@ -688,20 +661,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_WEBSITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
         Allowed to use third-party cookies for legacy Google Sign-In
       </message>
-      <!-- LOCALHOST SIGN IN SITE SETTING -->
-      <message name="IDS_LOCALHOST_TITLE" desc="Label for localhost site settings.">
-        Localhost access
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCALHOST_ASK" desc="Label for localhost site settings.">
-        Sites can request access to localhost resources
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCALHOST_BLOCK" desc="Label for localhost site settings.">
-        Don't allow access to localhost resources
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_LOCALHOST_ALLOW_EXCEPTIONS" desc="Label for localhost site settings.">
-        Allowed to access localhost resources
-      </message>
-
       <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
         Brave shields global defaults
       </message>
@@ -1459,6 +1418,27 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_BLOCK_ELEMENT_TEXT" desc="Shields block element button label.">
         Block element
       </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_TEXT" desc="Shields menu shred site's data item text.">
+        Shred site's data
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_SUB_TEXT" desc="Shields menu shred site's data item sub text.">
+        Auto shred: <ph name="AUTO_SHRED_MODE_TEXT">%1$s</ph>
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SITES_DATA_NOW_TEXT" desc="Shields menu shred site's data now item text.">
+        Shred site data now
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITES_DATA_TEXT" desc="Shields menu auto shred site's data item text.">
+        Auto shred
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_TEXT" desc="Shields menu auto shred never mode item text.">
+        Never
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITE_TAB_CLOSED_MODE_TEXT" desc="Shields menu auto shred site tab closed mode item text.">
+        Site tab closed
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
+        App close
+      </message>   
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
       </message>
@@ -3606,7 +3586,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Shredding will delete site data and close all '<ph name="SITE_NAME">%1$s</ph>' tabs. This cannot be undone.
     </message>
     <message name="IDS_BRAVE_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
-      Shred
+      Shred site data
     </message>
     <message name="IDS_BRAVE_SHRED_DATA_DIALOG_OK_BUTTON_TEXT" desc="Shred data confirmation dialog OK button text">
       Shred data

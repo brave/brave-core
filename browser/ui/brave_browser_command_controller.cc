@@ -15,9 +15,11 @@
 #include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -29,6 +31,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -127,18 +130,17 @@ BraveBrowserCommandController::BraveBrowserCommandController(
 
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
-void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
-                                                 int index,
-                                                 TabChangeType type) {
+void BraveBrowserCommandController::OnTabChangedAt(tabs::TabInterface* tab,
+                                                   int index,
+                                                   TabChangeType change_type) {
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicateTabs(&*browser_));
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
 }
 
-void BraveBrowserCommandController::TabPinnedStateChanged(
-    TabStripModel* tab_strip_model,
-    content::WebContents* contents,
+void BraveBrowserCommandController::OnTabPinnedStateChanged(
+    tabs::TabInterface* tab,
     int index) {
   UpdateCommandsForPin();
 }
@@ -342,12 +344,20 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
   UpdateCommandEnabled(IDC_EXPORT_ALL_BOOKMARKS, true);
 
+  UpdateCommandEnabled(
+      IDC_SHOW_EMAIL_ALIASES,
+      email_aliases::features::IsEmailAliasesEnabled() &&
+          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+              browser_->profile()));
+
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
     UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
+
+  UpdateCommandEnabled(IDC_FORCE_PASTE, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -705,6 +715,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_APPS_PAGE:
       brave::ShowAppsPage(&*browser_);
       break;
+    case IDC_SHOW_EMAIL_ALIASES:
+      browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage();
+      break;
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
       brave::GroupUngroupedTabs(&*browser_);
       break;
@@ -739,26 +752,30 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::BringAllTabs(&*browser_);
       break;
     case IDC_NEW_SPLIT_VIEW: {
-        CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-        chrome::NewSplitTab(base::to_address(browser_),
-                            split_tabs::SplitTabCreatedSource::kToolbarButton);
+      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
+      chrome::NewSplitTab(base::to_address(browser_),
+                          split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
     case IDC_TILE_TABS: {
-        CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-        brave::SplitTabsWithSideBySide(
-            base::to_address(browser_),
-            split_tabs::SplitTabCreatedSource::kToolbarButton);
+      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
+      brave::SplitTabsWithSideBySide(
+          base::to_address(browser_),
+          split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
     case IDC_BREAK_TILE: {
-        CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-        brave::RemoveSplitWithSideBySide(base::to_address(browser_));
+      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
+      brave::RemoveSplitWithSideBySide(base::to_address(browser_));
       break;
     }
     case IDC_SWAP_SPLIT_VIEW: {
-        CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-        brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
+      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
+      brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
+      break;
+    }
+    case IDC_FORCE_PASTE: {
+      brave::ForcePasteInBrowser(base::to_address(browser_));
       break;
     }
     default:

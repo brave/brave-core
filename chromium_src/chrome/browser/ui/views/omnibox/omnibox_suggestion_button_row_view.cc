@@ -10,8 +10,8 @@
 // TOOLBAR_CORNER_RADIUS with different value.
 // Not re-defined SetCornerRadius() like below because it is declared from many
 // headers. #define SetCornerRadius(...) SetCornerRadius(8)
-#define TOOLBAR_CORNER_RADIUS TOOLBAR_CORNER_RADIUS)); (SetCornerRadius(8
+#define kToolbarCornerRadius kToolbarCornerRadius)); (SetCornerRadius(8
 
 #include <chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc>
 
-#undef TOOLBAR_CORNER_RADIUS
+#undef kToolbarCornerRadius

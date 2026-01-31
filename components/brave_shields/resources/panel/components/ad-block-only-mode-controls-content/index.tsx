@@ -16,8 +16,8 @@ import {
   HeaderTextColumn,
   HeaderTitle,
   HeaderDescription,
-  ActionsSlotWrapper,
 } from './style'
+import styles from '../alerts.module.scss'
 
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -25,7 +25,8 @@ const onSettingsClick = () => {
   chrome.tabs.create({ url: 'chrome://settings/shields', active: true })
 }
 
-function IsTheSiteWorkingCorrectlyNowAdBlockOnlyModeNotice() {
+function IsTheSiteWorkingCorrectlyNowAdBlockOnlyModeNotice(
+  { isBraveShieldsEnabled }: { isBraveShieldsEnabled: boolean }) {
   const onLooksGoodClick = () => {
     getPanelBrowserAPI().panelHandler.closeUI()
   }
@@ -60,25 +61,34 @@ function IsTheSiteWorkingCorrectlyNowAdBlockOnlyModeNotice() {
         <div>
           {getLocale('braveShieldsIsThisSiteWorkingCorrectlyNowDesc')}
         </div>
-        <ActionsSlotWrapper slot='actions'>
-          <Button size="medium" onClick={onLooksGoodClick}>
-            {getLocale('braveShieldsIsThisSiteWorkingCorrectlyNowLooksGood')}
-          </Button>
-          <Button kind="plain" size="medium" onClick={onReportClick}>
-            {getLocale('braveShieldsIsThisSiteWorkingCorrectlyNowReportSite')}
-          </Button>
-        </ActionsSlotWrapper>
+        <div slot='actions' className={styles.actionsWrapper}>
+          {isBraveShieldsEnabled ? (
+            <div className={styles.buttonsWrapper}>
+              <Button size="medium" onClick={onLooksGoodClick}>
+                {getLocale('braveShieldsIsThisSiteWorkingCorrectlyNowLooksGood')}
+              </Button>
+              <Button kind="plain" size="medium" onClick={onReportClick}>
+                {getLocale('braveShieldsIsThisSiteWorkingCorrectlyNowReportSite')}
+              </Button>
+            </div>
+          ) : (
+            <Button size="medium" onClick={onReportClick}>
+              {getLocale('braveShieldsIsThisSiteWorkingCorrectlyNowReportSite')}
+            </Button>
+          )}
+        </div>
       </Alert>
     </Container>
   )
 }
 
 function AdBlockOnlyModeControlsContent(
-    { showGlobalSettings }: { showGlobalSettings: boolean }) {
+    { isBraveShieldsEnabled }: { isBraveShieldsEnabled: boolean }) {
   return (
     <section id='global-controls-content'>
-      <IsTheSiteWorkingCorrectlyNowAdBlockOnlyModeNotice />
-      {showGlobalSettings && <GlobalSettings showAdblockLists={false} />}
+      <IsTheSiteWorkingCorrectlyNowAdBlockOnlyModeNotice
+        isBraveShieldsEnabled={isBraveShieldsEnabled} />
+      {isBraveShieldsEnabled && <GlobalSettings showAdblockLists={false} />}
     </section>
   )
 }

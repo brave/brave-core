@@ -29,7 +29,6 @@ def _add_page_graph_to_config(config):
             "DidRemoveDOMAttr",
             "WillSendNavigationRequest",
             "WillSendRequest",
-            "DidReceiveResourceResponse",
             "DidReceiveData",
             "DidReceiveBlob",
             "DidFinishLoading",

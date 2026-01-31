@@ -56,6 +56,9 @@ extension BrowserViewController: TabManagerDelegate {
     }
     tab.walletWebUIHelper = .init(
       tab: tab,
+      showApprovePanelUIHandler: { [weak self] tab in
+        self?.showApprovePanelUI(tab: tab)
+      },
       showWalletBackUpHandler: { [weak self] in
         self?.showWalletBackupUI()
       },

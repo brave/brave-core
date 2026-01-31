@@ -75,8 +75,8 @@ class FilTxManagerUnitTest : public testing::Test {
                                                         &prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, nullptr, nullptr, *keyring_service_,
-        &prefs_, temp_dir_.GetPath(),
+        json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
+        *keyring_service_, &prefs_, temp_dir_.GetPath(),
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
@@ -155,7 +155,7 @@ class FilTxManagerUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     fil_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin,
+        chain_id, std::move(tx_data_union), from, origin, nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);

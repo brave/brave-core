@@ -141,6 +141,18 @@ enum NewTabPageAdMetricType {
   kConfirmation,
 };
 
+struct NewTabPageAdInfo {
+  string placement_id;
+  string creative_instance_id;
+  string creative_set_id;
+  string campaign_id;
+  string advertiser_id;
+  string segment;
+  url.mojom.Url target_url;
+  string company_name;
+  string alt;
+};
+
 enum NewTabPageAdEventType {
   kServedImpression = 0,
   kViewedImpression,

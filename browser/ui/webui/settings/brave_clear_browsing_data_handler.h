@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_HANDLER_H_
 
 #include "base/values.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -28,7 +29,9 @@ class BraveClearBrowsingDataHandler : public ClearBrowsingDataHandler {
 
   void HandleGetBraveRewardsEnabled(const base::Value::List& args);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   void HandleClearBraveAdsData(const base::Value::List& args);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   void OnRewardsEnabledPreferenceChanged();
 

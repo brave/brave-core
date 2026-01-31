@@ -104,10 +104,12 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
 
 class _UpdateProfilePage(page_module.Page):
   _delay: int
+  _force_update_componets: bool
 
-  def __init__(self, page_set, delay: int):
+  def __init__(self, page_set, delay: int, force_update_componets: bool):
     EXTRA_BROWSER_ARGUMENTS = ['--enable-brave-features-for-perf-testing']
     self._delay = delay
+    self._force_update_componets = force_update_componets
     super().__init__(url='https://example.com',
                      page_set=page_set,
                      shared_page_state_class=_UpdateProfileSharedPageState,
@@ -115,6 +117,18 @@ class _UpdateProfilePage(page_module.Page):
                      extra_browser_args=EXTRA_BROWSER_ARGUMENTS)
 
   def RunPageInteractions(self, action_runner):
+    if self._force_update_componets:
+      # Go to chrome://components and click every "Check for update" button
+      action_runner.tab.Navigate('chrome://components')
+      action_runner.tab.WaitForDocumentReadyStateToBeInteractiveOrBetter()
+      action_runner.Wait(1)
+      forceUpdateScript = """
+      document.querySelectorAll('.button-check-update').forEach((b, i) => {
+        setTimeout(() => b.click(), i * 100);
+      });
+      """
+      action_runner.tab.EvaluateJavaScript(forceUpdateScript)
+
     action_runner.Wait(self._delay)
     if action_runner.tab.browser.platform.GetOSName() != 'android':
       # Disable session restore via settingsPrivate API.
@@ -136,9 +150,9 @@ class BravePerfUtilsStorySet(story.StorySet):
   See loading_desktop.py for details.
   """
 
-  def __init__(self, delay: int, options):
+  def __init__(self, delay: int, force_update_componets: bool, options):
     platform = 'mobile' if options.os_name == 'android' else 'desktop'
     archive_data_file = GetPageSetsDataPath('system_health_%s.json' % platform)
     super().__init__(archive_data_file,
                      cloud_storage_bucket=story.PARTNER_BUCKET)
-    self.AddStory(_UpdateProfilePage(self, delay))
+    self.AddStory(_UpdateProfilePage(self, delay, force_update_componets))

@@ -3,7 +3,42 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale'
 import * as Mojom from './mojom'
+
+/**
+ * Formats a conversation history into a string suitable for clipboard copy.
+ * Each turn is labeled with a localized "You" for human messages and "Leo AI"
+ * (product name) for assistant messages, separated by double newlines.
+ *
+ * @param conversationHistory - The conversation history to format
+ * @returns Formatted string representation of the conversation
+ */
+export function formatConversationForClipboard(
+  conversationHistory: Mojom.ConversationTurn[],
+): string {
+  return conversationHistory
+    .map((turn) => {
+      const label =
+        turn.characterType === Mojom.CharacterType.HUMAN
+          ? getLocale(S.CHAT_UI_COPY_LABEL_YOU)
+          : 'Leo AI'
+      let text = turn.text
+
+      // For assistant entries, get the completion text from events if available
+      if (turn.characterType === Mojom.CharacterType.ASSISTANT) {
+        const completionEvent = turn.events?.find(
+          (event) => event.completionEvent,
+        )
+        if (completionEvent?.completionEvent?.completion) {
+          text = completionEvent.completionEvent.completion
+        }
+      }
+
+      return `${label}: ${text}`
+    })
+    .join('\n\n')
+}
 
 /**
  * Checks if a file is a full page screenshot

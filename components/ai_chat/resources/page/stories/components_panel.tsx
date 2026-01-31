@@ -63,7 +63,6 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
   searchQueriesEvent: undefined,
   searchStatusEvent: undefined,
-  selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
   sourcesEvent: undefined,
   contentReceiptEvent: undefined,

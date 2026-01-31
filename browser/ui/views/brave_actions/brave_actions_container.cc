@@ -49,7 +49,7 @@ void BraveActionsContainer::Init() {
   constexpr int kSeparatorWidth = 1;
   brave_button_separator_->SetPreferredSize(
       gfx::Size(kSeparatorWidth + kSeparatorMargin * 2,
-                GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
+                GetLayoutConstant(LayoutConstant::kLocationBarIconSize)));
   // separator left & right margin
   brave_button_separator_->SetBorder(views::CreateEmptyBorder(
       gfx::Insets::TLBR(0, kSeparatorMargin, 0, kSeparatorMargin)));
@@ -129,8 +129,9 @@ void BraveActionsContainer::UpdateVisibility() {
 }
 
 gfx::Size BraveActionsContainer::GetActionSize() const {
-  return {34, GetLayoutConstant(LOCATION_BAR_HEIGHT) -
-                  2 * GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING)};
+  return {34, GetLayoutConstant(LayoutConstant::kLocationBarHeight) -
+                  2 * GetLayoutConstant(
+                          LayoutConstant::kLocationBarElementPadding)};
 }
 
 void BraveActionsContainer::SetShouldHide(bool should_hide) {

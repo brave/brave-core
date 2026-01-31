@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave-tili";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Lähes valmis!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Vahvistussähköposti on matkalla. Napsauta sähköpostissa olevaa painiketta aktivoidaksesi tilisi.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Peruuta rekisteröinti";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Aloitusopas";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Lähetä vahvistussähköposti uudelleen";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Etkö näe sähköpostia? Tarkista roskapostikansio tai napsauta painiketta lähettääksesi vahvistussähköpostin uudelleen.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Kirjaudu ulos";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave-paneeli";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Virhe";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Aloitusopas";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Estä vaaralliset sivustot";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Selauksen näkyvyys";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "yksityinen välilehti";
+"tabGrid.privateBrowsingInfoTitle" = "Yksityinen välilehti";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Yksityinen selaus";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Käytössä";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Kohdista osoitepalkki automaattisesti uutta välilehteä luotaessa";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Näppäimistön automaattinen avaaminen";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Pidä yksityiset selainvälilehdet auki, kun suljet sovelluksen. Näin varmistat, että voit jatkaa yksityisiä selausistuntoja saumattomasti.";

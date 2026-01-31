@@ -14,14 +14,13 @@
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
-#include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/brave_user_agent_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/browser/net/search_ads_header_network_delegate_helper.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -36,6 +35,10 @@
 #include "net/base/net_errors.h"
 #include "third_party/blink/public/common/features.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/net/search_ads_header_network_delegate_helper.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #endif
@@ -43,8 +46,9 @@
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme))
+  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme)) {
     return true;
+  }
 #endif
   return ctx->request_url.SchemeIs(content::kChromeUIScheme);
 }
@@ -73,13 +77,6 @@ void BraveRequestHandler::SetupCallbacks() {
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
-
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    callback =
-        base::BindRepeating(brave::OnBeforeURLRequest_LocalhostPermissionWork);
-    before_url_request_callbacks_.push_back(callback);
-  }
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
@@ -110,9 +107,11 @@ void BraveRequestHandler::SetupCallbacks() {
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveAdblockCspRules)) {

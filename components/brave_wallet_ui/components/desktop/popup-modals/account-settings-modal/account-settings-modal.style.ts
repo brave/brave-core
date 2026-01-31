@@ -51,6 +51,9 @@ export const QRCodeWrapper = styled.div`
 export const QRCodeImage = styled.img`
   width: 170px;
   height: 170px;
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
 `
 
 export const AddressButton = styled(WalletButton)`

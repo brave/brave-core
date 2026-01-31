@@ -19,6 +19,8 @@ NS_SWIFT_NAME(WalletPageHandler)
 @protocol WalletPageHandlerBridge
 @required
 
+/// Handle when the user creates a new unapproved tx
+- (void)showApprovePanelUI;
 /// Handle when the user taps "Back up now" to back up wallet
 - (void)showWalletBackupUI;
 /// Handle when the user double taps the lock screen to unlock wallet

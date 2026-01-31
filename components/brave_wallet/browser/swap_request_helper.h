@@ -26,12 +26,6 @@ std::optional<std::string> EncodeQuoteParams(
 std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step);
 }  // namespace lifi
 
-namespace squid {
-std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
-std::optional<std::string> EncodeTransactionParams(
-    mojom::SwapQuoteParamsPtr params);
-}  // namespace squid
-
 namespace gate3 {
 // Encode swap quote parameters into JSON format for Gate3 API quote requests.
 // Return the encoded JSON string on success, or std::nullopt if encoding
@@ -39,6 +33,14 @@ namespace gate3 {
 //
 // See https://gate3.bsg.brave.com/docs for the underlying request format.
 std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
+
+// Encode swap status parameters into JSON format for Gate3 API status requests.
+// Return the encoded JSON string on success, or std::nullopt if encoding
+// fails.
+//
+// See https://gate3.bsg.brave.com/docs for the underlying request format.
+std::optional<std::string> EncodeStatusParams(
+    mojom::Gate3SwapStatusParamsPtr params);
 }  // namespace gate3
 
 }  // namespace brave_wallet

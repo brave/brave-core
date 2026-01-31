@@ -6,12 +6,37 @@
 .buttonMenu {
   --leo-menu-max-height: 320px;
   leo-menu-item {
+    --leo-icon-size: 20px;
+    font: var(--leo-font-default-regular);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--leo-spacing-m);
+    padding: var(--leo-spacing-m);
+    min-width: 240px;
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+  }
+}
+
+.section {
+  padding: var(--leo-spacing-s);
+  leo-menu-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--leo-spacing-xl);
     padding: var(--leo-spacing-m);
     min-width: 240px;
+    border-radius: var(--leo-radius-s);
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+    &[aria-selected] {
+      background-color: var(--leo-color-container-interactive);
+      color: var(--leo-color-text-interactive);
+    }
   }
 }
 
@@ -21,19 +46,6 @@
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   color: var(--leo-color-text-secondary);
   font: var(--leo-font-components-label);
-  position: absolute;
-  border-radius: 8px 8px 0px 0px;
-  border-top: 1px solid var(--leo-color-divider-subtle);
-  border-left: 1px solid var(--leo-color-divider-subtle);
-  border-right: 1px solid var(--leo-color-divider-subtle);
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-.headerGap {
-  min-height: 37px;
 }
 
 .anchorButton {
@@ -81,33 +93,4 @@
 
 .anchorButtonIconOpen {
   transform: rotate(180deg);
-}
-
-.menuFooter {
-  display: flex;
-  width: 100%;
-  padding: var(--leo-spacing-s);
-  background-color: var(--leo-color-container-background);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--leo-color-container-background);
-  border-radius: 0px 0px 8px 8px;
-  border: 1px solid var(--leo-color-divider-subtle);
-  leo-menu-item {
-    --leo-icon-size: 20px;
-    font: var(--leo-font-default-regular);
-    justify-content: flex-start;
-    border-radius: var(--leo-radius-s);
-    margin: 0;
-    gap: var(--leo-spacing-m);
-    &:hover {
-      background-color: var(--leo-color-container-highlight);
-    }
-  }
-}
-
-.footerGap {
-  min-height: 47px;
 }

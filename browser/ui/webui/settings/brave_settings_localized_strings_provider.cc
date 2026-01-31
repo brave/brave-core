@@ -171,18 +171,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsBraveOpenAIChatBlock",
        IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
 
-      {"siteSettingsLocalhostAccess",
-       IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS},
-      {"siteSettingsCategoryLocalhostAccess",
-       IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS},
-      {"siteSettingsLocalhostAccessAsk",
-       IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ASK},
-      {"siteSettingsLocalhostAccessBlock",
-       IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK},
-      {"siteSettingsLocalhostAccessBlockExceptions",
-       IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK_EXCEPTIONS},
-      {"siteSettingsLocalhostAccessAllowExceptions",
-       IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
       {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
       {"braveOriginHeadingTitle", IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE},
@@ -220,6 +208,18 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE},
       {"braveOriginResetToDefaultsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE},
+      {"braveOriginOnboardingTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_TITLE},
+      {"braveOriginOnboardingHeadingTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_HEADING_TITLE},
+      {"braveOriginOnboardingDescription1",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION1},
+      {"braveOriginOnboardingDescription2",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION2},
+      {"braveOriginOnboardingBuyNow",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW},
+      {"braveOriginOnboardingLearnMore",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_LEARN_MORE},
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -1217,34 +1217,9 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
-  if (!brave_account::features::IsBraveAccountEnabled()) {
-    return;
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    html_source->AddLocalizedStrings(webui::kBraveAccountStrings);
   }
-
-  webui::LocalizedString localized_strings[] = {
-      {"braveAccountLoggedOutRowTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE},
-      {"braveAccountLoggedOutRowDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION},
-      {"braveAccountGetStartedButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-      {"braveAccountVerificationRowTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE},
-      {"braveAccountVerificationRowDescription1",
-       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1},
-      {"braveAccountVerificationRowDescription2",
-       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2},
-      {"braveAccountResendConfirmationEmailButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL},
-      {"braveAccountCancelRegistrationButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL},
-      {"braveAccountLoggedInRowTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE},
-      {"braveAccountLogOutButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL},
-  };
-
-  html_source->AddLocalizedStrings(localized_strings);
 }
 
 }  // namespace

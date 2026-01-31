@@ -38,6 +38,8 @@ class AIChatMetricsUnitTest : public testing::Test {
         prefs::kBraveAIChatTabOrganizationEnabled, false);
     profile_prefs_.registry()->RegisterTimePref(prefs::kLastAcceptedDisclaimer,
                                                 base::Time::Now());
+    profile_prefs_.registry()->RegisterDictionaryPref(
+        prefs::kBraveAIChatSkills);
     task_environment_.FastForwardBy(base::Days(30));
     ai_chat_metrics_ =
         std::make_unique<AIChatMetrics>(&local_state_, &profile_prefs_);

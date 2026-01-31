@@ -71,7 +71,7 @@
 "wallet.addCustomTokenCoingeckoId" = "ID CoinGecko";
 
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorMessage" = "Impossible d'ajouter le jeton personnalisé. Veuillez réessayer.";
+"wallet.addCustomTokenErrorMessage" = "L'ajout du jeton personnalisé a échoué. Veuillez réessayer.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Impossible d'ajouter le jeton personnalisé";

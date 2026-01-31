@@ -5,7 +5,10 @@
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 // static
 std::vector<Profile*> ProfileManager::GetLastOpenedProfiles() {

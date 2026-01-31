@@ -9,8 +9,13 @@ import {
   getDocumentFiles,
   shouldDisableAttachmentsButton,
   isFullPageScreenshot,
+  formatConversationForClipboard,
 } from './conversation_history_utils'
 import * as Mojom from './mojom'
+import {
+  createConversationTurnWithDefaults,
+  getCompletionEvent,
+} from './test_data_utils'
 
 describe('processUploadedFilesWithLimits', () => {
   const createMockFile = (
@@ -713,5 +718,116 @@ describe('isFullPageScreenshot', () => {
       Mojom.UploadedFileType.kScreenshot,
     )
     expect(isFullPageScreenshot(file2)).toBe(false)
+  })
+})
+
+describe('formatConversationForClipboard', () => {
+  beforeEach(() => {
+    global.S = {
+      CHAT_UI_COPY_LABEL_YOU: 'You',
+    }
+  })
+
+  it('should format a single human message', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: 'Hello, how are you?',
+        characterType: Mojom.CharacterType.HUMAN,
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe('You: Hello, how are you?')
+  })
+
+  it('should format a single assistant message using text field', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: 'I am doing well, thank you!',
+        characterType: Mojom.CharacterType.ASSISTANT,
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe('Leo AI: I am doing well, thank you!')
+  })
+
+  it(
+    'should use completion event text for assistant messages when'
+      + 'available',
+    () => {
+      const conversationHistory = [
+        createConversationTurnWithDefaults({
+          uuid: 'turn1',
+          text: 'fallback text',
+          characterType: Mojom.CharacterType.ASSISTANT,
+          events: [getCompletionEvent('This is the completion text')],
+        }),
+      ]
+
+      const result = formatConversationForClipboard(conversationHistory)
+      expect(result).toBe('Leo AI: This is the completion text')
+    },
+  )
+
+  it('should format a full conversation with multiple turns', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: 'What is the capital of France?',
+        characterType: Mojom.CharacterType.HUMAN,
+      }),
+      createConversationTurnWithDefaults({
+        uuid: 'turn2',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('The capital of France is Paris.')],
+      }),
+      createConversationTurnWithDefaults({
+        uuid: 'turn3',
+        text: 'Tell me more about it.',
+        characterType: Mojom.CharacterType.HUMAN,
+      }),
+      createConversationTurnWithDefaults({
+        uuid: 'turn4',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent(
+            'Paris is the largest city in France and a major cultural center.',
+          ),
+        ],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe(
+      'You: What is the capital of France?\n\n'
+        + 'Leo AI: The capital of France is Paris.\n\n'
+        + 'You: Tell me more about it.\n\n'
+        + 'Leo AI: Paris is the largest city in France and a major '
+        + 'cultural center.',
+    )
+  })
+
+  it('should return empty string for empty conversation history', () => {
+    const result = formatConversationForClipboard([])
+    expect(result).toBe('')
+  })
+
+  it('should fall back to text field when no completion event exists', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: 'Fallback assistant text',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe('Leo AI: Fallback assistant text')
   })
 })

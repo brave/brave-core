@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Compte Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Presque terminé!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Un email de confirmation est en route. Cliquez sur le bouton dans cet email pour activer votre compte.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Annuler l'inscription";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Démarrer";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Renvoyer l'email de confirmation";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Vous ne voyez pas l'email? Vérifiez votre dossier spam ou cliquez sur le bouton pour renvoyer l'email de confirmation.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Se déconnecter";
+
 /* Button to show the brave panel */
 "BravePanel" = "Panneau Brave";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Erreur";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Démarrer";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Blocage des sites Web dangereux";
@@ -2747,7 +2765,7 @@
 "sync.addComputerTitle" = "Ajouter un ordinateur";
 
 /* Add mobile device to sync with scan */
-"sync.addDeviceScan" = "Code QR pour créer une chaîne de synchronisation";
+"sync.addDeviceScan" = "Code QR de synchronisation";
 
 /* Sync add device description */
 "sync.addDeviceScanDescription" = "Sur votre deuxième appareil mobile, ouvrez les paramètres dans Brave, sélectionnez « Synchronisation », puis « Scanner un code de synchronisation ». Utilisez votre appareil photo pour scanner le code QR ci-dessous.\n\nCe code doit être considéré comme un mot de passe. Si une autre personne réussit à l'obtenir, elle pourra lire et modifier vos données synchronisées.";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Visibilité de l'activité";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "Onglet de navigation privée ";
+"tabGrid.privateBrowsingInfoTitle" = "Onglet de navigation privée";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Navigation privée";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Activé";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Mettre automatiquement le focus sur la barre d'adresse lors de la création d'un nouvel onglet";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Ouverture automatique du clavier";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Conserve les onglets de navigation privée ouverts lorsque vous fermez l'application pour reprendre votre navigation plus tard.";

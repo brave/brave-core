@@ -46,6 +46,18 @@ std::optional<std::string> ParseNullableString(const base::Value& value) {
   return std::nullopt;
 }
 
+std::optional<std::vector<uint8_t>> ParseStringAsBytes(
+    const base::Value& value) {
+  auto str = ParseNullableString(value);
+  if (!str) {
+    return std::nullopt;
+  }
+  if (str->empty()) {
+    return std::nullopt;
+  }
+  return std::vector<uint8_t>(str->begin(), str->end());
+}
+
 }  // namespace
 
 namespace zeroex {
@@ -956,231 +968,6 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
 
 }  // namespace lifi
 
-namespace squid {
-
-namespace {
-constexpr char kNoTokenData[] = "Unable to fetch token data";
-
-std::optional<std::string> ChainIdToHex(const std::string& value) {
-  std::optional<uint256_t> out = Base10ValueToUint256(value);
-  if (!out) {
-    return std::nullopt;
-  }
-
-  return Uint256ValueToHex(*out);
-}
-
-mojom::SquidErrorType ParseErrorType(const std::string& value) {
-  if (value == "BAD_REQUEST") {
-    return mojom::SquidErrorType::kBadRequest;
-  }
-
-  if (value == "SCHEMA_VALIDATION_ERROR") {
-    return mojom::SquidErrorType::kSchemaValidationError;
-  }
-
-  return mojom::SquidErrorType::kUnknownError;
-}
-
-mojom::SquidActionType ParseActionType(const std::string& value) {
-  if (value == "wrap") {
-    return mojom::SquidActionType::kWrap;
-  }
-
-  if (value == "unwrap") {
-    return mojom::SquidActionType::kUnwrap;
-  }
-
-  if (value == "swap") {
-    return mojom::SquidActionType::kSwap;
-  }
-
-  if (value == "bridge") {
-    return mojom::SquidActionType::kBridge;
-  }
-
-  return mojom::SquidActionType::kUnknown;
-}
-
-mojom::BlockchainTokenPtr ParseToken(const swap_responses::SquidToken& value) {
-  auto result = mojom::BlockchainToken::New();
-  result->name = value.name;
-  result->symbol = value.symbol;
-  result->logo = value.logo_uri.value_or("");
-  result->contract_address =
-      base::ToLowerASCII(value.address) == kNativeEVMAssetContractAddress
-          ? ""
-          : value.address;
-
-  if (!base::StringToInt(value.decimals, &result->decimals)) {
-    return nullptr;
-  }
-
-  auto chain_id = ChainIdToHex(value.chain_id);
-  if (!chain_id) {
-    return nullptr;
-  }
-  result->chain_id = chain_id.value();
-
-  if (value.type == "evm") {
-    result->coin = mojom::CoinType::ETH;
-  } else {
-    return nullptr;
-  }
-
-  result->coingecko_id = value.coingecko_id.value_or("");
-
-  return result;
-}
-
-mojom::SquidGasCostPtr ParseGasCost(const swap_responses::SquidGasCost& value) {
-  auto result = mojom::SquidGasCost::New();
-  result->amount = value.amount;
-  result->gas_limit = value.gas_limit;
-  result->token = ParseToken(value.token);
-  return result;
-}
-
-mojom::SquidFeeCostPtr ParseFeeCost(const swap_responses::SquidFeeCost& value) {
-  auto result = mojom::SquidFeeCost::New();
-  result->amount = value.amount;
-  result->description = value.description;
-  result->name = value.name;
-  result->token = ParseToken(value.token);
-  return result;
-}
-
-mojom::SquidActionPtr ParseAction(const swap_responses::SquidAction& value) {
-  auto result = mojom::SquidAction::New();
-  result->type = ParseActionType(value.type);
-  result->description = value.description;
-  result->provider = value.provider;
-  result->logo_uri = value.logo_uri.value_or("");
-  result->from_amount = value.from_amount;
-  result->from_token = ParseToken(value.from_token);
-  result->to_amount = value.to_amount;
-  result->to_amount_min = value.to_amount_min;
-  result->to_token = ParseToken(value.to_token);
-  return result;
-}
-
-}  // namespace
-
-mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value) {
-  auto value = swap_responses::SquidQuoteResponse::FromValue(json_value);
-  if (!value) {
-    return nullptr;
-  }
-
-  auto result = mojom::SquidQuote::New();
-  for (const auto& action_value : value->route.estimate.actions) {
-    auto action = ParseAction(action_value);
-    if (!action) {
-      return nullptr;
-    }
-
-    result->actions.push_back(std::move(action));
-  }
-
-  result->aggregate_price_impact = value->route.estimate.aggregate_price_impact;
-  result->aggregate_slippage = value->route.estimate.aggregate_slippage;
-  result->estimated_route_duration =
-      value->route.estimate.estimated_route_duration;
-  result->exchange_rate = value->route.estimate.exchange_rate;
-
-  for (const auto& gas_cost_value : value->route.estimate.gas_costs) {
-    auto gas_cost = ParseGasCost(gas_cost_value);
-    if (!gas_cost) {
-      return nullptr;
-    }
-
-    result->gas_costs.push_back(std::move(gas_cost));
-  }
-
-  for (const auto& fee_cost_value : value->route.estimate.fee_costs) {
-    auto fee_cost = ParseFeeCost(fee_cost_value);
-    if (!fee_cost) {
-      return nullptr;
-    }
-
-    result->fee_costs.push_back(std::move(fee_cost));
-  }
-
-  result->is_boost_supported = value->route.estimate.is_boost_supported;
-  result->from_amount = value->route.estimate.from_amount;
-  result->from_token = ParseToken(value->route.estimate.from_token);
-  result->to_amount = value->route.estimate.to_amount;
-  result->to_amount_min = value->route.estimate.to_amount_min;
-  result->to_token = ParseToken(value->route.estimate.to_token);
-
-  // We pass quoteOnly=false to the Squid API, so the response will always
-  // contain a transactionRequest field.
-  //
-  // This is a workaround to avoid having to make an additional request to the
-  // Squid API to get Squid router contract address.
-  if (!value->route.transaction_request) {
-    return nullptr;
-  }
-
-  result->allowance_target = value->route.transaction_request->target;
-
-  return result;
-}
-
-mojom::SquidTransactionUnionPtr ParseTransactionResponse(
-    const base::Value& json_value) {
-  auto value = swap_responses::SquidQuoteResponse::FromValue(json_value);
-  if (!value) {
-    return nullptr;
-  }
-
-  if (!value->route.transaction_request) {
-    return nullptr;
-  }
-
-  auto result = mojom::SquidEvmTransaction::New();
-  result->data = value->route.transaction_request->data;
-  result->target = value->route.transaction_request->target;
-  result->value = value->route.transaction_request->value;
-  result->gas_limit = value->route.transaction_request->gas_limit;
-  result->gas_price = value->route.transaction_request->gas_price;
-  result->last_base_fee_per_gas =
-      value->route.transaction_request->last_base_fee_per_gas;
-  result->max_priority_fee_per_gas =
-      value->route.transaction_request->max_priority_fee_per_gas;
-  result->max_fee_per_gas = value->route.transaction_request->max_fee_per_gas;
-
-  auto chain_id = ChainIdToHex(value->route.estimate.from_token.chain_id);
-  if (!chain_id) {
-    return nullptr;
-  }
-  result->chain_id = chain_id.value();
-
-  return mojom::SquidTransactionUnion::NewEvmTransaction(std::move(result));
-}
-
-mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value) {
-  // {
-  //   "message": "onChainQuoting must be a `boolean` type.",
-  //   "statusCode": "400",
-  //   "type": "SCHEMA_VALIDATION_ERROR"
-  // }
-  auto value = swap_responses::SquidErrorResponse::FromValue(json_value);
-  if (!value) {
-    return nullptr;
-  }
-
-  auto result = mojom::SquidError::New();
-  result->message = value->message;
-  result->type = ParseErrorType(value->type);
-  result->is_insufficient_liquidity =
-      base::Contains(result->message, kNoTokenData);
-
-  return result;
-}
-
-}  // namespace squid
-
 namespace gate3 {
 
 namespace {
@@ -1198,6 +985,8 @@ std::optional<mojom::SwapProvider> ParseProvider(
       return mojom::SwapProvider::kJupiter;
     case swap_responses::Gate3Provider::kLifi:
       return mojom::SwapProvider::kLiFi;
+    case swap_responses::Gate3Provider::kSquid:
+      return mojom::SwapProvider::kSquid;
     default:
       return std::nullopt;
   }
@@ -1311,7 +1100,7 @@ mojom::Gate3SwapTransactionParamsUnionPtr ParseTransactionParams(
     evm_result->to = evm_params->to;
     evm_result->value = evm_params->value;
     evm_result->data = evm_params->data;
-    evm_result->gas_limit = ParseNullableString(evm_params->gas_limit);
+    evm_result->gas_limit = evm_params->gas_limit;
     evm_result->gas_price = ParseNullableString(evm_params->gas_price);
     return mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
         std::move(evm_result));
@@ -1479,7 +1268,7 @@ mojom::Gate3SwapRoutePtr ParseRoute(
 
   result->gasless = value.gasless;
   result->deposit_address = ParseNullableString(value.deposit_address);
-  result->deposit_memo = ParseNullableString(value.deposit_memo);
+  result->deposit_memo = ParseStringAsBytes(value.deposit_memo);
   result->expires_at = ParseNullableString(value.expires_at);
   result->slippage_percentage = value.slippage_percentage;
 
@@ -1493,7 +1282,6 @@ mojom::Gate3SwapRoutePtr ParseRoute(
     result->transaction_params = std::move(transaction_params);
   }
 
-  result->has_post_submit_hook = value.has_post_submit_hook;
   result->requires_token_allowance = value.requires_token_allowance;
   result->requires_firm_route = value.requires_firm_route;
 
@@ -1534,6 +1322,44 @@ mojom::Gate3SwapErrorPtr ParseErrorResponse(const base::Value& json_value) {
   auto result = mojom::Gate3SwapError::New();
   result->message = value->message;
   result->kind = ParseErrorKind(value->kind);
+  return result;
+}
+
+mojom::Gate3SwapStatusPtr ParseStatusResponse(const base::Value& json_value) {
+  auto value = swap_responses::Gate3StatusResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::Gate3SwapStatus::New();
+
+  // Map the status code
+  switch (value->status) {
+    case swap_responses::Gate3StatusCode::kPending:
+      result->status = mojom::Gate3SwapStatusCode::kPending;
+      break;
+    case swap_responses::Gate3StatusCode::kProcessing:
+      result->status = mojom::Gate3SwapStatusCode::kProcessing;
+      break;
+    case swap_responses::Gate3StatusCode::kSuccess:
+      result->status = mojom::Gate3SwapStatusCode::kSuccess;
+      break;
+    case swap_responses::Gate3StatusCode::kFailed:
+      result->status = mojom::Gate3SwapStatusCode::kFailed;
+      break;
+    case swap_responses::Gate3StatusCode::kRefunded:
+      result->status = mojom::Gate3SwapStatusCode::kRefunded;
+      break;
+    case swap_responses::Gate3StatusCode::kNone:
+    default:
+      // Invalid/unknown status, default to pending
+      result->status = mojom::Gate3SwapStatusCode::kPending;
+      break;
+  }
+
+  result->internal_status = value->internal_status;
+  result->explorer_url = value->explorer_url;
+
   return result;
 }
 

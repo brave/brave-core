@@ -146,6 +146,9 @@
                android:layout_height="wrap_content"
                android:layout_marginTop="32dp"
                android:layout_marginHorizontal="16dp"
+               android:focusable="true"
+               android:clickable="true"
+               android:background="@drawable/news_settings_item_bg"
                android:visibility="gone">
 
                <ImageView
@@ -191,6 +194,9 @@
                android:layout_height="wrap_content"
                android:layout_marginTop="24dp"
                android:layout_marginHorizontal="16dp"
+               android:focusable="true"
+               android:clickable="true"
+               android:background="@drawable/news_settings_item_bg"
                android:visibility="gone">
 
                <ImageView
@@ -236,6 +242,9 @@
                android:layout_height="wrap_content"
                android:layout_marginTop="24dp"
                android:layout_marginHorizontal="16dp"
+               android:focusable="true"
+               android:clickable="true"
+               android:background="@drawable/news_settings_item_bg"
                android:visibility="gone">
 
                <ImageView
@@ -281,6 +290,9 @@
                android:layout_height="wrap_content"
                android:layout_marginHorizontal="16dp"
                android:layout_marginVertical="24dp"
+               android:focusable="true"
+               android:clickable="true"
+               android:background="@drawable/news_settings_item_bg"
                android:visibility="gone">
 
                <ImageView

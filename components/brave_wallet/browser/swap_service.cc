@@ -238,6 +238,31 @@ base::flat_map<std::string, std::string> GetHeadersForZeroEx() {
   return headers;
 }
 
+void HandleGate3Quote(
+    mojom::SwapQuoteParamsPtr params,
+    SwapService::GetQuoteCallback callback,
+    base::OnceCallback<std::optional<std::string>(const std::string&)>
+        conversion_callback,
+    api_request_helper::APIRequestHelper& api_request_helper,
+    base::WeakPtr<SwapService> service) {
+  auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+  if (!encoded_params) {
+    std::move(callback).Run(
+        nullptr, nullptr, nullptr,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(&SwapService::OnGetGate3Quote,
+                                          service, std::move(callback));
+
+  api_request_helper.Request(net::HttpRequestHeaders::kPostMethod,
+                             SwapService::GetGate3QuoteURL(/*is_firm=*/false),
+                             *encoded_params, "application/json",
+                             std::move(internal_callback), GetHeaders(), {},
+                             std::move(conversion_callback));
+}
+
 }  // namespace
 
 SwapService::SwapService(
@@ -304,14 +329,14 @@ GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
 }
 
 // static
-GURL SwapService::GetSquidURL() {
-  return GURL(kSquidBaseAPIURL).Resolve("/v2/route");
-}
-
-// static
 GURL SwapService::GetGate3QuoteURL(bool is_firm) {
   return GURL(kGate3URL).Resolve(is_firm ? "/api/swap/v1/quote/firm"
                                          : "/api/swap/v1/quote/indicative");
+}
+
+// static
+GURL SwapService::GetGate3StatusURL() {
+  return GURL(kGate3URL).Resolve("/api/swap/v1/status");
 }
 
 void SwapService::IsSwapSupported(const std::string& chain_id,
@@ -421,47 +446,20 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
   if ((params->provider == mojom::SwapProvider::kNearIntents ||
        params->provider == mojom::SwapProvider::kAuto) &&
       has_near_intents_support) {
-    auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
-    if (!encoded_params) {
-      std::move(callback).Run(
-          nullptr, nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-
-    auto internal_callback =
-        base::BindOnce(&SwapService::OnGetGate3Quote,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-    api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod,
-                                GetGate3QuoteURL(/*is_firm=*/false),
-                                *encoded_params, "application/json",
-                                std::move(internal_callback), GetHeaders(), {},
-                                std::move(conversion_callback));
+    params->provider = mojom::SwapProvider::kNearIntents;
+    HandleGate3Quote(std::move(params), std::move(callback),
+                     std::move(conversion_callback), api_request_helper_,
+                     weak_ptr_factory_.GetWeakPtr());
     return;
   }
 
   if ((params->provider == mojom::SwapProvider::kSquid ||
        params->provider == mojom::SwapProvider::kAuto) &&
       has_squid_support) {
-    auto encoded_params = squid::EncodeQuoteParams(std::move(params));
-    if (!encoded_params) {
-      std::move(callback).Run(
-          nullptr, nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-
-    auto swap_fee = GetZeroSwapFee();
-
-    auto internal_callback = base::BindOnce(
-        &SwapService::OnGetSquidQuote, weak_ptr_factory_.GetWeakPtr(),
-        std::move(swap_fee), std::move(callback));
-
-    api_request_helper_.Request(
-        net::HttpRequestHeaders::kPostMethod, GetSquidURL(), *encoded_params,
-        "application/json", std::move(internal_callback), GetHeaders(), {},
-        std::move(conversion_callback));
+    params->provider = mojom::SwapProvider::kSquid;
+    HandleGate3Quote(std::move(params), std::move(callback),
+                     std::move(conversion_callback), api_request_helper_,
+                     weak_ptr_factory_.GetWeakPtr());
     return;
   }
 
@@ -580,33 +578,6 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
   }
 }
 
-void SwapService::OnGetSquidQuote(mojom::SwapFeesPtr swap_fee,
-                                  GetQuoteCallback callback,
-                                  APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    if (auto error_response =
-            squid::ParseErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(
-          nullptr, nullptr,
-          mojom::SwapErrorUnion::NewSquidError(std::move(error_response)), "");
-    } else {
-      std::move(callback).Run(
-          nullptr, nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    }
-    return;
-  }
-
-  if (auto quote = squid::ParseQuoteResponse(api_request_result.value_body())) {
-    std::move(callback).Run(
-        mojom::SwapQuoteUnion::NewSquidQuote(std::move(quote)),
-        std::move(swap_fee), nullptr, "");
-  } else {
-    std::move(callback).Run(nullptr, nullptr, nullptr,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-  }
-}
-
 void SwapService::OnGetGate3Quote(GetQuoteCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -698,29 +669,6 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
         net::HttpRequestHeaders::kPostMethod, GetLiFiTransactionURL(),
         *encoded_params, "application/json", std::move(internal_callback),
         GetHeaders(), {}, std::move(conversion_callback));
-
-    return;
-  }
-
-  if (params->is_squid_transaction_params()) {
-    auto& squid_transaction_params = params->get_squid_transaction_params();
-    auto encoded_params =
-        squid::EncodeTransactionParams(std::move(squid_transaction_params));
-    if (!encoded_params) {
-      std::move(callback).Run(
-          nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-
-    auto internal_callback =
-        base::BindOnce(&SwapService::OnGetSquidTransaction,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-    api_request_helper_.Request(
-        net::HttpRequestHeaders::kPostMethod, GetSquidURL(), *encoded_params,
-        "application/json", std::move(internal_callback), GetHeaders(), {},
-        std::move(conversion_callback));
 
     return;
   }
@@ -838,33 +786,6 @@ void SwapService::OnGetLiFiTransaction(GetTransactionCallback callback,
   }
 }
 
-void SwapService::OnGetSquidTransaction(GetTransactionCallback callback,
-                                        APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    if (auto error_response =
-            squid::ParseErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(
-          nullptr,
-          mojom::SwapErrorUnion::NewSquidError(std::move(error_response)), "");
-    } else {
-      std::move(callback).Run(
-          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    }
-
-    return;
-  }
-
-  if (auto transaction =
-          squid::ParseTransactionResponse(api_request_result.value_body())) {
-    std::move(callback).Run(mojom::SwapTransactionUnion::NewSquidTransaction(
-                                std::move(transaction)),
-                            nullptr, "");
-  } else {
-    std::move(callback).Run(nullptr, nullptr,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-  }
-}
-
 void SwapService::OnGetGate3Transaction(GetTransactionCallback callback,
                                         APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -903,6 +824,26 @@ void SwapService::OnGetGate3Transaction(GetTransactionCallback callback,
       "");
 }
 
+void SwapService::GetStatus(mojom::Gate3SwapStatusParamsPtr params,
+                            GetStatusCallback callback) {
+  auto encoded_params = gate3::EncodeStatusParams(std::move(params));
+  if (!encoded_params) {
+    std::move(callback).Run(
+        nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
+  auto internal_callback =
+      base::BindOnce(&SwapService::OnGetStatus, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback));
+
+  api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod,
+                              GetGate3StatusURL(), *encoded_params,
+                              "application/json", std::move(internal_callback),
+                              GetHeaders(), {}, std::move(conversion_callback));
+}
+
 void SwapService::GetLiFiStatus(const std::string& tx_hash,
                                 GetLiFiStatusCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
@@ -914,6 +855,31 @@ void SwapService::GetLiFiStatus(const std::string& tx_hash,
                               GetLiFiStatusURL(tx_hash), "", "",
                               std::move(internal_callback), GetHeaders(), {},
                               std::move(conversion_callback));
+}
+
+void SwapService::OnGetStatus(GetStatusCallback callback,
+                              APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    if (auto error_response =
+            gate3::ParseErrorResponse(api_request_result.value_body())) {
+      std::move(callback).Run(nullptr, std::move(error_response), "");
+      return;
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+      return;
+    }
+  }
+
+  if (auto status =
+          gate3::ParseStatusResponse(api_request_result.value_body())) {
+    std::move(callback).Run(std::move(status), nullptr, "");
+    return;
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
 }
 
 void SwapService::OnGetLiFiStatus(GetLiFiStatusCallback callback,

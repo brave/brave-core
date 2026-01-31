@@ -5,10 +5,6 @@
 
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc>
 
-const Browser* FakeTabSlotController::GetBrowser() const {
-  return nullptr;
-}
-
 bool FakeTabSlotController::ShouldAlwaysHideCloseButton() const {
   return should_always_hide_close_button_;
 }

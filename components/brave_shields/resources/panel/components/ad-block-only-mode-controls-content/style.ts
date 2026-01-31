@@ -37,7 +37,3 @@ export const StyledAlert = styled(Alert)`
   padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-xl);
 `
 
-export const ActionsSlotWrapper = styled.div`
-  display: flex;
-  gap: var(--leo-spacing-m);
-`

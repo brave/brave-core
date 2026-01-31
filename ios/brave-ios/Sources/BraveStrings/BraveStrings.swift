@@ -2911,78 +2911,6 @@ extension Strings {
       "Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'."
   )
 
-  public static let braveAccount = NSLocalizedString(
-    "BraveAccount",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Brave Account",
-    comment: "Title for the Brave Account section in settings"
-  )
-
-  public static let braveAccountEmailAddress = NSLocalizedString(
-    "BraveAccountEmailAddress",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Email address",
-    comment: "Title shown when user is logged in"
-  )
-
-  public static let braveAccountSignOut = NSLocalizedString(
-    "BraveAccountSignOut",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sign out",
-    comment: "Button text to sign out of Brave Account"
-  )
-
-  public static let braveAccountAlmostThere = NSLocalizedString(
-    "BraveAccountAlmostThere",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Almost there!",
-    comment: "Title shown when waiting for email verification"
-  )
-
-  public static let braveAccountAlmostThereDetail = NSLocalizedString(
-    "BraveAccountAlmostThereDetail",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "A confirmation email is on the way. Click the button in that email to activate your account.",
-    comment: "Detail text for the almost there title"
-  )
-
-  public static let braveAccountResendConfirmationEmail = NSLocalizedString(
-    "BraveAccountResendConfirmationEmail",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Resend confirmation email",
-    comment: "Button text to resend confirmation email"
-  )
-
-  public static let braveAccountResendConfirmationEmailDetail = NSLocalizedString(
-    "BraveAccountResendConfirmationEmailDetail",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Don't see the email? Check your spam folder or click on the button to resend the confirmation email.",
-    comment: "Detail text for the resend confirmation email button"
-  )
-
-  public static let braveAccountCancelRegistration = NSLocalizedString(
-    "BraveAccountCancelRegistration",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Cancel registration",
-    comment: "Button text to cancel Brave Account registration"
-  )
-
-  public static let braveAccountGetStarted = NSLocalizedString(
-    "BraveAccountGetStarted",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Get Started",
-    comment: "Button text to get started with Brave Account"
-  )
-
   public static let features = NSLocalizedString(
     "Features",
     tableName: "BraveShared",
@@ -4281,18 +4209,9 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Sponsored images are branded backgrounds that appear in newly opened tabs in the browser. Enabling these Sponsored Images supports Brave's mission.",
-        comment: "The text description of image type which is being used NTP"
+          "Sponsored images are branded backgrounds that appear in newly opened tabs in the browser. Enabling these Sponsored Images supports Brave's mission. [Learn More](#learn-more)",
+        comment: "The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link"
       )
-    public static let imageTypeSelectionDescriptionLearnMore =
-      NSLocalizedString(
-        "ntp.imageTypeSelectionDescriptionLearnMore",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Learn more",
-        comment: "The text label of image type learn more link"
-      )
-
     public static let settingsTitle = NSLocalizedString(
       "ntp.settingsTitle",
       tableName: "BraveShared",

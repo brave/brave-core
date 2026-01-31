@@ -121,8 +121,12 @@ std::optional<std::string> EncodeTransactionParams(
     swap_info_value.Set("outputMint", step->swap_info->output_mint);
     swap_info_value.Set("inAmount", step->swap_info->in_amount);
     swap_info_value.Set("outAmount", step->swap_info->out_amount);
-    swap_info_value.Set("feeAmount", step->swap_info->fee_amount);
-    swap_info_value.Set("feeMint", step->swap_info->fee_mint);
+    if (step->swap_info->fee_amount.has_value()) {
+      swap_info_value.Set("feeAmount", step->swap_info->fee_amount.value());
+    }
+    if (step->swap_info->fee_mint.has_value()) {
+      swap_info_value.Set("feeMint", step->swap_info->fee_mint.value());
+    }
 
     step_value.Set("swapInfo", std::move(swap_info_value));
     route_plan_value.Append(std::move(step_value));
@@ -457,75 +461,6 @@ std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step) {
 
 }  // namespace lifi
 
-namespace squid {
-
-namespace {
-
-std::optional<std::string> EncodeChainId(const std::string& value) {
-  uint256_t val;
-  if (!HexValueToUint256(value, &val)) {
-    return std::nullopt;
-  }
-
-  if (val > std::numeric_limits<uint64_t>::max()) {
-    return std::nullopt;
-  }
-
-  return base::NumberToString(static_cast<uint64_t>(val));
-}
-
-std::optional<std::string> EncodeParams(mojom::SwapQuoteParamsPtr params) {
-  base::Value::Dict result;
-  if (auto chain_id = EncodeChainId(params->from_chain_id)) {
-    result.Set("fromChain", *chain_id);
-  } else {
-    return std::nullopt;
-  }
-
-  result.Set("fromAddress", params->from_account_id->address);
-  result.Set("fromToken", params->from_token.empty()
-                              ? kNativeEVMAssetContractAddress
-                              : params->from_token);
-  result.Set("fromAmount", params->from_amount);
-
-  if (auto chain_id = EncodeChainId(params->to_chain_id)) {
-    result.Set("toChain", *chain_id);
-  } else {
-    return std::nullopt;
-  }
-
-  result.Set("toAddress", params->to_account_id->address);
-  result.Set("toToken", params->to_token.empty()
-                            ? kNativeEVMAssetContractAddress
-                            : params->to_token);
-
-  double slippage_percentage = 0.0;
-  if (base::StringToDouble(params->slippage_percentage, &slippage_percentage)) {
-    result.Set("slippage", slippage_percentage);
-  }
-
-  base::Value::Dict slippage_config;
-  slippage_config.Set("autoMode", 1);
-  result.Set("slippageConfig", std::move(slippage_config));
-
-  result.Set("enableBoost", true);
-  result.Set("quoteOnly", false);
-
-  return GetJSON(base::Value(std::move(result)));
-}
-
-}  // namespace
-
-std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
-  return EncodeParams(std::move(params));
-}
-
-std::optional<std::string> EncodeTransactionParams(
-    mojom::SwapQuoteParamsPtr params) {
-  return EncodeParams(std::move(params));
-}
-
-}  // namespace squid
 
 // namespace gate3 currently only supports Near Intents provider
 //
@@ -569,8 +504,8 @@ std::optional<std::string> EncodeProvider(mojom::SwapProvider provider) {
     //   return "ZERO_EX";
     // case mojom::SwapProvider::kJupiter:
     //   return "JUPITER";
-    // case mojom::SwapProvider::kSquid:
-    //   return "SQUID";
+    case mojom::SwapProvider::kSquid:
+      return "SQUID";
     case mojom::SwapProvider::kNearIntents:
       return "NEAR_INTENTS";
 
@@ -645,7 +580,45 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
   }
   result.Set("routePriority", *route_priority);
 
-  return GetJSON(base::Value(std::move(result)));
+  return GetJSON(result);
+}
+
+std::optional<std::string> EncodeStatusParams(
+    mojom::Gate3SwapStatusParamsPtr params) {
+  base::Value::Dict result;
+
+  result.Set("routeId", params->route_id);
+  result.Set("txHash", params->tx_hash);
+
+  auto source_coin = EncodeCoinType(params->source_coin);
+  if (!source_coin) {
+    return std::nullopt;
+  }
+  result.Set("sourceCoin", *source_coin);
+  result.Set("sourceChainId", params->source_chain_id);
+
+  auto destination_coin = EncodeCoinType(params->destination_coin);
+  if (!destination_coin) {
+    return std::nullopt;
+  }
+  result.Set("destinationCoin", *destination_coin);
+  result.Set("destinationChainId", params->destination_chain_id);
+
+  result.Set("depositAddress", params->deposit_address);
+  if (params->deposit_memo) {
+    result.Set("depositMemo", std::string(params->deposit_memo->begin(),
+                                          params->deposit_memo->end()));
+  } else {
+    result.Set("depositMemo", "");
+  }
+
+  auto provider = EncodeProvider(params->provider);
+  if (!provider) {
+    return std::nullopt;
+  }
+  result.Set("provider", *provider);
+
+  return GetJSON(result);
 }
 }  // namespace gate3
 

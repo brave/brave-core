@@ -107,9 +107,12 @@ provideStrings({
     + 'which may be able to see your IP address and domain.',
   braveWalletFetchingQuote: 'Fetching quote',
   braveWalletReceiveEstimate: 'Receive (est.)',
+  braveWalletReceiveMinimum: 'Receive (min.)',
   braveWalletFromToken: 'From token',
   braveWalletToToken: 'To token',
   braveWalletNewQuoteIn: 'New quote in $1',
+  braveWalletSwapProgramAddress: 'Program address',
+  braveWalletSwapDepositAddress: 'Deposit address',
 
   // Send Tab
   braveWalletChooseAssetToSend: 'Choose asset to send',
@@ -512,6 +515,14 @@ provideStrings({
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
   braveWalletAccountSettingsDownloadKey: 'Download',
+  braveWalletAccountSettingsEnterPasswordToEncrypt:
+    'Enter a password to encrypt your account export file.',
+  braveWalletAccountSettingsEncryptionPassword: 'Enter encryption password',
+  braveWalletAccountSettingsConfirmEncryptionPassword:
+    'Confirm encryption password',
+  braveWalletAccountSettingsPasswordsDoNotMatch: 'Passwords do not match',
+  braveWalletAccountSettingsEncryptionPasswordTooShort:
+    'Password must be at least 8 characters',
   braveWalletAccountSettingsUpdateError:
     'Failed to update account name, please try again.',
   braveWalletWatchListTokenId: 'Token ID (only for ERC721)',
@@ -653,6 +664,7 @@ provideStrings({
   braveWalletConfirmSwap: 'Confirm swap',
   braveWalletConfirmBridge: 'Confirm bridge',
   braveWalletConfirmSend: 'Confirm send',
+  braveWalletSwapProvider: 'Provider',
   braveWalletConfirmShield: 'Confirm shield',
   braveWalletConfirmUnshield: 'Confirm unshield',
   braveWalletSpend: 'Spend',
@@ -1265,6 +1277,9 @@ provideStrings({
   braveWalletSwapping: 'Swapping',
   braveWalletBridging: 'Bridging',
   braveWalletSwappingOrBridgingOnNetwork: '$1 on $2',
+  braveWalletSwapProcessing: 'Processing',
+  braveWalletSwapPending: 'Pending',
+  braveWalletSwapRefunded: 'Refunded',
   braveWalletErrorAttemptingToTransactOnNetwork:
     'There was an error attempting to $1 on $2',
   braveWalletShieldingAmount: 'Shielding $1',
@@ -1309,6 +1324,7 @@ provideStrings({
   braveWalletTransactionIntentDappInteraction: 'Dapp interaction',
   braveWalletTransactionIntentSend: 'Send $1',
   braveWalletTransactionIntentSwap: 'Swap $1 to $2',
+  braveWalletTransactionIntentBridge: 'Bridge $1 to $2',
 
   // Solana Associated Token Account
   braveWalletCreatingAssociatedTokenAccount:

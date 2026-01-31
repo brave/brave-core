@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -459,6 +460,311 @@ TEST(PolkadotKeyring, EncodePrivateKeyForExport_Testnet) {
   {
     auto empty_password_result = keyring.EncodePrivateKeyForExport(0, "");
     EXPECT_FALSE(empty_password_result.has_value());
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_Roundtrip) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  // Test account 0: encode then decode
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    // Get the original secret key
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(0);
+
+    // Decode the exported JSON
+    auto decoded_pkcs8_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+
+    // Verify the secret keys match
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+
+    // Verify we can create a keypair from the decoded secret key
+    auto decoded_keypair =
+        HDKeySr25519::CreateFromPkcs8(base::span(*decoded_pkcs8_key));
+    ASSERT_TRUE(decoded_keypair.has_value());
+    auto decoded_public_key = decoded_keypair->GetPublicKey();
+    auto original_public_key = keyring.GetPublicKey(0);
+    EXPECT_EQ(decoded_public_key, original_public_key);
+  }
+
+  // Test account 1: encode then decode
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(1, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(1);
+    auto decoded_pkcs8_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_WrongPassword) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+  const std::string kWrongPassword = "wrong_password";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  // Try to decode with wrong password - should fail
+  auto decoded_secret_key = PolkadotKeyring::DecodePrivateKeyFromExport(
+      *encoded_json, kWrongPassword);
+  EXPECT_FALSE(decoded_secret_key.has_value());
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_EmptyPassword) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  // Try to decode with empty password - should fail
+  auto decoded_secret_key =
+      PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, "");
+  EXPECT_FALSE(decoded_secret_key.has_value());
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_InvalidJSON) {
+  const std::string kPassword = "test_password_123";
+
+  // Test with invalid JSON
+  {
+    const std::string invalid_json = "{ invalid json }";
+    auto decoded_secret_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(invalid_json, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+
+  // Test with empty JSON
+  {
+    const std::string empty_json = "";
+    auto decoded_secret_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(empty_json, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+
+  // Test with JSON missing "encoded" field
+  {
+    const std::string json_missing_encoded = R"({"address":"test"})";
+    auto decoded_secret_key = PolkadotKeyring::DecodePrivateKeyFromExport(
+        json_missing_encoded, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+
+  // Test with JSON where "encoded" is not a string
+  {
+    const std::string json_wrong_type = R"({"encoded":123})";
+    auto decoded_secret_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(json_wrong_type, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_Testnet) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotTestnet);
+
+  // Test roundtrip for testnet
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(0);
+    auto decoded_pkcs8_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+  }
+}
+
+TEST(PolkadotKeyring, MissingParts) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotTestnet);
+
+  // Generate a valid JSON export
+  auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(valid_json.has_value());
+
+  // Parse the valid JSON into a base::Value::Dict
+  auto valid_dict = base::JSONReader::ReadDict(*valid_json, 0);
+  ASSERT_TRUE(valid_dict.has_value());
+
+  // Helper function to convert dict back to JSON string
+  auto dict_to_json = [](const base::Value::Dict& dict) -> std::string {
+    std::string json_string;
+    base::JSONWriter::Write(dict, &json_string);
+    return json_string;
+  };
+
+  // Missing pkcs8 in content.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* content_list = encoding_dict->FindList("content");
+    ASSERT_TRUE(content_list);
+    // Remove "pkcs8" from content, keep only "sr25519"
+    content_list->clear();
+    content_list->Append("sr25519");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing sr25519 in content.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* content_list = encoding_dict->FindList("content");
+    ASSERT_TRUE(content_list);
+    // Remove "sr25519" from content, keep only "pkcs8"
+    content_list->clear();
+    content_list->Append("pkcs8");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing scrypt in type.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* type_list = encoding_dict->FindList("type");
+    ASSERT_TRUE(type_list);
+    // Remove "scrypt" from type, keep only "xsalsa20-poly1305"
+    type_list->clear();
+    type_list->Append("xsalsa20-poly1305");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing xsalsa20-poly1305 in type.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* type_list = encoding_dict->FindList("type");
+    ASSERT_TRUE(type_list);
+    // Remove "xsalsa20-poly1305" from type, keep only "scrypt"
+    type_list->clear();
+    type_list->Append("scrypt");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Version mismatch.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    // Change version from "3" to "2"
+    encoding_dict->Set("version", "2");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing content.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    // Remove "content" field
+    encoding_dict->Remove("content");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing encoding.
+  {
+    auto test_dict = valid_dict->Clone();
+    // Remove "encoding" field
+    test_dict.Remove("encoding");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing type.
+  {
+    auto test_dict = valid_dict->Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    // Remove "type" field
+    encoding_dict->Remove("type");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Missing encoded.
+  {
+    auto test_dict = valid_dict->Clone();
+    // Remove "encoded" field
+    test_dict.Remove("encoded");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Corrupted encoded - invalid base64.
+  {
+    auto test_dict = valid_dict->Clone();
+    // Replace encoded with invalid base64
+    test_dict.Set(
+        "encoded",
+        "00EBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAg"
+        "ICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+"
+        "Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHR"
+        "B7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/"
+        "WROki1+SZ1OLWclpgVjEDift12grx7X");
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
+  }
+
+  // Corrupted encoded - wrong length.
+  {
+    auto test_dict = valid_dict->Clone();
+    const std::string* original_encoded = test_dict.FindString("encoded");
+    ASSERT_TRUE(original_encoded);
+    // Shorten the encoded string to make it wrong length
+    std::string shortened_encoded =
+        original_encoded->substr(0, original_encoded->size() - 10);
+    test_dict.Set("encoded", shortened_encoded);
+    std::string test_json = dict_to_json(test_dict);
+    EXPECT_FALSE(
+        PolkadotKeyring::DecodePrivateKeyFromExport(test_json, kPassword));
   }
 }
 

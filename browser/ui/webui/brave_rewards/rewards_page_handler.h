@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -136,6 +137,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void ResetRewards(ResetRewardsCallback callback) override;
   void RecordOfferView(RecordOfferViewCallback callback) override;
   void RecordOfferClick(RecordOfferClickCallback callback) override;
+  void RecordNewTabOnboardingClick(
+      RecordNewTabOnboardingClickCallback callback) override;
 
  private:
   class UpdateObserver;

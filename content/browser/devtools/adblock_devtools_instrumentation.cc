@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <utility>
-
 #include "base/task/sequenced_task_runner.h"
 #include "brave/content/public/browser/devtools/adblock_devtools_instumentation.h"
 #include "content/browser/devtools/devtools_agent_host_impl.h"
@@ -13,6 +11,7 @@
 #include "content/browser/renderer_host/frame_tree_node.h"
 #include "content/browser/renderer_host/navigation_request.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/frame_tree_node_id.h"
 
 namespace {
 
@@ -34,6 +33,7 @@ void SendAdblockInfoInternal(
   if (!frame_tree_node) {
     return;
   }
+
   content::DevToolsAgentHostImpl* agent_host =
       content::RenderFrameDevToolsAgentHost::GetFor(frame_tree_node);
   if (!agent_host) {
@@ -66,6 +66,26 @@ void SendAdblockInfoInternal(
   }
 }
 
+void SendAdblockInfoRFTInternal(
+    content::GlobalRenderFrameHostToken render_frame_token,
+    const std::string& request_id,
+    const content::devtools_instrumentation::AdblockInfo& info) {
+  if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
+    content::GetUIThreadTaskRunner()->PostTask(
+        FROM_HERE, base::BindOnce(&SendAdblockInfoRFTInternal,
+                                  render_frame_token, request_id, info));
+    return;
+  }
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  auto* render_frame_host =
+      content::RenderFrameHost::FromFrameToken(render_frame_token);
+  if (render_frame_host) {
+    SendAdblockInfoInternal(render_frame_host->GetFrameTreeNodeId(), request_id,
+                            info);
+  }
+}
+
 }  // namespace
 
 namespace content::devtools_instrumentation {
@@ -77,10 +97,10 @@ AdblockInfo::AdblockInfo(AdblockInfo&&) = default;
 AdblockInfo& AdblockInfo::operator=(const AdblockInfo&) = default;
 AdblockInfo& AdblockInfo::operator=(AdblockInfo&&) = default;
 
-void SendAdblockInfo(content::FrameTreeNodeId frame_tree_node_id,
+void SendAdblockInfo(content::GlobalRenderFrameHostToken render_frame_token,
                      const std::string& request_id,
                      const AdblockInfo& info) {
-  SendAdblockInfoInternal(frame_tree_node_id, request_id, info);
+  SendAdblockInfoRFTInternal(render_frame_token, request_id, info);
 }
 
 void SendAdblockInfo(content::NavigationHandle* handle,

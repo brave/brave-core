@@ -31,13 +31,17 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
       const VerticalTabStripRootViewBrowserTest&) = delete;
   ~VerticalTabStripRootViewBrowserTest() override = default;
 
-  Tab* GetTabAt(int index) { return tab_strip()->tab_at(index); }
+  Tab* GetTabAt(int index) {
+    return horizontal_tab_strip_for_testing()->tab_at(index);
+  }
 
   BrowserView* browser_view() {
     return BrowserView::GetBrowserViewForBrowser(browser());
   }
 
-  TabStrip* tab_strip() { return browser_view()->tabstrip(); }
+  TabStrip* horizontal_tab_strip_for_testing() {
+    return browser_view()->horizontal_tab_strip_for_testing();
+  }
 
   VerticalTabStripRootView* vtab_strip_root_view() {
     if (vtab_tab_strip_widget_delegate_view()) {
@@ -101,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -136,7 +140,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -175,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_ContextMenuInUnobscuredRegion) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* vtab_strip_root_view =
       vtab_tab_strip_widget_delegate_view()->vertical_tab_strip_region_view();

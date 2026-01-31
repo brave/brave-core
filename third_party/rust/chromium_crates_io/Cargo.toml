@@ -245,10 +245,6 @@ package = "regex-automata"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-syntax-v0_8"
 package = "regex-syntax"
 
-[patch.crates-io.ryu_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/ryu-v1"
-package = "ryu"
-
 [patch.crates-io.serde_core_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_core-v1"
 package = "serde_core"
@@ -280,6 +276,14 @@ package = "syn"
 [patch.crates-io.termcolor]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/termcolor-v1"
 package = "termcolor"
+
+[patch.crates-io.thiserror_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/thiserror-v2"
+package = "thiserror"
+
+[patch.crates-io.thiserror-impl_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2"
+package = "thiserror-impl"
 
 [patch.crates-io.unicode-ident_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-ident-v1"
@@ -352,3 +356,7 @@ package = "zcash_primitives"
 [patch.crates-io.zcash_client_backend_v0_12]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
 package = "zcash_client_backend"
+
+[patch.crates-io.zmij_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zmij-v1"
+package = "zmij"

@@ -64,6 +64,7 @@ class CardanoTxManager : public TxManager,
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
+                                mojom::SwapInfoPtr swap_info,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
@@ -81,6 +82,7 @@ class CardanoTxManager : public TxManager,
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
+      mojom::SwapInfoPtr swap_info,
       AddUnapprovedTransactionCallback callback,
       base::expected<CardanoTransaction, std::string> cardano_transaction);
 

@@ -162,11 +162,11 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
                        DisplayNewTabTakeoverOnNewTabPage) {
   ON_CALL(GetAdsServiceMock(), GetStatementOfAccounts(::testing::_))
       .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(/*mojom_statement=*/nullptr);
       });
 
   EXPECT_CALL(GetAdsServiceMock(), MaybeGetPrefetchedNewTabPageAd())
-      .WillOnce(::testing::Return(std::nullopt));
+      .WillOnce(::testing::Return(/*ad=*/nullptr));
 
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
                        NotDisplayNewTabTakeoverOnRestoredNewTabPage) {
   ON_CALL(GetAdsServiceMock(), GetStatementOfAccounts(::testing::_))
       .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(/*mojom_statement=*/nullptr);
       });
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
@@ -191,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
   testing::Mock::VerifyAndClearExpectations(&ads_service_mock);
 
   EXPECT_CALL(ads_service_mock, MaybeGetPrefetchedNewTabPageAd())
-      .WillOnce(::testing::Return(std::nullopt));
+      .WillOnce(::testing::Return(/*ad=*/nullptr));
   chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
   WaitForLoadStop();
   VerifyNewTabPageLoadedExpectation();

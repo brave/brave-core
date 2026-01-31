@@ -38,3 +38,5 @@ static std::string JNI_BraveDomainsUtils_GetServicesDomain(JNIEnv* env,
 
 }  // namespace android
 }  // namespace brave_domains
+
+DEFINE_JNI(BraveDomainsUtils)

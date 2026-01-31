@@ -37,6 +37,7 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -52,6 +53,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -123,6 +125,11 @@
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/storage_partition_constants.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
+
 using content::WebContents;
 
 namespace brave {
@@ -137,7 +144,7 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
 
 std::vector<int> GetSelectedIndices(Browser* browser) {
   auto* model = browser->tab_strip_model();
-  const auto selection = model->selection_model();
+  const auto& selection = model->selection_model().GetListSelectionModel();
   auto indices = std::vector<int>(selection.selected_indices().begin(),
                                   selection.selected_indices().end());
   CHECK(!indices.empty())
@@ -580,7 +587,7 @@ bool HasUngroupedTabs(Browser* browser) {
   }
 
   auto* tsm = browser->tab_strip_model();
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     if (!tsm->GetTabGroupForTab(i)) {
       return true;
     }
@@ -595,7 +602,7 @@ void GroupUngroupedTabs(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   std::vector<int> group_indices;
 
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     if (tsm->GetTabGroupForTab(i)) {
       continue;
     }
@@ -670,7 +677,7 @@ bool CanUngroupAllTabs(Browser* browser) {
     return false;
   }
   auto* tsm = browser->tab_strip_model();
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     if (tsm->GetTabGroupForTab(i)) {
       return true;
     }
@@ -683,7 +690,7 @@ void UngroupAllTabs(Browser* browser) {
     return;
   }
 
-  std::vector<int> indices(browser->tab_strip_model()->GetTabCount());
+  std::vector<int> indices(browser->tab_strip_model()->count());
   std::iota(indices.begin(), indices.end(), 0);
   browser->tab_strip_model()->RemoveFromGroup(indices);
 }
@@ -714,7 +721,7 @@ void CloseUngroupedTabs(Browser* browser) {
 
   std::vector<int> indices;
 
-  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+  for (int i = tsm->count() - 1; i >= 0; --i) {
     if (!tsm->GetTabGroupForTab(i)) {
       indices.push_back(i);
     }
@@ -741,7 +748,7 @@ void CloseTabsNotInCurrentGroup(Browser* browser) {
   }
 
   std::vector<int> indices;
-  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+  for (int i = tsm->count() - 1; i >= 0; --i) {
     if (tsm->GetTabGroupForTab(i) != *group_id) {
       indices.push_back(i);
     }
@@ -860,7 +867,7 @@ bool HasDuplicateTabs(Browser* browser) {
   }
 
   auto url = active_web_contents->GetVisibleURL();
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = 0; i < tsm->count(); ++i) {
     // Don't check the active tab.
     if (tsm->active_index() == i) {
       continue;
@@ -879,7 +886,7 @@ void CloseDuplicateTabs(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   auto url = tsm->GetActiveWebContents()->GetVisibleURL();
 
-  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+  for (int i = tsm->count() - 1; i >= 0; --i) {
     // Don't close the active tab.
     if (tsm->active_index() == i) {
       continue;
@@ -899,7 +906,8 @@ bool CanCloseTabsToLeft(Browser* browser) {
     return false;
   }
 
-  int left_selected = *(selection.selected_indices().begin());
+  int left_selected =
+      *(selection.GetListSelectionModel().selected_indices().begin());
   return left_selected > 0;
 }
 
@@ -910,7 +918,8 @@ void CloseTabsToLeft(Browser* browser) {
     return;
   }
 
-  int left_selected = *(selection.selected_indices().begin());
+  int left_selected =
+      *(selection.GetListSelectionModel().selected_indices().begin());
   for (int i = left_selected - 1; i >= 0; --i) {
     tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
                                    TabCloseTypes::CLOSE_USER_GESTURE);
@@ -1096,5 +1105,76 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   CHECK(split_id.has_value());
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
+
+void ForcePasteInBrowser(Browser* browser) {
+  CHECK(browser);
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  ForcePasteInWebContents(contents);
+}
+
+void ForcePasteInWebContents(content::WebContents* web_contents) {
+  CHECK(web_contents);
+
+  // Check the WebContents is focused.
+  auto* frame = web_contents->GetFocusedFrame();
+  if (!frame) {
+    return;
+  }
+
+  std::u16string result;
+  auto data = std::make_unique<ui::DataTransferEndpoint>(
+      frame->GetMainFrame()->GetLastCommittedURL(),
+      ui::DataTransferEndpointOptions{
+          .notify_if_restricted = true,
+          .off_the_record = frame->GetBrowserContext()->IsOffTheRecord()});
+  ui::Clipboard::GetForCurrentThread()->ReadText(
+      ui::ClipboardBuffer::kCopyPaste, data.get(), &result);
+
+  // If there's no text in the clipboard don't do anything.
+  if (result.empty()) {
+    return;
+  }
+
+  // Replace works just like Paste, but it doesn't trigger onpaste handlers
+  web_contents->Replace(result);
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
+                           const tabs::TabHandle& tab,
+                           const containers::mojom::ContainerPtr& container) {
+  const auto* tab_ptr = tab.Get();
+  if (!tab_ptr) {
+    LOG(ERROR) << "Tab is not valid";
+    return;
+  }
+
+  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+  OpenUrlInContainer(browser_window, url, container);
+}
+
+void OpenUrlInContainer(BrowserWindowInterface* browser_window,
+                        const GURL& url,
+                        const containers::mojom::ContainerPtr& container) {
+  if (!url.is_valid()) {
+    LOG(ERROR) << "Url is not valid";
+    return;
+  }
+
+  CHECK(container);
+
+  NavigateParams params(browser_window, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser_window->GetProfile(),
+      containers::kContainersStoragePartitionDomain, container->id,
+      browser_window->GetProfile()->IsOffTheRecord());
+
+  Navigate(&params);
+}
+#endif
 
 }  // namespace brave

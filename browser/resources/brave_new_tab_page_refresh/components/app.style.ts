@@ -86,15 +86,34 @@ export const style = scoped.css`
     color: #fff;
     opacity: .9;
 
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+
+    .day-period {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 14px;
+      margin-top: 7px;
+    }
+
     .ntp-top-sites-wide & {
       @container (width < ${topControlsWideBreakpoint}) {
         font-size: 16px;
+
+        .day-period {
+          display: none;
+        }
       }
     }
 
     @container (width < ${topControlsNarrowBreakpoint}) {
       margin: 12px;
       font-size: 16px;
+
+      .day-period {
+        display: none;
+      }
     }
   }
 

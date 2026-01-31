@@ -16,7 +16,7 @@ import { createWalletApi } from '../common/slices/api.slice'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import { createUIReducer } from '../common/slices/ui.slice'
-import { createPanelReducer } from '../panel/reducers/panel_reducer'
+import { createPanelSlice } from '../panel/slices/panel.slice'
 
 // mocks
 import { mockPageState } from '../stories/mock-data/mock-page-state'
@@ -77,10 +77,10 @@ export const createMockStore = (
         ...mockWalletState,
         ...(walletStateOverride || {}),
       }),
-      panel: createPanelReducer({
+      panel: createPanelSlice({
         ...mockPanelState,
         ...(panelStateOverride ?? {}),
-      }),
+      }).reducer,
       page: createPageReducer({
         ...mockPageState,
         ...(pageStateOverride || {}),

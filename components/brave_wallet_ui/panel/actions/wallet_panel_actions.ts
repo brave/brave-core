@@ -4,25 +4,20 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createAction } from '@reduxjs/toolkit'
-import { ShowConnectToSitePayload } from '../constants/action_types'
-import {
-  BraveWallet,
-  HardwareWalletResponseCodeType,
-  PanelTypes,
-  TransactionInfoLookup,
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
+import { PanelSliceActions } from '../slices/panel.slice'
 
+// Async actions (handled by async handler middleware)
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
-export const showConnectToSite =
-  createAction<ShowConnectToSitePayload>('showConnectToSite')
 export const openWalletSettings = createAction('openWalletSettings')
-export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
-export const setHardwareWalletInteractionError = createAction<
-  HardwareWalletResponseCodeType | undefined
->('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet =
   createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
-export const setSelectedTransactionId = createAction<
-  TransactionInfoLookup | undefined
->('setSelectedTransactionId')
+
+// Re-export sync actions from slice
+export const {
+  navigateTo,
+  showConnectToSite,
+  setHardwareWalletInteractionError,
+  setSelectedTransactionId,
+} = PanelSliceActions

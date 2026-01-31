@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"

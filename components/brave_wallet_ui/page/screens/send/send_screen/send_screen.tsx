@@ -28,7 +28,6 @@ import {
 import { MAX_ZCASH_MEMO_LENGTH } from '../constants/magics'
 
 // Utils
-import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -60,6 +59,7 @@ import {
   useSendBtcTransactionMutation,
   useSendZecTransactionMutation,
   useSendCardanoTransactionMutation,
+  useSendPolkadotTransactionMutation,
   useGetZCashTransactionTypeQuery,
 } from '../../../../common/slices/api.slice'
 import {
@@ -74,6 +74,8 @@ import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
 import {
   ToSectionWrapper,
   ReviewButtonRow,
+  ToSectionBackground,
+  ReviewButtonBackground,
 } from '../../composer_ui/shared_composer.style'
 import {
   Column,
@@ -167,6 +169,7 @@ export const SendScreen = React.memo(() => {
   const [sendBtcTransaction] = useSendBtcTransactionMutation()
   const [sendZecTransaction] = useSendZecTransactionMutation()
   const [sendCardanoTransaction] = useSendCardanoTransactionMutation()
+  const [sendPolkadotTransaction] = useSendPolkadotTransactionMutation()
   const [sendERC20Transfer] = useSendERC20TransferMutation()
   const [sendERC721TransferFrom] = useSendERC721TransferFromMutation()
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
@@ -527,7 +530,16 @@ export const SendScreen = React.memo(() => {
       }
 
       case BraveWallet.CoinType.DOT: {
-        assertNotReached()
+        await sendPolkadotTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          sendingMaxAmount,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex(),
+        })
+        resetSendFields()
       }
     }
   }, [
@@ -550,6 +562,7 @@ export const SendScreen = React.memo(() => {
     sendSPLTransfer,
     sendZecTransaction,
     sendCardanoTransaction,
+    sendPolkadotTransaction,
   ])
 
   const handleFromAssetValueChange = React.useCallback(
@@ -631,21 +644,16 @@ export const SendScreen = React.memo(() => {
             isLoadingBalances={isLoadingBalances}
             tokenBalancesRegistry={tokenBalancesRegistry}
           />
-          <ToSectionWrapper
-            fullWidth={true}
-            fullHeight={true}
-            justifyContent='flex-start'
+          <ToSectionBackground
             tokenColor={tokenColor}
+            fullHeight={true}
+            fullWidth={true}
+            justifyContent='space-between'
           >
-            <Column
-              fullWidth={true}
-              fullHeight={true}
-              justifyContent='space-between'
-              alignItems='center'
-              padding='32px 0px 0px 0px'
-            >
+            <ToSectionWrapper fullWidth={true}>
               <Column
                 fullWidth={true}
+                padding='32px 0px 0px 0px'
                 margin='0px 0px 16px 0px'
                 justifyContent='space-between'
               >
@@ -712,7 +720,9 @@ export const SendScreen = React.memo(() => {
                   </Row>
                 )}
               </Column>
-              <ReviewButtonRow width='100%'>
+            </ToSectionWrapper>
+            <ReviewButtonRow isMobile={isMobile}>
+              <ReviewButtonBackground>
                 <LeoSquaredButton
                   onClick={submitSend}
                   size='large'
@@ -738,9 +748,9 @@ export const SendScreen = React.memo(() => {
                     ),
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </LeoSquaredButton>
-              </ReviewButtonRow>
-            </Column>
-          </ToSectionWrapper>
+              </ReviewButtonBackground>
+            </ReviewButtonRow>
+          </ToSectionBackground>
         </Column>
       </WalletPageWrapper>
       {showSelectAddressModal && (

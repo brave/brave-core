@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave 帳戶";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "幾乎完成了！";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "確認電郵已發送。請點擊該電郵中的按鈕以啟用您的帳戶。";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "取消註冊";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "開始使用";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "重新發送確認電郵";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "看不到電郵？請檢查您的垃圾郵件資料夾，或點擊按鈕重新發送確認電郵。";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "登出";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave 面板";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "錯誤";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "開始使用";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "封鎖不安全的網站";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "開啟";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "建立新分頁時自動對焦地址欄";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "自動打開鍵盤";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "關閉應用程式時保持無痕式瀏覽分頁開啟，確保無痕式瀏覽工作階段順利繼續。";

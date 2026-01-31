@@ -96,10 +96,6 @@ const Content = styled.div`
   padding: 20px 64px;
 `
 
-const OpenArticlesDropdown = styled(Dropdown)`
-  margin-left: ${spacing['3Xl']};
-`
-
 export default function Configure() {
   const {
     setCustomizePage,
@@ -148,17 +144,21 @@ export default function Configure() {
         <CloseButton onClick={() => setCustomizePage(null)} kind='plain-faint'>
           <Icon name='close' />
         </CloseButton>
-        {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
-          <HeaderText>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</HeaderText>
-          <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
-          {feedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
-            <span slot="label">{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN)}</span>
-            <span slot='value'>
-              {openArticlesInNewTab ? getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB) : getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}
-            </span>
-            <leo-option value={'true'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB)}</leo-option>
-            <leo-option value={'false'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}</leo-option>
-          </OpenArticlesDropdown>}
+        {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={spacing['2Xl']}>
+          <Flex direction="row" align="center" gap={spacing.l}>
+            <HeaderText>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</HeaderText>
+            <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
+          </Flex>
+          {feedV2Enabled && <Flex direction="row" align="center" gap={spacing.l}>
+            <span>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN)}</span>
+            <Dropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
+              <span slot='value'>
+                {openArticlesInNewTab ? getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB) : getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}
+              </span>
+              <leo-option value={'true'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB)}</leo-option>
+              <leo-option value={'false'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}</leo-option>
+            </Dropdown>
+          </Flex>}
         </Flex>}
       </Header>
       <Hr />

@@ -9,10 +9,13 @@
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
 #include "base/strings/escape.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace ai_chat {
 
@@ -33,7 +36,8 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
     const PageContent& content,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
-  std::string truncated = content.content.substr(0, remaining_length);
+  std::string truncated(
+      base::TruncateUTF8ToByteSize(content.content, remaining_length));
   sanitize_input(truncated);
   if (content.is_video) {
     return mojom::ContentBlock::NewVideoTranscriptContentBlock(
@@ -42,44 +46,6 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
     return mojom::ContentBlock::NewPageTextContentBlock(
         mojom::PageTextContentBlock::New(std::move(truncated)));
   }
-}
-
-std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
-    const PageContents& page_contents,
-    uint32_t& max_associated_content_length,
-    base::FunctionRef<void(std::string&)> sanitize_input,
-    std::optional<uint32_t> max_per_content_length = std::nullopt) {
-  std::vector<mojom::ContentBlockPtr> blocks;
-
-  // Note: We iterate in reverse so that we prefer more recent page content
-  // (i.e. the oldest content will be truncated when we run out of context).
-  for (const auto& page_content : base::Reversed(page_contents)) {
-    uint32_t effective_length_limit = max_associated_content_length;
-    if (max_per_content_length.has_value()) {
-      effective_length_limit =
-          std::min(effective_length_limit, max_per_content_length.value());
-    }
-
-    auto block = GetContentBlockFromAssociatedContent(
-        page_content, effective_length_limit, sanitize_input);
-    uint32_t truncated_size = 0;
-    if (block->is_video_transcript_content_block()) {
-      truncated_size = block->get_video_transcript_content_block()->text.size();
-    } else if (block->is_page_text_content_block()) {
-      truncated_size = block->get_page_text_content_block()->text.size();
-    }
-
-    blocks.push_back(std::move(block));
-
-    if (truncated_size >= max_associated_content_length) {
-      max_associated_content_length = 0;
-      break;
-    } else {
-      max_associated_content_length -= truncated_size;
-    }
-  }
-
-  return blocks;
 }
 
 std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
@@ -123,6 +89,44 @@ OAIMessage& OAIMessage::operator=(OAIMessage&&) = default;
 
 OAIMessage::~OAIMessage() = default;
 
+std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
+    const PageContents& page_contents,
+    uint32_t& max_associated_content_length,
+    base::FunctionRef<void(std::string&)> sanitize_input,
+    std::optional<uint32_t> max_per_content_length) {
+  std::vector<mojom::ContentBlockPtr> blocks;
+
+  // Note: We iterate in reverse so that we prefer more recent page content
+  // (i.e. the oldest content will be truncated when we run out of context).
+  for (const auto& page_content : base::Reversed(page_contents)) {
+    uint32_t effective_length_limit = max_associated_content_length;
+    if (max_per_content_length.has_value()) {
+      effective_length_limit =
+          std::min(effective_length_limit, max_per_content_length.value());
+    }
+
+    auto block = GetContentBlockFromAssociatedContent(
+        page_content, effective_length_limit, sanitize_input);
+    uint32_t truncated_size = 0;
+    if (block->is_video_transcript_content_block()) {
+      truncated_size = block->get_video_transcript_content_block()->text.size();
+    } else if (block->is_page_text_content_block()) {
+      truncated_size = block->get_page_text_content_block()->text.size();
+    }
+
+    blocks.push_back(std::move(block));
+
+    if (truncated_size >= max_associated_content_length) {
+      max_associated_content_length = 0;
+      break;
+    } else {
+      max_associated_content_length -= truncated_size;
+    }
+  }
+
+  return blocks;
+}
+
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
@@ -139,9 +143,24 @@ std::vector<OAIMessage> BuildOAIMessages(
   base::flat_map<std::string, std::vector<mojom::ContentBlockPtr>>
       page_contents_blocks;
 
+  // We're going to iterate over the conversation entries and
+  // build a list of messages for the remote API.
+  // We largely want to send the full conversation with all messages and content
+  // blocks back to the model in order to preserve the context of the
+  // conversation. However, some tool results are extremely large (especially
+  // for images), and repetitive. We need a way to remove the noise in order to
+  // 1) not overwhelm the model and 2) not surpass the max token limit. For now,
+  // this is a rudimentary approach that only keeps the most recent large tool
+  // results. Use a two-pass approach: first identify which large tool results
+  // to keep, then build the conversation in chronological order.
+
   // Step 1:
+  //   - identify large tool results and remember which ones to remove.
   //   - generate content blocks for the page contents which we're going to
   //   keep.
+  absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
+  size_t large_tool_count = 0;
+
   for (size_t message_index = conversation_history.size(); message_index > 0;
        --message_index) {
     const auto& message = conversation_history[message_index - 1];
@@ -158,8 +177,44 @@ std::vector<OAIMessage> BuildOAIMessages(
           page_content_it->second, remaining_length, sanitize_input);
     }
 
-    if (remaining_length == 0) {
-      break;
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = message->events->size(); event_index > 0;
+           --event_index) {
+        const auto& message_event = message->events.value()[event_index - 1];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (!tool_event->output.has_value() || tool_event->output->empty()) {
+          continue;
+        }
+
+        // Check if this tool result is large
+        bool is_large = false;
+        size_t content_size = 0;
+        for (const auto& content : tool_event->output.value()) {
+          if (content->is_image_content_block()) {
+            is_large = true;
+            break;
+          } else if (content->is_text_content_block()) {
+            content_size += content->get_text_content_block()->text.size();
+            if (content_size >= features::kContentSizeLargeToolUseEvent.Get()) {
+              is_large = true;
+              break;
+            }
+          }
+        }
+
+        if (is_large) {
+          large_tool_count++;
+          if (large_tool_count > features::kMaxCountLargeToolUseEvents.Get()) {
+            large_tool_result_remove_set.insert(
+                {message_index - 1, event_index - 1});
+          }
+        }
+      }
     }
   }
 
@@ -270,6 +325,23 @@ std::vector<OAIMessage> BuildOAIMessages(
           mojom::TextContentBlock::New(skill_definition)));
     }
 
+    // Add tool calls to assistant message
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (tool_event->output.has_value()) {
+          oai_message.tool_calls.push_back(tool_event->Clone());
+        }
+      }
+    }
+
     // Build the main content block
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
       oai_message.content.push_back(
@@ -282,7 +354,49 @@ std::vector<OAIMessage> BuildOAIMessages(
               EngineConsumer::GetPromptForEntry(message))));
     }
 
+    // Add the assistant message first
     oai_messages.emplace_back(std::move(oai_message));
+
+    // Add tool results as separate tool messages
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (!tool_event->output.has_value()) {
+          continue;
+        }
+
+        // Create separate OAIMessage for tool result
+        OAIMessage tool_result_message;
+        tool_result_message.role = "tool";
+        tool_result_message.tool_call_id = tool_event->id;
+
+        // Check if we should keep the full content for this large tool result
+        bool should_keep_full_content = !large_tool_result_remove_set.contains(
+            {message_index, event_index});
+
+        if (should_keep_full_content) {
+          for (const auto& item : tool_event->output.value()) {
+            tool_result_message.content.push_back(item.Clone());
+          }
+        } else {
+          // Add text block for truncated result
+          tool_result_message.content.push_back(
+              mojom::ContentBlock::NewTextContentBlock(
+                  mojom::TextContentBlock::New(
+                      "[Large result removed to save space for "
+                      "subsequent results]")));
+        }
+
+        oai_messages.emplace_back(std::move(tool_result_message));
+      }
+    }
   }
 
   return oai_messages;

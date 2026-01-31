@@ -1028,3 +1028,6 @@ extra_kv = { allow_unsafe = false }
 
 [crate.zip32]
 extra_kv = { allow_unsafe = false }
+
+[crate.zmij]
+extra_kv = { allow_unsafe = true }

@@ -6,8 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_USER_ENGAGEMENT_REACTIONS_REACTIONS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_USER_ENGAGEMENT_REACTIONS_REACTIONS_UTIL_H_
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 

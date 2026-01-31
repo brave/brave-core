@@ -31,6 +31,7 @@
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -145,8 +146,10 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
   }
 
   if (mojom_url_response.code != net::HTTP_CREATED) {
-    return base::unexpected(std::make_tuple("Failed to request signed tokens",
-                                            /*should_retry=*/true));
+    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                              HttpStatusCodeClassType::kClientError;
+    return base::unexpected(
+        std::make_tuple("Failed to request signed tokens", should_retry));
   }
 
   std::optional<base::Value::Dict> dict =
@@ -220,8 +223,10 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
 
   if (mojom_url_response.code != net::HTTP_OK &&
       mojom_url_response.code != net::HTTP_UNAUTHORIZED) {
-    return base::unexpected(std::make_tuple("Failed to get signed tokens",
-                                            /*should_retry=*/true));
+    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                              HttpStatusCodeClassType::kClientError;
+    return base::unexpected(
+        std::make_tuple("Failed to get signed tokens", should_retry));
   }
 
   std::optional<base::Value::Dict> dict =

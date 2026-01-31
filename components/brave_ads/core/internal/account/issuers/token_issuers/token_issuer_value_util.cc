@@ -12,7 +12,6 @@
 #include "base/check_op.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
 
@@ -45,7 +44,7 @@ std::optional<std::string> ToString(TokenIssuerType token_issuer_type) {
   }
 
   NOTREACHED() << "Unexpected value for TokenIssuerType: "
-               << base::to_underlying(token_issuer_type);
+               << std::to_underlying(token_issuer_type);
 }
 
 std::optional<TokenIssuerType> ParseTokenIssuerType(

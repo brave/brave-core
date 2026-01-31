@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/common/chrome_paths_internal.h"
 
 #define GetDefaultUserDataDirectory GetDefaultUserDataDirectory_Disabled
@@ -23,7 +24,11 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
   std::string data_dir_suffix;
   brave::GetChannelImpl(nullptr, &data_dir_suffix);
 
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  *result = config_dir.Append("BraveSoftware/Brave-Origin" + data_dir_suffix);
+#else
   *result = config_dir.Append("BraveSoftware/Brave-Browser" + data_dir_suffix);
+#endif
   return true;
 }
 

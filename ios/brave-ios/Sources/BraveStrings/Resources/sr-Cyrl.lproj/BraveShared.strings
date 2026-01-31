@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Налог на Brave-у";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Скоро је!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Потврдни имејл је на путу. Кликните на дугме у том имејлу да активирате налог.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Откажи регистрацију";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Почетак";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Поново пошаљи потврдни имејл";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Не видите имејл? Проверите папку спама или кликните на дугме да поново пошаљете потврдни имејл.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Одјава";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave панел";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Грешка";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Почетак";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Блокирај опасне веб-сајтове";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Видљивост прегледања веба";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "приватна картица";
+"tabGrid.privateBrowsingInfoTitle" = "Приватна картица";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Приватно прегледање веба";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "На";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Аутоматски фокусирај адресну траку при креирању нове картице";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Аутоматски отвори тастатуру";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Оставите картице за приватно прегледање отворене када затворите апликацију како би сесије приватног прегледања могле да се наставе без прекида.";

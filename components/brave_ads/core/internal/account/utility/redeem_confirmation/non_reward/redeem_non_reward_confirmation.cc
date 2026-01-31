@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -86,11 +87,12 @@ void RedeemNonRewardConfirmation::CreateConfirmationCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  if (mojom_url_response.code != net::HTTP_OK &&
-      mojom_url_response.code != net::HTTP_NO_CONTENT) {
-    return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation,
-        /*should_retry=*/true);
+  if (HttpStatusCodeClass(mojom_url_response.code) !=
+      HttpStatusCodeClassType::kSuccess) {
+    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                              HttpStatusCodeClassType::kClientError;
+    return redeem_confirmation.FailedToRedeemConfirmation(confirmation,
+                                                          should_retry);
   }
 
   redeem_confirmation.SuccessfullyRedeemedConfirmation(confirmation);

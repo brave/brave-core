@@ -208,7 +208,6 @@ program
   .option(
     '--target_android_output_format <target_android_output_format>',
     'target Android output format (apk, aab)',
-    'aab',
   )
   .option('--target_arch <target_arch>', 'target architecture')
   .option(
@@ -414,6 +413,12 @@ program
     '--ios_simulator_platform <simulator_platform>',
     'platform to use for ios simulator',
     'iPhone 17',
+  )
+  .option(
+    '--ninja <opt>',
+    'Additional Ninja command-line options, in the form <key>:<value>',
+    collect,
+    [],
   )
   .option(
     '--ios_simulator_version <simulator_version>',

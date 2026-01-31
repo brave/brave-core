@@ -15,7 +15,7 @@ BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
 
 void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
     ui::SimpleMenuModel* model) {
-  if (tabs::utils::SupportsVerticalTabs(browser())) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser())) {
     std::optional<size_t> bookmark_all_tabs_index =
         model->GetIndexOfCommandId(IDC_BOOKMARK_ALL_TABS);
 

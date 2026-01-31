@@ -21,6 +21,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
@@ -49,6 +50,10 @@ constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
 constexpr char kCosmeticFilteringMigration[] =
     "brave.cosmetic_filtering_migration";
+
+constexpr char kUnusedSitePermissions[] = "unused_site_permissions";
+
+constexpr char kObsoleteBraveLocalhostPermission[] = "brave_localhost_access";
 
 constexpr char kExpirationPath[] = "expiration";
 constexpr char kLastModifiedPath[] = "last_modified";
@@ -108,6 +113,8 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       initialized_(false),
       store_last_modified_(store_last_modified),
       weak_factory_(this) {
+  DiscardObsoletePreferences();
+
   pref_change_registrar_.Init(prefs);
 
   pref_change_registrar_.Add(
@@ -118,6 +125,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   MigrateShieldsSettings(off_the_record_);
   MigrateFingerprintingSetingsToOriginScoped();
   MigrateCosmeticFilteringSettings();
+  MigrateBraveRemember1PStorageToAutoShred();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
@@ -159,6 +167,76 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(GetShieldsSettingUserPrefsPath(
       brave_shields::kObsoleteCosmeticFiltering));
   registry->RegisterBooleanPref(kCosmeticFilteringMigration, false);
+  registry->RegisterBooleanPref(kBraveRemember1PStorageMigration, false);
+  registry->RegisterDictionaryPref(
+      GetShieldsSettingUserPrefsPath(kObsoleteBraveLocalhostPermission));
+}
+
+void BravePrefProvider::DiscardObsoletePreferences() {
+  if (off_the_record_) {
+    return;
+  }
+
+  prefs_->ClearPref(
+      GetShieldsSettingUserPrefsPath(kObsoleteBraveLocalhostPermission));
+
+  // https://github.com/brave/brave-browser/issues/52220
+  // When a permission is deleted, a references to the non-existent permission
+  // may remain in the UNUSED_SITE_PERMISSIONS content settings. It has the
+  // following structure under the `profile.content_settings.exceptions` path:
+  //     "unused_site_permissions": {
+  //           "host, *": {
+  //               "expiration": "time",
+  //               "last_modified": "time",
+  //               "lifetime": "time",
+  //               "setting":
+  //               {
+  //                   "revoked": [ "content setting name", ... ]
+  //                   "revoked-chooser-permissions": [ "content setting name",
+  //                   ... ],
+  //                   possible other data
+  //               }
+  //           },
+  //           --- // ---
+  //     }
+  // The code below iterates through all lists within UNUSED_SITE_PERMISSIONS
+  // and removes references to obsolete permissions.
+
+  base::Value::Dict unused_site_permissions =
+      prefs_->GetDict(GetShieldsSettingUserPrefsPath(kUnusedSitePermissions))
+          .Clone();
+
+  constexpr std::string_view kObsoletePermissions[] = {
+      kObsoleteBraveLocalhostPermission};
+
+  bool need_update = false;
+  for (std::string_view obsolete_permission : kObsoletePermissions) {
+    const base::Value obsolete_value(obsolete_permission);
+
+    for (auto&& value : unused_site_permissions) {
+      if (!value.second.is_dict()) {
+        continue;
+      }
+      base::Value::Dict* setting =
+          value.second.GetDict().FindDict(kSettingPath);
+      if (!setting) {
+        continue;
+      }
+      for (auto&& list : *setting) {
+        if (!list.second.is_list()) {
+          continue;
+        }
+        if (list.second.GetList().EraseValue(obsolete_value) > 0) {
+          need_update = true;
+        }
+      }
+    }
+  }
+
+  if (need_update) {
+    prefs_->SetDict(GetShieldsSettingUserPrefsPath(kUnusedSitePermissions),
+                    std::move(unused_site_permissions));
+  }
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -538,6 +616,37 @@ void BravePrefProvider::MigrateFingerprintingSetingsToOriginScoped() {
                                 ContentSettingToValue(CONTENT_SETTING_ASK), {});
     }
   }
+}
+
+void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
+  if (off_the_record_ || prefs_->GetBoolean(kBraveRemember1PStorageMigration) ||
+      !base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    return;
+  }
+
+  std::vector<std::unique_ptr<Rule>> rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
+  }
+  rule_iterator.reset();
+
+  for (const auto& fp_rule : rules) {
+    const auto content_settings_value = ValueToContentSetting(fp_rule->value);
+    auto auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER;
+    if (content_settings_value == CONTENT_SETTING_BLOCK) {
+      auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED;
+    }
+
+    PrefProvider::SetWebsiteSetting(
+        fp_rule->primary_pattern, fp_rule->secondary_pattern,
+        ContentSettingsType::BRAVE_AUTO_SHRED,
+        brave_shields::AutoShredSetting::ToValue(auto_shred_mode), {});
+  }
+  prefs_->SetBoolean(kBraveRemember1PStorageMigration, true);
 }
 
 void BravePrefProvider::MigrateCosmeticFilteringSettings() {

@@ -35,18 +35,12 @@ extends SettingsClearBrowsingDataDialogElement {
 
   private saveOnExitSettingsCallback_: (() => void) | null = null
 
-  static override get properties() {
-    return {
-      ...SettingsClearBrowsingDataDialogElement.properties,
-      braveRewardsEnabled_: {
-        type: Boolean,
-        value: false,
-      },
-      onClearBraveAdsDataClickHandler_: {
-        type: Function,
-        value: () => {},
-      },
-    }
+  constructor() {
+    super()
+
+    // Initialize new properties
+    this.braveRewardsEnabled_ = false
+    this.onClearBraveAdsDataClickHandler_ = () => {}
   }
 
   override ready() {

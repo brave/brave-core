@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
@@ -48,8 +49,9 @@ const char kToolResultSuccessSubstring[] = "successful";
 class ContentAgentToolsTest : public InProcessBrowserTest {
  public:
   ContentAgentToolsTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgentProfile);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{ai_chat::features::kAIChatAgentProfile},
+        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 
   ~ContentAgentToolsTest() override = default;

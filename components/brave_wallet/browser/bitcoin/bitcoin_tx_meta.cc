@@ -64,7 +64,7 @@ mojom::TransactionInfoPtr BitcoinTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      tx_->to(), false, nullptr);
+      tx_->to(), false, swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType BitcoinTxMeta::GetCoinType() const {

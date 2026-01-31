@@ -5,8 +5,11 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
-import { useDispatch } from 'react-redux'
 import Button from '@brave/leo/react/button'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
+
 import * as leo from '@brave/leo/tokens/css/variables'
 import useMediaQuery from '$web-common/useMediaQuery'
 
@@ -44,7 +47,7 @@ export const RecoveryPhraseExplainer = () => {
   const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // mutations
   const [report] = useReportOnboardingActionMutation()

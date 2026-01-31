@@ -28,6 +28,7 @@
 #include "brave/ios/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/ui/webui/sanitized_image_source.h"
@@ -63,6 +64,8 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
 
   source->AddBoolean("isMobile", true);
   source->AddBoolean("isIOS", true);
+  source->AddBoolean("walletDebug",
+                     brave_wallet::features::IsWalletDebugEnabled());
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);

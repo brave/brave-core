@@ -17,6 +17,8 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/test/base/testing_profile.h"
@@ -313,6 +315,13 @@ class DirectAccessContentSettings {
     value.Set("setting", setting);
 
     prefs_value_.Set(primary + "," + secondary, std::move(value));
+  }
+
+  void AddRule(const std::string& primary,
+               const std::string& secondary,
+               base::Value::Dict setting) {
+    prefs_value_.Set(primary + "," + secondary,
+                     base::DictValue().Set("setting", std::move(setting)));
   }
 
   void AddRuleWithoutSettingValue(const std::string& primary,
@@ -877,6 +886,141 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
   EXPECT_EQ(block, cosmetic_filtering_v2.GetContentSetting(
                        &provider, GURL("https://brave.block")));
 
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, ObsoleteBraveLocalhostPermission) {
+  constexpr const char kBraveLocalhostPermission[] = "brave_localhost_access";
+
+  DirectAccessContentSettings brave_localhost_access(
+      testing_profile()->GetPrefs(), ContentSettingsType::DEFAULT,
+      GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission));
+  brave_localhost_access.AddRule("brave.block", "*", CONTENT_SETTING_BLOCK);
+  brave_localhost_access.Write();
+
+  testing_profile()->GetPrefs()->SetDict(
+      GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission),
+      base::Value::Dict().Set("test", "value"));
+
+  DirectAccessContentSettings unused_site_permissions(
+      testing_profile()->GetPrefs(),
+      ContentSettingsType::REVOKED_UNUSED_SITE_PERMISSIONS);
+
+  base::Value::Dict value;
+  value.Set("string", "string");
+  value.Set("int", 10);
+  value.Set("dict", base::DictValue().Set("test", "test"));
+  value.Set("revoked", base::ListValue()
+                           .Append(kBraveLocalhostPermission)
+                           .Append(kBraveLocalhostPermission)
+                           .Append("other"));
+  value.Set("revoked-chooser-permissions",
+            base::ListValue().Append(1).Append(kBraveLocalhostPermission));
+  value.Set("list",
+            base::ListValue().Append(2).Append(kBraveLocalhostPermission));
+
+  unused_site_permissions.AddRule("brave.block", "*", value.Clone());
+  unused_site_permissions.Write();
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  // Obsolete settings have been removed.
+  EXPECT_FALSE(testing_profile()->GetPrefs()->HasPrefPath(
+      GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission)));
+
+  unused_site_permissions.Refresh();
+  const auto changed_value =
+      unused_site_permissions.GetSettingDirectly("brave.block");
+  EXPECT_EQ(*value.Find("string"), *changed_value.GetDict().Find("string"));
+  EXPECT_EQ(*value.Find("int"), *changed_value.GetDict().Find("int"));
+  EXPECT_EQ(*value.Find("dict"), *changed_value.GetDict().Find("dict"));
+  EXPECT_EQ(base::ListValue().Append("other"),
+            *changed_value.GetDict().FindList("revoked"));
+  EXPECT_EQ(base::ListValue().Append(1),
+            *changed_value.GetDict().FindList("revoked-chooser-permissions"));
+  EXPECT_EQ(base::ListValue().Append(2),
+            *changed_value.GetDict().FindList("list"));
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveShredFeature);
+
+  constexpr char kAllowPattern[] = "brave.allow";
+  constexpr char kBlockPattern[] = "brave.block";
+
+  DirectAccessContentSettings remember_1p_storage(
+      testing_profile()->GetPrefs(),
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+
+  remember_1p_storage.AddRule(kAllowPattern, "*", CONTENT_SETTING_ALLOW);
+  remember_1p_storage.AddRule(kBlockPattern, "*", CONTENT_SETTING_BLOCK);
+
+  EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
+  remember_1p_storage.Write();
+
+  testing_profile()->GetPrefs()->ClearPref(
+      content_settings::kBraveRemember1PStorageMigration);
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  DirectAccessContentSettings auto_shred_settings(
+      testing_profile()->GetPrefs(),
+      brave_shields::AutoShredSetting::kContentSettingsType);
+
+  // Check that migration happened.
+  EXPECT_EQ(2u, auto_shred_settings.GetRulesCount());
+
+  const auto last_tab_closed = brave_shields::AutoShredSetting::ToValue(
+      brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED);
+  EXPECT_EQ(last_tab_closed,
+            auto_shred_settings.GetSettingDirectly(kBlockPattern, "*"));
+
+  const auto never = brave_shields::AutoShredSetting::ToValue(
+      brave_shields::mojom::AutoShredMode::NEVER);
+  EXPECT_EQ(never, auto_shred_settings.GetSettingDirectly(kAllowPattern, "*"));
+  EXPECT_TRUE(testing_profile()->GetPrefs()->GetBoolean(
+      content_settings::kBraveRemember1PStorageMigration));
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, SkipRemember1pStorageMigration) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(
+      brave_shields::features::kBraveShredFeature);
+
+  constexpr char kAllowPattern[] = "brave.allow";
+  constexpr char kBlockPattern[] = "brave.block";
+
+  DirectAccessContentSettings remember_1p_storage(
+      testing_profile()->GetPrefs(),
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+
+  remember_1p_storage.AddRule(kAllowPattern, "*", CONTENT_SETTING_ALLOW);
+  remember_1p_storage.AddRule(kBlockPattern, "*", CONTENT_SETTING_BLOCK);
+
+  EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
+  remember_1p_storage.Write();
+
+  testing_profile()->GetPrefs()->ClearPref(
+      content_settings::kBraveRemember1PStorageMigration);
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  DirectAccessContentSettings auto_shred_settings(
+      testing_profile()->GetPrefs(),
+      brave_shields::AutoShredSetting::kContentSettingsType);
+
+  // Make sure that no migration happened.
+  EXPECT_EQ(0u, auto_shred_settings.GetRulesCount());
   provider.ShutdownOnUIThread();
 }
 

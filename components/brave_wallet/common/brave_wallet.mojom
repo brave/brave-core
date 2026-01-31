@@ -543,12 +543,16 @@ enum RoutePriority {
 };
 
 enum SwapProvider {
+  // Providers supported by Gate3
   kAuto,
+  kNearIntents,
+  kSquid,
+
+  // Providers not supported by Gate3
   kLiFi,
   kZeroEx,
   kJupiter,
-  kSquid,
-  kNearIntents,
+  kCowSwap,
 };
 
 struct SwapQuoteParams {
@@ -578,7 +582,6 @@ union SwapTransactionParamsUnion {
   JupiterTransactionParams jupiter_transaction_params;
   SwapQuoteParams zero_ex_transaction_params;
   LiFiStep lifi_transaction_params;
-  SwapQuoteParams squid_transaction_params;
   SwapQuoteParams gate3_transaction_params;
 };
 
@@ -586,7 +589,6 @@ union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
   ZeroExQuote zero_ex_quote;
   LiFiQuote lifi_quote;
-  SquidQuote squid_quote;
   Gate3SwapQuote gate3_quote;
 };
 
@@ -594,7 +596,6 @@ union SwapTransactionUnion {
   string jupiter_transaction;
   ZeroExTransaction zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
-  SquidTransactionUnion squid_transaction;
   Gate3SwapRoute gate3_route;
 };
 
@@ -636,7 +637,7 @@ struct Gate3SwapEvmTransactionParams {
   string to;
   string value;
   string data;
-  string? gas_limit;
+  string gas_limit;
   string? gas_price;
 };
 
@@ -721,8 +722,8 @@ struct Gate3SwapRoute {
   // Address to deposit funds (may not be available for indicative quotes)
   string? deposit_address;
 
-  // Memo required for deposit (if applicable)
-  string? deposit_memo;
+  // Memo required for deposit (null if not applicable)
+  array<uint8>? deposit_memo;
 
   // Quote expiration time (Unix timestamp in seconds); may be unset.
   string? expires_at;
@@ -731,13 +732,39 @@ struct Gate3SwapRoute {
 
   Gate3SwapTransactionParamsUnion? transaction_params;
 
-  bool has_post_submit_hook;
   bool requires_token_allowance;
   bool requires_firm_route;
 };
 
 struct Gate3SwapQuote {
   array<Gate3SwapRoute> routes;
+};
+
+struct Gate3SwapStatusParams {
+  string route_id;
+  string tx_hash;
+  CoinType source_coin;
+  string source_chain_id;
+  CoinType destination_coin;
+  string destination_chain_id;
+  string deposit_address;
+  // Memo required for deposit (null if not applicable)
+  array<uint8>? deposit_memo;
+  SwapProvider provider;
+};
+
+enum Gate3SwapStatusCode {
+  kPending,
+  kProcessing,
+  kSuccess,
+  kFailed,
+  kRefunded,
+};
+
+struct Gate3SwapStatus {
+  Gate3SwapStatusCode status;
+  string internal_status;
+  string explorer_url;
 };
 
 struct ZeroExFee {
@@ -796,7 +823,6 @@ union SwapErrorUnion {
   JupiterError jupiter_error;
   ZeroExError zero_ex_error;
   LiFiError lifi_error;
-  SquidError squid_error;
   Gate3SwapError gate3_error;
 };
 
@@ -817,8 +843,8 @@ struct JupiterSwapInfo {
   string output_mint;
   string in_amount;
   string out_amount;
-  string fee_amount;
-  string fee_mint;
+  string? fee_amount;
+  string? fee_mint;
 };
 
 struct JupiterRouteStep {
@@ -1057,87 +1083,6 @@ struct LifiToolError {
 struct LiFiError {
   string message;
   LiFiErrorCode code;
-};
-
-// Squid types
-enum SquidActionType {
-  kWrap,
-  kUnwrap,
-  kSwap,
-  kBridge,
-  kUnknown,
-};
-
-struct SquidAction {
-  SquidActionType type;
-  string description;
-  string provider;
-  string logo_uri;
-
-  string from_amount;
-  BlockchainToken from_token;
-
-  string to_amount;
-  string to_amount_min;
-  BlockchainToken to_token;
-};
-
-struct SquidGasCost {
-  string amount;
-  string gas_limit;
-  BlockchainToken token;
-};
-
-struct SquidFeeCost {
-  string amount;
-  string description;
-  string name;
-  BlockchainToken token;
-};
-
-struct SquidQuote {
-  array<SquidAction> actions;
-  string aggregate_price_impact;
-  string aggregate_slippage;
-  string estimated_route_duration;
-  string exchange_rate;
-  array<SquidFeeCost> fee_costs;
-  array<SquidGasCost> gas_costs;
-  bool is_boost_supported;
-  string from_amount;
-  BlockchainToken from_token;
-  string to_amount;
-  string to_amount_min;
-  BlockchainToken to_token;
-  string allowance_target;
-};
-
-enum SquidErrorType {
-  kBadRequest,
-  kSchemaValidationError,
-  kUnknownError,
-};
-
-struct SquidError {
-  string message;
-  SquidErrorType type;
-  bool is_insufficient_liquidity;
-};
-
-union SquidTransactionUnion {
-  SquidEvmTransaction evm_transaction;
-};
-
-struct SquidEvmTransaction {
-  string data;
-  string target;
-  string value;
-  string gas_limit;
-  string gas_price;
-  string last_base_fee_per_gas;
-  string max_fee_per_gas;
-  string max_priority_fee_per_gas;
-  string chain_id;
 };
 
 enum SwapDiscountCode {
@@ -1443,6 +1388,12 @@ interface KeyringService {
   EncodePrivateKeyForExport(AccountId account_id, string password)
       => (string? privateKey);
 
+  // Encodes the Polkadot private key for exporting with a custom encryption
+  // password.
+  EncodePolkadotKeyForExport(
+      AccountId account_id, string password, string encryption_password)
+      => (string? privateKey);
+
   // Imports an account with a specific private key to the corresponding keyring
   ImportEthereumAccount(string accountName, string privateKey)
       => (AccountInfo? account);
@@ -1621,6 +1572,10 @@ interface SwapService {
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
+
+  GetStatus(Gate3SwapStatusParams params) => (Gate3SwapStatus? response,
+                                              Gate3SwapError? error,
+                                              string error_string);
 
   // Get LiFi status for a given transaction meta id
   GetLiFiStatus(string tx_hash) => (LiFiStatus? response,
@@ -2602,9 +2557,9 @@ struct CardanoTxData {
 
 struct PolkadotTxdata {
   string to;
-  uint64 amount;
+  uint128 amount;
+  uint128 fee;
   bool sending_max_amount;
-  uint64 fee;
 };
 
 union TxDataUnion {
@@ -2636,6 +2591,7 @@ struct SwapInfo {
   // An empty string indicates that the recipient is not known.
   string recipient;
   SwapProvider provider;
+  string route_id;
 };
 
 // Deprecated in favour of SwapInfo
@@ -2681,6 +2637,7 @@ struct TransactionInfo {
   string? effective_recipient;
   bool is_retriable;
 
+  SwapInfo? swap_info;
   SwapInfoDeprecated? swap_info_deprecated;
 };
 
@@ -2707,6 +2664,7 @@ struct NewEvmTransactionParams {
   string value;
   string gas_limit;
   array<uint8> data;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved Bitcoin transaction.
@@ -2716,6 +2674,7 @@ struct NewBitcoinTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved ZCash transaction.
@@ -2728,6 +2687,7 @@ struct NewZCashTransactionParams {
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
   bool use_shielded_pool;
+  SwapInfo? swap_info;
 };
 
 // Params sent from UI to Core for a new unapproved Cardano transaction.
@@ -2737,13 +2697,26 @@ struct NewCardanoTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  SwapInfo? swap_info;
+};
+
+// Params sent from UI to Core for a new unapproved Polkadot transaction.
+struct NewPolkadotTransactionParams {
+  string chain_id;
+  AccountId from;
+  string to;
+  uint128 amount;
+  bool sending_max_amount;
+  SwapInfo? swap_info;
 };
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(
-      TxDataUnion tx_data_union, string chain_id, AccountId from)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union,
+                           string chain_id,
+                           AccountId from,
+                           SwapInfo? swap_info)
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
@@ -2756,6 +2729,9 @@ interface TxService {
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedCardanoTransaction(NewCardanoTransactionParams params)
+      => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedPolkadotTransaction(NewPolkadotTransactionParams params)
       => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction

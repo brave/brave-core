@@ -30,7 +30,7 @@ class BraveTabContainer : public TabContainerImpl,
  public:
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
-                    TabDragContextBase* drag_context,
+                    TabDragPositioningDelegateBase* drag_position_delegate,
                     TabSlotController& tab_slot_controller);
   ~BraveTabContainer() override;
 
@@ -109,6 +109,8 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarDisabledWhenHorizontal);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            ScrollBarVisibilityWithManyTabs);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
@@ -221,9 +223,12 @@ class BraveTabContainer : public TabContainerImpl,
   // tabs.
   void UpdatePinnedUnpinnedSeparator();
 
+  // Checks if the vertical tabs should be shown
+  bool ShouldShowVerticalTabs() const;
+
   base::flat_set<Tab*> closing_tabs_;
 
-  raw_ptr<TabDragContextBase> drag_context_;
+  raw_ptr<TabDragContext> drag_context_;
 
   // A pointer storing the global tab style to be used.
   const raw_ptr<const TabStyle> tab_style_;

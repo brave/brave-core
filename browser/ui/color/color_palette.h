@@ -15,9 +15,9 @@ inline constexpr SkColor kLightColorForTest = SkColorSetRGB(0xFF, 0xFF, 0xFF);
 inline constexpr SkColor kDarkColorForTest = SkColorSetRGB(0x11, 0x11, 0x11);
 inline constexpr SkColor kDarkerColorForTest = SkColorSetRGB(0x00, 0x00, 0x00);
 
-inline constexpr SkColor kPrivateFrame = SkColorSetRGB(0x13, 0x05, 0x2A);
+inline constexpr SkColor kPrivateFrame = SkColorSetRGB(0x1F, 0x16, 0x29);
 
-inline constexpr SkColor kPrivateTorFrame = SkColorSetRGB(0x19, 0x04, 0x23);
+inline constexpr SkColor kPrivateTorFrame = SkColorSetRGB(0x22, 0x15, 0x27);
 
 inline constexpr SkColor kBraveNewTabBackgroundDark =
     SkColorSetRGB(0x33, 0x36, 0x39);

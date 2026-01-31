@@ -21,7 +21,7 @@ import UniformTypeIdentifiers
 import os.log
 
 /// Shortcut Activity Types and detailed information to create and perform actions
-public enum ActivityType: String {
+public enum ActivityType: String, CaseIterable {
   case newTab = "NewTab"
   case newPrivateTab = "NewPrivateTab"
   case openBookmarks = "OpenBookmarks"

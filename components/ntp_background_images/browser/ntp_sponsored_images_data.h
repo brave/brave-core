@@ -114,7 +114,7 @@ struct NTPSponsoredImagesData {
       size_t campaign_index,
       size_t creative_index) const;
   std::optional<base::Value::Dict> MaybeGetBackground(
-      const brave_ads::NewTabPageAdInfo& ad);
+      const brave_ads::mojom::NewTabPageAdInfo& ad);
 
   const Creative* GetCreativeByInstanceId(
       const std::string& creative_instance_id) const;

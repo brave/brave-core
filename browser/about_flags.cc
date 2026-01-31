@@ -12,8 +12,7 @@
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -78,7 +77,6 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
-#include "content/public/common/content_features.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
@@ -111,6 +109,11 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -392,20 +395,11 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                    \
       FEATURE_VALUE_TYPE(features::kBraveAndroidDynamicColors),      \
   })
-#define BRAVE_ANDROID_OPEN_PDF_INLINE                      \
-  EXPAND_FEATURE_ENTRIES({                                 \
-      "brave-android-open-pdf-inline",                     \
-      "Open PDF inline on Android",                        \
-      "Opens pdf files in browser when enabled.",          \
-      kOsAndroid,                                          \
-      FEATURE_VALUE_TYPE(features::kAndroidOpenPdfInline), \
-  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_ANDROID_DYNAMIC_COLORS
-#define BRAVE_ANDROID_OPEN_PDF_INLINE
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -518,9 +512,9 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #if defined(TOOLKIT_VIEWS)
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
   EXPAND_FEATURE_ENTRIES({                                           \
-      "brave-midnight-theme",                                        \
-      "Brave Midnight Theme",                                        \
-      "Enables the Brave Midnight theme",                            \
+      "brave-ultra-dark-theme",                                      \
+      "Brave Ultra Dark Theme",                                      \
+      "Enables the Brave Ultra Dark theme",                          \
       kOsWin | kOsMac | kOsLinux,                                    \
       FEATURE_VALUE_TYPE(darker_theme::features::kBraveDarkerTheme), \
   })
@@ -667,6 +661,31 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_AI_REWRITER
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#define BRAVE_ADS_FEATURE_ENTRIES                                             \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-ads-custom-push-notifications-ads",                          \
+          "Enable Brave Ads custom push notifications",                       \
+          "Enable Brave Ads custom push notifications to support rich media", \
+          kOsAll,                                                             \
+          FEATURE_VALUE_TYPE(brave_ads::kCustomNotificationAdFeature),        \
+      },                                                                      \
+      {                                                                       \
+          "brave-ads-allowed-to-fallback-to-custom-push-notification-ads",    \
+          "Allow Brave Ads to fallback from native to custom push "           \
+          "notifications",                                                    \
+          "Allow Brave Ads to fallback from native to custom push "           \
+          "notifications on operating systems which do not support native "   \
+          "notifications",                                                    \
+          kOsAll,                                                             \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_ads::kAllowedToFallbackToCustomNotificationAdFeature),    \
+      })
+#else
+#define BRAVE_ADS_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_LOCAL_AI_MODELS                                 \
@@ -960,14 +979,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                                  kBraveGoogleSignInPermission),                \
       },                                                                       \
       {                                                                        \
-          "brave-localhost-access-permission",                                 \
-          "Enable Localhost access permission prompt",                         \
-          "Enable permissioning access to localhost connections",              \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBraveLocalhostAccessPermission),       \
-      },                                                                       \
-      {                                                                        \
           "brave-extension-network-blocking",                                  \
           "Enable extension network blocking",                                 \
           "Enable blocking for network requests initiated by extensions",      \
@@ -1097,24 +1108,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(                                                  \
               brave_rewards::features::kPlatformCreatorDetectionFeature),      \
-      },                                                                       \
-      {                                                                        \
-          "brave-ads-custom-push-notifications-ads",                           \
-          "Enable Brave Ads custom push notifications",                        \
-          "Enable Brave Ads custom push notifications to support rich media",  \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_ads::kCustomNotificationAdFeature),         \
-      },                                                                       \
-      {                                                                        \
-          "brave-ads-allowed-to-fallback-to-custom-push-notification-ads",     \
-          "Allow Brave Ads to fallback from native to custom push "            \
-          "notifications",                                                     \
-          "Allow Brave Ads to fallback from native to custom push "            \
-          "notifications on operating systems which do not support native "    \
-          "notifications",                                                     \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::kAllowedToFallbackToCustomNotificationAdFeature),     \
       },                                                                       \
       {                                                                        \
           "file-system-access-api",                                            \
@@ -1322,13 +1315,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
-  BRAVE_ANDROID_OPEN_PDF_INLINE                                                \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
+  BRAVE_ADS_FEATURE_ENTRIES                                                    \
   BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

@@ -25,6 +25,7 @@ struct RewardsFlags {
   bool persist_logs = false;
   std::optional<int> reconcile_interval;
   std::optional<int> retry_interval;
+  std::optional<int> check_linkage_interval;
 };
 
 }  // namespace brave_rewards

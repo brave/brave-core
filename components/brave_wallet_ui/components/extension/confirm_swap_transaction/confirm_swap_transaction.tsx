@@ -12,21 +12,18 @@ import Icon from '@brave/leo/react/icon'
 import {
   useGetActiveOriginQuery,
   useGetNetworkQuery,
-  useGetTokenInfoQuery,
 } from '../../../common/slices/api.slice'
-
-// Constants
-import { BraveWallet } from '../../../constants/types'
-import {
-  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-  UNKNOWN_TOKEN_COINGECKO_ID,
-} from '../../../common/constants/magics'
+import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.extra'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { isBridgeTransaction } from '../../../utils/tx-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { getAddressLabel } from '../../../utils/account-utils'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+
+// Constants
+import { SwapProviderMetadata } from '../../../page/screens/swap/constants/metadata'
+import { BraveWallet, SwapProviderNameMapping } from '../../../constants/types'
 
 // Hooks
 import {
@@ -71,50 +68,15 @@ import {
   InfoBox,
   Card,
   ArrowIconContainer,
+  ProviderIcon,
 } from './confirm_swap_transaction.style'
-import { Column, Row, VerticalDivider } from '../../shared/style'
+import { Column, Row, VerticalDivider, Text } from '../../shared/style'
 import {
   ConfirmationButtonLink,
+  ConfirmationIconButton,
   ConfirmationInfoLabel,
   ScrollableColumn,
 } from '../shared-panel-styles'
-
-const isNativeToken = (token: BraveWallet.BlockchainToken) =>
-  token.contractAddress === ''
-  || token.contractAddress.toLowerCase() === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-
-const makeToken = (
-  token?: BraveWallet.BlockchainToken,
-  network?: BraveWallet.NetworkInfo,
-  symbol?: string,
-  decimals?: number,
-) => {
-  if (!token || !network) {
-    return undefined
-  }
-
-  if (token.coingeckoId !== UNKNOWN_TOKEN_COINGECKO_ID) {
-    return token
-  }
-
-  if (isNativeToken(token)) {
-    return {
-      ...token,
-      decimals: network.decimals,
-      symbol: network.symbol,
-    }
-  }
-
-  if (!symbol || !decimals) {
-    return undefined
-  }
-
-  return {
-    ...token,
-    symbol,
-    decimals,
-  }
-}
 
 export function ConfirmSwapTransaction() {
   // State
@@ -123,6 +85,8 @@ export function ConfirmSwapTransaction() {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [showTransactionDetails, setShowTransactionDetails] =
+    React.useState<boolean>(false)
+  const [isContractAddressCopied, setIsContractAddressCopied] =
     React.useState<boolean>(false)
 
   // Queries
@@ -157,68 +121,51 @@ export function ConfirmSwapTransaction() {
   const isBridgeTx = selectedPendingTransaction
     ? isBridgeTransaction(selectedPendingTransaction)
     : false
-  const toChainId = selectedPendingTransaction?.swapInfoDeprecated?.toChainId
-  const toCoin = selectedPendingTransaction?.swapInfoDeprecated?.toCoin
 
   // Queries
-  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
-    useSwapTransactionParser(selectedPendingTransaction)
+  const {
+    destinationToken,
+    sourceToken,
+    destinationAmount,
+    destinationAmountMin,
+    sourceAmount,
+    destinationAddress,
+    provider,
+  } = useSwapTransactionParser(selectedPendingTransaction)
 
-  const { data: sellAssetNetwork } = useGetNetworkQuery(sellToken ?? skipToken)
+  const { data: sourceNetwork } = useGetNetworkQuery(sourceToken ?? skipToken)
 
-  const { data: buyAssetNetwork } = useGetNetworkQuery(
-    isBridgeTx && toChainId && toCoin
-      ? { chainId: toChainId, coin: toCoin }
-      : (buyToken ?? skipToken),
-  )
-
-  const { data: sellTokenInfo } = useGetTokenInfoQuery(
-    sellToken
-      && sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
-      && !isNativeToken(sellToken)
-      ? {
-          contractAddress: sellToken.contractAddress,
-          chainId: sellToken.chainId,
-          coin: sellToken.coin,
-        }
+  const { data: destinationNetwork } = useGetNetworkQuery(
+    isBridgeTx && destinationToken
+      ? { chainId: destinationToken.chainId, coin: destinationToken.coin }
       : skipToken,
   )
+  const {
+    account: destinationAccount,
+    isLoading: isLoadingDestinationAccount,
+  } = useAccountFromAddressQuery(destinationAddress || skipToken)
 
-  const { data: buyTokenInfo } = useGetTokenInfoQuery(
-    buyToken
-      && buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
-      && !isNativeToken(buyToken)
-      ? {
-          contractAddress: buyToken.contractAddress,
-          chainId: buyToken.chainId,
-          coin: buyToken.coin,
-        }
-      : skipToken,
-  )
+  const contractAddressTitle = React.useMemo(() => {
+    if (provider === BraveWallet.SwapProvider.kNearIntents) {
+      return getLocale('braveWalletSwapDepositAddress')
+    }
 
-  // Memos
-  const buyTokenResult = React.useMemo(
-    () =>
-      makeToken(
-        buyToken,
-        buyAssetNetwork,
-        buyTokenInfo?.symbol,
-        buyTokenInfo?.decimals,
-      ),
-    [buyToken, buyAssetNetwork, buyTokenInfo],
-  )
-  const sellTokenResult = React.useMemo(
-    () =>
-      makeToken(
-        sellToken,
-        sellAssetNetwork,
-        sellTokenInfo?.symbol,
-        sellTokenInfo?.decimals,
-      ),
-    [sellToken, sellAssetNetwork, sellTokenInfo],
-  )
+    if (sourceToken?.coin === BraveWallet.CoinType.ETH) {
+      return getLocale('braveWalletNFTDetailContractAddress')
+    }
 
-  if (!selectedPendingTransaction || !transactionDetails) {
+    if (sourceToken?.coin === BraveWallet.CoinType.SOL) {
+      return getLocale('braveWalletSwapProgramAddress')
+    }
+
+    return getLocale('braveWalletNFTDetailContractAddress')
+  }, [provider, sourceToken])
+
+  if (
+    !selectedPendingTransaction
+    || !transactionDetails
+    || isLoadingDestinationAccount
+  ) {
     return <LoadingPanel />
   }
 
@@ -254,7 +201,6 @@ export function ConfirmSwapTransaction() {
               <OriginInfoCard
                 origin={originInfo}
                 noBackground={true}
-                provider={getAddressLabel(transactionDetails.recipient) ?? ''}
               />
             </Row>
           )}
@@ -271,16 +217,16 @@ export function ConfirmSwapTransaction() {
                 width='100%'
                 padding='16px'
               >
-                {/* Sell token */}
+                {/* Source token */}
                 <ConfirmationTokenInfo
-                  token={sellTokenResult}
-                  label='spend'
+                  token={sourceToken}
+                  label='swapSource'
                   amount={
-                    !sellAmountWei.isUndefined()
-                      ? sellAmountWei.format()
+                    !sourceAmount.isUndefined()
+                      ? sourceAmount.format()
                       : undefined
                   }
-                  network={sellAssetNetwork}
+                  network={sourceNetwork}
                   account={fromAccount}
                 />
 
@@ -295,19 +241,26 @@ export function ConfirmSwapTransaction() {
                   <VerticalDivider />
                 </Row>
 
-                {/* Buy token */}
+                {/* Destination token */}
                 <ConfirmationTokenInfo
-                  token={buyTokenResult}
-                  label={isBridgeTx ? 'bridge' : 'receive'}
+                  token={destinationToken}
+                  label={
+                    !destinationAmount.isUndefined()
+                      ? 'swapDestination'
+                      : !destinationAmountMin.isUndefined()
+                        ? 'swapDestinationMin'
+                        : 'swapDestination'
+                  }
                   amount={
-                    !buyAmountWei.isUndefined()
-                      ? buyAmountWei.format()
-                      : undefined
+                    !destinationAmount.isUndefined()
+                      ? destinationAmount.format()
+                      : !destinationAmountMin.isUndefined()
+                        ? destinationAmountMin.format()
+                        : undefined
                   }
-                  network={buyAssetNetwork}
-                  receiveAddress={
-                    selectedPendingTransaction.swapInfoDeprecated?.receiver
-                  }
+                  network={destinationNetwork}
+                  receiveAddress={destinationAddress}
+                  account={destinationAccount}
                 />
               </Card>
 
@@ -317,6 +270,29 @@ export function ConfirmSwapTransaction() {
                 padding='16px'
                 gap='8px'
               >
+                {provider && (
+                  <>
+                    <Row justifyContent='space-between'>
+                      <ConfirmationInfoLabel textColor='secondary'>
+                        {getLocale('braveWalletSwapProvider')}
+                      </ConfirmationInfoLabel>
+                      <Row
+                        width='unset'
+                        gap='4px'
+                      >
+                        <ProviderIcon src={SwapProviderMetadata[provider]} />
+                        <Text
+                          textSize='12px'
+                          isBold={true}
+                          textColor='primary'
+                        >
+                          {SwapProviderNameMapping[provider]}
+                        </Text>
+                      </Row>
+                    </Row>
+                    <VerticalDivider />
+                  </>
+                )}
                 <ConfirmationNetworkFee
                   transactionsNetwork={transactionsNetwork}
                   gasFee={gasFee}
@@ -330,7 +306,7 @@ export function ConfirmSwapTransaction() {
                 <VerticalDivider />
                 <Row justifyContent='space-between'>
                   <ConfirmationInfoLabel textColor='secondary'>
-                    {getLocale('braveWalletNFTDetailContractAddress')}
+                    {contractAddressTitle}
                   </ConfirmationInfoLabel>
                   <Row
                     width='unset'
@@ -346,6 +322,26 @@ export function ConfirmSwapTransaction() {
                         {reduceAddress(transactionDetails.recipient)}
                         <Icon name='arrow-diagonal-up-right' />
                       </ConfirmationButtonLink>
+                    </Tooltip>
+                    <Tooltip
+                      text={
+                        isContractAddressCopied
+                          ? getLocale('braveWalletButtonCopied')
+                          : ''
+                      }
+                    >
+                      <ConfirmationIconButton
+                        onClick={() => {
+                          copyToClipboard(transactionDetails.recipient)
+                          setIsContractAddressCopied(true)
+                          setTimeout(
+                            () => setIsContractAddressCopied(false),
+                            1500,
+                          )
+                        }}
+                      >
+                        <Icon name='copy' />
+                      </ConfirmationIconButton>
                     </Tooltip>
                   </Row>
                 </Row>

@@ -215,6 +215,7 @@ const Config = function () {
   ])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.is_asan = getEnvConfig(['is_asan'])
   this.is_msan = getEnvConfig(['is_msan'])
   this.is_ubsan = getEnvConfig(['is_ubsan'])
   this.use_no_gn_gen = getEnvConfig(['use_no_gn_gen'])
@@ -335,10 +336,17 @@ Config.prototype.enableCDMHostVerification = function () {
 }
 
 Config.prototype.isAsan = function () {
-  if (this.is_asan) {
-    return true
+  if (this.is_asan !== undefined) {
+    return this.is_asan
   }
   return false
+}
+
+Config.prototype.isLsan = function () {
+  // LSAN only works with ASAN and has very low overhead.
+  // Chromium supports LeakSanitizer is supported on x86_64 Linux only.
+  // See https://www.chromium.org/developers/testing/leaksanitizer/
+  return this.isAsan() && this.targetOS === 'linux'
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -369,6 +377,7 @@ Config.prototype.buildArgs = function () {
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
     is_asan: this.isAsan(),
+    is_lsan: this.isLsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     is_ubsan: this.is_ubsan,
@@ -563,11 +572,6 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (['android', 'linux', 'mac'].includes(this.targetOS)) {
-    // LSAN only works with ASAN and has very low overhead.
-    args.is_lsan = args.is_asan
-  }
-
   // Devtools: Now we patch devtools frontend, so it is useful to see
   // if something goes wrong on CI builds.
   if (this.targetOS !== 'android' && this.targetOS !== 'ios' && this.isCI) {
@@ -611,11 +615,12 @@ Config.prototype.buildArgs = function () {
     if (
       args.target_android_output_format === 'apk'
       && (this.targetArch === 'arm64' || this.targetArch === 'x64')
+      && this.isCI
     ) {
-      // We want to have both 32 and 64 bit native libs in arm64/x64 apks
+      // We want to have both 32 and 64 bit native libs in arm64/x64 apks for CI
       // Starting from cr136 it is defaulted to false.
-      // For local build you can add --gn=enable_android_secondary_abi:false
-      // to have only 64 bit libs.
+      // For local build you can add --gn=enable_android_secondary_abi:true
+      // to build both
       args.enable_android_secondary_abi = true
     }
 
@@ -844,8 +849,6 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.is_asan) {
     this.is_asan = true
-  } else {
-    this.is_asan = false
   }
 
   if (options.use_clang_coverage) {
@@ -1140,8 +1143,17 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // Restrict remote execution jobs.
-      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 160)
+      // Restrict remote execution jobs to x1.2 of available executors. This is
+      // a slight overprovisioning to ensure that network latency does not cause
+      // remote execution starvation.
+      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 720)
+
+      // Set SISO_REAPI_PRIORITY to 4 for interactive builds according to
+      // EngFlow's recommended priority system:
+      // https://blog.engflow.com/2025/04/07/not-all-builds-are-made-equal-using-priorities-to-expedite-remote-execution-of-the-builds-and-tests-that-matter-most/#from-workflow-to-priorities
+      if (!this.isCI) {
+        env.SISO_REAPI_PRIORITY = '4'
+      }
 
       // Prevent depot_tools from setting lower timeouts.
       const kRbeTimeout = '10m'

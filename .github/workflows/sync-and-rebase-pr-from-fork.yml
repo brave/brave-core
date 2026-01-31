@@ -67,7 +67,7 @@ jobs:
             echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
             exit 1
           fi
-          git push -f origin HEAD:"$contribHeadRefName"
+          git push -f origin HEAD:"refs/heads/$contribHeadRefName"
 
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
           if [[ "$existing_prs" = "[]" ]]; then

@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,8 +39,9 @@ namespace ai_chat {
 class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
  public:
   ContentAgentToolProviderBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgentProfile);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{ai_chat::features::kAIChatAgentProfile},
+        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 
   ~ContentAgentToolProviderBrowserTest() override = default;
@@ -151,14 +153,13 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
 // subsequent calls.
 IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
                        GetOrCreateTabHandleForTask) {
-  auto initial_tab_count =
-      agent_browser_window_->GetTabStripModel()->GetTabCount();
+  auto initial_tab_count = agent_browser_window_->GetTabStripModel()->count();
 
   tabs::TabHandle first_handle = GetToolProviderTabHandle();
   ASSERT_TRUE(first_handle.Get());
 
   // First call should result in a new tab
-  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
+  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->count(),
             initial_tab_count + 1);
 
   // Should be on the blank page
@@ -172,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   EXPECT_EQ(first_handle, second_handle);
 
   // Should not have opened a second new tab
-  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
+  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->count(),
             initial_tab_count + 1);
 }
 

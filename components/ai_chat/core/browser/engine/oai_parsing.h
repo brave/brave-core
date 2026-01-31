@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <optional>
+#include <string>
 #include <vector>
 
 #include "base/values.h"
@@ -15,8 +17,6 @@
 
 namespace ai_chat {
 
-class ModelService;
-
 // Construct a tool use event from a tool calls part of a Chat API-style
 // response
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
@@ -26,15 +26,18 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
 std::optional<base::Value::List> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools);
 
+// Extract the content container (delta or message) from an OpenAI response.
+// Returns nullptr if the response doesn't follow OpenAI format.
+const base::Value::Dict* GetOAIContentContainer(
+    const base::Value::Dict& response);
+
 // Parse OpenAI-format completion response for both streaming and
 // non-streaming requests. Response can have either delta.content (streaming)
 // or message.content (non-streaming).
-// model_service: Optional. If provided, extracts model from response and
-//                performs lookup. If nullptr, returns nullopt for model_key.
-//                Only supports looking up Leo models and not custom models.
+// model_key: Optional, will be propergated into returned result.
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     const base::Value::Dict& response,
-    ModelService* model_service);
+    std::optional<std::string> model_key);
 
 }  // namespace ai_chat
 

@@ -32,6 +32,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -400,7 +401,7 @@ END_METADATA
 
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
     BrowserView* browser_view,
-    TabStripRegionView* region_view)
+    HorizontalTabStripRegionView* region_view)
     : views::AnimationDelegateViews(this),
       browser_view_(browser_view),
       browser_(browser_view->browser()),
@@ -541,7 +542,7 @@ void BraveVerticalTabStripRegionView::OnWidgetDestroying(
 }
 
 void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
     return;
   }
 
@@ -611,7 +612,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   resize_area_->SetEnabled(state == State::kExpanded);
   header_view_->toggle_button()->SetHighlighted(state == State::kExpanded);
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
     // This can happen when "float on mouse hover" is enabled and tab strip
     // orientation has been changed.
     return;
@@ -646,7 +647,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   if (last_state_ == State::kFloating && state_ == State::kExpanded) {
     // In this case we need to lay out pinned tabs so that they need to hide
     // title and close button.
-    for (int i = 0; i < tab_strip->GetModelPinnedTabCount(); ++i) {
+    for (int i = 0; i < tab_strip->NumPinnedTabsInModel(); ++i) {
       tab_strip->tab_at(i)->InvalidateLayout();
     }
   }
@@ -702,7 +703,7 @@ gfx::Vector2d BraveVerticalTabStripRegionView::GetOffsetForDraggedTab() const {
 }
 
 int BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
-  DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_));
+  DCHECK(tabs::utils::ShouldShowBraveVerticalTabs(browser_));
   return GetPreferredWidthForState(state_, /*include_border=*/false,
                                    /*ignore_animation=*/false);
 }
@@ -810,7 +811,7 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
 void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateLayout(/* in_destruction= */ false);
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_) &&
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_) &&
       state_ == State::kFloating) {
     mouse_enter_timer_.Stop();
     SetState(State::kCollapsed);
@@ -825,7 +826,7 @@ void BraveVerticalTabStripRegionView::OnBrowserPanelsMoved() {
 }
 
 void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_) && !in_destruction) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(original_region_view_)) {
       original_parent_of_region_view_ = original_region_view_->parent();
       tab_strip_region_view_original_index_ =
@@ -947,7 +948,7 @@ void BraveVerticalTabStripRegionView::OnMousePressedInTree() {
 
 void BraveVerticalTabStripRegionView::OnBoundsChanged(
     const gfx::Rect& previous_bounds) {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
     return;
   }
 
@@ -1022,8 +1023,9 @@ void BraveVerticalTabStripRegionView::AnimationEnded(
 }
 
 void BraveVerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
-  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
-  auto* original_ntb = original_region_view_->GetNewTabButton();
+  const bool is_vertical_tabs =
+      tabs::utils::ShouldShowBraveVerticalTabs(browser_);
+  auto* original_ntb = original_region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
   separator_->SetVisible(is_vertical_tabs);
@@ -1058,7 +1060,7 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
 
     // Only show the border if the vertical tabs are enabled and in floating
     // mode, and the tabstrip is hovered.
-    return tabs::utils::ShouldShowVerticalTabs(browser_) &&
+    return tabs::utils::ShouldShowBraveVerticalTabs(browser_) &&
            state_ == State::kFloating;
   };
 
@@ -1164,7 +1166,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetPreferredSizeForState(
     State state,
     bool include_border,
     bool ignore_animation) const {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
     return {};
   }
 

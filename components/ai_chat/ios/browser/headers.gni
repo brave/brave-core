@@ -10,6 +10,7 @@ ai_chat_component_public_headers = [
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/common.mojom.objc.h",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/tab_tracker.mojom.objc.h",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/untrusted_frame.mojom.objc.h",
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/settings_helper.mojom.objc.h",
 ]
 
 ai_chat_component_public_deps =

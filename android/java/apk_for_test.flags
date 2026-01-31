@@ -81,6 +81,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.ntp.IncognitoNewTabPage {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveIncognitoNewTabPage {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
@@ -644,6 +652,7 @@
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowNtpAsHomeSurfaceAtStartup(...);
     *** createNewTabAndShowHomeSurfaceUi(...);
+    *** showHomeSurfaceUiOnNtp(...);
 }
 
 -keep class org.chromium.chrome.browser.IntentHandler {
@@ -664,6 +673,10 @@
 
 -keep class org.chromium.chrome.browser.BraveAppHooks {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tab.TabBrowserControlsConstraintsHelper {
+    *** getObservableConstraints(...);
 }
 
 -keep class org.chromium.components.cached_flags.CachedFlag {

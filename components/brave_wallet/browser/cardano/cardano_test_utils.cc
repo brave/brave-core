@@ -140,6 +140,21 @@ void CardanoTestRpcServer::RequestInterceptor(
     return;
   }
 
+  if (auto token_id = IsAssetInfoRequest(request)) {
+    for (auto& asset : assets_) {
+      if (asset.asset == token_id) {
+        url_loader_factory_.AddResponse(
+            request.url.spec(),
+            *base::WriteJsonWithOptions(asset.ToValue(), 0));
+        return;
+      }
+    }
+
+    url_loader_factory_.AddResponse(request.url.spec(), "Not found",
+                                    net::HTTP_NOT_FOUND);
+    return;
+  }
+
   NOTREACHED() << request.url.spec();
 }
 
@@ -200,6 +215,18 @@ std::optional<std::string> CardanoTestRpcServer::IsGetTransactionRequest(
       base::SplitString(ExtractApiRequestPath(request.url), "/",
                         base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "txs") {
+    return parts[1];
+  }
+
+  return std::nullopt;
+}
+
+std::optional<std::string> CardanoTestRpcServer::IsAssetInfoRequest(
+    const network::ResourceRequest& request) {
+  auto parts =
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (parts.size() == 2 && parts[0] == "assets") {
     return parts[1];
   }
 

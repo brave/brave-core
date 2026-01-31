@@ -39,6 +39,7 @@ class TxMeta {
   const std::string& tx_hash() const { return tx_hash_; }
   const std::optional<url::Origin>& origin() const { return origin_; }
   const std::string& chain_id() const { return chain_id_; }
+  const mojom::SwapInfoPtr& swap_info() const { return swap_info_; }
 
   void set_id(const std::string& id) { id_ = id; }
   void set_status(mojom::TransactionStatus status) { status_ = status; }
@@ -57,6 +58,9 @@ class TxMeta {
     origin_ = origin;
   }
   void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
+  void set_swap_info(mojom::SwapInfoPtr swap_info) {
+    swap_info_ = std::move(swap_info);
+  }
 
  protected:
   bool operator==(const TxMeta&) const;
@@ -70,6 +74,7 @@ class TxMeta {
   std::string tx_hash_;
   std::optional<url::Origin> origin_;
   std::string chain_id_;
+  mojom::SwapInfoPtr swap_info_;
 };
 
 }  // namespace brave_wallet

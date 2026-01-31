@@ -58,6 +58,12 @@ class CardanoRpc {
       RpcResponseCallback<std::optional<Transaction>>;
   void GetTransaction(std::string_view txid, GetTransactionCallback callback);
 
+  using GetAssetInfoCallback = RpcResponseCallback<AssetInfo>;
+  void GetAssetInfo(const cardano_rpc::TokenId& token_id,
+                    GetAssetInfoCallback callback);
+
+  bool HasPendingRequestsForTesting();
+
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
@@ -87,6 +93,8 @@ class CardanoRpc {
                          APIRequestResult api_request_result);
   void OnGetTransaction(GetTransactionCallback callback,
                         APIRequestResult api_request_result);
+  void OnGetAssetInfo(GetAssetInfoCallback callback,
+                      APIRequestResult api_request_result);
 
   GURL GetNetworkURL();
 

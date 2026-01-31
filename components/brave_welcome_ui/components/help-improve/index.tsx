@@ -68,7 +68,12 @@ function HelpImprove() {
 
   // Show toggles only if the preference is not managed by policy
   const showMetricsToggle = !loadTimeData.getBoolean('isMetricsReportingEnabledManaged')
+  // <if expr="is_brave_origin_branded">
+  // Brave Origin: never show P3A toggle
+  const showP3AToggle = false
+  // <else>
   const showP3AToggle = !loadTimeData.getBoolean('isP3AEnabledManaged')
+  // </if>
 
   const handleP3AChange = () => {
     setP3AEnabled(!isP3AEnabled)
@@ -104,11 +109,17 @@ function HelpImprove() {
     return null
   }
 
+  // <if expr="is_brave_origin_branded">
+  const title = getLocale('braveWelcomeStabilityDiagnosticsTitle')
+  // <else>
+  const title = getLocale('braveWelcomeHelpImproveBraveTitle')
+  // </if>
+
   return (
     <S.MainBox>
       <div className="view-header-box">
         <div className="view-details">
-          <h1 className="view-title">{getLocale('braveWelcomeHelpImproveBraveTitle')}</h1>
+          <h1 className="view-title">{title}</h1>
         </div>
       </div>
       <S.Grid>

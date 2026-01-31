@@ -13,11 +13,13 @@
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -242,6 +244,30 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     }
     message_dict.Set("content", std::move(content_list));
 
+    // Tool calls
+    if (!message.tool_calls.empty()) {
+      base::Value::List tool_call_dicts;
+      for (const auto& tool_event : message.tool_calls) {
+        base::Value::Dict tool_call_dict;
+        tool_call_dict.Set("id", tool_event->id);
+        tool_call_dict.Set("type", "function");
+
+        base::Value::Dict function_dict;
+        function_dict.Set("name", tool_event->tool_name);
+
+        function_dict.Set("arguments", tool_event->arguments_json);
+
+        tool_call_dict.Set("function", std::move(function_dict));
+        tool_call_dicts.Append(std::move(tool_call_dict));
+      }
+
+      message_dict.Set("tool_calls", std::move(tool_call_dicts));
+    }
+
+    if (!message.tool_call_id.empty()) {
+      message_dict.Set("tool_call_id", message.tool_call_id);
+    }
+
     serialized_messages.Append(std::move(message_dict));
   }
 
@@ -269,7 +295,6 @@ void ConversationAPIV2Client::ClearAllQueries() {
 
 void ConversationAPIV2Client::PerformRequest(
     std::vector<OAIMessage> messages,
-    const std::string& selected_language,
     std::optional<base::Value::List> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
@@ -279,7 +304,7 @@ void ConversationAPIV2Client::PerformRequest(
   // Get credentials and then perform request
   auto callback = base::BindOnce(
       &ConversationAPIV2Client::PerformRequestWithCredentials,
-      weak_ptr_factory_.GetWeakPtr(), std::move(messages), selected_language,
+      weak_ptr_factory_.GetWeakPtr(), std::move(messages),
       std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capability, model_name, std::move(data_received_callback),
       std::move(completed_callback));
@@ -288,7 +313,6 @@ void ConversationAPIV2Client::PerformRequest(
 
 std::string ConversationAPIV2Client::CreateJSONRequestBody(
     std::vector<OAIMessage> messages,
-    const std::string& selected_language,
     std::optional<base::Value::List> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
@@ -303,11 +327,14 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
     dict.Set("brave_capability", "content_agent");
   }
   dict.Set("model", model_name ? *model_name : model_name_);
-  dict.Set("selected_language", selected_language);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
+
+  if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
+    dict.Set("tools", std::move(oai_tool_definitions.value()));
+  }
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
@@ -316,7 +343,6 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
 
 void ConversationAPIV2Client::PerformRequestWithCredentials(
     std::vector<OAIMessage> messages,
-    const std::string& selected_language,
     std::optional<base::Value::List> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
@@ -340,8 +366,8 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(messages), selected_language, std::move(oai_tool_definitions),
-      preferred_tool_name, conversation_capability, model_name, is_sse_enabled);
+      std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
+      conversation_capability, model_name, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
@@ -394,10 +420,21 @@ void ConversationAPIV2Client::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
+    std::optional<bool> is_near_verified = std::nullopt;
+    std::optional<std::string> model_key = std::nullopt;
+    const auto& headers = result.headers();
+    if (const auto* header_value =
+            base::FindOrNull(headers, kBraveNearVerifiedHeader)) {
+      is_near_verified = *header_value == "true";
+    }
+
     // Parse OAI-format response for non-streaming API results
     if (result.value_body().is_dict()) {
-      if (auto parsed_result = ParseOAICompletionResponse(
-              result.value_body().GetDict(), model_service_)) {
+      auto& result_dict = result.value_body().GetDict();
+      model_key = GetLeoModelKeyFromResponse(result_dict);
+      if (auto parsed_result =
+              ParseOAICompletionResponse(result_dict, model_key)) {
+        parsed_result->is_near_verified = is_near_verified;
         std::move(callback).Run(base::ok(std::move(*parsed_result)));
         return;
       }
@@ -405,7 +442,8 @@ void ConversationAPIV2Client::OnQueryCompleted(
 
     // Return null event if no completion was provided in response body, can
     // happen when server send them all via OnQueryDataReceived.
-    std::move(callback).Run(GenerationResultData{nullptr, std::nullopt});
+    std::move(callback).Run(
+        GenerationResultData{nullptr, std::move(model_key), is_near_verified});
     return;
   }
 
@@ -435,10 +473,41 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     return;
   }
 
-  if (auto result_data =
-          ParseOAICompletionResponse(result->GetDict(), model_service_)) {
+  auto& result_params = result->GetDict();
+  std::optional<std::string> model_key =
+      GetLeoModelKeyFromResponse(result_params);
+
+  if (auto result_data = ParseOAICompletionResponse(result_params, model_key)) {
     callback.Run(std::move(*result_data));
   }
+
+  // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
+  // or choices[0].message.tool_calls
+  const base::Value::Dict* content_container =
+      GetOAIContentContainer(result_params);
+  if (content_container) {
+    if (const base::Value::List* tool_calls =
+            content_container->FindList("tool_calls")) {
+      // Provide any valid tool use events to the callback
+      // ToolUseEventFromToolCallsResponse handles per-tool alignment_check
+      for (auto& tool_use_event :
+           ToolUseEventFromToolCallsResponse(tool_calls)) {
+        auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_use_event));
+        callback.Run(GenerationResultData(std::move(tool_event), model_key));
+      }
+    }
+  }
+}
+
+std::optional<std::string> ConversationAPIV2Client::GetLeoModelKeyFromResponse(
+    const base::Value::Dict& response) {
+  const std::string* model = response.FindString("model");
+  if (!model_service_ || !model) {
+    return std::nullopt;
+  }
+
+  return model_service_->GetLeoModelKeyByName(*model);
 }
 
 }  // namespace ai_chat

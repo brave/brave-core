@@ -20,7 +20,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_account/brave_account_navigation_throttle.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
@@ -40,7 +39,6 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
@@ -50,9 +48,10 @@
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
+#include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -91,7 +90,6 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -164,6 +162,11 @@
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -640,9 +643,9 @@ void BraveContentBrowserClient::
                                                            associated_registry);
 }
 
-void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
+void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
-  ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+  ChromeContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(registry);
 #if !BUILDFLAG(IS_ANDROID)
   registry.AddGlobal<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
@@ -680,20 +683,6 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
-    registry.ForWebUI<VPNPanelUI>()
-        .Add<brave_vpn::mojom::PanelHandlerFactory>();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    registry.ForWebUI<playlist::PlaylistUI>()
-        .Add<playlist::mojom::PageHandlerFactory>();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
@@ -714,7 +703,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   registry.ForWebUI<AdsInternalsUI>().Add<bat_ads::mojom::AdsInternals>();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
@@ -796,6 +787,25 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
+void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
+    content::WebUIBrowserInterfaceBrokerRegistry& registry) {
+  ChromeContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
+    registry.ForWebUI<VPNPanelUI>()
+        .Add<brave_vpn::mojom::PanelHandlerFactory>();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    registry.ForWebUI<playlist::PlaylistUI>()
+        .Add<playlist::mojom::PageHandlerFactory>();
+  }
+#endif
+}
+
 std::optional<base::UnguessableToken>
 BraveContentBrowserClient::GetEphemeralStorageToken(
     content::RenderFrameHost* render_frame_host,
@@ -813,27 +823,6 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
   }
 
   return es_tab_helper->GetEphemeralStorageToken(origin);
-}
-
-bool BraveContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
-    content::BrowserContext* browser_context,
-    const url::Origin& origin) {
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(browser_context);
-  if (!host_content_settings_map) {
-    return false;
-  }
-  auto cookie_settings = CookieSettingsFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context));
-  if (!cookie_settings) {
-    return false;
-  }
-  const auto url = origin.GetURL();
-  return !brave_shields::GetBraveShieldsEnabled(host_content_settings_map,
-                                                url) ||
-         brave_shields::GetCookieControlType(host_content_settings_map,
-                                             cookie_settings.get(), url) ==
-             brave_shields::ControlType::ALLOW;
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(

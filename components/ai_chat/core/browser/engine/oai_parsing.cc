@@ -5,12 +5,10 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 
-#include <string>
 #include <utility>
 
 #include "base/logging.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
 namespace ai_chat {
@@ -48,6 +46,17 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     const std::string* arguments_raw = function->FindString("arguments");
     if (arguments_raw) {
       tool_use_event->arguments_json = *arguments_raw;
+    }
+
+    // Check for alignment_check within this tool call
+    if (const base::Value::Dict* alignment_dict =
+            tool_call.FindDict("alignment_check")) {
+      if (!alignment_dict->FindBool("allowed").value_or(true)) {
+        const std::string* assessment = alignment_dict->FindString("reasoning");
+        tool_use_event->permission_challenge = mojom::PermissionChallenge::New(
+            assessment ? std::make_optional(*assessment) : std::nullopt,
+            std::nullopt);
+      }
     }
 
     tool_use_events.push_back(std::move(tool_use_event));
@@ -125,13 +134,12 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
   return tools_list;
 }
 
-std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
-    const base::Value::Dict& response,
-    ModelService* model_service) {
+const base::Value::Dict* GetOAIContentContainer(
+    const base::Value::Dict& response) {
   const base::Value::List* choices = response.FindList("choices");
   if (!choices || choices->empty() || !choices->front().is_dict()) {
     VLOG(2) << "No choices list found in response, or it is empty.";
-    return std::nullopt;
+    return nullptr;
   }
 
   const base::Value::Dict& choice = choices->front().GetDict();
@@ -142,24 +150,21 @@ std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     content_container = choice.FindDict("message");
   }
 
+  return content_container;
+}
+
+std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
+    const base::Value::Dict& response,
+    std::optional<std::string> model_key) {
+  const base::Value::Dict* content_container = GetOAIContentContainer(response);
   if (!content_container) {
     VLOG(2) << "No delta or message info found in first completion choice.";
     return std::nullopt;
   }
 
   const std::string* content = content_container->FindString("content");
-  if (!content) {
+  if (!content || content->empty()) {
     return std::nullopt;
-  }
-
-  // Handle model lookup if model_service provided, only supports Leo models
-  // and not custom models for now.
-  std::optional<std::string> model_key = std::nullopt;
-  if (model_service) {
-    const std::string* model = response.FindString("model");
-    if (model) {
-      model_key = model_service->GetLeoModelKeyByName(*model);
-    }
   }
 
   auto event = mojom::ConversationEntryEvent::NewCompletionEvent(

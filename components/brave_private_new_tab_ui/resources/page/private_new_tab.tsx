@@ -5,22 +5,14 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { initLocale } from 'brave-ui'
 
-import { loadTimeData } from '../../../common/loadTimeData'
-import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import Container from './container'
 
 function App () {
-  return (
-    <BraveCoreThemeProvider>
-      <Container />
-    </BraveCoreThemeProvider>
-  )
+  return <Container />
 }
 
 function initialize () {
-  initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('mountPoint')!)
   root.render(<App />)
 }

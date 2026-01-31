@@ -33,8 +33,8 @@ namespace {
 
 constexpr float kDialogBorderRadius = 16;
 constexpr int kDialogWidth = 500;
-constexpr gfx::Size kDialogMinSize(kDialogWidth, 336);
-constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
+constexpr gfx::Size kDialogMinSize(kDialogWidth, 300);
+constexpr gfx::Size kDialogMaxSize(kDialogWidth, 800);
 
 // Tracks whether a Brave Account dialog is open for a WebContents.
 // This prevents multiple dialogs from being created via rapid clicks.

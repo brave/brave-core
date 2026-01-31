@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+
+// Redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // Actions
 import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
@@ -41,7 +43,7 @@ export const CancelTransaction = (props: Props) => {
 
   // Hooks
   const [cancelTx] = useCancelTransactionMutation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // Methods
   const onClickCancelTransaction = () => {

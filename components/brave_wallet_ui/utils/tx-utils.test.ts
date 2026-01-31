@@ -9,9 +9,8 @@ import {
   mockNetwork,
   mockSolanaAccount,
 } from '../common/constants/mocks'
-import { SwapExchangeProxy } from '../common/constants/registry'
+import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../common/constants/magics'
 import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
-import { makeNetworkAsset } from '../options/asset-options'
 import {
   mockBasicAttentionToken,
   mockBitcoinErc20Token,
@@ -24,7 +23,10 @@ import {
   mockSplBat,
   mockZecToken,
 } from '../stories/mock-data/mock-asset-options'
-import { mockEthMainnet } from '../stories/mock-data/mock-networks'
+import {
+  NetworksRegistry,
+  networkEntityAdapter,
+} from '../common/slices/entities/network.entity'
 import {
   createMockTransactionInfo,
   mockATAInstruction,
@@ -41,13 +43,14 @@ import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
   findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
   getIsRevokeApprovalTx,
   getIsSolanaAssociatedTokenAccountCreation,
   getTransactionGas,
+  getTransactionMemo,
   getTransactionStatusString,
   getTransactionTypeName,
   isCancelTransaction,
+  parseSwapInfo,
   toTxDataUnion,
 } from './tx-utils'
 
@@ -133,69 +136,145 @@ describe('getTransactionGas()', () => {
   })
 })
 
-describe('getETHSwapTransactionBuyAndSellTokens', () => {
-  it('should detect the correct but/swap tokens of a transaction', () => {
-    const { buyAmountWei, sellAmountWei, buyToken, sellToken } =
-      getETHSwapTransactionBuyAndSellTokens({
-        tokensList: mockErc20TokensList,
-        tx: {
-          chainId: BraveWallet.MAINNET_CHAIN_ID,
-          confirmedTime: { microseconds: Date.now() },
-          createdTime: { microseconds: Date.now() },
-          fromAddress: mockAccount.address,
-          effectiveRecipient: mockAccount.address,
-          fromAccountId: mockAccount.accountId,
-          id: 'swap',
-          originInfo: undefined,
-          submittedTime: { microseconds: Date.now() },
-          txArgs: [],
-          txDataUnion: {
-            ethTxData1559: {
-              baseData: {
-                data: [],
-                gasLimit: '',
-                gasPrice: '',
-                nonce: '',
-                signedTransaction: '',
-                signOnly: false,
-                to: SwapExchangeProxy,
-                value: '',
-              },
-              chainId: BraveWallet.MAINNET_CHAIN_ID,
-              gasEstimation: undefined,
-              maxFeePerGas: '1',
-              maxPriorityFeePerGas: '1',
-            },
-          },
-          txHash: '123',
-          txParams: [],
-          txStatus: BraveWallet.TransactionStatus.Unapproved,
-          txType: BraveWallet.TransactionType.ETHSwap,
-          isRetriable: false,
-          swapInfoDeprecated: {
-            fromCoin: mockBasicAttentionToken.coin,
-            fromChainId: mockBasicAttentionToken.chainId,
-            fromAsset: mockBasicAttentionToken.contractAddress,
-            fromAmount: '1',
-            toCoin: mockBitcoinErc20Token.coin,
-            toChainId: mockBitcoinErc20Token.chainId,
-            toAsset: mockBitcoinErc20Token.contractAddress,
-            toAmount: '2',
-          } as BraveWallet.SwapInfoDeprecated,
-        },
-        nativeAsset: makeNetworkAsset(mockNetwork),
-      })
+describe('parseSwapInfo', () => {
+  const createMockNetworksRegistry = (): NetworksRegistry => {
+    const sourceNetworkId = networkEntityAdapter.selectId({
+      chainId: mockBasicAttentionToken.chainId,
+      coin: mockBasicAttentionToken.coin,
+    }) as string
+    const destinationNetworkId = networkEntityAdapter.selectId({
+      chainId: mockBitcoinErc20Token.chainId,
+      coin: mockBitcoinErc20Token.coin,
+    }) as string
 
-    expect(buyToken).toBeDefined()
-    expect(sellToken).toBeDefined()
-    expect(sellToken?.contractAddress).toBe(
+    return {
+      ...networkEntityAdapter.getInitialState(),
+      entities: {
+        [sourceNetworkId]: mockNetwork,
+        [destinationNetworkId]: mockNetwork,
+      },
+      ids: [sourceNetworkId, destinationNetworkId],
+      hiddenIds: [],
+      hiddenIdsByCoinType: {},
+      visibleIdsByCoinType: {},
+      mainnetIds: [],
+      testnetIds: [],
+      offRampIds: [],
+      visibleIds: [sourceNetworkId, destinationNetworkId],
+    }
+  }
+
+  it('should parse swap info with new structure (source/destination)', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: mockBasicAttentionToken.contractAddress,
+        sourceAmount: '1000000000000000000', // 1 token with 18 decimals
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: mockBitcoinErc20Token.contractAddress,
+        destinationAmount: '2000000000000000000', // 2 tokens
+        destinationAmountMin: '1900000000000000000', // 1.9 tokens
+        recipient: '0x1234567890123456789012345678901234567890',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeDefined()
+    expect(destinationToken).toBeDefined()
+    expect(sourceToken?.contractAddress).toBe(
       mockBasicAttentionToken.contractAddress,
     )
-    expect(buyToken?.contractAddress).toBe(
+    expect(destinationToken?.contractAddress).toBe(
       mockBitcoinErc20Token.contractAddress,
     )
-    expect(buyAmountWei.format()).toEqual('2')
-    expect(sellAmountWei.format()).toEqual('1')
+    expect(sourceAmount.format()).toEqual('1000000000000000000')
+    expect(
+      sourceAmount.divideByDecimals(mockBasicAttentionToken.decimals).format(6),
+    ).toEqual('1')
+    expect(destinationAmount.format()).toEqual('2000000000000000000')
+    expect(destinationAmount.divideByDecimals(18).format(6)).toEqual('2')
+    expect(destinationAmountMin.divideByDecimals(18).format(6)).toEqual('1.9')
+    expect(destinationAddress).toBe(
+      '0x1234567890123456789012345678901234567890',
+    )
+    expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
+  })
+
+  it('should handle undefined swapInfo', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: undefined,
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeUndefined()
+    expect(destinationToken).toBeUndefined()
+    expect(sourceAmount.format()).toEqual('')
+    expect(destinationAmount.format()).toEqual('')
+    expect(destinationAmountMin.format()).toEqual('')
+    expect(destinationAddress).toBe('')
+    expect(provider).toBeUndefined()
+  })
+
+  it('should handle native assets correctly', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+        sourceAmount: '1000000000000000000', // 1 token with 18 decimals
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+        destinationAmount: '2000000000000000000', // 2 tokens
+        destinationAmountMin: '',
+        recipient: '',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeDefined()
+    expect(destinationToken).toBeDefined()
+    expect(sourceToken?.contractAddress).toBe('')
+    expect(destinationToken?.contractAddress).toBe('')
+    expect(sourceAmount.format()).toEqual('1000000000000000000')
+    expect(destinationAmount.format()).toEqual('2000000000000000000')
+    expect(destinationAmountMin.format()).toEqual('')
+    expect(destinationAddress).toBe('')
+    expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
   })
 })
 
@@ -258,7 +337,6 @@ describe('check for insufficient funds errors', () => {
 
       const mockTransactionInfo = {
         ...getMockedTransactionInfo(),
-        fromAddress: '0xdeadbeef',
         txArgs: [
           BraveWallet.TransactionType.ERC20Approve,
           BraveWallet.TransactionType.ERC20Transfer,
@@ -285,42 +363,37 @@ describe('check for insufficient funds errors', () => {
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
         accountNativeBalance:
-          nativeBalanceRegistry[mockTransactionInfo.chainId],
+          nativeBalanceRegistry[mockTransactionInfo.chainId] || '',
         gasFee,
       })
-
-      const nativeAsset = {
-        ...makeNetworkAsset(mockEthMainnet),
-        chainId: mockTransactionInfo.chainId,
-      }
 
       const token = findTransactionToken(
         mockTransactionInfo,
         mockErc20TokensList,
       )
 
-      const { sellAmountWei, sellToken } =
-        getETHSwapTransactionBuyAndSellTokens({
-          tokensList: mockErc20TokensList,
-          tx: mockTransactionInfo,
-          nativeAsset,
-        })
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: mockTransactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
 
       const accountNativeBalance =
         nativeBalanceRegistry[mockTransactionInfo.chainId]
 
-      const sellTokenBalance =
-        tokenBalanceRegistry[sellToken?.contractAddress ?? '']
+      const sourceTokenBalance =
+        tokenBalanceRegistry[sourceToken?.contractAddress ?? '']
 
       const tokenBalance = tokenBalanceRegistry[token?.contractAddress ?? '']
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
         accountNativeBalance,
-        accountTokenBalance: tokenBalance,
+        accountTokenBalance: tokenBalance || '',
         gasFee,
-        sellAmountWei,
-        sellTokenBalance: sellTokenBalance,
+        sourceAmount,
+        sourceTokenBalance: sourceTokenBalance || '',
         tx: mockTransactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsForGasError).toBeFalsy()
@@ -335,7 +408,6 @@ describe('check for insufficient funds errors', () => {
     const mockTransactionInfo = getMockedTransactionInfo()
     const transactionInfo: SerializableTransactionInfo = {
       ...mockTransactionInfo,
-      fromAddress: '0xdeadbeef',
       txType,
       txDataUnion: {
         ethTxData: {} as any,
@@ -377,12 +449,14 @@ describe('check for insufficient funds errors', () => {
       })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         accountTokenBalance: '',
         gasFee,
-        sellAmountWei: Amount.empty(),
-        sellTokenBalance: '',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
         tx: transactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsError).toBeTruthy()
@@ -405,7 +479,7 @@ describe('check for insufficient funds errors', () => {
         '0x1': '1003150000000000000', // 1.00315 ETH
       }
       const accountNativeBalance =
-        nativeBalanceRegistry[mockTransactionInfo.chainId]
+        nativeBalanceRegistry[mockTransactionInfo.chainId] || ''
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
         accountNativeBalance,
@@ -416,9 +490,10 @@ describe('check for insufficient funds errors', () => {
         accountNativeBalance,
         accountTokenBalance: '',
         gasFee,
-        sellAmountWei: Amount.empty(),
-        sellTokenBalance: '',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
         tx: mockTransactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsError).toBeFalsy()
@@ -446,7 +521,6 @@ describe('check for insufficient funds errors', () => {
         .toHex() // 1 full Token
       const transactionInfo: SerializableTransactionInfo = {
         ...mockTransactionInfo,
-        fromAddress: '0xdeadbeef',
         // (address recipient, uint256 amount)
         txArgs: ['mockRecipient', sendAmount],
         txType: BraveWallet.TransactionType.ERC20Transfer,
@@ -479,32 +553,29 @@ describe('check for insufficient funds errors', () => {
       }
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         gasFee,
       })
 
-      const nativeAsset = {
-        ...makeNetworkAsset(mockEthMainnet),
-        chainId: transactionInfo.chainId,
-      }
-
       const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
-      const { sellAmountWei, sellToken } =
-        getETHSwapTransactionBuyAndSellTokens({
-          tokensList: mockErc20TokensList,
-          tx: transactionInfo,
-          nativeAsset,
-        })
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: transactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         accountTokenBalance: tokenBalanceRegistry[token?.contractAddress ?? ''],
         gasFee,
-        sellAmountWei,
-        sellTokenBalance:
-          tokenBalanceRegistry[sellToken?.contractAddress ?? ''],
+        sourceAmount,
+        sourceTokenBalance:
+          tokenBalanceRegistry[sourceToken?.contractAddress ?? ''],
         tx: transactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(nativeBalanceRegistry[transactionInfo.chainId]).toBeTruthy()
@@ -534,7 +605,6 @@ describe('check for insufficient funds errors', () => {
 
       const transactionInfo: SerializableTransactionInfo = {
         ...mockTransactionInfo,
-        fromAddress: '0xdeadbeef',
         // (address recipient, uint256 amount)
         txArgs: ['mockRecipient', sendAmount],
         txType: BraveWallet.TransactionType.ERC20Transfer,
@@ -567,32 +637,29 @@ describe('check for insufficient funds errors', () => {
       }
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         gasFee,
       })
 
-      const nativeAsset = {
-        ...makeNetworkAsset(mockEthMainnet),
-        chainId: transactionInfo.chainId,
-      }
-
       const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
-      const { sellAmountWei, sellToken } =
-        getETHSwapTransactionBuyAndSellTokens({
-          tokensList: mockErc20TokensList,
-          tx: transactionInfo,
-          nativeAsset,
-        })
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: transactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
         accountTokenBalance: tokenBalanceRegistry[token?.contractAddress ?? ''],
         gasFee,
-        sellAmountWei,
-        sellTokenBalance:
-          tokenBalanceRegistry[sellToken?.contractAddress ?? ''],
+        sourceAmount,
+        sourceTokenBalance:
+          tokenBalanceRegistry[sourceToken?.contractAddress ?? ''],
         tx: transactionInfo,
+        txAccount: mockEthAccount,
       })
 
       expect(insufficientFundsError).toBeFalsy()
@@ -868,6 +935,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [mockATAInstruction],
           },
@@ -887,6 +955,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [mockATAInstruction],
           },
@@ -902,6 +971,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [
               {
@@ -922,6 +992,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [
               {
@@ -942,6 +1013,7 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
         txDataUnion: {
           solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
             staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
             instructions: [
               {
@@ -1214,5 +1286,192 @@ describe('isCancelTransaction', () => {
       id: 'submitted-tx',
     }
     expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+})
+
+// Test vectors based on Zcash ZIP 302 memo field format specification
+// https://zips.z.cash/zip-0302
+describe('getTransactionMemo', () => {
+  it('should return empty string for undefined transaction', () => {
+    expect(getTransactionMemo(undefined)).toBe('')
+  })
+
+  it('should return empty string for non-ZCash transaction', () => {
+    expect(getTransactionMemo(mockEthSendTransaction)).toBe('')
+    expect(getTransactionMemo(mockSolanaTransactionInfo)).toBe('')
+    expect(getTransactionMemo(mockBtcSendTransaction)).toBe('')
+    expect(getTransactionMemo(mockFilSendTransaction)).toBe('')
+  })
+
+  it('should return empty string for ZCash transaction without memo', () => {
+    expect(getTransactionMemo(mockZecSendTransaction)).toBe('')
+  })
+
+  it('should return empty string for ZCash transaction with undefined memo', () => {
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: undefined,
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('')
+  })
+
+  // ZIP 302: UTF-8 text (first byte ≤ 0xF4) padded with trailing zeros
+  it('should decode UTF-8 memo and strip trailing zeros', () => {
+    // "Hello, Zcash!" encoded as UTF-8 with trailing zeros (simulating 512-byte memo)
+    const memoText = 'Hello, Zcash!'
+    const memoBytes = new TextEncoder().encode(memoText)
+    const paddedMemo = new Uint8Array(512)
+    paddedMemo.set(memoBytes)
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(paddedMemo),
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('Hello, Zcash!')
+  })
+
+  it('should handle memo without trailing zeros', () => {
+    const memoText = 'No padding needed'
+    const memoBytes = Array.from(new TextEncoder().encode(memoText))
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: memoBytes,
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('No padding needed')
+  })
+
+  it('should handle memo with embedded zeros followed by more text', () => {
+    // "Hello" + null byte + "World" - should only return "Hello"
+    const memo = [
+      0x48,
+      0x65,
+      0x6c,
+      0x6c,
+      0x6f, // "Hello"
+      0x00, // null terminator
+      0x57,
+      0x6f,
+      0x72,
+      0x6c,
+      0x64, // "World" (should be ignored)
+    ]
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo,
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('Hello')
+  })
+
+  // ZIP 302: 0xF6 followed by zeros indicates "no memo"
+  // Note: Since TextDecoder doesn't throw by default, 0xF6 decodes to
+  // replacement character. However, if the memo is 0xF6 followed by zeros,
+  // we only slice up to the first zero, leaving just 0xF6.
+  it('should handle "no memo" marker (0xF6)', () => {
+    const noMemoMarker = new Uint8Array(512)
+    noMemoMarker[0] = 0xf6 // "no memo" marker, followed by zeros
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(noMemoMarker),
+        },
+      },
+    }
+    // 0xF6 is invalid UTF-8, TextDecoder returns replacement character
+    expect(getTransactionMemo(tx)).toBe('\uFFFD')
+  })
+
+  // ZIP 302: First byte ≥ 0xF5 indicates arbitrary data
+  it('should handle arbitrary data marker (0xFF)', () => {
+    // 0xFF followed by non-zero data (no null terminator)
+    const arbitraryData = [0xff, 0x01, 0x02, 0x03]
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: arbitraryData,
+        },
+      },
+    }
+    // Invalid UTF-8 bytes produce replacement characters
+    expect(getTransactionMemo(tx)).toContain('\uFFFD')
+  })
+
+  it('should return empty string for all zeros (empty memo)', () => {
+    const emptyMemo = new Uint8Array(512) // all zeros
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(emptyMemo),
+        },
+      },
+    }
+    // First byte is 0, so slice is empty
+    expect(getTransactionMemo(tx)).toBe('')
+  })
+
+  it('should handle Unicode characters correctly', () => {
+    // Test with emojis and multi-byte UTF-8 characters
+    const memoText = '🦓 Zcash: こんにちは'
+    const memoBytes = new TextEncoder().encode(memoText)
+    const paddedMemo = new Uint8Array(512)
+    paddedMemo.set(memoBytes)
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(paddedMemo),
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('🦓 Zcash: こんにちは')
+  })
+
+  it('should handle invalid UTF-8 sequences with replacement characters', () => {
+    // Invalid UTF-8: continuation bytes without start byte
+    const invalidUtf8 = [0x80, 0x81, 0x82]
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: invalidUtf8,
+        },
+      },
+    }
+    // TextDecoder replaces invalid bytes with U+FFFD
+    expect(getTransactionMemo(tx)).toBe('\uFFFD\uFFFD\uFFFD')
   })
 })

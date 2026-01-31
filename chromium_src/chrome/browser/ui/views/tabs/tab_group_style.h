@@ -33,7 +33,7 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
   float GetEmptyChipSize() const override;
 
  private:
-  bool ShouldShowVerticalTabs() const;
+  bool ShouldShowBraveVerticalTabs() const;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_STYLE_H_

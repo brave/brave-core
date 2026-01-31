@@ -147,7 +147,7 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
 bool BraveBrowserTabStripController::IsContextMenuCommandChecked(
     TabStripModel::ContextMenuCommand command_id) {
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    return tabs::utils::ShouldShowVerticalTabs(browser());
+    return tabs::utils::ShouldShowBraveVerticalTabs(browser());
   }
 
   return BrowserTabStripController::IsContextMenuCommandChecked(command_id);

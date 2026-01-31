@@ -6,6 +6,7 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"

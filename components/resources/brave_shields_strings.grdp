@@ -69,7 +69,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled.">
-    You're currently using Adblock-Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.
+    You're currently using Adblock-Only mode. This mode only offers ad blocking protection (if Shields are UP). If you wish to return to full Shields mode, disable this mode from settings.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADS_BLOCKED_NOTE" desc="Description to convey advertisements are being blocked.">
@@ -311,4 +311,13 @@
   <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_SITE_INFO_LINK" desc="Link text for Site Info tab on Page Info bubble">
     Site Info
   </message>
+
+  <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_IPH_TEXT" desc="Text for the IPH bubble shown when Brave Shields has moved to Page Info.">
+    Brave Shields has a new home and design. It now integrates with site information for a one-stop experience.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_IPH_SCREENREADER_TEXT" desc="Screen reader text for the Brave Shields Page Info IPH bubble.">
+    Brave Shields has a new home and design. Access it by clicking the site icon in the address bar.
+  </message>
+
 </grit-part>

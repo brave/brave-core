@@ -44,7 +44,7 @@ bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
   DCHECK(browser_view);
 #endif
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser_view->browser())) {
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view->browser())) {
     return result;
   }
 
@@ -54,7 +54,7 @@ bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
     // In this case, anchor bubble onto the screen edge. we should also reparent
     // native widget, as vertical tab's widget could be hidden.
     gfx::Rect bounds = anchor_widget->GetWorkAreaBoundsInScreen();
-    int offset = GetLayoutConstant(TAB_PRE_TITLE_PADDING);
+    int offset = GetLayoutConstant(LayoutConstant::kTabPreTitlePadding);
     bubble_delegate->SetAnchorView(nullptr);
     bubble_delegate->set_parent_window(anchor_widget->GetNativeView());
     bubble_delegate->SetAnchorRect(

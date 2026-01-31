@@ -74,8 +74,12 @@ import java.util.Map;
 public class CameraSource {
     @SuppressLint("InlinedApi")
     public static final int CAMERA_FACING_BACK = CameraInfo.CAMERA_FACING_BACK;
+
     @SuppressLint("InlinedApi")
     public static final int CAMERA_FACING_FRONT = CameraInfo.CAMERA_FACING_FRONT;
+
+    public static final int DEFAULT_PREVIEW_WIDTH = 1024;
+    public static final int DEFAULT_PREVIEW_HEIGHT = 768;
 
     private static final String TAG = "OpenCameraSource";
 
@@ -133,9 +137,8 @@ public class CameraSource {
     // These values may be requested by the caller.  Due to hardware limitations, we may need to
     // select close, but not exactly the same values for these.
     private float mRequestedFps = 30.0f;
-    private int mRequestedPreviewWidth = 1024;
-    private int mRequestedPreviewHeight = 768;
-
+    private int mRequestedPreviewWidth = DEFAULT_PREVIEW_WIDTH;
+    private int mRequestedPreviewHeight = DEFAULT_PREVIEW_HEIGHT;
 
     private String mFocusMode;
     private String mFlashMode;

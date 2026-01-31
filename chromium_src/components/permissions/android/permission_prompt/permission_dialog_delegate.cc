@@ -1,25 +1,18 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define CreateJavaDelegate                                      \
-  Java_PermissionDialogController_createDialog_BraveImpl(       \
-      JNIEnv* env, const base::android::JavaRef<jobject>& obj); \
-  virtual void CreateJavaDelegate
 #include "components/permissions/android/permission_prompt/permission_dialog_delegate.h"
-
-#include "base/check.h"
-#include "base/notreached.h"
-#undef CreateJavaDelegate
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "base/check.h"
+#include "base/notreached.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/permissions/android/jni_headers/PermissionDialogController_jni.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #include "components/permissions/features.h"
 #include "components/strings/grit/components_strings.h"
@@ -89,6 +82,19 @@ void PermissionDialogJavaDelegate::ApplyDontAskAgainOption(
   request->set_dont_ask_again(dont_ask_again);
 }
 
+void PermissionDialogJavaDelegate::BravePreCreateDialog(JNIEnv* env) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (HasWidevinePermissionRequest(
+          permission_prompt_->delegate_public()->Requests())) {
+    Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(
+        env, j_delegate_, true);
+  }
+#endif
+  if (ShouldShowLifetimeOptions(permission_prompt_->delegate_public())) {
+    SetLifetimeOptions(j_delegate_);
+  }
+}
+
 // static
 std::unique_ptr<PermissionDialogDelegate> PermissionDialogDelegate::Create(
     content::WebContents* web_contents,
@@ -96,24 +102,6 @@ std::unique_ptr<PermissionDialogDelegate> PermissionDialogDelegate::Create(
   // This should never be invoked, created only as a stub.
   // a method with PermissionPromptAndroid* should be invoked instead.
   NOTREACHED();
-}
-
-void PermissionDialogJavaDelegate::
-    Java_PermissionDialogController_createDialog_BraveImpl(
-        JNIEnv* env,
-        const base::android::JavaRef<jobject>& j_delegate) {
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  if (HasWidevinePermissionRequest(
-          permission_prompt_->delegate_public()->Requests())) {
-    Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(
-        env, j_delegate, true);
-  }
-#endif
-  if (ShouldShowLifetimeOptions(permission_prompt_->delegate_public())) {
-    SetLifetimeOptions(j_delegate);
-  }
-
-  Java_PermissionDialogController_createDialog(env, j_delegate);
 }
 
 }  // namespace permissions
@@ -124,11 +112,10 @@ void PermissionDialogJavaDelegate::
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                               \
   java_delegate_->ApplyLifetimeToPermissionRequests(env, permission_prompt_); \
   java_delegate_->ApplyDontAskAgainOption(env, permission_prompt_);
-#define Java_PermissionDialogController_createDialog \
-  Java_PermissionDialogController_createDialog_BraveImpl
+#define BRAVE_PERMISSION_DIALOG_PRE_CREATE_DIALOG BravePreCreateDialog(env);
 
 #include <components/permissions/android/permission_prompt/permission_dialog_delegate.cc>
 
-#undef Java_PermissionDialogController_createDialog
+#undef BRAVE_PERMISSION_DIALOG_PRE_CREATE_DIALOG
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT

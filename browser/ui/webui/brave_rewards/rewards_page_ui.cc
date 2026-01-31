@@ -9,16 +9,20 @@
 
 #include "base/check.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_data_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/brave_rewards/rewards_page_helper.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 using brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory;
 
@@ -71,7 +75,11 @@ void RewardsPageUI::BindInterface(
   handler_ = std::make_unique<RewardsPageHandler>(
       std::move(receiver), MakeBubbleDelegate(),
       RewardsServiceFactory::GetForProfile(profile),
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
       brave_ads::AdsServiceFactory::GetForProfile(profile),
+#else
+      nullptr,
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       BraveAdaptiveCaptchaServiceFactory::GetForProfile(profile),
       profile->GetPrefs());
 }

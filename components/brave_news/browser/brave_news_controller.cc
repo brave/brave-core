@@ -26,11 +26,11 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
@@ -42,6 +42,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "brave/components/brave_news/common/types.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
@@ -97,11 +98,10 @@ mojo::StructPtr<EventType> CreateChangeEvent(
 
 BraveNewsController::BraveNewsController(
     PrefService* prefs,
-    brave_ads::AdsService* ads_service,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
-    : ads_service_(ads_service),
+    :
 #if BUILDFLAG(IS_ANDROID)
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
@@ -284,7 +284,7 @@ void BraveNewsController::AddPublishersListener(
   GetPublishers(base::BindOnce(
       [](BraveNewsController* controller,
          mojo::PendingRemote<mojom::PublishersListener> listener,
-         Publishers publishers) {
+         MojomPublishers publishers) {
         auto id = controller->publishers_listeners_.Add(std::move(listener));
         auto* added_listener = controller->publishers_listeners_.Get(id);
         if (added_listener) {
@@ -417,14 +417,15 @@ void BraveNewsController::OnVerifiedDirectFeedUrl(
   IN_ENGINE_FF(EnsurePublishersIsUpdating);
 
   // Pass publishers to callback, waiting for updated publishers list
-  IN_ENGINE(
-      GetPublishers,
-      base::BindOnce(
-          [](SubscribeToNewDirectFeedCallback callback, Publishers publishers) {
-            std::move(callback).Run(
-                true, false, std::optional<Publishers>(std::move(publishers)));
-          },
-          std::move(callback)));
+  IN_ENGINE(GetPublishers,
+            base::BindOnce(
+                [](SubscribeToNewDirectFeedCallback callback,
+                   MojomPublishers publishers) {
+                  std::move(callback).Run(
+                      true, false,
+                      std::optional<MojomPublishers>(std::move(publishers)));
+                },
+                std::move(callback)));
 }
 
 void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
@@ -501,7 +502,7 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
   VLOG(1) << __FUNCTION__ << " " << publisher_id << ": " << new_status;
   GetPublishers(base::BindOnce(
       [](const std::string& publisher_id, mojom::UserEnabled new_status,
-         BraveNewsController* controller, Publishers publishers) {
+         BraveNewsController* controller, MojomPublishers publishers) {
         if (!publishers.contains(publisher_id)) {
           LOG(ERROR) << "Attempted to set publisher pref which didn't exist: "
                      << publisher_id;
@@ -689,7 +690,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     // Notify listeners of the current publishers when BraveNews is enabled.
     GetPublishers(base::BindOnce(
         [](base::WeakPtr<BraveNewsController> controller,
-           Publishers publishers) {
+           MojomPublishers publishers) {
           if (!controller) {
             return;
           }

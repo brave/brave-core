@@ -5,7 +5,7 @@
 
 #define BRAVE_ICON_LABEL_BUBBLE_VIEW_GET_HIGHLIGHT_PATH                    \
   const int layout_radius =                                                \
-      GetLayoutConstant(LOCATION_BAR_CHILD_CORNER_RADIUS);                 \
+      GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);    \
   return SkPath::RRect(gfx::RectToSkRect(highlight_bounds), layout_radius, \
                        layout_radius);
 

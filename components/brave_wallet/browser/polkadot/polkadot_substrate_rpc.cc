@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/checked_math.h"
-#include "base/strings/strcat.h"
+#include "base/strings/strcat.h"  // IWYU pragma: export
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -540,6 +540,45 @@ void PolkadotSubstrateRpc::OnGetRuntimeVersion(
   version.transaction_version = transaction_version.ValueOrDie();
 
   return std::move(callback).Run(version, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,
+                                           std::string_view signed_extrinsic,
+                                           SubmitExtrinsicCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+  params.Append(signed_extrinsic);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("author_submitExtrinsic", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnSubmitExtrinsic,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
+                                             APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotSubmitExtrinsic>(
+          api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(*res->result, std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {

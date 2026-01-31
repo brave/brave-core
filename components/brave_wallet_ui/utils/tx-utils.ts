@@ -15,6 +15,7 @@ import {
   SerializableTimeDelta,
   SortingOrder,
   TransactionInfo,
+  ParsedSwapInfo,
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import {
@@ -43,6 +44,11 @@ import {
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAccountLabel, getAddressLabel } from './account-utils'
 import { makeSerializableTimeDelta } from './model-serialization-utils'
+import {
+  NetworksRegistry,
+  networkEntityAdapter,
+} from '../common/slices/entities/network.entity'
+import { Uint128ToBigInt } from './polkadot-utils'
 
 export type FileCoinTransactionInfo = TransactionInfo & {
   txDataUnion: {
@@ -91,7 +97,6 @@ export interface ParsedTransaction
   contractAddressError?: string
   sameAddressError?: string
   erc721TokenId?: string
-  isSwap?: boolean
   intent: string
   chainId: string
   originInfo?: BraveWallet.OriginInfo | undefined
@@ -120,12 +125,8 @@ export interface ParsedTransaction
   isApprovalUnlimited?: boolean
 
   // Swap
-  sellToken?: BraveWallet.BlockchainToken
-  sellAmount?: Amount
-  sellAmountWei?: Amount
-  buyToken?: BraveWallet.BlockchainToken
-  minBuyAmount?: Amount
-  minBuyAmountWei?: Amount
+  isSwap?: boolean
+  swapInfo?: ParsedSwapInfo
   // sending to 0x Exchange Proxy
   isSendingToZeroXExchangeProxy: boolean
 
@@ -251,6 +252,15 @@ export function isEthereumTransaction(
   )
 }
 
+export function isPolkadotTransaction(
+  tx?: Pick<TransactionInfo, 'txDataUnion'>,
+) {
+  if (!tx) {
+    return false
+  }
+  return tx.txDataUnion.polkadotTxData !== undefined
+}
+
 export const getTransactionNonce = (tx: TransactionInfo): string => {
   // Handle EIP1559 transactions
   if (tx.txDataUnion?.ethTxData1559?.baseData.nonce) {
@@ -362,7 +372,41 @@ export const getTransactionToAddress = (
     return tx.txDataUnion.cardanoTxData?.to ?? ''
   }
 
+  if (isPolkadotTransaction(tx)) {
+    return tx.txDataUnion.polkadotTxData?.to ?? ''
+  }
+
   assertNotReached('Unknown transaction type')
+}
+
+/**
+ * Extracts the memo from a transaction if available.
+ * Currently only ZCash shielded transactions support memos.
+ *
+ * @param tx - The transaction to extract memo from
+ * @returns The memo as a string, or empty string if not available
+ */
+export const getTransactionMemo = (
+  tx?: TransactionInfo | SerializableTransactionInfo,
+): string => {
+  if (!tx) {
+    return ''
+  }
+
+  // ZCash shielded transactions have a memo field (byte array)
+  // Orchard memos may have trailing zeros that need to be trimmed
+  if (isZCashTransaction(tx) && tx.txDataUnion.zecTxData?.memo) {
+    try {
+      const memoBytes = new Uint8Array(tx.txDataUnion.zecTxData.memo)
+      const end = memoBytes.indexOf(0)
+      const slice = end === -1 ? memoBytes : memoBytes.slice(0, end)
+      return new TextDecoder('utf-8').decode(slice)
+    } catch {
+      return ''
+    }
+  }
+
+  return ''
 }
 
 export function getTransactionInteractionAddress(
@@ -394,6 +438,10 @@ export function getTransactionInteractionAddress(
       || tx.txDataUnion.ethTxData?.to // EVM
       || '' // Other
     )
+  }
+
+  if (isPolkadotTransaction(tx)) {
+    return tx.txDataUnion.polkadotTxData?.to ?? ''
   }
 
   assertNotReached('Unknown transaction type')
@@ -462,86 +510,72 @@ export const findTransactionToken = <
 }
 
 /**
- * Use this function to synchronously extract swap/bridge details from a
- * transaction.
+ * Use this function to synchronously extract swap/bridge details from swapInfo.
+ * This function is chain agnostic and works with any blockchain.
  *
  * Prefer using useSwapTransactionParser() hook in React components, which
  * can asynchronously extract details from the blockchain.
  */
-export const getETHSwapTransactionBuyAndSellTokens = ({
-  nativeAsset,
+export const parseSwapInfo = ({
+  networksRegistry,
   tokensList,
-  tx,
+  swapInfo,
 }: {
-  tx: TransactionInfo | undefined
-  nativeAsset?: BraveWallet.BlockchainToken
+  swapInfo: BraveWallet.SwapInfo | undefined
+  networksRegistry: NetworksRegistry | undefined
   tokensList: BraveWallet.BlockchainToken[]
-}): {
-  buyToken?: BraveWallet.BlockchainToken
-  sellToken?: BraveWallet.BlockchainToken
-  buyAmount: Amount
-  buyAmountWei: Amount
-  sellAmount: Amount
-  sellAmountWei: Amount
-} => {
-  if (
-    !tx
-    || !tx.swapInfoDeprecated
-    || tx.txType !== BraveWallet.TransactionType.ETHSwap
-  ) {
+}): ParsedSwapInfo => {
+  if (!swapInfo) {
     return {
-      buyToken: undefined,
-      sellToken: undefined,
-      buyAmount: Amount.empty(),
-      sellAmount: Amount.empty(),
-      sellAmountWei: Amount.empty(),
-      buyAmountWei: Amount.empty(),
-    }
+      sourceToken: undefined,
+      destinationToken: undefined,
+      sourceAmount: Amount.empty(),
+      destinationAmount: Amount.empty(),
+      destinationAmountMin: Amount.empty(),
+      destinationAddress: '',
+      provider: undefined,
+    } satisfies ParsedSwapInfo
   }
 
-  const sellToken =
-    tx.swapInfoDeprecated.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-      ? nativeAsset
-      : findTokenByContractAddress(tx.swapInfoDeprecated.fromAsset, tokensList)
-        // token not found
-        // return a "faked" coin (will need to "discover" it later)
-        || ({
-          chainId: tx.swapInfoDeprecated.fromChainId,
-          coin: tx.swapInfoDeprecated.fromCoin,
-          contractAddress: tx.swapInfoDeprecated.fromAsset,
-          symbol: '???',
-          isErc20: true,
-          coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
-          name: tx.swapInfoDeprecated.fromAsset,
-          logo: 'chrome://erc-token-images/',
-          tokenId: '',
-          isErc1155: false,
-          isErc721: false,
-          isNft: false,
-          isSpam: false,
-          visible: true,
-        } as BraveWallet.BlockchainToken)
+  // Extract source network and native asset
+  const sourceNetwork =
+    networksRegistry?.entities[
+      networkEntityAdapter.selectId({
+        chainId: swapInfo.sourceChainId,
+        coin: swapInfo.sourceCoin,
+      })
+    ]
+  const sourceNativeAsset = sourceNetwork
+    ? makeNetworkAsset(sourceNetwork)
+    : undefined
 
-  const sellAmountWei = new Amount(tx.swapInfoDeprecated.fromAmount)
-  const sellAmount = sellToken
-    ? sellAmountWei.divideByDecimals(sellToken.decimals)
-    : Amount.empty()
+  // Extract destination network and native asset
+  const destinationNetwork =
+    networksRegistry?.entities[
+      networkEntityAdapter.selectId({
+        chainId: swapInfo.destinationChainId,
+        coin: swapInfo.destinationCoin,
+      })
+    ]
+  const destinationNativeAsset = destinationNetwork
+    ? makeNetworkAsset(destinationNetwork)
+    : undefined
 
-  const buyToken =
-    tx.swapInfoDeprecated.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-      ? nativeAsset
-      : tx.swapInfoDeprecated.toAsset
-        ? findTokenByContractAddress(tx.swapInfoDeprecated.toAsset, tokensList)
+  const sourceToken =
+    swapInfo.sourceTokenAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+      ? sourceNativeAsset
+      : swapInfo.sourceTokenAddress
+        ? findTokenByContractAddress(swapInfo.sourceTokenAddress, tokensList)
           // token not found
           // return a "faked" coin (will need to "discover" it later)
           || ({
-            chainId: tx.swapInfoDeprecated.toChainId,
-            coin: tx.swapInfoDeprecated.toCoin,
-            contractAddress: tx.swapInfoDeprecated.toAsset,
+            chainId: swapInfo.sourceChainId,
+            coin: swapInfo.sourceCoin,
+            contractAddress: swapInfo.sourceTokenAddress,
             symbol: '???',
             isErc20: true,
             coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
-            name: tx.swapInfoDeprecated.toAsset,
+            name: swapInfo.sourceTokenAddress,
             logo: 'chrome://erc-token-images/',
             tokenId: '',
             isErc1155: false,
@@ -552,21 +586,47 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
           } as BraveWallet.BlockchainToken)
         : undefined
 
-  const buyAmountWei = tx.swapInfoDeprecated.toAmount
-    ? new Amount(tx.swapInfoDeprecated.toAmount)
-    : Amount.empty()
-  const buyAmount = buyToken
-    ? buyAmountWei.divideByDecimals(buyToken.decimals)
-    : Amount.empty()
+  const destinationToken =
+    swapInfo.destinationTokenAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+      ? destinationNativeAsset
+      : swapInfo.destinationTokenAddress
+        ? findTokenByContractAddress(
+            swapInfo.destinationTokenAddress,
+            tokensList,
+          )
+          // token not found
+          // return a "faked" coin (will need to "discover" it later)
+          || ({
+            chainId: swapInfo.destinationChainId,
+            coin: swapInfo.destinationCoin,
+            contractAddress: swapInfo.destinationTokenAddress,
+            symbol: '???',
+            isErc20: true,
+            coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
+            name: swapInfo.destinationTokenAddress,
+            logo: 'chrome://erc-token-images/',
+            tokenId: '',
+            isErc1155: false,
+            isErc721: false,
+            isNft: false,
+            isSpam: false,
+            visible: true,
+          } as BraveWallet.BlockchainToken)
+        : undefined
+
+  const sourceAmount = new Amount(swapInfo.sourceAmount)
+  const destinationAmount = new Amount(swapInfo.destinationAmount)
+  const destinationAmountMin = new Amount(swapInfo.destinationAmountMin)
 
   return {
-    buyToken,
-    sellToken,
-    sellAmount,
-    buyAmount,
-    buyAmountWei,
-    sellAmountWei,
-  }
+    sourceToken,
+    sourceAmount,
+    destinationToken,
+    destinationAmount,
+    destinationAmountMin,
+    destinationAddress: swapInfo.recipient,
+    provider: swapInfo.provider,
+  } satisfies ParsedSwapInfo
 }
 
 export function getLamportsMovedFromInstructions(
@@ -651,13 +711,19 @@ export function getTransactionBaseValue(tx: TransactionInfo) {
     return tx.txDataUnion.cardanoTxData?.amount.toString() ?? ''
   }
 
+  if (isPolkadotTransaction(tx)) {
+    return (
+      Uint128ToBigInt(tx.txDataUnion.polkadotTxData?.amount)?.toString() ?? ''
+    )
+  }
+
   assertNotReached('Unknown transaction type')
 }
 
 interface GetTransactionTransferredValueArgs {
   tx: TransactionInfo
   token?: BraveWallet.BlockchainToken
-  sellToken?: BraveWallet.BlockchainToken
+  sourceToken?: BraveWallet.BlockchainToken
   txAccount: BraveWallet.AccountInfo | undefined
   txNetwork: BraveWallet.NetworkInfo | undefined
 }
@@ -705,17 +771,17 @@ export function getTransactionTransferredValue(
     }
   }
 
-  // ETH Swap
-  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    const { sellAmountWei, sellToken } = getETHSwapTransactionBuyAndSellTokens({
-      tx,
+  // Swap
+  if (tx.swapInfo) {
+    const { sourceAmount, sourceToken } = parseSwapInfo({
+      swapInfo: tx.swapInfo,
       tokensList: [],
+      networksRegistry: undefined,
     })
-    const wei = sellAmountWei
     return {
-      wei: sellAmountWei,
-      normalized: sellToken
-        ? wei.divideByDecimals(sellToken.decimals)
+      wei: sourceAmount,
+      normalized: sourceToken
+        ? sourceAmount.divideByDecimals(sourceToken.decimals)
         : Amount.empty(),
     }
   }
@@ -837,7 +903,8 @@ export const getTransactionGasFee = (transaction: TransactionInfo): string => {
       || isFilecoinTransaction(transaction)
       || isBitcoinTransaction(transaction)
       || isZCashTransaction(transaction)
-      || isCardanoTransaction(transaction),
+      || isCardanoTransaction(transaction)
+      || isPolkadotTransaction(transaction),
   )
 
   if (isBitcoinTransaction(transaction)) {
@@ -850,6 +917,10 @@ export const getTransactionGasFee = (transaction: TransactionInfo): string => {
 
   if (isCardanoTransaction(transaction)) {
     return transaction.txDataUnion.cardanoTxData?.fee.toString() || ''
+  }
+
+  if (isPolkadotTransaction(transaction)) {
+    return transaction.txDataUnion.polkadotTxData?.fee.toString() || ''
   }
 
   const { maxFeePerGas, gasPrice } = getTransactionGas(transaction)
@@ -890,6 +961,10 @@ export const isTransactionGasLimitMissing = (tx: TransactionInfo): boolean => {
     return gasLimit === '' || Amount.normalize(gasLimit) === '0'
   }
 
+  if (isPolkadotTransaction(tx)) {
+    return false
+  }
+
   assertNotReached('Unknown transaction type')
 }
 
@@ -899,6 +974,7 @@ export const parseTransactionFeesWithoutPrices = (tx: TransactionInfo) => {
     || isBitcoinTransaction(tx)
     || isZCashTransaction(tx)
     || isCardanoTransaction(tx)
+    || isPolkadotTransaction(tx)
   ) {
     return {
       gasLimit: '',
@@ -951,17 +1027,17 @@ export function getTransactionDecimals({
   tx,
   erc721Token,
   network,
-  sellToken,
+  sourceToken,
   token,
 }: {
   tx: TransactionInfo
   network?: BraveWallet.NetworkInfo
-  sellToken?: BraveWallet.BlockchainToken
+  sourceToken?: BraveWallet.BlockchainToken
   erc721Token?: BraveWallet.BlockchainToken
   token?: BraveWallet.BlockchainToken
 }) {
-  if (sellToken) {
-    return sellToken.decimals
+  if (sourceToken) {
+    return sourceToken.decimals
   }
 
   if (erc721Token) {
@@ -1174,16 +1250,16 @@ export const accountHasInsufficientFundsForTransaction = ({
   gasFee,
   tx,
   txAccount,
-  sellAmountWei = new Amount('0'),
-  sellTokenBalance,
+  sourceAmount = new Amount('0'),
+  sourceTokenBalance,
 }: {
   accountNativeBalance: string
   accountTokenBalance: string
   gasFee: string
   tx: TransactionInfo
   txAccount: BraveWallet.AccountInfo
-  sellAmountWei: Amount
-  sellTokenBalance: string
+  sourceAmount: Amount
+  sourceTokenBalance: string
 }): boolean => {
   const { txType, txArgs } = tx
 
@@ -1231,9 +1307,9 @@ export const accountHasInsufficientFundsForTransaction = ({
     )
   }
 
-  // Eth Swap
-  if (txType === BraveWallet.TransactionType.ETHSwap) {
-    return sellTokenBalance !== '' && sellAmountWei.gt(sellTokenBalance)
+  // Swap or bridge transaction
+  if (tx.swapInfo) {
+    return sourceTokenBalance !== '' && sourceAmount.gt(sourceTokenBalance)
   }
 
   if (
@@ -1262,16 +1338,16 @@ export const accountHasInsufficientFundsForTransaction = ({
 export function getTransactionTransferredToken({
   tx,
   txNetwork,
-  sellToken,
+  sourceToken,
   token,
 }: {
   tx: TransactionInfo
   txNetwork?: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
-  sellToken?: BraveWallet.BlockchainToken
+  sourceToken?: BraveWallet.BlockchainToken
 }): BraveWallet.BlockchainToken | undefined {
-  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    return sellToken
+  if (tx.swapInfo && sourceToken) {
+    return sourceToken
   }
 
   if (
@@ -1292,20 +1368,20 @@ export function getTransactionTransferredToken({
 export function getTransactionTokenSymbol({
   tx,
   txNetwork,
-  sellToken,
+  sourceToken,
   token,
 }: {
   tx: TransactionInfo
   txNetwork?: Pick<BraveWallet.NetworkInfo, 'symbol'>
   token?: BraveWallet.BlockchainToken
-  sellToken?: BraveWallet.BlockchainToken
+  sourceToken?: BraveWallet.BlockchainToken
 }): string {
   if (isSolanaDappTransaction(tx)) {
     return txNetwork?.symbol ?? ''
   }
 
-  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    return sellToken?.symbol || ''
+  if (isSwapTransaction(tx) || isBridgeTransaction(tx)) {
+    return sourceToken?.symbol ?? ''
   }
 
   if (
@@ -1322,22 +1398,22 @@ export function getTransactionTokenSymbol({
 }
 
 export const getTransactionIntent = ({
-  buyAmount,
-  buyToken,
+  destinationAmount,
+  destinationToken,
   erc721TokenId,
   normalizedTransferredValue,
-  sellAmount,
-  sellToken,
+  sourceAmount,
+  sourceToken,
   token,
   transactionNetwork,
   tx,
 }: {
-  buyAmount?: Amount
-  buyToken?: BraveWallet.BlockchainToken
+  destinationAmount?: Amount
+  destinationToken?: BraveWallet.BlockchainToken
   erc721TokenId?: string
   normalizedTransferredValue: string
-  sellAmount?: Amount
-  sellToken?: BraveWallet.BlockchainToken
+  sourceAmount?: Amount
+  sourceToken?: BraveWallet.BlockchainToken
   token?: BraveWallet.BlockchainToken
   transactionNetwork?: BraveWallet.NetworkInfo
   tx: TransactionInfo
@@ -1385,11 +1461,52 @@ export const getTransactionIntent = ({
     )
   }
 
-  // ETHSwap
-  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+  // Swap transaction
+  if (
+    isSwapTransaction(tx)
+    && sourceAmount
+    && sourceToken
+    && destinationToken
+  ) {
     return getLocale('braveWalletTransactionIntentSwap')
-      .replace('$1', sellAmount?.formatAsAsset(6, sellToken?.symbol) ?? '')
-      .replace('$2', buyAmount?.formatAsAsset(6, buyToken?.symbol) ?? '')
+      .replace(
+        '$1',
+        sourceAmount
+          .divideByDecimals(sourceToken.decimals)
+          .formatAsAsset(6, sourceToken.symbol),
+      )
+      .replace(
+        '$2',
+        destinationAmount
+          ? destinationAmount
+              .divideByDecimals(destinationToken.decimals)
+              .formatAsAsset(6, destinationToken.symbol)
+          : destinationToken.symbol,
+      )
+  }
+
+  // Bridge transaction
+  if (
+    isBridgeTransaction(tx)
+    && sourceAmount
+    && sourceToken
+    && destinationToken
+  ) {
+    return getLocale('braveWalletTransactionIntentBridge')
+      .replace(
+        '$1',
+        sourceAmount
+          .divideByDecimals(sourceToken.decimals)
+          .formatAsAsset(6, sourceToken.symbol),
+      )
+      .replace(
+        '$2',
+        destinationAmount
+          ? destinationAmount
+              .divideByDecimals(destinationToken.decimals)
+              .formatAsAsset(6, destinationToken.symbol)
+          : destinationToken.symbol,
+      )
   }
 
   // default / other
@@ -1437,32 +1554,39 @@ export const isSwapTransaction = (tx: TransactionInfo) => {
     return true
   }
 
-  return [
+  const isTxTypeSwap = [
     BraveWallet.TransactionType.ETHSwap,
     BraveWallet.TransactionType.SolanaSwap,
   ].includes(tx.txType)
+
+  return (
+    isTxTypeSwap
+    || (tx.swapInfo
+      && tx.swapInfo.sourceCoin === tx.swapInfo.destinationCoin
+      && tx.swapInfo.sourceChainId === tx.swapInfo.destinationChainId)
+  )
 }
 
 export const isBridgeTransaction = (tx: TransactionInfo) => {
-  return tx.swapInfoDeprecated?.fromChainId !== tx.swapInfoDeprecated?.toChainId
+  return tx.swapInfo && !isSwapTransaction(tx)
 }
 
 export const getTransactionFormattedSendCurrencyTotal = ({
   normalizedTransferredValue,
-  sellToken,
+  sourceToken,
   token,
   tx,
   txNetwork,
 }: {
   normalizedTransferredValue: string
-  sellToken?: BraveWallet.BlockchainToken
+  sourceToken?: BraveWallet.BlockchainToken
   token?: BraveWallet.BlockchainToken
   tx: TransactionInfo
   txNetwork?: BraveWallet.NetworkInfo
 }): string => {
   const sendToken = getTransactionTransferredToken({
     tx,
-    sellToken,
+    sourceToken,
     token,
     txNetwork,
   })
@@ -1476,8 +1600,8 @@ export const getTransactionFiatValues = ({
   gasFee,
   networkSpotPrice,
   normalizedTransferredValue,
-  sellAmountWei,
-  sellToken,
+  sourceAmount,
+  sourceToken,
   spotPrices,
   token,
   transferredValueWei,
@@ -1487,8 +1611,8 @@ export const getTransactionFiatValues = ({
   gasFee: string
   networkSpotPrice: string
   normalizedTransferredValue: string
-  sellAmountWei?: string
-  sellToken?: BraveWallet.BlockchainToken
+  sourceAmount?: Amount
+  sourceToken?: BraveWallet.BlockchainToken
   spotPrices: BraveWallet.AssetPrice[]
   token?: BraveWallet.BlockchainToken
   transferredValueWei?: string
@@ -1594,21 +1718,21 @@ export const getTransactionFiatValues = ({
   }
 
   // ETH SWAP
-  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    const sellAmountFiat =
-      sellToken && sellAmountWei
+  if (tx.swapInfo) {
+    const sourceAmountFiat =
+      sourceToken && sourceAmount
         ? computeFiatAmount({
             spotPrices,
-            value: sellAmountWei,
-            token: sellToken,
+            value: sourceAmount.format(),
+            token: sourceToken,
           })
         : Amount.empty()
 
-    const totalAmountFiat = new Amount(gasFeeFiat).plus(sellAmountFiat)
+    const totalAmountFiat = new Amount(gasFeeFiat).plus(sourceAmountFiat)
 
     return {
       gasFeeFiat,
-      fiatValue: sellAmountFiat.toNumber().toString(),
+      fiatValue: sourceAmountFiat.toNumber().toString(),
       fiatTotal: totalAmountFiat.toNumber().toString(),
     }
   }
@@ -1652,20 +1776,14 @@ export const parseTransactionWithoutPrices = ({
 }): ParsedTransactionWithoutFiatValues => {
   const to = getTransactionToAddress(tx)
 
-  const nativeAsset = makeNetworkAsset(transactionNetwork)
   const token = findTransactionToken(tx, tokensList)
-  const {
-    buyToken,
-    sellToken,
-    buyAmount,
-    sellAmount,
-    sellAmountWei,
-    buyAmountWei,
-  } = getETHSwapTransactionBuyAndSellTokens({
-    nativeAsset,
+  const parsedSwapInfo = parseSwapInfo({
+    swapInfo: tx.swapInfo,
     tokensList,
-    tx,
+    networksRegistry: undefined,
   })
+  const { destinationToken, sourceToken, destinationAmount, sourceAmount } =
+    parsedSwapInfo
 
   const {
     normalizedTransferredValue,
@@ -1676,7 +1794,7 @@ export const parseTransactionWithoutPrices = ({
     txAccount: transactionAccount,
     txNetwork: transactionNetwork,
     token,
-    sellToken,
+    sourceToken,
   })
 
   const erc721BlockchainToken = [
@@ -1719,7 +1837,7 @@ export const parseTransactionWithoutPrices = ({
   const decimals = getTransactionDecimals({
     tx,
     network: transactionNetwork,
-    sellToken,
+    sourceToken,
     erc721Token: erc721BlockchainToken,
     token,
   })
@@ -1737,17 +1855,17 @@ export const parseTransactionWithoutPrices = ({
     tx,
     txNetwork: transactionNetwork,
     token,
-    sellToken,
+    sourceToken,
   })
 
   const intent = getTransactionIntent({
     normalizedTransferredValue,
     tx,
-    buyAmount,
-    buyToken,
+    destinationAmount,
+    destinationToken,
     erc721TokenId,
-    sellAmount,
-    sellToken,
+    sourceAmount,
+    sourceToken,
     token,
     transactionNetwork,
   })
@@ -1758,7 +1876,7 @@ export const parseTransactionWithoutPrices = ({
 
   const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal({
     normalizedTransferredValue,
-    sellToken,
+    sourceToken,
     token,
     txNetwork: transactionNetwork,
     tx,
@@ -1793,17 +1911,12 @@ export const parseTransactionWithoutPrices = ({
     isSwap: isSwapTransaction(tx),
     maxFeePerGas,
     maxPriorityFeePerGas,
-    minBuyAmount: buyAmount,
-    minBuyAmountWei: buyAmountWei,
     missingGasLimitError,
     nonce: getTransactionNonce(tx),
     originInfo: tx.originInfo,
     recipient: to,
     recipientLabel: getAddressLabel(to, accounts),
     sameAddressError,
-    sellAmount,
-    sellAmountWei,
-    sellToken,
     senderLabel: getAccountLabel(tx.fromAccountId, accounts),
     status: tx.txStatus,
     symbol,
@@ -1816,6 +1929,7 @@ export const parseTransactionWithoutPrices = ({
     isAssociatedTokenAccountCreation: isAssociatedTokenAccountCreationTx(tx),
     hasSystemProgramAssignInstruction: hasSystemProgramAssignInstruction(tx),
     zcashMemo: tx.txDataUnion.zecTxData?.memo ?? undefined,
+    swapInfo: parsedSwapInfo,
   }
 }
 
@@ -1921,10 +2035,9 @@ export const parseTransactionWithPrices = ({
 
   const {
     token,
-    sellToken,
+    swapInfo,
     weiTransferredValue,
     value: normalizedTransferredValue,
-    sellAmountWei,
     ...txBase
   } = parseTransactionWithoutPrices({
     accounts,
@@ -1936,19 +2049,18 @@ export const parseTransactionWithPrices = ({
 
   return {
     token,
-    sellToken,
-    sellAmountWei,
+    swapInfo,
     weiTransferredValue,
     value: normalizedTransferredValue,
     ...txBase,
     ...getTransactionFiatValues({
       gasFee,
-      sellAmountWei: sellAmountWei?.format(),
+      sourceAmount: swapInfo?.sourceAmount,
       networkSpotPrice,
       normalizedTransferredValue,
       spotPrices,
       tx,
-      sellToken,
+      sourceToken: swapInfo?.sourceToken,
       token,
       txNetwork: transactionNetwork,
       transferredValueWei: weiTransferredValue,

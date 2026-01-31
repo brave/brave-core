@@ -8,16 +8,7 @@ import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 brave_browser_brave_news_sources = []
 brave_browser_brave_news_deps = []
 
-# Deps for chrome/browser/prefs:impl
-brave_browser_brave_news_prefs_deps =
-    [ "//brave/components/brave_news/common/buildflags" ]
-
 if (enable_brave_news) {
-  brave_browser_brave_news_prefs_deps += [
-    "//brave/components/brave_news/browser",
-    "//brave/components/brave_news/common",
-  ]
-
   if (is_android) {
     brave_browser_brave_news_sources += [ "//brave/browser/brave_news/android/brave_news_controller_factory_android.cc" ]
   }

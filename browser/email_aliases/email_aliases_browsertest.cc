@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/test/run_until.h"
@@ -365,9 +366,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   {
     auto initilized = test::AuthStateObserver::Setup(service, true);
   }
-  EmailAliasesAuth auth(
-      browser()->profile()->GetPrefs(),
-      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  EmailAliasesAuth auth(browser()->profile()->GetPrefs(),
+                        test::GetEncryptor(g_browser_process->os_crypt_async()),
+                        base::DoNothing());
   auth.SetAuthForTesting("success_token");
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !service->GetAuthTokenForTesting().empty(); }));
@@ -401,9 +402,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
-  EmailAliasesAuth auth(
-      browser()->profile()->GetPrefs(),
-      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  EmailAliasesAuth auth(browser()->profile()->GetPrefs(),
+                        test::GetEncryptor(g_browser_process->os_crypt_async()),
+                        base::DoNothing());
   auth.SetAuthForTesting("success_token");
 
   const GURL settings_page("chrome://settings/email-aliases");
@@ -435,9 +436,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
-  EmailAliasesAuth auth(
-      browser()->profile()->GetPrefs(),
-      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  EmailAliasesAuth auth(browser()->profile()->GetPrefs(),
+                        test::GetEncryptor(g_browser_process->os_crypt_async()),
+                        base::DoNothing());
   auth.SetAuthForTesting("success_token");
 
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
@@ -467,9 +468,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
 }
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
   // Prepare auth token
-  EmailAliasesAuth auth(
-      browser()->profile()->GetPrefs(),
-      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  EmailAliasesAuth auth(browser()->profile()->GetPrefs(),
+                        test::GetEncryptor(g_browser_process->os_crypt_async()),
+                        base::DoNothing());
   auth.SetAuthForTesting("success_token");
 
   // Settings in logged-in state

@@ -405,6 +405,7 @@ class BraveWalletService : public KeyedService,
 
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
 
+  void OnNewCardanoTokenDiscovered(mojom::BlockchainTokenPtr token);
   void OnGetImportInfo(
       const std::string& new_password,
       base::OnceCallback<void(bool, const std::optional<std::string>&)>

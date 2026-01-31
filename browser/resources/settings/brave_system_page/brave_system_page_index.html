@@ -48,4 +48,11 @@
       in-search-mode="[[inSearchMode_]]">
     </settings-brave-shortcuts-page>
   </template>
+
+  <template is="dom-if" if="[[showOriginOnboarding_]]">
+    <settings-brave-origin-onboarding
+      id="origin-onboarding"
+      slot="view">
+    </settings-brave-origin-onboarding>
+  </template>
 </cr-view-manager>

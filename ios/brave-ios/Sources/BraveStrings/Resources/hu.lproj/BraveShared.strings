@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave fiók";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Szinte kész!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Egy megerősítő e-mail már útban van. Kattintson az e-mailben található gombra a fiók aktiválásához.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Regisztráció visszavonása";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Első lépések";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Megerősítő e-mail újraküldése";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Nem látja az e-mailt? Ellenőrizze a levélszemét mappát, vagy kattintson a gombra a megerősítő e-mail újraküldéséhez.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Kijelentkezés";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave panel";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Hiba";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Első lépések";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Veszélyes webhelyek letiltása";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Böngészés láthatósága";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "privát lap";
+"tabGrid.privateBrowsingInfoTitle" = "Privát fül";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privát böngészés";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Be";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Automatikusan fókuszáljon a címsorra új lap létrehozásakor";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Billentyűzet automatikus megnyitása";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Az alkalmazás bezárásakor nyitva tartja a privát böngészési lapokat, biztosítva, hogy a privát böngészési munkamenetek zökkenőmentesen folytatódhassanak.";

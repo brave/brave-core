@@ -44,6 +44,11 @@
 		layout="@layout/brave_shields_switcher"/>
 
 	<include
+		android:id="@+id/brave_shields_secondary_shred_site_data_layout_id"
+		layout="@layout/brave_shields_toggle_layout"/>
+
+
+	<include
 		android:id="@+id/brave_shields_cross_site_trackers_layout_id"
 		layout="@layout/brave_shields_toggle_layout"/>
 	<include

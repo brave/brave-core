@@ -10,6 +10,7 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
+import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { Error, isEmailValid } from './brave_account_common.js'
@@ -85,7 +86,11 @@ class PasswordStrengthMeter extends CrLitElement {
       </div>
       <div class="text">
         ${loadTimeData.getString(
-          `braveAccountPasswordStrengthMeter${this.category}`,
+          this.category === 'Weak'
+            ? BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK
+            : this.category === 'Medium'
+              ? BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM
+              : BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG,
         )}
       </div>
     `
@@ -133,7 +138,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   static override get properties() {
     return {
       email: { type: String },
-      isCheckboxChecked: { type: Boolean },
       isEmailBraveAlias: { type: Boolean },
       isEmailValid: { type: Boolean },
       password: { type: String },
@@ -160,10 +164,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
   protected onConfirmPasswordInput(detail: { value: string }) {
     this.passwordConfirmation = detail.value
-  }
-
-  protected onCheckboxChanged(detail: { checked: boolean }) {
-    this.isCheckboxChecked = detail.checked
   }
 
   // The reason this happens here (rather than in BraveAccountService) is that
@@ -232,7 +232,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
   protected icon: string = 'warning-triangle-filled'
   protected accessor email: string = ''
-  protected accessor isCheckboxChecked: boolean = false
   protected accessor isEmailBraveAlias: boolean = false
   protected accessor isEmailValid: boolean = false
   protected accessor password: string = ''

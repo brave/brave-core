@@ -31,7 +31,7 @@ Resolves
 - Ensure that there are comments explaining what classes/methods are/do. The "why" is often more important than the "what" in comments. Also update any relevant docs (moving docs from wiki to brave-core if necessary).
 - Request security or other review (third-party libraries, rust code, etc...) if applicable [security/privacy review is needed](https://github.com/brave/brave-browser/wiki/Security-reviews) [other review](https://github.com/brave/reviews/issues/new/choose)
   Also see [adding third-party libraries](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/adding_to_third_party.md) for general guidelines on using third party code
-- Maks sure there is a [ticket](https://github.com/brave/brave-browser/issues) for your issue
+- Make sure there is a [ticket](https://github.com/brave/brave-browser/issues) for your issue
 - Use Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
 - Write a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
 - Squash any review feedback or "fixup" commits before merge, so that history is a record of what happened in the repo, not your PR

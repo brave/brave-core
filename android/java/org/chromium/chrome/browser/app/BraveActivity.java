@@ -75,7 +75,7 @@ import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.UnownedUserDataSupplier;
+import org.chromium.base.supplier.SettableObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.base.ui.KeyboardUtils;
@@ -313,7 +313,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
-    private UnownedUserDataSupplier<BrowserControlsManager> mBrowserControlsManagerSupplier;
+    private SettableObservableSupplier<BrowserControlsManager> mBrowserControlsManagerSupplier;
 
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
@@ -383,6 +383,7 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
+
         BraveActivityJni.get().restartStatsUpdater();
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().addObserver(this);
@@ -464,22 +465,17 @@ public abstract class BraveActivity extends ChromeActivity
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
 
-            // Use async version to ensure policy values are checked before building menu
-            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListAsync(
-                    (mainMenuList) -> {
-                        final Bundle bundle =
-                                CustomizeBraveMenu.populateBundle(
-                                        getResources(),
-                                        new Bundle(),
-                                        mainMenuList,
-                                        braveTabbedAppMenuPropertiesDelegate
-                                                .buildPageActionsModelList());
-                        SettingsNavigation settingsNavigation =
-                                SettingsNavigationFactory.createSettingsNavigation();
-                        // Follow upstream code and pass null as fragment to show
-                        // that defaults to main settings screen.
-                        settingsNavigation.startSettings(BraveActivity.this, null, bundle);
-                    });
+            final Bundle bundle =
+                    CustomizeBraveMenu.populateBundle(
+                            getResources(),
+                            new Bundle(),
+                            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy(),
+                            braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+            SettingsNavigation settingsNavigation =
+                    SettingsNavigationFactory.createSettingsNavigation();
+            // Follow upstream code and pass null as fragment to show
+            // that defaults to main settings screen.
+            settingsNavigation.startSettings(BraveActivity.this, null, bundle);
             return true;
         }
 
@@ -542,15 +538,10 @@ public abstract class BraveActivity extends ChromeActivity
             assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
-            // Use async version to ensure policy values are checked before building menu
-            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListAsync(
-                    (mainMenuList) -> {
-                        // Get full menu items and pass them to settings.
-                        CustomizeBraveMenu.openCustomizeMenuSettings(
-                                BraveActivity.this,
-                                mainMenuList,
-                                braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
-                    });
+            CustomizeBraveMenu.openCustomizeMenuSettings(
+                    BraveActivity.this,
+                    braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy(),
+                    braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else if (id == R.id.brave_shred_id) {
             shredData(currentTab);
         } else {
@@ -1088,6 +1079,12 @@ public abstract class BraveActivity extends ChromeActivity
         if (BraveFreshNtpHelper.isEnabled() && mApplicationStateListener == null) {
             mApplicationStateListener = this::onApplicationStateChange;
             ApplicationStatus.registerApplicationStateListener(mApplicationStateListener);
+        }
+
+        Profile profile = getCurrentProfile();
+        if (profile != null) {
+            // Triggers notification of current app state on Android.
+            BraveFirstPartyStorageCleanerUtils.triggerCurrentAppStateNotification(profile);
         }
 
         super.onStartWithNative();
@@ -2747,15 +2744,17 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void quickSearchEnginesReady(RecyclerView recyclerView, int keypadHeight) {
+        Profile profile = getCurrentProfile();
         List<QuickSearchEnginesModel> searchEngines =
-                QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
+                QuickSearchEnginesUtil.getQuickSearchEnginesForView(profile);
 
         QuickSearchEnginesModel defaultQuickSearchEnginesModel =
-                QuickSearchEnginesUtil.getDefaultSearchEngine(getCurrentProfile());
+                QuickSearchEnginesUtil.getDefaultSearchEngine(profile);
         searchEngines.add(0, defaultQuickSearchEnginesModel);
 
-        if (!getCurrentProfile().isOffTheRecord()
-                && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()) {
+        if (!profile.isOffTheRecord()
+                && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()
+                && !BraveLeoPrefUtils.isLeoDisabledByPolicy(profile)) {
             QuickSearchEnginesModel leoQuickSearchEnginesModel =
                     new QuickSearchEnginesModel(
                             "",

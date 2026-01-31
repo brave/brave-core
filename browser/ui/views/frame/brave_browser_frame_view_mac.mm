@@ -29,7 +29,7 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
 
-  if (tabs::utils::SupportsVerticalTabs(browser)) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser)) {
     auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
@@ -63,7 +63,7 @@ void BraveBrowserFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserView()->browser())) {
     if (ShouldShowWindowTitleForVerticalTabs()) {
       // Set minimum top inset to show caption buttons on frame.
       return 30;
@@ -83,12 +83,12 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
 
 bool BraveBrowserFrameViewMac::ShouldShowWindowTitleForVerticalTabs() const {
   return tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-             browser_view()->browser()) &&
-         !browser_view()->IsFullscreen();
+             GetBrowserView()->browser()) &&
+         !GetBrowserView()->IsFullscreen();
 }
 
 void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {
-  if (!browser_view()->browser()->is_type_normal()) {
+  if (!GetBrowserView()->browser()->is_type_normal()) {
     return;
   }
 
@@ -97,7 +97,7 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {
 }
 
 void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
-  if (!browser_view()->browser()->is_type_normal()) {
+  if (!GetBrowserView()->browser()->is_type_normal()) {
     return;
   }
 
@@ -106,7 +106,7 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
 }
 
 int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
-  if (auto res = brave::NonClientHitTest(browser_view(), point);
+  if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
       res != HTNOWHERE) {
     return res;
   }
@@ -130,7 +130,7 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleAndControls() {
 }
 
 gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserView()->browser())) {
     // In order to ignore tab strip height, skip BrowserFrameViewMac's
     // implementation.
     auto size = browser_widget()->client_view()->GetMinimumSize();

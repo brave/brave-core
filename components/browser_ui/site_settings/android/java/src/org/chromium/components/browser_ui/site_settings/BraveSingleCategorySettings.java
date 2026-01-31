@@ -29,8 +29,6 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
             resource = R.string.website_settings_add_site_description_autoplay;
         } else if (mCategory.getType() == SiteSettingsCategory.Type.BRAVE_GOOGLE_SIGN_IN) {
             resource = R.string.website_settings_google_sign_in_allow_exceptions;
-        } else if (mCategory.getType() == SiteSettingsCategory.Type.BRAVE_LOCALHOST_ACCESS) {
-            resource = R.string.website_settings_localhost_allow_exceptions;
         } else {
             return (int)
                     BraveReflectionUtil.invokeMethod(
@@ -51,8 +49,7 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
                                 SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY
-                || mCategory.getType() == SiteSettingsCategory.Type.BRAVE_GOOGLE_SIGN_IN
-                || mCategory.getType() == SiteSettingsCategory.Type.BRAVE_LOCALHOST_ACCESS) {
+                || mCategory.getType() == SiteSettingsCategory.Type.BRAVE_GOOGLE_SIGN_IN) {
             exception = true;
         }
         if (exception) {

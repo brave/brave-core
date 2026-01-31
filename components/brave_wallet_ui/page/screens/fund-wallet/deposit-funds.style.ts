@@ -63,6 +63,9 @@ export const QRCodeContainer = styled.div`
 export const QRCodeImage = styled.img`
   width: 260px;
   height: 260px;
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
 `
 
 export const ScrollContainer = styled.div`

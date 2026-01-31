@@ -136,6 +136,20 @@ const runTests = async (
     let runArgs = braveArgs.slice()
     let runOptions = config.defaultOptions
 
+    // Upstream tests expect to be run from the output directory
+    runOptions.cwd = config.outputDir
+
+    // Set ASAN_OPTIONS (if not already set) only for test launching.
+    // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid
+    // LSAN failures. Chromium uses the same approach.
+    if (config.isAsan() || !runOptions.env.ASAN_OPTIONS) {
+      let asanOptions = ['detect_odr_violation=0']
+      if (config.isLsan()) {
+        asanOptions.push('detect_leaks=1')
+      }
+      runOptions.env.ASAN_OPTIONS = asanOptions.join(' ')
+    }
+
     // Filter out upstream tests that are known to fail for Brave
     const filterFilePaths = getApplicableFilters(Config, testSuite)
     if (filterFilePaths.length > 0) {
@@ -188,9 +202,12 @@ const runTests = async (
       )
 
       if (!options.manual_android_test_device) {
-        runArgs.push(
-          `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`,
+        const avdConfigPath = path.join(
+          config.srcDir,
+          'tools/android/avd/proto',
+          `${options.android_test_emulator_name}.textpb`,
         )
+        runArgs.push(`--avd-config=${avdConfigPath}`)
       }
     }
 

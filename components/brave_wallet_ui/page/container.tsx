@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+
+// redux
+import { useAppDispatch } from '../common/hooks/use-redux'
 
 import ProgressRing from '@brave/leo/react/progressRing'
 
@@ -77,7 +79,7 @@ export const Container = () => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // wallet selectors (safe)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
@@ -106,6 +108,9 @@ export const Container = () => {
 
   const [acceptedPartnerConsentTerms, setAcceptedPartnerConsentTerms] =
     useLocalStorage(LOCAL_STORAGE_KEYS.HAS_ACCEPTED_PARTNER_TERMS, false)
+
+  // ref to track previous location for route history
+  const previousLocationRef = React.useRef<string | null>(null)
 
   // computed
   const walletNotYetCreated = !isWalletCreated || setupStillInProgress
@@ -142,6 +147,23 @@ export const Container = () => {
         walletLocation,
       )
       setSessionRoute(walletLocation)
+    }
+
+    // Save the previous location (from ref) before updating it with
+    // current location.
+    if (
+      previousLocationRef.current
+      && isPersistableSessionRoute(previousLocationRef.current, isPanel)
+    ) {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.PREVIOUS_LOCATION_ROUTE,
+        previousLocationRef.current,
+      )
+    }
+
+    // Update the ref with current location for next route change
+    if (isPersistableSessionRoute(walletLocation, isPanel)) {
+      previousLocationRef.current = walletLocation
     }
     // clean recovery phrase if not backing up or onboarding on route change
     if (

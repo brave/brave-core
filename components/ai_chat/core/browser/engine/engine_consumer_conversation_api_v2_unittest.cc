@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -67,7 +68,6 @@ class MockConversationAPIV2Client : public ConversationAPIV2Client {
   MOCK_METHOD(void,
               PerformRequest,
               (std::vector<OAIMessage>,
-               const std::string& selected_language,
                std::optional<base::Value::List> oai_tool_definitions,
                const std::optional<std::string>& preferred_tool_name,
                mojom::ConversationCapability conversation_capability,
@@ -78,7 +78,7 @@ class MockConversationAPIV2Client : public ConversationAPIV2Client {
 
   std::string GetMessagesJson(std::vector<OAIMessage> messages) {
     auto body = CreateJSONRequestBody(
-        std::move(messages), "", std::nullopt, std::nullopt,
+        std::move(messages), std::nullopt, std::nullopt,
         mojom::ConversationCapability::CHAT, std::nullopt, true);
     auto dict = base::test::ParseJsonDict(body);
     base::Value::List* messages_list = dict.FindList("messages");
@@ -177,7 +177,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -218,7 +217,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -259,7 +258,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -302,7 +300,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", false, {},
+      {{{"turn-1", {page_content_1, page_content_2}}}}, history, false, {},
       std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -331,7 +329,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -375,7 +372,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -436,7 +433,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -479,7 +475,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -562,7 +558,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -603,7 +598,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -629,7 +624,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -671,7 +665,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   PageContent page_content("This is a sample page content.", false);
 
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -720,7 +714,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -762,7 +755,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     base::RunLoop run_loop;
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
-        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        {{"turn-1", {page_content}}}, std::move(history), false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -805,7 +798,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -845,7 +837,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     base::RunLoop run_loop;
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
-        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        {{"turn-1", {page_content}}}, std::move(history), false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -892,7 +884,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -931,7 +922,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     base::RunLoop run_loop;
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
-        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        {{"turn-1", {page_content}}}, std::move(history), false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -960,7 +951,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -995,7 +985,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     base::RunLoop run_loop;
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
-        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        {{"turn-1", {page_content}}}, std::move(history), false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -1029,7 +1019,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -1064,7 +1053,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     base::RunLoop run_loop;
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
-        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        {{"turn-1", {page_content}}}, std::move(history), false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -1097,7 +1086,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -1132,7 +1120,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     base::RunLoop run_loop;
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
-        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        {{"turn-1", {page_content}}}, std::move(history), false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -1176,7 +1164,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1213,7 +1200,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   PageContent page_content("This is a test page content.", false);
   engine_->GenerateAssistantResponse(
-      {{"turn-1", {page_content}}}, std::move(history), "",
+      {{"turn-1", {page_content}}}, std::move(history),
       true,  // is_temporary_chat = true
       {}, std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
@@ -1230,11 +1217,10 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   // Expect PerformRequest with the overridden model name
   EXPECT_CALL(
       *mock_api_client,
-      PerformRequest(_, _, _, _, _, _, _,
+      PerformRequest(_, _, _, _, _, _,
                      testing::Eq(std::optional<std::string>(
                          model_service_->GetLeoModelNameByKey(kModelKey)))))
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1261,7 +1247,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), std::move(history), "", false, {}, std::nullopt,
+      std::move(page_contents), std::move(history), false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -1276,13 +1262,13 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
 
   EXPECT_CALL(*mock_api_client,
-              PerformRequest(_, _, testing::Eq(std::nullopt), _, _, _, _, _))
+              PerformRequest(_, testing::Eq(std::nullopt), _, _, _, _, _))
       .WillOnce([&]() { run_loop.Quit(); });
 
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      {}, std::move(history), "", false, {}, std::nullopt,
+      {}, std::move(history), false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -1329,18 +1315,17 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     }
   ])";
 
-  EXPECT_CALL(
-      *mock_api_client,
-      PerformRequest(_, _,
-                     testing::Optional(base::test::IsJson(expected_tools_json)),
-                     _, _, _, _, _))
+  EXPECT_CALL(*mock_api_client,
+              PerformRequest(
+                  _, testing::Optional(base::test::IsJson(expected_tools_json)),
+                  _, _, _, _, _))
       .WillOnce([&]() { run_loop.Quit(); });
 
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      {}, std::move(history), "", false, {mock_tool->GetWeakPtr()},
-      std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+      {}, std::move(history), false, {mock_tool->GetWeakPtr()}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1379,9 +1364,9 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     turn->uuid = "turn-1";
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
-        {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", false,
-        {}, std::nullopt, mojom::ConversationCapability::CHAT,
-        base::DoNothing(), base::DoNothing());
+        {{{"turn-1", {page_content_1, page_content_2}}}}, history, false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -1391,7 +1376,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
 
     mock_engine_consumer->GenerateQuestionSuggestions(
-        {page_content_1, page_content_2}, "", base::DoNothing());
+        {page_content_1, page_content_2}, base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 }
@@ -1403,7 +1388,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1442,8 +1426,8 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-      std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+      {{"turn-1", {page_content}}}, std::move(history), false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
 
@@ -1458,7 +1442,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1493,7 +1476,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{"missing-turn", {page_content}}}, std::move(history), "", false, {},
+      {{"missing-turn", {page_content}}}, std::move(history), false, {},
       std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
@@ -1509,7 +1492,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1552,9 +1534,8 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{"turn-1", {page_content1, video_content}}}, std::move(history), "",
-      false, {}, std::nullopt, mojom::ConversationCapability::CHAT,
-      base::DoNothing(),
+      {{"turn-1", {page_content1, video_content}}}, std::move(history), false,
+      {}, std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
 
@@ -1569,7 +1550,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1639,7 +1619,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1}}, {"turn-2", {page_content2}}},
-      std::move(history), "", false, {}, std::nullopt,
+      std::move(history), false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
@@ -1684,7 +1664,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         base::RunLoop run_loop;
         EXPECT_CALL(*mock_api_client, PerformRequest)
             .WillOnce([&](std::vector<OAIMessage> messages,
-                          const std::string& selected_language,
                           std::optional<base::Value::List> oai_tool_definitions,
                           const std::optional<std::string>& preferred_tool_name,
                           mojom::ConversationCapability conversation_capability,
@@ -1729,7 +1708,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         engine_->GenerateAssistantResponse(
             {{"turn-1", {page_content_1, page_content_2}},
              {"turn-2", {page_content_3}}},
-            history, "", false, {}, std::nullopt,
+            history, false, {}, std::nullopt,
             mojom::ConversationCapability::CHAT, base::DoNothing(),
             base::DoNothing());
         run_loop.Run();
@@ -1838,7 +1817,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1899,7 +1877,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
       nullptr /* near_verification_status */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
@@ -1942,7 +1920,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -1999,7 +1976,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({{"turn-1", {page_content}}}, history, "",
+  engine_->GenerateAssistantResponse({{"turn-1", {page_content}}}, history,
                                      false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
@@ -2064,7 +2041,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -2143,7 +2119,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({{"turn-1", {page_content}}}, history, "",
+  engine_->GenerateAssistantResponse({{"turn-1", {page_content}}}, history,
                                      false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
@@ -2177,7 +2153,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -2224,7 +2199,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   history.push_back(std::move(turn));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_TRUE(future.Wait());
@@ -2266,7 +2241,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -2321,7 +2295,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   turn->uploaded_files = Clone(uploaded_files);
   history.push_back(std::move(turn));
 
-  engine_->GenerateAssistantResponse({{"turn-1", {page_content}}}, history, "",
+  engine_->GenerateAssistantResponse({{"turn-1", {page_content}}}, history,
                                      false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
@@ -2351,7 +2325,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   // skill definition and main user query as content blocks
   EXPECT_CALL(*mock_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -2384,7 +2357,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, conversation_history, "en-US", false, {}, std::nullopt,
+      {}, conversation_history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT,
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());
@@ -2394,12 +2367,546 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   EXPECT_TRUE(result.has_value());
 }
 
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_ToolUse) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+  tool_output_content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(tool_output_content_blocks), nullptr)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "First I'll look up the weather...", std::nullopt /* prompt */,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_123",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"temperature\":\"75F\" }"
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // One user turn, one assistant turn, one tool turn
+        EXPECT_EQ(messages.size(), 3u);
+        EXPECT_THAT(
+            mock_api_client->GetMessagesJson(std::move(messages)),
+            base::test::IsJson(base::test::ParseJson(expected_messages)));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, false, {}, std::nullopt, mojom::ConversationCapability::CHAT,
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_MultipleToolUse) {
+  // Responses can contain multiple tool use events
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+
+  std::vector<mojom::ContentBlockPtr> temperature_tool_output_content_blocks;
+  temperature_tool_output_content_blocks.push_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_temperature", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(temperature_tool_output_content_blocks), nullptr)));
+
+  std::vector<mojom::ContentBlockPtr> wind_tool_output_content_blocks;
+  wind_tool_output_content_blocks.push_back(
+      mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+          "{ \"speed\":\"25mph\", \"direction\":\"NW\" }")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_wind", "call_1234", "{\"location\":\"Santa Barbara\"}",
+          std::move(wind_tool_output_content_blocks), nullptr)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "First I'll look up the weather...", std::nullopt /* prompt */,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "get_temperature",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
+          }
+        },
+        {
+          "id": "call_1234",
+          "type": "function",
+          "function": {
+            "name": "get_wind",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_123",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"temperature\":\"75F\" }"
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1234",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"speed\":\"25mph\", \"direction\":\"NW\" }"
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // One user turn, one assistant turn, two tool turns
+        EXPECT_EQ(messages.size(), 4u);
+        EXPECT_THAT(base::test::ParseJson(
+                        mock_api_client->GetMessagesJson(std::move(messages))),
+                    base::test::IsJson(expected_messages));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, false, {}, std::nullopt, mojom::ConversationCapability::CHAT,
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_MultipleToolUseWithLargeContent) {
+  EngineConsumer::ConversationHistory history;
+
+  // Generate 3 tool use requests and the first one should be removed
+  // since kMaxCountLargeToolUseEvents is 2.
+  // Content considered as "large" is any image, or text if its size is > 1000,
+  // so we'll include both those types.
+  // This test also covers multiple tool use events and different content types,
+  // ensuring the order of calls is preserved as well as accompanying completion
+  // text.
+  std::string large_text_content(1500, 'a');
+  std::string image_url = "data:image/png;base64,ABC=";
+  for (int i = 0; i < 3; ++i) {
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 3), mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY, "What is this web page about?",
+        std::nullopt /* prompt */, std::nullopt, std::nullopt,
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
+        false, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */));
+    std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+    if (i == 0 || i == 2) {
+      tool_output_content_blocks.push_back(
+          mojom::ContentBlock::NewImageContentBlock(
+              mojom::ImageContentBlock::New(GURL(image_url))));
+    } else {
+      tool_output_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(
+              mojom::TextContentBlock::New(large_text_content)));
+    }
+    std::vector<mojom::ConversationEntryEventPtr> response_events;
+    response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("First I'll look up the page...")));
+    response_events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "get_page_content", base::StrCat({"call_123", base::ToString(i)}),
+            "{}", std::move(tool_output_content_blocks), nullptr)));
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 3 + 1),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "First I'll look up the page...", std::nullopt /* prompt */,
+        std::nullopt, std::move(response_events), base::Time::Now(),
+        std::nullopt, std::nullopt, nullptr /* skill */, false,
+        std::nullopt /* model_key */, nullptr /* near_verification_status */));
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 3 + 2),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "The page has some great content", std::nullopt /* prompt */,
+        std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+        std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */));
+  }
+
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_1230",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1230",
+      "content": [
+        {
+          "type": "text",
+          "text": "[Large result removed to save space for subsequent results]"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_1231",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1231",
+      "content": [
+        {
+          "type": "text",
+          "text": ")" + large_text_content +
+                                  R"("
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
+      "tool_calls": [
+        {
+          "id": "call_1232",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1232",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,ABC="
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_THAT(base::test::ParseJson(
+                        mock_api_client->GetMessagesJson(std::move(messages))),
+                    base::test::IsJson(expected_messages));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, false, {}, std::nullopt, mojom::ConversationCapability::CHAT,
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_ToolUseNoOutput) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::nullopt, nullptr)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "First I'll look up the weather...", std::nullopt /* prompt */,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */));
+
+  // If somehow the conversation is sent without the tool output, the
+  // request should not include the tool request, since most LLM APIs will fail
+  // in that scenario. This should be prevented by the callers.
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ]
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(messages.size(), 2u);
+        EXPECT_THAT(
+            mock_api_client->GetMessagesJson(std::move(messages)),
+            base::test::IsJson(base::test::ParseJson(expected_messages)));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, false, {}, std::nullopt, mojom::ConversationCapability::CHAT,
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   PageContent page_content("Sample page content.", false);
   PageContent video_content("Sample video content.", true);
   PageContents page_contents{page_content, video_content};
-
-  std::string selected_language = "en-US";
 
   std::string expected_messages = R"([
     {
@@ -2418,7 +2925,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -2453,7 +2959,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        page_contents, selected_language,
+        page_contents,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_TRUE(result.has_value());
@@ -2469,7 +2975,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -2481,7 +2986,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        page_contents, selected_language,
+        page_contents,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -2495,7 +3000,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -2510,7 +3014,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        page_contents, selected_language,
+        page_contents,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -2524,7 +3028,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
@@ -2536,7 +3039,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        page_contents, selected_language,
+        page_contents,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -2546,34 +3049,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 
-  // Test non-completion event
-  {
-    EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<OAIMessage> messages,
-                      const std::string& language,
-                      std::optional<base::Value::List> oai_tool_definitions,
-                      const std::optional<std::string>& preferred_tool_name,
-                      mojom::ConversationCapability conversation_capability,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback,
-                      const std::optional<std::string>& model_name) {
-          auto selected_language_event =
-              mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
-                  mojom::SelectedLanguageEvent::New("en-us"));
-          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-              std::move(selected_language_event), std::nullopt)));
-        });
-
-    engine_->GenerateQuestionSuggestions(
-        page_contents, selected_language,
-        base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
-                                                      mojom::APIError> result) {
-          ASSERT_FALSE(result.has_value());
-          EXPECT_EQ(result.error(), mojom::APIError::InternalError);
-        }));
-
-    testing::Mock::VerifyAndClearExpectations(mock_api_client);
-  }
 }
 
 TEST_F(EngineConsumerConversationAPIV2UnitTest,
@@ -2581,11 +3056,11 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   auto* client = GetMockConversationAPIV2Client();
 
   // Expect PerformRequest is NOT called for unsupported action types
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _, _, _)).Times(0);
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _, _)).Times(0);
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateRewriteSuggestion("Hello World",
-                                     mojom::ActionType::CREATE_TAGLINE, "",
+                                     mojom::ActionType::CREATE_TAGLINE,
                                      base::DoNothing(), future.GetCallback());
 
   auto result = future.Take();
@@ -2637,10 +3112,9 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
         test_text, params.expected_type_string, params.expected_payload);
   }
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _, _))
       .WillOnce(
           [&](std::vector<OAIMessage> messages,
-              const std::string& selected_language,
               std::optional<base::Value::List> oai_tool_definitions,
               const std::optional<std::string>& preferred_tool_name,
               mojom::ConversationCapability conversation_capability,
@@ -2700,7 +3174,7 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
           });
 
   engine_->GenerateRewriteSuggestion(
-      test_text, params.action_type, "", base::DoNothing(),
+      test_text, params.action_type, base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &expected_response](
                                      EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
@@ -2769,7 +3243,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([](std::vector<OAIMessage> messages, const std::string&,
+      .WillOnce([](std::vector<OAIMessage> messages,
                    std::optional<base::Value::List>,
                    const std::optional<std::string>&,
                    mojom::ConversationCapability,
@@ -2782,7 +3256,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history, "",
+  engine_->GenerateConversationTitle(page_contents, history,
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2810,7 +3284,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest).Times(0);
 
-  engine_->GenerateConversationTitle(page_contents, history, "",
+  engine_->GenerateConversationTitle(page_contents, history,
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2827,8 +3301,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([](std::vector<OAIMessage>, const std::string&,
-                   std::optional<base::Value::List>,
+      .WillOnce([](std::vector<OAIMessage>, std::optional<base::Value::List>,
                    const std::optional<std::string>&,
                    mojom::ConversationCapability,
                    EngineConsumer::GenerationDataCallback,
@@ -2838,7 +3311,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
             base::unexpected(mojom::APIError::RateLimitReached));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history, "",
+  engine_->GenerateConversationTitle(page_contents, history,
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2855,8 +3328,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([](std::vector<OAIMessage>, const std::string&,
-                   std::optional<base::Value::List>,
+      .WillOnce([](std::vector<OAIMessage>, std::optional<base::Value::List>,
                    const std::optional<std::string>&,
                    mojom::ConversationCapability,
                    EngineConsumer::GenerationDataCallback,
@@ -2868,7 +3340,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history, "",
+  engine_->GenerateConversationTitle(page_contents, history,
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2885,8 +3357,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([](std::vector<OAIMessage>, const std::string&,
-                   std::optional<base::Value::List>,
+      .WillOnce([](std::vector<OAIMessage>, std::optional<base::Value::List>,
                    const std::optional<std::string>&,
                    mojom::ConversationCapability,
                    EngineConsumer::GenerationDataCallback,
@@ -2899,7 +3370,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history, "",
+  engine_->GenerateConversationTitle(page_contents, history,
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2955,7 +3426,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -2974,7 +3444,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -2994,7 +3463,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3030,7 +3498,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3049,7 +3516,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3074,7 +3540,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3093,7 +3558,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3112,7 +3576,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3149,7 +3612,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3168,7 +3630,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3185,7 +3646,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3218,7 +3678,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3237,7 +3696,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3256,7 +3714,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3286,7 +3743,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillRepeatedly([&](std::vector<OAIMessage> messages,
-                          const std::string& selected_language,
                           std::optional<base::Value::List> oai_tool_definitions,
                           const std::optional<std::string>& preferred_tool_name,
                           mojom::ConversationCapability conversation_capability,
@@ -3336,7 +3792,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3405,7 +3860,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3423,7 +3877,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3490,7 +3943,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3508,7 +3960,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3540,7 +3991,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3555,7 +4005,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3579,7 +4028,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3594,7 +4042,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3656,7 +4103,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3673,7 +4119,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, conversation_history, "", false, {}, std::nullopt,
+      {}, conversation_history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT,
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());
@@ -3699,7 +4145,6 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
   EXPECT_CALL(*mock_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
-                    const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
@@ -3718,7 +4163,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, conversation_history, "", false, {}, std::nullopt,
+      {}, conversation_history, false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT,
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());

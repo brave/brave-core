@@ -23,7 +23,6 @@ enum ContentSettingsType {
   BRAVE_GOOGLE_SIGN_IN,
   BRAVE_HTTPS_UPGRADE,
   BRAVE_REMEMBER_1P_STORAGE,
-  BRAVE_LOCALHOST_ACCESS,
   // Allow a site to open AI Chat (in side panel on Desktop).
   // This is limited to Brave Search only.
   BRAVE_OPEN_AI_CHAT,

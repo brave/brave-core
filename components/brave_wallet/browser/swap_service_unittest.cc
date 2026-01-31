@@ -14,6 +14,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -290,98 +291,6 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
 
   quote->routes[0]->tags = {"CHEAPEST", "FASTEST"};
   quote->routes[0]->unique_id = "allbridge";
-
-  return quote;
-}
-
-mojom::SquidQuotePtr GetCannedSquidQuote() {
-  auto quote = mojom::SquidQuote::New();
-
-  auto eth = mojom::BlockchainToken::New();
-  eth->contract_address = "";
-  eth->name = "Ethereum";
-  eth->logo =
-      "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/"
-      "eth.svg";
-  eth->symbol = "ETH";
-  eth->decimals = 18;
-  eth->coingecko_id = "ethereum";
-  eth->chain_id = mojom::kArbitrumMainnetChainId;
-  eth->coin = mojom::CoinType::ETH;
-
-  auto weth = mojom::BlockchainToken::New();
-  weth->contract_address = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
-  weth->name = "Wrapped ETH";
-  weth->logo =
-      "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/"
-      "weth.svg";
-  weth->symbol = "WETH";
-  weth->decimals = 18;
-  weth->coingecko_id = "weth";
-  weth->chain_id = mojom::kArbitrumMainnetChainId;
-  weth->coin = mojom::CoinType::ETH;
-
-  auto usdc = mojom::BlockchainToken::New();
-  usdc->contract_address = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
-  usdc->name = "USD Coin";
-  usdc->logo =
-      "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/"
-      "usdc.svg";
-  usdc->symbol = "USDC";
-  usdc->decimals = 6;
-  usdc->coingecko_id = "usd-coin";
-  usdc->chain_id = mojom::kArbitrumMainnetChainId;
-  usdc->coin = mojom::CoinType::ETH;
-
-  quote->actions.push_back(mojom::SquidAction::New());
-  quote->actions[0]->type = mojom::SquidActionType::kWrap;
-  quote->actions[0]->description = "Wrap ETH to WETH";
-  quote->actions[0]->provider = "Native Wrapper";
-  quote->actions[0]->logo_uri =
-      "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/"
-      "weth.svg";
-  quote->actions[0]->from_amount = "10000000000000000";
-  quote->actions[0]->from_token = eth.Clone();
-  quote->actions[0]->to_amount = "10000000000000000";
-  quote->actions[0]->to_amount_min = "10000000000000000";
-  quote->actions[0]->to_token = weth.Clone();
-
-  quote->actions.push_back(mojom::SquidAction::New());
-  quote->actions[1]->type = mojom::SquidActionType::kSwap;
-  quote->actions[1]->description = "Swap from WETH to USDC";
-  quote->actions[1]->provider = "Uniswap V3";
-  quote->actions[1]->logo_uri =
-      "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/"
-      "uniswap.svg";
-  quote->actions[1]->from_amount = "10000000000000000";
-  quote->actions[1]->from_token = weth.Clone();
-  quote->actions[1]->to_amount = "25826875";
-  quote->actions[1]->to_amount_min = "25749394";
-  quote->actions[1]->to_token = usdc.Clone();
-
-  quote->aggregate_price_impact = "0.0";
-  quote->aggregate_slippage = "0.9600000000000001";
-  quote->estimated_route_duration = "20";
-  quote->exchange_rate = "2582.6875";
-  quote->is_boost_supported = false;
-  quote->from_amount = "10000000000000000";
-  quote->from_token = eth.Clone();
-  quote->to_amount = "25826875";
-  quote->to_amount_min = "25749394";
-  quote->to_token = usdc.Clone();
-
-  quote->fee_costs.push_back(mojom::SquidFeeCost::New());
-  quote->fee_costs[0]->amount = "311053437062551";
-  quote->fee_costs[0]->description = "Gas receiver fee";
-  quote->fee_costs[0]->name = "Gas receiver fee";
-  quote->fee_costs[0]->token = eth.Clone();
-
-  quote->gas_costs.push_back(mojom::SquidGasCost::New());
-  quote->gas_costs[0]->amount = "1452012968376000";
-  quote->gas_costs[0]->gas_limit = "953658";
-  quote->gas_costs[0]->token = eth.Clone();
-
-  quote->allowance_target = "0xce16F69375520ab01377ce7B88f5BA8C48F8D666";
 
   return quote;
 }
@@ -1588,386 +1497,6 @@ TEST_F(SwapServiceUnitTest, GetLiFiStatus) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(SwapServiceUnitTest, GetSquidURL) {
-  auto url = swap_service_->GetSquidURL();
-  EXPECT_EQ(url, "https://squid.wallet.brave.com/v2/route");
-}
-
-TEST_F(SwapServiceUnitTest, GetSquidQuote) {
-  SetInterceptor(R"(
-    {
-      "route": {
-        "estimate": {
-          "actions": [
-            {
-              "type": "wrap",
-              "chainType": "evm",
-              "fromChain": "42161",
-              "toChain": "42161",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": "2581.298038575404"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
-                "name": "Wrapped ETH",
-                "symbol": "WETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/weth.svg",
-                "coingeckoId": "weth",
-                "axelarNetworkSymbol": "WETH",
-                "subGraphIds": [
-                  "arbitrum-weth-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "2583.905483882831"
-              },
-              "fromAmount": "10000000000000000",
-              "toAmount": "10000000000000000",
-              "toAmountMin": "10000000000000000",
-              "exchangeRate": "1.0",
-              "priceImpact": "0.00",
-              "stage": "0",
-              "provider": "Native Wrapper",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/weth.svg",
-              "description": "Wrap ETH to WETH"
-            },
-            {
-              "type": "swap",
-              "chainType": "evm",
-              "fromChain": "42161",
-              "toChain": "42161",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
-                "name": "Wrapped ETH",
-                "symbol": "WETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/weth.svg",
-                "coingeckoId": "weth",
-                "axelarNetworkSymbol": "WETH",
-                "subGraphIds": [
-                  "arbitrum-weth-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "2583.905483882831"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-                "name": "USD Coin",
-                "symbol": "USDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "usd-coin",
-                "subGraphIds": [
-                  "uusdc",
-                  "cctp-uusdc-arbitrum-to-noble"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.999301671003392"
-              },
-              "fromAmount": "10000000000000000",
-              "toAmount": "25826875",
-              "toAmountMin": "25749394",
-              "exchangeRate": "2582.6875",
-              "priceImpact": "-0.0000627062536913",
-              "stage": "0",
-              "provider": "Uniswap V3",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/uniswap.svg",
-              "description": "Swap from WETH to USDC"
-            }
-          ],
-          "fromAmount": "10000000000000000",
-          "toAmount": "25826875",
-          "toAmountMin": "25749394",
-          "sendAmount": "10000000000000000",
-          "exchangeRate": "2582.6875",
-          "aggregatePriceImpact": "0.0",
-          "fromAmountUSD": "25.81",
-          "toAmountUSD": "25.70",
-          "toAmountMinUSD": "25.62",
-          "aggregateSlippage": "0.9600000000000001",
-          "index": "0",
-          "fromToken": {
-            "type": "evm",
-            "chainId": "42161",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-            "coingeckoId": "ethereum",
-            "usdPrice": "2581.298038575404"
-          },
-          "toToken": {
-            "type": "evm",
-            "chainId": "42161",
-            "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-            "name": "USD Coin",
-            "symbol": "USDC",
-            "decimals": "6",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-            "coingeckoId": "usd-coin",
-            "subGraphIds": [
-              "uusdc",
-              "cctp-uusdc-arbitrum-to-noble"
-            ],
-            "subGraphOnly": false,
-            "usdPrice": "0.999301671003392"
-          },
-          "isBoostSupported": false,
-          "feeCosts": [
-            {
-              "amount": "311053437062551",
-              "amountUsd": "0.80",
-              "description": "Gas receiver fee",
-              "gasLimit": "696400",
-              "gasMultiplier": "1.1550000000000002",
-              "name": "Gas receiver fee",
-              "token": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": 2581.298038575404
-              }
-            }
-          ],
-          "gasCosts": [
-            {
-              "type": "executeCall",
-              "token": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": 2581.298038575404
-              },
-              "amount": "1452012968376000",
-              "gasLimit": "953658",
-              "amountUsd": "3.75"
-            }
-          ],
-          "estimatedRouteDuration": "20"
-        },
-        "transactionRequest": {
-          "routeType": "CALL_BRIDGE_CALL",
-          "target": "0xce16F69375520ab01377ce7B88f5BA8C48F8D666",
-          "data": "0xdeadbeef",
-          "value": "1000368231439378717",
-          "gasLimit": "995464",
-          "lastBaseFeePerGas": "10000000",
-          "maxFeePerGas": "1520000000",
-          "maxPriorityFeePerGas": "1500000000",
-          "gasPrice": "10000000",
-          "requestId": "c8f8eb102224d0de969ce595612ef1ab"
-        }
-      }
-    }
-  )");
-
-  auto expected_swap_fees = mojom::SwapFees::New();
-  expected_swap_fees->fee_pct = "0";
-  expected_swap_fees->discount_pct = "0";
-  expected_swap_fees->effective_fee_pct = "0";
-  expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
-  expected_swap_fees->fee_param = "";
-
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewSquidQuote(
-                                GetCannedSquidQuote())),
-                            EqualsMojo(expected_swap_fees.Clone()),
-                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-  auto quote_params = GetCannedSwapQuoteParams(
-      mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-      mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "USDC",
-      mojom::SwapProvider::kSquid);
-  swap_service_->GetQuote(std::move(quote_params), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
-
-TEST_F(SwapServiceUnitTest, GetSquidTransaction) {
-  SetInterceptor(R"(
-    {
-      "route": {
-        "estimate": {
-          "actions": [],
-          "fromAmount": "10000000000000000",
-          "toAmount": "49836297930093733",
-          "toAmountMin": "49686789036303451",
-          "sendAmount": "10000000000000000",
-          "exchangeRate": "4.9836297930093733",
-          "aggregatePriceImpact": "0.0",
-          "fromAmountUSD": "25.81",
-          "toAmountUSD": "25.70",
-          "toAmountMinUSD": "25.62",
-          "aggregateSlippage": "0.9600000000000001",
-          "index": "0",
-          "fromToken": {
-            "type": "evm",
-            "chainId": "42161",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-            "coingeckoId": "ethereum",
-            "usdPrice": "2581.298038575404"
-          },
-          "toToken": {
-            "type": "evm",
-            "chainId": "56",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "BNB",
-            "symbol": "BNB",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/bnb.svg",
-            "coingeckoId": "binancecoin",
-            "axelarNetworkSymbol": "WBNB",
-            "subGraphIds": [
-              "wbnb-wei"
-            ],
-            "subGraphOnly": false,
-            "usdPrice": "515.821925157587"
-          },
-          "isBoostSupported": true,
-          "feeCosts": [],
-          "gasCosts": [],
-          "estimatedRouteDuration": "20"
-        },
-        "transactionRequest": {
-          "routeType": "CALL_BRIDGE_CALL",
-          "target": "0xce16F69375520ab01377ce7B88f5BA8C48F8D666",
-          "data": "0xdeadbeef",
-          "value": "1000368231439378717",
-          "gasLimit": "995464",
-          "lastBaseFeePerGas": "10000000",
-          "maxFeePerGas": "1520000000",
-          "maxPriorityFeePerGas": "1500000000",
-          "gasPrice": "10000000",
-          "requestId": "c8f8eb102224d0de969ce595612ef1ab"
-        }
-      }
-    }
-  )");
-
-  auto expected_transaction = mojom::SquidEvmTransaction::New();
-  expected_transaction->data = "0xdeadbeef";
-  expected_transaction->target = "0xce16F69375520ab01377ce7B88f5BA8C48F8D666";
-  expected_transaction->value = "1000368231439378717";
-  expected_transaction->gas_limit = "995464";
-  expected_transaction->last_base_fee_per_gas = "10000000";
-  expected_transaction->max_fee_per_gas = "1520000000";
-  expected_transaction->max_priority_fee_per_gas = "1500000000";
-  expected_transaction->gas_price = "10000000";
-  expected_transaction->chain_id = mojom::kArbitrumMainnetChainId;
-
-  auto quote_params = GetCannedSwapQuoteParams(
-      mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "ETH",
-      mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "USDC",
-      mojom::SwapProvider::kSquid);
-
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnion::NewSquidTransaction(
-                      mojom::SquidTransactionUnion::NewEvmTransaction(
-                          std::move(expected_transaction)))),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-
-  swap_service_->GetTransaction(
-      mojom::SwapTransactionParamsUnion::NewSquidTransactionParams(
-          std::move(quote_params)),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
-
-TEST_F(SwapServiceUnitTest, GetSquidQuoteError) {
-  std::string error = R"(
-    {
-      "message": "onChainQuoting must be a `boolean` type.",
-      "statusCode": "400",
-      "type": "SCHEMA_VALIDATION_ERROR"
-    }
-  )";
-  SetErrorInterceptor(error);
-
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-          EqualsMojo(mojom::SwapFeesPtr()),
-          EqualsMojo(
-              mojom::SwapErrorUnion::NewSquidError(mojom::SquidError::New(
-                  "onChainQuoting must be a `boolean` type.",
-                  mojom::SquidErrorType::kSchemaValidationError, false))),
-          ""));
-
-  swap_service_->GetQuote(
-      GetCannedSwapQuoteParams(
-          mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "ETH",
-          mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "USDC",
-          mojom::SwapProvider::kSquid),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-}
-
-TEST_F(SwapServiceUnitTest, GetSquidTransactionError) {
-  std::string error = R"(
-    {
-      "message": "onChainQuoting must be a `boolean` type.",
-      "statusCode": "400",
-      "type": "SCHEMA_VALIDATION_ERROR"
-    }
-  )";
-  SetErrorInterceptor(error);
-
-  auto quote_params = GetCannedSwapQuoteParams(
-      mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "ETH",
-      mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId, "USDC",
-      mojom::SwapProvider::kSquid);
-
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-          EqualsMojo(
-              mojom::SwapErrorUnion::NewSquidError(mojom::SquidError::New(
-                  "onChainQuoting must be a `boolean` type.",
-                  mojom::SquidErrorType::kSchemaValidationError, false))),
-          ""));
-
-  swap_service_->GetTransaction(
-      mojom::SwapTransactionParamsUnion::NewSquidTransactionParams(
-          std::move(quote_params)),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
-
 TEST_F(SwapServiceUnitTest, GetGate3Quote) {
   // Indicative quote response
   SetInterceptor(R"(
@@ -2014,7 +1543,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
           "expiresAt": null,
           "slippagePercentage": "0.5",
           "transactionParams": null,
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2123,7 +1651,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
               "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "value": "0",
               "data": "0xdeadbeef",
-              "gasLimit": null,
+              "gasLimit": "0xfde8",
               "gasPrice": null
             },
             "solana": null,
@@ -2131,7 +1659,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2146,6 +1673,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   expected_evm_params->to = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
   expected_evm_params->value = "0";
   expected_evm_params->data = "0xdeadbeef";
+  expected_evm_params->gas_limit = "0xfde8";
 
   // Create expected route step
   auto expected_step = mojom::Gate3SwapRouteStep::New();
@@ -2193,7 +1721,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   expected_route->transaction_params =
       mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
           std::move(expected_evm_params));
-  expected_route->has_post_submit_hook = true;
   expected_route->requires_token_allowance = false;
   expected_route->requires_firm_route = true;
 
@@ -2248,6 +1775,96 @@ TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
           std::move(quote_params)),
       callback.Get());
   run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3Status) {
+  std::string response = R"({
+    "status": "SUCCESS",
+    "internalStatus": "completed",
+    "explorerUrl": "https://solscan.io/tx/abc123"
+  })";
+  SetInterceptor(response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "test-route-id";
+  params->tx_hash = "0xdeadbeef";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = std::nullopt;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  ASSERT_TRUE(status);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+  EXPECT_EQ(status->status, mojom::Gate3SwapStatusCode::kSuccess);
+  EXPECT_EQ(status->internal_status, "completed");
+  EXPECT_EQ(status->explorer_url, "https://solscan.io/tx/abc123");
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3StatusError) {
+  std::string error_response = R"({
+    "message": "Route not found",
+    "kind": "UNKNOWN"
+  })";
+  SetErrorInterceptor(error_response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "invalid-route";
+  params->tx_hash = "0x123";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = std::nullopt;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  EXPECT_FALSE(status);
+  ASSERT_TRUE(error);
+  EXPECT_TRUE(error_string.empty());
+  EXPECT_EQ(error->message, "Route not found");
+  EXPECT_EQ(error->kind, mojom::Gate3SwapErrorKind::kUnknown);
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3StatusParsingError) {
+  std::string malformed_response = R"({"invalid": "json"})";
+  SetInterceptor(malformed_response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "route";
+  params->tx_hash = "0x123";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = std::nullopt;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  EXPECT_FALSE(status);
+  EXPECT_FALSE(error);
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 }  // namespace brave_wallet

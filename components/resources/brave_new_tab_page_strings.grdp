@@ -205,6 +205,10 @@
     Show clock
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_NEWS_WIDGET_LABEL" desc="Label for showing or hiding the Brave News widget on the NTP" formatter_data="webui=BraveNewTabPage">
+    Brave News
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP" formatter_data="webui=BraveNewTabPage">
     Brave Rewards
   </message>

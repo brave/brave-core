@@ -5,37 +5,111 @@
 
 import BraveCore
 import BraveShared
+import BraveStrings
 import BraveUI
 import Playlist
 import Preferences
-import Shared
-import Static
-import UIKit
-import Web
+import SwiftUI
 
-// MARK: - PlayListDownloadType
+struct PlaylistSettingsView: View {
+  @ObservedObject private var enablePlaylistURLBarButton = Preferences.Playlist
+    .enablePlaylistURLBarButton
+  @ObservedObject private var enableLongPressAddToPlaylist = Preferences.Playlist
+    .enableLongPressAddToPlaylist
+  @ObservedObject private var firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay
+  @ObservedObject private var autoDownloadVideo = Preferences.Playlist.autoDownloadVideo
+  @ObservedObject private var playbackLeftOff = Preferences.Playlist.playbackLeftOff
+  @State private var isResetConfirmationDialogPresented: Bool = false
 
-extension PlayListDownloadType: RepresentableOptionType {
-  public var displayString: String {
-    switch self {
-    case .on:
-      return Strings.PlayList.playlistAutoSaveOptionOn
-    case .off:
-      return Strings.PlayList.playlistAutoSaveOptionOff
-    case .wifi:
-      return Strings.PlayList.playlistAutoSaveOptionOnlyWifi
+  var body: some View {
+    Form {
+      Section {
+        Toggle(Strings.PlayList.urlBarButtonOptionTitle, isOn: $enablePlaylistURLBarButton.value)
+          .tint(Color(braveSystemName: .primary40))
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        Text(Strings.PlayList.urlBarButtonOptionFooter)
+      }
+      Section {
+        Toggle(
+          Strings.PlayList.playlistLongPressSettingsOptionTitle,
+          isOn: $enableLongPressAddToPlaylist.value
+        )
+        .tint(Color(braveSystemName: .primary40))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        Text(Strings.PlayList.playlistLongPressSettingsOptionFooterText)
+      }
+      Section {
+        Toggle(Strings.PlayList.playlistAutoPlaySettingsOptionTitle, isOn: $firstLoadAutoPlay.value)
+          .tint(Color(braveSystemName: .primary40))
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        Text(Strings.PlayList.playlistAutoPlaySettingsOptionFooterText)
+      }
+      Section {
+        Picker(Strings.PlayList.playlistAutoSaveSettingsTitle, selection: $autoDownloadVideo.value)
+        {
+          Text(Strings.PlayList.playlistAutoSaveOptionOn)
+            .tag(PlayListDownloadType.on.rawValue)
+          Text(Strings.PlayList.playlistAutoSaveOptionOff)
+            .tag(PlayListDownloadType.off.rawValue)
+          Text(Strings.PlayList.playlistAutoSaveOptionOnlyWifi)
+            .tag(PlayListDownloadType.wifi.rawValue)
+        }
+        .pickerStyle(.navigationLink)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(Strings.PlayList.playlistAutoSaveSettingsFooterText)
+          Text(Strings.PlayList.playlistAutoSaveSettingsDescription)
+        }
+      }
+      Section {
+        Toggle(
+          Strings.PlayList.playlistStartPlaybackSettingsOptionTitle,
+          isOn: $playbackLeftOff.value
+        )
+        .tint(Color(braveSystemName: .primary40))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        Text(Strings.PlayList.playlistStartPlaybackSettingsFooterText)
+      }
+      Section {
+        Button {
+          isResetConfirmationDialogPresented = true
+        } label: {
+          Text(Strings.PlayList.playlistResetAlertTitle)
+            .foregroundStyle(Color(braveSystemName: .textInteractive))
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .confirmationDialog(
+          Strings.PlayList.playlistResetAlertTitle,
+          isPresented: $isResetConfirmationDialogPresented,
+          titleVisibility: .visible
+        ) {
+          Button(Strings.PlayList.playlistResetAlertTitle, role: .destructive) {
+            Task {
+              await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+            }
+          }
+          Button(Strings.CancelString, role: .cancel) {}
+        } message: {
+          Text(Strings.PlayList.playlistResetPlaylistOptionFooterText)
+        }
+      } footer: {
+        Text(Strings.PlayList.playlistResetPlaylistOptionFooterText)
+      }
     }
+    .scrollContentBackground(.hidden)
+    .background(Color(.braveGroupedBackground))
   }
 }
 
-// MARK: - PlaylistSettingsViewController
-
-class PlaylistSettingsViewController: TableViewController {
-
-  // MARK: Lifecycle
-
+class PlaylistSettingsViewController: UIHostingController<PlaylistSettingsView> {
   init() {
-    super.init(style: .insetGrouped)
+    super.init(rootView: PlaylistSettingsView())
   }
 
   @available(*, unavailable)
@@ -45,123 +119,6 @@ class PlaylistSettingsViewController: TableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     title = Strings.PlayList.playListTitle
-
-    dataSource.sections = [
-      Section(
-        rows: [
-          .boolRow(
-            title: Strings.PlayList.urlBarButtonOptionTitle,
-            option: Preferences.Playlist.enablePlaylistURLBarButton
-          )
-        ],
-        footer: .title(Strings.PlayList.urlBarButtonOptionFooter)
-      ),
-      Section(
-        rows: [
-          .boolRow(
-            title: Strings.PlayList.playlistLongPressSettingsOptionTitle,
-            option: Preferences.Playlist.enableLongPressAddToPlaylist
-          )
-        ],
-        footer: .title(Strings.PlayList.playlistLongPressSettingsOptionFooterText)
-      ),
-      Section(
-        rows: [
-          .boolRow(
-            title: Strings.PlayList.playlistAutoPlaySettingsOptionTitle,
-            option: Preferences.Playlist.firstLoadAutoPlay
-          )
-        ],
-        footer: .title(Strings.PlayList.playlistAutoPlaySettingsOptionFooterText)
-      ),
-    ]
-
-    var autoDownloadSection = Section(
-      rows: [],
-      footer: .title(Strings.PlayList.playlistAutoSaveSettingsFooterText)
-    )
-    var row = Row(
-      text: Strings.PlayList.playlistAutoSaveSettingsTitle,
-      detailText: PlayListDownloadType(rawValue: Preferences.Playlist.autoDownloadVideo.value)?
-        .displayString,
-      accessory: .disclosureIndicator,
-      cellClass: MultilineSubtitleCell.self
-    )
-
-    row.selection = { [unowned self] in
-      let optionsViewController = OptionSelectionViewController<PlayListDownloadType>(
-        options: PlayListDownloadType.allCases,
-        selectedOption: PlayListDownloadType(
-          rawValue: Preferences.Playlist.autoDownloadVideo.value
-        ),
-        optionChanged: { [unowned self] _, option in
-          Preferences.Playlist.autoDownloadVideo.value = option.rawValue
-
-          self.dataSource.reloadCell(
-            row: row,
-            section: autoDownloadSection,
-            displayText: option.displayString
-          )
-        }
-      )
-      optionsViewController.title = Strings.PlayList.playlistAutoSaveSettingsTitle
-      optionsViewController.headerText = Strings.PlayList.playlistAutoSaveSettingsDescription
-
-      self.navigationController?.pushViewController(optionsViewController, animated: true)
-    }
-
-    autoDownloadSection.rows.append(row)
-    dataSource.sections.append(autoDownloadSection)
-
-    dataSource.sections.append(
-      Section(
-        rows: [
-          .boolRow(
-            title: Strings.PlayList.playlistStartPlaybackSettingsOptionTitle,
-            option: Preferences.Playlist.playbackLeftOff
-          )
-        ],
-        footer: .title(Strings.PlayList.playlistStartPlaybackSettingsFooterText)
-      )
-    )
-
-    dataSource.sections.append(
-      Section(
-        rows: [
-          Row(
-            text: Strings.PlayList.playlistResetAlertTitle,
-            selection: { [unowned self] in
-              let style: UIAlertController.Style =
-                UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
-              let alert = UIAlertController(
-                title: Strings.PlayList.playlistResetAlertTitle,
-                message: Strings.PlayList.playlistResetPlaylistOptionFooterText,
-                preferredStyle: style
-              )
-
-              alert.addAction(
-                UIAlertAction(
-                  title: Strings.PlayList.playlistResetAlertTitle,
-                  style: .default,
-                  handler: { _ in
-                    Task {
-                      await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
-                    }
-                  }
-                )
-              )
-              alert.addAction(
-                UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
-              )
-              self.present(alert, animated: true, completion: nil)
-            },
-            cellClass: ButtonCell.self
-          )
-        ],
-        footer: .title(Strings.PlayList.playlistResetPlaylistOptionFooterText)
-      )
-    )
   }
 }

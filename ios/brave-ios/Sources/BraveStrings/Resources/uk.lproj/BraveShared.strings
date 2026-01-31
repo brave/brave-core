@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Обліковий запис Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Майже там!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Підтвердження електронною поштою має прийти. Натисніть кнопку в цьому листі, щоб активувати свій обліковий запис.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Скасувати реєстрацію";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Почати";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Переслати підтвердження електронною поштою";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Не бачите листа? Перевірте папку спаму або натисніть кнопку, щоб переслати підтвердження електронною поштою.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Вийти";
+
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Помилка";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Почати";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Блокуйте небезпечні вебсайти";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Видимість у браузері";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "приватна вкладка";
+"tabGrid.privateBrowsingInfoTitle" = "Приватна вкладка";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Перегляд у приватному режимі";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Увімк.";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Автоматично фокусувати адресну панель при створенні нової вкладки";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Автоматично відкривати клавіатуру";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Залишати відкритими вкладки режиму приватного перегляду після закриття додатка. Це дозволить легко продовжувати роботу з вкладками приватного режиму в майбутньому.";

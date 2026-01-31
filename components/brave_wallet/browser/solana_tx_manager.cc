@@ -15,6 +15,7 @@
 #include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
@@ -211,6 +212,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_solana_tx_data());
 
@@ -230,6 +232,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta->set_created_time(base::Time::Now());
   meta->set_status(mojom::TransactionStatus::Unapproved);
   meta->set_chain_id(chain_id);
+  meta->set_swap_info(std::move(swap_info));
 
   // Skip preflight checks for compressed NFT transfers to avoid a potential
   // Solana RPC bug that incorrectly shows compute budget exceeded, causing

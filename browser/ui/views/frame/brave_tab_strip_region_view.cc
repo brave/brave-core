@@ -17,9 +17,25 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 
-BraveTabStripRegionView::~BraveTabStripRegionView() = default;
+namespace {
 
-void BraveTabStripRegionView::Layout(PassKey) {
+#if BUILDFLAG(IS_LINUX)
+ui::DropTargetEvent ConvertRootLocation(views::View* view,
+                                        const ui::DropTargetEvent& event) {
+  ui::DropTargetEvent converted_event = event;
+  auto root_location = event.location();
+  views::View::ConvertPointToScreen(view, &root_location);
+  converted_event.set_root_location(root_location);
+  return converted_event;
+}
+#endif
+
+}  // namespace
+
+BraveHorizontalTabStripRegionView::~BraveHorizontalTabStripRegionView() =
+    default;
+
+void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   auto* widget = GetWidget();
   if (!widget || widget->IsClosed()) {
     return;
@@ -27,14 +43,16 @@ void BraveTabStripRegionView::Layout(PassKey) {
 
   UpdateTabStripMargin();
 
-  if (!tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
-    LayoutSuperclass<TabStripRegionView>(this);
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(
+          tab_strip_->GetBrowserWindowInterface())) {
+    LayoutSuperclass<HorizontalTabStripRegionView>(this);
 
     // Ensure that the new tab button is positioned after the last tab, with the
     // correct amount of padding.
     if (new_tab_button_) {
-      new_tab_button_->SetX(tab_strip_container_->bounds().right() +
-                            GetLayoutConstant(TAB_STRIP_PADDING));
+      new_tab_button_->SetX(
+          tab_strip_container_->bounds().right() +
+          GetLayoutConstant(LayoutConstant::kTabStripPadding));
     }
     return;
   }
@@ -44,12 +62,12 @@ void BraveTabStripRegionView::Layout(PassKey) {
   tab_strip_container_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
 }
 
-void BraveTabStripRegionView::UpdateTabStripMargin() {
-  TabStripRegionView::UpdateTabStripMargin();
+void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
+  HorizontalTabStripRegionView::UpdateTabStripMargin();
 
   gfx::Insets margins;
-  bool vertical_tabs =
-      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser());
+  bool vertical_tabs = tabs::utils::ShouldShowBraveVerticalTabs(
+      tab_strip_->GetBrowserWindowInterface());
 
   // In horizontal mode, take the current right margin. It is required so that
   // the new tab button will not be covered by the frame grab handle.
@@ -74,12 +92,48 @@ void BraveTabStripRegionView::UpdateTabStripMargin() {
   tab_strip_container_->SetProperty(views::kMarginsKey, margins);
 }
 
-void BraveTabStripRegionView::Initialize() {
+void BraveHorizontalTabStripRegionView::OnDragEntered(
+    const ui::DropTargetEvent& event) {
+#if BUILDFLAG(IS_LINUX)
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(
+          tab_strip_->GetBrowserWindowInterface())) {
+    return HorizontalTabStripRegionView::OnDragEntered(event);
+  }
+
+  // Upstream calls TabDragController::Drag() with event.root_location().
+  // It should be screen cooridanated location but
+  // |event|'s root_location() gives vertical tab widget coordinated location.
+  return HorizontalTabStripRegionView::OnDragEntered(
+      ConvertRootLocation(this, event));
+#else
+  return HorizontalTabStripRegionView::OnDragEntered(event);
+#endif
+}
+
+int BraveHorizontalTabStripRegionView::OnDragUpdated(
+    const ui::DropTargetEvent& event) {
+#if BUILDFLAG(IS_LINUX)
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(
+          tab_strip_->GetBrowserWindowInterface())) {
+    return HorizontalTabStripRegionView::OnDragUpdated(event);
+  }
+
+  // Upstream calls TabDragController::Drag() with event.root_location().
+  // It should be screen cooridanated location but
+  // |event|'s root_location() gives vertical tab widget coordinated location.
+  return HorizontalTabStripRegionView::OnDragUpdated(
+      ConvertRootLocation(this, event));
+#else
+  return HorizontalTabStripRegionView::OnDragUpdated(event);
+#endif
+}
+
+void BraveHorizontalTabStripRegionView::Initialize() {
   // Use our own icon for the new tab button.
   if (auto* ntb = views::AsViewClass<TabStripControlButton>(new_tab_button_)) {
     ntb->SetVectorIcon(kLeoPlusAddIcon);
   }
 }
 
-BEGIN_METADATA(BraveTabStripRegionView)
+BEGIN_METADATA(BraveHorizontalTabStripRegionView)
 END_METADATA

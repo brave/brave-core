@@ -481,7 +481,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       to: to,
       value: value,
       gasLimit: gasLimit,
-      data: data
+      data: data,
+      swapInfo: nil
     )
     let (success, _, _) = await txService.addUnapprovedEvmTransaction(
       params: params
@@ -531,7 +532,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       to: fromToken.contractAddress(in: network),
       value: "0x0",
       gasLimit: "",
-      data: data
+      data: data,
+      swapInfo: nil
     )
     let (addSuccess, _, _) = await txService.addUnapprovedEvmTransaction(
       params: params
@@ -987,7 +989,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     let (success, _, _) = await txService.addUnapprovedTransaction(
       txDataUnion: .init(solanaTxData: solTxData),
       chainId: network.chainId,
-      from: accountInfo.accountId
+      from: accountInfo.accountId,
+      swapInfo: nil
     )
     return success
   }

@@ -322,7 +322,7 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
   if (feature == WindowFeature::kFeatureTitleBar) {
     // In case of vertical tab strip is allowed, we need to have ability to
     // show title bar on Windows.
-    return tabs::utils::ShouldShowVerticalTabs(this) &&
+    return tabs::utils::ShouldShowBraveVerticalTabs(this) &&
            tabs::utils::ShouldShowWindowTitleForVerticalTabs(this);
   }
 #endif

@@ -26,16 +26,12 @@ export default function NoticeConversationStorage() {
         <h4>{getLocale(S.CHAT_UI_MENU_CONVERSATION_HISTORY)}</h4>
         <p>{getLocale(S.CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY)}</p>
         <p>
-          <a
-            href='#'
-            target='_blank'
-            onClick={(e) => {
-              e.preventDefault()
-              aiChatContext.uiHandler?.openStorageSupportUrl()
-            }}
+          <button
+            className={styles.learnMoreLink}
+            onClick={() => aiChatContext.uiHandler?.openStorageSupportUrl()}
           >
             {getLocale(S.CHAT_UI_LEARN_MORE)}
-          </a>
+          </button>
         </p>
       </div>
       <Button

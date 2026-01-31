@@ -49,7 +49,7 @@ export function getHtml(this: BraveAccountDialogElement) {
                 kind="plain-faint"
                 @click=${() => this.fire('back-button-clicked')}
               >
-                $i18n{braveAccountBackButtonLabel}
+                $i18n{BRAVE_ACCOUNT_BACK_BUTTON_LABEL}
               </leo-button>`
             : nothing}
         </if>

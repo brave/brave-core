@@ -73,7 +73,6 @@ export function useLifi({
           lifiTransactionParams: step,
           jupiterTransactionParams: undefined,
           zeroExTransactionParams: undefined,
-          squidTransactionParams: undefined,
           gate3TransactionParams: undefined,
         }
 

@@ -51,9 +51,9 @@ void DirectFeedController::FindFeeds(
   CHECK(possible_feed_or_site_url.is_valid() &&
         !possible_feed_or_site_url.is_empty());
 
-  if (ongoing_requests_.count(possible_feed_or_site_url)) {
+  if (ongoing_requests_.count(possible_feed_or_site_url.spec())) {
     DVLOG(2) << "Accumulated: " << possible_feed_or_site_url.spec();
-    ongoing_requests_[possible_feed_or_site_url].push_back(
+    ongoing_requests_[possible_feed_or_site_url.spec()].push_back(
         {possible_feed_or_site_url, std::move(callback)});
     return;
   }
@@ -65,7 +65,7 @@ void DirectFeedController::FindFeeds(
   }
 
   DVLOG(2) << "Kick off: " << possible_feed_or_site_url.spec();
-  ongoing_requests_[possible_feed_or_site_url].push_back(
+  ongoing_requests_[possible_feed_or_site_url.spec()].push_back(
       {possible_feed_or_site_url, std::move(callback)});
   FindFeedsImpl(possible_feed_or_site_url);
 }
@@ -138,13 +138,13 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
 void DirectFeedController::OnFindFeedsImplResponse(
     const GURL& feed_url,
     std::vector<mojom::FeedSearchResultItemPtr> results) {
-  if (ongoing_requests_.count(feed_url)) {
-    if (ongoing_requests_[feed_url].size() == 1u) {
-      std::move(ongoing_requests_[feed_url].front().callback)
+  if (ongoing_requests_.count(feed_url.spec())) {
+    if (ongoing_requests_[feed_url.spec()].size() == 1u) {
+      std::move(ongoing_requests_[feed_url.spec()].front().callback)
           .Run(std::move(results));
     } else {
       // We need to do deep-copy
-      for (auto& request : ongoing_requests_[feed_url]) {
+      for (auto& request : ongoing_requests_[feed_url.spec()]) {
         std::vector<mojom::FeedSearchResultItemPtr> clone;
         std::ranges::transform(results, std::back_inserter(clone),
                                &mojom::FeedSearchResultItemPtr::Clone);
@@ -152,7 +152,7 @@ void DirectFeedController::OnFindFeedsImplResponse(
       }
     }
 
-    ongoing_requests_.erase(feed_url);
+    ongoing_requests_.erase(feed_url.spec());
   }
 
   DVLOG(2) << ongoing_requests_.size();
@@ -166,7 +166,7 @@ void DirectFeedController::OnFindFeedsImplResponse(
   pending_requests_.pop();
 
   auto target_url = request.possible_feed_or_site_url;
-  auto& requests = ongoing_requests_[target_url];
+  auto& requests = ongoing_requests_[target_url.spec()];
   requests.push_back(std::move(request));
   if (requests.size() == 1) {
     FindFeedsImpl(target_url);

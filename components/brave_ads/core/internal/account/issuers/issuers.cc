@@ -16,8 +16,8 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
@@ -79,19 +79,16 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& mojom_url_response) {
 
   is_fetching_ = false;
 
-  if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
-    BLOG(0, "Failed to fetch issuers as a browser upgrade is required");
-    return AdsNotifierManager::GetInstance()
-        .NotifyBrowserUpgradeRequiredToServeAds();
-  }
-
   if (mojom_url_response.code == net::HTTP_FORBIDDEN) {
+    // Returned when requests originate from sanctioned countries.
     BLOG(0, "Failed to request issuers as forbidden");
     return FailedToFetchIssuers(/*should_retry=*/false);
   }
 
   if (mojom_url_response.code != net::HTTP_OK) {
-    return FailedToFetchIssuers(/*should_retry=*/true);
+    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                              HttpStatusCodeClassType::kClientError;
+    return FailedToFetchIssuers(should_retry);
   }
 
   BLOG(1, "Parsing issuers");

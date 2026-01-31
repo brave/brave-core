@@ -18,8 +18,14 @@ namespace brave_ads {
 BASE_DECLARE_FEATURE(kConfirmationsFeature);
 
 inline constexpr base::FeatureParam<base::TimeDelta>
-    kRetryProcessingConfirmationAfter{
-        &kConfirmationsFeature, "retry_processing_after", base::Seconds(15)};
+    kProcessConfirmationInitialBackoffDelay{
+        &kConfirmationsFeature, "process_confirmation_initial_backoff_delay",
+        base::Seconds(15)};
+
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kProcessConfirmationMaxBackoffDelay{
+        &kConfirmationsFeature, "process_confirmation_max_backoff_delay",
+        base::Hours(6)};
 
 }  // namespace brave_ads
 

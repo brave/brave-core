@@ -4,9 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // types
 import {
@@ -26,7 +28,7 @@ import {
 import Amount from '../../../../utils/amount'
 import {
   findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
+  parseSwapInfo,
   sortTransactionByDate,
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -41,7 +43,6 @@ import {
   getDoesCoinSupportSwapOrBridge,
 } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
-import { makeNetworkAsset } from '../../../../options/asset-options'
 import { isRewardsAssetId } from '../../../../utils/rewards_utils'
 import {
   makeDepositFundsRoute,
@@ -82,10 +83,13 @@ import {
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
-  useGetUserTokensRegistryQuery,
   useUpdateUserAssetVisibleMutation,
+  useGetNetworksRegistryQuery,
 } from '../../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import {
+  useAccountsQuery,
+  useGetCombinedTokensRegistryQuery,
+} from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
@@ -135,7 +139,7 @@ export const PortfolioFungibleAsset = () => {
   const isRewardsToken = assetId ? isRewardsAssetId(assetId) : false
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // Local-Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
@@ -144,21 +148,27 @@ export const PortfolioFungibleAsset = () => {
   )
 
   // Queries
-  const { data: userTokensRegistry, isLoading: isLoadingTokens } =
-    useGetUserTokensRegistryQuery()
+  const { data: tokensRegistry, isLoading: isLoadingTokens } =
+    useGetCombinedTokensRegistryQuery()
+  const tokensList = React.useMemo(() => {
+    return tokensRegistry?.fungibleVisibleTokenIds.map((id) => {
+      return tokensRegistry.entities[id]!
+    })
+  }, [tokensRegistry])
   const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
   const {
     data: { rewardsToken } = emptyRewardsInfo,
     isLoading: isLoadingRewards,
   } = useGetRewardsInfoQuery(isRewardsToken ? undefined : skipToken)
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   // params
   const selectedAssetFromParams = React.useMemo(() => {
     if (isRewardsToken) {
       return rewardsToken
     }
-    return assetId ? userTokensRegistry?.entities[assetId] : undefined
-  }, [isRewardsToken, rewardsToken, assetId, userTokensRegistry])
+    return assetId ? tokensRegistry?.entities[assetId] : undefined
+  }, [isRewardsToken, rewardsToken, assetId, tokensRegistry])
 
   // mutations
   const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
@@ -277,9 +287,7 @@ export const PortfolioFungibleAsset = () => {
     && getDoesCoinSupportSwapOrBridge(selectedAssetFromParams.coin)
 
   const selectedAssetTransactions = React.useMemo(() => {
-    const nativeAsset = makeNetworkAsset(selectedAssetsNetwork)
-
-    if (selectedAssetFromParams) {
+    if (selectedAssetFromParams && tokensList && networksRegistry) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
         const token = findTransactionToken(tx, [selectedAssetFromParams])
 
@@ -287,19 +295,21 @@ export const PortfolioFungibleAsset = () => {
         const tokenId = token ? getAssetIdKey(token) : undefined
 
         if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-          const { sellToken, buyToken } = getETHSwapTransactionBuyAndSellTokens(
-            {
-              nativeAsset,
-              tokensList: [selectedAssetFromParams],
-              tx,
-            },
-          )
-          const buyTokenId = buyToken ? getAssetIdKey(buyToken) : undefined
-          const sellTokenId = sellToken ? getAssetIdKey(sellToken) : undefined
+          const { sourceToken, destinationToken } = parseSwapInfo({
+            swapInfo: tx.swapInfo,
+            tokensList,
+            networksRegistry,
+          })
+          const sourceTokenId = sourceToken
+            ? getAssetIdKey(sourceToken)
+            : undefined
+          const destinationTokenId = destinationToken
+            ? getAssetIdKey(destinationToken)
+            : undefined
           return (
             selectedAssetIdKey === tokenId
-            || selectedAssetIdKey === buyTokenId
-            || selectedAssetIdKey === sellTokenId
+            || selectedAssetIdKey === sourceTokenId
+            || selectedAssetIdKey === destinationTokenId
           )
         }
 
@@ -308,7 +318,12 @@ export const PortfolioFungibleAsset = () => {
       return sortTransactionByDate(filteredTransactions, 'descending')
     }
     return []
-  }, [selectedAssetFromParams, transactionsByNetwork, selectedAssetsNetwork])
+  }, [
+    selectedAssetFromParams,
+    transactionsByNetwork,
+    tokensList,
+    networksRegistry,
+  ])
 
   const fullAssetFiatBalance = React.useMemo(
     () =>

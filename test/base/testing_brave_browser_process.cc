@@ -129,10 +129,16 @@ TestingBraveBrowserProcess::brave_stats_updater() {
   return nullptr;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 brave_ads::BraveStatsHelper*
 TestingBraveBrowserProcess::ads_brave_stats_helper() {
   return nullptr;
 }
+
+brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
+  return nullptr;
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 ntp_background_images::NTPBackgroundImagesService*
 TestingBraveBrowserProcess::ntp_background_images_service() {
@@ -145,10 +151,6 @@ TestingBraveBrowserProcess::speedreader_rewriter_service() {
   return nullptr;
 }
 #endif
-
-brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
-  return nullptr;
-}
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNConnectionManager*

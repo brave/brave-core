@@ -7,14 +7,24 @@ import * as qr from 'qr-image'
 
 export const generateQRCode = (data: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const image = qr.image(data)
-    let chunks: Uint8Array[] = []
-    image
-      .on('data', (chunk: Uint8Array) => chunks.push(chunk))
-      .on('end', () => {
-        resolve(
-          `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`,
-        )
-      })
+    try {
+      // Use SVG output instead of PNG to avoid zlib dependency issues
+      // with the browser-assert polyfill (zlib requires assert.ok which
+      // browser-assert doesn't provide)
+      // This is only for generating QR codes with trusted data
+      const image = qr.image(data, { type: 'svg' })
+      let chunks: string[] = []
+      image
+        .on('data', (chunk: Buffer) => chunks.push(chunk.toString()))
+        .on('end', () => {
+          const svgString = chunks.join('')
+          resolve(`data:image/svg+xml;base64,${btoa(svgString)}`)
+        })
+        .on('error', (error: Error) => {
+          reject(error)
+        })
+    } catch (error) {
+      reject(error)
+    }
   })
 }

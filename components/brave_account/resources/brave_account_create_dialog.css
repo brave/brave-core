@@ -59,10 +59,3 @@ leo-icon[name='warning-triangle-filled'] {
 leo-icon[name='warning-triangle-filled'] + div {
   color: var(--leo-color-systemfeedback-error-text);
 }
-
-leo-checkbox a {
-  color: var(--leo-color-text-interactive);
-  font: var(--leo-font-default-link);
-  text-decoration-skip-ink: none;
-  text-underline-offset: 2.8px;
-}

@@ -3483,6 +3483,13 @@ extension Strings {
       value: "ZCash",
       comment: "One of the coin types for users to create an account to store ZEC assets"
     )
+    public static let coinTypeAda = NSLocalizedString(
+      "wallet.coinTypeAda",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cardano",
+      comment: "One of the coin types for users to create an account to store ADA assets"
+    )
     public static let coinTypeEthereumDescription = NSLocalizedString(
       "wallet.coinTypeEthereumDescription",
       tableName: "BraveWallet",

@@ -23,7 +23,6 @@ import com.google.android.material.button.MaterialButton;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveUrlConstants;
-import org.chromium.base.Callback;
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.library_loader.LibraryLoader;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -34,10 +33,11 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
-import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -47,9 +47,7 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.Tab;
@@ -64,6 +62,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler.AppMenuItemType;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -88,42 +87,46 @@ import java.util.function.Supplier;
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private final AppMenuDelegate mBraveAppMenuDelegate;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
-    private boolean mJunitIsTesting;
     private final Context mBraveContext;
+    private boolean mJunitIsTesting;
 
     /**
      * Represents a menu item that can be controlled by policy.
      *
      * <p>To add a new policy-controlled menu item, add a new entry to {@link
-     * #getPolicyControlledMenuItems()} with: - menuItemId: The resource ID of the menu item (e.g.,
-     * R.id.brave_news_id) - policyKey: The policy constant (e.g.,
-     * BravePolicyConstants.BRAVE_NEWS_DISABLED) - itemBuilder: Method reference to build the menu
-     * item (e.g., this::buildBraveNewsItem) - isSupportedChecker: Lambda to check if feature is
-     * supported (e.g., () -> true) - insertBeforeItemId: Menu item ID to insert before (e.g.,
-     * R.id.brave_customize_id)
+     * #getPolicyControlledMenuItems()} with:
+     *
+     * <ul>
+     *   <li>menuItemId: The resource ID of the menu item (e.g., R.id.brave_news_id)
+     *   <li>itemBuilder: Method reference to build the menu item (e.g., this::buildBraveNewsItem)
+     *   <li>isSupportedChecker: Lambda to check if feature is supported (e.g., () -> true)
+     *   <li>isDisabledByPolicyChecker: Lambda to check policy state (e.g., () ->
+     *       BraveNewsPolicy.isDisabledByPolicy(profile))
+     *   <li>insertBeforeItemIds: List of menu item IDs to try inserting before
+     * </ul>
      *
      * <p>The item will automatically be hidden/shown in the app menu based on policy ({@link
      * #updateMenuItemsBasedOnPolicy}) and hidden/shown in the settings screen menu based on policy
-     * ({@link #buildMainMenuModelListAsync}).
+     * ({@link #buildMainMenuModelList}).
      */
     private static class PolicyControlledMenuItem {
         final int mMenuItemId;
-        final String mPolicyKey;
         final Supplier<MVCListAdapter.ListItem> mItemBuilder;
         final Supplier<Boolean> mIsSupportedChecker;
-        final int mInsertBeforeItemId;
+        final Supplier<Boolean> mIsDisabledByPolicyChecker;
+        final List<Integer> mInsertBeforeItemIds;
 
         PolicyControlledMenuItem(
                 int menuItemId,
-                String policyKey,
                 Supplier<MVCListAdapter.ListItem> itemBuilder,
                 Supplier<Boolean> isSupportedChecker,
-                int insertBeforeItemId) {
+                Supplier<Boolean> isDisabledByPolicyChecker,
+                List<Integer> insertBeforeItemIds) {
             mMenuItemId = menuItemId;
-            mPolicyKey = policyKey;
             mItemBuilder = itemBuilder;
             mIsSupportedChecker = isSupportedChecker;
-            mInsertBeforeItemId = insertBeforeItemId;
+            mIsDisabledByPolicyChecker = isDisabledByPolicyChecker;
+            mInsertBeforeItemIds = insertBeforeItemIds;
         }
     }
 
@@ -134,15 +137,80 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     private List<PolicyControlledMenuItem> getPolicyControlledMenuItems() {
         return Arrays.asList(
                 new PolicyControlledMenuItem(
+                        R.id.brave_leo_id,
+                        this::buildBraveLeoItem,
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return BraveLeoPrefUtils.isLeoEnabled()
+                                    && (tab == null || !tab.isIncognito());
+                        },
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveLeoPrefUtils.isLeoDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(
+                                R.id.recent_tabs_menu_id,
+                                R.id.page_zoom_id,
+                                R.id.find_in_page_id,
+                                R.id.set_default_browser)),
+                new PolicyControlledMenuItem(
                         R.id.brave_rewards_id,
-                        BravePolicyConstants.BRAVE_REWARDS_DISABLED,
                         this::buildBraveRewardsItem,
                         () -> {
+                            // Native methods are not available in unit tests (Robolectric)
+                            if (!LibraryLoader.getInstance().isInitialized()) {
+                                return false;
+                            }
                             BraveRewardsNativeWorker worker =
                                     BraveRewardsNativeWorker.getInstance();
                             return worker != null && worker.isSupported();
                         },
-                        R.id.brave_news_id));
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveRewardsPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(
+                                R.id.brave_news_id,
+                                CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID,
+                                R.id.exit_id)),
+                new PolicyControlledMenuItem(
+                        R.id.brave_news_id,
+                        this::buildBraveNewsItem,
+                        () -> true,
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveNewsPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID, R.id.exit_id)),
+                // VPN feature checks call native code, so assume supported in JUnit tests
+                new PolicyControlledMenuItem(
+                        R.id.request_brave_vpn_id,
+                        this::buildBraveVpnItem,
+                        () -> mJunitIsTesting || BraveVpnUtils.isVpnFeatureSupported(mBraveContext),
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveVpnPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID, R.id.exit_id)),
+                // VPN location requires actual subscription/region data, don't assume in tests
+                new PolicyControlledMenuItem(
+                        R.id.request_vpn_location_id,
+                        this::buildBraveVpnLocationIconItem,
+                        () ->
+                                !mJunitIsTesting
+                                        && BraveVpnUtils.isVpnFeatureSupported(mBraveContext)
+                                        && BraveVpnPrefUtils.isSubscriptionPurchase()
+                                        && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode()),
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveVpnPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID, R.id.exit_id)));
     }
 
     public BraveTabbedAppMenuPropertiesDelegate(
@@ -186,26 +254,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Helper method to get the current profile from the activity tab provider. Used for policy
-     * checks that require a profile.
-     *
-     * @return The profile, or null if not available
-     */
-    @Nullable
-    private Profile getCurrentProfile() {
-        Tab currentTab = mActivityTabProvider.get();
-        if (currentTab == null) {
-            return null;
-        }
-        // Check if native library is loaded before calling native method
-        // In unit tests (Robolectric), native methods are not available
-        if (!LibraryLoader.getInstance().isInitialized()) {
-            return null;
-        }
-        return Profile.fromWebContents(currentTab.getWebContents());
-    }
-
-    /**
      * Checks if a menu item is present in the menu list.
      *
      * @param modelList The menu model list to search
@@ -239,59 +287,56 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Inserts a menu item before a specified item in the menu list.
+     * Inserts a menu item before the first matching item in the menu list.
      *
      * @param modelList The menu model list to modify
      * @param itemToInsert The menu item to insert
-     * @param beforeItemId The menu item ID to insert before
+     * @param beforeItemIds List of menu item IDs to try inserting before (priority order - first ID
+     *     in the list that exists in the menu wins)
      */
     private void insertMenuItemBefore(
             MVCListAdapter.ModelList modelList,
             MVCListAdapter.ListItem itemToInsert,
-            int beforeItemId) {
-        int insertIndex = modelList.size() - 1; // Default to end if beforeItemId not found
-        for (int i = 0; i < modelList.size(); i++) {
-            MVCListAdapter.ListItem item = modelList.get(i);
-            if (item.model.get(AppMenuItemProperties.MENU_ITEM_ID) == beforeItemId) {
-                insertIndex = i;
-                break;
+            List<Integer> beforeItemIds) {
+        int insertIndex = modelList.size(); // Default to end if no match found
+        // Try each ID in priority order - first one found in menu wins
+        for (int targetId : beforeItemIds) {
+            for (int i = 0; i < modelList.size(); i++) {
+                MVCListAdapter.ListItem item = modelList.get(i);
+                int itemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
+                if (itemId == targetId) {
+                    insertIndex = i;
+                    break;
+                }
+            }
+            if (insertIndex != modelList.size()) {
+                break; // Found a match, stop searching
             }
         }
         modelList.add(insertIndex, itemToInsert);
     }
 
     /**
-     * Updates menu items based on policy checks for all configured policy-controlled items. This
-     * method checks policies asynchronously and adds/removes menu items accordingly.
+     * Updates menu items based on cached policy states for all configured policy-controlled items.
+     * Policy values are cached in BraveActivity.onResumeWithNative() and read synchronously here.
      *
      * @param modelList The menu model list to update
      */
     private void updateMenuItemsBasedOnPolicy(MVCListAdapter.ModelList modelList) {
-        Profile profile = getCurrentProfile();
-        if (profile == null) {
-            // Profile not available (e.g., in tests) - skip policy check
-            return;
-        }
         for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
-            BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                    profile,
-                    item.mPolicyKey,
-                    (isDisabled) -> {
-                        if (isDisabled) {
-                            // Policy disables the feature - remove item if present
-                            removeMenuItemById(modelList, item.mMenuItemId);
-                        } else {
-                            // Policy allows the feature - add item if not present and supported
-                            if (!isMenuItemPresent(modelList, item.mMenuItemId)) {
-                                if (item.mIsSupportedChecker.get()) {
-                                    insertMenuItemBefore(
-                                            modelList,
-                                            item.mItemBuilder.get(),
-                                            item.mInsertBeforeItemId);
-                                }
-                            }
-                        }
-                    });
+            boolean isDisabled = item.mIsDisabledByPolicyChecker.get();
+            if (isDisabled) {
+                // Policy disables the feature - remove item if present
+                removeMenuItemById(modelList, item.mMenuItemId);
+            } else {
+                // Policy allows the feature - add item if not present and supported
+                if (!isMenuItemPresent(modelList, item.mMenuItemId)) {
+                    if (item.mIsSupportedChecker.get()) {
+                        insertMenuItemBefore(
+                                modelList, item.mItemBuilder.get(), item.mInsertBeforeItemIds);
+                    }
+                }
+            }
         }
     }
 
@@ -444,51 +489,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Builds the complete list of main menu items for the Customize menu settings screen
-     * asynchronously, ensuring policy values are checked before building.
+     * Builds the complete list of main menu items for the Customize menu settings screen using
+     * cached policy values.
      *
-     * <p>This method checks all policy-controlled menu items asynchronously, then builds the menu
-     * list with the correct policy state. Use this method instead of {@link
-     * #buildMainMenuModelList()} when you need to ensure policy values are up-to-date.
+     * <p>Policy values are cached in BraveActivity.onResumeWithNative() and read synchronously
+     * here.
      *
-     * @param callback Called with the built menu model list once all policy checks complete
+     * @return The built menu model list with policy-controlled items filtered
      */
-    public void buildMainMenuModelListAsync(Callback<MVCListAdapter.ModelList> callback) {
-        // Always check policy fresh (no caching) before building menu
-        // Check all policy-controlled items, then build menu with policy states
-        Profile profile = getCurrentProfile();
-        List<PolicyControlledMenuItem> policyItems = getPolicyControlledMenuItems();
-
-        if (profile == null || policyItems.isEmpty()) {
-            // Profile not available (e.g., in tests) or no policy items - build menu without policy
-            // checks
-            MVCListAdapter.ModelList menuList = buildMainMenuModelList(new HashMap<>());
-            callback.onResult(menuList);
-            return;
-        }
-
-        // Map to store policy states: menuItemId -> isDisabled
+    public MVCListAdapter.ModelList buildMainMenuModelListWithPolicy() {
         Map<Integer, Boolean> policyStates = new HashMap<>();
-        final int[] pendingChecks = {
-            policyItems.size()
-        }; // Use array to allow modification in lambda
-
-        for (PolicyControlledMenuItem item : policyItems) {
-            BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                    profile,
-                    item.mPolicyKey,
-                    (isDisabled) -> {
-                        policyStates.put(item.mMenuItemId, isDisabled);
-                        pendingChecks[0]--;
-
-                        // When all policy checks are complete, build the menu
-                        if (pendingChecks[0] == 0) {
-                            MVCListAdapter.ModelList menuList =
-                                    buildMainMenuModelList(policyStates);
-                            callback.onResult(menuList);
-                        }
-                    });
+        for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
+            policyStates.put(item.mMenuItemId, item.mIsDisabledByPolicyChecker.get());
         }
+        return buildMainMenuModelList(policyStates);
     }
 
     /**
@@ -498,9 +512,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      * customize through the menu settings. The list includes items like "New Tab", "History",
      * "Downloads", "Brave Wallet", etc., based on feature availability and device configuration.
      *
-     * <p><strong>Note:</strong> This synchronous version defaults to showing all menu items since
-     * it cannot check policy asynchronously. For accurate policy-based filtering, use {@link
-     * #buildMainMenuModelListAsync(Callback)} instead.
+     * <p><strong>Note:</strong> This version defaults to showing all menu items based on the
+     * provided policy states. For automatic policy-based filtering using cached values, use {@link
+     * #buildMainMenuModelListWithPolicy()} instead.
      *
      * <p><strong>Note on Icons:</strong> The returned menu items do not include drawable icons
      * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across activity
@@ -532,13 +546,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 0)));
 
         // Add to Group
-        if (ChromeFeatureList.sTabGroupParityBottomSheetAndroid.isEnabled()) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
-        }
+        modelList.add(
+                new MVCListAdapter.ListItem(
+                        AppMenuHandler.AppMenuItemType.STANDARD,
+                        buildModelForStandardMenuItem(
+                                R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
 
         // New Window
         if (!DeviceInfo.isAutomotive()) {
@@ -632,29 +644,17 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(buildBravePlaylistItem());
             modelList.add(buildBraveAddToPlaylistItem());
         }
-        if (BraveLeoPrefUtils.isLeoEnabled()) {
-            modelList.add(buildBraveLeoItem());
-        }
-
         modelList.add(buildSetDefaultBrowserItem());
 
-        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
-            modelList.add(buildBraveVpnItem());
-            if (BraveVpnPrefUtils.isSubscriptionPurchase()
-                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
-                modelList.add(buildBraveVpnLocationIconItem());
-            }
-        }
-        // Add policy-controlled items based on policy states
+        // Add policy-controlled items based on policy states, respecting their position
         for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
             // Check if item is disabled by policy (default to false/not disabled if not in map)
             boolean isDisabled = policyStates.getOrDefault(item.mMenuItemId, false);
             if (!isDisabled && item.mIsSupportedChecker.get()) {
-                modelList.add(item.mItemBuilder.get());
+                insertMenuItemBefore(modelList, item.mItemBuilder.get(), item.mInsertBeforeItemIds);
             }
         }
 
-        modelList.add(buildBraveNewsItem());
         modelList.add(buildExitItem());
         return modelList;
     }
@@ -930,35 +930,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             R.id.brave_wallet_id,
                             R.id.all_bookmarks_menu_id));
         }
-        if (BraveLeoPrefUtils.isLeoEnabled()) {
-            Tab tab = mActivityTabProvider.get();
-            if (tab != null && !tab.isIncognito()) {
-                addMenuItemAfter(
-                        modelList,
-                        buildBraveLeoItem(),
-                        Arrays.asList(
-                                R.id.add_to_playlist_id,
-                                R.id.brave_playlist_id,
-                                R.id.brave_wallet_id,
-                                R.id.all_bookmarks_menu_id));
-            }
-        }
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {
             modelList.add(buildSetDefaultBrowserItem());
         }
-        if (!mJunitIsTesting) {
-            if (BraveVpnUtils.isVpnFeatureSupported(mBraveContext)) {
-                modelList.add(buildBraveVpnItem());
-                if (BraveVpnPrefUtils.isSubscriptionPurchase()
-                        && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
-                    modelList.add(buildBraveVpnLocationIconItem());
-                }
-            }
-        }
-        // Policy-controlled items (like Rewards) are handled by updateMenuItemsBasedOnPolicy()
-        // They are not added here to avoid showing them if policy disables them
-        // The async policy check will add them if policy allows
-        modelList.add(buildBraveNewsItem());
+        // Policy-controlled items (Leo, Rewards, News, VPN) are handled by
+        // updateMenuItemsBasedOnPolicy() - they are not added here to avoid showing them
+        // if policy disables them
         modelList.add(buildCustomMenuItem());
         modelList.add(buildExitItem());
     }
@@ -1154,10 +1131,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Method to ensure that the object is created for junit tests to avoid calling the native
-     * portion of code.
+     * Sets whether we're running in JUnit tests to avoid calling native code.
      *
-     * @param isJunitTesting flag indicating whether the native code should be avoided.
+     * @param isJunitTesting flag indicating whether native code should be avoided.
      */
     @VisibleForTesting
     public void setIsJunitTesting(boolean isJunitTesting) {

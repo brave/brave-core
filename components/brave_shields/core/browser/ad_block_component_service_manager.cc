@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
@@ -368,7 +369,7 @@ void AdBlockComponentServiceManager::SetFilterListCatalog(
   filter_list_catalog_ = std::move(catalog);
   LoadComponentFiltersProviders();
 
-  list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_);
+  list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_, locale_);
 }
 
 const std::vector<FilterListCatalogEntry>&

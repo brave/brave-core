@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
-index 8990b735c3330136796a58acf5ece55a6785c2f6..804c618cc52b00f3a04227cdd0269b9146cd1acf 100644
+index 4a8b8a1202bda8b9f134986ac5a5c008206fb11e..21a88bde76c48c59aa7871b133cd5a803002562e 100644
 --- a/third_party/blink/common/BUILD.gn
 +++ b/third_party/blink/common/BUILD.gn
-@@ -354,6 +354,7 @@ source_set("common") {
+@@ -353,6 +353,7 @@ source_set("common") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]

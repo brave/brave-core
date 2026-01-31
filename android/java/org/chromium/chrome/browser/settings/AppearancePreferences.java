@@ -19,18 +19,22 @@ import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
-import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
-import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarPrefs;
+import org.chromium.chrome.browser.toolbar.adaptive.settings.BraveRadioButtonGroupAdaptiveToolbarPreference;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -179,6 +183,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
 
         // Check if Brave Rewards is disabled by policy and hide the icon preference if so
         checkRewardsPolicyAndUpdatePreference();
+
+        // Check if Leo is disabled by policy for toolbar shortcut settings
+        checkLeoPolicyForToolbarShortcut();
 
         if (ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
             updatePreferenceTitle(
@@ -353,21 +360,37 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     }
 
     /**
-     * Checks if Brave Rewards is disabled by policy via Brave Origin and removes related
-     * preferences if so. This ensures that when Brave Rewards is disabled, users cannot toggle
-     * rewards-related settings in the appearance settings.
+     * Checks if Brave Rewards is disabled by policy and removes related preferences if so. This
+     * ensures that when Brave Rewards is disabled, users cannot toggle rewards-related settings in
+     * the appearance settings.
      */
     private void checkRewardsPolicyAndUpdatePreference() {
-        BraveOriginSubscriptionPrefs.checkPolicyAsync(
-                getProfile(),
-                BravePolicyConstants.BRAVE_REWARDS_DISABLED,
-                (isDisabled) -> {
-                    if (getActivity() == null || getActivity().isFinishing() || !isDisabled) {
-                        return;
-                    }
-                    // Policy disables Brave Rewards - remove rewards-related preferences
-                    removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
-                    removePreferenceIfPresent(PREF_ADS_SWITCH);
-                });
+        if (BraveRewardsPolicy.isDisabledByPolicy(getProfile())) {
+            // Policy disables Brave Rewards - remove rewards-related preferences
+            removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
+            removePreferenceIfPresent(PREF_ADS_SWITCH);
+        }
+    }
+
+    /**
+     * Checks if Leo AI is disabled by policy and updates the static flag in
+     * BraveRadioButtonGroupAdaptiveToolbarPreference. This is checked before the user can navigate
+     * to toolbar shortcut settings, so the flag will be set when the preference screen opens.
+     */
+    private void checkLeoPolicyForToolbarShortcut() {
+        boolean isDisabled = BraveLeoPrefUtils.isLeoDisabledByPolicy(getProfile());
+        BraveRadioButtonGroupAdaptiveToolbarPreference.setLeoDisabledByPolicy(isDisabled);
+        // If Leo was selected and is now disabled, reset to default
+        if (isDisabled
+                && BraveAdaptiveToolbarPrefs.getCustomizationSetting()
+                        == AdaptiveToolbarButtonVariant.LEO) {
+            @AdaptiveToolbarButtonVariant
+            int defaultVariant =
+                    DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                                    ContextUtils.getApplicationContext())
+                            ? AdaptiveToolbarButtonVariant.SHARE
+                            : AdaptiveToolbarButtonVariant.NEW_TAB;
+            AdaptiveToolbarPrefs.saveToolbarButtonManualOverride(defaultVariant);
+        }
     }
 }

@@ -19,8 +19,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
@@ -97,6 +96,11 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -239,11 +243,6 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
       base::Value(
           static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled)));
 
-  // Disable cloud print
-  // Cloud Print: Don't allow this browser to act as Cloud Print server
-  registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled,
-                                base::Value(false));
-
   // Disable default webstore icons in topsites or apps.
   registry->SetDefaultPrefValue(policy::policy_prefs::kHideWebStoreIcon,
                                 base::Value(true));
@@ -293,8 +292,11 @@ void RegisterProfilePrefsForMigration(
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Added 05/2021
-  registry->RegisterBooleanPref(kBraveNewsIntroDismissed, false);
+  registry->RegisterBooleanPref(brave_news::prefs::kBraveNewsIntroDismissed,
+                                false);
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Added 11/2022
@@ -344,8 +346,10 @@ void RegisterProfilePrefsForMigration(
   // Added 2023-11
   brave_sync::Prefs::RegisterProfilePrefsForMigration(registry);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Added 2023-11
   brave_ads::RegisterProfilePrefsForMigration(registry);
+#endif
 
   // Added 2024-04
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -569,7 +573,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   }
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::RegisterProfilePrefs(registry);
+#endif
   brave_rewards::RegisterProfilePrefs(registry);
 
   webcompat_reporter::prefs::RegisterProfilePrefs(registry);
@@ -586,6 +592,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(prefs::kPinShareMenuButton, true);
+  registry->RegisterBooleanPref(prefs::kPinPwaInstallButton, true);
 #endif  // defined(TOOLKIT_VIEWS)
 
   OverrideDefaultPrefValues(registry);

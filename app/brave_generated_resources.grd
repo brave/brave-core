@@ -249,6 +249,9 @@
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
+      <message name="IDS_SHOW_EMAIL_ALIASES" desc="The show Email Aliases menu in the app menu">
+        Email Aliases
+      </message>
 
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
@@ -400,7 +403,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT" desc="The tooltip text for onion available button.">
         Open using .onion address: <ph name="ADDRESS">$1</ph>
       </message>
-      <message name="IDS_CONTENT_CONTEXT_FORCE_PASTE" desc="The name of the context menu item to paste without triggering onpaste handlers">
+      <message name="IDS_FORCE_PASTE" desc="The name of the context menu item to paste without triggering onpaste handlers">
         Force Paste
       </message>
 

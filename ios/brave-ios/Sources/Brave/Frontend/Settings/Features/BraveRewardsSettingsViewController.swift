@@ -83,7 +83,7 @@ struct BraveRewardsSettingsView: View {
       if model.isWalletInitialized, let rewardsAPI = model.rewards.rewardsAPI {
         Section {
           NavigationLink {
-            UIKitController(RewardsInternalsViewController(rewardsAPI: rewardsAPI))
+            RewardsInternalsView(rewardsAPI: rewardsAPI)
           } label: {
             Text(Strings.RewardsInternals.title)
           }

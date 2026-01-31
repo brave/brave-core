@@ -30,6 +30,10 @@
   font: var(--leo-font-small-regular);
   text-decoration: underline;
   color: var(--leo-color-text-primary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   &:hover {
     color: var(--leo-color-text-interactive);
   }
@@ -39,6 +43,10 @@
   font: var(--leo-font-small-regular);
   text-decoration: underline;
   color: var(--leo-color-text-secondary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   &:hover {
     color: var(--leo-color-text-interactive);
   }

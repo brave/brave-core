@@ -1,7 +1,10 @@
 include_rules = [
-  "+brave/components/ephemeral_storage",
-  "+brave/components/brave_shields/content/test",
-  "+brave/build/android/jni_headers/TabUtils_jni.h",
-  "!brave/components/brave_component_updater/browser/local_data_files_service.h",
-  "!brave/components/brave_component_updater/browser/local_data_files_observer.h",
+  '+brave/components/ephemeral_storage',
+  '+brave/components/brave_shields/content/test',
+  '+brave/build/android/jni_headers/TabUtils_jni.h',
+  '+brave/components/content_settings/core/common',
+  '+brave/components/content_settings/core/browser',
+
+  '!brave/components/brave_component_updater/browser/local_data_files_service.h',
+  '!brave/components/brave_component_updater/browser/local_data_files_observer.h',
 ]

@@ -8,7 +8,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/values.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -383,6 +387,88 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
 
   EXPECT_EQ(GetAllowedJsList().size(), 2u);
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
+                       DelayedBlocks) {
+  brave_shields::AdBlockService* ad_block_service =
+      g_brave_browser_process->ad_block_service();
+  ad_block_service->custom_filters_provider()->UpdateCustomFilters("||b.com^");
+
+  class EmptyAdsBlocked : public BraveShieldsTabHelper::Observer {
+   public:
+    EmptyAdsBlocked(content::WebContents* tab, bool wait_for_empty)
+        : tab_(tab), wait_for_empty_(wait_for_empty) {
+      auto* tab_helper = BraveShieldsTabHelper::FromWebContents(tab_);
+      observation_.Observe(tab_helper);
+    }
+
+    ~EmptyAdsBlocked() override = default;
+
+    void OnResourcesChanged() override {
+      auto* tab_helper = BraveShieldsTabHelper::FromWebContents(tab_);
+      if (tab_helper->GetBlockedAdsList().empty() == wait_for_empty_) {
+        run_loop_.Quit();
+      }
+    }
+
+    void Wait() { run_loop_.Run(); }
+
+   private:
+    const raw_ptr<content::WebContents> tab_ = nullptr;
+    const bool wait_for_empty_ = true;
+    base::ScopedObservation<BraveShieldsTabHelper,
+                            BraveShieldsTabHelper::Observer>
+        observation_{this};
+    base::RunLoop run_loop_;
+  };
+
+  auto* a_page = ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("a.com", "/simple.html"));
+
+  {
+    // Open a.com and start spaming requests to the blocked host.
+    constexpr char kScript[] = R"js(
+      setInterval( () => {
+        fetch($1)
+      }, 100)
+    )js";
+
+    EmptyAdsBlocked not_empty_waiter(GetWebContents(), false);
+    ASSERT_TRUE(content::ExecJs(
+        a_page, content::JsReplace(kScript, embedded_test_server()->GetURL(
+                                                "b.com", "/simple.html"))));
+
+    // Wait for at least one blocking report.
+    not_empty_waiter.Wait();
+  }
+
+  {
+    EmptyAdsBlocked empty_waiter(GetWebContents(), true);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL("c.com", "/simple.html")));
+    // Wait the reports are cleared on finish navigation.
+    empty_waiter.Wait();
+  }
+
+  {
+    // The straight variant: waiting a delayed report for 1 second.
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitClosure(), base::Seconds(1));
+    run_loop.Run();
+
+    auto* tab_helper = BraveShieldsTabHelper::FromWebContents(GetWebContents());
+    EXPECT_EQ(0u, tab_helper->GetBlockedAdsList().size());
+  }
+
+  {
+    // The synthetic variant: if straight is false positive.
+    brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
+        GURL("https://test-request.com"), a_page->GetGlobalFrameToken(), kAds);
+    auto* tab_helper = BraveShieldsTabHelper::FromWebContents(GetWebContents());
+    EXPECT_EQ(0u, tab_helper->GetBlockedAdsList().size());
+  }
 }
 
 }  // namespace brave_shields

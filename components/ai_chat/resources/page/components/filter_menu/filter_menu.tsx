@@ -19,6 +19,7 @@ export interface Props<T> {
   header?: React.ReactNode
   footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
+  onAutoSelect?: () => void
 
   onResultsChanged?: (results: { category: string; entries: T[] }[]) => void
 
@@ -118,6 +119,7 @@ export default function FilterMenu<T>(props: Props<T>) {
 
         if (!menuItem) return
 
+        props.onAutoSelect?.()
         menuItem.click()
       }
 

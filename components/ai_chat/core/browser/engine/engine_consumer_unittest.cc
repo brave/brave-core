@@ -31,8 +31,8 @@ TEST(EngineConsumerUnitTest, GetStrArrFromTabOrganizationResponses) {
 
   // This creates a result with an event that is not a completion event
   results.push_back(base::ok(EngineConsumer::GenerationResultData(
-      mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
-          mojom::SelectedLanguageEvent::New("en-us")),
+      mojom::ConversationEntryEvent::NewSearchStatusEvent(
+          mojom::SearchStatusEvent::New(true)),
       std::nullopt)));
 
   // This creates a result with no event

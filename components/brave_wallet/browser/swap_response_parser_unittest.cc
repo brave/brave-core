@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/swap_response_parser.h"
+
 #include <memory>
 #include <utility>
 
@@ -10,9 +12,9 @@
 #include "base/json/json_reader.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using base::test::ParseJson;
 
@@ -408,8 +410,10 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
             "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4");
   EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->in_amount, "997500");
   EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->out_amount, "4052482154");
-  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->fee_amount, "2500");
-  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->fee_mint,
+  ASSERT_TRUE(swap_quote->route_plan.at(0)->swap_info->fee_amount);
+  EXPECT_EQ(*swap_quote->route_plan.at(0)->swap_info->fee_amount, "2500");
+  ASSERT_TRUE(swap_quote->route_plan.at(0)->swap_info->fee_mint);
+  EXPECT_EQ(*swap_quote->route_plan.at(0)->swap_info->fee_mint,
             "So11111111111111111111111111111111111111112");
   EXPECT_EQ(swap_quote->route_plan.at(1)->percent, "100");
   EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->amm_key,
@@ -421,8 +425,10 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
             "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
   EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->in_amount, "4052482154");
   EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->out_amount, "834185227");
-  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->fee_amount, "10131205");
-  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->fee_mint,
+  ASSERT_TRUE(swap_quote->route_plan.at(1)->swap_info->fee_amount);
+  EXPECT_EQ(*swap_quote->route_plan.at(1)->swap_info->fee_amount, "10131205");
+  ASSERT_TRUE(swap_quote->route_plan.at(1)->swap_info->fee_mint);
+  EXPECT_EQ(*swap_quote->route_plan.at(1)->swap_info->fee_mint,
             "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
   EXPECT_EQ(swap_quote->route_plan.at(2)->percent, "100");
   EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->amm_key,
@@ -434,9 +440,41 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
             "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
   EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->in_amount, "834185227");
   EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->out_amount, "781469842");
-  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->fee_amount, "2085463");
-  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->fee_mint,
+  ASSERT_TRUE(swap_quote->route_plan.at(2)->swap_info->fee_amount);
+  EXPECT_EQ(*swap_quote->route_plan.at(2)->swap_info->fee_amount, "2085463");
+  ASSERT_TRUE(swap_quote->route_plan.at(2)->swap_info->fee_mint);
+  EXPECT_EQ(*swap_quote->route_plan.at(2)->swap_info->fee_mint,
             "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
+
+  // OK: missing optional feeAmount and feeMint fields
+  auto quote_without_fees = jupiter::ParseQuoteResponse(ParseJson(R"({
+    "inputMint": "So11111111111111111111111111111111111111112",
+    "inAmount": "1000000",
+    "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+    "outAmount": "781469842",
+    "otherAmountThreshold": "781391696",
+    "swapMode": "ExactIn",
+    "slippageBps": "1",
+    "platformFee": null,
+    "priceImpactPct": "0",
+    "routePlan": [
+      {
+        "swapInfo": {
+          "ammKey": "HCk6LA93xPVsF8g4v6gjkiCd88tLXwZq4eJwiYNHR8da",
+          "label": "Raydium",
+          "inputMint": "So11111111111111111111111111111111111111112",
+          "outputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+          "inAmount": "997500",
+          "outAmount": "4052482154"
+        },
+        "percent": "100"
+      }
+    ]
+  })"));
+  ASSERT_TRUE(quote_without_fees);
+  ASSERT_EQ(quote_without_fees->route_plan.size(), 1UL);
+  EXPECT_FALSE(quote_without_fees->route_plan.at(0)->swap_info->fee_amount);
+  EXPECT_FALSE(quote_without_fees->route_plan.at(0)->swap_info->fee_mint);
 
   // OK: null platformFee value
   EXPECT_TRUE(jupiter::ParseQuoteResponse(ParseJson(R"({
@@ -1891,870 +1929,6 @@ TEST(SwapResponseParserUnitTest, ParseLiFiStatusResponse) {
             "The transfer is waiting for destination transaction.");
 }
 
-TEST(SwapResponseParserUnitTest, ParseSquidErrorResponse) {
-  std::string json(R"(
-    {
-      "message": "onChainQuoting must be a `boolean` type, but the final value was: `\"ani\"`.",
-      "statusCode": "400",
-      "type": "SCHEMA_VALIDATION_ERROR"
-    }
-  )");
-
-  auto error = squid::ParseErrorResponse(ParseJson(json));
-  ASSERT_TRUE(error);
-  EXPECT_EQ(error->message,
-            "onChainQuoting must be a `boolean` type, but the "
-            "final value was: `\"ani\"`.");
-  EXPECT_EQ(error->type, mojom::SquidErrorType::kSchemaValidationError);
-
-  json = R"(
-    {
-      "message": "The request is missing a required parameter.",
-      "statusCode": "400",
-      "type": "INVALID_REQUEST_ERROR"
-    }
-  )";
-
-  error = squid::ParseErrorResponse(ParseJson(json));
-  ASSERT_TRUE(error);
-  EXPECT_EQ(error->message, "The request is missing a required parameter.");
-  EXPECT_EQ(error->type, mojom::SquidErrorType::kUnknownError);
-
-  json = R"(
-    {
-      "statusCode": "400",
-      "type": "BAD_REQUEST_ERROR",
-      "message": "Unable to fetch token data"
-    }
-  )";
-
-  error = squid::ParseErrorResponse(ParseJson(json));
-  ASSERT_TRUE(error);
-  EXPECT_EQ(error->type, mojom::SquidErrorType::kUnknownError);
-  EXPECT_EQ(error->message, "Unable to fetch token data");
-  EXPECT_TRUE(error->is_insufficient_liquidity);
-}
-
-TEST(SwapResponseParserUnitTest, ParseSquidQuoteResponse) {
-  std::string json(R"(
-    {
-      "route": {
-        "estimate": {
-          "actions": [
-            {
-              "type": "wrap",
-              "chainType": "evm",
-              "fromChain": "42161",
-              "toChain": "42161",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": "2581.298038575404"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
-                "name": "Wrapped ETH",
-                "symbol": "WETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/weth.svg",
-                "coingeckoId": "weth",
-                "axelarNetworkSymbol": "WETH",
-                "subGraphIds": [
-                  "arbitrum-weth-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "2583.905483882831"
-              },
-              "fromAmount": "10000000000000000",
-              "toAmount": "10000000000000000",
-              "toAmountMin": "10000000000000000",
-              "exchangeRate": "1.0",
-              "priceImpact": "0.00",
-              "stage": "0",
-              "provider": "Native Wrapper",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/weth.svg",
-              "description": "Wrap ETH to WETH"
-            },
-            {
-              "type": "swap",
-              "chainType": "evm",
-              "fromChain": "42161",
-              "toChain": "42161",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
-                "name": "Wrapped ETH",
-                "symbol": "WETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/weth.svg",
-                "coingeckoId": "weth",
-                "axelarNetworkSymbol": "WETH",
-                "subGraphIds": [
-                  "arbitrum-weth-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "2583.905483882831"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-                "name": "USD Coin",
-                "symbol": "USDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "usd-coin",
-                "subGraphIds": [
-                  "uusdc",
-                  "cctp-uusdc-arbitrum-to-noble"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.999301671003392"
-              },
-              "fromAmount": "10000000000000000",
-              "toAmount": "25826875",
-              "toAmountMin": "25749394",
-              "exchangeRate": "2582.6875",
-              "priceImpact": "-0.0000627062536913",
-              "stage": "0",
-              "provider": "Uniswap V3",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/uniswap.svg",
-              "description": "Swap from WETH to USDC"
-            },
-            {
-              "type": "swap",
-              "chainType": "evm",
-              "fromChain": "42161",
-              "toChain": "42161",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-                "name": "USD Coin",
-                "symbol": "USDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "usd-coin",
-                "subGraphIds": [
-                  "uusdc",
-                  "cctp-uusdc-arbitrum-to-noble"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.999301671003392"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
-                "name": "Axelar Wrapped USDC",
-                "symbol": "axlUSDC",
-                "axelarNetworkSymbol": "axlUSDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "axlusdc",
-                "subGraphIds": [
-                  "uusdc"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.9953463988901597"
-              },
-              "fromAmount": "25826875",
-              "toAmount": "25825839",
-              "toAmountMin": "25779352",
-              "exchangeRate": "0.999959886745880018",
-              "priceImpact": "-0.0000858142057914",
-              "stage": "0",
-              "provider": "Camelot V3",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/camelot.svg",
-              "description": "Swap from USDC to axlUSDC"
-            },
-            {
-              "type": "bridge",
-              "chainType": "evm",
-              "fromChain": "42161",
-              "toChain": "56",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
-                "name": "Axelar Wrapped USDC",
-                "symbol": "axlUSDC",
-                "axelarNetworkSymbol": "axlUSDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "axlusdc",
-                "subGraphIds": [
-                  "uusdc"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.9953463988901597"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3",
-                "name": "Axelar Wrapped USDC",
-                "symbol": "axlUSDC",
-                "axelarNetworkSymbol": "axlUSDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "axlusdc",
-                "subGraphIds": [
-                  "uusdc"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.9953463988901597"
-              },
-              "fromAmount": "25825839",
-              "toAmount": "25825839",
-              "toAmountMin": "25825839",
-              "exchangeRate": "1.0",
-              "priceImpact": "0",
-              "stage": "0",
-              "provider": "Axelar",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/axelar.svg",
-              "description": "Bridge axlUSDC to axlUSDC on BNB Chain",
-              "estimatedDuration": "20"
-            },
-            {
-              "type": "swap",
-              "chainType": "evm",
-              "fromChain": "56",
-              "toChain": "56",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3",
-                "name": "Axelar Wrapped USDC",
-                "symbol": "axlUSDC",
-                "axelarNetworkSymbol": "axlUSDC",
-                "decimals": "6",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdc.svg",
-                "coingeckoId": "axlusdc",
-                "subGraphIds": [
-                  "uusdc"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "0.9953463988901597"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0x55d398326f99059fF775485246999027B3197955",
-                "name": "Binance Pegged USDT",
-                "symbol": "USDT",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdt.svg",
-                "coingeckoId": "tether",
-                "usdPrice": "0.9994421903530111"
-              },
-              "fromAmount": "25825839",
-              "toAmount": "25813399115228268992",
-              "toAmountMin": "25766934996820858107",
-              "exchangeRate": "0.999518316335367419",
-              "priceImpact": "-0.0000491970529387",
-              "stage": "1",
-              "provider": "Pancakeswap V3",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/pancakeswap.svg",
-              "description": "Swap from axlUSDC to USDT"
-            },
-            {
-              "type": "swap",
-              "chainType": "evm",
-              "fromChain": "56",
-              "toChain": "56",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0x55d398326f99059fF775485246999027B3197955",
-                "name": "Binance Pegged USDT",
-                "symbol": "USDT",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/usdt.svg",
-                "coingeckoId": "tether",
-                "usdPrice": "0.9994421903530111"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-                "name": "WBNB",
-                "symbol": "WBNB",
-                "decimals": "18",
-                "axelarNetworkSymbol": "WBNB",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/bnb.svg",
-                "coingeckoId": "binancecoin",
-                "subGraphIds": [
-                  "wbnb-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "515.821925157587"
-              },
-              "fromAmount": "25813399115228268992",
-              "toAmount": "49836297930093733",
-              "toAmountMin": "49686789036303451",
-              "exchangeRate": "0.001930636787027922",
-              "priceImpact": "0.0003558720202861",
-              "stage": 1,
-              "provider": "Pancakeswap V2",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/pancakeswap.svg",
-              "description": "Swap from USDT to WBNB"
-            },
-            {
-              "type": "wrap",
-              "chainType": "evm",
-              "fromChain": "56",
-              "toChain": "56",
-              "fromToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-                "name": "WBNB",
-                "symbol": "WBNB",
-                "decimals": "18",
-                "axelarNetworkSymbol": "WBNB",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/bnb.svg",
-                "coingeckoId": "binancecoin",
-                "subGraphIds": [
-                  "wbnb-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "515.821925157587"
-              },
-              "toToken": {
-                "type": "evm",
-                "chainId": "56",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "BNB",
-                "symbol": "BNB",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/bnb.svg",
-                "coingeckoId": "binancecoin",
-                "axelarNetworkSymbol": "WBNB",
-                "subGraphIds": [
-                  "wbnb-wei"
-                ],
-                "subGraphOnly": false,
-                "usdPrice": "515.821925157587"
-              },
-              "fromAmount": "49836297930093733",
-              "toAmount": "49836297930093733",
-              "toAmountMin": "49686789036303451",
-              "exchangeRate": "1.0",
-              "priceImpact": "0.00",
-              "stage": "1",
-              "provider": "Native Wrapper",
-              "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/providers/weth.svg",
-              "description": "Unwrap WBNB to BNB"
-            }
-          ],
-          "fromAmount": "10000000000000000",
-          "toAmount": "49836297930093733",
-          "toAmountMin": "49686789036303451",
-          "sendAmount": "10000000000000000",
-          "exchangeRate": "4.9836297930093733",
-          "aggregatePriceImpact": "0.0",
-          "fromAmountUSD": "25.81",
-          "toAmountUSD": "25.70",
-          "toAmountMinUSD": "25.62",
-          "aggregateSlippage": "0.9600000000000001",
-          "index": "0",
-          "fromToken": {
-            "type": "evm",
-            "chainId": "42161",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-            "coingeckoId": "ethereum",
-            "usdPrice": "2581.298038575404"
-          },
-          "toToken": {
-            "type": "evm",
-            "chainId": "56",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "BNB",
-            "symbol": "BNB",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/bnb.svg",
-            "coingeckoId": "binancecoin",
-            "axelarNetworkSymbol": "WBNB",
-            "subGraphIds": [
-              "wbnb-wei"
-            ],
-            "subGraphOnly": false,
-            "usdPrice": "515.821925157587"
-          },
-          "isBoostSupported": true,
-          "feeCosts": [
-            {
-              "amount": "311053437062551",
-              "amountUsd": "0.80",
-              "description": "Gas receiver fee",
-              "gasLimit": "696400",
-              "gasMultiplier": "1.1550000000000002",
-              "name": "Gas receiver fee",
-              "token": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": 2581.298038575404
-              }
-            },
-            {
-              "amount": "39742490455932",
-              "amountUsd": "0.10",
-              "description": "Boost fee for Arbitrum to BNB Chain",
-              "name": "Boost fee",
-              "token": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": 2581.298038575404
-              }
-            }
-          ],
-          "gasCosts": [
-            {
-              "type": "executeCall",
-              "token": {
-                "type": "evm",
-                "chainId": "42161",
-                "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                "name": "Ethereum",
-                "symbol": "ETH",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-                "coingeckoId": "ethereum",
-                "usdPrice": 2581.298038575404
-              },
-              "amount": "1452012968376000",
-              "gasLimit": "953658",
-              "amountUsd": "3.75"
-            }
-          ],
-          "estimatedRouteDuration": "20"
-        },
-        "transactionRequest": {
-          "routeType": "CALL_BRIDGE_CALL",
-          "target": "0xce16F69375520ab01377ce7B88f5BA8C48F8D666",
-          "data": "0xdeadbeef",
-          "value": "1000368231439378717",
-          "gasLimit": "995464",
-          "lastBaseFeePerGas": "10000000",
-          "maxFeePerGas": "1520000000",
-          "maxPriorityFeePerGas": "1500000000",
-          "gasPrice": "10000000",
-          "requestId": "c8f8eb102224d0de969ce595612ef1ab"
-        }
-      }
-    }
-  )");
-
-  auto response = squid::ParseQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(response);
-
-  ASSERT_EQ(response->actions.size(), 7u);
-  EXPECT_EQ(response->actions[0]->type, mojom::SquidActionType::kWrap);
-  EXPECT_EQ(response->actions[0]->description, "Wrap ETH to WETH");
-  EXPECT_EQ(response->actions[0]->provider, "Native Wrapper");
-  EXPECT_EQ(response->actions[0]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/weth.svg");
-  EXPECT_EQ(response->actions[0]->from_amount, "10000000000000000");
-  EXPECT_EQ(response->actions[0]->from_token->contract_address, "");
-  EXPECT_EQ(response->actions[0]->from_token->name, "Ethereum");
-  EXPECT_EQ(response->actions[0]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/eth.svg");
-  EXPECT_EQ(response->actions[0]->from_token->symbol, "ETH");
-  EXPECT_EQ(response->actions[0]->from_token->decimals, 18);
-  EXPECT_EQ(response->actions[0]->from_token->coingecko_id, "ethereum");
-  EXPECT_EQ(response->actions[0]->from_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->actions[0]->from_token->coin, mojom::CoinType::ETH);
-  EXPECT_EQ(response->actions[0]->to_amount, "10000000000000000");
-  EXPECT_EQ(response->actions[0]->to_amount_min, "10000000000000000");
-  EXPECT_EQ(response->actions[0]->to_token->contract_address,
-            "0x82af49447d8a07e3bd95bd0d56f35241523fbab1");
-  EXPECT_EQ(response->actions[0]->to_token->name, "Wrapped ETH");
-  EXPECT_EQ(response->actions[0]->to_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/weth.svg");
-  EXPECT_EQ(response->actions[0]->to_token->symbol, "WETH");
-  EXPECT_EQ(response->actions[0]->to_token->decimals, 18);
-  EXPECT_EQ(response->actions[0]->to_token->coingecko_id, "weth");
-  EXPECT_EQ(response->actions[0]->to_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->actions[0]->to_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->actions[1]->type, mojom::SquidActionType::kSwap);
-  EXPECT_EQ(response->actions[1]->description, "Swap from WETH to USDC");
-  EXPECT_EQ(response->actions[1]->provider, "Uniswap V3");
-  EXPECT_EQ(response->actions[1]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/uniswap.svg");
-  EXPECT_EQ(response->actions[1]->from_amount, "10000000000000000");
-  EXPECT_EQ(response->actions[1]->from_token->contract_address,
-            "0x82af49447d8a07e3bd95bd0d56f35241523fbab1");
-  EXPECT_EQ(response->actions[1]->from_token->name, "Wrapped ETH");
-  EXPECT_EQ(response->actions[1]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/weth.svg");
-  EXPECT_EQ(response->actions[1]->from_token->symbol, "WETH");
-  EXPECT_EQ(response->actions[1]->from_token->decimals, 18);
-  EXPECT_EQ(response->actions[1]->from_token->coingecko_id, "weth");
-  EXPECT_EQ(response->actions[1]->from_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->actions[1]->from_token->coin, mojom::CoinType::ETH);
-  EXPECT_EQ(response->actions[1]->to_amount, "25826875");
-  EXPECT_EQ(response->actions[1]->to_amount_min, "25749394");
-  EXPECT_EQ(response->actions[1]->to_token->contract_address,
-            "0xaf88d065e77c8cC2239327C5EDb3A432268e5831");
-  EXPECT_EQ(response->actions[1]->to_token->name, "USD Coin");
-  EXPECT_EQ(response->actions[1]->to_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/usdc.svg");
-  EXPECT_EQ(response->actions[1]->to_token->symbol, "USDC");
-  EXPECT_EQ(response->actions[1]->to_token->decimals, 6);
-  EXPECT_EQ(response->actions[1]->to_token->coingecko_id, "usd-coin");
-  EXPECT_EQ(response->actions[1]->to_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->actions[1]->to_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->actions[2]->type, mojom::SquidActionType::kSwap);
-  EXPECT_EQ(response->actions[2]->description, "Swap from USDC to axlUSDC");
-  EXPECT_EQ(response->actions[2]->provider, "Camelot V3");
-  EXPECT_EQ(response->actions[2]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/camelot.svg");
-  EXPECT_EQ(response->actions[2]->from_amount, "25826875");
-  EXPECT_EQ(response->actions[2]->from_token->contract_address,
-            "0xaf88d065e77c8cC2239327C5EDb3A432268e5831");
-  EXPECT_EQ(response->actions[2]->from_token->name, "USD Coin");
-  EXPECT_EQ(response->actions[2]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/usdc.svg");
-  EXPECT_EQ(response->actions[2]->from_token->symbol, "USDC");
-  EXPECT_EQ(response->actions[2]->from_token->decimals, 6);
-  EXPECT_EQ(response->actions[2]->from_token->coingecko_id, "usd-coin");
-  EXPECT_EQ(response->actions[2]->from_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->actions[2]->from_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->actions[3]->type, mojom::SquidActionType::kBridge);
-  EXPECT_EQ(response->actions[3]->description,
-            "Bridge axlUSDC to axlUSDC on BNB Chain");
-  EXPECT_EQ(response->actions[3]->provider, "Axelar");
-  EXPECT_EQ(response->actions[3]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/axelar.svg");
-  EXPECT_EQ(response->actions[3]->from_amount, "25825839");
-  EXPECT_EQ(response->actions[3]->from_token->contract_address,
-            "0xEB466342C4d449BC9f53A865D5Cb90586f405215");
-  EXPECT_EQ(response->actions[3]->from_token->name, "Axelar Wrapped USDC");
-  EXPECT_EQ(response->actions[3]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/usdc.svg");
-  EXPECT_EQ(response->actions[3]->from_token->symbol, "axlUSDC");
-  EXPECT_EQ(response->actions[3]->from_token->decimals, 6);
-  EXPECT_EQ(response->actions[3]->from_token->coingecko_id, "axlusdc");
-  EXPECT_EQ(response->actions[3]->from_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->actions[3]->from_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->actions[4]->type, mojom::SquidActionType::kSwap);
-  EXPECT_EQ(response->actions[4]->description, "Swap from axlUSDC to USDT");
-  EXPECT_EQ(response->actions[4]->provider, "Pancakeswap V3");
-  EXPECT_EQ(response->actions[4]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/pancakeswap.svg");
-  EXPECT_EQ(response->actions[4]->from_amount, "25825839");
-  EXPECT_EQ(response->actions[4]->from_token->contract_address,
-            "0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3");
-  EXPECT_EQ(response->actions[4]->from_token->name, "Axelar Wrapped USDC");
-  EXPECT_EQ(response->actions[4]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/usdc.svg");
-  EXPECT_EQ(response->actions[4]->from_token->symbol, "axlUSDC");
-  EXPECT_EQ(response->actions[4]->from_token->decimals, 6);
-  EXPECT_EQ(response->actions[4]->from_token->coingecko_id, "axlusdc");
-  EXPECT_EQ(response->actions[4]->from_token->chain_id, "0x38");
-  EXPECT_EQ(response->actions[4]->from_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->actions[5]->type, mojom::SquidActionType::kSwap);
-  EXPECT_EQ(response->actions[5]->description, "Swap from USDT to WBNB");
-  EXPECT_EQ(response->actions[5]->provider, "Pancakeswap V2");
-  EXPECT_EQ(response->actions[5]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/pancakeswap.svg");
-  EXPECT_EQ(response->actions[5]->from_amount, "25813399115228268992");
-  EXPECT_EQ(response->actions[5]->from_token->contract_address,
-            "0x55d398326f99059fF775485246999027B3197955");
-  EXPECT_EQ(response->actions[5]->from_token->name, "Binance Pegged USDT");
-  EXPECT_EQ(response->actions[5]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/usdt.svg");
-  EXPECT_EQ(response->actions[5]->from_token->symbol, "USDT");
-  EXPECT_EQ(response->actions[5]->from_token->decimals, 18);
-  EXPECT_EQ(response->actions[5]->from_token->coingecko_id, "tether");
-  EXPECT_EQ(response->actions[5]->from_token->chain_id, "0x38");
-  EXPECT_EQ(response->actions[5]->from_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->actions[6]->type, mojom::SquidActionType::kWrap);
-  EXPECT_EQ(response->actions[6]->description, "Unwrap WBNB to BNB");
-  EXPECT_EQ(response->actions[6]->provider, "Native Wrapper");
-  EXPECT_EQ(response->actions[6]->logo_uri,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "providers/weth.svg");
-  EXPECT_EQ(response->actions[6]->from_amount, "49836297930093733");
-  EXPECT_EQ(response->actions[6]->from_token->contract_address,
-            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c");
-  EXPECT_EQ(response->actions[6]->from_token->name, "WBNB");
-  EXPECT_EQ(response->actions[6]->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/bnb.svg");
-  EXPECT_EQ(response->actions[6]->from_token->symbol, "WBNB");
-  EXPECT_EQ(response->actions[6]->from_token->decimals, 18);
-  EXPECT_EQ(response->actions[6]->from_token->coingecko_id, "binancecoin");
-  EXPECT_EQ(response->actions[6]->from_token->chain_id, "0x38");
-  EXPECT_EQ(response->actions[6]->from_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->aggregate_price_impact, "0.0");
-  EXPECT_EQ(response->aggregate_slippage, "0.9600000000000001");
-  EXPECT_EQ(response->estimated_route_duration, "20");
-  EXPECT_EQ(response->exchange_rate, "4.9836297930093733");
-
-  ASSERT_EQ(response->fee_costs.size(), 2u);
-  EXPECT_EQ(response->fee_costs[0]->amount, "311053437062551");
-  EXPECT_EQ(response->fee_costs[0]->description, "Gas receiver fee");
-  EXPECT_EQ(response->fee_costs[0]->name, "Gas receiver fee");
-  EXPECT_EQ(response->fee_costs[0]->token->contract_address, "");
-  EXPECT_EQ(response->fee_costs[0]->token->name, "Ethereum");
-  EXPECT_EQ(response->fee_costs[0]->token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/eth.svg");
-  EXPECT_EQ(response->fee_costs[0]->token->symbol, "ETH");
-  EXPECT_EQ(response->fee_costs[0]->token->decimals, 18);
-  EXPECT_EQ(response->fee_costs[0]->token->coingecko_id, "ethereum");
-  EXPECT_EQ(response->fee_costs[0]->token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->fee_costs[0]->token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->fee_costs[1]->amount, "39742490455932");
-  EXPECT_EQ(response->fee_costs[1]->description,
-            "Boost fee for Arbitrum to "
-            "BNB Chain");
-  EXPECT_EQ(response->fee_costs[1]->name, "Boost fee");
-  EXPECT_EQ(response->fee_costs[1]->token->contract_address, "");
-  EXPECT_EQ(response->fee_costs[1]->token->name, "Ethereum");
-  EXPECT_EQ(response->fee_costs[1]->token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/eth.svg");
-  EXPECT_EQ(response->fee_costs[1]->token->symbol, "ETH");
-  EXPECT_EQ(response->fee_costs[1]->token->decimals, 18);
-  EXPECT_EQ(response->fee_costs[1]->token->coingecko_id, "ethereum");
-  EXPECT_EQ(response->fee_costs[1]->token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->fee_costs[1]->token->coin, mojom::CoinType::ETH);
-
-  ASSERT_EQ(response->gas_costs.size(), 1u);
-  EXPECT_EQ(response->gas_costs[0]->amount, "1452012968376000");
-  EXPECT_EQ(response->gas_costs[0]->gas_limit, "953658");
-  EXPECT_EQ(response->gas_costs[0]->token->contract_address, "");
-  EXPECT_EQ(response->gas_costs[0]->token->name, "Ethereum");
-  EXPECT_EQ(response->gas_costs[0]->token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/eth.svg");
-  EXPECT_EQ(response->gas_costs[0]->token->symbol, "ETH");
-  EXPECT_EQ(response->gas_costs[0]->token->decimals, 18);
-  EXPECT_EQ(response->gas_costs[0]->token->coingecko_id, "ethereum");
-  EXPECT_EQ(response->gas_costs[0]->token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->gas_costs[0]->token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->is_boost_supported, true);
-  EXPECT_EQ(response->from_amount, "10000000000000000");
-  EXPECT_EQ(response->from_token->contract_address, "");
-  EXPECT_EQ(response->from_token->name, "Ethereum");
-  EXPECT_EQ(response->from_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/eth.svg");
-  EXPECT_EQ(response->from_token->symbol, "ETH");
-  EXPECT_EQ(response->from_token->decimals, 18);
-  EXPECT_EQ(response->from_token->coingecko_id, "ethereum");
-  EXPECT_EQ(response->from_token->chain_id, "0xa4b1");
-  EXPECT_EQ(response->from_token->coin, mojom::CoinType::ETH);
-  EXPECT_EQ(response->to_amount, "49836297930093733");
-  EXPECT_EQ(response->to_token->contract_address, "");
-  EXPECT_EQ(response->to_token->name, "BNB");
-  EXPECT_EQ(response->to_token->logo,
-            "https://raw.githubusercontent.com/0xsquid/assets/main/images/"
-            "tokens/bnb.svg");
-  EXPECT_EQ(response->to_token->symbol, "BNB");
-  EXPECT_EQ(response->to_token->decimals, 18);
-  EXPECT_EQ(response->to_token->coingecko_id, "binancecoin");
-  EXPECT_EQ(response->to_token->chain_id, "0x38");
-  EXPECT_EQ(response->to_token->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(response->allowance_target,
-            "0xce16F69375520ab01377ce7B88f5BA8C48F8D666");
-}
-
-TEST(SwapResponseParserUnitTest, DebugSquid) {
-  std::string json(R"(
-  {
-    "route": {
-        "estimate": {
-            "actions": [],
-            "aggregatePriceImpact": "0.0",
-            "aggregateSlippage": "0.5",
-            "estimatedRouteDuration": "10",
-            "exchangeRate": "0.3718245",
-            "feeCosts": [],
-            "fromAmount": "2000000000000000000",
-            "fromAmountUSD": "0.73",
-            "fromToken": {
-                "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                "axelarNetworkSymbol": "MATIC",
-                "chainId": "137",
-                "coingeckoId": "matic-network",
-                "decimals": "18",
-                "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/matic.svg",
-                "name": "POL",
-                "subGraphIds": [
-                    "wmatic-wei"
-                ],
-                "subGraphOnly": false,
-                "symbol": "POL",
-                "type": "evm",
-                "usdPrice": "0.36997782427450376",
-                "volatility": "2"
-            },
-            "gasCosts": [],
-            "isBoostSupported": false,
-            "toAmount": "743649",
-            "toAmountMin": "739930",
-            "toAmountMinUSD": "0.73",
-            "toAmountUSD": "0.74",
-            "toToken": {
-                "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-                "axelarNetworkSymbol": "USDC",
-                "chainId": "137",
-                "coingeckoId": "usd-coin",
-                "decimals": "6",
-                "interchainTokenId": null,
-                "logoURI": "https://raw.githubusercontent.com/axelarnetwork/axelar-configs/main/images/tokens/usdc.svg",
-                "name": "Polygon USDC",
-                "subGraphIds": [
-                    "polygon-uusdc"
-                ],
-                "subGraphOnly": true,
-                "symbol": "USDC",
-                "type": "evm",
-                "usdPrice": "0.997429327281814",
-                "volatility": "0"
-            }
-        },
-        "transactionRequest": {
-          "data": "0x58181a80000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf12700000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000004d0e30db00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf1270000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf1270000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf12700000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001c000000000000000000000000000000000000000000000000000000000000000e404e45aaf0000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf12700000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa8417400000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba40000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000000000000b4a5a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf12700000000000000000000000000000000000000000000000000000000000000004042d96bd785965030498e8f18dbcd5e2",
-          "gasLimit": "363500",
-          "gasPrice": "30000000125",
-          "lastBaseFeePerGas": "125",
-          "maxFeePerGas": "1500000250",
-          "maxPriorityFeePerGas": "1500000000",
-          "routeType": "EVM_ONLY",
-          "target": "0xce16F69375520ab01377ce7B88f5BA8C48F8D666",
-          "value": "2000000000000000000"
-        }
-    }
-}
-  )");
-
-  auto response = squid::ParseQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(response);
-}
-
-TEST(SwapResponseParserUnitTest, ParseSquidTransactionResponse) {
-  std::string json(R"(
-    {
-      "route": {
-        "estimate": {
-          "actions": [],
-          "fromAmount": "10000000000000000",
-          "toAmount": "49836297930093733",
-          "toAmountMin": "49686789036303451",
-          "sendAmount": "10000000000000000",
-          "exchangeRate": "4.9836297930093733",
-          "aggregatePriceImpact": "0.0",
-          "fromAmountUSD": "25.81",
-          "toAmountUSD": "25.70",
-          "toAmountMinUSD": "25.62",
-          "aggregateSlippage": "0.9600000000000001",
-          "index": "0",
-          "fromToken": {
-            "type": "evm",
-            "chainId": "42161",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/eth.svg",
-            "coingeckoId": "ethereum",
-            "usdPrice": "2581.298038575404"
-          },
-          "toToken": {
-            "type": "evm",
-            "chainId": "56",
-            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            "name": "BNB",
-            "symbol": "BNB",
-            "decimals": "18",
-            "logoURI": "https://raw.githubusercontent.com/0xsquid/assets/main/images/tokens/bnb.svg",
-            "coingeckoId": "binancecoin",
-            "axelarNetworkSymbol": "WBNB",
-            "subGraphIds": [
-              "wbnb-wei"
-            ],
-            "subGraphOnly": false,
-            "usdPrice": "515.821925157587"
-          },
-          "isBoostSupported": true,
-          "feeCosts": [],
-          "gasCosts": [],
-          "estimatedRouteDuration": "20"
-        },
-        "transactionRequest": {
-          "routeType": "CALL_BRIDGE_CALL",
-          "target": "0xce16F69375520ab01377ce7B88f5BA8C48F8D666",
-          "data": "0x846a1bc6000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000a600000000000000000000000000000000000000000000000000000000000000aa00000000000000000000000000000000000000000000000000000000000000ae00000000000000000000000000000000000000000000000000000000000000b40000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba40000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001e0000000000000000000000000000000000000000000000000000000000000036000000000000000000000000000000000000000000000000000000000000005800000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000082af49447d8a07e3bd95bd0d56f35241523fbab10000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000004d0e30db000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000082af49447d8a07e3bd95bd0d56f35241523fbab10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000082af49447d8a07e3bd95bd0d56f35241523fbab1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000082af49447d8a07e3bd95bd0d56f35241523fbab10000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001c000000000000000000000000000000000000000000000000000000000000000e404e45aaf00000000000000000000000082af49447d8a07e3bd95bd0d56f35241523fbab1000000000000000000000000af88d065e77c8cc2239327c5edb3a432268e583100000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000ea749fd6ba492dbc14c24fe8a3d08769229b896c0000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000957f6f55000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000082af49447d8a07e3bd95bd0d56f35241523fbab100000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000af88d065e77c8cc2239327c5edb3a432268e5831000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000032226588378236fd0c7c4053999f88ac0e5cac77ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000af88d065e77c8cc2239327c5edb3a432268e58310000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000032226588378236fd0c7c4053999f88ac0e5cac77000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001c000000000000000000000000000000000000000000000000000000000000000e404e45aaf000000000000000000000000af88d065e77c8cc2239327c5edb3a432268e5831000000000000000000000000eb466342c4d449bc9f53a865d5cb90586f4052150000000000000000000000000000000000000000000000000000000000000064000000000000000000000000ce16f69375520ab01377ce7b88f5ba8c48f8d6660000000000000000000000000000000000000000000000000000000095f2983d0000000000000000000000000000000000000000000000000000000095a775a50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000af88d065e77c8cc2239327c5edb3a432268e58310000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000761786c5553444300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000762696e616e636500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a307863653136463639333735353230616230313337376365374238386635424138433438463844363636000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c100000000000000000000000000000000000000000000000000000000000000040000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000001e000000000000000000000000000000000000000000000000000000000000003600000000000000000000000000000000000000000000000000000000000000580000000000000000000000000000000000000000000000000000000000000070000000000000000000000000000000000000000000000000000000000000009200000000000000000000000000000000000000000000000000000000000000a8000000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000004268b8f0b87b6eae5d897996e6b845ddbd99adf300000000000000000000000000000000000000000000000000000000000000000000000000000000000000004268b8f0b87b6eae5d897996e6b845ddbd99adf3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000013f4ea83d0bd40e75c8222255bc855a974568dd4ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000004268b8f0b87b6eae5d897996e6b845ddbd99adf30000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000013f4ea83d0bd40e75c8222255bc855a974568dd4000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001c000000000000000000000000000000000000000000000000000000000000000e404e45aaf0000000000000000000000004268b8f0b87b6eae5d897996e6b845ddbd99adf300000000000000000000000055d398326f99059ff775485246999027b31979550000000000000000000000000000000000000000000000000000000000000064000000000000000000000000ea749fd6ba492dbc14c24fe8a3d08769229b896c0000000000000000000000000000000000000000000000000000000095ec8b670000000000000000000000000000000000000000000000881849beaa6df927fb00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000004268b8f0b87b6eae5d897996e6b845ddbd99adf30000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000055d398326f99059ff775485246999027b3197955000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000013f4ea83d0bd40e75c8222255bc855a974568dd4ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000055d398326f99059ff775485246999027b31979550000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000013f4ea83d0bd40e75c8222255bc855a974568dd4000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000001c000000000000000000000000000000000000000000000000000000000000000e404e45aaf00000000000000000000000055d398326f99059ff775485246999027b3197955000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c00000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000ea749fd6ba492dbc14c24fe8a3d08769229b896c000000000000000000000000000000000000000000000088571d197d3d9905a300000000000000000000000000000000000000000000000042b9a634a68705a3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000055d398326f99059ff775485246999027b319795500000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000001000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000242e1a7d4d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000000000000000000c8f8eb102224d0de969ce595612ef1ab00000000000000000000000000000000c8f8eb102224d0de969ce595612ef1ab",
-          "value": "1000368231439378717",
-          "gasLimit": "995464",
-          "lastBaseFeePerGas": "10000000",
-          "maxFeePerGas": "1520000000",
-          "maxPriorityFeePerGas": "1500000000",
-          "gasPrice": "10000000",
-          "requestId": "c8f8eb102224d0de969ce595612ef1ab"
-        }
-      }
-    }
-  )");
-
-  auto response = squid::ParseTransactionResponse(ParseJson(json));
-  ASSERT_TRUE(response);
-}
-
 TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   // Indicative quote response from Gate3 API
   std::string json(R"(
@@ -2801,7 +1975,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
           "expiresAt": null,
           "slippagePercentage": "0.5",
           "transactionParams": null,
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -2826,7 +1999,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   EXPECT_FALSE(route->deposit_address.has_value());
   EXPECT_FALSE(route->deposit_memo.has_value());
   EXPECT_FALSE(route->expires_at.has_value());
-  EXPECT_TRUE(route->has_post_submit_hook);
   EXPECT_FALSE(route->requires_token_allowance);
   EXPECT_TRUE(route->requires_firm_route);
   EXPECT_FALSE(route->transaction_params);
@@ -2921,7 +2093,7 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
               "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "value": "0",
               "data": "0xa9059cbb00000000000000000000000016a0fdeb69d821753440dfa092316f54ef95e96700000000000000000000000000000000000000000000000000000000000f4240",
-              "gasLimit": null,
+              "gasLimit": "0xfde8",
               "gasPrice": null
             },
             "solana": null,
@@ -2929,7 +2101,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -3046,7 +2217,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -3148,7 +2318,6 @@ TEST(SwapResponseParserUnitTest,
             "cardano": null,
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -3237,7 +2406,6 @@ TEST(SwapResponseParserUnitTest,
             },
             "zcash": null
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -3325,7 +2493,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithZCashTransaction) {
               "refundTo": "t1sender123456789"
             }
           },
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -3403,7 +2570,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseInvalidJson) {
           "sourceAmount": "1000000",
           "destinationAmount": "714449",
           "destinationAmountMin": "710876",
-          "hasPostSubmitHook": true,
           "requiresTokenAllowance": false,
           "requiresFirmRoute": true
         }
@@ -3412,6 +2578,62 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseInvalidJson) {
   )");
   quote = gate3::ParseQuoteResponse(ParseJson(json_invalid_provider));
   EXPECT_FALSE(quote);
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3StatusResponse) {
+  struct TestCase {
+    std::string status_string;
+    std::string internal_status;
+    std::string explorer_url;
+    mojom::Gate3SwapStatusCode expected_code;
+  };
+  std::vector<TestCase> cases = {
+      {"PENDING", "awaiting_deposit", "", mojom::Gate3SwapStatusCode::kPending},
+      {"PROCESSING", "swap_in_progress", "https://explorer.example.com/tx/123",
+       mojom::Gate3SwapStatusCode::kProcessing},
+      {"SUCCESS", "completed", "https://solscan.io/tx/abc123",
+       mojom::Gate3SwapStatusCode::kSuccess},
+      {"FAILED", "swap_failed", "", mojom::Gate3SwapStatusCode::kFailed},
+      {"REFUNDED", "refund_complete", "https://etherscan.io/tx/refund123",
+       mojom::Gate3SwapStatusCode::kRefunded},
+  };
+
+  for (const auto& tc : cases) {
+    std::string json =
+        absl::StrFormat(R"({
+      "status": "%s",
+      "internalStatus": "%s",
+      "explorerUrl": "%s"
+    })",
+                        tc.status_string, tc.internal_status, tc.explorer_url);
+
+    auto status = gate3::ParseStatusResponse(ParseJson(json));
+    ASSERT_TRUE(status) << "Failed to parse status: " << tc.status_string;
+    EXPECT_EQ(status->status, tc.expected_code);
+    EXPECT_EQ(status->internal_status, tc.internal_status);
+    EXPECT_EQ(status->explorer_url, tc.explorer_url);
+  }
+}
+
+TEST(SwapResponseParserUnitTest, ParseGate3StatusResponseInvalidJson) {
+  // Missing status field
+  std::string json_no_status = R"({
+    "internalStatus": "test",
+    "explorerUrl": ""
+  })";
+  EXPECT_FALSE(gate3::ParseStatusResponse(ParseJson(json_no_status)));
+
+  // Empty JSON
+  EXPECT_FALSE(gate3::ParseStatusResponse(ParseJson("{}")));
+
+  // Invalid status value
+  std::string json_invalid_status = R"({
+    "status": "INVALID_STATUS",
+    "internalStatus": "test",
+    "explorerUrl": ""
+  })";
+  auto status = gate3::ParseStatusResponse(ParseJson(json_invalid_status));
+  EXPECT_FALSE(status);
 }
 
 }  // namespace brave_wallet

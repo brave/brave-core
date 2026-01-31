@@ -14,23 +14,16 @@ class BraveTabHoverCardController;
 
 #define UpdateHoverCard                         \
   UpdateHoverCard_Unused();                     \
+  friend class BraveTabDragContext;             \
   friend class BraveTabHoverTest;               \
   friend class BraveTabStrip;                   \
   friend class BraveVerticalTabStripRegionView; \
   void UpdateHoverCard
 
-#define ShouldDrawStrokes \
-  UnUsed() {              \
-    return true;          \
-  }                       \
-  virtual bool ShouldDrawStrokes
 #define GetDragContext                                                  \
   Unused_GetDragContext() {                                             \
     return nullptr;                                                     \
   }                                                                     \
-  friend class BraveTabStrip;                                           \
-  friend class BraveTabDragContext;                                     \
-  const Browser* GetBrowser() const override;                           \
   bool ShouldAlwaysHideCloseButton() const override;                    \
   bool CanCloseTabViaMiddleButtonClick() const override;                \
   bool IsVerticalTabsFloating() const override;                         \
@@ -39,11 +32,11 @@ class BraveTabHoverCardController;
                           decltype(TabStrip::hover_card_controller_)>;  \
   }                                                                     \
   virtual TabDragContext* GetDragContext
+
 #define TabHoverCardController BraveTabHoverCardController
 #include <chrome/browser/ui/views/tabs/tab_strip.h>  // IWYU pragma: export
 #undef TabHoverCardController
 #undef GetDragContext
-#undef ShouldDrawStrokes
 #undef UpdateHoverCard
 
 static_assert(TabStrip::IsUsingBraveTabHoverCardController(),

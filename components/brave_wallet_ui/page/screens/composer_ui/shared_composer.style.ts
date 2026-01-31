@@ -22,20 +22,28 @@ import {
   layoutPanelWidth, //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const ToSectionWrapper = styled(Column)<{
+export const ToSectionBackground = styled(Column)<{
   tokenColor?: string
 }>`
-  --default-background: ${leo.color.container.interactive};
+  --default-background: ${(p) =>
+    p.tokenColor ?? leo.color.container.interactive};
   @media (prefers-color-scheme: dark) {
-    --default-background: ${leo.color.container.highlight};
+    --default-background: ${(p) =>
+      p.tokenColor ?? leo.color.container.highlight};
   }
-  padding: 0px 24px 24px 24px;
+  --background-color: ${(p) => p.tokenColor ?? 'var(--default-background)'};
   border-radius: 0px 0px 24px 24px;
-  background-color: ${(p) => p.tokenColor ?? 'var(--default-background)'};
+  background-color: var(--background-color);
   @media screen and (max-width: ${layoutPanelWidth}px) {
     border-radius: 0px;
-    padding: 0px 16px 16px 16px;
     height: 100%;
+  }
+`
+
+export const ToSectionWrapper = styled(Column)`
+  padding: 0px 24px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0px 16px;
   }
 `
 
@@ -97,10 +105,23 @@ export const PresetButton = styled(WalletButton)`
   cursor: pointer;
 `
 
-export const ReviewButtonRow = styled(Row)`
+export const ReviewButtonRow = styled(Row)<{
+  isMobile?: boolean
+}>`
+  position: ${(p) => (p.isMobile ? 'sticky' : 'unset')};
+  bottom: ${(p) => (p.isMobile ? '0' : 'unset')};
   max-width: 360px;
+  background-color: ${leo.color.container.background};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     max-width: unset;
+  }
+`
+
+export const ReviewButtonBackground = styled(Row)`
+  background-color: var(--background-color);
+  padding-bottom: 24px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0px 16px 16px 16px;
   }
 `
 

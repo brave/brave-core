@@ -8,6 +8,10 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
 namespace brave_ads {
 
 inline constexpr char kDefaultLanguageCode[] = "en";

@@ -68,7 +68,6 @@ RequestTracker::RegisterRequestComplete(const InspectorId request_id,
                                         int64_t encoded_data_length,
                                         const FrameId& frame_id) {
   auto& request = tracked_requests_.at(request_id)->request;
-  request->GetResponseMetadata().SetEncodedDataLength(encoded_data_length);
   request->SetCompleted(frame_id);
   return ReturnTrackingRecord(request_id);
 }
@@ -116,10 +115,8 @@ void RequestTracker::RegisterDocumentRequestComplete(
   auto& request_record = request_record_it->value;
 
   // The request should not have been completed previously.
-  DCHECK_EQ(request_record.response_metadata.EncodedDataLength(), -1);
   DCHECK_EQ(request_record.complete_timestamp, base::TimeDelta());
 
-  request_record.response_metadata.SetEncodedDataLength(encoded_data_length);
   request_record.complete_timestamp = timestamp;
   request_record.frame_id = frame_id;
 }

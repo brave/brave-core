@@ -13,7 +13,9 @@ source_set("browser_tests") {
   sources = [ "containers_browsertest.cc" ]
 
   deps = [
+    "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/mojom",
     "//chrome/browser",
     "//chrome/test:test_support",
   ]

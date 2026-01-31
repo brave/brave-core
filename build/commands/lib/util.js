@@ -965,12 +965,20 @@ const util = {
     return false
   },
 
-  addGitExclusion: (repoDir, exclusion) => {
-    if (util.isGitExclusionExists(repoDir, exclusion)) {
+  modifyGitExclusions: (repoDir, { add = [], remove = [] }) => {
+    const excludeFileName =
+        util.getGitInfoExcludeFileName(repoDir, add.length > 0)
+    if (!excludeFileName) {
       return
     }
-    const excludeFileName = util.getGitInfoExcludeFileName(repoDir, true)
-    fs.appendFileSync(excludeFileName, '\n' + exclusion)
+    let lines = fs.readFileSync(excludeFileName).toString().split(/\r?\n/)
+    lines = lines.filter(line => !remove.includes(line))
+    for (const exclusion of add) {
+      if (!lines.includes(exclusion)) {
+        lines.push(exclusion)
+      }
+    }
+    util.writeFileIfModified(excludeFileName, lines.join('\n'))
   },
 
   fetchAndCheckoutRef: (repoDir, ref) => {

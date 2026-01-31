@@ -10,8 +10,6 @@ include_rules += [
   "+brave/grit",
   "+chrome/utility",
   "+brave/components/constants",
-  "+brave/components/constants",
-  "+brave/components/services/bat_ads",
   "+brave/components/services/bat_rewards",
   "+brave/components/services/brave_wallet",
   "+brave/components/brave_wallet/common/buildflags",

@@ -35,7 +35,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         switch (contentType) {
             case ContentSettingsType.AUTOPLAY:
                 return new ResourceItem(
-                        R.drawable.ic_volume_up_grey600_24dp,
+                        R.drawable.ic_volume_up_fill_24dp,
                         R.string.autoplay_title,
                         ContentSetting.ALLOW,
                         ContentSetting.BLOCK,
@@ -53,18 +53,6 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                         ContentSetting.BLOCK,
                         R.string.website_settings_category_google_sign_in_ask,
                         R.string.website_settings_category_google_sign_in_block,
-                        0,
-                        0,
-                        0,
-                        0);
-            case ContentSettingsType.BRAVE_LOCALHOST_ACCESS:
-                return new ResourceItem(
-                        R.drawable.ic_desktop_windows,
-                        R.string.localhost_title,
-                        ContentSetting.ASK,
-                        ContentSetting.BLOCK,
-                        R.string.website_settings_category_localhost_ask,
-                        R.string.website_settings_category_localhost_block,
                         0,
                         0,
                         0,

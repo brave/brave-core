@@ -12,7 +12,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.display.DisplayManager;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Surface;
 
@@ -33,7 +32,9 @@ import java.io.IOException;
  * lifecycle management, and 180-degree rotation handling for QR code scanning.
  */
 @NullMarked
-public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTrackerCallback {
+public class QRCodeCameraManager
+        implements BarcodeTracker.BarcodeGraphicTrackerCallback,
+                CameraSourcePreview.WindowFocusListener {
     private static final String TAG = "QRCodeCameraManager";
     private static final int INITIAL_ROTATION = -1;
     private static final int RC_HANDLE_GMS = 9001;
@@ -111,6 +112,7 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
      */
     public void init(CameraSourcePreview cameraSourcePreview) {
         mCameraSourcePreview = cameraSourcePreview;
+        mCameraSourcePreview.setWindowFocusListener(this);
 
         Activity activity = mHostProvider.getHostActivity();
         if (activity != null) {
@@ -165,16 +167,9 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
             Log.w(TAG, "Detector dependencies are not yet available.");
         }
 
-        // Creates and starts the camera. Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the barcode detector to detect small barcodes
-        // at long distances.
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
         CameraSource.Builder builder =
                 new CameraSource.Builder(context, barcodeDetector)
                         .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
                         .setRequestedFps(24.0f);
 
         // Make sure that auto focus is an available option
@@ -243,6 +238,21 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
     public void stopCameraSource() {
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.stop();
+        }
+    }
+
+    // CameraSourcePreview.WindowFocusListener implementation
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (!hasFocus) {
+            stopCameraSource();
+            return;
+        }
+
+        try {
+            startCameraSource();
+        } catch (SecurityException e) {
+            Log.e(TAG, "Security exception when restarting camera on focus", e);
         }
     }
 

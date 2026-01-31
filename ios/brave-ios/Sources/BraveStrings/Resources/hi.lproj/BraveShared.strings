@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Brave अकाउंट";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "लगभग हो गया!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "एक पुष्टि ईमेल रास्ते में है। अपने खाते को सक्रिय करने के लिए उस ईमेल में बटन पर क्लिक करें।";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "पंजीकरण रद्द करें";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "आरंभ करें";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "पुष्टि ईमेल दोबारा भेजें";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "ईमेल नहीं दिख रहा? अपने स्पैम फ़ोल्डर की जांच करें या पुष्टि ईमेल को दोबारा भेजने के लिए बटन पर क्लिक करें।";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "साइन आउट करें";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave पैनल";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "गड़बड़ी";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "आरंभ करें";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "खतरनाक वेबसाइटें ब्लॉक करें";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "चालू";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "नया टैब बनाते समय पता बार को स्वचालित रूप से फोकस करता है";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "कीबोर्ड अपने-आप खोलें";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "ऐप बंद करने पर प्राइवेट ब्राउज़िंग टैब्स खुले रखें, ताकि प्राइवेट ब्राउज़िंग सेशन बिना परेशानी के जारी रहें।";

@@ -137,6 +137,7 @@ struct TabGridView: View {
           .transition(.opacity)
         }
       } else {
+        let isGridHidden = viewModel.isPrivateBrowsing && !viewModel.isSceneActive
         TabGridContainerViewRepresentable(
           viewModel: viewModel,
           containerView: containerView,
@@ -148,6 +149,8 @@ struct TabGridView: View {
           },
           selectedTabList: $selectedTabs
         )
+        .opacity(isGridHidden ? 0 : 1)
+        .accessibilityHidden(isGridHidden)
       }
     }
     .environment(\.editMode, $editMode)
@@ -459,8 +462,11 @@ struct TabGridView: View {
       } label: {
         Text(Strings.TabGrid.moreMenuButtonTitle)
           .padding(4)
+          .lineLimit(1)
       }
       .menuOrder(.fixed)
+      .frame(maxWidth: .infinity, alignment: .leading)
+
       Spacer()
       Button {
         viewModel.addTab()
@@ -493,8 +499,10 @@ struct TabGridView: View {
       } label: {
         Text(Strings.done)
           .padding(4)
+          .lineLimit(1)
       }
       .keyboardShortcut(.defaultAction)
+      .frame(maxWidth: .infinity, alignment: .trailing)
     }
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .fontWeight(.medium)

@@ -12,6 +12,7 @@
 #include "base/test/test_reg_util_win.h"
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
 #include "chrome/install_static/install_constants.h"
 #include "chrome/install_static/install_details.h"
@@ -70,6 +71,66 @@ struct TestData {
 };
 
 #if defined(OFFICIAL_BUILD)
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+constexpr TestData kTestData[] = {
+    {
+        L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Origin\\Application"
+        L"\\brave.exe",
+        STABLE_INDEX,
+        true,
+        L"",
+    },
+    {
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Origin"
+        L"\\Application\\brave.exe",
+        STABLE_INDEX,
+        false,
+        L"",
+    },
+    {
+        L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Origin-Beta"
+        L"\\Application\\brave.exe",
+        BETA_INDEX,
+        true,
+        L"beta",
+    },
+    {
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Origin-Beta"
+        L"\\Application\\brave.exe",
+        BETA_INDEX,
+        false,
+        L"beta",
+    },
+    {
+        L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Origin-Dev"
+        L"\\Application\\brave.exe",
+        DEV_INDEX,
+        true,
+        L"dev",
+    },
+    {
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Origin-Dev"
+        L"\\Application\\brave.exe",
+        DEV_INDEX,
+        false,
+        L"dev",
+    },
+    {
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Origin-Nightly"
+        L"\\Application\\brave.exe",
+        NIGHTLY_INDEX,
+        false,
+        L"nightly",
+    },
+    {
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Origin-Nightly"
+        L"\\Application\\brave.exe",
+        NIGHTLY_INDEX,
+        false,
+        L"nightly",
+    },
+};
+#else   // !IS_BRAVE_ORIGIN_BRANDED
 constexpr TestData kTestData[] = {
     {
         L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser\\Application"
@@ -112,6 +173,7 @@ constexpr TestData kTestData[] = {
         NIGHTLY_INDEX, false, L"nightly",
     },
 };
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 #else   // OFFICIAL_BUILD
 constexpr TestData kTestData[] = {
     {

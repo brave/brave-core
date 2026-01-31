@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "build/build_config.h"
 #include "chrome/browser/actor/actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -105,7 +106,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     agent_profile_ = agent_browser->profile();
     agent_browser_window_ = agent_browser;
 
-    GetActorService()->GetPolicyChecker().SetActOnWebForTesting(true);
+    GetActorService()->GetPolicyChecker().set_act_on_web_for_testing(true);
     actor::InitActionBlocklist(agent_profile_);
 
     // Get the AI Chat service from the agent profile
@@ -285,7 +286,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     auto on_generate_called = run_loop->QuitClosure();
     auto& expect =
         EXPECT_CALL(*mock_engine_,
-                    GenerateAssistantResponse(_, _, _, _, _, _, _, _, _))
+                    GenerateAssistantResponse(_, _, _, _, _, _, _, _))
             .Description(base::StrCat({"GenerateAssistantResponse mocked from ",
                                        location.ToString()}));
     if (sequence) {
@@ -296,7 +297,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
          on_called = std::move(on_generate_called)](
             PageContentsMap page_contents,
             const EngineConsumer::ConversationHistory& history,
-            const std::string& selected_language, bool is_temporary,
+            bool is_temporary,
             const std::vector<base::WeakPtr<Tool>>& provided_tools,
             std::optional<std::string_view> preferred_tool_name,
             mojom::ConversationCapability capability,
@@ -337,8 +338,16 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+// This test is consistently failing on MacOS arm64 with cr145. There's already
+// an open issue for intermittent failures on both MacOS and Linux:
+// https://github.com/brave/brave-browser/issues/51130
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_TaskPauseResumeActions DISABLED_TaskPauseResumeActions
+#else
+#define MAYBE_TaskPauseResumeActions TaskPauseResumeActions
+#endif
 IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
-                       TaskPauseResumeActions) {
+                       MAYBE_TaskPauseResumeActions) {
   CreateConversationWithMockEngine();
   std::string uuid = conversation_handler_->get_conversation_uuid();
 

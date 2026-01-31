@@ -186,6 +186,7 @@ export default async ({ config, mode }) => {
   if (forkTsChecker) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({
       typescript: {
+        build: true,
         configFile: tsConfigPath
       }
     }))

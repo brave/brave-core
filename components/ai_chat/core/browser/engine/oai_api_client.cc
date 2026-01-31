@@ -127,6 +127,25 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
                               block->get_page_excerpt_content_block()->text)));
           break;
 
+        case mojom::ContentBlock::Tag::kPageTextContentBlock:
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
+                          base::UTF8ToUTF16(
+                              block->get_page_text_content_block()->text)));
+          break;
+
+        case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text",
+              l10n_util::GetStringFUTF8(
+                  IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+                  base::UTF8ToUTF16(
+                      block->get_video_transcript_content_block()->text)));
+          break;
+
         case mojom::ContentBlock::Tag::kChangeToneContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set(
@@ -154,6 +173,9 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
             case mojom::SimpleRequestType::kExpand:
               message_id = IDS_AI_CHAT_QUESTION_EXPAND;
               break;
+            case mojom::SimpleRequestType::kRequestQuestions:
+              message_id = IDS_AI_CHAT_SUGGEST_QUESTIONS_PROMPT;
+              break;
             default:
               DVLOG(2) << "Unsupported simple request type: "
                        << static_cast<int>(request->type);
@@ -161,6 +183,16 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
           }
 
           content_block_dict.Set("text", l10n_util::GetStringUTF8(message_id));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kRequestTitleContentBlock: {
+          const auto& request = block->get_request_title_content_block();
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_GENERATE_CONVERSATION_TITLE_PROMPT,
+                          base::UTF8ToUTF16(request->text)));
           break;
         }
 
@@ -262,7 +294,7 @@ void OAIAPIClient::OnQueryCompleted(
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
       if (auto result_data = ParseOAICompletionResponse(
-              result.value_body().GetDict(), nullptr /* model_service */)) {
+              result.value_body().GetDict(), std::nullopt /* model_key */)) {
         std::move(callback).Run(base::ok(std::move(*result_data)));
         return;
       }
@@ -308,7 +340,7 @@ void OAIAPIClient::OnQueryDataReceived(
   }
 
   if (auto result_data = ParseOAICompletionResponse(
-          result->GetDict(), nullptr /* model_service */)) {
+          result->GetDict(), std::nullopt /* model_key */)) {
     callback.Run(std::move(*result_data));
   }
 }

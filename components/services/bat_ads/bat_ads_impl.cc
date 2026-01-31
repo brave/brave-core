@@ -13,7 +13,7 @@
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -124,7 +124,7 @@ void BatAdsImpl::MaybeGetNotificationAd(
                 std::move(callback).Run(std::move(dict));
               },
               std::move(callback)),
-          /*value=*/std::nullopt));
+          /*ad=*/std::nullopt));
 }
 
 void BatAdsImpl::TriggerNotificationAdEvent(
@@ -153,17 +153,10 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
       base::BindOnce(
           [](MaybeServeNewTabPageAdCallback callback,
              base::optional_ref<const brave_ads::NewTabPageAdInfo> ad) {
-            if (!ad) {
-              std::move(callback).Run(/*ad*/ std::nullopt);
-              return;
-            }
-
-            std::optional<base::Value::Dict> dict =
-                brave_ads::NewTabPageAdToValue(*ad);
-            std::move(callback).Run(std::move(dict));
+            std::move(callback).Run(brave_ads::ToMojom(ad));
           },
           std::move(callback)),
-      /*value=*/std::nullopt));
+      /*ad=*/std::nullopt));
 }
 
 void BatAdsImpl::TriggerNewTabPageAdEvent(
@@ -218,7 +211,7 @@ void BatAdsImpl::GetAdHistory(base::Time from_time,
                               GetAdHistoryCallback callback) {
   GetAds()->GetAdHistory(from_time, to_time,
                          mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-                             std::move(callback), /*value=*/std::nullopt));
+                             std::move(callback), /*ad_history=*/std::nullopt));
 }
 
 void BatAdsImpl::GetStatementOfAccounts(

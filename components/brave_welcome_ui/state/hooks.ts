@@ -82,9 +82,16 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
   const { browserProfiles, currentSelectedBrowserProfiles} = React.useContext(DataContext)
 
   const states = React.useMemo(() => {
-    const isWebDiscoveryEnabledManaged = loadTimeData.getBoolean('isWebDiscoveryEnabledManaged')
-    // Skip HelpWDP if web discovery is managed
-    const nextAfterImport = isWebDiscoveryEnabledManaged ? ViewType.HelpImprove : ViewType.HelpWDP
+    // <if expr="is_brave_origin_branded">
+    // Brave Origin: skip HelpWDP (Web Discovery) but still show HelpImprove
+    const nextAfterImport = ViewType.HelpImprove
+    // <else>
+    // Skip HelpWDP only if web discovery is managed
+    const isWebDiscoveryEnabledManaged =
+        loadTimeData.getBoolean('isWebDiscoveryEnabledManaged')
+    const nextAfterImport = isWebDiscoveryEnabledManaged ?
+        ViewType.HelpImprove : ViewType.HelpWDP
+    // </if>
 
     return {
       [ViewType.DefaultBrowser]: {  // The initial state view
@@ -95,7 +102,9 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
         forward: nextAfterImport
       },
       [ViewType.ImportSelectBrowser]: {
-        forward: currentSelectedBrowserProfiles && currentSelectedBrowserProfiles.length > 1 ? ViewType.ImportSelectProfile : ViewType.ImportInProgress,
+        forward: currentSelectedBrowserProfiles &&
+            currentSelectedBrowserProfiles.length > 1 ?
+            ViewType.ImportSelectProfile : ViewType.ImportInProgress,
         skip: nextAfterImport,
       },
       [ViewType.ImportSelectProfile]: {

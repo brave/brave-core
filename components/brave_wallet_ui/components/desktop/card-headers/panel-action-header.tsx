@@ -4,7 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+
+// Constants
+import {
+  LOCAL_STORAGE_KEYS, //
+} from '../../../common/constants/local-storage-keys'
 
 // Selectors
 import {
@@ -39,15 +44,22 @@ export const PanelActionHeader = (props: Props) => {
   // UI Selectors (safe)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
 
+  const previousLocation = window.localStorage.getItem(
+    LOCAL_STORAGE_KEYS.PREVIOUS_LOCATION_ROUTE,
+  )
+
   // Routing
   const history = useHistory()
+  const location = useLocation()
 
   // Methods
   const onClose = () => {
-    if (history.length > 1) {
-      history.goBack()
+    if (previousLocation && !previousLocation.includes(location.pathname)) {
+      history.push(previousLocation)
       return
     }
+
+    // Default to portfolio assets
     history.push(WalletRoutes.PortfolioAssets)
   }
 

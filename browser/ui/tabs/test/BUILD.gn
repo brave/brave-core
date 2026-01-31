@@ -54,7 +54,10 @@ source_set("unit_tests") {
   deps = []
 
   if (!is_android) {
-    sources += [ "tree_tab_node_tab_collection_unittest.cc" ]
+    sources += [
+      "tab_style_unittest.cc",
+      "tree_tab_node_tab_collection_unittest.cc",
+    ]
     deps += [
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/tabs",

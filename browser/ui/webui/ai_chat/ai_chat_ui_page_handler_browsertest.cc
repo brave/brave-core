@@ -109,6 +109,12 @@ class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
     auto* webui =
         static_cast<AIChatUI*>(web_contents->GetWebUI()->GetController());
     EXPECT_TRUE(webui);
+    // Wait for the page handler to be created. It's created when the frontend
+    // binds to the mojom::AIChatUIHandler Mojo interface, which may not happen
+    // immediately after the WebUI loads.
+    bool handler_ready = base::test::RunUntil(
+        [&]() { return webui->page_handler_.get() != nullptr; });
+    EXPECT_TRUE(handler_ready);
     return webui->page_handler_.get();
   }
 

@@ -32,7 +32,7 @@ bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
 
   // As vertical tabs are always in a scroll view, we should prefer scrolling
   // to tab cycling.
-  if (tabs::utils::ShouldShowVerticalTabs(browser_)) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
     return RootView::OnMouseWheel(event);
   }
 

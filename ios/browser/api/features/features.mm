@@ -161,11 +161,6 @@
       initWithFeature:&brave_shields::features::kBraveDomainBlock1PES];
 }
 
-+ (Feature*)kBraveLocalhostAccessPermission {
-  return [[Feature alloc] initWithFeature:&brave_shields::features::
-                                              kBraveLocalhostAccessPermission];
-}
-
 + (Feature*)kBraveNTPBrandedWallpaper {
   return [[Feature alloc] initWithFeature:&ntp_background_images::features::
                                               kBraveNTPBrandedWallpaper];
@@ -247,6 +242,11 @@
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletZCashFeature];
 }
+
++ (Feature*)kBraveWalletCardanoEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave_wallet::features::kBraveWalletCardanoFeature];
+}
 #else
 + (nullable Feature*)kBraveWalletAnkrBalancesFeature {
   return nil;
@@ -257,6 +257,10 @@
 }
 
 + (nullable Feature*)kBraveWalletZCashFeature {
+  return nil;
+}
+
++ (Feature*)kBraveWalletCardanoEnabled {
   return nil;
 }
 #endif

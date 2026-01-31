@@ -378,7 +378,7 @@ class UserAgentBuilderTests: XCTestCase {
     // MARK: - iPhone iOS 34
     let ios34 = OperatingSystemVersion(majorVersion: 34, minorVersion: 0, patchVersion: 0)
     let iPhone_safari_34_Brave_UA = """
-      Mozilla/5.0 (iPhone; CPU iPhone OS 34_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
       Brave/\(bundleMajorVersion) \
       Mobile/15E148 \
       Safari/604.1
@@ -391,7 +391,7 @@ class UserAgentBuilderTests: XCTestCase {
     )
 
     let iPad_safari_34_Brave_UA = """
-      Mozilla/5.0 (iPad; CPU OS 34_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Mozilla/5.0 (iPad; CPU OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
       Brave/\(bundleMajorVersion) \
       Mobile/15E148 \
       Safari/604.1
@@ -409,7 +409,7 @@ class UserAgentBuilderTests: XCTestCase {
     // MARK: - iPhone iOS 34
     let ios34 = OperatingSystemVersion(majorVersion: 34, minorVersion: 0, patchVersion: 0)
     let iPhone_safari_34_UA = """
-      Mozilla/5.0 (iPhone; CPU iPhone OS 34_0 like Mac OS X) \
+      Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
       Version/34.0 \
       Mobile/15E148 \
@@ -428,7 +428,7 @@ class UserAgentBuilderTests: XCTestCase {
     )
 
     let iPad_safari_34_UA = """
-      Mozilla/5.0 (iPad; CPU OS 34_0 like Mac OS X) \
+      Mozilla/5.0 (iPad; CPU OS 18_7 like Mac OS X) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
       Version/34.0 \
       Mobile/15E148 \

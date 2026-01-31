@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Tài khoản Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Gần đến rồi!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Email xác nhận đang được gửi đến. Nhấp vào nút trong email đó để kích hoạt tài khoản của bạn.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Hủy đăng ký";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Get Started";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Gửi lại email xác nhận";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Không thấy email? Hãy kiểm tra thư mục thư rác hoặc nhấp vào nút để gửi lại email xác nhận.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Đăng xuất";
+
 /* Button to show the brave panel */
 "BravePanel" = "Bảng điều khiển Brave";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Lỗi";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Get Started";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Chặn các web nguy hiểm";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Độ hiển thị khi duyệt";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "thẻ riêng tư";
+"tabGrid.privateBrowsingInfoTitle" = "Thẻ Riêng tư";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Duyệt riêng tư";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Bật";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Tự động tập trung vào thanh địa chỉ khi tạo tab mới";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Tự động mở bàn phím";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Vẫn mở các thẻ duyệt riêng tư khi bạn đóng ứng dụng, đảm bảo phiên duyệt riêng tư tiếp tục không bị gián đoạn.";

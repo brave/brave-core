@@ -78,6 +78,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/storage_partition_constants.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -458,12 +459,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       brave::CopyLinkWithStrictCleaning(GetBrowser(), link_url);
     }; break;
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
-      std::u16string result;
-      ui::Clipboard::GetForCurrentThread()->ReadText(
-          ui::ClipboardBuffer::kCopyPaste,
-          CreateDataEndpoint(/*notify_if_restricted=*/true).get(), &result);
-      // Replace works just like Paste, but it doesn't trigger onpaste handlers
-      source_web_contents_->Replace(result);
+      brave::ForcePasteInWebContents(source_web_contents_);
     }; break;
 #if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR: {
@@ -585,7 +581,6 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     }
     ai_engine_->GenerateRewriteSuggestion(
         selected_text, action_type,
-        /*selected_language*/ "",
         ai_chat::BindParseRewriteReceivedData(
             base::BindRepeating(&OnRewriteSuggestionDataReceived,
                                 source_web_contents_->GetWeakPtr())),
@@ -796,17 +791,29 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveRenderViewContextMenu::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
-  // TODO(https://github.com/brave/brave-browser/issues/47118)
-  // Open |params_.link_url| in the selected container.
-  NOTIMPLEMENTED();
+  if (!params_.link_url.is_valid()) {
+    return;
+  }
+
+  brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container);
 }
 
 base::flat_set<std::string>
 BraveRenderViewContextMenu::GetCurrentContainerIds() {
-  // TODO(https://github.com/brave/brave-browser/issues/47118) If the tab is in
-  // a container, return the container ID.
-  NOTIMPLEMENTED();
-  return {};
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  const auto& storage_partition_config =
+      source_web_contents_->GetSiteInstance()->GetStoragePartitionConfig();
+  if (storage_partition_config.partition_domain() !=
+      containers::kContainersStoragePartitionDomain) {
+    return {};
+  }
+
+  if (storage_partition_config.partition_name().empty()) {
+    return {};
+  }
+
+  return {storage_partition_config.partition_name()};
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -823,9 +830,8 @@ void BraveRenderViewContextMenu::InitMenu() {
   std::optional<size_t> index = menu_model_.GetIndexOfCommandId(
       IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
   if (index.has_value()) {
-    menu_model_.InsertItemWithStringIdAt(index.value() + 1,
-                                         IDC_CONTENT_CONTEXT_FORCE_PASTE,
-                                         IDS_CONTENT_CONTEXT_FORCE_PASTE);
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_FORCE_PASTE, IDS_FORCE_PASTE);
   }
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   const bool media_image = content_type_->SupportsGroup(

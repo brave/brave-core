@@ -4,8 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
+
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
@@ -56,7 +59,7 @@ export const VerifyRecoveryPhrase = () => {
   const [report] = useReportOnboardingActionMutation()
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
 
   // routing

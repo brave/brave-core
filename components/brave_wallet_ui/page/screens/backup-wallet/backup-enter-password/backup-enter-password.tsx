@@ -5,7 +5,9 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // utils
 import getAPIProxy from '../../../../common/async/bridge'
@@ -39,7 +41,7 @@ export const BackupEnterPassword: React.FC = () => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()

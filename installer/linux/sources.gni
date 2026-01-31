@@ -8,7 +8,6 @@ common_packaging_files_sources = [
   "//brave/chromium_src/chrome/app/resources/manpage.1.in",
   "//brave/chromium_src/chrome/installer/linux/common/brave-browser/appdata.xml.template",
   "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.info",
-  "//brave/installer/linux/common/brave_installer.include",
 ]
 
 common_packaging_files_excluded_sources = [

@@ -10,15 +10,15 @@
 
 // Override to disable GDP service handler requests as it sends them to
 // googleapis.com.
-#define OAuthScopes                                                    \
+#define BaseURL                                                        \
   Undefined();                                                         \
   void CanMakeRequest(Profile* profile,                                \
                       base::OnceCallback<void(bool success)> callback) \
       override;                                                        \
-  signin::ScopeSet OAuthScopes
+  GURL BaseURL
 
 #include <chrome/browser/devtools/gdp_service_handler.h>  // IWYU pragma: export
 
-#undef OAuthScopes
+#undef BaseURL
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DEVTOOLS_GDP_SERVICE_HANDLER_H_

@@ -16,10 +16,12 @@ namespace blink {
 class ScriptState;
 
 class MODULES_EXPORT Brave final : public ScriptWrappable,
-                                   public GarbageCollectedMixin {
+                                   public Supplement<NavigatorBase> {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
+  static const char kSupplementName[];
+
   static Brave* brave(NavigatorBase& navigator);
 
   explicit Brave(NavigatorBase& navigator);
@@ -28,9 +30,6 @@ class MODULES_EXPORT Brave final : public ScriptWrappable,
   void Trace(Visitor*) const override;
 
   ScriptPromise<IDLBoolean> isBrave(ScriptState*);
-
- private:
-  Member<NavigatorBase> navigator_base_;
 };
 
 }  // namespace blink

@@ -15,7 +15,6 @@
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_manager.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
@@ -90,6 +89,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                      BitcoinWalletService* bitcoin_wallet_service,
                      ZCashWalletService* zcash_wallet_service,
                      CardanoWalletService* cardano_wallet_service,
+                     PolkadotWalletService* polkadot_wallet_service,
                      KeyringService& keyring_service,
                      PrefService* prefs,
                      const base::FilePath& wallet_base_directory,
@@ -144,8 +144,14 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   }
 
   if (IsPolkadotEnabled()) {
-    tx_manager_map_[mojom::CoinType::DOT] = std::make_unique<PolkadotTxManager>(
-        *this, keyring_service, *delegate_, *account_resolver_delegate_);
+    if (!polkadot_wallet_service) {
+      CHECK_IS_TEST();
+    } else {
+      tx_manager_map_[mojom::CoinType::DOT] =
+          std::make_unique<PolkadotTxManager>(*this, *polkadot_wallet_service,
+                                              keyring_service, *delegate_,
+                                              *account_resolver_delegate_);
+    }
   }
 }
 
@@ -181,6 +187,10 @@ CardanoTxManager* TxService::GetCardanoTxManager() {
   return static_cast<CardanoTxManager*>(GetTxManager(mojom::CoinType::ADA));
 }
 
+PolkadotTxManager* TxService::GetPolkadotTxManager() {
+  return static_cast<PolkadotTxManager*>(GetTxManager(mojom::CoinType::DOT));
+}
+
 template <>
 void TxService::Bind(mojo::PendingReceiver<mojom::TxService> receiver) {
   tx_service_receivers_.Add(this, std::move(receiver));
@@ -211,6 +221,7 @@ void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& chain_id,
     mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
     AddUnapprovedTransactionCallback callback) {
   CHECK_NE(from->coin, mojom::CoinType::ETH)
       << "Wallet UI must use AddUnapprovedEvmTransaction";
@@ -221,14 +232,15 @@ void TxService::AddUnapprovedTransaction(
   CHECK_NE(from->coin, mojom::CoinType::ADA)
       << "Wallet UI must use AddUnapprovedCardanoTransaction";
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
-                                     std::move(from), std::nullopt,
-                                     std::move(callback));
+                                     std::move(from), std::move(swap_info),
+                                     std::nullopt, std::move(callback));
 }
 
 void TxService::AddUnapprovedTransactionWithOrigin(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& chain_id,
     mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
     const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   if (!account_resolver_delegate_->ValidateAccountId(from)) {
@@ -247,7 +259,8 @@ void TxService::AddUnapprovedTransactionWithOrigin(
 
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
-      chain_id, std::move(tx_data_union), from, origin, std::move(callback));
+      chain_id, std::move(tx_data_union), from, origin, std::move(swap_info),
+      std::move(callback));
 }
 
 void TxService::AddUnapprovedEvmTransaction(
@@ -340,6 +353,27 @@ void TxService::AddUnapprovedCardanoTransaction(
 
   GetCardanoTxManager()->AddUnapprovedCardanoTransaction(std::move(params),
                                                          std::move(callback));
+}
+
+void TxService::AddUnapprovedPolkadotTransaction(
+    mojom::NewPolkadotTransactionParamsPtr params,
+    AddUnapprovedPolkadotTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::DOT);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(std::move(params),
+                                                           std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

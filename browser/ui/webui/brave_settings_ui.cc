@@ -21,7 +21,6 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -32,8 +31,9 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
-#include "brave/components/brave_origin/brave_origin_handler.h"
+#include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -187,7 +187,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddString(
       "braveProductVersion",
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
-  NavigationBarDataProvider::Initialize(html_source, profile);
   html_source->AddBoolean(
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
@@ -275,6 +274,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_account::features::IsBraveAccountEnabled());
   html_source->AddBoolean("isOriginAllowed",
                           brave_origin::IsBraveOriginEnabled());
+  html_source->AddBoolean("isBraveOriginBrandedBuild",
+                          BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   html_source->AddBoolean("isTreeTabsFlagEnabled",
                           base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",

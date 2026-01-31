@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/user_data/redeem_payment_tokens_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
@@ -111,8 +112,10 @@ base::expected<void, std::tuple<std::string, bool>>
 RedeemPaymentTokens::HandleRedeemPaymentTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
   if (mojom_url_response.code != net::HTTP_OK) {
-    return base::unexpected(std::make_tuple("Failed to redeem payment tokens",
-                                            /*should_retry=*/true));
+    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                              HttpStatusCodeClassType::kClientError;
+    return base::unexpected(
+        std::make_tuple("Failed to redeem payment tokens", should_retry));
   }
 
   return base::ok();

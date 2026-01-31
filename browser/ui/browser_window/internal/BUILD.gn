@@ -4,24 +4,36 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 source_set("internal") {
-  sources = [ "browser_window_features.cc" ]
+  sources = []
+  if (!is_android) {
+    sources += [ "browser_window_features.cc" ]
+  }
 
   deps = [
     "//base",
     "//brave/browser/brave_rewards",
     "//brave/browser/email_aliases",
-    "//brave/browser/ui/email_aliases",
-    "//brave/browser/ui/sidebar",
-    "//brave/browser/ui/tabs:tab_menu",
-    "//brave/browser/ui/views/page_info",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui/browser_window",
-    "//chrome/browser/ui/tabs:features",
   ]
+
+  if (toolkit_views) {
+    deps += [ "//brave/browser/ui/sidebar" ]
+  }
+
+  if (!is_android) {
+    deps += [
+      "//brave/browser/ui/email_aliases",
+      "//brave/browser/ui/tabs:tab_menu",
+      "//brave/browser/ui/views/page_info",
+      "//chrome/browser/ui/tabs:features",
+    ]
+  }
 
   if (enable_brave_vpn) {
     deps += [ "//brave/browser/ui/brave_vpn" ]

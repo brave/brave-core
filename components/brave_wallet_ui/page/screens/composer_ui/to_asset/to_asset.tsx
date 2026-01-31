@@ -12,9 +12,6 @@ import {
   computeFiatAmount,
   getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
-import {
-  getDominantColorFromImageURL, //
-} from '../../../../utils/style.utils'
 import Amount from '../../../../utils/amount'
 
 // Queries
@@ -46,7 +43,7 @@ import {
   RefreshIcon,
   RefreshButton,
 } from './to_asset.style'
-import { AmountInput, ToSectionWrapper } from '../shared_composer.style'
+import { AmountInput } from '../shared_composer.style'
 import { Column, Row, Text } from '../../../../components/shared/style'
 
 const makeTwoDigits = (n: number) => {
@@ -144,10 +141,6 @@ export const ToAsset = (props: Props) => {
     }).formatAsFiat(defaultFiatCurrency)
   }, [spotPrices, token, inputValue, defaultFiatCurrency, selectedSendOption])
 
-  const tokenColor = React.useMemo(() => {
-    return getDominantColorFromImageURL(token?.logo ?? '')
-  }, [token?.logo])
-
   // Computed
   const countdown =
     timeUntilNextQuote !== undefined
@@ -168,116 +161,111 @@ export const ToAsset = (props: Props) => {
 
   // render
   return (
-    <ToSectionWrapper
-      tokenColor={tokenColor}
+    <Column
       fullWidth={true}
+      fullHeight={true}
+      justifyContent='flex-start'
+      alignItems='center'
+      padding='32px 0px 0px 0px'
     >
-      <Column
-        fullWidth={true}
-        fullHeight={true}
-        justifyContent='flex-start'
+      <ReceiveAndQuoteRow
+        width='100%'
         alignItems='center'
-        padding='32px 0px 0px 0px'
+        justifyContent='space-between'
+        marginBottom={10}
       >
-        <ReceiveAndQuoteRow
-          width='100%'
-          alignItems='center'
-          justifyContent='space-between'
-          marginBottom={10}
+        <ReceiveAndQuoteText
+          textSize='14px'
+          isBold={false}
         >
-          <ReceiveAndQuoteText
+          {getLocale('braveWalletReceiveEstimate')}
+        </ReceiveAndQuoteText>
+        <Row width='unset'>
+          {!isFetchingQuote && timeUntilNextQuote !== undefined && (
+            <Row
+              width='unset'
+              gap='4px'
+              margin='0px 4px 0px 0px'
+            >
+              <ReceiveAndQuoteText
+                textSize='12px'
+                isBold={false}
+              >
+                {newQuote}
+              </ReceiveAndQuoteText>
+            </Row>
+          )}
+          {timeUntilNextQuote !== undefined && (
+            <RefreshButton
+              onClick={handleRefreshQuote}
+              clicked={refreshClicked}
+              onAnimationEnd={() => setRefreshClicked(false)}
+              disabled={refreshClicked || isFetchingQuote}
+            >
+              <RefreshIcon />
+            </RefreshButton>
+          )}
+        </Row>
+      </ReceiveAndQuoteRow>
+      <SelectAndInputRow
+        width='100%'
+        alignItems='center'
+        justifyContent='space-between'
+        marginBottom={10}
+      >
+        <Row width='unset'>
+          <SelectButton
+            onClick={onClickSelectToken}
+            token={token}
+            selectedSendOption={selectedSendOption}
+            placeholderText={getLocale('braveWalletChooseAsset')}
+            disabled={buttonDisabled}
+          />
+        </Row>
+        <AmountInput
+          placeholder='0.0'
+          type='number'
+          spellCheck={false}
+          onChange={onInputChange}
+          value={inputValue}
+          hasError={hasInputError}
+          disabled={inputDisabled}
+        />
+      </SelectAndInputRow>
+      <NetworkAndFiatRow
+        width='100%'
+        alignItems='center'
+        justifyContent='space-between'
+      >
+        {network && token && (
+          <NetworkAndFiatText
             textSize='14px'
             isBold={false}
           >
-            {getLocale('braveWalletReceiveEstimate')}
-          </ReceiveAndQuoteText>
+            {getLocale('braveWalletPortfolioAssetNetworkDescription')
+              .replace('$1', '')
+              .replace('$2', network.chainName)}
+          </NetworkAndFiatText>
+        )}
+        {token && (
           <Row width='unset'>
-            {!isFetchingQuote && timeUntilNextQuote !== undefined && (
-              <Row
-                width='unset'
-                gap='4px'
-                margin='0px 4px 0px 0px'
+            {isLoadingSpotPrices ? (
+              <LoadingSkeleton
+                height={18}
+                width={60}
+              />
+            ) : (
+              <NetworkAndFiatText
+                textSize='14px'
+                isBold={false}
               >
-                <ReceiveAndQuoteText
-                  textSize='12px'
-                  isBold={false}
-                >
-                  {newQuote}
-                </ReceiveAndQuoteText>
-              </Row>
-            )}
-            {timeUntilNextQuote !== undefined && (
-              <RefreshButton
-                onClick={handleRefreshQuote}
-                clicked={refreshClicked}
-                onAnimationEnd={() => setRefreshClicked(false)}
-                disabled={refreshClicked || isFetchingQuote}
-              >
-                <RefreshIcon />
-              </RefreshButton>
+                {fiatValue}
+              </NetworkAndFiatText>
             )}
           </Row>
-        </ReceiveAndQuoteRow>
-        <SelectAndInputRow
-          width='100%'
-          alignItems='center'
-          justifyContent='space-between'
-          marginBottom={10}
-        >
-          <Row width='unset'>
-            <SelectButton
-              onClick={onClickSelectToken}
-              token={token}
-              selectedSendOption={selectedSendOption}
-              placeholderText={getLocale('braveWalletChooseAsset')}
-              disabled={buttonDisabled}
-            />
-          </Row>
-          <AmountInput
-            placeholder='0.0'
-            type='number'
-            spellCheck={false}
-            onChange={onInputChange}
-            value={inputValue}
-            hasError={hasInputError}
-            disabled={inputDisabled}
-          />
-        </SelectAndInputRow>
-        <NetworkAndFiatRow
-          width='100%'
-          alignItems='center'
-          justifyContent='space-between'
-        >
-          {network && token && (
-            <NetworkAndFiatText
-              textSize='14px'
-              isBold={false}
-            >
-              {getLocale('braveWalletPortfolioAssetNetworkDescription')
-                .replace('$1', '')
-                .replace('$2', network.chainName)}
-            </NetworkAndFiatText>
-          )}
-          {token && (
-            <Row width='unset'>
-              {isLoadingSpotPrices ? (
-                <LoadingSkeleton
-                  height={18}
-                  width={60}
-                />
-              ) : (
-                <NetworkAndFiatText
-                  textSize='14px'
-                  isBold={false}
-                >
-                  {fiatValue}
-                </NetworkAndFiatText>
-              )}
-            </Row>
-          )}
-        </NetworkAndFiatRow>
-        {children}
-      </Column>
-    </ToSectionWrapper>
+        )}
+      </NetworkAndFiatRow>
+      {children}
+    </Column>
   )
 }

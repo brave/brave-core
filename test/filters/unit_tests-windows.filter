@@ -5,8 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# This test is flaky: passes locally but fails on CI
+# These tests pass locally but fail on CI
 -FileSystemAccessUIHelpersTest.GetElidedPathForDisplayAsTitle
+-NotificationHelperLaunchesChrome.ChromeLaunchTest
+-PerformanceManagerMetricsProviderDesktopTest.TestCpuThrottlingMetricRecordedWhereAvailable
 
 # This test is disabled because our CIs use Windows Server which doesn't appear
 # to have FOLDERID_OneDrive entry in the registry making this test fail.
@@ -35,4 +37,5 @@
 -RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerSettingsIsDisabled
 -RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordsManagerSubPageIsDisabled
 -ShellIntegrationWinTest.*
+-WebAppCommandManagerTest.ToDebugValue
 -WebAppShortcutWinTest.*

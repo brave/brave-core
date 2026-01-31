@@ -9,11 +9,14 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#endif
 
 namespace settings {
 
@@ -41,11 +44,13 @@ void BraveClearBrowsingDataHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled,
           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   web_ui()->RegisterMessageCallback(
       "clearBraveAdsData",
       base::BindRepeating(
           &BraveClearBrowsingDataHandler::HandleClearBraveAdsData,
           base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled(
@@ -59,6 +64,7 @@ void BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled(
   ResolveJavascriptCallback(args[0], rewards_enabled);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 void BraveClearBrowsingDataHandler::HandleClearBraveAdsData(
     const base::Value::List& /*args*/) {
   if (auto* ads_service =
@@ -66,6 +72,7 @@ void BraveClearBrowsingDataHandler::HandleClearBraveAdsData(
     ads_service->ClearData(/*intentional*/ base::DoNothing());
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 void BraveClearBrowsingDataHandler::OnRewardsEnabledPreferenceChanged() {
   if (!IsJavascriptAllowed()) {

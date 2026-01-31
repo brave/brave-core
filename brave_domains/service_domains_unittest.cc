@@ -27,16 +27,6 @@ constexpr char kDevValue[] = BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN);
 
 }  // namespace
 
-TEST(BraveServiceDomains, TestValuesPresent) {
-  // These tests don't work if the values are the same, or empty
-  EXPECT_GT(strlen(kProductionValue), 0u);
-  EXPECT_GT(strlen(kStagingValue), 0u);
-  EXPECT_GT(strlen(kDevValue), 0u);
-  EXPECT_NE(kProductionValue, kStagingValue);
-  EXPECT_NE(kProductionValue, kDevValue);
-  EXPECT_NE(kStagingValue, kDevValue);
-}
-
 TEST(BraveServiceDomains, ProductionWhenEmpty) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
 

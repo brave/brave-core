@@ -7,7 +7,6 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
@@ -19,15 +18,13 @@ EdgeRequestComplete::EdgeRequestComplete(GraphItemContext* context,
                                          const InspectorId request_id,
                                          const FrameId& frame_id,
                                          const blink::String& resource_type,
-                                         const ResponseMetadata& metadata,
                                          const blink::String& hash)
     : EdgeRequestResponse(context,
                           out_node,
                           in_node,
                           request_id,
                           frame_id,
-                          kRequestStatusComplete,
-                          metadata),
+                          kRequestStatusComplete),
       resource_type_(resource_type),
       hash_(hash) {}
 
@@ -40,15 +37,6 @@ ItemName EdgeRequestComplete::GetItemName() const {
 ItemDesc EdgeRequestComplete::GetItemDesc() const {
   return blink::StrCat(
       {EdgeRequestResponse::GetItemDesc(), " [", resource_type_, "]"});
-}
-
-void EdgeRequestComplete::AddGraphMLAttributes(xmlDocPtr doc,
-                                               xmlNodePtr parent_node) const {
-  EdgeRequestResponse::AddGraphMLAttributes(doc, parent_node);
-  GraphMLAttrDefForType(kGraphMLAttrDefResourceType)
-      ->AddValueNode(doc, parent_node, resource_type_);
-  GraphMLAttrDefForType(kGraphMLAttrDefResponseHash)
-      ->AddValueNode(doc, parent_node, hash_);
 }
 
 bool EdgeRequestComplete::IsEdgeRequestComplete() const {

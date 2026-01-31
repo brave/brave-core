@@ -20,6 +20,7 @@
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -42,6 +43,8 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyDelete;
+using endpoints::VerifyResend;
 using endpoints::VerifyResult;
 
 namespace {
@@ -154,6 +157,7 @@ void BraveAccountService::RegisterInitialize(
 
   auto request = MakeRequest<PasswordInit::Request>();
   request.blinded_message = blinded_message;
+  request.initiating_service_name = "accounts";
   request.new_account_email = email;
   request.serialize_response = true;
   Client<PasswordInit>::Send(
@@ -188,13 +192,58 @@ void BraveAccountService::RegisterFinalize(
                      encrypted_verification_token));
 }
 
-void BraveAccountService::ResendConfirmationEmail() {
-  // TODO(https://github.com/brave/brave-browser/issues/50653)
-  NOTIMPLEMENTED();
+void BraveAccountService::ResendConfirmationEmail(
+    ResendConfirmationEmailCallback callback) {
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
+  if (encrypted_verification_token.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ResendConfirmationEmailError::New(
+            std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+                              kUserNotInTheVerificationState)));
+  }
+
+  const auto verification_token = Decrypt(encrypted_verification_token);
+  if (verification_token.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ResendConfirmationEmailError::New(
+            std::nullopt, mojom::ResendConfirmationEmailErrorCode::
+                              kVerificationTokenDecryptionFailed)));
+  }
+
+  auto request = MakeRequest<WithHeaders<VerifyResend::Request>>();
+  SetBearerToken(request, verification_token);
+  // Server side will determine locale based on the Accept-Language request
+  // header (which is included automatically by upstream).
+  request.locale = "";
+  request.timeout_duration = kVerifyResendTimeout;
+  Client<VerifyResend>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnResendConfirmationEmail,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveAccountService::CancelRegistration() {
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
+
   pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
+
+  if (encrypted_verification_token.empty()) {
+    return;
+  }
+
+  const auto verification_token = Decrypt(encrypted_verification_token);
+  if (verification_token.empty()) {
+    return;
+  }
+
+  // Best-effort notification to the server, since the token will be cleaned up
+  // automatically after 30 minutes anyway.
+  auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
+  SetBearerToken(request, verification_token);
+  Client<VerifyDelete>::Send(url_loader_factory_, std::move(request),
+                             base::BindOnce([](VerifyDelete::Response) {}));
 }
 
 void BraveAccountService::LoginInitialize(const std::string& email,
@@ -206,6 +255,7 @@ void BraveAccountService::LoginInitialize(const std::string& email,
 
   auto request = MakeRequest<LoginInit::Request>();
   request.email = email;
+  request.initiating_service_name = "accounts";
   request.serialized_ke1 = serialized_ke1;
   Client<LoginInit>::Send(
       url_loader_factory_, std::move(request),
@@ -364,6 +414,40 @@ void BraveAccountService::OnRegisterFinalize(
 
             return mojom::RegisterFinalizeResult::New();
           });
+
+  std::move(callback).Run(std::move(result));
+}
+
+void BraveAccountService::OnResendConfirmationEmail(
+    ResendConfirmationEmailCallback callback,
+    VerifyResend::Response response) {
+  if (!response.body) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ResendConfirmationEmailError::New(
+            response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody                      ]> ==>
+          // expected<SuccessBody, [ResendConfirmationEmailErrorPtr]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::ResendConfirmationEmailError>(
+                status_code, std::move(error_body));
+          })
+          // expected<[SuccessBody                     ],
+          //                         ResendConfirmationEmailErrorPtr> ==>
+          // expected<[ResendConfirmationEmailResultPtr],
+          //                         ResendConfirmationEmailErrorPtr>
+          .and_then(
+              [](auto success_body)
+                  -> base::expected<mojom::ResendConfirmationEmailResultPtr,
+                                    mojom::ResendConfirmationEmailErrorPtr> {
+                return mojom::ResendConfirmationEmailResult::New();
+              });
 
   std::move(callback).Run(std::move(result));
 }

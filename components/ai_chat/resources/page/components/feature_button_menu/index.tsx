@@ -8,12 +8,16 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
+import {
+  formatConversationForClipboard, //
+} from '../../../common/conversation_history_utils'
 
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
@@ -35,6 +39,24 @@ export default function FeatureMenu(props: Props) {
 
   const handleTemporaryChatToggle = (detail: { checked: boolean }) => {
     conversationContext.setTemporary(detail.checked)
+  }
+
+  const copyEntireConversation = async () => {
+    // Fetch the full conversation history directly from the handler
+    // to avoid stale closure issues with the context state
+    const handler = conversationContext.conversationHandler
+    if (!handler) return
+
+    const { conversationHistory } = await handler.getConversationHistory()
+    const formattedConversation =
+      formatConversationForClipboard(conversationHistory)
+    navigator.clipboard.writeText(formattedConversation).then(() => {
+      showAlert({
+        type: 'info',
+        content: getLocale(S.CHAT_UI_CONVERSATION_COPIED),
+        actions: [],
+      })
+    })
   }
 
   return (
@@ -72,6 +94,22 @@ export default function FeatureMenu(props: Props) {
               onChange={handleTemporaryChatToggle}
               checked={conversationContext.isTemporaryChat}
             ></Toggle>
+          </div>
+        </leo-menu-item>
+      )}
+
+      {hasConversationStarted && (
+        <leo-menu-item onClick={() => copyEntireConversation()}>
+          <div
+            className={classnames(
+              styles.menuItemWithIcon,
+              styles.menuItemMainItem,
+            )}
+          >
+            <Icon name='copy' />
+            <span className={styles.menuText}>
+              {getLocale(S.CHAT_UI_MENU_COPY_CONVERSATION)}
+            </span>
           </div>
         </leo-menu-item>
       )}

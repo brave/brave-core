@@ -147,7 +147,7 @@ You can add one or more responses per request. These will be returned in the giv
 | Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
 | Can show notification ads while browser is backgrounded  | boolean  | `true`  | `test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
 | Site history  | vector\<GURL>  |  | `test::MockGetSiteHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
-| URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses).  |
+| URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-url-responses).  |
 
 See [mock_test_util.h](./mock_test_util.h), [test_constants.h](./test_constants.h), and [test_types.h](./test_types.h).
 

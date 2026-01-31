@@ -688,6 +688,7 @@ class AccountActivityStoreTests: XCTestCase {
       chainId: BraveWallet.FilecoinMainnet,
       effectiveRecipient: nil,
       isRetriable: false,
+      swapInfo: nil,
       swapInfoDeprecated: nil
     )
 

@@ -276,7 +276,8 @@ class EnvConfig {
         process.exit(1)
       }
 
-      const envContent = fs.readFileSync(filePath, 'utf8')
+      // Trim to remove BOM.
+      const envContent = fs.readFileSync(filePath, 'utf8').trim()
       const lines = envContent.split('\n')
       let result = ''
 

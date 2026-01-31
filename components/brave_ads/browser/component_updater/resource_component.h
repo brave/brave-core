@@ -17,7 +17,10 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_info.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 

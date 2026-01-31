@@ -89,7 +89,7 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
       region_view_(
           AddChildView(std::make_unique<BraveVerticalTabStripRegionView>(
               browser_view_,
-              views::AsViewClass<TabStripRegionView>(
+              views::AsViewClass<HorizontalTabStripRegionView>(
                   browser_view_->tab_strip_view())))) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
@@ -114,9 +114,10 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
   host_->SetPreferredSize(region_view_->GetMinimumSize());
 
   // The position could be changed, so we should lay out again.
-  host_->parent()->DeprecatedLayoutImmediately();
+  host_->InvalidateLayout();
 
   // Lay out the widget manually in case the host doesn't arrange it.
+  // Ex, expand on mouse hover.
   UpdateWidgetBounds();
 }
 
@@ -151,7 +152,7 @@ void VerticalTabStripWidgetDelegateView::OnWidgetVisibilityChanged(
     views::Widget* widget,
     bool visible) {
   if (widget == GetWidget()) {
-    if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
+    if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view_->browser()) &&
         visible) {
       // This happens when restoring browser window. The upstream implementation
       // make child widgets visible regardless of their previous visibility.
@@ -189,12 +190,11 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
   auto insets = host_->GetInsets();
   widget_bounds.set_width(region_view_->GetPreferredSize().width() +
                           insets.width());
-  if (!region_view_->GetVisible() || widget_bounds.IsEmpty()) {
+  if (!region_view_->GetVisible() || widget_bounds.IsEmpty() ||
+      !tabs::utils::ShouldShowBraveVerticalTabs(browser_view_->browser())) {
     widget->Hide();
     return;
   }
-
-  DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()));
 
   if (GetInsets() != insets) {
     SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));

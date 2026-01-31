@@ -767,24 +767,34 @@ if (is_redirect_cc_build) {
 }
 if (is_win && enable_resource_allowlist_generation) {
   # Merge chrome_resource_allowlist and wireguard resources allowlist to keep
-  # wireguard resources in pak files.
-  action("merge_allowlists") {
-    deps = [
-      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_resource_allowlist",
-      "//chrome:resource_allowlist",
-    ]
+  # wireguard resources in pak files. When VPN is disabled, just copy the chrome
+  # allowlist.
+  if (enable_brave_vpn) {
+    action("merge_allowlists") {
+      deps = [
+        "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_resource_allowlist",
+        "//chrome:resource_allowlist",
+      ]
 
-    script = "//brave//resources/brave_allowlist.py"
-    source_allowlist = "$root_gen_dir/chrome/chrome_resource_allowlist.txt"
-    args = [
-      "--repack_allowlist",
-      rebase_path(source_allowlist, root_build_dir),
-      "--brave_allowlist",
-      rebase_path(wireguard_resource_allowlist_file, root_build_dir),
-      "--output",
-      rebase_path(brave_allowlist_file, root_build_dir),
-    ]
+      script = "//brave//resources/brave_allowlist.py"
+      source_allowlist = "$root_gen_dir/chrome/chrome_resource_allowlist.txt"
+      args = [
+        "--repack_allowlist",
+        rebase_path(source_allowlist, root_build_dir),
+        "--brave_allowlist",
+        rebase_path(wireguard_resource_allowlist_file, root_build_dir),
+        "--output",
+        rebase_path(brave_allowlist_file, root_build_dir),
+      ]
 
-    outputs = [ brave_allowlist_file ]
+      outputs = [ brave_allowlist_file ]
+    }
+  } else {
+    # When VPN is disabled, just copy the chrome resource allowlist.
+    copy("merge_allowlists") {
+      deps = [ "//chrome:resource_allowlist" ]
+      sources = [ "$root_gen_dir/chrome/chrome_resource_allowlist.txt" ]
+      outputs = [ brave_allowlist_file ]
+    }
   }
 }

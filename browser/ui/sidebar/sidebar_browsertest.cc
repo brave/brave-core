@@ -696,6 +696,9 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   service->SetSidebarShowOption(
       SidebarService::ShowSidebarOption::kShowOnMouseOver);
 
+  // To put sidebar right position after changing show option.
+  browser_view()->DeprecatedLayoutImmediately();
+
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser()));
 
@@ -1538,7 +1541,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  ASSERT_EQ(tab_model()->GetTabCount(), 2);
+  ASSERT_EQ(tab_model()->count(), 2);
 
   // Open contextual panel from Tab 0.
   tab_model()->ActivateTabAt(0);
@@ -1548,7 +1551,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   // Delete Tab 0 and check model doesn't have active index.
   tab_model()->DetachAndDeleteWebContentsAt(0);
   EXPECT_FALSE(!!model()->active_index());
-  ASSERT_EQ(tab_model()->GetTabCount(), 1);
+  ASSERT_EQ(tab_model()->count(), 1);
 
   // Create two more tab for test below.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
@@ -1559,7 +1562,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+  ASSERT_EQ(tab_model()->count(), 3);
 
   // Open a "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
@@ -1601,7 +1604,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+  ASSERT_EQ(tab_model()->count(), 3);
 
   // Open a unmanaged "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
@@ -1674,7 +1677,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+  ASSERT_EQ(tab_model()->count(), 3);
   // Open a "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
   SimulateSidebarItemClickAt(global_item_index.value());
@@ -1703,7 +1706,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* prefs = browser()->profile()->GetPrefs();
   auto* vertical_tabs_container = GetVerticalTabsContainer();
@@ -1766,7 +1769,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   registry->Register(std::move(toolbar_entry));
 
   // Show the toolbar entry
-  auto* coordinator = browser()->GetFeatures().side_panel_coordinator();
+  auto* coordinator = SidePanelCoordinator::From(browser());
   coordinator->SetNoDelaysForTesting(true);
   coordinator->Show(SidePanelEntry::Id::kAboutThisSite);
 

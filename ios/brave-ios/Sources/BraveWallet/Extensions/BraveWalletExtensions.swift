@@ -276,6 +276,8 @@ extension BraveWallet.CoinType {
     case .zec:
       return Strings.Wallet.coinTypeZCash
     case .ada:
+      return Strings.Wallet.coinTypeAda
+    case .dot:
       fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown

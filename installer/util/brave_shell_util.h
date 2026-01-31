@@ -11,7 +11,7 @@
 namespace installer {
 
 std::wstring GetProgIdForFileType();
-bool ShouldUseFileTypeProgId(const std::wstring& ext);
+bool ShouldUseFileTypeProgId(std::wstring_view ext);
 
 }  // namespace installer
 

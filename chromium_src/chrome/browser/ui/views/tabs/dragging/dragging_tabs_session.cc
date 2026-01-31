@@ -17,7 +17,7 @@
 // nothing changes)
 #define GetStandardWidth(...)                          \
   GetStandardWidth(__VA_ARGS__) *                      \
-      (tabs::utils::ShouldShowVerticalTabs(            \
+      (tabs::utils::ShouldShowBraveVerticalTabs(       \
            BrowserView::GetBrowserViewForNativeWindow( \
                attached_context_->GetWidget()          \
                    ->GetTopLevelWidget()               \

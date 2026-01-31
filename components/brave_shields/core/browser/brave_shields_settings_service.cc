@@ -8,6 +8,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -211,6 +212,9 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetDefaultAutoShredMode() {
 
 void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
                                                    const GURL& url) {
+  CHECK(base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveShredFeature));
+
   // Shred and AutoShred delete data at the eTLD+1 boundary, because that’s
   // the Web’s cookie boundary, so we must use the domain pattern to align
   // with how browsers enforce storage boundaries.
@@ -227,9 +231,42 @@ void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
 
 mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
     const GURL& url) {
+  CHECK(base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveShredFeature));
   return AutoShredSetting::FromValue(
       host_content_settings_map_->GetWebsiteSetting(
           url, GURL(), AutoShredSetting::kContentSettingsType));
+}
+
+std::vector<std::string>
+BraveShieldsSettingsService::GetEphemeralDomainsForAutoShredMode(
+    mojom::AutoShredMode mode) {
+  CHECK(base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveShredFeature));
+  std::vector<std::string> result;
+
+  ContentSettingsForOneType all_auto_shred_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          AutoShredSetting::kContentSettingsType);
+
+  for (const auto& setting : all_auto_shred_settings) {
+    if (!setting.primary_pattern.IsValid()) {
+      continue;
+    }
+
+    auto setting_mode = AutoShredSetting::FromValue(setting.setting_value);
+    if (setting_mode != mode) {
+      continue;
+    }
+
+    GURL pattern_url(setting.primary_pattern.ToRepresentativeUrl());
+    if (pattern_url.is_valid() &&
+        !IsShieldsDisabledOnAnyHostMatchingDomainOf(pattern_url)) {
+      result.push_back(net::URLToEphemeralStorageDomain(pattern_url));
+    }
+  }
+
+  return result;
 }
 
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {

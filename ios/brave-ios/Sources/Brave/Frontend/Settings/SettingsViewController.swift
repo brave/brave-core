@@ -84,9 +84,11 @@ class SettingsViewController: TableViewController {
     return BraveAccountAuthenticationBridgeImpl(profile: braveCore.profile)
   }()
 
+  private let braveAccountSectionUUID: UUID = .init()
   private let featureSectionUUID: UUID = .init()
   private let displaySectionUUID: UUID = .init()
 
+  private let braveAccountResendConfirmationEmailRowUUID: UUID = .init()
   private let walletRowUUID: UUID = .init()
   private let appIconRowUUID: UUID = .init()
 
@@ -360,16 +362,33 @@ class SettingsViewController: TableViewController {
     return section
   }()
 
+  private func setCellEnabled(_ enabled: Bool, rowUUID: UUID, sectionUUID: UUID) {
+    if let indexPath = dataSource.indexPath(
+      rowUUID: rowUUID.uuidString,
+      sectionUUID: sectionUUID.uuidString
+    ),
+      let cell = tableView.cellForRow(at: indexPath)
+    {
+      cell.isUserInteractionEnabled = enabled
+
+      if var content = cell.contentConfiguration as? UIListContentConfiguration {
+        content.textProperties.color =
+          enabled ? view.tintColor : UIColor(braveSystemName: .textDisabled)
+        cell.contentConfiguration = content
+      }
+    }
+  }
+
   private var braveAccountSection: Static.Section {
     let authenticationToken = braveCore.profile.prefs.string(
       forPath: BraveAccountAuthenticationTokenPref
     )
     if !authenticationToken.isEmpty {
       return Static.Section(
-        header: .title(Strings.braveAccount),
+        header: .title(BraveL10nUtils.string(messageId: IDS_BRAVE_ACCOUNT_TITLE)),
         rows: [
           Row(
-            text: Strings.braveAccountEmailAddress,
+            text: BraveL10nUtils.string(messageId: IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE),
             detailText: braveCore.profile.prefs.string(
               forPath: BraveAccountEmailAddressPref
             ),
@@ -377,7 +396,7 @@ class SettingsViewController: TableViewController {
             cellClass: BraveAccountIconCell.self
           ),
           Row(
-            text: Strings.braveAccountSignOut,
+            text: BraveL10nUtils.string(messageId: IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL),
             selection: { [unowned self] in braveAccountAuthentication.logOut() },
             cellClass: BraveAccountIconCell.self,
             context: [
@@ -393,43 +412,80 @@ class SettingsViewController: TableViewController {
     )
     if !verificationToken.isEmpty {
       return Static.Section(
-        header: .title(Strings.braveAccount),
+        header: .title(BraveL10nUtils.string(messageId: IDS_BRAVE_ACCOUNT_TITLE)),
         rows: [
           Row(
-            text: Strings.braveAccountAlmostThere,
-            detailText: Strings.braveAccountAlmostThereDetail,
+            text: BraveL10nUtils.string(
+              messageId: IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE
+            ),
+            detailText: BraveL10nUtils.string(
+              messageId: IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1
+            ),
             cellClass: BraveAccountIconCell.self
           ),
           Row(
-            text: Strings.braveAccountResendConfirmationEmail,
-            detailText: Strings.braveAccountResendConfirmationEmailDetail,
-            selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
+            text: BraveL10nUtils.string(
+              messageId: IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
+            ),
+            detailText: BraveL10nUtils.string(
+              messageId: IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2
+            ),
+            selection: { [unowned self] in
+              setCellEnabled(
+                false,
+                rowUUID: braveAccountResendConfirmationEmailRowUUID,
+                sectionUUID: braveAccountSectionUUID
+              )
+              braveAccountAuthentication.resendConfirmationEmail { [weak self] title, message in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                  let alert = UIAlertController(
+                    title: title,
+                    message: message,
+                    preferredStyle: .alert
+                  )
+                  alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
+                  self.present(alert, animated: true)
+                  setCellEnabled(
+                    true,
+                    rowUUID: braveAccountResendConfirmationEmailRowUUID,
+                    sectionUUID: braveAccountSectionUUID
+                  )
+                }
+              }
+            },
             cellClass: BraveAccountIconCell.self,
             context: [
               BraveAccountIconCell.titleColorKey: view.tintColor
-            ]
+            ],
+            uuid: braveAccountResendConfirmationEmailRowUUID.uuidString
           ),
           Row(
-            text: Strings.braveAccountCancelRegistration,
+            text: BraveL10nUtils.string(
+              messageId: IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL
+            ),
             selection: { [unowned self] in braveAccountAuthentication.cancelRegistration() },
             cellClass: BraveAccountIconCell.self,
             context: [
               BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .systemfeedbackErrorText)
             ]
           ),
-        ]
+        ],
+        uuid: braveAccountSectionUUID.uuidString
       )
     }
 
     return Static.Section(
-      header: .title(Strings.braveAccount),
+      header: .title(BraveL10nUtils.string(messageId: IDS_BRAVE_ACCOUNT_TITLE)),
       rows: [
         Row(
-          text: Strings.braveAccountGetStarted,
+          text: BraveL10nUtils.string(
+            messageId: IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
+          ),
           selection: { [unowned self] in
             let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
             let container = UINavigationController(rootViewController: controller)
-            controller.title = Strings.braveAccount
+            controller.title = BraveL10nUtils.string(messageId: IDS_BRAVE_ACCOUNT_TITLE)
             controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
             controller.navigationItem.rightBarButtonItem = .init(
               systemItem: .done,
@@ -954,6 +1010,7 @@ class SettingsViewController: TableViewController {
                   request,
                   isPrivate: false
                 )
+                self.dismiss(animated: true)
               }
             ),
             animated: true
@@ -1769,6 +1826,7 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
 
     contentConfiguration = content
     accessoryType = row.accessory.type
+    isUserInteractionEnabled = true
   }
 }
 

@@ -13,10 +13,12 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/mojom/ios/common.mojom.objc+private.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/settings_helper.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
@@ -115,6 +117,71 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
                            initWithPremiumInfoPtr:std::move(info)]
                      : nil);
       }));
+}
+
+- (NSArray<AiChatModel*>*)customModels {
+  const std::vector<ai_chat::mojom::ModelPtr>& models =
+      _modelService->GetModels();
+  NSMutableArray<AiChatModel*>* bridgedModels = [[NSMutableArray alloc] init];
+  for (auto& model : models) {
+    if (model->options->is_custom_model_options()) {
+      [bridgedModels
+          addObject:[[AiChatModel alloc] initWithModelPtr:model->Clone()]];
+    }
+  }
+  return [bridgedModels copy];
+}
+
+- (void)addCustomModel:(AiChatModel*)bridgedModel
+     completionHandler:(void (^)(AiChatOperationResult result))handler {
+  ai_chat::mojom::ModelPtr model = bridgedModel.cppObjPtr;
+  CHECK(model->options->is_custom_model_options());
+
+  ai_chat::ModelValidationResult result =
+      ai_chat::ModelValidator::ValidateCustomModelOptions(
+          *model->options->get_custom_model_options());
+  if (result == ai_chat::ModelValidationResult::kInvalidUrl) {
+    const auto endpoint = model->options->get_custom_model_options()->endpoint;
+    const bool valid_as_private_ip =
+        ai_chat::ModelValidator::IsValidEndpoint(endpoint, true);
+    // The URL is invalid, but may be valid as a private endpoint. Let's
+    // examine the value more closely, and notify the user.
+    handler(valid_as_private_ip ? AiChatOperationResultUrlValidAsPrivateEndpoint
+                                : AiChatOperationResultInvalidUrl);
+  }
+
+  _modelService->AddCustomModel(std::move(model));
+  handler(AiChatOperationResultSuccess);
+}
+
+- (void)updateCustomModelAtIndex:(NSInteger)index
+                           model:(AiChatModel*)bridgedModel
+               completionHandler:
+                   (void (^)(AiChatOperationResult result))handler {
+  ai_chat::mojom::ModelPtr model = bridgedModel.cppObjPtr;
+  CHECK(model->options->is_custom_model_options());
+
+  ai_chat::ModelValidationResult result =
+      ai_chat::ModelValidator::ValidateCustomModelOptions(
+          *model->options->get_custom_model_options());
+  if (result == ai_chat::ModelValidationResult::kInvalidUrl) {
+    const auto endpoint = model->options->get_custom_model_options()->endpoint;
+    const bool valid_as_private_ip =
+        ai_chat::ModelValidator::IsValidEndpoint(endpoint, true);
+    // The URL is invalid, but may be valid as a private endpoint. Let's
+    // examine the value more closely, and notify the user.
+    handler(valid_as_private_ip ? AiChatOperationResultUrlValidAsPrivateEndpoint
+                                : AiChatOperationResultInvalidUrl);
+
+    return;
+  }
+
+  _modelService->SaveCustomModel(index, std::move(model));
+  handler(AiChatOperationResultSuccess);
+}
+
+- (void)deleteCustomModelAtIndex:(NSInteger)index {
+  _modelService->DeleteCustomModel(index);
 }
 
 - (void)resetLeoData {

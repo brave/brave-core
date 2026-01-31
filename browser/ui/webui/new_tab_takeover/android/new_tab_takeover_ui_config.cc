@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,17 +18,24 @@
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
 NewTabTakeoverUIConfig::NewTabTakeoverUIConfig()
     : WebUIConfig(content::kChromeUIScheme, kNewTabTakeoverHost) {}
 
 std::unique_ptr<content::WebUIController>
 NewTabTakeoverUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                               const GURL& url) {
-  Profile* profile = Profile::FromWebUI(web_ui);
-
   auto rich_media_ad_event_handler = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
-      brave_ads::AdsServiceFactory::GetForProfile(profile));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui))
+#else
+      nullptr
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  );
 
   ntp_background_images::NTPBackgroundImagesService*
       ntp_background_images_service =

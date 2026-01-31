@@ -426,7 +426,7 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   feedback_api_->SendRating(
       is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-      model->options->get_leo_model_options()->name, selected_language_,
+      model->options->get_leo_model_options()->name,
       base::BindOnce(
           [](RateMessageCallback callback, APIRequestResult result) {
             if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
@@ -479,7 +479,7 @@ void ConversationHandler::SendFeedback(const std::string& category,
       category, feedback, rating_id,
       urls.empty() ? std::nullopt
                    : std::make_optional(base::JoinString(urls, ",")),
-      selected_language_, std::move(on_complete));
+      std::move(on_complete));
 }
 
 void ConversationHandler::GetConversationUuid(
@@ -926,7 +926,7 @@ void ConversationHandler::GenerateQuestions() {
 
 void ConversationHandler::PerformQuestionGeneration() {
   engine_->GenerateQuestionSuggestions(
-      associated_content_manager_->GetCachedContents(), selected_language_,
+      associated_content_manager_->GetCachedContents(),
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1212,8 +1212,8 @@ void ConversationHandler::PerformAssistantGeneration() {
 
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
-      selected_language_, IsTemporaryChat(), GetTools(),
-      std::nullopt /* preferred_tool_name */, conversation_capability_,
+      IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
+      conversation_capability_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1323,13 +1323,6 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
     if (event->is_conversation_title_event()) {
       OnConversationTitleChanged(event->get_conversation_title_event()->title);
-      // Don't add this event to history
-      return;
-    }
-
-    if (event->is_selected_language_event()) {
-      OnSelectedLanguageChanged(
-          event->get_selected_language_event()->selected_language);
       // Don't add this event to history
       return;
     }
@@ -1614,19 +1607,6 @@ void ConversationHandler::OnEngineCompletionComplete(
   }
   OnConversationEntryAdded(chat_history_.back());
 
-  // Check if we need title generation (after assistant response is added)
-  if (engine_->RequiresClientSideTitleGeneration() &&
-      chat_history_.size() == 2) {
-    // Keep the request active and complete the generation in OnTitleGenerated.
-    engine_->GenerateConversationTitle(
-        associated_content_manager_->GetCachedContentsMap(), chat_history_,
-        selected_language_,
-        base::BindOnce(&ConversationHandler::OnTitleGenerated,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
-  }
-
-  // Complete the generation if we don't need title generation.
   CompleteGeneration(true);
 }
 
@@ -1638,14 +1618,24 @@ void ConversationHandler::OnTitleGenerated(
     OnConversationTitleChanged(
         result->event->get_conversation_title_event()->title);
   }
-
-  CompleteGeneration(true);
 }
 
 void ConversationHandler::CompleteGeneration(bool success) {
   is_request_in_progress_ = false;
   OnAPIRequestInProgressChanged();
+
   if (success) {
+    // Trigger title generation in background after request completes but
+    // before pending requests or tool handling. This is independent of request
+    // progress.
+    if (engine_->RequiresClientSideTitleGeneration() &&
+        chat_history_.size() == 2) {
+      engine_->GenerateConversationTitle(
+          associated_content_manager_->GetCachedContentsMap(), chat_history_,
+          base::BindOnce(&ConversationHandler::OnTitleGenerated,
+                         weak_ptr_factory_.GetWeakPtr()));
+    }
+
     MaybePopPendingRequests();
     if (!MaybeRespondToNextToolUseRequest()) {
       // Inform tool providers that there are no more tool use requests to
@@ -1979,11 +1969,6 @@ void ConversationHandler::OnConversationTokenInfoChanged(
 void ConversationHandler::OnConversationUIConnectionChanged(
     mojo::RemoteSetElementId id) {
   OnClientConnectionChanged();
-}
-
-void ConversationHandler::OnSelectedLanguageChanged(
-    const std::string& selected_language) {
-  selected_language_ = selected_language;
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {

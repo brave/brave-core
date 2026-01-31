@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "حساب Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "تقريبا!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "رسالة تأكيد على الطريق. انقر فوق الزر في تلك الرسالة لتفعيل حسابك.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "إلغاء التسجيل";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "البدء";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "أعد إرسال رسالة التأكيد";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد المزعج أو انقر على الزر لإعادة إرسال رسالة التأكيد.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "تسجيل الخروج";
+
 /* Button to show the brave panel */
 "BravePanel" = "لوحة Brave";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "خطأ";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "البدء";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "حظر مواقع الويب الخطرة";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "تشغيل";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "ركز تلقائيًا على شريط العناوين عند إنشاء علامة تبويب جديدة";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "فتح تلقائي للوحة المفاتيح";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "حافظ على علامات تبويب التصفح الخاص مفتوحة عند إغلاق التطبيق، مما يضمن استمرار جلسات التصفح الخاصة بسلاسة.";

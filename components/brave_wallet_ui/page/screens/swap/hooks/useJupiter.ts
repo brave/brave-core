@@ -53,7 +53,6 @@ export function useJupiter(params: SwapParams) {
               },
               zeroExTransactionParams: undefined,
               lifiTransactionParams: undefined,
-              squidTransactionParams: undefined,
               gate3TransactionParams: undefined,
             },
             'jupiterTransactionParams',

@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
+
+// redux
+import { useAppDispatch } from '../../../../../common/hooks/use-redux'
 
 // types
 import {
@@ -133,7 +135,7 @@ export const Nfts = ({
   const listScrollContainerRef = React.useRef<HTMLDivElement>(null)
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted,

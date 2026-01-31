@@ -7,7 +7,7 @@
 
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_origin/android/jni_headers/BraveOriginServiceFactory_jni.h"
-#include "brave/components/brave_origin/brave_origin_handler.h"
+#include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
@@ -17,7 +17,7 @@ namespace android {
 static jlong
 JNI_BraveOriginServiceFactory_GetInterfaceToBraveOriginSettingsHandler(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   mojo::PendingRemote<brave_origin::mojom::BraveOriginSettingsHandler> pending;
   if (profile) {
@@ -38,3 +38,5 @@ JNI_BraveOriginServiceFactory_GetInterfaceToBraveOriginSettingsHandler(
 
 }  // namespace android
 }  // namespace brave
+
+DEFINE_JNI(BraveOriginServiceFactory)

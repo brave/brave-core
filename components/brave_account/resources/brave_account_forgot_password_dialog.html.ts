@@ -11,14 +11,14 @@ import { BraveAccountForgotPasswordDialogElement } from './brave_account_forgot_
 export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      alert-message="$i18n{braveAccountAlertMessage}"
-      dialog-description="$i18n{braveAccountForgotPasswordDialogDescription}"
-      dialog-title="$i18n{braveAccountForgotPasswordDialogTitle}"
+      alert-message="$i18n{BRAVE_ACCOUNT_ALERT_MESSAGE}"
+      dialog-description="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION}"
+      dialog-title="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE}"
       show-back-button
     >
       <div slot="inputs">
         <leo-input
-          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
           @input=${this.onEmailInput}
         >
           <div
@@ -26,7 +26,7 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
               ? 'error'
               : ''}"
           >
-            $i18n{braveAccountEmailInputLabel}
+            $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
           </div>
         </leo-input>
       </div>
@@ -34,7 +34,7 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
         slot="buttons"
         ?isDisabled=${!this.isEmailValid}
       >
-        $i18n{braveAccountResetPasswordButtonLabel}
+        $i18n{BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL}
       </leo-button>
     </brave-account-dialog>
     <!--_html_template_end_-->`

@@ -33,6 +33,7 @@ brave_settings_web_component_files = [
   "brave_default_extensions_page/brave_default_extensions_page.ts",
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
   "brave_new_tab_page/brave_new_tab_page.ts",
+  "brave_origin_page/brave_origin_onboarding.ts",
   "brave_origin_page/brave_origin_page.ts",
   "brave_origin_page/origin_toggle_button.ts",
   "brave_privacy_page/brave_personalization_options.ts",
@@ -60,7 +61,6 @@ brave_settings_web_component_files = [
   "getting_started_page/getting_started_page_index.ts",
   "site_settings/site_settings_autoplay.ts",
   "site_settings/site_settings_brave_ai.ts",
-  "site_settings/site_settings_localhost.ts",
   "site_settings/site_settings_google.ts",
   "site_settings/site_settings_shields.ts",
   "social_blocking_page/social_blocking_page.ts",
@@ -204,7 +204,7 @@ brave_settings_ts_extra_deps =
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account_row.mojom-webui.ts",
-  "$root_gen_dir/brave/components/brave_origin/common/mojom/brave_origin_settings.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_origin/mojom/brave_origin_settings.mojom-webui.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.
@@ -214,7 +214,7 @@ brave_settings_mojo_files = [
 
 brave_settings_mojo_files_deps = [
   "//brave/components/brave_account/mojom:mojom_ts__generator",
-  "//brave/components/brave_origin/common/mojom:mojom_ts__generator",
+  "//brave/components/brave_origin/mojom:mojom_ts__generator",
 
   # Add generated strings to the build_webui() via mojo_files_deps.
   "//brave/app:brave_generated_resources_grit",

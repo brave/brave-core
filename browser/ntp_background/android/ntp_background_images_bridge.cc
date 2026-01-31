@@ -35,7 +35,6 @@
 
 using base::android::AttachCurrentThread;
 using base::android::ConvertUTF8ToJavaString;
-using base::android::JavaParamRef;
 using base::android::JavaRef;
 using base::android::ScopedJavaLocalRef;
 using content::BrowserThread;
@@ -98,9 +97,8 @@ NTPBackgroundImagesBridge::~NTPBackgroundImagesBridge() {
 }
 
 static base::android::ScopedJavaLocalRef<jobject>
-JNI_NTPBackgroundImagesBridge_GetInstance(
-    JNIEnv* env,
-    const JavaParamRef<jobject>& j_profile) {
+JNI_NTPBackgroundImagesBridge_GetInstance(JNIEnv* env,
+                                          const JavaRef<jobject>& j_profile) {
   auto* profile = Profile::FromJavaObject(j_profile);
   return ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance()
       ->GetForProfile(profile)
@@ -114,10 +112,10 @@ NTPBackgroundImagesBridge::GetJavaObject() {
 
 void NTPBackgroundImagesBridge::WallpaperLogoClicked(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj,
-    const base::android::JavaParamRef<jstring>& jwallpaperId,
-    const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
-    const base::android::JavaParamRef<jstring>& jdestinationUrl,
+    const base::android::JavaRef<jobject>& obj,
+    const base::android::JavaRef<jstring>& jwallpaperId,
+    const base::android::JavaRef<jstring>& jcreativeInstanceId,
+    const base::android::JavaRef<jstring>& jdestinationUrl,
     int metricType) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_) {
@@ -207,7 +205,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
 
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::GetCurrentWallpaper(JNIEnv* env,
-                                               const JavaParamRef<jobject>& obj,
+                                               const JavaRef<jobject>& obj,
                                                jboolean allow_sponsored_image) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!view_counter_service_) {
@@ -243,3 +241,5 @@ void NTPBackgroundImagesBridge::OnSponsoredImagesDataDidUpdate(
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }
+
+DEFINE_JNI(NTPBackgroundImagesBridge)

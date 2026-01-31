@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
 #include <array>
+#include <optional>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -44,6 +45,12 @@ class HDKeySr25519 {
   // https://github.com/paritytech/polkadot-sdk/blob/13bc266c3f3cb337a36998cfdc5940ca559051c9/substrate/utils/substrate-bip39/src/lib.rs#L34-L70
   static HDKeySr25519 GenerateFromSeed(
       base::span<const uint8_t, kSr25519SeedSize> seed);
+
+  // Create a keypair from the provided pkcs8 key.
+  // Returns std::nullopt if the pkcs8 key is invalid (e.g., invalid header or
+  // divider).
+  static std::optional<HDKeySr25519> CreateFromPkcs8(
+      base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key);
 
   // Get the public key portion of the keypair as a simple 32-byte array.
   std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey() const;

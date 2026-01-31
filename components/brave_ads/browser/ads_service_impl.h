@@ -24,12 +24,12 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/core/browser/network/network_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/browser/service/network_client.h"
-#include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
+#include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -64,7 +64,6 @@ class BatAdsServiceFactory;
 class DeviceId;
 class NewTabPageAdPrefetcher;
 class ResourceComponent;
-struct NewTabPageAdInfo;
 
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
@@ -242,7 +241,7 @@ class AdsServiceImpl final : public AdsService,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
+  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
@@ -250,7 +249,8 @@ class AdsServiceImpl final : public AdsService,
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
+  void MaybeServeNewTabPageAd(
+      MaybeServeMojomNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

@@ -9,8 +9,6 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "brave/components/services/bat_rewards/rewards_engine_factory.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -52,11 +50,6 @@ auto RunRewardsEngineFactory(
       std::move(receiver));
 }
 
-auto RunBatAdsService(
-    mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
-  return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
-}
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 auto RunBraveWalletUtilsService(
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletUtilsService>
@@ -82,8 +75,6 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
 #endif
 
   services.Add(RunRewardsEngineFactory);
-
-  services.Add(RunBatAdsService);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   services.Add(RunBraveWalletUtilsService);

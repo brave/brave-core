@@ -4,6 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_ephemeral_storage_sources = [
+  "//brave/browser/ephemeral_storage/application_state_observer.cc",
+  "//brave/browser/ephemeral_storage/application_state_observer.h",
   "//brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.cc",
   "//brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h",
   "//brave/browser/ephemeral_storage/ephemeral_storage_service_factory.cc",

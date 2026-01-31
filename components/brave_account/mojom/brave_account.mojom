@@ -85,6 +85,29 @@ struct LoginError {
   LoginErrorCode? errorCode;
 };
 
+struct ResendConfirmationEmailResult {
+  // Currently empty, serves as a placeholder for success.
+};
+
+enum ResendConfirmationEmailErrorCode {
+  // Client-side errors:
+  kUserNotInTheVerificationState     = -2,
+  kVerificationTokenDecryptionFailed = -1,
+  // Server-side errors (/v2/verify/resend):
+  kMiscServerError                   = 0,
+  kMaximumEmailSendAttemptsExceeded  = 13008,
+  kEmailAlreadyVerified              = 13009,
+};
+
+struct ResendConfirmationEmailError {
+  // null: client-side error
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32? netErrorOrHttpStatus;
+  ResendConfirmationEmailErrorCode? errorCode;
+};
+
 // Services that depend on Brave Account.
 // Note: do not assign explicit values to enumerators,
 // as kMaxValue is used to validate that all services are handled.
@@ -148,7 +171,10 @@ interface Authentication {
     => result<RegisterFinalizeResult, RegisterError>;
 
   // Resends the confirmation email to the user during the registration process.
-  ResendConfirmationEmail();
+  // Returns `ResendConfirmationEmailResult` on success, or
+  //         `ResendConfirmationEmailError` on failure.
+  ResendConfirmationEmail()
+    => result<ResendConfirmationEmailResult, ResendConfirmationEmailError>;
 
   // Cancels the registration process by clearing the verification token.
   CancelRegistration();

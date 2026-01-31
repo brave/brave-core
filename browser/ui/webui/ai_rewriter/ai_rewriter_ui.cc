@@ -118,7 +118,7 @@ void AIRewriterUI::RewriteText(const std::string& text,
   // instructions in the frontend.
   // https://github.com/brave/brave-browser/issues/50385
   ai_engine_->GenerateRewriteSuggestion(
-      text, action, /*selected_language*/ "",
+      text, action,
       ai_chat::BindParseRewriteReceivedData(
           base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
                               weak_ptr_factory_.GetWeakPtr())),

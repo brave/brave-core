@@ -10,6 +10,50 @@
  * #include=cr-toolbar-search-field-chromium
  * #css_wrapper_metadata_end */
 
-:host {
-  outline: 1px solid var(--leo-color-divider-subtle);
+/* Override search field styling to match Brave/Leo design system (Figma) */
+
+:host(:not([narrow])) {
+  /* Match Figma design: 8px border radius, 44px height */
+  border-radius: var(--leo-radius-m);
+  height: 44px;
+}
+
+:host(:not([narrow])) #background {
+  /* Add outlined border to match Figma design */
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
+  /* Use a lighter/transparent background for outlined style */
+  background: var(--leo-color-container-background);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host(:not([narrow])) #background {
+    background: transparent;
+    border-color: var(--leo-color-divider-subtle);
+  }
+}
+
+/* Input text styling to match Figma */
+input {
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+}
+
+#prompt {
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+  color: var(--leo-color-text-tertiary);
+}
+
+/* Icon styling */
+cr-icon-button {
+  --cr-icon-button-fill-color: var(--leo-color-icon-default);
+}
+
+:host(:hover:not([search-focused_], [narrow])) #stateBackground {
+  background: rgba(0, 0, 0, 0.05);
 }

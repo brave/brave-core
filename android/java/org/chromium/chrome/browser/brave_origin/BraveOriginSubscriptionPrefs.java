@@ -37,6 +37,8 @@ import org.chromium.skus.mojom.SkusResultCode;
 import org.chromium.skus.mojom.SkusService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** Utility class for managing Brave Origin subscription preferences. */
 @NullMarked
@@ -432,8 +434,7 @@ public class BraveOriginSubscriptionPrefs {
     }
 
     /**
-     * Generic method to check if a feature is disabled by policy asynchronously. This method checks
-     * subscription status first, then checks the policy value.
+     * Convenience method to check a single policy. Delegates to {@link #checkPoliciesAsync}.
      *
      * @param profile The profile to use for the operation
      * @param policyKey The policy key to check (e.g., BravePolicyConstants.BRAVE_REWARDS_DISABLED)
@@ -444,50 +445,85 @@ public class BraveOriginSubscriptionPrefs {
         if (callback == null) {
             return;
         }
+        checkPoliciesAsync(profile, Map.of(policyKey, callback));
+    }
 
-        // If Brave Origin feature is not enabled, policies are not applicable
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
-            callback.onResult(false);
+    /**
+     * Checks multiple policies asynchronously with a single subscription check. This is more
+     * efficient than calling checkPolicyAsync multiple times, as it only checks subscription status
+     * once.
+     *
+     * @param profile The profile to use for the operation
+     * @param policyCallbacks Map of policy keys to their callbacks. Each callback will be called
+     *     with true if the feature is disabled by policy, false otherwise.
+     */
+    public static void checkPoliciesAsync(
+            @Nullable Profile profile, Map<String, Callback<Boolean>> policyCallbacks) {
+        if (policyCallbacks == null || policyCallbacks.isEmpty()) {
             return;
         }
 
-        if (profile == null) {
-            callback.onResult(false);
+        // If Brave Origin feature is not enabled or profile is null, policies are not applicable
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN) || profile == null) {
+            for (Callback<Boolean> callback : policyCallbacks.values()) {
+                if (callback != null) {
+                    callback.onResult(false);
+                }
+            }
             return;
         }
 
-        // Check subscription status first - if not active, policies don't apply (feature enabled)
+        // Check subscription status once for all policies
         requestCredentialSummary(
                 profile,
                 (isSubscriptionActive) -> {
-                    // If subscription is not active, return false (feature not disabled = enabled)
+                    // If subscription is not active, all features are enabled (not disabled)
                     if (!isSubscriptionActive) {
-                        callback.onResult(false);
+                        for (Callback<Boolean> callback : policyCallbacks.values()) {
+                            if (callback != null) {
+                                callback.onResult(false);
+                            }
+                        }
                         return;
                     }
 
-                    // Subscription is active, proceed with policy check
+                    // Subscription is active, check each policy
                     BraveOriginServiceFactory factory = BraveOriginServiceFactory.getInstance();
                     BraveOriginSettingsHandler handler =
                             factory.getBraveOriginSettingsHandler(profile, null);
                     if (handler == null) {
-                        callback.onResult(false);
+                        for (Callback<Boolean> callback : policyCallbacks.values()) {
+                            if (callback != null) {
+                                callback.onResult(false);
+                            }
+                        }
                         return;
                     }
 
-                    handler.getPolicyValue(
-                            policyKey,
-                            (value) -> {
-                                // For "DISABLED" policies (inverted): true = disabled, null/false =
-                                // enabled
-                                // For "ENABLED" policies: true = enabled, null/false = disabled
-                                boolean isDisabled =
-                                        isPolicyInverted(policyKey)
-                                                ? (value != null && value)
-                                                : (value == null || !value);
-                                callback.onResult(isDisabled);
-                                handler.close();
-                            });
+                    // Track remaining callbacks to know when to close handler
+                    final AtomicInteger remaining = new AtomicInteger(policyCallbacks.size());
+
+                    for (Map.Entry<String, Callback<Boolean>> entry : policyCallbacks.entrySet()) {
+                        String policyKey = entry.getKey();
+                        Callback<Boolean> callback = entry.getValue();
+
+                        handler.getPolicyValue(
+                                policyKey,
+                                (value) -> {
+                                    if (callback != null) {
+                                        boolean isDisabled =
+                                                isPolicyInverted(policyKey)
+                                                        ? (value != null && value)
+                                                        : (value == null || !value);
+                                        callback.onResult(isDisabled);
+                                    }
+
+                                    // Close handler when all callbacks are done
+                                    if (remaining.decrementAndGet() == 0) {
+                                        handler.close();
+                                    }
+                                });
+                    }
                 });
     }
 }

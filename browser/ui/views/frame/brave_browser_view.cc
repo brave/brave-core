@@ -67,12 +67,13 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -126,6 +127,9 @@
 #endif
 
 namespace {
+
+// Exposed for testing.
+constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
 
 std::optional<bool> g_download_confirm_return_allow_for_testing;
 
@@ -312,7 +316,8 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
         std::make_unique<ReaderModeToolbarView>(browser_->profile()));
     contents_container_->SetLayoutManager(
         std::make_unique<BraveContentsLayoutManager>(
-            contents_container_view_, lens_overlay_view_, reader_mode_toolbar_,
+            GetActiveContentsContainerView(), lens_overlay_view_,
+            reader_mode_toolbar_,
             /*scrim_view=*/nullptr));
   }
 #endif
@@ -350,7 +355,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
         RemoveChildViewT(contents_height_side_panel_.get());
     sidebar_container_view_ =
         AddChildView(std::make_unique<SidebarContainerView>(
-            browser_, browser_->GetFeatures().side_panel_coordinator(),
+            browser_, SidePanelCoordinator::From(browser_),
             std::move(original_side_panel)));
     contents_height_side_panel_ = sidebar_container_view_->side_panel();
 
@@ -370,7 +375,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   }
 
   const bool supports_vertical_tabs =
-      tabs::utils::SupportsVerticalTabs(browser_);
+      tabs::utils::SupportsBraveVerticalTabs(browser_);
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());
@@ -427,7 +432,8 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser());
+  const bool is_vertical_tabs =
+      tabs::utils::ShouldShowBraveVerticalTabs(browser());
   const bool use_search_button =
       browser()->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (features::HasTabSearchToolbarButton()) {
@@ -509,7 +515,7 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     return false;
   }
 
@@ -965,11 +971,45 @@ void BraveBrowserView::HideSplitView() {
 }
 
 void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
-  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     return;
   }
 
   BrowserView::ReparentTopContainerForEndOfImmersive();
+}
+
+bool BraveBrowserView::ShouldDrawTabStrokes() const {
+  // TODO(simonhong): We can return false always here as horizontal tab design
+  // doesn't need additional stroke.
+  // Delete all below code when horizontal tab feature flag is removed.
+  if (tabs::HorizontalTabsUpdateEnabled()) {
+    // We never automatically draw strokes around tabs. For pinned tabs, we draw
+    // the stroke when generating the tab drawing path.
+    return false;
+  }
+
+  if (!BrowserView::ShouldDrawTabStrokes()) {
+    return false;
+  }
+
+  // Use a little bit lower minimum contrast ratio as our ratio is 1.08162
+  // between default tab background and frame color of light theme.
+  // With upstream's 1.3f minimum ratio, strokes are drawn and it causes weird
+  // border lines in the tab group.
+  // Set 1.0816f as a minimum ratio to prevent drawing stroke.
+  // We don't need the stroke for our default light theme.
+  // NOTE: We don't need to check features::kTabOutlinesInLowContrastThemes
+  // enabled state. Although TabStrip::ShouldDrawTabStrokes() has related code,
+  // that feature is already expired since cr82. See
+  // chrome/browser/flag-metadata.json.
+  const SkColor background_color = TabStyle::Get()->GetTabBackgroundColor(
+      TabStyle::TabSelectionState::kActive, /*hovered=*/false,
+      /*frame_active*/ true, GetColorProvider());
+  const SkColor frame_color =
+      GetFrameView()->GetFrameColor(BrowserFrameActiveState::kActive);
+  const float contrast_ratio =
+      color_utils::GetContrastRatio(background_color, frame_color);
+  return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
 }
 
 BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {
@@ -1146,7 +1186,7 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
   }
 
   if (vertical_tab_strip_widget_delegate_view_ &&
-      tabs::utils::ShouldShowVerticalTabs(browser())) {
+      tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
         ->ShowVerticalTabStripOnMouseOver(point_in_screen);
   }
@@ -1252,10 +1292,11 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
         }
       };
 
-  if (contents_container_view_) {
-    update_corner_radius(contents_container_view_->contents_view(),
-                         contents_container_view_->devtools_web_view(),
-                         contents_container_view_->devtools_docked_placement(),
+  auto* contents_container_view = GetActiveContentsContainerView();
+  if (contents_container_view) {
+    update_corner_radius(contents_container_view->contents_view(),
+                         contents_container_view->devtools_web_view(),
+                         contents_container_view->devtools_docked_placement(),
                          corners);
   }
 }

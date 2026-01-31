@@ -145,6 +145,27 @@
 /* Title for the Brave Account section in settings */
 "BraveAccount" = "Účet Brave";
 
+/* Title shown when waiting for email verification */
+"BraveAccountAlmostThere" = "Skoro hotovo!";
+
+/* Detail text for the almost there title */
+"BraveAccountAlmostThereDetail" = "Potvrdzovací email je na ceste. Kliknutím na tlačidlo v tomto emaile aktivujete svoj účet.";
+
+/* Button text to cancel Brave Account registration */
+"BraveAccountCancelRegistration" = "Zrušiť registráciu";
+
+/* Button text to get started with Brave Account */
+"BraveAccountGetStarted" = "Začať";
+
+/* Button text to resend confirmation email */
+"BraveAccountResendConfirmationEmail" = "Znova odoslať potvrdzovací email";
+
+/* Detail text for the resend confirmation email button */
+"BraveAccountResendConfirmationEmailDetail" = "Email nevidíte? Skontrolujte si priečinok nevyžiadanej pošty alebo kliknutím na tlačidlo znova odošlite potvrdzovací email.";
+
+/* Button text to sign out of Brave Account */
+"BraveAccountSignOut" = "Odhlásiť sa";
+
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
 
@@ -801,9 +822,6 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Chyba";
-
-/* Button text to get started with Brave Account */
-"GetStarted" = "Začať";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Blokovať nebezpečné webové stránky";
@@ -3077,7 +3095,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Viditeľnosť prehliadania";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "súkromná karta";
+"tabGrid.privateBrowsingInfoTitle" = "Súkromná karta";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Súkromné ​​prehliadanie";
@@ -3123,6 +3141,12 @@
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Zapnuté";
+
+/* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardDescription" = "Automaticky zamerajte adresný riadok pri vytváraní novej karty";
+
+/* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
+"tabs.settings.autoOpenKeyboardTitle" = "Automatické otváranie klávesnice";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Po zatvorení aplikácie nechajte karty súkromného prehliadania otvorené, čím zaistíte bezproblémové pokračovanie súkromných relácií prehliadania.";

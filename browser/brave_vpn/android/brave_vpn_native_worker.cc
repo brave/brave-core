@@ -43,7 +43,7 @@ BraveVpnNativeWorker::~BraveVpnNativeWorker() {}
 
 void BraveVpnNativeWorker::Destroy(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    const base::android::JavaRef<jobject>& jcaller) {
   delete this;
 }
 
@@ -67,8 +67,8 @@ void BraveVpnNativeWorker::OnGetTimezonesForRegions(
 
 void BraveVpnNativeWorker::GetHostnamesForRegion(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& region,
-    const base::android::JavaParamRef<jstring>& region_precision) {
+    const base::android::JavaRef<jstring>& region,
+    const base::android::JavaRef<jstring>& region_precision) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetHostnamesForRegion(
@@ -90,9 +90,9 @@ void BraveVpnNativeWorker::OnGetHostnamesForRegion(
 
 void BraveVpnNativeWorker::GetWireguardProfileCredentials(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& subscriber_credential,
-    const base::android::JavaParamRef<jstring>& public_key,
-    const base::android::JavaParamRef<jstring>& hostname) {
+    const base::android::JavaRef<jstring>& subscriber_credential,
+    const base::android::JavaRef<jstring>& public_key,
+    const base::android::JavaRef<jstring>& hostname) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetWireguardProfileCredentials(
@@ -117,10 +117,10 @@ void BraveVpnNativeWorker::OnGetWireguardProfileCredentials(
 
 void BraveVpnNativeWorker::VerifyCredentials(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& hostname,
-    const base::android::JavaParamRef<jstring>& client_id,
-    const base::android::JavaParamRef<jstring>& subscriber_credential,
-    const base::android::JavaParamRef<jstring>& api_auth_token) {
+    const base::android::JavaRef<jstring>& hostname,
+    const base::android::JavaRef<jstring>& client_id,
+    const base::android::JavaRef<jstring>& subscriber_credential,
+    const base::android::JavaRef<jstring>& api_auth_token) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->VerifyCredentials(
@@ -145,10 +145,10 @@ void BraveVpnNativeWorker::OnVerifyCredentials(
 
 void BraveVpnNativeWorker::InvalidateCredentials(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& hostname,
-    const base::android::JavaParamRef<jstring>& client_id,
-    const base::android::JavaParamRef<jstring>& subscriber_credential,
-    const base::android::JavaParamRef<jstring>& api_auth_token) {
+    const base::android::JavaRef<jstring>& hostname,
+    const base::android::JavaRef<jstring>& client_id,
+    const base::android::JavaRef<jstring>& subscriber_credential,
+    const base::android::JavaRef<jstring>& api_auth_token) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->InvalidateCredentials(
@@ -173,11 +173,11 @@ void BraveVpnNativeWorker::OnInvalidateCredentials(
 
 void BraveVpnNativeWorker::GetSubscriberCredential(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& product_type,
-    const base::android::JavaParamRef<jstring>& product_id,
-    const base::android::JavaParamRef<jstring>& validation_method,
-    const base::android::JavaParamRef<jstring>& purchase_token,
-    const base::android::JavaParamRef<jstring>& bundle_id) {
+    const base::android::JavaRef<jstring>& product_type,
+    const base::android::JavaRef<jstring>& product_id,
+    const base::android::JavaRef<jstring>& validation_method,
+    const base::android::JavaRef<jstring>& purchase_token,
+    const base::android::JavaRef<jstring>& bundle_id) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetSubscriberCredential(
@@ -212,10 +212,10 @@ void BraveVpnNativeWorker::OnGetSubscriberCredential(
 
 void BraveVpnNativeWorker::VerifyPurchaseToken(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& purchase_token,
-    const base::android::JavaParamRef<jstring>& product_id,
-    const base::android::JavaParamRef<jstring>& product_type,
-    const base::android::JavaParamRef<jstring>& bundle_id) {
+    const base::android::JavaRef<jstring>& purchase_token,
+    const base::android::JavaRef<jstring>& product_id,
+    const base::android::JavaRef<jstring>& product_type,
+    const base::android::JavaRef<jstring>& bundle_id) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->VerifyPurchaseToken(
@@ -280,9 +280,11 @@ void BraveVpnNativeWorker::ReportBackgroundP3A(JNIEnv* env,
 
 static void JNI_BraveVpnNativeWorker_Init(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    const base::android::JavaRef<jobject>& jcaller) {
   new BraveVpnNativeWorker(env, jcaller);
 }
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveVpnNativeWorker)

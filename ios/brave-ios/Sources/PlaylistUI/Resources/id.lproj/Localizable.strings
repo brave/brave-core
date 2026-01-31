@@ -17,7 +17,7 @@
 "playlist.accessibilityItemDownloadStatusReady" = "Hal Siap";
 
 /* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
-"playlist.accessibilityMoreMenuButtonTitle" = "Lebih lanjut";
+"playlist.accessibilityMoreMenuButtonTitle" = "Lainnya";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
 "playlist.accessibilityNextItem" = "Hal Berikutnya";

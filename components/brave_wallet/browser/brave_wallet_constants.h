@@ -419,6 +419,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletConfirmSwap", IDS_BRAVE_WALLET_CONFIRM_SWAP},
     {"braveWalletConfirmBridge", IDS_BRAVE_WALLET_CONFIRM_BRIDGE},
     {"braveWalletConfirmSend", IDS_BRAVE_WALLET_CONFIRM_SEND},
+    {"braveWalletSwapProvider", IDS_BRAVE_WALLET_SWAP_PROVIDER},
     {"braveWalletConfirmShield", IDS_BRAVE_WALLET_CONFIRM_SHIELD},
     {"braveWalletConfirmUnshield", IDS_BRAVE_WALLET_CONFIRM_UNSHIELD},
     {"braveWalletSpend", IDS_BRAVE_WALLET_SPEND},
@@ -699,6 +700,16 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY},
     {"braveWalletAccountSettingsDownloadKey",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DOWNLOAD_KEY},
+    {"braveWalletAccountSettingsEnterPasswordToEncrypt",
+     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_ENTER_PASSWORD_TO_ENCRYPT},
+    {"braveWalletAccountSettingsEncryptionPassword",
+     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_ENCRYPTION_PASSWORD},
+    {"braveWalletAccountSettingsConfirmEncryptionPassword",
+     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_CONFIRM_ENCRYPTION_PASSWORD},
+    {"braveWalletAccountSettingsPasswordsDoNotMatch",
+     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_PASSWORDS_DO_NOT_MATCH},
+    {"braveWalletAccountSettingsEncryptionPasswordTooShort",
+     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_ENCRYPTION_PASSWORD_TOO_SHORT},
     {"braveWalletAccountSettingsUpdateError",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_UPDATE_ERROR},
     {"braveWalletPreset25", IDS_BRAVE_WALLET_PRESET25},
@@ -1034,6 +1045,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSwapReviewReceive", IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE},
     {"braveWalletSwapReviewHeader", IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER},
     {"braveWalletSolanaSwap", IDS_BRAVE_WALLET_SOLANA_SWAP},
+    {"braveWalletSwapProgramAddress", IDS_BRAVE_WALLET_SWAP_PROGRAM_ADDRESS},
+    {"braveWalletSwapDepositAddress", IDS_BRAVE_WALLET_SWAP_DEPOSIT_ADDRESS},
     {"braveWalletUnlockError", IDS_BRAVE_WALLET_UNLOCK_ERROR},
     {"braveWalletDeviceUnknownScheme", IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR},
     {"braveWalletApprovalTransactionIntent",
@@ -1222,6 +1235,9 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletBridging", IDS_BRAVE_WALLET_BRIDGING},
     {"braveWalletSwappingOrBridgingOnNetwork",
      IDS_BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK},
+    {"braveWalletSwapProcessing", IDS_BRAVE_WALLET_SWAP_PROCESSING},
+    {"braveWalletSwapPending", IDS_BRAVE_WALLET_SWAP_PENDING},
+    {"braveWalletSwapRefunded", IDS_BRAVE_WALLET_SWAP_REFUNDED},
     {"braveWalletErrorAttemptingToTransactOnNetwork",
      IDS_BRAVE_WALLET_ERROR_ATTEMPTING_TO_TRANSACT_ON_NETWORK},
     {"braveWalletShieldingAmount", IDS_BRAVE_WALLET_SHIELDING_AMOUNT},
@@ -1272,6 +1288,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND},
     {"braveWalletTransactionIntentSwap",
      IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP},
+    {"braveWalletTransactionIntentBridge",
+     IDS_BRAVE_WALLET_TRANSACTION_INTENT_BRIDGE},
     {"braveWalletCreatingAssociatedTokenAccount",
      IDS_BRAVE_WALLET_CREATING_ASSOCIATED_TOKEN_ACCOUNT},
     {"braveWalletFailedToCreateAssociatedTokenAccount",
@@ -1535,6 +1553,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveSwapEnterAnAmount", IDS_BRAVE_SWAP_ENTER_AN_AMOUNT},
     {"braveWalletFetchingQuote", IDS_BRAVE_WALLET_FETCHING_QUOTE},
     {"braveWalletReceiveEstimate", IDS_BRAVE_WALLET_RECEIVE_ESTIMATE},
+    {"braveWalletReceiveMinimum", IDS_BRAVE_WALLET_RECEIVE_MINIMUM},
     {"braveWalletFromToken", IDS_BRAVE_WALLET_FROM_TOKEN},
     {"braveWalletToToken", IDS_BRAVE_WALLET_TO_TOKEN},
     {"braveWalletNewQuoteIn", IDS_BRAVE_WALLET_NEW_QUOTE_IN},
@@ -1755,9 +1774,6 @@ inline constexpr char kLiFiSolanaMainnetChainID[] = "1151111081099710";
 // LiFi // 0x // Squid common constants
 inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-
-// Squid constants
-inline constexpr char kSquidBaseAPIURL[] = "https://squid.wallet.brave.com";
 
 inline constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 inline constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;

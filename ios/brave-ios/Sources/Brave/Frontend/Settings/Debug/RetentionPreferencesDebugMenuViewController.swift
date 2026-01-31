@@ -9,20 +9,126 @@ import Foundation
 import Growth
 import Onboarding
 import Preferences
-import Shared
-import Static
-import UIKit
-import Web
+import SwiftUI
 
-class RetentionPreferencesDebugMenuViewController: TableViewController {
+struct RetentionPreferencesDebugMenuView: View {
   private let p3aUtilities: BraveP3AUtils
   private let attributionManager: AttributionManager
 
-  init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
+  @State private var isOnboardingPresented: Bool = false
+
+  @ObservedObject private var isNewRetentionUser = Preferences.Onboarding.isNewRetentionUser
+  @ObservedObject private var ntpCalloutCompleted = Preferences.FullScreenCallout
+    .ntpCalloutCompleted
+  @ObservedObject private var rewardsCalloutCompleted = Preferences.FullScreenCallout
+    .rewardsCalloutCompleted
+  @ObservedObject private var defaultBrowserIntroCompleted = Preferences.DefaultBrowserIntro
+    .completed
+
+  init(
+    p3aUtilities: BraveP3AUtils,
+    attributionManager: AttributionManager
+  ) {
     self.p3aUtilities = p3aUtilities
     self.attributionManager = attributionManager
+  }
 
-    super.init(style: .insetGrouped)
+  var body: some View {
+    Form {
+      Section {
+        Button("Start Onboarding") {
+          isOnboardingPresented = true
+        }
+        .fullScreenCover(isPresented: $isOnboardingPresented) {
+          OnboardingRepresentable(
+            p3aUtilities: p3aUtilities,
+            attributionManager: attributionManager
+          )
+        }
+      }
+      Section {
+        Toggle(isOn: $isNewRetentionUser.value.coalesced) {
+          VStack(alignment: .leading) {
+            Text("Retention User")
+            Text(
+              "Flag showing if the user installed the application after new onboarding is added."
+            )
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .font(.footnote)
+          }
+        }
+        Toggle(isOn: $ntpCalloutCompleted.value) {
+          VStack(alignment: .leading) {
+            Text("NTP Education Shown")
+            Text("Flag tracking NTP Education should be loaded after onboarding of user.")
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .font(.footnote)
+          }
+        }
+        Toggle(isOn: $rewardsCalloutCompleted.value) {
+          VStack(alignment: .leading) {
+            Text("Rewards Callout Shown")
+            Text("Flag determining if Rewards callout is shown to user.")
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .font(.footnote)
+          }
+        }
+        Toggle(isOn: $defaultBrowserIntroCompleted.value) {
+          VStack(alignment: .leading) {
+            Text("Default Browser Callout Shown")
+            Text("Flag determining if DefaultBrowser callout is shown to user.")
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .font(.footnote)
+          }
+        }
+      } header: {
+        Text("Onboarding Debug Menu")
+      } footer: {
+        Text(
+          "These are the preferences that stored in preferences for determining the If certain elements are shown to user."
+        )
+      }
+    }
+  }
+}
+
+extension Bool? {
+  fileprivate var coalesced: Bool {
+    get { self ?? false }
+    set { self = newValue }
+  }
+}
+
+private struct OnboardingRepresentable: UIViewControllerRepresentable {
+  var p3aUtilities: BraveP3AUtils
+  var attributionManager: AttributionManager
+
+  func makeUIViewController(context: Context) -> OnboardingController {
+    let env = OnboardingEnvironment(
+      p3aUtils: p3aUtilities,
+      attributionManager: attributionManager
+    )
+    var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
+    if !p3aUtilities.isP3APreferenceManaged {
+      steps.append(.p3aOptIn)
+    }
+    return OnboardingController(environment: env, steps: steps)
+  }
+  func updateUIViewController(_ uiViewController: OnboardingController, context: Context) {
+  }
+}
+
+class RetentionPreferencesDebugMenuViewController: UIHostingController<
+  RetentionPreferencesDebugMenuView
+>
+{
+  init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
+    super.init(
+      rootView: RetentionPreferencesDebugMenuView(
+        p3aUtilities: p3aUtilities,
+        attributionManager: attributionManager
+      )
+    )
   }
 
   @available(*, unavailable)
@@ -34,144 +140,5 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
     super.viewDidLoad()
 
     title = "Onboarding Debug Menu"
-
-    dataSource.sections = [
-      startOnboardingSection,
-      debugFlags,
-      retentionPreferenceFlags,
-    ]
   }
-
-  private func presentDebugFlagAlert() {
-    let alert = UIAlertController(
-      title: "Value can't be changed!",
-      message: "This is debug flag value cant be changed.",
-      preferredStyle: .alert
-    )
-    alert.addAction(.init(title: "OK", style: .default, handler: nil))
-
-    present(alert, animated: true, completion: nil)
-  }
-
-  // MARK: - Sections
-
-  private lazy var startOnboardingSection: Static.Section = {
-    var section = Static.Section(
-      rows: [
-        Row(
-          text: "Start Onboarding",
-          selection: { [unowned self] in
-            let env = OnboardingEnvironment(
-              p3aUtils: p3aUtilities,
-              attributionManager: attributionManager
-            )
-            var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
-            if !p3aUtilities.isP3APreferenceManaged {
-              steps.append(.p3aOptIn)
-            }
-            let controller = OnboardingController(environment: env, steps: steps)
-            present(controller, animated: false)
-          },
-          cellClass: MultilineButtonCell.self
-        )
-      ]
-    )
-
-    return section
-  }()
-
-  private lazy var debugFlags: Section = {
-    var shields = Section(
-      header: .title("Debug Flags"),
-      rows: [
-        .boolRow(
-          title: "Skip Onboarding Intro",
-          detailText: "Flag for hide/show entire onboarding sequence.",
-          toggleValue: Preferences.DebugFlag.skipOnboardingIntro ?? false,
-          valueChange: { [unowned self] _ in
-            self.presentDebugFlagAlert()
-          }
-        ),
-        .boolRow(
-          title: "Skip Education Pop-ups",
-          detailText:
-            "Flag for hide/show education pop-ups. Includes onboarding ad block notifications and cookie consent notice blocking callout",
-          toggleValue: Preferences.DebugFlag.skipEduPopups ?? false,
-          valueChange: { [unowned self] _ in
-            self.presentDebugFlagAlert()
-          }
-        ),
-        .boolRow(
-          title: "Skip NTP Callouts",
-          detailText:
-            "Flag for hide/show full screen callouts. Includes Default Browser, Rewards, Sync",
-          toggleValue: Preferences.DebugFlag.skipNTPCallouts ?? false,
-          valueChange: { [unowned self] _ in
-            self.presentDebugFlagAlert()
-          }
-        ),
-      ],
-      footer: .title(
-        "These are the debug flags that enables entire features and set to false for Debug scheme in order to provide faster development."
-      )
-    )
-    return shields
-  }()
-
-  private lazy var retentionPreferenceFlags: Section = {
-    var shields = Section(
-      header: .title("Onboarding Debug Menu"),
-      rows: [
-        .boolRow(
-          title: "Retention User",
-          detailText:
-            "Flag showing if the user installed the application after new onboarding is added.",
-          toggleValue: Preferences.Onboarding.isNewRetentionUser.value ?? false,
-          valueChange: {
-            if $0 {
-              let status = $0
-              Preferences.Onboarding.isNewRetentionUser.value = status
-            }
-          }
-        ),
-        .boolRow(
-          title: "NTP Education Shown",
-          detailText: "Flag tracking NTP Education should be loaded after onboarding of user.",
-          toggleValue: Preferences.FullScreenCallout.ntpCalloutCompleted.value,
-          valueChange: {
-            if $0 {
-              let status = $0
-              Preferences.FullScreenCallout.ntpCalloutCompleted.value = status
-            }
-          }
-        ),
-        .boolRow(
-          title: "Rewards Callout Shown",
-          detailText: "Flag determining if Rewards callout is shown to user.",
-          toggleValue: Preferences.FullScreenCallout.rewardsCalloutCompleted.value,
-          valueChange: {
-            if $0 {
-              let status = $0
-              Preferences.FullScreenCallout.rewardsCalloutCompleted.value = status
-            }
-          }
-        ),
-        .boolRow(
-          title: "Default Browser Callout Shown",
-          detailText: "Flag determining if DefaultBrowser callout is shown to user.",
-          toggleValue: Preferences.DefaultBrowserIntro.completed.value,
-          valueChange: {
-            if $0 {
-              let status = $0
-              Preferences.DefaultBrowserIntro.completed.value = status
-            }
-          }
-        ),
-      ],
-      footer: .title(
-        "These are the preferences that stored in preferences for determining the If certain elements are shown to user."
-      )
-    )
-    return shields
-  }()
 }

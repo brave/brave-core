@@ -18,6 +18,7 @@ import {
   SendSolTransactionParams,
   SendZecTransactionParams,
   SendCardanoTransactionParams,
+  SendPolkadotTransactionParams,
   SerializableTransactionInfo,
   SPLTransferFromParams,
   TransactionInfoLookup,
@@ -59,6 +60,7 @@ import {
   signLedgerBitcoinTransaction,
 } from '../../async/hardware'
 import { getLocale } from '../../../../common/locale'
+import { bigIntToUint128 } from '../../../utils/polkadot-utils'
 
 interface ProcessSignSolTransactionsRequestPayload {
   approved: boolean
@@ -236,6 +238,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ solanaTxData: txData ?? undefined }),
               payload.network.chainId,
               payload.fromAccount.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success && errorMessage) {
@@ -299,6 +302,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ solanaTxData: txData }),
               payload.network.chainId,
               payload.fromAccount.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success) {
@@ -342,6 +346,7 @@ export const transactionEndpoints = ({
         accountId: BraveWallet.AccountId
         txType: BraveWallet.TransactionType
         sendOptions?: BraveWallet.SolanaSendTransactionOptions
+        swapInfo?: BraveWallet.SwapInfo
       }
     >({
       queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
@@ -366,6 +371,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
               payload.chainId,
               payload.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success) {
@@ -621,6 +627,7 @@ export const transactionEndpoints = ({
             to: payload.to,
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
+            swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
@@ -664,6 +671,7 @@ export const transactionEndpoints = ({
             sendingMaxAmount: payload.sendingMaxAmount,
             memo: payload.memo,
             useShieldedPool: payload.useShieldedPool,
+            swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
@@ -705,6 +713,7 @@ export const transactionEndpoints = ({
             to: payload.to,
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
+            swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
@@ -719,6 +728,48 @@ export const transactionEndpoints = ({
           }
         } catch (error) {
           return { error: 'Failed to send ADA transaction' }
+        }
+      },
+      invalidatesTags: (res, err, arg) =>
+        err
+          ? []
+          : TX_CACHE_TAGS.LISTS({
+              coin: arg.fromAccount.accountId.coin,
+              fromAccountId: arg.fromAccount.accountId,
+              chainId: null,
+            }),
+    }),
+
+    // Polkadot
+    sendPolkadotTransaction: mutation<
+      { success: boolean },
+      SendPolkadotTransactionParams
+    >({
+      queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        try {
+          const { txService } = baseQuery(undefined).data
+
+          const params: BraveWallet.NewPolkadotTransactionParams = {
+            chainId: payload.network.chainId,
+            from: payload.fromAccount.accountId,
+            to: payload.to,
+            amount: bigIntToUint128(BigInt(payload.value)),
+            sendingMaxAmount: payload.sendingMaxAmount,
+            swapInfo: payload.swapInfo,
+          }
+
+          const { errorMessage, success } =
+            await txService.addUnapprovedPolkadotTransaction(params)
+
+          if (!success && errorMessage) {
+            throw new Error(errorMessage || 'unknown error')
+          }
+
+          return {
+            data: { success },
+          }
+        } catch (error) {
+          return { error: 'Failed to send DOT transaction' }
         }
       },
       invalidatesTags: (res, err, arg) =>
@@ -755,6 +806,7 @@ export const transactionEndpoints = ({
               toTxDataUnion({ filTxData: filTxData }),
               payload.network.chainId,
               payload.fromAccount.accountId,
+              payload.swapInfo ?? null,
             )
 
           if (!success) {
@@ -1738,6 +1790,7 @@ async function sendEvmTransaction({
     to: payload.to,
     value: payload.value,
     data: payload.data,
+    swapInfo: payload.swapInfo,
   }
 
   const { errorMessage, success } =

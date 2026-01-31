@@ -168,6 +168,88 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/synced_device_manager.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/history/synced_device_manager.html.ts
++++ gen/chrome/browser/resources/history/preprocessed/synced_device_manager.html.ts
+@@ -1,16 +1,15 @@
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+-// <if expr=\\"not is_chromeos\\">
++// 
+ import {HistorySignInState} from './constants.js';
+-// </if>
++// 
+ 
+ import type {HistorySyncedDeviceManagerElement} from './synced_device_manager.js';
+ 
+ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<div id=\\"synced-device-list\\" class=\\"history-cards\\"
+-    ?hidden=\\"\${!this.syncedDevices_.length}\\">
++<div id=\\"synced-device-list\\" class=\\"history-cards\\" ?hidden=\\"\${!this.syncedDevices_.length}\\">
+   \${this.syncedDevices_.map((syncedDevice, index) => html\`
+     <history-synced-device-card
+         .device=\\"\${syncedDevice.device}\\"
+         .lastUpdateTime=\\"\${syncedDevice.lastUpdateTime}\\"
+@@ -23,26 +22,15 @@
+         data-index=\\"\${index}\\">
+     </history-synced-device-card>
+   \`)}
+ </div>
+-<div id=\\"no-synced-tabs\\" class=\\"centered-message\\"
+-    ?hidden=\\"\${!this.showNoSyncedMessage_()}\\">
++<div id=\\"no-synced-tabs\\" class=\\"centered-message\\" ?hidden=\\"\${!this.showNoSyncedMessage_()}\\">
+   \${this.noSyncedTabsMessage_()}
+ </div>
+ 
+-<div id=\\"sign-in-guide\\"
+-    ?hidden=\\"\${!this.showSignInGuide_()
+-      || this.replaceSyncPromosWithSignInPromos_}\\">
+-  <div id=\\"sync-promo-illustration\\"></div>
+-  <div id=\\"turn-on-sync-promo\\">$i18n{turnOnSyncPromo}</div>
+-  <div id=\\"turn-on-sync-promo-desc\\">$i18n{turnOnSyncPromoDesc}</div>
+-  <cr-button id=\\"turn-on-sync-button\\" class=\\"action-button\\"
+-      @click=\\"\${this.onTurnOnSyncClick_}\\">
+-    $i18n{turnOnSyncButton}
+-  </cr-button>
+-</div>
+ 
+-<if expr=\\"not is_chromeos\\">
++
++
+   \${this.shouldShowHistorySyncOptIn_() ? html\`
+     <div id=\\"history-sync-optin\\" class=\\"history-sync-optin\\">
+       \${this.isSignInState_(HistorySignInState.SIGNED_OUT)
+         || this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ? html\`
+@@ -120,11 +108,11 @@
+             $i18n{turnOnSyncHistoryButton}
+           </cr-button>\`}
+     </div>
+   \` : ''}
+-</if>
+ 
+-<cr-lazy-render-lit id=\\"menu\\" .template='\${() => html\`
++
++<cr-lazy-render-lit id=\\"menu\\" .template=\\"\${() => html\`
+   <cr-action-menu role-description=\\"$i18n{menu}\\">
+     <button id=\\"menuOpenButton\\" class=\\"dropdown-item\\"
+         @click=\\"\${this.onOpenAllClick_}\\">
+       $i18n{openAll}
+@@ -133,9 +121,9 @@
+         @click=\\"\${this.onDeleteSessionClick_}\\">
+       $i18n{deleteSession}
+     </button>
+   </cr-action-menu>
+-\`}'>
++\`}\\">
+ </cr-lazy-render-lit>
+ <!--_html_template_end_-->\`;
+   // clang-format on
+ }
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/side_panel/customize_chrome/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
@@ -549,24 +631,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    </cr-checkbox>
  </div>
  
-@@ -79,15 +59,12 @@
-   <div slot=\\"body\\" id=\\"dialog-body\\" class=\\"warning-message\\">
-     \${this.forceSigninErrorDialogBody_}
-   </div>
-   <div slot=\\"button-container\\" class=\\"button-container\\">
--    <cr-button id=\\"cancel-button\\"
--        @click=\\"\${this.onForceSigninErrorDialogOkButtonClicked_}\\">
-+    <cr-button id=\\"cancel-button\\" @click=\\"\${this.onForceSigninErrorDialogOkButtonClicked_}\\">
-       $i18n{ok}
-     </cr-button>
--    <cr-button id=\\"button-sign-in\\" class=\\"action-button\\"
--        @click=\\"\${this.onReauthClicked_}\\"
--        ?hidden=\\"\${!this.shouldShownSigninButton_}\\">
-+    <cr-button id=\\"button-sign-in\\" class=\\"action-button\\" @click=\\"\${this.onReauthClicked_}\\" ?hidden=\\"\${!this.shouldShownSigninButton_}\\">
-       $i18n{needsSigninPrompt}
-     </cr-button>
-   </div>
- </cr-dialog>
 "
 `;
 

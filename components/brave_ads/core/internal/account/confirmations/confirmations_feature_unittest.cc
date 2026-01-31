@@ -16,9 +16,14 @@ TEST(BraveAdsConfirmationsFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kConfirmationsFeature));
 }
 
-TEST(BraveAdsConfirmationsFeatureTest, RetryProcessingConfirmationAfter) {
+TEST(BraveAdsConfirmationsFeatureTest, ProcessConfirmationInitialBackoffDelay) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(15), kRetryProcessingConfirmationAfter.Get());
+  EXPECT_EQ(base::Seconds(15), kProcessConfirmationInitialBackoffDelay.Get());
+}
+
+TEST(BraveAdsConfirmationsFeatureTest, ProcessConfirmationMaxBackoffDelay) {
+  // Act & Assert
+  EXPECT_EQ(base::Hours(6), kProcessConfirmationMaxBackoffDelay.Get());
 }
 
 }  // namespace brave_ads
