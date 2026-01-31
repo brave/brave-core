@@ -16,7 +16,7 @@ const gfx::VectorIcon& GetAskBraveSearchStarterPackIcon();
     vector_icon = &GetAskBraveSearchStarterPackIcon();          \
     /* NOLINTNEXTLINE */                                        \
   } else if (template_url && template_url->starter_pack_id() == \
-                                 template_url_starter_pack_data::kAiMode
+                                 template_url_starter_pack_data::StarterPackId::kAiMode
 
 #include <chrome/browser/ui/views/location_bar/selected_keyword_view.cc>
 

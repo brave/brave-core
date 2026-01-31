@@ -7,9 +7,9 @@
 
 // Add case statements to return the engine type for any Brave-defined starter
 // packs.
-#define KEYWORD_MODE_STARTER_PACK_AI_MODE               \
-  KEYWORD_MODE_STARTER_PACK_AI_MODE;                    \
-  case template_url_starter_pack_data::kAskBraveSearch: \
+#define KEYWORD_MODE_STARTER_PACK_AI_MODE                              \
+  KEYWORD_MODE_STARTER_PACK_AI_MODE;                                   \
+  case template_url_starter_pack_data::StarterPackId::kAskBraveSearch: \
     return KEYWORD_MODE_STARTER_PACK_ASK_BRAVE_SEARCH
 
 #include <components/search_engines/template_url.cc>
