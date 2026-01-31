@@ -11,5 +11,6 @@
 
 proprietary_codecs = true
 ffmpeg_branding = "Chrome"
-enable_glic = false
+
+# enable_glic = false
 enable_widevine = true
