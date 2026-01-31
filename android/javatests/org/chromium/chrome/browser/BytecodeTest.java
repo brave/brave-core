@@ -222,6 +222,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.modelutil.PropertyModel;
+import org.chromium.ui.util.TokenHolder;
 import org.chromium.url.GURL;
 
 import java.lang.reflect.Constructor;
@@ -1472,6 +1473,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         MonotonicObservableSupplier.class,
                         DesktopWindowStateManager.class,
+                        TokenHolder.class,
                         MultiInstanceManager.class,
                         MonotonicObservableSupplier.class,
                         MenuButtonCoordinator.VisibilityDelegate.class,
