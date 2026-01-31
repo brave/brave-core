@@ -63,7 +63,7 @@ std::string_view TabManagementTool::Description() const {
          "the plan parameter when using the list operation.";
 }
 
-std::optional<base::Value::Dict> TabManagementTool::InputProperties() const {
+std::optional<base::DictValue> TabManagementTool::InputProperties() const {
   return CreateInputProperties(
       {{"action", StringProperty("The action to perform",
                                  std::vector<std::string>{
