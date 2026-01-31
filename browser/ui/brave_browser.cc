@@ -225,7 +225,7 @@ void BraveBrowser::OnTabStripModelChanged(
       // If there is no tab after this change for inserting them to
       // another window, this browser should be closed.
       if (contents.remove_reason ==
-              TabStripModelChange::RemoveReason::kInsertedIntoOtherTabStrip &&
+              TabRemovedReason::kInsertedIntoOtherTabStrip &&
           tab_strip_model->empty()) {
         // Each removed can only have same reason. so safe to early return here.
         ignore_enable_closing_last_tab_pref_ = true;
