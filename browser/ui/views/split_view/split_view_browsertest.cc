@@ -48,6 +48,7 @@
 #include "components/tabs/public/split_tab_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -148,6 +149,39 @@ constexpr char kTestPageWithLink[] = R"(
 </body>
 </html>
 )";
+
+// Helper for waiting until next same-document navigation commits in
+// |web_contents|. Unlike base::test::RunUntil() polling, this observer
+// properly waits for the DidFinishNavigation callback which is more reliable
+// for hash/fragment navigations.
+class SameDocumentCommitObserver : public content::WebContentsObserver {
+ public:
+  explicit SameDocumentCommitObserver(content::WebContents* web_contents)
+      : content::WebContentsObserver(web_contents) {
+    EXPECT_TRUE(web_contents);
+  }
+
+  SameDocumentCommitObserver(const SameDocumentCommitObserver&) = delete;
+  SameDocumentCommitObserver& operator=(const SameDocumentCommitObserver&) =
+      delete;
+
+  void Wait() { run_loop_.Run(); }
+
+  const GURL& last_committed_url() { return last_committed_url_; }
+
+ private:
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    if (navigation_handle->IsSameDocument() &&
+        navigation_handle->HasCommitted()) {
+      last_committed_url_ = navigation_handle->GetURL();
+      run_loop_.Quit();
+    }
+  }
+
+  GURL last_committed_url_;
+  base::RunLoop run_loop_;
+};
 
 }  // namespace
 
@@ -1325,19 +1359,21 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
   content::WaitForLoadStop(left_pane);
 
-  GURL initial_url = left_pane->GetLastCommittedURL();
+  // Set up observer for same-document navigation BEFORE triggering the click.
+  // Using SameDocumentCommitObserver is more reliable than base::test::RunUntil
+  // polling, as it properly waits for the DidFinishNavigation callback.
+  SameDocumentCommitObserver same_doc_observer(left_pane);
 
   // Click the hash link (same-document navigation)
   ASSERT_TRUE(content::ExecJs(left_pane, "clickHashLink();"));
 
-  // Wait a bit and verify URL changed but it's still same document
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return left_pane->GetLastCommittedURL() != initial_url; }));
+  // Wait for the same-document navigation to complete
+  same_doc_observer.Wait();
 
   // Same-document navigation should not redirect to right pane
-  EXPECT_TRUE(left_pane->GetLastCommittedURL().has_ref());
+  EXPECT_TRUE(same_doc_observer.last_committed_url().has_ref());
   EXPECT_EQ(GetLinkTestPageURL().spec() + "#section",
-            left_pane->GetLastCommittedURL().spec());
+            same_doc_observer.last_committed_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, RightPaneNavigationDoesNotRedirect) {
