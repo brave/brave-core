@@ -70,7 +70,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetStarterPackEngines() {
   return t_urls;
 }
 
-std::u16string GetDestinationUrlForStarterPackId(int id) {
+std::u16string GetDestinationUrlForStarterPackId(StarterPackId id) {
   if (id == StarterPackId::kAskBraveSearch) {
     return base::UTF8ToUTF16(ask_brave_search.destination_url);
   }
