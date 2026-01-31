@@ -647,6 +647,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
+  // Wait for distillation to complete before interacting with distilled content
+  WaitDistilled();
   auto* web_contents = ActiveWebContents();
 
   static constexpr char kCheckNoApiInMainWorld[] =
@@ -657,10 +659,30 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS)
                   .ExtractBool());
 
+  // Wait for the "View original" link to be present in the DOM.
+  // The element ID is hardcoded in extractor.rs.
+  // Use polling loop similar to WaitElement in the Toolbar test.
+  static constexpr char kCheckLinkExists[] =
+      R"js(
+        !!document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e')
+      )js";
+  const base::TimeTicks deadline = base::TimeTicks::Now() + base::Seconds(10);
+  for (;;) {
+    NonBlockingDelay(base::Milliseconds(10));
+    if (content::EvalJs(web_contents, kCheckLinkExists,
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractBool()) {
+      break;
+    }
+    if (base::TimeTicks::Now() >= deadline) {
+      FAIL() << "Timeout waiting for 'View original' link to appear";
+    }
+  }
+
   static constexpr char kClickLinkAndGetTitle[] =
       R"js(
     (function() {
-      // element id is hardcoded in extractor.rs
       const link =
         document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       link.click();
