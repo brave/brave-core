@@ -49,26 +49,6 @@ void BraveSidePanelCoordinator::Show(
   SidePanelCoordinator::Show(entry, open_trigger, suppress_animations);
 }
 
-void BraveSidePanelCoordinator::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
-  const bool active_tab_changed = selection.active_tab_changed();
-  if (active_tab_changed) {
-    brave_browser_view->SetSidePanelOperationByActiveTabChange(true);
-  }
-
-  SidePanelCoordinator::OnTabStripModelChanged(tab_strip_model, change,
-                                               selection);
-
-  // Clear as this flag is only used for show/hide operation triggered by above
-  // SidePanelCoordinator::OnTabStripModelChanged().
-  if (active_tab_changed) {
-    brave_browser_view->SetSidePanelOperationByActiveTabChange(false);
-  }
-}
-
 void BraveSidePanelCoordinator::Toggle() {
   if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
       !browser_view_->contents_height_side_panel()->IsClosing()) {
