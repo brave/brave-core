@@ -7,9 +7,9 @@
 
 #include "base/check.h"
 
-#define FromTabInModel FromTabInModel_ChromiumImpl
+#define FromTabInterface FromTabInterface_ChromiumImpl
 #include <chrome/browser/ui/tabs/tab_renderer_data.cc>
-#undef FromTabInModel
+#undef FromTabInterface
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
@@ -40,28 +40,32 @@ ui::ImageModel GetThemedNTPFavicon(content::WebContents* contents) {
 
 }  // namespace
 
-TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
-                                                int index) {
+TabRendererData TabRendererData::FromTabInterface(tabs::TabInterface* tab) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
-    if (index < model->IndexOfFirstNonPinnedTab()) {
-      auto* shared_pinned_tab_service =
-          SharedPinnedTabServiceFactory::GetForProfile(model->profile());
-      DCHECK(shared_pinned_tab_service);
+    // Note that in unit tests, this may be null.
+    if (auto* const bwi = tab->GetBrowserWindowInterface()) {
+      TabStripModel* model = bwi->GetTabStripModel();
+      const int index = model->GetIndexOfTab(tab);
+      if (index < model->IndexOfFirstNonPinnedTab()) {
+        auto* shared_pinned_tab_service =
+            SharedPinnedTabServiceFactory::GetForProfile(model->profile());
+        DCHECK(shared_pinned_tab_service);
 
-      auto* contents = model->GetWebContentsAt(index);
-      if (shared_pinned_tab_service->IsDummyContents(contents)) {
-        if (const auto* data =
-                shared_pinned_tab_service->GetTabRendererDataForDummyContents(
-                    index, contents)) {
-          return *data;
+        auto* contents = model->GetWebContentsAt(index);
+        if (shared_pinned_tab_service->IsDummyContents(contents)) {
+          if (const auto* data =
+                  shared_pinned_tab_service->GetTabRendererDataForDummyContents(
+                      index, contents)) {
+            return *data;
+          }
         }
       }
     }
   }
 
-  auto data = FromTabInModel_ChromiumImpl(model, index);
+  auto data = FromTabInterface_ChromiumImpl(tab);
 
-  content::WebContents* const contents = model->GetWebContentsAt(index);
+  content::WebContents* const contents = tab->GetContents();
   const GURL& url = contents->GetVisibleURL();
 
   // Override favicon theming for some WebUIs.
@@ -76,9 +80,10 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
 
   // Show which tabs are unloaded.
   if (!data.should_show_discard_status) {
-    using resource_coordinator::TabLoadTracker;
-    const auto loading_state = TabLoadTracker::Get()->GetLoadingState(contents);
-    if (loading_state == TabLoadTracker::LoadingState::UNLOADED) {
+    const auto loading_state =
+        resource_coordinator::TabLoadTracker::Get()->GetLoadingState(contents);
+    if (loading_state ==
+        resource_coordinator::TabLoadTracker::LoadingState::UNLOADED) {
       data.should_show_discard_status = true;
     }
   }
