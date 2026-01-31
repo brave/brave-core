@@ -2593,12 +2593,12 @@ extension Strings {
     value: "Privacy",
     comment: "Settings privacy section title"
   )
-  public static let security = NSLocalizedString(
-    "Security",
+  public static let autofill = NSLocalizedString(
+    "Autofill",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Security",
-    comment: "Settings security section title"
+    value: "Autofill",
+    comment: "Settings autofill section title"
   )
   public static let saveLogins = NSLocalizedString(
     "SaveLogins",

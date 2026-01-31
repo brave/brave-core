@@ -256,7 +256,7 @@ class SettingsViewController: TableViewController {
       generalSection,
       displaySection,
       tabsSection,
-      securitySection,
+      autofillSection,
       supportSection,
       aboutSection,
     ]
@@ -790,6 +790,31 @@ class SettingsViewController: TableViewController {
       )
     }
 
+    let browserLockRow = Row(
+      text: Strings.Privacy.browserLock,
+      detailText: Strings.Privacy.browserLockDescription,
+      image: UIImage(braveSystemNamed: "leo.biometric.login"),
+      accessory: .view(
+        SwitchAccessoryView(
+          initialValue: Preferences.Privacy.lockWithPasscode.value,
+          valueChange: { [unowned self] isOn in
+            if isOn {
+              Preferences.Privacy.lockWithPasscode.value = isOn
+            } else {
+              self.askForLocalAuthentication { [weak self] success, error in
+                if success {
+                  Preferences.Privacy.lockWithPasscode.value = isOn
+                }
+              }
+            }
+          }
+        )
+      ),
+      cellClass: MultilineSubtitleCell.self,
+      uuid: Preferences.Privacy.lockWithPasscode.key
+    )
+    general.rows.append(browserLockRow)
+
     return general
   }()
 
@@ -1182,33 +1207,10 @@ class SettingsViewController: TableViewController {
     )
   }
 
-  private lazy var securitySection: Static.Section = {
+  private lazy var autofillSection: Static.Section = {
     return Section(
-      header: .title(Strings.security),
+      header: .title(Strings.autofill),
       rows: [
-        Row(
-          text: Strings.Privacy.browserLock,
-          detailText: Strings.Privacy.browserLockDescription,
-          image: UIImage(braveSystemNamed: "leo.biometric.login"),
-          accessory: .view(
-            SwitchAccessoryView(
-              initialValue: Preferences.Privacy.lockWithPasscode.value,
-              valueChange: { [unowned self] isOn in
-                if isOn {
-                  Preferences.Privacy.lockWithPasscode.value = isOn
-                } else {
-                  self.askForLocalAuthentication { [weak self] success, error in
-                    if success {
-                      Preferences.Privacy.lockWithPasscode.value = isOn
-                    }
-                  }
-                }
-              }
-            )
-          ),
-          cellClass: MultilineSubtitleCell.self,
-          uuid: Preferences.Privacy.lockWithPasscode.key
-        ),
         Row(
           text: Strings.Login.loginListNavigationTitle,
           selection: { [unowned self] in
@@ -1224,7 +1226,7 @@ class SettingsViewController: TableViewController {
           },
           image: UIImage(braveSystemNamed: "leo.outside"),
           accessory: .disclosureIndicator
-        ),
+        )
       ]
     )
   }()
