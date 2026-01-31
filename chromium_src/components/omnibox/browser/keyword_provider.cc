@@ -11,9 +11,10 @@
 // use, we want the empty query placeholder text to be "question oriented"
 // rather than "search oriented". Use the same logic for kAskBraveSearch as
 // upstream uses for kAiMode.
-#define kAiMode                         \
-  kAiMode || turl->starter_pack_id() == \
-                 template_url_starter_pack_data::kAskBraveSearch
+#define kAiMode                  \
+  kAiMode ||                     \
+      turl->starter_pack_id() == \
+          template_url_starter_pack_data::StarterPackId::kAskBraveSearch
 
 #include <components/omnibox/browser/keyword_provider.cc>
 
