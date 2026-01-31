@@ -102,6 +102,7 @@ import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.util.TokenHolder;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -209,6 +210,7 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable BackPressManager backPressManager,
             MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
+            @Nullable TokenHolder lockTopControlsTokenJar,
             @Nullable MultiInstanceManager multiInstanceManager,
             MonotonicObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @Nullable VisibilityDelegate menuButtonVisibilityDelegate,
@@ -261,6 +263,7 @@ public class BraveToolbarManager extends ToolbarManager
                 backPressManager,
                 readAloudControllerSupplier,
                 desktopWindowStateManager,
+                lockTopControlsTokenJar,
                 multiInstanceManager,
                 tabBookmarkerSupplier,
                 menuButtonVisibilityDelegate,
