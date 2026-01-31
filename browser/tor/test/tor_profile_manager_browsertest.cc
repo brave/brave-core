@@ -569,7 +569,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest, CookiesEvents) {
       extensions::CookiesAPI ::GetFactoryInstance()->Get(profile());
 
   extensions::EventListenerInfo details("chrome.cookies.onChanged", "id",
-                                        GURL("https://a.com"), profile());
+                                        GURL("https://a.com"),
+                                        /*filter=*/nullptr, profile());
 
   tor_cookies_api->OnListenerAdded(details);
 
