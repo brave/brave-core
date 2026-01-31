@@ -12,7 +12,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -707,10 +707,12 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
 
   // Ensure no normal browser window is active.
   EXPECT_TRUE(browser()->profile()->IsOffTheRecord());
-  for (const auto& browser_instance : *BrowserList::GetInstance()) {
-    EXPECT_TRUE(browser_instance->profile()->IsOffTheRecord());
-    EXPECT_EQ(browser_instance->profile(), browser()->profile());
-  }
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [this](BrowserWindowInterface* browser_instance) {
+        EXPECT_TRUE(browser_instance->GetProfile()->IsOffTheRecord());
+        EXPECT_EQ(browser_instance->GetProfile(), browser()->profile());
+        return true;
+      });
 
   EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive(

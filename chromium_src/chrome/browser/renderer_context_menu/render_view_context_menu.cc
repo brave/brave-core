@@ -35,8 +35,8 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -159,14 +159,14 @@ namespace {
 
 #if BUILDFLAG(ENABLE_TOR)
 bool HasAlreadyOpenedTorWindow(Profile* profile) {
-  for (Browser* browser : *BrowserList::GetInstance()) {
-    if (browser->profile()->IsTor() &&
-        browser->profile()->GetOriginalProfile() == profile) {
-      return true;
-    }
-  }
-
-  return false;
+  bool found = false;
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [profile, &found](BrowserWindowInterface* browser) {
+        found = browser->GetProfile()->IsTor() &&
+                browser->GetProfile()->GetOriginalProfile() == profile;
+        return !found;
+      });
+  return found;
 }
 
 // Modified OnProfileCreated() in render_view_context_menu.cc

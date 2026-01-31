@@ -21,9 +21,9 @@
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/profiles/profile_view_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -95,12 +95,15 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
   }
 
   Browser* FindAIChatBrowser() {
-    for (Browser* browser : *BrowserList::GetInstance()) {
-      if (browser->profile()->IsAIChatAgent()) {
-        return browser;
-      }
-    }
-    return nullptr;
+    Browser* browser_found = nullptr;
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [&browser_found](BrowserWindowInterface* browser) {
+          if (browser->GetProfile()->IsAIChatAgent()) {
+            browser_found = browser->GetBrowserForMigrationOnly();
+          }
+          return browser_found == nullptr;
+        });
+    return browser_found;
   }
 
   Profile* GetProfile() { return browser()->profile(); }

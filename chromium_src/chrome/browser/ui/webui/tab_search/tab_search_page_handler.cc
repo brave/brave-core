@@ -9,8 +9,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/session_id.h"
@@ -213,16 +213,18 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
   for (auto& iter : original_tabs_info_by_window_) {
     // Find the browser with the session ID (key).
     Browser* target = nullptr;
-    for (Browser* browser : *BrowserList::GetInstance()) {
-      if (!ShouldTrackBrowser(browser)) {
-        continue;
-      }
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [&target, &iter, this](BrowserWindowInterface* bwi) {
+          Browser* browser = bwi->GetBrowserForMigrationOnly();
+          if (!ShouldTrackBrowser(browser)) {
+            return true;
+          }
 
-      if (browser->session_id() == iter.first) {
-        target = browser;
-        break;
-      }
-    }
+          if (browser->session_id() == iter.first) {
+            target = browser;
+          }
+          return target == nullptr;
+        });
 
     if (!target) {
       continue;

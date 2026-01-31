@@ -94,7 +94,7 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -436,11 +436,13 @@ BraveBrowserProcessImpl::tor_pluggable_transport_updater() {
 
 void BraveBrowserProcessImpl::OnTorEnabledChanged() {
   // Update all browsers' tor command status.
-  for (Browser* browser : *BrowserList::GetInstance()) {
-    static_cast<chrome::BraveBrowserCommandController*>(
-        browser->command_controller())
-        ->UpdateCommandForTor();
-  }
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [](BrowserWindowInterface* browser) {
+        static_cast<chrome::BraveBrowserCommandController*>(
+            browser->GetBrowserForMigrationOnly()->command_controller())
+            ->UpdateCommandForTor();
+        return true;
+      });
 }
 #endif
 
