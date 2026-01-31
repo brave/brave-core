@@ -11,7 +11,7 @@
 #include "base/json/json_writer.h"
 #include "brave/browser/ai_chat/tools/content_agent_tool_base_test.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
-#include "chrome/browser/actor/browser_action_util.h"
+#include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tools/navigate_tool_request.h"
 #include "chrome/browser/actor/tools/page_tool_request.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"

@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ACTOR_BROWSER_ACTION_UTIL_H_
-#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ACTOR_BROWSER_ACTION_UTIL_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ACTOR_ACTOR_PROTO_CONVERSION_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ACTOR_ACTOR_PROTO_CONVERSION_H_
 
-#include <chrome/browser/actor/browser_action_util.h>  // IWYU pragma: export
+#include <chrome/browser/actor/actor_proto_conversion.h>  // IWYU pragma: export
 
 namespace actor {
 
@@ -17,4 +17,4 @@ std::unique_ptr<ToolRequest> CreateToolRequestForTesting(
 
 }  // namespace actor
 
-#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ACTOR_BROWSER_ACTION_UTIL_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ACTOR_ACTOR_PROTO_CONVERSION_H_
