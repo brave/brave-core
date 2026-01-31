@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -30,7 +29,6 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
-import org.chromium.components.omnibox.AutocompleteRequestType;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.base.WindowAndroid;
@@ -79,8 +77,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
-            SettableNonNullObservableSupplier<@AutocompleteRequestType Integer>
-                    autocompleteRequestTypeSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
             @Nullable MultiInstanceManager multiInstanceManager,
@@ -104,7 +100,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 tabModelSelectorSupplier,
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
-                autocompleteRequestTypeSupplier,
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
                 multiInstanceManager,

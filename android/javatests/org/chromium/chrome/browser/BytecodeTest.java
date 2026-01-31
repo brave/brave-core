@@ -1778,7 +1778,6 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        SettableNonNullObservableSupplier.class,
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
                         MultiInstanceManager.class,
