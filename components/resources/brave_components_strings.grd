@@ -7,6 +7,10 @@
     <output filename="grit/brave_components_webui_strings.h" type="webui_header" />
     <output filename="grit/brave_components_webui_strings.ts" type="webui_ts" />
     <output filename="grit/brave_components_webui_mock_strings.ts" type="webui_mock" />
+    <if expr="is_ios">
+      <output filename="grit/brave_components_swift_strings.h" type="objc_header" />
+      <output filename="grit/brave_components_swift_strings.mm" type="objc_mm" />
+    </if>
     <output filename="brave_components_strings_af.pak" type="data_package" lang="af" />
     <output filename="brave_components_strings_am.pak" type="data_package" lang="am" />
     <output filename="brave_components_strings_ar.pak" type="data_package" lang="ar" />

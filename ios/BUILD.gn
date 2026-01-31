@@ -122,6 +122,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/ui/brave_l10n_util_bridge.h",
   "//ui/base/l10n/l10n_util_mac_bridge.h",
   "$root_gen_dir/components/grit/brave_components_strings.h",
+  "$root_gen_dir/components/grit/brave_components_swift_strings.h",
 ]
 
 brave_core_public_headers += ads_public_headers
@@ -237,6 +238,8 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   sources = brave_core_public_headers
   sources += ios_web_view_public_headers
+  sources +=
+      [ "$root_gen_dir/components/grit/brave_components_swift_strings.mm" ]
 
   public_headers = get_target_outputs(":brave_core_umbrella_header")
   public_headers += brave_core_public_headers

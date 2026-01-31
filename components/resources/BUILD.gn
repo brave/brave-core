@@ -203,6 +203,13 @@ brave_grit("strings") {
     "grit/brave_components_webui_mock_strings.ts",
   ]
 
+  if (is_ios) {
+    outputs += [
+      "grit/brave_components_swift_strings.h",
+      "grit/brave_components_swift_strings.mm",
+    ]
+  }
+
   defines = [
     "enable_ai_chat=$enable_ai_chat",
     "enable_brave_ai_chat_agent_profile=$enable_brave_ai_chat_agent_profile",

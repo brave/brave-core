@@ -8,14 +8,31 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef __cplusplus
-#import "ui/base/l10n/l10n_util_mac_bridge.h"
-#else
-#import "l10n_util_mac_bridge.h"
-#endif
+typedef int BraveMessageID NS_TYPED_ENUM;
+
+NS_ASSUME_NONNULL_BEGIN
 
 OBJC_VISIBLE
-@interface BraveL10nUtils : L10nUtils
+@interface BraveL10nUtils : NSObject
+
++ (NSString*)stringForBraveMessageID:(BraveMessageID)messageID
+    NS_SWIFT_NAME(string(messageId:));
+
++ (NSString*)stringWithFixupForBraveMessageID:(BraveMessageID)messageID
+    NS_SWIFT_NAME(stringWithFixup(messageId:));
+
++ (NSString*)formatStringForBraveMessageID:(BraveMessageID)messageID
+                                  argument:(NSString*)argument
+    NS_SWIFT_NAME(formatString(messageId:argument:));
+
++ (NSString*)pluralStringForBraveMessageID:(BraveMessageID)messageID
+                                    number:(NSInteger)number
+    NS_SWIFT_NAME(pluralString(messageId:number:));
+
+- (instancetype)init NS_UNAVAILABLE;
+
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_UI_BRAVE_L10N_UTIL_BRIDGE_H_
