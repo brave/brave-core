@@ -5,11 +5,9 @@
 
 #include "chrome/browser/ui/ui_features.h"
 
-#define HasTabSearchToolbarButton HasTabSearchToolbarButton_ChromiumImpl
-#include <chrome/browser/ui/ui_features.cc>
-#undef HasTabSearchToolbarButton
-
 #include "base/feature_override.h"
+
+#include <chrome/browser/ui/ui_features.cc>
 
 namespace features {
 
@@ -21,9 +19,5 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // scrim views if needed.
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
-
-bool HasTabSearchToolbarButton() {
-  return true;
-}
 
 }  // namespace features

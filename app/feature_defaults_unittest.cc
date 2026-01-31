@@ -12,6 +12,7 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
+#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/aggregation_service/features.h"
