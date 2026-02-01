@@ -1,0 +1,169 @@
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+import jest from 'eslint-plugin-jest'
+import licenses from 'eslint-plugin-licenses'
+import noUnsanitized from 'eslint-plugin-no-unsanitized'
+import reactHooks from 'eslint-plugin-react-hooks'
+import typescript from '@typescript-eslint/eslint-plugin'
+import love from 'eslint-config-love'
+import typescriptParser from '@typescript-eslint/parser'
+import prettier from 'eslint-config-prettier'
+
+export default defineConfig([
+  prettier,
+  {
+    ...love,
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        project: './tsconfig-lint.json',
+      },
+    },
+
+    plugins: {
+      jest,
+      licenses,
+      'no-unsanitized': noUnsanitized,
+      'react-hooks': reactHooks,
+      '@typescript-eslint': typescript,
+    },
+
+    rules: {
+      'no-unsanitized/method': 'error',
+      'no-unsanitized/property': 'error',
+
+      'licenses/header': [
+        2,
+        {
+          'tryUseCreatedYear': true,
+
+          'comment': {
+            'allow': 'both',
+            'prefer': 'line',
+          },
+
+          'header': [
+            'Copyright (c) {YEAR} The Brave Authors. All rights reserved.',
+            'This Source Code Form is subject to the terms of the Mozilla Public',
+            'License, v. 2.0. If a copy of the MPL was not distributed with this file,',
+            'You can obtain one at https://mozilla.org/MPL/2.0/.',
+          ],
+
+          'altHeaders': [
+            [
+              'Copyright (c) {YEAR} The Brave Authors. All rights reserved.',
+              '* This Source Code Form is subject to the terms of the Mozilla Public',
+              '* License, v. 2.0. If a copy of the MPL was not distributed with this file,',
+              '* You can obtain one at https://mozilla.org/MPL/2.0/.',
+            ],
+            [
+              'This Source Code Form is subject to the terms of the Mozilla Public',
+              '* License, v. 2.0. If a copy of the MPL was not distributed with this file,',
+              '* You can obtain one at https://mozilla.org/MPL/2.0/.',
+            ],
+            [
+              'Copyright (c) {YEAR} The Brave Authors. All rights reserved.',
+              'This Source Code Form is subject to the terms of the Mozilla Public',
+              'License, v. 2.0. If a copy of the MPL was not distributed with this file,',
+              'you can obtain one at https://mozilla.org/MPL/2.0/.',
+            ],
+          ],
+        },
+      ],
+
+      'object-shorthand': 0,
+      'n/no-callback-literal': 0,
+      'no-template-curly-in-string': 0,
+      '@typescript-eslint/array-type': 0,
+      '@typescript-eslint/await-thenable': 0,
+      '@typescript-eslint/consistent-generic-constructors': 0,
+      '@typescript-eslint/ban-ts-comment': 0,
+      '@typescript-eslint/consistent-indexed-object-style': 0,
+      '@typescript-eslint/no-confusing-void-expression': 0,
+      '@typescript-eslint/ban-types': 0,
+      '@typescript-eslint/consistent-type-imports': 0,
+      '@typescript-eslint/consistent-type-exports': 0,
+      '@typescript-eslint/indent': 0,
+      '@typescript-eslint/no-useless-constructor': 0,
+      '@typescript-eslint/explicit-function-return-type': 0,
+      'import/first': 0,
+      '@typescript-eslint/no-var-requires': 0,
+      'consistent-type-definitions': 0,
+      '@typescript-eslint/strict-boolean-expressions': 0,
+      '@typescript-eslint/restrict-template-expressions': 0,
+      '@typescript-eslint/restrict-plus-operands': 0,
+      '@typescript-eslint/prefer-optional-chain': 0,
+      '@typescript-eslint/prefer-nullish-coalescing': 0,
+      '@typescript-eslint/no-misused-promises': 0,
+      '@typescript-eslint/no-unsafe-argument': 0,
+      '@typescript-eslint/unbound-method': 0,
+      'no-mixed-operators': 0,
+      'no-prototype-builtins': 0,
+      '@typescript-eslint/promise-function-async': 0,
+      'no-case-declarations': 0,
+      '@typescript-eslint/no-dynamic-delete': 0,
+      '@typescript-eslint/no-empty-interface': 0,
+      'no-useless-escape': 0,
+      'no-return-assign': 0,
+      'no-async-promise-executor': 0,
+      'no-fallthrough': 0,
+      'array-callback-return': 0,
+      'prefer-promise-reject-errors': 0,
+      '@typescript-eslint/no-floating-promises': 0,
+      '@typescript-eslint/no-base-to-string': 0,
+      'prefer-regex-literals': 0,
+      '@typescript-eslint/no-implied-eval': 0,
+      '@typescript-eslint/no-namespace': 0,
+      '@typescript-eslint/require-array-sort-compare': 0,
+      'no-loss-of-precision': 0,
+      '@typescript-eslint/no-this-alias': 0,
+      '@typescript-eslint/no-redeclare': 0,
+      'no-unsafe-negation': 0,
+      'promise/param-names': 0,
+      'node/no-callback-literal': 0,
+      '@typescript-eslint/consistent-type-definitions': 0,
+      'multiline-ternary': 0,
+      '@typescript-eslint/prefer-readonly': 0,
+      '@typescript-eslint/key-spacing': 0,
+      'import/no-absolute-path': 0,
+      '@typescript-eslint/class-literal-property-style': 1,
+      'no-useless-call': 0,
+      '@typescript-eslint/consistent-type-assertions': 0,
+      '@typescript-eslint/no-non-null-assertion': 0,
+      '@typescript-eslint/no-invalid-void-type': 0,
+      'prefer-const': 0,
+      '@typescript-eslint/return-await': 0,
+    },
+  },
+  globalIgnores([
+    '.storybook/*',
+    'browser/*',
+    'ui/webui/resources/*',
+    '**/*.js',
+    '**/*.d.ts',
+    'tools/chromium_src/lit_mangler/*.ts',
+    '!build/**/*.js',
+    '!components/playlist/resources/media_detector/*.js',
+  ]),
+  {
+    files: [
+      'components/brave_wallet/**/*.js',
+      'components/brave_wallet/**/*.ts',
+      'components/brave_wallet/**/*.tsx',
+      'components/brave_wallet_ui/**/*.js',
+      'components/brave_wallet_ui/**/*.ts',
+      'components/brave_wallet_ui/**/*.tsx',
+    ],
+
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
+  },
+  {
+    files: ['components/**/*.stories.tsx', 'components/**/stories/*.tsx'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+])
