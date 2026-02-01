@@ -11,7 +11,6 @@ import { LedgerCommand, AuthorizationSuccessCommand } from './ledger-messages'
 // `transport['handlers']` instead of `transport.handlers`. As a result we
 // silence the dot-notation tslint rule for the file.
 //
-/* eslint-disable @typescript-eslint/dot-notation */
 
 const createWindow = (): Window => {
   let iframe = document.createElement('iframe')

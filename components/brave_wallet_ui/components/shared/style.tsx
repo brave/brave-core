@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-/* eslint-disable max-len */
-
 import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'

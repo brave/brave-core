@@ -51,11 +51,11 @@ it('should detect string value differences', () => {
 it('should detect numeric value differences', () => {
   expect(objectEquals(5, 5)).toBe(true)
   expect(objectEquals(5, 10)).toBe(false)
-  // eslint-disable-next-line no-new-wrappers
+
   expect(objectEquals(new Number(5), 5)).toBe(true)
-  // eslint-disable-next-line no-new-wrappers
+
   expect(objectEquals(new Number(5), 10)).toBe(false)
-  // eslint-disable-next-line no-new-wrappers
+
   expect(objectEquals(new Number(1), '1')).toBe(false)
 })
 

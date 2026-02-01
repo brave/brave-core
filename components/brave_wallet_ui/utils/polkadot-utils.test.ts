@@ -43,7 +43,6 @@ describe('Uint128ToBigInt', () => {
   })
 
   it('all upper bits are zero', () => {
-    /* eslint-disable new-cap */
     const amount = new uint128()
     amount.high = BigInt(0)
     amount.low = BigInt('0xffffffffffffffff')
@@ -52,7 +51,6 @@ describe('Uint128ToBigInt', () => {
   })
 
   it('all lower bits are zero', () => {
-    /* eslint-disable new-cap */
     const amount = new uint128()
     amount.high = BigInt('0xffffffffffffffff')
     amount.low = BigInt(0)
@@ -63,7 +61,6 @@ describe('Uint128ToBigInt', () => {
   })
 
   it('all bits are set', () => {
-    /* eslint-disable new-cap */
     const amount = new uint128()
     amount.high = BigInt('0xffffffffffffffff')
     amount.low = BigInt('0xffffffffffffffff')
@@ -75,7 +72,6 @@ describe('Uint128ToBigInt', () => {
   })
 
   it('all bits are zero', () => {
-    /* eslint-disable new-cap */
     const amount = new uint128()
     amount.high = BigInt(0)
     amount.low = BigInt(0)

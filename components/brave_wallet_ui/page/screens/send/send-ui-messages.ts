@@ -88,7 +88,6 @@ export const ZCashInvalidUnifiedAddressErrorMessage: AddressMessageInfo = {
   id: AddressMessageInfoIds.zcashInvalidUnifiedAddressError,
 }
 
-// eslint-disable-next-line max-len
 export const ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage: AddressMessageInfo =
   {
     title: '',
@@ -97,17 +96,15 @@ export const ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage: AddressMe
     id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError,
   }
 
-// eslint-disable-next-line max-len
 export const ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage: AddressMessageInfo =
   {
     title: '',
     description: 'braveWalletZCashInvalidUnifiedAddressMissingTransparentPart',
     type: 'error',
-    // eslint-disable-next-line max-len
+
     id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError,
   }
 
-// eslint-disable-next-line max-len
 export const ZCashInvalidAddressNetworkMismatchErrorMessage: AddressMessageInfo =
   {
     title: '',

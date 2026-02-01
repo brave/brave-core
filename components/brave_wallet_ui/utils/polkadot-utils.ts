@@ -15,7 +15,6 @@ export function bigIntToUint128(amount: bigint) {
   const high = amount >> BigInt(64)
   const low = amount & BigInt('0xffffffffffffffff')
 
-  /* eslint-disable new-cap */
   const sendAmount = new BraveWallet.uint128()
   sendAmount.high = high
   sendAmount.low = low

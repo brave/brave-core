@@ -33,7 +33,6 @@ Object.defineProperty(global.crypto, 'randomUUID', {
 // That yields a typescript error unless we use bracket notation, e.g.
 // `transport['handlers']` instead of `transport.handlers`. As a result we
 // silence the dot-notation tslint rule for the file.
-/* eslint-disable @typescript-eslint/dot-notation */
 
 const createTransport = (
   targetUrl: string = 'chrome-untrusted://trezor-bridge',
