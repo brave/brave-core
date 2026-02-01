@@ -6,9 +6,7 @@
 import * as React from 'react'
 import { render } from '@testing-library/react'
 
-import {
-  default as BraveCoreThemeProvider,
-} from '../../../../../common/BraveCoreThemeProvider'
+import { default as BraveCoreThemeProvider } from '../../../../../common/BraveCoreThemeProvider'
 
 // Components
 import {

@@ -23,9 +23,7 @@ import { store } from '../../../store'
 import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
-import {
-  default as BraveCoreThemeProvider,
-} from '../../../../../common/BraveCoreThemeProvider'
+import { default as BraveCoreThemeProvider } from '../../../../../common/BraveCoreThemeProvider'
 import { DepositFundsScreen } from '../deposit-funds'
 
 import { setIconBasePath } from '@brave/leo/react/icon'

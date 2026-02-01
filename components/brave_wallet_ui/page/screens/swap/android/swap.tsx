@@ -23,9 +23,7 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store } from '../../../store'
-import {
-  default as BraveCoreThemeProvider,
-} from '../../../../../common/BraveCoreThemeProvider'
+import { default as BraveCoreThemeProvider } from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
 
 export function AndroidSwapApp() {
