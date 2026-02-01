@@ -111,7 +111,9 @@ export type EndpointDef<P extends readonly any[], R> =
  */
 export type EventDef<Args extends any[], Payload extends any[]> = {
   registerEmitter: (emitter: (...args: Payload) => void) => void
-  /** phantom field so we can extract `Args` at the type level */
+  /**
+   *  phantom field so we can extract `Args` at the type level
+   */
   __args: Args
 }
 
@@ -139,7 +141,6 @@ export function state<R>(data?: R): QueryEndpointDefinition<[], R> {
       Promise.reject(new Error('State endpoint should not be called')),
     enabled: false,
     prefetchWithArgs: [],
-    // TODO(petemill): should be placeholderData?
     initialData: data,
     // never re-fetch, even if invalidated
     staleTime: 'static',
@@ -184,18 +185,21 @@ export function createInterfaceApi<
   const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
   EventDefinitions extends Record<string, EventDef<any[], any>>,
 >(config: {
-  /** Unique identifier for this API, used in query keys */
+  /**
+   *  Unique identifier for this API, used in query keys
+   */
   key?: string
 
   /**
    * Simple actions that can be called directly from the UI. These
-   * don't need any status helpers or long-term data caching. If you helper
-   * data for status would be useful, consider using a mutation endpoint instead.
-   * TODO(petemill): make optional
+   * don't need any status helpers or data caching. If helper data for status,
+   * e.g. "in progress", would be useful then consider using a mutation endpoint instead.
    */
-  actions: ExposedActions
+  actions?: ExposedActions
 
-  /** Actions to expose to the UI, each have a result that will be cached or mutated */
+  /**
+   * Actions to expose to the UI, each have a result that will be cached or mutated
+   */
   endpoints: RawEndpoints
 
   /** An array of event names to broadcast */
@@ -263,7 +267,7 @@ export function createInterfaceApi<
     // }
     // ```
     [P in K as `${P}Data`]: EndpointDataForKey<K>
-    // TODO(petemill): We could add more convenience properties here,
+    // Note: We could add more convenience properties here,
     // e.g. `isMyQueryLoading`.
   } & {
     // Never undefined if placeholderData is provided
@@ -740,7 +744,8 @@ export function createInterfaceApi<
 
     // register the emitter for the event
     // @ts-expect-error we need to fix the type of argsAndPayload
-    ;(config.events as any)[eventName].registerEmitter((...args: any[]) =>
+    ;(config.events as any)[eventName].registerEmitter((...args) =>
+      // @ts-expect-error
       emitEvent(eventName, args),
     )
 
