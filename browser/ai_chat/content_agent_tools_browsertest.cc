@@ -383,9 +383,10 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   base::test::TestFuture<actor::MayActOnUrlBlockReason> allowed;
   auto* actor_service =
       actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
-  actor_service->GetPolicyChecker().MayActOnUrl(
-      GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
-      actor_service->GetJournal(), actor::TaskId(), allowed.GetCallback());
+  ::actor::MayActOnUrl(GURL("https://chromewebstore.google.com/example"), false,
+                       agent_profile_, actor_service->GetJournal(),
+                       actor::TaskId(), actor_service->GetPolicyChecker(),
+                       allowed.GetCallback());
   EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);
 }
 
