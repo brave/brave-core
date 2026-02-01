@@ -55,6 +55,7 @@ static_library("ai_chat") {
     "//brave/components/script_injector/common/mojom",
     "//brave/net/base:utils",
     "//chrome/browser:browser_process",
+    "//chrome/browser/actor",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common:channel_info",
@@ -104,7 +105,6 @@ static_library("ai_chat") {
     ]
 
     deps += [
-      "//chrome/browser/actor",
       "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
     ]
