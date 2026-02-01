@@ -28,7 +28,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
 
     public BraveToolbarLongPressMenuHandler(
             Context context,
-            MonotonicObservableSupplier<@Nullable Profile> profileSupplier,
+            MonotonicObservableSupplier<Profile> profileSupplier,
             boolean isCustomTab,
             BooleanSupplier suppressLongPressSupplier,
             ActivityLifecycleDispatcher lifecycleDispatcher,

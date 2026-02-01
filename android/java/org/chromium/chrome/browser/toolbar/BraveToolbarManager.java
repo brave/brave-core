@@ -217,7 +217,7 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
             MonotonicObservableSupplier<TopInsetProvider> topInsetProviderSupplier,
-            @Nullable MonotonicObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             PageZoomManager pageZoomManager,
             SnackbarManager snackbarManager,
             @Nullable OmniboxChipManager omniboxChipManager) {
