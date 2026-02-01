@@ -12,10 +12,7 @@ import override_utils
 @override_utils.override_function(globals())
 def Run(_original_function, **kwargs):
     node_args = [
-        brave_node.PathInNodeModules('eslint', 'bin', 'eslint'),
-        '--quiet',
-        '--resolve-plugins-relative-to',
-        brave_node.PathInNodeModules(),
+        brave_node.PathInNodeModules('eslint', 'bin', 'eslint'), '--quiet'
     ]
     if os.environ.get('PRESUBMIT_FIX') == '1':
         node_args += ['--fix']
