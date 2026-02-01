@@ -8,6 +8,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALL_STATIC_CHROMIUM_INSTALL_MODES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALL_STATIC_CHROMIUM_INSTALL_MODES_H_
 
+#include <stdlib.h>
+
 #include <array>
 
 #include "brave/components/brave_origin/buildflags/buildflags.h"
@@ -16,6 +18,31 @@
 #include "chrome/install_static/install_constants.h"
 
 namespace install_static {
+
+// Brand-specific constants and install modes for Brave.
+
+// The brand-specific company name to be included as a component of the install
+// and user data directory paths. May be empty if no such dir is to be used.
+inline constexpr wchar_t kCompanyPathName[] = L"BraveSoftware";
+
+// The brand-specific product name to be included as a component of the install
+// and user data directory paths.
+#if defined(OFFICIAL_BUILD)
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+// Brave Origin uses "Brave-Origin" instead of "Brave-Browser" to allow
+// side-by-side installation with Brave Browser.
+inline constexpr wchar_t kProductPathName[] = L"Brave-Origin";
+#else
+inline constexpr wchar_t kProductPathName[] = L"Brave-Browser";
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#else
+// If you change this, then you also need to change occurrences of this string
+// in mini_installer_constants.cc.
+inline constexpr wchar_t kProductPathName[] = L"Brave-Browser-Development";
+#endif
+
+// The brand-specific safe browsing client name.
+inline constexpr char kSafeBrowsingName[] = "chromium";
 
 // Note: This list of indices must be kept in sync with the brand-specific
 // resource strings in chrome/installer/util/prebuild/create_string_rc.
