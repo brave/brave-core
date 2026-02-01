@@ -16,6 +16,7 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -23,6 +24,7 @@
 #include "chrome/common/buildflags.h"
 #include "components/browsing_data/content/browsing_data_helper.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -183,6 +185,14 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     host_content_settings_map->ClearSettingsForOneTypeWithPredicate(
         ContentSettingsType::BRAVE_SHIELDS_METADATA, delete_begin, delete_end,
         website_settings_filter);
+  }
+
+  if ((remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY)) {
+    // Clear SERP metrics time period storage because it indicates the user
+    // visited Brave, Google, or another search engine, even though it contains
+    // no queries or URLs.
+    profile_->GetPrefs()->ClearPref(
+        serp_metrics::prefs::kSerpMetricsTimePeriodStorage);
   }
 }
 

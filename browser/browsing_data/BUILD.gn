@@ -17,6 +17,7 @@ source_set("browser_tests") {
     deps = [
       "//base",
       "//base/test:test_support",
+      "//brave/components/serp_metrics:prefs",
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/browsing_data:constants",
