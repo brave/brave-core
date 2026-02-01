@@ -105,6 +105,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedder;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
+import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
@@ -1481,7 +1482,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         PageZoomManager.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        OmniboxChipManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1747,7 +1749,7 @@ public class BytecodeTest {
                         LocationBarDataProvider.class,
                         ActionMode.Callback.class,
                         WindowAndroid.class,
-                        Supplier.class,
+                        NullableObservableSupplier.class,
                         Supplier.class,
                         Supplier.class,
                         IncognitoStateProvider.class,
@@ -1777,7 +1779,8 @@ public class BytecodeTest {
                         Function.class,
                         MultiInstanceManager.class,
                         SnackbarManager.class,
-                        View.class));
+                        View.class,
+                        OmniboxChipManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1803,7 +1806,8 @@ public class BytecodeTest {
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
                         MultiInstanceManager.class,
-                        LocationBarEmbedder.class));
+                        LocationBarEmbedder.class,
+                        OmniboxChipManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",

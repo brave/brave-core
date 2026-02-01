@@ -52,6 +52,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.LocationBar;
+import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
@@ -218,7 +219,8 @@ public class BraveToolbarManager extends ToolbarManager
             MonotonicObservableSupplier<TopInsetProvider> topInsetProviderSupplier,
             @Nullable MonotonicObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             PageZoomManager pageZoomManager,
-            SnackbarManager snackbarManager) {
+            SnackbarManager snackbarManager,
+            @Nullable OmniboxChipManager omniboxChipManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -271,7 +273,8 @@ public class BraveToolbarManager extends ToolbarManager
                 topInsetProviderSupplier,
                 xrSpaceModeObservableSupplier,
                 pageZoomManager,
-                snackbarManager);
+                snackbarManager,
+                omniboxChipManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
