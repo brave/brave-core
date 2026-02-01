@@ -41,6 +41,12 @@ source_set("browser_process") {
   ]
 }
 
+source_set("brave_global_features") {
+  sources = [ "brave_global_features.h" ]
+
+  deps = [ "//chrome/browser:global_features" ]
+}
+
 group("browser") {
   visibility = [
     "//brave:browser_dependencies",

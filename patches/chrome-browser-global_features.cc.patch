@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/global_features.cc b/chrome/browser/global_features.cc
+index b24b1f4ea45194f35b885198c2480681cbccf97d..2a5b857d01292e95f2513bb56cc34b9b3a692046 100644
+--- a/chrome/browser/global_features.cc
++++ b/chrome/browser/global_features.cc
+@@ -63,6 +63,7 @@
+ #include "components/unexportable_keys/unexportable_key_service_impl.h"
+ #endif  // BUILDFLAG(ENABLE_DEVICE_BOUND_SESSIONS)
+ 
++GlobalFeatures* CreateBraveGlobalFeatures();
+ namespace {
+ 
+ // This is the generic entry point for test code to stub out browser
+@@ -81,7 +82,7 @@ std::unique_ptr<GlobalFeatures> GlobalFeatures::CreateGlobalFeatures() {
+     return GetFactory().Run();
+   }
+   // Constructor is protected.
+-  return base::WrapUnique(new GlobalFeatures());
++  return base::WrapUnique(CreateBraveGlobalFeatures());
+ }
+ 
+ GlobalFeatures::~GlobalFeatures() = default;
