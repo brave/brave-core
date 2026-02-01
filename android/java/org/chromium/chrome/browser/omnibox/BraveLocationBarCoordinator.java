@@ -14,6 +14,7 @@ import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -69,7 +70,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             LocationBarDataProvider locationBarDataProvider,
             ActionMode.@Nullable Callback actionModeCallback,
             WindowAndroid windowAndroid,
-            Supplier<@Nullable Tab> activityTabSupplier,
+            NullableObservableSupplier<Tab> activityTabSupplier,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable IncognitoStateProvider incognitoStateProvider,
@@ -102,7 +103,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Function<Tab, @Nullable Bitmap> tabFaviconFunction,
             @Nullable MultiInstanceManager multiInstanceManager,
             SnackbarManager snackbarManager,
-            View bottomContainerView) {
+            View bottomContainerView,
+            @Nullable OmniboxChipManager omniboxChipManager) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -144,7 +146,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabFaviconFunction,
                 multiInstanceManager,
                 snackbarManager,
-                bottomContainerView);
+                bottomContainerView,
+                omniboxChipManager);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
