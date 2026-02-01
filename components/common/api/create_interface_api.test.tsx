@@ -22,8 +22,8 @@ describe('createInterfaceApi', () => {
     })
 
     // Check fetch is keyed by parameter
-    expect(await api.endpoints.getData.fetch('1')).toEqual({ id: '1' })
-    expect(await api.endpoints.getData.fetch('2')).toEqual({ id: '2' })
+    expect(await api.getData.fetch('1')).toEqual({ id: '1' })
+    expect(await api.getData.fetch('2')).toEqual({ id: '2' })
     // Current should be keyed by parameter
     expect(api.getData.current('1')).toEqual({ id: '1' })
     expect(api.getData.current('2')).toEqual({ id: '2' })
@@ -129,7 +129,7 @@ describe('createInterfaceApi', () => {
     expect(api.getData.current('1')).toBeUndefined()
 
     function useTestQueryData() {
-      const query = api.endpoints.getData.useQuery('1')
+      const query = api.getData.useQuery('1')
       return query.data
     }
 
@@ -366,7 +366,7 @@ describe('createInterfaceApi', () => {
     const api = createMyApi()
     expect(api.doSomething).toBeDefined()
     expect(typeof api.doSomething).toBe('function')
-    expect(api.endpoints.doSomething.mutate).toBeDefined()
+    expect(api.doSomething).toBeDefined()
     // expect(api.useDoSomething).toBeUndefined()
     expect(mutationFn).toHaveBeenCalledTimes(0)
     const result = await api.doSomething(['4'])
@@ -392,12 +392,13 @@ describe('createInterfaceApi', () => {
       return api
     }
     const api = createMyApi()
-    expect(api.actions.doSomething).toBeDefined()
-    expect(api.actions.moreThings.doAnotherThing).toBeDefined()
-    expect(api.actions.doSomething('4')).toBeUndefined()
+
+    expect(api.doSomething).toBeDefined()
+    expect(api.moreThings.doAnotherThing).toBeDefined()
+    expect(api.doSomething('4')).toBeUndefined()
     expect(doSomething).toHaveBeenCalledWith('4')
     expect(doSomething).toHaveBeenCalledTimes(1)
-    expect(api.actions.moreThings.doAnotherThing()).toBeUndefined()
+    expect(api.moreThings.doAnotherThing()).toBeUndefined()
   })
 
   it('updates the query cache when update is called', async () => {

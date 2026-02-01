@@ -19,7 +19,7 @@ import {
 } from '@tanstack/react-query'
 
 //
-// This file contains a factory function, createMojoAPI, to create a
+// This file contains a factory function, createInterfaceApi, to create a
 // subscribable API with a shared cache based off a mojom interface which
 // exposes features of Tanstack Query in a similar fashion to
 // RTK Query's createApi.
@@ -874,8 +874,7 @@ export function createInterfaceApi<
       >
         ? `use${Capitalize<string & K>}Data`
         : never]: (...args: ArgsOf<K>) => DataOf<K>
-    } & // Mutations
-    {
+    } & { // Mutations
       // useDoSomething: endpoints.doSomething.useMutation
       [K in MutationKeys as `use${Capitalize<string & K>}`]: (
         options?: APIUseMutationOptions<K>,
@@ -927,9 +926,8 @@ export function createInterfaceApi<
   // Convenient access to query endpoint child functions
 
   const api = {
-    endpoints,
     emitEvent,
-    actions,
+    ...actions,
     ...rootEndpointProperties,
     ...eventHooks,
     close: () => {
