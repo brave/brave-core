@@ -7,7 +7,6 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 
 import {
-  // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider,
 } from '../../../../common/BraveCoreThemeProvider'
 

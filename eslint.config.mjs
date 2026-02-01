@@ -124,7 +124,6 @@ export default defineConfig([
       '@typescript-eslint/consistent-type-definitions': 0,
       'multiline-ternary': 0,
       '@typescript-eslint/prefer-readonly': 0,
-      '@typescript-eslint/key-spacing': 0,
       'import/no-absolute-path': 0,
       '@typescript-eslint/class-literal-property-style': 1,
       'no-useless-call': 0,

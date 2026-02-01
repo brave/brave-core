@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 
 // Utils
 import {
-  // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider,
 } from '../../../../common/BraveCoreThemeProvider'
 import { createMockStore } from '../../../utils/test-utils'

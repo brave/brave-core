@@ -29,7 +29,6 @@ import {
 } from '../../../../stories/mock-data/mock-transaction-info'
 import { createMockStore } from '../../../../utils/test-utils'
 import {
-  // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider,
 } from '../../../../../common/BraveCoreThemeProvider'
 

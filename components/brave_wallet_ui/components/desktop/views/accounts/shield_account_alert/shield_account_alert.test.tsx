@@ -8,7 +8,6 @@ import { render, act, waitFor } from '@testing-library/react'
 
 // Utils
 import {
-  // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider,
 } from '../../../../../../common/BraveCoreThemeProvider'
 import { createMockStore } from '../../../../../utils/test-utils'

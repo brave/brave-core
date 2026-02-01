@@ -24,7 +24,6 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 // Components
 import { store } from '../../../store'
 import {
-  // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider,
 } from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
