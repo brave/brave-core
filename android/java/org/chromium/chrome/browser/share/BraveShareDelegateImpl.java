@@ -27,7 +27,7 @@ public class BraveShareDelegateImpl extends ShareDelegateImpl {
             @Nullable BottomSheetController controller,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             Supplier<@Nullable Tab> tabProvider,
-            Supplier<TabModelSelector> tabModelSelectorProvider,
+            Supplier<@Nullable TabModelSelector> tabModelSelectorProvider,
             Supplier<@Nullable Profile> profileSupplier,
             ShareSheetDelegate delegate,
             boolean isCustomTab,

@@ -1480,7 +1480,7 @@ public class BytecodeTest {
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
                         MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         PageZoomManager.class,
                         SnackbarManager.class,
                         OmniboxChipManager.class));
@@ -1922,7 +1922,7 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         EdgeToEdgeManager.class,
                         MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -2163,7 +2163,7 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         TabGroupCreationUiDelegate.class,
-                        MonotonicObservableSupplier.class));
+                        NonNullObservableSupplier.class));
 
         Assert.assertTrue(
                 constructorsMatch(
