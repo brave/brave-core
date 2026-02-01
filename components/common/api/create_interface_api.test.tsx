@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { expect, jest, test, describe, it } from '@jest/globals'
+import { expect, jest, describe, it } from '@jest/globals'
 import { act, renderHook } from '@testing-library/react'
 import * as React from 'react'
 import { createInterfaceApi, state, event } from './create_interface_api'
