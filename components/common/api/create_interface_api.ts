@@ -874,7 +874,8 @@ export function createInterfaceApi<
       >
         ? `use${Capitalize<string & K>}Data`
         : never]: (...args: ArgsOf<K>) => DataOf<K>
-    } & { // Mutations
+    } & {
+      // Mutations
       // useDoSomething: endpoints.doSomething.useMutation
       [K in MutationKeys as `use${Capitalize<string & K>}`]: (
         options?: APIUseMutationOptions<K>,
