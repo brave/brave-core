@@ -3192,11 +3192,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
   AdBlockServiceTestJsPerformance() {
+    // Use a longer throttle time (2000ms) to ensure reliable throttle testing.
+    // The previous 500ms value was too short - if WaitForSelectorBlocked took
+    // more than 250ms, the throttle window would expire during the test,
+    // causing intermittent failures.
     feature_list_.InitWithFeaturesAndParameters(
         {{kCosmeticFilteringJsPerformance,
           {{"subframes_first_query_delay_ms", "3000"},
            {"switch_to_polling_threshold", "500"},
-           {"fetch_throttling_ms", "500"}}}},
+           {"fetch_throttling_ms", "2000"}}}},
         {});
   }
 
@@ -3247,9 +3251,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
 
   // This elements will be check by mutation observer after throttling delay.
   AddDivsWithDynamicClasses(contents, 201, 500);
-  // Wait fetch_throttling_ms/2 ms and check the selector is still visible to
-  // verify that throttling works correctly.
-  NonBlockingDelay(base::Milliseconds(250));
+  // Wait fetch_throttling_ms/2 ms (1000ms with 2000ms throttle) and check the
+  // selector is still visible to verify that throttling works correctly.
+  NonBlockingDelay(base::Milliseconds(1000));
   EXPECT_TRUE(
       EvalJs(contents, "checkSelector('.div-class-500', 'display', 'block')")
           .ExtractBool());
