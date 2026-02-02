@@ -85,6 +85,10 @@ class BraveLocalHistoryZeroSuggestProviderTest
   // testing::Test
   void SetUp() override {
     client_ = std::make_unique<FakeAutocompleteProviderClient>();
+
+    ON_CALL(*client_, SearchSuggestEnabled())
+        .WillByDefault(testing::Return(true));
+
     auto* registry = static_cast<sync_preferences::TestingPrefServiceSyncable*>(
                          client_->GetPrefs())
                          ->registry();
