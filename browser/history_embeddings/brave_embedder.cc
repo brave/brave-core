@@ -244,9 +244,10 @@ void BraveEmbedder::OnAllEmbeddingsComplete(
   }
 
   // All passages processed successfully
-  DVLOG(3) << "All passages processed for task " << task_id
-           << ", invoking callback with " << task.embeddings.size()
-           << " embeddings";
+  DVLOG(2) << "Batch complete: task_id=" << task_id
+           << ", passages=" << task.embeddings.size()
+           << ", total_time=" << task.batch_timer.Elapsed().InMilliseconds()
+           << "ms";
 
   std::vector<std::string> passages = std::move(task.passages);
   std::vector<passage_embeddings::Embedding> embeddings =

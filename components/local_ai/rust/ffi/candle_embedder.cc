@@ -29,9 +29,11 @@ CandleEmbedder::InitCallbackData::~InitCallbackData() = default;
 
 CandleEmbedder::EmbedCallbackData::EmbedCallbackData(
     EmbedCallback callback,
-    scoped_refptr<base::SequencedTaskRunner> origin_task_runner)
+    scoped_refptr<base::SequencedTaskRunner> origin_task_runner,
+    size_t text_length)
     : callback(std::move(callback)),
-      origin_task_runner(std::move(origin_task_runner)) {}
+      origin_task_runner(std::move(origin_task_runner)),
+      text_length(text_length) {}
 
 CandleEmbedder::EmbedCallbackData::~EmbedCallbackData() = default;
 
@@ -64,7 +66,8 @@ void CandleEmbedder::DeleteOnThreadPool(
   // since ~CandleEmbedder() calls Thread::Stop() which blocks.
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-      base::BindOnce([](std::unique_ptr<CandleEmbedder> e) {}, std::move(embedder)));
+      base::BindOnce([](std::unique_ptr<CandleEmbedder> e) {},
+                     std::move(embedder)));
 }
 
 void CandleEmbedder::Create(std::vector<uint8_t> weights,
@@ -154,8 +157,8 @@ void CandleEmbedder::EmbedOnRustThread(
     return;
   }
 
-  auto* callback_data =
-      new EmbedCallbackData(std::move(callback), origin_task_runner);
+  auto* callback_data = new EmbedCallbackData(std::move(callback),
+                                              origin_task_runner, text.size());
 
   candle_embedder_embed(embedder_.get(), text.c_str(),
                         &CandleEmbedder::OnEmbedCallback, callback_data);
@@ -165,6 +168,11 @@ void CandleEmbedder::OnEmbedCallback(void* user_data,
                                      const float* embeddings,
                                      size_t length) {
   auto* callback_data = static_cast<EmbedCallbackData*>(user_data);
+
+  DVLOG(2) << "CandleEmbedder::Embed completed: text_length="
+           << callback_data->text_length
+           << ", time=" << callback_data->timer.Elapsed().InMilliseconds()
+           << "ms, embedding_size=" << length;
 
   std::vector<float> result;
   if (embeddings && length > 0) {

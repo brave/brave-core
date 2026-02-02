@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/threading/thread.h"
+#include "base/timer/elapsed_timer.h"
 
 struct CCandleEmbedder;
 
@@ -90,11 +91,14 @@ class CandleEmbedder {
   struct EmbedCallbackData {
     EmbedCallbackData(
         EmbedCallback callback,
-        scoped_refptr<base::SequencedTaskRunner> origin_task_runner);
+        scoped_refptr<base::SequencedTaskRunner> origin_task_runner,
+        size_t text_length);
     ~EmbedCallbackData();
 
     EmbedCallback callback;
     scoped_refptr<base::SequencedTaskRunner> origin_task_runner;
+    size_t text_length;
+    base::ElapsedTimer timer;
   };
 
   raw_ptr<CCandleEmbedder> embedder_ = nullptr;

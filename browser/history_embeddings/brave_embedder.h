@@ -13,6 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/elapsed_timer.h"
 #include "components/passage_embeddings/passage_embeddings_types.h"
 
 class Profile;
@@ -69,6 +70,7 @@ class BraveEmbedder : public passage_embeddings::Embedder {
     std::vector<passage_embeddings::Embedding> embeddings;
     bool cancelled = false;
     bool in_flight = false;
+    base::ElapsedTimer batch_timer;
   };
 
   void ProcessAllPassagesInParallel(TaskId task_id);
