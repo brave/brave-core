@@ -122,6 +122,14 @@ struct ReportFiller {
     return *this;
   }
 
+  ReportFiller& FillAdblockOnlyModeEnabled() {
+    if (!(*report_info)->adblock_only_mode_enabled) {
+      (*report_info)->adblock_only_mode_enabled =
+          service_delegate->GetAdblockOnlyModeEnabled();
+    }
+    return *this;
+  }
+
   raw_ref<webcompat_reporter::mojom::ReportInfoPtr> report_info;
   const raw_ptr<webcompat_reporter::WebcompatReporterService::Delegate>
       service_delegate;
@@ -234,7 +242,8 @@ void WebcompatReporterService::SubmitWebcompatReport(
       .FillReportWithComponetsInfo()
       .FillReportWithAdblockListNames()
       .FillCookiePolicy()
-      .FillScriptBlockingFlag();
+      .FillScriptBlockingFlag()
+      .FillAdblockOnlyModeEnabled();
 
   ProcessContactInfo(profile_prefs_, report_info);
 

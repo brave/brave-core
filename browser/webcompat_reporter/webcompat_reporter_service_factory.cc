@@ -70,9 +70,13 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
 
+  PrefService* local_state = g_browser_process->local_state();
+  CHECK(local_state);
+
   return std::make_unique<WebcompatReporterService>(
       prefs,
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
+          *local_state, g_browser_process->GetApplicationLocale(),
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service(),
           HostContentSettingsMapFactory::GetForProfile(context),

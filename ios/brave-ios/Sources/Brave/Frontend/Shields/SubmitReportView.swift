@@ -211,6 +211,7 @@ struct SubmitReportView: View {
         shieldsEnabled: String(
           tab?.braveShieldsHelper?.isBraveShieldsEnabled(for: tab?.visibleURL) ?? true
         ),
+        adblockOnlyModeEnabled: nil,
         adBlockSetting: (tab?.braveShieldsHelper?.shieldLevel(
           for: tab?.visibleURL,
           considerAllShieldsOption: false

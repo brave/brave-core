@@ -31,6 +31,7 @@ class WebcompatReporterServiceDelegateImpl
       const std::optional<std::string>& current_url) const override;
   std::optional<std::string> GetScriptBlockingFlag(
       const std::optional<std::string>& current_url) const override;
+  std::optional<std::string> GetAdblockOnlyModeEnabled() const override;
 };
 
 }  // namespace webcompat_reporter

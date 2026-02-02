@@ -12,19 +12,27 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_service.h"
 
 namespace webcompat_reporter {
 
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
+    PrefService& local_state,
+    const std::string& application_locale,
     component_updater::ComponentUpdateService* component_update_service,
     brave_shields::AdBlockService* adblock_service,
     HostContentSettingsMap* host_content_settings_map,
     scoped_refptr<content_settings::CookieSettings> content_settings)
     : WebcompatReporterServiceDelegateBase(component_update_service),
+      local_state_(local_state),
+      application_locale_(application_locale),
       adblock_service_(adblock_service),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(content_settings) {}
@@ -88,6 +96,19 @@ WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag(
       brave_shields::GetNoScriptControlType(host_content_settings_map_,
                                             GURL(current_url.value())) ==
       brave_shields::ControlType::BLOCK);
+}
+
+std::optional<std::string>
+WebcompatReporterServiceDelegateImpl::GetAdblockOnlyModeEnabled() const {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kAdblockOnlyMode) ||
+      !brave_shields::IsAdblockOnlyModeSupportedForLocale(
+          application_locale_)) {
+    return std::nullopt;
+  }
+
+  return BoolToString(
+      local_state_->GetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled));
 }
 
 }  // namespace webcompat_reporter

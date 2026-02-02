@@ -9,10 +9,14 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service_delegate_base.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+
+class PrefService;
 
 namespace brave_shields {
 class AdBlockService;
@@ -24,6 +28,8 @@ class WebcompatReporterServiceDelegateImpl
     : public WebcompatReporterServiceDelegateBase {
  public:
   explicit WebcompatReporterServiceDelegateImpl(
+      PrefService& local_state,
+      const std::string& application_locale,
       component_updater::ComponentUpdateService* component_update_service,
       brave_shields::AdBlockService* adblock_service,
       HostContentSettingsMap* host_content_settings_map,
@@ -41,8 +47,11 @@ class WebcompatReporterServiceDelegateImpl
       const std::optional<std::string>& current_url) const override;
   std::optional<std::string> GetScriptBlockingFlag(
       const std::optional<std::string>& current_url) const override;
+  std::optional<std::string> GetAdblockOnlyModeEnabled() const override;
 
  private:
+  const raw_ref<PrefService> local_state_;
+  const std::string application_locale_;
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;

@@ -72,7 +72,8 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
 
   std::vector<std::string> webcompat_errors{"Could not create screenshot"};
   auto report = webcompat_reporter::mojom::ReportInfo::New(
-      "dev", "1.231.45", "https://abc.url/p1/p2", "true", "ad_block_setting",
+      "dev", "1.231.45", "https://abc.url/p1/p2", "true",
+      /*adblock_only_mode_enabled=*/"true", "ad_block_setting",
       "fp_block_setting", "ad_block_list_names", "languages", "true", "true",
       "category", "details", "contact", "block", "true", std::move(components),
       std::nullopt, webcompat_errors);
@@ -110,6 +111,8 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
                report_copy->language_farbling.has_value())
           .Set("languages", *report_copy->languages)
           .Set("shieldsEnabled", report_copy->shields_enabled.has_value())
+          .Set("adblockOnlyModeEnabled",
+               report_copy->adblock_only_mode_enabled.has_value())
           .Set("url", GURL(report_copy->report_url.value()).spec())
           .Set("version", *report_copy->brave_version)
           .Set("webcompatReportErrors", std::move(errors_list)));

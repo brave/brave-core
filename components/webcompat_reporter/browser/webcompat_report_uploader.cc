@@ -121,6 +121,12 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
         report_info->shields_enabled.value() == kStringTrue);
   }
 
+  if (report_info->adblock_only_mode_enabled) {
+    report_details_dict.Set(
+        kAdblockOnlyModeEnabledField,
+        report_info->adblock_only_mode_enabled.value() == kStringTrue);
+  }
+
   if (report_info->ad_block_setting) {
     report_details_dict.Set(kAdBlockSettingField,
                             report_info->ad_block_setting.value());
