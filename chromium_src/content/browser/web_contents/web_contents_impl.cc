@@ -23,11 +23,12 @@ bool WebContentsImpl::GetShouldDoLearningForTesting() {
 #define ShouldDoLearning(...) ShouldDoLearning_ChromiumImpl(__VA_ARGS__)
 
 #define BRAVE_WEB_CONTENTS_IMPL_CREATE_NEW_WINDOW_OPENER_SUPPRESSED \
-  if (GetContentClient()->browser()->ShouldInheritStoragePartition( \
+  if (!is_guest &&                                                  \
+      GetContentClient()->browser()->ShouldInheritStoragePartition( \
           partition_config)) {                                      \
     site_instance = SiteInstance::CreateForFixedStoragePartition(   \
         GetBrowserContext(), GURL(), partition_config);             \
-  }
+  } else /* NOLINT(readability/braces) */
 
 #include <content/browser/web_contents/web_contents_impl.cc>
 
