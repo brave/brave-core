@@ -11,6 +11,8 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/local_ai/rust/ffi/candle_embedder_ffi.h"
 
 namespace local_ai {
@@ -45,7 +47,24 @@ CandleEmbedder::~CandleEmbedder() {
         FROM_HERE, base::BindOnce(&candle_embedder_destroy, embedder_.get()));
     embedder_ = nullptr;
   }
+  // Thread::Stop() calls PlatformThread::Join() which is a base sync primitive.
+  // When destroyed via DeleteOnThreadPool during shutdown, thread pool workers
+  // disallow sync primitives, so we must explicitly allow it here.
+  base::ScopedAllowBaseSyncPrimitives allow_sync;
   rust_thread_.Stop();
+}
+
+// static
+void CandleEmbedder::DeleteOnThreadPool(
+    std::unique_ptr<CandleEmbedder> embedder) {
+  if (!embedder) {
+    return;
+  }
+  // Post deletion to a thread pool thread that allows blocking,
+  // since ~CandleEmbedder() calls Thread::Stop() which blocks.
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock(), base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
+      base::BindOnce([](std::unique_ptr<CandleEmbedder> e) {}, std::move(embedder)));
 }
 
 void CandleEmbedder::Create(std::vector<uint8_t> weights,
@@ -108,7 +127,9 @@ void CandleEmbedder::OnInitCallback(void* user_data,
     callback_data->origin_task_runner->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback_data->callback), nullptr,
                                   error_message));
-    delete callback_data->wrapper;
+    // Delete on thread pool since we're on rust_thread_ and ~CandleEmbedder()
+    // calls rust_thread_.Stop() which would deadlock if called from itself.
+    DeleteOnThreadPool(base::WrapUnique(callback_data->wrapper.get()));
   }
 
   delete callback_data;

@@ -10,10 +10,14 @@ class BraveBrowsingDataRemoverDelegate;
 namespace brave {
 class ProcessLauncher;
 }
+namespace local_ai {
+class CandleEmbedder;
+}
 
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H  \
   friend class ::BraveBrowsingDataRemoverDelegate; \
-  friend class brave::ProcessLauncher;
+  friend class brave::ProcessLauncher;             \
+  friend class local_ai::CandleEmbedder;
 
 #include <base/threading/thread_restrictions.h>  // IWYU pragma: export
 

@@ -110,13 +110,19 @@ CandleService::CandleService() {
 
 CandleService::~CandleService() {
   LocalModelsUpdaterState::GetInstance()->RemoveObserver(this);
+
+  // Ensure embedder is deleted on thread pool to avoid blocking
+  // (defensive - Shutdown() should have already done this)
+  CandleEmbedder::DeleteOnThreadPool(std::move(embedder_));
 }
 
 void CandleService::LoadModelFiles() {
-  if (model_initialized_ || embedder_) {
+  if (model_initialized_ || embedder_ || initialization_in_progress_) {
     DVLOG(3) << "Model already initialized or loading";
     return;
   }
+
+  initialization_in_progress_ = true;
 
   // Get model file paths from LocalModelsUpdaterState
   base::FilePath weights_path =
@@ -135,6 +141,7 @@ void CandleService::LoadModelFiles() {
 
   if (model_dir.empty()) {
     DVLOG(0) << "CandleService: Model directory not set in updater state";
+    initialization_in_progress_ = false;
     return;
   }
 
@@ -164,6 +171,7 @@ void CandleService::LoadModelFiles() {
 
             if (!model_files) {
               DVLOG(0) << "Failed to load model files from disk";
+              service->initialization_in_progress_ = false;
               service->model_load_retry_count_++;
               if (service->model_load_retry_count_ <
                   CandleService::kMaxModelLoadRetries) {
@@ -210,11 +218,18 @@ void CandleService::Embed(const std::string& text, EmbedCallback callback) {
 
 void CandleService::OnModelInitialized(std::unique_ptr<CandleEmbedder> embedder,
                                        const std::string& error_message) {
+  initialization_in_progress_ = false;
+
   if (embedder) {
     DVLOG(3) << "CandleService: EmbeddingGemma model loaded successfully! "
              << "History embeddings are now ready.";
     model_load_retry_count_ = 0;
     model_initialized_ = true;
+
+    // Safely delete any existing embedder on thread pool (defensive)
+    if (embedder_) {
+      CandleEmbedder::DeleteOnThreadPool(std::move(embedder_));
+    }
     embedder_ = std::move(embedder);
 
     // Process any queued embed requests
@@ -263,7 +278,8 @@ void CandleService::Shutdown() {
   }
   pending_embed_requests_.clear();
 
-  embedder_.reset();
+  // Delete embedder on thread pool to avoid blocking UI thread
+  CandleEmbedder::DeleteOnThreadPool(std::move(embedder_));
   model_initialized_ = false;
 }
 

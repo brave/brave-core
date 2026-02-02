@@ -49,6 +49,10 @@ class CandleEmbedder {
 
   void Embed(const std::string& text, EmbedCallback callback);
 
+  // Delete the embedder on a thread pool to avoid blocking the UI thread.
+  // CandleEmbedder::~CandleEmbedder() calls Thread::Stop() which blocks.
+  static void DeleteOnThreadPool(std::unique_ptr<CandleEmbedder> embedder);
+
  private:
   static void CreateOnRustThread(
       CandleEmbedder* wrapper,

@@ -50,6 +50,7 @@ class CandleService : public KeyedService,
   // Track readiness conditions
   bool component_ready_ = false;
   bool model_initialized_ = false;
+  bool initialization_in_progress_ = false;
 
   // The native Rust embedder
   std::unique_ptr<CandleEmbedder> embedder_;
