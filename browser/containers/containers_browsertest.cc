@@ -441,7 +441,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   EXPECT_EQ(1, content::EvalJs(web_contents_default,
                                GetServiceWorkerRegistrationCountJS()));
 
-  // Open a new tab with a different storage partition (container_a)
+  // Open a new tab with a different storage partition (container-a)
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
@@ -486,7 +486,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   EXPECT_EQ(1, content::EvalJs(web_contents_default,
                                GetServiceWorkerRegistrationCountJS()));
 
-  // Open another container (container_b)
+  // Open another container (container-b)
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
