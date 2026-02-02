@@ -5,12 +5,15 @@
 
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 
+#include <cstddef>
 #include <memory>
 #include <utility>
 
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
@@ -22,6 +25,8 @@
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_stats/switches.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -31,10 +36,12 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/rpill/common/rpill.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -102,6 +109,31 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
       policy_exception_justification:
         "Not implemented."
     })");
+}
+
+serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
+  if (!profile_manager) {
+    // `profile_manager` can only be null in tests.
+    CHECK_IS_TEST();
+    return nullptr;
+  }
+
+  const base::FilePath initial_profile_dir =
+      profile_manager->GetInitialProfileDir();
+  Profile* profile = profile_manager->GetProfileByPath(initial_profile_dir);
+  if (!profile) {
+    profile = profile_manager->GetLastUsedProfileIfLoaded();
+  }
+  // TODO(https://github.com/brave/brave-browser/issues/52492): Migrate SERP
+  // metrics to profile attributes and remove temporary invariant checks.
+  DUMP_WILL_BE_CHECK(profile);
+
+  misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  CHECK(profile_misc_metrics_service);
+
+  return profile_misc_metrics_service->GetSerpMetrics();
 }
 
 }  // anonymous namespace
@@ -337,9 +369,8 @@ void BraveStatsUpdater::SendServerPing() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
   auto stats_updater_params =
-      std::make_unique<brave_stats::BraveStatsUpdaterParams>(pref_service_,
-                                                             arch_);
-
+      std::make_unique<brave_stats::BraveStatsUpdaterParams>(
+          pref_service_, GetSerpMetrics(profile_manager_), arch_);
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;

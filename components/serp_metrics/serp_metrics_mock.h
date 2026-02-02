@@ -26,15 +26,14 @@ class SerpMetricsMock final : public SerpMetrics {
 
   MOCK_METHOD(void, RecordBraveSearch, (), ());
   MOCK_METHOD(size_t, GetBraveSearchCountForYesterday, (), (const));
-  MOCK_METHOD(size_t, GetBraveSearchCountForStalePeriod, (), (const));
 
   MOCK_METHOD(void, RecordGoogleSearch, (), ());
   MOCK_METHOD(size_t, GetGoogleSearchCountForYesterday, (), (const));
-  MOCK_METHOD(size_t, GetGoogleSearchCountForStalePeriod, (), (const));
 
   MOCK_METHOD(void, RecordOtherSearch, (), ());
   MOCK_METHOD(size_t, GetOtherSearchCountForYesterday, (), (const));
-  MOCK_METHOD(size_t, GetOtherSearchCountForStalePeriod, (), (const));
+
+  MOCK_METHOD(size_t, GetSearchCountForStalePeriod, (), (const));
 };
 
 }  // namespace serp_metrics

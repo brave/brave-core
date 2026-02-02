@@ -39,15 +39,14 @@ class SerpMetrics {
 
   virtual void RecordBraveSearch();
   virtual size_t GetBraveSearchCountForYesterday() const;
-  virtual size_t GetBraveSearchCountForStalePeriod() const;
 
   virtual void RecordGoogleSearch();
   virtual size_t GetGoogleSearchCountForYesterday() const;
-  virtual size_t GetGoogleSearchCountForStalePeriod() const;
 
   virtual void RecordOtherSearch();
   virtual size_t GetOtherSearchCountForYesterday() const;
-  virtual size_t GetOtherSearchCountForStalePeriod() const;
+
+  virtual size_t GetSearchCountForStalePeriod() const;
 
  private:
   // Returns the start of the stale period in local time, based on the last day
@@ -57,6 +56,10 @@ class SerpMetrics {
   // is unavailable or invalid, an empty time is returned to indicate that the
   // full retention period should be considered stale.
   base::Time GetStartOfStalePeriod() const;
+
+  size_t GetBraveSearchCountForStalePeriod() const;
+  size_t GetGoogleSearchCountForStalePeriod() const;
+  size_t GetOtherSearchCountForStalePeriod() const;
 
   const raw_ptr<PrefService> local_state_;  // Not owned.
   const raw_ptr<PrefService> prefs_;        // Not owned.
