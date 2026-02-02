@@ -220,12 +220,38 @@ base::expected<RpcResponse, std::string> HandleRpcCall(
 std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
     const polkadot_substrate_rpc_responses::PolkadotChainHeader& res) {
   PolkadotBlockHeader header;
+
   if (!PrefixedHexStringToFixed(res.result->parent_hash, header.parent_hash)) {
     return std::nullopt;
   }
 
   if (!base::HexStringToUInt(res.result->number, &header.block_number)) {
     return std::nullopt;
+  }
+
+  if (!PrefixedHexStringToFixed(res.result->state_root, header.state_root)) {
+    return std::nullopt;
+  }
+
+  if (!PrefixedHexStringToFixed(res.result->extrinsics_root,
+                                header.extrinsics_root)) {
+    return std::nullopt;
+  }
+
+  // We need this for hashing the block header.
+  // If we receive more than u32::MAX logs, it's safe to say we're getting bad
+  // data from the remote.
+  if (!base::CheckedNumeric<uint32_t>(res.result->digest.logs.size())
+           .IsValid()) {
+    return std::nullopt;
+  }
+
+  for (const auto& log_str : res.result->digest.logs) {
+    std::vector<uint8_t> log;
+    if (!PrefixedHexStringToBytes(log_str, &log)) {
+      return std::nullopt;
+    }
+    header.logs.push_back(std::move(log));
   }
 
   return header;
@@ -398,7 +424,7 @@ void PolkadotSubstrateRpc::GetBlockHeader(
   base::ListValue params;
 
   if (blockhash) {
-    params.Append(base::HexEncode(*blockhash));
+    params.Append(base::HexEncodeLower(*blockhash));
   }
 
   auto payload =
