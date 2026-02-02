@@ -18,6 +18,9 @@ class RewardsEngine;
 
 namespace endpoints {
 
+// Returns the Brave services key header for Gate3 requests.
+std::string GetBraveServicesKeyHeader();
+
 class RequestBuilder {
  public:
   static constexpr char kApplicationJson[] = "application/json; charset=utf-8";

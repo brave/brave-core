@@ -8,7 +8,15 @@
 #include <optional>
 #include <utility>
 
+#include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
+
 namespace brave_rewards::internal::endpoints {
+
+std::string GetBraveServicesKeyHeader() {
+  return std::string(kBraveServicesKeyHeader) + ": " +
+         BUILDFLAG(BRAVE_SERVICES_KEY);
+}
 
 RequestBuilder::~RequestBuilder() = default;
 

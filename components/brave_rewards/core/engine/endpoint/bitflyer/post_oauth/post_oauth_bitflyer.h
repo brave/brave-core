@@ -11,18 +11,17 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
-// POST https://bitflyer.com/api/link/v1/token
+// POST https://gate3.wallet.brave.com/api/oauth/bitflyer/{environment}/token
 //
 // Request body:
 // {
-//   "client_id": "abcdedg",
-//   "client_secret": "xxxxxxxxxxxxxxxxxx",
 //   "code": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
 //   "grant_type": "code",
 //   "code_verifier": "xxxxxxx",
-//   "expires_in": 3600,
+//   "expires_in": 259002,
 //   "external_account_id": "xxxxxxxxxx",
 //   "request_id": "xxxxxxxx",
+//   "redirect_uri": "rewards://bitflyer/authorization",
 //   "request_deposit_id": true
 // }
 //

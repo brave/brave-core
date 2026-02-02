@@ -16,8 +16,10 @@ namespace brave_rewards::internal {
 class RewardsBitflyerPostOauthTest : public RewardsEngineTest {
  protected:
   auto Request(mojom::UrlResponsePtr response) {
-    auto request_url = engine().Get<EnvironmentConfig>().bitflyer_url().Resolve(
-        "/api/link/v1/token");
+    auto request_url = engine()
+                           .Get<EnvironmentConfig>()
+                           .gate3_oauth_url("bitflyer")
+                           .Resolve("token");
 
     client().AddNetworkResultForTesting(
         request_url.spec(), mojom::UrlMethod::POST, std::move(response));

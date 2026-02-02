@@ -8,12 +8,11 @@
 #include <optional>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/strcat.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/engine/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/url_loader.h"
@@ -27,16 +26,14 @@ PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
   return engine_->Get<EnvironmentConfig>()
-      .bitflyer_url()
-      .Resolve("/api/link/v1/token")
+      .gate3_oauth_url("bitflyer")
+      .Resolve("token")
       .spec();
 }
 
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code,
                                        const std::string& code_verifier) {
-  auto& config = engine_->Get<EnvironmentConfig>();
-
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
@@ -44,8 +41,6 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   dict.Set("grant_type", "code");
   dict.Set("code", code);
   dict.Set("code_verifier", code_verifier);
-  dict.Set("client_id", config.bitflyer_client_id());
-  dict.Set("client_secret", config.bitflyer_client_secret());
   dict.Set("expires_in", 259002);
   dict.Set("external_account_id", external_account_id);
   dict.Set("request_id", request_id);
@@ -111,18 +106,12 @@ void PostOauth::Request(const std::string& external_account_id,
                         const std::string& code,
                         const std::string& code_verifier,
                         PostOauthCallback callback) {
-  auto get_auth_user = [&]() {
-    auto& config = engine_->Get<EnvironmentConfig>();
-    return base::Base64Encode(base::StrCat(
-        {config.bitflyer_client_id(), ":", config.bitflyer_client_secret()}));
-  };
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(external_account_id, code, code_verifier);
-  request->headers = {"Authorization: Basic " + get_auth_user()};
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
+  request->headers.push_back(endpoints::GetBraveServicesKeyHeader());
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kNone,

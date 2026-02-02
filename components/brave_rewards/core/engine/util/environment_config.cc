@@ -6,7 +6,9 @@
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 
 #include "base/check.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
+#include "brave/components/constants/brave_constants.h"
 
 namespace brave_rewards::internal {
 
@@ -157,22 +159,18 @@ GURL EnvironmentConfig::bitflyer_url() const {
                       : BUILDFLAG(BITFLYER_SANDBOX_URL));
 }
 
-std::string EnvironmentConfig::bitflyer_client_id() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_ID)
-             : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID);
-}
-
-std::string EnvironmentConfig::bitflyer_client_secret() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_SECRET)
-             : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_SECRET);
-}
-
 std::string EnvironmentConfig::bitflyer_fee_address() const {
   return current_environment() == mojom::Environment::kProduction
              ? BUILDFLAG(BITFLYER_PRODUCTION_FEE_ADDRESS)
              : BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS);
+}
+
+GURL EnvironmentConfig::gate3_oauth_url(const std::string& provider) const {
+  std::string environment =
+      current_environment() == mojom::Environment::kProduction ? "production"
+                                                               : "sandbox";
+  return GURL(base::StrCat(
+      {brave::kGate3URL, "/api/oauth/", provider, "/", environment, "/"}));
 }
 
 GURL EnvironmentConfig::URLValue(std::string value) const {

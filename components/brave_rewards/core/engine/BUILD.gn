@@ -16,12 +16,8 @@ buildflag_header("buildflags") {
   header_dir = "brave/components/brave_rewards/core/engine"
   header = "buildflags.h"
   flags = [
-    "BITFLYER_PRODUCTION_CLIENT_ID=\"$bitflyer_production_client_id\"",
-    "BITFLYER_PRODUCTION_CLIENT_SECRET=\"$bitflyer_production_client_secret\"",
     "BITFLYER_PRODUCTION_FEE_ADDRESS=\"$bitflyer_production_fee_address\"",
     "BITFLYER_PRODUCTION_URL=\"$bitflyer_production_url\"",
-    "BITFLYER_SANDBOX_CLIENT_ID=\"$bitflyer_sandbox_client_id\"",
-    "BITFLYER_SANDBOX_CLIENT_SECRET=\"$bitflyer_sandbox_client_secret\"",
     "BITFLYER_SANDBOX_FEE_ADDRESS=\"$bitflyer_sandbox_fee_address\"",
     "BITFLYER_SANDBOX_URL=\"$bitflyer_sandbox_url\"",
     "GEMINI_PRODUCTION_API_URL=\"$gemini_production_api_url\"",
@@ -406,6 +402,7 @@ static_library("engine") {
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
+    "//brave/components/constants",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//brave/vendor/brave_base",
