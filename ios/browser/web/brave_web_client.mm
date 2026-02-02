@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/ios/ns_error_util.h"
+#include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
@@ -191,4 +192,18 @@ NSString* BraveWebClient::GetUserAgentForRequest(
                           request:request];
   }
   return nil;
+}
+
+bool BraveWebClient::CanRunOpenPanel(web::WebState* source) const
+    API_AVAILABLE(ios(18.4)) {
+  return false;
+}
+
+void BraveWebClient::RunOpenPanel(
+    web::WebState* source,
+    WKOpenPanelParameters* parameters,
+    WKFrameInfo* frame,
+    base::OnceCallback<void(NSArray<NSURL*>*)> completion) const
+    API_AVAILABLE(ios(18.4)) {
+  NOTIMPLEMENTED();
 }

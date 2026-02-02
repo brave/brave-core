@@ -50,6 +50,14 @@ class BraveWebClient : public ChromeWebClient {
   bool ShouldBlockUniversalLinks(web::WebState* web_state,
                                  NSURLRequest* request) override;
 
+  bool CanRunOpenPanel(web::WebState* web_state) const override
+      API_AVAILABLE(ios(18.4));
+  void RunOpenPanel(web::WebState* web_state,
+                    WKOpenPanelParameters* parameters,
+                    WKFrameInfo* frame,
+                    base::OnceCallback<void(NSArray<NSURL*>*)> completion)
+      const override API_AVAILABLE(ios(18.4));
+
  private:
   std::string legacy_user_agent_;
 };
