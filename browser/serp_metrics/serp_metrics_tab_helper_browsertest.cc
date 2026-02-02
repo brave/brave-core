@@ -21,7 +21,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/sessions/session_restore_test_utils.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -157,7 +156,7 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
   uint64_t GetSearchCountForTimePeriodStorageDictKey(
       const char* dict_key) const {
     TimePeriodStorage time_period_storage(
-        browser()->profile()->GetPrefs(), prefs::kSerpMetricsTimePeriodStorage,
+        GetProfile()->GetPrefs(), prefs::kSerpMetricsTimePeriodStorage,
         dict_key, kSerpMetricsTimePeriodInDays.Get(),
         /*should_offset_dst=*/false);
     return time_period_storage.GetPeriodSum();
