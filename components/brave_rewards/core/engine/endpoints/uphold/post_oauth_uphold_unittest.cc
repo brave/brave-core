@@ -38,8 +38,8 @@ class RewardsPostOAuthUpholdTest
 TEST_P(RewardsPostOAuthUpholdTest, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  auto request_url = engine().Get<EnvironmentConfig>().uphold_api_url().Resolve(
-      "/oauth2/token");
+  auto request_url =
+      engine().Get<EnvironmentConfig>().uphold_oauth_url().Resolve("token");
 
   auto response = mojom::UrlResponse::New();
   response->status_code = status_code;

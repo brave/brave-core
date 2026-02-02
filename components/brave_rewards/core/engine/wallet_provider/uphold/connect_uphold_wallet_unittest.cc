@@ -20,7 +20,7 @@ TEST_F(RewardsConnectUpholdWalletTest, LoginURL) {
   auto actual = connect.GenerateLoginURL();
 
   auto expected_url = config.uphold_oauth_url().Resolve(base::StrCat(
-      {"/authorize/", config.uphold_client_id(),
+      {"auth"
        "?scope=cards%3Aread+cards%3Awrite+user%3Aread+transactions%3Aread+"
        "transactions%3Atransfer%3Aapplication+transactions%3Atransfer%3Aothers"
        "&intention=login"

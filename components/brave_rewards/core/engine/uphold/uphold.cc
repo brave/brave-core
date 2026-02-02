@@ -29,7 +29,7 @@ const char* Uphold::WalletType() const {
 }
 
 void Uphold::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
-  auto url = engine_->Get<EnvironmentConfig>().uphold_oauth_url();
+  auto url = engine_->Get<EnvironmentConfig>().uphold_url();
 
   external_wallet.account_url = url.Resolve("/dashboard").spec();
 

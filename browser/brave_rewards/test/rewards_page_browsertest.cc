@@ -379,18 +379,25 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ConnectAccount) {
   std::string state;
   WaitForFinishNavigation([&state](const GURL& url) {
     std::string url_spec = url.spec();
-    if (url_spec.find("/authorize/") == std::string::npos) {
+    if (url_spec.find("/api/oauth/uphold/sandbox/auth") == std::string::npos &&
+        url_spec.find("/api/oauth/uphold/production/auth") ==
+            std::string::npos) {
       return false;
     }
-    if (auto pos = url_spec.find("&state="); pos != std::string::npos) {
-      state = url_spec.substr(pos);
+    if (auto pos = url_spec.find("state="); pos != std::string::npos) {
+      pos += 6;
+      size_t end = url_spec.find('&', pos);
+      state = url_spec.substr(
+          pos, end != std::string::npos ? end - pos : std::string::npos);
     }
     return true;
   });
 
   SetRequestHandler(base::BindLambdaForTesting(
       [](const GURL& url, const std::string& method) -> RequestHandlerResult {
-        if (url.path() == "/oauth2/token" && method == "POST") {
+        if ((url.path() == "/api/oauth/uphold/sandbox/token" ||
+             url.path() == "/api/oauth/uphold/production/token") &&
+            method == "POST") {
           return std::pair{200, R"({ "access_token": "abc123" })"};
         }
         if (url.path() == "/v0/me" && method == "GET") {

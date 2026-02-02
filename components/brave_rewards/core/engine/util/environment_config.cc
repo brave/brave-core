@@ -73,28 +73,20 @@ GURL EnvironmentConfig::rewards_grant_url() const {
   }
 }
 
-GURL EnvironmentConfig::uphold_oauth_url() const {
+GURL EnvironmentConfig::uphold_url() const {
   return URLValue(current_environment() == mojom::Environment::kProduction
                       ? BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)
                       : BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL));
+}
+
+GURL EnvironmentConfig::uphold_oauth_url() const {
+  return BuildGate3OAuthURL("uphold");
 }
 
 GURL EnvironmentConfig::uphold_api_url() const {
   return URLValue(current_environment() == mojom::Environment::kProduction
                       ? BUILDFLAG(UPHOLD_PRODUCTION_API_URL)
                       : BUILDFLAG(UPHOLD_SANDBOX_API_URL));
-}
-
-std::string EnvironmentConfig::uphold_client_id() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)
-             : BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID);
-}
-
-std::string EnvironmentConfig::uphold_client_secret() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_SECRET)
-             : BUILDFLAG(UPHOLD_SANDBOX_CLIENT_SECRET);
 }
 
 std::string EnvironmentConfig::uphold_fee_address() const {

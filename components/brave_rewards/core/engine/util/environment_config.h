@@ -30,11 +30,10 @@ class EnvironmentConfig : public RewardsEngineHelper,
   GURL rewards_api_url() const;
   GURL rewards_grant_url() const;
 
-  GURL uphold_oauth_url() const;
+  GURL uphold_url() const;
   GURL uphold_api_url() const;
-  std::string uphold_client_id() const;
-  std::string uphold_client_secret() const;
   std::string uphold_fee_address() const;
+  GURL uphold_oauth_url() const;
 
   GURL gemini_oauth_url() const;
   GURL gemini_api_url() const;
