@@ -4,9 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("serp_metrics") {
-  public = [ "serp_metrics.h" ]
+  public = [
+    "serp_classifier.h",
+    "serp_metrics.h",
+  ]
 
-  sources = [ "serp_metrics.cc" ]
+  sources = [
+    "serp_classifier.cc",
+    "serp_metrics.cc",
+  ]
 
   public_deps = [
     "//base",
@@ -45,7 +51,10 @@ static_library("features") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "serp_metrics_unittest.cc" ]
+  sources = [
+    "serp_classifier_unittest.cc",
+    "serp_metrics_unittest.cc",
+  ]
 
   deps = [
     ":features",
