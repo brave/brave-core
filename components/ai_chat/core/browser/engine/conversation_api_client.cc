@@ -279,7 +279,9 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
-#if !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(IS_IOS)
+  dict.Set("use_citations", ai_chat::features::IsAIChatWebUIEnabled());
+#else
   dict.Set("use_citations", true);
 #endif
 
