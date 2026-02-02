@@ -18,6 +18,15 @@ index 9f67abe2a84421d2cad94dc1db1666c5c391abcb..4fc53cc2fcd3535ad0a1a7e8051fb297
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
+@@ -576,6 +576,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+     // Clamp the insertion point to keep it within the visible region.
+     last_insertion_point = std::max(0, last_insertion_point - num_dragged_tabs);
+
+     // Ensure the first dragged tab always stays in the visible index range.
++    BRAVE_TAB_DRAG_CONTEXT_IMPL_GET_INSERTION_INDEX_FOR_DRAGGED_BOUNDS
+     return std::min(index, last_insertion_point);
+   }
+
 @@ -1469,7 +1471,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,

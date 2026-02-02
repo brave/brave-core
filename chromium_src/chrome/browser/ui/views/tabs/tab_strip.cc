@@ -53,10 +53,18 @@
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
+// Skip visible-region clamping for vertical tabs; it's for horizontal overflow.
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_GET_INSERTION_INDEX_FOR_DRAGGED_BOUNDS   \
+  if (tabs::utils::ShouldShowBraveVerticalTabs(                             \
+          tab_strip_->GetBrowserWindowInterface())) {                      \
+    return index;                                                           \
+  }
+
 #define TabDragController TabDragControllerChromium
 #include <chrome/browser/ui/views/tabs/tab_strip.cc>
 #undef TabDragController
 
+#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_GET_INSERTION_INDEX_FOR_DRAGGED_BOUNDS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController
