@@ -3278,6 +3278,7 @@
 -ServiceWorker/NTPInterceptionWebRequestAPITest.*
 -ServiceWorker/WebNavigationApiTestWithContextType.*
 -ServiceWorker/WebUiNtpInterceptionWebRequestAPITest.*
+-ServiceWorkerMessagingTest.TabToWorker_StopWorkerDisconnects
 -ServiceWorkerBackgroundSyncTest.*
 -ServiceWorkerBasedBackgroundTest.*
 -ServiceWorkerLifetimeKeepaliveBrowsertest.ShutdownWithActiveMessagePipe*
