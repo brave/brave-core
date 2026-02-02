@@ -5,7 +5,6 @@
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
-import TextInput from '$web-components/input'
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import { useState } from 'react'
@@ -17,6 +16,7 @@ import PublisherCard, { DirectPublisherCard } from '../shared/PublisherCard'
 import { PopularCarousel } from './Popular'
 import { SuggestionsCarousel } from './Suggestions'
 import useSearch from './useSearch'
+import Input from '@brave/leo/react/input'
 
 const Header = styled.span`
   font-size: 24px;
@@ -24,19 +24,12 @@ const Header = styled.span`
   padding: 12px 0;
 `
 
-const SearchInput = styled(TextInput)`
-  margin: 16px 0;
-  border-radius: 4px;
-  --interactive8: #AEB1C2;
-  --focus-border: #737ADE;
-`
-
 export default function Discover () {
   const [query, setQuery] = useState('')
 
   return <Flex direction='column'>
     <Header>Discover</Header>
-    <SearchInput type="search" placeholder={getLocale(S.BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL)} value={query} onChange={e => setQuery(e.currentTarget.value)} />
+    <Input type="search" placeholder={getLocale(S.BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL)} value={query} onInput={e => setQuery(e.value)} />
     { query.length
       ? <SearchResults query={query} />
       : <Home />
