@@ -5,7 +5,9 @@
 
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 
+#include "base/test/scoped_feature_list.h"
 #include "base/types/optional_ref.h"
+#include "brave/components/containers/core/common/features.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/test/storage_partition_test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -13,14 +15,29 @@
 namespace containers {
 
 class StoragePartitionUtilsTest : public testing::Test {
- protected:
-  StoragePartitionUtilsTest() = default;
+ public:
+  StoragePartitionUtilsTest() {
+    scoped_feature_list_.InitAndEnableFeature(features::kContainers);
+  }
   ~StoragePartitionUtilsTest() override = default;
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(StoragePartitionUtilsTest, IsContainersStoragePartition_ValidConfig) {
   auto config = content::CreateStoragePartitionConfigForTesting(
       /*in_memory=*/false,
+      /*partition_domain=*/kContainersStoragePartitionDomain,
+      /*partition_name=*/"test_container");
+
+  EXPECT_TRUE(IsContainersStoragePartition(config));
+}
+
+TEST_F(StoragePartitionUtilsTest,
+       IsContainersStoragePartition_ValidInMemoryConfig) {
+  auto config = content::CreateStoragePartitionConfigForTesting(
+      /*in_memory=*/true,
       /*partition_domain=*/kContainersStoragePartitionDomain,
       /*partition_name=*/"test_container");
 

@@ -5,12 +5,14 @@
 
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 
+#include "brave/components/containers/core/common/features.h"
 #include "content/public/browser/storage_partition_config.h"
 
 namespace containers {
 
 bool IsContainersStoragePartition(
     const content::StoragePartitionConfig& partition_config) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
   return partition_config.partition_domain() ==
              kContainersStoragePartitionDomain &&
          !partition_config.partition_name().empty();
@@ -19,6 +21,7 @@ bool IsContainersStoragePartition(
 std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
     base::optional_ref<const content::StoragePartitionConfig>
         storage_partition_config) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
   if (storage_partition_config &&
       IsContainersStoragePartition(*storage_partition_config)) {
     return *storage_partition_config;

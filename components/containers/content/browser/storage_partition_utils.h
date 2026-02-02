@@ -17,13 +17,20 @@ class StoragePartitionConfig;
 
 namespace containers {
 
+// The partition domain identifier used for all containers storage partitions.
 inline constexpr char kContainersStoragePartitionDomain[] =
     "containers-default";
 
+// Checks whether a given StoragePartitionConfig belongs to Containers.
+// Partition domain should match kContainersStoragePartitionDomain and partition
+// name should be non-empty.
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 bool IsContainersStoragePartition(
     const content::StoragePartitionConfig& partition_config);
 
+// Returns the StoragePartitionConfig if it is a Containers storage partition,
+// otherwise returns std::nullopt. Used to conditionally inherit
+// StoragePartitionConfig when creating a new SiteInstance.
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
     base::optional_ref<const content::StoragePartitionConfig>

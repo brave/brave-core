@@ -14,6 +14,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
@@ -41,12 +42,20 @@ void UpdateParams(NavigateParams* params) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
 std::optional<content::StoragePartitionConfig>
 GetStoragePartitionConfigToInherit(const NavigateParams& params) {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return std::nullopt;
+  }
+
   if (params.storage_partition_config) {
-    return *params.storage_partition_config;
+    return containers::MaybeInheritStoragePartition(
+        *params.storage_partition_config);
   }
+
   if (params.source_site_instance) {
-    return params.source_site_instance->GetStoragePartitionConfig();
+    return containers::MaybeInheritStoragePartition(
+        params.source_site_instance->GetStoragePartitionConfig());
   }
+
   return std::nullopt;
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -56,10 +65,9 @@ GetStoragePartitionConfigToInherit(const NavigateParams& params) {
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateParams(params);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#define GetSiteInstanceForNewTab(...)                                \
-  GetSiteInstanceForNewTab(__VA_ARGS__,                              \
-                           containers::MaybeInheritStoragePartition( \
-                               GetStoragePartitionConfigToInherit(params)))
+#define GetSiteInstanceForNewTab(...)   \
+  GetSiteInstanceForNewTab(__VA_ARGS__, \
+                           GetStoragePartitionConfigToInherit(params))
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/browser_navigator.cc>
