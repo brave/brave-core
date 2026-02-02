@@ -10,7 +10,7 @@
 // account all Brave's permissions. This define is not great, but perhaps will
 // hold. See
 // chromium_src/third_party/blink/public/common/permissions/permission_utils.h
-constexpr size_t kBraveExtraPermissionsCount = 13;
+constexpr size_t kBraveExtraPermissionsCount = 14;
 #define SizeIs(VALUE)                                          \
   SizeIs(VALUE == kPermissionsCount                            \
              ? kPermissionsCount + kBraveExtraPermissionsCount \
