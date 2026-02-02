@@ -162,7 +162,9 @@ void BraveTreeTabStripCollectionDelegate::AddTabAsTreeNodeToCollection(
     tabs::TabCollection* target_collection,
     size_t target_index,
     size_t expected_recursive_index) const {
+#if DCHECK_IS_ON()
   auto* tab_ptr = tab.get();
+#endif
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_));
