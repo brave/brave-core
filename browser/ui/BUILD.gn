@@ -866,6 +866,7 @@ source_set("ui") {
     "//brave/components/p3a_utils",
     "//brave/components/playlist/core/common",
     "//brave/components/query_filter",
+    "//brave/components/resources:scaled_resources",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
     "//brave/components/skus/browser",
