@@ -5,6 +5,9 @@
 
 #include "extensions/browser/verified_contents.h"
 
+#include <memory>
+
+#include "base/files/file_util.h"
 #include "base/memory/ptr_util.h"
 #include "extensions/common/extension.h"
 
