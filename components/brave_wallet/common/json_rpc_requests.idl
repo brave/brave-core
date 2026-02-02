@@ -13,7 +13,7 @@ namespace json_rpc_requests {
     DOMString? value;
     DOMString? data;
     DOMString? nonce;
-    DOMString? maxPriorityFeePerGas;
-    DOMString? maxFeePerGas;
+    any? maxPriorityFeePerGas;
+    any? maxFeePerGas;
   };
 };

@@ -130,11 +130,22 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(
 
   tx_data->base_data = std::move(base_data_ret);
 
+  // MM accepts `null` in these fields as no value:
+  // https://github.com/MetaMask/core/blob/5d9dec2085607b9dbf7667e328a16a5652da07fa/packages/transaction-controller/src/utils/validation.ts#L374-L395
   if (tx->max_priority_fee_per_gas) {
-    tx_data->max_priority_fee_per_gas = *tx->max_priority_fee_per_gas;
+    if (tx->max_priority_fee_per_gas->is_string()) {
+      tx_data->max_priority_fee_per_gas =
+          tx->max_priority_fee_per_gas->GetString();
+    } else if (!tx->max_priority_fee_per_gas->is_none()) {
+      return nullptr;
+    }
   }
   if (tx->max_fee_per_gas) {
-    tx_data->max_fee_per_gas = *tx->max_fee_per_gas;
+    if (tx->max_fee_per_gas->is_string()) {
+      tx_data->max_fee_per_gas = tx->max_fee_per_gas->GetString();
+    } else if (!tx->max_fee_per_gas->is_none()) {
+      return nullptr;
+    }
   }
 
   return tx_data;

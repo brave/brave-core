@@ -137,6 +137,41 @@ TEST(EthResponseHelperUnitTest, ParseEthTransaction1559Params) {
   EXPECT_TRUE(tx_data->max_fee_per_gas.empty());
 }
 
+TEST(EthResponseHelperUnitTest, ParseEthTransaction1559ParamsHandleNulls) {
+  std::string json(
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "to": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7",
+          "gas": "0x146",
+          "value": "0x25F38E9E0000000",
+          "data": "0x010203",
+          "nonce": "0x01",
+        }]
+      })");
+  auto params = ParseParamsList(json);
+  std::string from;
+  mojom::TxData1559Ptr tx_data = ParseEthTransaction1559Params(params, from);
+  EXPECT_EQ(tx_data->max_fee_per_gas, "");
+  EXPECT_EQ(tx_data->max_priority_fee_per_gas, "");
+
+  // nulls in these fields are parsed as no value.
+  params[0].GetDict().Set("maxFeePerGas", base::Value());
+  params[0].GetDict().Set("maxPriorityFeePerGas", base::Value());
+
+  tx_data = ParseEthTransaction1559Params(params, from);
+  EXPECT_EQ(tx_data->max_fee_per_gas, "");
+  EXPECT_EQ(tx_data->max_priority_fee_per_gas, "");
+
+  // Non string values fail parsing.
+  params[0].GetDict().Set("maxFeePerGas", base::Value(123));
+  EXPECT_FALSE(ParseEthTransaction1559Params(params, from));
+  params[0].GetDict().Set("maxFeePerGas", base::Value());
+
+  params[0].GetDict().Set("maxPriorityFeePerGas", base::DictValue());
+  EXPECT_FALSE(ParseEthTransaction1559Params(params, from));
+}
+
 TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   // Test both EIP1559 and legacy gas fee fields are specified.
   std::string json(
