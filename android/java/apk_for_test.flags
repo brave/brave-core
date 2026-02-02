@@ -718,6 +718,10 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.ui.favicon.FaviconUtils {
+    *** getIconDrawableWithFilter(...);
+}
+
 -keep class org.chromium.chrome.browser.document.ChromeLauncherActivity {
     public <init>(...);
 }

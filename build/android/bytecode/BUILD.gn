@@ -56,6 +56,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveEditUrlSuggestionProcessorBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveEditUrlSuggestionProcessorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveExternalNavigationHandlerClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFaviconUtilsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveForegroundServiceUtilsClassAdapter.java",

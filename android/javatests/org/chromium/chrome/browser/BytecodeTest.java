@@ -158,6 +158,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.appmenu.BraveAppMenu;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -181,6 +182,7 @@ import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
+import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
@@ -362,6 +364,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFeatureParam"));
         Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFlagUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/favicon/FaviconUtils"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
@@ -795,6 +798,18 @@ public class BytecodeTest {
                         "updateVisibility",
                         MethodModifier.REGULAR,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ui/favicon/FaviconUtils",
+                        "getIconDrawableWithFilter",
+                        MethodModifier.STATIC,
+                        Drawable.class,
+                        Bitmap.class,
+                        GURL.class,
+                        RoundedIconGenerator.class,
+                        FaviconHelper.DefaultFaviconHelper.class,
+                        Context.class,
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",

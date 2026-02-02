@@ -60,6 +60,7 @@ public class BraveClassAdapter {
         chain = new BraveEditUrlSuggestionProcessorBaseClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveExternalNavigationHandlerClassAdapter(chain);
+        chain = new BraveFaviconUtilsClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
         chain = new BraveForegroundServiceUtilsClassAdapter(chain);
