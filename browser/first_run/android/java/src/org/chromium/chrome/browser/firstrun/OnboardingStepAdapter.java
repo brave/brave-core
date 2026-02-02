@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
-import org.chromium.build.annotations.NullMarked;
 import org.chromium.brave.browser.firstrun.R;
+import org.chromium.build.annotations.NullMarked;
 
 /**
  * RecyclerView adapter for the variant-B onboarding ViewPager2, inflating one layout per step and

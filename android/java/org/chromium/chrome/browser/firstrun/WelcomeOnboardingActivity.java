@@ -383,8 +383,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
     }
 
-    private void setMetricsReportingConsent(
-            final boolean consent, final boolean markAsShown) {
+    private void setMetricsReportingConsent(final boolean consent, final boolean markAsShown) {
         try {
             // Updates reporting consent for first run.
             UmaSessionStats.changeMetricsReportingConsent(
