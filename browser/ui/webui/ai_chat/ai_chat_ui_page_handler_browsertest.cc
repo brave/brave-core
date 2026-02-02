@@ -11,6 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/gtest_util.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
@@ -111,7 +112,9 @@ class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
     EXPECT_TRUE(webui);
     // Wait for the page handler to be created. It's created when the frontend
     // binds to the mojom::AIChatUIHandler Mojo interface, which may not happen
-    // immediately after the WebUI loads.
+    // immediately after the WebUI loads. Extend the timeout from the default 1s
+    // to 30s for slower CI machines (especially macOS arm64 under load).
+    base::test::ScopedRunLoopTimeout timeout(FROM_HERE, base::Seconds(30));
     bool handler_ready = base::test::RunUntil(
         [&]() { return webui->page_handler_.get() != nullptr; });
     EXPECT_TRUE(handler_ready);
