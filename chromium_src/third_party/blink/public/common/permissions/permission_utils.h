@@ -23,7 +23,8 @@
   BRAVE_GOOGLE_SIGN_IN,             \
   BRAVE_OPEN_AI_CHAT,               \
   BRAVE_CARDANO,                    \
-  NUM
+  NUM,                              \
+  BRAVE_MIN_VALUE = BRAVE_ADS
 // clang-format on
 
 #include <third_party/blink/public/common/permissions/permission_utils.h>  // IWYU pragma: export
