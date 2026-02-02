@@ -39,6 +39,7 @@ static_library("content") {
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/constants",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources",

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/no_destructor.h"
+#include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/update_client/buildflags.h"
@@ -25,7 +26,8 @@ int OnBeforeStartTransaction_BraveServiceKey(
   static const base::NoDestructor<std::vector<std::string>> allowed_domains{
       {kExtensionUpdaterDomain,
        std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
-       std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host())}};
+       std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()),
+       std::string(GURL(brave::kGate3URL).host())}};
 
   const GURL& url = ctx->request_url;
 

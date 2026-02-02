@@ -47,9 +47,9 @@ class EnvironmentConfig : public RewardsEngineHelper,
   std::string zebpay_client_secret() const;
 
   GURL bitflyer_url() const;
-  std::string bitflyer_client_id() const;
-  std::string bitflyer_client_secret() const;
   std::string bitflyer_fee_address() const;
+
+  GURL gate3_oauth_url(const std::string& provider) const;
 
   // Unit tests should be able to execute even if the build-time config values
   // are not specified. Calling this method in unit tests will allow certain

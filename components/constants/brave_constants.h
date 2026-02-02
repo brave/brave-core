@@ -11,6 +11,8 @@
 
 namespace brave {
 
+inline constexpr char kGate3URL[] = "https://gate3.wallet.brave.com";
+
 extern const base::FilePath::CharType kSessionProfileDir[];
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)

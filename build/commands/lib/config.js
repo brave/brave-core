@@ -214,12 +214,8 @@ const Config = function () {
   this.use_no_gn_gen = getEnvConfig(['use_no_gn_gen'])
 
   this.forwardEnvArgsToGn = [
-    'bitflyer_production_client_id',
-    'bitflyer_production_client_secret',
     'bitflyer_production_fee_address',
     'bitflyer_production_url',
-    'bitflyer_sandbox_client_id',
-    'bitflyer_sandbox_client_secret',
     'bitflyer_sandbox_fee_address',
     'bitflyer_sandbox_url',
     'brave_android_developer_options_code',
@@ -664,12 +660,8 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
-    delete args.bitflyer_production_client_id
-    delete args.bitflyer_production_client_secret
     delete args.bitflyer_production_fee_address
     delete args.bitflyer_production_url
-    delete args.bitflyer_sandbox_client_id
-    delete args.bitflyer_sandbox_client_secret
     delete args.bitflyer_sandbox_fee_address
     delete args.bitflyer_sandbox_url
     delete args.gemini_production_api_url
