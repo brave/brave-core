@@ -14,24 +14,25 @@
 //!
 //! # Quick Start
 //!
+//! To get you started quickly, the easiest and highest-level way to get
+//! a random value is to use [`random()`]; alternatively you can use
+//! [`thread_rng()`]. The [`Rng`] trait provides a useful API on all RNGs, while
+//! the [`distributions`] and [`seq`] modules provide further
+//! functionality on top of RNGs.
+//!
 //! ```
-//! // The prelude import enables methods we use below, specifically
-//! // Rng::random, Rng::sample, SliceRandom::shuffle and IndexedRandom::choose.
 //! use rand::prelude::*;
 //!
-//! // Get an RNG:
-//! let mut rng = rand::rng();
+//! if rand::random() { // generates a boolean
+//!     // Try printing a random unicode code point (probably a bad idea)!
+//!     println!("char: {}", rand::random::<char>());
+//! }
 //!
-//! // Try printing a random unicode code point (probably a bad idea)!
-//! println!("char: '{}'", rng.random::<char>());
-//! // Try printing a random alphanumeric value instead!
-//! println!("alpha: '{}'", rng.sample(rand::distr::Alphanumeric) as char);
+//! let mut rng = rand::thread_rng();
+//! let y: f64 = rng.gen(); // generates a float between 0 and 1
 //!
-//! // Generate and shuffle a sequence:
 //! let mut nums: Vec<i32> = (1..100).collect();
 //! nums.shuffle(&mut rng);
-//! // And take a random pick (yes, we didn't need to shuffle first!):
-//! let _ = nums.choose(&mut rng);
 //! ```
 //!
 //! # The Book
@@ -48,23 +49,15 @@
 #![deny(missing_debug_implementations)]
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
 #![no_std]
-#![cfg_attr(feature = "simd_support", feature(portable_simd))]
-#![cfg_attr(
-    all(feature = "simd_support", target_feature = "avx512bw"),
-    feature(stdarch_x86_avx512)
-)]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(feature = "simd_support", feature(stdsimd))]
+#![cfg_attr(doc_cfg, feature(doc_cfg))]
 #![allow(
     clippy::float_cmp,
     clippy::neg_cmp_op_on_partial_ord,
-    clippy::nonminimal_bool
 )]
-#![deny(clippy::undocumented_unsafe_blocks)]
 
-#[cfg(feature = "alloc")]
-extern crate alloc;
-#[cfg(feature = "std")]
-extern crate std;
+#[cfg(feature = "std")] extern crate std;
+#[cfg(feature = "alloc")] extern crate alloc;
 
 #[allow(unused)]
 macro_rules! trace { ($($x:tt)*) => (
@@ -97,44 +90,56 @@ macro_rules! error { ($($x:tt)*) => (
     }
 ) }
 
-// Re-export rand_core itself
-pub use rand_core;
-
 // Re-exports from rand_core
-pub use rand_core::{CryptoRng, RngCore, SeedableRng, TryCryptoRng, TryRngCore};
+pub use rand_core::{CryptoRng, Error, RngCore, SeedableRng};
 
 // Public modules
-pub mod distr;
+pub mod distributions;
 pub mod prelude;
 mod rng;
 pub mod rngs;
 pub mod seq;
 
 // Public exports
-#[cfg(feature = "thread_rng")]
-pub use crate::rngs::thread::rng;
-
-/// Access the thread-local generator
-///
-/// Use [`rand::rng()`](rng()) instead.
-#[cfg(feature = "thread_rng")]
-#[deprecated(since = "0.9.0", note = "Renamed to `rng`")]
-#[inline]
-pub fn thread_rng() -> crate::rngs::ThreadRng {
-    rng()
-}
-
+#[cfg(all(feature = "std", feature = "std_rng"))]
+pub use crate::rngs::thread::thread_rng;
 pub use rng::{Fill, Rng};
 
-#[cfg(feature = "thread_rng")]
-use crate::distr::{Distribution, StandardUniform};
+#[cfg(all(feature = "std", feature = "std_rng"))]
+use crate::distributions::{Distribution, Standard};
 
-/// Generate a random value using the thread-local random number generator.
+/// Generates a random value using the thread-local random number generator.
 ///
-/// This function is shorthand for <code>[rng()].[random()](Rng::random)</code>:
+/// This is simply a shortcut for `thread_rng().gen()`. See [`thread_rng`] for
+/// documentation of the entropy source and [`Standard`] for documentation of
+/// distributions and type-specific generation.
 ///
-/// -   See [`ThreadRng`] for documentation of the generator and security
-/// -   See [`StandardUniform`] for documentation of supported types and distributions
+/// # Provided implementations
+///
+/// The following types have provided implementations that
+/// generate values with the following ranges and distributions:
+///
+/// * Integers (`i32`, `u32`, `isize`, `usize`, etc.): Uniformly distributed
+///   over all values of the type.
+/// * `char`: Uniformly distributed over all Unicode scalar values, i.e. all
+///   code points in the range `0...0x10_FFFF`, except for the range
+///   `0xD800...0xDFFF` (the surrogate code points). This includes
+///   unassigned/reserved code points.
+/// * `bool`: Generates `false` or `true`, each with probability 0.5.
+/// * Floating point types (`f32` and `f64`): Uniformly distributed in the
+///   half-open range `[0, 1)`. See notes below.
+/// * Wrapping integers (`Wrapping<T>`), besides the type identical to their
+///   normal integer variants.
+///
+/// Also supported is the generation of the following
+/// compound types where all component types are supported:
+///
+/// *   Tuples (up to 12 elements): each element is generated sequentially.
+/// *   Arrays (up to 32 elements): each element is generated sequentially;
+///     see also [`Rng::fill`] which supports arbitrary array length for integer
+///     types and tends to be faster for `u32` and smaller types.
+/// *   `Option<T>` first generates a `bool`, and if true generates and returns
+///     `Some(value)` where `value: T`, otherwise returning `None`.
 ///
 /// # Examples
 ///
@@ -150,151 +155,34 @@ use crate::distr::{Distribution, StandardUniform};
 /// }
 /// ```
 ///
-/// If you're calling `random()` repeatedly, consider using a local `rng`
-/// handle to save an initialization-check on each usage:
+/// If you're calling `random()` in a loop, caching the generator as in the
+/// following example can increase performance.
 ///
 /// ```
-/// use rand::Rng; // provides the `random` method
-///
-/// let mut rng = rand::rng(); // a local handle to the generator
+/// use rand::Rng;
 ///
 /// let mut v = vec![1, 2, 3];
 ///
 /// for x in v.iter_mut() {
-///     *x = rng.random();
+///     *x = rand::random()
+/// }
+///
+/// // can be made faster by caching thread_rng
+///
+/// let mut rng = rand::thread_rng();
+///
+/// for x in v.iter_mut() {
+///     *x = rng.gen();
 /// }
 /// ```
 ///
-/// [`StandardUniform`]: distr::StandardUniform
-/// [`ThreadRng`]: rngs::ThreadRng
-#[cfg(feature = "thread_rng")]
+/// [`Standard`]: distributions::Standard
+#[cfg(all(feature = "std", feature = "std_rng"))]
+#[cfg_attr(doc_cfg, doc(cfg(all(feature = "std", feature = "std_rng"))))]
 #[inline]
 pub fn random<T>() -> T
-where
-    StandardUniform: Distribution<T>,
-{
-    rng().random()
-}
-
-/// Return an iterator over [`random()`] variates
-///
-/// This function is shorthand for
-/// <code>[rng()].[random_iter](Rng::random_iter)()</code>.
-///
-/// # Example
-///
-/// ```
-/// let v: Vec<i32> = rand::random_iter().take(5).collect();
-/// println!("{v:?}");
-/// ```
-#[cfg(feature = "thread_rng")]
-#[inline]
-pub fn random_iter<T>() -> distr::Iter<StandardUniform, rngs::ThreadRng, T>
-where
-    StandardUniform: Distribution<T>,
-{
-    rng().random_iter()
-}
-
-/// Generate a random value in the given range using the thread-local random number generator.
-///
-/// This function is shorthand for
-/// <code>[rng()].[random_range](Rng::random_range)(<var>range</var>)</code>.
-///
-/// # Example
-///
-/// ```
-/// let y: f32 = rand::random_range(0.0..=1e9);
-/// println!("{}", y);
-///
-/// let words: Vec<&str> = "Mary had a little lamb".split(' ').collect();
-/// println!("{}", words[rand::random_range(..words.len())]);
-/// ```
-/// Note that the first example can also be achieved (without `collect`'ing
-/// to a `Vec`) using [`seq::IteratorRandom::choose`].
-#[cfg(feature = "thread_rng")]
-#[inline]
-pub fn random_range<T, R>(range: R) -> T
-where
-    T: distr::uniform::SampleUniform,
-    R: distr::uniform::SampleRange<T>,
-{
-    rng().random_range(range)
-}
-
-/// Return a bool with a probability `p` of being true.
-///
-/// This function is shorthand for
-/// <code>[rng()].[random_bool](Rng::random_bool)(<var>p</var>)</code>.
-///
-/// # Example
-///
-/// ```
-/// println!("{}", rand::random_bool(1.0 / 3.0));
-/// ```
-///
-/// # Panics
-///
-/// If `p < 0` or `p > 1`.
-#[cfg(feature = "thread_rng")]
-#[inline]
-#[track_caller]
-pub fn random_bool(p: f64) -> bool {
-    rng().random_bool(p)
-}
-
-/// Return a bool with a probability of `numerator/denominator` of being
-/// true.
-///
-/// That is, `random_ratio(2, 3)` has chance of 2 in 3, or about 67%, of
-/// returning true. If `numerator == denominator`, then the returned value
-/// is guaranteed to be `true`. If `numerator == 0`, then the returned
-/// value is guaranteed to be `false`.
-///
-/// See also the [`Bernoulli`] distribution, which may be faster if
-/// sampling from the same `numerator` and `denominator` repeatedly.
-///
-/// This function is shorthand for
-/// <code>[rng()].[random_ratio](Rng::random_ratio)(<var>numerator</var>, <var>denominator</var>)</code>.
-///
-/// # Panics
-///
-/// If `denominator == 0` or `numerator > denominator`.
-///
-/// # Example
-///
-/// ```
-/// println!("{}", rand::random_ratio(2, 3));
-/// ```
-///
-/// [`Bernoulli`]: distr::Bernoulli
-#[cfg(feature = "thread_rng")]
-#[inline]
-#[track_caller]
-pub fn random_ratio(numerator: u32, denominator: u32) -> bool {
-    rng().random_ratio(numerator, denominator)
-}
-
-/// Fill any type implementing [`Fill`] with random data
-///
-/// This function is shorthand for
-/// <code>[rng()].[fill](Rng::fill)(<var>dest</var>)</code>.
-///
-/// # Example
-///
-/// ```
-/// let mut arr = [0i8; 20];
-/// rand::fill(&mut arr[..]);
-/// ```
-///
-/// Note that you can instead use [`random()`] to generate an array of random
-/// data, though this is slower for small elements (smaller than the RNG word
-/// size).
-#[cfg(feature = "thread_rng")]
-#[inline]
-#[track_caller]
-pub fn fill<T: Fill + ?Sized>(dest: &mut T) {
-    dest.fill(&mut rng())
+where Standard: Distribution<T> {
+    thread_rng().gen()
 }
 
 #[cfg(test)]
@@ -309,52 +197,18 @@ mod test {
         rand_pcg::Pcg32::new(seed, INC)
     }
 
-    /// Construct a generator yielding a constant value
-    pub fn const_rng(x: u64) -> StepRng {
-        StepRng(x, 0)
-    }
-
-    /// Construct a generator yielding an arithmetic sequence
-    pub fn step_rng(x: u64, increment: u64) -> StepRng {
-        StepRng(x, increment)
-    }
-
-    #[derive(Clone)]
-    pub struct StepRng(u64, u64);
-    impl RngCore for StepRng {
-        fn next_u32(&mut self) -> u32 {
-            self.next_u64() as u32
-        }
-
-        fn next_u64(&mut self) -> u64 {
-            let res = self.0;
-            self.0 = self.0.wrapping_add(self.1);
-            res
-        }
-
-        fn fill_bytes(&mut self, dst: &mut [u8]) {
-            rand_core::impls::fill_bytes_via_next(self, dst)
-        }
-    }
-
     #[test]
-    #[cfg(feature = "thread_rng")]
+    #[cfg(all(feature = "std", feature = "std_rng"))]
     fn test_random() {
-        let _n: u64 = random();
+        let _n: usize = random();
         let _f: f32 = random();
+        let _o: Option<Option<i8>> = random();
         #[allow(clippy::type_complexity)]
         let _many: (
             (),
-            [(u32, bool); 3],
+            (usize, isize, Option<(u32, (bool,))>),
             (u8, i8, u16, i16, u32, i32, u64, i64),
             (f32, (f64, (f64,))),
         ) = random();
-    }
-
-    #[test]
-    #[cfg(feature = "thread_rng")]
-    fn test_range() {
-        let _n: usize = random_range(42..=43);
-        let _f: f32 = random_range(42.0..43.0);
     }
 }
