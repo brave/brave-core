@@ -5,7 +5,6 @@
 
 import { expect, jest, describe, it } from '@jest/globals'
 import { act, renderHook } from '@testing-library/react'
-import * as React from 'react'
 import { createInterfaceApi, state, event } from './create_interface_api'
 
 describe('createInterfaceApi', () => {
@@ -239,7 +238,7 @@ describe('createInterfaceApi', () => {
 
     function useMutate() {
       const result = api.useDoSomething({
-        // @ts-ignore - verify defining a handler here does not work or prevent
+        // @ts-expect-error - verify defining a handler here does not work or prevent
         // global event handler from firing
         onSettled(result, error, variables) {
           hookOnMutateObserver(variables)
