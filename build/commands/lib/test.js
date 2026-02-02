@@ -142,7 +142,7 @@ const runTests = async (
     // Set ASAN_OPTIONS (if not already set) only for test launching.
     // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid
     // LSAN failures. Chromium uses the same approach.
-    if (config.isAsan() || !runOptions.env.ASAN_OPTIONS) {
+    if (config.isAsan() && !runOptions.env.ASAN_OPTIONS) {
       let asanOptions = ['detect_odr_violation=0']
       if (config.isLsan()) {
         asanOptions.push('detect_leaks=1')
