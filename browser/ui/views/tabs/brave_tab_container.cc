@@ -244,8 +244,21 @@ void BraveTabContainer::EnterTabClosingMode(std::optional<int> override_width,
 }
 
 bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
-  if (ShouldShowVerticalTabs() && !tab->data().pinned && !tab->dragging()) {
-    // Only show tab if it is within pinned tab area.
+  if (ShouldShowVerticalTabs()) {
+    // Dragging or detached tabs should always be visible regardless of pinned
+    // state.
+    if (tab->dragging() || tab->detached()) {
+      return true;
+    }
+
+    // Handle pinned tabs in vertical tabs mode - pinned tabs should always be
+    // visible
+    if (tab->data().pinned) {
+      return true;
+    }
+
+    // Handle unpinned tabs in vertical tabs mode.
+    // Only show tab if it is not hidden under the pinned tab area.
     if (auto tab_index = tabs_view_model_.GetIndexOfView(tab)) {
       const auto tab_bottom =
           tabs_view_model_.ideal_bounds(*tab_index).bottom();
