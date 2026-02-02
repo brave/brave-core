@@ -38,6 +38,8 @@ async function refreshWalletInfo(listenerApi: ListenerApi) {
       'DefaultSolWallet',
       'DefaultAdaWallet',
       'IsMetaMaskInstalled',
+      // So backup warning banner updates when wallet is restored natively (e.g. iOS)
+      'IsWalletBackedUp',
     ]),
   )
 }
@@ -73,6 +75,14 @@ startAppListening({
       onInteractionInterval,
     )
     listenerApi.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
+
+    // iOS: refetch backup status once on load when not backed up so the Backup
+    // Wallet Warning banner updates after native restore (web UI restore
+    // mutation never runs there).
+    const state = listenerApi.getState()
+    if (state.ui?.isIOS && !walletInfo.isWalletBackedUp) {
+      listenerApi.dispatch(walletApi.util.invalidateTags(['IsWalletBackedUp']))
+    }
   },
 })
 
