@@ -554,6 +554,7 @@ test("brave_unit_tests") {
       "//brave/browser/android/youtube_script_injector:unit_tests",
       "//brave/browser/password_manager/android:unit_tests",
       "//brave/components/brave_mobile_subscription/renderer/android:unit_tests",
+      "//chrome/android:chrome_all_java",
       "//chrome/android:chrome_apk_paks",
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
