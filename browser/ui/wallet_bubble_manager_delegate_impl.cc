@@ -12,7 +12,9 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -27,10 +29,49 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/ui_base_types.h"
 #include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
+
+// Forward declaration
+class WalletWebUIBubbleDialogView;
+
+// This class manages z-order of wallet bubble and its parent widget
+class WalletBubbleZOrderManager : public views::WidgetObserver {
+ public:
+  explicit WalletBubbleZOrderManager(WalletWebUIBubbleDialogView& bubble_view);
+  WalletBubbleZOrderManager(const WalletBubbleZOrderManager&) = delete;
+  WalletBubbleZOrderManager& operator=(const WalletBubbleZOrderManager&) =
+      delete;
+  ~WalletBubbleZOrderManager() override;
+
+  // views::WidgetObserver:
+  void OnWidgetDestroying(views::Widget* widget) override;
+  void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
+
+ private:
+  // Sets the zorder for wallet bubble to kSecuritySurface, so that it
+  // appears above other UI elements even they are floating on top. For
+  // example, Picture-in-Picture window is on top of other widgets, but
+  // wallet bubble should still be on top of it.
+  void ElevateZOrder();
+
+  // Restores z-order of widget and its parent widget to the level before
+  // elevation.
+  void RestoreZOrder();
+
+  raw_ref<WalletWebUIBubbleDialogView> bubble_view_;
+
+  bool z_order_elevated_ = false;
+
+  ui::ZOrderLevel widget_z_order_level_;
+  ui::ZOrderLevel parent_widget_z_order_level_;
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      wallet_bubble_observer_{this};
+};
 
 class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
   METADATA_HEADER(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
@@ -63,6 +104,12 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
                                      params);
   }
 
+  // views::BubbleDialogDelegateView:
+  void AddedToWidget() override {
+    WebUIBubbleDialogView::AddedToWidget();
+    z_order_manager_ = std::make_unique<WalletBubbleZOrderManager>(*this);
+  }
+
  private:
   // WidgetObserver:
   void OnWidgetTreeActivated(views::Widget* root_widget,
@@ -80,10 +127,79 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       anchor_widget_observation_{this};
+
+  std::unique_ptr<WalletBubbleZOrderManager> z_order_manager_;
 };
 
 BEGIN_METADATA(WalletWebUIBubbleDialogView)
 END_METADATA
+
+// WalletBubbleZOrderManager implementation
+// -----------------------------------------------------------------------------
+
+WalletBubbleZOrderManager::WalletBubbleZOrderManager(
+    WalletWebUIBubbleDialogView& bubble_view)
+    : bubble_view_(bubble_view) {
+  auto* widget = bubble_view_->GetWidget();
+  CHECK(widget);
+  wallet_bubble_observer_.Observe(widget);
+
+  if (widget->IsActive()) {
+    ElevateZOrder();
+  }
+}
+
+WalletBubbleZOrderManager::~WalletBubbleZOrderManager() = default;
+
+void WalletBubbleZOrderManager::OnWidgetDestroying(views::Widget* widget) {
+  CHECK_EQ(widget, bubble_view_->GetWidget());
+  RestoreZOrder();
+  wallet_bubble_observer_.Reset();
+}
+
+void WalletBubbleZOrderManager::OnWidgetActivationChanged(views::Widget* widget,
+                                                          bool active) {
+  CHECK_EQ(widget, bubble_view_->GetWidget());
+  if (active) {
+    ElevateZOrder();
+  } else {
+    RestoreZOrder();
+  }
+}
+
+void WalletBubbleZOrderManager::ElevateZOrder() {
+  if (z_order_elevated_) {
+    return;
+  }
+
+  auto* widget = bubble_view_->GetWidget();
+  CHECK(widget);
+  auto* parent_widget = widget->parent();
+  CHECK(parent_widget);
+  z_order_elevated_ = false;
+
+  // Store current z-order level to restore later.
+  widget_z_order_level_ = widget->GetZOrderLevel();
+  parent_widget_z_order_level_ = parent_widget->GetZOrderLevel();
+
+  parent_widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+  widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+  z_order_elevated_ = true;
+}
+
+void WalletBubbleZOrderManager::RestoreZOrder() {
+  if (!z_order_elevated_) {
+    return;
+  }
+  auto* widget = bubble_view_->GetWidget();
+  CHECK(widget);
+  auto* parent_widget = widget->parent();
+  CHECK(parent_widget);
+
+  parent_widget->SetZOrderLevel(parent_widget_z_order_level_);
+  widget->SetZOrderLevel(widget_z_order_level_);
+  z_order_elevated_ = false;
+}
 
 class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
                                  public views::ViewObserver {
@@ -121,7 +237,6 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     auto* widget =
         views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
     CHECK(widget);
-    widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
 
     // Checking if we create WalletPanelUI instance of WebUI and
     // extracting WebUIContentsWrapper class to pass real browser delegate
@@ -259,6 +374,13 @@ bool WalletBubbleManagerDelegateImpl::IsShowingBubble() {
 bool WalletBubbleManagerDelegateImpl::IsBubbleClosedForTesting() {
   return !webui_bubble_manager_ || !webui_bubble_manager_->GetBubbleWidget() ||
          webui_bubble_manager_->GetBubbleWidget()->IsClosed();
+}
+
+views::Widget* WalletBubbleManagerDelegateImpl::GetBubbleWidgetForTesting() {
+  if (!webui_bubble_manager_) {
+    return nullptr;
+  }
+  return webui_bubble_manager_->GetBubbleWidget();
 }
 
 }  // namespace brave_wallet

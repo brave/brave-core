@@ -13,6 +13,10 @@
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
 #include "url/gurl.h"
 
+namespace views {
+class Widget;
+}  // namespace views
+
 namespace brave_wallet {
 
 class WalletWebUIBubbleManager;
@@ -33,6 +37,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
   bool IsBubbleClosedForTesting() override;
   content::WebContents* GetWebContentsForTesting() override;
   const std::vector<int32_t>& GetPopupIdsForTesting() override;
+  views::Widget* GetBubbleWidgetForTesting() override;
 
  private:
   raw_ptr<content::WebContents> web_contents_ = nullptr;
