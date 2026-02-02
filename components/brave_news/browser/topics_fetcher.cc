@@ -11,6 +11,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/urls.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
@@ -28,7 +28,7 @@ namespace {
 TopicsResult ParseTopics(const base::Value& topics_json,
                          const base::Value& topic_articles_json) {
   TopicsResult result;
-  absl::flat_hash_map<int, std::vector<api::topics::TopicArticle>> articles;
+  base::flat_map<int, std::vector<api::topics::TopicArticle>> articles;
 
   if (auto* list = topic_articles_json.GetIfList()) {
     for (const auto& a : *list) {

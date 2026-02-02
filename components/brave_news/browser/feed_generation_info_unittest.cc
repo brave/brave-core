@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -22,7 +23,6 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
@@ -104,7 +104,7 @@ class BraveNewsFeedGenerationInfoTest : public testing::Test {
     return info.article_infos_.has_value();
   }
 
-  absl::flat_hash_map<std::string, size_t>& GetAvailableCounts(
+  base::flat_map<std::string, size_t>& GetAvailableCounts(
       FeedGenerationInfo& info) {
     return info.available_counts_;
   }

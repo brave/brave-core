@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
@@ -123,7 +124,7 @@ void PublishersController::GetPublisherForSite(
       subscriptions,
       base::BindOnce(
           [](base::WeakPtr<PublishersController> controller, GURL site_url,
-             GetPublisherCallback callback, const Publishers& publishers) {
+             GetPublisherCallback callback, Publishers publishers) {
             if (!controller) {
               return;
             }
@@ -177,8 +178,14 @@ void PublishersController::GetOrFetchPublishers(
                              // Either there was already data, or the fetch was
                              // complete (with success or error, so we would
                              // still check for valid data again, but it's fine
-                             // to just send the empty array).
-                             std::move(callback).Run(controller->publishers_);
+                             // to just send the empty array). Provide data
+                             // clone for ownership outside of this class.
+                             Publishers clone;
+                             for (auto const& kv : controller->publishers_) {
+                               clone.insert_or_assign(kv.first,
+                                                      kv.second->Clone());
+                             }
+                             std::move(callback).Run(std::move(clone));
                            },
                            weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
                        wait_for_current_update);
@@ -217,7 +224,7 @@ void PublishersController::GetLocale(
       base::BindOnce(
           [](base::WeakPtr<PublishersController> controller,
              mojom::BraveNewsController::GetLocaleCallback callback,
-             const Publishers& _) {
+             Publishers _) {
             if (!controller) {
               return;
             }

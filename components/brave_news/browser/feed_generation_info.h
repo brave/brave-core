@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "base/memory/raw_span.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
@@ -92,7 +92,7 @@ class FeedGenerationInfo {
 
   std::optional<ArticleInfos> article_infos_;
   std::optional<std::vector<ContentGroup>> content_groups_;
-  absl::flat_hash_map<std::string, size_t> available_counts_;
+  base::flat_map<std::string, size_t> available_counts_;
 };
 
 ArticleInfos GetArticleInfosForTesting(const std::string& locale,

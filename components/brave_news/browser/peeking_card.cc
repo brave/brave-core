@@ -21,7 +21,6 @@
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 
@@ -52,20 +51,19 @@ constexpr double kMaxCandidatesScorePercentCutoff = 0.7;
 constexpr char kEntertainmentChannel[] = "Entertainment";
 }  // namespace
 
-absl::flat_hash_set<std::string> GetTopStoryUrls(
+base::flat_set<std::string> GetTopStoryUrls(
     const base::span<TopicAndArticles>& topics) {
-  absl::flat_hash_set<std::string> urls;
-  for (const auto& [topic, articles] : topics) {
-    for (const auto& article : articles) {
-      urls.insert(article.url);
-    }
+  std::vector<std::string> urls;
+  for (auto& [topic, articles] : topics) {
+    std::ranges::transform(articles, std::back_inserter(urls),
+                           [](const auto& article) { return article.url; });
   }
-  return urls;
+  return base::flat_set<std::string>(urls);
 }
 
 std::optional<size_t> PickPeekingCardWithMax(
     SubscriptionsSnapshot subscriptions,
-    const absl::flat_hash_set<std::string>& top_story_urls,
+    const base::flat_set<std::string>& top_story_urls,
     const ArticleInfos& articles,
     size_t max_candidates) {
   // Store now, so it's consistent for everything.
@@ -218,7 +216,7 @@ std::optional<size_t> PickPeekingCardWithMax(
 
 std::optional<size_t> PickPeekingCard(
     SubscriptionsSnapshot subscriptions,
-    const absl::flat_hash_set<std::string>& top_story_urls,
+    const base::flat_set<std::string>& top_story_urls,
     const ArticleInfos& articles) {
   return PickPeekingCardWithMax(std::move(subscriptions), top_story_urls,
                                 articles, kMaxPeekingCardCandidates);

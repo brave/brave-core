@@ -10,17 +10,17 @@
 #include <tuple>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
 using FeedItems = std::vector<mojom::FeedItemPtr>;
-using ETags = absl::flat_hash_map<std::string, std::string>;
+using ETags = base::flat_map<std::string, std::string>;
 using FetchFeedCallback = base::OnceCallback<void(FeedItems items, ETags tags)>;
 using UpdateAvailableCallback = base::OnceCallback<void(bool)>;
 
@@ -63,11 +63,12 @@ class FeedFetcher {
   // Steps for |FetchFeed|
   void OnFetchFeedFetchedPublishers(const SubscriptionsSnapshot& subscriptions,
                                     FetchFeedCallback callback,
-                                    const Publishers& publishers);
+                                    Publishers publishers);
   void OnFetchFeedFetchedFeed(std::string locale,
                               FetchFeedSourceCallback callback,
                               api_request_helper::APIRequestResult result);
   void OnFetchFeedFetchedAll(FetchFeedCallback callback,
+                             Publishers publishers,
                              std::vector<FeedSourceResult> results);
 
   // Steps for |IsUpdateAvailable|
@@ -75,7 +76,7 @@ class FeedFetcher {
       const SubscriptionsSnapshot& subscriptions,
       ETags etags,
       UpdateAvailableCallback callback,
-      const Publishers& publishers);
+      Publishers publishers);
   void OnIsUpdateAvailableFetchedHead(
       std::string current_etag,
       base::RepeatingCallback<void(bool)> has_update_callback,

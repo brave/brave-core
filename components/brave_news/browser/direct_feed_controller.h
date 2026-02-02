@@ -15,7 +15,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -73,8 +72,7 @@ class DirectFeedController {
   // Witthout that, some heavy RSS feed parsing work will prevent new feeds from
   // detection and app from shutdown.
   std::queue<FindFeedRequest> pending_requests_;
-  absl::flat_hash_map<std::string, std::vector<FindFeedRequest>>
-      ongoing_requests_;
+  base::flat_map<GURL, std::vector<FindFeedRequest>> ongoing_requests_;
 
   base::WeakPtrFactory<DirectFeedController> weak_ptr_factory_{this};
 };

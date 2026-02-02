@@ -50,8 +50,6 @@ if (enable_brave_news) {
       "subscriptions_snapshot.cc",
       "subscriptions_snapshot.h",
       "switches.h",
-      "types.cc",
-      "types.h",
     ]
 
     public_deps = [

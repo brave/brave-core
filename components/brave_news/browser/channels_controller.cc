@@ -19,16 +19,16 @@
 
 namespace brave_news {
 
-absl::flat_hash_set<std::string> GetChannelsForPublisher(
+std::vector<std::string> GetChannelsForPublisher(
     const std::string& locale,
     const mojom::PublisherPtr& publisher) {
-  absl::flat_hash_set<std::string> result;
+  std::vector<std::string> result;
   for (const auto& locale_info : publisher->locales) {
     if (locale_info->locale != locale) {
       continue;
     }
     for (const auto& channel : locale_info->channels) {
-      result.insert(channel);
+      result.push_back(channel);
     }
   }
   return result;
@@ -87,8 +87,7 @@ void ChannelsController::GetAllChannels(
   publishers_controller_->GetOrFetchPublishers(
       subscriptions, base::BindOnce(
                          [](const SubscriptionsSnapshot& subscriptions,
-                            ChannelsCallback callback,
-                            const Publishers& publishers) {
+                            ChannelsCallback callback, Publishers publishers) {
                            std::move(callback).Run(GetChannelsFromPublishers(
                                publishers, subscriptions));
                          },

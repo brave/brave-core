@@ -24,16 +24,16 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "brave/components/brave_news/common/types.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/mojom/url.mojom.h"
 
 namespace brave_news {
 
 namespace {
+
+using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
 base::Value GetFeedJson() {
   // One item has a higher score, but a matching history domain - it should

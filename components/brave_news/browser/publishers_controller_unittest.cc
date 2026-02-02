@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
@@ -116,15 +117,16 @@ class BraveNewsPublishersControllerTest : public testing::Test {
                           publisher_id, &DirectFeed::id);
   }
 
-  const Publishers& GetPublishers() {
-    base::RunLoop run_loop;
-    publishers_controller_->GetOrFetchPublishers(
-        pref_manager_->GetSubscriptions(),
-        base::BindLambdaForTesting(
-            [&run_loop](const Publishers& publishers) { run_loop.Quit(); }),
-        true);
-    run_loop.Run();
-    return publishers_controller_->last_publishers();
+  Publishers GetPublishers() {
+    auto [publishers] = WaitForCallback(base::BindOnce(
+        [](BraveNewsPublishersControllerTest* test,
+           GetPublishersCallback callback) {
+          test->publishers_controller_->GetOrFetchPublishers(
+              test->pref_manager_->GetSubscriptions(), std::move(callback),
+              true);
+        },
+        base::Unretained(this)));
+    return std::move(publishers);
   }
 
   mojom::PublisherPtr GetPublisherForSite(const GURL& url) {
@@ -166,7 +168,7 @@ class BraveNewsPublishersControllerTest : public testing::Test {
 TEST_F(BraveNewsPublishersControllerTest, CanReceiveFeeds) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
-  const auto& result = GetPublishers();
+  auto result = GetPublishers();
   ASSERT_EQ(3u, result.size());
   EXPECT_TRUE(result.contains("111"));
   EXPECT_TRUE(result.contains("333"));
@@ -329,9 +331,7 @@ TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
         "enabled": false
     }])",
                                        net::HTTP_OK);
-  const auto& publishers = GetPublishers();
-  ASSERT_FALSE(publishers.empty());
-  const auto first_publisher_id = publishers.begin()->first;
+  GetPublishers();
 
   auto [locale] = WaitForCallback(
       base::BindOnce(&PublishersController::GetLocale,
@@ -341,12 +341,10 @@ TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
   EXPECT_EQ("en_US", locale);
 
   auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/"));
-  ASSERT_TRUE(publisher);
-  EXPECT_EQ(publisher->publisher_id, first_publisher_id);
+  EXPECT_EQ("111", publisher->publisher_id);
 
   publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
-  ASSERT_TRUE(publisher);
-  EXPECT_EQ(publisher->publisher_id, first_publisher_id);
+  EXPECT_EQ("111", publisher->publisher_id);
 }
 
 TEST_F(BraveNewsPublishersControllerTest,
@@ -401,7 +399,7 @@ TEST_F(BraveNewsPublishersControllerTest, CanGetPublishers) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
-  const auto& result = GetPublishers();
+  auto result = GetPublishers();
   EXPECT_EQ(3u, result.size());
 }
 

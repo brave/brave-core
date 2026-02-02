@@ -25,7 +25,6 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "brave/components/brave_news/common/types.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -80,7 +79,7 @@ void FeedController::EnsureFeedIsUpdating(
       base::BindOnce(
           [](base::WeakPtr<FeedController> controller,
              const SubscriptionsSnapshot& subscriptions,
-             const Publishers& publishers) {
+             Publishers publishers) {
             if (!controller) {
               return;
             }
@@ -91,9 +90,6 @@ void FeedController::EnsureFeedIsUpdating(
               controller->NotifyUpdateDone();
               return;
             }
-
-            // Clone publishers for use in nested callbacks
-            Publishers publishers_copy = ClonePublishers(publishers);
 
             // Handle all feed items downloaded
             // Fetch https request via callback
@@ -155,7 +151,7 @@ void FeedController::EnsureFeedIsUpdating(
                       controller->history_querier_->Run(std::move(on_history));
                     },
                     controller->weak_ptr_factory_.GetWeakPtr(), subscriptions,
-                    std::move(publishers_copy)));
+                    std::move(publishers)));
           },
           weak_ptr_factory_.GetWeakPtr(), subscriptions));
 }

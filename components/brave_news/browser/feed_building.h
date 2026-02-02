@@ -22,7 +22,7 @@ namespace brave_news {
 
 bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const absl::flat_hash_set<std::string>& history_hosts,
-               const Publishers* publishers,
+               Publishers* publishers,
                mojom::Feed* feed,
                const SubscriptionsSnapshot& subscriptions);
 

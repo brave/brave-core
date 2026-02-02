@@ -198,12 +198,12 @@ TEST_F(BraveNewsChannelsControllerTest, CanGetPublisherChannels) {
 
   auto channels = GetChannelsForPublisher("en_NZ", publisher);
   EXPECT_EQ(2u, channels.size());
-  EXPECT_TRUE(channels.contains("foo"));
-  EXPECT_TRUE(channels.contains("bar"));
+  EXPECT_EQ("foo", channels.at(0));
+  EXPECT_EQ("bar", channels.at(1));
 
   channels = GetChannelsForPublisher("en_AU", publisher);
   EXPECT_EQ(1u, channels.size());
-  EXPECT_TRUE(channels.contains("foo"));
+  EXPECT_EQ("foo", channels.at(0));
 }
 
 }  // namespace brave_news

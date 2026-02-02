@@ -12,6 +12,7 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -27,10 +28,8 @@
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "brave/components/brave_news/common/types.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 namespace {
@@ -49,10 +48,10 @@ double ProjectToRange(double value, double min, double max) {
   return value * range + min;
 }
 
-absl::flat_hash_map<std::string_view, double> GetVisitWeightings(
+base::flat_map<std::string_view, double> GetVisitWeightings(
     const history::QueryResults& history) {
   // Score hostnames from browsing history by how many times they appear
-  absl::flat_hash_map<std::string_view, double> weightings;
+  base::flat_map<std::string_view, double> weightings;
   for (const auto& entry : history) {
     weightings[entry.url().host()] += 1;
   }
@@ -64,9 +63,9 @@ absl::flat_hash_map<std::string_view, double> GetVisitWeightings(
   // Normalize (between 0 and 1) the visit counts by dividing
   // by the maximum number of visits.
   auto max_visits =
-      std::ranges::max_element(weightings, [](const auto& a, const auto& b) {
+      std::ranges::max(weightings, [](const auto& a, const auto& b) {
         return a.second < b.second;
-      })->second;
+      }).second;
 
   for (auto& it : weightings) {
     it.second /= max_visits;
@@ -77,7 +76,7 @@ absl::flat_hash_map<std::string_view, double> GetVisitWeightings(
 // Get score for having visited a source.
 double GetVisitWeighting(
     const mojom::PublisherPtr& publisher,
-    const absl::flat_hash_map<std::string_view, double>& visit_weightings) {
+    const base::flat_map<std::string_view, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
   auto* weight = base::FindOrNull(visit_weightings, host_name);
   if (!weight) {
@@ -156,14 +155,10 @@ void SuggestionsController::GetSuggestedPublisherIds(
                 base::BindOnce(
                     [](base::WeakPtr<SuggestionsController> controller,
                        GetSuggestedPublisherIdsCallback callback,
-                       const Publishers& publishers) {
+                       Publishers publishers) {
                       if (!controller) {
                         return;
                       }
-
-                      // Clone publishers for use in nested callbacks
-                      Publishers publishers_copy = ClonePublishers(publishers);
-
                       controller->history_querier_->Run(base::BindOnce(
                           [](base::WeakPtr<SuggestionsController> controller,
                              Publishers publishers,
@@ -177,7 +172,7 @@ void SuggestionsController::GetSuggestedPublisherIds(
                                     publishers, results);
                             std::move(callback).Run(std::move(result));
                           },
-                          controller, std::move(publishers_copy),
+                          controller, std::move(publishers),
                           std::move(callback)));
                     },
                     controller, std::move(callback)));
@@ -190,7 +185,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const Publishers& publishers,
     const history::QueryResults& history) {
   const auto visit_weightings = GetVisitWeightings(history);
-  absl::flat_hash_map<std::string_view, double> scores;
+  base::flat_map<std::string_view, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     std::vector<std::string> locales;
@@ -299,8 +294,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                 subscriptions,
                 base::BindOnce(
                     [](base::WeakPtr<SuggestionsController> controller,
-                       const std::string& locale,
-                       const Publishers& publishers) {
+                       const std::string& locale, Publishers publishers) {
                       if (!controller) {
                         return;
                       }
