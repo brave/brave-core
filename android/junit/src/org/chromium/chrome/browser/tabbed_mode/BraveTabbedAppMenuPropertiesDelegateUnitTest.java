@@ -118,6 +118,7 @@ import java.util.List;
     BraveFeatureList.BRAVE_PLAYLIST,
     ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
+    ChromeFeatureList.GLIC,
     ChromeFeatureList.NEW_TAB_PAGE_CUSTOMIZATION,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
     BraveFeatureList.BRAVE_SHRED,
