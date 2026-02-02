@@ -39,6 +39,12 @@ constexpr char16_t kYoutubeBackgroundPlayback[] =
       }
     };
   }
+
+  // Override document.visibilityState to always return 'visible'
+  Object.defineProperty(document, 'visibilityState', {
+    configurable: true,
+    get: function() { return 'visible'; }
+  });
 }());
 )";
 
