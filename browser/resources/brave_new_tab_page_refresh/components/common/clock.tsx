@@ -43,7 +43,14 @@ export function Clock() {
     <>
       {formatter.formatToParts(time).map((item) => {
         if (item.type === 'dayPeriod') {
-          return <span className='day-period'>{item.value}</span>
+          return (
+            <span
+              className='day-period'
+              key='day-period'
+            >
+              {item.value}
+            </span>
+          )
         }
         return item.value
       })}
