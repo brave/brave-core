@@ -7,8 +7,6 @@ package org.chromium.chrome.browser.tasks.tab_management;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -20,6 +18,7 @@ import org.chromium.chrome.browser.user_education.UserEducationHelper;
 
 import java.util.function.DoubleConsumer;
 
+@NullMarked
 public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     BraveTabSwitcherPaneBase(
             @PaneId int paneId,
