@@ -28,7 +28,7 @@ const observer = {
     store.dispatch(Actions.purchasedStateChanged(state))
   },
 
-  onSmartProxyRoutingStateChanged: (enabled: boolean) => {}
+  onSmartProxyRoutingStateChanged: (enabled: boolean) => { }
 }
 
 const handler = new AsyncActionHandler()
@@ -39,7 +39,7 @@ handler.on<PurchasedState>(Actions.initialize.getType(),
     const serviceObserver = new ServiceObserverReceiver(observer)
     getVPNServiceHandler().addObserver(
       serviceObserver.$.bindNewPipeAndPassRemote())
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+
     // @ts-ignore
     getNTPBrowserAPI().pageHandler.refreshVPNState()
     store.dispatch(Actions.purchasedStateChanged(payload))
@@ -47,10 +47,10 @@ handler.on<PurchasedState>(Actions.initialize.getType(),
 )
 
 handler.on(Actions.launchVPNPanel.getType(), async (store) => {
-  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+
   // @ts-ignore
   getNTPBrowserAPI().pageHandler.launchVPNPanel()
-  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+
   // @ts-ignore
   getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
@@ -58,10 +58,10 @@ handler.on(Actions.launchVPNPanel.getType(), async (store) => {
 handler.on<ManageURLType>(
   Actions.openVPNAccountPage.getType(),
   async (store, payload) => {
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+
     // @ts-ignore
     getNTPBrowserAPI().pageHandler.openVPNAccountPage(payload)
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+
     // @ts-ignore
     getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
   }
@@ -78,7 +78,7 @@ handler.on(Actions.toggleConnection.getType(), async (store) => {
   } else {
     getVPNServiceHandler().connect()
   }
-  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+
   // @ts-ignore
   getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })

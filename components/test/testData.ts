@@ -14,7 +14,7 @@ export class ChromeEvent {
   }
 
   emit (...args: Array<() => void>) {
-    this.listeners.forEach((cb: () => void) => cb.apply(null, args))
+    this.listeners.forEach((cb: (...args: any[]) => void) => cb(...args))
   }
 
   addListener (cb: () => void) {
@@ -99,7 +99,7 @@ export const getMockChrome = () => {
       query: function (queryInfo: chrome.tabs.QueryInfo, callback: (result: chrome.tabs.Tab[]) => void) {
         return callback
       },
-      sendMessage: function (tabID: Number, message: any, options: object, responseCallback: any) {
+      sendMessage: function (tabID: number, message: any, options: object, responseCallback: any) {
         return responseCallback
       },
       onActivated: new ChromeEvent(),
@@ -125,7 +125,7 @@ export const getMockChrome = () => {
         get: function (callback: (items: { [key: string]: any }) => void): void {
 
         },
-        set: function (items: Object, callback?: () => void): void {
+        set: function (items: object, callback?: () => void): void {
 
         }
       }
@@ -184,7 +184,7 @@ export const getMockLoadTimeData = () => {
 
 export const window = () => {
   let mock = {
-    prompt: function (text: String) {
+    prompt: function (text: string) {
       return text
     }
   }

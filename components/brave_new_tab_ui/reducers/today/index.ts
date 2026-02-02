@@ -27,7 +27,7 @@ export type BraveNewsState = {
   displayAdToScrollTo?: number
 }
 
-function storeInHistoryState (data: Object) {
+function storeInHistoryState (data: object) {
   const oldHistoryState = (typeof history.state === 'object') ? history.state : {}
   const newHistoryState = { ...oldHistoryState, ...data }
   history.pushState(newHistoryState, document.title)

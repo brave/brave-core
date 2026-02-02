@@ -32,12 +32,12 @@ interface Props {
   totalBlockedTitle: string
 }
 
-function generateWebcompatEntries (invokedWebcompatList: Number[] | undefined) : Array<[string, Number]> {
+function generateWebcompatEntries (invokedWebcompatList: number[] | undefined) : Array<[string, number]> {
   if (invokedWebcompatList === undefined) {
     return [];
   }
   const names = Object.keys(ContentSettingsType)
-  let raw : Array<[string, Number]> = []
+  let raw : Array<[string, number]> = []
   for (const name of names) {
     const value = ContentSettingsType[name as keyof typeof ContentSettingsType]
     if (value > ContentSettingsType.BRAVE_WEBCOMPAT_NONE &&

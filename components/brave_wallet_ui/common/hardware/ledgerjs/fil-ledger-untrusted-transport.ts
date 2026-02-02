@@ -153,7 +153,7 @@ export class FilecoinLedgerUntrustedMessagingTransport //
     }
   }
 
-  private makeProvider = async (): Promise<Boolean> => {
+  private makeProvider = async (): Promise<boolean> => {
     if (this.transportWrapper) {
       await this.transportWrapper.disconnect()
     }

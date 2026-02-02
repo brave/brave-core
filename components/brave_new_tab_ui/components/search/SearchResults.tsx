@@ -86,7 +86,7 @@ export default function SearchResults() {
 
   // Filter out empty results (from urlWhatYouTyped) and the
   // 'search-what-you-typed', which always from from the default search engine.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+
   const matches = React.useMemo(() => [urlWhatYouTyped!, ...(result?.matches ?? [])]
     .filter(r => r && r.type !== 'search-what-you-typed'), [urlWhatYouTyped, result])
   const [selectedMatch, setSelectedMatch] = React.useState<number>();

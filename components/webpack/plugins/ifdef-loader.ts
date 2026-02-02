@@ -233,7 +233,6 @@ function evaluate(condition: string, defs: OptionObject): boolean {
 
    let result: boolean;
    try {
-      // eslint-disable-next-line no-new-func
       const f = new Function(...args, code);
       result = f(...args.map((k) => defs[k]));
    }
@@ -254,7 +253,7 @@ function blankCode(lines: string[], start: number, end: number) {
 }
 
 export default function (source: string, map) {
-   this.cacheable && this.cacheable();
+   this.cacheable?.();
 
    const options = loaderUtils.getOptions(this) || {};
    const originalData = options.json || options;

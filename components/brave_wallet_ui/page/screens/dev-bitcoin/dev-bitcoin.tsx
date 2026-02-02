@@ -90,7 +90,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <ul>
             {balance?.balances
               && Object.entries(
-                balance.balances as { [key: string]: BigInt },
+                balance.balances as { [key: string]: bigint },
               ).map(([address, balance]) => {
                 return (
                   <li key={address}>

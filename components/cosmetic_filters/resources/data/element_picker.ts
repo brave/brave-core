@@ -365,7 +365,7 @@ const attachElementPicker = () => {
 
   // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
-  // eslint-disable-next-line no-unsanitized/property
+  // eslint-disable-next-line no-unsanitized/property, @typescript-eslint/no-require-imports
   shadowRoot.innerHTML = require('./element_picker.html')
 
   const pickerCSSStyle: string = [

@@ -15,7 +15,7 @@ addFeedListener((hash) => {
   store.dispatch(Actions.isUpdateAvailable({ isUpdateAvailable: current !== hash }))
 })
 
-function storeInHistoryState (data: Object) {
+function storeInHistoryState (data: object) {
   const oldHistoryState =
     typeof history.state === 'object' ? history.state : {}
   const newHistoryState = { ...oldHistoryState, ...data }

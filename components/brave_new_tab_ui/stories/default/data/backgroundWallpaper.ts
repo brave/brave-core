@@ -23,6 +23,7 @@ const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         wallpaperImageUrl: require('../../../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
       }
     })

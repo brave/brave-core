@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-type MaybeObj = Object | any[] | null | undefined | number | string
+type MaybeObj = object | any[] | null | undefined | number | string
 
 export function objectEquals(x: MaybeObj, y: MaybeObj): boolean {
   // check falsey values

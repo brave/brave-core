@@ -263,7 +263,6 @@ describe('Attachments Component', () => {
         attachmentsDialog='tabs'
         conversationUuid='test-conversation'
         uiHandler={
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
           {
             ...defaultAIChatContext.uiHandler,
             associateTab: mockAssociateTab,
@@ -294,7 +293,6 @@ describe('Attachments Component', () => {
         attachmentsDialog='tabs'
         conversationUuid='test-conversation'
         uiHandler={
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
           {
             ...defaultAIChatContext.uiHandler,
             disassociateContent: mockDisassociateContent,

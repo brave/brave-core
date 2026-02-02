@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Import BraveNewsControllerMock first.
 import './default/data/mockBraveNewsController'
@@ -56,6 +57,7 @@ export default {
 updateImages(images.map((image): NewTab.BraveBackground => {
   return {
     ...image,
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     wallpaperImageUrl: require('../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
   }
 }))

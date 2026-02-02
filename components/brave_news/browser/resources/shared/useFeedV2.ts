@@ -137,7 +137,7 @@ export const useFeedV2 = (enabled: boolean) => {
 
       // If what's in localStorage isn't from the latest data, make sure we remove
       // it. Without the eslint-disable-next-line comment the below will fail on iOS
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+
       const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
       if (localStorageData?.sourceHash !== latestHash) {
         localStorage.removeItem(FEED_KEY)

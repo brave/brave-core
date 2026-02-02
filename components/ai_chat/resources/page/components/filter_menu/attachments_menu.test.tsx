@@ -209,7 +209,6 @@ describe('TabsMenu', () => {
         conversationUuid='1'
         inputText={['@']}
         uiHandler={
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
           {
             associateTab,
             ...defaultAIChatContext.uiHandler,

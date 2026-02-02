@@ -35,7 +35,7 @@ let handler: TrezorCommandHandler
 export function addTrezorCommandHandler(
   command: TrezorCommand,
   listener: Function,
-): Boolean {
+): boolean {
   if (!handler) {
     handler = new TrezorCommandHandler()
   }
