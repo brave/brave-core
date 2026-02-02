@@ -129,7 +129,7 @@ TEST_F(SerpMetricsTest, BraveSearchCountForStalePeriod) {
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordBraveSearch();
 
-  EXPECT_EQ(2U, serp_metrics_->GetBraveSearchCountForStalePeriod());
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, NoGoogleSearchCountForYesterday) {
@@ -181,7 +181,7 @@ TEST_F(SerpMetricsTest, GoogleSearchCountForStalePeriod) {
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordGoogleSearch();
 
-  EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, NoOtherSearchCountForYesterday) {
@@ -232,7 +232,7 @@ TEST_F(SerpMetricsTest, OtherSearchCountForStalePeriod) {
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
 
-  EXPECT_EQ(2U, serp_metrics_->GetOtherSearchCountForStalePeriod());
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, DoNotCountSearchesOnOrBeforeLastCheckedDate) {
@@ -257,20 +257,16 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesOnOrBeforeLastCheckedDate) {
   serp_metrics_->RecordBraveSearch();
 
   local_state_.SetString(kLastCheckYMD, last_checked_at_1);
-  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
 
   local_state_.SetString(kLastCheckYMD, last_checked_at_2);
-  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, SearchCountForStalePeriodOverMultipleDays) {
@@ -300,9 +296,7 @@ TEST_F(SerpMetricsTest, SearchCountForStalePeriodOverMultipleDays) {
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordOtherSearch();
 
-  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForStalePeriod());
-  EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
-  EXPECT_EQ(3U, serp_metrics_->GetOtherSearchCountForStalePeriod());
+  EXPECT_EQ(6U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, SearchCountForYesterday) {
@@ -366,12 +360,10 @@ TEST_F(SerpMetricsTest, SearchCountForYesterdayWhenTodayHasNoRecordedSearches) {
 }
 
 TEST_F(SerpMetricsTest, ZeroSearchCounts) {
-  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, SearchCounts) {
@@ -391,12 +383,10 @@ TEST_F(SerpMetricsTest, SearchCounts) {
   // Day 2: Today
   serp_metrics_->RecordGoogleSearch();
 
-  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
   EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForStalePeriod());
   EXPECT_EQ(2U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(4U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, ExpireSearchCountsAfterGivenTimePeriod) {
@@ -419,12 +409,10 @@ TEST_F(SerpMetricsTest, ExpireSearchCountsAfterGivenTimePeriod) {
   AdvanceClockToStartOfLocalDayAfterDays(1);
 
   // Day 9: Today
-  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForStalePeriod());
   EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 }  // namespace serp_metrics
