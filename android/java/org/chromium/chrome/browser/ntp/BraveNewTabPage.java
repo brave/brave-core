@@ -193,9 +193,8 @@ public class BraveNewTabPage extends NewTabPage {
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }
 
-    public boolean updateSearchProvider() {
+    public void updateSearchProvider() {
         // Search provider logo is not used in Brave's NTP.
         mSearchProviderHasLogo = false;
-        return false;
     }
 }

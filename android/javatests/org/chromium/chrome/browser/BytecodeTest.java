@@ -710,7 +710,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ntp/NewTabPage",
                         "updateSearchProvider",
                         MethodModifier.REGULAR,
-                        boolean.class));
+                        void.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
