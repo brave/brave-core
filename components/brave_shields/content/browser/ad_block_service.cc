@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/leak_annotations.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -374,7 +375,12 @@ AdBlockService::AdBlockService(
       std::make_unique<SourceProviderObserver>(this, false);
 }
 
-AdBlockService::~AdBlockService() = default;
+AdBlockService::~AdBlockService() {
+  // The engines are deleted on the task runner with SKIP_ON_SHUTDOWN trait,
+  // therefore they leak during shutdown.
+  ANNOTATE_LEAKING_OBJECT_PTR(default_engine_.get());
+  ANNOTATE_LEAKING_OBJECT_PTR(additional_filters_engine_.get());
+}
 
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
