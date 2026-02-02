@@ -20,6 +20,16 @@ describe('createInterfaceApi', () => {
       },
     })
 
+    // No initial / placeholder data, so don't expect the hook
+    // @ts-expect-error
+    expect(api.useGetfDataData).toBeUndefined()
+
+    // Typescript shouldn't allow an endpoint that isn't defined
+    // @ts-expect-error
+    expect(api.useDoesNotExist).toBeUndefined()
+    // @ts-expect-error
+    expect(api.doesNotExist).toBeUndefined()
+
     // Check fetch is keyed by parameter
     expect(await api.getData.fetch('1')).toEqual({ id: '1' })
     expect(await api.getData.fetch('2')).toEqual({ id: '2' })
@@ -190,10 +200,13 @@ describe('createInterfaceApi', () => {
       },
     })
 
+    // Generates the convenience function since we define placeholderData
+    expect(api.useGetListData).not.toBeUndefined()
+
     function useTestQueryData() {
-      const query = api.useGetList()
-      return query.data
+      return api.useGetList().getListData
     }
+
     let hookResult = await act(async () => renderHook(useTestQueryData))
     expect(hookResult.result.current).toEqual([])
 
@@ -438,10 +451,7 @@ describe('createInterfaceApi', () => {
     expect(api.getList.current()).toEqual([{ id: '3' }, { id: '4' }])
   })
 
-  it('creates state queries with no query fetching', async () => {
-    const queryFn = jest.fn(() =>
-      Promise.resolve({ aProp: 'fetched', bProp: false }),
-    )
+  it('creates state queries with placeholder data', async () => {
     const api = createInterfaceApi({
       actions: {},
       endpoints: {
@@ -452,22 +462,71 @@ describe('createInterfaceApi', () => {
       },
     })
 
-    // Should not fetch the query
-    expect(queryFn).not.toHaveBeenCalled()
+    // Ensure typescript knows, and actual state is, never undefined since we
+    // provide initial data.
+    expect(api.state.current().aProp).not.toBeUndefined()
     expect(api.state.current()).toEqual({ aProp: 'initial', bProp: true })
-    expect(queryFn).not.toHaveBeenCalled()
 
-    // Render a hook and verify the query is not fetched
+    // Render a hook and verify the query is not fetched (no error)
     function useStateData() {
-      const stateData = api.state.useQuery()
-      return stateData.data
+      return api.state.useQuery()
     }
+
     let hookResult = await act(async () => renderHook(useStateData))
-    expect(hookResult.result.current).toEqual({ aProp: 'initial', bProp: true })
-    expect(queryFn).not.toHaveBeenCalled()
+
+    expect(hookResult.result.current.data).toEqual({
+      aProp: 'initial',
+      bProp: true,
+    })
+    expect(hookResult.result.current.error).toBeNull()
+
     await act(async () => hookResult.rerender())
-    expect(hookResult.result.current).toEqual({ aProp: 'initial', bProp: true })
-    expect(queryFn).not.toHaveBeenCalled()
+
+    expect(hookResult.result.current.data).toEqual({
+      aProp: 'initial',
+      bProp: true,
+    })
+    expect(hookResult.result.current.error).toBeNull()
+  })
+
+  it('creates state queries with no placeholder data', async () => {
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {
+        flag: state<boolean>(),
+      },
+    })
+
+    // Ensure typescript knows, and actual state is, undefined when we don't
+    // provide initial data.
+    expect(api.flag.current()).toBeUndefined()
+    // Ensure typescript knows, and actual state is, undefined when we don't
+    // provide initial data.
+    expect(api.flag.current()).toBeUndefined()
+
+    // Render a hook and verify the query is not fetched (no error)
+    function useStateData() {
+      return api.flag.useQuery()
+    }
+
+    let hookResult = await act(async () => renderHook(useStateData))
+
+    expect(hookResult.result.current.data).toBeUndefined()
+    expect(hookResult.result.current.error).toBeNull()
+
+    await act(async () => hookResult.rerender())
+
+    expect(hookResult.result.current.data).toBeUndefined()
+    expect(hookResult.result.current.error).toBeNull()
+
+    // set data
+    api.flag.update(true)
+
+    await act(async () => hookResult.rerender())
+
+    expect(hookResult.result.current.data).toBe(true)
+    expect(hookResult.result.current.error).toBeNull()
+    expect(api.flag.current()).toBe(true)
   })
 
   it('fires and handles events', () => {

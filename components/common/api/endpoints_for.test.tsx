@@ -76,7 +76,7 @@ describe('endpointsFor', () => {
     getState: {
       response: (result) => result.state,
       prefetchWithArgs: [],
-      initialData: {
+      placeholderData: {
         aProp: 'initial',
         bProp: true,
       },
@@ -84,7 +84,7 @@ describe('endpointsFor', () => {
     getSimple: {
       response: (result) => result.simple,
       prefetchWithArgs: ['4'],
-      initialData: 'ad',
+      placeholderData: 'ad',
     },
     getMultiple: {
       response: (result) => result.multiple,
@@ -189,7 +189,7 @@ describe('endpointsFor', () => {
 
   it('should create an interface API with the endpoints', () => {
     // Can the combination of createInterfaceAPI and endpointsFor
-    // infer the return type of the query, including initialData?
+    // infer the return type of the query, including placeholderData?
     const api = createInterfaceApi({
       actions: {},
       endpoints: {

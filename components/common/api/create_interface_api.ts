@@ -132,19 +132,26 @@ export function query<const P extends readonly any[], R>(
 /**
  * Wrapper for an endpoint which creates data that is not fetched but is
  * updated by events and provided with initial data.
- * @param data optional initial data (not placeholder data)
+ * @param data optional initial data
  * @returns query endpoint definition
  */
+// Overload: when data is provided, return type includes placeholderData
+export function state<R>(data: R): PlaceholderQueryEndpointDefinition<[], R>
+// Overload: when no data, return type without placeholderData
+export function state<R>(): NoPlaceholderQueryEndpointDefinition<[], R>
+// Implementation
 export function state<R>(data?: R): QueryEndpointDefinition<[], R> {
-  return {
+  const base = {
     query: () =>
       Promise.reject(new Error('State endpoint should not be called')),
     enabled: false,
-    prefetchWithArgs: [],
-    initialData: data,
-    // never re-fetch, even if invalidated
-    staleTime: 'static',
+    prefetchWithArgs: [] as [],
+    staleTime: 'static' as const,
   }
+  if (data !== undefined) {
+    return { ...base, placeholderData: data }
+  }
+  return base
 }
 
 /**
@@ -183,7 +190,7 @@ export function createInterfaceApi<
     | Record<string, (...args: readonly any[]) => any>
   >,
   const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
-  EventDefinitions extends Record<string, EventDef<any[], any>>,
+  EventDefinitions extends Record<string, EventDef<any[], any>> = {},
 >(config: {
   /**
    *  Unique identifier for this API, used in query keys
@@ -461,11 +468,11 @@ export function createInterfaceApi<
         })
       }
 
-      // Removes state and resets to undefined or initialData
+      // Removes state and resets to undefined or placeholderData
       const reset = (...args: QArgs) => {
         const queryKey = [...baseKey, ...args]
         // We can use removeQueries if we don't want
-        // to reset to initialData.
+        // to reset to placeholderData.
         queryClient.resetQueries({
           queryKey,
           exact: true,
@@ -538,14 +545,6 @@ export function createInterfaceApi<
           const newData = updateFromOld(old, updateData)
           return newData
         })
-      }
-
-      // Set initial data to avoid a query
-      if (
-        queryOptions.initialData !== undefined
-        && queryOptions.enabled === false
-      ) {
-        queryClient.setQueryData(baseKey, () => queryOptions.initialData)
       }
 
       if (prefetchWithArgs && queryOptions.enabled !== false) {

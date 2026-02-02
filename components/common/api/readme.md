@@ -6,16 +6,12 @@ information about the user's preferences or the state of a service, whereas the
 UI might provide information about whether a navigation menu is currently open,
 or which item of a list is currently being edited, pending updating the remote.
 
-It's also useful to have a distinction between data provided from different
-remote endpoints, and even different remotes, so that an overview of the flow
-and modification of data can be more easily obtained.
-
 This API introduces the remote API client part of that distinction.
 
 A popular pattern has emerged to accopmlish this for many apps and websites,
 using a store that specializes around fetching remote state. This pattern can be
 seen in libraries like [_Redux Toolkit Queries_](https://redux-toolkit.js.org/rtk-query/overview) and [_TanStack Query_ (a.k.a.
-_React Query_)](https://tanstack.com/query/latest/docs/framework/react/overview). The latter is the library used behind the scenes to manage and
+_React Query_)](https://tanstack.com/query/latest/docs/framework/react/overview). The latter is the library used behind the scenes within this API to manage and
 query the store.
 
 Remote APIs often have these things in common:
@@ -43,10 +39,17 @@ It provides a way to take a simple definition of your interface's endpoints,
 actions and events, generating both framework-independent accessors, and
 mutators as well as React hooks which create easy subscriptions in components.
 
+| What to use | When to use it | How to use it |
+| --- | --- | --- |
+| Query Endpoint | Get data | `api.useMyQuery()` - data will be fetched immediately whether it is used or not (via `.data` or `.isPending`) |
+| Mutation Endpoint | Call an action (a.k.a "mutating") function on the endpoint, where we want to either handle events when it happens, or share the action state between components | `<button onClick={api.doSomething()}>` |
+| Action | Call an action function on the endpoint, where we don't need to handle centrally or share between components its state | `<button onClick={api.doSomething()}>` |
+| Event | Handle when a function gets called by the remote | `api.useOnSomethingHappened(() => { showAlert('something happened') }` |
+
 ## Endpoints
 
 ```typescript
-// Sample types
+// Sample types, perhaps generated via Mojom
 type Todo = { id: string, task: string, isComplete: boolean }
 
 type MyInterface = {
@@ -65,7 +68,7 @@ type MyInterfaceObserver {
 }
 
 // API usage
-function createMyAPI(MyInterface myInterfaceRemote) {
+function createMyAPI(myInterfaceRemote: MyInterface) {
   // Define the API layout and what to do with the interface data:
   // - which functions should be exposed to the UI as subscribable with hooks
   // - which should be prefetched,
@@ -89,11 +92,13 @@ function createMyAPI(MyInterface myInterfaceRemote) {
           // Optional: In fact, we want to fetch it as soon as possible and not wait for
           // the UI to mount.
           prefetchWithArgs: [], // there are no parameters for this function
-          // Optional: So that the UI doesn't have to check if undefined.
+          // Optional: So that the UI doesn't have to check if undefined. This is
+          // usually stub data for loading screens or convenience. Use `.isPlaceholderData`
+          // to determine whether the current data value is the placeholder value.
           placeholderData: [] as Todo[]
           // ...or use any other option available to useQuery
           // https://tanstack.com/query/latest/docs/framework/react/reference/useQuery
-          // e.g. refetch options / retry intervals
+          // e.g. refetch options / retry intervals / initialData
         },
 
         // Takes a parameter, inferred by the Typescript interface
@@ -238,10 +243,13 @@ function MyReactComponent(props) {
 ## Actions
 
 Sometimes we want to allow the UI to call actions exposed by mojo, that we don't
-need to subscribe to the result, to the progress for or to expose calls from one
-part of the UI to other parts. For example, perhaps the result is broadcast to
-observers and isn't a long-running or awaitable action. We can pass the entire
-interface but restrict access via Typescript to the functions we allow.
+need to be notified of when they are called, or share calls between different
+parts of the UI. Or we don't need to know when the action is in-progress.
+For example, perhaps the result is broadcast to observers and
+isn't a long-running or awaitable action.
+For these scenarios, we can simply pass through the functions from our interfaces.
+We can simply pass the entire interface but restrict access via Typescript
+to the functions we allow.
 
 ```tsx
 const api = createInterfaceAPI({
