@@ -46,7 +46,7 @@ const ControlsContainer = styled.span`
 `
 
 const Container = styled.div`
-  background-color: var(--info-background);
+  background-color: ${color.systemfeedback.infoBackground};
   border-radius: 8px;
   padding: 24px 24px;
   align-items: center;
@@ -57,7 +57,7 @@ const Container = styled.div`
 
 const DescriptionRow = styled.div`
   width: 100%;
-  color: var(--text1);
+  color: ${color.text.primary};
   font-family: var(--brave-font-family-non-serif);
   letter-spacing: 0.01em;
   margin-bottom: 16px;

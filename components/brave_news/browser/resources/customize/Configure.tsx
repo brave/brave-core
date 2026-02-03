@@ -66,7 +66,7 @@ const Hr = styled.hr`
   grid-area: separator;
   width: 100%;
   align-self: center;
-  background: var(--divider1);
+  background: ${color.divider.subtle};
   height: 2px;
   border-width: 0;
 `
@@ -76,7 +76,7 @@ const Sidebar = styled.div`
   overflow: auto;
   grid-area: sidebar;
   padding: 28px 22px 28px 32px;
-  background: var(--background2);
+  background: ${color.page.background};
 `
 
 // Overlay on top of the sidebar, shown when it is disabled.
