@@ -74,13 +74,13 @@ export default function TabsMenu() {
       if ('contentId' in attachment) {
         aiChat.api.uiHandler.associateTab(
           attachment,
-          conversation.conversationUuid!,
+          conversation.conversationUuid,
         )
       } else {
         aiChat.api.uiHandler.associateUrlContent(
           attachment.url,
           attachment.title,
-          conversation.conversationUuid!,
+          conversation.conversationUuid,
         )
       }
       document.querySelector('textarea')?.focus()
