@@ -4,10 +4,10 @@
     "./components/**/*",
     "./chromium_src/**/*",
     "./build/commands/**/*",
-    "./.*.js",
-    "./.*.ts",
     "./*.js",
-    "./*.ts"
+    "./*.ts",
+    "./*.mjs",
+    "./*.mts"
   ],
   "exclude": []
 }

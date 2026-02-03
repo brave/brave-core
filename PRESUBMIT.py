@@ -78,6 +78,8 @@ def CheckESLint(input_api, output_api):
         r'.+\.js$',
         r'.+\.ts$',
         r'.+\.tsx$',
+        r'.+\.mjs$',
+        r'.+\.mts$',
     )
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
