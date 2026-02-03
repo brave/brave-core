@@ -143,8 +143,13 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
 #endif
          }},
         {"gemini",
-         {GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)),
-          GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL))}},
+         {
+             GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)),
+             GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL)),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+             GURL(brave_domains::kGate3URL),
+#endif
+         }},
         {"uphold",
          {GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
           GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL))}},

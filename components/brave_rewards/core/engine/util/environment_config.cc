@@ -111,27 +111,13 @@ std::string EnvironmentConfig::uphold_fee_address() const {
 }
 
 GURL EnvironmentConfig::gemini_oauth_url() const {
-  return URLValue(current_environment() == mojom::Environment::kProduction
-                      ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
-                      : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL));
+  return BuildGate3OAuthURL("gemini");
 }
 
 GURL EnvironmentConfig::gemini_api_url() const {
   return URLValue(current_environment() == mojom::Environment::kProduction
                       ? BUILDFLAG(GEMINI_PRODUCTION_API_URL)
                       : BUILDFLAG(GEMINI_SANDBOX_API_URL));
-}
-
-std::string EnvironmentConfig::gemini_client_id() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(GEMINI_PRODUCTION_CLIENT_ID)
-             : BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID);
-}
-
-std::string EnvironmentConfig::gemini_client_secret() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(GEMINI_PRODUCTION_CLIENT_SECRET)
-             : BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET);
 }
 
 std::string EnvironmentConfig::gemini_fee_address() const {

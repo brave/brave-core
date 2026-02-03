@@ -20,10 +20,9 @@ TEST_F(RewardsConnectGeminiWalletTest, LoginURL) {
   auto actual = connect.GenerateLoginURL();
 
   auto expected_url = config.gemini_oauth_url().Resolve(
-      base::StrCat({"/auth?client_id=", config.gemini_client_id(),
-                    "&scope=balances%3Aread%2Chistory%3Aread%2Ccrypto%3Asend%2C"
+      base::StrCat({"auth"
+                    "?scope=balances%3Aread%2Chistory%3Aread%2Ccrypto%3Asend%2C"
                     "account%3Aread%2Cpayments%3Acreate%2Cpayments%3Asend%2C"
-                    "&redirect_uri=rewards%3A%2F%2Fgemini%2Fauthorization"
                     "&state=",
                     connect.GetOAuthStateForTesting().one_time_string,
                     "&response_type=code"}));

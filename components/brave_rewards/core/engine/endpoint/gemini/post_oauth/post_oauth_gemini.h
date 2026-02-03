@@ -11,12 +11,10 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
 
-// POST https://exchange.sandbox.gemini.com/auth/token
+// POST https://gate3.wallet.brave.com/api/oauth/gemini/{environment}/token
 //
 // Request body:
 // {
-//   "client_id": "xxxxx",
-//   "client_secret": "yyyyy",
 //   "code": "aaaaa",
 //   "grant_type": "authorization_code",
 //   "redirect_uri": "rewards://gemini/authorization"

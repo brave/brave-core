@@ -17,8 +17,7 @@ class RewardsGeminiPostOauthTest : public RewardsEngineTest {
  protected:
   auto Request(mojom::UrlResponsePtr response) {
     auto request_url =
-        engine().Get<EnvironmentConfig>().gemini_oauth_url().Resolve(
-            "/auth/token");
+        engine().Get<EnvironmentConfig>().gemini_oauth_url().Resolve("token");
 
     client().AddNetworkResultForTesting(
         request_url.spec(), mojom::UrlMethod::POST, std::move(response));

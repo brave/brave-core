@@ -234,13 +234,9 @@ const Config = function () {
     'dcheck_always_on',
     'enable_updater',
     'gemini_production_api_url',
-    'gemini_production_client_id',
-    'gemini_production_client_secret',
     'gemini_production_fee_address',
     'gemini_production_oauth_url',
     'gemini_sandbox_api_url',
-    'gemini_sandbox_client_id',
-    'gemini_sandbox_client_secret',
     'gemini_sandbox_fee_address',
     'gemini_sandbox_oauth_url',
     'google_default_client_id',
@@ -665,13 +661,9 @@ Config.prototype.buildArgs = function () {
     delete args.bitflyer_sandbox_fee_address
     delete args.bitflyer_sandbox_url
     delete args.gemini_production_api_url
-    delete args.gemini_production_client_id
-    delete args.gemini_production_client_secret
     delete args.gemini_production_fee_address
     delete args.gemini_production_oauth_url
     delete args.gemini_sandbox_api_url
-    delete args.gemini_sandbox_client_id
-    delete args.gemini_sandbox_client_secret
     delete args.gemini_sandbox_fee_address
     delete args.gemini_sandbox_oauth_url
     delete args.uphold_production_api_url
