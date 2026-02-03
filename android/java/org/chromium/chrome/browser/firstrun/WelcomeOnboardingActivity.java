@@ -10,7 +10,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
 import android.animation.LayoutTransition;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -31,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.viewpager2.widget.ViewPager2;

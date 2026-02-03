@@ -106,3 +106,13 @@ android_library("brave_test_java_org.chromium.chrome.browser.swiperefresh") {
     "//ui/android:ui_no_recycler_view_java",
   ]
 }
+
+android_library(
+    "brave_test_java_org.chromium.chrome.browser.set_default_browser") {
+  sources = [ "org/chromium/chrome/browser/set_default_browser/BraveSetDefaultBrowserUtilsTest.java" ]
+
+  deps = [
+    ":brave_test_java_helper",
+    "//components/embedder_support/android:util_java",
+  ]
+}

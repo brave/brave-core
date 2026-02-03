@@ -44,8 +44,7 @@ android_resources("java_resources") {
 
 robolectric_library("junit") {
   resources_package = "org.chromium.brave.browser.firstrun"
-  sources =
-      [ "javatests/src/org/chromium/chrome/browser/firstrun/OnboardingStepAdapterTest.java" ]
+  sources = [ "javatests/src/org/chromium/chrome/browser/firstrun/OnboardingStepAdapterTest.java" ]
 
   deps = [
     ":java",
