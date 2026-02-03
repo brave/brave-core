@@ -2672,7 +2672,10 @@
 -AdsPageLoadMetricsObserverBrowserTest.*
 -AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
 -All/AmpPageLoadMetricsBrowserTest.*
--All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/kLastHour
+# Chromium test flaky - disabled on Windows upstream (crbug.com/413259587). Race
+# condition between JavaScript cookie set via document.cookie and backend
+# SiteDataCountingHelper query. Brave has no modifications to this code.
+-All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/*
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
