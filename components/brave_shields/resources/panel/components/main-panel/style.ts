@@ -4,8 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled, { css } from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
-import globalIconUrl from '../../../../../web-components/icons/globe.svg'
-import managedIconUrl from '../../../../../web-components/icons/managed.svg'
 import { color } from '@brave/leo/tokens/css/variables'
 
 interface CaratIconProps {
@@ -246,28 +244,6 @@ export const CaratIcon = styled(CaratStrongDownIcon) <CaratIconProps>`
   ${p => p.isExpanded && css`
     --rotate: rotate(180deg);
   `}
-`
-
-export const GlobeIcon = styled.i`
-  display: block;
-  width: 17px;
-  height: 17px;
-  background-image: url(${globalIconUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top;
-  margin-right: 5px;
-`
-
-export const ManagedIcon = styled.i`
-  display: block;
-  width: 17px;
-  height: 17px;
-  background-image: url(${managedIconUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top;
-  margin-right: 5px;
 `
 
 export const ManagedText = styled.div`

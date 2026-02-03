@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import Toggle from '@brave/leo/react/toggle'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 import * as S from './style'
 import AdvancedControlsContent from '../advanced-controls-content'
@@ -19,6 +20,16 @@ import { formatLocale, getLocale } from '$web-common/locale'
 import DataContext from '../../state/context'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 import { useIsExpanded } from '../../state/hooks'
+import styled from 'styled-components'
+import { color } from '@brave/leo/tokens/css/variables'
+
+const ManagedIcon = styled(Icon).attrs({ name: 'news-business' })`
+  --leo-icon-size: 17px;
+  --leo-icon-color: ${color.icon.interactive};
+
+  display: block;
+  margin-right: 5px;
+`
 
 const handleLearnMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault()
@@ -108,7 +119,7 @@ function MainPanel () {
   let managedFootnoteElement = (
     <S.Footnote>
       <S.ControlBox>
-        <S.ManagedIcon />
+        <ManagedIcon />
         <S.ManagedText>{getLocale('braveShieldsManaged')}</S.ManagedText>
       </S.ControlBox>
     </S.Footnote>
