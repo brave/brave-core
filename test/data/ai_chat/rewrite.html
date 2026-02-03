@@ -14,19 +14,31 @@
   </style>
   </head>
   <script>
-    function get_contenteditable_text() {
-      var contenteditable = document.getElementById("contenteditable");
-      var text = contenteditable.innerHTML;
-      return text;
+    function get_text(id) {
+      var element = document.getElementById(id);
+      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+        return element.value;
+      }
+      return element.innerText;
     }
 
-    function get_text(id) {
-      if (id === "contenteditable") {
-        return get_contenteditable_text();
-      }
+    // Returns a promise that resolves when the element's text equals expected.
+    // Used to wait for async DOM updates from Replace() IPC.
+    function wait_for_text(id, expected) {
       var element = document.getElementById(id);
-      var text = element.value;
-      return text;
+      if (get_text(id) === expected) {
+        return Promise.resolve(get_text(id));
+      }
+      return new Promise(function(resolve) {
+        var observer = new MutationObserver(function() {
+          if (get_text(id) === expected) {
+            observer.disconnect();
+            resolve(get_text(id));
+          }
+        });
+        observer.observe(element,
+            {childList: true, subtree: true, characterData: true});
+      });
     }
 
     function select_all(id) {
@@ -36,6 +48,9 @@
         return element.value.substring(
             element.selectionStart, element.selectionEnd);
       } else {
+        // Focus the element first to ensure the browser recognizes the context
+        // as editable for contenteditable elements.
+        element.focus();
         var selection = window.getSelection();
         var range = document.createRange();
         range.selectNodeContents(element);

@@ -234,9 +234,13 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     testing::Mock::VerifyAndClearExpectations(ai_engine);
 
     // Verify that the text is rewritten as expected.
+    // NOTE: Replace() is an IPC to the renderer that updates the DOM
+    // asynchronously. wait_for_text() uses a MutationObserver to wait for the
+    // DOM to update to the expected value before checking.
     std::string updated_text =
         content::EvalJs(web_contents,
-                        content::JsReplace("get_text($1)", element_id))
+                        content::JsReplace("wait_for_text($1, $2)", element_id,
+                                           expected_updated_text))
             .ExtractString();
     EXPECT_EQ(expected_updated_text, updated_text);
   }
