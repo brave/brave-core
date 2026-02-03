@@ -12,22 +12,19 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
-class TabDragController : public TabDragControllerChromium {
+class BraveTabDragController : public TabDragController {
  public:
-  TabDragController();
-  ~TabDragController() override;
-
-  // Making this virtual method is really painful as "Init" is too common name.
-  // So, just hide Chromium's Init and make clients use this version
-  Liveness Init(TabDragContext* source_context,
-                TabSlotView* source_view,
-                const std::vector<TabSlotView*>& dragging_views,
-                const gfx::Point& offset_from_first_dragged_view,
-                const gfx::Point& offset_from_source_view,
-                ui::ListSelectionModel initial_selection_model,
-                ui::mojom::DragEventSource event_source);
+  BraveTabDragController();
+  ~BraveTabDragController() override;
 
   // TabDragControllerChromium:
+  [[nodiscard]] Liveness Init(TabDragContext* source_context,
+                              TabSlotView* source_view,
+                              const std::vector<TabSlotView*>& dragging_views,
+                              const gfx::Point& offset_from_first_dragged_view,
+                              const gfx::Point& offset_from_source_view,
+                              ui::ListSelectionModel initial_selection_model,
+                              ui::mojom::DragEventSource event_source) override;
   views::Widget* GetAttachedBrowserWidget() override;
   gfx::Vector2d CalculateWindowDragOffset() override;
   void StartDraggingTabsSession(bool initial_move,
@@ -50,7 +47,7 @@ class TabDragController : public TabDragControllerChromium {
   BraveVerticalTabStripRegionView::ScopedStateResetter
       vertical_tab_state_resetter_;
 
-  base::WeakPtrFactory<TabDragController> weak_factory_{this};
+  base::WeakPtrFactory<BraveTabDragController> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_

@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
+#include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -53,9 +54,7 @@
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
-#define TabDragController TabDragControllerChromium
 #include <chrome/browser/ui/views/tabs/tab_strip.cc>
-#undef TabDragController
 
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
