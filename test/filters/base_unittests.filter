@@ -8,3 +8,10 @@
 # rust logs severity has been tamed in brave, as crates were spamming CI with
 # logs.
 -RustLogIntegrationTest.CheckAllSeverity
+
+# Pkey pool tests exhaust the 256MB ThreadIsolatedPool size. The test allocates
+# up to 250 random-sized blocks (up to 2MB each) simultaneously, which exceeds
+# the pool capacity. This is an upstream test limitation - the test works with
+# the regular GiB-sized pool but not the smaller pkey pool.
+-AlternateTestParams/PartitionAllocTest.ZeroFill/2
+-AlternateTestParams/PartitionAllocTest.ZeroFill/3
