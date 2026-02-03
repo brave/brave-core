@@ -1218,7 +1218,7 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
   if (brave_account::features::IsBraveAccountEnabled()) {
-    html_source->AddLocalizedStrings(webui::kBraveAccountStrings);
+    html_source->AddLocalizedStrings(webui::kBraveAccountSettingsStrings);
   }
 }
 

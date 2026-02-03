@@ -13,7 +13,7 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
 } from './brave_account_browser_proxy.js'
-import { BraveAccountStrings } from '../brave_components_webui_strings.js'
+import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import {
   ResendConfirmationEmailError,
   ResendConfirmationEmailErrorCode,
@@ -78,14 +78,14 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     leoShowAlert({
       type: error ? 'error' : 'success',
       title: this.i18n(
-        error ? BraveAccountStrings
+        error ? BraveAccountSettingsStrings
                      .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE :
-                BraveAccountStrings
+                BraveAccountSettingsStrings
                      .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE),
       content: error
         ? this.getErrorMessage(error)
         : this.i18n(
-              BraveAccountStrings
+              BraveAccountSettingsStrings
                    .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS)
     }, 30000)
 
@@ -111,11 +111,11 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     > = {
       [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
         this.i18n(
-            BraveAccountStrings
+            BraveAccountSettingsStrings
                  .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED),
       [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
         this.i18n(
-            BraveAccountStrings
+            BraveAccountSettingsStrings
                  .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED),
     }
 
@@ -124,10 +124,10 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     if (netErrorOrHttpStatus == null) {
       // client-side error
       return this.i18n(
-          BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
+          BraveAccountSettingsStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
           errorCode != null
             ? ` (${this.i18n(
-                       BraveAccountStrings
+                       BraveAccountSettingsStrings
                             .BRAVE_ACCOUNT_ERROR)}=${errorCode})`
             : '',
       )
@@ -137,11 +137,11 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     return (
       (errorCode != null ? ERROR_STRINGS[errorCode] : null)
       ?? this.i18n(
-        BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
+        BraveAccountSettingsStrings.BRAVE_ACCOUNT_SERVER_ERROR,
         netErrorOrHttpStatus,
         errorCode != null
           ? `, ${this.i18n(
-                     BraveAccountStrings
+                     BraveAccountSettingsStrings
                           .BRAVE_ACCOUNT_ERROR)}=${errorCode}`
           : '',
       )

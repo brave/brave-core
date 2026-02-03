@@ -6,7 +6,7 @@
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
-import { BraveAccountStrings } from '../brave_components_webui_strings.js'
+import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import { SettingsBraveAccountRow } from './brave_account_row.js'
 
 const createFirstRow = (
@@ -39,14 +39,16 @@ export function getHtml(this: SettingsBraveAccountRow) {
     () => ReturnType<typeof html>
   > = {
     [AccountStateFieldTags.LOGGED_IN]: () => createFirstRow(
-      this.i18n(BraveAccountStrings.SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE),
+      this.i18n(
+          BraveAccountSettingsStrings
+               .SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE),
       this.state!.loggedIn!.email,
       html`
         <leo-button kind="outline"
                     size="small"
                     @click=${this.onLogOutButtonClicked}>
           ${this.i18n(
-                BraveAccountStrings
+                BraveAccountSettingsStrings
                      .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
         </leo-button>
       `
@@ -54,14 +56,14 @@ export function getHtml(this: SettingsBraveAccountRow) {
     [AccountStateFieldTags.VERIFICATION]: () => html`
       ${createFirstRow(
         this.i18n(
-            BraveAccountStrings
+            BraveAccountSettingsStrings
                 .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE),
         [
           this.i18n(
-              BraveAccountStrings
+              BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1),
           this.i18n(
-              BraveAccountStrings
+              BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)
         ]
       )}
@@ -71,7 +73,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
                     ?isDisabled=${this.isResendingConfirmationEmail}
                     @click=${this.onResendConfirmationEmailButtonClicked}>
           ${this.i18n(
-                BraveAccountStrings
+                BraveAccountSettingsStrings
                      .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL)}
         </leo-button>
         <leo-button kind="plain-faint"
@@ -79,24 +81,24 @@ export function getHtml(this: SettingsBraveAccountRow) {
                     class="cancel-registration-button"
                     @click=${this.onCancelRegistrationButtonClicked}>
           ${this.i18n(
-                BraveAccountStrings
+                BraveAccountSettingsStrings
                      .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL)}
         </leo-button>
       </div>
     `,
     [AccountStateFieldTags.LOGGED_OUT]: () => createFirstRow(
       this.i18n(
-          BraveAccountStrings
+          BraveAccountSettingsStrings
                .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE),
       this.i18n(
-          BraveAccountStrings
+          BraveAccountSettingsStrings
                .BRAVE_ACCOUNT_DESCRIPTION),
       html`
         <leo-button kind="filled"
                     size="small"
                     @click=${this.onGetStartedButtonClicked}>
           ${this.i18n(
-                BraveAccountStrings
+                BraveAccountSettingsStrings
                      .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}
         </leo-button>
       `

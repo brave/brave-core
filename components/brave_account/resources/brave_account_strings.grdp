@@ -3,31 +3,31 @@
   <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="webui=BraveAccount android_java">
     Brave Account
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccount">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccountSettings">
     Sign in or create a Brave account
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Get Started
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE" translateable="false" desc="Title shown when user has registered but is awaiting email verification" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE" translateable="false" desc="Title shown when user has registered but is awaiting email verification" formatter_data="webui=BraveAccountSettings android_java">
     Almost there!
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java">
     A confirmation email is on the way. Click the button in that email to activate your account.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Resend confirmation email
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="webui=BraveAccountSettings android_java">
     Don't see the email? Check your spam folder or click on the button to resend the confirmation email.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Cancel registration
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="webui=BraveAccountSettings android_java">
     Email address
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Sign out
   </message>
 
@@ -112,13 +112,13 @@
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog" formatter_data="webui=BraveAccount">
     We encountered an error while processing your request.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     error
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     The browser encountered an unexpected error<ph name="ERROR_CODE">$1</ph>. Please restart the browser and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="" formatter_data="webui=BraveAccount">
@@ -138,7 +138,7 @@
   </message>
 
   <!-- Common: -->
-  <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" translateable="false" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" translateable="false" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount,BraveAccountSettings">
     A Brave account will allow you to easily access Brave services.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button" formatter_data="webui=BraveAccount">
@@ -154,19 +154,19 @@
     Enter your password
   </message>
 
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="webui=BraveAccountSettings android_java">
     Done
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in an alert after successfully resending the confirmation email" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" translateable="false" desc="Success message shown in an alert after successfully resending the confirmation email" formatter_data="webui=BraveAccountSettings android_java">
     Confirmation email resent.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" translateable="false" desc="Title for the alert shown when resending the confirmation email fails" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" translateable="false" desc="Title for the alert shown when resending the confirmation email fails" formatter_data="webui=BraveAccountSettings android_java">
     Unable to resend
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" translateable="false" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded" formatter_data="webui=BraveAccountSettings android_java">
     Too many verification emails have been sent already. Please check your spam folder.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" translateable="false" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccountSettings android_java">
     Email already verified.
   </message>
 </grit-part>
