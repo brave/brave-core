@@ -514,6 +514,13 @@ void ConversationAPIV2Client::OnQueryDataReceived(
         mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
 
     callback.Run(GenerationResultData(std::move(event), std::move(model_key)));
+  } else if (*object_type == "brave-chat.toolStart") {
+    const std::string* tool_name = result_params.FindString("tool_name");
+    if (IsBraveSearchTool(tool_name ? *tool_name : "")) {
+      auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
+          mojom::SearchStatusEvent::New(true));
+      callback.Run(GenerationResultData(std::move(event), std::nullopt));
+    }
   }
 
   // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
@@ -523,13 +530,31 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   if (content_container) {
     if (const base::ListValue* tool_calls =
             content_container->FindList("tool_calls")) {
-      // Provide any valid tool use events to the callback
-      // ToolUseEventFromToolCallsResponse handles per-tool alignment_check
-      for (auto& tool_use_event :
-           ToolUseEventFromToolCallsResponse(tool_calls)) {
-        auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
-            std::move(tool_use_event));
-        callback.Run(GenerationResultData(std::move(tool_event), model_key));
+      for (const auto& tool_call_value : *tool_calls) {
+        if (!tool_call_value.is_dict()) {
+          continue;
+        }
+        const auto& tool_call_dict = tool_call_value.GetDict();
+
+        // Parse tool request or server tool result
+        if (tool_call_dict.FindDict("function")) {
+          // Create ToolUseEvent for tool request
+          if (auto tool_use_event = ParseToolCallRequest(tool_call_dict)) {
+            auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+                std::move(*tool_use_event));
+            callback.Run(
+                GenerationResultData(std::move(tool_event), model_key));
+          }
+        } else if (tool_call_dict.FindList("output_content")) {
+          // Create ToolUseEvent for tool result, which will be stored as the
+          // output in the tool request arrived before.
+          if (auto tool_use_event = ParseToolCallResult(tool_call_dict)) {
+            auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+                std::move(*tool_use_event));
+            callback.Run(
+                GenerationResultData(std::move(tool_event), model_key));
+          }
+        }
       }
     }
   }

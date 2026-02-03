@@ -24,7 +24,6 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/safe_math.h"
@@ -72,6 +71,19 @@ using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
+
+bool HasPendingToolsInEntry(const mojom::ConversationTurn& entry) {
+  if (!entry.events.has_value()) {
+    return false;
+  }
+  for (const auto& event : *entry.events) {
+    if (event->is_tool_use_event() &&
+        !event->get_tool_use_event()->output.has_value()) {
+      return true;
+    }
+  }
+  return false;
+}
 
 }  // namespace
 
@@ -1309,13 +1321,40 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
                << " is empty? " << tool_use_event->tool_name.empty()
                << " with input: " << tool_use_event->arguments_json;
 
+      // Accumulate streamed arguments_json from tool requests in the existing
+      // tool use event.
       if (last_event->is_tool_use_event() &&
-          tool_use_event->tool_name.empty()) {
+          tool_use_event->tool_name.empty() &&
+          !tool_use_event->output.has_value()) {
         last_event->get_tool_use_event()->arguments_json =
             base::StrCat({last_event->get_tool_use_event()->arguments_json,
                           tool_use_event->arguments_json});
         // TODO(petemill): Don't clone
         OnHistoryUpdate(entry.Clone());
+        return;
+      }
+
+      // For server-side tool results, tool_name is empty but output exists.
+      // Find the tool use event created from tool call request and update it's
+      // output. If there are any other client-side tool use requests to be
+      // processed, we would handle it upon CompleteGeneration after server has
+      // finished streaming everything for this generation request.
+      if (tool_use_event->tool_name.empty() &&
+          tool_use_event->output.has_value() &&
+          tool_use_event->is_server_result) {
+        auto* existing_tool_use_event =
+            GetToolUseEventForLastResponse(tool_use_event->id);
+        if (!existing_tool_use_event) {
+          DVLOG(1) << "Server tool result for unknown id: "
+                   << tool_use_event->id;
+          return;
+        }
+
+        // Update the tool with the server's output
+        existing_tool_use_event->output = std::move(tool_use_event->output);
+        existing_tool_use_event->is_server_result = true;
+        // Notify UI about the tool completion
+        OnToolUseEventOutput(entry.get(), existing_tool_use_event);
         return;
       }
     }
@@ -1559,6 +1598,68 @@ void ConversationHandler::OnGeneratePageContentComplete(
   OnAssociatedContentUpdated();
 }
 
+std::vector<mojom::ConversationEntryEventPtr>
+ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
+  // When client-side tools are involved, we end up with multiple consecutive
+  // assistant entries (see PerformAssistantGenerationWithPossibleContent which
+  // sets needs_new_entry_ = true). The search tool results may be in an earlier
+  // entry, so scan backwards through all recent assistant entries until we hit
+  // a non-assistant (user) entry.
+  std::vector<mojom::WebSourcePtr> all_sources;
+  std::vector<std::string> all_queries;
+
+  for (auto it = chat_history_.rbegin(); it != chat_history_.rend(); ++it) {
+    if ((*it)->character_type != CharacterType::ASSISTANT) {
+      break;
+    }
+
+    if (!(*it)->events.has_value()) {
+      continue;
+    }
+
+    for (const auto& event : *(*it)->events) {
+      if (!event->is_tool_use_event()) {
+        continue;
+      }
+
+      const auto& tool = event->get_tool_use_event();
+
+      // Only process search tools with output
+      if (!IsBraveSearchTool(tool->tool_name) || !tool->output.has_value()) {
+        continue;
+      }
+
+      for (const auto& content_block : *tool->output) {
+        if (!content_block->is_web_sources_content_block()) {
+          continue;
+        }
+        const auto& web_sources =
+            content_block->get_web_sources_content_block();
+        for (const auto& source : web_sources->sources) {
+          all_sources.push_back(source.Clone());
+        }
+        if (web_sources->query.has_value() &&
+            !web_sources->query.value().empty()) {
+          all_queries.push_back(web_sources->query.value());
+        }
+      }
+    }
+  }
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  if (!all_sources.empty()) {
+    events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
+        mojom::WebSourcesEvent::New(std::move(all_sources),
+                                    std::vector<std::string>())));
+  }
+  if (!all_queries.empty()) {
+    events.push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+        mojom::SearchQueriesEvent::New(std::move(all_queries))));
+  }
+
+  return events;
+}
+
 void ConversationHandler::OnEngineCompletionDataReceived(
     EngineConsumer::GenerationResultData result) {
   UpdateOrCreateLastAssistantEntry(std::move(result));
@@ -1604,6 +1705,18 @@ void ConversationHandler::OnEngineCompletionComplete(
       return;
     }
   }
+
+  // Extract web sources from server-side search tools and add to last entry.
+  // Skip if there are pending client tools - next generation will handle it.
+  // Also a null check before accessing chat_history_.back()->events just for
+  // safety, it's unlikely to happen in regular flows.
+  if (chat_history_.back()->events &&
+      !HasPendingToolsInEntry(*chat_history_.back())) {
+    for (auto& event : ExtractSourcesFromRecentAssistantEntries()) {
+      chat_history_.back()->events->push_back(std::move(event));
+    }
+  }
+
   OnConversationEntryAdded(chat_history_.back());
 
   CompleteGeneration(true);
@@ -2070,6 +2183,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
   bool has_pending_tool_use_request = false;
   bool has_only_completed_tool_use_events = false;
+  bool has_non_server_tool_results = false;
 
   // Handle one tool at a time and wait for its response
   // before handling the next one
@@ -2079,6 +2193,11 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       if (tool_use_event->output != std::nullopt) {
         // already handled
         has_only_completed_tool_use_events = true;
+
+        // Track if any tool result was not from the server.
+        if (!has_non_server_tool_results && !tool_use_event->is_server_result) {
+          has_non_server_tool_results = true;
+        }
         continue;
       }
 
@@ -2187,9 +2306,13 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
     }
   }
 
-  // If there's nothing to do but send results, and there is no request in
-  // progress, then we must be resuming from a previous cancellation
-  if (has_only_completed_tool_use_events && !is_request_in_progress_) {
+  // All tool use events have completed. Send results back to the server to
+  // continue generation if any tool was not server-executed.
+  // If all tools are server-executed, we do not need to trigger an extra
+  // generation request as the final assistant response is already sent together
+  // with the tool result.
+  if (has_only_completed_tool_use_events && !is_request_in_progress_ &&
+      has_non_server_tool_results) {
     PerformPostToolAssistantGeneration();
   }
 
