@@ -25,7 +25,10 @@ def _GetMessageText(msg_or_ph):
     return result
 
 def _GetWebuiMessageAndIds(root):
-    """Collects webui messages grouped by their webui attribute value."""
+    """Collects webui messages grouped by their webui attribute value.
+    Supports comma-separated values, e.g. webui=BraveAccount,BraveSettings
+    will add the message to both groups.
+    """
 
     IDS_PREFIX_LEN = 4
 
@@ -42,8 +45,12 @@ def _GetWebuiMessageAndIds(root):
 
         name = item.attrs['name']
         # Strip 'IDS_' prefix from message names.
-        grouped_messages[webui].append(
-            (name[IDS_PREFIX_LEN:], ids_map[name], _GetMessageText(item)))
+        message_data = (name[IDS_PREFIX_LEN:], ids_map[name],
+                        _GetMessageText(item))
+
+        # Support comma-separated group names.
+        for group in webui.split(','):
+            grouped_messages[group].append(message_data)
 
     return grouped_messages
 
@@ -85,9 +92,15 @@ def _FormatWebuiMock(root, *_args, **_kwargs):
 
     yield 'export default {\n'
 
+    # Deduplicate messages that appear in multiple groups.
+    seen = {}
     for _, messages in _GetWebuiMessageAndIds(root).items():
         for name, _, text in messages:
-            yield f"  {name}: {json.dumps(text, ensure_ascii=False)},\n"
+            if name not in seen:
+                seen[name] = text
+
+    for name, text in seen.items():
+        yield f"  {name}: {json.dumps(text, ensure_ascii=False)},\n"
 
     yield '}\n'
 
