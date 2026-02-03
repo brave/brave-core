@@ -5,9 +5,16 @@
 
 import { act, renderHook } from '@testing-library/react'
 import { endpointsFor } from './endpoints_for'
-import { createInterfaceApi } from './create_interface_api'
+import {
+  createInterfaceApi,
+  clearAllDataForTesting,
+} from './create_interface_api'
 
 describe('endpointsFor', () => {
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
   class Test {
     // Test we don't ruin `this` in the queries
     public localState = 'local'
@@ -191,6 +198,7 @@ describe('endpointsFor', () => {
     // Can the combination of createInterfaceAPI and endpointsFor
     // infer the return type of the query, including placeholderData?
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         ...testResult,
@@ -202,6 +210,7 @@ describe('endpointsFor', () => {
 
   it('should keep arrays as arrays when combined with createInterfaceApi', async () => {
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         ...endpointsFor(test, {

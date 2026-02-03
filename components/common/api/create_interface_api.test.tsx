@@ -3,13 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { expect, jest, describe, it } from '@jest/globals'
+import * as React from 'react'
+import { expect, jest, describe, it, beforeEach } from '@jest/globals'
 import { act, renderHook } from '@testing-library/react'
-import { createInterfaceApi, state, event } from './create_interface_api'
+import {
+  createInterfaceApi,
+  state,
+  event,
+  clearAllDataForTesting,
+} from './create_interface_api'
 
 describe('createInterfaceApi', () => {
+  // Clear the shared QueryClient between tests to avoid cache pollution
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
   it('should return results keyed by parameters', async () => {
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -49,6 +61,7 @@ describe('createInterfaceApi', () => {
 
   it('reset should return to placeholder data', async () => {
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -79,6 +92,7 @@ describe('createInterfaceApi', () => {
       return Promise.resolve({ id })
     })
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -96,17 +110,65 @@ describe('createInterfaceApi', () => {
     await api.getData.fetch('1')
     expect(mockedQuery).toHaveBeenCalledWith('1')
     expect(mockedQuery).toHaveBeenCalledTimes(1)
-    // Now invalidate the query
+
+    // Invalidate triggers an immediate refetch (refetchType: 'all')
     api.getData.invalidate('1')
-    // Shouldn't re-fetch until asked to
-    expect(mockedQuery).toHaveBeenCalledTimes(1)
+    // Wait for the async refetch to complete
     await api.getData.fetch('1')
+    expect(mockedQuery).toHaveBeenCalledTimes(2)
+
+    // Additional fetches don't cause more calls since data is fresh
     await api.getData.fetch('1')
     expect(mockedQuery).toHaveBeenCalledTimes(2)
   })
 
+  it('invalidate should cause automatic re-fetch when useQuery hook is subscribed', async () => {
+    let fetchCount = 0
+    const mockedQuery = jest.fn((id: string) => {
+      fetchCount++
+      return Promise.resolve({ id, fetchCount })
+    })
+    const api = createInterfaceApi({
+      key: 'test-invalidate',
+      actions: {},
+      endpoints: {
+        getData: {
+          query: mockedQuery,
+        },
+      },
+    })
+
+    function useTestQueryData() {
+      const query = api.getData.useQuery('1')
+      return query.data
+    }
+
+    // Render the hook which should trigger the initial fetch
+    let hookResult = await act(async () => renderHook(useTestQueryData))
+
+    // Initial fetch should have happened
+    expect(mockedQuery).toHaveBeenCalledTimes(1)
+    expect(mockedQuery).toHaveBeenCalledWith('1')
+
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current).toEqual({ id: '1', fetchCount: 1 })
+
+    // Invalidate the query while the hook is subscribed
+    await act(async () => {
+      api.getData.invalidate('1')
+    })
+
+    // Wait for the automatic re-fetch to complete
+    await act(async () => hookResult.rerender())
+
+    // Should have automatically re-fetched due to the active subscription
+    expect(mockedQuery).toHaveBeenCalledTimes(2)
+    expect(hookResult.result.current).toEqual({ id: '1', fetchCount: 2 })
+  })
+
   it('supports state that is not queried', async () => {
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         myData: state({
@@ -125,6 +187,7 @@ describe('createInterfaceApi', () => {
       return Promise.resolve({ id })
     })
     const api = createInterfaceApi({
+      key: 'test-hook-data',
       actions: {},
       endpoints: {
         getData: {
@@ -155,6 +218,7 @@ describe('createInterfaceApi', () => {
 
   it('gets array data from a query', async () => {
     const api = createInterfaceApi({
+      key: 'test-array-data',
       actions: {},
       endpoints: {
         getData: {
@@ -174,6 +238,7 @@ describe('createInterfaceApi', () => {
       const query = api.useGetList()
       return query.data
     }
+
     let hookResult = await act(async () => renderHook(useTestQueryData))
 
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
@@ -184,6 +249,7 @@ describe('createInterfaceApi', () => {
 
   it('gets array data from a query with placeholder', async () => {
     const api = createInterfaceApi({
+      key: 'test-array-placeholder',
       actions: {},
       endpoints: {
         getData: {
@@ -227,6 +293,7 @@ describe('createInterfaceApi', () => {
 
     function createMyApi() {
       const api = createInterfaceApi({
+        key: 'test-mutations',
         endpoints: {
           doSomething: {
             mutation: (isThing: boolean): Promise<{ isThing: boolean }> =>
@@ -259,6 +326,7 @@ describe('createInterfaceApi', () => {
       })
       return result
     }
+
     const hookResult = await renderHook(useMutate)
 
     // Should not be called when only rendered
@@ -333,6 +401,7 @@ describe('createInterfaceApi', () => {
 
     function createMyApi() {
       const api = createInterfaceApi({
+        key: 'test',
         endpoints: {
           doSomething: {
             mutation: () => {
@@ -363,6 +432,7 @@ describe('createInterfaceApi', () => {
 
     function createMyApi() {
       const api = createInterfaceApi({
+        key: 'test',
         endpoints: {
           doSomething: {
             mutation: (hi: string) => {
@@ -391,6 +461,7 @@ describe('createInterfaceApi', () => {
     const doSomething = jest.fn((hi: string) => {})
     function createMyApi() {
       const api = createInterfaceApi({
+        key: 'test',
         endpoints: {},
         actions: {
           doSomething(hi: string) {
@@ -415,6 +486,7 @@ describe('createInterfaceApi', () => {
 
   it('updates the query cache when update is called', async () => {
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -453,6 +525,7 @@ describe('createInterfaceApi', () => {
 
   it('creates state queries with placeholder data', async () => {
     const api = createInterfaceApi({
+      key: 'test-state-placeholder',
       actions: {},
       endpoints: {
         state: state({
@@ -491,6 +564,7 @@ describe('createInterfaceApi', () => {
 
   it('creates state queries with no placeholder data', async () => {
     const api = createInterfaceApi({
+      key: 'test-state-no-placeholder',
       actions: {},
       endpoints: {
         flag: state<boolean>(),
@@ -529,9 +603,130 @@ describe('createInterfaceApi', () => {
     expect(api.flag.current()).toBe(true)
   })
 
+  it('hook should update when api.update() is called with array placeholder data', async () => {
+    // This test replicates the conversation history scenario:
+    // - Query has placeholder data (empty array)
+    // - Data is updated via update() (from Mojo events)
+    // - Hook should reflect the updated data
+    let fetchCount = 0
+    const api = createInterfaceApi({
+      key: 'test-update-array',
+      actions: {},
+      endpoints: {
+        getHistory: {
+          query: () => {
+            fetchCount++
+            return Promise.resolve([{ id: `${fetchCount}` }])
+          },
+          placeholderData: [] as { id: string }[],
+        },
+      },
+    })
+
+    function useHistoryData() {
+      const query = api.useGetHistory()
+      return {
+        data: query.data,
+        dataUpdatedAt: query.dataUpdatedAt,
+        isPlaceholderData: query.isPlaceholderData,
+      }
+    }
+
+    // Render the hook
+    let hookResult = await act(async () => renderHook(useHistoryData))
+
+    // Wait for prefetch to complete
+    await act(async () => hookResult.rerender())
+
+    // Should have fetched data
+    expect(fetchCount).toBe(1)
+    expect(hookResult.result.current.data).toEqual([{ id: '1' }])
+    expect(hookResult.result.current.isPlaceholderData).toBe(false)
+
+    // Now simulate a Mojo event updating the data via update()
+    await act(async () => {
+      api.getHistory.update((old) => [...old, { id: '2' }])
+    })
+
+    await act(async () => hookResult.rerender())
+
+    // Hook should see the updated data
+    expect(hookResult.result.current.data).toEqual([{ id: '1' }, { id: '2' }])
+  })
+
+  it('hook should update when api changes (simulating conversation switch)', async () => {
+    // This test replicates the scenario where:
+    // - API #1 is created with key 'conversation-1'
+    // - Hook subscribes to API #1
+    // - API #2 is created with key 'conversation-2'
+    // - Hook should now use API #2's data via different query keys
+    //
+    // With shared QueryClient, unique keys ensure data isolation but intact
+    // subscription to the correct instance.
+
+    function createTestApi(key: string) {
+      return createInterfaceApi({
+        key: `conversation-${key}`,
+        actions: {},
+        endpoints: {
+          getHistory: {
+            query: () => Promise.resolve([{ id: key }]),
+            placeholderData: [] as { id: string }[],
+          },
+        },
+      })
+    }
+
+    let currentApi = createTestApi('1')
+
+    function useHistoryData() {
+      const query = currentApi.useGetHistory()
+      return {
+        data: query.data,
+        key: (currentApi as any).__debugKey,
+        status: query.status,
+        fetchStatus: query.fetchStatus,
+        isPlaceholderData: query.isPlaceholderData,
+      }
+    }
+
+    // Use the shared APIQueryClientProvider wrapper
+    // Render with API #1
+    let hookResult = await act(async () => renderHook(useHistoryData))
+    await act(async () => hookResult.rerender())
+
+    expect(hookResult.result.current.data).toEqual([{ id: '1' }])
+    expect(hookResult.result.current.key).toBe('conversation-1')
+
+    // Switch to API #2 (simulating bindConversation)
+    // This creates a new API with different key, so hooks use different query keys
+    currentApi = createTestApi('2')
+
+    // Re-render - the hook now uses the new API's query key
+    await act(async () => hookResult.rerender())
+    await act(async () => hookResult.rerender())
+    await act(async () => hookResult.rerender())
+
+    // With shared QueryClient and unique keys, hooks use the correct data
+    expect(hookResult.result.current.key).toBe('conversation-2')
+    expect(hookResult.result.current.data).toEqual([{ id: '2' }])
+
+    // Now update API #2's data via update() (simulating Mojo event)
+    await act(async () => {
+      currentApi.getHistory.update([{ id: '2' }, { id: '3' }])
+    })
+
+    await act(async () => hookResult.rerender())
+    await act(async () => hookResult.rerender())
+    await act(async () => hookResult.rerender())
+
+    expect(hookResult.result.current.data).toEqual([{ id: '2' }, { id: '3' }])
+  })
+
   it('fires and handles events', () => {
     let emitter: (...args: [String, number]) => void = () => {}
     const api = createInterfaceApi({
+      key: 'test-events',
       actions: {},
       endpoints: {},
       events: {

@@ -18,6 +18,23 @@ import {
   MutateOptions,
 } from '@tanstack/react-query'
 
+/**
+ * Shared QueryClient singleton used by all APIs created with createInterfaceApi.
+ * Each API differentiates its data via unique key prefixes.
+ * Callers can still pass their own QueryClient if needed.
+ */
+let sharedQueryClient = new QueryClient()
+
+/**
+ * Removes all data from the shared QueryClient used by all calls to
+ * createInterfaceApi which do not provide their own QueryClient.
+ */
+export function clearAllDataForTesting() {
+  // sharedQueryClient.clear() or .cancelQueries() can throw a CancelledError,
+  // and it's probably best to move to a new instance in-between tests anyway.
+  sharedQueryClient = new QueryClient()
+}
+
 //
 // This file contains a factory function, createInterfaceApi, to create a
 // subscribable API with a shared cache based off a mojom interface which
@@ -218,14 +235,16 @@ export function createInterfaceApi<
    */
   queryClient?: QueryClient
 }) {
-  // Validate
-  if (config.queryClient && !config.key) {
+  // Validate - key is required to avoid cache collisions
+  if (!config.key && !config.queryClient) {
     console.warn(
-      'createInterfaceApi received a queryClient as if it were to be used for multiple instances, but no key with which to differentiate them. This may cause cache collisions.',
+      'createInterfaceApi called without a key. This may cause cache collisions with other APIs. Provide a unique key like "ai-chat" or "conversation-${id}".',
     )
   }
 
-  const queryClient = config.queryClient ?? new QueryClient()
+  // Use shared QueryClient by default for proper React context integration.
+  // All APIs share the same client; keys differentiate the data.
+  const queryClient = config.queryClient ?? sharedQueryClient
 
   type ValidKey = keyof RawEndpoints & string
 
@@ -936,10 +955,18 @@ export function createInterfaceApi<
     ...rootEndpointProperties,
     ...eventHooks,
     close: () => {
-      queryClient.cancelQueries()
-      queryClient.clear()
-      queryClient.unmount()
+      if (config.key || config.queryClient) {
+        // Cancel all pending queries for this API key or queryClient
+        queryClient.cancelQueries({ queryKey: [config.key], exact: false })
+      }
+      if (config.queryClient) {
+        // Don't clear the shared query client
+        queryClient.clear()
+        queryClient.unmount()
+      }
     },
+    // Debug property to identify which API instance is being used
+    __debugKey: config.key,
   }
 
   // @ts-expect-error

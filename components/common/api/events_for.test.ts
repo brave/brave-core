@@ -4,9 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { eventsFor, partialReceiver } from './events_for'
-import { createInterfaceApi, EventDef } from './create_interface_api'
+import {
+  clearAllDataForTesting,
+  createInterfaceApi,
+  EventDef,
+} from './create_interface_api'
 
 describe('eventsFor', () => {
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
   class TestInterface {
     testMethod(arg1: string, arg2: number) {}
     anotherMethod(arg1: boolean) {}
@@ -79,6 +87,7 @@ describe('eventsFor', () => {
   it('fires and handles events with createInterfaceApi', () => {
     let eventHandler: TestInterface | undefined
     const api = createInterfaceApi({
+      key: 'test',
       actions: {},
       endpoints: {},
       events: eventsFor(
