@@ -17,6 +17,7 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+import { getTransactionMemo } from '../../../utils/tx-utils'
 
 // Hooks
 import {
@@ -153,6 +154,8 @@ export function ConfirmSendTransaction() {
   const isBraveWalletOrigin = React.useMemo(() => {
     return originInfo.originSpec === 'chrome://wallet'
   }, [originInfo])
+
+  const memoText = getTransactionMemo(selectedPendingTransaction)
 
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
@@ -291,6 +294,31 @@ export function ConfirmSendTransaction() {
                     </ConfirmationInfoText>
                   </Row>
                 </Column>
+
+                {/* Transaction Memo */}
+                {memoText && (
+                  <>
+                    <VerticalDivider />
+                    <Column width='100%'>
+                      <Row justifyContent='flex-start'>
+                        <ConfirmationInfoLabel
+                          textColor='secondary'
+                          textAlign='left'
+                        >
+                          {getLocale('braveWalletMemo')}
+                        </ConfirmationInfoLabel>
+                      </Row>
+                      <Row justifyContent='flex-start'>
+                        <ConfirmationInfoText
+                          textColor='tertiary'
+                          textAlign='left'
+                        >
+                          {memoText}
+                        </ConfirmationInfoText>
+                      </Row>
+                    </Column>
+                  </>
+                )}
               </Column>
 
               {/* Transaction errors */}
