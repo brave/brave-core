@@ -507,12 +507,11 @@ async function fetchAssetsForNetwork({
       // from the API now have correct https URLs.
       if (
         listType === 'user'
-        && tokenLogo
-        && !tokenLogo.startsWith('https')
         && !isNativeAsset(token)
         && !token.isNft
         && !token.isErc1155
         && !token.isErc721
+        && (token.logo === '' || (tokenLogo && !tokenLogo.startsWith('https')))
       ) {
         const contractAddress =
           network.coin === BraveWallet.CoinType.ETH
