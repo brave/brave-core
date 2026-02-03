@@ -253,6 +253,12 @@ class AIChatServiceUnitTest : public testing::Test,
     prefs::RegisterLocalStatePrefs(local_state_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
 
+#if BUILDFLAG(IS_IOS)
+    // On iOS the default for this pref is based on WebUI being enabled, for the
+    // purpose of this test suite, enable it by default regardless
+    prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+#endif
+
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
 
