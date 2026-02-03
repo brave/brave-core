@@ -254,7 +254,7 @@ to the functions we allow.
 ```tsx
 const api = createInterfaceAPI({
   ...
-  actions: myInterfaceRemote as Pick<MyInterface, 'markComplete' | 'deleteTodo'>
+  actions: actionsFor(myInterface, ['markComplete' | 'deleteTodo'])
   ...
 })
 
@@ -265,6 +265,20 @@ function MyReactComponent(props) {
   // Typescript compile will fail!
   return <button onClick={api.addTodo}>
 }
+```
+
+If you have a lot of actions on different interfaces and want to avoid conflicts
+or provide groupings, you can pass an object:
+
+```tsx
+const api = createInterfaceAPI({
+  ...
+  actions: {
+    serverThing: actionsFor(myInterface, ['markComplete' | 'deleteTodo']),
+    otherThing: actions(otherInterface, ['doSomething']),
+  }
+  ...
+})
 ```
 
 ## Other uses
