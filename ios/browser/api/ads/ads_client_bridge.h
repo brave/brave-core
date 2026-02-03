@@ -58,7 +58,7 @@
 - (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
-- (base::Value::Dict)getVirtualPrefs;
+- (base::DictValue)getVirtualPrefs;
 
 @end
 

@@ -104,7 +104,7 @@ void SkusInternalsUI::GetSkusState(GetSkusStateCallback callback) {
 }
 
 void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("Order", GetOrderInfo("vpn."));
   std::string result;
   base::JSONWriter::Write(dict, &result);
@@ -112,16 +112,16 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 }
 
 void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("Order", GetOrderInfo("leo."));
   std::string result;
   base::JSONWriter::Write(dict, &result);
   std::move(callback).Run(result);
 }
 
-base::Value::Dict SkusInternalsUI::GetOrderInfo(
+base::DictValue SkusInternalsUI::GetOrderInfo(
     const std::string& location) const {
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
@@ -141,7 +141,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
       continue;
     }
 
-    base::Value::Dict order_dict_output;
+    base::DictValue order_dict_output;
     for (const auto order : *orders) {
       const auto* order_dict = order.second.GetIfDict();
       if (!order_dict) {
@@ -195,7 +195,7 @@ void SkusInternalsUI::DownloadSkusState() {
 
 std::string SkusInternalsUI::GetSkusStateAsString() const {
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   for (const auto kv : skus_state) {
     // Only shows "skus:xx" kv in webui.

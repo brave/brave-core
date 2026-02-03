@@ -28,7 +28,7 @@
     (ntp_background_images::NTPBackgroundImagesData*)data;
 - (void)onUpdatedNTPSponsoredImagesData:
     (ntp_background_images::NTPSponsoredImagesData*)data;
-- (void)onUpdatedNTPSponsoredContent:(const base::Value::Dict&)data;
+- (void)onUpdatedNTPSponsoredContent:(const base::DictValue&)data;
 @end
 
 class NTPBackgroundImagesServiceObserverBridge
@@ -48,7 +48,7 @@ class NTPBackgroundImagesServiceObserverBridge
     [bridge_ onUpdatedNTPSponsoredImagesData:data];
   }
 
-  void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override {
+  void OnSponsoredContentDidUpdate(const base::DictValue& data) override {
     [bridge_ onUpdatedNTPSponsoredContent:data];
   }
 
@@ -167,7 +167,7 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
   }
 }
 
-- (void)onUpdatedNTPSponsoredContent:(const base::Value::Dict&)data {
+- (void)onUpdatedNTPSponsoredContent:(const base::DictValue&)data {
   if (_adsService) {
     // Since `data` contains small JSON from a CRX component, cloning it has no
     // performance impact.

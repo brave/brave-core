@@ -34,7 +34,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   bool CanShowNotificationAds() const override;
   void CloseNotificationAd(const std::string& placement_id) override;
-  base::Value::Dict GetVirtualPrefs() const override;
+  base::DictValue GetVirtualPrefs() const override;
   void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr mojom_url_request,
                   brave_ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,

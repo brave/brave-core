@@ -152,6 +152,6 @@ bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
   return [bridge_ hasLocalStatePrefPath:path];
 }
 
-base::Value::Dict AdsClientIOS::GetVirtualPrefs() const {
+base::DictValue AdsClientIOS::GetVirtualPrefs() const {
   return [bridge_ getVirtualPrefs];
 }

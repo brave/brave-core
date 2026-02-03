@@ -15,9 +15,9 @@
 
 namespace ios {
 namespace bookmarks_encoder {
-base::Value::Dict Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
-                         const bookmarks::BookmarkNode* other_folder_node,
-                         const bookmarks::BookmarkNode* mobile_folder_node) {
+base::DictValue Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
+                       const bookmarks::BookmarkNode* other_folder_node,
+                       const bookmarks::BookmarkNode* mobile_folder_node) {
   auto encoder = std::make_unique<bookmarks::BookmarkCodec>();
   return encoder->Encode(
       bookmark_bar_node, other_folder_node, mobile_folder_node,

@@ -61,13 +61,13 @@
 
 - (NSDictionary<NSString*, BaseValueBridge*>*)dictionaryForPath:
     (NSString*)path {
-  const base::Value::Dict& dict =
+  const base::DictValue& dict =
       self.prefService->GetDict(base::SysNSStringToUTF8(path));
   return brave::NSDictionaryFromBaseValueDict(dict.Clone());
 }
 
 - (NSArray<BaseValueBridge*>*)listForPath:(NSString*)path {
-  const base::Value::List& list =
+  const base::ListValue& list =
       self.prefService->GetList(base::SysNSStringToUTF8(path));
   return brave::NSArrayFromBaseValue(base::Value(list.Clone()));
 }
@@ -101,12 +101,12 @@
 
 - (void)setDictionary:(NSDictionary<NSString*, BaseValueBridge*>*)dict
               forPath:(NSString*)path {
-  base::Value::Dict baseDict = brave::BaseValueDictFromNSDictionary(dict);
+  base::DictValue baseDict = brave::BaseValueDictFromNSDictionary(dict);
   self.prefService->SetDict(base::SysNSStringToUTF8(path), std::move(baseDict));
 }
 
 - (void)setList:(NSArray<BaseValueBridge*>*)list forPath:(NSString*)path {
-  base::Value::List baseList = brave::BaseValueListFromNSArray(list);
+  base::ListValue baseList = brave::BaseValueListFromNSArray(list);
   self.prefService->SetList(base::SysNSStringToUTF8(path), std::move(baseList));
 }
 

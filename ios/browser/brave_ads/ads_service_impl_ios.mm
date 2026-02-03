@@ -218,7 +218,7 @@ void AdsServiceImplIOS::OnFailedToPrefetchNewTabPageAd(
 }
 
 void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
-    base::Value::Dict dict,
+    base::DictValue dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
   if (task_queue_.should_queue()) {
     // TODO(https://github.com/brave/brave-browser/issues/44925): Transition

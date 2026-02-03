@@ -6,9 +6,6 @@
 #ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARKS_ENCODER_H_
 #define BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARKS_ENCODER_H_
 
-#include <memory>
-#include <vector>
-
 #include "base/values.h"
 
 namespace bookmarks {
@@ -17,9 +14,9 @@ class BookmarkNode;
 
 namespace ios {
 namespace bookmarks_encoder {
-base::Value::Dict Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
-                         const bookmarks::BookmarkNode* other_folder_node,
-                         const bookmarks::BookmarkNode* mobile_folder_node);
+base::DictValue Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
+                       const bookmarks::BookmarkNode* other_folder_node,
+                       const bookmarks::BookmarkNode* mobile_folder_node);
 }  // namespace bookmarks_encoder
 }  // namespace ios
 

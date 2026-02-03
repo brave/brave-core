@@ -48,7 +48,7 @@ bool ParseHistoryItems(
   CHECK(!json_data.empty());
   CHECK(history_items);
 
-  std::optional<base::Value::Dict> parsed_json = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> parsed_json = base::JSONReader::ReadDict(
       json_data, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json) {
     return false;  // History file format is incorrect. Expected
@@ -73,7 +73,7 @@ bool ParseHistoryItems(
     }
 
     history::URLRow url_row;
-    const base::Value::Dict& dict = item.GetDict();
+    const base::DictValue& dict = item.GetDict();
 
     // URL is non-optional
     auto* url_string = dict.FindString("url");

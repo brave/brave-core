@@ -43,7 +43,7 @@ class SkusInternalsUI : public web::WebUIIOSController,
   void CopySkusStateToClipboard() override;
   void DownloadSkusState() override;
 
-  base::Value::Dict GetOrderInfo(const std::string& location) const;
+  base::DictValue GetOrderInfo(const std::string& location) const;
   std::string GetSkusStateAsString() const;
 
   void EnsureMojoConnected();

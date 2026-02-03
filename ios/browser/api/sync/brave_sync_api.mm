@@ -313,7 +313,7 @@ BraveSyncAPIWordsValidationStatus const
   auto device_list = _worker->GetDeviceList();
   auto* local_device_info = _worker->GetLocalDeviceInfo();
 
-  base::Value::List device_list_value;
+  base::ListValue device_list_value;
 
   for (const auto& device : device_list) {
     auto device_value = device->ToValue();

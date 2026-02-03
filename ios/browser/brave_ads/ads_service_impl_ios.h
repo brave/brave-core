@@ -87,7 +87,7 @@ class AdsServiceImplIOS : public AdsService {
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
   void ParseAndSaveNewTabPageAds(
-      base::Value::Dict dict,
+      base::DictValue dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
   void MaybeServeNewTabPageAd(
       MaybeServeMojomNewTabPageAdCallback callback) override;

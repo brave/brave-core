@@ -1434,7 +1434,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return self.localStatePrefService->HasPrefPath(path);
 }
 
-- (base::Value::Dict)getVirtualPrefs {
+- (base::DictValue)getVirtualPrefs {
   if (virtualPrefProvider == nullptr) {
     return {};
   }

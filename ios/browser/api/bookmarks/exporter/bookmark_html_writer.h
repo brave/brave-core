@@ -40,7 +40,7 @@ void WriteBookmarks(ProfileIOS* profile,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 
-void WriteBookmarks(base::Value::Dict encoded_bookmarks,
+void WriteBookmarks(base::DictValue encoded_bookmarks,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 
