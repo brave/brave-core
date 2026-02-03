@@ -9,6 +9,6 @@ pattern = 'new GlobalFeatures()'
 replace = 'CreateBraveGlobalFeatures()'
 
 [[substitution]]
-description = 'Forward declear CreateBraveGlobalFeatures'
+description = 'Forward declare CreateBraveGlobalFeatures'
 re_pattern = '(namespace {)'
 replace = 'GlobalFeatures* CreateBraveGlobalFeatures();\n\1'
