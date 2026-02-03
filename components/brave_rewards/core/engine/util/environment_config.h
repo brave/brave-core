@@ -40,10 +40,8 @@ class EnvironmentConfig : public RewardsEngineHelper,
   GURL gemini_api_url() const;
   std::string gemini_fee_address() const;
 
-  GURL zebpay_oauth_url() const;
   GURL zebpay_api_url() const;
-  std::string zebpay_client_id() const;
-  std::string zebpay_client_secret() const;
+  GURL zebpay_oauth_url() const;
 
   GURL bitflyer_url() const;
   std::string bitflyer_client_id() const;

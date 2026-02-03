@@ -270,12 +270,8 @@ const Config = function () {
     'use_prebuilt_omaha4',
     'webcompat_report_api_endpoint',
     'zebpay_production_api_url',
-    'zebpay_production_client_id',
-    'zebpay_production_client_secret',
     'zebpay_production_oauth_url',
     'zebpay_sandbox_api_url',
-    'zebpay_sandbox_client_id',
-    'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
     'use_clang_coverage',
     'coverage_instrumentation_input_file',
@@ -685,12 +681,8 @@ Config.prototype.buildArgs = function () {
     delete args.uphold_sandbox_fee_address
     delete args.uphold_sandbox_oauth_url
     delete args.zebpay_production_api_url
-    delete args.zebpay_production_client_id
-    delete args.zebpay_production_client_secret
     delete args.zebpay_production_oauth_url
     delete args.zebpay_sandbox_api_url
-    delete args.zebpay_sandbox_client_id
-    delete args.zebpay_sandbox_client_secret
     delete args.zebpay_sandbox_oauth_url
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap

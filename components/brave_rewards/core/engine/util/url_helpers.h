@@ -20,9 +20,7 @@ namespace brave_rewards::internal {
 // e.g.
 //
 // url = AppendOrReplaceQueryParameters(
-//     url, {{"client_id", config.zebpay_client_id()},
-//           {"grant_type", "authorization_code"},
-//           {"redirect_uri", "rewards://zebpay/authorization"},
+//     url, {{"grant_type", "authorization_code"},
 //           {"response_type", "code"},
 //           {"scope", "openid profile"},
 //           {"state", oauth_info_.one_time_string}});

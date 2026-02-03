@@ -10,7 +10,6 @@
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
-#include "base/strings/strcat.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
@@ -114,17 +113,14 @@ PostOAuthZebPay::~PostOAuthZebPay() = default;
 std::optional<std::string> PostOAuthZebPay::Url() const {
   return engine_->Get<EnvironmentConfig>()
       .zebpay_oauth_url()
-      .Resolve("/connect/token")
+      .Resolve("token")
       .spec();
 }
 
 std::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
     const std::string&) const {
-  auto& config = engine_->Get<EnvironmentConfig>();
   return std::vector<std::string>{
-      "Authorization: Basic " +
-      base::Base64Encode(base::StrCat(
-          {config.zebpay_client_id(), ":", config.zebpay_client_secret()}))};
+      engine_->Get<EnvironmentConfig>().BraveServicesKeyHeader()};
 }
 
 std::optional<std::string> PostOAuthZebPay::Content() const {

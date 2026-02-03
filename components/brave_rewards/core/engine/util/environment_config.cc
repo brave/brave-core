@@ -119,28 +119,14 @@ std::string EnvironmentConfig::gemini_fee_address() const {
              : BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS);
 }
 
-GURL EnvironmentConfig::zebpay_oauth_url() const {
-  return URLValue(current_environment() == mojom::Environment::kProduction
-                      ? BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)
-                      : BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL));
-}
-
 GURL EnvironmentConfig::zebpay_api_url() const {
   return URLValue(current_environment() == mojom::Environment::kProduction
                       ? BUILDFLAG(ZEBPAY_PRODUCTION_API_URL)
                       : BUILDFLAG(ZEBPAY_SANDBOX_API_URL));
 }
 
-std::string EnvironmentConfig::zebpay_client_id() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(ZEBPAY_PRODUCTION_CLIENT_ID)
-             : BUILDFLAG(ZEBPAY_SANDBOX_CLIENT_ID);
-}
-
-std::string EnvironmentConfig::zebpay_client_secret() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(ZEBPAY_PRODUCTION_CLIENT_SECRET)
-             : BUILDFLAG(ZEBPAY_SANDBOX_CLIENT_SECRET);
+GURL EnvironmentConfig::zebpay_oauth_url() const {
+  return BuildGate3OAuthURL("zebpay");
 }
 
 GURL EnvironmentConfig::bitflyer_url() const {
