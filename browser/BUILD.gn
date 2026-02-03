@@ -47,6 +47,16 @@ source_set("brave_global_features") {
   deps = [ "//chrome/browser:global_features" ]
 }
 
+source_set("brave_global_features_impl") {
+  visibility = [ "//chrome/browser" ]
+  sources = [ "brave_global_features.cc" ]
+
+  deps = [
+    "//brave/browser:brave_global_features",
+    "//chrome/browser:global_features",
+  ]
+}
+
 group("browser") {
   visibility = [
     "//brave:browser_dependencies",

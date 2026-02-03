@@ -90,7 +90,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_browser_process_impl.h",
   "//brave/browser/brave_content_browser_client.cc",
   "//brave/browser/brave_content_browser_client.h",
-  "//brave/browser/brave_global_features.cc",
   "//brave/browser/brave_local_state_prefs.cc",
   "//brave/browser/brave_local_state_prefs.h",
   "//brave/browser/brave_profile_prefs.cc",
@@ -130,6 +129,7 @@ brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:brave_global_features",
+  "//brave/browser:brave_global_features_impl",
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
   "//brave/browser/brave_account",
@@ -716,6 +716,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+  "//brave/browser:brave_global_features_impl",
 ]
 
 if (enable_ai_chat) {
