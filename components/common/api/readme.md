@@ -453,3 +453,212 @@ that is only used by 1 or 2 Components should be queried in the components
 themselves and can be made re-usable with custom hook functions. This can also
 be solved using an external store or a better version of React Context which
 provides a subscribable selector: `UseContextSelector`.
+
+# Mocking for Storybook and Tests
+
+When writing Storybook stories or unit tests, you need to provide mock implementations
+of your Mojo interfaces. The recommended pattern is to create configurable mock
+factories that return sensible defaults but allow overriding specific methods.
+
+## Creating Mock Factories
+
+Use `makeCloseable()` to wrap your mock object with the required `$: { close() }`
+property that Mojo remotes have:
+
+```typescript
+import { makeCloseable, Closable } from '$web-common/api'
+import * as Mojom from '../mojom'
+
+export function createMockService(
+  overrides: Partial<Mojom.ServiceInterface> = {}
+): Closable<Mojom.ServiceInterface> {
+  return makeCloseable({
+    // Query methods - return sensible empty/default results
+    getHistory: () => Promise.resolve({ history: [] }),
+    getConversations: () => Promise.resolve({ conversations: [] }),
+    getPremiumStatus: () => Promise.resolve({
+      status: Mojom.PremiumStatus.Inactive,
+      info: null
+    }),
+
+    // Action methods - no-op stubs
+    markAgreementAccepted: () => {},
+    enableStoragePref: () => {},
+
+    // Apply overrides - these replace the defaults above
+    ...overrides,
+  })
+}
+```
+
+**Why explicit method listing:**
+- **TypeScript enforces completeness** - When the interface changes, the build fails
+  until you add the new method with a default
+- **Forces devs to choose defaults** - Each method needs a sensible default value
+- **No prototype complexity** - Simple object spread, easy to understand
+
+## Using Mocks in Tests
+
+For tests, pass overrides directly when creating the mock:
+
+```typescript
+it('filters history by query', async () => {
+  const mockService = createMockService({
+    getHistory: (query) => Promise.resolve({
+      history: query ? filteredHistory : allHistory
+    }),
+  })
+
+  const { api } = createMyApi(mockService)
+  // Test behavior...
+})
+```
+
+## Using Mocks in Storybook with Reactive Args
+
+Storybook controls can change at any time, so mock functions need to read the
+*current* args value. Use a **ref pattern** to ensure mocks always have fresh data:
+
+```typescript
+function useStoryMyApi(args: CustomArgs) {
+  // Ref holds current args - updated every render
+  const argsRef = React.useRef(args)
+  argsRef.current = args
+
+  const [myApi] = React.useState(() => {
+    const mockService = createMockService({
+      // Mocks read from ref, always getting current storybook args
+      getHistory: () => Promise.resolve({
+        history: argsRef.current.isHistoryEnabled ? SAMPLE_HISTORY : []
+      }),
+      getPremiumStatus: () => Promise.resolve({
+        status: argsRef.current.isPremiumUser
+          ? Mojom.PremiumStatus.Active
+          : Mojom.PremiumStatus.Inactive,
+        info: null,
+      }),
+    })
+
+    return createMyApi(mockService)
+  })
+
+  // When storybook controls change, invalidate all queries to trigger refetch.
+  // The ref already has new data, invalidation causes queries to re-run with
+  // fresh data from the mock functions.
+  React.useEffect(() => {
+    myApi.api.invalidateAll()
+  }, [myApi.api, args.isHistoryEnabled, args.isPremiumUser])
+
+  return myApi
+}
+```
+
+### The `invalidateAll()` Function
+
+Every API created with `createInterfaceApi` has an `invalidateAll()` method that
+invalidates all queries for that API instance. This is much simpler than tracking
+which specific queries need to be invalidated when different args change:
+
+```typescript
+// Instead of this (complex, error-prone):
+React.useEffect(() => {
+  myApi.api.getHistory.invalidate()
+}, [args.isHistoryEnabled])
+
+React.useEffect(() => {
+  myApi.api.getPremiumStatus.invalidate()
+}, [args.isPremiumUser])
+
+// Do this (simple, reliable):
+React.useEffect(() => {
+  myApi.api.invalidateAll()
+}, [args.isHistoryEnabled, args.isPremiumUser, /* any other args */])
+```
+
+## When to Use `.update()` vs Function Overrides
+
+| Pattern | Use When |
+|---------|----------|
+| **Function overrides** (default) | All query endpoints. Mock returns data based on args. Most predictable. |
+| **`api.*.update()`** | State endpoints without query functions (e.g., `state<T>()` definitions), or data provided by events rather than fetched. |
+
+**Why function overrides are preferred for query endpoints:**
+- No race conditions with internal event handlers that might call `.update()`
+- Always return your mock data, regardless of what the API does internally
+- Simpler mental model: "my mock function is the source of truth"
+
+**When `.update()` is appropriate:**
+- State endpoints defined with `state<T>()` don't have query functions, so you must
+  use `.update()` to provide data
+- Simulating event-driven updates (e.g., observer callbacks that push new data)
+
+```typescript
+// State endpoints must use .update()
+React.useLayoutEffect(() => {
+  myApi.api.state.update({
+    hasAcceptedAgreement: args.hasAcceptedAgreement,
+    isStoragePrefEnabled: args.isStoragePrefEnabled,
+  })
+}, [myApi.api, args.hasAcceptedAgreement, args.isStoragePrefEnabled])
+
+// isStandalone is also a state endpoint
+React.useLayoutEffect(() => {
+  myApi.api.isStandalone.update(args.isStandalone)
+}, [myApi.api, args.isStandalone])
+```
+
+## Query Args and Cache Keys
+
+TanStack Query keys include function arguments, so be aware:
+
+```typescript
+// These are DIFFERENT cache entries:
+api.getHistory.update('', null, data)     // Key: ['api-key', 'getHistory', '', null]
+api.getHistory.update('search', 10, data) // Key: ['api-key', 'getHistory', 'search', 10]
+```
+
+If a component calls `useGetHistory('search', 10)`, it won't find data you pushed
+with `update('', null, data)`. This is why **function overrides are preferred** -
+the mock function receives the actual args and can return appropriate data:
+
+```typescript
+const mockService = createMockService({
+  getHistory: (query, maxResults) => Promise.resolve({
+    // Mock can use actual args to filter/return appropriate data
+    history: query
+      ? SAMPLE_HISTORY.filter(h => h.title.includes(query))
+      : SAMPLE_HISTORY
+  }),
+})
+```
+
+## Provider Overrides for Internal Hook State
+
+Some context values come from internal React hooks (like `useState` in custom hooks)
+rather than from API mocks. These can't be controlled via mock factories.
+
+For these values, use the `overrides` prop on generated Providers:
+
+```typescript
+// Values like isFeedbackFormVisible come from useSendFeedback() hook,
+// not from API mocks. Use overrides to control them in Storybook:
+const conversationOverrides = React.useMemo(
+  () => ({
+    isFeedbackFormVisible: storyArgs.isFeedbackFormVisible,
+  }),
+  [storyArgs.isFeedbackFormVisible],
+)
+
+return (
+  <ConversationProvider
+    api={conversationApi.api}
+    {...otherProps}
+    overrides={conversationOverrides}
+  >
+    {children}
+  </ConversationProvider>
+)
+```
+
+The `overrides` prop is shallow-merged with the hook's result, so you only need
+to specify the values you want to override.

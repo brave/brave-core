@@ -5,6 +5,21 @@
 
 import * as React from 'react'
 
+/**
+ * Props for the generated Provider component.
+ * Includes the API props plus an optional `overrides` prop for testing/storybook.
+ */
+type ProviderProps<API, T> = React.PropsWithChildren<
+  API & {
+    /**
+     * Optional overrides to merge with the hook's result.
+     * Useful for Storybook/tests to override specific values
+     * (like `isFeedbackFormVisible`) while using real provider logic.
+     */
+    overrides?: Partial<T>
+  }
+>
+
 // Provide a React Context provider and useAPI hook which the consumer
 // can use to get the API instance and the implementer
 // can customize with the required arguments for the provider.
@@ -22,10 +37,14 @@ export default function generateReactContextForAPI<API extends {}, T = API>(
     return maybeAPI
   }
 
-  function Provider(props: React.PropsWithChildren<API>) {
-    const value: T = hook(props)
+  function Provider(props: ProviderProps<API, T>) {
+    const { overrides, children, ...apiProps } = props
+    const value: T = hook(apiProps as API)
 
-    return <Context.Provider value={value}>{props.children}</Context.Provider>
+    // Merge overrides if provided (shallow merge)
+    const finalValue = overrides ? { ...value, ...overrides } : value
+
+    return <Context.Provider value={finalValue}>{children}</Context.Provider>
   }
 
   return {

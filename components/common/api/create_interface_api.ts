@@ -954,6 +954,17 @@ export function createInterfaceApi<
     ...actions,
     ...rootEndpointProperties,
     ...eventHooks,
+    /**
+     * Invalidates all queries for this API instance, causing them to refetch
+     * if currently subscribed. Useful for Storybook/tests when any control
+     * changes and you want all data to refresh from mock functions.
+     */
+    invalidateAll: () => {
+      queryClient.invalidateQueries({
+        queryKey: [config.key],
+        exact: false,
+      })
+    },
     close: () => {
       if (config.key || config.queryClient) {
         // Cancel all pending queries for this API key or queryClient
