@@ -471,16 +471,18 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   int result = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       base::DoNothing(), brave_request_info);
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-  // On desktop platforms, policy is enforced, so wallet is disabled
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_ANDROID)
+  // On desktop and Android platforms, policy is enforced, so wallet is disabled
   // Should return OK immediately (not pending) because wallet is disabled
   EXPECT_EQ(net::OK, result);
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 #else
-  // On mobile platforms, policy is not enforced, so wallet is always enabled
+  // On other platforms, policy is not enforced, so wallet is always enabled
   // Should return ERR_IO_PENDING because it will try to resolve the domain
   EXPECT_EQ(net::ERR_IO_PENDING, result);
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+        // BUILDFLAG(IS_ANDROID)
 }
 
 // Test that decentralized DNS works when BraveWalletDisabled policy is false

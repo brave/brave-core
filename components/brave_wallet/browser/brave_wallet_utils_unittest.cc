@@ -1016,13 +1016,8 @@ TEST_F(BraveWalletPolicyTest, PolicyDisablesWallet) {
   // Test that the policy preference is set correctly
   EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletDisabledByPolicy));
 
-#if BUILDFLAG(IS_ANDROID)
-  // On android the policy is not enforced
-  EXPECT_TRUE(IsAllowed(&prefs_));
-#else
-  // On other platforms, policy should be enforced
+  // Policy should be enforced
   EXPECT_FALSE(IsAllowed(&prefs_));
-#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 TEST_F(BraveWalletPolicyTest, PolicyEnablesWallet) {
