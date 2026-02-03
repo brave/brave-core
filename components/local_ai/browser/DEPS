@@ -1,5 +1,7 @@
 include_rules = [
   "+components/component_updater",
+  "+components/keyed_service",
   "+components/update_client",
+  "+content/public/browser",
   "+crypto",
 ]
