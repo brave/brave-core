@@ -7,6 +7,7 @@
 
 const assert = require('assert')
 const fs = require('fs')
+const os = require('os')
 const path = require('path')
 const { parseEnv } = require('node:util')
 const Log = require('./logging')
@@ -21,6 +22,9 @@ const Log = require('./logging')
  *   3. Default values provided by caller (lowest priority)
  */
 class EnvConfig {
+  /** Directory containing package.json and .env files.
+   *  @type {string}  */
+  #configDir
   /** Package.json object.
    *  @type {Record<string, any>}  */
   #packageJson
@@ -43,6 +47,7 @@ class EnvConfig {
    * files
    */
   constructor(configDir) {
+    this.#configDir = configDir
     this.#packageJson = EnvConfig.#loadPackageJson(configDir)
     this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
     this.#seenDefaultValues = {}
@@ -121,6 +126,49 @@ class EnvConfig {
     }
 
     return mergedObject
+  }
+
+  /**
+   * Retrieves a path configuration value and resolves it relative to the config
+   * directory if the path is relative.
+   *
+   * The method uses the same lookup order as get():
+   *   1. .env file values
+   *   2. package.json values
+   *   3. The provided defaultValue
+   *
+   * If the retrieved path is relative, it will be resolved relative to the
+   * config directory. Absolute paths are returned as-is. Paths starting with
+   * `~` are expanded to the user's home directory.
+   *
+   * @param {string[]} keyPath - Array of keys forming the config path
+   * @returns {string|undefined} The resolved absolute path, or undefined
+   */
+  getPath(keyPath) {
+    let pathValue = this.get(keyPath, '')
+    if (!pathValue) {
+      return undefined
+    }
+
+    // Expand ~ to home directory.
+    if (pathValue.startsWith('~')) {
+      pathValue = path.join(os.homedir(), pathValue.slice(1))
+    }
+
+    // If the path is relative, resolve it relative to the config directory.
+    if (!path.isAbsolute(pathValue)) {
+      pathValue = path.resolve(this.#configDir, pathValue)
+    }
+
+    // Normalize the path.
+    pathValue = path.normalize(pathValue)
+
+    // Replace Windows separators with POSIX separators.
+    if (process.platform === 'win32') {
+      pathValue = pathValue.replaceAll(path.win32.sep, path.posix.sep)
+    }
+
+    return pathValue
   }
 
   /**

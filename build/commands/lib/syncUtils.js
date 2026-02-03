@@ -42,15 +42,11 @@ function writeGclientConfig(
         managed: false,
         name: 'src',
         url: config.chromiumRepo,
-        custom_deps: {
-          ...config.chromiumCustomDeps,
-        },
-        custom_vars: {
-          ...config.chromiumCustomVars,
-        },
+        custom_deps: config.chromiumCustomDeps,
+        custom_vars: config.chromiumCustomVars,
       },
     ],
-    cache_dir: process.env.GIT_CACHE_PATH,
+    cache_dir: config.gitCachePath,
     target_os: targetOSList,
     target_cpu: targetArchList,
     ...config.gclientGlobalVars,
