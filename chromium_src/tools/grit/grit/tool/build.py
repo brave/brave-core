@@ -136,17 +136,9 @@ def _GetSwiftExportMessageIds(root):
             continue
 
         name = item.attrs['name']
-        camel_name = _SnakeCaseToCamelCase(name[IDS_PREFIX_LEN:])
-        messages.append((camel_name, ids_map[name]))
+        messages.append((name[IDS_PREFIX_LEN:], ids_map[name]))
 
     return messages
-
-
-def _SnakeCaseToCamelCase(string):
-    """Converts SNAKE_CASE to camelCase."""
-
-    parts = string.lower().split('_')
-    return parts[0] + ''.join(x.capitalize() for x in parts[1:])
 
 
 def _FormatObjCHeader(root, *_args, **_kwargs):
