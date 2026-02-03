@@ -132,9 +132,6 @@ def _GetSwiftExportMessageIds(root):
         if not isinstance(item, message.MessageNode):
             continue
 
-        if 'ios_swift' not in item.formatter_data:
-            continue
-
         name = item.attrs['name']
         messages.append((name[IDS_PREFIX_LEN:], ids_map[name]))
 
