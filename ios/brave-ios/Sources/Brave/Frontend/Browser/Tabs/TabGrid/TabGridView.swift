@@ -198,6 +198,7 @@ struct TabGridView: View {
             isFocused: $viewModel.isSearching,
             scrollView: containerView.collectionView
           )
+          .containerCornerOffset(.leading, sizeToFit: true)
         }
       }
       .padding(.horizontal, 16)
