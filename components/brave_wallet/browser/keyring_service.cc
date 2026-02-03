@@ -2768,7 +2768,6 @@ std::optional<std::vector<uint8_t>> KeyringService::GetZCashPubKey(
   return zcash_keyring->GetPubkey(*key_id);
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 std::optional<OrchardAddrRawPart> KeyringService::GetOrchardRawBytes(
     const mojom::AccountIdPtr& account_id,
     const mojom::ZCashKeyIdPtr& key_id) {
@@ -2802,8 +2801,6 @@ std::optional<OrchardSpendingKey> KeyringService::GetOrchardSpendingKey(
 
   return zcash_keyring->GetOrchardSpendingKey(account_id->account_index);
 }
-
-#endif
 
 void KeyringService::UpdateNextUnusedAddressForCardanoAccount(
     const mojom::AccountIdPtr& account_id,
@@ -3284,7 +3281,6 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
           derived_account_info.zcash_account_birthday->second);
     }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
     auto unified_address = zcash_keyring->GetUnifiedAddress(
         *receive_key_id,
         *mojom::ZCashKeyId::New(account_id->account_index, 0, 0));
@@ -3302,7 +3298,6 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
       result->orchard_internal_address =
           orchard_internal_address->address_string;
     }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
     return result;
   }

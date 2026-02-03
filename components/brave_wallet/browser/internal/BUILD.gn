@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wallet/common/config.gni")
 import("//build/rust/rust_static_library.gni")
 
 source_set("hd_key_common") {
@@ -44,13 +43,11 @@ source_set("hd_key") {
 
   public_deps = [ ":hd_key_common" ]
 
-  if (enable_orchard) {
-    sources += [
-      "hd_key_zip32.cc",
-      "hd_key_zip32.h",
-    ]
-    deps += [ "//brave/components/brave_wallet/browser/zcash/rust" ]
-  }
+  sources += [
+    "hd_key_zip32.cc",
+    "hd_key_zip32.h",
+  ]
+  deps += [ "//brave/components/brave_wallet/browser/zcash/rust" ]
 
   sources += [
     "hd_key_sr25519.cc",
@@ -62,35 +59,33 @@ source_set("hd_key") {
   ]
 }
 
-if (enable_orchard) {
-  source_set("test_support") {
-    sources = [
-      "orchard_test_utils.cc",
-      "orchard_test_utils.h",
-    ]
-    public_deps = [
-      "//brave/components/brave_wallet/browser/zcash/rust:test_support_headers",
-    ]
-    deps = [
-      ":orchard_bundle",
-      "//brave/components/brave_wallet/browser/zcash/rust:test_support",
-    ]
-  }
+source_set("test_support") {
+  sources = [
+    "orchard_test_utils.cc",
+    "orchard_test_utils.h",
+  ]
+  public_deps = [
+    "//brave/components/brave_wallet/browser/zcash/rust:test_support_headers",
+  ]
+  deps = [
+    ":orchard_bundle",
+    "//brave/components/brave_wallet/browser/zcash/rust:test_support",
+  ]
+}
 
-  source_set("orchard_bundle") {
-    sources = [
-      "orchard_block_scanner.cc",
-      "orchard_block_scanner.h",
-      "orchard_bundle_manager.cc",
-      "orchard_bundle_manager.h",
-      "orchard_sync_state.cc",
-      "orchard_sync_state.h",
-    ]
-    deps = [
-      "orchard_storage",
-      "//brave/components/brave_wallet/browser/zcash/rust",
-    ]
-  }
+source_set("orchard_bundle") {
+  sources = [
+    "orchard_block_scanner.cc",
+    "orchard_block_scanner.h",
+    "orchard_bundle_manager.cc",
+    "orchard_bundle_manager.h",
+    "orchard_sync_state.cc",
+    "orchard_sync_state.h",
+  ]
+  deps = [
+    "orchard_storage",
+    "//brave/components/brave_wallet/browser/zcash/rust",
+  ]
 }
 
 rust_static_library("sr25519_rs") {

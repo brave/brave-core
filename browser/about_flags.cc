@@ -132,18 +132,14 @@ const flags_ui::FeatureEntry::FeatureParam
     kZCashShieldedTransactionsDisabled[] = {
         {"zcash_shielded_transactions_enabled", "false"}};
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
     {{"zcash_shielded_transactions_enabled", "true"}};
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      std::size(kZCashShieldedTransactionsDisabled), nullptr},
-#if BUILDFLAG(ENABLE_ORCHARD)
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
      std::size(kZCashShieldedTransactionsEnabled), nullptr}
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 };
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 

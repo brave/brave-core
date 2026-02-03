@@ -15,8 +15,6 @@
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-static_assert(BUILDFLAG(ENABLE_ORCHARD));
-
 namespace brave_wallet {
 
 TEST(OrchardBlockScannerTest, DiscoverNewNotes) {

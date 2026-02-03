@@ -26,7 +26,6 @@ namespace brave_wallet {
 
 namespace {
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
@@ -36,7 +35,6 @@ std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
   DVLOG(1) << "Signatures applied";
   return result;
 }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace
 
@@ -75,7 +73,6 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
     return;
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Process Orchard part if there are Orchard inputs or outputs
   if (!transaction_.orchard_part().inputs.empty() ||
       !transaction_.orchard_part().outputs.empty()) {
@@ -100,7 +97,6 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
       return;
     }
   }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   if (!transaction_.transparent_part().inputs.empty() &&
       !transaction_.IsTransparentPartSigned()) {
@@ -169,7 +165,6 @@ void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
   ScheduleWorkOnTask();
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 void ZCashCompleteTransactionTask::CalculateWitness() {
   if (transaction_.orchard_part().inputs.empty()) {
     witness_inputs_ = std::vector<OrchardInput>();
@@ -279,8 +274,6 @@ void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
   transaction_.orchard_part().raw_tx = orchard_bundle_manager->GetRawTxBytes();
   ScheduleWorkOnTask();
 }
-
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 void ZCashCompleteTransactionTask::SignTransparentPart() {
   // Sign transparent part

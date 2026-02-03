@@ -78,7 +78,6 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     std::optional<OrchardMemo> memo = ToOrchardMemo(params->memo);
     if (!memo && params->memo) {
@@ -110,7 +109,6 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
       return;
     }
   }
-#endif
   if (tx_result.value() == mojom::ZCashTxType::kTransparentToTransparent) {
     zcash_wallet_service_->CreateFullyTransparentTransaction(
         from->Clone(), params->to, amount,

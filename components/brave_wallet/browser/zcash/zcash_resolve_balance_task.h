@@ -39,12 +39,9 @@ class ZCashResolveBalanceTask {
   void OnUtxosResolvedForBalance(
       base::expected<ZCashWalletService::UtxoMap, std::string> result);
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   void OnGetSpendableNotes(
       base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                      OrchardStorage::Error> result);
-
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   void CreateBalance();
 
@@ -57,9 +54,7 @@ class ZCashResolveBalanceTask {
   std::optional<ZCashWalletService::UtxoMap> utxo_map_;
   std::optional<mojom::ZCashBalancePtr> result_;
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<OrchardSyncState::SpendableNotesBundle> spendable_notes_result_;
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   base::WeakPtrFactory<ZCashResolveBalanceTask> weak_ptr_factory_{this};
 };

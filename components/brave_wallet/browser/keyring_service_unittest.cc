@@ -4223,7 +4223,6 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
                 ->next_transparent_change_address->key_id);
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
@@ -4361,8 +4360,6 @@ TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {
                               mojom::AccountKind::kDerived, 1),
       mojom::ZCashKeyId::New(1, 0 /* external */, 3)));
 }
-
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 TEST_F(KeyringServiceUnitTest, GetCardanoAccountInfo) {
   using mojom::CardanoAddress;

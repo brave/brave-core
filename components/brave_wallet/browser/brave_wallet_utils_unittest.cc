@@ -598,7 +598,6 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
       )"));
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
@@ -662,7 +661,6 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureDisabled) {
     EXPECT_EQ(2, count);
   }
 }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
   base::test::ScopedFeatureList feature_list;

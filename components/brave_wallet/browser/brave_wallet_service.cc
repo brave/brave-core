@@ -95,13 +95,11 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     if (!ContainsNativeToken(tokens, coin, chain_id, false)) {
       tokens.push_back(GetZcashNativeToken(chain_id));
     }
-#if BUILDFLAG(ENABLE_ORCHARD)
     if (IsZCashShieldedTransactionsEnabled()) {
       if (!ContainsNativeToken(tokens, coin, chain_id, true)) {
         tokens.push_back(GetZcashNativeShieldedToken(chain_id));
       }
     }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
   }
 
   if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id) &&

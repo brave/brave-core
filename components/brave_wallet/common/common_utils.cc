@@ -52,11 +52,7 @@ bool IsZCashEnabled() {
 }
 
 bool IsZCashShieldedTransactionsEnabled() {
-#if BUILDFLAG(ENABLE_ORCHARD)
   return IsZCashEnabled() && features::kZCashShieldedTransactionsEnabled.Get();
-#else
-  return false;
-#endif
 }
 
 bool IsPolkadotEnabled() {

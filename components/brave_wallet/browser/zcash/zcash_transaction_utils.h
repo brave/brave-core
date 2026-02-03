@@ -65,12 +65,10 @@ struct PickOrchardInputsResult {
   PickOrchardInputsResult& operator=(PickOrchardInputsResult&& other) = delete;
 };
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
     uint64_t amount,
     ZCashTargetOutputType output_type);
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet
 

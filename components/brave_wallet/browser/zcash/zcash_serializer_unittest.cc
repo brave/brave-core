@@ -15,10 +15,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
-#endif
 
 namespace brave_wallet {
 
@@ -199,8 +196,6 @@ TEST(ZCashSerializerTest, TxId_TransparentOnly) {
       ToHex(tx_id),
       "0x360d056309669faf0d7937f41581418be5e46b04e2cea0a7b14261d7bff1d825");
 }
-
-#if BUILDFLAG(ENABLE_ORCHARD)
 
 namespace {
 void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
@@ -1678,6 +1673,5 @@ TEST(ZCashSerializerTest, OrchardBundle) {
       "ace55bd2bc12bca438a4d99807e91d5d1571742922b099a46ebdea8f161720",
       ToHex(ZCashSerializer::SerializeRawTransaction(tx)));
 }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

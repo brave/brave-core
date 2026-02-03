@@ -57,7 +57,6 @@ void ZCashResolveBalanceTask::WorkOnTask() {
     return;
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     if (!spendable_notes_result_) {
       zcash_wallet_service_->sync_state()
@@ -69,7 +68,6 @@ void ZCashResolveBalanceTask::WorkOnTask() {
       return;
     }
   }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   if (!result_) {
     CreateBalance();
@@ -79,7 +77,6 @@ void ZCashResolveBalanceTask::WorkOnTask() {
   std::move(callback_).Run(base::ok(std::move(result_.value())));
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 void ZCashResolveBalanceTask::OnGetSpendableNotes(
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
@@ -98,8 +95,6 @@ void ZCashResolveBalanceTask::OnGetSpendableNotes(
   ScheduleWorkOnTask();
 }
 
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
-
 void ZCashResolveBalanceTask::CreateBalance() {
   auto result = mojom::ZCashBalance::New();
   result->transparent_balance = 0;
@@ -116,7 +111,6 @@ void ZCashResolveBalanceTask::CreateBalance() {
 
   result->total_balance = result->transparent_balance;
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     if (spendable_notes_result_) {
       for (const auto& note : spendable_notes_result_->all_notes) {
@@ -134,7 +128,6 @@ void ZCashResolveBalanceTask::CreateBalance() {
       result->total_balance += result->shielded_balance;
     }
   }
-#endif
 
   result_ = std::move(result);
   ScheduleWorkOnTask();
