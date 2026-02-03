@@ -523,7 +523,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.height.greaterThanOrEqualTo(UX.locationHeight)
     }
 
-    updateMainStackViewConstraints()
+    mainStackView.snp.remakeConstraints { make in
+      make.top.bottom.equalTo(self)
+      if #available(iOS 26.0, *) {
+        make.leading.trailing.equalTo(layoutGuide(for: .safeArea(cornerAdaptation: .horizontal)))
+      } else {
+        make.leading.trailing.equalTo(safeAreaLayoutGuide)
+      }
+    }
 
     scrollToTopButton.snp.makeConstraints { make in
       make.top.equalTo(self)
@@ -533,17 +540,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationView.snp.makeConstraints { make in
       make.edges.equalTo(self.locationContainer)
       make.height.greaterThanOrEqualTo(UX.locationHeight)
-    }
-  }
-
-  func updateMainStackViewConstraints() {
-    mainStackView.snp.remakeConstraints { make in
-      make.top.bottom.equalTo(self)
-      if #available(iOS 26.0, *) {
-        make.leading.trailing.equalTo(layoutGuide(for: .safeArea(cornerAdaptation: .horizontal)))
-      } else {
-        make.leading.trailing.equalTo(safeAreaLayoutGuide)
-      }
     }
   }
 

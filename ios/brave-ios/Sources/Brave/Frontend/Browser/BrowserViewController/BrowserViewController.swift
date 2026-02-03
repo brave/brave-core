@@ -685,9 +685,8 @@ public class BrowserViewController: UIViewController {
     if LiquidGlassMode.isEnabled {
       // Update top toolbar constraints and force layout/redraw during transition
       Task.delayed(bySeconds: 0.1) { @MainActor [self] in
-        topToolbar.updateMainStackViewConstraints()
         // Force a full layout pass to redraw the toolbar
-        topToolbar.layoutIfNeeded()
+        topToolbar.setNeedsUpdateConstraints()
       }
     }
   }
