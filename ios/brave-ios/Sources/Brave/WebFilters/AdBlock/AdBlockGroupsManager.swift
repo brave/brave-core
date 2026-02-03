@@ -541,8 +541,14 @@ import os
 
   /// Add or update `resourcesInfo` if it is a newer version. This information is used for lazy loading.
   func updateIfNeeded(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo) {
-    guard self.resourcesInfo == nil || resourcesInfo.version > self.resourcesInfo!.version else {
-      return
+    // if we have existing resources, check if it needs updated
+    if let existingResourcesInfo = self.resourcesInfo {
+      let newVersion = resourcesInfo.version
+      let existingVersion = existingResourcesInfo.version
+      guard newVersion.compare(existingVersion, options: .numeric) == .orderedDescending else {
+        // existing version is the same or newer, do nothing.
+        return
+      }
     }
     self.resourcesInfo = resourcesInfo
 
