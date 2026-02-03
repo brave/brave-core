@@ -8,7 +8,9 @@
 
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
+#include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -156,6 +158,13 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
+  void NonBlockingDelay(base::TimeDelta delay) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
+    run_loop.Run();
+  }
+
   void TestRewriteInPlace(
       content::WebContents* web_contents,
       const std::string& element_id,
@@ -234,10 +243,25 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     testing::Mock::VerifyAndClearExpectations(ai_engine);
 
     // Verify that the text is rewritten as expected.
-    std::string updated_text =
-        content::EvalJs(web_contents,
-                        content::JsReplace("get_text($1)", element_id))
-            .ExtractString();
+    // NOTE: Replace() is an IPC to the renderer that updates the DOM
+    // asynchronously. We must poll for the expected text value since the
+    // completion callback fires before the DOM update completes.
+    // Do not use EvalJs inside RunUntil() - it causes DCHECK on macOS arm64.
+    const base::TimeTicks deadline = base::TimeTicks::Now() + base::Seconds(5);
+    std::string updated_text;
+    for (;;) {
+      updated_text =
+          content::EvalJs(web_contents,
+                          content::JsReplace("get_text($1)", element_id))
+              .ExtractString();
+      if (updated_text == expected_updated_text) {
+        break;
+      }
+      if (base::TimeTicks::Now() >= deadline) {
+        break;  // Exit to report actual vs expected values
+      }
+      NonBlockingDelay(base::Milliseconds(10));
+    }
     EXPECT_EQ(expected_updated_text, updated_text);
   }
 
