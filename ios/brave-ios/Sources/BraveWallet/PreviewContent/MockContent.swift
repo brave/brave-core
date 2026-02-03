@@ -220,7 +220,7 @@ extension BraveWallet.BlockchainToken {
     coin: .zec,
     isShielded: false
   )
-  
+
   static let mockAdaToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "",
     name: "Ada",
