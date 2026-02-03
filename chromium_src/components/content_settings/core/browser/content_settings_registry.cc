@@ -404,15 +404,13 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 
 #if BUILDFLAG(ENABLE_PSST)
-  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
-    website_settings_registry_->Register(
-        ContentSettingsType::BRAVE_PSST, psst::kBravePsst, base::Value(),
-        WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
-        WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-        WebsiteSettingsRegistry::DESKTOP |
-            WebsiteSettingsRegistry::PLATFORM_ANDROID,
-        WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
-  }
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_PSST, psst::kBravePsst, base::Value(),
+      WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 #endif  // BUILDFLAG(ENABLE_PSST)
 }
 
