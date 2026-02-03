@@ -38,11 +38,18 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
     return;
   }
 
-  int start =
-      kMarginForVerticalTabContainers;  // margin before the first unpinned tab
-  if (!result->empty()) {
-    // This means pinned tabs are already laid out. So start from the bottom of
-    // the last pinned tab and add spacing and separator height.
+  int start = kMarginForVerticalTabContainers;  // margin before the first tab
+  bool consider_separator_bounds = false;
+  if (result->empty()) {
+    // We still can have pinned tabs. If we have pinend tabs,
+    // we should layout unpinned tabs after separator.
+    consider_separator_bounds =
+        std::ranges::any_of(tabs, [](const TabWidthConstraints& tab) {
+          return tab.state().pinned() == TabPinned::kPinned;
+        });
+  } else {
+    // This means pinned tabs are already laid out in grid. So start from the
+    // bottom of the last pinned tab and add spacing and separator height.
     start += result->back().bottom() +
              kVerticalTabsSpacing /* spacing after the last pinned tab */ +
              kPinnedUnpinnedSeparatorHeight;
@@ -52,6 +59,16 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
   rect.set_y(start);
   for (auto iter = tabs.begin() + result->size(); iter != tabs.end(); iter++) {
     auto& tab = *iter;
+
+    if (consider_separator_bounds &&
+        tab.state().pinned() != TabPinned::kPinned) {
+      rect.Offset(0,
+                  kVerticalTabsSpacing /* spacing after the last pinned tab */ +
+                      kPinnedUnpinnedSeparatorHeight);
+      // Do this only once.
+      consider_separator_bounds = false;
+    }
+
     rect.set_x(
         kMarginForVerticalTabContainers +
         (tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup : 0));
