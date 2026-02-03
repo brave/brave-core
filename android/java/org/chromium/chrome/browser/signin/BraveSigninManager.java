@@ -121,4 +121,9 @@ public class BraveSigninManager implements SigninManager {
 
     @Override
     public void isAccountManaged(CoreAccountInfo account, final Callback<Boolean> callback) {}
+
+    @Override
+    public boolean didAccountFetchSucceed() {
+        return false;
+    }
 }
