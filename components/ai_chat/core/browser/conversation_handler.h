@@ -368,6 +368,10 @@ class ConversationHandler : public mojom::ConversationHandler,
       base::OnceClosure callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
 
+  // Extract web sources from search tools in recent assistant entries
+  std::vector<mojom::ConversationEntryEventPtr>
+  ExtractSourcesFromRecentAssistantEntries();
+
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
