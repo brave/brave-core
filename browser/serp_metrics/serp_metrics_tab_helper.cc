@@ -6,6 +6,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -44,7 +45,9 @@ SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents)
 
   TemplateURLService* template_url_service =
       TemplateURLServiceFactory::GetForProfile(profile);
-  CHECK(template_url_service);
+  if (!template_url_service) {
+    CHECK_IS_TEST();
+  }
   serp_classifier_ = std::make_unique<SerpClassifier>(template_url_service);
 
   misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =

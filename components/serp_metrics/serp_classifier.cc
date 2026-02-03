@@ -6,6 +6,7 @@
 #include "brave/components/serp_metrics/serp_classifier.h"
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_set.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_terms_data.h"
@@ -33,9 +34,11 @@ constexpr auto kDisallowList = base::MakeFixedFlatSet<SearchEngineType>(
 
 SerpClassifier::SerpClassifier(TemplateURLService* template_url_service)
     : template_url_service_(template_url_service) {
-  CHECK(template_url_service_);
-
-  template_url_service->Load();
+  if (template_url_service_) {
+    template_url_service_->Load();
+  } else {
+    CHECK_IS_TEST();
+  }
 }
 
 SerpClassifier::~SerpClassifier() = default;
@@ -45,6 +48,7 @@ bool SerpClassifier::IsSameSearchQuery(const GURL& lhs, const GURL& rhs) const {
 }
 
 std::optional<SearchEngineType> SerpClassifier::MaybeClassify(const GURL& url) {
+  CHECK(template_url_service_);
   if (!template_url_service_->loaded()) {
     return std::nullopt;
   }
@@ -94,6 +98,7 @@ GURL SerpClassifier::NormalizeUrl(const GURL& url) const {
   url_replacements.ClearPort();
   GURL normalized_url = url.ReplaceComponents(url_replacements);
 
+  CHECK(template_url_service_);
   TemplateURL* template_url =
       template_url_service_->GetTemplateURLForHost(normalized_url.GetHost());
   if (!template_url) {
