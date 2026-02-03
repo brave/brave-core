@@ -1607,6 +1607,7 @@ ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
   // a non-assistant (user) entry.
   std::vector<mojom::WebSourcePtr> all_sources;
   std::vector<std::string> all_queries;
+  std::vector<std::string> all_rich_results;
 
   for (auto it = chat_history_.rbegin(); it != chat_history_.rend(); ++it) {
     if ((*it)->character_type != CharacterType::ASSISTANT) {
@@ -1642,6 +1643,9 @@ ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
             !web_sources->query.value().empty()) {
           all_queries.push_back(web_sources->query.value());
         }
+        for (const auto& rich_result : web_sources->rich_results) {
+          all_rich_results.push_back(rich_result);
+        }
       }
     }
   }
@@ -1650,7 +1654,7 @@ ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
   if (!all_sources.empty()) {
     events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
         mojom::WebSourcesEvent::New(std::move(all_sources),
-                                    std::vector<std::string>())));
+                                    std::move(all_rich_results))));
   }
   if (!all_queries.empty()) {
     events.push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
