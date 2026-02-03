@@ -19,6 +19,7 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
     private static final String IDLE_DETECTION = "idle_detection";
     private static final String DIVIDER_KEY = "divider";
     private static final String PERMISSION_AUTOREVOCATION_KEY = "permission_autorevocation";
+    private static final String ETHEREUM_CONNECTED_SITES_KEY = "ethereum_connected_sites";
     private static final String SOLANA_CONNECTED_SITES_KEY = "solana_connected_sites";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
@@ -67,6 +68,12 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         removePreferenceIfPresent(ADS_KEY);
         removePreferenceIfPresent(BACKGROUND_SYNC_KEY);
 
+        // Hide Ethereum and Solana connected sites when wallet is disabled by policy.
+        if (isWalletDisabledByPolicy()) {
+            removePreferenceIfPresent(ETHEREUM_CONNECTED_SITES_KEY);
+            removePreferenceIfPresent(SOLANA_CONNECTED_SITES_KEY);
+        }
+
         // We want to place these Settings at the bottom.
         // See https://github.com/brave/brave-browser/issues/46547
         // for the context
@@ -78,11 +85,23 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         if (prefDivider != null && prefPermissionAutorevocation != null) {
             Preference prefSolanaConnectedSites =
                     getPreferenceScreen().findPreference(SOLANA_CONNECTED_SITES_KEY);
-            assert prefSolanaConnectedSites != null
-                    : "Adjust if needed for the last pref in the site settings screen";
-            int solanaConnectedSitesOrder = prefSolanaConnectedSites.getOrder();
-            prefDivider.setOrder(solanaConnectedSitesOrder + 1);
-            prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 2);
+            // Solana preference may be removed if wallet is disabled by policy.
+            if (prefSolanaConnectedSites != null) {
+                int solanaConnectedSitesOrder = prefSolanaConnectedSites.getOrder();
+                prefDivider.setOrder(solanaConnectedSitesOrder + 1);
+                prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 2);
+            }
         }
+    }
+
+    private boolean isWalletDisabledByPolicy() {
+        if (!hasSiteSettingsDelegate()) {
+            return false;
+        }
+        SiteSettingsDelegate delegate = getSiteSettingsDelegate();
+        if (delegate instanceof BraveWalletSiteSettingsDelegate) {
+            return ((BraveWalletSiteSettingsDelegate) delegate).isWalletDisabledByPolicy();
+        }
+        return false;
     }
 }

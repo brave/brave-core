@@ -2441,6 +2441,10 @@ public class BytecodeTest {
                         Website.class));
         Assert.assertTrue(
                 fieldExists(
+                        "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
+                        "mProfile"));
+        Assert.assertTrue(
+                fieldExists(
                         "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
                         "sLock",
                         true,

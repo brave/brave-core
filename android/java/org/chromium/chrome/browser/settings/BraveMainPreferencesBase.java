@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -149,6 +150,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         checkLeoPolicyAndUpdatePreference();
         checkNewsPolicyAndUpdatePreference();
         checkVpnPolicyAndUpdatePreference();
+        checkWalletPolicyAndUpdatePreference();
 
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
@@ -628,6 +630,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (BraveVpnPolicy.isDisabledByPolicy(getProfile())) {
             removePreferenceIfPresent(PREF_BRAVE_VPN);
             removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+        }
+    }
+
+    /** Checks if Brave Wallet is disabled by policy and removes the preference if so. */
+    private void checkWalletPolicyAndUpdatePreference() {
+        if (BraveWalletPolicy.isDisabledByPolicy(getProfile())) {
+            removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
     }
 }

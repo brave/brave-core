@@ -130,6 +130,7 @@ import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
@@ -770,13 +771,16 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void showWalletPanel(
             final boolean showPendingTransactions, final boolean ignoreWeb3NotificationPreference) {
+        // Don't show wallet panel if disabled by policy or services not initialized
+        if (mKeyringService == null) {
+            return;
+        }
         final BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         layout.showWalletIcon(true);
         if (!ignoreWeb3NotificationPreference
                 && !BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
             return;
         }
-        assert mKeyringService != null;
         mKeyringService.isLocked(
                 locked -> {
                     if (locked) {
@@ -2052,6 +2056,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void setupWalletModel() {
+        // Don't setup wallet model if disabled by policy
+        if (BraveWalletPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
+            return;
+        }
         PostTask.postTask(
                 TaskTraits.UI_DEFAULT,
                 () -> {
@@ -2088,93 +2096,145 @@ public abstract class BraveActivity extends ChromeActivity
     @MainThread
     private void setupObservers() {
         ThreadUtils.assertOnUiThread();
+        if (mWalletModel == null) {
+            return;
+        }
         clearObservers();
-        mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
-                this, transactionInfo -> {
-                    if (transactionInfo == null) {
-                        return;
-                    }
-                    // don't show dapps panel if the wallet is locked and requests are being
-                    // processed by the approve dialog already
-                    mKeyringService.isLocked(locked -> {
-                        if (locked) {
-                            return;
-                        }
+        mWalletModel
+                .getCryptoModel()
+                .getPendingTxHelper()
+                .mSelectedPendingRequest
+                .observe(
+                        this,
+                        transactionInfo -> {
+                            if (transactionInfo == null) {
+                                return;
+                            }
+                            // don't show dapps panel if the wallet is locked and requests are being
+                            // processed by the approve dialog already
+                            mKeyringService.isLocked(
+                                    locked -> {
+                                        if (locked) {
+                                            return;
+                                        }
 
-                        if (!mIsProcessingPendingDappsTxRequest) {
-                            mIsProcessingPendingDappsTxRequest = true;
-                            openBraveWalletDAppsActivity(
-                                    BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
-                        }
+                                        if (!mIsProcessingPendingDappsTxRequest) {
+                                            mIsProcessingPendingDappsTxRequest = true;
+                                            openBraveWalletDAppsActivity(
+                                                    BraveWalletDAppsActivity.ActivityType
+                                                            .CONFIRM_TRANSACTION);
+                                        }
 
-                        // update badge if there's a pending tx
-                        updateWalletBadgeVisibility();
-                    });
-                });
+                                        // update badge if there's a pending tx
+                                        updateWalletBadgeVisibility();
+                                    });
+                        });
 
-        mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(
-                this, this::setWalletBadgeVisibility);
+        mWalletModel
+                .getDappsModel()
+                .mWalletIconNotificationVisible
+                .observe(this, this::setWalletBadgeVisibility);
 
-        mWalletModel.getDappsModel().mPendingWalletAccountCreationRequest.observe(this, request -> {
-            if (request == null) return;
-            mWalletModel.getKeyringModel().isWalletLocked(isLocked -> {
-                if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) return;
-                if (isLocked) {
-                    Tab tab = getActivityTab();
-                    if (tab != null) {
-                        walletInteractionDetected(tab.getWebContents());
-                    }
-                    showWalletPanel(false);
-                    return;
-                }
-                for (CryptoAccountTypeInfo info :
-                        mWalletModel.getCryptoModel().getSupportedCryptoAccountTypes()) {
-                    if (info.getCoinType() == request.getCoinType()) {
-                        Intent intent = AddAccountActivity.createIntentToAddAccount(
-                                this, info.getCoinType());
-                        startActivity(intent);
-                        mWalletModel.getDappsModel().removeProcessedAccountCreationRequest(request);
-                        break;
-                    }
-                }
-            });
-        });
-
-        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
-                this, networkInfo -> {
-                    if (networkInfo == null) return;
-
-                    MaterialAlertDialogBuilder builder =
-                            new MaterialAlertDialogBuilder(
-                                    this, R.style.BraveWalletAlertDialogTheme)
-                                    .setMessage(getString(
-                                            R.string.brave_wallet_create_account_description,
-                                            networkInfo.symbolName))
-                                    .setPositiveButton(R.string.brave_action_yes,
-                                            (dialog, which) -> {
-                                                mWalletModel.createAccountAndSetDefaultNetwork(
-                                                        networkInfo);
-                                            })
-                                    .setNegativeButton(
-                                            R.string.brave_action_no, (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .clearCreateAccountState();
-                                                dialog.dismiss();
+        mWalletModel
+                .getDappsModel()
+                .mPendingWalletAccountCreationRequest
+                .observe(
+                        this,
+                        request -> {
+                            if (request == null) return;
+                            mWalletModel
+                                    .getKeyringModel()
+                                    .isWalletLocked(
+                                            isLocked -> {
+                                                if (!BraveWalletPreferences
+                                                        .getPrefWeb3NotificationsEnabled()) {
+                                                    return;
+                                                }
+                                                if (isLocked) {
+                                                    Tab tab = getActivityTab();
+                                                    if (tab != null) {
+                                                        walletInteractionDetected(
+                                                                tab.getWebContents());
+                                                    }
+                                                    showWalletPanel(false);
+                                                    return;
+                                                }
+                                                for (CryptoAccountTypeInfo info :
+                                                        mWalletModel
+                                                                .getCryptoModel()
+                                                                .getSupportedCryptoAccountTypes()) {
+                                                    if (info.getCoinType()
+                                                            == request.getCoinType()) {
+                                                        Intent intent =
+                                                                AddAccountActivity
+                                                                        .createIntentToAddAccount(
+                                                                                this,
+                                                                                info.getCoinType());
+                                                        startActivity(intent);
+                                                        mWalletModel
+                                                                .getDappsModel()
+                                                                .removeProcessedAccountCreationRequest( // presubmit: ignore-long-line
+                                                                        request);
+                                                        break;
+                                                    }
+                                                }
                                             });
-                    builder.show();
-                });
+                        });
+
+        mWalletModel
+                .getCryptoModel()
+                .getNetworkModel()
+                .mNeedToCreateAccountForNetwork
+                .observe(
+                        this,
+                        networkInfo -> {
+                            if (networkInfo == null) return;
+
+                            MaterialAlertDialogBuilder builder =
+                                    new MaterialAlertDialogBuilder(
+                                                    this, R.style.BraveWalletAlertDialogTheme)
+                                            .setMessage(
+                                                    getString(
+                                                            R.string
+                                                                    .brave_wallet_create_account_description, // presubmit: ignore-long-line
+                                                            networkInfo.symbolName))
+                                            .setPositiveButton(
+                                                    R.string.brave_action_yes,
+                                                    (dialog, which) -> {
+                                                        mWalletModel
+                                                                .createAccountAndSetDefaultNetwork(
+                                                                        networkInfo);
+                                                    })
+                                            .setNegativeButton(
+                                                    R.string.brave_action_no,
+                                                    (dialog, which) -> {
+                                                        mWalletModel
+                                                                .getCryptoModel()
+                                                                .getNetworkModel()
+                                                                .clearCreateAccountState();
+                                                        dialog.dismiss();
+                                                    });
+                            builder.show();
+                        });
     }
 
     @MainThread
     private void clearObservers() {
         ThreadUtils.assertOnUiThread();
-        mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.removeObservers(
-                this);
+        if (mWalletModel == null) {
+            return;
+        }
+        mWalletModel
+                .getCryptoModel()
+                .getPendingTxHelper()
+                .mSelectedPendingRequest
+                .removeObservers(this);
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);
-        mWalletModel.getCryptoModel()
+        mWalletModel
+                .getCryptoModel()
                 .getNetworkModel()
-                .mNeedToCreateAccountForNetwork.removeObservers(this);
+                .mNeedToCreateAccountForNetwork
+                .removeObservers(this);
     }
 
     private void showBraveRateDialog() {
@@ -2483,6 +2543,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void initWalletNativeServices() {
+        // Don't initialize wallet services if disabled by policy
+        if (BraveWalletPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
+            return;
+        }
         initBlockchainRegistry();
         initTxService();
         initEthTxManagerProxy();

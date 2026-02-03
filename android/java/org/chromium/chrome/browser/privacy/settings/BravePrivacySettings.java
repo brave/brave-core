@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
@@ -472,6 +473,13 @@ public class BravePrivacySettings extends PrivacySettings {
         removePreferenceIfPresent(PREF_SECURITY_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY_GUIDE);
         removePreferenceIfPresent(PREF_PASSWORD_LEAK_DETECTION);
+
+        // Hide decentralized DNS settings when wallet is disabled by policy
+        if (BraveWalletPolicy.isDisabledByPolicy(getProfile())) {
+            removePreferenceIfPresent(PREF_UNSTOPPABLE_DOMAINS);
+            removePreferenceIfPresent(PREF_ENS);
+            removePreferenceIfPresent(PREF_SNS);
+        }
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING)) {
             removePreferenceIfPresent(PREF_SAFE_BROWSING);

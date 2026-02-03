@@ -411,6 +411,10 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mPrefService.isManagedPreference(BravePref.MANAGED_BRAVE_VPN_DISABLED))
                 .thenReturn(true);
         when(mPrefService.getBoolean(BravePref.MANAGED_BRAVE_VPN_DISABLED)).thenReturn(true);
+        // Wallet: BRAVE_WALLET_DISABLED_BY_POLICY = true means disabled
+        when(mPrefService.isManagedPreference(BravePref.BRAVE_WALLET_DISABLED_BY_POLICY))
+                .thenReturn(true);
+        when(mPrefService.getBoolean(BravePref.BRAVE_WALLET_DISABLED_BY_POLICY)).thenReturn(true);
 
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
@@ -424,7 +428,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.open_history_menu_id,
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
-            R.id.brave_wallet_id,
+            // R.id.brave_wallet_id is NOT included - disabled by policy
             // R.id.brave_leo_id is NOT included - disabled by policy
             // R.id.brave_rewards_id is NOT included - disabled by policy
             R.id.recent_tabs_menu_id,

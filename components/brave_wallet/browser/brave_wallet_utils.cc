@@ -49,13 +49,9 @@ namespace {
 constexpr size_t kCardanoScriptHashSize = 28u;
 
 bool IsDisabledByPolicy(PrefService* prefs) {
-#if BUILDFLAG(IS_ANDROID)
-  return false;
-#else
   DCHECK(prefs);
   return prefs->IsManagedPreference(kBraveWalletDisabledByPolicy) &&
          prefs->GetBoolean(kBraveWalletDisabledByPolicy);
-#endif
 }
 
 constexpr const char kEnsRegistryContractAddress[] =

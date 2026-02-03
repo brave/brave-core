@@ -58,6 +58,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
@@ -1125,7 +1126,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 return;
             }
         }
-        if (show) {
+        if (show && !BraveWalletPolicy.isDisabledByPolicy(currentTab.getProfile())) {
             mWalletLayout.setVisibility(View.VISIBLE);
             mTabsWithWalletIcon.add(currentTab.getId());
         } else {

@@ -351,6 +351,7 @@
 }
 
 -keep class org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate {
+    *** mProfile;
     public <init>(...);
 }
 

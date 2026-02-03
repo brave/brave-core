@@ -43,6 +43,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/brave_rewards/core/pref_names.h",
     "//brave/components/brave_shields/core/common/pref_names.h",
     "//brave/components/brave_vpn/common/pref_names.h",
+    "//brave/components/brave_wallet/browser/pref_names.h",
     "//brave/components/constants/pref_names.h",
     "//brave/components/de_amp/common/pref_names.cc",
     "//brave/components/de_amp/common/pref_names.h",

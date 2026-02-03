@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -136,6 +137,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      */
     private List<PolicyControlledMenuItem> getPolicyControlledMenuItems() {
         return Arrays.asList(
+                new PolicyControlledMenuItem(
+                        R.id.brave_wallet_id,
+                        this::buildBraveWalletItem,
+                        () -> ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET),
+                        () -> {
+                            Tab tab = mActivityTabProvider.get();
+                            return tab != null
+                                    && BraveWalletPolicy.isDisabledByPolicy(tab.getProfile());
+                        },
+                        Arrays.asList(R.id.brave_leo_id, R.id.all_bookmarks_menu_id)),
                 new PolicyControlledMenuItem(
                         R.id.brave_leo_id,
                         this::buildBraveLeoItem,
@@ -636,10 +647,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         buildModelForStandardMenuItem(
                                 R.id.recent_tabs_menu_id, R.string.menu_recent_tabs, 0)));
 
-        // Add Brave specific items.
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            modelList.add(buildBraveWalletItem());
-        }
+        // Add Brave specific items (Wallet is handled by policy-controlled mechanism).
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             modelList.add(buildBravePlaylistItem());
             modelList.add(buildBraveAddToPlaylistItem());
@@ -903,11 +911,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         }
 
-        // Add Brave specific items.
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            addMenuItemAfter(
-                    modelList, buildBraveWalletItem(), Arrays.asList(R.id.all_bookmarks_menu_id));
-        }
+        // Add Brave specific items (Wallet is handled by policy-controlled mechanism).
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {

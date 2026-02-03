@@ -12,6 +12,7 @@ android_library("java") {
     "java/src/org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveWalletSiteSettingsDelegate.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveWebsite.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveWebsitePermissionsFetcher.java",
   ]
