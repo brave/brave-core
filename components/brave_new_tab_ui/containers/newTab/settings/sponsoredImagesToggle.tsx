@@ -17,6 +17,7 @@ import Flex from '$web-common/Flex'
 // Utilities
 import { getLocale } from '../../../../common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
+import { color } from '@brave/leo/tokens/css/variables'
 
 interface Props {
   onChange: () => void
@@ -34,7 +35,7 @@ const ToggleRow = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 8px 0px;
-  background-color: var(--background1);
+  background-color: ${color.container.background};
 `
 
 const ControlsContainer = styled.span`

@@ -8,7 +8,7 @@ import { getLocale , formatLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
-import { spacing } from '@brave/leo/tokens/css/variables'
+import { color, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
@@ -86,7 +86,7 @@ const SidebarOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--background1);
+  background: ${color.container.background};
   opacity: 0.7;
 `
 
