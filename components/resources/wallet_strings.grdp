@@ -543,12 +543,12 @@
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address.</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address.</message>
   <message name="IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR" desc="Send input trying to send zcash crypto to wrong unified address">Invalid unified address</message>
-  <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_TITLE" desc="Send input failed checksum title">Address doesn’t look correct</message>
-  <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_DESCRIPTION" desc="Send input failed checksum title">Check your address to make sure it’s the right address (e.g. letters with lower or upper case).</message>
+  <message name="IDS_BRAVE_WALLET_MISSING_CHECKSUM_TITLE" desc="Send input missing checksum title">Address is missing checksum</message>
+  <message name="IDS_BRAVE_WALLET_MISSING_CHECKSUM_DESCRIPTION" desc="Send input missing checksum description">Validity of this address cannot be verified. To avoid a potential loss of funds, review the address carefully before sending.</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_CHECKSUM_TITLE" desc="Send input invalid checksum title">Address doesn't look correct (invalid checksum)</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_CHECKSUM_DESCRIPTION" desc="Send input invalid checksum description">This address appears to have a typo. Please review the address and type it again.</message>
   <message name="IDS_BRAVE_WALLET_HOW_TO_SOLVE" desc="How to solve button text">How can I solve it?</message>
   <message name="IDS_BRAVE_WALLET_CHECKSUM_WARNING_TITLE" desc="Send input address missing checksum information title">Missing checksum information</message>
-  <message name="IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING" desc="Send input address missing checksum information">This address cannot be verified (missing checksum). Proceed?</message>
-  <message name="IDS_BRAVE_WALLET_NOT_VALID_CHECKSUM_ADDRESS_ERROR" desc="Send input address has invalid checksum information">Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.</message>
   <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR" desc="Send amount must be greater than 0 error">Amount must be greater than 0</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR" desc="Address field is required error">To address is required</message>

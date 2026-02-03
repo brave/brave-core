@@ -1098,16 +1098,16 @@ provideStrings({
   braveWalletSameAddressError: 'The receiving address is your own address.',
   braveWalletContractAddressError:
     'The receiving address is a tokens contract address.',
-  braveWalletFailedChecksumTitle: 'Address doesn’t look correct',
-  braveWalletFailedChecksumDescription:
-    'Check your address to make sure it’s the right address '
-    + '(e.g. letters with lower or upper case).',
+  braveWalletMissingChecksumTitle: 'Address is missing checksum',
+  braveWalletMissingChecksumDescription:
+    'Validity of this address cannot be verified. To avoid a potential loss '
+    + 'of funds, review the address carefully before sending.',
+  braveWalletInvalidChecksumTitle:
+    "Address doesn't look correct (invalid checksum)",
+  braveWalletInvalidChecksumDescription:
+    'This address appears to have a typo. Please review the address and type '
+    + 'it again.',
   braveWalletHowToSolve: 'How can I solve it?',
-  braveWalletAddressMissingChecksumInfoWarning:
-    'This address cannot be verified (missing checksum). Proceed?',
-  braveWalletNotValidChecksumAddressError:
-    'Address did not pass verification (invalid checksum). '
-    + 'Please try again, replacing lowercase letters with uppercase.',
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',

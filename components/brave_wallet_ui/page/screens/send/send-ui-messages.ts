@@ -24,15 +24,15 @@ export const HasNoDomainAddressMessage: AddressMessageInfo = {
 }
 
 export const FailedChecksumMessage: AddressMessageInfo = {
-  title: 'braveWalletFailedChecksumTitle',
-  description: 'braveWalletFailedChecksumDescription',
+  title: 'braveWalletInvalidChecksumTitle',
+  description: 'braveWalletInvalidChecksumDescription',
   type: 'error',
   id: AddressMessageInfoIds.invalidChecksumError,
 }
 
 export const MissingChecksumMessage: AddressMessageInfo = {
-  title: 'braveWalletFailedChecksumTitle',
-  description: 'braveWalletFailedChecksumDescription',
+  title: 'braveWalletMissingChecksumTitle',
+  description: 'braveWalletMissingChecksumDescription',
   type: 'warning',
   id: AddressMessageInfoIds.missingChecksumWarning,
 }
