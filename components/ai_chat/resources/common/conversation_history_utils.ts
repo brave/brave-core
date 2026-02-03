@@ -7,6 +7,53 @@ import { getLocale } from '$web-common/locale'
 import * as Mojom from './mojom'
 
 /**
+ * Replaces citation numbers [1], [2], etc. with actual URLs from allowedLinks.
+ * Adds a space before the URL if there isn't already whitespace before the
+ * citation.
+ *
+ * @param text - The text containing citations to replace
+ * @param allowedLinks - URLs for each citation (index 0 = [1], index 1 = [2])
+ * @returns Text with citations replaced by URLs
+ */
+export function replaceCitationsWithUrls(
+  text: string,
+  allowedLinks: string[],
+): string {
+  if (allowedLinks.length === 0) {
+    return text
+  }
+
+  return text.replace(/\[(\d+)\]/g, (match, citationNumber, offset) => {
+    const index = parseInt(citationNumber) - 1
+    if (index >= 0 && index < allowedLinks.length) {
+      const url = allowedLinks[index]
+      // Add space before URL if citation had no preceding whitespace
+      const charBefore = offset > 0 ? text[offset - 1] : ''
+      const needsSpace = charBefore && !/\s/.test(charBefore)
+      return needsSpace ? ` ${url}` : url
+    }
+    return match
+  })
+}
+
+/**
+ * Extracts allowedLinks from sourcesEvent in a turn's events.
+ *
+ * @param events - The events from a conversation turn
+ * @returns Array of URLs from sourcesEvent
+ */
+export function extractAllowedLinksFromTurn(
+  events?: Mojom.ConversationEntryEvent[],
+): string[] {
+  return (
+    events?.flatMap(
+      (event) =>
+        event.sourcesEvent?.sources?.map((source) => source.url.url) || [],
+    ) || []
+  )
+}
+
+/**
  * Formats a conversation history into a string suitable for clipboard copy.
  * Each turn is labeled with a localized "You" for human messages and "Leo AI"
  * (product name) for assistant messages, separated by double newlines.
@@ -33,6 +80,10 @@ export function formatConversationForClipboard(
         if (completionEvent?.completionEvent?.completion) {
           text = completionEvent.completionEvent.completion
         }
+
+        // Extract allowedLinks and replace citations with URLs
+        const allowedLinks = extractAllowedLinksFromTurn(turn.events)
+        text = replaceCitationsWithUrls(text, allowedLinks)
       }
 
       return `${label}: ${text}`

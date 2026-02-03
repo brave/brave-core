@@ -15,6 +15,7 @@ import * as Mojom from './mojom'
 import {
   createConversationTurnWithDefaults,
   getCompletionEvent,
+  getWebSourcesEvent,
 } from './test_data_utils'
 
 describe('processUploadedFilesWithLimits', () => {
@@ -829,5 +830,105 @@ describe('formatConversationForClipboard', () => {
 
     const result = formatConversationForClipboard(conversationHistory)
     expect(result).toBe('Leo AI: Fallback assistant text')
+  })
+
+  it('should replace citation numbers with URLs in assistant messages', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://example.com/article1' },
+              title: 'Article 1',
+              faviconUrl: { url: 'https://example.com/favicon.ico' },
+            },
+            {
+              url: { url: 'https://example.com/article2' },
+              title: 'Article 2',
+              faviconUrl: { url: 'https://example.com/favicon.ico' },
+            },
+          ]),
+          getCompletionEvent(
+            'This is a response with citations [1] and [2] in the text.',
+          ),
+        ],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe(
+      'Leo AI: This is a response with citations https://example.com/article1 and https://example.com/article2 in the text.',
+    )
+  })
+
+  it('should add space before URL when citation follows a word', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://example.com/article1' },
+              title: 'Article 1',
+              faviconUrl: { url: 'https://example.com/favicon.ico' },
+            },
+          ]),
+          getCompletionEvent(
+            'This is text without space[1] and with space [1].',
+          ),
+        ],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe(
+      'Leo AI: This is text without space https://example.com/article1 and '
+        + 'with space https://example.com/article1.',
+    )
+  })
+
+  it('keeps citation number when link is missing for that index', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://example.com/article1' },
+              title: 'Article 1',
+              faviconUrl: { url: 'https://example.com/favicon.ico' },
+            },
+          ]),
+          getCompletionEvent(
+            'This has valid citation [1] and invalid [3] citations.',
+          ),
+        ],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe(
+      'Leo AI: This has valid citation https://example.com/article1 and invalid [3] citations.',
+    )
+  })
+
+  it('should not replace citations in human messages', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: 'Check out reference [1]',
+        characterType: Mojom.CharacterType.HUMAN,
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe('You: Check out reference [1]')
   })
 })

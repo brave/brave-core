@@ -4,6 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Mojom from '../../../common/mojom'
+import {
+  extractAllowedLinksFromTurn,
+  replaceCitationsWithUrls,
+} from '../../../common/conversation_history_utils'
 
 // Possibly expose an event handler for copying the entry's text to clipboard,
 // if the entry is simple enough for the text to be extracted
@@ -20,7 +24,11 @@ export default function useConversationEventClipboardCopyHandler(
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
       const event = entry.events?.find((event) => event.completionEvent)
       if (!event?.completionEvent) return
-      navigator.clipboard.writeText(event.completionEvent.completion)
+      let text = event.completionEvent.completion
+      // Replace citations with URLs
+      const allowedLinks = extractAllowedLinksFromTurn(entry.events)
+      text = replaceCitationsWithUrls(text, allowedLinks)
+      navigator.clipboard.writeText(text)
     } else {
       navigator.clipboard.writeText(entry.text)
     }
