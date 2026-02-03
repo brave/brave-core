@@ -31,7 +31,7 @@ const ScrollButton = styled.button<{ hidden: boolean }>`
 
   :hover {
     box-shadow: 0px 1px 4px rgba(63, 76, 99, 0.5);
-    color: var(--interactive4);
+    color: ${color.legacy.interactive4};
   }
 
   ${p => p.hidden && css`opacity: 0;`}

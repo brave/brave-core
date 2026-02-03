@@ -78,7 +78,7 @@ const DescriptionBody = styled.div`
 
 const EnableRewardsButton = styled.button`
   height: 36px;
-  background: var(--interactive5);
+  background: ${color.button.background};
   border-radius: 1000px;
   border-width: 0;
   color: white;
