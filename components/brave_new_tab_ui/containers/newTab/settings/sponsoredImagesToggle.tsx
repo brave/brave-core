@@ -58,7 +58,6 @@ const Container = styled.div`
 const DescriptionRow = styled.div`
   width: 100%;
   color: ${color.text.primary};
-  font-family: var(--brave-font-family-non-serif);
   letter-spacing: 0.01em;
   margin-bottom: 16px;
 `
@@ -84,7 +83,6 @@ const EnableRewardsButton = styled.button`
   color: white;
   cursor: pointer;
   padding: 10px 20px;
-  font-family: var(--brave-font-family-non-serif);
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;

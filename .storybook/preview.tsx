@@ -7,7 +7,6 @@ import 'emptykit.css'
 import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { setIconBasePath } from '@brave/leo/react/icon'
-import '../components/web-components/app.global.scss'
 import { getString } from './locale'
 import ThemeProvider from '../components/common/BraveCoreThemeProvider'
 
