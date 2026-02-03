@@ -231,11 +231,6 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
            << storage_partition_config;
   const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-  if (cleanup_mode != StorageCleanupMode::kImmediateShred &&
-      auto_shred_mode.has_value() &&
-      auto_shred_mode.value() == brave_shields::mojom::AutoShredMode::NEVER) {
-    return;
-  }
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area =
