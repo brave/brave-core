@@ -1,0 +1,20 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/search/SearchBoxMediator.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/search/SearchBoxMediator.java
+index 7aba49e95adc0dbac25457a878022c9b15b3a766..8de5b000d93a1cbf6cb69c6179af7c3477abf386 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/search/SearchBoxMediator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/search/SearchBoxMediator.java
+@@ -15,6 +15,7 @@ import androidx.annotation.StyleRes;
+ import org.chromium.build.annotations.MonotonicNonNull;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
++import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.composeplate.ComposeplateUtils;
+ import org.chromium.chrome.browser.lens.LensController;
+ import org.chromium.chrome.browser.lens.LensEntryPoint;
+@@ -22,7 +23,6 @@ import org.chromium.chrome.browser.lens.LensIntentParams;
+ import org.chromium.chrome.browser.lens.LensQueryParams;
+ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+ import org.chromium.chrome.browser.lifecycle.DestroyObserver;
+-import org.chromium.chrome.browser.omnibox.R;
+ import org.chromium.ui.base.WindowAndroid;
+ import org.chromium.ui.modelutil.PropertyModel;
+ import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
