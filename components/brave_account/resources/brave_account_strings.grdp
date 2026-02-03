@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="webui=BraveAccount android_java ios_swift">
     Brave Account
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccountSettings">
     Sign in or create a Brave account
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Get Started
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE" translateable="false" desc="Title shown when user has registered but is awaiting email verification" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE" translateable="false" desc="Title shown when user has registered but is awaiting email verification" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Almost there!
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     A confirmation email is on the way. Click the button in that email to activate your account.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Resend confirmation email
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Don't see the email? Check your spam folder or click on the button to resend the confirmation email.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Cancel registration
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Email address
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java ios_swift">
     Sign out
   </message>
 
