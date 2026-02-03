@@ -25,8 +25,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_terms_data.h"
-#include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/web_contents.h"
@@ -74,21 +72,9 @@ constexpr char kBackupSearchContent[] =
 
 constexpr char kScriptDefaultAPIExists[] =
     "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
-// Script to call getCanSetDefaultSearchProvider without any delay.
-// The caller should ensure the TemplateURL exists before calling this.
 constexpr char kScriptDefaultAPIGetValue[] = R"(
   brave.getCanSetDefaultSearchProvider()
 )";
-
-// Helper function to check if a TemplateURL exists for a given host.
-bool HasTemplateURLForHost(TemplateURLService* service, std::string_view host) {
-  for (const TemplateURL* template_url : service->GetTemplateURLs()) {
-    if (template_url->url_ref().GetHost(SearchTermsData()) == host) {
-      return true;
-    }
-  }
-  return false;
-}
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
@@ -208,6 +194,13 @@ class BraveSearchTest : public InProcessBrowserTest {
 
   bool GetFallbackSetsCookie() { return fallback_sets_cookie_; }
 
+  void NonBlockingDelay(base::TimeDelta delay) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitClosure(), delay);
+    run_loop.Run();
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
@@ -276,9 +269,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
-  auto* template_url_service =
-      TemplateURLServiceFactory::GetForProfile(browser()->profile());
-  search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
+  search_test_utils::WaitForTemplateURLServiceToLoad(
+      TemplateURLServiceFactory::GetForProfile(browser()->profile()));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -286,13 +278,20 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   EXPECT_EQ(url, contents->GetURL());
   EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
 
-  // Wait for the opensearch XML to be fetched and the TemplateURL to be
-  // created. This replaces the unreliable setTimeout(1200) in JavaScript.
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return HasTemplateURLForHost(template_url_service, kAllowedDomain);
-  }));
-
-  EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIGetValue));
+  // Wait for the opensearch XML to be fetched, TemplateURL to be created,
+  // and all async initialization to complete. Use manual polling loop to avoid
+  // nested run loops (EvalJs creates its own run loop).
+  const base::TimeTicks deadline = base::TimeTicks::Now() + base::Seconds(10);
+  for (;;) {
+    NonBlockingDelay(base::Milliseconds(10));
+    if (content::EvalJs(contents, kScriptDefaultAPIGetValue).ExtractBool()) {
+      break;
+    }
+    if (base::TimeTicks::Now() >= deadline) {
+      FAIL() << "Timeout waiting for getCanSetDefaultSearchProvider to return "
+                "true";
+    }
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIHiddenUnknownHost) {
