@@ -1,0 +1,20 @@
+################################################################################
+# LeakSanitizer Suppressions file.
+# Brave-specific addition to //build/sanitizers/lsan_suppressions.cc
+# Please annotate each suppression with a related issue.
+################################################################################
+
+# https://github.com/brave/brave-browser/issues/52520
+leak:brave_wallet::OrchardSyncState
+leak:brave_wallet::BraveWalletService
+leak:brave_wallet::bip39::MnemonicToEntropy
+
+# https://github.com/brave/brave-browser/issues/52518
+leak:brave_sync::crypto::PassphraseToBytes32
+
+# https://github.com/brave/brave-browser/issues/52517
+leak:brave_ads::ml::NormalizationTransformation::Apply
+
+# https://github.com/brave/brave-browser/issues/52522
+leak:update_client::UpdateEngine
+leak:update_client::TaskUpdate

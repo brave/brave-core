@@ -149,6 +149,15 @@ const runTests = async (
       }
       runOptions.env.ASAN_OPTIONS = asanOptions.join(' ')
     }
+    if (config.isLsan() && !runOptions.env.LSAN_OPTIONS) {
+      const suppressionsFilePath = path.join(
+        config.braveCoreDir,
+        'test',
+        'sanitizers',
+        'lsan_suppressions.txt',
+      )
+      runOptions.env.LSAN_OPTIONS = `suppressions=${suppressionsFilePath}`
+    }
 
     // Filter out upstream tests that are known to fail for Brave
     const filterFilePaths = getApplicableFilters(Config, testSuite)
