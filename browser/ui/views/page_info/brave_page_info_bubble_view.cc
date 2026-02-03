@@ -55,10 +55,9 @@ gfx::Size BravePageInfoBubbleView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   gfx::Size size = PageInfoBubbleView::CalculatePreferredSize(available_size);
 
-  if (customize_view_) {
+  if (shields_page_view_) {
     // If the shields panel is visible, use its preferred width, which can vary
     // depending on the user's "page zoom" setting.
-    CHECK(shields_page_view_);
     if (shields_page_view_->GetVisible()) {
       auto shields_size = shields_page_view_->GetPreferredSize(available_size);
       size.set_width(shields_size.width());

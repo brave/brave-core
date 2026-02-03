@@ -45,9 +45,7 @@ class ShieldsWebView : public views::WebView,
                  base::RepeatingCallback<void()> close_bubble)
       : contents_wrapper_(std::move(contents_wrapper)),
         close_bubble_(std::move(close_bubble)) {
-    contents_wrapper_->SetHost(weak_factory_.GetWeakPtr());
     SetWebContents(contents_wrapper_->web_contents());
-    holder()->SetCornerRadii(gfx::RoundedCornersF(0, 0, 16, 16));
   }
 
   ~ShieldsWebView() override = default;
@@ -57,6 +55,14 @@ class ShieldsWebView : public views::WebView,
   void CloseUI() override { close_bubble_.Run(); }
 
   // views::WebView:
+  void AddedToWidget() override {
+    views::WebView::AddedToWidget();
+    if (contents_wrapper_) {
+      contents_wrapper_->SetHost(weak_factory_.GetWeakPtr());
+    }
+    holder()->SetCornerRadii(gfx::RoundedCornersF(0, 0, 16, 16));
+  }
+
   bool HandleContextMenu(content::RenderFrameHost& render_frame_host,
                          const content::ContextMenuParams& params) override {
     return true;
