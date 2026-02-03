@@ -128,7 +128,6 @@ if (enable_brave_wallet) {
 brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
-  "//brave/browser:brave_global_features",
   "//brave/browser:brave_global_features_impl",
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
