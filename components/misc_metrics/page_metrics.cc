@@ -333,14 +333,13 @@ void PageMetrics::ReportFirstPageLoadTime() {
 }
 
 void PageMetrics::OnDomainDiversityResult(
-    std::pair<history::DomainDiversityResults, history::DomainDiversityResults>
-        metrics) {
-  if (metrics.first.empty() || metrics.second.empty()) {
+    history::DomainDiversityResults metrics) {
+  if (metrics.empty()) {
     return;
   }
   // The second entry in the pair counts both local, and foreign (synced)
   // visits.
-  const history::DomainMetricSet& metric_set = metrics.first.front();
+  const history::DomainMetricSet& metric_set = metrics.front();
   if (!metric_set.seven_day_metric.has_value()) {
     return;
   }
