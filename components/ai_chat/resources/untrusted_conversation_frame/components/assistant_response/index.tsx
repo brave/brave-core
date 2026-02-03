@@ -18,6 +18,7 @@ import styles from './style.module.scss'
 import {
   removeReasoning,
   removeCitationsWithMissingLinks,
+  normalizeCitationSpacing,
 } from '../conversation_entries/conversation_entries_utils'
 import RichSearchWidget from './rich_search_widget'
 
@@ -122,11 +123,8 @@ function AssistantEvent(
           allowedLinks,
         )
 
-      // Replaces 2 consecutive citations with a separator and also
-      // adds a space before the citation and the text.
-      const completion = filteredOutCitationsWithMissingLinks.replace(
-        /(\w|\S)\[(\d+)\]/g,
-        '$1 [$2]',
+      const completion = normalizeCitationSpacing(
+        filteredOutCitationsWithMissingLinks,
       )
 
       const fullText = `${numberedLinks}${removeReasoning(completion)}`
