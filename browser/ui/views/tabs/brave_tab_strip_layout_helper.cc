@@ -103,7 +103,8 @@ void CalculatePinnedTabsBoundsInGrid(
 
   const int pinned_tab_count =
       std::ranges::count_if(tabs, [](const TabWidthConstraints& tab) {
-        return tab.state().pinned() == TabPinned::kPinned;
+        return tab.state().pinned() == TabPinned::kPinned &&
+               tab.state().open() == TabOpen::kOpen;
       });
   if (!pinned_tab_count) {
     // No pinned tabs to lay out in grid.
