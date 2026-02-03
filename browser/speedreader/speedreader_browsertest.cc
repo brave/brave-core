@@ -12,6 +12,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
@@ -180,60 +181,81 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         ->GetPageActionIconView(brave::kSpeedreaderPageActionIconType);
   }
 
-  void WaitDistilled(speedreader::SpeedreaderTabHelper* th = nullptr) {
+  bool WaitDistilled(speedreader::SpeedreaderTabHelper* th = nullptr) {
     if (!th) {
       th = tab_helper();
     }
-    while (!speedreader::DistillStates::IsDistilled(th->PageDistillState())) {
-      NonBlockingDelay(base::Milliseconds(10));
+    if (!base::test::RunUntil([th]() {
+          return speedreader::DistillStates::IsDistilled(
+              th->PageDistillState());
+        })) {
+      return false;
     }
     content::WaitForLoadStop(ActiveWebContents());
+    return true;
   }
 
-  void WaitDistillable(speedreader::SpeedreaderTabHelper* th = nullptr) {
+  bool WaitDistillable(speedreader::SpeedreaderTabHelper* th = nullptr) {
     if (!th) {
       th = tab_helper();
     }
-    while (!speedreader::DistillStates::IsDistillable(th->PageDistillState())) {
-      NonBlockingDelay(base::Milliseconds(10));
+    if (!base::test::RunUntil([th]() {
+          return speedreader::DistillStates::IsDistillable(
+              th->PageDistillState());
+        })) {
+      return false;
     }
     content::WaitForLoadStop(ActiveWebContents());
+    return true;
   }
 
-  void WaitOriginal(speedreader::SpeedreaderTabHelper* th = nullptr) {
+  bool WaitOriginal(speedreader::SpeedreaderTabHelper* th = nullptr) {
     if (!th) {
       th = tab_helper();
     }
-    while (
-        !speedreader::DistillStates::IsViewOriginal(th->PageDistillState())) {
-      NonBlockingDelay(base::Milliseconds(10));
+    if (!base::test::RunUntil([th]() {
+          return speedreader::DistillStates::IsViewOriginal(
+              th->PageDistillState());
+        })) {
+      return false;
     }
     content::WaitForLoadStop(ActiveWebContents());
+    return true;
   }
 
-  void ClickReaderButton() {
+  bool ClickReaderButton() {
     const auto was_distilled = speedreader::DistillStates::IsDistilled(
         tab_helper()->PageDistillState());
     browser()->command_controller()->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
     if (!was_distilled) {
-      WaitDistilled();
+      if (!WaitDistilled()) {
+        return false;
+      }
     } else {
-      WaitDistillable();
+      if (!WaitDistillable()) {
+        return false;
+      }
     }
     content::WaitForLoadStop(ActiveWebContents());
+    return true;
   }
 
-  void WaitToolbarVisibility(ReaderModeToolbarView* toolbar, bool visible) {
-    while (toolbar->GetVisible() != visible) {
-      NonBlockingDelay(base::Milliseconds(10));
+  bool WaitToolbarVisibility(ReaderModeToolbarView* toolbar, bool visible) {
+    if (!base::test::RunUntil([toolbar, visible]() {
+          return toolbar->GetVisible() == visible;
+        })) {
+      return false;
     }
 
     if (visible) {
-      while (toolbar->height() != toolbar->GetPreferredSize().height()) {
-        NonBlockingDelay(base::Milliseconds(10));
+      if (!base::test::RunUntil([toolbar]() {
+            return toolbar->height() == toolbar->GetPreferredSize().height();
+          })) {
+        return false;
       }
     }
+    return true;
   }
 
   void ClickInView(views::View* clickable_view) {
@@ -290,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, PRE_RestoreSpeedreaderPage) {
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   browser()->tab_strip_model()->ActivateTabAt(0);
-  WaitDistilled();
+  ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
 }
@@ -454,7 +476,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
   histogram_tester_.ExpectTotalCount(
       speedreader::kSpeedreaderPageViewsHistogramName, 0);
 
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -463,7 +485,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
   histogram_tester_.ExpectTotalCount(
       speedreader::kSpeedreaderPageViewsHistogramName, 1);
 
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
@@ -487,7 +509,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
       )js";
   EXPECT_TRUE(content::ExecJs(ActiveWebContents(), kChangeContent,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS));
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
 
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -508,7 +530,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
   EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
   NavigateToPageSynchronously(kTestEsPageReadable);
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
 
   static constexpr char kCheckText[] =
       R"js( document.querySelector('#par-to-check').innerText.length )js";
@@ -540,12 +562,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderA) {
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
   EnableSpeedreaderAllowedForAllSites();
-  WaitDistilled();
+  ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
   DisableSpeedreaderForAllSites();
-  WaitOriginal();
+  ASSERT_TRUE(WaitOriginal());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
@@ -555,18 +577,18 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderA) {
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderB) {
   NavigateToPageSynchronously(kTestPageReadable);
-  ClickReaderButton();
-  WaitDistilled();
+  ASSERT_TRUE(ClickReaderButton());
+  ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
   EnableSpeedreaderAllowedForAllSites();
-  WaitDistilled();
+  ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
   DisableSpeedreaderForAllSites();
-  WaitOriginal();
+  ASSERT_TRUE(WaitOriginal());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
@@ -645,7 +667,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
 
   // Wait for the "View original" link to be present in the DOM.
   // The element ID is hardcoded in extractor.rs.
-  // Use polling loop similar to WaitElement in the Toolbar test.
+  // Note: We use a polling loop with NonBlockingDelay instead of
+  // base::test::RunUntil() here because EvalJs inside RunUntil causes nesting
+  // level issues on macOS arm64 (DCHECK in message_pump_apple.mm).
   static constexpr char kCheckLinkExists[] =
       R"js(
         !!document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e')
@@ -687,7 +711,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   EXPECT_TRUE(speedreader_service()->IsAllowedForSite(web_contents));
 
   // Click on speedreader button
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
   content::WaitForLoadStop(web_contents);
   EXPECT_TRUE(
       speedreader::DistillStates::IsDistilled(tab_helper->PageDistillState()));
@@ -904,15 +928,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
   Click(toolbar, "tune");
   {
-    while (!tab_helper()->speedreader_bubble_view()) {
-      NonBlockingDelay(base::Milliseconds(10));
-    }
+    ASSERT_TRUE(base::test::RunUntil([this]() {
+      return tab_helper()->speedreader_bubble_view() != nullptr;
+    }));
   }
   Click(toolbar, "tune");
 
   Click(toolbar, "close");
   {
-    WaitOriginal();
+    ASSERT_TRUE(WaitOriginal());
     EXPECT_FALSE(toolbar_view->GetVisible());
   }
 }
@@ -979,13 +1003,13 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
                               WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
-  WaitDistillable(tab_helper());
+  ASSERT_TRUE(WaitDistillable(tab_helper()));
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
   GoBack(browser());
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
-  WaitDistilled();
+  ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -1087,7 +1111,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest,
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
 
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
 
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -1096,7 +1120,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest,
   speedreader_service()->SetEnabledForSite(ActiveWebContents(), true);
   ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                               false);
-  WaitDistilled();
+  ASSERT_TRUE(WaitDistilled());
 
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -1200,53 +1224,53 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
 
-  WaitToolbarVisibility(GetPrimaryToolbar(), true);
-  WaitToolbarVisibility(GetSecondaryToolbar(), false);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
 
   // Change the active tab.
   browser()->tab_strip_model()->ActivateTabAt(1);
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   // Load a distillabe page in second tab.
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
-  WaitToolbarVisibility(GetPrimaryToolbar(), true);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   // Check secondary location bar position when changing active tab
   // between non split view tab and split view tab.
   // Secondary location bar should have same origin with secondary
   // contents container.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), false);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
 
   browser()->tab_strip_model()->ActivateTabAt(0);
-  WaitToolbarVisibility(GetPrimaryToolbar(), true);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   browser()->tab_strip_model()->ActivateTabAt(2);
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), false);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
 
   browser()->tab_strip_model()->ActivateTabAt(0);
-  WaitToolbarVisibility(GetPrimaryToolbar(), true);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   // Second tab is active. Show original content.
   browser()->tab_strip_model()->ActivateTabAt(1);
-  ClickReaderButton();
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(ClickReaderButton());
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   browser()->tab_strip_model()->ActivateTabAt(0);
   // First tab is active. Show original content.
-  ClickReaderButton();
+  ASSERT_TRUE(ClickReaderButton());
 
   // There are no distilled pages.
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), false);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
@@ -1269,18 +1293,18 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
   // Check clicking view makes its tab activate.
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   ClickInView(GetSecondaryToolbar());
-  WaitToolbarVisibility(GetPrimaryToolbar(), true);
-  WaitToolbarVisibility(GetSecondaryToolbar(), false);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  WaitToolbarVisibility(GetPrimaryToolbar(), false);
-  WaitToolbarVisibility(GetSecondaryToolbar(), true);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), false));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
   // Simulated input doesn't reliably trigger DidGetUserInteraction()
   // callback on these platforms in test environments, causing intermittent
@@ -1290,7 +1314,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
   // mechanism. The full click → DidGetUserInteraction → ActivateContents chain
   // is verified manually on these platforms.
   GetSecondaryToolbar()->ActivateContents();
-  WaitToolbarVisibility(GetPrimaryToolbar(), true);
-  WaitToolbarVisibility(GetSecondaryToolbar(), false);
+  ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
+  ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 }
