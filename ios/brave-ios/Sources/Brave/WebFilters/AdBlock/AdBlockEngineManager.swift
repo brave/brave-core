@@ -625,7 +625,7 @@ extension AdBlockEngineManager.FileInfo {
     if filterListInfo.source.onlyExceptions(for: engineType) {
       return String(data: data, encoding: .utf8)?
         .components(separatedBy: .newlines)
-        .filter({ $0.contains("@@") || $0.contains("@#@") })
+        .filter({ $0.contains("@@") || $0.contains("#@#") })
         .joined(separator: "\n")
         .data(using: .utf8)
     } else {
