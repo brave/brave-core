@@ -423,7 +423,7 @@ struct TabGridView: View {
       .imageScale(.large)
       .labelStyle(.iconOnly)
     }
-    .osAvailableContainerCornerOffset(.leading, sizeToFit: true)
+    .containerCornerOffset(.leading, sizeToFit: true)
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
@@ -534,7 +534,7 @@ struct TabGridView: View {
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
     }
-    .osAvailableContainerCornerOffset(.leading, sizeToFit: true)
+    .containerCornerOffset(.leading, sizeToFit: true)
     .padding(.vertical, 4)
   }
 

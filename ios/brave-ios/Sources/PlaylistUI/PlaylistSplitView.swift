@@ -253,7 +253,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
         HStack {
           toolbar
         }
-        .osAvailableContainerCornerOffset(.leading, sizeToFit: true)
+        .containerCornerOffset(.leading, sizeToFit: true)
         .padding(.horizontal)
         .tint(Color.primary)
         // Mimic an actual navigation bar re: sizing/layout
