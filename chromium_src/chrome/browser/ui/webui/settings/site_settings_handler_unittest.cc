@@ -26,7 +26,7 @@ TEST_F(SiteSettingsHandlerTest, ClearBraveShieldMetadata) {
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile());
 
-  base::Value::Dict shields_metadata;
+  base::DictValue shields_metadata;
   shields_metadata.Set("farbling_token", "123");
 
   // Add metadata for the hosts.
@@ -44,7 +44,7 @@ TEST_F(SiteSettingsHandlerTest, ClearBraveShieldMetadata) {
                     .size());
 
   // Clear at the eTLD+1 level and ensure affected origins are cleared.
-  base::Value::List args;
+  base::ListValue args;
   args.Append(GroupingKey::CreateFromEtldPlus1("example.com").Serialize());
   handler()->HandleClearSiteGroupDataAndCookies(args);
   ContentSettingsForOneType shields_metadata_settings =

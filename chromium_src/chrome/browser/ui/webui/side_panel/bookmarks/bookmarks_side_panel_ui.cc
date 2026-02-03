@@ -31,7 +31,7 @@ std::optional<int> BookmarksSidePanelUIConfig::GetCommandIdForTesting() {
 
 BookmarksSidePanelUI::BookmarksSidePanelUI(content::WebUI* web_ui)
     : BookmarksSidePanelUI_ChromiumImpl(web_ui) {
-  base::Value::Dict update_data;
+  base::DictValue update_data;
   update_data.Set("sortCustom",
                   l10n_util::GetStringUTF16(IDS_BOOKMARKS_SORT_CUSTOM));
   update_data.Set("sortCustomLower",

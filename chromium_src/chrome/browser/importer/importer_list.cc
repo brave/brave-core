@@ -21,7 +21,7 @@
 namespace {
 void AddChromeToProfiles(
     std::vector<user_data_importer::SourceProfile>* profiles,
-    base::Value::List chrome_profiles,
+    base::ListValue chrome_profiles,
     const base::FilePath& user_data_folder,
     const std::string& brand,
     user_data_importer::ImporterType type) {

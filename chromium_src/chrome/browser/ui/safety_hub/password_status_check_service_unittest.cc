@@ -20,7 +20,7 @@ TEST_P(PasswordStatusCheckServiceParameterizedCardTest,
   }
 
   // The password card data should always be marked safe
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set(safety_hub::kCardStateKey,
            static_cast<int>(safety_hub::SafetyHubCardState::kSafe));
   EXPECT_EQ(dict, service()->GetPasswordCardData(signed_in()));

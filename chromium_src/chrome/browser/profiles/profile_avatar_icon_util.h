@@ -19,10 +19,9 @@ inline constexpr size_t kBraveDefaultAvatarIconsCount = 0;
 #endif
 
 // Provide direct access to custom implementation
-base::Value::Dict GetDefaultProfileAvatarIconAndLabel_Brave(
-    SkColor fill_color,
-    SkColor stroke_color,
-    bool selected);
+base::DictValue GetDefaultProfileAvatarIconAndLabel_Brave(SkColor fill_color,
+                                                          SkColor stroke_color,
+                                                          bool selected);
 }  // namespace profiles
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_AVATAR_ICON_UTIL_H_

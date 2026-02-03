@@ -56,7 +56,7 @@ bool MojoFacade::IsWebUIMessageAllowedForFrame(const GURL& origin,
   // If the scheme is untrusted
   if (name_and_args.name == "Mojo.bindInterface" &&
       origin.scheme() == "chrome-untrusted") {
-    const base::Value::Dict& args = name_and_args.args;
+    const base::DictValue& args = name_and_args.args;
     const std::string* interface_name = args.FindString("interfaceName");
     CHECK(interface_name);
 

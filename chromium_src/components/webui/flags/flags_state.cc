@@ -20,7 +20,7 @@ namespace {
 void AppendCurrentFeatureStateIfDefault(
     const FeatureEntry& entry,
     const std::set<std::string>& enabled_entries,
-    base::Value::List& result) {
+    base::ListValue& result) {
   if (std::ranges::any_of(result, [](const base::Value& v) {
         return *v.GetDict().FindBool("selected");
       })) {
@@ -58,11 +58,11 @@ void AppendCurrentFeatureStateIfDefault(
 
 }  // namespace
 
-// Returns the Value::List representing the choice data in the specified entry.
-base::Value::List FlagsState::CreateOptionsData(
+// Returns the ListValue representing the choice data in the specified entry.
+base::ListValue FlagsState::CreateOptionsData(
     const FeatureEntry& entry,
     const std::set<std::string>& enabled_entries) const {
-  base::Value::List result =
+  base::ListValue result =
       ::flags_ui::CreateOptionsData(entry, enabled_entries);
 
   if (entry.type == FeatureEntry::FEATURE_VALUE ||

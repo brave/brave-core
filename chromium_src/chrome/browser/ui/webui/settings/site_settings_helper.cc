@@ -108,7 +108,7 @@ void BraveGetExceptionForPage(ContentSettingsType type,
                               const ContentSettingsPattern& pattern,
                               const ContentSettingsPattern& secondary_pattern,
                               const ContentSetting& setting,
-                              base::Value::Dict& exception);
+                              base::DictValue& exception);
 }  // namespace
 
 #include <chrome/browser/ui/webui/settings/site_settings_helper.cc>
@@ -180,7 +180,7 @@ void BraveGetExceptionForPage(ContentSettingsType type,
                               const ContentSettingsPattern& pattern,
                               const ContentSettingsPattern& secondary_pattern,
                               const ContentSetting& setting,
-                              base::Value::Dict& exception) {
+                              base::DictValue& exception) {
   constexpr char kBraveCookieType[] = "braveCookieType";
 
   // Update the RawSiteException.braveCookieType declaration in

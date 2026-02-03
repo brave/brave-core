@@ -12,7 +12,7 @@
 namespace version_ui {
 
 // Brave always shows full variations names instead of hashes.
-base::Value::List GetVariationsList() {
+base::ListValue GetVariationsList() {
   std::vector<std::string> variations;
   base::FieldTrial::ActiveGroups active_groups;
   base::FieldTrialList::GetActiveFieldTrialGroups(&active_groups);
@@ -26,7 +26,7 @@ base::Value::List GetVariationsList() {
     variations.push_back(line);
   }
 
-  base::Value::List variations_list;
+  base::ListValue variations_list;
   const std::string& seed_version = variations::GetSeedVersion();
   if (!seed_version.empty() && seed_version != "1") {
     variations_list.Append(seed_version);

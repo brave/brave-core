@@ -57,7 +57,7 @@ void WebStateImpl::RealizedWebState::ClearWebUI() {
 void WebStateImpl::RealizedWebState::HandleWebUIMessage(
     const GURL& source_url,
     std::string_view message,
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   const std::string_view host = source_url.host();
   auto web_ui = web_uis_.find(host);
   if (web_ui != web_uis_.end() && web_ui->second) {

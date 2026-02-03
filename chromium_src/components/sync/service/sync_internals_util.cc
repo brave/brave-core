@@ -15,7 +15,7 @@
 
 namespace syncer::sync_ui_util {
 
-base::Value::Dict ConstructAboutInformation(
+base::DictValue ConstructAboutInformation(
     IncludeSensitiveData include_sensitive_data,
     SyncService* service,
     const std::string& channel) {
@@ -52,7 +52,7 @@ base::Value::Dict ConstructAboutInformation(
       section_brave_sync.AddStringStat("Leave chain details");
   leave_chain_details->Set(brave_sync_service->prefs().GetLeaveChainDetails());
 
-  base::Value::List* details = about_info.FindList(kDetailsKey);
+  base::ListValue* details = about_info.FindList(kDetailsKey);
   DCHECK_NE(details, nullptr);
 
   details->Append(section_brave_sync.ToValue());

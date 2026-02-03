@@ -215,9 +215,9 @@ gfx::Image GetPlaceholderAvatarIconVisibleAgainstBackground(
 // GetPlaceholderAvatarIconWithColors function above which is used in this
 // function. Also, changes the label from "Default Avatar" to our placeholder
 // avatar name.
-base::Value::Dict GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
-                                                      SkColor stroke_color,
-                                                      bool selected) {
+base::DictValue GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
+                                                    SkColor stroke_color,
+                                                    bool selected) {
   gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
       fill_color, stroke_color, kAvatarIconSize);
   size_t index = profiles::GetPlaceholderAvatarIndex();
@@ -226,10 +226,9 @@ base::Value::Dict GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
       l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER), index,
       selected, /*is_gaia_avatar=*/false);
 }
-base::Value::Dict GetDefaultProfileAvatarIconAndLabel_Brave(
-    SkColor fill_color,
-    SkColor stroke_color,
-    bool selected) {
+base::DictValue GetDefaultProfileAvatarIconAndLabel_Brave(SkColor fill_color,
+                                                          SkColor stroke_color,
+                                                          bool selected) {
   return GetDefaultProfileAvatarIconAndLabel(fill_color, stroke_color,
                                              selected);
 }

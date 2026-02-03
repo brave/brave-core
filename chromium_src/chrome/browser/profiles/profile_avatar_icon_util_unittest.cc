@@ -31,7 +31,7 @@ TEST(ProfileUtilTest, KeepChromiumChoice) {
 
 TEST(ProfileUtilTest, BraveAvatarIconChoices) {
   // Test that the avatar icon choices presented to the user are brave's.
-  base::Value::List avatars = profiles::GetCustomProfileAvatarIconsAndLabels(0);
+  base::ListValue avatars = profiles::GetCustomProfileAvatarIconsAndLabels(0);
 
   const size_t expected_selectable_avatar_count =
       profiles::kBraveDefaultAvatarIconsCount;
@@ -84,9 +84,9 @@ class ProfileAvatarSelectorTest : public testing::Test {
 TEST_F(ProfileAvatarSelectorTest, ProfileAvatarSelectorPlaceholder) {
   // Test that the default avatar presented to the user in the profile
   // customiztion UI is Brave's.
-  base::Value::List avatars =
+  base::ListValue avatars =
       profiles::GetIconsAndLabelsForProfileAvatarSelector(profile()->GetPath());
-  const base::Value::Dict* default_avatar = avatars[0].GetIfDict();
+  const base::DictValue* default_avatar = avatars[0].GetIfDict();
   EXPECT_NE(nullptr, default_avatar);
 
   const std::string* label = default_avatar->FindString("label");

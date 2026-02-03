@@ -15,8 +15,8 @@
 namespace blink {
 
 using PageGraphValue = base::Value;
-using PageGraphValues = base::Value::List;
-using PageGraphObject = base::Value::Dict;
+using PageGraphValues = base::ListValue;
+using PageGraphObject = base::DictValue;
 
 enum class PageGraphBindingType {
   kAttribute,
@@ -34,8 +34,8 @@ enum class PageGraphBindingEvent {
 };
 
 template <typename... Args>
-base::Value::List CreatePageGraphValues(Args&&... args) {
-  base::Value::List list;
+base::ListValue CreatePageGraphValues(Args&&... args) {
+  base::ListValue list;
   list.reserve(sizeof...(Args));
   (list.Append(std::forward<Args>(args)), ...);
   return list;

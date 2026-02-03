@@ -34,7 +34,7 @@ using extensions::Manifest;
 namespace {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 
-std::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
+std::optional<base::DictValue> GetChromeExtensionsListFromFile(
     const base::FilePath& preference_path) {
   if (!base::PathExists(preference_path))
     return std::nullopt;
@@ -42,7 +42,7 @@ std::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
   std::string preference_content;
   base::ReadFileToString(preference_path, &preference_content);
 
-  std::optional<base::Value::Dict> preference = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> preference = base::JSONReader::ReadDict(
       preference_content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!preference) {
     return std::nullopt;
@@ -59,13 +59,13 @@ bool HasImportableExtensions(const base::FilePath& profile_path) {
 }
 
 std::vector<std::string> GetImportableListFromChromeExtensionsList(
-    const base::Value::Dict& extensions_list) {
+    const base::DictValue& extensions_list) {
   std::vector<std::string> extensions;
   for (const auto [key, value] : extensions_list) {
     if (!value.is_dict()) {
       continue;
     }
-    const base::Value::Dict& dict = value.GetDict();
+    const base::DictValue& dict = value.GetDict();
     // Only import if type is extension, it's came from webstore and it's not
     // installed by default.
     if (dict.FindBool("was_installed_by_default").value_or(true))
@@ -99,7 +99,7 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
   return extensions;
 }
 
-std::optional<base::Value::Dict> GetChromeExtensionsList(
+std::optional<base::DictValue> GetChromeExtensionsList(
     const base::FilePath& profile_path) {
   auto list_from_secure_preference = GetChromeExtensionsListFromFile(
       profile_path.AppendASCII(kChromeSecurePreferencesFile));
@@ -140,7 +140,7 @@ bool HasPaymentMethods(const base::FilePath& payments_path) {
 }
 
 bool IsLastActiveProfile(const std::string& profile,
-                         const base::Value::List& last_active_profiles) {
+                         const base::ListValue& last_active_profiles) {
   for (const auto& it : last_active_profiles) {
     if (it.GetString() == profile) {
       return true;
@@ -170,13 +170,13 @@ bool CanImportPasswordsForType(user_data_importer::ImporterType type) {
 
 }  // namespace
 
-base::Value::List GetChromeSourceProfiles(
+base::ListValue GetChromeSourceProfiles(
     const base::FilePath& local_state_path) {
-  base::Value::List profiles;
+  base::ListValue profiles;
   if (base::PathExists(local_state_path)) {
     std::string local_state_content;
     base::ReadFileToString(local_state_path, &local_state_content);
-    std::optional<base::Value::Dict> local_state_dict =
+    std::optional<base::DictValue> local_state_dict =
         base::JSONReader::ReadDict(local_state_content,
                                    base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!local_state_dict)
@@ -198,7 +198,7 @@ base::Value::List GetChromeSourceProfiles(
           if (!name) {
             continue;
           }
-          base::Value::Dict entry;
+          base::DictValue entry;
           entry.Set("id", value.first);
           entry.Set("name", *name);
           if (last_active_profiles)
@@ -219,7 +219,7 @@ base::Value::List GetChromeSourceProfiles(
     }
   }
   if (profiles.empty()) {
-    base::Value::Dict entry;
+    base::DictValue entry;
     entry.Set("id", "");
     entry.Set("name", "Default");
     profiles.Append(std::move(entry));

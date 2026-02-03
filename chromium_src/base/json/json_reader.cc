@@ -16,19 +16,19 @@ namespace serde_json_lenient {
 // whenever dealing with 64bit integers that cannot be represented in
 // `base::Value`.
 
-void list_append_i64(base::Value::List& ctx, int64_t val) {
+void list_append_i64(base::ListValue& ctx, int64_t val) {
   NOTIMPLEMENTED();
 }
 
-void list_append_u64(base::Value::List& ctx, uint64_t val) {
+void list_append_u64(base::ListValue& ctx, uint64_t val) {
   NOTIMPLEMENTED();
 }
 
-void dict_set_i64(base::Value::Dict& ctx, rust::Str key, int64_t val) {
+void dict_set_i64(base::DictValue& ctx, rust::Str key, int64_t val) {
   NOTIMPLEMENTED();
 }
 
-void dict_set_u64(base::Value::Dict& ctx, rust::Str key, uint64_t val) {
+void dict_set_u64(base::DictValue& ctx, rust::Str key, uint64_t val) {
   NOTIMPLEMENTED();
 }
 

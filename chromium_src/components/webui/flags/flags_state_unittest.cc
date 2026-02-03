@@ -21,8 +21,8 @@ TEST_F(FlagsStateTest, ShowDefaultState) {
   scoped_feature_list.InitAndDisableFeature(kTestFeature2);
 
   // Get flag feature entries.
-  base::Value::List supported_entries;
-  base::Value::List unsupported_entries;
+  base::ListValue supported_entries;
+  base::ListValue unsupported_entries;
   flags_state_->GetFlagFeatureEntries(&flags_storage_, kGeneralAccessFlagsOnly,
                                       supported_entries, unsupported_entries,
                                       base::BindRepeating(&SkipFeatureEntry));

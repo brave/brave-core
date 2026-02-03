@@ -21,7 +21,7 @@
 TabSearchUI::TabSearchUI(content::WebUI* web_ui)
     : TabSearchUI_ChromiumImpl(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
-  base::Value::Dict update_data;
+  base::DictValue update_data;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   update_data.Set(

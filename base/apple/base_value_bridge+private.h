@@ -28,8 +28,8 @@ NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValue(
 // `base::Value::Type::LIST`
 base::Value BaseValueFromNSArray(NSArray<BaseValueBridge*>*);
 
-// Clone the contents of an NSArray into a `base::Value::List`
-base::Value::List BaseValueListFromNSArray(NSArray<BaseValueBridge*>*);
+// Clone the contents of an NSArray into a `base::ListValue`
+base::ListValue BaseValueListFromNSArray(NSArray<BaseValueBridge*>*);
 
 // Clone the contents of an NSDictionary into a `base::Value` with the type
 // `base::Value::Type::DICT`
@@ -37,8 +37,8 @@ base::Value BaseValueFromNSDictionary(
     NSDictionary<NSString*, BaseValueBridge*>*);
 
 NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValueDict(
-    const base::Value::Dict);
-base::Value::Dict BaseValueDictFromNSDictionary(
+    const base::DictValue);
+base::DictValue BaseValueDictFromNSDictionary(
     NSDictionary<NSString*, BaseValueBridge*>*);
 
 }  // namespace brave

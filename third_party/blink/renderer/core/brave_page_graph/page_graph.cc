@@ -961,7 +961,7 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   }
 
   std::ostringstream str;
-  base::Value::Dict dict;
+  base::DictValue dict;
   str << console_message->GetSource();
   dict.Set("source", str.str());
   str.str("");
@@ -969,7 +969,7 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   dict.Set("level", str.str());
   dict.Set("message", console_message->Message().Utf8());
 
-  base::Value::Dict loc;
+  base::DictValue loc;
   loc.Set("url", console_message->Location()->Url().Utf8());
   loc.Set("line", static_cast<int>(console_message->Location()->LineNumber()));
   loc.Set("column",
@@ -977,7 +977,7 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   loc.Set("script_id", console_message->Location()->ScriptId());
   dict.Set("location", std::move(loc));
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(std::move(dict));
   RegisterWebAPICall(execution_context, "ConsoleMessageAdded", std::move(args));
 }

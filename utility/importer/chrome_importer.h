@@ -66,7 +66,7 @@ class ChromeImporter : public Importer {
                        favicon_base::FaviconUsageDataList* favicons);
 
   void RecursiveReadBookmarksFolder(
-      const base::Value::Dict* folder,
+      const base::DictValue* folder,
       const std::vector<std::u16string>& parent_path,
       bool is_in_toolbar,
       std::vector<user_data_importer::ImportedBookmarkEntry>* bookmarks);

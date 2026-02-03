@@ -8,7 +8,7 @@
 
 #define GetFlagFeatureEntries(...)                                             \
   GetFlagFeatureEntries(__VA_ARGS__);                                          \
-  base::Value::List CreateOptionsData(                                         \
+  base::ListValue CreateOptionsData(                                           \
       const FeatureEntry& entry, const std::set<std::string>& enabled_entries) \
       const
 

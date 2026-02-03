@@ -340,15 +340,15 @@ NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValue(
 
 base::Value BaseValueFromNSArray(NSArray<BaseValueBridge*>* array) {
   base::Value value(base::Value::Type::LIST);
-  base::Value::List& list = *value.GetIfList();
+  base::ListValue& list = *value.GetIfList();
   for (BaseValueBridge* obj in array) {
     list.Append(obj.value);
   }
   return value;
 }
 
-base::Value::List BaseValueListFromNSArray(NSArray<BaseValueBridge*>* array) {
-  base::Value::List value;
+base::ListValue BaseValueListFromNSArray(NSArray<BaseValueBridge*>* array) {
+  base::ListValue value;
   for (BaseValueBridge* obj in array) {
     value.Append(obj.value);
   }
@@ -358,7 +358,7 @@ base::Value::List BaseValueListFromNSArray(NSArray<BaseValueBridge*>* array) {
 base::Value BaseValueFromNSDictionary(
     NSDictionary<NSString*, BaseValueBridge*>* dictionary) {
   base::Value result(base::Value::Type::DICT);
-  base::Value::Dict& dict = result.GetDict();
+  base::DictValue& dict = result.GetDict();
   for (NSString* key in dictionary) {
     BaseValueBridge* value = dictionary[key];
     dict.Set(base::SysNSStringToUTF8(key), value.value);
@@ -367,7 +367,7 @@ base::Value BaseValueFromNSDictionary(
 }
 
 NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValueDict(
-    base::Value::Dict value) {
+    base::DictValue value) {
   auto result = [[NSMutableDictionary alloc] init];
   for (auto kv : value) {
     result[base::SysUTF8ToNSString(kv.first)] =
@@ -376,9 +376,9 @@ NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValueDict(
   return result;
 }
 
-base::Value::Dict BaseValueDictFromNSDictionary(
+base::DictValue BaseValueDictFromNSDictionary(
     NSDictionary<NSString*, BaseValueBridge*>* dictionary) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   for (NSString* key in dictionary) {
     BaseValueBridge* value = dictionary[key];
     dict.Set(base::SysNSStringToUTF8(key), value.value);

@@ -6,10 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SEARCH_ENGINES_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SEARCH_ENGINES_HANDLER_H_
 
-#define GetSearchEnginesList                    \
-  GetSearchEnginesList_NotUsed() { return {}; } \
-  friend class BraveSearchEnginesHandler;       \
-  virtual base::Value::Dict GetSearchEnginesList
+#define GetSearchEnginesList              \
+  GetSearchEnginesList_NotUsed() {        \
+    return {};                            \
+  }                                       \
+  friend class BraveSearchEnginesHandler; \
+  virtual base::DictValue GetSearchEnginesList
 
 #include <chrome/browser/ui/webui/settings/search_engines_handler.h>  // IWYU pragma: export
 

@@ -14,8 +14,7 @@ TEST_F(PKIMetadataComponentInstallerTest,
   task_environment_.RunUntilIdle();
   WriteKPConfigToFile();
   policy_->ComponentReady(base::Version("1.2.3.4"),
-                          component_install_dir_.GetPath(),
-                          base::Value::Dict());
+                          component_install_dir_.GetPath(), base::DictValue());
   task_environment_.RunUntilIdle();
 
   network::NetworkService* network_service =

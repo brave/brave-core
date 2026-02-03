@@ -311,7 +311,7 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
     def ObjCWrappedType(self):
         return "NSDictionary<NSString*,BaseValueBridge*>*"
     def ExpectedCppType(self):
-        return "base::Value::Dict"
+        return "base::DictValue"
     def DefaultObjCValue(self, default):
         return "@{}"
     def ObjCToCpp(self, accessor):

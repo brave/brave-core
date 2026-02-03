@@ -19,7 +19,7 @@
 
 // static
 bool SearchSuggestionParser::ParseSuggestResults(
-    const base::Value::List& root_list,
+    const base::ListValue& root_list,
     const AutocompleteInput& input,
     const AutocompleteSchemeClassifier& scheme_classifier,
     int default_result_relevance,
@@ -38,7 +38,7 @@ bool SearchSuggestionParser::ParseSuggestResults(
 
 // static
 bool SearchSuggestionParser::ParseSuggestResults(
-    const base::Value::List& root_list,
+    const base::ListValue& root_list,
     const AutocompleteInput& input,
     const AutocompleteSchemeClassifier& scheme_classifier,
     int default_result_relevance,

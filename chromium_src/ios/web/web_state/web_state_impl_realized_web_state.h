@@ -25,7 +25,7 @@
   void ClearWebUI_ChromiumImpl();                                              \
   bool HasWebUI_ChromiumImpl() const;                                          \
   void HandleWebUIMessage_ChromiumImpl(const GURL&, std::string_view,          \
-                                       const base::Value::List&)
+                                       const base::ListValue&)
 // Exposes an API to obtain the main frame WebUI which is required for some
 // Brave WebUI implementations
 #define ClearWebUI                    \

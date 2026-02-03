@@ -141,7 +141,7 @@ base::Value ToPageGraphValue(ScriptState* script_state, T& value) {
 template <typename T>
   requires(pg_internal::convert_as_iterable<T>)
 base::Value ToPageGraphValue(ScriptState* script_state, const T& values) {
-  base::Value::List list_values;
+  base::ListValue list_values;
   for (const auto& value : values) {
     list_values.Append(ToPageGraphValue(script_state, value));
   }
@@ -151,7 +151,7 @@ base::Value ToPageGraphValue(ScriptState* script_state, const T& values) {
 // Helper for tuple types converter.
 template <typename... Ts, std::size_t... Is>
 void ToPageGraphValueImpl(ScriptState* script_state,
-                          base::Value::List& list_values,
+                          base::ListValue& list_values,
                           const std::tuple<Ts...>& values,
                           std::index_sequence<Is...>) {
   (list_values.Append(ToPageGraphValue(script_state, std::get<Is>(values))),
@@ -162,7 +162,7 @@ void ToPageGraphValueImpl(ScriptState* script_state,
 template <typename... Ts>
 base::Value ToPageGraphValue(ScriptState* script_state,
                              const std::tuple<Ts...>& values) {
-  base::Value::List list_values;
+  base::ListValue list_values;
   ToPageGraphValueImpl(script_state, list_values, values,
                        std::index_sequence_for<Ts...>{});
   return base::Value(std::move(list_values));
