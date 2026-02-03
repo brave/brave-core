@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.set_default_browser;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import android.content.Context;
@@ -44,48 +43,7 @@ public class BraveSetDefaultBrowserUtilsTest {
 
     @Test
     @SmallTest
-    public void testIsBraveSetAsDefaultBrowser_ReturnsFalseWhenNoBraveVariantIsDefault() {
-        // The test app package (com.brave.browser.tests) is not a Brave variant,
-        // so even if the test app is set as default browser, isBraveSetAsDefaultBrowser
-        // should return false (unless an actual Brave variant is the default).
-        Intent browserIntent =
-                new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
-        ResolveInfo resolveInfo =
-                mContext.getPackageManager()
-                        .resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        String defaultBrowserPackage =
-                (resolveInfo != null && resolveInfo.activityInfo != null)
-                        ? resolveInfo.activityInfo.packageName
-                        : null;
-
-        // Check if the default browser is actually a Brave variant.
-        boolean defaultIsBraveVariant =
-                defaultBrowserPackage != null
-                        && (defaultBrowserPackage.equals(
-                                        BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                                || defaultBrowserPackage.equals(
-                                        BraveConstants.BRAVE_BETA_PACKAGE_NAME)
-                                || defaultBrowserPackage.equals(
-                                        BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME)
-                                || defaultBrowserPackage.equals(
-                                        BraveConstants.BRAVE_DEBUG_PACKAGE_NAME));
-
-        // If no Brave variant is the default, isBraveSetAsDefaultBrowser should return false.
-        if (!defaultIsBraveVariant) {
-            boolean isBraveDefault =
-                    BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mContext);
-            assertFalse(
-                    "isBraveSetAsDefaultBrowser should return false when no Brave variant is "
-                            + "default. Current default: "
-                            + defaultBrowserPackage,
-                    isBraveDefault);
-        }
-    }
-
-    @Test
-    @SmallTest
-    public void testDefaultBrowserDetection_MatchesSystemResolvedActivity() {
+    public void testIsBraveSetAsDefaultBrowser_MatchesSystemResolvedActivity() {
         // This test verifies that isBraveSetAsDefaultBrowser correctly checks the resolved
         // activity against Brave package names.
         Intent browserIntent =
@@ -97,26 +55,25 @@ public class BraveSetDefaultBrowserUtilsTest {
         // The resolved activity should exist on any device with a browser.
         assertNotNull("System should have a default browser handler", resolveInfo);
         assertNotNull("ResolveInfo should have activityInfo", resolveInfo.activityInfo);
-        assertNotNull(
-                "ActivityInfo should have packageName", resolveInfo.activityInfo.packageName);
+        assertNotNull("ActivityInfo should have packageName", resolveInfo.activityInfo.packageName);
 
         String defaultBrowserPackage = resolveInfo.activityInfo.packageName;
 
         // Check if the default browser is a Brave variant.
-        boolean isBravePackage =
+        boolean expectedResult =
                 defaultBrowserPackage.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
                         || defaultBrowserPackage.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)
                         || defaultBrowserPackage.equals(BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME)
                         || defaultBrowserPackage.equals(BraveConstants.BRAVE_DEBUG_PACKAGE_NAME);
 
-        boolean isBraveDefault = BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mContext);
+        boolean actualResult = BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mContext);
 
         assertEquals(
                 "isBraveSetAsDefaultBrowser should return true only if default browser is a "
                         + "Brave variant. Current default: "
                         + defaultBrowserPackage,
-                isBravePackage,
-                isBraveDefault);
+                expectedResult,
+                actualResult);
     }
 
     @Test
@@ -135,8 +92,8 @@ public class BraveSetDefaultBrowserUtilsTest {
         String defaultBrowserPackage = resolveInfo.activityInfo.packageName;
         String currentPackage = mContext.getPackageName();
 
-        boolean shouldBeDefault = defaultBrowserPackage.equals(currentPackage);
-        boolean isAppDefault = BraveSetDefaultBrowserUtils.isAppSetAsDefaultBrowser(mContext);
+        boolean expectedResult = defaultBrowserPackage.equals(currentPackage);
+        boolean actualResult = BraveSetDefaultBrowserUtils.isAppSetAsDefaultBrowser(mContext);
 
         assertEquals(
                 "isAppSetAsDefaultBrowser should return true only if current package ("
@@ -144,8 +101,8 @@ public class BraveSetDefaultBrowserUtilsTest {
                         + ") matches default browser ("
                         + defaultBrowserPackage
                         + ")",
-                shouldBeDefault,
-                isAppDefault);
+                expectedResult,
+                actualResult);
     }
 
     @Test
