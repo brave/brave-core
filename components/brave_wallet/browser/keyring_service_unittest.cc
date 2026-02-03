@@ -544,7 +544,7 @@ TEST_F(KeyringServiceUnitTest, SetPrefForKeyring) {
 
 TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
   std::string salt;
-  base::Value::Dict mnemonic;
+  base::DictValue mnemonic;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
@@ -1244,7 +1244,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
                 kAccountAddress),
             imported_accounts[0].address);
   // private key is encrypted
-  const base::Value::Dict encrypted_private_key =
+  const base::DictValue encrypted_private_key =
       imported_accounts_value->GetList()[0]
           .GetDict()
           .FindDict("encrypted_private_key")
@@ -1314,7 +1314,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   const base::Value* imported_accounts_value = GetPrefForKeyring(
       GetPrefs(), kImportedAccounts, mojom::KeyringId::kDefault);
   ASSERT_TRUE(imported_accounts_value);
-  const base::Value::Dict encrypted_private_key =
+  const base::DictValue encrypted_private_key =
       imported_accounts_value->GetList()[0]
           .GetDict()
           .FindDict("encrypted_private_key")
@@ -3274,11 +3274,11 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
                                         ->at(0)
                                         .As<network::DataElementBytes>()
                                         .AsStringPiece());
-    base::Value::Dict dict = ParseJsonDict(request_string);
+    base::DictValue dict = ParseJsonDict(request_string);
     std::string* method = dict.FindString("method");
     ASSERT_TRUE(method);
     if (*method == "eth_getTransactionCount") {
-      base::Value::List* params = dict.FindList("params");
+      base::ListValue* params = dict.FindList("params");
       ASSERT_TRUE(params);
       std::string* address = (*params)[0].GetIfString();
       ASSERT_TRUE(address);
@@ -3290,7 +3290,7 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
     }
 
     if (*method == "Filecoin.WalletBalance") {
-      base::Value::List* params = dict.FindList("params");
+      base::ListValue* params = dict.FindList("params");
       ASSERT_TRUE(params);
       std::string* address = (*params)[0].GetIfString();
       ASSERT_TRUE(address);
@@ -3302,7 +3302,7 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
     }
 
     if (*method == "getBalance") {
-      base::Value::List* params = dict.FindList("params");
+      base::ListValue* params = dict.FindList("params");
       ASSERT_TRUE(params);
       std::string* address = (*params)[0].GetIfString();
       ASSERT_TRUE(address);
@@ -4107,7 +4107,7 @@ TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
   auto cardano_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
   auto message = base::byte_span_from_cstring("brave");
 
-  base::Value::Dict expected_dict;
+  base::DictValue expected_dict;
   expected_dict.Set(
       "key",
       "a50101025839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5"

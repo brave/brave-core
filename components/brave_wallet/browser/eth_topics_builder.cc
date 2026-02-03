@@ -15,7 +15,7 @@ namespace brave_wallet {
 
 bool MakeAssetDiscoveryTopics(
     const std::vector<std::string>& to_account_addresses,
-    base::Value::List* topics) {
+    base::ListValue* topics) {
   // First topic matches full keccak hash of the erc20::Transfer event signature
   topics->Append(ToHex(KeccakHash(
       base::byte_span_from_cstring("Transfer(address,address,uint256)"))));
@@ -24,7 +24,7 @@ bool MakeAssetDiscoveryTopics(
   topics->Append(base::Value());
 
   // Third topic matches any of the to_addresses
-  base::Value::List to_address_topic;
+  base::ListValue to_address_topic;
   for (const auto& account_address : to_account_addresses) {
     std::string padded_address;
     if (!brave_wallet::PadHexEncodedParameter(account_address,

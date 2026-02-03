@@ -56,8 +56,8 @@ void ParseErrorResult(const base::Value& json_value,
   }
 }
 
-std::optional<base::Value::Dict> ParseResultDict(const base::Value& json_value);
-std::optional<base::Value::List> ParseResultList(const base::Value& json_value);
+std::optional<base::DictValue> ParseResultDict(const base::Value& json_value);
+std::optional<base::ListValue> ParseResultList(const base::Value& json_value);
 std::optional<bool> ParseBoolResult(const base::Value& json_value);
 
 std::optional<std::string> ConvertInt64ToString(const std::string& path,
@@ -76,7 +76,7 @@ std::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     const std::vector<std::string>& keys,
     const std::string& json);
 
-bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
+bool GetUint64FromDictValue(const base::DictValue& dict_value,
                             const std::string& key,
                             bool nullable,
                             uint64_t* ret);

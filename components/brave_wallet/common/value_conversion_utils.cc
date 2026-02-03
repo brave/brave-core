@@ -30,7 +30,7 @@ namespace {
 // https://eips.ethereum.org/EIPS/eip-3085.
 bool ValueToNetworkInfoCommon(const base::Value& value,
                               brave_wallet::mojom::NetworkInfo* chain) {
-  const base::Value::Dict* params_dict = value.GetIfDict();
+  const base::DictValue* params_dict = value.GetIfDict();
   if (!params_dict) {
     return false;
   }
@@ -71,7 +71,7 @@ bool ValueToNetworkInfoCommon(const base::Value& value,
 namespace brave_wallet {
 
 std::optional<std::string> ExtractChainIdFromValue(
-    const base::Value::Dict* dict) {
+    const base::DictValue* dict) {
   if (!dict) {
     return std::nullopt;
   }
@@ -90,7 +90,7 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
     return nullptr;
   }
 
-  const base::Value::Dict* params_dict = value.GetIfDict();
+  const base::DictValue* params_dict = value.GetIfDict();
   if (!params_dict) {
     return nullptr;
   }
@@ -160,7 +160,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
 
   chain.coin = mojom::CoinType::ETH;
 
-  const base::Value::Dict* params_dict = value.GetIfDict();
+  const base::DictValue* params_dict = value.GetIfDict();
   if (!params_dict) {
     return nullptr;
   }
@@ -202,14 +202,14 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   return chain.Clone();
 }
 
-base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
-  base::Value::Dict dict;
+base::DictValue NetworkInfoToValue(const mojom::NetworkInfo& chain) {
+  base::DictValue dict;
 
   dict.Set("coin", static_cast<int>(chain.coin));
   dict.Set("chainId", chain.chain_id);
   dict.Set("chainName", chain.chain_name);
 
-  base::Value::List blockExplorerUrlsValue;
+  base::ListValue blockExplorerUrlsValue;
   if (!chain.block_explorer_urls.empty()) {
     for (const auto& url : chain.block_explorer_urls) {
       blockExplorerUrlsValue.Append(url);
@@ -217,7 +217,7 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   }
   dict.Set("blockExplorerUrls", std::move(blockExplorerUrlsValue));
 
-  base::Value::List iconUrlsValue;
+  base::ListValue iconUrlsValue;
   if (!chain.icon_urls.empty()) {
     for (const auto& url : chain.icon_urls) {
       iconUrlsValue.Append(url);
@@ -225,7 +225,7 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   }
   dict.Set("iconUrls", std::move(iconUrlsValue));
 
-  base::Value::List rpcUrlsValue;
+  base::ListValue rpcUrlsValue;
   for (const auto& url : chain.rpc_endpoints) {
     rpcUrlsValue.Append(url.spec());
   }
@@ -234,7 +234,7 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   DCHECK_LT(static_cast<size_t>(chain.active_rpc_endpoint_index),
             chain.rpc_endpoints.size());
   dict.Set("activeRpcEndpointIndex", chain.active_rpc_endpoint_index);
-  base::Value::Dict currency;
+  base::DictValue currency;
   currency.Set("name", chain.symbol_name);
   currency.Set("symbol", chain.symbol);
   currency.Set("decimals", chain.decimals);
@@ -242,8 +242,7 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   return dict;
 }
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(
-    const base::Value::Dict& value) {
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::DictValue& value) {
   mojom::BlockchainTokenPtr token_ptr = mojom::BlockchainToken::New();
 
   auto coin_int = value.FindInt("coin");
@@ -364,10 +363,9 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(
   return token_ptr;
 }
 
-base::Value::Dict BlockchainTokenToValue(
-    const mojom::BlockchainTokenPtr& token) {
+base::DictValue BlockchainTokenToValue(const mojom::BlockchainTokenPtr& token) {
   CHECK(token);
-  base::Value::Dict value;
+  base::DictValue value;
   value.Set("address", token->contract_address);
   value.Set("name", token->name);
   value.Set("symbol", token->symbol);
@@ -391,27 +389,27 @@ base::Value::Dict BlockchainTokenToValue(
 
 // Creates a response object as described in:
 // https://eips.ethereum.org/EIPS/eip-2255
-base::Value::List PermissionRequestResponseToValue(
+base::ListValue PermissionRequestResponseToValue(
     const url::Origin& origin,
     const std::vector<std::string>& accounts) {
-  base::Value::List container_list;
-  base::Value::Dict dict;
+  base::ListValue container_list;
+  base::DictValue dict;
   dict.Set("id", base::Uuid::GenerateRandomV4().AsLowercaseString());
 
-  base::Value::List context_list;
+  base::ListValue context_list;
   context_list.Append(base::Value("https://github.com/MetaMask/rpc-cap"));
   dict.Set("context", std::move(context_list));
 
-  base::Value::List caveats_list;
-  base::Value::Dict caveats_obj1;
+  base::ListValue caveats_list;
+  base::DictValue caveats_obj1;
   caveats_obj1.Set("name", "primaryAccountOnly");
   caveats_obj1.Set("type", "limitResponseLength");
   caveats_obj1.Set("value", 1);
   caveats_list.Append(std::move(caveats_obj1));
-  base::Value::Dict caveats_obj2;
+  base::DictValue caveats_obj2;
   caveats_obj2.Set("name", "exposedAccounts");
   caveats_obj2.Set("type", "filterResponse");
-  base::Value::List filter_response_list;
+  base::ListValue filter_response_list;
   for (auto account : accounts) {
     filter_response_list.Append(base::ToLowerASCII(account));
   }
@@ -444,7 +442,7 @@ int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
   return 0;
 }
 
-bool ReadUint32StringTo(const base::Value::Dict& dict,
+bool ReadUint32StringTo(const base::DictValue& dict,
                         std::string_view key,
                         uint32_t& to) {
   auto* str = dict.FindString(key);
@@ -454,7 +452,7 @@ bool ReadUint32StringTo(const base::Value::Dict& dict,
   return base::StringToUint(*str, &to);
 }
 
-bool ReadStringTo(const base::Value::Dict& dict,
+bool ReadStringTo(const base::DictValue& dict,
                   std::string_view key,
                   std::string& to) {
   auto* str = dict.FindString(key);
@@ -465,7 +463,7 @@ bool ReadStringTo(const base::Value::Dict& dict,
   return true;
 }
 
-bool ReadUint64StringTo(const base::Value::Dict& dict,
+bool ReadUint64StringTo(const base::DictValue& dict,
                         std::string_view key,
                         uint64_t& to) {
   auto* str = dict.FindString(key);
@@ -475,7 +473,7 @@ bool ReadUint64StringTo(const base::Value::Dict& dict,
   return base::StringToUint64(*str, &to);
 }
 
-bool ReadHexByteArrayTo(const base::Value::Dict& dict,
+bool ReadHexByteArrayTo(const base::DictValue& dict,
                         std::string_view key,
                         std::vector<uint8_t>& to) {
   auto* str = dict.FindString(key);

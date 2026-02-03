@@ -12,10 +12,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class CardanoTxMeta : public TxMeta {
@@ -29,7 +25,7 @@ class CardanoTxMeta : public TxMeta {
   bool operator==(const CardanoTxMeta& other) const;
 
   // TxMeta
-  base::Value::Dict ToValue() const override;
+  base::DictValue ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
   mojom::CoinType GetCoinType() const override;
 

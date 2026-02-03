@@ -45,7 +45,7 @@ class Eip1559Transaction : public Eip2930Transaction {
       const mojom::TxData1559Ptr& tx_data,
       bool strict = true);
   static std::optional<Eip1559Transaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   uint256_t max_priority_fee_per_gas() const {
     return max_priority_fee_per_gas_;
@@ -77,7 +77,7 @@ class Eip1559Transaction : public Eip2930Transaction {
   // signatureR,signatureS]))
   std::string GetTransactionHash() const override;
 
-  base::Value::Dict ToValue() const override;
+  base::DictValue ToValue() const override;
 
  protected:
   Eip1559Transaction(std::optional<uint256_t> nonce,

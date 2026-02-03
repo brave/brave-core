@@ -45,7 +45,7 @@ class EthLogsTracker {
   bool IsRunning() const;
 
   void AddSubscriber(const std::string& subscription_id,
-                     base::Value::Dict filter);
+                     base::DictValue filter);
   void RemoveSubscriber(const std::string& subscription_id);
 
   void AddObserver(Observer* observer);
@@ -62,7 +62,7 @@ class EthLogsTracker {
   base::RepeatingTimer timer_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
-  std::map<std::string, base::Value::Dict> eth_logs_subscription_info_;
+  std::map<std::string, base::DictValue> eth_logs_subscription_info_;
 
   base::ObserverList<Observer> observers_;
 

@@ -103,7 +103,7 @@ mojom::DecodedSolanaInstructionDataPtr SolanaInstructionDecodedData::ToMojom()
 
 // static
 std::optional<SolanaInstructionDecodedData>
-SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
+SolanaInstructionDecodedData::FromValue(const base::DictValue& value) {
   const std::string* sys_ins_type_str = value.FindString("sys_ins_type");
   const std::string* token_ins_type_str = value.FindString("token_ins_type");
   if (!sys_ins_type_str == !token_ins_type_str) {  // Both true or both false.
@@ -131,7 +131,7 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
         static_cast<mojom::SolanaTokenInstruction>(token_ins_type);
   }
 
-  const base::Value::List* param_list = value.FindList("params");
+  const base::ListValue* param_list = value.FindList("params");
   if (!param_list) {
     return std::nullopt;
   }
@@ -166,8 +166,7 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
         std::make_tuple(*name, *localized_name, *value_local, type));
   }
 
-  const base::Value::List* account_param_list =
-      value.FindList("account_params");
+  const base::ListValue* account_param_list = value.FindList("account_params");
   for (const auto& param_value : *account_param_list) {
     if (!param_value.is_dict()) {
       return std::nullopt;
@@ -188,12 +187,12 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
   return decoded_data;
 }
 
-std::optional<base::Value::Dict> SolanaInstructionDecodedData::ToValue() const {
+std::optional<base::DictValue> SolanaInstructionDecodedData::ToValue() const {
   if (!IsValid()) {
     return std::nullopt;
   }
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   if (sys_ins_type) {
     dict.Set("sys_ins_type",
              base::NumberToString(static_cast<uint32_t>(*sys_ins_type)));
@@ -204,9 +203,9 @@ std::optional<base::Value::Dict> SolanaInstructionDecodedData::ToValue() const {
              base::NumberToString(static_cast<uint32_t>(*token_ins_type)));
   }
 
-  base::Value::List param_list;
+  base::ListValue param_list;
   for (const auto& param : params) {
-    base::Value::Dict param_dict;
+    base::DictValue param_dict;
     param_dict.Set("name", std::get<0>(param));
     param_dict.Set("localized_name", std::get<1>(param));
     param_dict.Set("value", std::get<2>(param));
@@ -215,9 +214,9 @@ std::optional<base::Value::Dict> SolanaInstructionDecodedData::ToValue() const {
   }
   dict.Set("params", std::move(param_list));
 
-  base::Value::List account_param_list;
+  base::ListValue account_param_list;
   for (const auto& param : account_params) {
-    base::Value::Dict param_dict;
+    base::DictValue param_dict;
     param_dict.Set("name", std::get<0>(param));
     param_dict.Set("localized_name", std::get<1>(param));
     account_param_list.Append(std::move(param_dict));

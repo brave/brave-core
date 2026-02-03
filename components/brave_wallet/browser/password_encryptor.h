@@ -46,14 +46,14 @@ class PasswordEncryptor {
 
   std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
                                base::span<const uint8_t> nonce);
-  base::Value::Dict EncryptToDict(base::span<const uint8_t> plaintext,
-                                  base::span<const uint8_t> nonce);
+  base::DictValue EncryptToDict(base::span<const uint8_t> plaintext,
+                                base::span<const uint8_t> nonce);
 
   std::optional<std::vector<uint8_t>> Decrypt(
       base::span<const uint8_t> ciphertext,
       base::span<const uint8_t> nonce);
   std::optional<std::vector<uint8_t>> DecryptFromDict(
-      const base::Value::Dict& encrypted_value);
+      const base::DictValue& encrypted_value);
 
   // This can only be used by wallet importer
   std::optional<std::vector<uint8_t>> DecryptForImporter(

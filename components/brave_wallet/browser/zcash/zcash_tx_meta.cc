@@ -69,8 +69,8 @@ bool ZCashTxMeta::operator==(const ZCashTxMeta& other) const {
 
 ZCashTxMeta::~ZCashTxMeta() = default;
 
-base::Value::Dict ZCashTxMeta::ToValue() const {
-  base::Value::Dict dict = TxMeta::ToValue();
+base::DictValue ZCashTxMeta::ToValue() const {
+  base::DictValue dict = TxMeta::ToValue();
   if (tx_) {
     dict.Set("tx", tx_->ToValue());
   }

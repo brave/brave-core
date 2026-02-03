@@ -82,8 +82,7 @@ namespace {
 constexpr char kCowSwapTypeHash[] =
     "D5A25BA2E97094AD7D83DC28A6572DA797D6B3E7FC6663BD93EFB789FC17E489";
 
-mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(
-    const base::Value::Dict& value) {
+mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(const base::DictValue& value) {
   const auto cow_swap_order_value =
       eth_requests::CowSwapOrder::FromValue(value);
   if (!cow_swap_order_value) {
@@ -105,7 +104,7 @@ mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(
 }  // namespace
 
 mojom::TxData1559Ptr ParseEthTransaction1559Params(
-    const base::Value::List& params,
+    const base::ListValue& params,
     std::string& from_out) {
   if (params.size() != 1) {
     return nullptr;
@@ -159,8 +158,8 @@ bool ShouldCreate1559Tx(const mojom::TxData1559& tx_data_1559) {
 bool GetEthJsonRequestInfo(std::string_view json,
                            base::Value* id,
                            std::string* method,
-                           base::Value::List* params_list) {
-  std::optional<base::Value::Dict> response_dict = base::JSONReader::ReadDict(
+                           base::ListValue* params_list) {
+  std::optional<base::DictValue> response_dict = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!response_dict) {
@@ -241,7 +240,7 @@ std::optional<JsonRpcRequest> ParseJsonRpcRequest(base::Value input_value) {
 bool NormalizeEthRequest(std::string_view input_json,
                          std::string* output_json) {
   CHECK(output_json);
-  std::optional<base::Value::Dict> out_dict = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> out_dict = base::JSONReader::ReadDict(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!out_dict) {
@@ -259,8 +258,7 @@ bool NormalizeEthRequest(std::string_view input_json,
   return true;
 }
 
-std::optional<EthSignParams> ParseEthSignParams(
-    const base::Value::List& params) {
+std::optional<EthSignParams> ParseEthSignParams(const base::ListValue& params) {
   if (params.size() != 2) {
     return std::nullopt;
   }
@@ -279,7 +277,7 @@ std::optional<EthSignParams> ParseEthSignParams(
 }
 
 std::optional<EthSignParams> ParsePersonalSignParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   // personal_sign allows extra params
   if (params.size() < 2) {
     return std::nullopt;
@@ -315,7 +313,7 @@ std::optional<EthSignParams> ParsePersonalSignParams(
 }
 
 std::optional<std::string> ParseEthGetEncryptionPublicKeyParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   // eth_getEncryptionPublicKey allows extra params
   if (params.empty()) {
     return std::nullopt;
@@ -325,7 +323,7 @@ std::optional<std::string> ParseEthGetEncryptionPublicKeyParams(
 }
 
 std::optional<EthDecryptParams> ParseEthDecryptParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   // eth_decrypt allows extra params
   if (params.size() < 2) {
     return std::nullopt;
@@ -369,7 +367,7 @@ std::optional<EthDecryptParams> ParseEthDecryptParams(
 }
 
 std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   // personal_ecRecover allows extra params
   if (params.size() < 2) {
     return std::nullopt;
@@ -397,7 +395,7 @@ std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
 }
 
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
-    const base::Value::List& params,
+    const base::ListValue& params,
     EthSignTypedDataHelper::Version version) {
   if (params.size() != 2) {
     return nullptr;
@@ -408,8 +406,8 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     return nullptr;
   }
 
-  const base::Value::Dict* dict = nullptr;
-  std::optional<base::Value::Dict> dict_from_str;
+  const base::DictValue* dict = nullptr;
+  std::optional<base::DictValue> dict_from_str;
 
   if (const auto* typed_data_str = params[1].GetIfString()) {
     dict_from_str = base::JSONReader::ReadDict(
@@ -503,8 +501,7 @@ EthDecryptData::EthDecryptData() = default;
 EthDecryptData::~EthDecryptData() = default;
 EthDecryptData::EthDecryptData(EthDecryptData&&) = default;
 
-std::optional<EthDecryptData> ParseEthDecryptData(
-    const base::Value::Dict& dict) {
+std::optional<EthDecryptData> ParseEthDecryptData(const base::DictValue& dict) {
   // {
   //   "version": "x25519-xsalsa20-poly1305",
   //   "nonce": "base64-string",
@@ -554,7 +551,7 @@ std::optional<EthDecryptData> ParseEthDecryptData(
 }
 
 std::optional<std::string> ParseSwitchEthereumChainParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   if (params.size() != 1 || !params.front().is_dict()) {
     return std::nullopt;
   }
@@ -574,7 +571,7 @@ std::optional<std::string> ParseSwitchEthereumChainParams(
 }
 
 mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
-    const base::Value::List& params,
+    const base::ListValue& params,
     std::string& error_message) {
   error_message = "";
 
@@ -682,7 +679,7 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
 // Parses param request objects from
 // https://eips.ethereum.org/EIPS/eip-2255
 std::optional<base::flat_set<std::string>> ParseRequestPermissionsParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   // [{
   //   "eth_accounts": {}
   // }]
@@ -703,7 +700,7 @@ std::optional<base::flat_set<std::string>> ParseRequestPermissionsParams(
 }
 
 std::optional<std::string> ParseEthSendRawTransactionParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   if (params.size() != 1) {
     return std::nullopt;
   }
@@ -712,7 +709,7 @@ std::optional<std::string> ParseEthSendRawTransactionParams(
 }
 
 std::optional<EthSubscribeParams> ParseEthSubscribeParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   if (params.size() != 1 && params.size() != 2) {
     return std::nullopt;
   }
@@ -735,7 +732,7 @@ std::optional<EthSubscribeParams> ParseEthSubscribeParams(
 }
 
 std::optional<std::string> ParseEthUnsubscribeParams(
-    const base::Value::List& params) {
+    const base::ListValue& params) {
   if (params.size() != 1) {
     return std::nullopt;
   }

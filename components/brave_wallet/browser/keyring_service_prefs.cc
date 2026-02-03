@@ -67,7 +67,7 @@ const base::Value* GetPrefForKeyring(PrefService* profile_prefs,
                                      std::string_view key,
                                      mojom::KeyringId keyring_id) {
   const auto& keyrings_pref = profile_prefs->GetDict(kBraveWalletKeyrings);
-  const base::Value::Dict* keyring_dict =
+  const base::DictValue* keyring_dict =
       keyrings_pref.FindDict(KeyringIdPrefString(keyring_id));
   if (!keyring_dict) {
     return nullptr;
@@ -90,9 +90,9 @@ void SetPrefForKeyring(PrefService* profile_prefs,
   }
 }
 
-const base::Value::List* GetPrefForKeyringList(PrefService* profile_prefs,
-                                               std::string_view key,
-                                               mojom::KeyringId keyring_id) {
+const base::ListValue* GetPrefForKeyringList(PrefService* profile_prefs,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id) {
   if (const base::Value* result =
           GetPrefForKeyring(profile_prefs, key, keyring_id);
       result && result->is_list()) {
@@ -101,9 +101,9 @@ const base::Value::List* GetPrefForKeyringList(PrefService* profile_prefs,
   return nullptr;
 }
 
-const base::Value::Dict* GetPrefForKeyringDict(PrefService* profile_prefs,
-                                               std::string_view key,
-                                               mojom::KeyringId keyring_id) {
+const base::DictValue* GetPrefForKeyringDict(PrefService* profile_prefs,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id) {
   if (const base::Value* result =
           GetPrefForKeyring(profile_prefs, key, keyring_id);
       result && result->is_dict()) {
@@ -112,19 +112,17 @@ const base::Value::Dict* GetPrefForKeyringDict(PrefService* profile_prefs,
   return nullptr;
 }
 
-base::Value::List& GetListPrefForKeyringUpdate(
-    ScopedDictPrefUpdate& dict_update,
-    std::string_view key,
-    mojom::KeyringId keyring_id) {
+base::ListValue& GetListPrefForKeyringUpdate(ScopedDictPrefUpdate& dict_update,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id) {
   return *dict_update.Get()
               .EnsureDict(KeyringIdPrefString(keyring_id))
               ->EnsureList(key);
 }
 
-base::Value::Dict& GetDictPrefForKeyringUpdate(
-    ScopedDictPrefUpdate& dict_update,
-    std::string_view key,
-    mojom::KeyringId keyring_id) {
+base::DictValue& GetDictPrefForKeyringUpdate(ScopedDictPrefUpdate& dict_update,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id) {
   return *dict_update.Get()
               .EnsureDict(KeyringIdPrefString(keyring_id))
               ->EnsureDict(key);
@@ -233,7 +231,7 @@ base::Value HardwareAccountInfo::ToValue() const {
   CHECK(bitcoin_next_receive_address_index.has_value());
   CHECK(bitcoin_next_change_address_index.has_value());
 
-  base::Value::Dict hw_account;
+  base::DictValue hw_account;
   hw_account.Set(kAccountIndex, base::checked_cast<int>(account_index));
   hw_account.Set(kAccountName, account_name);
   hw_account.SetByDottedPath(kHardwareVendor,
@@ -315,7 +313,7 @@ std::vector<HardwareAccountInfo> GetHardwareAccountsForKeyring(
     PrefService* profile_prefs,
     mojom::KeyringId keyring_id) {
   CHECK(IsBitcoinHardwareKeyring(keyring_id));
-  const base::Value::List* hw_accounts =
+  const base::ListValue* hw_accounts =
       GetPrefForKeyringList(profile_prefs, kAccountMetas, keyring_id);
   if (!hw_accounts) {
     return {};

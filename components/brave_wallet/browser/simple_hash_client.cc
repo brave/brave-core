@@ -575,7 +575,7 @@ void SimpleHashClient::OnGetNfts(
 
 std::optional<std::pair<std::optional<std::string>,
                         std::vector<mojom::BlockchainTokenPtr>>>
-SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value::Dict& dict,
+SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
                                           bool skip_spam,
                                           bool only_spam) {
   // Parses responses like this
@@ -769,7 +769,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value::Dict& dict,
     next_cursor = std::nullopt;
   }
 
-  const base::Value::List* nfts = dict.FindList("nfts");
+  const base::ListValue* nfts = dict.FindList("nfts");
   if (!nfts) {
     return std::nullopt;
   }
@@ -778,7 +778,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value::Dict& dict,
   for (const auto& nft_value : *nfts) {
     auto token = mojom::BlockchainToken::New();
 
-    const base::Value::Dict* nft = nft_value.GetIfDict();
+    const base::DictValue* nft = nft_value.GetIfDict();
     if (!nft) {
       continue;
     }
@@ -919,8 +919,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value::Dict& dict,
 }
 
 std::optional<SolCompressedNftProofData>
-SimpleHashClient::ParseSolCompressedNftProofData(
-    const base::Value::Dict& dict) {
+SimpleHashClient::ParseSolCompressedNftProofData(const base::DictValue& dict) {
   SolCompressedNftProofData result;
 
   const std::string* root_opt = dict.FindString("root");
@@ -960,7 +959,7 @@ SimpleHashClient::ParseSolCompressedNftProofData(
   }
   result.canopy_depth = canopy_depth;
 
-  const base::Value::List* proofs = dict.FindList("proof");
+  const base::ListValue* proofs = dict.FindList("proof");
   if (!proofs) {
     return std::nullopt;
   }
@@ -977,8 +976,8 @@ SimpleHashClient::ParseSolCompressedNftProofData(
 
 std::optional<base::flat_map<mojom::NftIdentifierPtr,
                              base::flat_map<std::string, uint64_t>>>
-SimpleHashClient::ParseBalances(const base::Value::Dict& dict) {
-  const base::Value::List* nfts = dict.FindList("nfts");
+SimpleHashClient::ParseBalances(const base::DictValue& dict) {
+  const base::ListValue* nfts = dict.FindList("nfts");
   if (!nfts) {
     return std::nullopt;
   }
@@ -986,7 +985,7 @@ SimpleHashClient::ParseBalances(const base::Value::Dict& dict) {
   base::flat_map<mojom::NftIdentifierPtr, base::flat_map<std::string, uint64_t>>
       owners;
   for (const auto& nft_value : *nfts) {
-    const base::Value::Dict* nft = nft_value.GetIfDict();
+    const base::DictValue* nft = nft_value.GetIfDict();
     if (!nft) {
       continue;
     }
@@ -1032,14 +1031,14 @@ SimpleHashClient::ParseBalances(const base::Value::Dict& dict) {
       nft_identifier->token_id = Uint256ValueToHex(*token_id_uint256);
     }
 
-    const base::Value::List* owners_list = nft->FindList("owners");
+    const base::ListValue* owners_list = nft->FindList("owners");
     if (!owners_list) {
       continue;
     }
 
     base::flat_map<std::string, uint64_t> owners_map;
     for (const auto& owner_value : *owners_list) {
-      const base::Value::Dict* owner = owner_value.GetIfDict();
+      const base::DictValue* owner = owner_value.GetIfDict();
       if (!owner) {
         continue;
       }
@@ -1064,15 +1063,15 @@ SimpleHashClient::ParseBalances(const base::Value::Dict& dict) {
 }
 
 std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-SimpleHashClient::ParseMetadatas(const base::Value::Dict& dict) {
-  const base::Value::List* nfts = dict.FindList("nfts");
+SimpleHashClient::ParseMetadatas(const base::DictValue& dict) {
+  const base::ListValue* nfts = dict.FindList("nfts");
   if (!nfts) {
     return std::nullopt;
   }
 
   base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr> nft_metadatas;
   for (const auto& nft_value : *nfts) {
-    const base::Value::Dict* nft = nft_value.GetIfDict();
+    const base::DictValue* nft = nft_value.GetIfDict();
     if (!nft) {
       continue;
     }
@@ -1157,13 +1156,13 @@ SimpleHashClient::ParseMetadatas(const base::Value::Dict& dict) {
     }
 
     // attributes
-    const base::Value::Dict* extra_metadata = nft->FindDict("extra_metadata");
+    const base::DictValue* extra_metadata = nft->FindDict("extra_metadata");
     if (extra_metadata) {
-      const base::Value::List* attributes =
+      const base::ListValue* attributes =
           extra_metadata->FindList("attributes");
       if (attributes) {
         for (const auto& attribute_value : *attributes) {
-          const base::Value::Dict* attribute = attribute_value.GetIfDict();
+          const base::DictValue* attribute = attribute_value.GetIfDict();
           if (!attribute) {
             continue;
           }

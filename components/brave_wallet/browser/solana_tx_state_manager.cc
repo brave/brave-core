@@ -22,7 +22,7 @@ SolanaTxStateManager::SolanaTxStateManager(
 SolanaTxStateManager::~SolanaTxStateManager() = default;
 
 std::unique_ptr<SolanaTxMeta> SolanaTxStateManager::ValueToSolanaTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   return std::unique_ptr<SolanaTxMeta>{
       static_cast<SolanaTxMeta*>(ValueToTxMeta(value).release())};
 }
@@ -32,14 +32,14 @@ mojom::CoinType SolanaTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::unique_ptr<SolanaTxMeta> meta = std::make_unique<SolanaTxMeta>();
 
   if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
 
-  const base::Value::Dict* tx_value = value.FindDict("tx");
+  const base::DictValue* tx_value = value.FindDict("tx");
   if (!tx_value) {
     return nullptr;
   }
@@ -49,7 +49,7 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
   }
   meta->set_tx(std::move(tx));
 
-  const base::Value::Dict* signature_status_value =
+  const base::DictValue* signature_status_value =
       value.FindDict("signature_status");
   if (!signature_status_value) {
     return nullptr;

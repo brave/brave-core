@@ -104,8 +104,8 @@ struct OrchardOutput {
 
   bool operator==(const OrchardOutput& other) const = default;
 
-  base::Value::Dict ToValue() const;
-  static std::optional<OrchardOutput> FromValue(const base::Value::Dict& value);
+  base::DictValue ToValue() const;
+  static std::optional<OrchardOutput> FromValue(const base::DictValue& value);
 };
 
 // Describes note nullifier that marks some note as spent.
@@ -131,8 +131,8 @@ struct OrchardNote {
   OrchardRseed seed{};
 
   bool operator==(const OrchardNote& other) const = default;
-  base::Value::Dict ToValue() const;
-  static std::optional<OrchardNote> FromValue(const base::Value::Dict& value);
+  base::DictValue ToValue() const;
+  static std::optional<OrchardNote> FromValue(const base::DictValue& value);
 };
 
 // Note witness is a Merkle path in the Orchard commitment tree from the
@@ -157,8 +157,8 @@ struct OrchardInput {
   OrchardNote note;
   std::optional<OrchardNoteWitness> witness;
 
-  base::Value::Dict ToValue() const;
-  static std::optional<OrchardInput> FromValue(const base::Value::Dict& value);
+  base::DictValue ToValue() const;
+  static std::optional<OrchardInput> FromValue(const base::DictValue& value);
 };
 
 // Bundle of Orchard inputs along with keys needed for signing.

@@ -59,8 +59,8 @@ bool SolanaSignatureStatus::operator==(
          confirmation_status == sig_status.confirmation_status;
 }
 
-base::Value::Dict SolanaSignatureStatus::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaSignatureStatus::ToValue() const {
+  base::DictValue dict;
   dict.Set("slot", base::NumberToString(slot));
   dict.Set("confirmations", base::NumberToString(confirmations));
   dict.Set("err", err);
@@ -70,7 +70,7 @@ base::Value::Dict SolanaSignatureStatus::ToValue() const {
 
 // static
 std::optional<SolanaSignatureStatus> SolanaSignatureStatus::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   SolanaSignatureStatus status;
   const std::string* slot_string = value.FindString("slot");
   if (!slot_string || !base::StringToUint64(*slot_string, &status.slot)) {

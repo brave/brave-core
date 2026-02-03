@@ -24,7 +24,7 @@ namespace brave_wallet {
 
 namespace {
 
-void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
+void TestValueToBlockchainTokenFailCases(const base::DictValue& value,
                                          const std::vector<std::string>& keys) {
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
@@ -198,7 +198,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
 
 TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  base::Value::Dict value = NetworkInfoToValue(chain);
+  base::DictValue value = NetworkInfoToValue(chain);
   EXPECT_EQ(*value.FindString("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindString("chainName"), chain.chain_name);
   EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.name"),
@@ -324,7 +324,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
                    "decimals", "visible"});
 
   // Test input value with optional keys.
-  base::Value::Dict optional_value = json_value.Clone();
+  base::DictValue optional_value = json_value.Clone();
   optional_value.Remove("logo");
   optional_value.Remove("token_id");
   optional_value.Remove("coingecko_id");
@@ -460,7 +460,7 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   url::Origin origin = url::Origin::Create(GURL("https://brave.com"));
   std::vector<std::string> accounts{
       "0xA99D71De40D67394eBe68e4D0265cA6C9D421029"};
-  base::Value::List value = PermissionRequestResponseToValue(origin, accounts);
+  base::ListValue value = PermissionRequestResponseToValue(origin, accounts);
 
   // [{
   //   "caveats":[

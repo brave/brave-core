@@ -104,9 +104,9 @@ struct SolanaSignatureStatus {
   SolanaSignatureStatus(const SolanaSignatureStatus&) = default;
   bool operator==(const SolanaSignatureStatus&) const;
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<SolanaSignatureStatus> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   // The slot the transaction was processed.
   uint64_t slot = 0;

@@ -84,8 +84,8 @@ bool ZCashTransaction::TransparentPart::IsEmpty() const {
   return inputs.empty() && outputs.empty();
 }
 
-base::Value::Dict ZCashTransaction::Outpoint::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue ZCashTransaction::Outpoint::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("txid", base::HexEncode(txid));
   dict.Set("index", static_cast<int>(index));
@@ -95,7 +95,7 @@ base::Value::Dict ZCashTransaction::Outpoint::ToValue() const {
 
 // static
 std::optional<ZCashTransaction::Outpoint> ZCashTransaction::Outpoint::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   Outpoint result;
 
   auto* txid_hex = value.FindString("txid");
@@ -132,8 +132,8 @@ bool ZCashTransaction::TxInput::operator==(
                   other.script_sig, other.script_pub_key);
 }
 
-base::Value::Dict ZCashTransaction::TxInput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue ZCashTransaction::TxInput::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("utxo_address", utxo_address);
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
@@ -146,7 +146,7 @@ base::Value::Dict ZCashTransaction::TxInput::ToValue() const {
 
 // static
 std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   ZCashTransaction::TxInput result;
 
   if (!ReadStringTo(value, "utxo_address", result.utxo_address)) {
@@ -212,8 +212,8 @@ bool ZCashTransaction::TxOutput::operator==(
          std::tie(other.address, other.amount, other.script_pubkey);
 }
 
-base::Value::Dict ZCashTransaction::TxOutput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue ZCashTransaction::TxOutput::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("address", address);
   dict.Set("amount", base::NumberToString(amount));
@@ -224,7 +224,7 @@ base::Value::Dict ZCashTransaction::TxOutput::ToValue() const {
 
 // static
 std::optional<ZCashTransaction::TxOutput> ZCashTransaction::TxOutput::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   ZCashTransaction::TxOutput result;
   if (!ReadStringTo(value, "address", result.address)) {
     return std::nullopt;
@@ -241,27 +241,27 @@ std::optional<ZCashTransaction::TxOutput> ZCashTransaction::TxOutput::FromValue(
   return result;
 }
 
-base::Value::Dict ZCashTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue ZCashTransaction::ToValue() const {
+  base::DictValue dict;
 
-  auto& inputs_value = dict.Set("inputs", base::Value::List())->GetList();
+  auto& inputs_value = dict.Set("inputs", base::ListValue())->GetList();
   for (auto& input : transparent_part_.inputs) {
     inputs_value.Append(input.ToValue());
   }
 
   auto& orchard_inputs_value =
-      dict.Set("orchard_inputs", base::Value::List())->GetList();
+      dict.Set("orchard_inputs", base::ListValue())->GetList();
   for (auto& input : orchard_part_.inputs) {
     orchard_inputs_value.Append(input.ToValue());
   }
 
-  auto& outputs_value = dict.Set("outputs", base::Value::List())->GetList();
+  auto& outputs_value = dict.Set("outputs", base::ListValue())->GetList();
   for (auto& output : transparent_part_.outputs) {
     outputs_value.Append(output.ToValue());
   }
   // TODO(cypt4): Add orchard part serialization\deserialization
   auto& orchard_outputs_value =
-      dict.Set("orchard_outputs", base::Value::List())->GetList();
+      dict.Set("orchard_outputs", base::ListValue())->GetList();
   for (auto& orchard_output : orchard_part_.outputs) {
     orchard_outputs_value.Append(orchard_output.ToValue());
   }
@@ -285,7 +285,7 @@ base::Value::Dict ZCashTransaction::ToValue() const {
 
 // static
 std::optional<ZCashTransaction> ZCashTransaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   ZCashTransaction result;
 
   auto* inputs_list = value.FindList("inputs");

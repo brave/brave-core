@@ -35,8 +35,8 @@ bool SolanaMessageHeader::operator==(const SolanaMessageHeader& header) const {
              header.num_readonly_unsigned_accounts;
 }
 
-base::Value::Dict SolanaMessageHeader::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaMessageHeader::ToValue() const {
+  base::DictValue dict;
   dict.Set(kNumRequiredSignatures,
            base::NumberToString(num_required_signatures));
   dict.Set(kNumReadonlySignedAccounts,
@@ -48,7 +48,7 @@ base::Value::Dict SolanaMessageHeader::ToValue() const {
 
 // static
 std::optional<SolanaMessageHeader> SolanaMessageHeader::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   auto num_required_signatures =
       GetUint8FromStringDict(value, kNumRequiredSignatures);
   if (!num_required_signatures) {

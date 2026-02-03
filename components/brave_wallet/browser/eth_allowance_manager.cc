@@ -138,7 +138,7 @@ void EthAllowanceManager::DiscoverEthAllowancesOnAllSupportedChains(
           GetChainIdsForAlowanceDiscovering());
 
   for (const auto& [chain_id, token_list] : token_list_map) {
-    base::Value::List contract_addresses;
+    base::ListValue contract_addresses;
     for (const auto& token : token_list) {
       contract_addresses.Append(token->contract_address);
     }
@@ -156,7 +156,7 @@ void EthAllowanceManager::DiscoverEthAllowancesOnAllSupportedChains(
 
 void EthAllowanceManager::OnGetCurrentBlock(
     const std::string& chain_id,
-    base::Value::List contract_addresses,
+    base::ListValue contract_addresses,
     const std::vector<std::string>& account_addresses,
     uint256_t block_num,
     mojom::ProviderError error,
@@ -182,11 +182,11 @@ void EthAllowanceManager::OnGetCurrentBlock(
         task_id, std::make_unique<EthAllowanceTask>(
                      task_id, chain_id, account_address_hex, block_num));
 
-    base::Value::List topics;
+    base::ListValue topics;
     topics.Append(approval_topic_hash);
     topics.Append(account_address_hex);
 
-    base::Value::Dict filter_options;
+    base::DictValue filter_options;
     filter_options.Set(kAddress, contract_addresses.Clone());
     filter_options.Set(kTopics, std::move(topics));
     filter_options.Set(kFromBlock, GetBlocknumberFilterFromCache(
@@ -353,7 +353,7 @@ void EthAllowanceManager::MaybeMergeAllResultsAndCallBack() {
        allowance_tasks_by_chain_ids) {
     auto* chain_section = allowance_cache.EnsureDict(chain_id);
     auto* last_block_section = chain_section->EnsureDict(kLastBlockNumber);
-    base::Value::List allw_list;
+    base::ListValue allw_list;
     for (const auto& allowance_task_info : allowance_task_infos) {
       last_block_section->Set(
           allowance_task_info->account_address_,
@@ -362,7 +362,7 @@ void EthAllowanceManager::MaybeMergeAllResultsAndCallBack() {
         if (allowance.is_null()) {
           continue;
         }
-        base::Value::Dict allw_dict_item;
+        base::DictValue allw_dict_item;
         allw_dict_item.Set(kContractAddress, allowance->contract_address);
         allw_dict_item.Set(kApproverAddress, allowance->approver_address);
         allw_dict_item.Set(kSpenderAddress, allowance->spender_address);

@@ -262,7 +262,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
 
   ScopedDictPrefUpdate last_sent_time_update(
       profile_prefs_, kBraveWalletLastTransactionSentTimeDict);
-  base::Value::Dict& last_sent_time_dict = last_sent_time_update.Get();
+  base::DictValue& last_sent_time_dict = last_sent_time_update.Get();
 
   std::string coin_key = base::NumberToString(static_cast<int>(coin));
 
@@ -316,7 +316,7 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
 
   CHECK(histogram_name);
 
-  const base::Value::Dict& active_wallet_dict =
+  const base::DictValue& active_wallet_dict =
       profile_prefs_->GetDict(kBraveWalletP3AActiveWalletDict);
   std::string coin_type_str = base::NumberToString(static_cast<int>(coin_type));
   if (!active_wallet_dict.FindBool(coin_type_str).has_value()) {

@@ -44,7 +44,7 @@ namespace brave_wallet {
 namespace {
 
 std::string LatestBlockPayload(int height, int slot, int epoch) {
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("height", height);
   result.Set("slot", slot);
   result.Set("epoch", epoch);
@@ -54,7 +54,7 @@ std::string LatestBlockPayload(int height, int slot, int epoch) {
 std::string LatestEpochParameters(int min_fee_a,
                                   int min_fee_b,
                                   int coins_per_utxo_size) {
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("min_fee_a", min_fee_a);
   result.Set("min_fee_b", min_fee_b);
   result.Set("coins_per_utxo_size", coins_per_utxo_size);

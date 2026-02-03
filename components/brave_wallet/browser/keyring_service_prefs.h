@@ -49,20 +49,18 @@ void SetPrefForKeyring(PrefService* profile_prefs,
                        base::Value value,
                        mojom::KeyringId keyring_id);
 
-const base::Value::List* GetPrefForKeyringList(PrefService* profile_prefs,
-                                               std::string_view key,
-                                               mojom::KeyringId keyring_id);
-const base::Value::Dict* GetPrefForKeyringDict(PrefService* profile_prefs,
-                                               std::string_view key,
-                                               mojom::KeyringId keyring_id);
-base::Value::List& GetListPrefForKeyringUpdate(
-    ScopedDictPrefUpdate& dict_update,
-    std::string_view key,
-    mojom::KeyringId keyring_id);
-base::Value::Dict& GetDictPrefForKeyringUpdate(
-    ScopedDictPrefUpdate& dict_update,
-    std::string_view key,
-    mojom::KeyringId keyring_id);
+const base::ListValue* GetPrefForKeyringList(PrefService* profile_prefs,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id);
+const base::DictValue* GetPrefForKeyringDict(PrefService* profile_prefs,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id);
+base::ListValue& GetListPrefForKeyringUpdate(ScopedDictPrefUpdate& dict_update,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id);
+base::DictValue& GetDictPrefForKeyringUpdate(ScopedDictPrefUpdate& dict_update,
+                                             std::string_view key,
+                                             mojom::KeyringId keyring_id);
 
 uint32_t GenerateNextAccountIndex(PrefService* profile_prefs,
                                   mojom::KeyringId keyring_id);

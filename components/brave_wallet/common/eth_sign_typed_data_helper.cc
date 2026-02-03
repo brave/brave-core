@@ -26,19 +26,19 @@ namespace brave_wallet {
 
 // static
 std::unique_ptr<EthSignTypedDataHelper> EthSignTypedDataHelper::Create(
-    base::Value::Dict types,
+    base::DictValue types,
     Version version) {
   return std::unique_ptr<EthSignTypedDataHelper>(
       new EthSignTypedDataHelper(std::move(types), version));
 }
 
-EthSignTypedDataHelper::EthSignTypedDataHelper(base::Value::Dict types,
+EthSignTypedDataHelper::EthSignTypedDataHelper(base::DictValue types,
                                                Version version)
     : types_(std::move(types)), version_(version) {}
 
 EthSignTypedDataHelper::~EthSignTypedDataHelper() = default;
 
-void EthSignTypedDataHelper::SetTypes(base::Value::Dict types) {
+void EthSignTypedDataHelper::SetTypes(base::DictValue types) {
   types_ = std::move(types);
 }
 
@@ -92,7 +92,7 @@ std::string EthSignTypedDataHelper::EncodeType(
     if (!type.GetList()[i].is_dict()) {
       return std::string();
     }
-    const base::Value::Dict& root = type.GetList()[i].GetDict();
+    const base::DictValue& root = type.GetList()[i].GetDict();
     const std::string* type_str = root.FindString("type");
     const std::string* name_str = root.FindString("name");
     if (!type_str || !name_str) {
@@ -133,9 +133,9 @@ EthSignTypedDataHelper::Eip712HashArray EthSignTypedDataHelper::GetTypeHash(
 }
 
 std::optional<
-    std::pair<EthSignTypedDataHelper::Eip712HashArray, base::Value::Dict>>
+    std::pair<EthSignTypedDataHelper::Eip712HashArray, base::DictValue>>
 EthSignTypedDataHelper::HashStruct(const std::string_view primary_type_name,
-                                   const base::Value::Dict& data) const {
+                                   const base::DictValue& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
   if (!encoded_data) {
     return std::nullopt;
@@ -146,9 +146,9 @@ EthSignTypedDataHelper::HashStruct(const std::string_view primary_type_name,
 
 // Encode the json data by the its type defined in json custom types starting
 // from primary type. See unittests for some examples.
-std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+std::optional<std::pair<std::vector<uint8_t>, base::DictValue>>
 EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
-                                   const base::Value::Dict& data) const {
+                                   const base::DictValue& data) const {
   const auto* primary_type = types_.FindList(primary_type_name);
   if (!primary_type) {
     return std::nullopt;
@@ -159,7 +159,7 @@ EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
 
   base::Extend(result, GetTypeHash(primary_type_name));
 
-  base::Value::Dict sanitized_data;
+  base::DictValue sanitized_data;
 
   for (const auto& item : *primary_type) {
     const auto& field = item.GetDict();
@@ -382,17 +382,17 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
 }
 
 std::optional<
-    std::pair<EthSignTypedDataHelper::Eip712HashArray, base::Value::Dict>>
+    std::pair<EthSignTypedDataHelper::Eip712HashArray, base::DictValue>>
 EthSignTypedDataHelper::GetTypedDataDomainHash(
-    const base::Value::Dict& domain) const {
+    const base::DictValue& domain) const {
   return HashStruct("EIP712Domain", domain);
 }
 
 std::optional<
-    std::pair<EthSignTypedDataHelper::Eip712HashArray, base::Value::Dict>>
+    std::pair<EthSignTypedDataHelper::Eip712HashArray, base::DictValue>>
 EthSignTypedDataHelper::GetTypedDataPrimaryHash(
     const std::string& primary_type_name,
-    const base::Value::Dict& message) const {
+    const base::DictValue& message) const {
   return HashStruct(primary_type_name, message);
 }
 

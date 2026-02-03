@@ -17,10 +17,6 @@
 #include "brave/components/brave_wallet/browser/solana_message_header.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class SolanaMessage {
@@ -68,11 +64,11 @@ class SolanaMessage {
   std::string fee_payer() const { return fee_payer_; }
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 
-  static std::optional<SolanaMessage> FromValue(const base::Value::Dict& value);
+  static std::optional<SolanaMessage> FromValue(const base::DictValue& value);
   static std::optional<SolanaMessage> FromDeprecatedLegacyValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   void SetInstructionsForTesting(
       const std::vector<SolanaInstruction>& instructions) {

@@ -112,14 +112,14 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Isolate* isolate,
       mojom::SolanaProviderError error,
       const std::string& error_message,
-      base::Value::Dict result);
+      base::DictValue result);
 
   void OnSignMessage(v8::Global<v8::Context> global_context,
                      v8::Global<v8::Promise::Resolver> promise_resolver,
                      v8::Isolate* isolate,
                      mojom::SolanaProviderError error,
                      const std::string& error_message,
-                     base::Value::Dict result);
+                     base::DictValue result);
 
   void OnSignTransaction(v8::Global<v8::Context> global_context,
                          v8::Global<v8::Promise::Resolver> promise_resolver,
@@ -144,7 +144,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
                  const std::string& method,
                  mojom::SolanaProviderError error,
                  const std::string& error_message,
-                 base::Value::Dict result);
+                 base::DictValue result);
 
   void SendResponse(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,

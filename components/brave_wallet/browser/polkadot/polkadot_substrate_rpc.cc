@@ -321,8 +321,8 @@ void PolkadotSubstrateRpc::GetAccountBalance(
 
   auto payload = base::WriteJson(MakeRpcRequestJson(
       "state_queryStorageAt",
-      base::Value::List().Append(
-          base::Value(base::Value::List().Append(std::move(rpc_cmd))))));
+      base::ListValue().Append(
+          base::Value(base::ListValue().Append(std::move(rpc_cmd))))));
 
   CHECK(payload);
 

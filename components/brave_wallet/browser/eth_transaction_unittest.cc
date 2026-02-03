@@ -176,7 +176,7 @@ TEST(EthTransactionUnitTest, TransactionAndValue) {
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
       std::vector<uint8_t>(), false, std::nullopt));
-  base::Value::Dict tx_value = tx.ToValue();
+  base::DictValue tx_value = tx.ToValue();
   auto tx_from_value = EthTransaction::FromValue(tx_value);
   ASSERT_NE(tx_from_value, std::nullopt);
   EXPECT_EQ(tx_from_value, tx);

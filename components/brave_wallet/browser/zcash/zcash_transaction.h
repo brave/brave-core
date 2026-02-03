@@ -29,8 +29,8 @@ class ZCashTransaction {
     Outpoint& operator=(Outpoint&& other);
     bool operator==(const Outpoint& other) const;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<Outpoint> FromValue(const base::DictValue& value);
 
     std::array<uint8_t, 32> txid{};
     uint32_t index = 0;
@@ -45,8 +45,8 @@ class ZCashTransaction {
     TxInput& operator=(TxInput&& other);
     bool operator==(const TxInput& other) const;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxInput> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxInput> FromValue(const base::DictValue& value);
 
     static std::optional<TxInput> FromRpcUtxo(
         const std::string& address,
@@ -72,8 +72,8 @@ class ZCashTransaction {
     TxOutput& operator=(TxOutput&& other);
     bool operator==(const TxOutput& other) const;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxOutput> FromValue(const base::DictValue& value);
 
     std::string address;
     std::vector<uint8_t> script_pubkey;
@@ -122,9 +122,9 @@ class ZCashTransaction {
   ZCashTransaction& operator=(ZCashTransaction&& other);
   bool operator==(const ZCashTransaction& other) const;
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<ZCashTransaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   bool IsTransparentPartSigned() const;
   uint64_t TotalInputsAmount() const;

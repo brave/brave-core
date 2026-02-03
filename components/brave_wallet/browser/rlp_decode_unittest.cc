@@ -23,7 +23,7 @@ std::string RLPTestValueToString(const base::Value& val) {
     }
     output += "[";
     std::string elems;
-    const base::Value::List& list = val.GetList();
+    const base::ListValue& list = val.GetList();
     for (const auto& item : list) {
       if (elems.size()) {
         elems += ", ";

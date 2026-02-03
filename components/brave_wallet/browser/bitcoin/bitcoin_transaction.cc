@@ -24,7 +24,7 @@ namespace {
 constexpr char kChangeOuputType[] = "change";
 constexpr char kTargetOutputType[] = "target";
 
-bool ReadStringTo(const base::Value::Dict& dict,
+bool ReadStringTo(const base::DictValue& dict,
                   std::string_view key,
                   std::string& to) {
   auto* str = dict.FindString(key);
@@ -35,7 +35,7 @@ bool ReadStringTo(const base::Value::Dict& dict,
   return true;
 }
 
-bool ReadUint64StringTo(const base::Value::Dict& dict,
+bool ReadUint64StringTo(const base::DictValue& dict,
                         std::string_view key,
                         uint64_t& to) {
   auto* str = dict.FindString(key);
@@ -45,7 +45,7 @@ bool ReadUint64StringTo(const base::Value::Dict& dict,
   return base::StringToUint64(*str, &to);
 }
 
-bool ReadUint32StringTo(const base::Value::Dict& dict,
+bool ReadUint32StringTo(const base::DictValue& dict,
                         std::string_view key,
                         uint32_t& to) {
   auto* str = dict.FindString(key);
@@ -56,7 +56,7 @@ bool ReadUint32StringTo(const base::Value::Dict& dict,
 }
 
 template <class T>
-bool ReadDictTo(const base::Value::Dict& dict, std::string_view key, T& to) {
+bool ReadDictTo(const base::DictValue& dict, std::string_view key, T& to) {
   auto* key_dict = dict.FindDict(key);
   if (!key_dict) {
     return false;
@@ -69,7 +69,7 @@ bool ReadDictTo(const base::Value::Dict& dict, std::string_view key, T& to) {
   return true;
 }
 
-bool ReadHexByteArrayTo(const base::Value::Dict& dict,
+bool ReadHexByteArrayTo(const base::DictValue& dict,
                         std::string_view key,
                         std::vector<uint8_t>& to) {
   auto* str = dict.FindString(key);
@@ -83,7 +83,7 @@ bool ReadHexByteArrayTo(const base::Value::Dict& dict,
   return base::HexStringToBytes(*str, &to);
 }
 
-bool ReadOptionalHexByteArrayTo(const base::Value::Dict& dict,
+bool ReadOptionalHexByteArrayTo(const base::DictValue& dict,
                                 std::string_view key,
                                 std::optional<std::vector<uint8_t>>& to) {
   auto* str = dict.FindString(key);
@@ -133,8 +133,8 @@ bool BitcoinTransaction::Outpoint::operator<(
   return std::tie(this->txid, this->index) < std::tie(other.txid, other.index);
 }
 
-base::Value::Dict BitcoinTransaction::Outpoint::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue BitcoinTransaction::Outpoint::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("txid", base::HexEncode(txid));
   dict.Set("index", static_cast<int>(index));
@@ -144,7 +144,7 @@ base::Value::Dict BitcoinTransaction::Outpoint::ToValue() const {
 
 // static
 std::optional<BitcoinTransaction::Outpoint>
-BitcoinTransaction::Outpoint::FromValue(const base::Value::Dict& value) {
+BitcoinTransaction::Outpoint::FromValue(const base::DictValue& value) {
   Outpoint result;
 
   auto* txid_hex = value.FindString("txid");
@@ -182,8 +182,8 @@ bool BitcoinTransaction::TxInput::operator==(
                   other.script_sig, other.witness, other.raw_outpoint_tx);
 }
 
-base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue BitcoinTransaction::TxInput::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("utxo_address", utxo_address);
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
@@ -200,7 +200,7 @@ base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
 
 // static
 std::optional<BitcoinTransaction::TxInput>
-BitcoinTransaction::TxInput::FromValue(const base::Value::Dict& value) {
+BitcoinTransaction::TxInput::FromValue(const base::DictValue& value) {
   BitcoinTransaction::TxInput result;
 
   if (!ReadStringTo(value, "utxo_address", result.utxo_address)) {
@@ -296,8 +296,8 @@ bool BitcoinTransaction::TxOutput::operator==(
          std::tie(other.type, other.address, other.script_pubkey, other.amount);
 }
 
-base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue BitcoinTransaction::TxOutput::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
                                                  : kChangeOuputType);
@@ -310,7 +310,7 @@ base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
 
 // static
 std::optional<BitcoinTransaction::TxOutput>
-BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
+BitcoinTransaction::TxOutput::FromValue(const base::DictValue& value) {
   BitcoinTransaction::TxOutput result;
 
   std::string type_string;
@@ -336,15 +336,15 @@ BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   return result;
 }
 
-base::Value::Dict BitcoinTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue BitcoinTransaction::ToValue() const {
+  base::DictValue dict;
 
-  auto& inputs_value = dict.Set("inputs", base::Value::List())->GetList();
+  auto& inputs_value = dict.Set("inputs", base::ListValue())->GetList();
   for (auto& input : inputs_) {
     inputs_value.Append(input.ToValue());
   }
 
-  auto& outputs_value = dict.Set("outputs", base::Value::List())->GetList();
+  auto& outputs_value = dict.Set("outputs", base::ListValue())->GetList();
   for (auto& output : outputs_) {
     outputs_value.Append(output.ToValue());
   }
@@ -359,7 +359,7 @@ base::Value::Dict BitcoinTransaction::ToValue() const {
 
 // static
 std::optional<BitcoinTransaction> BitcoinTransaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   BitcoinTransaction result;
 
   auto* inputs_list = value.FindList("inputs");

@@ -26,12 +26,12 @@ namespace {
 constexpr char kChangeOuputType[] = "change";
 constexpr char kTargetOutputType[] = "target";
 
-std::optional<std::string> ReadString(const base::Value::Dict& dict,
+std::optional<std::string> ReadString(const base::DictValue& dict,
                                       std::string_view key) {
   return base::OptionalFromPtr(dict.FindString(key));
 }
 
-std::optional<CardanoAddress> ReadCardanoAddress(const base::Value::Dict& dict,
+std::optional<CardanoAddress> ReadCardanoAddress(const base::DictValue& dict,
                                                  std::string_view key) {
   auto address_string = ReadString(dict, key);
   if (!address_string) {
@@ -41,7 +41,7 @@ std::optional<CardanoAddress> ReadCardanoAddress(const base::Value::Dict& dict,
   return CardanoAddress::FromString(*address_string);
 }
 
-std::optional<uint64_t> ReadUint64String(const base::Value::Dict& dict,
+std::optional<uint64_t> ReadUint64String(const base::DictValue& dict,
                                          std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -55,7 +55,7 @@ std::optional<uint64_t> ReadUint64String(const base::Value::Dict& dict,
   return result;
 }
 
-std::optional<uint32_t> ReadUint32String(const base::Value::Dict& dict,
+std::optional<uint32_t> ReadUint32String(const base::DictValue& dict,
                                          std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -70,7 +70,7 @@ std::optional<uint32_t> ReadUint32String(const base::Value::Dict& dict,
 }
 
 template <class T>
-std::optional<T> ReadDict(const base::Value::Dict& dict, std::string_view key) {
+std::optional<T> ReadDict(const base::DictValue& dict, std::string_view key) {
   auto* key_dict = dict.FindDict(key);
   if (!key_dict) {
     return std::nullopt;
@@ -80,7 +80,7 @@ std::optional<T> ReadDict(const base::Value::Dict& dict, std::string_view key) {
 
 template <size_t SZ>
 std::optional<std::array<uint8_t, SZ>> ReadHexByteArray(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -94,7 +94,7 @@ std::optional<std::array<uint8_t, SZ>> ReadHexByteArray(
 }
 
 std::optional<std::vector<uint8_t>> ReadHexByteVector(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -107,10 +107,10 @@ std::optional<std::vector<uint8_t>> ReadHexByteVector(
   return result;
 }
 
-base::Value::List TokensToValue(const cardano_rpc::Tokens& tokens) {
-  base::Value::List result;
+base::ListValue TokensToValue(const cardano_rpc::Tokens& tokens) {
+  base::ListValue result;
   for (auto& token : tokens) {
-    base::Value::Dict token_value;
+    base::DictValue token_value;
     token_value.Set("token_id", base::HexEncode(token.first));
     token_value.Set("amount", base::NumberToString(token.second));
     result.Append(std::move(token_value));
@@ -119,7 +119,7 @@ base::Value::List TokensToValue(const cardano_rpc::Tokens& tokens) {
 }
 
 std::optional<cardano_rpc::Tokens> TokensFromValue(
-    const base::Value::List* tokens_list) {
+    const base::ListValue* tokens_list) {
   if (!tokens_list) {
     return std::nullopt;
   }
@@ -131,7 +131,7 @@ std::optional<cardano_rpc::Tokens> TokensFromValue(
       return std::nullopt;
     }
 
-    const base::Value::Dict& token_value = item.GetDict();
+    const base::DictValue& token_value = item.GetDict();
 
     cardano_rpc::TokenId token_id;
 
@@ -178,8 +178,8 @@ CardanoTransaction::Outpoint::Outpoint(Outpoint&& other) = default;
 CardanoTransaction::Outpoint& CardanoTransaction::Outpoint::operator=(
     Outpoint&& other) = default;
 
-base::Value::Dict CardanoTransaction::Outpoint::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue CardanoTransaction::Outpoint::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("txid", base::HexEncode(txid));
   dict.Set("index", base::checked_cast<int>(index));
@@ -189,7 +189,7 @@ base::Value::Dict CardanoTransaction::Outpoint::ToValue() const {
 
 // static
 std::optional<CardanoTransaction::Outpoint>
-CardanoTransaction::Outpoint::FromValue(const base::Value::Dict& value) {
+CardanoTransaction::Outpoint::FromValue(const base::DictValue& value) {
   Outpoint result;
 
   auto* txid_hex = value.FindString("txid");
@@ -220,8 +220,8 @@ CardanoTransaction::TxInput::TxInput(CardanoTransaction::TxInput&& other) =
 CardanoTransaction::TxInput& CardanoTransaction::TxInput::operator=(
     CardanoTransaction::TxInput&& other) = default;
 
-base::Value::Dict CardanoTransaction::TxInput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue CardanoTransaction::TxInput::ToValue() const {
+  base::DictValue dict;
 
   // TODO(https://github.com/brave/brave-browser/issues/45411): implement with
   // json_schema_compiler.
@@ -235,7 +235,7 @@ base::Value::Dict CardanoTransaction::TxInput::ToValue() const {
 
 // static
 std::optional<CardanoTransaction::TxInput>
-CardanoTransaction::TxInput::FromValue(const base::Value::Dict& value) {
+CardanoTransaction::TxInput::FromValue(const base::DictValue& value) {
   CardanoTransaction::TxInput result;
 
   if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "utxo_address"),
@@ -290,8 +290,8 @@ CardanoTransaction::TxWitness::TxWitness(
 CardanoTransaction::TxWitness& CardanoTransaction::TxWitness::operator=(
     CardanoTransaction::TxWitness&& other) = default;
 
-base::Value::Dict CardanoTransaction::TxWitness::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue CardanoTransaction::TxWitness::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("public_key", base::HexEncode(public_key));
   dict.Set("signature", base::HexEncode(signature));
@@ -301,7 +301,7 @@ base::Value::Dict CardanoTransaction::TxWitness::ToValue() const {
 
 // static
 std::optional<CardanoTransaction::TxWitness>
-CardanoTransaction::TxWitness::FromValue(const base::Value::Dict& value) {
+CardanoTransaction::TxWitness::FromValue(const base::DictValue& value) {
   CardanoTransaction::TxWitness result;
 
   // Try to read from legacy witness_bytes first.
@@ -347,8 +347,8 @@ CardanoTransaction::TxOutput::TxOutput(CardanoTransaction::TxOutput&& other) =
 CardanoTransaction::TxOutput& CardanoTransaction::TxOutput::operator=(
     CardanoTransaction::TxOutput&& other) = default;
 
-base::Value::Dict CardanoTransaction::TxOutput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue CardanoTransaction::TxOutput::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
                                                  : kChangeOuputType);
@@ -361,7 +361,7 @@ base::Value::Dict CardanoTransaction::TxOutput::ToValue() const {
 
 // static
 std::optional<CardanoTransaction::TxOutput>
-CardanoTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
+CardanoTransaction::TxOutput::FromValue(const base::DictValue& value) {
   CardanoTransaction::TxOutput result;
 
   if (auto type = ReadString(value, "type")) {
@@ -409,20 +409,20 @@ CardanoTransaction::TxOutput::ToSerializableTxOutput() const {
   return result;
 }
 
-base::Value::Dict CardanoTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue CardanoTransaction::ToValue() const {
+  base::DictValue dict;
 
-  auto& inputs_value = dict.Set("inputs", base::Value::List())->GetList();
+  auto& inputs_value = dict.Set("inputs", base::ListValue())->GetList();
   for (const auto& input : inputs_) {
     inputs_value.Append(input.ToValue());
   }
 
-  auto& outputs_value = dict.Set("outputs", base::Value::List())->GetList();
+  auto& outputs_value = dict.Set("outputs", base::ListValue())->GetList();
   for (const auto& output : outputs_) {
     outputs_value.Append(output.ToValue());
   }
 
-  auto& witnesses_value = dict.Set("witnesses", base::Value::List())->GetList();
+  auto& witnesses_value = dict.Set("witnesses", base::ListValue())->GetList();
   for (const auto& witness : witnesses_) {
     witnesses_value.Append(witness.ToValue());
   }
@@ -438,7 +438,7 @@ base::Value::Dict CardanoTransaction::ToValue() const {
 
 // static
 std::optional<CardanoTransaction> CardanoTransaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   CardanoTransaction result;
 
   auto* inputs_list = value.FindList("inputs");

@@ -169,9 +169,9 @@ std::string GetFilStateSearchMsgLimitedResponse(int64_t value) {
 }
 
 void UpdateCustomNetworks(PrefService* prefs,
-                          std::vector<base::Value::Dict>* values) {
+                          std::vector<base::DictValue>* values) {
   ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value::List* list = update->EnsureList(kEthereumPrefKey);
+  base::ListValue* list = update->EnsureList(kEthereumPrefKey);
   list->clear();
   for (auto& it : *values) {
     list->Append(std::move(it));
@@ -289,7 +289,7 @@ class TestJsonRpcServiceObserver
 constexpr char https_metadata_response[] =
     R"({"attributes":[{"trait_type":"Feet","value":"Green Shoes"},{"trait_type":"Legs","value":"Tan Pants"},{"trait_type":"Suspenders","value":"White Suspenders"},{"trait_type":"Upper Body","value":"Indigo Turtleneck"},{"trait_type":"Sleeves","value":"Long Sleeves"},{"trait_type":"Hat","value":"Yellow / Blue Pointy Beanie"},{"trait_type":"Eyes","value":"White Nerd Glasses"},{"trait_type":"Mouth","value":"Toothpick"},{"trait_type":"Ears","value":"Bing Bong Stick"},{"trait_type":"Right Arm","value":"Swinging"},{"trait_type":"Left Arm","value":"Diamond Hand"},{"trait_type":"Background","value":"Blue"}],"description":"5,000 animated Invisible Friends hiding in the metaverse. A collection by Markus Magnusson & Random Character Collective.","image":"https://rcc.mypinata.cloud/ipfs/QmXmuSenZRnofhGMz2NyT3Yc4Zrty1TypuiBKDcaBsNw9V/1817.gif","name":"Invisible Friends #1817"})";
 
-std::optional<base::Value::Dict> ToValue(
+std::optional<base::DictValue> ToValue(
     const network::ResourceRequest& request) {
   std::string_view request_string(request.request_body->elements()
                                       ->at(0)
@@ -337,9 +337,9 @@ class SolRpcCallHandler {
  public:
   virtual ~SolRpcCallHandler() = default;
 
-  virtual bool CallSupported(const base::Value::Dict& dict) = 0;
+  virtual bool CallSupported(const base::DictValue& dict) = 0;
   virtual std::optional<std::string> HandleCall(
-      const base::Value::Dict& dict) = 0;
+      const base::DictValue& dict) = 0;
 
   void FailWithTimeout(bool fail_with_timeout = true) {
     fail_with_timeout_ = fail_with_timeout;
@@ -347,8 +347,7 @@ class SolRpcCallHandler {
   void Disable(bool disabled = true) { disabled_ = disabled; }
   void Enable() { disabled_ = false; }
 
-  std::optional<SolanaAddress> AddressFromParams(
-      const base::Value::Dict& dict) {
+  std::optional<SolanaAddress> AddressFromParams(const base::DictValue& dict) {
     auto* params_list = dict.FindList("params");
     if (!params_list || params_list->size() == 0) {
       return std::nullopt;
@@ -378,7 +377,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     data_ = std::move(data);
   }
 
-  bool CallSupported(const base::Value::Dict& dict) override {
+  bool CallSupported(const base::DictValue& dict) override {
     if (disabled_) {
       return false;
     }
@@ -536,8 +535,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     return result;
   }
 
-  std::optional<std::string> HandleCall(
-      const base::Value::Dict& dict) override {
+  std::optional<std::string> HandleCall(const base::DictValue& dict) override {
     if (fail_with_timeout_) {
       return "timeout";
     }
@@ -546,8 +544,8 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       return MakeJsonRpcValueResponse(base::Value());
     }
 
-    base::Value::Dict value;
-    base::Value::List data_array;
+    base::DictValue value;
+    base::ListValue data_array;
     data_array.Append(base::Value(base::Base64Encode(data_)));
     data_array.Append(base::Value("base64"));
     value.Set("data", std::move(data_array));
@@ -577,7 +575,7 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
         token_account_address_(token_account_address),
         token_account_data_(token_account_data) {}
 
-  bool CallSupported(const base::Value::Dict& dict) override {
+  bool CallSupported(const base::DictValue& dict) override {
     if (disabled_) {
       return false;
     }
@@ -601,8 +599,7 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
     return data;
   }
 
-  std::optional<std::string> HandleCall(
-      const base::Value::Dict& dict) override {
+  std::optional<std::string> HandleCall(const base::DictValue& dict) override {
     if (fail_with_timeout_) {
       return "timeout";
     }
@@ -611,25 +608,25 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
     EXPECT_TRUE(filters);
 
     auto data_span = base::span(token_account_data_);
-    base::Value::List expected_filters;
-    expected_filters.Append(base::Value::Dict());
+    base::ListValue expected_filters;
+    expected_filters.Append(base::DictValue());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 0);
     expected_filters.back().GetDict().SetByDottedPath(
         "memcmp.bytes", Base58Encode(data_span.first<32>()));
-    expected_filters.Append(base::Value::Dict());
+    expected_filters.Append(base::DictValue());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 64);
     expected_filters.back().GetDict().SetByDottedPath(
         "memcmp.bytes", Base58Encode(data_span.subspan(64u, 1u)));
-    expected_filters.Append(base::Value::Dict());
+    expected_filters.Append(base::DictValue());
     expected_filters.back().GetDict().Set("dataSize", 165);
 
     EXPECT_EQ(expected_filters, *filters);
 
-    base::Value::Dict item;
+    base::DictValue item;
 
-    base::Value::Dict account_dict;
+    base::DictValue account_dict;
 
-    base::Value::List data_array;
+    base::ListValue data_array;
     data_array.Append(base::Base64Encode(token_account_data_));
     data_array.Append("base64");
     account_dict.Set("data", std::move(data_array));
@@ -643,7 +640,7 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
 
     item.Set("pubkey", token_account_address_.ToBase58());
 
-    base::Value::List items;
+    base::ListValue items;
     items.Append(std::move(item));
 
     return MakeJsonRpcResultResponse(base::Value(std::move(items)));
@@ -685,7 +682,7 @@ class JsonRpcEndpointHandler {
   }
 
  protected:
-  std::optional<std::string> HandleCall(const base::Value::Dict& dict) {
+  std::optional<std::string> HandleCall(const base::DictValue& dict) {
     auto* method = dict.FindString("method");
     if (!method) {
       return std::nullopt;
@@ -697,7 +694,7 @@ class JsonRpcEndpointHandler {
     return HandleSolRpcCall(dict);
   }
 
-  std::optional<std::string> HandleEthCall(const base::Value::Dict& dict) {
+  std::optional<std::string> HandleEthCall(const base::DictValue& dict) {
     auto* params_list = dict.FindList("params");
     if (!params_list || params_list->size() == 0 ||
         !params_list->begin()->is_dict()) {
@@ -729,7 +726,7 @@ class JsonRpcEndpointHandler {
     return std::nullopt;
   }
 
-  std::optional<std::string> HandleSolRpcCall(const base::Value::Dict& dict) {
+  std::optional<std::string> HandleSolRpcCall(const base::DictValue& dict) {
     for (auto* handler : sol_rpc_call_handlers_) {
       if (!handler->CallSupported(dict)) {
         continue;
@@ -1362,13 +1359,13 @@ class JsonRpcServiceUnitTest : public testing::Test {
   void TestEthGetLogs(const std::string& chain_id,
                       const std::string& from_block,
                       const std::string& to_block,
-                      base::Value::List contract_addresses,
-                      base::Value::List topics,
+                      base::ListValue contract_addresses,
+                      base::ListValue topics,
                       const std::vector<Log>& expected_logs,
                       mojom::ProviderError expected_error,
                       const std::string& expected_error_message) {
     base::RunLoop run_loop;
-    base::Value::Dict params;
+    base::DictValue params;
     params.Set("fromBlock", from_block);
     params.Set("toBlock", to_block);
     params.Set("address", std::move(contract_addresses));
@@ -2020,7 +2017,7 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
   const auto& origin_a = url::Origin::Create(GURL("https://a.com"));
   const auto& origin_b = url::Origin::Create(GURL("https://b.com"));
 
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(NetworkInfoToValue(chain1));
 
@@ -2044,7 +2041,7 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   const auto& origin_a = url::Origin::Create(GURL("https://a.com"));
   const auto& origin_b = url::Origin::Create(GURL("https://b.com"));
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
@@ -2073,7 +2070,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 
 TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetCustomNetworksCallback> callback;
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1(mojom::kMainnetChainId);
   values.push_back(NetworkInfoToValue(chain1));
 
@@ -2091,7 +2088,7 @@ TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
 
 TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetKnownNetworksCallback> callback;
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1(mojom::kMainnetChainId);
   values.push_back(NetworkInfoToValue(chain1));
   UpdateCustomNetworks(prefs(), &values);
@@ -3866,7 +3863,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(brave_wallet::NetworkInfoToValue(chain1));
 
@@ -4512,7 +4509,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, Reset) {
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x1");
   values.push_back(brave_wallet::NetworkInfoToValue(chain));
   UpdateCustomNetworks(prefs(), &values);
@@ -5912,7 +5909,7 @@ class OffchainGatewayHandler {
       data_value = eth_abi::TupleEncoder().AddBytes(data_value).Encode();
     }
 
-    base::Value::Dict result;
+    base::DictValue result;
     result.Set("data", ToHex(data_value));
     std::string response;
     base::JSONWriter::Write(result, &response);
@@ -7103,8 +7100,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_NetworkError) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
-  base::Value::List contract_addresses;
-  base::Value::List topics;
+  base::ListValue contract_addresses;
+  base::ListValue topics;
 
   // Invalid network ID yields internal error
   TestEthGetLogs("0xinvalid", "earliest", "latest", contract_addresses.Clone(),

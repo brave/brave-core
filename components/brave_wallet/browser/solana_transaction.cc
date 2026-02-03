@@ -61,7 +61,7 @@ bool SolanaTransaction::SendOptions::operator==(
 // static
 std::optional<SolanaTransaction::SendOptions>
 SolanaTransaction::SendOptions::FromValue(
-    std::optional<base::Value::Dict> value) {
+    std::optional<base::DictValue> value) {
   if (!value) {
     return std::nullopt;
   }
@@ -70,7 +70,7 @@ SolanaTransaction::SendOptions::FromValue(
 
 // static
 std::optional<SolanaTransaction::SendOptions>
-SolanaTransaction::SendOptions::FromValue(const base::Value::Dict& dict) {
+SolanaTransaction::SendOptions::FromValue(const base::DictValue& dict) {
   SolanaTransaction::SendOptions options;
 
   if (auto* max_retries_string = dict.FindString(kMaxRetries)) {
@@ -98,8 +98,8 @@ SolanaTransaction::SendOptions::FromValue(const base::Value::Dict& dict) {
   return options;
 }
 
-base::Value::Dict SolanaTransaction::SendOptions::ToValue() const {
-  base::Value::Dict options;
+base::DictValue SolanaTransaction::SendOptions::ToValue() const {
+  base::DictValue options;
   if (max_retries) {
     options.Set(kMaxRetries, base::NumberToString(*max_retries));
   }
@@ -363,8 +363,8 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   return solana_tx_data;
 }
 
-base::Value::Dict SolanaTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaTransaction::ToValue() const {
+  base::DictValue dict;
   dict.Set("message", message_.ToValue());
   dict.Set("to_wallet_address", to_wallet_address_);
   // We use the old key, spl_token_mint_address, for backwards compatibility
@@ -380,13 +380,13 @@ base::Value::Dict SolanaTransaction::ToValue() const {
   }
 
   if (sign_tx_param_) {
-    base::Value::Dict sign_tx_param_dict;
+    base::DictValue sign_tx_param_dict;
     sign_tx_param_dict.Set(kEncodedSerializedMsg,
                            sign_tx_param_->encoded_serialized_msg);
 
-    base::Value::List signatures_list;
+    base::ListValue signatures_list;
     for (const auto& signature_pubkey_pair : sign_tx_param_->signatures) {
-      base::Value::Dict signature_dict;
+      base::DictValue signature_dict;
       signature_dict.Set(kPublicKey, signature_pubkey_pair->public_key);
       if (signature_pubkey_pair->signature) {
         signature_dict.Set(
@@ -400,7 +400,7 @@ base::Value::Dict SolanaTransaction::ToValue() const {
   }
 
   if (fee_estimation_) {
-    base::Value::Dict fee_estimation_dict;
+    base::DictValue fee_estimation_dict;
     fee_estimation_dict.Set("base_fee",
                             base::NumberToString(fee_estimation_->base_fee));
     fee_estimation_dict.Set(
@@ -427,8 +427,8 @@ void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
 
 // static
 std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
-    const base::Value::Dict& value) {
-  const base::Value::Dict* message_dict = value.FindDict("message");
+    const base::DictValue& value) {
+  const base::DictValue* message_dict = value.FindDict("message");
   if (!message_dict) {
     return nullptr;
   }
@@ -480,12 +480,12 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     tx->set_wired_tx(*wired_tx);
   }
 
-  const base::Value::Dict* send_options_value = value.FindDict(kSendOptions);
+  const base::DictValue* send_options_value = value.FindDict(kSendOptions);
   if (send_options_value) {
     tx->set_send_options(SendOptions::FromValue(*send_options_value));
   }
 
-  const base::Value::Dict* sign_tx_param_value = value.FindDict(kSignTxParam);
+  const base::DictValue* sign_tx_param_value = value.FindDict(kSignTxParam);
   if (sign_tx_param_value) {
     auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
     const auto* encoded_serialized_msg =
@@ -527,8 +527,7 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     tx->set_sign_tx_param(std::move(sign_tx_param));
   }
 
-  const base::Value::Dict* fee_estimation_dict =
-      value.FindDict("fee_estimation");
+  const base::DictValue* fee_estimation_dict = value.FindDict("fee_estimation");
   if (fee_estimation_dict) {
     auto fee_estimation = mojom::SolanaFeeEstimation::New();
     const auto* base_fee_string = fee_estimation_dict->FindString("base_fee");

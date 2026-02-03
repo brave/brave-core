@@ -96,7 +96,7 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
   void OnSignData(v8::Global<v8::Context> global_context,
                   v8::Global<v8::Promise::Resolver> promise_resolver,
                   v8::Isolate* isolate,
-                  std::optional<base::Value::Dict> result,
+                  std::optional<base::DictValue> result,
                   mojom::CardanoProviderErrorBundlePtr error_message);
 
   v8::Local<v8::Promise> SubmitTx(gin::Arguments* args);

@@ -30,7 +30,7 @@ std::unique_ptr<CardanoTxMeta> CardanoTxStateManager::GetCardanoTx(
 }
 
 std::unique_ptr<CardanoTxMeta> CardanoTxStateManager::ValueToCardanoTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   return std::unique_ptr<CardanoTxMeta>{
       static_cast<CardanoTxMeta*>(ValueToTxMeta(value).release())};
 }
@@ -40,13 +40,13 @@ mojom::CoinType CardanoTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<TxMeta> CardanoTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::unique_ptr<CardanoTxMeta> meta = std::make_unique<CardanoTxMeta>();
 
   if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
-  const base::Value::Dict* tx = value.FindDict("tx");
+  const base::DictValue* tx = value.FindDict("tx");
   if (!tx) {
     return nullptr;
   }

@@ -26,7 +26,7 @@ class PolkadotTxMeta : public TxMeta {
   PolkadotTxMeta& operator=(const PolkadotTxMeta&) = delete;
 
   // TxMeta
-  base::Value::Dict ToValue() const override;
+  base::DictValue ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
   mojom::CoinType GetCoinType() const override;
 

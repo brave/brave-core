@@ -21,18 +21,18 @@ namespace brave_wallet {
 bool GetEthJsonRequestInfo(std::string_view json,
                            base::Value* id,
                            std::string* method,
-                           base::Value::List* params_list);
+                           base::ListValue* params_list);
 
 struct JsonRpcRequest {
   base::Value id;
   std::string method;
-  base::Value::List params;
+  base::ListValue params;
 };
 
 std::optional<JsonRpcRequest> ParseJsonRpcRequest(base::Value input_value);
 
 mojom::TxData1559Ptr ParseEthTransaction1559Params(
-    const base::Value::List& params,
+    const base::ListValue& params,
     std::string& from_out);
 bool ShouldCreate1559Tx(const mojom::TxData1559& tx_data_1559);
 
@@ -43,11 +43,10 @@ struct EthSignParams {
   std::string message;
 };
 
-std::optional<EthSignParams> ParseEthSignParams(
-    const base::Value::List& params);
+std::optional<EthSignParams> ParseEthSignParams(const base::ListValue& params);
 
 std::optional<EthSignParams> ParsePersonalSignParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 struct PersonalEcRecoverParams {
   std::string message;
@@ -55,10 +54,10 @@ struct PersonalEcRecoverParams {
 };
 
 std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 std::optional<std::string> ParseEthGetEncryptionPublicKeyParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 struct EthDecryptParams {
   std::string untrusted_encrypted_data_json;
@@ -66,7 +65,7 @@ struct EthDecryptParams {
 };
 
 std::optional<EthDecryptParams> ParseEthDecryptParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 struct EthDecryptData {
   EthDecryptData();
@@ -77,33 +76,32 @@ struct EthDecryptData {
   std::vector<uint8_t> ephemeral_public_key;
   std::vector<uint8_t> ciphertext;
 };
-std::optional<EthDecryptData> ParseEthDecryptData(
-    const base::Value::Dict& dict);
+std::optional<EthDecryptData> ParseEthDecryptData(const base::DictValue& dict);
 
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
-    const base::Value::List& params,
+    const base::ListValue& params,
     EthSignTypedDataHelper::Version version);
 
 std::optional<std::string> ParseSwitchEthereumChainParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
-    const base::Value::List& params,
+    const base::ListValue& params,
     std::string& error_message);
 std::optional<base::flat_set<std::string>> ParseRequestPermissionsParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 std::optional<std::string> ParseEthSendRawTransactionParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 struct EthSubscribeParams {
   std::string event_type;
-  base::Value::Dict filter;
+  base::DictValue filter;
 };
 std::optional<EthSubscribeParams> ParseEthSubscribeParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 std::optional<std::string> ParseEthUnsubscribeParams(
-    const base::Value::List& params);
+    const base::ListValue& params);
 
 }  // namespace brave_wallet
 

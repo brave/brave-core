@@ -93,7 +93,7 @@ TEST(SolanaAccountMetaUnitTest, FromValue) {
 
 TEST(SolanaAccountMetaUnitTest, ToValue) {
   SolanaAccountMeta meta(kAccount1, std::nullopt, true, false);
-  base::Value::Dict value = meta.ToValue();
+  base::DictValue value = meta.ToValue();
   EXPECT_EQ(*value.FindString("pubkey"),
             "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
   EXPECT_TRUE(*value.FindBool("is_signer"));

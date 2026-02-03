@@ -23,7 +23,7 @@ mojom::CoinType PolkadotTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<TxMeta> PolkadotTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   auto tx_meta = std::make_unique<PolkadotTxMeta>();
 
   if (!ValueToBaseTxMeta(value, tx_meta.get())) {

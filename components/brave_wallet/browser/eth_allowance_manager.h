@@ -98,7 +98,7 @@ class EthAllowanceManager {
     bool is_completed_{false};
   };
   void OnGetCurrentBlock(const std::string& chain_id,
-                         base::Value::List contract_addresses,
+                         base::ListValue contract_addresses,
                          const std::vector<std::string>& account_addresses,
                          uint256_t block_num,
                          mojom::ProviderError error,

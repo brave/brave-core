@@ -19,7 +19,7 @@ constexpr char kBase64EncodedWriteIndexes[] = "base64_encoded_write_indexes";
 constexpr char kBase64EncodedReadIndexes[] = "base64_encoded_read_indexes";
 
 std::optional<std::vector<uint8_t>> GetIndexesFromBase64EncodedStringDict(
-    const base::Value::Dict& value,
+    const base::DictValue& value,
     const std::string& dict_key) {
   const std::string* base64_encoded_indexes = value.FindString(dict_key);
   if (!base64_encoded_indexes) {
@@ -101,8 +101,8 @@ SolanaMessageAddressTableLookup::Deserialize(const std::vector<uint8_t>& bytes,
                                          *read_indexes);
 }
 
-base::Value::Dict SolanaMessageAddressTableLookup::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaMessageAddressTableLookup::ToValue() const {
+  base::DictValue dict;
   dict.Set(kAccountKey, account_key_.ToBase58());
   dict.Set(kBase64EncodedWriteIndexes, base::Base64Encode(write_indexes_));
   dict.Set(kBase64EncodedReadIndexes, base::Base64Encode(read_indexes_));
@@ -111,7 +111,7 @@ base::Value::Dict SolanaMessageAddressTableLookup::ToValue() const {
 
 // static
 std::optional<SolanaMessageAddressTableLookup>
-SolanaMessageAddressTableLookup::FromValue(const base::Value::Dict& value) {
+SolanaMessageAddressTableLookup::FromValue(const base::DictValue& value) {
   const std::string* account_key_str = value.FindString(kAccountKey);
   if (!account_key_str) {
     return std::nullopt;

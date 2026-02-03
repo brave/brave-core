@@ -34,7 +34,7 @@ v8::Local<v8::Value> ConvertError(
         .ToLocalChecked();
   }
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
 
   if (error->pagination_error_payload) {
     error_value.Set("maxSize",
@@ -502,7 +502,7 @@ void JSCardanoWalletApi::OnSignData(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    std::optional<base::Value::Dict> result,
+    std::optional<base::DictValue> result,
     mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;

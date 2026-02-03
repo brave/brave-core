@@ -151,7 +151,7 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
        SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
 
-  base::Value::Dict value = instruction.ToValue();
+  base::DictValue value = instruction.ToValue();
   auto expect_instruction_value = base::test::ParseJson(R"(
     {
       "program_id": "11111111111111111111111111111111",

@@ -116,7 +116,7 @@ bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
 }
 
 bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
-                      const base::Value::Dict* dict) {
+                      const base::DictValue* dict) {
   if (!dict) {
     return false;
   }
@@ -309,9 +309,9 @@ bool HasCreatedWallets(PrefService* prefs) {
   return !prefs->GetTime(kBraveWalletLastUnlockTime).is_null();
 }
 
-base::Value::Dict TransactionReceiptToValue(
+base::DictValue TransactionReceiptToValue(
     const TransactionReceipt& tx_receipt) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("transaction_hash", tx_receipt.transaction_hash);
   dict.Set("transaction_index",
            Uint256ValueToHex(tx_receipt.transaction_index));
@@ -330,7 +330,7 @@ base::Value::Dict TransactionReceiptToValue(
 }
 
 std::optional<TransactionReceipt> ValueToTransactionReceipt(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   TransactionReceipt tx_receipt;
   const std::string* transaction_hash = value.FindString("transaction_hash");
   if (!transaction_hash) {
@@ -472,8 +472,8 @@ mojom::SwapProvider DecodeSwapProvider(const std::string& provider_str) {
   return mojom::SwapProvider::kAuto;
 }
 
-base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info) {
-  base::Value::Dict dict;
+base::DictValue SwapInfoToValue(const mojom::SwapInfoPtr& swap_info) {
+  base::DictValue dict;
   if (!swap_info) {
     return dict;
   }
@@ -505,7 +505,7 @@ base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info) {
   return dict;
 }
 
-mojom::SwapInfoPtr ValueToSwapInfo(const base::Value::Dict& value) {
+mojom::SwapInfoPtr ValueToSwapInfo(const base::DictValue& value) {
   auto swap_info = mojom::SwapInfo::New();
 
   const std::string* source_coin_str = value.FindString("source_coin");
@@ -887,8 +887,8 @@ std::vector<mojom::BlockchainTokenPtr> GetDefaultZCashAssets() {
   return user_assets_list;
 }
 
-base::Value::List GetDefaultUserAssets() {
-  base::Value::List user_assets_pref;
+base::ListValue GetDefaultUserAssets() {
+  base::ListValue user_assets_pref;
   for (auto& asset : GetDefaultEthereumAssets()) {
     user_assets_pref.Append(BlockchainTokenToValue(asset));
   }

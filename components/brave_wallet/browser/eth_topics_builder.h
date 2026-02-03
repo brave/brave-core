@@ -16,7 +16,7 @@ namespace brave_wallet {
 // to_account_addresses
 bool MakeAssetDiscoveryTopics(
     const std::vector<std::string>& to_account_addresses,
-    base::Value::List* topics);
+    base::ListValue* topics);
 
 }  // namespace brave_wallet
 

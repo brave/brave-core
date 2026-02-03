@@ -51,8 +51,8 @@ mojom::SolanaAccountMetaPtr SolanaAccountMeta::ToMojomSolanaAccountMeta()
                                        is_writable);
 }
 
-base::Value::Dict SolanaAccountMeta::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaAccountMeta::ToValue() const {
+  base::DictValue dict;
   dict.Set(kPubkey, pubkey);
   dict.Set(kIsSigner, is_signer);
   dict.Set(kIsWritable, is_writable);
@@ -65,7 +65,7 @@ base::Value::Dict SolanaAccountMeta::ToValue() const {
 
 // static
 std::optional<SolanaAccountMeta> SolanaAccountMeta::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   const std::string* pubkey = value.FindString(kPubkey);
   if (!pubkey) {
     return std::nullopt;

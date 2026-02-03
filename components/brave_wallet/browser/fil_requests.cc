@@ -34,9 +34,9 @@ std::string getEstimateGas(const std::string& from_address,
                            uint64_t nonce,
                            const std::string& max_fee,
                            const std::string& value) {
-  base::Value::List params;
+  base::ListValue params;
 
-  base::Value::Dict transaction;
+  base::DictValue transaction;
   transaction.Set("To", to_address);
   transaction.Set("From", from_address);
   transaction.Set("Value", value);
@@ -57,15 +57,15 @@ std::string getEstimateGas(const std::string& from_address,
   transaction.Set("Nonce", base::NumberToString(nonce));
   params.Append(std::move(transaction));
 
-  base::Value::Dict fee;
+  base::DictValue fee;
   fee.Set("MaxFee", max_fee.empty() ? "0" : max_fee);
   params.Append(std::move(fee));
 
-  base::Value::List cids;
+  base::ListValue cids;
   params.Append(std::move(cids));
 
   // TODO(cdesouza): This dictionary should be composed by GetJsonRpcDictionary.
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("jsonrpc", "2.0");
   dict.Set("method", "Filecoin.GasEstimateMessageGas");
   dict.Set("params", std::move(params));
@@ -82,7 +82,7 @@ std::string getChainHead() {
 }
 
 std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
-  base::Value::Dict cid_value;
+  base::DictValue cid_value;
   cid_value.Set("/", cid);
   auto result =
       GetJsonRpcString("Filecoin.StateSearchMsgLimited", std::move(cid_value),
@@ -92,7 +92,7 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
 }
 
 std::optional<std::string> getSendTransaction(const std::string& signed_tx) {
-  base::Value::List params;
+  base::ListValue params;
   auto signed_tx_value = FilTransaction::DeserializeSignedTx(signed_tx);
   if (!signed_tx_value) {
     return std::nullopt;
@@ -100,7 +100,7 @@ std::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   params.Append(std::move(signed_tx_value.value()));
 
   // TODO(cdesouza): This dictionary should be composed by GetJsonRpcDictionary.
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("jsonrpc", "2.0");
   dict.Set("method", "Filecoin.MpoolPush");
   dict.Set("params", std::move(params));

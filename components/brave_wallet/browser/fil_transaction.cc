@@ -153,8 +153,8 @@ std::optional<FilTransaction> FilTransaction::FromTxData(
   return tx;
 }
 
-base::Value::Dict FilTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue FilTransaction::ToValue() const {
+  base::DictValue dict;
   dict.Set("Nonce", nonce_ ? base::NumberToString(nonce_.value()) : "");
   dict.Set("GasPremium", gas_premium_);
   dict.Set("GasFeeCap", gas_fee_cap_);
@@ -167,7 +167,7 @@ base::Value::Dict FilTransaction::ToValue() const {
 
 // static
 std::optional<FilTransaction> FilTransaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   FilTransaction tx;
   const std::string* nonce_value = value.FindString("Nonce");
   if (!nonce_value) {
@@ -219,8 +219,7 @@ std::optional<FilTransaction> FilTransaction::FromValue(
   return tx;
 }
 
-base::Value::Dict FilTransaction::GetMessageToSign(
-    const FilAddress& from) const {
+base::DictValue FilTransaction::GetMessageToSign(const FilAddress& from) const {
   DCHECK(!from.IsEmpty());
 
   auto value = ToValue();
@@ -323,7 +322,7 @@ std::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
 }
 
 // static
-std::optional<base::Value::Dict> FilTransaction::DeserializeSignedTx(
+std::optional<base::DictValue> FilTransaction::DeserializeSignedTx(
     const std::string& signed_tx) {
   std::string json =
       json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true);
@@ -342,13 +341,13 @@ std::optional<std::string> FilTransaction::GetSignedTransaction(
       << from.protocol();
 
   auto message = GetMessageToSign(from);
-  base::Value::Dict signature_dict;
+  base::DictValue signature_dict;
   signature_dict.Set("Data", base::Base64Encode(signature));
   signature_dict.Set("Type",
                      from.protocol() == mojom::FilecoinAddressProtocol::BLS
                          ? BLSSigType
                          : ECDSASigType);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("Message", std::move(message));
   dict.Set("Signature", std::move(signature_dict));
   std::string json;

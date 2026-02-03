@@ -84,8 +84,8 @@ bool EthTxMeta::operator==(const EthTxMeta& meta) const {
          *tx_ == *meta.tx_;
 }
 
-base::Value::Dict EthTxMeta::ToValue() const {
-  base::Value::Dict dict = TxMeta::ToValue();
+base::DictValue EthTxMeta::ToValue() const {
+  base::DictValue dict = TxMeta::ToValue();
   dict.Set("tx_receipt", TransactionReceiptToValue(tx_receipt_));
   dict.Set("tx", tx_->ToValue());
   dict.Set("sign_only", sign_only_);

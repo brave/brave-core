@@ -610,12 +610,12 @@ TEST(PolkadotKeyring, MissingParts) {
   auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(valid_json.has_value());
 
-  // Parse the valid JSON into a base::Value::Dict
+  // Parse the valid JSON into a base::DictValue
   auto valid_dict = base::JSONReader::ReadDict(*valid_json, 0);
   ASSERT_TRUE(valid_dict.has_value());
 
   // Helper function to convert dict back to JSON string
-  auto dict_to_json = [](const base::Value::Dict& dict) -> std::string {
+  auto dict_to_json = [](const base::DictValue& dict) -> std::string {
     std::string json_string;
     base::JSONWriter::Write(dict, &json_string);
     return json_string;

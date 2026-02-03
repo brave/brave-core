@@ -28,7 +28,7 @@ namespace brave_wallet {
 
 namespace {
 
-bool ParseResultFromDict(const base::Value::Dict* response_dict,
+bool ParseResultFromDict(const base::DictValue* response_dict,
                          const std::string& key,
                          std::string* output_val) {
   auto* val = response_dict->FindString(key);
@@ -39,7 +39,7 @@ bool ParseResultFromDict(const base::Value::Dict* response_dict,
   return true;
 }
 
-bool ParseOptionalBoolFromDict(const base::Value::Dict* response_dict,
+bool ParseOptionalBoolFromDict(const base::DictValue* response_dict,
                                const std::string& key) {
   return response_dict->FindBool(key).value_or(false);
 }
@@ -78,8 +78,8 @@ std::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
   return std::nullopt;
 }
 
-std::optional<base::Value::Dict> ParseJsonToDict(const std::string& json) {
-  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
+std::optional<base::DictValue> ParseJsonToDict(const std::string& json) {
+  std::optional<base::DictValue> records_v = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -245,7 +245,7 @@ bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
   //   }
   // }
 
-  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> records_v = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -400,7 +400,7 @@ std::optional<RampTokenListMaps> ParseRampTokenListMaps(
   //   ]
   // }
 
-  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
+  std::optional<base::DictValue> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
@@ -425,7 +425,7 @@ std::optional<RampTokenListMaps> ParseRampTokenListMaps(
 
 std::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json) {
-  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
+  std::optional<base::DictValue> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
@@ -506,7 +506,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
     return false;
   }
 
-  const base::Value::List* chain_list = records_v->GetIfList();
+  const base::ListValue* chain_list = records_v->GetIfList();
   if (!chain_list) {
     return false;
   }
@@ -657,7 +657,7 @@ std::optional<DappListMap> ParseDappLists(const std::string& json) {
   //   ...
   // }
 
-  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
+  std::optional<base::DictValue> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
@@ -707,7 +707,7 @@ std::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   //   }
   // }
 
-  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
+  std::optional<base::DictValue> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
@@ -745,7 +745,7 @@ std::optional<std::vector<std::string>> ParseOfacAddressesList(
   //     ...
   //   ]
   // }
-  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
+  std::optional<base::DictValue> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }

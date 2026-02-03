@@ -335,7 +335,7 @@ bool IsDynamicType(const eth_abi::Type& type) {
 std::optional<DecoderResult<base::Value>> GetTupleFromData(
     const eth_abi::Type& type,
     ByteView input) {
-  base::Value::List result;
+  base::ListValue result;
   size_t consumed = 0;
   size_t dynamic_consumed = 0;
   for (const auto& child_type : type.tuple_types) {
@@ -405,7 +405,7 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
   }
 
   auto has_dynamic_child = IsDynamicType(*type.array_type);
-  base::Value::List result;
+  base::ListValue result;
 
   if (has_dynamic_child) {
     for (size_t i = 0; i < size; i++) {
@@ -508,8 +508,8 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   return path;
 }
 
-std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
-                                           base::span<const uint8_t> input) {
+std::optional<base::ListValue> ABIDecode(const eth_abi::Type& type,
+                                         base::span<const uint8_t> input) {
   auto decoded = DecodeParam(type, input);
   if (!decoded) {
     return std::nullopt;

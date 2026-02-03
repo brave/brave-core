@@ -120,7 +120,7 @@ std::optional<std::vector<uint8_t>> CompactArrayDecode(
                               bytes.begin() + *bytes_index);
 }
 
-std::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
+std::optional<uint8_t> GetUint8FromStringDict(const base::DictValue& dict,
                                               std::string_view key) {
   const std::string* string_value = dict.FindString(key);
   if (!string_value) {

@@ -30,7 +30,7 @@ std::unique_ptr<BitcoinTxMeta> BitcoinTxStateManager::GetBitcoinTx(
 }
 
 std::unique_ptr<BitcoinTxMeta> BitcoinTxStateManager::ValueToBitcoinTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   return std::unique_ptr<BitcoinTxMeta>{
       static_cast<BitcoinTxMeta*>(ValueToTxMeta(value).release())};
 }
@@ -40,13 +40,13 @@ mojom::CoinType BitcoinTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<TxMeta> BitcoinTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::unique_ptr<BitcoinTxMeta> meta = std::make_unique<BitcoinTxMeta>();
 
   if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
-  const base::Value::Dict* tx = value.FindDict("tx");
+  const base::DictValue* tx = value.FindDict("tx");
   if (!tx) {
     return nullptr;
   }

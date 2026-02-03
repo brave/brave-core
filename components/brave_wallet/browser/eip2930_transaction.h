@@ -40,10 +40,10 @@ class Eip2930Transaction : public EthTransaction {
                                                       uint256_t chain_id,
                                                       bool strict = true);
   static std::optional<Eip2930Transaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
-  static base::Value::List AccessListToValue(const AccessList&);
-  static std::optional<AccessList> ValueToAccessList(const base::Value::List&);
+  static base::ListValue AccessListToValue(const AccessList&);
+  static std::optional<AccessList> ValueToAccessList(const base::ListValue&);
 
   uint256_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
@@ -63,7 +63,7 @@ class Eip2930Transaction : public EthTransaction {
 
   bool IsSigned() const override;
 
-  base::Value::Dict ToValue() const override;
+  base::DictValue ToValue() const override;
 
   uint256_t GetDataFee() const override;
 

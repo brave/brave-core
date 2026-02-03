@@ -384,7 +384,7 @@ TEST(SolanaMessageUnitTest, ToSolanaTxData) {
 TEST(SolanaMessageUnitTest, FromToValue) {
   // legacy
   SolanaMessage message = GetTestLegacyMessage();
-  base::Value::Dict value = message.ToValue();
+  base::DictValue value = message.ToValue();
   auto expect_message_value = base::test::ParseJsonDict(R"(
     {
       "version": 0,
@@ -455,7 +455,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
       R"({"fee_payer": "fee payer", "instructions": []})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    base::Value::Dict invalid_value =
+    base::DictValue invalid_value =
         base::test::ParseJsonDict(invalid_value_string);
     EXPECT_FALSE(SolanaMessage::FromValue(invalid_value))
         << ":" << invalid_value_string;

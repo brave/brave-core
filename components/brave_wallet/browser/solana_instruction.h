@@ -16,10 +16,6 @@
 #include "brave/components/brave_wallet/browser/solana_instruction_decoded_data.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class SolanaAddress;
@@ -64,13 +60,13 @@ class SolanaInstruction {
   const std::vector<uint8_t>& data() const { return data_; }
 
   mojom::SolanaInstructionPtr ToMojomSolanaInstruction() const;
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 
   static void FromMojomSolanaInstructions(
       const std::vector<mojom::SolanaInstructionPtr>& mojom_instructions,
       std::vector<SolanaInstruction>* instructions);
   static std::optional<SolanaInstruction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
  private:
   std::string program_id_;

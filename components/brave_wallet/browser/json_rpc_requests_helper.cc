@@ -27,7 +27,7 @@ constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
 constexpr char kEthBlockNumber[] = "eth_blockNumber";
 
 std::optional<std::string> EthGetBlockByNumberParamsForCache(
-    const base::Value::List& params_list) {
+    const base::ListValue& params_list) {
   std::string cleaned_params;
   if (!base::JSONWriter::Write(params_list, &cleaned_params)) {
     return std::nullopt;
@@ -39,8 +39,8 @@ std::optional<std::string> EthGetBlockByNumberParamsForCache(
 
 namespace internal {
 
-base::Value::Dict ComposeRpcDict(std::string_view method) {
-  base::Value::Dict dict;
+base::DictValue ComposeRpcDict(std::string_view method) {
+  base::DictValue dict;
   dict.Set("jsonrpc", "2.0");
   dict.Set("method", method);
   // I don't think we need to use this param, but it is required,
@@ -57,7 +57,7 @@ std::string GetJSON(base::ValueView dict) {
   return json;
 }
 
-void AddKeyIfNotEmpty(base::Value::Dict* dict,
+void AddKeyIfNotEmpty(base::DictValue* dict,
                       std::string_view name,
                       std::string_view val) {
   if (!val.empty()) {
@@ -73,7 +73,7 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
                              : base::flat_map<std::string, std::string>();
 
   std::string id, method;
-  base::Value::List params_list;
+  base::ListValue params_list;
   // TODO(apaymyshev): `json_payload` should be `base::Value` so we don't have
   // to parse it again.
   if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params_list)) {
@@ -97,13 +97,13 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
 std::string EncodeAnkrGetAccountBalancesParams(
     const std::string& address,
     const std::vector<std::string>& blockchains) {
-  base::Value::Dict dict = internal::ComposeRpcDict("ankr_getAccountBalance");
+  base::DictValue dict = internal::ComposeRpcDict("ankr_getAccountBalance");
 
-  base::Value::Dict params;
+  base::DictValue params;
   params.Set("nativeFirst", true);
   params.Set("walletAddress", address);
 
-  base::Value::List blockchains_list;
+  base::ListValue blockchains_list;
   for (const auto& blockchain : blockchains) {
     blockchains_list.Append(blockchain);
   }

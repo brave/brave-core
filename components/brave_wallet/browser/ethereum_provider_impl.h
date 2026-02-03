@@ -66,7 +66,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void Web3ClientVersion(RequestCallback callback, base::Value id);
   std::optional<std::vector<std::string>> GetAllowedAccounts(
       bool include_accounts_when_locked);
-  void AddEthereumChain(base::Value::List params,
+  void AddEthereumChain(base::ListValue params,
                         RequestCallback callback,
                         base::Value id);
   void SwitchEthereumChain(const std::string& chain_id,
@@ -86,7 +86,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                       base::Value id);
 
   void EthSubscribe(const std::string& event_type,
-                    std::optional<base::Value::Dict> filter,
+                    std::optional<base::DictValue> filter,
                     RequestCallback callback,
                     base::Value id);
   void EthUnsubscribe(const std::string& subscription_id,
@@ -214,7 +214,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void Request(base::Value input, RequestCallback callback) override;
   void Enable(EnableCallback callback) override;
   void Send(const std::string& method,
-            base::Value::List params,
+            base::ListValue params,
             SendCallback callback) override;
   void SendAsync(base::Value input, SendAsyncCallback callback) override;
   void GetChainId(GetChainIdCallback callback) override;
@@ -269,7 +269,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       base::expected<base::Value, std::string> result);
   void SendOrSignTransactionInternal(RequestCallback callback,
                                      base::Value id,
-                                     const base::Value::List& params,
+                                     const base::ListValue& params,
                                      bool sign_only);
 
   // content_settings::Observer:

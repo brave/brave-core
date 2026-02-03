@@ -52,23 +52,22 @@ class FilTransaction {
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
 
   std::optional<std::string> GetMessageToSignJson(const FilAddress& from) const;
-  base::Value::Dict GetMessageToSign(const FilAddress& from) const;
+  base::DictValue GetMessageToSign(const FilAddress& from) const;
   std::optional<std::vector<uint8_t>> GetMessageToSignCBOR(
       const FilAddress& from) const;
   std::optional<std::array<uint8_t, kFilTransactionCidSize>> TransactionCid(
       const FilAddress& from) const;
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
   std::optional<std::string> GetSignedTransaction(
       const FilAddress& from,
       base::span<const uint8_t> signature) const;
-  static std::optional<FilTransaction> FromValue(
-      const base::Value::Dict& value);
+  static std::optional<FilTransaction> FromValue(const base::DictValue& value);
 
   // Deserializes JSON which contains value, provided by SignTransaction
   // Wraps uint64_t fields to string
-  static std::optional<base::Value::Dict> DeserializeSignedTx(
+  static std::optional<base::DictValue> DeserializeSignedTx(
       const std::string& signed_tx);
   // Finds signed tx JSON by path and converts some string fields to uint64 form
   static std::optional<std::string> ConvertMessageStringFieldsToInt64(

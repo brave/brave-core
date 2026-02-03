@@ -13,10 +13,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/origin.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class TxMeta {
@@ -26,7 +22,7 @@ class TxMeta {
 
   static std::string GenerateMetaID();
 
-  virtual base::Value::Dict ToValue() const;
+  virtual base::DictValue ToValue() const;
   virtual mojom::TransactionInfoPtr ToTransactionInfo() const = 0;
   virtual mojom::CoinType GetCoinType() const = 0;
 

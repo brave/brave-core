@@ -16,7 +16,7 @@ ScopedTxsUpdate::~ScopedTxsUpdate() {
   delegate_->ScheduleWrite();
 }
 
-base::Value::Dict& ScopedTxsUpdate::Get() {
+base::DictValue& ScopedTxsUpdate::Get() {
   return delegate_->GetTxs();
 }
 

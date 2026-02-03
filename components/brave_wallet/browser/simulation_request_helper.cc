@@ -23,8 +23,8 @@ namespace brave_wallet {
 
 namespace {
 
-base::Value::Dict GetMetadata(const mojom::OriginInfoPtr& origin_info) {
-  base::Value::Dict metadata_object;
+base::DictValue GetMetadata(const mojom::OriginInfoPtr& origin_info) {
+  base::DictValue metadata_object;
 
   if (origin_info && origin_info->origin_spec != "chrome://wallet" &&
       origin_info->origin_spec != "brave://wallet") {
@@ -47,7 +47,7 @@ namespace evm {
 std::optional<std::string> EncodeScanTransactionParams(
     const mojom::TransactionInfo& tx_info,
     const std::string& from_address) {
-  base::Value::Dict tx_object;
+  base::DictValue tx_object;
   tx_object.Set("from", from_address);
 
   if (tx_info.tx_data_union->is_eth_tx_data_1559()) {
@@ -113,9 +113,9 @@ std::optional<std::string> EncodeScanTransactionParams(
     return std::nullopt;
   }
 
-  base::Value::Dict params;
+  base::DictValue params;
 
-  base::Value::List tx_objects;
+  base::ListValue tx_objects;
   tx_objects.Append(std::move(tx_object));
   params.Set("txObjects", std::move(tx_objects));
   params.Set("metadata", GetMetadata(tx_info.origin_info));
@@ -203,7 +203,7 @@ void PopulateRecentBlockhash(mojom::TransactionInfo& tx_info,
 std::optional<std::string> EncodeScanTransactionParams(
     const mojom::SignSolTransactionsRequest& sign_sol_transactions_request,
     const std::string& from_address) {
-  base::Value::List transactions;
+  base::ListValue transactions;
   for (auto& tx_data : sign_sol_transactions_request.tx_datas) {
     auto serialized_tx = GetBase64TransactionFromSolanaTxData(tx_data.Clone());
     if (!serialized_tx) {
@@ -213,7 +213,7 @@ std::optional<std::string> EncodeScanTransactionParams(
     transactions.Append(*serialized_tx);
   }
 
-  base::Value::Dict params;
+  base::DictValue params;
   params.Set("transactions", std::move(transactions));
   params.Set("metadata",
              GetMetadata(std::move(sign_sol_transactions_request.origin_info)));
@@ -234,10 +234,10 @@ std::optional<std::string> EncodeScanTransactionParams(
     return std::nullopt;
   }
 
-  base::Value::List transactions;
+  base::ListValue transactions;
   transactions.Append(*serialized_tx);
 
-  base::Value::Dict params;
+  base::DictValue params;
   params.Set("transactions", std::move(transactions));
   params.Set("metadata", GetMetadata(tx_info.origin_info));
   params.Set("userAccount", from_address);

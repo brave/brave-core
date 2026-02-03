@@ -147,7 +147,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
                                               ->at(0)
                                               .As<network::DataElementBytes>()
                                               .AsStringPiece());
-          base::Value::Dict request_root =
+          base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
 
           std::string* method = request_root.FindString("method");
@@ -232,7 +232,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
                                               ->at(0)
                                               .As<network::DataElementBytes>()
                                               .AsStringPiece());
-          base::Value::Dict request_root =
+          base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
 
           std::string* method = request_root.FindString("method");

@@ -383,7 +383,7 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
 TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   // types won't matter here
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(base::Value::Dict(),
+      EthSignTypedDataHelper::Create(base::DictValue(),
                                      EthSignTypedDataHelper::Version::kV3);
   ASSERT_TRUE(helper);
 

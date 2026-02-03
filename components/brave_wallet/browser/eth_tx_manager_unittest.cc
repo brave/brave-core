@@ -198,7 +198,7 @@ class EthTxManagerUnitTest : public testing::Test {
                                               ->at(0)
                                               .As<network::DataElementBytes>()
                                               .AsStringPiece());
-          base::Value::Dict request_value = ParseJsonDict(request_string);
+          base::DictValue request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
 

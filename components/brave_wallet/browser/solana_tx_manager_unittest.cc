@@ -166,7 +166,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                               ->at(0)
                                               .As<network::DataElementBytes>()
                                               .AsStringPiece());
-          base::Value::Dict request_root =
+          base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
           auto* params = request_root.FindList("params");
           ASSERT_TRUE(params && !params->empty() && (*params)[0].is_string());
@@ -238,7 +238,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                               ->at(0)
                                               .As<network::DataElementBytes>()
                                               .AsStringPiece());
-          base::Value::Dict request_root =
+          base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
 
           std::string* method = request_root.FindString("method");
@@ -310,7 +310,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
               return;
             }
 
-            const base::Value::List* params_list =
+            const base::ListValue* params_list =
                 request_root.FindList("params");
             ASSERT_TRUE(params_list && (*params_list)[0].is_list());
             const std::string* hash =

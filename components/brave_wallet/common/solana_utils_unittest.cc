@@ -204,7 +204,7 @@ TEST(SolanaUtilsUnitTest, CompactArrayDecode) {
 }
 
 TEST(SolanaUtilsUnitTest, GetUint8FromStringDict) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("valid", base::NumberToString(UINT8_MAX));
   dict.Set("too_big", base::NumberToString(UINT8_MAX + 1));
   dict.Set("not_a_number", "HELLO");

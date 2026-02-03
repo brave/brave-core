@@ -20,12 +20,12 @@ namespace brave_wallet {
 
 namespace internal {
 
-base::Value::Dict ComposeRpcDict(std::string_view method);
+base::DictValue ComposeRpcDict(std::string_view method);
 
 }  // namespace internal
 
 template <typename T>
-base::Value::Dict GetJsonRpcDictionary(std::string_view method, T&& params) {
+base::DictValue GetJsonRpcDictionary(std::string_view method, T&& params) {
   auto dict = internal::ComposeRpcDict(method);
   dict.Set("params", std::move(params));
   return dict;
@@ -35,12 +35,12 @@ std::string GetJSON(base::ValueView dict);
 
 template <typename... Args>
 std::string GetJsonRpcString(std::string_view method, Args&&... args) {
-  base::Value::List params;
+  base::ListValue params;
   (params.Append(std::forward<Args&&>(args)), ...);
   return GetJSON(GetJsonRpcDictionary(method, std::move(params)));
 }
 
-void AddKeyIfNotEmpty(base::Value::Dict* dict,
+void AddKeyIfNotEmpty(base::DictValue* dict,
                       std::string_view name,
                       std::string_view val);
 

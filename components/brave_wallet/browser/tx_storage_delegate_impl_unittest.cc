@@ -61,7 +61,7 @@ TEST_F(TxStorageDelegateImplUnitTest, ReadWriteAndClear) {
   auto& txs = delegate->GetTxs();
   EXPECT_TRUE(txs.empty());
   txs.Set("key1", 123);
-  txs.Set("key2", base::Value::Dict().Set("nest", "brave"));
+  txs.Set("key2", base::DictValue().Set("nest", "brave"));
   delegate->ScheduleWrite();
   auto txs_from_db = GetTxsFromDB(delegate.get());
   ASSERT_TRUE(txs_from_db);

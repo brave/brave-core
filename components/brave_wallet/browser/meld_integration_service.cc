@@ -131,10 +131,10 @@ bool NeedsToParseResponse(const int http_error_code) {
 
 void FillCustomerData(
     const brave_wallet::mojom::CryptoWidgetCustomerDataPtr& customer_data,
-    base::Value::Dict& cbwr) {
+    base::DictValue& cbwr) {
   if (customer_data) {
     if (customer_data->customer) {
-      base::Value::Dict co;
+      base::DictValue co;
       co.Set("email", customer_data->customer->email);
       cbwr.Set("customer", std::move(co));
     }
@@ -154,20 +154,20 @@ void FillCustomerData(
   }
 }
 
-std::optional<base::Value::Dict> GetCryptoBuyWidgetPayload(
+std::optional<base::DictValue> GetCryptoBuyWidgetPayload(
     brave_wallet::mojom::CryptoBuySessionDataPtr session_data,
     brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data) {
   if (!session_data) {
     return std::nullopt;
   }
 
-  base::Value::Dict cbwr;
-  base::Value::Dict cbsd;
+  base::DictValue cbwr;
+  base::DictValue cbsd;
   cbsd.Set("countryCode", session_data->country_code);
   cbsd.Set("destinationCurrencyCode", session_data->destination_currency_code);
 
   if (session_data->lock_fields && session_data->lock_fields->size()) {
-    base::Value::List lfs;
+    base::ListValue lfs;
     for (const auto& fld : *session_data->lock_fields) {
       lfs.Append(fld);
     }
@@ -199,20 +199,20 @@ std::optional<base::Value::Dict> GetCryptoBuyWidgetPayload(
   return cbwr;
 }
 
-std::optional<base::Value::Dict> GetCryptoSellWidgetPayload(
+std::optional<base::DictValue> GetCryptoSellWidgetPayload(
     brave_wallet::mojom::CryptoSellSessionDataPtr session_data,
     brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data) {
   if (!session_data) {
     return std::nullopt;
   }
 
-  base::Value::Dict cbwr;
-  base::Value::Dict cbsd;
+  base::DictValue cbwr;
+  base::DictValue cbsd;
   cbsd.Set("countryCode", session_data->country_code);
   cbsd.Set("destinationCurrencyCode", session_data->destination_currency_code);
 
   if (session_data->lock_fields && session_data->lock_fields->size()) {
-    base::Value::List lfs;
+    base::ListValue lfs;
     for (const auto& fld : *session_data->lock_fields) {
       lfs.Append(fld);
     }
@@ -246,15 +246,15 @@ std::optional<base::Value::Dict> GetCryptoSellWidgetPayload(
   return cbwr;
 }
 
-std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
+std::optional<base::DictValue> GetCryptoTransferWidgetPayload(
     brave_wallet::mojom::CryptoTransferSessionDataPtr session_data,
     brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data) {
   if (!session_data) {
     return std::nullopt;
   }
 
-  base::Value::Dict cbwr;
-  base::Value::Dict cbsd;
+  base::DictValue cbwr;
+  base::DictValue cbsd;
 
   if (session_data->country_code) {
     cbsd.Set("countryCode", session_data->country_code.value());
@@ -265,7 +265,7 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
   }
 
   if (session_data->lock_fields && session_data->lock_fields->size()) {
-    base::Value::List lfs;
+    base::ListValue lfs;
     for (const auto& fld : *session_data->lock_fields) {
       lfs.Append(fld);
     }
@@ -282,7 +282,7 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
     cbsd.Set("sourceAmount", session_data->source_amount.value());
   }
 
-  base::Value::List source_currency_codes;
+  base::ListValue source_currency_codes;
   for (const auto& cc : session_data->source_currency_codes) {
     source_currency_codes.Append(cc);
   }
@@ -304,7 +304,7 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
   return cbwr;
 }
 
-std::string GetPayload(const std::optional<base::Value::Dict>& payload_value) {
+std::string GetPayload(const std::optional<base::DictValue>& payload_value) {
   if (!payload_value) {
     return "";
   }
@@ -408,7 +408,7 @@ void MeldIntegrationService::GetCryptoQuotes(
     const std::optional<std::string>& account,
     const std::optional<std::string>& payment_method,
     GetCryptoQuotesCallback callback) {
-  base::Value::Dict payload;
+  base::DictValue payload;
   AddKeyIfNotEmpty(&payload, "countryCode", country);
   AddKeyIfNotEmpty(&payload, "sourceCurrencyCode", source_currency_code);
   payload.Set("sourceAmount", source_amount);

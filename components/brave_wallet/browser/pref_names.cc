@@ -67,8 +67,8 @@ inline constexpr char kBraveWalletTransactions[] = "brave.wallet.transactions";
 inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
     "brave.wallet.transactions_db_format_migrated";
 
-base::Value::Dict GetDefaultSelectedNetworks() {
-  base::Value::Dict selected_networks;
+base::DictValue GetDefaultSelectedNetworks() {
+  base::DictValue selected_networks;
   selected_networks.Set(kEthereumPrefKey, mojom::kMainnetChainId);
   selected_networks.Set(kSolanaPrefKey, mojom::kSolanaMainnet);
   selected_networks.Set(kFilecoinPrefKey, mojom::kFilecoinMainnet);
@@ -78,50 +78,50 @@ base::Value::Dict GetDefaultSelectedNetworks() {
   return selected_networks;
 }
 
-base::Value::Dict GetDefaultSelectedNetworksPerOrigin() {
-  base::Value::Dict selected_networks;
-  selected_networks.Set(kEthereumPrefKey, base::Value::Dict());
-  selected_networks.Set(kSolanaPrefKey, base::Value::Dict());
-  selected_networks.Set(kFilecoinPrefKey, base::Value::Dict());
-  selected_networks.Set(kBitcoinPrefKey, base::Value::Dict());
-  selected_networks.Set(kZCashPrefKey, base::Value::Dict());
+base::DictValue GetDefaultSelectedNetworksPerOrigin() {
+  base::DictValue selected_networks;
+  selected_networks.Set(kEthereumPrefKey, base::DictValue());
+  selected_networks.Set(kSolanaPrefKey, base::DictValue());
+  selected_networks.Set(kFilecoinPrefKey, base::DictValue());
+  selected_networks.Set(kBitcoinPrefKey, base::DictValue());
+  selected_networks.Set(kZCashPrefKey, base::DictValue());
 
   return selected_networks;
 }
 
-base::Value::Dict GetDefaultHiddenNetworks() {
-  base::Value::Dict hidden_networks;
+base::DictValue GetDefaultHiddenNetworks() {
+  base::DictValue hidden_networks;
 
-  base::Value::List eth_hidden;
+  base::ListValue eth_hidden;
   eth_hidden.Append(mojom::kSepoliaChainId);
   eth_hidden.Append(mojom::kLocalhostChainId);
   eth_hidden.Append(mojom::kFilecoinEthereumTestnetChainId);
   hidden_networks.Set(kEthereumPrefKey, std::move(eth_hidden));
 
-  base::Value::List fil_hidden;
+  base::ListValue fil_hidden;
   fil_hidden.Append(mojom::kFilecoinTestnet);
   fil_hidden.Append(mojom::kLocalhostChainId);
   hidden_networks.Set(kFilecoinPrefKey, std::move(fil_hidden));
 
-  base::Value::List sol_hidden;
+  base::ListValue sol_hidden;
   sol_hidden.Append(mojom::kSolanaDevnet);
   sol_hidden.Append(mojom::kSolanaTestnet);
   sol_hidden.Append(mojom::kLocalhostChainId);
   hidden_networks.Set(kSolanaPrefKey, std::move(sol_hidden));
 
-  base::Value::List btc_hidden;
+  base::ListValue btc_hidden;
   btc_hidden.Append(mojom::kBitcoinTestnet);
   hidden_networks.Set(kBitcoinPrefKey, std::move(btc_hidden));
 
-  base::Value::List zec_hidden;
+  base::ListValue zec_hidden;
   zec_hidden.Append(mojom::kZCashTestnet);
   hidden_networks.Set(kZCashPrefKey, std::move(zec_hidden));
 
-  base::Value::List cardano_hidden;
+  base::ListValue cardano_hidden;
   cardano_hidden.Append(mojom::kCardanoTestnet);
   hidden_networks.Set(kCardanoPrefKey, std::move(cardano_hidden));
 
-  base::Value::List polkadot_hidden;
+  base::ListValue polkadot_hidden;
   polkadot_hidden.Append(mojom::kPolkadotTestnet);
   hidden_networks.Set(kPolkadotPrefKey, std::move(polkadot_hidden));
 

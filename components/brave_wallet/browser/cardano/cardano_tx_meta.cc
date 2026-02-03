@@ -49,8 +49,8 @@ bool CardanoTxMeta::operator==(const CardanoTxMeta& other) const {
 
 CardanoTxMeta::~CardanoTxMeta() = default;
 
-base::Value::Dict CardanoTxMeta::ToValue() const {
-  base::Value::Dict dict = TxMeta::ToValue();
+base::DictValue CardanoTxMeta::ToValue() const {
+  base::DictValue dict = TxMeta::ToValue();
   dict.Set("tx", tx_->ToValue());
   return dict;
 }

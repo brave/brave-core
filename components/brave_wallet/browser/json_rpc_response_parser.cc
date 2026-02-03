@@ -58,8 +58,7 @@ std::optional<base::Value> ParseResultValue(const base::Value& json_value) {
   return std::move(*response->result);
 }
 
-std::optional<base::Value::Dict> ParseResultDict(
-    const base::Value& json_value) {
+std::optional<base::DictValue> ParseResultDict(const base::Value& json_value) {
   auto result = ParseResultValue(json_value);
   if (!result || !result->is_dict()) {
     return std::nullopt;
@@ -68,8 +67,7 @@ std::optional<base::Value::Dict> ParseResultDict(
   return std::move(result->GetDict());
 }
 
-std::optional<base::Value::List> ParseResultList(
-    const base::Value& json_value) {
+std::optional<base::ListValue> ParseResultList(const base::Value& json_value) {
   auto result = ParseResultValue(json_value);
   if (!result || !result->is_list()) {
     return std::nullopt;
@@ -168,7 +166,7 @@ std::optional<std::string> ConvertInt64ToString(const std::string& path,
   return converted_json;
 }
 
-bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
+bool GetUint64FromDictValue(const base::DictValue& dict_value,
                             const std::string& key,
                             bool nullable,
                             uint64_t* ret) {

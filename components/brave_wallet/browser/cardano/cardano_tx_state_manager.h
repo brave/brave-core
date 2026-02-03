@@ -11,10 +11,6 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class TxMeta;
@@ -31,13 +27,12 @@ class CardanoTxStateManager : public TxStateManager {
 
   std::unique_ptr<CardanoTxMeta> GetCardanoTx(const std::string& id);
   std::unique_ptr<CardanoTxMeta> ValueToCardanoTxMeta(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
  private:
   mojom::CoinType GetCoinType() const override;
 
-  std::unique_ptr<TxMeta> ValueToTxMeta(
-      const base::Value::Dict& value) override;
+  std::unique_ptr<TxMeta> ValueToTxMeta(const base::DictValue& value) override;
 };
 
 }  // namespace brave_wallet

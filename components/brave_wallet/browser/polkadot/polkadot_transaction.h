@@ -19,9 +19,9 @@ struct PolkadotTransaction {
 
   PolkadotTransaction(PolkadotTransaction&&);
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<PolkadotTransaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   const PolkadotAddress& recipient() const { return recipient_; }
   void set_recipient(PolkadotAddress recipient) { recipient_ = recipient; }

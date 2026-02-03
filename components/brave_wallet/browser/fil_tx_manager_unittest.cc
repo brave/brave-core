@@ -42,9 +42,9 @@ namespace brave_wallet {
 namespace {
 std::string GetSignedMessage(const std::string& message,
                              const std::string& data) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("Message", "{message}");
-  base::Value::Dict signature;
+  base::DictValue signature;
   signature.Set("Data", data);
   signature.Set("Type", 1);
   dict.Set("Signature", std::move(signature));

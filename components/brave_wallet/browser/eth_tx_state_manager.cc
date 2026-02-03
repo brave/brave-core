@@ -30,7 +30,7 @@ std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(const std::string& id) {
 }
 
 std::unique_ptr<EthTxMeta> EthTxStateManager::ValueToEthTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   return std::unique_ptr<EthTxMeta>{
       static_cast<EthTxMeta*>(ValueToTxMeta(value).release())};
 }
@@ -40,14 +40,14 @@ mojom::CoinType EthTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::unique_ptr<EthTxMeta> meta = std::make_unique<EthTxMeta>();
 
   if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
 
-  const base::Value::Dict* tx_receipt = value.FindDict("tx_receipt");
+  const base::DictValue* tx_receipt = value.FindDict("tx_receipt");
   if (!tx_receipt) {
     return nullptr;
   }
@@ -58,7 +58,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
   }
   meta->set_tx_receipt(*tx_receipt_from_value);
 
-  const base::Value::Dict* tx = value.FindDict("tx");
+  const base::DictValue* tx = value.FindDict("tx");
   if (!tx) {
     return nullptr;
   }

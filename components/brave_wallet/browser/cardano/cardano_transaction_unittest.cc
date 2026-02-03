@@ -105,7 +105,7 @@ TEST(CardanoTransaction, TxWitness_Value) {
   EXPECT_EQ(parsed->public_key, witness.public_key);
   EXPECT_EQ(parsed->signature, witness.signature);
 
-  base::Value::Dict legacy_format;
+  base::DictValue legacy_format;
   legacy_format.Set(
       "witness_bytes",
       "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98"

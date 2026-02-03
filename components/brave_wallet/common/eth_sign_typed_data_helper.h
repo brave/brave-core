@@ -26,31 +26,31 @@ class EthSignTypedDataHelper {
  public:
   using Eip712HashArray = KeccakHashArray;
   enum class Version { kV3, kV4 };
-  static std::unique_ptr<EthSignTypedDataHelper> Create(base::Value::Dict types,
+  static std::unique_ptr<EthSignTypedDataHelper> Create(base::DictValue types,
                                                         Version version);
 
   ~EthSignTypedDataHelper();
   EthSignTypedDataHelper(const EthSignTypedDataHelper&) = delete;
   EthSignTypedDataHelper& operator=(const EthSignTypedDataHelper&) = delete;
 
-  void SetTypes(base::Value::Dict types);
+  void SetTypes(base::DictValue types);
   void SetVersion(Version version);
 
   Eip712HashArray GetTypeHash(const std::string_view primary_type_name) const;
-  std::optional<std::pair<Eip712HashArray, base::Value::Dict>> HashStruct(
+  std::optional<std::pair<Eip712HashArray, base::DictValue>> HashStruct(
       const std::string_view primary_type_name,
-      const base::Value::Dict& data) const;
-  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
+      const base::DictValue& data) const;
+  std::optional<std::pair<std::vector<uint8_t>, base::DictValue>> EncodeData(
       const std::string_view primary_type_name,
-      const base::Value::Dict& data) const;
+      const base::DictValue& data) const;
   static Eip712HashArray GetTypedDataMessageToSign(
       base::span<const uint8_t> domain_hash,
       base::span<const uint8_t> primary_hash);
-  std::optional<std::pair<Eip712HashArray, base::Value::Dict>>
+  std::optional<std::pair<Eip712HashArray, base::DictValue>>
   GetTypedDataPrimaryHash(const std::string& primary_type_name,
-                          const base::Value::Dict& message) const;
-  std::optional<std::pair<Eip712HashArray, base::Value::Dict>>
-  GetTypedDataDomainHash(const base::Value::Dict& domain) const;
+                          const base::DictValue& message) const;
+  std::optional<std::pair<Eip712HashArray, base::DictValue>>
+  GetTypedDataDomainHash(const base::DictValue& domain) const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypes);
@@ -59,7 +59,7 @@ class EthSignTypedDataHelper {
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeField);
 
-  explicit EthSignTypedDataHelper(base::Value::Dict types, Version version);
+  explicit EthSignTypedDataHelper(base::DictValue types, Version version);
 
   void FindAllDependencyTypes(
       base::flat_map<std::string, base::Value>* known_types,
@@ -71,7 +71,7 @@ class EthSignTypedDataHelper {
   std::optional<Eip712HashArray> EncodeField(const std::string_view type_string,
                                              const base::Value& value) const;
 
-  base::Value::Dict types_;
+  base::DictValue types_;
   Version version_;
 };
 

@@ -89,20 +89,20 @@ TEST(EthRequestUnitTest, GetTransactionReceiptPayload) {
 }
 
 TEST(EthRequestUnitTest, GetLogsPayload) {
-  base::Value::List topics;
+  base::ListValue topics;
   topics.Append(
       "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
-  base::Value::List sub_topics;
+  base::ListValue sub_topics;
   sub_topics.Append(
       "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
   sub_topics.Append(
       "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc");
   topics.Append(std::move(sub_topics));
 
-  base::Value::List addresses;
+  base::ListValue addresses;
   addresses.Append(base::Value("0x8888f1f195afa192cfee860698584c030f4c9db1"));
 
-  base::Value::Dict filtering;
+  base::DictValue filtering;
   filtering.Set("fromBlock", "0x1");
   filtering.Set("toBlock", "0x2");
   filtering.Set("address", std::move(addresses));

@@ -13,10 +13,6 @@
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class FilTransaction;
@@ -32,7 +28,7 @@ class FilTxMeta : public TxMeta {
   ~FilTxMeta() override;
 
   // TxMeta
-  base::Value::Dict ToValue() const override;
+  base::DictValue ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
   mojom::CoinType GetCoinType() const override;
 

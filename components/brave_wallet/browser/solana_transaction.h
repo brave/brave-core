@@ -37,10 +37,10 @@ class SolanaTransaction {
 
     bool operator==(const SolanaTransaction::SendOptions&) const;
 
-    static std::optional<SendOptions> FromValue(const base::Value::Dict& value);
+    static std::optional<SendOptions> FromValue(const base::DictValue& value);
     static std::optional<SendOptions> FromValue(
-        std::optional<base::Value::Dict> value);
-    base::Value::Dict ToValue() const;
+        std::optional<base::DictValue> value);
+    base::DictValue ToValue() const;
     static std::optional<SendOptions> FromMojomSendOptions(
         mojom::SolanaSendTransactionOptionsPtr mojom_options);
     mojom::SolanaSendTransactionOptionsPtr ToMojomSendOptions() const;
@@ -87,12 +87,12 @@ class SolanaTransaction {
   GetSerializedMessage() const;
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 
   static std::unique_ptr<SolanaTransaction> FromSolanaTxData(
       mojom::SolanaTxDataPtr solana_tx_data);
   static std::unique_ptr<SolanaTransaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
   static std::unique_ptr<SolanaTransaction> FromSignedTransactionBytes(
       const std::vector<uint8_t>& bytes);
 

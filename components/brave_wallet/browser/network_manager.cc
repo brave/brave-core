@@ -818,8 +818,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   NOTREACHED() << coin;
 }
 
-const base::Value::List* GetCustomNetworksList(PrefService* prefs,
-                                               mojom::CoinType coin) {
+const base::ListValue* GetCustomNetworksList(PrefService* prefs,
+                                             mojom::CoinType coin) {
   const auto& custom_networks = prefs->GetDict(kBraveWalletCustomNetworks);
   return custom_networks.FindList(GetPrefKeyForCoinType(coin));
 }
@@ -968,7 +968,7 @@ mojom::NetworkInfoPtr NetworkManager::GetKnownChain(std::string_view chain_id,
 
 mojom::NetworkInfoPtr NetworkManager::GetCustomChain(std::string_view chain_id,
                                                      mojom::CoinType coin) {
-  const base::Value::List* custom_list = GetCustomNetworksList(prefs_, coin);
+  const base::ListValue* custom_list = GetCustomNetworksList(prefs_, coin);
   if (!custom_list) {
     return nullptr;
   }
@@ -1062,7 +1062,7 @@ bool NetworkManager::KnownChainExists(std::string_view chain_id,
 
 bool NetworkManager::CustomChainExists(std::string_view custom_chain_id,
                                        mojom::CoinType coin) {
-  const base::Value::List* custom_list = GetCustomNetworksList(prefs_, coin);
+  const base::ListValue* custom_list = GetCustomNetworksList(prefs_, coin);
   if (!custom_list) {
     return false;
   }
@@ -1080,7 +1080,7 @@ bool NetworkManager::CustomChainExists(std::string_view custom_chain_id,
 std::vector<std::string> NetworkManager::CustomChainsExist(
     const std::vector<std::string>& custom_chain_ids,
     mojom::CoinType coin) {
-  const base::Value::List* custom_list = GetCustomNetworksList(prefs_, coin);
+  const base::ListValue* custom_list = GetCustomNetworksList(prefs_, coin);
   std::vector<std::string> existing_chain_ids;
 
   if (!custom_list) {
@@ -1226,7 +1226,7 @@ void NetworkManager::AddCustomNetwork(const mojom::NetworkInfo& chain) {
 void NetworkManager::RemoveCustomNetwork(std::string_view chain_id,
                                          mojom::CoinType coin) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-  base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
+  base::ListValue* list = update->FindList(GetPrefKeyForCoinType(coin));
   if (!list) {
     return;
   }
@@ -1268,7 +1268,7 @@ std::vector<std::string> NetworkManager::GetHiddenNetworks(
 void NetworkManager::AddHiddenNetwork(mojom::CoinType coin,
                                       std::string_view chain_id) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletHiddenNetworks);
-  base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
+  base::ListValue* list = update->EnsureList(GetPrefKeyForCoinType(coin));
   std::string chain_id_lower =
       MakeChainIdLowerCase(chain_id, ToLowerCaseReason::kAddHiddenNetwork);
   if (!base::Contains(*list, base::Value(chain_id_lower))) {
@@ -1279,7 +1279,7 @@ void NetworkManager::AddHiddenNetwork(mojom::CoinType coin,
 void NetworkManager::RemoveHiddenNetwork(mojom::CoinType coin,
                                          std::string_view chain_id) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletHiddenNetworks);
-  base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
+  base::ListValue* list = update->FindList(GetPrefKeyForCoinType(coin));
   if (!list) {
     return;
   }

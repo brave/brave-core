@@ -44,8 +44,7 @@ class EthTransaction {
   static std::optional<EthTransaction> FromTxData(
       const mojom::TxDataPtr& tx_data,
       bool strict = true);
-  static std::optional<EthTransaction> FromValue(
-      const base::Value::Dict& value);
+  static std::optional<EthTransaction> FromValue(const base::DictValue& value);
 
   uint8_t type() const { return type_; }
 
@@ -90,7 +89,7 @@ class EthTransaction {
 
   virtual bool IsSigned() const;
 
-  virtual base::Value::Dict ToValue() const;
+  virtual base::DictValue ToValue() const;
 
   // Minimum gas required (data fee + tx fee + contract creation fee)
   uint256_t GetBaseFee() const;

@@ -99,14 +99,13 @@ void MigrateDerivedAccountIndex(PrefService* profile_prefs) {
       mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kZCashTestnet};
 
   for (auto keyring_id : keyrings) {
-    base::Value::Dict* keyring_dict =
+    base::DictValue* keyring_dict =
         update->FindDict(KeyringIdPrefString(keyring_id));
     if (!keyring_dict) {
       continue;
     }
 
-    base::Value::Dict* account_metas_dict =
-        keyring_dict->FindDict(kAccountMetas);
+    base::DictValue* account_metas_dict = keyring_dict->FindDict(kAccountMetas);
 
     if (!account_metas_dict) {
       continue;
@@ -117,7 +116,7 @@ void MigrateDerivedAccountIndex(PrefService* profile_prefs) {
       account_metas_dict->clear();
     }
 
-    std::map<uint32_t, base::Value::Dict> new_accounts_map;
+    std::map<uint32_t, base::DictValue> new_accounts_map;
     for (auto acc_item : *account_metas_dict) {
       auto account_index = ExtractAccountIndex(keyring_id, acc_item.first);
       if (!account_index) {
@@ -127,12 +126,12 @@ void MigrateDerivedAccountIndex(PrefService* profile_prefs) {
         continue;
       }
 
-      base::Value::Dict new_account = acc_item.second.GetIfDict()->Clone();
+      base::DictValue new_account = acc_item.second.GetIfDict()->Clone();
       new_account.Set(kAccountIndex, base::NumberToString(*account_index));
       new_accounts_map[*account_index] = std::move(new_account);
     }
 
-    base::Value::List new_accounts;
+    base::ListValue new_accounts;
     for (auto& acc : new_accounts_map) {
       new_accounts.Append(std::move(acc.second));
     }

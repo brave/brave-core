@@ -29,8 +29,8 @@ bool TxMeta::operator==(const TxMeta& meta) const {
          swap_info_ == meta.swap_info_;
 }
 
-base::Value::Dict TxMeta::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue TxMeta::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("id", id_);
   dict.Set("status", static_cast<int>(status_));

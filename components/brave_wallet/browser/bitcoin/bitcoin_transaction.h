@@ -28,8 +28,8 @@ class BitcoinTransaction {
     bool operator==(const Outpoint& other) const;
     bool operator<(const Outpoint& other) const;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<Outpoint> FromValue(const base::DictValue& value);
 
     SHA256HashArray txid{};
     uint32_t index = 0;
@@ -45,8 +45,8 @@ class BitcoinTransaction {
     TxInput& operator=(TxInput&& other);
     bool operator==(const TxInput& other) const;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxInput> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxInput> FromValue(const base::DictValue& value);
 
     static std::optional<TxInput> FromRpcUtxo(
         const std::string& address,
@@ -100,8 +100,8 @@ class BitcoinTransaction {
     TxOutput& operator=(TxOutput&& other);
     bool operator==(const TxOutput& other) const;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxOutput> FromValue(const base::DictValue& value);
 
     TxOutputType type = TxOutputType::kTarget;
     std::string address;
@@ -117,9 +117,9 @@ class BitcoinTransaction {
   BitcoinTransaction& operator=(BitcoinTransaction&& other);
   bool operator==(const BitcoinTransaction& other) const;
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<BitcoinTransaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   // All inputs are signed.
   bool IsSigned() const;

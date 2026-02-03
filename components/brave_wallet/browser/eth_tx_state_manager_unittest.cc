@@ -97,7 +97,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
   meta.set_chain_id(mojom::kMainnetChainId);
 
-  base::Value::Dict meta_value = meta.ToValue();
+  base::DictValue meta_value = meta.ToValue();
   EXPECT_FALSE(meta_value.FindString("from"));
   const std::string* from_account_id = meta_value.FindString("from_account_id");
   ASSERT_TRUE(from_account_id);
@@ -138,7 +138,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   access_list->push_back(item_a);
 
   EthTxMeta meta1(eth_account_id, std::move(tx1));
-  base::Value::Dict value1 = meta1.ToValue();
+  base::DictValue value1 = meta1.ToValue();
   auto meta_from_value1 = eth_tx_state_manager_->ValueToEthTxMeta(value1);
   ASSERT_NE(meta_from_value1, nullptr);
   EXPECT_EQ(meta_from_value1->tx()->type(), 1);
@@ -164,7 +164,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
                   "0xb68a0aa00" /* Hex of 49 * 1e9 */,
                   "0xad8075b7a" /* Hex of 46574033786 */))));
   EthTxMeta meta2(eth_account_id, std::move(tx2));
-  base::Value::Dict value2 = meta2.ToValue();
+  base::DictValue value2 = meta2.ToValue();
   auto meta_from_value2 = eth_tx_state_manager_->ValueToEthTxMeta(value2);
   ASSERT_NE(meta_from_value2, nullptr);
   EXPECT_EQ(meta_from_value2->tx()->type(), 2);
@@ -180,7 +180,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
           std::vector<uint8_t>(), false, std::nullopt)));
   EthTxMeta meta3(eth_account_id, std::move(tx3));
   meta3.set_sign_only(true);
-  base::Value::Dict meta_value3 = meta3.ToValue();
+  base::DictValue meta_value3 = meta3.ToValue();
   auto meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);
   ASSERT_NE(meta_from_value3, nullptr);
   EXPECT_TRUE(meta_from_value3->sign_only());

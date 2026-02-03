@@ -18,10 +18,6 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
-namespace base {
-class Value;
-}  // namespace base
-
 class GURL;
 
 namespace brave_wallet {
@@ -49,13 +45,12 @@ void UpdateLastUnlockPref(PrefService* prefs);
 // created before, regardless of still existed or not.
 bool HasCreatedWallets(PrefService* prefs);
 
-base::Value::Dict TransactionReceiptToValue(
-    const TransactionReceipt& tx_receipt);
+base::DictValue TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
 std::optional<TransactionReceipt> ValueToTransactionReceipt(
-    const base::Value::Dict& value);
+    const base::DictValue& value);
 
-base::Value::Dict SwapInfoToValue(const mojom::SwapInfoPtr& swap_info);
-mojom::SwapInfoPtr ValueToSwapInfo(const base::Value::Dict& value);
+base::DictValue SwapInfoToValue(const mojom::SwapInfoPtr& swap_info);
+mojom::SwapInfoPtr ValueToSwapInfo(const base::DictValue& value);
 
 bool IsEndpointUsingBraveWalletProxy(const GURL& url);
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
@@ -105,7 +100,7 @@ bool SetAssetSPLTokenProgram(PrefService* prefs,
 bool SetAssetCompressed(PrefService* prefs,
                         const mojom::BlockchainTokenPtr& token);
 
-base::Value::List GetDefaultUserAssets();
+base::ListValue GetDefaultUserAssets();
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 

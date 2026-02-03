@@ -134,7 +134,7 @@ void SerializeHardwareAccounts(const std::string& device_id,
   for (const auto account : account_value->GetDict()) {
     DCHECK(account.second.is_dict());
     std::string address = account.first;
-    const base::Value::Dict& dict = account.second.GetDict();
+    const base::DictValue& dict = account.second.GetDict();
 
     mojom::HardwareVendor hardware_vendor = mojom::HardwareVendor::kLedger;
     const std::string* hardware_value = dict.FindString(kHardwareVendor);
@@ -205,7 +205,7 @@ struct ImportedAccountInfo {
                       std::string account_name,
                       std::optional<std::string> account_address,
                       uint32_t account_index,
-                      base::Value::Dict imported_private_key)
+                      base::DictValue imported_private_key)
       : keyring_id(keyring_id),
         account_name(std::move(account_name)),
         account_address(std::move(account_address)),
@@ -229,7 +229,7 @@ struct ImportedAccountInfo {
   }
 
   base::Value ToValue() const {
-    base::Value::Dict imported_account;
+    base::DictValue imported_account;
     imported_account.Set(kAccountName, account_name);
     if (account_address) {
       imported_account.Set(kAccountAddress, *account_address);
@@ -262,7 +262,7 @@ struct ImportedAccountInfo {
     const std::string* account_name = value_dict.FindString(kAccountName);
     const std::string* account_address = value_dict.FindString(kAccountAddress);
     const std::optional<int> account_index = value_dict.FindInt(kAccountIndex);
-    const base::Value::Dict* imported_private_key =
+    const base::DictValue* imported_private_key =
         value_dict.FindDict(kEncryptedPrivateKey);
     if (!account_name || !imported_private_key) {
       return std::nullopt;
@@ -302,7 +302,7 @@ struct ImportedAccountInfo {
   std::string account_name;
   std::optional<std::string> account_address;
   uint32_t account_index = 0;
-  base::Value::Dict imported_private_key;
+  base::DictValue imported_private_key;
   std::optional<uint32_t> bitcoin_next_receive_address_index;
   std::optional<uint32_t> bitcoin_next_change_address_index;
 };
@@ -312,7 +312,7 @@ std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
     PrefService* profile_prefs,
     mojom::KeyringId keyring_id) {
   std::vector<ImportedAccountInfo> result;
-  const base::Value::List* imported_accounts =
+  const base::ListValue* imported_accounts =
       GetPrefForKeyringList(profile_prefs, kImportedAccounts, keyring_id);
   if (!imported_accounts) {
     return result;
@@ -398,7 +398,7 @@ struct DerivedAccountInfo {
   }
 
   base::Value ToValue() const {
-    base::Value::Dict derived_account;
+    base::DictValue derived_account;
     derived_account.Set(kAccountIndex, base::NumberToString(account_index));
     derived_account.Set(kAccountName, account_name);
     derived_account.Set(kAccountAddress, account_address);
@@ -524,7 +524,7 @@ struct DerivedAccountInfo {
 std::vector<DerivedAccountInfo> GetDerivedAccountsForKeyring(
     PrefService* profile_prefs,
     mojom::KeyringId keyring_id) {
-  const base::Value::List* derived_accounts =
+  const base::ListValue* derived_accounts =
       GetPrefForKeyringList(profile_prefs, kAccountMetas, keyring_id);
   if (!derived_accounts) {
     return {};
@@ -815,7 +815,7 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
         !deprecated_imported_accounts->is_list()) {
       continue;
     }
-    base::Value::List imported_accounts =
+    base::ListValue imported_accounts =
         deprecated_imported_accounts->GetList().Clone();
     for (auto& imported_account : imported_accounts) {
       if (!imported_account.is_dict()) {
@@ -951,7 +951,7 @@ void MaybeMigrateToWalletMnemonic(PrefService* profile_prefs,
         !deprecated_imported_accounts->is_list()) {
       continue;
     }
-    base::Value::List imported_accounts =
+    base::ListValue imported_accounts =
         deprecated_imported_accounts->GetList().Clone();
     for (auto& imported_account : imported_accounts) {
       if (!imported_account.is_dict()) {
@@ -2047,7 +2047,7 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
     return accounts;
   }
 
-  const base::Value::Dict* keyring =
+  const base::DictValue* keyring =
       GetPrefForKeyringDict(profile_prefs_, kHardwareAccounts, keyring_id);
   if (!keyring) {
     return accounts;
@@ -2094,12 +2094,12 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
             : kTrezorPrefValue;
     const std::string& device_id = info->device_id;
 
-    base::Value::Dict hw_account;
+    base::DictValue hw_account;
     hw_account.Set(kAccountName, info->name);
     hw_account.Set(kHardwareVendor, hardware_vendor_string);
     hw_account.Set(kHardwareDerivationPath, info->derivation_path);
 
-    base::Value::Dict& hardware_keyrings = GetDictPrefForKeyringUpdate(
+    base::DictValue& hardware_keyrings = GetDictPrefForKeyringUpdate(
         keyrings_update, kHardwareAccounts, info->keyring_id);
 
     hardware_keyrings.EnsureDict(device_id)
@@ -2179,11 +2179,11 @@ bool KeyringService::RemoveHardwareAccountInternal(
   }
 
   ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
-  base::Value::Dict& hardware_keyrings = GetDictPrefForKeyringUpdate(
+  base::DictValue& hardware_keyrings = GetDictPrefForKeyringUpdate(
       keyrings_update, kHardwareAccounts, account_id.keyring_id);
   for (auto&& [id, device] : hardware_keyrings) {
     DCHECK(device.is_dict());
-    base::Value::Dict* account_metas = device.GetDict().FindDict(kAccountMetas);
+    base::DictValue* account_metas = device.GetDict().FindDict(kAccountMetas);
     if (!account_metas) {
       continue;
     }
@@ -2551,16 +2551,15 @@ bool KeyringService::SetHardwareAccountNameInternal(
   }
 
   ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
-  base::Value::Dict& hardware_keyrings = GetDictPrefForKeyringUpdate(
+  base::DictValue& hardware_keyrings = GetDictPrefForKeyringUpdate(
       keyrings_update, kHardwareAccounts, account_id.keyring_id);
   for (auto&& [id, device] : hardware_keyrings) {
     DCHECK(device.is_dict());
-    base::Value::Dict* account_metas = device.GetDict().FindDict(kAccountMetas);
+    base::DictValue* account_metas = device.GetDict().FindDict(kAccountMetas);
     if (!account_metas) {
       continue;
     }
-    base::Value::Dict* address_key =
-        account_metas->FindDict(account_id.address);
+    base::DictValue* address_key = account_metas->FindDict(account_id.address);
     if (!address_key) {
       continue;
     }
@@ -2920,8 +2919,7 @@ KeyringService::SignMessageByCardanoKeyring(
                                       message);
 }
 
-std::optional<base::Value::Dict>
-KeyringService::SignCip30MessageByCardanoKeyring(
+std::optional<base::DictValue> KeyringService::SignCip30MessageByCardanoKeyring(
     const mojom::AccountIdPtr& account_id,
     const mojom::CardanoKeyIdPtr& key_id,
     base::span<const uint8_t> message) {
@@ -2951,7 +2949,7 @@ KeyringService::SignCip30MessageByCardanoKeyring(
     return std::nullopt;
   }
 
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("key", base::HexEncodeLower(
                         CardanoCip30Serializer::SerializeSignedDataKey(
                             *cardano_address, signature_pair->pubkey)));
@@ -3052,7 +3050,7 @@ bool KeyringService::SetZCashAccountBirthday(
   CHECK(IsZCashAccount(account_id));
 
   ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
-  base::Value::List& account_metas = GetListPrefForKeyringUpdate(
+  base::ListValue& account_metas = GetListPrefForKeyringUpdate(
       keyrings_update, kAccountMetas, account_id->keyring_id);
   for (auto& item : account_metas) {
     if (auto derived_account =

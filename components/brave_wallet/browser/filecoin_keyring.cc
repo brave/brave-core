@@ -113,7 +113,7 @@ bool FilecoinKeyring::DecodeImportPayload(
   if (!base::HexStringToString(payload_hex, &key_payload)) {
     return false;
   }
-  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> records_v = base::JSONReader::ReadDict(
       key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {

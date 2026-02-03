@@ -519,7 +519,7 @@ void EnsResolverTask::FetchOffchainData() {
 
   std::string payload;
   if (!data_substituted) {
-    base::Value::Dict payload_dict;
+    base::DictValue payload_dict;
     payload_dict.Set("sender", offchain_lookup_data_->sender.ToHex());
     payload_dict.Set("data", ToHex(offchain_lookup_data_->call_data));
     base::JSONWriter::Write(payload_dict, &payload);

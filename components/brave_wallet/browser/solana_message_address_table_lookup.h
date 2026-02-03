@@ -39,9 +39,9 @@ class SolanaMessageAddressTableLookup {
       const std::vector<uint8_t>& bytes,
       size_t* bytes_index);
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<SolanaMessageAddressTableLookup> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
   static std::vector<mojom::SolanaMessageAddressTableLookupPtr> ToMojomArray(
       const std::vector<SolanaMessageAddressTableLookup>&
           address_table_lookups);

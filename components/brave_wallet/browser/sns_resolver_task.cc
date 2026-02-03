@@ -397,34 +397,34 @@ struct SplAccountData {
 // Make getProgramAccounts RPC call to find token account for mint. Filters by
 // token account data size, NFT amount eq to 1 and target mint address.
 std::string getProgramAccounts(const SolanaAddress& mint_token) {
-  base::Value::List params;
+  base::ListValue params;
   params.Append(mojom::kSolanaTokenProgramId);
 
-  base::Value::Dict configuration;
+  base::DictValue configuration;
   configuration.Set("commitment", "confirmed");
   configuration.Set("encoding", "base64");
 
   // Offsets are within this struct:
   // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L86
-  base::Value::List filters;
+  base::ListValue filters;
   // mint.
-  filters.Append(base::Value::Dict());
+  filters.Append(base::DictValue());
   filters.back().GetDict().SetByDottedPath("memcmp.offset", 0);
   filters.back().GetDict().SetByDottedPath("memcmp.bytes",
                                            mint_token.ToBase58());
   // amount.
-  filters.Append(base::Value::Dict());
+  filters.Append(base::DictValue());
   filters.back().GetDict().SetByDottedPath("memcmp.offset", 64);
   filters.back().GetDict().SetByDottedPath("memcmp.bytes",
                                            "2");  // base58 of 0x01
-  filters.Append(base::Value::Dict());
+  filters.Append(base::DictValue());
   // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L129
   filters.back().GetDict().Set("dataSize", 165);
   configuration.Set("filters", std::move(filters));
 
   params.Append(std::move(configuration));
 
-  base::Value::Dict dictionary =
+  base::DictValue dictionary =
       GetJsonRpcDictionary("getProgramAccounts", std::move(params));
   return GetJSON(dictionary);
 }

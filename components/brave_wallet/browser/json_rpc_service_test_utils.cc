@@ -66,10 +66,10 @@ std::string MakeJsonRpcErrorResponseWithData(int error,
 }
 
 std::string MakeJsonRpcValueResponse(const base::Value& value) {
-  base::Value::Dict response;
+  base::DictValue response;
   response.Set("jsonrpc", "2.0");
   response.Set("id", 1);
-  base::Value::Dict result;
+  base::DictValue result;
   result.SetByDottedPath("context.slot", 12345);
   result.Set("value", value.Clone());
   response.Set("result", std::move(result));
@@ -80,7 +80,7 @@ std::string MakeJsonRpcValueResponse(const base::Value& value) {
 }
 
 std::string MakeJsonRpcResultResponse(const base::Value& value) {
-  base::Value::Dict response;
+  base::DictValue response;
   response.Set("jsonrpc", "2.0");
   response.Set("id", 1);
   response.Set("result", value.Clone());

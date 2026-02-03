@@ -323,7 +323,7 @@ TEST(RLPEncodeTest, ComplexStructure) {
 }
 
 TEST(RLPEncodeTest, DictionaryValueNotSupported) {
-  base::Value::Dict d;
+  base::DictValue d;
   d.Set("test", true);
   ASSERT_TRUE(brave_wallet::RLPEncode(base::Value(std::move(d))).empty());
 }

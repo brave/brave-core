@@ -20,19 +20,16 @@
 
 namespace brave_wallet {
 
-std::optional<std::string> ExtractChainIdFromValue(
-    const base::Value::Dict* dict);
-base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& info);
+std::optional<std::string> ExtractChainIdFromValue(const base::DictValue* dict);
+base::DictValue NetworkInfoToValue(const mojom::NetworkInfo& info);
 mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value);
 mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value);
-base::Value::List PermissionRequestResponseToValue(
+base::ListValue PermissionRequestResponseToValue(
     const url::Origin& origin,
     const std::vector<std::string>& accounts);
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(
-    const base::Value::Dict& value);
-base::Value::Dict BlockchainTokenToValue(
-    const mojom::BlockchainTokenPtr& token);
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::DictValue& value);
+base::DictValue BlockchainTokenToValue(const mojom::BlockchainTokenPtr& token);
 
 // Returns index of the first URL to use that:
 // 1. Has no variables in it like ${INFURA_API_KEY}
@@ -40,12 +37,12 @@ base::Value::Dict BlockchainTokenToValue(
 // Otherwise returns 0.
 int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls);
 
-bool ReadUint32StringTo(const base::Value::Dict& dict,
+bool ReadUint32StringTo(const base::DictValue& dict,
                         std::string_view key,
                         uint32_t& to);
 
 template <class T>
-bool ReadDictTo(const base::Value::Dict& dict, std::string_view key, T& to) {
+bool ReadDictTo(const base::DictValue& dict, std::string_view key, T& to) {
   auto* key_dict = dict.FindDict(key);
   if (!key_dict) {
     return false;
@@ -59,7 +56,7 @@ bool ReadDictTo(const base::Value::Dict& dict, std::string_view key, T& to) {
 }
 
 template <size_t const T>
-bool ReadHexByteArrayTo(const base::Value::Dict& dict,
+bool ReadHexByteArrayTo(const base::DictValue& dict,
                         std::string_view key,
                         std::array<uint8_t, T>& to) {
   auto* str = dict.FindString(key);
@@ -83,15 +80,15 @@ bool ReadHexByteArrayTo(const base::Value::Dict& dict,
   return true;
 }
 
-bool ReadStringTo(const base::Value::Dict& dict,
+bool ReadStringTo(const base::DictValue& dict,
                   std::string_view key,
                   std::string& to);
 
-bool ReadUint64StringTo(const base::Value::Dict& dict,
+bool ReadUint64StringTo(const base::DictValue& dict,
                         std::string_view key,
                         uint64_t& to);
 
-bool ReadHexByteArrayTo(const base::Value::Dict& dict,
+bool ReadHexByteArrayTo(const base::DictValue& dict,
                         std::string_view key,
                         std::vector<uint8_t>& to);
 

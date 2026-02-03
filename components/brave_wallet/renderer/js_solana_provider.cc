@@ -303,7 +303,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
   }
 
   // Get base::Value arg to pass and ignore extra parameters
-  std::optional<base::Value::Dict> arg = std::nullopt;
+  std::optional<base::DictValue> arg = std::nullopt;
   v8::Local<v8::Value> v8_arg;
   if (arguments->Length() >= 1 && !arguments->GetNext(&v8_arg)) {
     arguments->ThrowTypeError(
@@ -379,7 +379,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     return v8::Local<v8::Promise>();
   }
 
-  std::optional<base::Value::Dict> send_options = std::nullopt;
+  std::optional<base::DictValue> send_options = std::nullopt;
   v8::Local<v8::Value> v8_send_options;
   if (arguments->Length() > 1 && !arguments->GetNext(&v8_send_options)) {
     arguments->ThrowTypeError(
@@ -681,7 +681,7 @@ void JSSolanaProvider::OnSignAndSendTransaction(
     v8::Isolate* isolate,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value::Dict result) {
+    base::DictValue result) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
@@ -706,7 +706,7 @@ void JSSolanaProvider::OnSignMessage(
     v8::Isolate* isolate,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value::Dict result) {
+    base::DictValue result) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
@@ -813,7 +813,7 @@ void JSSolanaProvider::OnRequest(
     const std::string& method,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value::Dict result) {
+    base::DictValue result) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),

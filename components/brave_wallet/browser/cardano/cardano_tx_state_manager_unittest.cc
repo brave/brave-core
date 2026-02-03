@@ -85,7 +85,7 @@ TEST_F(CardanoTxStateManagerUnitTest, CardanoTxMetaAndValue) {
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
   meta.set_chain_id(mojom::kCardanoTestnet);
 
-  base::Value::Dict meta_value = meta.ToValue();
+  base::DictValue meta_value = meta.ToValue();
   auto meta_from_value =
       cardano_tx_state_manager_->ValueToCardanoTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);

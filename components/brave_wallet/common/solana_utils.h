@@ -33,7 +33,7 @@ bool Uint8ArrayDecode(std::string_view str,
                       std::vector<uint8_t>* ret,
                       size_t len);
 
-std::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
+std::optional<uint8_t> GetUint8FromStringDict(const base::DictValue& dict,
                                               std::string_view key);
 
 // A compact-array is serialized as the array length, followed by each array

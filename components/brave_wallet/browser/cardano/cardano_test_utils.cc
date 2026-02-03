@@ -61,7 +61,7 @@ void CardanoTestRpcServer::RequestInterceptor(
     }
 
     if (utxos_map_.contains(*address)) {
-      base::Value::List items;
+      base::ListValue items;
       for (const auto& utxo : utxos_map_[*address]) {
         items.Append(utxo.ToValue());
       }

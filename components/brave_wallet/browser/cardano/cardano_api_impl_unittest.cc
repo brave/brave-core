@@ -385,7 +385,7 @@ TEST_F(CardanoApiImplTest, SignData_Approved) {
 
   SignMessageRequestWaiter waiter(brave_wallet_service());
 
-  TestFuture<std::optional<base::Value::Dict>,
+  TestFuture<std::optional<base::DictValue>,
              mojom::CardanoProviderErrorBundlePtr>
       future;
 
@@ -397,7 +397,7 @@ TEST_F(CardanoApiImplTest, SignData_Approved) {
   auto& signature = future.Get<0>();
   auto& error = future.Get<1>();
 
-  base::Value::Dict expected_signature;
+  base::DictValue expected_signature;
   expected_signature.Set(
       "key",
       "a50101025839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5"
@@ -437,7 +437,7 @@ TEST_F(CardanoApiImplTest, SignData_Rejected) {
 
   SignMessageRequestWaiter waiter(brave_wallet_service());
 
-  TestFuture<std::optional<base::Value::Dict>,
+  TestFuture<std::optional<base::DictValue>,
              mojom::CardanoProviderErrorBundlePtr>
       future;
 

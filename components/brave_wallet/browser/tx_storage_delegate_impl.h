@@ -36,8 +36,8 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
   TxStorageDelegateImpl& operator=(const TxStorageDelegateImpl&) = delete;
 
   bool IsInitialized() const override;
-  const base::Value::Dict& GetTxs() const override;
-  base::Value::Dict& GetTxs() override;
+  const base::DictValue& GetTxs() const override;
+  base::DictValue& GetTxs() override;
   void ScheduleWrite() override;
   void DisableWritesForTesting(bool disable);
 
@@ -72,7 +72,7 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
   // In memory txs which will be read during initialization from db and schedule
   // write to it when changed. We only hold 500 confirmed and 500 rejected
   // txs, once the limit is reached we will retire oldest entries.
-  base::Value::Dict txs_;
+  base::DictValue txs_;
 
   bool disable_writes_for_testing_ = false;
 

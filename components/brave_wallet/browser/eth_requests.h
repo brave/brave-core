@@ -62,7 +62,7 @@ std::string GetBlockByNumberPayload(std::string_view quantity_tag,
 // Returns the receipt of a transaction by transaction hash.
 std::string GetTransactionReceiptPayload(std::string_view transaction_hash);
 // Returns an array of all logs matching a given filter object.
-std::string GetLogsPayload(base::Value::Dict filter_options);
+std::string GetLogsPayload(base::DictValue filter_options);
 
 }  // namespace brave_wallet::eth
 

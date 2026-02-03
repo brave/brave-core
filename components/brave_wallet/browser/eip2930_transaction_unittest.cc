@@ -163,7 +163,7 @@ TEST(Eip2930TransactionUnitTest, Serialization) {
   item_a.storage_keys.push_back(storage_key_0);
   access_list->push_back(item_a);
 
-  base::Value::Dict tx_value = tx.ToValue();
+  base::DictValue tx_value = tx.ToValue();
   auto tx_from_value = Eip2930Transaction::FromValue(tx_value);
   ASSERT_NE(tx_from_value, std::nullopt);
   EXPECT_EQ(tx_from_value, tx);

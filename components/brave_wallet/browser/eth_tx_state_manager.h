@@ -12,10 +12,6 @@
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class TxMeta;
@@ -31,13 +27,12 @@ class EthTxStateManager : public TxStateManager {
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
   std::unique_ptr<EthTxMeta> GetEthTx(const std::string& id);
-  std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value::Dict& value);
+  std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::DictValue& value);
 
  private:
   mojom::CoinType GetCoinType() const override;
 
-  std::unique_ptr<TxMeta> ValueToTxMeta(
-      const base::Value::Dict& value) override;
+  std::unique_ptr<TxMeta> ValueToTxMeta(const base::DictValue& value) override;
 };
 
 }  // namespace brave_wallet

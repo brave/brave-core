@@ -36,8 +36,8 @@ bool EthLogsTracker::IsRunning() const {
 }
 
 void EthLogsTracker::AddSubscriber(const std::string& subscription_id,
-                                   base::Value::Dict filter) {
-  eth_logs_subscription_info_.insert(std::pair<std::string, base::Value::Dict>(
+                                   base::DictValue filter) {
+  eth_logs_subscription_info_.insert(std::pair<std::string, base::DictValue>(
       subscription_id, std::move(filter)));
 }
 

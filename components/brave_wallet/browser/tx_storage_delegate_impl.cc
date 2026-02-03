@@ -50,11 +50,11 @@ bool TxStorageDelegateImpl::IsInitialized() const {
   return initialized_;
 }
 
-const base::Value::Dict& TxStorageDelegateImpl::GetTxs() const {
+const base::DictValue& TxStorageDelegateImpl::GetTxs() const {
   return txs_;
 }
 
-base::Value::Dict& TxStorageDelegateImpl::GetTxs() {
+base::DictValue& TxStorageDelegateImpl::GetTxs() {
   return txs_;
 }
 

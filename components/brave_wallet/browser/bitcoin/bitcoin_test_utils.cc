@@ -240,7 +240,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
 
   if (auto address = IsAddressUtxoRequest(request)) {
     if (utxos_map_.contains(*address)) {
-      base::Value::List items;
+      base::ListValue items;
       for (auto& utxo : utxos_map_[*address]) {
         items.Append(utxo.ToValue());
       }

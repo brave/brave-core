@@ -31,19 +31,19 @@ mojom::CoinType FilTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<FilTxMeta> FilTxStateManager::ValueToFilTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   return std::unique_ptr<FilTxMeta>{
       static_cast<FilTxMeta*>(ValueToTxMeta(value).release())};
 }
 
 std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::unique_ptr<FilTxMeta> meta = std::make_unique<FilTxMeta>();
 
   if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
-  const base::Value::Dict* tx = value.FindDict("tx");
+  const base::DictValue* tx = value.FindDict("tx");
   if (!tx) {
     return nullptr;
   }

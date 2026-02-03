@@ -174,7 +174,7 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
 
 // static
 std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::optional<Eip2930Transaction> tx_2930 =
       Eip2930Transaction::FromValue(value);
   if (!tx_2930) {
@@ -202,7 +202,7 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   }
 
   GasEstimation estimation;
-  const base::Value::Dict* estimation_dict = value.FindDict("gas_estimation");
+  const base::DictValue* estimation_dict = value.FindDict("gas_estimation");
   if (estimation_dict) {
     const std::string* tx_slow_max_priority_fee_per_gas =
         estimation_dict->FindString("slow_max_priority_fee_per_gas");
@@ -276,7 +276,7 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
     uint256_t chain_id) const {
   DCHECK(nonce_);
 
-  base::Value::List list;
+  base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
@@ -307,15 +307,15 @@ std::string Eip1559Transaction::GetTransactionHash() const {
   return ToHex(KeccakHash(Serialize()));
 }
 
-base::Value::Dict Eip1559Transaction::ToValue() const {
-  base::Value::Dict tx = Eip2930Transaction::ToValue();
+base::DictValue Eip1559Transaction::ToValue() const {
+  base::DictValue tx = Eip2930Transaction::ToValue();
 
   tx.Set("max_priority_fee_per_gas",
          Uint256ValueToHex(max_priority_fee_per_gas_));
   tx.Set("max_fee_per_gas", Uint256ValueToHex(max_fee_per_gas_));
 
-  base::Value::Dict& estimation =
-      tx.Set("gas_estimation", base::Value::Dict())->GetDict();
+  base::DictValue& estimation =
+      tx.Set("gas_estimation", base::DictValue())->GetDict();
   estimation.Set(
       "slow_max_priority_fee_per_gas",
       Uint256ValueToHex(gas_estimation_.slow_max_priority_fee_per_gas));
@@ -342,7 +342,7 @@ bool Eip1559Transaction::VIsRecid() const {
 }
 
 std::vector<uint8_t> Eip1559Transaction::Serialize() const {
-  base::Value::List list;
+  base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));

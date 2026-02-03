@@ -16,8 +16,8 @@ class TxStorageDelegate {
   virtual ~TxStorageDelegate() = default;
 
   virtual bool IsInitialized() const = 0;
-  virtual const base::Value::Dict& GetTxs() const = 0;
-  virtual base::Value::Dict& GetTxs() = 0;
+  virtual const base::DictValue& GetTxs() const = 0;
+  virtual base::DictValue& GetTxs() = 0;
   virtual void ScheduleWrite() = 0;
 
   class Observer : public base::CheckedObserver {

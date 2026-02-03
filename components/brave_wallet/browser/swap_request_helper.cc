@@ -55,7 +55,7 @@ std::optional<std::string> GetFeeAccount(const std::string& output_mint) {
 
 std::optional<std::string> EncodeTransactionParams(
     const mojom::JupiterTransactionParams& params) {
-  base::Value::Dict tx_params;
+  base::DictValue tx_params;
 
   // The code below does the following two things:
   //   - compute the ATA address that should be used to receive fees
@@ -78,19 +78,19 @@ std::optional<std::string> EncodeTransactionParams(
 
   // Ref:
   // https://station.jup.ag/docs/apis/landing-transactions#an-example-of-how-jupiter-estimates-priority-fees
-  base::Value::Dict priority_level_with_max_lamports;
+  base::DictValue priority_level_with_max_lamports;
   priority_level_with_max_lamports.Set("maxLamports", 4000000);
   priority_level_with_max_lamports.Set("global", false);
   priority_level_with_max_lamports.Set("priorityLevel", "high");
 
-  base::Value::Dict prioritization_fee_lamports;
+  base::DictValue prioritization_fee_lamports;
   prioritization_fee_lamports.Set("priorityLevelWithMaxLamports",
                                   std::move(priority_level_with_max_lamports));
 
   tx_params.Set("prioritizationFeeLamports",
                 std::move(prioritization_fee_lamports));
 
-  base::Value::Dict quote;
+  base::DictValue quote;
   quote.Set("inputMint", params.quote->input_mint);
   quote.Set("inAmount", params.quote->in_amount);
   quote.Set("outputMint", params.quote->output_mint);
@@ -101,7 +101,7 @@ std::optional<std::string> EncodeTransactionParams(
   quote.Set("priceImpactPct", params.quote->price_impact_pct);
 
   if (params.quote->platform_fee) {
-    base::Value::Dict platform_fee;
+    base::DictValue platform_fee;
     platform_fee.Set("amount", params.quote->platform_fee->amount);
     platform_fee.Set("feeBps", params.quote->platform_fee->fee_bps);
     quote.Set("platformFee", std::move(platform_fee));
@@ -109,12 +109,12 @@ std::optional<std::string> EncodeTransactionParams(
     quote.Set("platformFee", base::Value());
   }
 
-  base::Value::List route_plan_value;
+  base::ListValue route_plan_value;
   for (const auto& step : params.quote->route_plan) {
-    base::Value::Dict step_value;
+    base::DictValue step_value;
     step_value.Set("percent", step->percent);
 
-    base::Value::Dict swap_info_value;
+    base::DictValue swap_info_value;
     swap_info_value.Set("ammKey", step->swap_info->amm_key);
     swap_info_value.Set("label", step->swap_info->label);
     swap_info_value.Set("inputMint", step->swap_info->input_mint);
@@ -136,7 +136,7 @@ std::optional<std::string> EncodeTransactionParams(
 
   tx_params.Set("quoteResponse", std::move(quote));
 
-  // FIXME - GetJSON should be refactored to accept a base::Value::Dict
+  // FIXME - GetJSON should be refactored to accept a base::DictValue
   std::string result = GetJSON(base::Value(std::move(tx_params)));
 
   result = json::convert_string_value_to_uint64("/quoteResponse/slippageBps",
@@ -179,18 +179,18 @@ std::optional<std::string> EncodeChainId(const std::string& value) {
   return base::NumberToString(static_cast<uint64_t>(val));
 }
 
-base::Value::Dict EncodeToolDetails(
+base::DictValue EncodeToolDetails(
     const mojom::LiFiToolDetailsPtr& tool_details) {
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("key", tool_details->key);
   result.Set("name", tool_details->name);
   result.Set("logoURI", tool_details->logo);
   return result;
 }
 
-std::optional<base::Value::Dict> EncodeToken(
+std::optional<base::DictValue> EncodeToken(
     const mojom::BlockchainTokenPtr& token) {
-  base::Value::Dict result;
+  base::DictValue result;
 
   if (token->contract_address.empty()) {
     result.Set("address", token->coin == mojom::CoinType::SOL
@@ -228,8 +228,8 @@ std::string EncodeStepType(const mojom::LiFiStepType type) {
   NOTREACHED();
 }
 
-std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
-  base::Value::Dict result;
+std::optional<base::DictValue> EncodeStepAction(mojom::LiFiActionPtr action) {
+  base::DictValue result;
 
   if (auto chain_id = EncodeChainId(action->from_token->chain_id)) {
     result.Set("fromChainId", *chain_id);
@@ -279,9 +279,9 @@ std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
   return result;
 }
 
-std::optional<base::Value::Dict> EncodeStepEstimate(
+std::optional<base::DictValue> EncodeStepEstimate(
     mojom::LiFiStepEstimatePtr estimate) {
-  base::Value::Dict result;
+  base::DictValue result;
 
   result.Set("tool", estimate->tool);
   result.Set("fromAmount", estimate->from_amount);
@@ -297,9 +297,9 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
   }
 
   if (estimate->fee_costs) {
-    base::Value::List fee_costs_value;
+    base::ListValue fee_costs_value;
     for (const auto& fee_cost : *estimate->fee_costs) {
-      base::Value::Dict fee_cost_value;
+      base::DictValue fee_cost_value;
       fee_cost_value.Set("name", fee_cost->name);
       fee_cost_value.Set("description", fee_cost->description);
       fee_cost_value.Set("amount", fee_cost->amount);
@@ -320,9 +320,9 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
     result.Set("feeCosts", std::move(fee_costs_value));
   }
 
-  base::Value::List gas_costs_value;
+  base::ListValue gas_costs_value;
   for (const auto& gas_cost : estimate->gas_costs) {
-    base::Value::Dict gas_cost_value;
+    base::DictValue gas_cost_value;
     gas_cost_value.Set("type", gas_cost->type);
     gas_cost_value.Set("estimate", gas_cost->estimate);
     gas_cost_value.Set("limit", gas_cost->limit);
@@ -345,8 +345,8 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
   return result;
 }
 
-std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
-  base::Value::Dict result;
+std::optional<base::DictValue> EncodeStep(mojom::LiFiStepPtr step) {
+  base::DictValue result;
   result.Set("id", step->id);
   result.Set("type", EncodeStepType(step->type));
   result.Set("tool", step->tool);
@@ -373,7 +373,7 @@ std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
     return result;
   }
 
-  base::Value::List included_steps_value;
+  base::ListValue included_steps_value;
   for (auto& included_step : *step->included_steps) {
     if (auto included_step_value = EncodeStep(std::move(included_step))) {
       included_steps_value.Append(std::move(*included_step_value));
@@ -391,7 +391,7 @@ std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
 std::optional<std::string> EncodeQuoteParams(
     mojom::SwapQuoteParamsPtr params,
     const std::optional<std::string>& fee_param) {
-  base::Value::Dict result;
+  base::DictValue result;
 
   if (auto chain_id = EncodeChainId(params->from_chain_id)) {
     result.Set("fromChainId", *chain_id);
@@ -423,7 +423,7 @@ std::optional<std::string> EncodeQuoteParams(
   result.Set("toAddress", params->to_account_id->address);
   result.Set("allowDestinationCall", true);
 
-  base::Value::Dict options;
+  base::DictValue options;
   options.Set("insurance", true);
   options.Set("integrator", kLiFiIntegratorID);
   options.Set("allowSwitchChain", false);
@@ -530,7 +530,7 @@ std::optional<std::string> EncodeRoutePriority(
 }  // namespace
 
 std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
-  base::Value::Dict result;
+  base::DictValue result;
 
   // Source coin type from account
   auto source_coin = EncodeCoinType(params->from_account_id->coin);
@@ -585,7 +585,7 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
 
 std::optional<std::string> EncodeStatusParams(
     mojom::Gate3SwapStatusParamsPtr params) {
-  base::Value::Dict result;
+  base::DictValue result;
 
   result.Set("routeId", params->route_id);
   result.Set("txHash", params->tx_hash);

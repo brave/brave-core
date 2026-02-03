@@ -48,8 +48,8 @@ bool BitcoinTxMeta::operator==(const BitcoinTxMeta& other) const {
 
 BitcoinTxMeta::~BitcoinTxMeta() = default;
 
-base::Value::Dict BitcoinTxMeta::ToValue() const {
-  base::Value::Dict dict = TxMeta::ToValue();
+base::DictValue BitcoinTxMeta::ToValue() const {
+  base::DictValue dict = TxMeta::ToValue();
   dict.Set("tx", tx_->ToValue());
   return dict;
 }

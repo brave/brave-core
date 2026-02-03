@@ -28,7 +28,7 @@ using ::testing::Optional;
 
 namespace brave_wallet {
 namespace {
-base::Value::List ParseParamsList(const std::string& json) {
+base::ListValue ParseParamsList(const std::string& json) {
   return std::move(*ParseJsonDict(json).FindList("params"));
 }
 }  // namespace
@@ -497,7 +497,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   })";
   base::Value id;
   std::string method;
-  base::Value::List params;
+  base::ListValue params;
   EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value("1"));
   EXPECT_EQ(method, "eth_blockNumber");
@@ -1131,7 +1131,7 @@ TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
   EXPECT_THAT(ParseRequestPermissionsParams(ParseParamsList(json)),
               Optional(base::flat_set<std::string>()));
 
-  EXPECT_FALSE(ParseRequestPermissionsParams(base::Value::List()));
+  EXPECT_FALSE(ParseRequestPermissionsParams(base::ListValue()));
   EXPECT_FALSE(
       ParseRequestPermissionsParams(ParseParamsList(R"({ "params": [5] })")));
   EXPECT_FALSE(

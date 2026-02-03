@@ -499,8 +499,8 @@ mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
   return solana_tx_data;
 }
 
-base::Value::Dict SolanaMessage::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaMessage::ToValue() const {
+  base::DictValue dict;
 
   dict.Set(kVersion, static_cast<int32_t>(version_));
   dict.Set(kRecentBlockhash, recent_blockhash_);
@@ -509,19 +509,19 @@ base::Value::Dict SolanaMessage::ToValue() const {
   dict.Set(kFeePayer, fee_payer_);
   dict.Set(kMessageHeader, message_header_.ToValue());
 
-  base::Value::List static_account_key_list;
+  base::ListValue static_account_key_list;
   for (const auto& static_account_key : static_account_keys_) {
     static_account_key_list.Append(static_account_key.ToBase58());
   }
   dict.Set(kStaticAccountKeys, std::move(static_account_key_list));
 
-  base::Value::List instruction_list;
+  base::ListValue instruction_list;
   for (const auto& instruction : instructions_) {
     instruction_list.Append(instruction.ToValue());
   }
   dict.Set(kInstructions, std::move(instruction_list));
 
-  base::Value::List address_table_lookup_list;
+  base::ListValue address_table_lookup_list;
   for (const auto& address_table_lookup : address_table_lookups_) {
     address_table_lookup_list.Append(address_table_lookup.ToValue());
   }
@@ -532,7 +532,7 @@ base::Value::Dict SolanaMessage::ToValue() const {
 
 // static
 std::optional<SolanaMessage> SolanaMessage::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   auto version = value.FindInt(kVersion);
   if (!version || !mojom::IsKnownEnumValue(
                       static_cast<mojom::SolanaMessageVersion>(*version))) {
@@ -558,7 +558,7 @@ std::optional<SolanaMessage> SolanaMessage::FromValue(
     return std::nullopt;
   }
 
-  const base::Value::Dict* message_header_dict = value.FindDict(kMessageHeader);
+  const base::DictValue* message_header_dict = value.FindDict(kMessageHeader);
   if (!message_header_dict) {
     return std::nullopt;
   }
@@ -567,7 +567,7 @@ std::optional<SolanaMessage> SolanaMessage::FromValue(
     return std::nullopt;
   }
 
-  const base::Value::List* static_account_key_list =
+  const base::ListValue* static_account_key_list =
       value.FindList(kStaticAccountKeys);
   if (!static_account_key_list) {
     return std::nullopt;
@@ -585,7 +585,7 @@ std::optional<SolanaMessage> SolanaMessage::FromValue(
     static_account_keys.emplace_back(*address);
   }
 
-  const base::Value::List* instruction_list = value.FindList(kInstructions);
+  const base::ListValue* instruction_list = value.FindList(kInstructions);
   if (!instruction_list) {
     return std::nullopt;
   }
@@ -603,7 +603,7 @@ std::optional<SolanaMessage> SolanaMessage::FromValue(
     instructions.emplace_back(std::move(instruction.value()));
   }
 
-  const base::Value::List* address_table_lookup_list =
+  const base::ListValue* address_table_lookup_list =
       value.FindList(kAddressTableLookups);
   if (!address_table_lookup_list) {
     return std::nullopt;
@@ -632,7 +632,7 @@ std::optional<SolanaMessage> SolanaMessage::FromValue(
 
 // static
 std::optional<SolanaMessage> SolanaMessage::FromDeprecatedLegacyValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   const std::string* recent_blockhash = value.FindString(kRecentBlockhash);
   if (!recent_blockhash) {
     return std::nullopt;
@@ -652,7 +652,7 @@ std::optional<SolanaMessage> SolanaMessage::FromDeprecatedLegacyValue(
     return std::nullopt;
   }
 
-  const base::Value::List* instruction_list = value.FindList(kInstructions);
+  const base::ListValue* instruction_list = value.FindList(kInstructions);
   if (!instruction_list) {
     return std::nullopt;
   }

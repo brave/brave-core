@@ -13,8 +13,8 @@ PolkadotTransaction::PolkadotTransaction() = default;
 PolkadotTransaction::~PolkadotTransaction() = default;
 PolkadotTransaction::PolkadotTransaction(PolkadotTransaction&&) = default;
 
-base::Value::Dict PolkadotTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue PolkadotTransaction::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("amount", base::HexEncodeLower(base::byte_span_from_ref(amount_)));
   dict.Set("fee", base::HexEncodeLower(base::byte_span_from_ref(fee_)));
@@ -29,7 +29,7 @@ base::Value::Dict PolkadotTransaction::ToValue() const {
 
 // static
 std::optional<PolkadotTransaction> PolkadotTransaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   uint128_t amount = 0;
   uint128_t fee = 0;
   bool transfer_all = false;

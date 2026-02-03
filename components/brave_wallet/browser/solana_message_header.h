@@ -23,9 +23,9 @@ struct SolanaMessageHeader {
   ~SolanaMessageHeader() = default;
   bool operator==(const SolanaMessageHeader&) const;
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<SolanaMessageHeader> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
   mojom::SolanaMessageHeaderPtr ToMojom() const;
   static SolanaMessageHeader FromMojom(
       const mojom::SolanaMessageHeaderPtr& mojom_msg_header);

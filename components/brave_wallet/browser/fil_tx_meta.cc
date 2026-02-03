@@ -30,8 +30,8 @@ bool FilTxMeta::operator==(const FilTxMeta& meta) const {
   return TxMeta::operator==(meta) && *tx_ == *meta.tx_;
 }
 
-base::Value::Dict FilTxMeta::ToValue() const {
-  base::Value::Dict dict = TxMeta::ToValue();
+base::DictValue FilTxMeta::ToValue() const {
+  base::DictValue dict = TxMeta::ToValue();
   dict.Set("tx", tx_->ToValue());
   return dict;
 }

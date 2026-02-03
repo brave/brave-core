@@ -51,7 +51,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
   void Init(mojo::PendingRemote<mojom::SolanaEventsListener> events_listener)
       override;
-  void Connect(std::optional<base::Value::Dict> arg,
+  void Connect(std::optional<base::DictValue> arg,
                ConnectCallback callback) override;
   void Disconnect() override;
   void IsConnected(IsConnectedCallback callback) override;
@@ -62,12 +62,12 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       std::vector<mojom::SolanaSignTransactionParamPtr> params,
       SignAllTransactionsCallback callback) override;
   void SignAndSendTransaction(mojom::SolanaSignTransactionParamPtr param,
-                              std::optional<base::Value::Dict> send_options,
+                              std::optional<base::DictValue> send_options,
                               SignAndSendTransactionCallback callback) override;
   void SignMessage(const std::vector<uint8_t>& blob_msg,
                    const std::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override;
-  void Request(base::Value::Dict arg, RequestCallback callback) override;
+  void Request(base::DictValue arg, RequestCallback callback) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
@@ -164,7 +164,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       sign_and_send_tx_callbacks_;
   // Pending callback and arg are for waiting user unlock before connect
   ConnectCallback pending_connect_callback_;
-  std::optional<base::Value::Dict> pending_connect_arg_;
+  std::optional<base::DictValue> pending_connect_arg_;
 
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   bool account_creation_shown_ = false;

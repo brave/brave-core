@@ -80,7 +80,7 @@ std::vector<uint8_t> RLPEncode(const base::Value& val) {
   return {};
 }
 
-std::vector<uint8_t> RLPEncode(const base::Value::List& val) {
+std::vector<uint8_t> RLPEncode(const base::ListValue& val) {
   std::vector<uint8_t> items_encoded;
   for (auto& item : val) {
     base::Extend(items_encoded, RLPEncode(item));

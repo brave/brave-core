@@ -542,7 +542,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   fee_estimation->fee_per_compute_unit = 25;
   transaction.set_fee_estimation(std::move(fee_estimation));
 
-  base::Value::Dict value = transaction.ToValue();
+  base::DictValue value = transaction.ToValue();
   auto expect_tx_value = base::test::ParseJson(R"(
       {
         "message": {

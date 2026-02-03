@@ -276,8 +276,8 @@ decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
 }
 
 // Retrieves a custom network dict from the preferences based on the chain ID.
-// This function is templated to work with both base::Value::Dict as well as
-// const base::Value::Dict types, for read/write and read-only access
+// This function is templated to work with both base::DictValue as well as
+// const base::DictValue types, for read/write and read-only access
 // respectively.
 template <typename T>
 T* GetCustomEVMNetworkFromPrefsDict(const std::string& chain_id,
@@ -2355,7 +2355,7 @@ void JsonRpcService::GetERC1155TokenBalance(
 }
 
 void JsonRpcService::EthGetLogs(const std::string& chain_id,
-                                base::Value::Dict filter_options,
+                                base::DictValue filter_options,
                                 EthGetLogsCallback callback) {
   auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {

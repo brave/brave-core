@@ -34,8 +34,8 @@ class CardanoTransaction {
     Outpoint& operator=(Outpoint&& other);
     auto operator<=>(const Outpoint& other) const = default;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<Outpoint> FromValue(const base::DictValue& value);
 
     std::array<uint8_t, kCardanoTxHashSize> txid = {};
     uint32_t index = 0;
@@ -51,8 +51,8 @@ class CardanoTransaction {
     TxInput& operator=(TxInput&& other);
     auto operator<=>(const TxInput& other) const = default;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxInput> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxInput> FromValue(const base::DictValue& value);
 
     static TxInput FromRpcUtxo(const cardano_rpc::UnspentOutput& utxo);
 
@@ -75,8 +75,8 @@ class CardanoTransaction {
     TxWitness& operator=(TxWitness&& other);
     auto operator<=>(const TxWitness& other) const = default;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxWitness> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxWitness> FromValue(const base::DictValue& value);
 
     std::array<uint8_t, kCardanoPubKeySize> public_key = {};
     std::array<uint8_t, kCardanoSignatureSize> signature = {};
@@ -94,8 +94,8 @@ class CardanoTransaction {
     TxOutput& operator=(TxOutput&& other);
     auto operator<=>(const TxOutput& other) const = default;
 
-    base::Value::Dict ToValue() const;
-    static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
+    base::DictValue ToValue() const;
+    static std::optional<TxOutput> FromValue(const base::DictValue& value);
 
     CardanoTxDecoder::SerializableTxOutput ToSerializableTxOutput() const;
 
@@ -113,9 +113,9 @@ class CardanoTransaction {
   CardanoTransaction& operator=(CardanoTransaction&& other);
   bool operator==(const CardanoTransaction& other) const;
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
   static std::optional<CardanoTransaction> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   // Adds change output.
   void SetupChangeOutput(CardanoAddress change_address);

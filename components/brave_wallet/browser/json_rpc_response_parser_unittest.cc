@@ -337,7 +337,7 @@ TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
        "result": "hi"
      })";
 
-  base::Value::Dict value = base::test::ParseJsonDict(json);
+  base::DictValue value = base::test::ParseJsonDict(json);
   auto response = json_rpc_responses::RPCResponse::FromValue(value);
   ASSERT_TRUE(response);
   EXPECT_EQ(response->jsonrpc, "2.0");

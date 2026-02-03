@@ -29,7 +29,7 @@ TEST(BraveWalletTypesTest, OverflowWorksAsExpected) {
 }
 
 TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
-  base::Value::Dict value = base::test::ParseJsonDict(R"({
+  base::DictValue value = base::test::ParseJsonDict(R"({
     "slot": "18446744073709551615",
     "confirmations": "10",
     "err": "",
@@ -60,7 +60,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
       R"({"slot": "72", "confirmations": "10", "err": ""})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    base::Value::Dict invalid_value =
+    base::DictValue invalid_value =
         base::test::ParseJsonDict(invalid_value_string);
     EXPECT_FALSE(SolanaSignatureStatus::FromValue(invalid_value))
         << ":" << invalid_value_string;
@@ -74,7 +74,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusToValue) {
   status.err = "";
   status.confirmation_status = "confirmed";
 
-  base::Value::Dict value = status.ToValue();
+  base::DictValue value = status.ToValue();
   EXPECT_EQ(*value.FindString("slot"), "18446744073709551615");
   EXPECT_EQ(*value.FindString("confirmations"), "10");
   EXPECT_EQ(*value.FindString("err"), status.err);

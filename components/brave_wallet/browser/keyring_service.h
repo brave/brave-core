@@ -283,7 +283,7 @@ class KeyringService : public mojom::KeyringService {
       const mojom::AccountIdPtr& account_id,
       const mojom::CardanoKeyIdPtr& key_id,
       base::span<const uint8_t> message);
-  std::optional<base::Value::Dict> SignCip30MessageByCardanoKeyring(
+  std::optional<base::DictValue> SignCip30MessageByCardanoKeyring(
       const mojom::AccountIdPtr& account_id,
       const mojom::CardanoKeyIdPtr& key_id,
       base::span<const uint8_t> message);

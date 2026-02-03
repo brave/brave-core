@@ -80,7 +80,7 @@ TEST_F(FilTxStateManagerUnitTest, FilTxMetaAndValue) {
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
   meta.set_chain_id(mojom::kFilecoinMainnet);
 
-  base::Value::Dict meta_value = meta.ToValue();
+  base::DictValue meta_value = meta.ToValue();
   auto meta_from_value = fil_tx_state_manager_->ValueToFilTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
   EXPECT_EQ(*meta_from_value, meta);

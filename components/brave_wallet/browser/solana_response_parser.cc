@@ -22,7 +22,7 @@ namespace brave_wallet {
 
 namespace {
 
-mojom::SPLTokenAmountPtr ParseAmountDict(const base::Value::Dict& value) {
+mojom::SPLTokenAmountPtr ParseAmountDict(const base::DictValue& value) {
   auto* amount = value.FindString("amount");
   if (!amount) {
     return nullptr;
@@ -262,7 +262,7 @@ bool ParseGetAccountInfo(const base::Value& json_value,
 }
 
 bool ParseGetAccountInfoPayload(
-    const base::Value::Dict& value_dict,
+    const base::DictValue& value_dict,
     std::optional<SolanaAccountInfo>* account_info_out) {
   SolanaAccountInfo account_info;
   if (!GetUint64FromDictValue(value_dict, "lamports", false,

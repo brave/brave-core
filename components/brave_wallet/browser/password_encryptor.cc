@@ -65,10 +65,10 @@ std::vector<uint8_t> PasswordEncryptor::Encrypt(
   return aead.Seal(plaintext, nonce, std::vector<uint8_t>());
 }
 
-base::Value::Dict PasswordEncryptor::EncryptToDict(
+base::DictValue PasswordEncryptor::EncryptToDict(
     base::span<const uint8_t> plaintext,
     base::span<const uint8_t> nonce) {
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set(kCiphertextKey, base::Base64Encode(Encrypt(plaintext, nonce)));
   result.Set(kNonceKey, base::Base64Encode(nonce));
   return result;
@@ -83,7 +83,7 @@ std::optional<std::vector<uint8_t>> PasswordEncryptor::Decrypt(
 }
 
 std::optional<std::vector<uint8_t>> PasswordEncryptor::DecryptFromDict(
-    const base::Value::Dict& encrypted_value) {
+    const base::DictValue& encrypted_value) {
   auto* ciphertext_encoded = encrypted_value.FindString(kCiphertextKey);
   if (!ciphertext_encoded) {
     return std::nullopt;

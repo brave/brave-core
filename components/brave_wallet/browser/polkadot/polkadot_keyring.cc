@@ -254,15 +254,15 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   std::string encoded = base::Base64Encode(encoded_bytes);
 
   // Build the JSON structure.
-  base::Value::Dict json_dict;
+  base::DictValue json_dict;
   json_dict.Set("encoded", encoded);
 
-  base::Value::Dict encoding_dict;
-  base::Value::List content_list;
+  base::DictValue encoding_dict;
+  base::ListValue content_list;
   content_list.Append("pkcs8");
   content_list.Append("sr25519");
   encoding_dict.Set("content", std::move(content_list));
-  base::Value::List type_list;
+  base::ListValue type_list;
   type_list.Append("scrypt");
   type_list.Append("xsalsa20-poly1305");
   encoding_dict.Set("type", std::move(type_list));
@@ -298,13 +298,13 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
     return std::nullopt;
   }
 
-  const base::Value::Dict* encoding_dict = json_dict->FindDict("encoding");
+  const base::DictValue* encoding_dict = json_dict->FindDict("encoding");
   if (!encoding_dict) {
     return std::nullopt;
   }
 
   // Validate "type" JSON field.
-  const base::Value::List* type_list = encoding_dict->FindList("type");
+  const base::ListValue* type_list = encoding_dict->FindList("type");
   if (!type_list || type_list->size() != 2) {
     return std::nullopt;
   }
@@ -315,7 +315,7 @@ PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
   }
 
   // Validate "content" JSON field.
-  const base::Value::List* content_list = encoding_dict->FindList("content");
+  const base::ListValue* content_list = encoding_dict->FindList("content");
   if (!content_list || content_list->size() != 2) {
     return std::nullopt;
   }

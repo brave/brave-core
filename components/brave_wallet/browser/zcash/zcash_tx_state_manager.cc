@@ -30,7 +30,7 @@ std::unique_ptr<ZCashTxMeta> ZCashTxStateManager::GetZCashTx(
 }
 
 std::unique_ptr<ZCashTxMeta> ZCashTxStateManager::ValueToZCashTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   return std::unique_ptr<ZCashTxMeta>{
       static_cast<ZCashTxMeta*>(ValueToTxMeta(value).release())};
 }
@@ -40,13 +40,13 @@ mojom::CoinType ZCashTxStateManager::GetCoinType() const {
 }
 
 std::unique_ptr<TxMeta> ZCashTxStateManager::ValueToTxMeta(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   std::unique_ptr<ZCashTxMeta> meta = std::make_unique<ZCashTxMeta>();
 
   if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
-  const base::Value::Dict* tx = value.FindDict("tx");
+  const base::DictValue* tx = value.FindDict("tx");
   if (!tx) {
     return nullptr;
   }

@@ -29,8 +29,7 @@ class PolkadotTxStateManager : public TxStateManager {
  protected:
   // TxStateManager
   mojom::CoinType GetCoinType() const override;
-  std::unique_ptr<TxMeta> ValueToTxMeta(
-      const base::Value::Dict& value) override;
+  std::unique_ptr<TxMeta> ValueToTxMeta(const base::DictValue& value) override;
 };
 
 }  // namespace brave_wallet

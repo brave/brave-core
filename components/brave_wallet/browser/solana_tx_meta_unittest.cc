@@ -220,7 +220,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
   meta.set_chain_id("0x66");
 
-  base::Value::Dict value = meta.ToValue();
+  base::DictValue value = meta.ToValue();
   auto expect_value = base::test::ParseJsonDict(R"(
     {
       "coin": 501,

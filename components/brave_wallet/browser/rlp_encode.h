@@ -20,7 +20,7 @@ base::Value::BlobStorage RLPUint256ToBlob(uint256_t input);
 // blob, or int data
 // https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp/
 std::vector<uint8_t> RLPEncode(const base::Value& val);
-std::vector<uint8_t> RLPEncode(const base::Value::List& val);
+std::vector<uint8_t> RLPEncode(const base::ListValue& val);
 
 }  // namespace brave_wallet
 

@@ -45,8 +45,8 @@ struct SolanaInstructionDecodedData {
   mojom::DecodedSolanaInstructionDataPtr ToMojom() const;
 
   static std::optional<SolanaInstructionDecodedData> FromValue(
-      const base::Value::Dict& value);
-  std::optional<base::Value::Dict> ToValue() const;
+      const base::DictValue& value);
+  std::optional<base::DictValue> ToValue() const;
 
   // There should be only one type that has value.
   bool IsValid() const { return !sys_ins_type != !token_ins_type; }

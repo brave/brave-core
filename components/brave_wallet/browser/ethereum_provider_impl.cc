@@ -117,16 +117,16 @@ void RejectMismatchError(base::Value id,
       std::move(id), std::move(formed_response), true, "", false));
 }
 
-bool IsTypedDataStructure(const base::Value::List& params_list) {
+bool IsTypedDataStructure(const base::ListValue& params_list) {
   return (ParseEthSignTypedDataParams(params_list,
                                       EthSignTypedDataHelper::Version::kV4) ||
           ParseEthSignTypedDataParams(params_list,
                                       EthSignTypedDataHelper::Version::kV3));
 }
 
-base::Value::Dict GetJsonRpcRequest(const std::string& method,
-                                    base::Value::List params) {
-  base::Value::Dict dictionary;
+base::DictValue GetJsonRpcRequest(const std::string& method,
+                                  base::ListValue params) {
+  base::DictValue dictionary;
   dictionary.Set("jsonrpc", "2.0");
   dictionary.Set("method", method);
   dictionary.Set("params", std::move(params));
@@ -204,7 +204,7 @@ EthereumProviderImpl::~EthereumProviderImpl() {
   eth_logs_tracker_.RemoveObserver(this);
 }
 
-void EthereumProviderImpl::AddEthereumChain(base::Value::List params,
+void EthereumProviderImpl::AddEthereumChain(base::ListValue params,
                                             RequestCallback callback,
                                             base::Value id) {
   bool reject = false;
@@ -292,7 +292,7 @@ void EthereumProviderImpl::SwitchEthereumChain(const std::string& chain_id,
 void EthereumProviderImpl::SendOrSignTransactionInternal(
     RequestCallback callback,
     base::Value id,
-    const base::Value::List& params,
+    const base::ListValue& params,
     bool sign_only) {
   url::Origin origin = delegate_->GetOrigin();
   mojom::NetworkInfoPtr chain =
@@ -531,7 +531,7 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
 }
 
 void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
-                                        std::optional<base::Value::Dict> filter,
+                                        std::optional<base::DictValue> filter,
                                         RequestCallback callback,
                                         base::Value id) {
   const std::string& chain_id = json_rpc_service_->GetChainIdSync(
@@ -1203,7 +1203,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
 }
 
 void EthereumProviderImpl::Send(const std::string& method,
-                                base::Value::List params,
+                                base::ListValue params,
                                 SendCallback callback) {
   CommonRequestOrSendAsync(
       base::Value(GetJsonRpcRequest(method, std::move(params))),
@@ -1342,7 +1342,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     formed_response =
         base::Value(PermissionRequestResponseToValue(origin, accounts));
   } else {
-    base::Value::List list;
+    base::ListValue list;
     for (const auto& account : accounts) {
       list.Append(base::ToLowerASCII(account));
     }
@@ -1401,7 +1401,7 @@ void EthereumProviderImpl::GetAllowedAccountsInternal(
   base::Value formed_response;
 
   if (method == kEthAccounts) {
-    base::Value::List list;
+    base::ListValue list;
     for (const auto& account : accounts) {
       list.Append(base::ToLowerASCII(account));
     }
@@ -1663,7 +1663,7 @@ void EthereumProviderImpl::OnLogsReceived(const std::string& subscription,
   }
 
   auto& dict = rawlogs.GetDict();
-  const base::Value::List* results = dict.FindList("result");
+  const base::ListValue* results = dict.FindList("result");
 
   if (results == nullptr) {
     return;

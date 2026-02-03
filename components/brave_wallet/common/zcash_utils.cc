@@ -105,8 +105,8 @@ std::vector<uint8_t> GetNetworkPrefix(bool is_testnet) {
 
 }  // namespace
 
-base::Value::Dict OrchardNote::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue OrchardNote::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("addr", base::HexEncode(addr));
   dict.Set("block_id", base::NumberToString(block_id));
@@ -170,7 +170,7 @@ base::expected<void, mojom::ZCashAddressError> ValidateOrchardRecipientAddress(
 
 // static
 std::optional<OrchardNote> OrchardNote::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   OrchardNote result;
   if (!ReadHexByteArrayTo<kOrchardRawBytesSize>(value, "addr", result.addr)) {
     return std::nullopt;
@@ -205,8 +205,8 @@ std::optional<OrchardNote> OrchardNote::FromValue(
   return result;
 }
 
-base::Value::Dict OrchardInput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue OrchardInput::ToValue() const {
+  base::DictValue dict;
 
   // Do not serialize witness ATM since it is calculated before post
   dict.Set("note", note.ToValue());
@@ -216,7 +216,7 @@ base::Value::Dict OrchardInput::ToValue() const {
 
 // static
 std::optional<OrchardInput> OrchardInput::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   OrchardInput result;
 
   auto* note_dict = value.FindDict("note");
@@ -258,8 +258,8 @@ DecodedZCashTransparentAddress::DecodedZCashTransparentAddress(
 DecodedZCashTransparentAddress& DecodedZCashTransparentAddress::operator=(
     DecodedZCashTransparentAddress&& other) = default;
 
-base::Value::Dict OrchardOutput::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue OrchardOutput::ToValue() const {
+  base::DictValue dict;
 
   dict.Set("address", base::HexEncode(addr.data(), addr.size()));
   dict.Set("amount", base::NumberToString(value));
@@ -272,7 +272,7 @@ base::Value::Dict OrchardOutput::ToValue() const {
 
 // static
 std::optional<OrchardOutput> OrchardOutput::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   OrchardOutput result;
   if (!ReadHexByteArrayTo<kOrchardRawBytesSize>(value, "address",
                                                 result.addr)) {

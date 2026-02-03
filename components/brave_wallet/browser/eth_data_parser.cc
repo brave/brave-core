@@ -216,7 +216,7 @@ eth_abi::Type MakeLiFiSwapDataType() {
 }
 
 std::optional<LiFiSwapData> LiFiSwapDataDecode(
-    const base::Value::List& swap_data_list) {
+    const base::ListValue& swap_data_list) {
   if (swap_data_list.size() == 1) {
     // Direct swap.
     auto& swap_data = swap_data_list.front().GetList();
@@ -247,7 +247,7 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
   return std::nullopt;
 }
 
-std::optional<SquidSwapData> SquidDecodeCall(const base::Value::List& call) {
+std::optional<SquidSwapData> SquidDecodeCall(const base::ListValue& call) {
   auto calldata_with_selector = PrefixedHexStringToBytes(call[3].GetString());
   if (!calldata_with_selector) {
     return std::nullopt;
@@ -410,7 +410,7 @@ std::optional<SquidSwapData> SquidDecodeCall(const base::Value::List& call) {
 }
 
 std::optional<SquidSwapData> SquidDecodeMulticall(
-    const base::Value::List& multicall) {
+    const base::ListValue& multicall) {
   std::optional<SquidSwapData> last_call_swap_data = std::nullopt;
   for (int i = multicall.size() - 1; i >= 0; --i) {
     auto& call = multicall[i].GetList();
@@ -498,7 +498,7 @@ eth_abi::Type MakeLiFiBridgeDataType() {
 }
 
 std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
-    const base::Value::List& data) {
+    const base::ListValue& data) {
   if (data.size() != 10) {
     return std::nullopt;
   }
@@ -1135,7 +1135,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto min_amount_out = decoded.value()[4].GetString();
     auto receiver = TransformEoaAddress(decoded.value()[3].GetString());
 
-    auto swap_data_list = base::Value::List();
+    auto swap_data_list = base::ListValue();
     swap_data_list.Append(std::move(decoded.value()[5]));
     auto swap_data = LiFiSwapDataDecode(swap_data_list);
     if (!swap_data) {

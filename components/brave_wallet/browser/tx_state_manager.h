@@ -19,10 +19,6 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 class AccountResolverDelegate;
@@ -64,7 +60,7 @@ class TxStateManager {
 
  protected:
   // For derived classes to call to fill TxMeta properties.
-  bool ValueToBaseTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
+  bool ValueToBaseTxMeta(const base::DictValue& value, TxMeta* tx_meta);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, ConvertFromAddress);
@@ -81,7 +77,7 @@ class TxStateManager {
   // specific type of tx meta (ex: EthTxMeta) from a value. TxMeta
   // properties can be filled via the protected ValueToTxMeta function above.
   virtual std::unique_ptr<TxMeta> ValueToTxMeta(
-      const base::Value::Dict& value) = 0;
+      const base::DictValue& value) = 0;
 
   bool no_retire_for_testing_ = false;
   const raw_ref<TxStorageDelegate> delegate_;

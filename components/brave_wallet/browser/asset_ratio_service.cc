@@ -109,10 +109,10 @@ namespace {
 
 std::string CreatePricingRequestPayload(
     const std::vector<mojom::AssetPriceRequestPtr>& requests) {
-  base::Value::List response;
+  base::ListValue response;
 
   for (const auto& request : requests) {
-    base::Value::Dict response_item;
+    base::DictValue response_item;
     if (auto coin_str = GetStringFromCoinType(request->coin)) {
       response_item.Set("coin", *coin_str);
     } else {
@@ -271,12 +271,12 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(coinbase_url, "presetFiatAmount", amount);
 
     // Construct the destinationWallets JSON
-    base::Value::List destinationWallets;
-    base::Value::Dict wallet;
+    base::ListValue destinationWallets;
+    base::DictValue wallet;
     wallet.Set("address", address);
 
     // Restrict to ETH or SOL chains based on the address
-    base::Value::List blockchains;
+    base::ListValue blockchains;
     if (EthAddress::IsValidAddress(address)) {
       // Supported networks list
       // https://docs.cloud.coinbase.com/pay-sdk/docs/faq#which-blockchains-and-cryptocurrencies-do-you-support
@@ -291,7 +291,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
       blockchains.Append("solana");
     }
     wallet.Set("blockchains", std::move(blockchains));
-    base::Value::List assets;
+    base::ListValue assets;
     assets.Append(symbol);
     wallet.Set("assets", std::move(assets));
     destinationWallets.Append(std::move(wallet));
@@ -377,7 +377,7 @@ void AssetRatioService::GetStripeBuyURL(
     return;
   }
 
-  base::Value::Dict payload;
+  base::DictValue payload;
   AddKeyIfNotEmpty(&payload, "wallet_address", address);
   AddKeyIfNotEmpty(&payload, "source_currency", source_currency);
   AddKeyIfNotEmpty(&payload, "source_exchange_amount", source_exchange_amount);

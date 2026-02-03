@@ -606,7 +606,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
   EXPECT_TRUE(service.IsLockedSync());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_EQ(GetPrefs()->GetDict(kBraveWalletMnemonic), base::Value::Dict());
+  EXPECT_EQ(GetPrefs()->GetDict(kBraveWalletMnemonic), base::DictValue());
 
   EXPECT_CALL(callback, Run(true));
   service.ValidatePassword(kPassword, callback.Get());
@@ -795,7 +795,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
   EXPECT_TRUE(service.IsLockedSync());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_EQ(GetPrefs()->GetDict(kBraveWalletMnemonic), base::Value::Dict());
+  EXPECT_EQ(GetPrefs()->GetDict(kBraveWalletMnemonic), base::DictValue());
 
   EXPECT_CALL(callback, Run(true));
   service.ValidatePassword(kPassword, callback.Get());

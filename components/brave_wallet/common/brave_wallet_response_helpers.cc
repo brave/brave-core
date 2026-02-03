@@ -21,7 +21,7 @@ constexpr char kRequestJsonRPC[] = "2.0";
 base::Value GetProviderErrorDictionaryInternal(int code,
                                                const std::string& message) {
   std::string formed_response;
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("code", code);
   result.Set("message", message);
   return base::Value(std::move(result));
@@ -82,7 +82,7 @@ base::Value GetProviderRequestReturnFromEthJsonResponse(
 base::Value ToProviderResponse(base::Value id,
                                base::Value* result,
                                base::Value* error) {
-  base::Value::Dict response;
+  base::DictValue response;
 
   response.Set("id", std::move(id));
   response.Set("jsonrpc", kRequestJsonRPC);

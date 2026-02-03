@@ -33,7 +33,7 @@ constexpr size_t kMaxRejectedTxNum = 500;
 
 }  // namespace
 
-bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
+bool TxStateManager::ValueToBaseTxMeta(const base::DictValue& value,
                                        TxMeta* meta) {
   const std::string* id = value.FindString("id");
   if (!id) {
@@ -119,7 +119,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   }
   meta->set_chain_id(*chain_id_string);
 
-  const base::Value::Dict* swap_info_value = value.FindDict("swap_info");
+  const base::DictValue* swap_info_value = value.FindDict("swap_info");
   if (swap_info_value) {
     auto swap_info = ValueToSwapInfo(*swap_info_value);
     if (swap_info) {
@@ -175,7 +175,7 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& meta_id) {
     return nullptr;
   }
   const auto& txs = delegate_->GetTxs();
-  const base::Value::Dict* value = txs.FindDict(meta_id);
+  const base::DictValue* value = txs.FindDict(meta_id);
   if (!value) {
     return nullptr;
   }

@@ -39,7 +39,7 @@ bool ParseGetSignatureStatuses(
 bool ParseGetAccountInfo(const base::Value& json_value,
                          std::optional<SolanaAccountInfo>* account_info_out);
 bool ParseGetAccountInfoPayload(
-    const base::Value::Dict& value_dict,
+    const base::DictValue& value_dict,
     std::optional<SolanaAccountInfo>* account_info_out);
 bool ParseGetFeeForMessage(const base::Value& json_value, uint64_t* fee);
 bool ParseGetBlockHeight(const base::Value& json_value, uint64_t* block_height);

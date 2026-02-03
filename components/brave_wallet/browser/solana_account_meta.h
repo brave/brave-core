@@ -26,13 +26,13 @@ struct SolanaAccountMeta {
   bool operator==(const SolanaAccountMeta&) const;
 
   mojom::SolanaAccountMetaPtr ToMojomSolanaAccountMeta() const;
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 
   static void FromMojomSolanaAccountMetas(
       const std::vector<mojom::SolanaAccountMetaPtr>& mojom_account_metas,
       std::vector<SolanaAccountMeta>* account_metas);
   static std::optional<SolanaAccountMeta> FromValue(
-      const base::Value::Dict& value);
+      const base::DictValue& value);
 
   std::string pubkey;
   std::optional<uint8_t> address_table_lookup_index;

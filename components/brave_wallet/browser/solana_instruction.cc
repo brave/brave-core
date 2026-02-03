@@ -186,11 +186,11 @@ mojom::SolanaInstructionPtr SolanaInstruction::ToMojomSolanaInstruction()
                                        std::move(mojom_decoded_data));
 }
 
-base::Value::Dict SolanaInstruction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue SolanaInstruction::ToValue() const {
+  base::DictValue dict;
   dict.Set(kProgramId, program_id_);
 
-  base::Value::List account_list;
+  base::ListValue account_list;
   for (const auto& account : accounts_) {
     account_list.Append(account.ToValue());
   }
@@ -209,13 +209,13 @@ base::Value::Dict SolanaInstruction::ToValue() const {
 
 // static
 std::optional<SolanaInstruction> SolanaInstruction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   const std::string* program_id = value.FindString(kProgramId);
   if (!program_id) {
     return std::nullopt;
   }
 
-  const base::Value::List* account_list = value.FindList(kAccounts);
+  const base::ListValue* account_list = value.FindList(kAccounts);
   if (!account_list) {
     return std::nullopt;
   }
@@ -243,7 +243,7 @@ std::optional<SolanaInstruction> SolanaInstruction::FromValue(
   std::vector<uint8_t> data(data_decoded.begin(), data_decoded.end());
 
   std::optional<SolanaInstructionDecodedData> decoded_data = std::nullopt;
-  const base::Value::Dict* decoded_data_dict = value.FindDict(kDecodedData);
+  const base::DictValue* decoded_data_dict = value.FindDict(kDecodedData);
   if (decoded_data_dict) {
     decoded_data = SolanaInstructionDecodedData::FromValue(*decoded_data_dict);
   }

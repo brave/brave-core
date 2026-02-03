@@ -14,7 +14,7 @@ namespace brave_wallet {
 PolkadotTxMeta::PolkadotTxMeta() = default;
 PolkadotTxMeta::~PolkadotTxMeta() = default;
 
-base::Value::Dict PolkadotTxMeta::ToValue() const {
+base::DictValue PolkadotTxMeta::ToValue() const {
   auto dict = TxMeta::ToValue();
   dict.Set("tx", tx_->ToValue());
   return dict;
