@@ -177,6 +177,18 @@ struct ReduceFocusTopicsContentBlock {
   string text;  // topics
 };
 
+struct WebSource {
+  string title;
+  url.mojom.Url url;
+  url.mojom.Url favicon_url;
+};
+
+// Content block for parsed web sources from search tool results.
+struct WebSourcesContentBlock {
+  array<WebSource> sources;
+  string? query;
+};
+
 enum SimpleRequestType {
   kParaphrase,
   kImprove,
@@ -218,6 +230,10 @@ union ContentBlock {
   SuggestFocusTopicsWithEmojiContentBlock
     suggest_focus_topics_with_emoji_content_block;
   ReduceFocusTopicsContentBlock reduce_focus_topics_content_block;
+
+  // Brave customized content blocks for parsed web sources from server-side
+  // search tool results
+  WebSourcesContentBlock web_sources_content_block;
 
   // Brave customized content blocks which does not have any data payloads.
   SimpleRequestContentBlock simple_request_content_block;
@@ -266,12 +282,6 @@ struct SearchQueriesEvent {
 
 struct SearchStatusEvent {
   bool is_searching = true;
-};
-
-struct WebSource {
-  string title;
-  url.mojom.Url url;
-  url.mojom.Url favicon_url;
 };
 
 struct WebSourcesEvent {

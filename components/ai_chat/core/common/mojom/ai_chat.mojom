@@ -30,6 +30,9 @@ const string kSelectDropdownToolName = "select_dropdown";
 const string kTypeTextToolName = "type_text";
 const string kWaitToolName = "wait";
 
+// Server side tools
+const string kBraveNewsSearchToolName = "brave_news_search";
+const string kBraveWebSearchToolName = "brave_web_search";
 
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
