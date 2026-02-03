@@ -11,11 +11,11 @@
 
 namespace brave_ads {
 
-base::Value::Dict ReactionMapToDict(const ReactionMap& reactions);
-ReactionMap ReactionMapFromDict(const base::Value::Dict& dict);
+base::DictValue ReactionMapToDict(const ReactionMap& reactions);
+ReactionMap ReactionMapFromDict(const base::DictValue& dict);
 
-base::Value::List ReactionSetToList(const ReactionSet& reactions);
-ReactionSet ReactionSetFromList(const base::Value::List& list);
+base::ListValue ReactionSetToList(const ReactionSet& reactions);
+ReactionSet ReactionSetFromList(const base::ListValue& list);
 
 }  // namespace brave_ads
 

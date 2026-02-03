@@ -28,7 +28,7 @@ struct PurchaseIntentResourceInfo final {
   ~PurchaseIntentResourceInfo();
 
   static std::optional<PurchaseIntentResourceInfo> CreateFromValue(
-      base::Value::Dict dict);
+      base::DictValue dict);
 
   std::optional<int> version;
   PurchaseIntentSegmentKeyphraseList segment_keyphrases;

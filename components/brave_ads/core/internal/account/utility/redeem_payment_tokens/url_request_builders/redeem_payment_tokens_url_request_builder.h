@@ -23,7 +23,7 @@ class RedeemPaymentTokensUrlRequestBuilder final
  public:
   RedeemPaymentTokensUrlRequestBuilder(WalletInfo wallet,
                                        PaymentTokenList payment_tokens,
-                                       base::Value::Dict user_data);
+                                       base::DictValue user_data);
 
   RedeemPaymentTokensUrlRequestBuilder(
       const RedeemPaymentTokensUrlRequestBuilder&) = delete;
@@ -41,11 +41,11 @@ class RedeemPaymentTokensUrlRequestBuilder final
 
   std::string BuildPayload() const;
 
-  base::Value::List BuildPaymentRequestDTO(const std::string& payload) const;
+  base::ListValue BuildPaymentRequestDTO(const std::string& payload) const;
 
   WalletInfo wallet_;
   PaymentTokenList payment_tokens_;
-  base::Value::Dict user_data_;
+  base::DictValue user_data_;
 };
 
 }  // namespace brave_ads

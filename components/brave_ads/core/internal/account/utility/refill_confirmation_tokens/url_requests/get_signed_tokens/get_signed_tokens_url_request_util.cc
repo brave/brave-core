@@ -51,7 +51,7 @@ ConfirmationTokenList BuildConfirmationTokens(
 
 }  // namespace
 
-std::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict) {
+std::optional<std::string> ParseCaptchaId(const base::DictValue& dict) {
   const std::string* const captcha_id = dict.FindString(kCaptchaIdKey);
   if (!captcha_id || captcha_id->empty()) {
     return std::nullopt;

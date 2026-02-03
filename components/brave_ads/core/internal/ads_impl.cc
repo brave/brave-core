@@ -128,7 +128,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
 }
 
 void AdsImpl::ParseAndSaveNewTabPageAds(
-    base::Value::Dict dict,
+    base::DictValue dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(

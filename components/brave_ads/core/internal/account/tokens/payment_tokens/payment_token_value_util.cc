@@ -27,8 +27,8 @@ constexpr std::string_view kAdTypeKey = "ad_type";
 
 }  // namespace
 
-base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
-  base::Value::List list;
+base::ListValue PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
+  base::ListValue list;
 
   for (const auto& payment_token : payment_tokens) {
     std::optional<std::string> unblinded_token_base64 =
@@ -43,7 +43,7 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
       continue;
     }
 
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set(kTransactionIdKey, payment_token.transaction_id)
                     .Set(kUnblindedTokenKey, *unblinded_token_base64)
                     .Set(kPublicKey, *public_key_base64)
@@ -55,7 +55,7 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
   return list;
 }
 
-PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
+PaymentTokenList PaymentTokensFromValue(const base::ListValue& list) {
   PaymentTokenList payment_tokens;
 
   for (const auto& value : list) {

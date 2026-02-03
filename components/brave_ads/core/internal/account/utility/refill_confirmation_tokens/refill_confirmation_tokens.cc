@@ -152,7 +152,7 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
         std::make_tuple("Failed to request signed tokens", should_retry));
   }
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
     return base::unexpected(std::make_tuple(
@@ -229,7 +229,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
         std::make_tuple("Failed to get signed tokens", should_retry));
   }
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
     return base::unexpected(std::make_tuple(
@@ -273,7 +273,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
 }
 
 void RefillConfirmationTokens::ParseAndRequireCaptcha(
-    const base::Value::Dict& dict) const {
+    const base::DictValue& dict) const {
   if (std::optional<std::string> captcha_id = ParseCaptchaId(dict)) {
     NotifyCaptchaRequiredToRefillConfirmationTokens(*captcha_id);
   }

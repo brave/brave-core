@@ -132,7 +132,7 @@ class AdsClient {
   virtual bool HasLocalStatePrefPath(const std::string& path) const = 0;
 
   // Get the virtual preferences.
-  virtual base::Value::Dict GetVirtualPrefs() const = 0;
+  virtual base::DictValue GetVirtualPrefs() const = 0;
 
   // Log a `message` to `file` and the console log with `line` and
   // `verbose_level`.

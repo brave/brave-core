@@ -57,7 +57,7 @@ TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersToValue) {
   const TokenIssuerList token_issuers = test::BuildTokenIssuers();
 
   // Act
-  const base::Value::List list = TokenIssuersToValue(token_issuers);
+  const base::ListValue list = TokenIssuersToValue(token_issuers);
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonList(kTokenIssuersAsJson), list);
@@ -65,7 +65,7 @@ TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersToValue) {
 
 TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersToValue) {
   // Act
-  const base::Value::List list = TokenIssuersToValue({});
+  const base::ListValue list = TokenIssuersToValue({});
 
   // Assert
   EXPECT_THAT(list, ::testing::IsEmpty());
@@ -73,7 +73,7 @@ TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersToValue) {
 
 TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersFromValue) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kTokenIssuersAsJson);
+  const base::ListValue list = base::test::ParseJsonList(kTokenIssuersAsJson);
 
   // Act
   std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(list);

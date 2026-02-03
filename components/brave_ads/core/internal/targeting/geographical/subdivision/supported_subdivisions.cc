@@ -11,12 +11,12 @@ namespace brave_ads {
 
 namespace {
 
-base::Value::List ToValue(const SubdivisionMap& subdivisions) {
-  base::Value::List list;
+base::ListValue ToValue(const SubdivisionMap& subdivisions) {
+  base::ListValue list;
 
   for (const auto& [subdivision, name] : subdivisions) {
     list.Append(
-        base::Value::Dict().Set("subdivision", subdivision).Set("name", name));
+        base::DictValue().Set("subdivision", subdivision).Set("name", name));
   }
 
   return list;
@@ -75,7 +75,7 @@ const SupportedSubdivisionMap& GetSupportedSubdivisions() {
   return *kSupportedSubdivisions;
 }
 
-base::Value::List GetSupportedSubdivisionsAsValueList(
+base::ListValue GetSupportedSubdivisionsAsValueList(
     const std::string& country_code) {
   const auto& supported_subdivisions = GetSupportedSubdivisions();
 

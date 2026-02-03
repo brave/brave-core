@@ -27,8 +27,8 @@ constexpr std::string_view kReminderNotificationAdTargetUrl =
 
 namespace {
 
-base::Value::Dict BuildClickedSameAdMultipleTimesReminder() {
-  return base::Value::Dict()
+base::DictValue BuildClickedSameAdMultipleTimesReminder() {
+  return base::DictValue()
       .Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId)
       .Set(kNotificationAdTitleKey,
            l10n_util::GetStringUTF16(
@@ -39,8 +39,8 @@ base::Value::Dict BuildClickedSameAdMultipleTimesReminder() {
       .Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
 }
 
-base::Value::Dict BuildExternalWalletConnectedReminder() {
-  return base::Value::Dict()
+base::DictValue BuildExternalWalletConnectedReminder() {
+  return base::DictValue()
       .Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId)
       .Set(kNotificationAdTitleKey,
            l10n_util::GetStringUTF16(
@@ -53,7 +53,7 @@ base::Value::Dict BuildExternalWalletConnectedReminder() {
 
 }  // namespace
 
-base::Value::Dict BuildReminder(mojom::ReminderType mojom_reminder_type) {
+base::DictValue BuildReminder(mojom::ReminderType mojom_reminder_type) {
   switch (mojom_reminder_type) {
     case mojom::ReminderType::kClickedSameAdMultipleTimes: {
       return BuildClickedSameAdMultipleTimesReminder();

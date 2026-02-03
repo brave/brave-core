@@ -61,7 +61,7 @@ class AdsImpl final : public Ads {
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void ParseAndSaveNewTabPageAds(
-      base::Value::Dict dict,
+      base::DictValue dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(

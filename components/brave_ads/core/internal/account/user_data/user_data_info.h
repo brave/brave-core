@@ -24,10 +24,10 @@ struct UserDataInfo final {
   bool operator==(const UserDataInfo&) const = default;
 
   // User data that may change.
-  base::Value::Dict dynamic;
+  base::DictValue dynamic;
 
   // User data that remains constant.
-  base::Value::Dict fixed;
+  base::DictValue fixed;
 };
 
 }  // namespace brave_ads

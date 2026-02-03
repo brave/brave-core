@@ -43,7 +43,7 @@ class BraveAdsPaymentTokenValueUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensToValue) {
   // Act
-  const base::Value::List list =
+  const base::ListValue list =
       PaymentTokensToValue(test::BuildPaymentTokens(/*count=*/2));
 
   // Assert
@@ -57,8 +57,7 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, EmptyPaymentTokensToValue) {
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensFromValue) {
   // Arrange
-  const base::Value::List list =
-      base::test::ParseJsonList(kPaymentTokensAsJson);
+  const base::ListValue list = base::test::ParseJsonList(kPaymentTokensAsJson);
 
   // Act
   const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);

@@ -17,8 +17,8 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildFixedUserData(const TransactionInfo& transaction) {
-  base::Value::Dict user_data;
+base::DictValue BuildFixedUserData(const TransactionInfo& transaction) {
+  base::DictValue user_data;
 
   user_data.Merge(BuildBuildChannelUserData());
   user_data.Merge(BuildCatalogUserData());

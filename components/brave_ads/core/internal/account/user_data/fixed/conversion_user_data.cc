@@ -14,19 +14,19 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildConversionUserData(const ConversionInfo& conversion) {
-  base::Value::List list;
+base::DictValue BuildConversionUserData(const ConversionInfo& conversion) {
+  base::ListValue list;
 
   // Conversion.
   list.Append(BuildConversionActionTypeUserData(conversion));
 
   // Verifiable conversion.
-  if (std::optional<base::Value::Dict> verifiable_conversion_user_data =
+  if (std::optional<base::DictValue> verifiable_conversion_user_data =
           MaybeBuildVerifiableConversionUserData(conversion)) {
     list.Append(std::move(*verifiable_conversion_user_data));
   }
 
-  return base::Value::Dict().Set(kConversionKey, std::move(list));
+  return base::DictValue().Set(kConversionKey, std::move(list));
 }
 
 }  // namespace brave_ads

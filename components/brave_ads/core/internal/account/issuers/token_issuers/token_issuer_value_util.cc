@@ -48,7 +48,7 @@ std::optional<std::string> ToString(TokenIssuerType token_issuer_type) {
 }
 
 std::optional<TokenIssuerType> ParseTokenIssuerType(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   const std::string* const token_issuer_type =
       dict.FindString(kTokenIssuerTypeKey);
   if (!token_issuer_type) {
@@ -71,7 +71,7 @@ std::optional<TokenIssuerType> ParseTokenIssuerType(
 }
 
 std::optional<TokenIssuerPublicKeyMap> ParseTokenIssuerPublicKeys(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   const auto* const list = dict.FindList(kTokenIssuerPublicKeysKey);
   if (!list) {
     return std::nullopt;
@@ -115,8 +115,8 @@ std::optional<TokenIssuerPublicKeyMap> ParseTokenIssuerPublicKeys(
 
 }  // namespace
 
-base::Value::List TokenIssuersToValue(const TokenIssuerList& token_issuers) {
-  base::Value::List list;
+base::ListValue TokenIssuersToValue(const TokenIssuerList& token_issuers) {
+  base::ListValue list;
 
   for (const auto& token_issuer : token_issuers) {
     std::optional<std::string> token_issuer_type = ToString(token_issuer.type);
@@ -124,17 +124,17 @@ base::Value::List TokenIssuersToValue(const TokenIssuerList& token_issuers) {
       continue;
     }
 
-    base::Value::List token_issuer_public_keys_list;
+    base::ListValue token_issuer_public_keys_list;
     for (const auto& [public_key, associated_value] :
          token_issuer.public_keys) {
       token_issuer_public_keys_list.Append(
-          base::Value::Dict()
+          base::DictValue()
               .Set(kTokenIssuerPublicKeyKey, public_key)
               .Set(kTokenIssuerAssociatedValueKey,
                    base::NumberToString(associated_value)));
     }
 
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set(kTokenIssuerTypeKey, *token_issuer_type)
                     .Set(kTokenIssuerPublicKeysKey,
                          std::move(token_issuer_public_keys_list)));
@@ -144,7 +144,7 @@ base::Value::List TokenIssuersToValue(const TokenIssuerList& token_issuers) {
 }
 
 std::optional<TokenIssuerList> TokenIssuersFromValue(
-    const base::Value::List& list) {
+    const base::ListValue& list) {
   TokenIssuerList token_issuers;
   token_issuers.reserve(list.size());
 

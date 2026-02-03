@@ -26,7 +26,7 @@ constexpr std::string_view kTypeKey = "type";
 
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
   auto dict =
-      base::Value::Dict()
+      base::DictValue()
           .Set(kCreativeInstanceIdKey, confirmation.creative_instance_id)
           .Set(kTypeKey, ToString(confirmation.type));
 

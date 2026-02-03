@@ -67,13 +67,13 @@ void AdsInternalsHandler::ClearAdsData(brave_ads::ClearDataCallback callback) {
 
 void AdsInternalsHandler::GetInternalsCallback(
     GetAdsInternalsCallback callback,
-    std::optional<base::Value::Dict> internals) {
+    std::optional<base::DictValue> internals) {
   // `value` can be nullopt in the following cases:
   // - `bat_ads::mojom::BatAds` associated remote is not bound.
   // - A database query fails.
   std::string json;
   CHECK(base::JSONWriter::Write(
-      std::move(internals).value_or(base::Value::Dict{}), &json));
+      std::move(internals).value_or(base::DictValue{}), &json));
   std::move(callback).Run(json);
 }
 

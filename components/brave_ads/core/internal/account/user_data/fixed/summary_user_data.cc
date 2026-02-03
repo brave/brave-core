@@ -22,15 +22,15 @@ constexpr std::string_view kAdFormatKey = "ad_format";
 
 }  // namespace
 
-base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
+base::DictValue BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
 
-  base::Value::List list;
+  base::ListValue list;
   for (const auto& [mojom_ad_type, confirmations] :
        BuildAdTypeBuckets(payment_tokens)) {
-    auto dict = base::Value::Dict().Set(kAdFormatKey, ToString(mojom_ad_type));
+    auto dict = base::DictValue().Set(kAdFormatKey, ToString(mojom_ad_type));
 
     for (const auto& [confirmation_type, count] : confirmations) {
       dict.Set(ToString(confirmation_type), count);
@@ -39,7 +39,7 @@ base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
     list.Append(std::move(dict));
   }
 
-  return base::Value::Dict().Set(kSummaryKey, std::move(list));
+  return base::DictValue().Set(kSummaryKey, std::move(list));
 }
 
 }  // namespace brave_ads

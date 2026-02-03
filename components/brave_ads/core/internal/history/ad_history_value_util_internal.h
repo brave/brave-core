@@ -12,13 +12,13 @@ namespace brave_ads {
 
 struct AdHistoryItemInfo;
 
-void ParseCreatedAt(const base::Value::Dict& dict,
+void ParseCreatedAt(const base::DictValue& dict,
                     AdHistoryItemInfo& ad_history_item);
 
-void ParseAdContent(const base::Value::Dict& dict,
+void ParseAdContent(const base::DictValue& dict,
                     AdHistoryItemInfo& ad_history_item);
 
-void ParseSegmentContent(const base::Value::Dict& dict,
+void ParseSegmentContent(const base::DictValue& dict,
                          AdHistoryItemInfo& ad_history_item);
 
 }  // namespace brave_ads

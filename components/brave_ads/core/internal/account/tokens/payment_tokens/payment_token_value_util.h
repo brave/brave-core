@@ -12,8 +12,8 @@
 
 namespace brave_ads {
 
-base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens);
-PaymentTokenList PaymentTokensFromValue(const base::Value::List& list);
+base::ListValue PaymentTokensToValue(const PaymentTokenList& payment_tokens);
+PaymentTokenList PaymentTokensFromValue(const base::ListValue& list);
 
 }  // namespace brave_ads
 

@@ -24,7 +24,7 @@ void SetIssuers(const IssuersInfo& issuers) {
 }
 
 std::optional<IssuersInfo> GetIssuers() {
-  std::optional<base::Value::List> list = GetProfileListPref(prefs::kIssuers);
+  std::optional<base::ListValue> list = GetProfileListPref(prefs::kIssuers);
   if (!list || list->empty()) {
     return std::nullopt;
   }

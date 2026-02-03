@@ -62,7 +62,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
                     test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act
-  const base::Value::Dict user_data = BuildConversionUserData(conversion);
+  const base::DictValue user_data = BuildConversionUserData(conversion);
 
   // Assert
   std::string json;

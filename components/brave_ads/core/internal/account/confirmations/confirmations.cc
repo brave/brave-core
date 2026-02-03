@@ -31,7 +31,7 @@ Confirmations::~Confirmations() {
 }
 
 void Confirmations::Confirm(const TransactionInfo& transaction,
-                            base::Value::Dict user_data) {
+                            base::DictValue user_data) {
   CHECK(transaction.IsValid());
 
   BLOG(1, "Confirming " << transaction.confirmation_type << " for "

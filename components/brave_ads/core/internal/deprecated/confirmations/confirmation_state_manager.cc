@@ -93,7 +93,7 @@ std::string ConfirmationStateManager::ToJson() {
 
   std::string json;
   CHECK(base::JSONWriter::Write(
-      base::Value::Dict()
+      base::DictValue()
           .Set("unblinded_tokens",
                ConfirmationTokensToValue(confirmation_tokens_.GetAll()))
           .Set("unblinded_payment_tokens",
@@ -106,7 +106,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::FromJson", "json",
               json.size());
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   confirmation_tokens_.RemoveAll();
   payment_tokens_.RemoveAllTokens();
@@ -126,7 +126,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   const auto* const list = dict.FindList("unblinded_tokens");
   if (!list) {
     return;
@@ -155,7 +155,7 @@ void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
 }
 
 void ConfirmationStateManager::ParsePaymentTokensFromDictionary(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   if (const auto* const list = dict.FindList("unblinded_payment_tokens")) {
     payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
   }

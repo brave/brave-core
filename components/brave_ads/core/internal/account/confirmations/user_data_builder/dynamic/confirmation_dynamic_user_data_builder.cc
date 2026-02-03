@@ -10,8 +10,8 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildDynamicUserData() {
-  base::Value::Dict user_data;
+base::DictValue BuildDynamicUserData() {
+  base::DictValue user_data;
 
   user_data.Merge(BuildDiagnosticIdUserData());
   user_data.Merge(BuildSystemTimestampUserData());

@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildDynamicUserData();
+base::DictValue BuildDynamicUserData();
 
 }  // namespace brave_ads
 

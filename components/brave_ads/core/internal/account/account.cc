@@ -81,7 +81,7 @@ void Account::DepositWithUserData(
     const std::string& segment,
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    base::Value::Dict user_data) const {
+    base::DictValue user_data) const {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
   CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
@@ -107,7 +107,7 @@ void Account::DepositCallback(const std::string& creative_instance_id,
                               const std::string& segment,
                               mojom::AdType mojom_ad_type,
                               mojom::ConfirmationType mojom_confirmation_type,
-                              base::Value::Dict user_data,
+                              base::DictValue user_data,
                               bool success,
                               double value) const {
   if (!success) {
@@ -124,7 +124,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              double value,
                              mojom::AdType mojom_ad_type,
                              mojom::ConfirmationType mojom_confirmation_type,
-                             base::Value::Dict user_data) const {
+                             base::DictValue user_data) const {
   if (!UserHasJoinedBraveRewards()) {
     // If the user has not joined Brave Rewards, there's no need to record
     // transactions.
@@ -146,7 +146,7 @@ void Account::ProcessDepositCallback(
     const std::string& creative_instance_id,
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    base::Value::Dict user_data,
+    base::DictValue user_data,
     bool success,
     const TransactionInfo& transaction) const {
   if (!success) {
@@ -158,7 +158,7 @@ void Account::ProcessDepositCallback(
 }
 
 void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
-                                           base::Value::Dict user_data) const {
+                                           base::DictValue user_data) const {
   BLOG(3, "Successfully processed deposit for "
               << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "

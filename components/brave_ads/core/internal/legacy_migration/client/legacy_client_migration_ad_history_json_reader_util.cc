@@ -15,7 +15,7 @@ namespace {
 constexpr std::string_view kAdHistoryKey = "adsShownHistory";
 }  // namespace
 
-std::optional<AdHistoryList> ParseAdHistory(const base::Value::Dict& dict) {
+std::optional<AdHistoryList> ParseAdHistory(const base::DictValue& dict) {
   const auto* const list = dict.FindList(kAdHistoryKey);
   if (!list) {
     return std::nullopt;

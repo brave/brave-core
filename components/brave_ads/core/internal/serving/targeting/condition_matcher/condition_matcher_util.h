@@ -195,7 +195,7 @@ using ConditionMatcherMap =
 // malformed condition matchers will be logged to the console, they are not
 // logged to the Rewards log.
 
-bool MatchConditions(const base::Value::Dict& virtual_prefs,
+bool MatchConditions(const base::DictValue& virtual_prefs,
                      const ConditionMatcherMap& condition_matchers);
 
 }  // namespace brave_ads

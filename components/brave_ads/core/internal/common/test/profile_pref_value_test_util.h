@@ -30,9 +30,9 @@ void SetProfileStringPrefValue(const std::string& path,
 void SetProfileInt64PrefValue(const std::string& path, int64_t value);
 void SetProfileUint64PrefValue(const std::string& path, uint64_t value);
 void SetProfileDictPrefValue(const std::string& path,
-                             base::Value::Dict value = {});
+                             base::DictValue value = {});
 void SetProfileListPrefValue(const std::string& path,
-                             base::Value::List value = {});
+                             base::ListValue value = {});
 void SetProfileTimePrefValue(const std::string& path, base::Time value);
 void SetProfileTimeDeltaPrefValue(const std::string& path,
                                   base::TimeDelta value);

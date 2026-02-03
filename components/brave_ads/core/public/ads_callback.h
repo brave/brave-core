@@ -27,10 +27,10 @@ using InitializeCallback = base::OnceCallback<void(bool success)>;
 using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
 using GetInternalsCallback =
-    base::OnceCallback<void(std::optional<base::Value::Dict> internals)>;
+    base::OnceCallback<void(std::optional<base::DictValue> internals)>;
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
+    base::OnceCallback<void(std::optional<base::ListValue> diagnostics)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
@@ -57,7 +57,7 @@ using GetAdHistoryCallback =
 // TODO(https://github.com/brave/brave-browser/issues/24595): Transition
 // GetAdHistory from base::Value to a mojom data structure.
 using GetAdHistoryForUICallback =
-    base::OnceCallback<void(std::optional<base::Value::List> ad_history)>;
+    base::OnceCallback<void(std::optional<base::ListValue> ad_history)>;
 
 using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
 

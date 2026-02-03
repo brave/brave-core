@@ -56,11 +56,11 @@ void SetProfileUint64PrefValue(const std::string& path, uint64_t value) {
   SetProfilePrefValue(path, base::Value(base::NumberToString(value)));
 }
 
-void SetProfileDictPrefValue(const std::string& path, base::Value::Dict value) {
+void SetProfileDictPrefValue(const std::string& path, base::DictValue value) {
   SetProfilePrefValue(path, base::Value(std::move(value)));
 }
 
-void SetProfileListPrefValue(const std::string& path, base::Value::List value) {
+void SetProfileListPrefValue(const std::string& path, base::ListValue value) {
   SetProfilePrefValue(path, base::Value(std::move(value)));
 }
 

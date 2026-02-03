@@ -448,9 +448,9 @@ void AdEvents::GetVirtualPrefs(const base::flat_set<std::string>& ids,
         const auto& mojom_db_rows =
             mojom_db_transaction_result->rows_union->get_rows();
 
-        base::Value::Dict virtual_prefs;
+        base::DictValue virtual_prefs;
 
-        base::Value::Dict* ad_events_dict =
+        base::DictValue* ad_events_dict =
             virtual_prefs.EnsureDict("[virtual]:ad_events");
         for (const auto& row : mojom_db_rows) {
           CHECK(row);
@@ -460,7 +460,7 @@ void AdEvents::GetVirtualPrefs(const base::flat_set<std::string>& ids,
           const std::string confirmation_type = ColumnString(row, 1);
           const int count = ColumnInt(row, 2);
 
-          base::Value::Dict* id_dict = ad_events_dict->EnsureDict(id);
+          base::DictValue* id_dict = ad_events_dict->EnsureDict(id);
           id_dict->Set(confirmation_type, count);
         }
 

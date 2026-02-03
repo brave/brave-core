@@ -41,7 +41,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   SetLastUnIdleTimeDiagnosticEntry(test::Now());
 
   // Act & Assert
-  const base::Value::List expected_diagnostics = base::test::ParseJsonList(
+  const base::ListValue expected_diagnostics = base::test::ParseJsonList(
       R"(
           [
             {

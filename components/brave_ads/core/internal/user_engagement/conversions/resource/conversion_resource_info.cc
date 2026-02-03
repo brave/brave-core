@@ -31,7 +31,7 @@ ConversionResourceInfo::~ConversionResourceInfo() = default;
 
 // static
 std::optional<ConversionResourceInfo> ConversionResourceInfo::CreateFromValue(
-    const base::Value::Dict dict) {
+    const base::DictValue dict) {
   ConversionResourceInfo conversions;
 
   if (std::optional<int> version = dict.FindInt("version")) {
@@ -49,7 +49,7 @@ std::optional<ConversionResourceInfo> ConversionResourceInfo::CreateFromValue(
 
   for (const auto [url_pattern, conversion_id_pattern] :
        *conversion_id_patterns_dict) {
-    const base::Value::Dict* conversion_id_pattern_dict =
+    const base::DictValue* conversion_id_pattern_dict =
         conversion_id_pattern.GetIfDict();
 
     if (!conversion_id_pattern_dict) {

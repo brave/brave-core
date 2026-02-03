@@ -30,9 +30,9 @@ void SetLocalStateStringPrefValue(const std::string& path,
 void SetLocalStateInt64PrefValue(const std::string& path, int64_t value);
 void SetLocalStateUint64PrefValue(const std::string& path, uint64_t value);
 void SetLocalStateDictPrefValue(const std::string& path,
-                                base::Value::Dict value = {});
+                                base::DictValue value = {});
 void SetLocalStateListPrefValue(const std::string& path,
-                                base::Value::List value = {});
+                                base::ListValue value = {});
 void SetLocalStateTimePrefValue(const std::string& path, base::Time value);
 void SetLocalStateTimeDeltaPrefValue(const std::string& path,
                                      base::TimeDelta value);

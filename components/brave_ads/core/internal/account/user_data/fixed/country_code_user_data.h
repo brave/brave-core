@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildCountryCodeUserData();
+base::DictValue BuildCountryCodeUserData();
 
 }  // namespace brave_ads
 

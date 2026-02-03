@@ -19,7 +19,7 @@ namespace {
 constexpr std::string_view kDiagnosticIdKey = "diagnosticId";
 }  // namespace
 
-base::Value::Dict BuildDiagnosticIdUserData() {
+base::DictValue BuildDiagnosticIdUserData() {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
@@ -32,7 +32,7 @@ base::Value::Dict BuildDiagnosticIdUserData() {
     return {};
   }
 
-  return base::Value::Dict().Set(kDiagnosticIdKey, diagnostic_id);
+  return base::DictValue().Set(kDiagnosticIdKey, diagnostic_id);
 }
 
 }  // namespace brave_ads

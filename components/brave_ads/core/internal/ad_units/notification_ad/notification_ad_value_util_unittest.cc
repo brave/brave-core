@@ -79,7 +79,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdToValue) {
       BuildNotificationAd(creative_ad, test::kPlacementId);
 
   // Act
-  const base::Value::Dict dict = NotificationAdToValue(ad);
+  const base::DictValue dict = NotificationAdToValue(ad);
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(kNotificationAdAsJson), dict);
@@ -93,7 +93,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsToValue) {
       BuildNotificationAd(creative_ad, test::kPlacementId);
 
   // Act
-  const base::Value::List list = NotificationAdsToValue({ad, ad});
+  const base::ListValue list = NotificationAdsToValue({ad, ad});
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonList(kNotificationAdsAsJson), list);
@@ -101,8 +101,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsToValue) {
 
 TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdFromValue) {
   // Arrange
-  const base::Value::Dict dict =
-      base::test::ParseJsonDict(kNotificationAdAsJson);
+  const base::DictValue dict = base::test::ParseJsonDict(kNotificationAdAsJson);
 
   // Act
   const NotificationAdInfo ad = NotificationAdFromValue(dict);
@@ -115,7 +114,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdFromValue) {
 
 TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsFromValue) {
   // Arrange
-  const base::Value::List list =
+  const base::ListValue list =
       base::test::ParseJsonList(kNotificationAdsAsJson);
 
   // Act

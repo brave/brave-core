@@ -48,7 +48,7 @@ bool MatchCondition(std::string_view value, std::string_view condition) {
 
 }  // namespace
 
-bool MatchConditions(const base::Value::Dict& virtual_prefs,
+bool MatchConditions(const base::DictValue& virtual_prefs,
                      const ConditionMatcherMap& condition_matchers) {
   return std::ranges::all_of(
       condition_matchers, [&virtual_prefs](const auto& condition_matcher) {

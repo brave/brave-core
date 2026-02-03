@@ -22,20 +22,20 @@ constexpr std::string_view kGroupNameKey = "group";
 
 }  // namespace
 
-base::Value::Dict BuildStudiesUserData() {
+base::DictValue BuildStudiesUserData() {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
 
-  base::Value::List list;
+  base::ListValue list;
   if (const std::optional<base::FieldTrial::ActiveGroup>
           active_field_trial_group = GetActiveFieldTrialStudyGroup()) {
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set(kTrialNameKey, active_field_trial_group->trial_name)
                     .Set(kGroupNameKey, active_field_trial_group->group_name));
   }
 
-  return base::Value::Dict().Set(kStudiesKey, std::move(list));
+  return base::DictValue().Set(kStudiesKey, std::move(list));
 }
 
 }  // namespace brave_ads

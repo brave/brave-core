@@ -20,15 +20,15 @@ constexpr int kDefaultWeight = 0;
 
 }  // namespace
 
-base::Value::Dict PurchaseIntentSignalHistoryToValue(
+base::DictValue PurchaseIntentSignalHistoryToValue(
     const PurchaseIntentSignalHistoryInfo& purchase_intent_signal_history) {
-  return base::Value::Dict()
+  return base::DictValue()
       .Set(kSignaledAtKey, base::TimeToValue(purchase_intent_signal_history.at))
       .Set(kWeightKey, purchase_intent_signal_history.weight);
 }
 
 PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   base::Time signaled_at = base::Time();
 
   if (const auto* const value = dict.Find(kSignaledAtKey)) {

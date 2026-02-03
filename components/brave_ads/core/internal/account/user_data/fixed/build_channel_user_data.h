@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildBuildChannelUserData();
+base::DictValue BuildBuildChannelUserData();
 
 }  // namespace brave_ads
 

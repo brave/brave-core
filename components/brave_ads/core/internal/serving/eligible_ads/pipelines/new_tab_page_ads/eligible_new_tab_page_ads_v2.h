@@ -72,8 +72,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
   void ApplyConditionMatcherCallback(
       CreativeNewTabPageAdList creative_ads,
       EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-      base::Value::Dict virtual_prefs);
-
+      base::DictValue virtual_prefs);
 
   void FilterAndMaybePredictCreativeAd(
       UserModelInfo user_model,

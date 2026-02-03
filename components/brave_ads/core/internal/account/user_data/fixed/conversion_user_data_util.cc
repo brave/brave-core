@@ -18,15 +18,15 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildConversionActionTypeUserData(
+base::DictValue BuildConversionActionTypeUserData(
     const ConversionInfo& conversion) {
   CHECK_NE(ConversionActionType::kUndefined, conversion.action_type);
 
-  return base::Value::Dict().Set(kConversionActionTypeKey,
-                                 ToString(conversion.action_type));
+  return base::DictValue().Set(kConversionActionTypeKey,
+                               ToString(conversion.action_type));
 }
 
-std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
+std::optional<base::DictValue> MaybeBuildVerifiableConversionUserData(
     const ConversionInfo& conversion) {
   if (!UserHasJoinedBraveRewards()) {
     // Do not support verifiable conversions for users who have not joined Brave
@@ -50,9 +50,9 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
     return std::nullopt;
   }
 
-  return base::Value::Dict().Set(
+  return base::DictValue().Set(
       kVerifiableConversionEnvelopeKey,
-      base::Value::Dict()
+      base::DictValue()
           .Set(kVerifiableConversionEnvelopeAlgorithmKey,
                GetVerifiableConversionEnvelopeAlgorithm())
           .Set(kVerifiableConversionEnvelopeCipherTextKey,

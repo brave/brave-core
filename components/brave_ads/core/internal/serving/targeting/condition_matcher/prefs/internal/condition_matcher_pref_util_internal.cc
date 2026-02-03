@@ -48,7 +48,7 @@ std::optional<std::string> ToString(const base::Value& value) {
 }
 
 std::optional<base::Value> MaybeGetRootPrefValue(
-    const base::Value::Dict& virtual_prefs,
+    const base::DictValue& virtual_prefs,
     const std::string& pref_path) {
   if (pref_path.starts_with(kVirtualPrefPathPrefix)) {
     return GetVirtualPref(virtual_prefs, pref_path);
@@ -85,7 +85,7 @@ std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
     return std::nullopt;
   }
 
-  const base::Value::List& list = pref_value.GetList();
+  const base::ListValue& list = pref_value.GetList();
 
   if (index > list.size() - 1) {
     // Invalid pref path key, because the list index is out of bounds.
@@ -109,7 +109,7 @@ std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
 }
 
 std::optional<base::Value> MaybeGetPrefValue(
-    const base::Value::Dict& virtual_prefs,
+    const base::DictValue& virtual_prefs,
     const std::string& pref_path) {
   // Split the `pref_path` into individual keys using '|' as the delimiter.
   const std::vector<std::string> keys = base::SplitString(

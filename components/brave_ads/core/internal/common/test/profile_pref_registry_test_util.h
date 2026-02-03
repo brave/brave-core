@@ -25,9 +25,9 @@ void RegisterProfileDoublePref(const std::string& path, double default_value);
 void RegisterProfileStringPref(const std::string& path,
                                const std::string& default_value);
 void RegisterProfileDictPref(const std::string& path,
-                             base::Value::Dict default_value = {});
+                             base::DictValue default_value = {});
 void RegisterProfileListPref(const std::string& path,
-                             base::Value::List default_value = {});
+                             base::ListValue default_value = {});
 void RegisterProfileInt64Pref(const std::string& path, int64_t default_value);
 void RegisterProfileUint64Pref(const std::string& path, uint64_t default_value);
 void RegisterProfileTimePref(const std::string& path, base::Time default_value);

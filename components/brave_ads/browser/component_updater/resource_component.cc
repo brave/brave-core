@@ -121,7 +121,7 @@ void ResourceComponent::LoadManifestCallback(const std::string& component_id,
                                              const std::string& json) {
   VLOG(8) << "Manifest JSON: " << json;
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
     VLOG(0) << "Failed to parse manifest";
@@ -149,13 +149,13 @@ void ResourceComponent::LoadResourceCallback(
     const std::string& json) {
   VLOG(8) << "Resource JSON: " << json;
 
-  std::optional<base::Value::Dict> root =
+  std::optional<base::DictValue> root =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!root) {
     VLOG(0) << "Failed to parse resource";
     return;
   }
-  const base::Value::Dict& dict = *root;
+  const base::DictValue& dict = *root;
 
   std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (!schema_version) {

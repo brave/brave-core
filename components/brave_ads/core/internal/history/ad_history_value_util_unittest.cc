@@ -105,7 +105,7 @@ TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToValue) {
                            /*should_generate_random_uuids=*/false);
 
   // Act
-  const base::Value::List list = AdHistoryToValue(ad_history);
+  const base::ListValue list = AdHistoryToValue(ad_history);
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonList(kAdHistoryAsJson), list);

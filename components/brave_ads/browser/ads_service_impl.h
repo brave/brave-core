@@ -202,7 +202,7 @@ class AdsServiceImpl final : public AdsService,
   // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OpenNewTabWithAdCallback(std::optional<base::Value::Dict> dict);
+  void OpenNewTabWithAdCallback(std::optional<base::DictValue> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
   void OpenNewTabWithUrl(const GURL& url);
 
@@ -247,7 +247,7 @@ class AdsServiceImpl final : public AdsService,
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
   void ParseAndSaveNewTabPageAds(
-      base::Value::Dict dict,
+      base::DictValue dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
   void MaybeServeNewTabPageAd(
       MaybeServeMojomNewTabPageAdCallback callback) override;
@@ -321,7 +321,7 @@ class AdsServiceImpl final : public AdsService,
   void CanShowNotificationAdsWhileBrowserIsBackgrounded(
       CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
       override;
-  void ShowNotificationAd(base::Value::Dict dict) override;
+  void ShowNotificationAd(base::DictValue dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void GetSiteHistory(int max_count,

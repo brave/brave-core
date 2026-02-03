@@ -71,7 +71,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildChannel) {
   EXPECT_CALL(delegate(), GetChannel).WillOnce(testing::Return("release"));
 
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   const std::string* build_channel =
       virtual_prefs.FindStringByDottedPath("[virtual]:browser.build_channel");
   ASSERT_TRUE(build_channel);
@@ -82,7 +82,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildChannel) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, BrowserVersion) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   const std::string* version =
       virtual_prefs.FindStringByDottedPath("[virtual]:browser.version");
   ASSERT_TRUE(version);
@@ -93,7 +93,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserVersion) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMajorVersion) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   std::optional<int> major_version =
       virtual_prefs.FindIntByDottedPath("[virtual]:browser.major_version");
 
@@ -103,7 +103,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMajorVersion) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMinorVersion) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   std::optional<int> minor_version =
       virtual_prefs.FindIntByDottedPath("[virtual]:browser.minor_version");
 
@@ -113,7 +113,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMinorVersion) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildVersion) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   std::optional<int> build_version =
       virtual_prefs.FindIntByDottedPath("[virtual]:browser.build_version");
 
@@ -123,7 +123,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildVersion) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, BrowserPatchVersion) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   std::optional<int> patch_version =
       virtual_prefs.FindIntByDottedPath("[virtual]:browser.patch_version");
 
@@ -136,7 +136,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleLanguage) {
   const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
 
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   const std::string* language = virtual_prefs.FindStringByDottedPath(
       "[virtual]:operating_system.locale.language");
   ASSERT_TRUE(language);
@@ -150,7 +150,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleRegion) {
   const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
 
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   const std::string* region = virtual_prefs.FindStringByDottedPath(
       "[virtual]:operating_system.locale.region");
   ASSERT_TRUE(region);
@@ -161,7 +161,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleRegion) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemName) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   const std::string* name =
       virtual_prefs.FindStringByDottedPath("[virtual]:operating_system.name");
   ASSERT_TRUE(name);
@@ -172,7 +172,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemName) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, IsSurveyPanelist) {
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   std::optional<bool> is_survey_panelist =
       virtual_prefs.FindBoolByDottedPath("[virtual]:is_survey_panelist");
 
@@ -186,7 +186,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, SearchEngineDefaultName) {
       .WillOnce(testing::Return("Brave"));
 
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  const base::DictValue virtual_prefs = provider().GetPrefs();
   const std::string* default_search_engine_name =
       virtual_prefs.FindStringByDottedPath(
           "[virtual]:search_engine.default_name");
@@ -199,7 +199,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, SearchEngineDefaultName) {
 TEST_F(BraveAdsVirtualPrefProviderTest, PrefsWithSkus) {
   // Arrange
   local_state_.SetDict(skus::prefs::kSkusState,
-                       base::Value::Dict().Set("skus:development", R"JSON({
+                       base::DictValue().Set("skus:development", R"JSON({
       "orders": {
         "f24787ab-7bc3-46b9-bc05-65befb360cb8": {
           "created_at": "2023-10-24T16:00:57.902289",
@@ -212,12 +212,12 @@ TEST_F(BraveAdsVirtualPrefProviderTest, PrefsWithSkus) {
     })JSON"));
 
   // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
-  const base::Value::Dict* skus = virtual_prefs.FindDict("[virtual]:skus");
+  const base::DictValue virtual_prefs = provider().GetPrefs();
+  const base::DictValue* skus = virtual_prefs.FindDict("[virtual]:skus");
   ASSERT_TRUE(skus);
 
   // Assert
-  const base::Value::Dict expected_skus = base::test::ParseJsonDict(
+  const base::DictValue expected_skus = base::test::ParseJsonDict(
       R"JSON(
       {
         "development": {

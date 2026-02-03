@@ -25,7 +25,7 @@ using SupportedSubdivisionMap =
 
 const SupportedSubdivisionMap& GetSupportedSubdivisions();
 
-base::Value::List GetSupportedSubdivisionsAsValueList(
+base::ListValue GetSupportedSubdivisionsAsValueList(
     const std::string& country_code);
 
 }  // namespace brave_ads

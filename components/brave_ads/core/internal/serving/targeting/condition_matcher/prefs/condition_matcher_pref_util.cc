@@ -10,7 +10,7 @@
 namespace brave_ads {
 
 std::optional<std::string> MaybeGetPrefValueAsString(
-    const base::Value::Dict& virtual_prefs,
+    const base::DictValue& virtual_prefs,
     const std::string& pref_path) {
   if (std::optional<base::Value> value =
           MaybeGetPrefValue(virtual_prefs, pref_path)) {

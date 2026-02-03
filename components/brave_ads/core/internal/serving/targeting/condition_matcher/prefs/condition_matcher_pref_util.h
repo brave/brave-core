@@ -20,7 +20,7 @@ namespace brave_ads {
 // should be separated by `|`. Example `list|1` would return the second element
 // of a list.
 std::optional<std::string> MaybeGetPrefValueAsString(
-    const base::Value::Dict& virtual_prefs,
+    const base::DictValue& virtual_prefs,
     const std::string& pref_path);
 
 }  // namespace brave_ads

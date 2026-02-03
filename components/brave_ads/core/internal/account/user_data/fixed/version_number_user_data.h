@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildVersionNumberUserData();
+base::DictValue BuildVersionNumberUserData();
 
 }  // namespace brave_ads
 

@@ -37,7 +37,7 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
 
   ~NewTabPageAdHandler() override;
 
-  void ParseAndSave(base::Value::Dict dict,
+  void ParseAndSave(base::DictValue dict,
                     ParseAndSaveNewTabPageAdsCallback callback);
 
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);

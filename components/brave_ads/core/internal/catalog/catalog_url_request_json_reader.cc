@@ -51,9 +51,9 @@ constexpr int kDefaultConversionObservationWindow = 7;
 
 template <typename T>
 std::optional<std::vector<T>> ParseListWithCodeAndName(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const std::string& key) {
-  const base::Value::List* const list = dict.FindList(key);
+  const base::ListValue* const list = dict.FindList(key);
   if (!list) {
     return std::nullopt;
   }
@@ -62,7 +62,7 @@ std::optional<std::vector<T>> ParseListWithCodeAndName(
   items.reserve(list->size());
 
   for (const auto& value : *list) {
-    const base::Value::Dict* const item_dict = value.GetIfDict();
+    const base::DictValue* const item_dict = value.GetIfDict();
     if (!item_dict) {
       BLOG(1, "Invalid " << key);
       return std::nullopt;
@@ -87,14 +87,14 @@ std::optional<std::vector<T>> ParseListWithCodeAndName(
 }
 
 std::optional<CatalogGeoTargetList> ParseGeoTargets(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   return ParseListWithCodeAndName<CatalogGeoTargetInfo>(dict, "geoTargets");
 }
 
-std::optional<CatalogDaypartList> ParseDayparts(const base::Value::Dict& dict) {
+std::optional<CatalogDaypartList> ParseDayparts(const base::DictValue& dict) {
   CatalogDaypartList dayparts;
 
-  const base::Value::List* const list = dict.FindList("dayParts");
+  const base::ListValue* const list = dict.FindList("dayParts");
   if (!list || list->empty()) {
     // Fallback to 24/7.
     dayparts.push_back(CatalogDaypartInfo{});
@@ -104,7 +104,7 @@ std::optional<CatalogDaypartList> ParseDayparts(const base::Value::Dict& dict) {
   dayparts.reserve(list->size());
 
   for (const auto& value : *list) {
-    const base::Value::Dict* const daypart_dict = value.GetIfDict();
+    const base::DictValue* const daypart_dict = value.GetIfDict();
     if (!daypart_dict) {
       BLOG(1, "Invalid daypart");
       return std::nullopt;
@@ -139,19 +139,19 @@ std::optional<CatalogDaypartList> ParseDayparts(const base::Value::Dict& dict) {
   return dayparts;
 }
 
-std::optional<CatalogSegmentList> ParseSegments(const base::Value::Dict& dict) {
+std::optional<CatalogSegmentList> ParseSegments(const base::DictValue& dict) {
   return ParseListWithCodeAndName<CatalogSegmentInfo>(dict, "segments");
 }
 
-std::optional<CatalogOsList> ParseOses(const base::Value::Dict& dict) {
+std::optional<CatalogOsList> ParseOses(const base::DictValue& dict) {
   return ParseListWithCodeAndName<CatalogOsInfo>(dict, "oses");
 }
 
 std::optional<CatalogConversionList> ParseConversions(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const CatalogCampaignInfo& campaign,
     const CatalogCreativeSetInfo& creative_set) {
-  const base::Value::List* const list = dict.FindList("conversions");
+  const base::ListValue* const list = dict.FindList("conversions");
   if (!list) {
     return std::nullopt;
   }
@@ -160,7 +160,7 @@ std::optional<CatalogConversionList> ParseConversions(
   conversions.reserve(list->size());
 
   for (const auto& value : *list) {
-    const base::Value::Dict* const conversion_dict = value.GetIfDict();
+    const base::DictValue* const conversion_dict = value.GetIfDict();
     if (!conversion_dict) {
       BLOG(1, "Invalid conversion");
       return std::nullopt;
@@ -197,7 +197,7 @@ std::optional<CatalogConversionList> ParseConversions(
 }
 
 std::optional<CatalogCreativeNotificationAdInfo> ParseCreativeNotificationAd(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   CatalogCreativeNotificationAdInfo creative;
 
   const std::string* const title = dict.FindString("title");
@@ -228,9 +228,8 @@ std::optional<CatalogCreativeNotificationAdInfo> ParseCreativeNotificationAd(
   return creative;
 }
 
-std::optional<CatalogTypeInfo> ParseCreativeType(
-    const base::Value::Dict& dict) {
-  const base::Value::Dict* const type_dict = dict.FindDict("type");
+std::optional<CatalogTypeInfo> ParseCreativeType(const base::DictValue& dict) {
+  const base::DictValue* const type_dict = dict.FindDict("type");
   if (!type_dict) {
     BLOG(1, "Invalid creative type");
     return std::nullopt;
@@ -293,7 +292,7 @@ template <typename CatalogCreativeAdInfo,
 bool ParseCreativeForType(ParseCreativeAdFunc parse_creative_ad_func,
                           CatalogCreativeSetInfo& creative_set,
                           const std::string& creative_instance_id,
-                          const base::Value::Dict& payload_dict,
+                          const base::DictValue& payload_dict,
                           const CatalogTypeInfo& type,
                           CreativeList& creatives) {
   std::optional<CatalogCreativeAdInfo> creative =
@@ -314,7 +313,7 @@ bool ParseCreativeForType(ParseCreativeAdFunc parse_creative_ad_func,
   return true;
 }
 
-bool ParseCreative(const base::Value::Dict& dict,
+bool ParseCreative(const base::DictValue& dict,
                    CatalogCreativeSetInfo& creative_set) {
   const std::string* const creative_instance_id =
       dict.FindString("creativeInstanceId");
@@ -329,7 +328,7 @@ bool ParseCreative(const base::Value::Dict& dict,
     return false;
   }
 
-  const base::Value::Dict* const payload_dict = dict.FindDict("payload");
+  const base::DictValue* const payload_dict = dict.FindDict("payload");
   if (!payload_dict) {
     BLOG(1, "Invalid creative payload");
     return false;
@@ -345,15 +344,15 @@ bool ParseCreative(const base::Value::Dict& dict,
   return true;
 }
 
-bool ParseCreatives(const base::Value::Dict& dict,
+bool ParseCreatives(const base::DictValue& dict,
                     CatalogCreativeSetInfo& creative_set) {
-  const base::Value::List* const list = dict.FindList("creatives");
+  const base::ListValue* const list = dict.FindList("creatives");
   if (!list) {
     return false;
   }
 
   for (const auto& value : *list) {
-    const base::Value::Dict* const creative_dict = value.GetIfDict();
+    const base::DictValue* const creative_dict = value.GetIfDict();
     if (!creative_dict) {
       BLOG(1, "Invalid creative");
       return false;
@@ -370,7 +369,7 @@ bool ParseCreatives(const base::Value::Dict& dict,
 }
 
 std::optional<CatalogCreativeSetInfo> ParseCreativeSet(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const CatalogCampaignInfo& campaign) {
   CatalogCreativeSetInfo creative_set;
 
@@ -434,9 +433,9 @@ std::optional<CatalogCreativeSetInfo> ParseCreativeSet(
 }
 
 std::optional<CatalogCreativeSetList> ParseCreativeSets(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const CatalogCampaignInfo& campaign) {
-  const base::Value::List* const list = dict.FindList("creativeSets");
+  const base::ListValue* const list = dict.FindList("creativeSets");
   if (!list) {
     return std::nullopt;
   }
@@ -445,7 +444,7 @@ std::optional<CatalogCreativeSetList> ParseCreativeSets(
   creative_sets.reserve(list->size());
 
   for (const auto& value : *list) {
-    const base::Value::Dict* const creative_set_dict = value.GetIfDict();
+    const base::DictValue* const creative_set_dict = value.GetIfDict();
     if (!creative_set_dict) {
       BLOG(1, "Invalid creative set");
       continue;
@@ -460,8 +459,7 @@ std::optional<CatalogCreativeSetList> ParseCreativeSets(
   return creative_sets;
 }
 
-std::optional<CatalogCampaignInfo> ParseCampaign(
-    const base::Value::Dict& dict) {
+std::optional<CatalogCampaignInfo> ParseCampaign(const base::DictValue& dict) {
   CatalogCampaignInfo campaign;
 
   const std::string* const campaign_id = dict.FindString("campaignId");
@@ -534,9 +532,8 @@ std::optional<CatalogCampaignInfo> ParseCampaign(
   return campaign;
 }
 
-std::optional<CatalogCampaignList> ParseCampaigns(
-    const base::Value::Dict& dict) {
-  const base::Value::List* const list = dict.FindList("campaigns");
+std::optional<CatalogCampaignList> ParseCampaigns(const base::DictValue& dict) {
+  const base::ListValue* const list = dict.FindList("campaigns");
   if (!list) {
     BLOG(1, "Missing campaigns");
     return std::nullopt;
@@ -546,7 +543,7 @@ std::optional<CatalogCampaignList> ParseCampaigns(
   campaigns.reserve(list->size());
 
   for (const auto& value : *list) {
-    const base::Value::Dict* const campaign_dict = value.GetIfDict();
+    const base::DictValue* const campaign_dict = value.GetIfDict();
     if (!campaign_dict) {
       BLOG(1, "Invalid campaign");
       continue;
@@ -564,7 +561,7 @@ std::optional<CatalogCampaignList> ParseCampaigns(
   return campaigns;
 }
 
-std::optional<CatalogInfo> ParseCatalog(const base::Value::Dict& dict) {
+std::optional<CatalogInfo> ParseCatalog(const base::DictValue& dict) {
   CatalogInfo catalog;
 
   const std::string* const catalog_id = dict.FindString("catalogId");
@@ -597,7 +594,7 @@ std::optional<CatalogInfo> ParseCatalog(const base::Value::Dict& dict) {
 }  // namespace
 
 std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
     BLOG(0, "Failed to read catalog JSON");

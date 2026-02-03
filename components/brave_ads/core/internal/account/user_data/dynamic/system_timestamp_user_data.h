@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildSystemTimestampUserData();
+base::DictValue BuildSystemTimestampUserData();
 
 }  // namespace brave_ads
 

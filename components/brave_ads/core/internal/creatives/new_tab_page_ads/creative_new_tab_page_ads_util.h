@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-void ParseAndSaveNewTabPageAds(base::Value::Dict dict, ResultCallback callback);
+void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback);
 
 std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(
     std::string_view value);

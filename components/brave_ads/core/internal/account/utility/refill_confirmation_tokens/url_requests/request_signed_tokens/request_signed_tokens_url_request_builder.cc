@@ -112,7 +112,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
-  base::Value::List list;
+  base::ListValue list;
 
   for (const auto& blinded_token : blinded_tokens_) {
     if (std::optional<std::string> blinded_token_base64 =
@@ -123,7 +123,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
 
   std::string json;
   CHECK(base::JSONWriter::Write(
-      base::Value::Dict().Set("blindedTokens", std::move(list)), &json));
+      base::DictValue().Set("blindedTokens", std::move(list)), &json));
   return json;
 }
 

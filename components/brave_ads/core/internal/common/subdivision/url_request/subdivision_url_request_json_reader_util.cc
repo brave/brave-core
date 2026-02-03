@@ -21,7 +21,7 @@ constexpr std::string_view kRegionKey = "region";
 }  // namespace
 
 std::optional<std::string> ParseSubdivision(const std::string& json) {
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
     return std::nullopt;

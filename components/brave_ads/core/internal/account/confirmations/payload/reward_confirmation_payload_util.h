@@ -12,7 +12,7 @@ namespace brave_ads {
 
 struct RewardInfo;
 
-base::Value::Dict BuildRewardConfirmationPayload(const RewardInfo& reward);
+base::DictValue BuildRewardConfirmationPayload(const RewardInfo& reward);
 
 }  // namespace brave_ads
 

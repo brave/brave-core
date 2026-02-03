@@ -12,8 +12,8 @@
 
 namespace brave_ads {
 
-base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad) {
-  return base::Value::Dict()
+base::DictValue NotificationAdToValue(const NotificationAdInfo& ad) {
+  return base::DictValue()
       .Set(kNotificationAdTypeKey, ToString(ad.type))
       .Set(kNotificationAdPlacementIdKey, ad.placement_id)
       .Set(kNotificationAdCreativeInstanceIdKey, ad.creative_instance_id)
@@ -26,9 +26,9 @@ base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad) {
       .Set(kNotificationAdTargetUrlKey, ad.target_url.spec());
 }
 
-base::Value::List NotificationAdsToValue(
+base::ListValue NotificationAdsToValue(
     const base::circular_deque<NotificationAdInfo>& ads) {
-  base::Value::List list;
+  base::ListValue list;
   list.reserve(ads.size());
 
   for (const auto& ad : ads) {
@@ -38,7 +38,7 @@ base::Value::List NotificationAdsToValue(
   return list;
 }
 
-NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict) {
+NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict) {
   NotificationAdInfo ad;
 
   if (const auto* const value = dict.FindString(kNotificationAdTypeKey)) {
@@ -89,7 +89,7 @@ NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict) {
 }
 
 base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
-    const base::Value::List& list) {
+    const base::ListValue& list) {
   base::circular_deque<NotificationAdInfo> ads;
 
   for (const auto& value : list) {

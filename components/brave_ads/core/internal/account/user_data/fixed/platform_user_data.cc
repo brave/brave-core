@@ -16,14 +16,14 @@ namespace {
 constexpr std::string_view kPlatformKey = "platform";
 }  // namespace
 
-base::Value::Dict BuildPlatformUserData() {
+base::DictValue BuildPlatformUserData() {
   const std::string platform_name = PlatformHelper::GetInstance().GetName();
   if (platform_name.empty()) {
     // Invalid platform name.
     return {};
   }
 
-  return base::Value::Dict().Set(kPlatformKey, platform_name);
+  return base::DictValue().Set(kPlatformKey, platform_name);
 }
 
 }  // namespace brave_ads

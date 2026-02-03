@@ -213,7 +213,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
         std::make_tuple("Failed to fetch payment token", should_retry));
   }
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
     return base::unexpected(std::make_tuple(

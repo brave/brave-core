@@ -25,7 +25,7 @@ void CheckIfFirstTimeAndDepositWithUserDataCallback(
     mojom::ConfirmationType confirmation_type,
     const std::string& creative_instance_id,
     const std::string& segment,
-    base::Value::Dict user_data,
+    base::DictValue user_data,
     bool success,
     bool is_first_time) {
   if (!success) {
@@ -46,7 +46,7 @@ void CheckIfFirstTimeAndDepositWithUserData(
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     const std::string& segment,
-    base::Value::Dict user_data) {
+    base::DictValue user_data) {
   database::table::AdEvents ad_events_database_table;
   ad_events_database_table.IsFirstTime(
       campaign_id, confirmation_type,
@@ -62,7 +62,7 @@ void DepositWithUserData(mojom::AdType ad_type,
                          const std::string& campaign_id,
                          const std::string& creative_instance_id,
                          const std::string& segment,
-                         base::Value::Dict user_data) {
+                         base::DictValue user_data) {
   if (confirmation_type != mojom::ConfirmationType::kViewedImpression) {
     return GetAccount().DepositWithUserData(creative_instance_id, segment,
                                             ad_type, confirmation_type,
@@ -81,7 +81,7 @@ void Deposit(mojom::AdType ad_type,
              const std::string& segment) {
   DepositWithUserData(ad_type, confirmation_type, campaign_id,
                       creative_instance_id, segment,
-                      /*user_data=*/base::Value::Dict());
+                      /*user_data=*/base::DictValue());
 }
 
 }  // namespace brave_ads

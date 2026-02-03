@@ -15,7 +15,7 @@
 namespace brave_ads {
 
 UserDataInfo BuildConfirmationUserData(const TransactionInfo& transaction,
-                                       base::Value::Dict user_data) {
+                                       base::DictValue user_data) {
   UserDataInfo confirmation_user_data;
 
   confirmation_user_data.dynamic = BuildDynamicUserData();

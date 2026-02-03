@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildPageLandUserData(int http_status_code);
+base::DictValue BuildPageLandUserData(int http_status_code);
 
 }  // namespace brave_ads
 

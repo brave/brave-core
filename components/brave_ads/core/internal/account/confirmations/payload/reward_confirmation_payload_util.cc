@@ -21,7 +21,7 @@ constexpr std::string_view kPublicKeyKey = "publicKey";
 
 }  // namespace
 
-base::Value::Dict BuildRewardConfirmationPayload(const RewardInfo& reward) {
+base::DictValue BuildRewardConfirmationPayload(const RewardInfo& reward) {
   std::optional<std::string> blinded_token_base64 =
       reward.blinded_token.EncodeBase64();
   CHECK(blinded_token_base64);
@@ -30,8 +30,8 @@ base::Value::Dict BuildRewardConfirmationPayload(const RewardInfo& reward) {
       reward.public_key.EncodeBase64();
   CHECK(public_key_base64);
 
-  return base::Value::Dict()
-      .Set(kBlindedTokensKey, base::Value::List().Append(*blinded_token_base64))
+  return base::DictValue()
+      .Set(kBlindedTokensKey, base::ListValue().Append(*blinded_token_base64))
       .Set(kPublicKeyKey, *public_key_base64);
 }
 

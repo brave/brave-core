@@ -12,7 +12,7 @@ namespace brave_ads {
 
 struct TransactionInfo;
 
-base::Value::Dict BuildFixedUserData(const TransactionInfo& transaction);
+base::DictValue BuildFixedUserData(const TransactionInfo& transaction);
 
 }  // namespace brave_ads
 

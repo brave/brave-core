@@ -11,8 +11,8 @@
 
 namespace brave_ads {
 
-base::Value::Dict ReactionMapToDict(const ReactionMap& reactions) {
-  base::Value::Dict dict;
+base::DictValue ReactionMapToDict(const ReactionMap& reactions) {
+  base::DictValue dict;
 
   for (const auto& [id, type] : reactions) {
     dict.Set(id, static_cast<int>(type));
@@ -21,7 +21,7 @@ base::Value::Dict ReactionMapToDict(const ReactionMap& reactions) {
   return dict;
 }
 
-ReactionMap ReactionMapFromDict(const base::Value::Dict& dict) {
+ReactionMap ReactionMapFromDict(const base::DictValue& dict) {
   ReactionMap reactions;
 
   for (const auto [id, value] : dict) {
@@ -33,8 +33,8 @@ ReactionMap ReactionMapFromDict(const base::Value::Dict& dict) {
   return reactions;
 }
 
-base::Value::List ReactionSetToList(const ReactionSet& reactions) {
-  base::Value::List list;
+base::ListValue ReactionSetToList(const ReactionSet& reactions) {
+  base::ListValue list;
 
   for (const auto& reaction : reactions) {
     list.Append(base::Value(reaction));
@@ -43,7 +43,7 @@ base::Value::List ReactionSetToList(const ReactionSet& reactions) {
   return list;
 }
 
-ReactionSet ReactionSetFromList(const base::Value::List& list) {
+ReactionSet ReactionSetFromList(const base::ListValue& list) {
   ReactionSet reactions;
 
   for (const auto& value : list) {

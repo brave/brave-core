@@ -19,8 +19,7 @@ namespace {
 constexpr std::string_view kRotatingHashKey = "rotatingHash";
 }  // namespace
 
-base::Value::Dict BuildRotatingHashUserData(
-    const TransactionInfo& transaction) {
+base::DictValue BuildRotatingHashUserData(const TransactionInfo& transaction) {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
@@ -31,7 +30,7 @@ base::Value::Dict BuildRotatingHashUserData(
     return {};
   }
 
-  return base::Value::Dict().Set(kRotatingHashKey, *rotating_hash);
+  return base::DictValue().Set(kRotatingHashKey, *rotating_hash);
 }
 
 }  // namespace brave_ads

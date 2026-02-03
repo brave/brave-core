@@ -115,7 +115,7 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdManager::Initialize() {
-  std::optional<base::Value::List> list =
+  std::optional<base::ListValue> list =
       GetProfileListPref(prefs::kNotificationAds);
   if (!list) {
     return;

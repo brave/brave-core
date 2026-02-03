@@ -987,7 +987,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::OpenNewTabWithAdCallback(
-    std::optional<base::Value::Dict> dict) {
+    std::optional<base::DictValue> dict) {
   if (!dict) {
     return VLOG(0) << "Failed to get notification ad";
   }
@@ -1210,7 +1210,7 @@ void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
 }
 
 void AdsServiceImpl::ParseAndSaveNewTabPageAds(
-    base::Value::Dict dict,
+    base::DictValue dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
@@ -1477,7 +1477,7 @@ void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
       delegate_->CanShowSystemNotificationsWhileBrowserIsBackgrounded());
 }
 
-void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
+void AdsServiceImpl::ShowNotificationAd(base::DictValue dict) {
   const NotificationAdInfo ad = NotificationAdFromValue(dict);
 
   std::u16string title;

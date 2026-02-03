@@ -12,11 +12,10 @@
 
 namespace brave_ads {
 
-base::Value::List ConfirmationTokensToValue(
+base::ListValue ConfirmationTokensToValue(
     const ConfirmationTokenList& confirmation_tokens);
 
-ConfirmationTokenList ConfirmationTokensFromValue(
-    const base::Value::List& list);
+ConfirmationTokenList ConfirmationTokensFromValue(const base::ListValue& list);
 
 }  // namespace brave_ads
 

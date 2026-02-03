@@ -14,7 +14,7 @@ struct TransactionInfo;
 struct UserDataInfo;
 
 UserDataInfo BuildConfirmationUserData(const TransactionInfo& transaction,
-                                       base::Value::Dict user_data);
+                                       base::DictValue user_data);
 
 }  // namespace brave_ads
 

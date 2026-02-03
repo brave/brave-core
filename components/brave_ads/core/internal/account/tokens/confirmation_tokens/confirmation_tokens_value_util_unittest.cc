@@ -43,7 +43,7 @@ TEST_F(BraveAdsConfirmationTokenValueUtilTest, ConfirmationTokensToValue) {
       test::BuildConfirmationTokens(/*count=*/2);
 
   // Act
-  const base::Value::List list = ConfirmationTokensToValue(confirmation_tokens);
+  const base::ListValue list = ConfirmationTokensToValue(confirmation_tokens);
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonList(kConfirmationTokensAsJson), list);
@@ -51,7 +51,7 @@ TEST_F(BraveAdsConfirmationTokenValueUtilTest, ConfirmationTokensToValue) {
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, EmptyConfirmationTokensToValue) {
   // Act
-  const base::Value::List list = ConfirmationTokensToValue({});
+  const base::ListValue list = ConfirmationTokensToValue({});
 
   // Assert
   EXPECT_THAT(list, ::testing::IsEmpty());
@@ -59,7 +59,7 @@ TEST_F(BraveAdsConfirmationTokenValueUtilTest, EmptyConfirmationTokensToValue) {
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, ConfirmationTokensFromValue) {
   // Arrange
-  const base::Value::List list =
+  const base::ListValue list =
       base::test::ParseJsonList(kConfirmationTokensAsJson);
 
   // Act

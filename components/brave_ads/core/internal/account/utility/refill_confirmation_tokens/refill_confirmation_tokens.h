@@ -59,7 +59,7 @@ class RefillConfirmationTokens final {
   base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
   HandleGetSignedTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
-  void ParseAndRequireCaptcha(const base::Value::Dict& dict) const;
+  void ParseAndRequireCaptcha(const base::DictValue& dict) const;
 
   void SuccessfullyRefilled();
   void FailedToRefillAndRetry();

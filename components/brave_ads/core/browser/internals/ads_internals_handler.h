@@ -47,7 +47,7 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
   void ClearAdsData(brave_ads::ClearDataCallback callback) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
-                            std::optional<base::Value::Dict> internals);
+                            std::optional<base::DictValue> internals);
 
   void OnBraveRewardsEnabledPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();

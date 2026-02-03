@@ -31,7 +31,7 @@ std::vector<std::string> BuildHeaders() {
 RedeemPaymentTokensUrlRequestBuilder::RedeemPaymentTokensUrlRequestBuilder(
     WalletInfo wallet,
     PaymentTokenList payment_tokens,
-    base::Value::Dict user_data)
+    base::DictValue user_data)
     : wallet_(std::move(wallet)),
       payment_tokens_(std::move(payment_tokens)),
       user_data_(std::move(user_data)) {
@@ -68,7 +68,7 @@ std::string RedeemPaymentTokensUrlRequestBuilder::BuildBody(
   CHECK(!payload.empty());
   CHECK(!user_data_.empty());
 
-  auto dict = base::Value::Dict()
+  auto dict = base::DictValue()
                   .Set("paymentCredentials", BuildPaymentRequestDTO(payload))
                   .Set("payload", payload);
 
@@ -82,18 +82,18 @@ std::string RedeemPaymentTokensUrlRequestBuilder::BuildBody(
 std::string RedeemPaymentTokensUrlRequestBuilder::BuildPayload() const {
   std::string json;
   CHECK(base::JSONWriter::Write(
-      base::Value::Dict().Set("paymentId", wallet_.payment_id), &json));
+      base::DictValue().Set("paymentId", wallet_.payment_id), &json));
   return json;
 }
 
-base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
+base::ListValue RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
     const std::string& payload) const {
   CHECK(!payload.empty());
 
-  base::Value::List list;
+  base::ListValue list;
 
   for (const auto& payment_token : payment_tokens_) {
-    std::optional<base::Value::Dict> credential =
+    std::optional<base::DictValue> credential =
         cbr::MaybeBuildCredential(payment_token.unblinded_token, payload);
     if (!credential) {
       continue;
@@ -104,7 +104,7 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
     CHECK(public_key_base64);
 
     list.Append(
-        base::Value::Dict()
+        base::DictValue()
             .Set("confirmationType", ToString(payment_token.confirmation_type))
             .Set("credential", std::move(*credential))
             .Set("publicKey", *public_key_base64));

@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildRedeemPaymentTokensUserData(
+base::DictValue BuildRedeemPaymentTokensUserData(
     const PaymentTokenList& payment_tokens);
 
 }  // namespace brave_ads

@@ -41,7 +41,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildConfirmationUserData) {
   // Act
   const UserDataInfo user_data = BuildConfirmationUserData(
       transaction,
-      /*user_data=*/base::Value::Dict().Set("foo", "bar"));
+      /*user_data=*/base::DictValue().Set("foo", "bar"));
 
   // Assert
   UserDataInfo expected_user_data;
@@ -86,7 +86,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Act
   const UserDataInfo user_data = BuildConfirmationUserData(
       transaction,
-      /*user_data=*/base::Value::Dict().Set("foo", "bar"));
+      /*user_data=*/base::DictValue().Set("foo", "bar"));
 
   // Assert
   UserDataInfo expected_user_data;

@@ -43,7 +43,7 @@ constexpr std::string_view kSegmentKey = "category";
 
 }  // namespace
 
-void ParseCreatedAt(const base::Value::Dict& dict,
+void ParseCreatedAt(const base::DictValue& dict,
                     AdHistoryItemInfo& ad_history_item) {
   const base::Value* value = dict.Find(kCreatedAtKey);
   if (!value) {
@@ -54,9 +54,9 @@ void ParseCreatedAt(const base::Value::Dict& dict,
   ad_history_item.created_at = base::ValueToTime(value).value_or(base::Time());
 }
 
-void ParseAdContent(const base::Value::Dict& dict,
+void ParseAdContent(const base::DictValue& dict,
                     AdHistoryItemInfo& ad_history_item) {
-  const base::Value::Dict* content_dict = dict.FindDict(kAdContentKey);
+  const base::DictValue* content_dict = dict.FindDict(kAdContentKey);
   if (!content_dict) {
     // Migration from legacy key.
     content_dict = dict.FindDict(kLegacyAdContentKey);
@@ -118,9 +118,9 @@ void ParseAdContent(const base::Value::Dict& dict,
   }
 }
 
-void ParseSegmentContent(const base::Value::Dict& dict,
+void ParseSegmentContent(const base::DictValue& dict,
                          AdHistoryItemInfo& ad_history_item) {
-  const base::Value::Dict* content_dict = nullptr;
+  const base::DictValue* content_dict = nullptr;
 
   content_dict = dict.FindDict(kSegmentContentKey);
   if (!content_dict) {

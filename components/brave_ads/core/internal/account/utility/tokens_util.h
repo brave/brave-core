@@ -20,13 +20,13 @@ namespace cbr {
 class PublicKey;
 }  // namespace cbr
 
-std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict);
+std::optional<cbr::PublicKey> ParsePublicKey(const base::DictValue& dict);
 
 std::optional<cbr::SignedTokenList> ParseSignedTokens(
-    const base::Value::Dict& dict);
+    const base::DictValue& dict);
 
 std::optional<cbr::UnblindedTokenList> ParseVerifyAndUnblindTokens(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const cbr::TokenList& tokens,
     const cbr::BlindedTokenList& blinded_tokens,
     const cbr::PublicKey& public_key);

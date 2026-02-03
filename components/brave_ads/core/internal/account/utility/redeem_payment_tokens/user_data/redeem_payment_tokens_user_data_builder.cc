@@ -10,9 +10,9 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildRedeemPaymentTokensUserData(
+base::DictValue BuildRedeemPaymentTokensUserData(
     const PaymentTokenList& payment_tokens) {
-  base::Value::Dict user_data;
+  base::DictValue user_data;
 
   user_data.Merge(BuildPlatformUserData());
   user_data.Merge(BuildSummaryUserData(payment_tokens));

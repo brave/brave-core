@@ -22,9 +22,9 @@ constexpr std::string_view kSignature = "signature";
 
 }  // namespace
 
-base::Value::List ConfirmationTokensToValue(
+base::ListValue ConfirmationTokensToValue(
     const ConfirmationTokenList& confirmation_tokens) {
-  base::Value::List list;
+  base::ListValue list;
 
   for (const auto& confirmation_token : confirmation_tokens) {
     std::optional<std::string> unblinded_token_base64 =
@@ -39,7 +39,7 @@ base::Value::List ConfirmationTokensToValue(
       continue;
     }
 
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set(kUnblindedTokenKey, *unblinded_token_base64)
                     .Set(kPublicKey, *public_key_base64)
                     .Set(kSignature, confirmation_token.signature_base64));
@@ -48,8 +48,7 @@ base::Value::List ConfirmationTokensToValue(
   return list;
 }
 
-ConfirmationTokenList ConfirmationTokensFromValue(
-    const base::Value::List& list) {
+ConfirmationTokenList ConfirmationTokensFromValue(const base::ListValue& list) {
   ConfirmationTokenList confirmation_tokens;
   confirmation_tokens.reserve(list.size());
 

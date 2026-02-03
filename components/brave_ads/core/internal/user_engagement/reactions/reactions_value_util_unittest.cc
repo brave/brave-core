@@ -54,7 +54,7 @@ TEST(BraveAdsReactionsValueUtilTest, EmptyReactionMapToDict) {
 
 TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromDict) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kReactionMapAsJson);
+  const base::DictValue dict = base::test::ParseJsonDict(kReactionMapAsJson);
 
   // Act & Assert
   const ReactionMap expected_reactions = {
@@ -85,7 +85,7 @@ TEST(BraveAdsReactionsValueUtilTest, EmptyReactionSetToList) {
 
 TEST(BraveAdsReactionsValueUtilTest, ReactionSetFromList) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kReactionSetAsJson);
+  const base::ListValue list = base::test::ParseJsonList(kReactionSetAsJson);
 
   // Act & Assert
   const ReactionSet expected_reactions = {test::kCreativeInstanceId,

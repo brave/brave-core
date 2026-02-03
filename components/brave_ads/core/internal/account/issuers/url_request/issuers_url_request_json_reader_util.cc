@@ -18,12 +18,11 @@ constexpr std::string_view kIssuersKey = "issuers";
 
 }  // namespace
 
-std::optional<int> ParsePing(const base::Value::Dict& dict) {
+std::optional<int> ParsePing(const base::DictValue& dict) {
   return dict.FindInt(kPingKey);
 }
 
-std::optional<TokenIssuerList> ParseTokenIssuers(
-    const base::Value::Dict& dict) {
+std::optional<TokenIssuerList> ParseTokenIssuers(const base::DictValue& dict) {
   if (const auto* const list = dict.FindList(kIssuersKey)) {
     return TokenIssuersFromValue(*list);
   }

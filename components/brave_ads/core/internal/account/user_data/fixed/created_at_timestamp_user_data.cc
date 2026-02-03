@@ -18,7 +18,7 @@ namespace {
 constexpr std::string_view kCreatedAtTimestampKey = "createdAtTimestamp";
 }  // namespace
 
-base::Value::Dict BuildCreatedAtTimestampUserData(
+base::DictValue BuildCreatedAtTimestampUserData(
     const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
 
@@ -26,7 +26,7 @@ base::Value::Dict BuildCreatedAtTimestampUserData(
     return {};
   }
 
-  return base::Value::Dict().Set(
+  return base::DictValue().Set(
       kCreatedAtTimestampKey,
       TimeToPrivacyPreservingIso8601(*transaction.created_at));
 }

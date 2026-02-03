@@ -16,11 +16,11 @@ namespace {
 constexpr std::string_view kBuildChannelKey = "buildChannel";
 }  // namespace
 
-base::Value::Dict BuildBuildChannelUserData() {
+base::DictValue BuildBuildChannelUserData() {
   const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   CHECK(!build_channel.name.empty());
 
-  return base::Value::Dict().Set(kBuildChannelKey, build_channel.name);
+  return base::DictValue().Set(kBuildChannelKey, build_channel.name);
 }
 
 }  // namespace brave_ads

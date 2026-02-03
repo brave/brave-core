@@ -70,7 +70,7 @@ std::string GetProfileStringPref(const std::string& path) {
   return value->GetString();
 }
 
-base::Value::Dict GetProfileDictPref(const std::string& path) {
+base::DictValue GetProfileDictPref(const std::string& path) {
   std::optional<base::Value> value = GetAdsClient().GetProfilePref(path);
   if (!value) {
     return {};
@@ -81,7 +81,7 @@ base::Value::Dict GetProfileDictPref(const std::string& path) {
   return value->GetDict().Clone();
 }
 
-base::Value::List GetProfileListPref(const std::string& path) {
+base::ListValue GetProfileListPref(const std::string& path) {
   std::optional<base::Value> value = GetAdsClient().GetProfilePref(path);
   if (!value) {
     return {};
@@ -157,11 +157,11 @@ void SetProfileStringPref(const std::string& path, const std::string& value) {
   GetAdsClient().SetProfilePref(path, base::Value(value));
 }
 
-void SetProfileDictPref(const std::string& path, base::Value::Dict value) {
+void SetProfileDictPref(const std::string& path, base::DictValue value) {
   GetAdsClient().SetProfilePref(path, base::Value(std::move(value)));
 }
 
-void SetProfileListPref(const std::string& path, base::Value::List value) {
+void SetProfileListPref(const std::string& path, base::ListValue value) {
   GetAdsClient().SetProfilePref(path, base::Value(std::move(value)));
 }
 
@@ -254,7 +254,7 @@ std::string GetLocalStateStringPref(const std::string& path) {
   return value->GetString();
 }
 
-base::Value::Dict GetLocalStateDictPref(const std::string& path) {
+base::DictValue GetLocalStateDictPref(const std::string& path) {
   std::optional<base::Value> value = GetAdsClient().GetLocalStatePref(path);
   if (!value) {
     return {};
@@ -265,7 +265,7 @@ base::Value::Dict GetLocalStateDictPref(const std::string& path) {
   return value->GetDict().Clone();
 }
 
-base::Value::List GetLocalStateListPref(const std::string& path) {
+base::ListValue GetLocalStateListPref(const std::string& path) {
   std::optional<base::Value> value = GetAdsClient().GetLocalStatePref(path);
   if (!value) {
     return {};
@@ -344,11 +344,11 @@ void SetLocalStateStringPref(const std::string& path,
   GetAdsClient().SetLocalStatePref(path, base::Value(value));
 }
 
-void SetLocalStateDictPref(const std::string& path, base::Value::Dict value) {
+void SetLocalStateDictPref(const std::string& path, base::DictValue value) {
   GetAdsClient().SetLocalStatePref(path, base::Value(std::move(value)));
 }
 
-void SetLocalStateListPref(const std::string& path, base::Value::List value) {
+void SetLocalStateListPref(const std::string& path, base::ListValue value) {
   GetAdsClient().SetLocalStatePref(path, base::Value(std::move(value)));
 }
 
@@ -387,9 +387,8 @@ bool HasLocalStatePrefPath(const std::string& path) {
   return GetAdsClient().HasLocalStatePrefPath(path);
 }
 
-std::optional<base::Value> GetVirtualPref(
-    const base::Value::Dict& virtual_prefs,
-    const std::string& path) {
+std::optional<base::Value> GetVirtualPref(const base::DictValue& virtual_prefs,
+                                          const std::string& path) {
   if (path.starts_with(kVirtualPrefPathPrefix)) {
     if (const base::Value* const value = virtual_prefs.Find(path)) {
       return value->Clone();

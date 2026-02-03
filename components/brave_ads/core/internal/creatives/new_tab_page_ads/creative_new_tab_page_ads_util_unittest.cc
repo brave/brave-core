@@ -170,7 +170,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("4 July 2025"));
 
-  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
       {
         "schemaVersion": 2,
         "campaigns": [
@@ -390,7 +390,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
        ParseAndSaveAdsWithEmptyCampaigns) {
   // Arrange
-  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
       {
         "schemaVersion": 2,
         "campaigns": []
@@ -412,14 +412,14 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/false))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  ParseAndSaveNewTabPageAds(base::Value::Dict(), callback.Get());
+  ParseAndSaveNewTabPageAds(base::DictValue(), callback.Get());
   run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
        DoNotParseAndSaveAdsWithUnsupportedSchemaVersion) {
   // Arrange
-  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
       {
         "schemaVersion": 0,
         "campaigns": []
@@ -437,7 +437,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
        DoNotParseAndSaveAdsWithMissingCampaigns) {
   // Arrange
-  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
       {
         "schemaVersion": 2,
       })JSON");

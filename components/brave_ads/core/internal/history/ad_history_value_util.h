@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-base::Value::List AdHistoryToValue(const AdHistoryList& ad_history);
+base::ListValue AdHistoryToValue(const AdHistoryList& ad_history);
 
 }  // namespace brave_ads
 

@@ -13,8 +13,8 @@
 
 namespace brave_ads::json::reader {
 
-std::optional<int> ParsePing(const base::Value::Dict& dict);
-std::optional<TokenIssuerList> ParseTokenIssuers(const base::Value::Dict& dict);
+std::optional<int> ParsePing(const base::DictValue& dict);
+std::optional<TokenIssuerList> ParseTokenIssuers(const base::DictValue& dict);
 
 }  // namespace brave_ads::json::reader
 

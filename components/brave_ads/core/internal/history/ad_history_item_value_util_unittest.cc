@@ -91,8 +91,7 @@ class BraveAdsAdHistoryItemValueUtilTest : public test::TestBase {
 
 TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
   // Arrange
-  const base::Value::Dict dict =
-      base::test::ParseJsonDict(kAdHistoryItemAsJson);
+  const base::DictValue dict = base::test::ParseJsonDict(kAdHistoryItemAsJson);
 
   // Act
   const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
@@ -106,7 +105,7 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
 
 TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
   // Arrange
-  const base::Value::Dict dict =
+  const base::DictValue dict =
       base::test::ParseJsonDict(kLegacyAdHistoryItemAsJson);
 
   // Act
@@ -127,7 +126,7 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToValue) {
                                /*should_generate_random_uuids=*/false);
 
   // Act
-  const base::Value::Dict dict = AdHistoryItemToValue(ad_history_item);
+  const base::DictValue dict = AdHistoryItemToValue(ad_history_item);
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(kAdHistoryItemAsJson), dict);

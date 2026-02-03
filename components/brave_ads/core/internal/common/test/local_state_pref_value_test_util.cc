@@ -57,12 +57,12 @@ void SetLocalStateUint64PrefValue(const std::string& path, uint64_t value) {
 }
 
 void SetLocalStateDictPrefValue(const std::string& path,
-                                base::Value::Dict value) {
+                                base::DictValue value) {
   SetLocalStatePrefValue(path, base::Value(std::move(value)));
 }
 
 void SetLocalStateListPrefValue(const std::string& path,
-                                base::Value::List value) {
+                                base::ListValue value) {
   SetLocalStatePrefValue(path, base::Value(std::move(value)));
 }
 

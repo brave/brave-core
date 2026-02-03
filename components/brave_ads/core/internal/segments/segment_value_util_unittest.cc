@@ -29,7 +29,7 @@ constexpr std::string_view kSegmentsAsJson =
 
 TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
   // Act
-  const base::Value::List list =
+  const base::ListValue list =
       SegmentsToValue({"technology & computing", "personal finance-banking",
                        "food & drink-restaurants"});
 
@@ -39,7 +39,7 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
 
 TEST(BraveAdsSegmentValueUtilTest, EmptySegmentsToValue) {
   // Act
-  const base::Value::List list = SegmentsToValue({});
+  const base::ListValue list = SegmentsToValue({});
 
   // Assert
   EXPECT_THAT(list, ::testing::IsEmpty());
@@ -47,7 +47,7 @@ TEST(BraveAdsSegmentValueUtilTest, EmptySegmentsToValue) {
 
 TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kSegmentsAsJson);
+  const base::ListValue list = base::test::ParseJsonList(kSegmentsAsJson);
 
   // Act
   const SegmentList segments = SegmentsFromValue(list);

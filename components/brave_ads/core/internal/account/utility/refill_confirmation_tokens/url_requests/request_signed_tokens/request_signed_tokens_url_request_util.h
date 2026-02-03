@@ -13,9 +13,9 @@
 
 namespace brave_ads {
 
-std::optional<bool> ParseIsEligible(const base::Value::Dict& dict);
+std::optional<bool> ParseIsEligible(const base::DictValue& dict);
 
-std::optional<std::string> ParseNonce(const base::Value::Dict& dict);
+std::optional<std::string> ParseNonce(const base::DictValue& dict);
 
 }  // namespace brave_ads
 

@@ -17,7 +17,7 @@ namespace {
 constexpr std::string_view kVersionNumberKey = "versionNumber";
 }  // namespace
 
-base::Value::Dict BuildVersionNumberUserData() {
+base::DictValue BuildVersionNumberUserData() {
   std::vector<std::string> parts =
       base::SplitString(GetBrowserVersionNumber(), ".", base::KEEP_WHITESPACE,
                         base::SPLIT_WANT_ALL);
@@ -27,8 +27,7 @@ base::Value::Dict BuildVersionNumberUserData() {
   parts[2] = "0";
   parts[3] = "0";
 
-  return base::Value::Dict().Set(kVersionNumberKey,
-                                 base::JoinString(parts, "."));
+  return base::DictValue().Set(kVersionNumberKey, base::JoinString(parts, "."));
 }
 
 }  // namespace brave_ads

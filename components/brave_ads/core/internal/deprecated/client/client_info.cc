@@ -33,12 +33,12 @@ ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 
 ClientInfo::~ClientInfo() = default;
 
-base::Value::Dict ClientInfo::ToValue() const {
+base::DictValue ClientInfo::ToValue() const {
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
-  base::Value::Dict purchase_intent_signal_history_dict;
+  base::DictValue purchase_intent_signal_history_dict;
   for (const auto& [segment, history] : purchase_intent_signal_history) {
-    base::Value::List list;
+    base::ListValue list;
     for (const auto& item : history) {
       const base::Time decay_signal_at = item.at + time_window;
       if (base::Time::Now() < decay_signal_at) {
@@ -49,31 +49,31 @@ base::Value::Dict ClientInfo::ToValue() const {
     purchase_intent_signal_history_dict.Set(segment, std::move(list));
   }
 
-  base::Value::List probabilities_history_list;
+  base::ListValue probabilities_history_list;
   for (const auto& item : text_classification_probabilities) {
-    base::Value::List probabilities_list;
+    base::ListValue probabilities_list;
 
     for (const auto& [segment, page_score] : item) {
       CHECK(!segment.empty());
 
       probabilities_list.Append(
-          base::Value::Dict()
+          base::DictValue()
               .Set("segment", segment)
               .Set("pageScore", base::NumberToString(page_score)));
     }
 
-    probabilities_history_list.Append(base::Value::Dict().Set(
+    probabilities_history_list.Append(base::DictValue().Set(
         "textClassificationProbabilities", std::move(probabilities_list)));
   }
 
-  return base::Value::Dict()
+  return base::DictValue()
       .Set("purchaseIntentSignalHistory",
            std::move(purchase_intent_signal_history_dict))
       .Set("textClassificationProbabilitiesHistory",
            std::move(probabilities_history_list));
 }
 
-bool ClientInfo::FromValue(const base::Value::Dict& dict) {
+bool ClientInfo::FromValue(const base::DictValue& dict) {
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
       const auto* const items = history.GetIfList();
@@ -152,7 +152,7 @@ std::string ClientInfo::ToJson() const {
 bool ClientInfo::FromJson(const std::string& json) {
   TRACE_EVENT(kTraceEventCategory, "ClientInfo::FromJson");
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
     BLOG(0, "Malformed client JSON state");

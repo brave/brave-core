@@ -13,8 +13,7 @@
 
 namespace brave_ads::json::reader {
 
-std::optional<ConfirmationList> ParseConfirmations(
-    const base::Value::Dict& dict);
+std::optional<ConfirmationList> ParseConfirmations(const base::DictValue& dict);
 
 }  // namespace brave_ads::json::reader
 

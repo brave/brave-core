@@ -40,7 +40,7 @@ class VirtualPrefProvider final {
 
   ~VirtualPrefProvider();
 
-  base::Value::Dict GetPrefs() const;
+  base::DictValue GetPrefs() const;
 
  private:
   const raw_ptr<PrefService> prefs_;        // Not owned.

@@ -33,7 +33,7 @@ std::optional<T> LoadAndParseResourceComponentOnBackgroundThread(
     return std::nullopt;
   }
 
-  std::optional<base::Value::Dict> dict;
+  std::optional<base::DictValue> dict;
   {
     // `content` can be up to 10 MB, so we keep the scope of this object to this
     // block to release its memory as soon as possible.

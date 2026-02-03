@@ -13,7 +13,7 @@
 
 namespace brave_ads::json::reader {
 
-std::optional<AdHistoryList> ParseAdHistory(const base::Value::Dict& dict);
+std::optional<AdHistoryList> ParseAdHistory(const base::DictValue& dict);
 
 }  // namespace brave_ads::json::reader
 

@@ -24,21 +24,20 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   constexpr double kTolerance = 1e-7;
 
   // Act
-  const base::Value::Dict dict = base::test::ParseJsonDictFromFile(
+  const base::DictValue dict = base::test::ParseJsonDictFromFile(
       test::DataPath().AppendASCII(kHashCheck));
 
-  const base::Value::Dict* const test_case_name_dict =
+  const base::DictValue* const test_case_name_dict =
       dict.FindDict(test_case_name);
   ASSERT_TRUE(test_case_name_dict);
 
   const std::string* const input = test_case_name_dict->FindString("input");
   ASSERT_TRUE(input);
 
-  const base::Value::List* const idx_list =
-      test_case_name_dict->FindList("idx");
+  const base::ListValue* const idx_list = test_case_name_dict->FindList("idx");
   ASSERT_TRUE(idx_list);
 
-  const base::Value::List* const count_list =
+  const base::ListValue* const count_list =
       test_case_name_dict->FindList("count");
   ASSERT_TRUE(count_list);
 

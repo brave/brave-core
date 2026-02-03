@@ -12,7 +12,7 @@ namespace brave_ads {
 
 struct ConversionInfo;
 
-base::Value::Dict BuildConversionUserData(const ConversionInfo& conversion);
+base::DictValue BuildConversionUserData(const ConversionInfo& conversion);
 
 }  // namespace brave_ads
 

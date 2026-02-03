@@ -23,19 +23,19 @@ constexpr std::string_view kRowKey = "adDetailRows";
 
 }  // namespace
 
-base::Value::List AdHistoryToValue(const AdHistoryList& ad_history) {
-  base::Value::List list;
+base::ListValue AdHistoryToValue(const AdHistoryList& ad_history) {
+  base::ListValue list;
   list.reserve(ad_history.size());
 
   size_t row = 0;
 
   for (const auto& ad_history_item : ad_history) {
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set(kUuidKey, base::NumberToString(row++))
                     .Set(kCreatedAtKey,
                          ad_history_item.created_at
                              .InMillisecondsFSinceUnixEpochIgnoringNull())
-                    .Set(kRowKey, base::Value::List().Append(
+                    .Set(kRowKey, base::ListValue().Append(
                                       AdHistoryItemToValue(ad_history_item))));
   }
 

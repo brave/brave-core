@@ -17,12 +17,12 @@ namespace {
 constexpr std::string_view kSystemTimestampKey = "systemTimestamp";
 }  // namespace
 
-base::Value::Dict BuildSystemTimestampUserData() {
+base::DictValue BuildSystemTimestampUserData() {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
 
-  return base::Value::Dict().Set(
+  return base::DictValue().Set(
       kSystemTimestampKey, TimeToPrivacyPreservingIso8601(base::Time::Now()));
 }
 

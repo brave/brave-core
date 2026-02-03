@@ -16,20 +16,20 @@
 
 namespace brave_ads {
 
-std::optional<int> ParseVersion(const base::Value::Dict& dict);
+std::optional<int> ParseVersion(const base::DictValue& dict);
 
-std::optional<SegmentList> ParseSegments(const base::Value::Dict& dict);
+std::optional<SegmentList> ParseSegments(const base::DictValue& dict);
 
 std::optional<PurchaseIntentSegmentKeyphraseList> ParseSegmentKeyphrases(
     const SegmentList& segments,
-    const base::Value::Dict& dict);
+    const base::DictValue& dict);
 
 std::optional<PurchaseIntentFunnelKeyphraseList> ParseFunnelKeyphrases(
-    const base::Value::Dict& dict);
+    const base::DictValue& dict);
 
 std::optional<PurchaseIntentFunnelSiteMap> ParseFunnelSites(
     const SegmentList& segments,
-    const base::Value::Dict& dict);
+    const base::DictValue& dict);
 
 }  // namespace brave_ads
 

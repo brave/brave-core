@@ -115,7 +115,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
     EXPECT_CALL(callback, Run(/*success=*/true))
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
-    base::Value::Dict dict = base::test::ParseJsonDict(json);
+    base::DictValue dict = base::test::ParseJsonDict(json);
     GetAds().ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
     run_loop.Run();
   }

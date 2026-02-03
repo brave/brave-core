@@ -29,7 +29,7 @@ using IsFirstTimeCallback =
 using GetAdEventsCallback =
     base::OnceCallback<void(bool success, const AdEventList& ad_events)>;
 using GetAdEventVirtualPrefsCallback =
-    base::OnceCallback<void(base::Value::Dict virtual_prefs)>;
+    base::OnceCallback<void(base::DictValue virtual_prefs)>;
 
 class AdEvents final : public TableInterface {
  public:

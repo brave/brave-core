@@ -19,7 +19,7 @@ namespace {
 constexpr std::string_view kCountryCodeKey = "countryCode";
 }  // namespace
 
-base::Value::Dict BuildCountryCodeUserData() {
+base::DictValue BuildCountryCodeUserData() {
   std::string country_code =
       GetLocalStateStringPref(variations::prefs::kVariationsCountry);
   if (country_code.empty()) {
@@ -27,8 +27,8 @@ base::Value::Dict BuildCountryCodeUserData() {
     // country code as a fallback.
     country_code = CurrentCountryCode();
   }
-  return base::Value::Dict().Set(kCountryCodeKey,
-                                 base::ToUpperASCII(country_code));
+  return base::DictValue().Set(kCountryCodeKey,
+                               base::ToUpperASCII(country_code));
 }
 
 }  // namespace brave_ads

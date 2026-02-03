@@ -19,14 +19,14 @@ constexpr std::string_view kIdKey = "id";
 
 }  // namespace
 
-base::Value::Dict BuildCatalogUserData() {
+base::DictValue BuildCatalogUserData() {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
 
-  return base::Value::Dict().Set(
-      kCatalogKey, base::Value::List().Append(
-                       base::Value::Dict().Set(kIdKey, GetCatalogId())));
+  return base::DictValue().Set(
+      kCatalogKey,
+      base::ListValue().Append(base::DictValue().Set(kIdKey, GetCatalogId())));
 }
 
 }  // namespace brave_ads

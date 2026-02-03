@@ -227,28 +227,28 @@ bool Reactions::IsAdMarkedAsInappropriate(
 ///////////////////////////////////////////////////////////////////////////////
 
 void Reactions::LoadAdReactions() {
-  if (std::optional<base::Value::Dict> dict =
+  if (std::optional<base::DictValue> dict =
           GetProfileDictPref(prefs::kAdReactions)) {
     ad_reactions_ = ReactionMapFromDict(*dict);
   }
 }
 
 void Reactions::LoadSegmentReactions() {
-  if (std::optional<base::Value::Dict> dict =
+  if (std::optional<base::DictValue> dict =
           GetProfileDictPref(prefs::kSegmentReactions)) {
     segment_reactions_ = ReactionMapFromDict(*dict);
   }
 }
 
 void Reactions::LoadSavedAds() {
-  if (std::optional<base::Value::List> list =
+  if (std::optional<base::ListValue> list =
           GetProfileListPref(prefs::kSaveAds)) {
     saved_ads_ = ReactionSetFromList(*list);
   }
 }
 
 void Reactions::LoadMarkedAsInappropriate() {
-  if (std::optional<base::Value::List> list =
+  if (std::optional<base::ListValue> list =
           GetProfileListPref(prefs::kMarkedAsInappropriate)) {
     marked_as_inappropriate_ = ReactionSetFromList(*list);
   }

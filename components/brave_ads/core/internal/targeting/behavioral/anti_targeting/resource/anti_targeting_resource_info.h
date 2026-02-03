@@ -34,7 +34,7 @@ struct AntiTargetingResourceInfo final {
   ~AntiTargetingResourceInfo();
 
   static std::optional<AntiTargetingResourceInfo> CreateFromValue(
-      base::Value::Dict dict);
+      base::DictValue dict);
 
   std::optional<int> version;
   AntiTargetingCreativeSetMap creative_sets;

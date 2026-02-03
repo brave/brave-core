@@ -43,7 +43,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   ~AdHandler() override;
 
-  void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
+  void ParseAndSaveNewTabPageAds(base::DictValue dict,
                                  ParseAndSaveNewTabPageAdsCallback callback);
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
   void TriggerNewTabPageAdEvent(

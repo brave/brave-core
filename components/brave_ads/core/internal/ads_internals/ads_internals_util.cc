@@ -20,9 +20,9 @@ namespace brave_ads {
 
 namespace {
 
-base::Value::List BuildCreativeSetConversions(
+base::ListValue BuildCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions) {
-  base::Value::List list;
+  base::ListValue list;
   list.reserve(creative_set_conversions.size());
 
   for (const auto& creative_set_conversion : creative_set_conversions) {
@@ -31,7 +31,7 @@ base::Value::List BuildCreativeSetConversions(
       continue;
     }
 
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set("URL Pattern", creative_set_conversion.url_pattern)
                     .Set("Expires At", creative_set_conversion.expire_at
                                            ->InSecondsFSinceUnixEpoch()));
@@ -40,8 +40,8 @@ base::Value::List BuildCreativeSetConversions(
   return list;
 }
 
-base::Value::List BuildAdEvents(const AdEventList& ad_events) {
-  base::Value::List list;
+base::ListValue BuildAdEvents(const AdEventList& ad_events) {
+  base::ListValue list;
   list.reserve(ad_events.size());
 
   for (const auto& ad_event : ad_events) {
@@ -56,7 +56,7 @@ base::Value::List BuildAdEvents(const AdEventList& ad_events) {
       continue;
     }
 
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set("Target URL", ad_event.target_url.spec())
                     .Set("Ad Type", ToString(ad_event.type))
                     .Set("Event Type", ToString(ad_event.confirmation_type))
@@ -71,7 +71,7 @@ void Successful(GetInternalsCallback callback,
                 const CreativeSetConversionList& creative_set_conversions,
                 const AdEventList& ad_events) {
   std::move(callback).Run(
-      base::Value::Dict()
+      base::DictValue()
           .Set("creativeSetConversions",
                BuildCreativeSetConversions(creative_set_conversions))
           .Set("adEvents", BuildAdEvents(ad_events)));

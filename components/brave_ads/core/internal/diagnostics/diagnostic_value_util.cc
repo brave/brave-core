@@ -18,13 +18,13 @@ constexpr std::string_view kValueKey = "value";
 
 }  // namespace
 
-base::Value::List DiagnosticsToValue(const DiagnosticMap& diagnostics) {
-  base::Value::List list;
+base::ListValue DiagnosticsToValue(const DiagnosticMap& diagnostics) {
+  base::ListValue list;
 
   for (const auto& [_, entry] : diagnostics) {
     CHECK(entry);
 
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set(kNameKey, entry->GetName())
                     .Set(kValueKey, entry->GetValue()));
   }

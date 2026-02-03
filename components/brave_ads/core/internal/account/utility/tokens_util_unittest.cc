@@ -23,11 +23,11 @@ namespace brave_ads {
 
 namespace {
 
-base::Value::Dict BuildUrlResponseBody() {
-  return base::Value::Dict()
+base::DictValue BuildUrlResponseBody() {
+  return base::DictValue()
       .Set("batchProof", cbr::test::kBatchDLEQProofBase64)
       .Set("signedTokens",
-           base::Value::List().Append(cbr::test::kSignedTokenBase64))
+           base::ListValue().Append(cbr::test::kSignedTokenBase64))
       .Set("publicKey", cbr::test::kPublicKeyBase64);
 }
 
@@ -43,7 +43,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParsePublicKey) {
 
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidPublicKey) {
   // Arrange
-  const base::Value::Dict dict =
+  const base::DictValue dict =
       BuildUrlResponseBody().Set("publicKey", cbr::test::kInvalidBase64);
 
   // Act & Assert
@@ -64,7 +64,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
 
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseSignedTokensIfMissingKey) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
+  base::DictValue dict = BuildUrlResponseBody();
   dict.Remove("signedTokens");
 
   // Act & Assert
@@ -73,7 +73,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseSignedTokensIfMissingKey) {
 
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidSignedTokens) {
   // Arrange
-  const base::Value::Dict dict =
+  const base::DictValue dict =
       BuildUrlResponseBody().Set("signedTokens", cbr::test::kInvalidBase64);
 
   // Act & Assert
@@ -96,7 +96,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseVerifyAndUnblindTokens) {
 TEST_F(BraveAdsSignedTokensUtilTest,
        DoNotParseVerifyAndUnblindTokensIfMissingBatchDLEQProof) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
+  base::DictValue dict = BuildUrlResponseBody();
   dict.Remove("batchProof");
 
   // Act
@@ -111,7 +111,7 @@ TEST_F(BraveAdsSignedTokensUtilTest,
 TEST_F(BraveAdsSignedTokensUtilTest,
        DoNotParseVerifyAndUnblindMissingSignedTokens) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
+  base::DictValue dict = BuildUrlResponseBody();
   dict.Remove("signedTokens");
 
   // Act
@@ -126,8 +126,8 @@ TEST_F(BraveAdsSignedTokensUtilTest,
 TEST_F(BraveAdsSignedTokensUtilTest,
        DoNoParseVerifyAndUnblindMalformedSignedTokens) {
   // Arrange
-  const base::Value::Dict dict = BuildUrlResponseBody().Set(
-      "signedTokens", base::Value::List().Append(/*invalid*/ 0));
+  const base::DictValue dict = BuildUrlResponseBody().Set(
+      "signedTokens", base::ListValue().Append(/*invalid*/ 0));
 
   // Act
   const auto result = ParseVerifyAndUnblindTokens(dict, cbr::test::GetTokens(),
@@ -141,8 +141,8 @@ TEST_F(BraveAdsSignedTokensUtilTest,
 TEST_F(BraveAdsSignedTokensUtilTest,
        DoNotParseVerifyAndUnblindInvalidSignedTokens) {
   // Arrange
-  const base::Value::Dict dict = BuildUrlResponseBody().Set(
-      "signedTokens", base::Value::List().Append(cbr::test::kInvalidBase64));
+  const base::DictValue dict = BuildUrlResponseBody().Set(
+      "signedTokens", base::ListValue().Append(cbr::test::kInvalidBase64));
 
   // Act
   const auto result = ParseVerifyAndUnblindTokens(dict, cbr::test::GetTokens(),

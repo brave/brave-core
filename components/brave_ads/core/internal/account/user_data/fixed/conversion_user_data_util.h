@@ -14,10 +14,10 @@ namespace brave_ads {
 
 struct ConversionInfo;
 
-base::Value::Dict BuildConversionActionTypeUserData(
+base::DictValue BuildConversionActionTypeUserData(
     const ConversionInfo& conversion);
 
-std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
+std::optional<base::DictValue> MaybeBuildVerifiableConversionUserData(
     const ConversionInfo& conversion);
 
 }  // namespace brave_ads

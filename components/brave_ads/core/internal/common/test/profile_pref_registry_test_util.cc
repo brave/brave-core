@@ -41,12 +41,12 @@ void RegisterProfileStringPref(const std::string& path,
 }
 
 void RegisterProfileDictPref(const std::string& path,
-                             base::Value::Dict default_value) {
+                             base::DictValue default_value) {
   RegisterProfilePref(path, base::Value(std::move(default_value)));
 }
 
 void RegisterProfileListPref(const std::string& path,
-                             base::Value::List default_value) {
+                             base::ListValue default_value) {
   RegisterProfilePref(path, base::Value(std::move(default_value)));
 }
 

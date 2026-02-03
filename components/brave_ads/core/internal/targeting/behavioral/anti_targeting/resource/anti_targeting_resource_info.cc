@@ -32,7 +32,7 @@ AntiTargetingResourceInfo::~AntiTargetingResourceInfo() = default;
 
 // static
 std::optional<AntiTargetingResourceInfo>
-AntiTargetingResourceInfo::CreateFromValue(const base::Value::Dict dict) {
+AntiTargetingResourceInfo::CreateFromValue(const base::DictValue dict) {
   AntiTargetingResourceInfo anti_targeting;
 
   if (std::optional<int> version = dict.FindInt(kVersionKey)) {

@@ -11,8 +11,8 @@
 
 namespace brave_ads {
 
-base::Value::List SegmentsToValue(const SegmentList& segments) {
-  base::Value::List list;
+base::ListValue SegmentsToValue(const SegmentList& segments) {
+  base::ListValue list;
 
   for (const auto& segment : segments) {
     CHECK(!segment.empty());
@@ -22,7 +22,7 @@ base::Value::List SegmentsToValue(const SegmentList& segments) {
   return list;
 }
 
-SegmentList SegmentsFromValue(const base::Value::List& list) {
+SegmentList SegmentsFromValue(const base::ListValue& list) {
   SegmentList segments;
   segments.reserve(list.size());
 

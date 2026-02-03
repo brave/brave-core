@@ -18,7 +18,7 @@ namespace brave_ads {
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,
-    base::Value::Dict user_data) {
+    base::DictValue user_data) {
   CHECK(transaction.IsValid());
   CHECK(!UserHasJoinedBraveRewardsAndConnectedWallet());
 

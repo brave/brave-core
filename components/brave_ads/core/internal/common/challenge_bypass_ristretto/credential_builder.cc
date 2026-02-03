@@ -22,7 +22,7 @@ constexpr std::string_view kTokenPreimageKey = "t";
 
 }  // namespace
 
-std::optional<base::Value::Dict> MaybeBuildCredential(
+std::optional<base::DictValue> MaybeBuildCredential(
     const UnblindedToken& unblinded_token,
     const std::string& payload) {
   CHECK(unblinded_token.has_value());
@@ -58,7 +58,7 @@ std::optional<base::Value::Dict> MaybeBuildCredential(
     return std::nullopt;
   }
 
-  return base::Value::Dict()
+  return base::DictValue()
       .Set(kVerificationSignatureKey, *verification_signature_base64)
       .Set(kTokenPreimageKey, *token_preimage_base64);
 }

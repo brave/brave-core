@@ -22,7 +22,7 @@ std::optional<std::string> WriteRewardCredential(
     return std::nullopt;
   }
 
-  std::optional<base::Value::Dict> credential =
+  std::optional<base::DictValue> credential =
       cbr::MaybeBuildCredential(reward->unblinded_token, payload);
   if (!credential) {
     return std::nullopt;

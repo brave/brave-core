@@ -17,7 +17,7 @@ namespace {
 constexpr std::string_view kSegmentKey = "segment";
 }  // namespace
 
-base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
+base::DictValue BuildSegmentUserData(const TransactionInfo& transaction) {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
@@ -32,7 +32,7 @@ base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
     return {};
   }
 
-  return base::Value::Dict().Set(kSegmentKey, transaction.segment);
+  return base::DictValue().Set(kSegmentKey, transaction.segment);
 }
 
 }  // namespace brave_ads

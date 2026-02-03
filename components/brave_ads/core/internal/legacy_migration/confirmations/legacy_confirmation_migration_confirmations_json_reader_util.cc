@@ -33,8 +33,7 @@ constexpr char kConfirmationAdTypeKey[] = "ad_type";
 constexpr char kConfirmationCreatedAtKey[] = "created_at";
 constexpr char kConfirmationUserDataKey[] = "user_data";
 
-std::optional<RewardInfo> ParseConfirmationReward(
-    const base::Value::Dict& dict) {
+std::optional<RewardInfo> ParseConfirmationReward(const base::DictValue& dict) {
   RewardInfo reward;
 
   // Token
@@ -91,8 +90,7 @@ std::optional<RewardInfo> ParseConfirmationReward(
   return reward;
 }
 
-std::optional<ConfirmationInfo> ParseConfirmation(
-    const base::Value::Dict& dict) {
+std::optional<ConfirmationInfo> ParseConfirmation(const base::DictValue& dict) {
   ConfirmationInfo confirmation;
 
   // Transaction id
@@ -155,7 +153,7 @@ std::optional<ConfirmationInfo> ParseConfirmation(
 }  // namespace
 
 std::optional<ConfirmationList> ParseConfirmations(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   const auto* const confirmations_dict = dict.FindDict(kConfirmationsKey);
   if (!confirmations_dict) {
     return std::nullopt;

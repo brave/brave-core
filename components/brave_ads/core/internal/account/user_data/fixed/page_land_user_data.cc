@@ -19,14 +19,14 @@ constexpr char kNonsensicalHttpStatusCode[] = "---";
 
 }  // namespace
 
-base::Value::Dict BuildPageLandUserData(int http_status_code) {
+base::DictValue BuildPageLandUserData(int http_status_code) {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
 
-  return base::Value::Dict().Set(kHttpResponseStatusKey,
-                                 HttpStatusCodeToString(http_status_code)
-                                     .value_or(kNonsensicalHttpStatusCode));
+  return base::DictValue().Set(kHttpResponseStatusKey,
+                               HttpStatusCodeToString(http_status_code)
+                                   .value_or(kNonsensicalHttpStatusCode));
 }
 
 }  // namespace brave_ads

@@ -100,7 +100,7 @@ std::optional<std::string> BuildRewardCredential(
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
     const TransactionInfo& transaction,
-    base::Value::Dict user_data) {
+    base::DictValue user_data) {
   CHECK(transaction.IsValid());
   CHECK(UserHasJoinedBraveRewards());
 

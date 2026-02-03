@@ -215,7 +215,7 @@ void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
 void EligibleNewTabPageAdsV2::ApplyConditionMatcherCallback(
     CreativeNewTabPageAdList creative_ads,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-    base::Value::Dict virtual_prefs) {
+    base::DictValue virtual_prefs) {
   virtual_prefs.Merge(GetAdsClient().GetVirtualPrefs());
 
   std::erase_if(creative_ads, [&virtual_prefs](

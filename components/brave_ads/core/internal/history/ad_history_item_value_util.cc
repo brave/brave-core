@@ -48,7 +48,7 @@ constexpr std::string_view kLikeSegmentReactionTypeKey = "optAction";
 
 }  // namespace
 
-AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict) {
+AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict) {
   AdHistoryItemInfo ad_history_item;
 
   ParseCreatedAt(dict, ad_history_item);
@@ -58,12 +58,11 @@ AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict) {
   return ad_history_item;
 }
 
-base::Value::Dict AdHistoryItemToValue(
-    const AdHistoryItemInfo& ad_history_item) {
-  return base::Value::Dict()
+base::DictValue AdHistoryItemToValue(const AdHistoryItemInfo& ad_history_item) {
+  return base::DictValue()
       .Set(kCreatedAtKey, base::TimeToValue(ad_history_item.created_at))
       .Set(kAdContentKey,
-           base::Value::Dict()
+           base::DictValue()
                .Set(kType, ToString(ad_history_item.type))
                .Set(kConfirmationType,
                     ToString(ad_history_item.confirmation_type))
@@ -86,7 +85,7 @@ base::Value::Dict AdHistoryItemToValue(
                     GetReactions().IsAdMarkedAsInappropriate(
                         ad_history_item.creative_set_id)))
       .Set(kSegmentContentKey,
-           base::Value::Dict()
+           base::DictValue()
                .Set(kSegmentKey, ad_history_item.segment)
                .Set(kLikeSegmentReactionTypeKey,
                     static_cast<int>(GetReactions().SegmentReactionTypeForId(

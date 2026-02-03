@@ -18,7 +18,7 @@ void DepositWithUserData(mojom::AdType ad_type,
                          const std::string& campaign_id,
                          const std::string& creative_instance_id,
                          const std::string& segment,
-                         base::Value::Dict user_data);
+                         base::DictValue user_data);
 
 void Deposit(mojom::AdType ad_type,
              mojom::ConfirmationType confirmation_type,

@@ -25,7 +25,7 @@ struct ConversionResourceInfo final {
   ~ConversionResourceInfo();
 
   static std::optional<ConversionResourceInfo> CreateFromValue(
-      base::Value::Dict dict);
+      base::DictValue dict);
 
   std::optional<int> version;
   ConversionResourceIdPatternMap id_patterns;

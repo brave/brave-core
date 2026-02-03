@@ -12,7 +12,7 @@ namespace brave_ads {
 
 struct TransactionInfo;
 
-base::Value::Dict BuildRotatingHashUserData(const TransactionInfo& transaction);
+base::DictValue BuildRotatingHashUserData(const TransactionInfo& transaction);
 
 }  // namespace brave_ads
 
