@@ -75,7 +75,7 @@ class CandleService : public KeyedService,
   friend class WasmWebContentsObserver;
 
   // LocalModelsUpdaterState::Observer:
-  void OnComponentReady(const base::FilePath& install_dir) override;
+  void OnLocalModelsReady(const base::FilePath& install_dir) override;
 
   // KeyedService:
   void Shutdown() override;

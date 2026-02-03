@@ -266,8 +266,8 @@ void CandleService::OnWasmPageLoaded() {
   TryLoadModel();
 }
 
-void CandleService::OnComponentReady(const base::FilePath& install_dir) {
-  DVLOG(3) << "CandleService: Component ready at: " << install_dir;
+void CandleService::OnLocalModelsReady(const base::FilePath& install_dir) {
+  DVLOG(3) << "CandleService: Local models ready at: " << install_dir;
   component_ready_ = true;
 
   // Try to load model if both conditions are met
