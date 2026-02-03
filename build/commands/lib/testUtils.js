@@ -84,6 +84,10 @@ const getApplicableFilters = (config, suite) => {
     possibleFilters.push([suite, targetPlatform, 'ubsan'].join('-'))
   }
 
+  if (config.is_msan) {
+    possibleFilters.push([suite, targetPlatform, 'msan'].join('-'))
+  }
+
   possibleFilters.forEach((filterName) => {
     let filterFilePath = path.join(
       config.braveCoreDir,
