@@ -9,3 +9,8 @@
 # when file chooser dialog is triggered for PDF download.
 # https://github.com/brave/brave-browser/issues/52434
 -PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
+
+# Flaky - problem in libblkid with file chooser dialog.
+# https://github.com/brave/brave-browser/issues/52422
+# https://github.com/brave/brave-browser/issues/52421
+-All/PDFPluginDisabledTest.DirectNavigationToPDF/*
