@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -97,7 +98,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable HomeButtonDisplay homeButtonDisplay,
             TopControlsStacker topControlsStacker,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
-            Supplier<Integer> incognitoWindowCountSupplier) {
+            Supplier<Integer> incognitoWindowCountSupplier,
+            MonotonicObservableSupplier<Profile> profileSupplier) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -134,7 +136,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 homeButtonDisplay,
                 topControlsStacker,
                 browserControlsVisibilityManager,
-                incognitoWindowCountSupplier);
+                incognitoWindowCountSupplier,
+                profileSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
