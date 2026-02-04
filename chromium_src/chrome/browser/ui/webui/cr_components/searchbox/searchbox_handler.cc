@@ -37,8 +37,14 @@ constexpr char kLeoMessageBubbleAskIconResourceName[] =
   autocomplete_input.set_prefer_keyword(true)
 #define set_allow_exact_keyword_match(allow) set_allow_exact_keyword_match(true)
 
+// This function is used for the WebUI Omnibox which isn't enabled in Brave, so
+// its okay to disable the NOTREACHED() check here and use the default icon
+// instead.
+#define BRAVE_AUTOCOMPLETE_ICON_TO_RESOURCE_NAME_OVERRIDE return "";
+
 #include <chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc>
 
+#undef BRAVE_AUTOCOMPLETE_ICON_TO_RESOURCE_NAME_OVERRIDE
 #undef set_prefer_keyword
 #undef set_allow_exact_keyword_match
 #undef kProductChromeRefreshIcon
