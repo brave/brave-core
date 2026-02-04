@@ -26,9 +26,9 @@ class SelectToolTest : public ContentAgentToolBaseTest {
   }
 
   // Creates a valid select JSON with the given target and value
-  std::string CreateToolInputJson(const base::Value::Dict& target_dict,
+  std::string CreateToolInputJson(const base::DictValue& target_dict,
                                   const std::string& value = "option1") {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("value", value);
     dict.Set("target", target_dict.Clone());
 
@@ -101,7 +101,7 @@ TEST_F(SelectToolTest, InvalidJson) {
 
 TEST_F(SelectToolTest, MissingValue) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   // Note: No value intentionally
 
@@ -110,7 +110,7 @@ TEST_F(SelectToolTest, MissingValue) {
 
 TEST_F(SelectToolTest, InvalidValueType) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("value", 123);  // Invalid type - should be string
 

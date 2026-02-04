@@ -26,11 +26,11 @@ class TypeToolTest : public ContentAgentToolBaseTest {
   }
 
   // Creates a valid type JSON with the given target and type properties
-  std::string CreateToolInputJson(const base::Value::Dict& target_dict,
+  std::string CreateToolInputJson(const base::DictValue& target_dict,
                                   const std::string& text = "test text",
                                   const std::string& mode = "replace",
                                   bool follow_by_enter = false) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("text", text);
     dict.Set("mode", mode);
     dict.Set("follow_by_enter", follow_by_enter);
@@ -144,7 +144,7 @@ TEST_F(TypeToolTest, InvalidJson) {
 
 TEST_F(TypeToolTest, MissingText) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("mode", "replace");
   dict.Set("follow_by_enter", false);
@@ -155,7 +155,7 @@ TEST_F(TypeToolTest, MissingText) {
 
 TEST_F(TypeToolTest, MissingMode) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("text", "test text");
   dict.Set("follow_by_enter", false);
@@ -166,7 +166,7 @@ TEST_F(TypeToolTest, MissingMode) {
 
 TEST_F(TypeToolTest, InvalidMode) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("text", "test text");
   dict.Set("mode", "invalid_mode");
@@ -177,7 +177,7 @@ TEST_F(TypeToolTest, InvalidMode) {
 
 TEST_F(TypeToolTest, MissingFollowByEnter) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("text", "test text");
   dict.Set("mode", "replace");

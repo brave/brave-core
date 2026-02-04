@@ -98,7 +98,7 @@ class MockPrintPreviewPrintRenderFrame
 #endif
       bool has_selection) override {
   }
-  void PrintPreview(base::Value::Dict settings) override {
+  void PrintPreview(base::DictValue settings) override {
     settings_ = std::move(settings);
     if (closure_) {
       std::move(closure_).Run();
@@ -133,7 +133,7 @@ class MockPrintPreviewPrintRenderFrame
             std::move(handle)));
   }
 
-  const base::Value::Dict& GetSettings() { return settings_; }
+  const base::DictValue& GetSettings() { return settings_; }
 
   void SetPrintPreviewCalledClosure(base::OnceClosure closure) {
     closure_ = std::move(closure);
@@ -141,7 +141,7 @@ class MockPrintPreviewPrintRenderFrame
 
  private:
   base::OnceClosure closure_;
-  base::Value::Dict settings_;
+  base::DictValue settings_;
   ExpectedError expected_error_ = ExpectedError::kNone;
 
   mojo::AssociatedRemote<printing::mojom::PrintPreviewUI> preview_ui_;

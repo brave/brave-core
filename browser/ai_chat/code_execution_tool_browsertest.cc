@@ -66,7 +66,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   }
 
   void ExecuteCode(const std::string& script, std::string* output) {
-    base::Value::Dict input;
+    base::DictValue input;
     input.Set("script", script);
     std::string input_json;
     base::JSONWriter::Write(input, &input_json);

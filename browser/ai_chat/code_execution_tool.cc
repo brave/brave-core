@@ -161,7 +161,7 @@ std::string_view CodeExecutionTool::Description() const {
          " - Retrieving weather information for a location";
 }
 
-std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {
+std::optional<base::DictValue> CodeExecutionTool::InputProperties() const {
   return CreateInputProperties(
       {{kScriptProperty, StringProperty("The JavaScript code to execute")}});
 }

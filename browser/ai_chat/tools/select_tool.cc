@@ -39,7 +39,7 @@ std::string_view SelectTool::Description() const {
          "The value should match the 'value' attribute of the desired option.";
 }
 
-std::optional<base::Value::Dict> SelectTool::InputProperties() const {
+std::optional<base::DictValue> SelectTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameTarget,
         target_util::TargetProperty("Dropdown element to select from")},
@@ -72,7 +72,7 @@ void SelectTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
+  const base::DictValue* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: missing 'target' property"));

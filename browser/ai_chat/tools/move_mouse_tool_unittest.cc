@@ -25,8 +25,8 @@ class MoveMouseToolTest : public ContentAgentToolBaseTest {
     return std::make_unique<MoveMouseTool>(mock_task_provider_.get());
   }
 
-  std::string CreateToolInputJson(const base::Value::Dict& target_dict) {
-    base::Value::Dict dict;
+  std::string CreateToolInputJson(const base::DictValue& target_dict) {
+    base::DictValue dict;
     dict.Set("target", target_dict.Clone());
 
     return *base::WriteJson(dict);

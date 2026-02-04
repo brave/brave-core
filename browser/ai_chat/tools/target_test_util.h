@@ -56,15 +56,14 @@ optimization_guide::proto::ActionTarget GetCoordinateTarget(int x = 100,
                                                             int y = 200);
 
 // Creates a standard content node target JSON for testing
-base::Value::Dict GetContentNodeTargetDict(
-    int content_node_id = 42,
-    const std::string& doc_id = "doc123");
+base::DictValue GetContentNodeTargetDict(int content_node_id = 42,
+                                         const std::string& doc_id = "doc123");
 
 // Creates a standard document target JSON for testing
-base::Value::Dict GetDocumentTargetDict(const std::string& doc_id = "doc123");
+base::DictValue GetDocumentTargetDict(const std::string& doc_id = "doc123");
 
 // Creates a standard coordinate target JSON for testing
-base::Value::Dict GetCoordinateTargetDict(double x = 100.5, double y = 200.5);
+base::DictValue GetCoordinateTargetDict(double x = 100.5, double y = 200.5);
 
 }  // namespace ai_chat::target_test_util
 

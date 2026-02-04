@@ -37,7 +37,7 @@ std::string_view MoveMouseTool::Description() const {
          "identifier, or x/y coordinates.";
 }
 
-std::optional<base::Value::Dict> MoveMouseTool::InputProperties() const {
+std::optional<base::DictValue> MoveMouseTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameTarget,
         target_util::TargetProperty("Element to move mouse to")}});
@@ -60,7 +60,7 @@ void MoveMouseTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
+  const base::DictValue* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: missing 'target' property"));

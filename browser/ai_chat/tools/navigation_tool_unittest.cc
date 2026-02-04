@@ -26,7 +26,7 @@ class NavigationToolTest : public ContentAgentToolBaseTest {
   }
 
   std::string CreateToolInputJson(const std::string& url) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("website_url", url);
 
     return *base::WriteJson(dict);
