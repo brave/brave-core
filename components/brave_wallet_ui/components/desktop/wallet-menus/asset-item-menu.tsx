@@ -43,7 +43,8 @@ import {
 } from '../../../utils/routes-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwapOrBridge,
+  getDoesCoinSupportSwap,
+  getDoesCoinSupportBridge,
 } from '../../../utils/asset-utils'
 
 // Components
@@ -116,7 +117,8 @@ export const AssetItemMenu = (props: Props) => {
     return new Amount(assetBalance).isZero()
   }, [assetBalance])
 
-  const isSwapOrBridgeSupported = getDoesCoinSupportSwapOrBridge(asset.coin)
+  const isSwapSupported = getDoesCoinSupportSwap(asset.coin)
+  const isBridgeSupported = getDoesCoinSupportBridge(asset.coin)
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
@@ -196,21 +198,17 @@ export const AssetItemMenu = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletSend')}</PopupButtonText>
         </PopupButton>
       )}
-      {isSwapOrBridgeSupported && (
-        <>
-          <PopupButton onClick={() => onClickSwapOrBridge('swap')}>
-            <ButtonIcon name='currency-exchange' />
-            <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
-          </PopupButton>
-          {!isIOS && (
-            <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
-              <ButtonIcon name='web3-bridge' />
-              <PopupButtonText>
-                {getLocale('braveWalletBridge')}
-              </PopupButtonText>
-            </PopupButton>
-          )}
-        </>
+      {isSwapSupported && (
+        <PopupButton onClick={() => onClickSwapOrBridge('swap')}>
+          <ButtonIcon name='currency-exchange' />
+          <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {!isIOS && isBridgeSupported && (
+        <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
+          <ButtonIcon name='web3-bridge' />
+          <PopupButtonText>{getLocale('braveWalletBridge')}</PopupButtonText>
+        </PopupButton>
       )}
       <PopupButton onClick={onClickDeposit}>
         <ButtonIcon name='money-bag-coins' />

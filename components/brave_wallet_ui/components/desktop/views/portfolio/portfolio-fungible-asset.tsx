@@ -40,7 +40,8 @@ import {
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwapOrBridge,
+  getDoesCoinSupportSwap,
+  getDoesCoinSupportBridge,
 } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import { isRewardsAssetId } from '../../../../utils/rewards_utils'
@@ -282,9 +283,12 @@ export const PortfolioFungibleAsset = () => {
       : skipToken,
     querySubscriptionOptions60s,
   )
-  const isSwapOrBridgeSupported =
-    selectedAssetFromParams
-    && getDoesCoinSupportSwapOrBridge(selectedAssetFromParams.coin)
+
+  const selectedCoin = selectedAssetFromParams?.coin
+  const isSwapSupported =
+    selectedCoin !== undefined && getDoesCoinSupportSwap(selectedCoin)
+  const isBridgeSupported =
+    selectedCoin !== undefined && getDoesCoinSupportBridge(selectedCoin)
 
   const selectedAssetTransactions = React.useMemo(() => {
     if (selectedAssetFromParams && tokensList && networksRegistry) {
@@ -500,21 +504,19 @@ export const PortfolioFungibleAsset = () => {
               icon='send'
               onClick={onClickSend}
             />
-            {isSwapOrBridgeSupported && (
-              <>
-                <PortfolioAssetActionButton
-                  text={getLocale('braveWalletSwap')}
-                  icon='currency-exchange'
-                  onClick={() => onClickSwapOrBridge('swap')}
-                />
-                {!isIOS && (
-                  <PortfolioAssetActionButton
-                    text={getLocale('braveWalletBridge')}
-                    icon='web3-bridge'
-                    onClick={() => onClickSwapOrBridge('bridge')}
-                  />
-                )}
-              </>
+            {isSwapSupported && (
+              <PortfolioAssetActionButton
+                text={getLocale('braveWalletSwap')}
+                icon='currency-exchange'
+                onClick={() => onClickSwapOrBridge('swap')}
+              />
+            )}
+            {!isIOS && isBridgeSupported && (
+              <PortfolioAssetActionButton
+                text={getLocale('braveWalletBridge')}
+                icon='web3-bridge'
+                onClick={() => onClickSwapOrBridge('bridge')}
+              />
             )}
             {isSelectedAssetDepositSupported && (
               <PortfolioAssetActionButton

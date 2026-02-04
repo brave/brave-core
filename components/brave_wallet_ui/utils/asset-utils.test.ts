@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
+import { BraveWallet } from '../constants/types'
 import {
   TokenBalancesRegistry, //
 } from '../common/slices/entities/token-balance.entity'
@@ -16,6 +17,8 @@ import {
   getTokenCollectionName,
   getAssetIdKey,
   isTokenWatchOnly,
+  getDoesCoinSupportSwap,
+  getDoesCoinSupportBridge,
 } from './asset-utils'
 import { getAccountBalancesKey } from './balance-utils'
 
@@ -184,5 +187,35 @@ describe('isTokenWatchOnly', () => {
         mockEmptyUserTokenBalancesRegistry,
       ),
     ).toBe(true)
+  })
+})
+
+describe('getDoesCoinSupportSwap', () => {
+  it('returns true for swap-supported coins: ETH, SOL', () => {
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.ETH)).toBe(true)
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.SOL)).toBe(true)
+  })
+
+  it('returns false for coins that do not support swap', () => {
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.BTC)).toBe(false)
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.ZEC)).toBe(false)
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.ADA)).toBe(false)
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.FIL)).toBe(false)
+    expect(getDoesCoinSupportSwap(BraveWallet.CoinType.DOT)).toBe(false)
+  })
+})
+
+describe('getDoesCoinSupportBridge', () => {
+  it('returns true for bridge-supported coins: ETH, SOL, BTC, ZEC, ADA', () => {
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.ETH)).toBe(true)
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.SOL)).toBe(true)
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.BTC)).toBe(true)
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.ZEC)).toBe(true)
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.ADA)).toBe(true)
+  })
+
+  it('returns false for coins that do not support bridge', () => {
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.FIL)).toBe(false)
+    expect(getDoesCoinSupportBridge(BraveWallet.CoinType.DOT)).toBe(false)
   })
 })
