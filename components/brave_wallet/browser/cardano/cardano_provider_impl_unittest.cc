@@ -52,11 +52,12 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD0(UnlockWallet, void());
   MOCK_METHOD0(WalletInteractionDetected, void());
   MOCK_METHOD0(ShowWalletOnboarding, void());
-  MOCK_METHOD1(ShowAccountCreation, void(mojom::CoinType type));
-  MOCK_CONST_METHOD0(GetOrigin, url::Origin());
-  MOCK_METHOD3(RequestPermissions,
+  MOCK_METHOD2(ShowAccountCreation,
+               void(mojom::CoinType type, const url::Origin& origin));
+  MOCK_METHOD4(RequestPermissions,
                void(mojom::CoinType type,
                     const std::vector<std::string>& accounts,
+                    const url::Origin& origin,
                     RequestPermissionsCallback));
   MOCK_METHOD2(IsAccountAllowed,
                bool(mojom::CoinType type, const std::string& account));
@@ -90,7 +91,8 @@ class CardanoProviderImplUnitTest : public testing::Test {
               std::make_unique<
                   testing::NiceMock<MockBraveWalletProviderDelegate>>();
           return result;
-        }));
+        }),
+        url::Origin::Create(GURL("https://brave.com")));
   }
 
   void CreateWallet() {
@@ -161,11 +163,13 @@ TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
                 {added_account->account_id->unique_key});
           });
 
-  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+  ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
       .WillByDefault(
           [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              const url::Origin& origin,
               MockBraveWalletProviderDelegate::RequestPermissionsCallback
                   callback) {
+            EXPECT_EQ(origin.GetURL(), GURL("https://brave.com"));
             EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
             EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
@@ -343,11 +347,13 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
     EXPECT_TRUE(error);
   }
 
-  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+  ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
       .WillByDefault(
           [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              const url::Origin& origin,
               MockBraveWalletProviderDelegate::RequestPermissionsCallback
                   callback) {
+            EXPECT_EQ(origin.GetURL(), GURL("https://brave.com"));
             EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
             EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
@@ -377,8 +383,8 @@ TEST_F(CardanoProviderImplUnitTest, AccCreation) {
   CreateWallet();
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
-  EXPECT_CALL(*delegate(),
-              ShowAccountCreation(testing::Eq(mojom::CoinType::ADA)))
+  EXPECT_CALL(*delegate(), ShowAccountCreation(
+                               testing::Eq(mojom::CoinType::ADA), testing::_))
       .Times(1);
 
   mojo::Remote<mojom::CardanoApi> api;
@@ -405,11 +411,13 @@ TEST_F(CardanoProviderImplUnitTest,
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
-  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+  ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
       .WillByDefault(
           [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              const url::Origin& origin,
               MockBraveWalletProviderDelegate::RequestPermissionsCallback
                   callback) {
+            EXPECT_EQ(origin.GetURL(), GURL("https://brave.com"));
             EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
             EXPECT_EQ(accounts[0], added_account->account_id->unique_key);

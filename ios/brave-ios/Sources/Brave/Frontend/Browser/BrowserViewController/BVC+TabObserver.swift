@@ -203,8 +203,10 @@ extension BrowserViewController: TabObserver {
       tab.browserData?.clearSolanaConnectedAccounts()
 
       if let browserData = tab.browserData {
+        let committedOrigin = tab.lastCommittedURL?.origin
         if let provider = profileController.braveWalletAPI.ethereumProvider(
           with: browserData,
+          origin: committedOrigin,
           isPrivateBrowsing: tab.isPrivate
         ) {
           // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
@@ -215,6 +217,7 @@ extension BrowserViewController: TabObserver {
         }
         if let provider = profileController.braveWalletAPI.solanaProvider(
           with: browserData,
+          origin: committedOrigin,
           isPrivateBrowsing: tab.isPrivate
         ) {
           tab.walletSolProvider = provider

@@ -139,14 +139,23 @@ class SolanaProviderImplUnitTest : public testing::Test {
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(browser_context())
                 .release())));
+
+    GURL url("https://example.com");
+    Navigate(url);
+  }
+
+  void InitProvider() {
     auto* host_content_settings_map =
         HostContentSettingsMapFactory::GetForProfile(browser_context());
     ASSERT_TRUE(host_content_settings_map);
+    url::Origin origin =
+        web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
     provider_ = std::make_unique<SolanaProviderImpl>(
         *host_content_settings_map, brave_wallet_service_.get(),
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(),
-            web_contents()->GetPrimaryMainFrame()->GetGlobalId()));
+            web_contents()->GetPrimaryMainFrame()->GetGlobalId()),
+        origin);
     observer_ = std::make_unique<MockEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
@@ -159,7 +168,11 @@ class SolanaProviderImplUnitTest : public testing::Test {
         web_contents_.get());
   }
 
-  void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
+  void Navigate(const GURL& url) {
+    web_contents()->NavigateAndCommit(url);
+    InitProvider();
+  }
+
   url::Origin GetOrigin() {
     return web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   }

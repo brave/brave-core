@@ -83,12 +83,13 @@ void BraveWalletTabHelper::BindEthereumProvider(
   if (!tab_helper) {
     return;
   }
+  url::Origin origin = frame_host->GetLastCommittedOrigin();
   tab_helper->ethereum_provider_receivers_.Add(
       std::make_unique<EthereumProviderImpl>(
           host_content_settings_map, brave_wallet_service,
           std::make_unique<BraveWalletProviderDelegateImpl>(
               web_contents, frame_host->GetGlobalId()),
-          prefs),
+          prefs, origin),
       std::move(receiver));
 }
 
@@ -115,11 +116,13 @@ void BraveWalletTabHelper::BindSolanaProvider(
     return;
   }
 
+  url::Origin origin = frame_host->GetLastCommittedOrigin();
   tab_helper->solana_provider_receivers_.Add(
       std::make_unique<SolanaProviderImpl>(
           *host_content_settings_map, brave_wallet_service,
           std::make_unique<BraveWalletProviderDelegateImpl>(
-              web_contents, frame_host->GetGlobalId())),
+              web_contents, frame_host->GetGlobalId()),
+          origin),
       std::move(receiver));
 }
 
@@ -149,11 +152,13 @@ void BraveWalletTabHelper::BindCardanoProvider(
     return;
   }
 
+  url::Origin origin = frame_host->GetLastCommittedOrigin();
   tab_helper->cardano_provider_receivers_.Add(
       std::make_unique<CardanoProviderImpl>(
           *brave_wallet_service,
           base::BindRepeating(&CreateDelegate, web_contents,
-                              frame_host->GetGlobalId())),
+                              frame_host->GetGlobalId()),
+          origin),
       std::move(receiver));
 }
 

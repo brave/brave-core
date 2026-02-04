@@ -2428,7 +2428,6 @@ extension BrowserViewController: TabMiscDelegate {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
       Preferences.Wallet.displayWeb3Notifications.value,
-      let origin = tab.browserData?.getOrigin(),
       let tabDappStore = tab.tabDappStore
     else {
       return

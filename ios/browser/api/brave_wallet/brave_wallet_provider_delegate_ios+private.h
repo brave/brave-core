@@ -29,13 +29,14 @@ class BraveWalletProviderDelegateBridge
   bool IsTabVisible() override;
   void ShowPanel() override;
   void WalletInteractionDetected() override;
-  url::Origin GetOrigin() const override;
   void ShowWalletOnboarding() override;
   void ShowWalletBackup() override;
   void UnlockWallet() override;
-  void ShowAccountCreation(mojom::CoinType type) override;
+  void ShowAccountCreation(mojom::CoinType type,
+                           const url::Origin& origin) override;
   void RequestPermissions(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
+                          const url::Origin& origin,
                           RequestPermissionsCallback) override;
   bool IsAccountAllowed(mojom::CoinType type,
                         const std::string& account) override;

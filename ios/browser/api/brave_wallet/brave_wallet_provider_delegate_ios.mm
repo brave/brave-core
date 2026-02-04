@@ -28,10 +28,6 @@ void BraveWalletProviderDelegateBridge::WalletInteractionDetected() {
   [bridge_ walletInteractionDetected];
 }
 
-url::Origin BraveWalletProviderDelegateBridge::GetOrigin() const {
-  return url::Origin([[bridge_ getOrigin] underlyingOrigin]);
-}
-
 void BraveWalletProviderDelegateBridge::ShowWalletOnboarding() {
   [bridge_ showWalletOnboarding];
 }
@@ -45,13 +41,17 @@ void BraveWalletProviderDelegateBridge::UnlockWallet() {
 }
 
 void BraveWalletProviderDelegateBridge::ShowAccountCreation(
-    mojom::CoinType type) {
-  [bridge_ showAccountCreation:static_cast<BraveWalletCoinType>(type)];
+    mojom::CoinType type,
+    const url::Origin& origin) {
+  URLOriginIOS* origin_ios = [[URLOriginIOS alloc] initWithOrigin:origin];
+  [bridge_ showAccountCreation:static_cast<BraveWalletCoinType>(type)
+                        origin:origin_ios];
 }
 
 void BraveWalletProviderDelegateBridge::RequestPermissions(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,
+    const url::Origin& origin,
     RequestPermissionsCallback callback) {
   auto completion = [callback = std::make_shared<decltype(callback)>(std::move(
                          callback))](BraveWalletRequestPermissionsError error,
@@ -71,8 +71,10 @@ void BraveWalletProviderDelegateBridge::RequestPermissions(
     std::move(*callback).Run(static_cast<mojom::RequestPermissionsError>(error),
                              v);
   };
+  URLOriginIOS* origin_ios = [[URLOriginIOS alloc] initWithOrigin:origin];
   [bridge_ requestPermissions:static_cast<BraveWalletCoinType>(type)
                      accounts:brave::vector_to_ns(accounts)
+                       origin:origin_ios
                    completion:completion];
 }
 

@@ -235,31 +235,15 @@ extension TabBrowserData: BraveWalletProviderDelegate {
     tab.miscDelegate?.showWalletNotification(tab, origin: origin)
   }
 
-  func getOrigin() -> URLOrigin {
-    guard let origin = tab?.visibleURL?.origin else {
-      // A nil url is possible if multiple tabs are restored but one or more
-      // of the tabs is not opened yet (loaded the url). When a new chain is
-      // assigned for a specific origin, the provider(s) will check origin
-      // of all open Tab's to see if that provider needs(s) updated too.
-      // We can get the url from the SessionTab, and return it's origin.
-      if let tab, let sessionTabOrigin = SessionTab.from(tabId: tab.id)?.url?.origin {
-        return sessionTabOrigin
-      }
-      assert(false, "We should have a valid origin to get to this point")
-      return .init()
-    }
-    return origin
-  }
-
   public func requestPermissions(
     _ coinType: BraveWallet.CoinType,
     accounts: [String],
+    origin: URLOrigin,
     completion: @escaping RequestPermissionsCallback
   ) {
     guard let tab else { return }
     Task { @MainActor in
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
-      let origin = getOrigin()
 
       if permissionRequestManager.hasPendingRequest(for: origin, coinType: coinType) {
         completion(.requestInProgress, nil)
@@ -404,7 +388,7 @@ extension TabBrowserData: BraveWalletProviderDelegate {
     }
   }
 
-  func showAccountCreation(_ coin: BraveWallet.CoinType) {
+  func showAccountCreation(_ coin: BraveWallet.CoinType, origin: URLOrigin) {
     guard let tab else { return }
     let privateMode = tab.isPrivate
     guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode)
@@ -412,8 +396,6 @@ extension TabBrowserData: BraveWalletProviderDelegate {
       return
     }
     Task { @MainActor in
-      let origin = getOrigin()
-
       // check if we receive account creation request without a wallet setup
       let isWalletCreated = await keyringService.isWalletCreated()
       if !isWalletCreated {
@@ -744,7 +726,7 @@ extension TabBrowserData: BraveWalletKeyringServiceObserver {
 extension BrowserViewController {
   func showApprovePanelUI(tab: (any TabState)?) {
     guard let tab,
-      let origin = tab.browserData?.getOrigin(),
+      let origin = tab.lastCommittedURL?.origin,
       let tabDappStore = tab.tabDappStore
     else {
       return
