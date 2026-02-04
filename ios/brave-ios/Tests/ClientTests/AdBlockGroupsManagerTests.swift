@@ -1,3 +1,5 @@
+// swift-format-ignore-file
+
 // Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,20 +12,21 @@ import XCTest
 
 @testable import Brave
 
+@MainActor
 final class AdBlockGroupsManagerTests: XCTestCase {
   private static var sampleFilterListURL = Bundle.module.url(
     forResource: "iodkpdagapdfkphljnddpjlldadblomo",
     withExtension: "txt"
   )!
 
-  @MainActor private lazy var ruleStore: WKContentRuleListStore = {
+  private lazy var ruleStore: WKContentRuleListStore = {
     let testBundle = Bundle.module
     let bundleURL = testBundle.bundleURL
     return WKContentRuleListStore(url: bundleURL)!
   }()
 
   /// Testing engine compilations and filter list managment
-  @MainActor func testCompilation() async throws {
+  func testCompilation() async throws {
     AdblockEngine.setDomainResolver()
 
     // Given
@@ -117,7 +120,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
   }
 
   /// Partially testing expectations found in https://dev-pages.bravesoftware.com/filtering/index.html
-  @MainActor func testBlocking() async throws {
+  func testBlocking() async throws {
     AdblockEngine.setDomainResolver()
 
     // Given
@@ -251,7 +254,90 @@ final class AdBlockGroupsManagerTests: XCTestCase {
     XCTAssertTrue(blockResult)
   }
 
-  @MainActor private func makeContentBlockingManager() -> ContentBlockerManager {
+  /// Verify basic update from no resources -> "1.0.0"
+  func testResourcesUpdateNoExistingResources() {
+    let groupsManager = makeEmptyAdblockGroupsManager()
+    let resourcesInfoV1_0_0 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "1.0.0"
+    )
+    groupsManager.resourcesInfo = nil
+    groupsManager.updateIfNeeded(resourcesInfo: resourcesInfoV1_0_0)
+    XCTAssertEqual(groupsManager.resourcesInfo?.version, resourcesInfoV1_0_0.version)
+  }
+
+  /// Verify basic update from "0" -> "1.0.0"
+  func testResourcesUpdate() {
+    let groupsManager = makeEmptyAdblockGroupsManager()
+    let resourcesInfoV0 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "0"
+    )
+    let resourcesInfoV1_0_0 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "1.0.0"
+    )
+    groupsManager.resourcesInfo = resourcesInfoV0
+    groupsManager.updateIfNeeded(resourcesInfo: resourcesInfoV1_0_0)
+    XCTAssertEqual(groupsManager.resourcesInfo?.version, resourcesInfoV1_0_0.version)
+  }
+
+  /// Verify "1.0.2" -> "1.0.10"
+  /// This would fail `"1.0.2" < "1.0.10"` (basic string comparison) because
+  /// of the extra digit. A numeric version comparison should be used.
+  func testResourcesUpdateNewVersionExtraDigits() {
+    let groupsManager = makeEmptyAdblockGroupsManager()
+    let resourcesInfoV1_0_2 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "1.0.2"
+    )
+    groupsManager.resourcesInfo = resourcesInfoV1_0_2
+    let updatedResourcesInfoV1_0_10 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "1.0.10"
+    )
+    groupsManager.updateIfNeeded(resourcesInfo: updatedResourcesInfoV1_0_10)
+    XCTAssertEqual(groupsManager.resourcesInfo?.version, updatedResourcesInfoV1_0_10.version)
+  }
+
+  /// Verify "1.0.0" does not update when given a lower version number
+  func testResourcesUpdateOnlyIfNewer() {
+    let groupsManager = makeEmptyAdblockGroupsManager()
+    let resourcesInfoV1_0_0 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "1.0.0"
+    )
+    let resourcesInfoV1_0_1 = GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "1.0.1"
+    )
+    groupsManager.resourcesInfo = resourcesInfoV1_0_1
+    groupsManager.updateIfNeeded(resourcesInfo: resourcesInfoV1_0_0)
+    XCTAssertEqual(groupsManager.resourcesInfo?.version, resourcesInfoV1_0_1.version)
+  }
+
+  private func makeEmptyAdblockGroupsManager() -> AdBlockGroupsManager {
+    let sourceProvider = TestSourceProvider(
+      aggressiveFileInfos: [],
+      standardFileInfos: []
+    )
+    let standardManager = AdBlockEngineManager(
+      engineType: .standard,
+      cacheFolderName: "test_standard"
+    )
+    let aggressiveManager = AdBlockEngineManager(
+      engineType: .aggressive,
+      cacheFolderName: "test_aggressive"
+    )
+    return AdBlockGroupsManager(
+      standardManager: standardManager,
+      aggressiveManager: aggressiveManager,
+      contentBlockerManager: makeContentBlockingManager(),
+      sourceProvider: sourceProvider
+    )
+  }
+
+  private func makeContentBlockingManager() -> ContentBlockerManager {
     return ContentBlockerManager(
       ruleStore: ruleStore,
       container: UserDefaults(suiteName: "tests") ?? .standard
