@@ -82,22 +82,22 @@ optimization_guide::proto::ActionTarget GetCoordinateTarget(int x, int y) {
   return target;
 }
 
-base::Value::Dict GetContentNodeTargetDict(int content_node_id,
-                                           const std::string& doc_id) {
-  base::Value::Dict target_dict;
+base::DictValue GetContentNodeTargetDict(int content_node_id,
+                                         const std::string& doc_id) {
+  base::DictValue target_dict;
   target_dict.Set("content_node_id", content_node_id);
   target_dict.Set("document_identifier", doc_id);
   return target_dict;
 }
 
-base::Value::Dict GetDocumentTargetDict(const std::string& doc_id) {
-  base::Value::Dict target_dict;
+base::DictValue GetDocumentTargetDict(const std::string& doc_id) {
+  base::DictValue target_dict;
   target_dict.Set("document_identifier", doc_id);
   return target_dict;
 }
 
-base::Value::Dict GetCoordinateTargetDict(double x, double y) {
-  base::Value::Dict target_dict;
+base::DictValue GetCoordinateTargetDict(double x, double y) {
+  base::DictValue target_dict;
   target_dict.Set("x", x);
   target_dict.Set("y", y);
   return target_dict;

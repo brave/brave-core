@@ -46,7 +46,7 @@ std::string_view ScrollTool::Description() const {
          "viewport.";
 }
 
-std::optional<base::Value::Dict> ScrollTool::InputProperties() const {
+std::optional<base::DictValue> ScrollTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameTarget,
         target_util::TargetProperty("Document or Element to scroll")},
@@ -97,7 +97,7 @@ void ScrollTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
+  const base::DictValue* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: missing 'target' property"));

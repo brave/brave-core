@@ -20,10 +20,10 @@ const char kPropertyNameDocumentIdentifier[] = "document_identifier";
 
 }  // namespace
 
-base::Value::Dict TargetProperty(const std::string& description) {
-  base::Value::Dict target_property;
+base::DictValue TargetProperty(const std::string& description) {
+  base::DictValue target_property;
   target_property.Set("description", description);
-  base::Value::List* any_of = target_property.EnsureList("anyOf");
+  base::ListValue* any_of = target_property.EnsureList("anyOf");
 
   any_of->Append(ObjectProperty(
       "DOM element identifiers of target (preferred)",
@@ -48,7 +48,7 @@ base::Value::Dict TargetProperty(const std::string& description) {
 }
 
 base::expected<optimization_guide::proto::ActionTarget, std::string>
-ParseTargetInput(const base::Value::Dict& target_dict) {
+ParseTargetInput(const base::DictValue& target_dict) {
   // Check what targeting approaches are present
   auto x_value = target_dict.FindDouble(kPropertyNameX);
   auto y_value = target_dict.FindDouble(kPropertyNameY);

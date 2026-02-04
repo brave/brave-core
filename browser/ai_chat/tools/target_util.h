@@ -73,14 +73,14 @@ inline constexpr char kErrorTargetIdentifiersHasMissingDocumentIdentifier[] =
 //     ]
 //   }
 // }
-base::Value::Dict TargetProperty(const std::string& description);
+base::DictValue TargetProperty(const std::string& description);
 
 // Parse target
 // Expects target_dict to be in the format defined in `TargetProperty`.
 //
 // Returns ActionTarget proto on success, or error string on parse error.
 base::expected<optimization_guide::proto::ActionTarget, std::string>
-ParseTargetInput(const base::Value::Dict& target_dict);
+ParseTargetInput(const base::DictValue& target_dict);
 
 }  // namespace ai_chat::target_util
 

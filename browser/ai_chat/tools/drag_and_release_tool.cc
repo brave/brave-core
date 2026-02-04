@@ -40,7 +40,7 @@ std::string_view DragAndReleaseTool::Description() const {
          "destination locations.";
 }
 
-std::optional<base::Value::Dict> DragAndReleaseTool::InputProperties() const {
+std::optional<base::DictValue> DragAndReleaseTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameFrom,
         target_util::TargetProperty("Source element to drag from")},
@@ -66,7 +66,7 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse source (from) target
-  const base::Value::Dict* from_dict = input->FindDict(kPropertyNameFrom);
+  const base::DictValue* from_dict = input->FindDict(kPropertyNameFrom);
   if (!from_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: missing 'from' target object"));
@@ -81,7 +81,7 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse destination (to) target
-  const base::Value::Dict* to_dict = input->FindDict(kPropertyNameTo);
+  const base::DictValue* to_dict = input->FindDict(kPropertyNameTo);
   if (!to_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: missing 'to' target object"));

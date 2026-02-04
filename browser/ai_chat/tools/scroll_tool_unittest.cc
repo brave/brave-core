@@ -26,10 +26,10 @@ class ScrollToolTest : public ContentAgentToolBaseTest {
     return std::make_unique<ScrollTool>(mock_task_provider_.get());
   }
 
-  std::string CreateToolInputJson(const base::Value::Dict& target_dict,
+  std::string CreateToolInputJson(const base::DictValue& target_dict,
                                   const std::string& direction = "down",
                                   double distance = 100.0) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("direction", direction);
     dict.Set("distance", distance);
     dict.Set("target", target_dict.Clone());
@@ -119,7 +119,7 @@ TEST_F(ScrollToolTest, InvalidJson) {
 
 TEST_F(ScrollToolTest, MissingDirection) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("distance", 100.0);
   // Note: No direction intentionally
@@ -129,7 +129,7 @@ TEST_F(ScrollToolTest, MissingDirection) {
 
 TEST_F(ScrollToolTest, InvalidDirection) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("direction", "diagonal");  // Invalid direction
   dict.Set("distance", 100.0);
@@ -139,7 +139,7 @@ TEST_F(ScrollToolTest, InvalidDirection) {
 
 TEST_F(ScrollToolTest, MissingDistance) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("direction", "down");
   // Note: No distance intentionally
@@ -149,7 +149,7 @@ TEST_F(ScrollToolTest, MissingDistance) {
 
 TEST_F(ScrollToolTest, NegativeDistance) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("direction", "down");
   dict.Set("distance", -50.0);  // Negative distance
@@ -159,7 +159,7 @@ TEST_F(ScrollToolTest, NegativeDistance) {
 
 TEST_F(ScrollToolTest, ZeroDistance) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("direction", "down");
   dict.Set("distance", 0.0);  // Zero distance
@@ -168,7 +168,7 @@ TEST_F(ScrollToolTest, ZeroDistance) {
 }
 
 TEST_F(ScrollToolTest, MissingTargetObject) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("direction", "down");
   dict.Set("distance", 100.0);
   // Note: No target intentionally

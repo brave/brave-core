@@ -315,7 +315,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   // Creates a navigate tool use event with JSON arguments
   mojom::ToolUseEventPtr CreateNavigateToolUseEvent(const std::string& tool_id,
                                                     const GURL& url) {
-    base::Value::Dict args;
+    base::DictValue args;
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,

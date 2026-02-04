@@ -214,7 +214,7 @@ void PrintPreviewExtractorInternal::CreatePrintPreview() {
     CHECK(print_preview_ui_id_);
 
     // Basic print setting from PrintingContext::UsePdfSettings and modified
-    base::Value::Dict settings;
+    base::DictValue settings;
     settings.Set(printing::kSettingHeaderFooterEnabled, false);
     settings.Set(printing::kSettingShouldPrintBackgrounds, false);
     settings.Set(printing::kSettingShouldPrintSelectionOnly, false);
@@ -237,7 +237,7 @@ void PrintPreviewExtractorInternal::CreatePrintPreview() {
     settings.Set(printing::kSettingRasterizePdf, false);
     settings.Set(printing::kSettingPagesPerSheet, 1);
 
-    base::Value::Dict media_size;
+    base::DictValue media_size;
     media_size.Set(printing::kSettingMediaSizeWidthMicrons, 215900);
     media_size.Set(printing::kSettingMediaSizeHeightMicrons, 279400);
     media_size.Set(printing::kSettingsImageableAreaRightMicrons, 215900);

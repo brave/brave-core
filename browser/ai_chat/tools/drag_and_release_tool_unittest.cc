@@ -26,9 +26,9 @@ class DragAndReleaseToolTest : public ContentAgentToolBaseTest {
   }
 
   // Creates a valid drag and release JSON with the given source and target
-  std::string CreateToolInputJson(const base::Value::Dict& from_target,
-                                  const base::Value::Dict& to_target) {
-    base::Value::Dict dict;
+  std::string CreateToolInputJson(const base::DictValue& from_target,
+                                  const base::DictValue& to_target) {
+    base::DictValue dict;
     dict.Set("from", from_target.Clone());
     dict.Set("to", to_target.Clone());
 

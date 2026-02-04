@@ -44,7 +44,7 @@ std::string_view ClickTool::Description() const {
          "coordinates. Supports left/right click and single/double click.";
 }
 
-std::optional<base::Value::Dict> ClickTool::InputProperties() const {
+std::optional<base::DictValue> ClickTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameTarget,
         target_util::TargetProperty("Element to click on")},
@@ -94,7 +94,7 @@ void ClickTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
+  const base::DictValue* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: Missing 'target' property"));

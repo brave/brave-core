@@ -184,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ClickTool_NodeIdTarget) {
   auto target_dict = target_test_util::GetContentNodeTargetDict(
       button_node_id, GetMainFrameDocumentIdentifier());
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("target", target_dict.Clone());
   input.Set("click_type", "left");
   input.Set("click_count", "single");
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, TypeTool_NodeIdTarget) {
   auto target_dict = target_test_util::GetContentNodeTargetDict(
       input_node_id, GetMainFrameDocumentIdentifier());
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("target", target_dict.Clone());
   input.Set("text", "Hello World");
   input.Set("follow_by_enter", false);
@@ -249,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_NodeIdTarget) {
   auto target_dict = target_test_util::GetContentNodeTargetDict(
       scroller_node_id, GetMainFrameDocumentIdentifier());
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("target", target_dict.Clone());
   input.Set("direction", "down");
   input.Set("distance", 50);
@@ -280,7 +280,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_DocumentTarget) {
   auto target_dict =
       target_test_util::GetDocumentTargetDict(GetMainFrameDocumentIdentifier());
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("target", target_dict.Clone());
   input.Set("direction", "down");
   input.Set("distance", scroll_distance);
@@ -311,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, SelectTool_NodeIdTarget) {
   auto target_dict = target_test_util::GetContentNodeTargetDict(
       select_node_id, GetMainFrameDocumentIdentifier());
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("target", target_dict.Clone());
   input.Set("value", "beta");
 
@@ -339,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, NavigationTool_BasicNavigation) {
 
   // Create input for navigating to a different test page
   GURL test_url = embedded_https_test_server().GetURL("/actor/input.html");
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("website_url", test_url.spec());
 
   auto result = ExecuteToolAndWait(nav_tool, *base::WriteJson(input));
@@ -362,7 +362,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   GURL initial_url = web_contents()->GetVisibleURL();
 
   // Create input for navigating to a different test page
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("website_url", "https://chromewebstore.google.com/example");
 
   auto result = ExecuteToolAndWait(nav_tool, *base::WriteJson(input), false);
@@ -405,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest,
   auto to_target =
       target_test_util::GetCoordinateTargetDict(100, 15);  // Middle of range
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("from", from_target.Clone());
   input.Set("to", to_target.Clone());
 
@@ -433,7 +433,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, HistoryTool_Back) {
   auto history_tool = FindToolByName("navigate_history");
   ASSERT_TRUE(history_tool);
 
-  base::Value::Dict input;
+  base::DictValue input;
   input.Set("direction", "back");
   auto result = ExecuteToolAndWait(history_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);

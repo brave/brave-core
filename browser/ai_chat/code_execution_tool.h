@@ -49,7 +49,7 @@ class CodeExecutionTool : public Tool {
   // Tool overrides
   std::string_view Name() const override;
   std::string_view Description() const override;
-  std::optional<base::Value::Dict> InputProperties() const override;
+  std::optional<base::DictValue> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(

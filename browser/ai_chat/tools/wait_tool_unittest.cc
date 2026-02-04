@@ -24,7 +24,7 @@ class WaitToolTest : public ContentAgentToolBaseTest {
 
   // Creates a valid wait JSON with the given wait time
   std::string CreateToolInputJson(int wait_time_ms) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("wait_time_ms", wait_time_ms);
 
     return *base::WriteJson(dict);
