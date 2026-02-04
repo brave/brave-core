@@ -189,8 +189,8 @@ export default function createAIChatApi(
           // We don't need to do any handling here, just pass through
           onNewDefaultConversation(contentId: number) {},
 
-          // TODO(petemill): rename in mojom to
-          // `onAttachedFilesAreProcessing`.
+          // TODO(https://github.com/brave/brave-browser/issues/52539): rename
+          // in mojom to `onAttachedFilesAreProcessing`.
           onUploadFilesSelected() {},
 
           onChildFrameBound(parentPagePendingReceiver) {},
@@ -203,8 +203,8 @@ export default function createAIChatApi(
       ...eventsFor(
         Mojom.ParentUIFrameInterface,
         {
-          // TODO(petemill): rename in mojom to
-          // `OnConversationEntriesFrameHeightChanged`, etc.
+          // TODO(https://github.com/brave/brave-browser/issues/52540): rename
+          // in mojom to `OnConversationEntriesFrameHeightChanged`, etc.
           childHeightChanged(height) {},
           rateMessage(turnUuid, isLiked) {},
           userRequestedOpenGeneratedUrl(url) {},

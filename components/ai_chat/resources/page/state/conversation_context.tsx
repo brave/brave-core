@@ -485,7 +485,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     setSelectedSkill(undefined)
   }, [inputText, selectedSkill])
 
-  // TODO(petemill): Handle this conversation's deletion:
+  // TODO(https://github.com/brave/brave-browser/issues/52542): Handle this conversation's deletion:
   // Disable everything and show undismissable dialog when
   // the conversation is deleted on the backend.
   // const isDeleted = api.useCurrentOnConversationDeleted().hasEmitted
@@ -598,7 +598,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     /**
      * @deprecated
      * This is not derived from here anymore
-     * TODO: remove
      */
     shouldShowLongPageWarning: false,
 
@@ -712,8 +711,6 @@ export type ConversationContext = SendFeedbackState
   & ReturnType<typeof useProvideConversationContext>
 
 export function useConversationState() {
-  // TODO: maybe the API should automatically create these when placeholder
-  // data is specified?
   const conversation = useConversation()
   return conversation.api.useGetState().getStateData
 }

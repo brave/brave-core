@@ -7,11 +7,11 @@ import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
 import { act, render, waitFor } from '@testing-library/react'
+import { clearAllDataForTesting } from '$web-common/api'
 import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 import * as Mojom from '../../../common/mojom'
-import TabsMenu from './attachments_menu'
 import { MockContext } from '../../state/mock_context'
-import { clearAllDataForTesting } from '$web-common/api'
+import TabsMenu from './attachments_menu'
 
 describe('TabsMenu', () => {
   // Clear the shared QueryClient between tests to avoid cache pollution
@@ -50,7 +50,7 @@ describe('TabsMenu', () => {
   })
 
   it('should filter out attached tabs', async () => {
-    const { queryByText, findByText } = render(
+    const { queryByText } = render(
       <MockContext
         initialState={{
           conversationState: {

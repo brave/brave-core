@@ -62,7 +62,8 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     ),
     isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
 
-    // TODO(petemill): consumers should consume directly from
+    // TODO(https://github.com/brave/brave-browser/issues/52541): consumers
+    // should consume directly from
     // api's hooks for better performance, so that every component
     // is not re-rendered when the state of every endpoint changes.
 
