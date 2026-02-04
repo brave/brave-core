@@ -944,9 +944,6 @@ export function createInterfaceApi<
 
   const actions = config.actions as any as APIActions
 
-  // @ts-expect-error
-  window.queryClient = queryClient
-
   // Convenient access to query endpoint child functions
 
   const api = {
@@ -979,9 +976,6 @@ export function createInterfaceApi<
     // Debug property to identify which API instance is being used
     __debugKey: config.key,
   }
-
-  // @ts-expect-error
-  window.api = api
 
   return api
 }
