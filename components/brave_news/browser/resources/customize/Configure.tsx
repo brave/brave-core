@@ -8,7 +8,7 @@ import { getLocale , formatLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import { spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
@@ -66,7 +66,7 @@ const Hr = styled.hr`
   grid-area: separator;
   width: 100%;
   align-self: center;
-  background: ${color.divider.subtle};
+  background: var(--divider1);
   height: 2px;
   border-width: 0;
 `
@@ -76,7 +76,7 @@ const Sidebar = styled.div`
   overflow: auto;
   grid-area: sidebar;
   padding: 28px 22px 28px 32px;
-  background: ${color.page.background};
+  background: var(--background2);
 `
 
 // Overlay on top of the sidebar, shown when it is disabled.
@@ -86,7 +86,7 @@ const SidebarOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: ${color.container.background};
+  background: var(--background1);
   opacity: 0.7;
 `
 

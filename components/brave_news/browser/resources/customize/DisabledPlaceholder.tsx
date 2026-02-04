@@ -8,7 +8,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale, formatLocale } from '$web-common/locale'
 import Flex from '$web-common/Flex'
-import { color } from '@brave/leo/tokens/css/variables'
 
 const TodayGraphic = <svg width="370" height="80" viewBox="0 0 370 80" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path fillRule="evenodd" clipRule="evenodd" d="M244.071 3.51134C240.45 5.46094 239.075 10.0138 241 13.6805C242.926 17.3471 247.423 18.7391 251.044 16.7895C254.665 14.8399 256.04 10.287 254.115 6.62036C252.189 2.9537 247.692 1.56175 244.071 3.51134Z" fill="#D0D2F7" />
@@ -31,7 +30,7 @@ const Header = styled.h3`
   font-size: 24px;
   font-weight: 500;
   line-height: 1.2;
-  color: ${color.text.secondary};
+  color: var(--text2);
 `
 
 const Subtitle = styled.p`
@@ -41,7 +40,7 @@ const Subtitle = styled.p`
   text-align: center;
   font-size: 14px;
   font-weight: 500;
-  color: ${color.text.secondary};
+  color: var(--text2);
 
   & + & {
     margin-top: 12px;

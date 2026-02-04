@@ -1,0 +1,41 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:root {
+  --brave-font-family-default: Poppins, sans-serif;
+  --brave-font-family-non-serif: Poppins, normal;
+  --background1: white;
+  --background2: #F8F9FA;
+  --info-background: rgba(93, 181, 252, 0.2);
+  --divider1: #E9E9F4;
+  --text1: #212529;
+  --text2: #495057;
+  --text3: #868E96;
+  --interactive2: #FB542B;
+  --interactive4: #353DAB;
+  --interactive5: #4C54D2;
+  --interactive6: #737ADE;
+  --interactive7: #212529;
+  --interactive8: #AEB1C2;
+  --interactive9: #A0A5EB;
+  --focus-border: #A0A5EB;
+  --disabled: #DADCE8;
+  --blurple300: #A0A5EB;
+  font-family: var(--brave-font-family-default);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background1: #1E2029;
+    --background2: #17171F;
+    --divider1: #3B3E4F;
+    --text1: #F0F2FF;
+    --text2: #C2C4CF;
+    --text3: #84889C;
+    --interactive7: #F0F2FF;
+    --interactive8: #5E6175;
+    --disabled: #343A40;
+  }
+}

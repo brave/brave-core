@@ -1,9 +1,7 @@
-// Copyright (c) 2018 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color } from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 export const StyledStatsItemContainer = styled('ul')<{}>`
@@ -25,8 +23,8 @@ export const StyledStatsItem = styled('li')<{}>`
   font-size: inherit;
   font-family: inherit;
   margin: 10px 16px;
-  &:first-child { color: var(--override-readability-color, ${color.legacy.interactive1}); }
-  &:nth-child(2) { color: var(--override-readability-color, ${color.legacy.interactive8}); }
+  &:first-child { color: var(--override-readability-color, var(--interactive2)); }
+  &:nth-child(2) { color: var(--override-readability-color, var(--interactive9)); }
   &:last-child { 
     color: var(--override-readability-color, #FFFFFF); 
     margin-right: 0;

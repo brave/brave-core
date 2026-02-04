@@ -4,14 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color } from '@brave/leo/tokens/css/variables'
 
 const CustomizeLink = styled.button`
   all: unset;
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
-  color: ${color.button.background};
+  color: var(--interactive5);
   cursor: pointer;
 
 `

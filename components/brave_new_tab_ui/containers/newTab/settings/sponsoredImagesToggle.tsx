@@ -17,7 +17,6 @@ import Flex from '$web-common/Flex'
 // Utilities
 import { getLocale } from '../../../../common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
-import { color } from '@brave/leo/tokens/css/variables'
 
 interface Props {
   onChange: () => void
@@ -35,7 +34,7 @@ const ToggleRow = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 8px 0px;
-  background-color: ${color.container.background};
+  background-color: var(--background1);
 `
 
 const ControlsContainer = styled.span`
@@ -46,7 +45,7 @@ const ControlsContainer = styled.span`
 `
 
 const Container = styled.div`
-  background-color: ${color.systemfeedback.infoBackground};
+  background-color: var(--info-background);
   border-radius: 8px;
   padding: 24px 24px;
   align-items: center;
@@ -57,7 +56,8 @@ const Container = styled.div`
 
 const DescriptionRow = styled.div`
   width: 100%;
-  color: ${color.text.primary};
+  color: var(--text1);
+  font-family: var(--brave-font-family-non-serif);
   letter-spacing: 0.01em;
   margin-bottom: 16px;
 `
@@ -77,12 +77,13 @@ const DescriptionBody = styled.div`
 
 const EnableRewardsButton = styled.button`
   height: 36px;
-  background: ${color.button.background};
+  background: var(--interactive5);
   border-radius: 1000px;
   border-width: 0;
   color: white;
   cursor: pointer;
   padding: 10px 20px;
+  font-family: var(--brave-font-family-non-serif);
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
