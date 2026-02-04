@@ -30,13 +30,17 @@ export function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
 }
 
 export function getToolUseEvent(
-  toolUseEvent: UndefinedToOptional<Mojom.ToolUseEvent>,
+  toolUseEvent: Omit<
+    UndefinedToOptional<Mojom.ToolUseEvent>,
+    'isServerResult'
+  > & { isServerResult?: boolean },
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
     toolUseEvent: {
       output: undefined,
       permissionChallenge: undefined,
+      isServerResult: false, // default value
       ...toolUseEvent,
     },
   }
