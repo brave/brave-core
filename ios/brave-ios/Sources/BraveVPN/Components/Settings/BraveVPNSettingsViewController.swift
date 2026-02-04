@@ -63,6 +63,8 @@ class VPNSettingsViewModel {
     )
   }
 
+  private(set) var isConfigurationResetting: Bool = false
+
   private(set) var selectedServer: ServerDetails?
 
   struct ServerDetails {
@@ -152,6 +154,22 @@ class VPNSettingsViewModel {
     )
   }
 
+  @MainActor
+  func resetConfiguraton() async -> Bool {
+    isConfigurationResetting = true
+    defer { isConfigurationResetting = false }
+    // This allows the UI to update immediately since BraveVPN.reconfigureVPN will block the main
+    // thread temporarily
+    try? await Task.sleep(for: .milliseconds(100))
+    let success = await withCheckedContinuation { continuation in
+      BraveVPN.reconfigureVPN {
+        continuation.resume(returning: $0)
+      }
+    }
+    updateSelectedServer()
+    return success
+  }
+
   private func getProductStatusInfo() -> (status: String, color: UIColor) {
     if Preferences.VPN.vpnReceiptStatus.value
       == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
@@ -205,9 +223,15 @@ struct SmartProxyBadge: View {
 
 public struct VPNSettingsView: View {
   @State private var isResetDialogPresented: Bool = false
+  @State private var resetConfigurationResult: ResetConfigurationResult?
   @Bindable var viewModel: VPNSettingsViewModel
 
   var openURL: (URL) -> Void
+
+  fileprivate enum ResetConfigurationResult {
+    case success
+    case failure
+  }
 
   public var body: some View {
     Form {
@@ -252,6 +276,7 @@ public struct VPNSettingsView: View {
           }
         }
       }
+      .disabled(viewModel.isConfigurationResetting)
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       SubscriptionSection(viewModel: viewModel)
       Section {
@@ -290,18 +315,27 @@ public struct VPNSettingsView: View {
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        Button(Strings.VPN.settingsResetConfiguration) {
+        Button {
           isResetDialogPresented = true
+        } label: {
+          HStack {
+            Text(Strings.VPN.settingsResetConfiguration)
+              .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorText))
+            Spacer()
+            if viewModel.isConfigurationResetting {
+              ProgressView()
+                .progressViewStyle(.circular)
+            }
+          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorText))
         .confirmationDialog(
           Strings.VPN.vpnResetAlertTitle,
           isPresented: $isResetDialogPresented,
           titleVisibility: .visible
         ) {
           Button(Strings.VPN.vpnResetButton, role: .destructive) {
-
+            tappedResetConfiguration()
           }
           Button(Strings.CancelString, role: .cancel) {}
         } message: {
@@ -310,6 +344,7 @@ public struct VPNSettingsView: View {
       } header: {
         Text(Strings.VPN.settingsServerSection)
       }
+      .disabled(viewModel.isConfigurationResetting)
       Section {
         NavigationLink(Strings.VPN.settingsContactSupport) {
           VPNContactFormView()
@@ -329,6 +364,29 @@ public struct VPNSettingsView: View {
     .navigationBarTitleDisplayMode(.inline)
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
+    .alert(
+      resetConfigurationResult == .success
+        ? Strings.VPN.resetVPNSuccessTitle : Strings.VPN.resetVPNErrorTitle,
+      isPresented: $resetConfigurationResult.isPresented,
+      presenting: resetConfigurationResult
+    ) { result in
+      switch result {
+      case .success:
+        Button(Strings.OKString) {}
+      case .failure:
+        Button(Strings.CancelString, role: .cancel) {}
+        Button(Strings.VPN.resetVPNErrorButtonActionTitle, role: .destructive) {
+          tappedResetConfiguration()
+        }
+      }
+    } message: { result in
+      switch result {
+      case .success:
+        Text(Strings.VPN.resetVPNSuccessBody)
+      case .failure:
+        Text(Strings.VPN.resetVPNErrorBody)
+      }
+    }
     .environment(
       \.openURL,
       OpenURLAction { url in
@@ -336,6 +394,12 @@ public struct VPNSettingsView: View {
         return .handled
       }
     )
+  }
+
+  private func tappedResetConfiguration() {
+    Task {
+      resetConfigurationResult = await viewModel.resetConfiguraton() ? .success : .failure
+    }
   }
 
   private struct SubscriptionSection: View {
@@ -424,6 +488,14 @@ public struct VPNSettingsView: View {
         Text(Strings.VPN.settingsLinkReceiptFooter)
       }
     }
+  }
+}
+
+// Binding<ResetConfigurationResult?> presentation helper
+extension VPNSettingsView.ResetConfigurationResult? {
+  fileprivate var isPresented: Bool {
+    get { self != nil }
+    set { if !newValue { self = nil } }
   }
 }
 
