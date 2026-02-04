@@ -414,39 +414,37 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
             base::Time::Now(), /*number_of_days_to_report*/ 1,
             static_cast<history::DomainMetricType>(type),
             history::VisitQuery404sPolicy::kExclude404s,
-            base::BindOnce(
-                ^(std::pair<history::DomainDiversityResults,
-                            history::DomainDiversityResults> metrics) {
-                  if (!metrics.first.empty()) {
-                    [cancellable_tracker reset];
-                    callback(0);
-                    return;
+            base::BindOnce(^(history::DomainDiversityResults metrics) {
+              if (metrics.empty()) {
+                [cancellable_tracker reset];
+                callback(0);
+                return;
+              }
+              auto& metric = metrics.front();
+              NSInteger value = 0;
+              switch (metricType) {
+                case DomainMetricTypeIOSNoMetric:
+                  break;
+                case DomainMetricTypeIOSLast1DayMetric:
+                  if (metric.one_day_metric) {
+                    value = metric.one_day_metric.value().count;
                   }
-                  auto& metric = metrics.first.front();
-                  NSInteger value = 0;
-                  switch (metricType) {
-                    case DomainMetricTypeIOSNoMetric:
-                      break;
-                    case DomainMetricTypeIOSLast1DayMetric:
-                      if (metric.one_day_metric) {
-                        value = metric.one_day_metric.value().count;
-                      }
-                      break;
-                    case DomainMetricTypeIOSLast7DayMetric:
-                      if (metric.seven_day_metric) {
-                        value = metric.seven_day_metric.value().count;
-                      }
-                      break;
-                    case DomainMetricTypeIOSLast28DayMetric:
-                      if (metric.twenty_eight_day_metric) {
-                        value = metric.twenty_eight_day_metric.value().count;
-                      }
-                      break;
+                  break;
+                case DomainMetricTypeIOSLast7DayMetric:
+                  if (metric.seven_day_metric) {
+                    value = metric.seven_day_metric.value().count;
                   }
+                  break;
+                case DomainMetricTypeIOSLast28DayMetric:
+                  if (metric.twenty_eight_day_metric) {
+                    value = metric.twenty_eight_day_metric.value().count;
+                  }
+                  break;
+              }
 
-                  [cancellable_tracker reset];
-                  callback(value);
-                }),
+              [cancellable_tracker reset];
+              callback(value);
+            }),
             [cancellable_tracker tracker]);
       };
   web::GetUIThreadTaskRunner({})->PostTask(
