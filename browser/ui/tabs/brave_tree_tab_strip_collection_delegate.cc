@@ -7,6 +7,7 @@
 
 #include <variant>
 
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
@@ -219,9 +220,37 @@ void BraveTreeTabStripCollectionDelegate::AddTabToUnpinnedCollectionAsTreeNode(
 std::unique_ptr<tabs::TabInterface>
 BraveTreeTabStripCollectionDelegate::RemoveTabAtIndexRecursive(
     size_t index) const {
-  // TODO(https://github.com/brave/brave-browser/issues/49789)
-  NOTIMPLEMENTED();
-  return collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
+  auto* target_tab = collection_->GetTabAtIndexRecursive(index);
+  auto* parent_collection =
+      collection_->GetParentCollection(target_tab, GetPassKey());
+  CHECK(parent_collection);
+
+  if (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    // Just remove the tab.
+    return collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
+  }
+
+  // When removing a tree tab node, the children node should be re-added to the
+  // current position of the tree tab node.
+  auto* tree_tab_node_collection =
+      static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
+  CHECK(tree_tab_model_);
+  tree_tab_model_->RemoveTreeTabNode(tree_tab_node_collection->node().id());
+
+  // Remove the tab first so that we can keep the |index| correct.
+  auto tab = collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
+
+  // Get direct children of |tree_tab_node_collection| and re-add them to the
+  // owner collection to preserve the tree structure.
+  MoveChildrenOfTreeTabNodeToParent(tree_tab_node_collection);
+
+  // Remove the tree tab node collection from owner
+  auto* tree_node_owner_collection =
+      tree_tab_node_collection->GetParentCollection();
+  CHECK(tree_node_owner_collection);
+  auto removed_collection = tree_node_owner_collection->MaybeRemoveCollection(
+      tree_tab_node_collection);
+  return tab;
 }
 
 void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
@@ -232,4 +261,44 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     const std::set<tabs::TabCollection::Type>& retain_collection_types) const {
   // TODO(https://github.com/brave/brave-browser/issues/49790)
   NOTIMPLEMENTED();
+}
+
+void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToParent(
+    tabs::TreeTabNodeTabCollection* tree_tab_node_collection) const {
+  auto* tree_node_owner_collection =
+      tree_tab_node_collection->GetParentCollection();
+  auto local_index = tree_node_owner_collection->GetIndexOfCollection(
+      tree_tab_node_collection);
+  CHECK(local_index.has_value());
+
+  MoveChildrenOfTreeTabNodeToNode(tree_tab_node_collection,
+                                  tree_node_owner_collection, *local_index);
+}
+
+void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
+    tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
+    tabs::TabCollection* target_collection,
+    size_t target_index) const {
+  CHECK_LT(target_index, target_collection->ChildCount());
+
+  auto children = tree_tab_node_collection->GetTreeNodeChildren();
+  for (auto& child : base::Reversed(children)) {
+    std::visit(
+        absl::Overload{
+            [&](tabs::TabInterface* tab) {
+              if (tab == tree_tab_node_collection->current_tab().get()) {
+                // Skipping moving current tab itself
+                return;
+              }
+
+              target_collection->AddTab(
+                  tree_tab_node_collection->MaybeRemoveTab(tab), target_index);
+            },
+            [&](tabs::TabCollection* collection) {
+              target_collection->AddCollection(
+                  tree_tab_node_collection->MaybeRemoveCollection(collection),
+                  target_index);
+            }},
+        child);
+  }
 }

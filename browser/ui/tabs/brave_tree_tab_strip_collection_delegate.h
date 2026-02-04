@@ -11,6 +11,10 @@
 
 class TreeTabModel;
 
+namespace tabs {
+class TreeTabNodeTabCollection;
+}  // namespace tabs
+
 // A delegate for BraveTabStripCollection when in tree tab mode.
 // This class do pre/post processing for tab manipulation methods so that we can
 // keep tabs in a valid tree tab structure.
@@ -72,6 +76,19 @@ class BraveTreeTabStripCollectionDelegate
       size_t index,
       std::optional<tab_groups::TabGroupId> new_group_id,
       std::unique_ptr<tabs::TabInterface> tab) const;
+
+  // Move all direct children of TreeTabNodeTabCollection to its parent at the
+  // position of the TreeTabNodeTabCollection. The "current tab" of the given
+  // tree tab node collection will be skipped.
+  void MoveChildrenOfTreeTabNodeToParent(
+      tabs::TreeTabNodeTabCollection* tree_tab_node_collection) const;
+
+  // Move all direct children of TreeTabNodeTabCollection except the
+  // "current_tab" to the target TreeTabNodeTabCollection.
+  void MoveChildrenOfTreeTabNodeToNode(
+      tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
+      tabs::TabCollection* target_collection,
+      size_t target_index) const;
 
   bool in_destruction_ = false;
 

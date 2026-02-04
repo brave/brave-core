@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -727,4 +728,192 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   }
 
   tab_strip_model().RemoveObserver(&mock_observer);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    RemoveTabAtIndexRecursive_WithChildren_MovesChildrenToParent) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Create a child node
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // Verify tree structure: tab 0 has a child
+  // The child tab should be at the last index.
+  auto* child_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+  ASSERT_EQ(child_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  // Parent's TreeTabNode should have 2 children: parent tab itself + child tab
+  // Note: ChildCount includes the parent tab itself as one child
+  ASSERT_GE(parent_tab->GetParentCollection()->ChildCount(), 2u);
+
+  int initial_count = tab_strip_model().count();
+
+  // Remove the parent tab (index 0).
+  tab_strip_model().CloseWebContentsAt(0, TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(initial_count - 1, tab_strip_model().count());
+
+  // The child tab should now be at index 0 (where parent was).
+  auto* moved_child = tab_strip_model().GetTabAtIndex(0);
+  EXPECT_EQ(child_tab, moved_child);
+
+  // The child should now be a direct child of unpinned collection.
+  EXPECT_EQ(moved_child->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(moved_child->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    RemoveTabAtIndexRecursive_WithMultipleChildren_MovesAllChildren) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Create multiple children for the parent tab.
+  std::vector<tabs::TabInterface*> child_tabs;
+  for (int i = 0; i < 3; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_interface->set_opener(parent_tab);
+    child_tabs.push_back(tab_interface.get());
+
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+
+  // Verify tree structure: parent's TreeTabNode has 4 children
+  // (parent tab itself + 3 child tabs)
+  ASSERT_EQ(parent_tab->GetParentCollection()->ChildCount(), 4u);
+
+  int initial_count = tab_strip_model().count();
+
+  // Remove the parent tab (index 0).
+  tab_strip_model().CloseWebContentsAt(0, TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(initial_count - 1, tab_strip_model().count());
+
+  // All children should be preserved and moved to unpinned collection level.
+  for (size_t i = 0; i < child_tabs.size(); ++i) {
+    auto* moved_child = tab_strip_model().GetTabAtIndex(i);
+    EXPECT_EQ(child_tabs[i], moved_child);
+    EXPECT_EQ(moved_child->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+    EXPECT_EQ(moved_child->GetParentCollection()->GetParentCollection(),
+              &unpinned_collection());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    RemoveTabAtIndexRecursive_NestedStructure_PreservesTree) {
+  SetTreeTabsEnabled(true);
+
+  // The initial tab is the level 0 tab.
+  auto* level0_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Create level 1 child.
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(level0_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // Find level1_tab - it should be a child of level0_tab's TreeTabNode
+  auto* level1_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+  ASSERT_EQ(level1_tab->GetParentCollection()->GetParentCollection(),
+            level0_tab->GetParentCollection());
+
+  // Create level 2 child (child of level 1).
+  tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(level1_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* level2_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+
+  // Verify nested structure: level0 -> level1 -> level2
+  // level2's parent collection should be a TreeTabNode, and its parent should
+  // be level1's TreeTabNode
+  ASSERT_EQ(level2_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(level2_tab->GetParentCollection()->GetParentCollection(),
+            level1_tab->GetParentCollection());
+  ASSERT_EQ(level1_tab->GetParentCollection()->GetParentCollection(),
+            level0_tab->GetParentCollection());
+
+  int level1_index = tab_strip_model().GetIndexOfTab(level1_tab);
+  ASSERT_GE(level1_index, 0);
+
+  // Remove level 1 tab (middle node).
+  tab_strip_model().CloseWebContentsAt(level1_index, TabCloseTypes::CLOSE_NONE);
+
+  // Verify structure after removal:
+  // - level2 should be moved to level0's children
+  // - level0 should still exist
+  EXPECT_EQ(2, tab_strip_model().count());
+  EXPECT_EQ(level0_tab, tab_strip_model().GetTabAtIndex(0));
+  EXPECT_EQ(level2_tab, tab_strip_model().GetTabAtIndex(1));
+
+  // level2 should now be a direct child of level0's tree node.
+  auto* moved_level2 = tab_strip_model().GetTabAtIndex(1);
+  EXPECT_EQ(moved_level2->GetParentCollection()->GetParentCollection(),
+            level0_tab->GetParentCollection());
+
+  // level0 should have 2 children now (itself + level2).
+  EXPECT_EQ(level0_tab->GetParentCollection()->ChildCount(), 2u);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       RemoveTabAtIndexRecursive_NoChildren_RemovesNormally) {
+  SetTreeTabsEnabled(true);
+
+  // Add tabs without opener
+  for (int i = 0; i < 2; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+
+  // Verify initial structure.
+  ASSERT_EQ(3, tab_strip_model().count());
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    ASSERT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
+
+  // Store remaining tab pointers.
+  auto* tab0 = tab_strip_model().GetTabAtIndex(0);
+  auto* tab2 = tab_strip_model().GetTabAtIndex(2);
+
+  // Remove tab at index 1 (no children).
+  tab_strip_model().CloseWebContentsAt(1, TabCloseTypes::CLOSE_NONE);
+
+  // Verify tab was removed and remaining tabs are preserved.
+  EXPECT_EQ(2, tab_strip_model().count());
+  EXPECT_EQ(tab0, tab_strip_model().GetTabAtIndex(0));
+  EXPECT_EQ(tab2, tab_strip_model().GetTabAtIndex(1));
+
+  // Also unpinned collection should have 2 tree nodes for 0 and 2
+  EXPECT_EQ(unpinned_collection().ChildCount(), 2u);
+  EXPECT_EQ(unpinned_collection().GetTabAtIndexRecursive(0), tab0);
+  EXPECT_EQ(unpinned_collection().GetTabAtIndexRecursive(1), tab2);
+
+  // Remaining tabs should still be in tree structure.
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
 }
