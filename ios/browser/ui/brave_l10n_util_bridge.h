@@ -8,24 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
-typedef int BraveMessageID NS_TYPED_ENUM;
+typedef int MessageIDTyped NS_TYPED_ENUM;
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_VISIBLE
 @interface BraveL10nUtils : NSObject
 
-+ (NSString*)stringForBraveMessageID:(BraveMessageID)messageID
++ (NSString*)stringForMessageIDTyped:(MessageIDTyped)messageID
     NS_SWIFT_NAME(string(messageId:));
 
-+ (NSString*)stringWithFixupForBraveMessageID:(BraveMessageID)messageID
++ (NSString*)stringWithFixupForMessageIDTyped:(MessageIDTyped)messageID
     NS_SWIFT_NAME(stringWithFixup(messageId:));
 
-+ (NSString*)formatStringForBraveMessageID:(BraveMessageID)messageID
++ (NSString*)formatStringForMessageIDTyped:(MessageIDTyped)messageID
                                   argument:(NSString*)argument
     NS_SWIFT_NAME(formatString(messageId:argument:));
 
-+ (NSString*)pluralStringForBraveMessageID:(BraveMessageID)messageID
++ (NSString*)pluralStringForMessageIDTyped:(MessageIDTyped)messageID
                                     number:(NSInteger)number
     NS_SWIFT_NAME(pluralString(messageId:number:));
 

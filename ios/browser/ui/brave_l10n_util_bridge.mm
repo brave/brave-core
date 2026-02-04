@@ -10,20 +10,20 @@
 
 @implementation BraveL10nUtils
 
-+ (NSString*)stringForBraveMessageID:(BraveMessageID)messageID {
++ (NSString*)stringForMessageIDTyped:(MessageIDTyped)messageID {
   return l10n_util::GetNSString(messageID);
 }
 
-+ (NSString*)stringWithFixupForBraveMessageID:(BraveMessageID)messageID {
++ (NSString*)stringWithFixupForMessageIDTyped:(MessageIDTyped)messageID {
   return l10n_util::GetNSStringWithFixup(messageID);
 }
 
-+ (NSString*)formatStringForBraveMessageID:(BraveMessageID)messageID
++ (NSString*)formatStringForMessageIDTyped:(MessageIDTyped)messageID
                                   argument:(NSString*)argument {
   return l10n_util::GetNSStringF(messageID, base::SysNSStringToUTF16(argument));
 }
 
-+ (NSString*)pluralStringForBraveMessageID:(BraveMessageID)messageID
++ (NSString*)pluralStringForMessageIDTyped:(MessageIDTyped)messageID
                                     number:(NSInteger)number {
   int numberInt = static_cast<int>(number);
   return l10n_util::GetPluralNSStringF(messageID, numberInt);
