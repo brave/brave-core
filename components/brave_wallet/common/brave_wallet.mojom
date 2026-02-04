@@ -2564,8 +2564,8 @@ struct CardanoTxOutput {
 
 struct CardanoTxData {
   string to;
-  uint64 sending_amount;
-  string? sending_token;
+  uint64 sending_lovelace;
+  CardanoTxTokenValue? sending_token;
   uint64 fee;
   array<CardanoTxInput> inputs;
   array<CardanoTxOutput> outputs;

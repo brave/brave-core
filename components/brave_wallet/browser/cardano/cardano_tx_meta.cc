@@ -43,26 +43,25 @@ mojom::CardanoTxDataPtr ToCardanoTxData(const CardanoTransaction& tx) {
     }
   }
 
-  uint64_t sending_amount = 0;
-  std::optional<std::string> sending_token_id_hex;
-
-  if (tx.TargetOutput()->tokens.empty()) {
-    sending_amount = tx.TargetOutput()->amount;
-  } else {
-    DCHECK_EQ(tx.TargetOutput()->tokens.size(), 1u);
-    sending_amount = tx.TargetOutput()->tokens.begin()->second;
-    sending_token_id_hex =
-        base::HexEncodeLower(tx.TargetOutput()->tokens.begin()->first);
+  uint64_t sending_lovelace = 0;
+  mojom::CardanoTxTokenValuePtr sending_token;
+  if (tx.TargetOutput()) {
+    sending_lovelace = tx.TargetOutput()->amount;
+    if (!tx.TargetOutput()->tokens.empty()) {
+      DCHECK_EQ(tx.TargetOutput()->tokens.size(), 1u);
+      const auto& token = tx.TargetOutput()->tokens.begin();
+      sending_token = mojom::CardanoTxTokenValue::New(
+          base::HexEncodeLower(token->first), token->second);
+    }
   }
 
   std::string send_to_address_str;
-
   if (auto send_to_address = tx.GetToAddress()) {
     send_to_address_str = send_to_address->ToString();
   }
 
   return mojom::CardanoTxData::New(
-      send_to_address_str, sending_amount, sending_token_id_hex, tx.fee(),
+      send_to_address_str, sending_lovelace, std::move(sending_token), tx.fee(),
       std::move(mojom_inputs), std::move(mojom_outputs));
 }
 

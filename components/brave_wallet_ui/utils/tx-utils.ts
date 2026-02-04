@@ -274,7 +274,9 @@ export function isCardanoSendLovelaceTransaction(
 export function isCardanoSendTokenTransaction(
   tx: TransactionInfo,
 ): tx is CardanoTransactionInfo & {
-  txDataUnion: { cardanoTxData: { sendingToken: string } }
+  txDataUnion: {
+    cardanoTxData: { sendingToken: BraveWallet.CardanoTxTokenValue }
+  }
 } {
   return (
     isCardanoTransaction(tx)
@@ -546,7 +548,7 @@ export const findTransactionToken = <
   // Cardano Send Token
   if (isCardanoSendTokenTransaction(tx)) {
     return findTokenByContractAddress(
-      tx.txDataUnion.cardanoTxData.sendingToken,
+      tx.txDataUnion.cardanoTxData.sendingToken.tokenIdHex,
       tokensList,
     )
   }
@@ -757,8 +759,12 @@ export function getTransactionBaseValue(tx: TransactionInfo) {
     return tx.txDataUnion.zecTxData?.amount.toString() ?? ''
   }
 
-  if (isCardanoTransaction(tx)) {
-    return tx.txDataUnion.cardanoTxData.sendingAmount.toString()
+  if (isCardanoSendLovelaceTransaction(tx)) {
+    return tx.txDataUnion.cardanoTxData.sendingLovelace.toString()
+  }
+
+  if (isCardanoSendTokenTransaction(tx)) {
+    return tx.txDataUnion.cardanoTxData.sendingToken.value.toString()
   }
 
   if (isPolkadotTransaction(tx)) {
