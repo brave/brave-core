@@ -47,6 +47,11 @@
       <!-- WebUI Local AI resources -->
       <include name="IDR_LOCAL_AI_INTERNALS_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
       <include name="IDR_CANDLE_EMBEDDING_GEMMA_BRIDGE_HTML" file="../local_ai/resources/candle_embedding_gemma_bridge.html" type="BINDATA" />
+      <!-- Plain JS Service Worker (not bundled by webpack to avoid top-level await) -->
+      <include name="IDR_CANDLE_EMBEDDING_GEMMA_SW_JS" file="../local_ai/resources/candle_embedding_gemma_sw.js" type="BINDATA" />
+      <!-- Web-target WASM files for Service Worker compatibility -->
+      <include name="IDR_CANDLE_EMBEDDING_GEMMA_WEB_JS" file="${root_gen_dir}/brave/ui/webui/resources/wasm/candle_embedding_gemma/web/pkg/index.js" use_base_dir="false" type="BINDATA" />
+      <include name="IDR_CANDLE_EMBEDDING_GEMMA_WEB_WASM" file="${root_gen_dir}/brave/ui/webui/resources/wasm/candle_embedding_gemma/web/pkg/index_bg.wasm" use_base_dir="false" type="BINDATA" />
 
       <!-- WebUI wallet resources -->
       <if expr="enable_brave_wallet">

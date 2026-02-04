@@ -39,6 +39,10 @@ class UntrustedCandleEmbeddingGemmaUIConfig : public content::WebUIConfig {
   std::unique_ptr<content::WebUIController> CreateWebUIController(
       content::WebUI* web_ui,
       const GURL& url) override;
+
+  // Called when registering a Service Worker to ensure the data source
+  // is available for serving the SW script.
+  void RegisterURLDataSource(content::BrowserContext* browser_context) override;
 };
 
 }  // namespace local_ai

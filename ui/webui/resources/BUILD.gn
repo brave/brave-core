@@ -151,6 +151,21 @@ transpile_web_ui("candle_embedding_gemma") {
   public_asset_path = "chrome-untrusted://resources/brave/"
 }
 
+# Build WASM with "web" target for Service Worker use.
+# The "web" target generates an init(wasmUrl) function instead of
+# auto-initialization with top-level await, making it compatible with
+# Service Workers.
+# The output files (index.js, index_bg.wasm) are included directly in
+# brave_components_resources.grd and served via the WebUI request filter.
+rust_to_wasm("candle_embedding_gemma_web") {
+  rust_packages = [ rebase_path("wasm/candle_embedding_gemma/Cargo.toml") ]
+  wasm_pack_target = "web"
+  inputs = [
+    rebase_path("wasm/Cargo.lock"),
+    rebase_path("wasm/candle_embedding_gemma/src/lib.rs"),
+  ]
+}
+
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
 generate_grd("static_grdp") {
   grd_prefix = "brave_webui"

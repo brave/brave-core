@@ -45,6 +45,7 @@ brave_grit("static_resources") {
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
+    "//brave/ui/webui/resources:candle_embedding_gemma_web",
   ]
 
   if (enable_ai_chat) {

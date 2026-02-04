@@ -5,19 +5,41 @@
 
 #include "brave/components/local_ai/browser/candle_service.h"
 
-#include "base/files/file_path.h"
+#include <map>
+#include <string>
+#include <utility>
+
+#include "base/base64.h"
 #include "base/files/file_util.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "components/grit/brave_components_resources.h"
+#include "third_party/blink/public/common/messaging/web_message_port.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/local_ai/browser/local_models_updater.h"
-#include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/base/big_buffer.h"
-#include "ui/base/page_transition_types.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/service_worker_context.h"
+#include "content/public/browser/storage_partition.h"
+#include "third_party/blink/public/common/messaging/message_port_channel.h"
+#include "third_party/blink/public/common/messaging/transferable_message.h"
+#include "third_party/blink/public/common/storage_key/storage_key.h"
+#include "third_party/blink/public/mojom/script/script_type.mojom.h"
+#include "third_party/blink/public/mojom/service_worker/service_worker_registration_options.mojom.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace local_ai {
+
+CandleService::LoadedFiles::LoadedFiles() = default;
+CandleService::LoadedFiles::~LoadedFiles() = default;
+CandleService::LoadedFiles::LoadedFiles(LoadedFiles&&) = default;
+CandleService::LoadedFiles& CandleService::LoadedFiles::operator=(
+    LoadedFiles&&) = default;
 
 CandleService::PendingEmbedRequest::PendingEmbedRequest() = default;
 CandleService::PendingEmbedRequest::PendingEmbedRequest(std::string text,
@@ -29,89 +51,6 @@ CandleService::PendingEmbedRequest::PendingEmbedRequest(PendingEmbedRequest&&) =
 CandleService::PendingEmbedRequest&
 CandleService::PendingEmbedRequest::operator=(PendingEmbedRequest&&) = default;
 
-namespace {
-
-mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk(
-    const base::FilePath& weights_path,
-    const base::FilePath& weights_dense1_path,
-    const base::FilePath& weights_dense2_path,
-    const base::FilePath& tokenizer_path,
-    const base::FilePath& config_path) {
-  auto weights_opt = base::ReadFileToBytes(weights_path);
-  if (!weights_opt) {
-    DVLOG(0) << "Failed to read model weights from: " << weights_path;
-    return nullptr;
-  }
-
-  auto weights_dense1_opt = base::ReadFileToBytes(weights_dense1_path);
-  if (!weights_dense1_opt) {
-    DVLOG(0) << "Failed to read dense1 weights from: " << weights_dense1_path;
-    return nullptr;
-  }
-
-  auto weights_dense2_opt = base::ReadFileToBytes(weights_dense2_path);
-  if (!weights_dense2_opt) {
-    DVLOG(0) << "Failed to read dense2 weights from: " << weights_dense2_path;
-    return nullptr;
-  }
-
-  auto tokenizer_opt = base::ReadFileToBytes(tokenizer_path);
-  if (!tokenizer_opt) {
-    DVLOG(0) << "Failed to read tokenizer from: " << tokenizer_path;
-    return nullptr;
-  }
-
-  auto config_opt = base::ReadFileToBytes(config_path);
-  if (!config_opt) {
-    DVLOG(0) << "Failed to read config from: " << config_path;
-    return nullptr;
-  }
-
-  DVLOG(1) << "Loaded weights, size: " << weights_opt->size();
-  DVLOG(1) << "Loaded weights_dense1, size: " << weights_dense1_opt->size();
-  DVLOG(1) << "Loaded weights_dense2, size: " << weights_dense2_opt->size();
-  DVLOG(1) << "Loaded tokenizer, size: " << tokenizer_opt->size();
-  DVLOG(1) << "Loaded config, size: " << config_opt->size();
-
-  // Create BigBuffer directly - it will automatically use shared memory for
-  // large data (> 64KB)
-  auto model_files = mojom::ModelFiles::New();
-  model_files->weights = mojo_base::BigBuffer(std::move(*weights_opt));
-  model_files->weights_dense1 =
-      mojo_base::BigBuffer(std::move(*weights_dense1_opt));
-  model_files->weights_dense2 =
-      mojo_base::BigBuffer(std::move(*weights_dense2_opt));
-  model_files->tokenizer = mojo_base::BigBuffer(std::move(*tokenizer_opt));
-  model_files->config = mojo_base::BigBuffer(std::move(*config_opt));
-
-  return model_files;
-}
-
-}  // namespace
-
-// WasmWebContentsObserver implementation
-WasmWebContentsObserver::WasmWebContentsObserver(
-    CandleService* service,
-    content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents), service_(service) {}
-
-WasmWebContentsObserver::~WasmWebContentsObserver() = default;
-
-void WasmWebContentsObserver::DidFinishLoad(
-    content::RenderFrameHost* render_frame_host,
-    const GURL& validated_url) {
-  DVLOG(3) << "WasmWebContentsObserver: WASM page loaded: " << validated_url;
-  if (service_) {
-    service_->OnWasmPageLoaded();
-  }
-}
-
-namespace {
-// Idle timeout before closing the WASM WebContents to free memory
-constexpr base::TimeDelta kIdleTimeout = base::Minutes(1);
-}  // namespace
-
-// CandleService implementation
 CandleService::CandleService(content::BrowserContext* browser_context)
     : browser_context_(browser_context) {
   DVLOG(3) << "CandleService created for browser context";
@@ -121,15 +60,18 @@ CandleService::CandleService(content::BrowserContext* browser_context)
     return;
   }
 
+  // Get ServiceWorkerContext from the storage partition
+  GURL sw_scope(kUntrustedCandleEmbeddingGemmaWasmURL);
+  content::StoragePartition* partition =
+      browser_context_->GetStoragePartitionForUrl(sw_scope);
+  service_worker_context_ = partition->GetServiceWorkerContext();
+
   // Observe the component updater for model readiness
   LocalModelsUpdaterState::GetInstance()->AddObserver(this);
-
-  // WebContents will be created lazily when needed (in EnsureWasmWebContents)
 }
 
 CandleService::~CandleService() {
   LocalModelsUpdaterState::GetInstance()->RemoveObserver(this);
-  CloseWasmWebContents();
 }
 
 void CandleService::BindReceiver(
@@ -140,94 +82,14 @@ void CandleService::BindReceiver(
 
 void CandleService::BindEmbeddingGemma(
     mojo::PendingRemote<mojom::EmbeddingGemmaInterface> pending_remote) {
-  // Bind the single embedder remote from our WASM WebContents
-  if (embedding_gemma_remote_.is_bound()) {
-    DVLOG(1) << "EmbeddingGemma already bound, resetting";
-    embedding_gemma_remote_.reset();
-    model_initialized_ = false;
-  }
-  embedding_gemma_remote_.Bind(std::move(pending_remote));
-
-  // Set up disconnect handler - this handles renderer crashes, manual kills,
-  // etc.
-  embedding_gemma_remote_.set_disconnect_handler(base::BindOnce(
-      [](CandleService* service) {
-        DVLOG(1) << "EmbeddingGemma remote disconnected (renderer crash or "
-                    "manual kill)";
-        // Clear pending requests on disconnect
-        for (auto& request : service->pending_embed_requests_) {
-          std::move(request.callback).Run({});
-        }
-        service->pending_embed_requests_.clear();
-        // Close WebContents and reset state so next Embed() will reinitialize
-        service->CloseWasmWebContents();
-      },
-      base::Unretained(this)));
-
-  DVLOG(3) << "BindEmbeddingGemma: Bound embedder remote";
-
-  // Try to load model now that remote is bound
-  TryLoadModel();
-}
-
-void CandleService::LoadModelFiles() {
-  if (!embedding_gemma_remote_) {
-    DVLOG(0) << "Embedding Gemma interface not bound";
-    OnModelFilesLoaded(false);
-    return;
-  }
-
-  // Get model file paths from LocalModelsUpdaterState
-  base::FilePath weights_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModel();
-  base::FilePath weights_dense1_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense1();
-  base::FilePath weights_dense2_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense2();
-  base::FilePath tokenizer_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaTokenizer();
-  base::FilePath config_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaConfig();
-
-  const base::FilePath& model_dir =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModelDir();
-
-  if (model_dir.empty()) {
-    DVLOG(0) << "CandleService: Model directory not set in updater state";
-    OnModelFilesLoaded(false);
-    return;
-  }
-
-  // Store model directory for potential retries
-  pending_model_path_ = model_dir;
-
-  DVLOG(1) << "Loading Embedding Gemma model files (attempt "
-           << (model_load_retry_count_ + 1) << "/" << kMaxModelLoadRetries
-           << "):";
-  DVLOG(1) << "Weights: " << weights_path;
-  DVLOG(1) << "Weights Dense1: " << weights_dense1_path;
-  DVLOG(1) << "Weights Dense2: " << weights_dense2_path;
-  DVLOG(1) << "Tokenizer: " << tokenizer_path;
-  DVLOG(1) << "Config: " << config_path;
-
-  // Load model files on a background thread to avoid blocking
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&LoadEmbeddingGemmaModelFilesFromDisk, weights_path,
-                     weights_dense1_path, weights_dense2_path, tokenizer_path,
-                     config_path),
-      base::BindOnce(&CandleService::OnEmbeddingGemmaModelFilesLoaded,
-                     weak_ptr_factory_.GetWeakPtr()));
+  // This is no longer used in the Service Worker approach.
+  // The Service Worker communicates via MessagePort instead of Mojo.
+  DVLOG(1) << "BindEmbeddingGemma called but not used in SW approach";
 }
 
 void CandleService::Embed(const std::string& text, EmbedCallback callback) {
-  // Stop idle timer since we have activity
-  StopIdleTimer();
-
-  // Ensure WebContents exists (may have been closed due to idle)
-  EnsureWasmWebContents();
+  // Ensure Service Worker is running
+  EnsureServiceWorker();
 
   // If model is not initialized yet, queue the request
   if (!model_initialized_) {
@@ -236,72 +98,31 @@ void CandleService::Embed(const std::string& text, EmbedCallback callback) {
     return;
   }
 
-  embedding_gemma_remote_->Embed(text, std::move(callback));
+  // Send embed request to Service Worker
+  int message_id = next_message_id_++;
+  pending_callbacks_[message_id] = std::move(callback);
 
-  // Start idle timer after processing the request
-  StartIdleTimer();
-}
+  // Create JSON message
+  base::Value::Dict message;
+  message.Set("type", "embed");
+  message.Set("id", message_id);
+  message.Set("text", text);
 
-void CandleService::OnEmbeddingGemmaModelFilesLoaded(
-    mojom::ModelFilesPtr model_files) {
-  DVLOG(3) << "CandleService::OnEmbeddingGemmaModelFilesLoaded called";
+  std::string json_str;
+  base::JSONWriter::Write(message, &json_str);
+  std::u16string message_str = base::UTF8ToUTF16(json_str);
 
-  if (!model_files) {
-    DVLOG(0) << "Failed to load embedding gemma model files from disk";
-    OnModelFilesLoaded(false);
-    return;
-  }
-
-  DVLOG(3) << "Calling embedding_gemma_remote_->Init()...";
-  embedding_gemma_remote_->Init(
-      std::move(model_files), base::BindOnce(&CandleService::OnModelFilesLoaded,
-                                             weak_ptr_factory_.GetWeakPtr()));
-}
-
-void CandleService::OnWasmPageLoaded() {
-  DVLOG(3) << "CandleService: WASM page loaded";
-  wasm_page_loaded_ = true;
-
-  // Try to load model if both conditions are met
-  TryLoadModel();
+  message_port_.PostMessage(blink::WebMessagePort::Message(message_str));
 }
 
 void CandleService::OnLocalModelsReady(const base::FilePath& install_dir) {
   DVLOG(3) << "CandleService: Local models ready at: " << install_dir;
   component_ready_ = true;
 
-  // Try to load model if both conditions are met
-  TryLoadModel();
-}
-
-void CandleService::TryLoadModel() {
-  DVLOG(3) << "CandleService::TryLoadModel - wasm_page_loaded_="
-           << wasm_page_loaded_ << ", component_ready_=" << component_ready_
-           << ", remote_bound=" << embedding_gemma_remote_.is_bound()
-           << ", model_initialized_=" << model_initialized_;
-
-  if (!wasm_page_loaded_) {
-    DVLOG(3) << "CandleService: Waiting for WASM page to load...";
-    return;
+  // Try to load model if Service Worker is ready
+  if (port_connected_ && !model_initialized_) {
+    LoadModelFiles();
   }
-
-  if (!component_ready_) {
-    DVLOG(3) << "CandleService: Waiting for component to be ready...";
-    return;
-  }
-
-  if (!embedding_gemma_remote_.is_bound()) {
-    DVLOG(1) << "CandleService: WASM page loaded but remote not bound yet";
-    return;
-  }
-
-  if (model_initialized_) {
-    DVLOG(3) << "CandleService: Model already initialized";
-    return;
-  }
-
-  DVLOG(3) << "CandleService: Both WASM and component ready, loading model...";
-  LoadModelFiles();
 }
 
 void CandleService::Shutdown() {
@@ -313,11 +134,399 @@ void CandleService::Shutdown() {
   }
   pending_embed_requests_.clear();
 
-  CloseWasmWebContents();
+  // Clear pending callbacks
+  for (auto& [id, callback] : pending_callbacks_) {
+    std::move(callback).Run({});
+  }
+  pending_callbacks_.clear();
+
+  message_port_.Close();
+}
+
+bool CandleService::OnMessage(blink::WebMessagePort::Message message) {
+  // Parse the JSON message from Service Worker
+  std::string json_str = base::UTF16ToUTF8(message.data);
+  auto parsed = base::JSONReader::Read(json_str, base::JSON_PARSE_RFC);
+  if (!parsed || !parsed->is_dict()) {
+    DVLOG(0) << "Failed to parse message from Service Worker: " << json_str;
+    return false;
+  }
+
+  const base::Value::Dict& dict = parsed->GetDict();
+  const std::string* type = dict.FindString("type");
+  if (!type) {
+    DVLOG(0) << "Message missing type field";
+    return false;
+  }
+
+  DVLOG(3) << "Received message from Service Worker: " << *type;
+
+  if (*type == "connected") {
+    // Port connected, now we can send messages
+    DVLOG(3) << "Service Worker port connected";
+    port_connected_ = true;
+
+    // If component is ready, load the model
+    if (component_ready_ && !model_initialized_) {
+      LoadModelFiles();
+    }
+    return true;
+  }
+
+  if (*type == "init-response") {
+    std::optional<bool> success = dict.FindBool("success");
+    if (success && *success) {
+      DVLOG(3) << "Model initialized successfully";
+      model_initialized_ = true;
+      ProcessPendingEmbedRequests();
+    } else {
+      DVLOG(0) << "Model initialization failed";
+    }
+    return true;
+  }
+
+  if (*type == "embed-response") {
+    std::optional<int> id = dict.FindInt("id");
+    if (!id) {
+      DVLOG(0) << "embed-response missing id";
+      return false;
+    }
+
+    auto it = pending_callbacks_.find(*id);
+    if (it == pending_callbacks_.end()) {
+      DVLOG(0) << "No pending callback for id: " << *id;
+      return false;
+    }
+
+    std::vector<double> output;
+    const base::Value::List* output_list = dict.FindList("output");
+    if (output_list) {
+      for (const auto& val : *output_list) {
+        if (val.is_double()) {
+          output.push_back(val.GetDouble());
+        } else if (val.is_int()) {
+          output.push_back(static_cast<double>(val.GetInt()));
+        }
+      }
+    }
+
+    std::move(it->second).Run(std::move(output));
+    pending_callbacks_.erase(it);
+    return true;
+  }
+
+  DVLOG(0) << "Unknown message type: " << *type;
+  return true;
+}
+
+void CandleService::OnPipeError() {
+  DVLOG(1) << "Service Worker MessagePort error";
+
+  // Clear pending requests on error
+  for (auto& request : pending_embed_requests_) {
+    std::move(request.callback).Run({});
+  }
+  pending_embed_requests_.clear();
+
+  for (auto& [id, callback] : pending_callbacks_) {
+    std::move(callback).Run({});
+  }
+  pending_callbacks_.clear();
+
+  // Reset state so next Embed() will reinitialize
+  port_connected_ = false;
+  model_initialized_ = false;
+  service_worker_started_ = false;
+}
+
+void CandleService::EnsureServiceWorker() {
+  if (service_worker_started_ || !service_worker_context_) {
+    return;
+  }
+
+  DVLOG(3) << "CandleService: Ensuring Service Worker is running";
+
+  // Register the Service Worker if not already registered
+  if (!service_worker_registered_) {
+    // Use the plain JS Service Worker (not webpack-bundled) to avoid
+    // top-level await issues. The SW uses static imports which requires
+    // module script type.
+    GURL script_url(std::string(kUntrustedCandleEmbeddingGemmaWasmURL) +
+                    "candle_embedding_gemma_sw.js");
+    GURL scope(kUntrustedCandleEmbeddingGemmaWasmURL);
+    blink::StorageKey key =
+        blink::StorageKey::CreateFirstParty(url::Origin::Create(scope));
+
+    blink::mojom::ServiceWorkerRegistrationOptions options;
+    options.scope = scope;
+    // Use module script type since the SW uses static imports
+    options.type = blink::mojom::ScriptType::kModule;
+
+    service_worker_context_->RegisterServiceWorker(
+        script_url, key, options,
+        base::BindOnce(&CandleService::OnServiceWorkerRegistered,
+                       weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  // If registered, start the Service Worker
+  StartServiceWorkerWithPort();
+}
+
+void CandleService::StartServiceWorkerWithPort() {
+  if (service_worker_started_ || !service_worker_context_) {
+    return;
+  }
+
+  DVLOG(3) << "CandleService: Starting Service Worker with MessagePort";
+
+  GURL scope(kUntrustedCandleEmbeddingGemmaWasmURL);
+  blink::StorageKey key =
+      blink::StorageKey::CreateFirstParty(url::Origin::Create(scope));
+
+  // Create a MessagePort pair for communication
+  auto port_pair = blink::WebMessagePort::CreatePair();
+  message_port_ = std::move(port_pair.first);
+  message_port_.SetReceiver(this,
+                            base::SequencedTaskRunner::GetCurrentDefault());
+
+  // Create a TransferableMessage with the other port
+  blink::TransferableMessage transferable_message;
+  std::vector<blink::MessagePortDescriptor> ports;
+  ports.push_back(port_pair.second.PassPort());
+  transferable_message.ports =
+      blink::MessagePortChannel::CreateFromHandles(std::move(ports));
+  // Set the sender agent cluster ID to the embedder's (required for
+  // serialization)
+  transferable_message.sender_agent_cluster_id =
+      blink::WebMessagePort::GetEmbedderAgentClusterID();
+
+  // Dispatch the message to start the Service Worker and send the port
+  service_worker_context_->StartServiceWorkerAndDispatchMessage(
+      scope, key, std::move(transferable_message),
+      base::BindOnce(&CandleService::OnServiceWorkerStartResult,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CandleService::OnServiceWorkerStartResult(bool success) {
+  DVLOG(3) << "StartServiceWorkerAndDispatchMessage result: " << success;
+
+  if (success) {
+    service_worker_started_ = true;
+  } else {
+    // SW might still be installing, retry after a delay
+    DVLOG(3) << "Service Worker not ready, retrying in 200ms";
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&CandleService::StartServiceWorkerWithPort,
+                       weak_ptr_factory_.GetWeakPtr()),
+        base::Milliseconds(200));
+  }
+}
+
+void CandleService::OnServiceWorkerRegistered(
+    blink::ServiceWorkerStatusCode status) {
+  if (status != blink::ServiceWorkerStatusCode::kOk) {
+    DVLOG(0) << "Failed to register Service Worker: "
+             << static_cast<int>(status);
+    return;
+  }
+
+  DVLOG(3) << "Service Worker registered successfully";
+  service_worker_registered_ = true;
+
+  // Wait a moment for the SW to finish installing before starting it.
+  // The registration callback fires when registration starts, but the SW
+  // may still be installing/activating.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&CandleService::StartServiceWorkerWithPort,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::Milliseconds(100));
+}
+
+void CandleService::OnServiceWorkerStarted(int64_t version_id,
+                                           int process_id,
+                                           int thread_id) {
+  DVLOG(3) << "Service Worker started: version_id=" << version_id
+           << ", process_id=" << process_id << ", thread_id=" << thread_id;
+  service_worker_version_id_ = version_id;
+  service_worker_started_ = true;
+}
+
+void CandleService::SendMessageToServiceWorker(
+    blink::WebMessagePort::Message message) {
+  if (!port_connected_) {
+    DVLOG(0) << "Cannot send message: port not connected";
+    return;
+  }
+  message_port_.PostMessage(std::move(message));
+}
+
+void CandleService::LoadModelFiles() {
+  DVLOG(3) << "CandleService: Loading model files to send via MessagePort";
+
+  if (!port_connected_) {
+    DVLOG(0) << "Cannot send init message: port not connected";
+    return;
+  }
+
+  // Check if model directory is available
+  const base::FilePath& model_dir =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModelDir();
+  if (model_dir.empty()) {
+    DVLOG(0) << "CandleService: Model directory not set in updater state";
+    return;
+  }
+
+  // Load all files on a background thread, then send via MessagePort
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&CandleService::LoadFilesOnBackgroundThread,
+                     LocalModelsUpdaterState::GetInstance()
+                         ->GetEmbeddingGemmaModel(),
+                     LocalModelsUpdaterState::GetInstance()
+                         ->GetEmbeddingGemmaDense1(),
+                     LocalModelsUpdaterState::GetInstance()
+                         ->GetEmbeddingGemmaDense2(),
+                     LocalModelsUpdaterState::GetInstance()
+                         ->GetEmbeddingGemmaTokenizer(),
+                     LocalModelsUpdaterState::GetInstance()
+                         ->GetEmbeddingGemmaConfig()),
+      base::BindOnce(&CandleService::OnFilesLoaded,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+// static
+std::optional<CandleService::LoadedFiles>
+CandleService::LoadFilesOnBackgroundThread(
+    const base::FilePath& weights_path,
+    const base::FilePath& dense1_path,
+    const base::FilePath& dense2_path,
+    const base::FilePath& tokenizer_path,
+    const base::FilePath& config_path) {
+  LoadedFiles files;
+
+  auto weights = base::ReadFileToBytes(weights_path);
+  if (!weights) {
+    LOG(ERROR) << "Failed to read weights file";
+    return std::nullopt;
+  }
+  files.weights = std::move(*weights);
+
+  auto dense1 = base::ReadFileToBytes(dense1_path);
+  if (!dense1) {
+    LOG(ERROR) << "Failed to read dense1 file";
+    return std::nullopt;
+  }
+  files.dense1 = std::move(*dense1);
+
+  auto dense2 = base::ReadFileToBytes(dense2_path);
+  if (!dense2) {
+    LOG(ERROR) << "Failed to read dense2 file";
+    return std::nullopt;
+  }
+  files.dense2 = std::move(*dense2);
+
+  auto tokenizer = base::ReadFileToBytes(tokenizer_path);
+  if (!tokenizer) {
+    LOG(ERROR) << "Failed to read tokenizer file";
+    return std::nullopt;
+  }
+  files.tokenizer = std::move(*tokenizer);
+
+  auto config = base::ReadFileToBytes(config_path);
+  if (!config) {
+    LOG(ERROR) << "Failed to read config file";
+    return std::nullopt;
+  }
+  files.config = std::move(*config);
+
+  return files;
+}
+
+void CandleService::OnFilesLoaded(std::optional<LoadedFiles> files) {
+  if (!files) {
+    DVLOG(0) << "Failed to load model files";
+    return;
+  }
+
+  DVLOG(3) << "CandleService: Files loaded, sending to Service Worker";
+  DVLOG(3) << "  weights: " << files->weights.size() << " bytes";
+  DVLOG(3) << "  dense1: " << files->dense1.size() << " bytes";
+  DVLOG(3) << "  dense2: " << files->dense2.size() << " bytes";
+  DVLOG(3) << "  tokenizer: " << files->tokenizer.size() << " bytes";
+  DVLOG(3) << "  config: " << files->config.size() << " bytes";
+
+  // Also load the WASM binary from grit resources
+  scoped_refptr<base::RefCountedMemory> wasm_bytes =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytes(
+          IDR_CANDLE_EMBEDDING_GEMMA_WEB_WASM);
+  if (!wasm_bytes) {
+    DVLOG(0) << "Failed to load WASM binary from resources";
+    return;
+  }
+  DVLOG(3) << "  wasm: " << wasm_bytes->size() << " bytes";
+
+  // Store files for sending via MessagePort
+  pending_model_files_ = std::move(files);
+  pending_wasm_bytes_ = std::move(wasm_bytes);
+
+  // Send init message via MessagePort with base64-encoded data
+  SendInitWithDataMessage();
+}
+
+void CandleService::SendInitWithDataMessage() {
+  if (!pending_model_files_ || !pending_wasm_bytes_) {
+    DVLOG(0) << "No pending files to send";
+    return;
+  }
+
+  if (!port_connected_) {
+    DVLOG(0) << "Cannot send init message: port not connected";
+    return;
+  }
+
+  DVLOG(3) << "Sending init-with-data via MessagePort (base64 encoded)";
+
+  // Create JSON message with base64-encoded file data
+  // While this adds ~33% overhead, it works reliably with MessagePort
+  base::Value::Dict message;
+  message.Set("type", "init-with-data");
+  message.Set("id", 0);
+  message.Set("weights",
+              base::Base64Encode(pending_model_files_->weights));
+  message.Set("dense1",
+              base::Base64Encode(pending_model_files_->dense1));
+  message.Set("dense2",
+              base::Base64Encode(pending_model_files_->dense2));
+  message.Set("tokenizer",
+              base::Base64Encode(pending_model_files_->tokenizer));
+  message.Set("config",
+              base::Base64Encode(pending_model_files_->config));
+  message.Set("wasm", base::Base64Encode(*pending_wasm_bytes_));
+
+  // Clear pending data
+  pending_model_files_.reset();
+  pending_wasm_bytes_.reset();
+
+  std::string json_str;
+  base::JSONWriter::Write(message, &json_str);
+  DVLOG(3) << "Init message size: " << json_str.size() << " bytes";
+
+  std::u16string message_str = base::UTF8ToUTF16(json_str);
+  message_port_.PostMessage(blink::WebMessagePort::Message(message_str));
+}
+
+void CandleService::OnModelFilesLoaded(mojom::ModelFilesPtr model_files) {
+  // This method is no longer used in the Service Worker approach.
+  // The Service Worker fetches model files directly via URL.
+  // Keeping this for potential fallback or future use.
+  DVLOG(3) << "CandleService::OnModelFilesLoaded called (unused in SW mode)";
 }
 
 void CandleService::ProcessPendingEmbedRequests() {
-  if (!model_initialized_ || !embedding_gemma_remote_) {
+  if (!model_initialized_) {
     return;
   }
 
@@ -326,109 +535,21 @@ void CandleService::ProcessPendingEmbedRequests() {
 
   // Process all queued requests
   for (auto& request : pending_embed_requests_) {
-    embedding_gemma_remote_->Embed(request.text, std::move(request.callback));
+    int message_id = next_message_id_++;
+    pending_callbacks_[message_id] = std::move(request.callback);
+
+    base::Value::Dict message;
+    message.Set("type", "embed");
+    message.Set("id", message_id);
+    message.Set("text", request.text);
+
+    std::string json_str;
+    base::JSONWriter::Write(message, &json_str);
+    std::u16string message_str = base::UTF8ToUTF16(json_str);
+
+    message_port_.PostMessage(blink::WebMessagePort::Message(message_str));
   }
   pending_embed_requests_.clear();
-
-  // Start idle timer after processing requests
-  StartIdleTimer();
-}
-
-void CandleService::EnsureWasmWebContents() {
-  if (wasm_web_contents_) {
-    return;  // Already created
-  }
-
-  DVLOG(3) << "CandleService: Creating WASM WebContents";
-
-  // Create a hidden WebContents to load the WASM
-  content::WebContents::CreateParams create_params(browser_context_);
-  create_params.is_never_composited = true;
-  wasm_web_contents_ = content::WebContents::Create(create_params);
-
-  // Create observer for the WebContents to track page load
-  wasm_web_contents_observer_ =
-      std::make_unique<WasmWebContentsObserver>(this, wasm_web_contents_.get());
-
-  // Navigate to the WASM page - this will trigger BindEmbeddingGemma
-  // automatically
-  GURL wasm_url(kUntrustedCandleEmbeddingGemmaWasmURL);
-  DVLOG(3) << "CandleService: Loading WASM from " << wasm_url;
-  wasm_web_contents_->GetController().LoadURL(wasm_url, content::Referrer(),
-                                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
-                                              std::string());
-}
-
-void CandleService::CloseWasmWebContents() {
-  DVLOG(3) << "CandleService: Closing WASM WebContents to free memory";
-
-  idle_timer_.Stop();
-  wasm_web_contents_observer_.reset();
-  embedding_gemma_remote_.reset();
-
-  if (wasm_web_contents_) {
-    wasm_web_contents_->Close();
-    wasm_web_contents_.reset();
-  }
-
-  // Reset state so we can reinitialize later
-  wasm_page_loaded_ = false;
-  model_initialized_ = false;
-  model_load_retry_count_ = 0;
-}
-
-void CandleService::StartIdleTimer() {
-  idle_timer_.Start(FROM_HERE, kIdleTimeout,
-                    base::BindOnce(&CandleService::CloseWasmWebContents,
-                                   weak_ptr_factory_.GetWeakPtr()));
-}
-
-void CandleService::StopIdleTimer() {
-  idle_timer_.Stop();
-}
-
-void CandleService::OnModelFilesLoaded(bool success) {
-  DVLOG(3) << "CandleService::OnModelFilesLoaded called with success="
-           << success;
-
-  if (success) {
-    DVLOG(3) << "CandleService: EmbeddingGemma model loaded successfully! "
-             << "History embeddings are now ready.";
-    model_load_retry_count_ = 0;
-    model_initialized_ = true;
-
-    DVLOG(3) << "Processing " << pending_embed_requests_.size()
-             << " pending requests";
-    // Process any queued embed requests
-    ProcessPendingEmbedRequests();
-  } else {
-    // Failed - this could be because binding isn't ready yet or file not found
-    model_load_retry_count_++;
-    model_initialized_ = false;
-
-    if (model_load_retry_count_ < kMaxModelLoadRetries) {
-      DVLOG(1) << "CandleService: Failed to load model (attempt "
-               << model_load_retry_count_ << "/" << kMaxModelLoadRetries
-               << "). Retrying in 100ms...";
-      RetryLoadModel();
-    } else {
-      DVLOG(0) << "CandleService: Failed to load EmbeddingGemma model after "
-               << kMaxModelLoadRetries << " attempts. "
-               << "History embeddings will not work. "
-               << "Make sure model files are downloaded via component "
-               << "updater.";
-      model_load_retry_count_ = 0;
-    }
-  }
-}
-
-void CandleService::RetryLoadModel() {
-  // Post a delayed task to retry after 100ms
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(&CandleService::LoadModelFiles,
-                     weak_ptr_factory_.GetWeakPtr()),
-      base::Milliseconds(100));
 }
 
 }  // namespace local_ai

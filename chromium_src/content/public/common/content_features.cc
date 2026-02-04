@@ -19,6 +19,10 @@ BASE_FEATURE(kIdleDetection,
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDevToolsPrivacyUI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
+    // Enable Service Workers for chrome-untrusted:// URLs to allow running
+    // WASM-based local AI models in a Service Worker instead of a hidden
+    // WebContents, reducing memory usage.
+    {kEnableServiceWorkersForChromeUntrusted, base::FEATURE_ENABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},

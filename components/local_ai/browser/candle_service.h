@@ -6,54 +6,40 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 
+#include <map>
 #include <memory>
+#include <optional>
+#include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
-#include "base/timer/timer.h"
 #include "brave/components/local_ai/browser/local_models_updater.h"
 #include "brave/components/local_ai/common/candle.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/blink/public/common/messaging/web_message_port.h"
+#include "third_party/blink/public/common/service_worker/service_worker_status_code.h"
 
 namespace content {
 class BrowserContext;
-class WebContents;
+class ServiceWorkerContext;
 }  // namespace content
 
 namespace local_ai {
 
-class CandleService;
-
-// Helper class to observe WebContents for WASM page load events.
-// This is separated from CandleService so the service can be shared
-// with platforms that don't have content::WebContentsObserver.
-class WasmWebContentsObserver : public content::WebContentsObserver {
- public:
-  explicit WasmWebContentsObserver(CandleService* service,
-                                   content::WebContents* web_contents);
-  ~WasmWebContentsObserver() override;
-
-  WasmWebContentsObserver(const WasmWebContentsObserver&) = delete;
-  WasmWebContentsObserver& operator=(const WasmWebContentsObserver&) = delete;
-
- private:
-  // content::WebContentsObserver:
-  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                     const GURL& validated_url) override;
-
-  raw_ptr<CandleService> service_;
-};
-
+// CandleService runs WASM-based embedding models using a Service Worker
+// to minimize memory usage. It communicates with the Service Worker via
+// MessagePort for bidirectional message passing.
 class CandleService : public KeyedService,
                       public mojom::CandleService,
-                      public LocalModelsUpdaterState::Observer {
+                      public LocalModelsUpdaterState::Observer,
+                      public blink::WebMessagePort::MessageReceiver {
  public:
   explicit CandleService(content::BrowserContext* browser_context);
   ~CandleService() override;
@@ -68,49 +54,67 @@ class CandleService : public KeyedService,
 
   void Embed(const std::string& text, EmbedCallback callback) override;
 
-  // Called by WasmWebContentsObserver when the WASM page finishes loading
-  void OnWasmPageLoaded();
-
  private:
-  friend class WasmWebContentsObserver;
-
   // LocalModelsUpdaterState::Observer:
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
 
   // KeyedService:
   void Shutdown() override;
 
+  // blink::WebMessagePort::MessageReceiver:
+  bool OnMessage(blink::WebMessagePort::Message message) override;
+  void OnPipeError() override;
+
+  void EnsureServiceWorker();
+  void OnServiceWorkerRegistered(blink::ServiceWorkerStatusCode status);
+  void StartServiceWorkerWithPort();
+  void OnServiceWorkerStartResult(bool success);
+  void OnServiceWorkerStarted(int64_t version_id,
+                              int process_id,
+                              int thread_id);
+  void SendMessageToServiceWorker(blink::WebMessagePort::Message message);
   void LoadModelFiles();
-  void OnEmbeddingGemmaModelFilesLoaded(mojom::ModelFilesPtr model_files);
-  void OnModelFilesLoaded(bool success);
-  void RetryLoadModel();
-  void EnsureWasmWebContents();
-  void CloseWasmWebContents();
-  void StartIdleTimer();
-  void StopIdleTimer();
+  void OnModelFilesLoaded(mojom::ModelFilesPtr model_files);
+  void ProcessPendingEmbedRequests();
+
+  // Struct to hold loaded file data
+  struct LoadedFiles {
+    LoadedFiles();
+    ~LoadedFiles();
+    LoadedFiles(LoadedFiles&&);
+    LoadedFiles& operator=(LoadedFiles&&);
+
+    std::vector<uint8_t> weights;
+    std::vector<uint8_t> dense1;
+    std::vector<uint8_t> dense2;
+    std::vector<uint8_t> tokenizer;
+    std::vector<uint8_t> config;
+  };
+
+  static std::optional<LoadedFiles> LoadFilesOnBackgroundThread(
+      const base::FilePath& weights_path,
+      const base::FilePath& dense1_path,
+      const base::FilePath& dense2_path,
+      const base::FilePath& tokenizer_path,
+      const base::FilePath& config_path);
+  void OnFilesLoaded(std::optional<LoadedFiles> files);
+  void SendInitWithDataMessage();
 
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
-
-  // The single WebContents that loads the WASM and maintains the model
-  std::unique_ptr<content::WebContents> wasm_web_contents_;
-
-  // Observer for WASM WebContents load events
-  std::unique_ptr<WasmWebContentsObserver> wasm_web_contents_observer_;
+  raw_ptr<content::ServiceWorkerContext> service_worker_context_ = nullptr;
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
 
-  // Single embedder remote (shared by all callers)
-  mojo::Remote<mojom::EmbeddingGemmaInterface> embedding_gemma_remote_;
+  // MessagePort for communication with the Service Worker
+  blink::WebMessagePort message_port_;
 
-  // Model loading state
-  base::FilePath pending_model_path_;
-  int model_load_retry_count_ = 0;
-  static constexpr int kMaxModelLoadRetries = 10;
-
-  // Track readiness conditions
-  bool wasm_page_loaded_ = false;
-  bool component_ready_ = false;
+  // Track Service Worker state
+  bool service_worker_registered_ = false;
+  bool service_worker_started_ = false;
+  bool port_connected_ = false;
   bool model_initialized_ = false;
+  bool component_ready_ = false;
+  int64_t service_worker_version_id_ = -1;
 
   // Queue for pending Embed requests while model is initializing
   struct PendingEmbedRequest {
@@ -125,11 +129,13 @@ class CandleService : public KeyedService,
   };
   std::vector<PendingEmbedRequest> pending_embed_requests_;
 
-  void TryLoadModel();
-  void ProcessPendingEmbedRequests();
+  // Map message IDs to callbacks for async responses
+  int next_message_id_ = 1;
+  std::map<int, mojom::CandleService::EmbedCallback> pending_callbacks_;
 
-  // Idle timer to close WebContents when not in use
-  base::OneShotTimer idle_timer_;
+  // Pending files to send via MessagePort (base64 encoded)
+  std::optional<LoadedFiles> pending_model_files_;
+  scoped_refptr<base::RefCountedMemory> pending_wasm_bytes_;
 
   base::WeakPtrFactory<CandleService> weak_ptr_factory_{this};
 };
