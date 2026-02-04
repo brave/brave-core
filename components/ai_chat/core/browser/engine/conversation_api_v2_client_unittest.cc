@@ -1717,6 +1717,207 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
   }
 }
 
+TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
+  // Test toolStart event parsing for server-side search tools
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+
+  // Case 1: brave_web_search tool should emit SearchStatusEvent
+  {
+    SCOPED_TRACE("brave_web_search should emit SearchStatusEvent");
+    auto tool_start = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.toolStart",
+      "tool_name": "brave_web_search"
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_search_status_event());
+          EXPECT_TRUE(result.event->get_search_status_event()->is_searching);
+          EXPECT_FALSE(result.model_key.has_value());
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(tool_start))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 2: brave_news_search tool should emit SearchStatusEvent
+  {
+    SCOPED_TRACE("brave_news_search should emit SearchStatusEvent");
+    auto tool_start = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.toolStart",
+      "tool_name": "brave_news_search"
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_search_status_event());
+          EXPECT_TRUE(result.event->get_search_status_event()->is_searching);
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(tool_start))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 3: Non-search tool should NOT emit SearchStatusEvent
+  {
+    SCOPED_TRACE("page_summary should not emit SearchStatusEvent");
+    auto tool_start = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.toolStart",
+      "tool_name": "page_summary"
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(tool_start))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 4: Empty tool_name should NOT emit SearchStatusEvent
+  {
+    SCOPED_TRACE("Empty tool_name should not emit SearchStatusEvent");
+    auto tool_start = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.toolStart",
+      "tool_name": ""
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(tool_start))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 5: Missing tool_name should NOT emit SearchStatusEvent
+  {
+    SCOPED_TRACE("Missing tool_name should not emit SearchStatusEvent");
+    auto tool_start = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.toolStart"
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(tool_start))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallRequest) {
+  // Test tool call request parsing (function dict present)
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+
+  auto chunk = base::test::ParseJsonDict(R"({
+    "object": "chat.completion.chunk",
+    "model": "llama-3-8b-instruct",
+    "choices": [{
+      "delta": {
+        "tool_calls": [
+          {
+            "id": "call_123",
+            "type": "function",
+            "function": {
+              "name": "brave_web_search",
+              "arguments": "{\"query\":\"weather today\"}"
+            }
+          }
+        ]
+      }
+    }]
+  })");
+
+  auto expected_event =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "brave_web_search", "call_123", "{\"query\":\"weather today\"}",
+          std::nullopt, nullptr, false));
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_event.get()))))
+      .Times(1);
+
+  client_->OnQueryDataReceived(
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::ok(base::Value(std::move(chunk))));
+
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
+  // Test tool call result parsing (output_content present)
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+
+  auto chunk = base::test::ParseJsonDict(R"({
+    "object": "chat.completion.chunk",
+    "model": "llama-3-8b-instruct",
+    "choices": [{
+      "delta": {
+        "tool_calls": [
+          {
+            "id": "call_123",
+            "output_content": [
+              {
+                "type": "brave-chat.webSources",
+                "sources": [
+                  {
+                    "title": "Weather.com",
+                    "url": "https://weather.com",
+                    "favicon": "https://imgs.search.brave.com/weather.ico"
+                  }
+                ],
+                "query": "weather today"
+              }
+            ]
+          }
+        ]
+      }
+    }]
+  })");
+
+  std::vector<mojom::WebSourcePtr> sources;
+  sources.push_back(
+      mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
+                            GURL("https://imgs.search.brave.com/weather.ico")));
+  std::vector<mojom::ContentBlockPtr> output;
+  output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      mojom::WebSourcesContentBlock::New(std::move(sources), "weather today")));
+  auto expected_event =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "", "call_123", std::string(), std::move(output), nullptr, true));
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_event.get()))))
+      .Times(1);
+
+  client_->OnQueryDataReceived(
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::ok(base::Value(std::move(chunk))));
+
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
+
 TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
   // Test streaming completion chunk parsing in OnQueryDataReceived
   testing::StrictMock<MockCallbacks> mock_callbacks;

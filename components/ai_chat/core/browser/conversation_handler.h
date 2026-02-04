@@ -332,6 +332,24 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_EmptyHistory);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_SearchToolWithOutput);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_SkipsNonSearchTools);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_SkipsToolWithoutOutput);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_StopsAtUserEntry);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_SkipsEmptyQuery);
 
   void InitEngine();
 
