@@ -48,6 +48,12 @@ class SerpMetrics {
 
   virtual size_t GetSearchCountForStalePeriod() const;
 
+  // Test helpers to return the total search count stored in `TimePeriodStorage`
+  // without filtering by time range or staleness.
+  size_t GetBraveSearchCountForTesting() const;
+  size_t GetGoogleSearchCountForTesting() const;
+  size_t GetOtherSearchCountForTesting() const;
+
  private:
   // Returns the start of the stale period in local time, based on the last day
   // for which usage metrics were reported. Metrics recorded on or before the

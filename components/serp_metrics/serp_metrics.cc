@@ -135,6 +135,18 @@ size_t SerpMetrics::GetSearchCountForStalePeriod() const {
          GetOtherSearchCountForStalePeriod();
 }
 
+size_t SerpMetrics::GetBraveSearchCountForTesting() const {
+  return brave_search_engine_time_period_storage_.GetPeriodSum();
+}
+
+size_t SerpMetrics::GetGoogleSearchCountForTesting() const {
+  return google_search_engine_time_period_storage_.GetPeriodSum();
+}
+
+size_t SerpMetrics::GetOtherSearchCountForTesting() const {
+  return other_search_engine_time_period_storage_.GetPeriodSum();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 base::Time SerpMetrics::GetStartOfStalePeriod() const {

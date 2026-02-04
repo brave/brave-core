@@ -37,11 +37,10 @@ source_set("browser_tests") {
   deps = [
     ":serp_metrics",
     "//base",
+    "//brave/browser/misc_metrics",
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
-    "//brave/components/serp_metrics:prefs",
-    "//brave/components/time_period_storage",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles/keep_alive",
