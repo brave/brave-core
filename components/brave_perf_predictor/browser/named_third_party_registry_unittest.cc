@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 
+#include <memory>
+
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
@@ -58,33 +60,38 @@ std::string LoadFile() {
 }  // namespace
 
 TEST(NamedThirdPartyRegistryTest, HandlesEmptyJSON) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   bool parsed = extractor->LoadMappings("", false);
   EXPECT_FALSE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, ParsesJSON) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   bool parsed = extractor->LoadMappings(test_mapping, false);
   EXPECT_TRUE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, HandlesInvalidJSON) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   bool parsed =
       extractor->LoadMappings(R"([{"name":"Google Analytics")", false);
   EXPECT_FALSE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, HandlesFullDataset) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   auto dataset = LoadFile();
   bool parsed = extractor->LoadMappings(dataset, true);
   EXPECT_TRUE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyURLTest) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
 
@@ -94,7 +101,8 @@ TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyURLTest) {
 }
 
 TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyHostnameTest) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
   auto entity = extractor->GetThirdParty("https://google-analytics.com");
@@ -103,7 +111,8 @@ TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyHostnameTest) {
 }
 
 TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyRootDomainTest) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
   auto entity = extractor->GetThirdParty("https://test.m.facebook.com");
@@ -112,7 +121,8 @@ TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyRootDomainTest) {
 }
 
 TEST(NamedThirdPartyRegistryTest, HandlesUnrecognisedThirdPartyTest) {
-  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  std::unique_ptr<NamedThirdPartyRegistry> extractor =
+      std::make_unique<NamedThirdPartyRegistry>();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
   auto entity = extractor->GetThirdParty("http://example.com");
