@@ -69,12 +69,13 @@ class BraveReferralsServiceTest : public testing::Test {
           request_count_++;
         }));
 
+    referral_initialized_callback_ =
+        base::BindLambdaForTesting([&](const std::string& download_id) {
+          init_callback_called_ = true;
+          received_download_id_ = download_id;
+        });
     BraveReferralsService::SetReferralInitializedCallbackForTesting(
-        new BraveReferralsService::ReferralInitializedCallback(
-            base::BindLambdaForTesting([&](const std::string& download_id) {
-              init_callback_called_ = true;
-              received_download_id_ = download_id;
-            })));
+        &referral_initialized_callback_);
   }
 
   void TearDown() override {
@@ -131,6 +132,8 @@ class BraveReferralsServiceTest : public testing::Test {
   size_t request_count_ = 0;
   bool init_callback_called_ = false;
   std::string received_download_id_;
+  BraveReferralsService::ReferralInitializedCallback
+      referral_initialized_callback_;
 };
 
 TEST_F(BraveReferralsServiceTest, InitAndActivity) {
