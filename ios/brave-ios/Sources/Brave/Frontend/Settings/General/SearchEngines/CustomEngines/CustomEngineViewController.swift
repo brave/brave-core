@@ -49,7 +49,6 @@ class CustomEngineViewController: UIViewController {
   // MARK: Properties
 
   var profile: LegacyBrowserProfile
-  var isPrivateBrowsing: Bool
   var onAddSucceed: (() -> Void)?
 
   private var urlText: String?
@@ -109,11 +108,9 @@ class CustomEngineViewController: UIViewController {
 
   init(
     profile: LegacyBrowserProfile,
-    isPrivateBrowsing: Bool,
     engineToBeEdited: OpenSearchEngine? = nil
   ) {
     self.profile = profile
-    self.isPrivateBrowsing = isPrivateBrowsing
 
     self.engineToBeEdited = engineToBeEdited
     if engineToBeEdited != nil {
@@ -423,7 +420,7 @@ extension CustomEngineViewController {
     faviconTask = Task { @MainActor in
       let favicon = try? await FaviconFetcher.loadIcon(
         url: hostUrl,
-        persistent: !isPrivateBrowsing
+        persistent: false
       )
       if let image = favicon?.image {
         engineImage = image

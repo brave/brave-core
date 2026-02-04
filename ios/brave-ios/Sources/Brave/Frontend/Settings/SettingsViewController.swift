@@ -659,10 +659,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.searchEngines,
           selection: { [unowned self] in
-            let viewController = SearchSettingsViewController(
-              profile: self.profile,
-              privateBrowsingManager: tabManager.privateBrowsingManager
-            )
+            let viewController = SearchSettingsViewController(profile: self.profile)
             self.navigationController?.pushViewController(viewController, animated: true)
           },
           image: UIImage(braveSystemNamed: "leo.search"),

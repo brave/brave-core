@@ -50,8 +50,15 @@ class SearchSuggestionDataSource {
   let searchEngines: SearchEngines?
 
   var quickSearchEngines: [OpenSearchEngine] {
-    guard let searchEngines = searchEngines?.quickSearchEngines else { return [] }
-    return searchEngines
+    guard let searchEngines else { return [] }
+    var quickSearchEngines = searchEngines.quickSearchEngines
+    let searchEngineType: DefaultEngineType = isPrivate ? .privateMode : .standard
+    if let defaultEngine = searchEngines.defaultEngine(forType: searchEngineType),
+      !quickSearchEngines.contains(where: { $0.engineID == defaultEngine.engineID })
+    {
+      quickSearchEngines.insert(defaultEngine, at: 0)
+    }
+    return quickSearchEngines
   }
 
   // If the user only has a single quick search engine, it is also their default one.

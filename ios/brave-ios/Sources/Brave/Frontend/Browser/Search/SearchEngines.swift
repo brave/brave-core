@@ -241,7 +241,7 @@ public class SearchEngines {
     }
   }
 
-  var quickSearchEngines: [OpenSearchEngine]! {
+  var quickSearchEngines: [OpenSearchEngine] {
     return self.orderedEngines.filter({ (engine) in self.isEngineEnabled(engine) })
   }
 

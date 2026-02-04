@@ -174,7 +174,7 @@ extension CustomEngineViewController {
       do {
         let icon = try await FaviconFetcher.loadIcon(
           url: url,
-          persistent: !isPrivateBrowsing
+          persistent: false
         )
         self.faviconImage = icon.image ?? Favicon.defaultImage
       } catch {

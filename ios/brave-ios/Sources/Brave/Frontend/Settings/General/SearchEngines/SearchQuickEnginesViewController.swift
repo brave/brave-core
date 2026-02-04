@@ -37,7 +37,6 @@ class SearchQuickEnginesViewController: UITableViewController {
 
   private var searchEngines: SearchEngines
   private let profile: LegacyBrowserProfile
-  private let isPrivateBrowsing: Bool
   weak var delegate: SearchQuickEnginesViewControllerDelegate?
 
   lazy var addButton = UIBarButtonItem(
@@ -56,9 +55,8 @@ class SearchQuickEnginesViewController: UITableViewController {
 
   // MARK: Lifecycle
 
-  init(profile: LegacyBrowserProfile, isPrivateBrowsing: Bool) {
+  init(profile: LegacyBrowserProfile) {
     self.profile = profile
-    self.isPrivateBrowsing = isPrivateBrowsing
     self.searchEngines = profile.searchEngines
     super.init(nibName: nil, bundle: nil)
   }
@@ -222,10 +220,7 @@ extension SearchQuickEnginesViewController {
     if toggle.isOn {
       searchEngines.enableEngine(engine)
     } else {
-      searchEngines.disableEngine(
-        engine,
-        type: isPrivateBrowsing ? .privateMode : .standard
-      )
+      searchEngines.disableEngine(engine, type: .standard)
     }
     delegate?.searchQuickEnginesUpdated()
   }
@@ -240,10 +235,7 @@ extension SearchQuickEnginesViewController {
   }
 
   @objc func onAddButton() {
-    let addCustomSearchEngineVC = CustomEngineViewController(
-      profile: self.profile,
-      isPrivateBrowsing: self.isPrivateBrowsing
-    )
+    let addCustomSearchEngineVC = CustomEngineViewController(profile: self.profile)
     addCustomSearchEngineVC.onAddSucceed = { [weak self] in
       self?.tableView.reloadData()
       self?.delegate?.searchQuickEnginesUpdated()

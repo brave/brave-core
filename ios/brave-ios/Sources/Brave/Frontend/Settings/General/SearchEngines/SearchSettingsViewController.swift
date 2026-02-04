@@ -65,7 +65,6 @@ class SearchSettingsViewController: UITableViewController {
   private var searchEngines: SearchEngines
   private let profile: LegacyBrowserProfile
   private var showDeletion = false
-  private var privateBrowsingManager: PrivateBrowsingManager
 
   private func searchPickerEngines(type: DefaultEngineType) -> [OpenSearchEngine] {
     var orderedEngines = searchEngines.orderedEngines
@@ -104,9 +103,8 @@ class SearchSettingsViewController: UITableViewController {
 
   // MARK: Lifecycle
 
-  init(profile: LegacyBrowserProfile, privateBrowsingManager: PrivateBrowsingManager) {
+  init(profile: LegacyBrowserProfile) {
     self.profile = profile
-    self.privateBrowsingManager = privateBrowsingManager
     self.searchEngines = profile.searchEngines
     super.init(nibName: nil, bundle: nil)
   }
@@ -223,7 +221,6 @@ class SearchSettingsViewController: UITableViewController {
   private func presentAddEditSearchEngine(_ engine: OpenSearchEngine? = nil) {
     let customEngineViewController = CustomEngineViewController(
       profile: self.profile,
-      isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing,
       engineToBeEdited: engine
     )
     customEngineViewController.onAddSucceed = { [weak self] in
@@ -406,10 +403,7 @@ extension SearchSettingsViewController {
     } else if indexPath.section == Section.current.rawValue
       && indexPath.item == CurrentEngineType.quick.rawValue
     {
-      let quickSearchEnginesViewController = SearchQuickEnginesViewController(
-        profile: profile,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-      )
+      let quickSearchEnginesViewController = SearchQuickEnginesViewController(profile: profile)
       navigationController?.pushViewController(quickSearchEnginesViewController, animated: true)
     } else if indexPath.section == Section.customSearch.rawValue
       && indexPath.item == customSearchEngines.count

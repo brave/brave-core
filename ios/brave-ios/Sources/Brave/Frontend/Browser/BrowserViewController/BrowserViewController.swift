@@ -2543,10 +2543,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
   }
 
   func presentQuickSearchEnginesViewController() {
-    let quickSearchEnginesViewController = SearchQuickEnginesViewController(
-      profile: profile,
-      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-    )
+    let quickSearchEnginesViewController = SearchQuickEnginesViewController(profile: profile)
     quickSearchEnginesViewController.navigationItem.leftBarButtonItem =
       UIBarButtonItem(
         title: Strings.close,
