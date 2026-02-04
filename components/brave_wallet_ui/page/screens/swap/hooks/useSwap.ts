@@ -1434,7 +1434,7 @@ export const useSwap = () => {
       || (swapValidationError
         && fromNetwork.coin === BraveWallet.CoinType.ETH
         && swapValidationError !== 'insufficientAllowance')
-      || (swapValidationError && fromNetwork.coin === BraveWallet.CoinType.SOL)
+      || (swapValidationError && fromNetwork.coin !== BraveWallet.CoinType.ETH)
     )
   }, [
     fromNetwork,
