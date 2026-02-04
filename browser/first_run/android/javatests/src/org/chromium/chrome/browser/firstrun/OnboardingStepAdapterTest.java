@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.firstrun;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -186,6 +187,52 @@ public class OnboardingStepAdapterTest {
         assertNotNull(p3aReports);
         assertEquals(View.VISIBLE, p3aReports.getVisibility());
         assertTrue(p3aReports.isChecked());
+    }
+
+    @Test
+    public void testMakeBraveBetterCrashReportingToggleNotifiesListener() {
+        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        adapter.setCrashReportingManaged(false);
+        adapter.setCrashReportingChecked(false);
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                adapter.onCreateViewHolder(mParent, 2);
+        MaterialCheckBox crashReports = holder.itemView.findViewById(R.id.send_crash_reports);
+
+        assertNotNull(crashReports);
+        assertEquals(View.VISIBLE, crashReports.getVisibility());
+        assertEquals(0, mListener.mCrashReportingChangeCount);
+
+        crashReports.setChecked(true);
+        assertEquals(1, mListener.mCrashReportingChangeCount);
+        assertTrue(mListener.mLastCrashReportingEnabled);
+
+        crashReports.setChecked(false);
+        assertEquals(2, mListener.mCrashReportingChangeCount);
+        assertFalse(mListener.mLastCrashReportingEnabled);
+    }
+
+    @Test
+    public void testMakeBraveBetterP3aToggleNotifiesListener() {
+        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        adapter.setP3aManaged(false);
+        adapter.setP3aChecked(false);
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                adapter.onCreateViewHolder(mParent, 2);
+        MaterialCheckBox p3aReports = holder.itemView.findViewById(R.id.send_p3a_reports);
+
+        assertNotNull(p3aReports);
+        assertEquals(View.VISIBLE, p3aReports.getVisibility());
+        assertEquals(0, mListener.mP3aChangeCount);
+
+        p3aReports.setChecked(true);
+        assertEquals(1, mListener.mP3aChangeCount);
+        assertTrue(mListener.mLastP3aEnabled);
+
+        p3aReports.setChecked(false);
+        assertEquals(2, mListener.mP3aChangeCount);
+        assertFalse(mListener.mLastP3aEnabled);
     }
 
     private static final class TestListener
