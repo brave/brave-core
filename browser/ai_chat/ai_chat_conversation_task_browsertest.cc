@@ -319,13 +319,13 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,
-                                    nullptr);
+                                    nullptr, false);
   }
 
   mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
                                             const std::string& tool_id) {
     return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
-                                    nullptr);
+                                    nullptr, false);
   }
 
   raw_ptr<Profile> agent_profile_ = nullptr;

@@ -99,9 +99,10 @@ GetMockMessagesAndExpectedMessagesJson() {
         mojom::TextContentBlock::New("Going to use a tool...")));
     message.tool_calls.push_back(mojom::ToolUseEvent::New(
         "get_weather", "123", "{\"location\":\"New York\"}", std::nullopt,
-        nullptr));
-    message.tool_calls.push_back(mojom::ToolUseEvent::New(
-        "get_screenshot", "456", "{\"type\":\"tab\"}", std::nullopt, nullptr));
+        nullptr, false));
+    message.tool_calls.push_back(
+        mojom::ToolUseEvent::New("get_screenshot", "456", "{\"type\":\"tab\"}",
+                                 std::nullopt, nullptr, false));
     messages.push_back(std::move(message));
   }
 
@@ -835,7 +836,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
                         mojom::ToolUseEvent::New("get_weather", "call_123",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt, nullptr));
+                                                 std::nullopt, nullptr, false));
         EXPECT_EQ(result.model_key, "chat-basic");
       });
 
@@ -848,7 +849,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
             result.event->get_tool_use_event(),
             mojom::ToolUseEvent::New("search_web", "call_456",
                                      "{\"query\":\"Hello, world!\"}",
-                                     std::nullopt, nullptr));
+                                     std::nullopt, nullptr, false));
         EXPECT_EQ(result.model_key, "chat-basic");
       });
 
@@ -986,7 +987,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
           "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
           std::nullopt,
           mojom::PermissionChallenge::New(
-              "Server determined this tool use is off", std::nullopt)));
+              "Server determined this tool use is off", std::nullopt),
+          false));
   {
     SCOPED_TRACE(
         "Expected search_web (call_123) to have PermissionChallenge with "
@@ -1001,7 +1003,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   auto expected_tool_use_event_2 =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_456", "{\"location\":\"New York\"}",
-          std::nullopt, nullptr));
+          std::nullopt, nullptr, false));
   {
     SCOPED_TRACE(
         "Expected get_weather (call_456) to have no PermissionChallenge "
@@ -1017,7 +1019,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "read_file", "call_789", "{\"path\":\"/etc/passwd\"}", std::nullopt,
           mojom::PermissionChallenge::New("This tool is also off-topic",
-                                          std::nullopt)));
+                                          std::nullopt),
+          false));
   {
     SCOPED_TRACE(
         "Expected read_file (call_789) to have PermissionChallenge with "
@@ -1032,7 +1035,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   auto expected_tool_use_event_4 =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "allowed_tool", "call_101", "{\"arg\":\"value\"}", std::nullopt,
-          nullptr));
+          nullptr, false));
   {
     SCOPED_TRACE(
         "Expected allowed_tool (call_101) to have no PermissionChallenge "
@@ -1045,8 +1048,9 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   }
 
   auto expected_tool_use_event_5 =
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "missing_allowed_field", "call_202", "{}", std::nullopt, nullptr));
+      mojom::ConversationEntryEvent::NewToolUseEvent(
+          mojom::ToolUseEvent::New("missing_allowed_field", "call_202", "{}",
+                                   std::nullopt, nullptr, false));
   {
     SCOPED_TRACE(
         "Expected missing_allowed_field (call_202) to have no "
@@ -1061,7 +1065,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   auto expected_tool_use_event_6 =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "missing_reasoning", "call_303", "{}", std::nullopt,
-          mojom::PermissionChallenge::New(std::nullopt, std::nullopt)));
+          mojom::PermissionChallenge::New(std::nullopt, std::nullopt), false));
   {
     SCOPED_TRACE(
         "Expected missing_reasoning (call_303) to have PermissionChallenge "

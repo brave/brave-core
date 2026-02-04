@@ -2387,7 +2387,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
-          std::move(tool_output_content_blocks), nullptr)));
+          std::move(tool_output_content_blocks), nullptr, false)));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -2489,7 +2489,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_temperature", "call_123", "{\"location\":\"Santa Barbara\"}",
-          std::move(temperature_tool_output_content_blocks), nullptr)));
+          std::move(temperature_tool_output_content_blocks), nullptr, false)));
 
   std::vector<mojom::ContentBlockPtr> wind_tool_output_content_blocks;
   wind_tool_output_content_blocks.push_back(
@@ -2498,7 +2498,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_wind", "call_1234", "{\"location\":\"Santa Barbara\"}",
-          std::move(wind_tool_output_content_blocks), nullptr)));
+          std::move(wind_tool_output_content_blocks), nullptr, false)));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -2633,7 +2633,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
     response_events.push_back(
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
             "get_page_content", base::StrCat({"call_123", base::ToString(i)}),
-            "{}", std::move(tool_output_content_blocks), nullptr)));
+            "{}", std::move(tool_output_content_blocks), nullptr, false)));
     history.push_back(mojom::ConversationTurn::New(
         "turn-" + base::NumberToString(i * 3 + 1),
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -2841,7 +2841,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
-          std::nullopt, nullptr)));
+          std::nullopt, nullptr, false)));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -4090,7 +4090,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
-          std::move(tool_output_content_blocks), nullptr)));
+          std::move(tool_output_content_blocks), nullptr, false)));
 
   conversation_history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,

@@ -255,6 +255,9 @@ struct ToolUseEvent {
   // Permission challenge that blocks execution until user approves.
   // Can be set by server (alignment check) or client tool.
   PermissionChallenge? permission_challenge;
+
+  // True if the output was provided by the server (server-side tool execution).
+  bool is_server_result = false;
 };
 
 struct SearchQueriesEvent {

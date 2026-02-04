@@ -43,7 +43,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidSingleToolCall) {
 
   auto expected = mojom::ToolUseEvent::New("get_weather", "call_123",
                                            "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr);
+                                           std::nullopt, nullptr, false);
 
   EXPECT_MOJOM_EQ(result[0], expected);
 }
@@ -79,13 +79,13 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidMultipleToolCalls) {
   EXPECT_MOJOM_EQ(result[0],
                   mojom::ToolUseEvent::New("get_weather", "call_123",
                                            "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr));
+                                           std::nullopt, nullptr, false));
 
   // Second tool call
   EXPECT_MOJOM_EQ(result[1],
                   mojom::ToolUseEvent::New("search_web", "call_456",
                                            "{\"query\":\"Hello, world!\"}",
-                                           std::nullopt, nullptr));
+                                           std::nullopt, nullptr, false));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {
@@ -109,7 +109,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {
   EXPECT_MOJOM_EQ(
       result[0],
       mojom::ToolUseEvent::New("get_weather", "", "{\"location\":\"New York\"}",
-                               std::nullopt, nullptr));
+                               std::nullopt, nullptr, false));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
@@ -132,7 +132,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
 
   EXPECT_MOJOM_EQ(result[0], mojom::ToolUseEvent::New(
                                  "", "call_123", "{\"location\":\"New York\"}",
-                                 std::nullopt, nullptr));
+                                 std::nullopt, nullptr, false));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionObject) {
@@ -175,7 +175,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_InvalidToolCall) {
   EXPECT_MOJOM_EQ(result[0],
                   mojom::ToolUseEvent::New("get_weather", "call_123",
                                            "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr));
+                                           std::nullopt, nullptr, false));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_EmptyList) {
@@ -264,19 +264,20 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
 
   EXPECT_MOJOM_EQ(result[0],
                   mojom::ToolUseEvent::New("allowed_by_default", "no_check",
-                                           "{}", std::nullopt, nullptr))
+                                           "{}", std::nullopt, nullptr, false))
       << "No alignment_check should result in no PermissionChallenge";
 
-  EXPECT_MOJOM_EQ(result[1], mojom::ToolUseEvent::New("explicitly_allowed",
-                                                      "explicit_allow", "{}",
-                                                      std::nullopt, nullptr))
+  EXPECT_MOJOM_EQ(result[1], mojom::ToolUseEvent::New(
+                                 "explicitly_allowed", "explicit_allow", "{}",
+                                 std::nullopt, nullptr, false))
       << "alignment_check.allowed=true should not create PermissionChallenge";
 
   EXPECT_MOJOM_EQ(
       result[2],
       mojom::ToolUseEvent::New(
           "denied_tool", "deny_with_reason", "{}", std::nullopt,
-          mojom::PermissionChallenge::New("Security risk", std::nullopt)))
+          mojom::PermissionChallenge::New("Security risk", std::nullopt),
+          false))
       << "alignment_check.allowed=false with reasoning should create "
          "PermissionChallenge with reasoning";
 
@@ -284,19 +285,19 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
       result[3],
       mojom::ToolUseEvent::New(
           "denied_no_explanation", "deny_no_reason", "{}", std::nullopt,
-          mojom::PermissionChallenge::New(std::nullopt, std::nullopt)))
+          mojom::PermissionChallenge::New(std::nullopt, std::nullopt), false))
       << "alignment_check.allowed=false without reasoning should create "
          "PermissionChallenge with null reasoning";
 
-  EXPECT_MOJOM_EQ(result[4], mojom::ToolUseEvent::New("invalid_alignment",
-                                                      "malformed_check", "{}",
-                                                      std::nullopt, nullptr))
+  EXPECT_MOJOM_EQ(result[4], mojom::ToolUseEvent::New(
+                                 "invalid_alignment", "malformed_check", "{}",
+                                 std::nullopt, nullptr, false))
       << "alignment_check without allowed field should be treated as allowed, "
          "no PermissionChallenge";
 
   EXPECT_MOJOM_EQ(result[5],
                   mojom::ToolUseEvent::New("empty_alignment", "empty_check",
-                                           "{}", std::nullopt, nullptr))
+                                           "{}", std::nullopt, nullptr, false))
       << "Empty alignment_check should be treated as allowed, no "
          "PermissionChallenge";
 }
