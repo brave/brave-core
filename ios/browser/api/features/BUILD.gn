@@ -35,7 +35,6 @@ source_set("features") {
     "//brave/ios/browser/ui/commerce:features",
     "//brave/ios/browser/ui/tab_tray:features",
     "//brave/ios/browser/ui/web_view:features",
-    "//brave/ios/browser/ui/webui/ai_chat:features",
     "//build:blink_buildflags",
     "//net",
   ]

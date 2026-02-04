@@ -53,11 +53,3 @@ source_set("ai_chat") {
     "//ui/gfx/codec",
   ]
 }
-
-source_set("features") {
-  sources = [
-    "features.h",
-    "features.mm",
-  ]
-  deps = [ "//base" ]
-}
