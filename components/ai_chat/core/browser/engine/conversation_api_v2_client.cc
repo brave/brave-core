@@ -487,17 +487,10 @@ void ConversationAPIV2Client::OnQueryDataReceived(
       callback.Run(std::move(*result_data));
     }
   } else if (*object_type == "brave-chat.contentReceipt") {
-    std::optional<int> total_tokens_opt = result_params.FindInt("total_tokens");
-    uint64_t total_tokens =
-        total_tokens_opt.has_value() && total_tokens_opt.value() >= 0
-            ? static_cast<uint64_t>(total_tokens_opt.value())
-            : 0;
-    std::optional<int> trimmed_tokens_opt =
-        result_params.FindInt("trimmed_tokens");
-    uint64_t trimmed_tokens =
-        trimmed_tokens_opt.has_value() && trimmed_tokens_opt.value() >= 0
-            ? static_cast<uint64_t>(trimmed_tokens_opt.value())
-            : 0;
+    uint64_t total_tokens = base::saturated_cast<uint64_t>(
+        result_params.FindInt("total_tokens").value_or(0));
+    uint64_t trimmed_tokens = base::saturated_cast<uint64_t>(
+        result_params.FindInt("trimmed_tokens").value_or(0));
     auto event = mojom::ConversationEntryEvent::NewContentReceiptEvent(
         mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
 
