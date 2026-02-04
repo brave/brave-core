@@ -180,26 +180,6 @@ void BraveVPNRegionDataManager::LoadCachedRegionData() {
   VLOG(2) << __func__ << " : Failed to load cached region list";
 }
 
-bool BraveVPNRegionDataManager::NeedToUpdateRegionData() const {
-  if (!IsRegionDataReady()) {
-    return true;
-  }
-
-  // Skip checking region data update when we have cached one and its age is
-  // younger than 5h.
-  const auto last_fetched_date =
-      local_prefs_->GetTime(prefs::kBraveVPNRegionListFetchedDate);
-  constexpr int kRegionDataFetchIntervalInHours = 5;
-
-  if (last_fetched_date.is_null() ||
-      (base::Time::Now() - last_fetched_date).InHours() >=
-          kRegionDataFetchIntervalInHours) {
-    return true;
-  }
-
-  return false;
-}
-
 void BraveVPNRegionDataManager::NotifyRegionDataReady() const {
   if (region_data_ready_callback_) {
     region_data_ready_callback_.Run(!regions_.empty());
@@ -212,13 +192,6 @@ void BraveVPNRegionDataManager::FetchRegionDataIfNeeded() {
     return;
   }
 
-  if (!NeedToUpdateRegionData()) {
-    VLOG(2)
-        << __func__
-        << " : Don't need to check as it's not passed 5h since the last check.";
-    NotifyRegionDataReady();
-    return;
-  }
   FetchRegions();
 }
 
@@ -311,8 +284,6 @@ void BraveVPNRegionDataManager::SetRegionListToPrefs() {
 
   local_prefs_->Set(prefs::kBraveVPNRegionList,
                     base::Value(std::move(regions_list)));
-  local_prefs_->SetTime(prefs::kBraveVPNRegionListFetchedDate,
-                        base::Time::Now());
 }
 
 std::string BraveVPNRegionDataManager::GetCurrentTimeZone() {

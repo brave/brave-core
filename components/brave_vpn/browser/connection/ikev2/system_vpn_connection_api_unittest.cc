@@ -320,12 +320,6 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
     GetBraveVPNConnectionManager()->GetRegionDataManager().regions_.clear();
   }
 
-  bool NeedToUpdateRegionData() {
-    return GetBraveVPNConnectionManager()
-        ->GetRegionDataManager()
-        .NeedToUpdateRegionData();
-  }
-
   mojom::RegionPtr device_region() {
     const auto device_region_name = GetBraveVPNConnectionManager()
                                         ->GetRegionDataManager()
@@ -434,23 +428,6 @@ TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   SetTestTimezone("Invalid");
   OnFetchTimezones(GetTimeZonesData(), true);
   EXPECT_EQ(regions()[0], device_region());
-}
-
-TEST_F(SystemVPNConnectionAPIUnitTest, NeedToUpdateRegionDataTest) {
-  // Initially, need to update region data.
-  EXPECT_TRUE(NeedToUpdateRegionData());
-
-  // Still need to update.
-  OnFetchRegionList(std::string(), true);
-  EXPECT_TRUE(NeedToUpdateRegionData());
-
-  // Don't need to update when got valid region data.
-  OnFetchRegionList(GetRegionsData(), true);
-  EXPECT_FALSE(NeedToUpdateRegionData());
-
-  // Need to update again after 5h passed.
-  task_environment_.AdvanceClock(base::Hours(5));
-  EXPECT_TRUE(NeedToUpdateRegionData());
 }
 
 // Create os vpn entry with cached connection_info when there is cached

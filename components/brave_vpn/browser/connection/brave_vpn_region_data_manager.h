@@ -69,7 +69,6 @@ class BraveVPNRegionDataManager {
 
   // Notify it's ready when |regions_| is not empty.
   std::string GetCurrentTimeZone();
-  bool NeedToUpdateRegionData() const;
   void NotifyRegionDataReady() const;
 
   // For testing only.

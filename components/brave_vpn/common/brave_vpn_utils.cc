@@ -35,7 +35,6 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   registry->RegisterListPref(prefs::kBraveVPNRegionList);
   registry->RegisterIntegerPref(prefs::kBraveVPNRegionListVersion, 1);
-  registry->RegisterTimePref(prefs::kBraveVPNRegionListFetchedDate, {});
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegionV2, "");
@@ -297,6 +296,13 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   RegisterVPNLocalStatePrefs(registry);
 }
 
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 02/2026
+  registry->RegisterTimePref(prefs::kBraveVPNRegionListFetchedDate, {});
+#endif
+}
+
 void MigrateLocalStatePrefs(PrefService* local_prefs) {
 #if !BUILDFLAG(IS_ANDROID)
   const int current_version =
@@ -304,6 +310,9 @@ void MigrateLocalStatePrefs(PrefService* local_prefs) {
   if (current_version == 1) {
     MigrateFromV1ToV2(local_prefs);
   }
+
+  // Added 02/2026
+  local_prefs->ClearPref(prefs::kBraveVPNRegionListFetchedDate);
 #endif
 }
 

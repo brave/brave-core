@@ -199,6 +199,8 @@ TEST(BraveVPNUtilsUnitTest, AlreadyMigrated) {
 TEST(BraveVPNUtilsUnitTest, SelectedRegionNameMigration) {
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  brave_vpn::RegisterLocalStatePrefsForMigration(
+      local_state_pref_service.registry());
   EXPECT_EQ(1, local_state_pref_service.GetInteger(
                    brave_vpn::prefs::kBraveVPNRegionListVersion));
 
@@ -218,6 +220,8 @@ TEST(BraveVPNUtilsUnitTest, SelectedRegionNameMigration) {
 TEST(BraveVPNUtilsUnitTest, InvalidSelectedRegionNameMigration) {
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  brave_vpn::RegisterLocalStatePrefsForMigration(
+      local_state_pref_service.registry());
   EXPECT_EQ(1, local_state_pref_service.GetInteger(
                    brave_vpn::prefs::kBraveVPNRegionListVersion));
 

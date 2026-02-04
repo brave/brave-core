@@ -139,6 +139,10 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   brave_ads::RegisterLocalStatePrefsForMigration(registry);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::RegisterLocalStatePrefsForMigration(registry);
+#endif
+
   ntp_background_images::NTPBackgroundImagesService::
       RegisterLocalStatePrefsForMigration(registry);
 }
