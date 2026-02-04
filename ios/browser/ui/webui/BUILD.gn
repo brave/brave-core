@@ -17,6 +17,7 @@ source_set("webui") {
     "//base",
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_wallet/common",
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/brave_wallet",

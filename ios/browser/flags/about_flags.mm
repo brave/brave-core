@@ -26,7 +26,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/ios/browser/brave_wallet/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -198,13 +197,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),          \
       })
 
-#define BRAVE_WALLET_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                              \
-      "brave-wallet-webui-ios",                                         \
-      "Enable WebUI for Brave Wallet iOS",                              \
-      "Enables WebUI for Brave Wallet",                                 \
-      flags_ui::kOsIos,                                                 \
-      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletWebUIIOS), \
+#define BRAVE_WALLET_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-wallet-webui-ios",                                             \
+      "Enable WebUI for Brave Wallet iOS",                                  \
+      "Enables WebUI for Brave Wallet",                                     \
+      flags_ui::kOsIos,                                                     \
+      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletWebUIFeature), \
   })
 #else
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES

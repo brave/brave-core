@@ -35,7 +35,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/ios/browser/brave_wallet/features.h"
 #endif
 
 @interface Feature () {
@@ -372,7 +371,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 + (Feature*)kBraveWalletWebUIIOS {
   return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kBraveWalletWebUIIOS];
+      initWithFeature:&brave_wallet::features::kBraveWalletWebUIFeature];
 }
 #else
 + (nullable Feature*)kBraveWalletWebUIIOS {
