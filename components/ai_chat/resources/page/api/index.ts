@@ -85,8 +85,7 @@ export default function createAIChatApi(
             isPremiumUserDisconnected:
               result.status === Mojom.PremiumStatus.ActiveDisconnected,
           }),
-          // Should be `placeholderData`?
-          initialData: {
+          placeholderData: {
             isPremiumStatusFetching: true,
             isPremiumUser: false,
             isPremiumUserDisconnected: false,
