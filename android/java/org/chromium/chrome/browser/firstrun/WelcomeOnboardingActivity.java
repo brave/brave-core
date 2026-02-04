@@ -295,46 +295,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
 
         if (!mIsCrashReportingManaged) {
-            // Handle crash reporting consent based on installation status
-            if (PackageUtils.isFirstInstall(this)
-                    && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-                // For first time installs, enable crash reporting by default
-                if (mCheckboxCrash != null) {
-                    mCheckboxCrash.setChecked(true);
-                }
-                setMetricsReportingConsent(true, true);
-            } else {
-                // For existing installations, restore previous crash reporting preference
-                boolean isCrashReporting = false;
-                try {
-                    // Get current crash reporting permission status
-                    isCrashReporting =
-                            PrivacyPreferencesManagerImpl.getInstance()
-                                    .isUsageAndCrashReportingPermittedByUser();
-                } catch (Exception e) {
-                    Log.e(TAG, "CrashReportingOnboarding", e);
-                }
-                // Update checkbox to match current preference
-                if (mCheckboxCrash != null) {
-                    mCheckboxCrash.setChecked(isCrashReporting);
-                }
-            }
-
+            final boolean isCrashReporting = getCrashReportingPreference();
             if (mCheckboxCrash != null) {
+                mCheckboxCrash.setChecked(isCrashReporting);
                 mCheckboxCrash.setOnCheckedChangeListener(
                         (buttonView, isChecked) -> setMetricsReportingConsent(isChecked, false));
             }
         }
 
         if (!mIsP3aManaged) {
-            boolean isP3aEnabled = true;
-
-            try {
-                isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
-            } catch (Exception e) {
-                Log.e(TAG, "P3aOnboarding", e);
-            }
-
+            final boolean isP3aEnabled = getP3aPreference();
             if (mCheckboxP3a != null) {
                 mCheckboxP3a.setChecked(isP3aEnabled);
                 mCheckboxP3a.setOnCheckedChangeListener(
@@ -619,43 +589,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
         if (isVariantB()) {
             if (!mIsCrashReportingManaged) {
-                // Handle crash reporting consent based on installation status
-                if (PackageUtils.isFirstInstall(this)
-                        && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-                    // For first time installs, enable crash reporting by default
-                    if (mVariantBAdapter != null) {
-                        mVariantBAdapter.setCrashReportingChecked(true);
-                    }
-                    setMetricsReportingConsent(true, true);
-                } else {
-                    // For existing installations, restore previous crash reporting preference
-                    boolean isCrashReporting = false;
-                    try {
-                        // Get current crash reporting permission status
-                        isCrashReporting =
-                                PrivacyPreferencesManagerImpl.getInstance()
-                                        .isUsageAndCrashReportingPermittedByUser();
-                    } catch (Exception e) {
-                        Log.e(TAG, "CrashReportingOnboarding", e);
-                    }
-                    // Update checkbox to match current preference
-                    if (mVariantBAdapter != null) {
-                        mVariantBAdapter.setCrashReportingChecked(isCrashReporting);
-                    }
+                final boolean isCrashReporting = getCrashReportingPreference();
+                if (mVariantBAdapter != null) {
+                    mVariantBAdapter.setCrashReportingChecked(isCrashReporting);
                 }
             } else if (mVariantBAdapter != null) {
                 mVariantBAdapter.setCrashReportingManaged(true);
             }
 
             if (!mIsP3aManaged) {
-                boolean isP3aEnabled = true;
-
-                try {
-                    isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
-                } catch (Exception e) {
-                    Log.e(TAG, "P3aOnboarding", e);
-                }
-
+                final boolean isP3aEnabled = getP3aPreference();
                 if (mVariantBAdapter != null) {
                     mVariantBAdapter.setP3aChecked(isP3aEnabled);
                 }
@@ -697,6 +640,34 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                     }
                 });
         return result;
+    }
+
+    private boolean getCrashReportingPreference() {
+        if (PackageUtils.isFirstInstall(this)
+                && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
+            setMetricsReportingConsent(true, true);
+            return true;
+        }
+
+        boolean isCrashReporting = false;
+        try {
+            isCrashReporting =
+                    PrivacyPreferencesManagerImpl.getInstance()
+                            .isUsageAndCrashReportingPermittedByUser();
+        } catch (Exception e) {
+            Log.e(TAG, "CrashReportingOnboarding", e);
+        }
+        return isCrashReporting;
+    }
+
+    private boolean getP3aPreference() {
+        boolean isP3aEnabled = true;
+        try {
+            isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
+        } catch (Exception e) {
+            Log.e(TAG, "P3aOnboarding", e);
+        }
+        return isP3aEnabled;
     }
 
     private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
