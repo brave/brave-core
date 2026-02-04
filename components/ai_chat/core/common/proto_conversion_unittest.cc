@@ -342,6 +342,177 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_IsServerResult) {
   EXPECT_FALSE(deserialized2->is_server_result);
 }
 
+TEST(ProtoConversionTest,
+     SerializeDeserializeToolUseEvent_WithWebSourcesContentBlock) {
+  // Create mojom ToolUseEvent with WebSourcesContentBlock output
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "brave_web_search", "tooluse_search123",
+      R"({"query": "weather", "country": "US"})",
+      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+
+  // Create WebSourcesContentBlock
+  auto web_sources_block = mojom::WebSourcesContentBlock::New();
+  web_sources_block->query = "weather in San Jose";
+
+  auto source1 =
+      mojom::WebSource::New("Weather.com", GURL("https://weather.com/sanjose"),
+                            GURL("https://weather.com/favicon.ico"));
+  web_sources_block->sources.push_back(std::move(source1));
+
+  auto source2 = mojom::WebSource::New(
+      "AccuWeather", GURL("https://accuweather.com/sanjose"),
+      GURL("https://accuweather.com/favicon.ico"));
+  web_sources_block->sources.push_back(std::move(source2));
+
+  mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      std::move(web_sources_block)));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  EXPECT_EQ(proto_event.tool_name(), "brave_web_search");
+  EXPECT_EQ(proto_event.id(), "tooluse_search123");
+  ASSERT_EQ(proto_event.output_size(), 1);
+
+  // Verify WebSourcesContentBlock serialization
+  ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
+  const auto& proto_sources = proto_event.output(0).web_sources_content_block();
+  EXPECT_EQ(proto_sources.query(), "weather in San Jose");
+  ASSERT_EQ(proto_sources.sources_size(), 2);
+  EXPECT_EQ(proto_sources.sources(0).title(), "Weather.com");
+  EXPECT_EQ(proto_sources.sources(0).url(), "https://weather.com/sanjose");
+  EXPECT_EQ(proto_sources.sources(0).favicon_url(),
+            "https://weather.com/favicon.ico");
+  EXPECT_EQ(proto_sources.sources(1).title(), "AccuWeather");
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeToolUseEvent(proto_event);
+
+  // Verify deserialized data matches original
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
+TEST(ProtoConversionTest,
+     SerializeDeserializeToolUseEvent_WebSourcesContentBlockWithoutQuery) {
+  // Create mojom ToolUseEvent with WebSourcesContentBlock without query
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "brave_web_search", "tooluse_456", R"({"query": "test"})",
+      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+
+  auto web_sources_block = mojom::WebSourcesContentBlock::New();
+  // No query set
+
+  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
+                                      GURL("https://example.com/favicon.ico"));
+  web_sources_block->sources.push_back(std::move(source));
+
+  mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      std::move(web_sources_block)));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  ASSERT_EQ(proto_event.output_size(), 1);
+  ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
+  EXPECT_FALSE(proto_event.output(0).web_sources_content_block().has_query());
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeToolUseEvent(proto_event);
+
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
+TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_MixedContentBlocks) {
+  // Test with mixed content blocks including WebSourcesContentBlock
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "multi_tool", "tooluse_mixed", "{}",
+      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+
+  // Add text block
+  auto text_block = mojom::TextContentBlock::New();
+  text_block->text = "Search results:";
+  mojom_event->output->push_back(
+      mojom::ContentBlock::NewTextContentBlock(std::move(text_block)));
+
+  // Add WebSourcesContentBlock
+  auto web_sources_block = mojom::WebSourcesContentBlock::New();
+  web_sources_block->query = "test query";
+  auto source = mojom::WebSource::New("Test Site", GURL("https://test.com"),
+                                      GURL("https://test.com/favicon.ico"));
+  web_sources_block->sources.push_back(std::move(source));
+  mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      std::move(web_sources_block)));
+
+  // Add image block
+  auto image_block = mojom::ImageContentBlock::New();
+  image_block->image_url = GURL("https://test.com/image.png");
+  mojom_event->output->push_back(
+      mojom::ContentBlock::NewImageContentBlock(std::move(image_block)));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  ASSERT_EQ(proto_event.output_size(), 3);
+  EXPECT_TRUE(proto_event.output(0).has_text_content_block());
+  EXPECT_TRUE(proto_event.output(1).has_web_sources_content_block());
+  EXPECT_TRUE(proto_event.output(2).has_image_content_block());
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeToolUseEvent(proto_event);
+
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
+TEST(ProtoConversionTest,
+     SerializeToolUseEvent_WebSourcesContentBlockInvalidUrls) {
+  // Test that invalid URLs in WebSourcesContentBlock are skipped
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "brave_web_search", "tooluse_789", "{}",
+      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+
+  auto web_sources_block = mojom::WebSourcesContentBlock::New();
+
+  // Valid source
+  auto valid_source =
+      mojom::WebSource::New("Valid", GURL("https://valid.com"),
+                            GURL("https://valid.com/favicon.ico"));
+  web_sources_block->sources.push_back(std::move(valid_source));
+
+  // Invalid URL source
+  auto invalid_url_source =
+      mojom::WebSource::New("Invalid URL", GURL("invalid-url"),
+                            GURL("https://valid.com/favicon.ico"));
+  web_sources_block->sources.push_back(std::move(invalid_url_source));
+
+  // Invalid favicon source
+  auto invalid_favicon_source = mojom::WebSource::New(
+      "Invalid Favicon", GURL("https://valid.com"), GURL("invalid-favicon"));
+  web_sources_block->sources.push_back(std::move(invalid_favicon_source));
+
+  mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      std::move(web_sources_block)));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  ASSERT_EQ(proto_event.output_size(), 1);
+  ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
+  // Only the valid source should be serialized
+  EXPECT_EQ(proto_event.output(0).web_sources_content_block().sources_size(),
+            1);
+  EXPECT_EQ(
+      proto_event.output(0).web_sources_content_block().sources(0).title(),
+      "Valid");
+}
+
 TEST(ProtoConversionTest, SerializeDeserializeSkillEntry) {
   // Create mojom SkillEntry
   auto mojom_entry =
