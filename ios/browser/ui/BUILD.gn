@@ -5,8 +5,8 @@
 
 source_set("ui") {
   sources = [
-    "brave_l10n_util_bridge.h",
-    "brave_l10n_util_bridge.mm",
+    "l10n_utils_typed_bridge.h",
+    "l10n_utils_typed_bridge.mm",
   ]
 
   deps = [ "//ui/base" ]

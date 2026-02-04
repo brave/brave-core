@@ -41,7 +41,7 @@ def _FormatObjCHeader(root, *_args, **_kwargs):
         return
 
     yield '\n#import <Foundation/Foundation.h>\n\n'
-    yield '#import "brave_l10n_util_bridge.h"\n\n'
+    yield '#import "l10n_utils_typed_bridge.h"\n\n'
 
     for name, _ in messages:
         yield f'OBJC_EXTERN const MessageIDTyped MessageIDTyped{name};\n'
@@ -57,7 +57,7 @@ def _FormatObjCMm(root, *_args, **_kwargs):
         return
 
     yield '\n#import <Foundation/Foundation.h>\n\n'
-    yield '#import "brave_l10n_util_bridge.h"\n\n'
+    yield '#import "l10n_utils_typed_bridge.h"\n\n'
 
     for name, ids_value in messages:
         yield (f'OBJC_EXPORT const MessageIDTyped '

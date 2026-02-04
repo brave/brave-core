@@ -3,17 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_UI_BRAVE_L10N_UTIL_BRIDGE_H_
-#define BRAVE_IOS_BROWSER_UI_BRAVE_L10N_UTIL_BRIDGE_H_
+#ifndef BRAVE_IOS_BROWSER_UI_L10N_UTILS_TYPED_BRIDGE_H_
+#define BRAVE_IOS_BROWSER_UI_L10N_UTILS_TYPED_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
 
-typedef int MessageIDTyped NS_TYPED_ENUM;
+#ifdef __cplusplus
+#import "ui/base/l10n/l10n_util_mac_bridge.h"
+#else
+#import "l10n_util_mac_bridge.h"
+#endif
+
+typedef MessageID MessageIDTyped NS_TYPED_ENUM;
 
 NS_ASSUME_NONNULL_BEGIN
 
-OBJC_VISIBLE
-@interface BraveL10nUtils : NSObject
+@interface L10nUtils (Typed)
 
 + (NSString*)stringForMessageIDTyped:(MessageIDTyped)messageID
     NS_SWIFT_NAME(string(messageId:));
@@ -35,4 +40,4 @@ OBJC_VISIBLE
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_UI_BRAVE_L10N_UTIL_BRIDGE_H_
+#endif  // BRAVE_IOS_BROWSER_UI_L10N_UTILS_TYPED_BRIDGE_H_

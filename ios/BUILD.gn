@@ -119,7 +119,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/safari_data_import/safari_data_importer_bridge.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_coordinator.h",
   "//brave/ios/browser/playlist/playlist_pref_names_bridge.h",
-  "//brave/ios/browser/ui/brave_l10n_util_bridge.h",
+  "//brave/ios/browser/ui/l10n_utils_typed_bridge.h",
+  "//ui/base/l10n/l10n_util_mac_bridge.h",
   "$root_gen_dir/components/grit/brave_components_swift_strings.h",
 ]
 
