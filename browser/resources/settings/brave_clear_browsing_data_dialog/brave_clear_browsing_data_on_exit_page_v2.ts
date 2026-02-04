@@ -68,7 +68,7 @@ export class SettingsBraveClearBrowsingDataOnExitPageV2Element
 
       browsingDataTypeOptionsList_: {
         type: Array,
-        value: () => [],
+        value: [],
       },
 
       // <if expr="enable_ai_chat">
