@@ -103,7 +103,7 @@ struct RewardsParameters {
   map<string, Regions> wallet_provider_regions;
   mojo_base.mojom.Time vbat_deadline;
   bool vbat_expired;
-  int32 tos_version = 1;
+  int32 tos_version = 0;
 };
 
 struct MediaEventInfo {

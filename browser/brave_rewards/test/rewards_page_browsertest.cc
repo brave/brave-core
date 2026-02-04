@@ -337,6 +337,17 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
   ASSERT_EQ(GetPrefs().GetInteger(prefs::kTosVersion), 2);
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, TOSVersionRace) {
+  auto params =
+      base::test::ParseJsonDict(R"({ "rate": 0.25, "tos_version": 2 })");
+  GetPrefs().SetDict(prefs::kParameters, std::move(params));
+  SetRequestHandler(base::BindRepeating(HandleEnableRewardsRequest));
+  NavigateToRewardsPage("/");
+  LoadScript("enable_rewards_test.js");
+  RunTests();
+  ASSERT_EQ(GetPrefs().GetInteger(prefs::kTosVersion), 2);
+}
+
 IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewardsFromPanel) {
   SetRequestHandler(base::BindRepeating(HandleEnableRewardsRequest));
   OpenRewardsPanel();

@@ -458,6 +458,11 @@ void RewardsServiceImpl::CreateRewardsWallet(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       }
 
+      // Set the user's current ToS version.
+      self->prefs_->SetInteger(
+          prefs::kTosVersion,
+          RewardsParametersFromPrefs(*(self->prefs_))->tos_version);
+
       // Notify observers that the Rewards wallet has been created.
       for (auto& observer : self->observers_) {
         observer.OnRewardsWalletCreated();
