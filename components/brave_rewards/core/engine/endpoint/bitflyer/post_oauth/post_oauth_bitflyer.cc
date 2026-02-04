@@ -26,7 +26,7 @@ PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
   return engine_->Get<EnvironmentConfig>()
-      .gate3_oauth_url("bitflyer")
+      .bitflyer_oauth_url()
       .Resolve("token")
       .spec();
 }

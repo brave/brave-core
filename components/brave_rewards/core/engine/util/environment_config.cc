@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
@@ -165,7 +167,11 @@ std::string EnvironmentConfig::bitflyer_fee_address() const {
              : BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS);
 }
 
-GURL EnvironmentConfig::gate3_oauth_url(const std::string& provider) const {
+GURL EnvironmentConfig::bitflyer_oauth_url() const {
+  return BuildGate3OAuthURL("bitflyer");
+}
+
+GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
   std::string environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
