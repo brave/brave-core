@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import { UICardItem } from '../../lib/app_state'
-import { AppModelContext } from '../../lib/app_model_context'
+import { UICardItem } from '../../lib/app_store'
+import { useAppActions } from '../../lib/app_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { sanitizeURL, faviconURL, cardImageURL } from './card_urls'
 
@@ -16,12 +16,12 @@ interface Props {
 
 export function CardItemView(props: Props) {
   const { item } = props
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const thumbnail = cardImageURL(item.thumbnail)
   return (
     <NewTabLink
       href={sanitizeURL(item.url)}
-      onClick={() => model.recordOfferClick()}
+      onClick={() => actions.recordOfferClick()}
     >
       <span className='thumbnail'>
         {thumbnail ? (

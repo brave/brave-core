@@ -7,9 +7,8 @@ import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
 import { formatString } from '$web-common/formatString'
-import { useLocaleContext } from '../../lib/locale_strings'
-import { AdType } from '../../lib/app_state'
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { AdType } from '../../lib/app_store'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { Modal } from '../common/modal'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 
@@ -29,8 +28,8 @@ interface Props {
 }
 
 export function AdsSettingsModal(props: Props) {
-  const model = React.useContext(AppModelContext)
-  const { getString } = useLocaleContext()
+  const actions = useAppActions()
+  const { getString } = useAppActions()
 
   const adsInfo = useAppState((state) => state.adsInfo)
   const externalWallet = useAppState((state) => state.externalWallet)
@@ -45,7 +44,7 @@ export function AdsSettingsModal(props: Props) {
 
   function onToggleChange(adType: AdType) {
     return (detail: { checked: boolean }) => {
-      model.setAdTypeEnabled(adType, detail.checked)
+      actions.setAdTypeEnabled(adType, detail.checked)
     }
   }
 
@@ -60,11 +59,11 @@ export function AdsSettingsModal(props: Props) {
     event: React.FormEvent<HTMLSelectElement>,
   ) {
     const value = Number(event.currentTarget.value) || 0
-    model.setNotificationAdsPerHour(value)
+    actions.setNotificationAdsPerHour(value)
   }
 
   function onSubdivisionChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    model.setAdsSubdivision(event.target.value)
+    actions.setAdsSubdivision(event.target.value)
   }
 
   function renderSubdivisions() {

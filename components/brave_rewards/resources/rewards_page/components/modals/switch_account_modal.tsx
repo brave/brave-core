@@ -6,10 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_state'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_store'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
-import { AppModelContext } from '../../lib/app_model_context'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
 import { BatIcon } from '../../../shared/components/icons/bat_icon'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
@@ -26,18 +25,16 @@ interface Props {
 }
 
 export function SwitchAccountModal(props: Props) {
-  const { getString } = useLocaleContext()
+  const actions = useAppActions()
+  const { getString } = actions
   const router = React.useContext(RouterContext)
-  const model = React.useContext(AppModelContext)
   const [loading, setLoading] = React.useState(false)
 
-  const [countryCode, setCountryCode] = React.useState(() => {
-    return model.getState().countryCode
-  })
+  const currentCountryCode = useAppState((s) => s.countryCode)
+  const currentProvider = useAppState((s) => s.externalWallet?.provider ?? null)
 
-  const [provider] = React.useState(() => {
-    return model.getState().externalWallet?.provider ?? null
-  })
+  const [countryCode, setCountryCode] = React.useState(currentCountryCode)
+  const [provider] = React.useState(currentProvider)
 
   const [enableRewardsResult, setEnableRewardsResult] =
     React.useState<EnableRewardsResult | null>(null)
@@ -49,7 +46,7 @@ export function SwitchAccountModal(props: Props) {
     })
 
   React.useEffect(() => {
-    model.getAvailableCountries().then(setAvailableCountries)
+    actions.getAvailableCountries().then(setAvailableCountries)
   }, [])
 
   React.useEffect(() => {
@@ -60,8 +57,8 @@ export function SwitchAccountModal(props: Props) {
 
   async function resetAndEnableRewards() {
     setLoading(true)
-    await model.resetRewards()
-    const result = await model.enableRewards(countryCode)
+    await actions.resetRewards()
+    const result = await actions.enableRewards(countryCode)
     setLoading(false)
     if (result === 'success') {
       router.setRoute(routes.connectAccount)

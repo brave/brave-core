@@ -5,19 +5,19 @@
 
 import * as React from 'react'
 
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { useAppState, useAppActions } from '../../lib/app_context'
 
 interface Props {
   children: React.ReactNode
 }
 
 export function ShowHandler(props: Props) {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const openTime = useAppState((state) => state.openTime)
 
   React.useEffect(() => {
-    model.onAppRendered()
-  }, [model, openTime])
+    actions.onAppRendered()
+  }, [actions, openTime])
 
   return <div key={`rewards-page-${openTime}`}>{props.children}</div>
 }

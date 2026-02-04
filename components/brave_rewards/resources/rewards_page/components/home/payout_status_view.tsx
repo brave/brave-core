@@ -6,8 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
 
 import {
@@ -41,7 +40,7 @@ function getPayoutMonth() {
 }
 
 export function PayoutStatusView() {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
 
   const parameters = useAppState((state) => state.rewardsParameters)
   const adsInfo = useAppState((state) => state.adsInfo)

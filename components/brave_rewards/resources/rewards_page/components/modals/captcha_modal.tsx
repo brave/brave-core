@@ -9,8 +9,8 @@ import Icon from '@brave/leo/react/icon'
 
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
-import { CaptchaInfo } from '../../lib/app_state'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { CaptchaInfo } from '../../lib/app_store'
+import { useAppActions } from '../../lib/app_context'
 import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './captcha_modal.style'
@@ -40,7 +40,7 @@ interface Props {
 
 export function CaptchaModal(props: Props) {
   const tabOpener = React.useContext(TabOpenerContext)
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const [captchaSolved, setCaptchaSolved] = React.useState(false)
 

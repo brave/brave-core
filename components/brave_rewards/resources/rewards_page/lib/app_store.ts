@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
 import {
   ExternalWallet,
   ExternalWalletProvider,
@@ -170,6 +171,42 @@ export interface UICard {
   items: UICardItem[]
 }
 
+export interface AppActions {
+  onAppRendered: () => void
+  openTab: (url: string) => void
+  getString: (key: string) => string
+  getPluralString: (key: string, count: number) => Promise<string>
+  enableRewards: (countryCode: string) => Promise<EnableRewardsResult>
+  setWebDiscoveryProjectEnabled: (enabled: boolean) => Promise<void>
+  getAvailableCountries: () => Promise<AvailableCountryInfo>
+  beginExternalWalletLogin: (
+    provider: ExternalWalletProvider,
+  ) => Promise<boolean>
+  connectExternalWallet: (
+    provider: ExternalWalletProvider,
+    args: Record<string, string>,
+  ) => Promise<ConnectExternalWalletResult>
+  resetRewards: () => Promise<void>
+  setAdTypeEnabled: (adType: AdType, enabled: boolean) => Promise<void>
+  setNotificationAdsPerHour: (adsPerHour: number) => Promise<void>
+  setAdsSubdivision: (subdivision: string) => Promise<void>
+  getAdsHistory: () => Promise<AdsHistoryItem[]>
+  setAdLikeStatus: (id: string, status: AdLikeStatus) => Promise<void>
+  setAdInappropriate: (id: string, value: boolean) => Promise<void>
+  removeRecurringContribution: (id: string) => Promise<void>
+  sendContribution: (
+    creatorID: string,
+    amount: number,
+    recurring: boolean,
+  ) => Promise<boolean>
+  acceptTermsOfServiceUpdate: () => Promise<void>
+  dismissSelfCustodyInvite: () => Promise<void>
+  onCaptchaResult: (success: boolean) => Promise<void>
+  clearNotification: (id: string) => Promise<void>
+  recordOfferClick: () => Promise<void>
+  recordOfferView: () => Promise<void>
+}
+
 export interface AppState {
   loading: boolean
   openTime: number
@@ -190,10 +227,13 @@ export interface AppState {
   captchaInfo: CaptchaInfo | null
   notifications: Notification[]
   cards: UICard[] | null
+  actions: AppActions
 }
 
-export function defaultState(): AppState {
-  return {
+export type AppStore = StateStore<AppState>
+
+export function defaultAppStore() {
+  return createStateStore<AppState>({
     loading: true,
     openTime: Date.now(),
     isUnsupportedRegion: false,
@@ -218,5 +258,50 @@ export function defaultState(): AppState {
     captchaInfo: null,
     notifications: [],
     cards: null,
-  }
+    actions: {
+      onAppRendered() {},
+      openTab() {},
+      getString(key) {
+        return ''
+      },
+      async getPluralString(key, count) {
+        return ''
+      },
+      async enableRewards(countryCode) {
+        return 'unexpected-error'
+      },
+      async setWebDiscoveryProjectEnabled(enabled) {},
+      async getAvailableCountries() {
+        return {
+          countryCodes: [],
+          defaultCountryCode: '',
+        }
+      },
+      async beginExternalWalletLogin(provider) {
+        return true
+      },
+      async connectExternalWallet(provider, args) {
+        return 'unexpected-error'
+      },
+      async resetRewards() {},
+      async setAdTypeEnabled(adType, enabled) {},
+      async setNotificationAdsPerHour(adsPerHour) {},
+      async setAdsSubdivision(subdivision) {},
+      async getAdsHistory() {
+        return []
+      },
+      async setAdLikeStatus(id, status) {},
+      async setAdInappropriate(id, value) {},
+      async removeRecurringContribution(id) {},
+      async sendContribution(creatorID, amount, recurring) {
+        return false
+      },
+      async acceptTermsOfServiceUpdate() {},
+      async dismissSelfCustodyInvite() {},
+      async onCaptchaResult(success) {},
+      async clearNotification(id: string) {},
+      async recordOfferClick() {},
+      async recordOfferView() {},
+    },
+  })
 }

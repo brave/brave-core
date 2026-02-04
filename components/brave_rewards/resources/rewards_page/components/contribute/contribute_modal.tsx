@@ -5,8 +5,7 @@
 
 import * as React from 'react'
 
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { Modal } from '../common/modal'
 import { PaymentForm } from './payment_form'
@@ -29,8 +28,8 @@ interface Props {
 }
 
 export function ContributeModal(props: Props) {
-  const { getString } = useLocaleContext()
-  const model = React.useContext(AppModelContext)
+  const { getString } = useAppActions()
+  const actions = useAppActions()
 
   const creator = useAppState((state) => state.currentCreator)
   const externalWallet = useAppState((state) => state.externalWallet)
@@ -55,7 +54,7 @@ export function ContributeModal(props: Props) {
 
     setViewType('sending')
 
-    model
+    actions
       .sendContribution(creator.site.id, amount, recurring)
       .then((success) => {
         setViewType(success ? 'success' : 'error')

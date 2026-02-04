@@ -5,14 +5,14 @@
 
 import * as React from 'react'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
 import { formatString } from '$web-common/formatString'
-import { ExternalWalletDisconnectedNotification } from '../../lib/app_state'
+import { ExternalWalletDisconnectedNotification } from '../../lib/app_store'
 import { NotificationViewProps } from './notification_view'
 
 export function ExternalWalletDisconnected(props: NotificationViewProps) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const { Title, Body, Action } = props
   const { provider } =
     props.notification as ExternalWalletDisconnectedNotification

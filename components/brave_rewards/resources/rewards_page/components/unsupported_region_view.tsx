@@ -5,14 +5,14 @@
 
 import * as React from 'react'
 
-import { useLocaleContext } from '../lib/locale_strings'
+import { useAppActions } from '../lib/app_context'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import * as urls from '../../shared/lib/rewards_urls'
 
 import { style } from './unsupported_region_view.style'
 
 export function UnsupportedRegionView() {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   return (
     <div data-css-scope={style.scope}>
       <h4>{getString('unsupportedRegionTitle')}</h4>

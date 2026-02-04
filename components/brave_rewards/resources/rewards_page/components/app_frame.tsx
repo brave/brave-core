@@ -9,8 +9,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { TabOpenerContext } from '../../shared/components/new_tab_link'
 import { EventHubContext } from '../lib/event_hub'
-import { useAppState } from '../lib/app_model_context'
-import { useLocaleContext } from '../lib/locale_strings'
+import { useAppState, useAppActions } from '../lib/app_context'
 import { useBreakpoint } from '../lib/breakpoint'
 import { RouterContext, useRoute } from '../lib/router'
 import * as urls from '../../shared/lib/rewards_urls'
@@ -45,7 +44,7 @@ function scrollRouteContentIntoView(
 }
 
 function NavList() {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const current = getCurrentNavRoute(useRoute())
   const router = React.useContext(RouterContext)
 
@@ -100,7 +99,7 @@ function NavList() {
 }
 
 function MoreMenu(props: { children: React.ReactNode }) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const tabOpener = React.useContext(TabOpenerContext)
   const eventHub = React.useContext(EventHubContext)
   const embedder = useAppState((state) => state.embedder)
@@ -140,7 +139,7 @@ interface Props {
 
 function PanelFrame(props: Props) {
   const tabOpener = React.useContext(TabOpenerContext)
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const embedder = useAppState((state) => state.embedder)
   const [isScrolled, setIsScrolled] = React.useState(false)
 
@@ -185,7 +184,7 @@ function PanelFrame(props: Props) {
 }
 
 function PageFrame(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   return (
     <div
       className='page-frame'

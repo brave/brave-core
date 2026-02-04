@@ -7,8 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocaleContext } from '../../lib/locale_strings'
-import { useAppState } from '../../lib/app_model_context'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
@@ -19,7 +18,7 @@ import * as urls from '../../../shared/lib/rewards_urls'
 import { style } from './reset_external_wallet_card.style'
 
 export function ResetExternalWalletCard() {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const openSwitchAccount = useSwitchAccountRouter()
   const externalWallet = useAppState((s) => s.externalWallet)
 

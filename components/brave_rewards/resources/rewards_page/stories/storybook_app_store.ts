@@ -3,10 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createStateStore } from '$web-common/state_store'
-import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
-import { AppState, defaultState } from '../lib/app_state'
-import { AppModel, defaultModel } from '../lib/app_model'
+import { AppActions, AppStore, defaultAppStore } from '../lib/app_store'
 import { localeStrings } from './storybook_strings'
 import { optional } from '../../shared/lib/optional'
 
@@ -24,10 +21,9 @@ function repeat<T>(array: T[], times: number) {
   return result
 }
 
-export function createModel(): AppModel {
-  const locale = createLocaleContextForTesting(localeStrings)
-  const store = createStateStore<AppState>({
-    ...defaultState(),
+export function createAppStore(): AppStore {
+  const store = defaultAppStore()
+  store.update({
     embedder: {
       platform: 'desktop',
       isAutoResizeBubble: false,
@@ -184,13 +180,18 @@ export function createModel(): AppModel {
     ],
   })
 
-  return {
-    ...defaultModel(),
+  function getString(key: string) {
+    return (localeStrings as Record<string, string>)[key] ?? ''
+  }
 
-    getString: locale.getString,
-    getPluralString: locale.getPluralString,
-    getState: store.getState,
-    addListener: store.addListener,
+  const actions: AppActions = {
+    ...store.getState().actions,
+
+    getString,
+
+    async getPluralString(key: string, count: number) {
+      return getString(key).replace('#', String(count))
+    },
 
     async getAvailableCountries() {
       return {
@@ -309,4 +310,8 @@ export function createModel(): AppModel {
       })
     },
   }
+
+  store.update({ actions })
+
+  return store
 }

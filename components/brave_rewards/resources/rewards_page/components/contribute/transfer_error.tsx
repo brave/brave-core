@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 
 import { style } from './transfer_error.style'
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function TransferError(props: Readonly<Props>) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   return (
     <div data-css-scope={style.scope}>
       <div className='message'>

@@ -7,8 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
 
-import { useLocaleContext } from '../../lib/locale_strings'
-import { useAppState } from '../../lib/app_model_context'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { CardView } from '../explore/card_view'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import * as urls from '../../../shared/lib/rewards_urls'
@@ -16,7 +15,7 @@ import * as urls from '../../../shared/lib/rewards_urls'
 import { style } from './benefits_card.style'
 
 export function BenefitsCard() {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const cards = useAppState((state) => state.cards)
 
   // Use the server-provided benefits card info if available.

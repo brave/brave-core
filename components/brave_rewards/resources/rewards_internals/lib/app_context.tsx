@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { defaultAppStore } from './app_store'
-import { createUseStateHook } from './state_store_hooks'
+import { createUseStateHook } from '../../rewards_page/lib/state_store_hooks'
 
 export const AppContext = React.createContext(defaultAppStore())
 

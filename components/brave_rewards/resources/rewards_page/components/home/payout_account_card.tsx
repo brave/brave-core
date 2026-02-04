@@ -9,8 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
 import Tooltip from '@brave/leo/react/tooltip'
 
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
@@ -28,9 +27,9 @@ const payoutDateFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 export function PayoutAccountCard() {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const tabOpener = React.useContext(TabOpenerContext)
-  const { getString } = useLocaleContext()
+  const { getString } = actions
 
   const externalWallet = useAppState((state) => state.externalWallet)
   const balance = useAppState((state) => state.balance)
@@ -57,7 +56,7 @@ export function PayoutAccountCard() {
 
   function onReconnectClick() {
     if (externalWallet) {
-      model.beginExternalWalletLogin(externalWallet.provider)
+      actions.beginExternalWalletLogin(externalWallet.provider)
     }
   }
 

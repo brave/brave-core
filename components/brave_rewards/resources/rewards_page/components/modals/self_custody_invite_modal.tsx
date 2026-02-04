@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { Modal } from '../common/modal'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 
 import { style } from './self_custody_invite_modal.style'
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function SelfCustodyInviteModal(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
 
   return (
     <Modal onEscape={props.onDismiss}>

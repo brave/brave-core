@@ -9,7 +9,7 @@ import {
   AdType,
   Notification,
   ExternalWalletDisconnectedNotification,
-} from '../lib/app_state'
+} from '../lib/app_store'
 
 import {
   ExternalWalletProvider,

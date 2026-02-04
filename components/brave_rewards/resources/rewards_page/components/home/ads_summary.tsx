@@ -6,14 +6,13 @@
 import * as React from 'react'
 import Label from '@brave/leo/react/label'
 
-import { AdType } from '../../lib/app_state'
-import { useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { AdType } from '../../lib/app_store'
+import { useAppState, useAppActions } from '../../lib/app_context'
 
 import { style } from './ads_summary.style'
 
 export function AdsSummary() {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const adsInfo = useAppState((state) => state.adsInfo)
 
   function renderRow(text: string, adType: AdType) {

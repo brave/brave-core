@@ -7,8 +7,8 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
-import { EnableRewardsResult } from '../../lib/app_state'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { EnableRewardsResult } from '../../lib/app_store'
+import { useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
 import { Modal } from '../common/modal'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export function OnboardingErrorModal(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
 
   if (props.result === 'success') {
     return null

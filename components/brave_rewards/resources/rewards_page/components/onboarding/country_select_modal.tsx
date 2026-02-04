@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 import { Modal } from '../common/modal'
 import { CountrySelect } from './country_select'
 
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function CountrySelectModal(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const [countryCode, setCountryCode] = React.useState('')
 
   function onContinueClick() {

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { useAppState } from './app_model_context'
+import { useAppState } from './app_context'
 import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 
 export function useShouldShowSelfCustodyInvite() {

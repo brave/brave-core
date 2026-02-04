@@ -5,10 +5,9 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
 import { scoped } from '$web-common/scoped_css'
-import { AppModelContext } from '../lib/app_model_context'
-import { createModel } from './storybook_model'
+import { AppContext } from '../lib/app_context'
+import { createAppStore } from './storybook_app_store'
 import { App } from '../components/app'
 
 export default {
@@ -23,14 +22,12 @@ const style = scoped.css`
 `
 
 export function RewardsPage() {
-  const model = React.useMemo(() => createModel(), [])
+  const store = createAppStore()
   return (
-    <LocaleContext.Provider value={model}>
-      <AppModelContext.Provider value={model}>
-        <div data-css-scope={style.scope}>
-          <App />
-        </div>
-      </AppModelContext.Provider>
-    </LocaleContext.Provider>
+    <AppContext.Provider value={store}>
+      <div data-css-scope={style.scope}>
+        <App />
+      </div>
+    </AppContext.Provider>
   )
 }

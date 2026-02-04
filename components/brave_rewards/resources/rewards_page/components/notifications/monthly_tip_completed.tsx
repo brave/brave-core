@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 import { NotificationViewProps } from './notification_view'
 
 export function MonthlyTipCompleted(props: NotificationViewProps) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const { Title, Body, Action } = props
 
   return (

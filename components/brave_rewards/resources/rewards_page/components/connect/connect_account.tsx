@@ -9,10 +9,9 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Tooltip from '@brave/leo/react/tooltip'
 
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { RouterContext } from '../../lib/router'
 import { formatString } from '$web-common/formatString'
-import { useLocaleContext } from '../../lib/locale_strings'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
 
@@ -32,9 +31,9 @@ import { style } from './connect_account.style'
 type LoadingState = 'loading' | 'error' | ''
 
 export function ConnectAccount() {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const router = React.useContext(RouterContext)
-  const { getString } = useLocaleContext()
+  const { getString } = actions
 
   const countryCode = useAppState((state) => state.countryCode)
   const regions = useAppState(
@@ -52,7 +51,7 @@ export function ConnectAccount() {
     // then automatically start the login process.
     if (externalWallet) {
       if (!externalWallet.authenticated) {
-        model.beginExternalWalletLogin(externalWallet.provider)
+        actions.beginExternalWalletLogin(externalWallet.provider)
       } else {
         router.replaceRoute(routes.home)
       }
@@ -134,7 +133,7 @@ export function ConnectAccount() {
       if (allowed) {
         setSelectedProvider(provider)
         setLoadingState('loading')
-        model.beginExternalWalletLogin(provider).then((ok) => {
+        actions.beginExternalWalletLogin(provider).then((ok) => {
           setLoadingState(ok ? '' : 'error')
         })
       }

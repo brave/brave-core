@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 
 import { style } from './success.style'
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function Success(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   return (
     <div
       className='contribution-success'

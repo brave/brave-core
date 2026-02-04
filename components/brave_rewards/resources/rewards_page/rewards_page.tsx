@@ -7,9 +7,8 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
-import { LocaleContext } from '../shared/lib/locale_context'
-import { AppModelContext } from './lib/app_model_context'
-import { createModel } from './webui/webui_model'
+import { AppContext } from './lib/app_context'
+import { createAppStore } from './webui/browser_app_store'
 import { TabOpenerContext } from '../shared/components/new_tab_link'
 import { ShowHandler } from './components/common/show_handler'
 import { App } from './components/app'
@@ -45,18 +44,17 @@ function whenDocumentReady() {
 whenDocumentReady().then(() => {
   handleLegacyURLs()
 
-  const model = createModel()
+  const store = createAppStore()
+  const { actions } = store.getState()
   const root = createRoot(document.getElementById('root')!)
 
   root.render(
-    <TabOpenerContext.Provider value={model}>
-      <LocaleContext.Provider value={model}>
-        <AppModelContext.Provider value={model}>
-          <ShowHandler>
-            <App />
-          </ShowHandler>
-        </AppModelContext.Provider>
-      </LocaleContext.Provider>
+    <TabOpenerContext.Provider value={actions}>
+      <AppContext.Provider value={store}>
+        <ShowHandler>
+          <App />
+        </ShowHandler>
+      </AppContext.Provider>
     </TabOpenerContext.Provider>,
   )
 })

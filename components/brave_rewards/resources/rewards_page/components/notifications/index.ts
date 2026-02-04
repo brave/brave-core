@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Notification } from '../../lib/app_state'
+import { Notification } from '../../lib/app_store'
 import { NotificationView } from './notification_view'
 
 import { MonthlyTipCompleted } from './monthly_tip_completed'

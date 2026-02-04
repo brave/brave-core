@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useAppState } from '../../lib/app_model_context'
+import { useAppState } from '../../lib/app_context'
 import { useBreakpoint } from '../../lib/breakpoint'
 import { ContributeCard } from './contribute_card'
 import { EarningCard } from './earning_card'

@@ -3,10 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-
-import { Locale, LocaleContext } from '../../shared/lib/locale_context'
-
 export type StringKey =
   | 'adsBrowserUpgradeRequiredText'
   | 'adsHistoryButtonLabel'
@@ -208,30 +204,3 @@ export type StringKey =
   | 'wdpCheckboxLabel'
   | 'wdpOptInText'
   | 'wdpOptInTitle'
-
-export function useLocaleContext() {
-  return React.useContext<Locale<StringKey>>(LocaleContext)
-}
-
-export function usePluralString(key: StringKey, count: number | undefined) {
-  const { getPluralString } = useLocaleContext()
-  const [value, setValue] = React.useState('')
-
-  React.useEffect(() => {
-    if (typeof count !== 'number') {
-      setValue('')
-      return
-    }
-    let canUpdate = true
-    getPluralString(key, count).then((newValue) => {
-      if (canUpdate) {
-        setValue(newValue)
-      }
-    })
-    return () => {
-      canUpdate = false
-    }
-  }, [getPluralString, count])
-
-  return value
-}

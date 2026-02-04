@@ -8,7 +8,7 @@ import * as React from 'react'
 import { Modal } from '../common/modal'
 
 import { formatString } from '$web-common/formatString'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import * as urls from '../../../shared/lib/rewards_urls'
 
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function TosUpdateModal(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
 
   React.useEffect(() => {
     document.querySelector<HTMLElement>(`${style.selector} a`)?.focus()

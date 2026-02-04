@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { Notification, NotificationAction } from '../../lib/app_state'
+import { Notification, NotificationAction } from '../../lib/app_store'
 
 export interface NotificationTitleProps {
   style?: 'funding' | 'information' | 'error' | 'custom'

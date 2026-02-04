@@ -7,7 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Checkbox from '@brave/leo/react/checkbox'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function ResetModal(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useAppActions()
   const [consented, setConsented] = React.useState(false)
 
   return (

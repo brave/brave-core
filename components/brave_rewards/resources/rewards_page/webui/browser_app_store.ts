@@ -13,10 +13,14 @@ import {
   externalWalletProviderFromString,
 } from '../../shared/lib/external_wallet'
 
-import { AppModel, defaultModel } from '../lib/app_model'
-import { AppState, Notification, defaultState } from '../lib/app_state'
+import {
+  AppActions,
+  AppStore,
+  Notification,
+  defaultAppStore,
+} from '../lib/app_store'
+
 import { RewardsPageProxy } from './rewards_page_proxy'
-import { createStateStore } from '$web-common/state_store'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
 import { optional } from '../../shared/lib/optional'
 import * as mojom from './mojom'
@@ -62,33 +66,32 @@ function isValidWeb3URL(url: string) {
   return false
 }
 
-function createModelForUnsupportedRegion(): AppModel {
-  const store = createStateStore<AppState>(defaultState())
+function createAppStoreForUnsupportedRegion(): AppStore {
+  const store = defaultAppStore()
   store.update({
     loading: false,
     isUnsupportedRegion: true,
-  })
-  return {
-    ...defaultModel(),
-    getState: store.getState,
-    addListener: store.addListener,
-    openTab,
-    getString(key) {
-      return loadTimeData.getString(key)
+    actions: {
+      ...store.getState().actions,
+      openTab,
+      getString(key) {
+        return loadTimeData.getString(key)
+      },
     },
-  }
+  })
+  return store
 }
 
-export function createModel(): AppModel {
+export function createAppStore(): AppStore {
   if (loadTimeData.getBoolean('isUnsupportedRegion')) {
-    return createModelForUnsupportedRegion()
+    return createAppStoreForUnsupportedRegion()
   }
 
   const searchParams = new URLSearchParams(location.search)
   const browserProxy = RewardsPageProxy.getInstance()
   const pageHandler = browserProxy.handler
   const adsHistoryAdapter = createAdsHistoryAdapter()
-  const store = createStateStore<AppState>(defaultState())
+  const store = defaultAppStore()
   const platform = normalizePlatform(loadTimeData.getString('platform'))
   const creatorParam = searchParams.get('creator') ?? ''
   const isAutoResizeBubble = loadTimeData.getBoolean('isAutoResizeBubble')
@@ -373,11 +376,7 @@ export function createModel(): AppModel {
 
   loadData()
 
-  return {
-    getState: store.getState,
-
-    addListener: store.addListener,
-
+  const actions: AppActions = {
     onAppRendered() {
       pageHandler.onPageReady()
       if (!isBubble) {
@@ -576,4 +575,8 @@ export function createModel(): AppModel {
       await pageHandler.recordOfferView()
     },
   }
+
+  store.update({ actions })
+
+  return store
 }
