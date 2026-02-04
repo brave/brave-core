@@ -76,8 +76,7 @@
         "../out/Release_arm64/gen/brave/ui/webui/resources/tsc/*",
         "../out/Debug_arm64/gen/brave/ui/webui/resources/tsc/*"
       ],
-      "$web-common/*": ["components/common/*"],
-      "$web-components/*": ["components/web-components/*"]
+      "$web-common/*": ["components/common/*"]
     },
     "typeRoots": ["./node_modules/@types", "./components/definitions"],
     // optional

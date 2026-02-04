@@ -42,7 +42,6 @@ module.exports = function (genPath) {
     'styled-components': path.resolve(
       __dirname, '../../node_modules/styled-components'),
     // More helpful path for local web-components
-    '$web-components': path.resolve(__dirname, '../web-components'),
     // TODO(petemill): Rename 'brave/components/common' dir to
     // 'brave/components/web-common'
     '$web-common': path.resolve(__dirname, '../common'),
