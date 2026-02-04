@@ -154,7 +154,7 @@ const runTests = async (
         config.braveCoreDir,
         'test',
         'sanitizers',
-        'lsan_suppressions.txt',
+        'lsan_suppressions.cfg',
       )
       runOptions.env.LSAN_OPTIONS = `suppressions=${suppressionsFilePath}`
     }
