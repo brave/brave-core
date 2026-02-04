@@ -449,6 +449,12 @@ export function createInterfaceApi<
       type QData = DataOf<typeof name>
 
       if (!queryOptions.staleTime) {
+        // The default for staleTime is 0, meaning a result is stale as soon
+        // as it is received. That results in every useQuery call causing a
+        // re-fetch after returning the stale data.
+        // Infinity will make data always considered fresh and re-fetch will
+        // only occur when invalidated, manually refetched, or if refetchOnX is
+        // set.
         queryOptions.staleTime = Infinity
       }
 
