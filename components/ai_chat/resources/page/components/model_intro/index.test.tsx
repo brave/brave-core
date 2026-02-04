@@ -7,13 +7,10 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as Mojom from '../../../common/mojom'
-import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { MockContext } from '../../state/mock_context'
+import { clearAllDataForTesting } from '$web-common/api'
 import ModelIntro from '.'
-
-jest.mock('../../state/ai_chat_context', () => ({
-  useAIChat: jest.fn(),
-}))
 
 jest.mock('../../state/conversation_context', () => ({
   useConversation: jest.fn(),
@@ -21,11 +18,6 @@ jest.mock('../../state/conversation_context', () => ({
 
 describe('ModelIntro', () => {
   beforeEach(() => {
-    ;(useAIChat as jest.Mock).mockReturnValue({
-      uiHandler: {
-        openModelSupportUrl: jest.fn(),
-      },
-    })
     ;(useConversation as jest.Mock).mockReturnValue({
       currentModel: {
         key: 'test-model',
@@ -38,10 +30,25 @@ describe('ModelIntro', () => {
       },
       isCurrentModelLeo: true,
     })
+    clearAllDataForTesting()
   })
 
+  const currentModel = {
+    key: 'test-model',
+    displayName: 'Test Model',
+    options: {
+      leoModelOptions: {
+        category: Mojom.ModelCategory.CHAT,
+      },
+    },
+  }
+
   it('should render model intro', () => {
-    const { container } = render(<ModelIntro />)
+    const { container } = render(
+      <MockContext>
+        <ModelIntro />
+      </MockContext>,
+    )
     expect(container).toBeInTheDocument()
 
     // Test that the model text is rendered
@@ -60,7 +67,11 @@ describe('ModelIntro', () => {
   })
 
   it('should render model intro tooltip', () => {
-    const { container } = render(<ModelIntro />)
+    const { container } = render(
+      <MockContext>
+        <ModelIntro />
+      </MockContext>,
+    )
     const tooltip = container.querySelector<HTMLDivElement>('leo-tooltip')
     expect(tooltip).toBeInTheDocument()
 

@@ -7,9 +7,10 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
-import getAPI from './api'
+import * as Mojom from '../common/mojom'
+import createAIChatAPI from './api/ai_chat_api'
 import {
-  AIChatContextProvider,
+  AIChatProvider,
   ConversationEntriesProps,
   useAIChat,
 } from './state/ai_chat_context'
@@ -27,10 +28,55 @@ import '../common/strings'
 import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
 // </if>
 
+// Perform any setup specific to this platform
+
 setIconBasePath('chrome://resources/brave-icons')
 
-// Make sure we're fetching data as early as possible
-const api = getAPI()
+// Create global mojo connections
+const serviceRemote = Mojom.Service.getRemote()
+const metricsRemote = new Mojom.MetricsRemote()
+serviceRemote.bindMetrics(metricsRemote.$.bindNewPipeAndPassReceiver())
+const uiHandlerRemote = Mojom.AIChatUIHandler.getRemote()
+const tabTrackerServiceRemote = Mojom.TabTrackerService.getRemote()
+
+const aiChat = createAIChatAPI(
+  serviceRemote,
+  uiHandlerRemote,
+  Mojom.BookmarksPageHandler.getRemote(),
+  Mojom.HistoryUIHandler.getRemote(),
+  metricsRemote,
+)
+
+// Bind mojo receivers to the appropriate observers, routing events.
+
+const serviceObserverReceiver = new Mojom.ServiceObserverReceiver(
+  aiChat.serviceObserver,
+)
+serviceRemote
+  .bindObserver(serviceObserverReceiver.$.bindNewPipeAndPassRemote())
+  .then(({ state }) => {
+    aiChat.api.state.update(state)
+  })
+
+const chatUIReceiver = new Mojom.ChatUIReceiver(aiChat.chatUIObserver)
+uiHandlerRemote
+  .setChatUI(chatUIReceiver.$.bindNewPipeAndPassRemote())
+  .then(({ isStandalone }) => {
+    aiChat.api.isStandalone.update(isStandalone)
+  })
+const tabDataObserverReceiver = new Mojom.TabDataObserverReceiver(
+  aiChat.tabDataObserver,
+)
+tabTrackerServiceRemote.addObserver(
+  tabDataObserverReceiver.$.bindNewPipeAndPassRemote(),
+)
+
+// Receive child frame interface
+aiChat.api.subscribeToOnChildFrameBound((parentPageReceiver) => {
+  new Mojom.ParentUIFrameReceiver(
+    aiChat.conversationEntriesFrameObserver,
+  ).$.bindHandle(parentPageReceiver.handle)
+})
 
 function App() {
   // <if expr="is_ios">
@@ -41,13 +87,16 @@ function App() {
   }, [])
 
   return (
-    <AIChatContextProvider conversationEntriesComponent={ConversationEntries}>
+    <AIChatProvider
+      api={aiChat.api}
+      conversationEntriesComponent={ConversationEntries}
+    >
       <ActiveChatProviderFromUrl>
         <ConversationContextProvider>
           <Content />
         </ConversationContextProvider>
       </ActiveChatProviderFromUrl>
-    </AIChatContextProvider>
+    </AIChatProvider>
   )
 }
 
@@ -67,6 +116,8 @@ function Content() {
 
 function ConversationEntries(props: ConversationEntriesProps) {
   const conversationContext = useConversation()
+  const aiChatContext = useAIChat()
+
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const hasNotifiedContentReady = React.useRef(false)
   const [hasLoaded, setHasLoaded] = React.useState(false)
@@ -104,17 +155,18 @@ function ConversationEntries(props: ConversationEntriesProps) {
     hasLoaded,
   ])
 
-  React.useEffect(() => {
-    const listener = (height: number) => {
+  // When height of frame content changes, update the iframe height
+  aiChatContext.api.useChildHeightChanged(
+    (height) => {
       // Use the first height change to notify that the iframe has rendered,
       // in lieu of an actual "has rendered the conversation entries" event
       // which, if we get any bugs with this and need to add complexity, might
       // be simpler to implement explicitly, from child -> parent.
-      if (!hasNotifiedContentReady.current && height > 0) {
+      if (!hasNotifiedContentReady.current && height) {
         hasNotifiedContentReady.current = true
         props.onIsContentReady(true)
       }
-      if (iframeRef.current) {
+      if (height && iframeRef.current) {
         // Additional height is added here to address the issue where the
         // button menu's get cut off when the conversation is short since
         // they cant be rendered outside of the iframe.
@@ -126,36 +178,19 @@ function ConversationEntries(props: ConversationEntriesProps) {
         )
         iframeRef.current.style.height = height + additionalHeight + 'px'
       }
-    }
-    const id =
-      api.conversationEntriesFrameObserver.childHeightChanged.addListener(
-        listener,
-      )
+    },
+    [props.onIsContentReady],
+  )
 
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(id)
-    }
-  }, [props.onIsContentReady])
-
-  React.useEffect(() => {
+  aiChatContext.api.useRegenerateAnswerMenuIsOpen((isOpen) => {
     // Set the iframe position to relative when the regenerate
     // answer menu is open. Otherwise the menu can sometimes be
     // overlapped by the Suggested question buttons.
-    const listener = (isOpen: boolean) => {
-      document.body.style.setProperty(
-        '--iframe-position-for-menus',
-        isOpen ? 'relative' : 'unset',
-      )
-    }
-    const id =
-      api.conversationEntriesFrameObserver.regenerateAnswerMenuIsOpen.addListener(
-        listener,
-      )
-
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(id)
-    }
-  }, [])
+    document.body.style.setProperty(
+      '--iframe-position-for-menus',
+      isOpen ? 'relative' : 'unset',
+    )
+  })
 
   return (
     <iframe

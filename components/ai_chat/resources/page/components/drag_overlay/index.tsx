@@ -8,10 +8,12 @@ import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 import { isImageFile, isPdfFile } from '../../constants/file_types'
+import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
 
 export default function DragOverlay() {
+  const aiChat = useAIChat()
   const { isDragActive, isDragOver, clearDragState, attachImages } =
     useConversation()
   const handleOverlayDrop = async (e: React.DragEvent) => {
@@ -29,7 +31,9 @@ export default function DragOverlay() {
 
     try {
       const uploadedFiles = await Promise.all(
-        files.map((file) => convertFileToUploadedFile(file)),
+        files.map((file) =>
+          convertFileToUploadedFile(file, aiChat.processImageFile),
+        ),
       )
       attachImages(uploadedFiles)
     } catch (error) {
