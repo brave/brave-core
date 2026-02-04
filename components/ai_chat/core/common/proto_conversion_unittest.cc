@@ -317,6 +317,31 @@ TEST(ProtoConversionTest, DeserializeToolUseEvent_InvalidContentBlocks) {
             "Valid text");
 }
 
+TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_IsServerResult) {
+  // Test is_server_result = true
+  auto mojom_event_server = mojom::ToolUseEvent::New(
+      "brave_web_search", "tooluse_server", R"({"query": "test"})",
+      std::nullopt, nullptr, true);
+
+  store::ToolUseEventProto proto_event;
+  EXPECT_TRUE(SerializeToolUseEvent(mojom_event_server, &proto_event));
+  EXPECT_TRUE(proto_event.is_server_result());
+
+  auto deserialized = DeserializeToolUseEvent(proto_event);
+  EXPECT_TRUE(deserialized->is_server_result);
+
+  // Test is_server_result = false (default)
+  auto mojom_event_client = mojom::ToolUseEvent::New(
+      "client_tool", "tooluse_client", "{}", std::nullopt, nullptr, false);
+
+  store::ToolUseEventProto proto_event2;
+  EXPECT_TRUE(SerializeToolUseEvent(mojom_event_client, &proto_event2));
+  EXPECT_FALSE(proto_event2.is_server_result());
+
+  auto deserialized2 = DeserializeToolUseEvent(proto_event2);
+  EXPECT_FALSE(deserialized2->is_server_result);
+}
+
 TEST(ProtoConversionTest, SerializeDeserializeSkillEntry) {
   // Create mojom SkillEntry
   auto mojom_entry =

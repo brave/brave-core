@@ -37,6 +37,9 @@ message ToolUseEventProto {
   // to DictionaryValue.
   string arguments_json = 3;
   repeated ContentBlockProto output = 4;
+
+  // True if the output was provided by the server (server-side tool execution).
+  bool is_server_result = 5;
 }
 
 message WebSourceProto {

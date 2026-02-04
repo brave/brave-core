@@ -79,7 +79,7 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
     const store::ToolUseEventProto& proto_event) {
   auto mojom_event = mojom::ToolUseEvent::New(
       proto_event.tool_name(), proto_event.id(), proto_event.arguments_json(),
-      std::nullopt, nullptr, false);
+      std::nullopt, nullptr, proto_event.is_server_result());
 
   // Convert output ContentBlocks
   if (proto_event.output_size() > 0) {
@@ -136,6 +136,7 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   proto_event->set_tool_name(mojom_event->tool_name);
   proto_event->set_id(mojom_event->id);
   proto_event->set_arguments_json(mojom_event->arguments_json);
+  proto_event->set_is_server_result(mojom_event->is_server_result);
 
   // Convert output ContentBlocks
   proto_event->clear_output();
