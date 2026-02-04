@@ -86,6 +86,7 @@
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
+#include "brave/components/local_ai/core/local_ai_internals.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
@@ -160,6 +161,7 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/browser/ui/webui/local_ai_internals/local_ai_internals_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
@@ -945,6 +947,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  content::RegisterWebUIControllerInterfaceBinder<
+      local_ai_internals::mojom::PageHandler, local_ai::LocalAIInternalsUI>(
+      map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::RewardsPageHandler,
       brave_rewards::RewardsPageTopUI>(map);
