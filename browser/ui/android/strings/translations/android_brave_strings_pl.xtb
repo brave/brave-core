@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Pokaż sugestie przeglądarki</translation>
 <translation id="8982438328166986164">Wyświetlaj sugerowane witryny internetowe w oparciu o zakładki i historię przeglądania.</translation>
 <translation id="924029461438529367">Pokaż sugestie wyszukiwania</translation>
-<translation id="6285118765755298263">Indeksowanie innych wyszukiwarek</translation>
-<translation id="919715748352669592">Automatycznie indeksuje strony internetowe, które są zgodne ze specyfikacją OpenSearch.</translation>
 <translation id="9148058034647219655">Wyjście</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrowanie treści</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Nie uaktualniaj połączeń do HTTPS (wyłączone)</translation>
 <translation id="693506469193748756">Zapomnij po zamknięciu tej strony</translation>
 <translation id="6975864539539353406">Usuwa pliki cookie i inne dane strony po jej zamknięciu</translation>
+<translation id="7740929262043547697">Zezwól na blokowanie elementów w prywatnych oknach</translation>
+<translation id="1260864846935682371">Włącza funkcję blokowania elementów Tarczy w prywatnych oknach. Uwaga: elementy zablokowane w prywatnych oknach będą również zablokowane w nieprywatnych.</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
 <translation id="5254037869598726291">Zanonimizowane dane P3A pomagają Brave oszacować ogólny poziom użytkowania i upewnić się, że ulepszamy popularne funkcje.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">PÓŹNIEJ</translation>
 <translation id="4117451092682672487">Prosta ochrona prywatności.</translation>
 <translation id="7909375417585209817">Gdy Brave jest domyślną przeglądarką, każdy otwarty link otwiera się z ochroną prywatności Brave.</translation>
-<translation id="7370959926683925817">Blokuj reklamy. Chroń dane. Każdego dnia.</translation>
-<translation id="7281027579943912834">Z Brave jako domyślną przeglądarką każdy link, który klikniesz, zostanie objęty ochroną Brave przed reklamami. Każda strona i transmisja. Każdy film.</translation>
 <translation id="5148943178722443958">Pomóż ulepszyć Brave.</translation>
 <translation id="6718362830686703942">Wysyłaj raporty diagnostyczne w przypadku wystąpienia błędu.</translation>
 <translation id="8616157231067364693">Dziel się w sposób prywatny i anonimowy uwagami na temat produktów, które są używane przez użytkowników Brave.</translation>
@@ -371,6 +369,14 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8793108040181436796">Widżety</translation>
 <translation id="8643377320501056697">Pokaż popularne strony</translation>
 <translation id="7275773481201277457">Pokaż statystyki Brave</translation>
+<translation id="7462178177755090262">Ekran startowy</translation>
+<translation id="5365434987337264071">Ostatnia otwarta karta</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Nowa zakładka po <ph name="HOURS_ONE"/> godzina braku aktywności}
+          other {Nowa zakładka po <ph name="HOURS_MANY"/> godziny braku aktywności}
+        }</translation>
+<translation id="5233638681132016545">Nowa karta</translation>
+<translation id="8395271296293035055">Wróć do ostatnio otwartej karty</translation>
 <translation id="8297488609722895137">Zdjęcie autorstwa <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Otwórz łącza zewnętrzne w Brave</translation>
 <translation id="5616508928556767259">Otwieraj łącza z innych aplikacji w podglądzie sieciowym Brave. Uwaga: Brave musi być ustawiona jako domyślna przeglądarka.</translation>
@@ -762,7 +768,6 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6889920539620318793">Ustaw jako aktywną</translation>
 <translation id="2653659639078652383">Prześlij</translation>
 <translation id="4945690646623486292">Wybierz sieć</translation>
-<translation id="5233638681132016545">Nowa karta</translation>
 <translation id="8006088103295786154">Dostęp do portfela Brave</translation>
 <translation id="5308380583665731573">Połącz</translation>
 <translation id="8030169304546394654">Rozłączony</translation>
@@ -1072,6 +1077,10 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="4650851936784160359">Nie można zaktualizować listy filtru. Spróbuj ponownie</translation>
 <translation id="3098054327870766317">Pokaż przycisk cofania, gdy karty są zamknięte</translation>
 <translation id="1336494649091412226">Czy na pewno chcesz opuścić Brave?</translation>
+<translation id="6061635824229591714">Usunąć dane strony?</translation>
+<translation id="1265051174491933207">Usunięcie spowoduje usunięcie danych strony i zamknięcie wszystkich kart „<ph name="SITE_NAME"/>”. Nie można tego cofnąć.</translation>
+<translation id="4279349293084858577">Usuń</translation>
+<translation id="4426990318287827331">Usuwaj dane</translation>
 <translation id="7942415993090181327">Historia czatu</translation>
 <translation id="6859935199732075666">Pokazuj błędy Bezpiecznego przeglądania</translation>
 <translation id="2735247450315842119">Zezwalaj na zrzuty ekranu w kartach prywatnych</translation>

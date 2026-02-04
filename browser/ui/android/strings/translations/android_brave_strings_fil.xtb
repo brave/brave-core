@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Ipakita ang mga mungkahi sa browser</translation>
 <translation id="8982438328166986164">Ipinapakita ang mga suhestiyong website batay sa iyong mga bookmark at browsing history.</translation>
 <translation id="924029461438529367">Ipakita ang mga suhestyon sa paghahanap</translation>
-<translation id="6285118765755298263">I-index ang iba pang search engine</translation>
-<translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
 <translation id="9148058034647219655">Lumabas</translation>
 <translation id="7534079972563542000">Mga Hindi Napipigilang Domain</translation>
 <translation id="6486983549008741930">Content Filtering</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Huwag i-upgrade ang mga koneksyon sa HTTPS (naka-disable)</translation>
 <translation id="693506469193748756">Kalimutan ako kapag isinara ko ang site na ito</translation>
 <translation id="6975864539539353406">Kini-clear ang cookies at iba pang data ng site kapag isinara mo ang isang site</translation>
+<translation id="7740929262043547697">Payagan ang pag-block ng elemento sa mga pribadong Windows</translation>
+<translation id="1260864846935682371">Ino-enable ng tampok na ito ang Shields Block Elements sa mga pribadong Windows. Tandaan na ang mga elementong na-block sa mga pribadong Windows ay ma-ke-ke-block din sa mga hindi-pribadong Windows.</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
 <translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
 <translation id="5254037869598726291">Nakakatulong ang na-anonymize na impormasyon ng P3A sa Brave na matantya ang pangkalahatang paggamit, at matiyak na napapahusay namin ang mga kilalang feature</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">MAMAYA</translation>
 <translation id="4117451092682672487">Privacy. Pinasimple.</translation>
 <translation id="7909375417585209817">Kapag default ang Brave, bubukas ang bawat link na ita-tap mo nang may mga proteksyon sa privacy ng Brave.</translation>
-<translation id="7370959926683925817">Mag-block ng mga ad. Makatipid sa data. Araw araw.</translation>
-<translation id="7281027579943912834">Kapag default ang Brave, ang bawat link na ita-tap mo ay magkakaroon ng proteksyon sa pag-block ng ad ng Brave. Bawat page, video, at stream.</translation>
 <translation id="5148943178722443958">Tumulong na pagandahin ang Brave.</translation>
 <translation id="6718362830686703942">Magpadala ng mga diagnostic report kung nakakaranas ka ng pag-crash o pag-freeze.</translation>
 <translation id="8616157231067364693">Magbahagi ng prvate at walang pagkakakilanlang kaisipan sa produkto tungkol sa kung anong mga feature ang ginagamit ng mga user ng Brave.</translation>
@@ -371,6 +369,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8793108040181436796">Mga Widget</translation>
 <translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>
+<translation id="7462178177755090262">Pambungad na Screen</translation>
+<translation id="5365434987337264071">Huling binuksang tab</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Bagong tab matapos ang <ph name="HOURS_ONE"/> oras ng kawalang-aktibidad} other {Bagong tab matapos ang <ph name="HOURS_MANY"/> oras ng kawalang-aktibidad}}</translation>
+<translation id="5233638681132016545">Bagong tab</translation>
+<translation id="8395271296293035055">Bumalik sa pinakahuling tab mo</translation>
 <translation id="8297488609722895137">Larawan ni <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Buksan ang mga external na link sa Brave</translation>
 <translation id="5616508928556767259">Binubuksan ang mga link mula sa iba pang app sa Brave webview. Tandaan: Dapat itakda ang Brave bilang iyong default na browser.</translation>
@@ -761,7 +764,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6889920539620318793">Itakda bilang aktibo</translation>
 <translation id="2653659639078652383">Isumite</translation>
 <translation id="4945690646623486292">Pumili ng Network</translation>
-<translation id="5233638681132016545">Bagong tab</translation>
 <translation id="8006088103295786154">I-access ang Brave Wallet</translation>
 <translation id="5308380583665731573">Kumonekta</translation>
 <translation id="8030169304546394654">Nakadiskonekta</translation>
@@ -1069,6 +1071,10 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4650851936784160359">Hindi ma-update ang filter list. Subukan ulit.</translation>
 <translation id="3098054327870766317">Ipakita ang button ng undo kapag isinara ang mga tab</translation>
 <translation id="1336494649091412226">Sigurado ka bang gusto mong mag-exit sa Brave?</translation>
+<translation id="6061635824229591714">Sirain ang data ng site?</translation>
+<translation id="1265051174491933207">Ang pagsira ay magtatanggal ng data ng site at isasara ang lahat ng mga tab na '<ph name="SITE_NAME"/>'. Hindi na ito maibabalik.</translation>
+<translation id="4279349293084858577">Sirain</translation>
+<translation id="4426990318287827331">Sirain ang data</translation>
 <translation id="7942415993090181327">History ng chat</translation>
 <translation id="6859935199732075666">Ipakita ang mga error ng Safe Browsing</translation>
 <translation id="2735247450315842119">Payagan ang mga screenshot sa mga private tab</translation>

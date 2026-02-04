@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">نمایش پیشنهادهای مرورگر</translation>
 <translation id="8982438328166986164">پیشنهادهای وب‌سایت را بر اساس نشانک‌ها و سابقه مرور شما نمایش می‌دهد.</translation>
 <translation id="924029461438529367">نمایش پیشنهادهای جستجو</translation>
-<translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
-<translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="9148058034647219655">خروج</translation>
 <translation id="7534079972563542000">دامنه‌های توقف‌ناپذیر</translation>
 <translation id="6486983549008741930">فیلتر کردن محتوا</translation>
@@ -147,6 +145,8 @@
 <translation id="4690906712010847708">اتصالات را به HTTPS ارتقاء ندهید (غیرفعال)</translation>
 <translation id="693506469193748756">وقتی این سایت را می‌بندم مرا فراموش کن</translation>
 <translation id="6975864539539353406">وقتی سایتی را می‌بندید، کوکی‌ها و سایر اطلاعات سایت را پاک می‌کند</translation>
+<translation id="7740929262043547697">اجازه مسدودسازی مؤلفه‌ها در Windows خصوصی</translation>
+<translation id="1260864846935682371">قابلیت مسدودسازی مؤلفه‌های سپرها را در Windows خصوصی فعال می‌کند. توجه داشته باشید که مؤلفه‌هایی که در Windows خصوصی مسدود می‌شوند، در Windows غیرخصوصی نیز مسدود خواهند شد.</translation>
 <translation id="1680858055899097121">بین جلسه‌های مرور وب، زبانه‌ها نگه داشته نمی‌شوند</translation>
 <translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
 <translation id="5254037869598726291">اطلاعات P3A بی‌نام‌شده به Brave کمک می‌کند مصرف کلی را تخمین بزند و تضمین می‌کند که ما ویژگی‌های پرطرفدار را بهبود می‌بخشیم.</translation>
@@ -194,8 +194,6 @@
 <translation id="834487290629916192">بعداً</translation>
 <translation id="4117451092682672487">حریم خصوصی. ساده شده است.</translation>
 <translation id="7909375417585209817">با استفاده از Brave به‌عنوان مرورگر پیش‌فرض، همه پیوندهایی که روی آن‌ها ضربه می‌زنید با محافظت‌های حریم خصوصی Brave باز می‌شوند.</translation>
-<translation id="7370959926683925817">مسدود کردن تبلیغات. ذخیره داده ها. هر روز</translation>
-<translation id="7281027579943912834">با Brave به‌عنوان پیش‌فرض، هر پیوندی که روی آن ضربه می‌زنید از محافظت از بلوک آگهی Brave برخوردار می‌شود. هر صفحه، ویدیو، و جریان.</translation>
 <translation id="5148943178722443958">به بهبود Brave کمک کنید.</translation>
 <translation id="6718362830686703942">اگر با از کار افتادن یا توقف مواجه شدید، گزارش‌های عیب‌یابی را ارسال کنید.</translation>
 <translation id="8616157231067364693">اطلاعات آماری محصول مربوط به ویژگی‌هایی که کاربران Brave استفاده می‌کنند، خصوصی و بی‌نام اشتراک‌‌گذاری می‌شوند.</translation>
@@ -373,6 +371,11 @@
 <translation id="8793108040181436796">ویجت‌ها</translation>
 <translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="7275773481201277457">نمایش آمار Brave</translation>
+<translation id="7462178177755090262">صفحه‌ی آغازین</translation>
+<translation id="5365434987337264071">آخرین تب بازشده</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {تب جدید پس از <ph name="HOURS_ONE"/> ساعت عدم فعالیت} other {تب جدید پس از <ph name="HOURS_MANY"/> ساعت عدم فعالیت}}</translation>
+<translation id="5233638681132016545">برگه جدید</translation>
+<translation id="8395271296293035055">بازگشت به آخرین تب بازشده</translation>
 <translation id="8297488609722895137">عکس از <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">پیوندهای خارجی را در Brave باز کنید</translation>
 <translation id="5616508928556767259">پیوندهای برنامه‌های دیگر را در نمای وب Brave باز می‌کند. توجه: Brave باید به‌عنوان مرورگر پیش‌فرض شما تنظیم شود.</translation>
@@ -763,7 +766,6 @@
 <translation id="6889920539620318793">تنظیم به‌عنوان فعال</translation>
 <translation id="2653659639078652383">ارسال</translation>
 <translation id="4945690646623486292">انتخاب شبکه</translation>
-<translation id="5233638681132016545">برگه جدید</translation>
 <translation id="8006088103295786154">دسترسی به کیف پول Brave</translation>
 <translation id="5308380583665731573">اتصال</translation>
 <translation id="8030169304546394654">ارتباط قطع شد</translation>
@@ -1071,6 +1073,10 @@
 <translation id="4650851936784160359">فهرست فیلتر به‌روزرسانی نشد. لطفاً دوباره تلاش کنید</translation>
 <translation id="3098054327870766317">نمایش دکمه واگرد هنگام بستن زبانه‌ها</translation>
 <translation id="1336494649091412226">مطمئنید می‌خواهید از Brave خارج شوید؟</translation>
+<translation id="6061635824229591714">داده‌های سایت حذف شوند؟</translation>
+<translation id="1265051174491933207">حذف امن داده‌ها باعث حذف اطلاعات سایت و بستن تمام تب‌های «<ph name="SITE_NAME"/>» می‌شود. این عملیات قابل بازگشت نیست.</translation>
+<translation id="4279349293084858577">حذف امن</translation>
+<translation id="4426990318287827331">حذف امن داده‌ها</translation>
 <translation id="7942415993090181327">سابقه گفتگو</translation>
 <translation id="6859935199732075666">نمایش خطاهای مرور ایمن</translation>
 <translation id="2735247450315842119">اجازه گرفتن عکس صفحه در برگه‌های خصوصی</translation>

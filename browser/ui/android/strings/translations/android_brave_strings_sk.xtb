@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Zobraziť návrh prehliadača</translation>
 <translation id="8982438328166986164">Zobrazuje návrhy webových stránok na základe vašich záložiek a histórie prehliadania.</translation>
 <translation id="924029461438529367">Zobraziť návrhy vyhľadávania</translation>
-<translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
-<translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
 <translation id="7534079972563542000">Nezastaviteľné domény</translation>
 <translation id="6486983549008741930">Filtrovanie obsahu</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Nemeniť pripojenia na HTTPS (vypnuté)</translation>
 <translation id="693506469193748756">Zabudnúť na mňa, keď zavriem túto stránku</translation>
 <translation id="6975864539539353406">Po zatvorení lokality vymaže súbory cookie a ďalšie údaje lokality</translation>
+<translation id="7740929262043547697">Povoliť blokovanie prvkov v súkromných oknách</translation>
+<translation id="1260864846935682371">Aktivuje funkciu Štíty – Blokovať prvky v súkromných oknách. Upozorňujeme, že prvky blokované v súkromných oknách budú blokované aj v bežných oknách.</translation>
 <translation id="1680858055899097121">Neotvárajte karty medzi prehliadanými reláciami</translation>
 <translation id="7142548388914389999">Povoliť analýzu produktov chrániacich súkromie (P3A)</translation>
 <translation id="5254037869598726291">Vďaka anonymným informáciám o P3A môže Brave odhadovať celkové používanie a zlepšovať populárne funkcie.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">NESKÔR</translation>
 <translation id="4117451092682672487">Jednoduchý spôsob ochrany vášho súkromia.</translation>
 <translation id="7909375417585209817">S Brave ako predvoleným prehliadačom sa každý odkaz, na ktorý ťuknete, otvorí s ochranou osobných údajov Brave.</translation>
-<translation id="7370959926683925817">Blokovať reklamy. Uložiť dáta. Každý jeden deň.</translation>
-<translation id="7281027579943912834">Keď je Brave predvolený, každý odkaz, na ktorý klepnete, získa ochranu proti blokovaniu reklám Brave. Každá stránka, video a stream.</translation>
 <translation id="5148943178722443958">Pomôžte zlepšiť prehliadač Brave.</translation>
 <translation id="6718362830686703942">Odošlite diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.</translation>
 <translation id="8616157231067364693">Zdieľajte súkromné a anonymné informácie o produktoch, ktoré používatelia Brave používajú.</translation>
@@ -371,6 +369,14 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8793108040181436796">Miniaplikácie</translation>
 <translation id="8643377320501056697">Zobraziť top stránky</translation>
 <translation id="7275773481201277457">Zobraziť štatistiky Brave</translation>
+<translation id="7462178177755090262">Úvodná obrazovka</translation>
+<translation id="5365434987337264071">Posledná otvorená karta</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Nová karta po <ph name="HOURS_ONE"/> hodina nečinnosti}
+          other {Nová karta po <ph name="HOURS_MANY"/> hodiny nečinnosti}
+        }</translation>
+<translation id="5233638681132016545">Nová karta</translation>
+<translation id="8395271296293035055">Vráťte sa na svoju poslednú kartu</translation>
 <translation id="8297488609722895137">Fotografia od <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Otvoriť externé prepojenia v prehliadači Brave</translation>
 <translation id="5616508928556767259">Otvorí prepojenia z iných aplikácií vo webovom zobrazení prehliadača Brave. Poznámka: prehliadač Brave musí byť nastavený ako predvolený prehliadač.</translation>
@@ -761,7 +767,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6889920539620318793">Nastaviť ako aktívne</translation>
 <translation id="2653659639078652383">Odoslať</translation>
 <translation id="4945690646623486292">Zvoliť sieť</translation>
-<translation id="5233638681132016545">Nová karta</translation>
 <translation id="8006088103295786154">Prístup k peňaženke Brave</translation>
 <translation id="5308380583665731573">Pripojenie</translation>
 <translation id="8030169304546394654">Odpojené</translation>
@@ -1072,6 +1077,10 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="4650851936784160359">Zoznam filtrov sa nepodarilo aktualizovať. Skúste to znova</translation>
 <translation id="3098054327870766317">Zobraziť tlačidlo „Späť“ pri zatvorení kariet</translation>
 <translation id="1336494649091412226">Naozaj chcete opustiť Brave?</translation>
+<translation id="6061635824229591714">Zničiť údaje stránky?</translation>
+<translation id="1265051174491933207">Zničením dôjde k zatvoreniu všetkých kariet „<ph name="SITE_NAME"/>“ a vymazaniu všetkých údajov stránky. Tento krok nemožno zvrátiť.</translation>
+<translation id="4279349293084858577">Zničiť</translation>
+<translation id="4426990318287827331">Zničiť údaje</translation>
 <translation id="7942415993090181327">História chatu</translation>
 <translation id="6859935199732075666">Zobraziť chyby Bezpečného prehliadania</translation>
 <translation id="2735247450315842119">Povoliť snímky obrazovky v súkromných kartách</translation>

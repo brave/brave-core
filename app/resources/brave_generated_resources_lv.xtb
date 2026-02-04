@@ -130,7 +130,6 @@
 <translation id="780301667611848630">Nē, paldies</translation>
 <translation id="1162706247109707219">Nospiežot OK, jūs piekrītat, ka jūsu Brave instalētā versija NESAŅEMS svarīgus drošības labojumus, līdz nebūsiet pārgājis uz Windows 10 vai jaunāku operētājsistēmu. Šis brīdinājums NETIKS rādīts atkārtoti.</translation>
 <translation id="9164786361657554526">Nospiežot OK, jūs piekrītat, ka jūsu Brave instalētā versija NESAŅEMS svarīgus drošības labojumus, līdz nebūsiet pārgājis uz macOS 10.15 vai jaunāku operētājsistēmu. Šis brīdinājums NETIKS rādīts atkārtoti.</translation>
-<translation id="2770465223704140727">Noņemt no saraksta</translation>
 <translation id="6020553119523541665">Šī cilne ir aktīva citā logā</translation>
 <translation id="4987392683074136770">Noklikšķinot uz šīs cilnes, tās saturs tiks pārnests uz šo logu</translation>
 <translation id="8355523213948477234">Dalītā skata izvēlnes spoga</translation>
@@ -223,6 +222,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPN izmantot WireGuard protokolu</translation>
 <translation id="8519170191215826548">Šo iestatījumu nevar mainīt, kamēr ir savienots Brave VPN.</translation>
+<translation id="1177917174080821247">Rādīt VPN teknes ikonu</translation>
+<translation id="3747459938663420752">Kad iespējots, uzdevumjoslā sistēmas teknē tiks rādīta Brave VPN ikona.</translation>
 <translation id="4235920711083356755">Rādīt VPN pogu</translation>
 <translation id="4070612712151038707">Rāda VPN pogu rīkjoslā</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -234,7 +235,6 @@
 <translation id="8030169304546394654">Atvienots</translation>
 <translation id="1863950594388384201">Rādīt VPN pogu rīkjoslā</translation>
 <translation id="5187139277471084437">Slēpt VPN pogu rīkjoslā</translation>
-<translation id="1177917174080821247">Rādīt VPN teknes ikonu</translation>
 <translation id="8041089156583427627">Sūtīt atsauksmes</translation>
 <translation id="4049186905514157504">Pārvaldīt plānu</translation>
 <translation id="7570585565843385325">Rādīt VPN pogu rīkjoslā</translation>
@@ -380,6 +380,7 @@
 <translation id="5860254591544742609">Rādīt virsrakstjoslu</translation>
 <translation id="4691131445504068802">Pilnībā paslēpt, kad minimizēts</translation>
 <translation id="6763346436728173884">Vienmēr paslēpt cilnes aizvēršanas pogu</translation>
+<translation id="8082625757059443808">Atļaut aizvērt cilnes, noklikšķinot ar vidējo pogu</translation>
 <translation id="4909269867860362936">Automātiski izvērst, turot peli virs, kad minimizēts</translation>
 <translation id="3367129510799209147">Tabulācijas kursora režīms</translation>
 <translation id="8925055964134259461">Izvērst vertikālās cilnes atsevišķi katrā logā</translation>
@@ -515,12 +516,12 @@
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="1051600834033686945">Atvērt visus Brave balvu iestatījumus</translation>
 <translation id="8826461509529116322">Parādīt Brave atlīdzību pogu</translation>
-<translation id="3328713589982547433">Tikai reklāmu bloķēšanas režīms</translation>
-<translation id="1574253307550419595">Izmantot tikai reklāmu bloķēšanas režīmu</translation>
-<translation id="738717058053657696">Tikai reklāmu bloķēšanas režīmā tiek saglabāti galvenie Brave Shields reklāmas bloķēšanas noteikumi. Brīdinājums: tiek noņemtas visas privātuma aizsardzības iespējas. Lūdzu, ņemiet vērā, ka atsevišķām vietnēm, kurās tiek bloķēta Brave privātuma aizsardzība, varat iestatīt Shields uz DOWN. Šis ir eksperimentāls režīms. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">Tikai reklāmu bloķēšanas režīms</translation>
+<translation id="4146834954839563870">Izmantot tikai reklāmu bloķēšanas režīmu</translation>
+<translation id="420732343671200734">Tikai reklāmu bloķēšanas režīmā tiek saglabāti galvenie Brave vairogi reklāmas bloķēšanas noteikumi. Brīdinājums: tiek noņemtas visas privātuma aizsardzības iespējas. Lūdzu, ņemiet vērā, ka atsevišķām vietnēm, kuras nedarbojas Brave konfidencialitātes aizsardzības dēļ, varat iestatīt Vairogi uz DOWN. Šis ir eksperimentāls režīms. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">Šobrīd vairogu opcijas ir atspējotas.</translation>
-<translation id="516439939408671102">Tikai reklāmu bloķēšanas režīmā tiek saglabāti galvenie Brave Shields reklāmu bloķēšanas noteikumi un izslēgta konfidencialitātes aizsardzība. Ja vēlaties iespējot standarta Shields, lūdzu, atspējojiet šo režīmu.</translation>
-<translation id="177233004755519660">Izslēgt tikai reklāmu bloķēšanas režīmu</translation>
+<translation id="2687830906359353344">Tikai reklāmu bloķēšanas režīmā tiek saglabāti galvenie Brave vairogi reklāmas bloķēšanas noteikumi un izslēgta konfidencialitātes aizsardzība. Ja vēlaties iespējot standarta Vairogi, lūdzu, atspējojiet šo režīmu.</translation>
+<translation id="3809423899581611047">Izslēgt tikai reklāmu bloķēšanas režīmu</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="7791141927430186653">Atļaut X (iepriekš Twitter) iegultos tvītus</translation>
@@ -664,8 +665,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7029809446516969842">Paroles</translation>
 <translation id="6011308810877101166">Uzlabojiet meklēšanas ieteikumus</translation>
 <translation id="2332576387809612040">Ja šī funkcija ir ieslēgta, Brave nosūta to, ko jūs ievadāt adreses joslā vai meklēšanas laukā, uz jūsu noklusējuma meklētājprogrammu, lai iegūtu labākus ieteikumus. Ja šī funkcija ir izslēgta, Brave rāda tikai jūsu ierīcē ģenerētus ieteikumus. Inkognito logos šī funkcija vienmēr ir izslēgta.</translation>
-<translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
-<translation id="5526883767168905185">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām</translation>
 <translation id="5522403133543437426">Adreses joslā izmantotā meklētājprogramma.</translation>
 <translation id="280472502078788655">Adreses joslā izmantotā meklētājprogramma, kas tiks izmantota inkognito logos.</translation>
 <translation id="7232120595886556478">Parastais logs</translation>
@@ -870,6 +869,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7311244614769792472">Netika atrasts neviens rezultāts</translation>
 <translation id="1838374766361614909">Notīrīt meklēšanu</translation>
 <translation id="5126255551970171328">Meklēt atmiņā</translation>
+<translation id="7402116145895962069">Sinhronizēt savus Ollama lokālos modeļus</translation>
+<translation id="4835154437390745810">Pārvalda Ollama</translation>
 <translation id="5985516785067818307">Aptaujas dalībnieks</translation>
 <translation id="8347743943525229984">Atļaut Brave aptaujas</translation>
 <translation id="3204080538332044581">Ļauj Brave rādīt saites uz privātām aptaujām jaunas cilnes lapā. Aptaujas palīdz mums veidot labākas funkcijas un izvērtēt pārlūkprogrammā balstītu reklāmas kampaņu efektivitāti. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Näita brauseri soovitusi</translation>
 <translation id="8982438328166986164">Näitab teie järjehoidjate ja sirvimisajaloo põhjal veebisaitide soovitusi.</translation>
 <translation id="924029461438529367">Näita otsingusoovitusi</translation>
-<translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
-<translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
 <translation id="9148058034647219655">Välju</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Sisu filtreerimine</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Ära täienda ühendusi HTTPS-ile (keelatud)</translation>
 <translation id="693506469193748756">Unusta mind selle saidi sulgemisel</translation>
 <translation id="6975864539539353406">Kustutab küpsised ja muud veebisaidi andmed, kui veebisaidi sulgete</translation>
+<translation id="7740929262043547697">Luba elementide blokeerimine privaatsetes akendes</translation>
+<translation id="1260864846935682371">Lubab Kaitse elementide blokeerimise funktsiooni privaatsetes akendes. Pange tähele, et privaatsetes akendes blokeeritud elemendid blokeeritakse ka mitteprivaatsetes akendes.</translation>
 <translation id="1680858055899097121">Ära säilita kaarte sirvimissessioonide vältel</translation>
 <translation id="7142548388914389999">Võimalda privaatsust säilitav tooteanalüüs (P3A)</translation>
 <translation id="5254037869598726291">Anonüümitud P3A teave aitab Brave'il hinnata üldist kasutust ja tagada, et parandame menukaid funktsioone.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">HILJEM</translation>
 <translation id="4117451092682672487">Privaatsus on nüüd lihtne.</translation>
 <translation id="7909375417585209817">Kui kasutate vaikimisi Brave'i, kasutatakse iga puudutatud lingi avamisel Brave'i privaatsuskaitseid.</translation>
-<translation id="7370959926683925817">Reklaamid blokeeritakse. Andmed salvestatakse. Päevast päeva.</translation>
-<translation id="7281027579943912834">Kui kasutate vaikimisi Brave'i, saab iga puudutatud link Brave'i reklaamikaitse. Igal lehel, igas videos ja voogesituses.</translation>
 <translation id="5148943178722443958">Aidake Brave'i paremaks muuta.</translation>
 <translation id="6718362830686703942">Saatke diagnostikaaruanne, kui kogete krahhi minekut või hangumist.</translation>
 <translation id="8616157231067364693">Jagage täiesti privaatselt ja anonüümselt tooteteavet funktsioonide kohta, mida Brave'i kasutajad tarvitavad.</translation>
@@ -372,6 +370,11 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8793108040181436796">Vidinad</translation>
 <translation id="8643377320501056697">Kuva popid saidid</translation>
 <translation id="7275773481201277457">Kuva Brave’i statistika</translation>
+<translation id="7462178177755090262">Avakuva seaded</translation>
+<translation id="5365434987337264071">Viimane avatud kaart</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Uus kaart pärast <ph name="HOURS_ONE"/> tunni jooksul tegevusetust} other {Uus kaart pärast <ph name="HOURS_MANY"/> tunni jooksul tegevusetust}}</translation>
+<translation id="5233638681132016545">Uus vaheleht</translation>
+<translation id="8395271296293035055">Naase hiljutise kaardi juurde</translation>
 <translation id="8297488609722895137">Foto autorilt <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Ava Brave’is välised lingid</translation>
 <translation id="5616508928556767259">Avab Brave’i veebivaates lingid muudest rakendustest. Märkus. Brave peab olema määratud vaikebrauseriks.</translation>
@@ -762,7 +765,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="6889920539620318793">Määra aktiivseks</translation>
 <translation id="2653659639078652383">Esita</translation>
 <translation id="4945690646623486292">Valige võrk</translation>
-<translation id="5233638681132016545">Uus vaheleht</translation>
 <translation id="8006088103295786154">Pääs Brave'i rahakotti</translation>
 <translation id="5308380583665731573">Ühendamine</translation>
 <translation id="8030169304546394654">Lahti ühendatud</translation>
@@ -1073,6 +1075,10 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="4650851936784160359">Filtrite loendit ei õnnestunud uuendada. Proovige uuesti</translation>
 <translation id="3098054327870766317">Kuva tagasivõtmise nupp, kui vahekaardid on suletud</translation>
 <translation id="1336494649091412226">Kas olete kindel, et soovite Brave'ist väljuda?</translation>
+<translation id="6061635824229591714">Kas hävitada saidi andmed?</translation>
+<translation id="1265051174491933207">Hävitamine kustutab saidi andmed ja sulgeb kõik '<ph name="SITE_NAME"/>' kaardid. Seda ei saa tagasi võtta.</translation>
+<translation id="4279349293084858577">Hävita</translation>
+<translation id="4426990318287827331">Hävita andmed</translation>
 <translation id="7942415993090181327">Vestluse ajalugu</translation>
 <translation id="6859935199732075666">Näita turvalise lehitsemise vigu</translation>
 <translation id="2735247450315842119">Luba ekraanipildid privaatsetel vahelehtedel</translation>

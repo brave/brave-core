@@ -131,7 +131,6 @@
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="1162706247109707219">확인을 클릭하면 Windows 10 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
 <translation id="9164786361657554526">확인을 클릭하면 macOS 10.15 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
-<translation id="2770465223704140727">목록에서 제거</translation>
 <translation id="6020553119523541665">이미 다른 창에 이 탭이 활성화되어 있음</translation>
 <translation id="4987392683074136770">이 탭을 클릭하면 콘텐츠를 이 창으로 가져옵니다.</translation>
 <translation id="8355523213948477234">분할 보기 메뉴 버튼</translation>
@@ -224,6 +223,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPN에서 WireGuard 프로토콜 사용</translation>
 <translation id="8519170191215826548">Brave VPN이 연결되어 있을 때는 이 설정을 변경할 수 없습니다.</translation>
+<translation id="1177917174080821247">VPN 트레이 아이콘 표시</translation>
+<translation id="3747459938663420752">활성화하면 Windows 작업 표시줄에 Brave VPN의 트레이 아이콘이 표시됩니다.</translation>
 <translation id="4235920711083356755">VPN 버튼 표시</translation>
 <translation id="4070612712151038707">툴바에 VPN 버튼 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -235,7 +236,6 @@
 <translation id="8030169304546394654">연결 해제됨</translation>
 <translation id="1863950594388384201">툴바에 VPN 버튼 표시</translation>
 <translation id="5187139277471084437">툴바에서 VPN 버튼 숨기기</translation>
-<translation id="1177917174080821247">VPN 트레이 아이콘 표시</translation>
 <translation id="8041089156583427627">의견 보내기</translation>
 <translation id="4049186905514157504">내 플랜 관리</translation>
 <translation id="7570585565843385325">툴바에 VPN 버튼 표시</translation>
@@ -381,6 +381,7 @@
 <translation id="5860254591544742609">제목 바 표시</translation>
 <translation id="4691131445504068802">최소화될 때 완전히 숨기기</translation>
 <translation id="6763346436728173884">탭 닫기 버튼 항상 숨기기</translation>
+<translation id="8082625757059443808">중간 버튼 클릭으로 탭을 닫을 수 있도록 허용</translation>
 <translation id="4909269867860362936">최소화된 상태에서 마우스를 올리면 자동 확장</translation>
 <translation id="3367129510799209147">탭 호버 모드</translation>
 <translation id="8925055964134259461">창별로 독립적으로 세로 탭 자동 확장</translation>
@@ -516,12 +517,12 @@
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
 <translation id="1051600834033686945">Brave Rewards 설정 전체 열기</translation>
 <translation id="8826461509529116322">Brave Rewards 버튼 표시</translation>
-<translation id="3328713589982547433">광고 차단 전용 모드</translation>
-<translation id="1574253307550419595">광고 차단 전용 모드 사용</translation>
-<translation id="738717058053657696">광고 차단 전용 모드는 Brave Shield의 핵심 광고 차단 규칙을 유지합니다. 경고: 모든 개인정보 보호 기능을 제거합니다. Brave의 개인 정보 보호 기능을 차단하는 개별 웹사이트의 경우, Shields를 DOWN으로 설정할 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">광고 차단 전용 모드</translation>
+<translation id="4146834954839563870">광고 차단 전용 모드 사용</translation>
+<translation id="420732343671200734">광고 차단 전용 모드는 Brave 쉴드의 핵심 광고 차단 규칙을 유지합니다. 경고: 모든 개인정보 보호 기능을 제거합니다. Brave의 개인정보 보호 기능으로 인해 정상 작동하지 않는 개별 웹사이트의 경우, 쉴드를 DOWN으로 설정할 수 있습니다. 이 기능은 실험적인 모드입니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">보호막 옵션은 현재 비활성화되어 있습니다.</translation>
-<translation id="516439939408671102">광고 차단 전용 모드는 Brave Shield의 핵심 광고 차단 규칙을 유지하며 개인정보 보호 기능을 해제합니다. 표준 쉴드를 사용하려면 이 모드를 비활성화하세요.</translation>
-<translation id="177233004755519660">광고 차단 전용 모드 끄기</translation>
+<translation id="2687830906359353344">광고 차단 전용 모드는 Brave 쉴드의 핵심 광고 차단 규칙을 유지하며 개인정보 보호 기능을 해제합니다. 표준 쉴드를 사용하려면 이 모드를 비활성화하세요.</translation>
+<translation id="3809423899581611047">광고 차단 전용 모드 끄기</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="7791141927430186653">X(구 Twitter) 임베디드 트윗 허용</translation>
@@ -665,8 +666,6 @@
 <translation id="7029809446516969842">비밀번호</translation>
 <translation id="6011308810877101166">검색 제안 향상</translation>
 <translation id="2332576387809612040">이 기능을 사용할 경우 Brave는 사용자가 주소창이나 검색창에 입력한 내용을 기본 검색 엔진으로 전송하여 더 나은 제안을 제공합니다. 이 기능을 사용하지 않을 경우 Brave는 장치에서 생성된 제안만 표시합니다. 비공개 창에서는 항상 꺼져 있습니다.</translation>
-<translation id="6285118765755298263">다른 검색 엔진 색인</translation>
-<translation id="5526883767168905185">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다</translation>
 <translation id="5522403133543437426">주소 표시줄에서 사용하는 검색 엔진입니다.</translation>
 <translation id="280472502078788655">비공개(시크릿) 창의 주소 표시줄에서 사용하는 검색 엔진입니다.</translation>
 <translation id="7232120595886556478">일반 창</translation>
@@ -871,6 +870,8 @@
 <translation id="7311244614769792472">결과가 없습니다</translation>
 <translation id="1838374766361614909">검색어 지우기</translation>
 <translation id="5126255551970171328">메모리 검색</translation>
+<translation id="7402116145895962069">Ollama 로컬 모델 동기화</translation>
+<translation id="4835154437390745810">Ollama에서 관리됨</translation>
 <translation id="5985516785067818307">설문조사 패널리스트</translation>
 <translation id="8347743943525229984">Brave 설문조사 허용</translation>
 <translation id="3204080538332044581">새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>

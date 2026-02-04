@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">បង្ហាញ​ទ្បសិត​ចូលក្រោម​កម្មវិធី​រុករក</translation>
 <translation id="8982438328166986164">បង្ហាញ​ណែនាំ​របាយការណ៍គេហទំព័រ​ដោយដាក់ចូល​ក្នុង​បញ្ជី​ទាំងចាស់ និង​ Browsing History</translation>
 <translation id="924029461438529367">បង្ហាញការណែនាំក្នុងការស្វែងរក</translation>
-<translation id="6285118765755298263">សន្ទស្សន៍ម៉ាស៊ីនស្វែងរកផ្សេងទៀត</translation>
-<translation id="919715748352669592">ធ្វើលិបិក្រមគេហទំព័រដែលធ្វើតាមលក្ខណៈពិសេស OpenSearch ដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="9148058034647219655">ចាកចេញ</translation>
 <translation id="7534079972563542000">Domainយ៉ាងអាចលោតបាន</translation>
 <translation id="6486983549008741930">តម្រងមាតិកា</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">មិនធ្វើការតំឡើងការតភ្ជាប់ទៅ HTTPS (បានផ្ដាច់)</translation>
 <translation id="693506469193748756">ភ្លេចខ្ញុំនៅពេលខ្ញុំបិទភ្ជាប់នេះ</translation>
 <translation id="6975864539539353406">ជម្រះខូគីស៍ និងទិន្នន័យគេហទំព័រផ្សេងទៀតនៅពេលអ្នកបិទគេហទំព័រ</translation>
+<translation id="7740929262043547697">អនុញ្ញាតការទប់ស្កាត់ធាតុក្នុងផ្ទាំងឯកជន</translation>
+<translation id="1260864846935682371">បើកមុខងារ 'ខែលការពារ​ទប់ស្កាត់ធាតុ' នៅក្នុងផ្ទាំង​ឯកជន។ សូមចំណាំថា​ធាតុ​ដែល​ត្រូវ​បានទប់ស្កាត់​នាពេល នៅផ្ទាំងឯកជន ក៏នឹងត្រូវបានទប់ស្កាត់នៅផ្ទាំង​ឥតឯកជនផងដែរ។</translation>
 <translation id="1680858055899097121">មិនរក្សាទុកផ្ទាំងរវាងសម័យការរុករក</translation>
 <translation id="7142548388914389999">អនុញ្ញាតវិភាគផលិតផល​ការពារ​ភាពឯកជន (P3A)</translation>
 <translation id="5254037869598726291">ព័ត៌មាន P3A ដែលបានយកអនាមិកជួយ Brave ប៉ាន់ស្មានការប្រើប្រាស់សរុប និងធានាថា យើងកំពុងធ្វើឱ្យលក្ខណៈពិសេសសំខាន់ៗកាន់តែប្រសើរ។</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">ពេលក្រោយ</translation>
 <translation id="4117451092682672487">ផ្តល់ជូននូវដំណោះស្រាយដែលផ្តោតលើឯកជនភាព</translation>
 <translation id="7909375417585209817">តាមរយៈការកំណត់ Brave ជាលំនាំដើម រាល់តំណភ្ជាប់ដែលអ្នកចុចនឹងភ្ជាប់មកជាមួយការការពារឯកជនភាពរបស់ Brave។</translation>
-<translation id="7370959926683925817">រារាំងការផ្សាយពាណិជ្ជកម្ម សន្សំព័ត៌មានទិន្នន័យ រាល់ថ្ងៃៗ</translation>
-<translation id="7281027579943912834">តាមរយៈការកំណត់ Brave ជាលំនាំដើម រាល់តំណភ្ជាប់ដែលអ្នកចុចនឹងភ្ជាប់មកជាមួយការការពារនៃការទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្មរបស់ Brave។ រាល់ទំព័រ វីដេអូ និងស្ទ្រីម។</translation>
 <translation id="5148943178722443958">ជួយធ្វើឱ្យ Brave កាន់តែប្រសើរឡើង។</translation>
 <translation id="6718362830686703942">ផ្ញើរបាយការណ៍វិភាគ ប្រសិនបើអ្នកជួបប្រទះការគាំង ឬបង្កក។</translation>
 <translation id="8616157231067364693">ចែករំលែកការយល់ដឹងអំពីផលិតផលឯកជន និងអនាមិកអំពីមុខងារអ្វីខ្លះដែលកំពុងត្រូវបានប្រើប្រាស់ដោយអ្នកប្រើប្រាស់របស់ Brave។</translation>
@@ -378,6 +376,14 @@
 <translation id="8793108040181436796">វិចិត្រេអាវក្នុងនាងួមាន</translation>
 <translation id="8643377320501056697">បង្ហាញតំបន់ចំបាច់</translation>
 <translation id="7275773481201277457">បង្ហាញស្ថិតិ Brave</translation>
+<translation id="7462178177755090262">អេក្រង់បើក</translation>
+<translation id="5365434987337264071">ផ្ទាំងបើកចុងក្រោយ</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {New tab after <ph name="HOURS_ONE"/> hour of inactivity}
+          other {New tab after <ph name="HOURS_MANY"/> hours of inactivity}
+        }</translation>
+<translation id="5233638681132016545">ផ្ទាំងថ្មី</translation>
+<translation id="8395271296293035055">ត្រឡប់ទៅផ្ទាំងដែលគេបានសកម្មចុងក្រោយ</translation>
 <translation id="8297488609722895137">រូបភាពដោយ <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">បើកតំណភ្ជាប់ខាងក្រៅនៅក្នុង Brave</translation>
 <translation id="5616508928556767259">បើកតំណភ្ជាប់ពីកម្មវិធីផ្សេងៗទៀតនៅក្នុងទិដ្ឋភាពបណ្តាញ Brave។ ចំណាំ៖ អ្នកត្រូវតែកំណត់ Brave ជាកម្មវិធីរុករកតាមអ៊ីនធឺណិតលំនាំដើមរបស់អ្នក។</translation>
@@ -677,6 +683,14 @@ Brave រារាំងអ្វីៗទាំងនេះដើម្បី�
 
 ឥណពិស្តខ្វៗៅញ្ជូនប្រាងនៃប្រើម៉ឺនសង្ខេបរបស់ប្រឈាដបាេីចន្លះប្រព័ន្ធរួចហូត់វគ្គនៅហ្ស៊ុនណ</translation>
 <translation id="8813171284214934811">ជម្រើសអាសយដ្ឋានម៉ាស៊ីុនដែលនៅជិតអ្នកបំផុតដោយផ្អែកលើវេលាអាសយដ្ឋានលំនៅសម្រាប់តំាងលំនៅ័ងអ៊ីនធឺណិត។ ជម្រើសនេះត្រូវបានណែនាំដើម្បីបង្កើនល្បឿនអ៊ីនធឺណិត។</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> city - }
+          other {<ph name="CITY_COUNT_MANY"/> cities - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servers}
+        }</translation>
 <translation id="3199127022143353223">ម៉ាស៊ីនមេ</translation>
 <translation id="5431902940483264007">ល្អបំផុត</translation>
 <translation id="6527596624419285047">ប្រើម៉ាស៊ីនមេល្អបំផុតដែលមាន</translation>
@@ -770,7 +784,6 @@ Brave រារាំងអ្វីៗទាំងនេះដើម្បី�
 <translation id="6889920539620318793">កំណត់ជាសកម្ម</translation>
 <translation id="2653659639078652383">ដាក់ស្នើ</translation>
 <translation id="4945690646623486292">ជ្រើសរើសបណ្តាញ</translation>
-<translation id="5233638681132016545">ផ្ទាំងថ្មី</translation>
 <translation id="8006088103295786154">ចូលប្រើកាបូប Brave</translation>
 <translation id="5308380583665731573">ភ្ជាប់</translation>
 <translation id="8030169304546394654">បានផ្ដាច់</translation>
@@ -1082,6 +1095,10 @@ Brave រារាំងអ្វីៗទាំងនេះដើម្បី�
 <translation id="4650851936784160359">បញ្ជីតម្រងមិនអាចធ្វើបច្ចុប្បន្នភាព។ សូមព្យាយាមម្តងទៀត</translation>
 <translation id="3098054327870766317">បង្ហាញប៊ូតុងមកវិញនៅពេលបិទផ្ទាំង</translation>
 <translation id="1336494649091412226">តើ​អ្នក​ប្រាកដ​ថា​ចង់​ចាក​ចេញ​ពី Brave ទេ?</translation>
+<translation id="6061635824229591714">បំផ្លាញទិន្នន័យគេហទំព័រ?</translation>
+<translation id="1265051174491933207">ការបំផ្លាញនេះ នឹងលុបទិន្នន័យគេហទំព័រ ហើយបិទផ្ទាំង '<ph name="SITE_NAME"/>' ទាំងអស់។ វាមិនអាចត្រូវបានធ្វើវិញឡើងវិញបានទេ។</translation>
+<translation id="4279349293084858577">បំផ្លាញ</translation>
+<translation id="4426990318287827331">បំផ្លាញទិន្នន័យ</translation>
 <translation id="7942415993090181327">ប្រវត្តិការជជែក</translation>
 <translation id="6859935199732075666">បង្ហាញកំហុសការសមន្ត្រីទំងែសកម្មភាព</translation>
 <translation id="2735247450315842119">អនុញ្ញាតការបរិច្ឆេទក្នុងផ្ទាំងបែបកម្មឯកជន</translation>

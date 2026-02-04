@@ -491,6 +491,15 @@
 <translation id="4915997950539925115">초기화하면 현재 Brave Rewards 프로필이 삭제되고 Brave Rewards가 더 이상 활성화되지 않습니다. 나중에 Brave Rewards를 다시 활성화하면 새 프로필로 시작됩니다. 자세한 정보를 보려면 <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 참조하세요.</translation>
 <translation id="4806029412510565611">내 현재 Brave Rewards 프로필과 Brave Rewards 데이터가 디바이스에서 삭제된다는 사실을 이해하며, <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 읽었습니다.</translation>
 <translation id="8835777704176513489">Rewards 비활성화 및 초기화</translation>
+<translation id="1570055891464728855">지금 재설정</translation>
+<translation id="6431824580671230473">걱정 마세요. <ph name="PROVIDER"/> 계정에 이미 들어 있는 BAT에는 재설정이 영향을 주지 않아요.</translation>
+<translation id="2881473942058010900"><ph name="PROVIDER"/>에 연결된 동안에는 광고에 대해 수익을 받지 못해요. 수익을 계속 받으려면 Brave 리워드를 재설정하고 다른 지불 계정을 연결하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
+<translation id="5803444802570526678"><ph name="PROVIDER"/> 계정은 더 이상 지원되지 않습니다.</translation>
+<translation id="3794463124070392793">지역 확인</translation>
+<translation id="4620879582500359234"><ph name="PROVIDER"/> 계정에 이미 들어 있는 BAT는 그대로 유지됩니다.</translation>
+<translation id="935303782545595866">30일 광고 기록 및 기타 Brave 리워드 설정이 재설정됩니다.</translation>
+<translation id="6279637499952804615">이 단계 이후에는 다른 지불 계정을 선택할 수 있어요.</translation>
+<translation id="5419770758409992826"><ph name="PROVIDER"/> 계정의 연결이 해제되고 Brave 리워드 프로필이 재설정됩니다.</translation>
 <translation id="7717357606512850995">상태 확인</translation>
 <translation id="6473937687348632190"><ph name="MONTH"/> 리워드 지급 완료.</translation>
 <translation id="1711367267038576241"><ph name="MONTH"/> 리워드 지급 처리 시작, <ph name="DATE"/> 완료 예정.</translation>
@@ -515,16 +524,16 @@
     }</translation>
 <translation id="3264975266761862670">받을 준비가 되셨나요?</translation>
 <translation id="2784412028126205842">결제 계정 연결</translation>
-<translation id="766126983336630294">{ADS_VIEWED, plural,
-      =0 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>}
-      =1 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>에 대한 대가를 지급받을 수 있습니다.}
-      other {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>에 대한 대가를 지급받을 수 있습니다.}
-    }</translation>
-<translation id="8611388433418909120">{ADS_VIEWED, plural,
-      =0 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>}
-      =1 {이번 달 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>를 본 데에 대한 수익}
-      other {이번 달 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>를 본 데에 대한 수익}
-    }</translation>
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+  =0 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>}
+  =1 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>에 대한 대가를 지급받을 수 있습니다.}
+  other {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>에 대한 대가를 지급받을 수 있습니다.}
+}</translation>
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+  =0 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>}
+  =1 {이번 달 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>를 본 데에 대한 수익}
+  other {이번 달 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>를 본 데에 대한 수익}
+}</translation>
 <translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
 <translation id="2359808026110333948">계속</translation>
 <translation id="3863981251715594911">원리가 무엇인가요?</translation>
@@ -601,7 +610,7 @@
 <translation id="5802986777701714573">매월 BAT 리워드를 받을 수 있는 새로운 방법이 추가되었습니다. 파트너 중 한 곳의 계정을 연결하거나 새로 추가된 자체 보호관리 옵션을 사용하여 적립을 시작하세요.</translation>
 <translation id="3251885322612056119">업데이트된 서비스 약관</translation>
 <translation id="7454675823870922788">Brave Rewards 서비스 약관이 업데이트되었습니다. 조항을 명확하게 하고 새 기능을 모두 포괄할 수 있도록 업데이트했습니다. 동의하지 않으셔서 Brave Rewards를 <ph name="LINK_BEGIN"/>초기화<ph name="LINK_END"/>하면 기능이 비활성화됩니다.</translation>
-<translation id="56057964000416013">서비스 약관이 개정되었습니다. Brave 리워드를 계속 사용하시려거든 약관을 읽고 동의해 주세요.</translation>
+<translation id="616595399243298960">서비스 약관이 개정되었습니다. Brave 리워드를 계속 사용하시려거든 약관을 읽고 동의해 주세요.</translation>
 <translation id="5192526308598085294"><ph name="LINK_BEGIN"/>Brave Rewards 서비스 약관<ph name="LINK_END"/> 보기</translation>
 <translation id="4130750466177569591">동의함</translation>
 <translation id="343114360276812078">약관 읽어보기</translation>
@@ -649,6 +658,8 @@
 <translation id="6751803821780922506">BAT를 받을 곳 선택</translation>
 <translation id="3162035476318501831">지역 및 지원에 대해 자세히 알아보기</translation>
 <translation id="7329170127335794328">현재 귀하의 지역에서 사용할 수 없음</translation>
+<translation id="1947910788470806100">현재 지역에는 지불 옵션이 없습니다. 추후 다시 확인하여 가능 여부를 확인하세요.</translation>
+<translation id="271689813824682404">지불 옵션 사용 불가</translation>
 <translation id="966956302643313970">베이직 어텐션 토큰(BAT) 보상을 적립하려면 계정을 연결하세요. 적립된 BAT가 매달 귀하의 계정으로 자동 송금됩니다.</translation>
 <translation id="4009439571146350519">Solana를 지원하는 다른 월렛</translation>
 <translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>이용 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인정보 보호정책<ph name="PP_LINK_END"/>.</translation>
@@ -859,6 +870,7 @@
 <translation id="6264944956989873014">브릿지 확인</translation>
 <translation id="7067917728851842589">전송 확인</translation>
 <translation id="2351357639951873714">쉴드 확인</translation>
+<translation id="7480044382160806610">쉴드 해제 확인</translation>
 <translation id="8332923694292360653">지출</translation>
 <translation id="3735740477244556633">정렬 기준</translation>
 <translation id="6484605214219822434">브리지 검토</translation>
@@ -880,6 +892,8 @@
 <translation id="7465227658364622464">Jupiter는 이더리움 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="712738518060477110">견적에 Brave 수수료 <ph name="SWAP_FEE_PERCENTAGE"/> 포함입니다.</translation>
 <translation id="8368540604723748428">소수 자릿수 너무 많음</translation>
+<translation id="4797709125717981664">최소 요구 금액은 1 ADA입니다</translation>
+<translation id="3826737479910350533">보내는 금액이 너무 적습니다</translation>
 <translation id="6575120282593094155">아직 <ph name="ACCOUNT_TYPE"/> 계정이 없습니다. 새로 만드시겠습니까?</translation>
 <translation id="1426410128494586442">예</translation>
 <translation id="4250680216510889253">아니요</translation>
@@ -926,7 +940,7 @@
 <translation id="2274014756904854136">계속하려면 화면을 두 번 탭</translation>
 <translation id="7795718119973968770">보안상의 이유로 월렛이 잠겨 있습니다. 계속하려면 월렛을 잠금 해제하세요.</translation>
 <translation id="9175546523521600401">월렛 잠그기</translation>
-<translation id="765834632354589737">지갑 백업</translation>
+<translation id="7117128722034148989">지갑 백업</translation>
 <translation id="1108298724135935307">연결된 사이트</translation>
 <translation id="5716350339763180836">잔액</translation>
 <translation id="5538251867290702601">그래프</translation>
@@ -1028,6 +1042,7 @@
 <translation id="2416098547200943834">참고: 비공개 키는 비공개 키와 프로토콜 정보가 포함된 헥스 인코디드 JSON 형식으로 제공됩니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7657130382217527063">참고: 비공개 키는 비공개 키와 프로토콜 정보가 포함된 헥스 인코디드 JSON 형식으로 제공되어야 합니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="4482913669726886926">참고: <ph name="FORMAT"/> 확장 키만 지원됩니다.</translation>
+<translation id="9133762451347918196">테스트넷 계정</translation>
 <translation id="42126664696688958">내보내기</translation>
 <translation id="1366855498335432549">입금</translation>
 <translation id="790104325876206743">계정 설정</translation>
@@ -1035,6 +1050,7 @@
 <translation id="836614343069504000">시작하려면 자금을 예치하거나 토큰을 구입하세요. 가져온 계정에 있는 토큰이 보이지 않는다면 필터 및 표시 설정을 확인하세요. 알 수 없는 토큰은 맞춤 자산으로 추가해야 할 수 있습니다.</translation>
 <translation id="2902856457593699108">키 표시</translation>
 <translation id="8033497299373164724">키 숨기기</translation>
+<translation id="7514365320538308">다운로드</translation>
 <translation id="2702143907607790516">게정 이름 업데이트에 실패했습니다. 다시 시도하세요.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1055,9 +1071,6 @@
 <translation id="1506421160138798546">환전 예상액</translation>
 <translation id="59223531494896848">한도</translation>
 <translation id="8569380433211549748">가격, 통화:</translation>
-<translation id="2490428413101944234">파우셋 테스트</translation>
-<translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/> 파우싯에서 이더 얻기</translation>
-<translation id="6449626816252815844">구매 수단 선택</translation>
 <translation id="8009571545960303544">서명을 요청 중입니다.</translation>
 <translation id="5294062982587710720">서명하면 어떤 일이 일어나든 Brave가 검증하지 않습니다. 서명은 요청하는 사이트에 귀하의 계정 내 거의 모든 동작에 대한 권한을 부여하며, 암호화폐 자산에 대한 전체적인 제어권도 포함하되 이에 국한되지 않습니다. 이 행동에 대한 책임을 스스로 지고 요청 사이트를 신뢰할 수 있는 경우에만 서명하세요.</translation>
 <translation id="3474375934783434676">모든 책임을 지고 서명</translation>
@@ -1065,6 +1078,7 @@
 <translation id="3586931643579894722">세부정보 숨기기</translation>
 <translation id="7702907602086592255">도메인</translation>
 <translation id="3586752056660754651">서명</translation>
+<translation id="4217653732094303705">공개 암호화 키</translation>
 <translation id="3484981968509595506">DApp이 공개 암호화 키를 요청합니다.</translation>
 <translation id="2300240008330189182"><ph name="URL"/>에서 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
 <translation id="3340247553212049934">제공</translation>
@@ -1301,9 +1315,7 @@
 <translation id="4312994183947987913">구입/입금</translation>
 <translation id="5133421763709317473">검색어 또는 필터와 일치하는 자산 없음</translation>
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
-<translation id="5522073372365069684">Ramp로 구매</translation>
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/>로 판매</translation>
-<translation id="3301984548406568819">파이낸셜 및 트랜잭션 데이터는 온램프 파트너가 처리합니다. Brave는 이러한 데이터를 수집하거나 액세스할 수 없습니다.</translation>
 <translation id="5795821518596541838">트랜잭션 파트너</translation>
 <translation id="1916136859742693273">Brave 월렛은 Meld.io를 사용하여 해당 지역의 다양한 암호화폐 공급자를 모아서 표시합니다. 당사는 월렛 주소와 국가 코드를 비롯하여 트랜잭션을 완료하기 위해 Meld.io와 정보를 공유합니다. 자세한 내용은 Meld의 이용약관을 참조하시기 바랍니다.</translation>
 <translation id="245827814248186739"><ph name="LINK_BEFORE"/>Meld의 이용약관<ph name="LINK_AFTER"/>을 읽었으며 이에 동의합니다</translation>
@@ -1324,17 +1336,8 @@
 <translation id="4196022627437957774"><ph name="ACCOUNT_TYPE"/> 계정을 생성하시겠습니까?</translation>
 <translation id="5982914754413312620"><ph name="TOKEN_SYMBOL"/>을(를) 받으려면 <ph name="ACCOUNT_TYPE"/> 계정이 필요합니다.</translation>
 <translation id="3067168166931605141">계정 이름</translation>
-<translation id="6534275647567011533">Transak으로 구매</translation>
-<translation id="5973390321030037823">Link로 구매</translation>
-<translation id="1932640759496708012">Coinbase Pay로 구매</translation>
-<translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="503018546142690471">Transak</translation>
-<translation id="7295150312737713113">Link by Stripe</translation>
-<translation id="7191335763519723663">Coinbase Pay</translation>
-<translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
-<translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
-<translation id="8280898387224328221">신용카드, 직불카드, 은행계좌로 결제</translation>
-<translation id="2218174283683424104">가장 신뢰받는 거래소에서 암호화폐를 구입하세요.</translation>
+<translation id="1213870770696612739">최소 금액: <ph name="AMOUNT"/></translation>
+<translation id="3041074161036535192">최대 금액: <ph name="AMOUNT"/></translation>
 <translation id="8528916244724490964">모든 네트워크</translation>
 <translation id="7721139939763655123">낮은순</translation>
 <translation id="5458608274117818139">높은순</translation>
@@ -1380,7 +1383,9 @@
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> - <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974"><ph name="NETWORK"/> 에서 <ph name="SWAP_OR_BRIDGE"/> 시도 중 오류가 발생했습니다</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> 차단 중</translation>
+<translation id="6439110433198887239"><ph name="AMOUNT"/> 차단 해제 중</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> 가 차단되었습니다</translation>
+<translation id="3860973324426281816"><ph name="AMOUNT"/> 가 차단 해제되었습니다</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
       other {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
@@ -1575,8 +1580,6 @@
 <translation id="1422451606553326863">암호화폐 구입</translation>
 <translation id="3887541341068007345">월렛 확장 프로그램 확인 중...</translation>
 <translation id="8407091560429310499">자산 선택</translation>
-<translation id="756590380936155533"><ph name="ASSET_TICKER"/> 구매를 완료하려면 파트너 중 하나를 선택하세요.</translation>
-<translation id="7880860489474966219">완료되면 자금이 용감한 지갑으로 이체됩니다.</translation>
 <translation id="6182661078713714878">암호화폐 입금</translation>
 <translation id="3683305208314702347"><ph name="VALUE"/> 입금</translation>
 <translation id="5768739294929936862">Solana 또는 SPL 토큰 입금</translation>
@@ -1815,10 +1818,14 @@
 <translation id="7747318989577709780">계정을 동기화 중입니다</translation>
 <translation id="9086302186042011942">동기화하는 중</translation>
 <translation id="99991973626409495">쉴드 검토</translation>
+<translation id="6779429520470417361">쉴드 해제 검토</translation>
 <translation id="3114681061018999547">차폐</translation>
+<translation id="1564172583156967455">쉴드 해제 중</translation>
 <translation id="8897189056319316783">ZEC 쉴드</translation>
+<translation id="508249542337194541">ZEC 쉴드 해제</translation>
 <translation id="3382275793825152362">자금 보호</translation>
 <translation id="8631765320256788981">투명 계정에서 차폐 계정으로 자금을 송금하는 중입니다.</translation>
+<translation id="3860364671495430495">쉴드된 계정에서 투명 계정으로 자금을 송금하는 중입니다.</translation>
 <translation id="7144878232160441200">재시도</translation>
 <translation id="9094621390791852268">트랜잭션 미리보기 실패.</translation>
 <translation id="4982713341035600933">예상 잔액 변화</translation>
@@ -2095,6 +2102,8 @@
 <translation id="4292565651642921086">다음 탭 그룹 활성화</translation>
 <translation id="874783686573493196">이전 탭 그룹 활성화</translation>
 <translation id="9169594135889675189">탭 그룹에 탭 추가</translation>
+<translation id="1722567105086139392">연결</translation>
+<translation id="4729794914864902904">연결 해제</translation>
 <translation id="1926106318101432555">북마크 열기...</translation>
 <translation id="6118819645013156507">창 전환...</translation>
 <translation id="1623204575967809688">현재 창을 다음에 병합...</translation>
@@ -2184,10 +2193,8 @@
 <translation id="8151638057146502721">구성</translation>
 <translation id="999273441077650169">최고의 작업을 위해 동적으로 모델을 변경합니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 3.1 8B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="7127671672828944579">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="2328524194917949829">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Google에서 개발한 Gemma 3 12B 모델을 기반으로 구동됩니다. Gemma는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="634682910381645550">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 심층적인 추론 작업을 수행하도록 DeepSeek에서 개발한 DeepSeek R1 모델을 기반으로 구동됩니다. DeepSeek R1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="1021134081694325196">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 DeepSeek에서 개발한 DeepSeek V3.1 모델을 기반으로 구동됩니다. DeepSeek V3.1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3852808100039989429">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 Qwen VL 30B 모델을 기반으로 구동됩니다. Qwen은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="6406961656408495869">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 DeepSeek에서 개발한 DeepSeek V3.1 모델을 기반으로 구동됩니다. DeepSeek V3.1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
@@ -2204,6 +2211,7 @@
 <translation id="963346402440669081">프리미엄</translation>
 <translation id="5807427080183870259">로컬</translation>
 <translation id="830868413617744215">베타</translation>
+<translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">추천 모델</translation>
 <translation id="6568044140836233369">모든 모델 표시</translation>
 <translation id="6187065185557150870">채팅</translation>
@@ -2292,7 +2300,8 @@
 <translation id="1243966363662220847">응답 피드백</translation>
 <translation id="7417895556119762861">답변에 '좋아요'나 '싫어요'를 누르면 레오를 개선하기 위해 등급, 대화, 모델, 언어, 버전, 프리미엄 상태가 Brave로 전송됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">레오에게 메시지 보내기</translation>
-<translation id="4084869091337186002">이 프로필에서 레오 AI 콘텐츠 에이전트가 항상 활성화됩니다</translation>
+<translation id="6222803935921999130">AI 브라우징 프로필 창 열기</translation>
+<translation id="1530903352777607099">이 프로필에서 레오 AI 콘텐츠 에이전트가 항상 활성화됩니다</translation>
 <translation id="8650874793377330048">응답 중지</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
@@ -2315,9 +2324,8 @@
 <translation id="1602382615168212961">북마크의 탭에서 페이지 콘텐츠를 전송하여 레오에게 대화에 대한 더 많은 컨텍스트를 제공하세요.</translation>
 <translation id="4808122506413075135">브라우저 기록에서 페이지 콘텐츠를 전송하여 레오에게 대화에 대한 더 많은 맥락을 제공하세요.</translation>
 <translation id="220541218939267992">페이지 내용이 메시지와 함께 레오에게 전송됩니다.</translation>
-<translation id="8164365899016970783">탭을 추가하고 콘텐츠를 북마크에 추가하여 맥락을 파악합니다. 콘텐츠가 메시지와 함께 레오에게 전송됩니다.</translation>
+<translation id="2152389270152475874">맥락을 파악하려면 탭, 북마크 또는 기록을 추가하세요. 선택한 콘텐츠는 메시지와 함께 레오에게 전송됩니다.</translation>
 <translation id="6237410387937453423">일치하는 첨부 파일 없음</translation>
-<translation id="8076492880354921740">탭</translation>
 <translation id="2315654674554095762">이제 레오가 대화를 기억해두므로 다시 대화로 돌아갈 수 있습니다. 대화는 장치에 암호화되어 저장되며 언제든지 삭제할 수 있습니다.</translation>
 <translation id="7821251979960635244">대화를 시작하면 여기에 대화 기록이 나타납니다.</translation>
 <translation id="887511360213807449">기록을 비활성화함</translation>
@@ -2326,10 +2334,10 @@
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
 <translation id="2793458212460902934">빠름 • 검색 • 도구</translation>
 <translation id="8506027496671575183">검색 • 비전 • 도구</translation>
-<translation id="3213834013136637671">검색 • 비전</translation>
-<translation id="7697693533305615127">검색 • 사고</translation>
+<translation id="3184606955650139158">빠름 • 검색 • 비전</translation>
 <translation id="7465032796278724624">NEAR AI TEE로 입증 가능한 개인 정보 보호</translation>
 <translation id="8782867266498869301">최고의 작업을 위해 동적으로 모델을 변경합니다</translation>
+<translation id="3213834013136637671">검색 • 비전</translation>
 <translation id="3965507912994218570">레오 설정</translation>
 <translation id="3754337604877048671">레오 AI 소개</translation>
 <translation id="5295261408976371809">브라우저에 바로 통합된 <ph name="TEXT_BEFORE"/>개인<ph name="TEXT_AFTER"/> AI 어시스턴트.</translation>
@@ -2407,20 +2415,28 @@
 <translation id="4798146464408730445">스킬을 찾을 수 없습니다. '새로 만들기' 버튼을 클릭하여 새로 만드세요.</translation>
 <translation id="271033894570825754">신규</translation>
 <translation id="8266605059880650542">나중에 해당 페이지에 대한 몇 가지 정보를 기록해 두세요.</translation>
-<translation id="7049849063044248805">에이전트 모드는 도구 지원이 있는 모델과 함께 작동합니다. 호환되지 않는 모델은 목록에서 숨겨집니다.</translation>
+<translation id="5103625298494362646">에이전트 모드는 도구 지원이 있는 모델과 함께 작동합니다. 호환되지 않는 모델은 목록에서 숨겨집니다.</translation>
 <translation id="3397808797783614750">AI가 자동으로 탐색하도록 허용하면 개인정보, 재정 및 온라인 통신과 관련하여 유해하거나 원치 않는 결과로 이어질 수 있습니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">보안 경고</translation>
 <translation id="6077070599873946984">Brave AI에서 다음 작업에 대한 권한이 필요합니다: <ph name="TOOL_LABEL"/></translation>
 <translation id="4163837693685963037">해당 작업이 귀하의 요청과 일치하지 않을 가능성이 있습니다:</translation>
 <translation id="3927932062596804919">거부</translation>
 <translation id="4569155249847375786">확인됨</translation>
-<translation id="3240988198391588806">에이전트 모드</translation>
-<translation id="538066983058750776">레오 프로필 정보</translation>
-<translation id="1577570612997320961">이 격리된 Brave 프로필은 데이터 보호 차원에서 AI 액세스를 기본 브라우징 프로필로 제한합니다. 이곳에서 레오 AI는 사이트를 방문하고 상호작용할 수 있는 추가 권한을 가지고 있으니, 레오 AI와 함께 생산성이 얼마나 향상될 수 있는지 시험해 보시기 바랍니다.</translation>
+<translation id="8200772114523450471">재시작</translation>
+<translation id="7607002721634913082">중지됨</translation>
+<translation id="4773299976671772492">중지됨</translation>
+<translation id="6946722113367118030">생각 중</translation>
+<translation id="2113810663179257944">코드 실행</translation>
+<translation id="4790888275629207278">샌드박스에서 코드 실행됨</translation>
+<translation id="4379566111233326721">코드:</translation>
+<translation id="3542130965673205258">출력:</translation>
+<translation id="3428245742224818842">AI 브라우징</translation>
+<translation id="2854657728271352435">AI 브라우징 프로필 정보</translation>
+<translation id="2301685062527585986">데이터 보호를 위해 이 격리된 AI 브라우징 프로필은 AI 에이전트가 사용자의 기본 브라우징 프로필에 접근할 수 없도록 하며, 필요한 경우에만 사이트를 방문하고 상호작용할 수 있는 권한을 제공합니다. 작업을 부여하고 브라우징을 맡겨 생산성을 높일 수 있습니다.</translation>
 <translation id="648116453147783450">귀하의 데이터와 세션</translation>
-<translation id="3906161204878017619">이 프로필로 웹사이트에 로그인하면, 레오는 해당 사이트가 열려 있을 때 정보를 볼 수 있습니다. 이 기능은 레오가 스스로 사이트를 방문하거나 해당 사이트에서 작업을 요청받았을 때 사용됩니다.</translation>
+<translation id="4879348540868082026">이 프로필로 웹사이트에 로그인하면, 레오의 AI 브라우징 에이전트는 해당 사이트가 열려 있을 때 정보를 볼 수 있습니다. 이는 레오가 사이트를 직접 방문하거나, 사용자가 해당 사이트에서 작업을 요청했을 때 발생합니다.</translation>
 <translation id="5583803492921648196">프로필 전환</translation>
-<translation id="8068929004144221259">메인 메뉴 또는 툴바의 레오 avatar에서 일반 프로필로 언제든지 전환할 수 있습니다. 에이전트 모드에서는 항상 이 프로필이 열립니다.</translation>
+<translation id="864117099189791993">메인 메뉴 또는 툴바의 프로필 메뉴를 통해 언제든지 일반 프로필로 전환할 수 있습니다. AI 브라우징은 항상 AI 브라우징 프로필에서 열립니다.</translation>
 <translation id="3486480638399578250">개인 이메일 주소 비공개 유지</translation>
 <translation id="7765422154906712751">고유하고 랜덤한 주소를 생성하여 Brave 계정 이메일로 전달하고 언제든지 삭제할 수 있습니다. 실제 이메일 주소가 광고주에게 공개되거나 사용되지 않도록 보호합니다.</translation>
 <translation id="5222676887888702881">로그아웃</translation>
@@ -2520,13 +2536,13 @@
 <translation id="3620004479054499575">이 사이트에 문제가 있나요?</translation>
 <translation id="9176447766421988172">웹사이트 호환성을 높이기 위해 광고 차단만 활성화된 상태로 유지하는 실험을 시도하고 있습니다. 경고: 모든 개인정보 보호 기능을 제거합니다. 사용해 보시겠습니까? <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave의 개인정보 보호 기능으로 차단된 개별 웹사이트의 경우, Shields를 DOWN으로 설정할 수 있다는 점에 유의하세요.</translation>
-<translation id="1836572675775891780">광고 차단 전용 모드 활성화</translation>
+<translation id="2850777974644218370">광고 차단 전용 모드 활성화</translation>
 <translation id="6623668214089604469">지금 사이트가 제대로 작동하고 있나요?</translation>
 <translation id="8978860854770042258">이 사이트가 여전히 고장난 경우 신고를 제출해 주세요.</translation>
 <translation id="4677356505199464553">보기 좋게</translation>
 <translation id="1992750560347846445">사이트 신고</translation>
-<translation id="2887186586339544116">광고 차단 전용 모드 활성화</translation>
-<translation id="673665019618844072">현재 광고 차단 전용 모드를 사용 중입니다. 이 모드는 광고 차단 보호 기능만 제공합니다. 전체 쉴드 모드로 돌아가려면 설정에서 이 모드를 비활성화하세요.</translation>
+<translation id="2863270180245144869">광고 차단 전용 모드 활성화</translation>
+<translation id="2302218429308447288">현재 광고 차단 전용 모드를 사용 중입니다. 이 모드는 광고 차단 보호 기능만 제공합니다. 전체 쉴드 모드로 돌아가려면 설정에서 이 모드를 비활성화하세요.</translation>
 <translation id="4820891023903368625">광고 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">트래커, 광고 등이 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields로 보호되지 않음 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
@@ -2559,6 +2575,8 @@
 <translation id="6975864539539353406">사이트를 닫을 때 쿠키와 다른 사이트 데이터 삭제</translation>
 <translation id="6486971767955110687">향후 고장난 사이트 보고서를 위해 연락처 정보 저장</translation>
 <translation id="4085787265464238844">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
+<translation id="7740929262043547697">비공개 창 내 요소 차단 허용</translation>
+<translation id="1260864846935682371">비공개 창에서 쉴드 요소 차단 기능을 활성화합니다. 비공개 창에서 차단된 요소는 비공개가 아닌 창에서도 차단됩니다.</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="8366221601425141146">지문 인식 차단됨</translation>
@@ -2611,7 +2629,7 @@
 <translation id="6764845498618413165">자세히 알아보기</translation>
 <translation id="7818938154803162778">좋아요, 도울게요</translation>
 <translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
-<translation id="293854220404217065">미드나잇 테마</translation>
+<translation id="4988030440045495002">울트라 다크 테마</translation>
 <translation id="2422927186524098759">사이드바</translation>
 <translation id="2361906291514218784">레오 AI</translation>
 <translation id="7705524343798198388">VPN</translation>

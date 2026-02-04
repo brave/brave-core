@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Mostra els suggeriments del navegador</translation>
 <translation id="8982438328166986164">Mostra suggerències de llocs web basades en els teus marcadors i historial de navegació.</translation>
 <translation id="924029461438529367">Mostra suggeriments de cerca</translation>
-<translation id="6285118765755298263">Indexa altres cercadors</translation>
-<translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="9148058034647219655">Surt</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtració del contingut</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">No actualitzis les connexions a HTTPS (inhabilitat)</translation>
 <translation id="693506469193748756">Oblida'm quan tanqui aquest lloc</translation>
 <translation id="6975864539539353406">Esborra les galetes i altres dades dels llocs quan tanquis un lloc</translation>
+<translation id="7740929262043547697">Permet el bloqueig d'elements a les finestres d'incògnit</translation>
+<translation id="1260864846935682371">Activa la característica Bloca Elements dels Escuts a les finestres d'incògnit. Tingues en compte que els elements blocats a les finestres d'incògnit també es blocaran a les finestres no privades.</translation>
 <translation id="1680858055899097121">No segueixis les pestanyes entre sessions de navegació</translation>
 <translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
 <translation id="5254037869598726291">La informació anonimitzada P3A ajuda a Brave a estimar l'ús general, i assegurar que millorem característiques populars.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">MÉS TARD</translation>
 <translation id="4117451092682672487">La privacitat. Simplificada.</translation>
 <translation id="7909375417585209817">Si Brave és el teu navegador predeterminat, tots els enllaços en què cliquis s'obriran amb les proteccions de privacitat de Brave.</translation>
-<translation id="7370959926683925817">Bloqueja anuncis. Guarda les dades. Tots els dies.</translation>
-<translation id="7281027579943912834">Amb Brave per defecte, cada enllaç que toquis té la protecció de bloqueig d'anuncis de Brave. Cada pàgina, vídeo i flux.</translation>
 <translation id="5148943178722443958">Ajuda a millorar Brave.</translation>
 <translation id="6718362830686703942">Envia informes de diagnòstic si es produeix un bloqueig o una congelació.</translation>
 <translation id="8616157231067364693">Compartiu la informació privada i anònima de productes sobre quines funcions fan servir els usuaris de Brave.</translation>
@@ -371,6 +369,11 @@ Segur que vols continuar?</translation>
 <translation id="8793108040181436796">Ginys</translation>
 <translation id="8643377320501056697">Mostra llocs destacats</translation>
 <translation id="7275773481201277457">Mostra estadístiques de Brave</translation>
+<translation id="7462178177755090262">Pantalla d'inici</translation>
+<translation id="5365434987337264071">Darrera pestanya oberta</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Nova pestanya després d’<ph name="HOURS_ONE"/> hora d’inactivitat} other {Nova pestanya després de <ph name="HOURS_MANY"/> hores d’inactivitat}}</translation>
+<translation id="5233638681132016545">Pestanya nova</translation>
+<translation id="8395271296293035055">Torna a la teva pestanya més recent</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Obre els enllaços externs a Brave</translation>
 <translation id="5616508928556767259">Obre enllaços des d'altres aplicacions en una vista web de Brave. Nota: Cal establir Brave com a navegador predeterminat.</translation>
@@ -761,7 +764,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6889920539620318793">Estableix com a actiu</translation>
 <translation id="2653659639078652383">Envia</translation>
 <translation id="4945690646623486292">Selecciona una xarxa</translation>
-<translation id="5233638681132016545">Pestanya nova</translation>
 <translation id="8006088103295786154">Accés a la Cartera de Brave</translation>
 <translation id="5308380583665731573">Connecta</translation>
 <translation id="8030169304546394654">Sense connexió</translation>
@@ -1069,6 +1071,10 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="4650851936784160359">La llista de filtres no s'ha pogut actualitzar. Torneu-ho a provar</translation>
 <translation id="3098054327870766317">Mostra el botó de desfer quan es tanquin les pestanyes</translation>
 <translation id="1336494649091412226">Segur que vols sortir de Brave?</translation>
+<translation id="6061635824229591714">Dades del lloc shred?</translation>
+<translation id="1265051174491933207">El shred suprimirà les dades del lloc i tancarà totes les pestanyes de "<ph name="SITE_NAME"/>". Això no es pot desfer.</translation>
+<translation id="4279349293084858577">Shred</translation>
+<translation id="4426990318287827331">Dades del shred</translation>
 <translation id="7942415993090181327">Historial de xat</translation>
 <translation id="6859935199732075666">Mostra els errors de Safe Browsing</translation>
 <translation id="2735247450315842119">Permetre les captures de pantalla a les pestanyes d'incògnit</translation>

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Vis forslag til nettlesere</translation>
 <translation id="8982438328166986164">Viser forslag til nettsider basert på bokmerkene og nettleserhistorikken din.</translation>
 <translation id="924029461438529367">Vis søkeforslag</translation>
-<translation id="6285118765755298263">Indekser andre søkemotorer</translation>
-<translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="7534079972563542000">Ustoppelige domener</translation>
 <translation id="6486983549008741930">Innholdsfiltrering</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Ikke oppgrader tilkoblinger til HTTPS (deaktivert)</translation>
 <translation id="693506469193748756">Glem meg når jeg lukker dette nettstedet</translation>
 <translation id="6975864539539353406">Sletter cookies og andre nettstedsdata når du lukker nettsider</translation>
+<translation id="7740929262043547697">Tillat elementblokkering i private vinduer</translation>
+<translation id="1260864846935682371">Aktiverer funksjonen for å blokkere elementer i Shields i private vinduer. Merk at elementene som blokkeres i private vinduer også vil blokkeres i ikke-private vinduer.</translation>
 <translation id="1680858055899097121">Ikke behold faner på tvers av surfeøkter</translation>
 <translation id="7142548388914389999">Tillat produktanalyse som ivaretar personvern (P3A)</translation>
 <translation id="5254037869598726291">Anonymisert P3A-informasjon hjelper Brave med å anslå den totale bruken, og sikrer at vi forbedrer populære funksjoner.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">SENERE</translation>
 <translation id="4117451092682672487">Personvern. Helt enkelt.</translation>
 <translation id="7909375417585209817">Med Brave som standard åpnes alle linker du trykker på, med Braves personvernbeskyttelser.</translation>
-<translation id="7370959926683925817">Blokker reklame. Spar data. Hver dag.</translation>
-<translation id="7281027579943912834">Med Brave som standard, vil hver lenke du trykker på få Braves reklameblokkering. Alle sider, videoer og strømminger.</translation>
 <translation id="5148943178722443958">Bidra til å gjøre Brave bedre.</translation>
 <translation id="6718362830686703942">Send diagnoserapporter hvis du opplever at systemet krasjer eller henger seg opp.</translation>
 <translation id="8616157231067364693">Send privat og anonym produktinformasjon om hvilke funksjoner som brukes av Brave-brukerne.</translation>
@@ -371,6 +369,11 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="8793108040181436796">Widgeter</translation>
 <translation id="8643377320501056697">Vis toppnettsteder</translation>
 <translation id="7275773481201277457">Vis Brave-statistikk</translation>
+<translation id="7462178177755090262">Startskjerm</translation>
+<translation id="5365434987337264071">Siste åpne fane</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Ny fane etter <ph name="HOURS_ONE"/> time med inaktivitet} other {Ny fane etter <ph name="HOURS_MANY"/> timer med inaktivitet}}</translation>
+<translation id="5233638681132016545">Ny fane</translation>
+<translation id="8395271296293035055">Gå tilbake til den siste fanen du hadde åpen</translation>
 <translation id="8297488609722895137">Foto av <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Åpne eksterne linker i Brave</translation>
 <translation id="5616508928556767259">Åpner linker fra andre apper i en Brave-webvisning. Merk: Brave må være angitt som standardnettleser.</translation>
@@ -761,7 +764,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6889920539620318793">Sett som aktiv</translation>
 <translation id="2653659639078652383">Send</translation>
 <translation id="4945690646623486292">Velg nettverk</translation>
-<translation id="5233638681132016545">Ny fane</translation>
 <translation id="8006088103295786154">Gå til Brave-lommeboken</translation>
 <translation id="5308380583665731573">Koble til</translation>
 <translation id="8030169304546394654">Koblet fra</translation>
@@ -1071,6 +1073,10 @@ Leo AI. Dette kan ikke angres.</translation>
 <translation id="4650851936784160359">Filterlisten kunne ikke oppdateres. Prøv igjen</translation>
 <translation id="3098054327870766317">Vis angreknappen når faner lukkes</translation>
 <translation id="1336494649091412226">Er du sikker på at du vil avslutte Brave?</translation>
+<translation id="6061635824229591714">Vil du slette data fra nettsted?</translation>
+<translation id="1265051174491933207">Sletting vil fjerne nettstedsdata og lukke alle faner med '<ph name="SITE_NAME"/>'. Dette kan ikke angres.</translation>
+<translation id="4279349293084858577">Slett</translation>
+<translation id="4426990318287827331">Slett data</translation>
 <translation id="7942415993090181327">Samtalelogg</translation>
 <translation id="6859935199732075666">Vis Safe Browsing-feil</translation>
 <translation id="2735247450315842119">Gjør det mulig å ta skjermbilder i private faner</translation>

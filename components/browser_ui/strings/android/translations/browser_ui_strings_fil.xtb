@@ -64,6 +64,7 @@
 <translation id="1717996979683942279">Kapag naka-on, posibleng hilingin ng mga site na pamahalaan ang mga window sa lahat ng iyong screen. Kapag naka-off, hindi mapapamahalaan ng mga site ang mga window sa lahat ng iyong screen.</translation>
 <translation id="1738912554587725807">Bottom sheet ng mga koleksyon ng tema para sa hitsura ng page ng bagong tab</translation>
 <translation id="1743802530341753419">Magtanong bago payagan ang mga site na kumonekta sa isang device (inirerekomenda)</translation>
+<translation id="2534291364429593865">Makakuha ng mga notification sa mga tip sa Brave</translation>
 <translation id="1777815584158991902">Bottom sheet ng feed ng Discover</translation>
 <translation id="1779089405699405702">Pang-decode ng larawan</translation>
 <translation id="1785415724048343560">Inirerekomenda para sa pinakamagandang experience</translation>
@@ -71,6 +72,7 @@
 <translation id="7401204338724669842">Mga Tip sa Brave</translation>
 <translation id="6704867734300244173">Kapag naka-on, mas mabilis na tatakbo ang Brave at gagana ang mga feature na gumagamit ng JavaScript ayon sa pagkakadisenyo sa mga ito. Kapag naka-off, pinapahina nito ang performance pero ginagawang mas matatag ang V8 laban sa mga attack.</translation>
 <translation id="1818308510395330587">Para payagan ang <ph name="APP_NAME"/> na gumamit ng AR, i-on din ang camera sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
+<translation id="1822318649925991542">Ilipat ang posisyon para i-customize ang iyong experience sa pag-browse</translation>
 <translation id="1848033246551405023">Font Sans Serif</translation>
 <translation id="1861262398884155592">Walang laman ang folder na ito</translation>
 <translation id="1881806992065048905">Bottom sheet ng hitsura ng page ng bagong tab</translation>
@@ -87,6 +89,7 @@
 <translation id="1985716030964443178">Ire-reset nito ang lahat ng site sa iyong listahan sa default na pag-zoom</translation>
 <translation id="1989112275319619282">Mag-browse</translation>
 <translation id="1994173015038366702">URL ng site</translation>
+<translation id="1994558116414798016">Font Lexend</translation>
 <translation id="2004697686368036666">Posibleng hindi gumana ang mga feature sa ilang site</translation>
 <translation id="2025115093177348061">Augmented reality</translation>
 <translation id="2028449514182362831">Hindi gagana ang mga feature na nangangailangan ng mga sensor ng paggalaw</translation>
@@ -97,6 +100,7 @@
 <translation id="2094208275686143364">Maliwanag na kulay ng tema</translation>
 <translation id="2096716221239095980">I-delete ang lahat ng data</translation>
 <translation id="2102396546234652240">Huwag payagan ang mga site na gamitin ang iyong mikropono</translation>
+<translation id="2115808389282428160">Huwag payagan ang mga site na i-access ang iba pang app at serbisyo sa device na ito</translation>
 <translation id="2117655453726830283">Susunod na slide</translation>
 <translation id="2146263598007866206">Posibleng awtomatikong i-download ng mga site ang magkakaugnay na file nang magkakasama para makatipid ka sa oras</translation>
 <translation id="2148716181193084225">Ngayong Araw</translation>
@@ -131,7 +135,6 @@
 <translation id="2411116727035790889">I-on ang mga shortcut</translation>
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="2434158240863470628">Tapos nang mag-download <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
-<translation id="2438120137003069591">Pansamantala mong pinayagan ang site na ito na gumamit ng third-party na cookies, na nangangahulugang mas mahina ang proteksyon sa pag-browse pero mas malamang na gumana ang mga feature ng site na gaya ng inaasahan. <ph name="BEGIN_LINK"/>Magpadala ng feedback<ph name="END_LINK"/></translation>
 <translation id="2442870161001914531">Palaging hilingin ang pang-desktop na site</translation>
 <translation id="1736696984974511795">Shine-share na ngayon ng Brave ang iyong mga kamakailang tab sa device mo. Makikita mo ang mga ito sa listahan ng app at mga resulta ng paghahanap ng iyong device. Puwede mo itong i-off anumang oras sa mga setting ng Brave.</translation>
 <translation id="245322989586167203">Karaniwang kumokonekta ang mga site sa mga serial port para sa mga feature sa paglilipat ng data, gaya ng pag-set up ng iyong network</translation>
@@ -145,6 +148,7 @@
 <translation id="2536779053640817375">Pinapayagan sa pagkakataong ito • Eksakto</translation>
 <translation id="2544997614631598250">Madilim na kulay ng tema</translation>
 <translation id="2546283357679194313">Cookies at data ng site</translation>
+<translation id="3127075554145176599">Kunin ang pinakamalakas na proteksyon ng Brave laban sa mga banta online</translation>
 <translation id="2570922361219980984">Naka-off din ang access sa lokasyon para sa device na ito. I-on ito sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Pinalawak - i-click upang i-collapse.</translation>
 <translation id="2586657967955657006">Clipboard</translation>
@@ -159,6 +163,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="2621115761605608342">Payagan ang JavaScript para sa isang partikular na site.</translation>
 <translation id="2626708220538466178">Isinara ang bottom sheet ng default browser</translation>
 <translation id="2653659639078652383">Isumite</translation>
+<translation id="2665056444046933274">Puwedeng gamitin ng mga site ang feature na ito para i-access ang iba pang app at serbisyo sa device na ito</translation>
 <translation id="2670403088701171361">Huwag payagan ang mga site na makita ang text o mga larawan sa iyong clipboard</translation>
 <translation id="2677748264148917807">Umalis</translation>
 <translation id="2682367912565197520">I-delete ang naka-save na level ng pag-zoom</translation>
@@ -184,11 +189,9 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="2903493209154104877">Mga Address</translation>
 <translation id="2910701580606108292">Magtanong bago payagan ang mga site na mag-play ng pinoprotektahang content</translation>
 <translation id="2918484639460781603">Pumunta sa mga setting</translation>
-<translation id="4577990953241424923">Makakuha ng mga notification sa Mga Tip sa Brave</translation>
 <translation id="2932883381142163287">I-ulat ang pang-aabuso</translation>
 <translation id="2939338015096024043">Kapag naka-on, puwedeng hilingin ng mga site na i-track ang posisyon ng iyong camera at malaman ang tungkol sa paligid mo. Kapag naka-off, hindi mata-track ng mga site ang posisyon ng iyong camera o malalaman ang tungkol sa paligid mo.</translation>
 <translation id="2968755619301702150">Viewer ng certificate</translation>
-<translation id="2979365474350987274">Limitado ang third-party na cookies</translation>
 <translation id="2990583317361835189">Huwag payagan ang mga site na gumamit ng mga sensor ng paggalaw</translation>
 <translation id="3004438526346162184">Magagamit ng mga site ang feature na ito para pamahalaan ang mga window sa lahat ng iyong screen</translation>
 <translation id="3008272652534848354">I-reset ang mga pahintulot</translation>
@@ -202,8 +205,10 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="311394601889664316">Huwag payagan ang mga site na mag-edit ng mga file o folder sa iyong device</translation>
 <translation id="3114012059975132928">Player ng video</translation>
 <translation id="3115898365077584848">Ipakita ang Impormasyon</translation>
+<translation id="3120204271988747891">Puwedeng humiling ang mga site na i-access ang iba pang device sa iyong lokal na network</translation>
 <translation id="3123473560110926937">Naka-block sa ilang site</translation>
 <translation id="3132996321662585180">I-refresh araw-araw</translation>
+<translation id="3134859781443140237">Lokal na network</translation>
 <translation id="3143754809889689516">I-play mula sa simula</translation>
 <translation id="3164169438034704658">Puwede mong i-on ang eksaktong lokasyon sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Payagan ang isang site na gumamit ng third-party na cookies</translation>
@@ -217,7 +222,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="3242646949159196181">Kapag naka-on, makakapag-play ng tunog ang mga site. Kapag naka-off, hindi makakapag-play ng tunog ang mga site.</translation>
 <translation id="3273479183583863618">Mga pagbaba ng presyo sa mga tab</translation>
 <translation id="3277252321222022663">Payagan ang mga site na i-access ang mga sensor (inirerekomenda)</translation>
-<translation id="3756573623297269122">Nililimitahan ng Brave ang karamihan sa mga site sa paggamit ng mga third-party na cookies para ma-track ka habang nagba-browse ka. Bisitahin ang mga setting para <ph name="BEGIN_LINK"/>pamahalaan ang access sa third-party na cookies<ph name="END_LINK"/>.</translation>
 <translation id="3285500645985761267">Payagan ang mga kaugnay na site na makita ang iyong aktibidad sa grupo</translation>
 <translation id="3295019059349372795">Kabanata 11: The Wonderful Emerald City of Oz</translation>
 <translation id="3295602654194328831">Itago ang Impormasyon</translation>
@@ -313,14 +317,12 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="429312253194641664">May site na nagpe-play ng media</translation>
 <translation id="42981349822642051">Palawakin</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Mag-e-expire bukas}one{Mag-e-expire sa loob ng # araw}other{Mag-e-expire sa loob ng # na araw}}</translation>
-<translation id="8601682686806697614">Maglilimita ulit ang Brave ng cookies ngayong araw</translation>
 <translation id="4338831206024587507">Lahat ng site sa ilalim ng <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Huwag payagan ang mga site na magpadala ng mga notification</translation>
 <translation id="4341577178275615435">Para i-on o i-off ang caret browsing, gamitin ang shortcut na F7</translation>
 <translation id="4402755511846832236">Pigilan ang mga site na malaman kung kailan mo aktibong ginagamit ang device na ito</translation>
 <translation id="8382883799082236806">Binuksan nang kalahati ang bottom sheet ng mga kulay ng Brave</translation>
 <translation id="4412992751769744546">Payagan ang third-party na cookies</translation>
-<translation id="1675197434085185531">Bina-block ng Brave ang mga site sa paggamit ng third-party na cookies para masubaybayan ka habang nagba-browse ka. Bisitahin ang mga setting para <ph name="BEGIN_LINK"/>pamahalaan ang access sa third-party na cookies<ph name="END_LINK"/>.</translation>
 <translation id="4425416282877905577">Font Serif</translation>
 <translation id="443121186588148776">Serial port</translation>
 <translation id="4434045419905280838">Mga pop-up at pag-redirect</translation>
@@ -395,7 +397,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="5246825184569358663">Ide-delete ng pagkilos na ito ang lahat ng lokal na data, kabilang ang cookies, at ire-reset nito ang lahat ng pahintulot para sa <ph name="DOMAIN"/> at lahat ng site sa ilalim nito</translation>
 <translation id="5264323282659631142">Alisin ang '<ph name="CHIP_LABEL"/>'</translation>
 <translation id="528192093759286357">I-drag mula sa itaas at pindutin ang button na bumalik upang lumabas sa full screen.</translation>
-<translation id="5292915569214461965">Na-block mo ang mga site sa paggamit ng third-party na cookies para masubaybayan ka habang nagba-browse ka. Bisitahin ang mga setting para <ph name="BEGIN_LINK"/>pamahalaan ang access sa third-party na cookies<ph name="END_LINK"/>.</translation>
+<translation id="5286194356314741248">Nagsa-scan</translation>
 <translation id="5300589172476337783">Ipakita</translation>
 <translation id="5301954838959518834">OK, nakuha ko</translation>
 <translation id="5317780077021120954">I-save</translation>
@@ -405,6 +407,8 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="5373874281522292782">Naka-save ang mga grupo ng tab mo</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 pa)}one{(+ # pa)}other{(+ # pa)}}</translation>
 <translation id="5403592356182871684">Mga Pangalan</translation>
+<translation id="5407203562970638234">Paigtingin ang iyong seguridad</translation>
+<translation id="5436307623797390637">Mga app sa device</translation>
 <translation id="5438097262470833822">Ire-reset ng opsyong ito ang mga pahintulot para sa <ph name="WEBSITE"/></translation>
 <translation id="5459413148890178711">Kapag naka-on, puwedeng hilingin ng mga site ang iyong lokasyon. Kapag naka-off, hindi makikita ng mga site ang iyong lokasyon.</translation>
 <translation id="5489227211564503167"><ph name="ELAPSED_TIME"/> ang lumipas mula sa <ph name="TOTAL_TIME"/>.</translation>
@@ -419,6 +423,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="5591840828808741583">Naka-block ang <ph name="SITE_NAME"/></translation>
 <translation id="560980142378233747">Nangangahulugan itong dapat gumana ang mga feature ng site na gaya ng inaasahan, pero posibleng magkaroon ka ng mas mahinang proteksyon sa pag-browse. <ph name="BEGIN_LINK"/>Magpadala ng feedback<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Bottom sheet ng mga card ng page na bagong tab</translation>
+<translation id="5621413808884657932">Kapag naka-on, puwedeng humiling ang mga site na i-access ang iba pang app at serbisyo sa device na ito. Kapag naka-off, hindi maa-access ng mga site ang iba pang app at serbisyo sa device na ito.</translation>
 <translation id="5632485077360054581">Ipakita sa akin kung paano</translation>
 <translation id="5649053991847567735">Mga awtomatikong pag-download</translation>
 <translation id="5668404140385795438">I-override ang kahilingan ng isang website upang mapigilan ang pagzu-zoom in</translation>
@@ -480,7 +485,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6181444274883918285">Magdagdag ng pagbubukod ng site</translation>
 <translation id="6192792657125177640">Mga Pagbubukod</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Magba-block ulit ang Brave ng cookies bukas}one{# araw bago mag-block ulit ng cookies}other{# na araw bago mag-block ulit ng cookies}}</translation>
-<translation id="6195163219142236913">Limitado ang third-party na cookies</translation>
 <translation id="6196640612572343990">I-block ang mga third-party na cookie</translation>
 <translation id="6205314730813004066">Privacy sa mga ad</translation>
 <translation id="6207207788774442484">I-delete ang data at i-reset ang mga pahintulot</translation>
@@ -539,6 +543,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6842868554183332230">Karaniwang nade-detect ng mga site kung aktibo mong ginagamit ang iyong device para maitakda ang iyong availability sa mga chat app</translation>
 <translation id="6864395892908308021">Hindi nababasa ng device na ito ang NFC</translation>
 <translation id="6870169401250095575">I-hide ang card na Pag-check sa Kaligtasan</translation>
+<translation id="6882736949427544336">Huwag payagan ang mga site na i-access ang iba pang device sa iyong lokal na network</translation>
 <translation id="6900883974539674431">Gumawa ng mga grupo ng tab na awtomatikong nagse-save at nag-a-update sa lahat ng iyong device</translation>
 <translation id="6912998170423641340">I-block ang mga site sa pag-read ng text at mga larawan mula sa clipboard</translation>
 <translation id="6945221475159498467">Pumili</translation>
@@ -556,6 +561,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7055552182600664515">Para mag-play ng content na pinoprotektahan ng copyright, posibleng kailanganin ng mga site na gumamit ng serbisyo sa pagprotekta ng content. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 ang napili}one{# ang napili}other{# ang napili}}</translation>
 <translation id="708014373017851679">Luma na ang '<ph name="APP_NAME"/>.' Paki-update ang app.</translation>
+<translation id="7084115944294706056">Piliin ang address bar position</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ang napili.  Available ang mga opsyon malapit sa itaas ng screen</translation>
 <translation id="7141896414559753902">I-block ang pagpapakita ng mga site ng mga pop-up at pag-redirect (inirerekomenda)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
@@ -599,6 +605,8 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7586676035079382730">Hindi pinapayagan ang mga notification</translation>
 <translation id="7594634374516752650">Nakakonekta sa isang Bluetooth device</translation>
 <translation id="7617547684249261169">Puwede mong i-delete ang ilan sa o lahat ng iyong history, cookies, data ng site at higit pa</translation>
+<translation id="762200934554267613">Puwedeng humiling ang mga site na i-access ang iba pang app at serbisyo sa device na ito</translation>
+<translation id="7627749368210392160">Puwedeng gamitin ng mga site ang feature na ito para i-access ang iba pang device sa iyong lokal na network</translation>
 <translation id="7649070708921625228">Tulong</translation>
 <translation id="7655411746932645568">Puwedeng hilingin ng mga site na kumonekta sa mga serial port</translation>
 <translation id="7658239707568436148">Kanselahin</translation>
@@ -619,7 +627,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7835852323729233924">Nagpe-play ng media</translation>
 <translation id="783819812427904514">I-unmute ang video</translation>
 <translation id="7846076177841592234">Kanselahin ang pinili</translation>
-<translation id="2353409725922994861">Nililimitahan ng Brave ang karamihan sa mga site sa paggamit ng third-party na cookies. Pero pinapayagan ang third-party na cookies sa site na ito dahil umaasa ito sa mga ito para makapagbigay ng mga pangunahing serbisyo.\n\nBisitahin ang mga setting para <ph name="BEGIN_LINK"/>pamahalaan ang access sa third-party na cookies<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Payagan ang tunog para sa isang partikular na site.</translation>
 <translation id="7891547341794213004">I-hide ang card na magpatuloy sa tab na ito</translation>
 <translation id="789722939441020330">Huwag payagan ang mga site na awtomatikong mag-download ng maraming file</translation>
@@ -641,7 +648,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6405300764336705484">Ang content na ito ay mula sa <ph name="DOMAIN_NAME"/>, na ipinadala ng Brave.</translation>
 <translation id="8088603949666785339">Higit pang opsyon sa <ph name="BANNER_TITLE"/></translation>
 <translation id="8112925981674547014">Tingnan ang mga tab sa iyong listahan ng app</translation>
-<translation id="7418062714432254273">{DAYS,plural, =1{Maglilimita ulit ang Brave ng cookies bukas}one{# araw bago maglimita ulit ang Brave ng cookies}other{# na araw bago maglimita ulit ang Brave ng cookies}}</translation>
 <translation id="8116925261070264013">Naka-mute</translation>
 <translation id="8117244575099414087">Kapag naka-on, magagamit ng mga site ang mga sensor ng iyong device. Kapag naka-off, hindi makakagamit ang mga site ng mga sensor.</translation>
 <translation id="813082847718468539">Tingnan ang impormasyon ng site</translation>
@@ -654,6 +660,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="8200772114523450471">Resume</translation>
 <translation id="8211406090763984747">Secure ang koneksyon</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
+<translation id="823874716226307142">Kapag naka-on, puwedeng hilingin ng mga site na i-access ang iba pang device sa iyong lokal na network. Kapag naka-off, hindi maa-access ng mga site ang iba pang device sa iyong lokal na network.</translation>
 <translation id="8249310407154411074">Ilipat sa itaas</translation>
 <translation id="8261506727792406068">I-delete</translation>
 <translation id="8284326494547611709">Mga Caption</translation>
@@ -707,6 +714,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="8725066075913043281">Subukan ulit</translation>
 <translation id="8730621377337864115">Tapos na</translation>
 <translation id="8737426583868847403">Lalabas dito ang mga site kung para saan ka nag-save ng custom na level ng pag-zoom</translation>
+<translation id="8748714929822124637">Huwag payagan ang mga site na i-access ang iba pang device sa iyong lokal na network</translation>
 <translation id="8751914237388039244">Pumili ng larawan</translation>
 <translation id="8775741625735357092">Puwede mong i-on ang bookmarks bar sa Mga Setting &gt; Hitsura</translation>
 <translation id="8800034312320686233">Hindi gumagana ang site?</translation>
@@ -724,7 +732,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="8926666909099850184">Naka-off ang NFC para sa device na ito. I-on ito sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="8928445016601307354">I-block ang mga site sa pagtingin at pagbago ng impormasyon sa mga NFC device</translation>
-<translation id="8944485226638699751">Limitado</translation>
 <translation id="895054485242522631">Puwedeng gumamit ng mga sensor ng paggalaw ang mga site</translation>
 <translation id="8959122750345127698">Hindi gumagana ang navigation: <ph name="URL"/></translation>
 <translation id="8990043154272859344">Masa-sign out ka sa lahat ng site</translation>
