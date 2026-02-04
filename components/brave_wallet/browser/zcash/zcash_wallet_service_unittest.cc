@@ -1574,7 +1574,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
 }
 
 // Disabled on android due timeout failures
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 
 TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   // Creating authorized orchard bundle may take a time
