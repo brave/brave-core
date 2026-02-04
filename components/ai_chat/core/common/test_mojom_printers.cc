@@ -18,6 +18,26 @@
 namespace ai_chat {
 namespace mojom {
 
+namespace {
+
+void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
+                                 std::ostream* os) {
+  *os << "web_sources(query: " << ws.query.value_or("<nullopt>")
+      << ", sources: [";
+  for (size_t i = 0; i < ws.sources.size(); ++i) {
+    if (i > 0) {
+      *os << ", ";
+    }
+    *os << "{title: " << ws.sources[i]->title
+        << ", url: " << ws.sources[i]->url.possibly_invalid_spec()
+        << ", favicon_url: "
+        << ws.sources[i]->favicon_url.possibly_invalid_spec() << "}";
+  }
+  *os << "])";
+}
+
+}  // namespace
+
 void PrintTo(const AssociatedContent& content, std::ostream* os) {
   *os << "--AssociatedContent--\n";
   *os << "  uuid: " << content.uuid << "\n";
@@ -77,6 +97,11 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
             *os << "text: " << txt->text;
             break;
           }
+          case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
+            PrintWebSourcesContentBlock(*block->get_web_sources_content_block(),
+                                        os);
+            break;
+          }
           default: {
             NOTREACHED() << "Implement PrintTo for new types of content blocks";
           }
@@ -97,6 +122,8 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
   } else {
     *os << "[nullopt]\n";
   }
+  *os << "is_server_result: " << (event.is_server_result ? "true" : "false")
+      << "\n";
 }
 
 void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
@@ -199,6 +226,12 @@ void PrintTo(const ContentBlock& block, std::ostream* os) {
     case ContentBlock::Tag::kTextContentBlock:
       *os << " text: \"" << block.get_text_content_block()->text << "\"\n";
       break;
+    case ContentBlock::Tag::kWebSourcesContentBlock: {
+      *os << " ";
+      PrintWebSourcesContentBlock(*block.get_web_sources_content_block(), os);
+      *os << "\n";
+      break;
+    }
     default:
       *os << " type: unknown\n";
   }

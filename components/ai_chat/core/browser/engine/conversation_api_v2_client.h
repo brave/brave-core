@@ -91,6 +91,12 @@ class ConversationAPIV2Client {
                            OnQueryDataReceived_ContentReceipt);
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
                            OnQueryDataReceived_CompletionChunk);
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+                           OnQueryDataReceived_ToolStart);
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+                           OnQueryDataReceived_ToolCallRequest);
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+                           OnQueryDataReceived_ToolCallResult);
 
   void PerformRequestWithCredentials(
       std::vector<OAIMessage> messages,
