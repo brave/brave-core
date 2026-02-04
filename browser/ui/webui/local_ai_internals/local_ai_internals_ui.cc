@@ -11,8 +11,8 @@
 #include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/local_ai/core/features.h"
-#include "brave/components/local_ai/resources/grit/local_ai_generated.h"
-#include "brave/components/local_ai/resources/grit/local_ai_generated_map.h"
+#include "brave/components/local_ai/resources/grit/local_ai_internals_generated.h"
+#include "brave/components/local_ai/resources/grit/local_ai_internals_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
@@ -112,7 +112,7 @@ LocalAIInternalsUI::LocalAIInternalsUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kLocalAIInternalsHost);
 
-  webui::SetupWebUIDataSource(source, kLocalAiGenerated,
+  webui::SetupWebUIDataSource(source, kLocalAiInternalsGenerated,
                               IDR_LOCAL_AI_INTERNALS_HTML);
 }
 

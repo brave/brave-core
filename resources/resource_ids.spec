@@ -238,6 +238,10 @@
     "META": {"sizes": {"includes": [1]}},
     "includes": [54037],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-local_ai_internals/local_ai_internals.grd": {
+    "META": {"sizes": {"includes": [1]}},
+    "includes": [54038],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [54040],
