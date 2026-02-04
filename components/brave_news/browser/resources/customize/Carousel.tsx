@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components'
 import Flex from '$web-common/Flex'
 import PublisherCard from '../shared/PublisherCard'
 import { ArrowRight } from '../shared/Icons'
+import { color } from '@brave/leo/tokens/css/variables'
 
 const CARD_SIZE = 208
 const CARD_SIZE_PX = `${CARD_SIZE}px`
@@ -25,12 +26,12 @@ const ScrollButton = styled.button<{ hidden: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text2);
+  color: ${color.text.secondary};
   cursor: pointer;
 
   :hover {
     box-shadow: 0px 1px 4px rgba(63, 76, 99, 0.5);
-    color: var(--interactive4);
+    color: ${color.legacy.interactive4};
   }
 
   ${p => p.hidden && css`opacity: 0;`}
