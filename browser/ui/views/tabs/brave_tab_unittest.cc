@@ -224,8 +224,9 @@ TEST_F(BraveTabRenamingUnitTest, EnterKeyCommitsRename) {
               SetCustomTitleForTab(
                   tab(), std::make_optional(std::u16string(kNewTitle))));
   // Simulate pressing Enter key to commit the rename.
-  rename_textfield().OnEvent(new ui::KeyEvent(ui::EventType::kKeyPressed,
-                                              ui::VKEY_RETURN, ui::EF_NONE));
+  ui::KeyEvent enter_event(ui::EventType::kKeyPressed, ui::VKEY_RETURN,
+                           ui::EF_NONE);
+  rename_textfield().OnEvent(&enter_event);
 
   EXPECT_FALSE(in_renaming_mode());
   EXPECT_FALSE(rename_textfield().GetVisible());
@@ -244,8 +245,9 @@ TEST_F(BraveTabRenamingUnitTest, EscapeKeyExitsRenameMode) {
   EXPECT_CALL(*tab_slot_controller(), SetCustomTitleForTab(tab(), testing::_))
       .Times(0);
   // Simulate pressing Escape key to exit rename mode.
-  rename_textfield().OnEvent(new ui::KeyEvent(ui::EventType::kKeyPressed,
-                                              ui::VKEY_ESCAPE, ui::EF_NONE));
+  ui::KeyEvent escape_event(ui::EventType::kKeyPressed, ui::VKEY_ESCAPE,
+                            ui::EF_NONE);
+  rename_textfield().OnEvent(&escape_event);
 
   EXPECT_FALSE(in_renaming_mode());
   EXPECT_FALSE(rename_textfield().GetVisible());
