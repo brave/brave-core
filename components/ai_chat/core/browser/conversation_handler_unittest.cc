@@ -201,8 +201,8 @@ std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
     const std::string& query) {
   std::vector<mojom::ContentBlockPtr> output;
   output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
-      mojom::WebSourcesContentBlock::New(CreateWebSources(num_sources),
-                                         query)));
+      mojom::WebSourcesContentBlock::New(CreateWebSources(num_sources), query,
+                                         {})));
   return output;
 }
 

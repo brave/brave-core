@@ -504,9 +504,15 @@ INSTANTIATE_TEST_SUITE_P(
               sources.push_back(mojom::WebSource::New(
                   "Example Title", GURL("https://example.com/page"),
                   GURL("https://example.com/favicon.ico")));
+              std::vector<std::string> rich_results;
+              rich_results.push_back(
+                  R"({"type":"knowledge_graph","title":"Test Title"})");
+              rich_results.push_back(
+                  R"({"type":"video","url":"https://video.example.com"})");
               return mojom::ContentBlock::NewWebSourcesContentBlock(
                   mojom::WebSourcesContentBlock::New(std::move(sources),
-                                                     "test query"));
+                                                     "test query",
+                                                     std::move(rich_results)));
             }),
             R"({
               "type": "brave-chat.webSources",
@@ -515,7 +521,11 @@ INSTANTIATE_TEST_SUITE_P(
                 "url": "https://example.com/page",
                 "favicon": "https://example.com/favicon.ico"
               }],
-              "query": "test query"
+              "query": "test query",
+              "rich_results": [
+                {"type": "knowledge_graph", "title": "Test Title"},
+                {"type": "video", "url": "https://video.example.com"}
+              ]
             })"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
       return info.param.name;
@@ -1900,7 +1910,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
                             GURL("https://imgs.search.brave.com/weather.ico")));
   std::vector<mojom::ContentBlockPtr> output;
   output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
-      mojom::WebSourcesContentBlock::New(std::move(sources), "weather today")));
+      mojom::WebSourcesContentBlock::New(std::move(sources), "weather today",
+                                         {})));
   auto expected_event =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "", "call_123", std::string(), std::move(output), nullptr, true));
