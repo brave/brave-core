@@ -14,8 +14,6 @@
 #include "ui/ozone/public/ozone_platform.h"
 #endif
 
-#define TabDragController TabDragControllerChromium
-
 // StackAtTop() is called to bring browser window to the front.
 // It's called for TabDragContext()->GetWidget(). In horizontal tab,
 // returned widget is browsr window's widget. But it's vertical tab widget in
@@ -30,4 +28,3 @@
 #undef GetWindowBoundsInScreen
 #undef StackAtTop
 #undef GetBrowserViewForNativeWindow
-#undef TabDragController

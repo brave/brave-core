@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 9f67abe2a84421d2cad94dc1db1666c5c391abcb..4fc53cc2fcd3535ad0a1a7e8051fb29703ab3444 100644
+index 9f67abe2a84421d2cad94dc1db1666c5c391abcb..d5bb0eafb05a7aabe737c40fb8849610b6a9518d 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
+@@ -342,7 +342,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+            event.type() == ui::EventType::kGestureScrollBegin))
+         << "Event type must be suitable for starting a drag.";
+ 
+-    drag_controller_ = std::make_unique<TabDragController>();
++    drag_controller_ = std::make_unique<BraveTabDragController>();
+ 
+     // !!! Init may delete `drag_controller_` on some platforms. !!!
+     // Init takes capture, which on some platforms may reenter Chrome, the
 @@ -582,6 +582,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
