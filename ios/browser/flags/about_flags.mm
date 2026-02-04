@@ -36,7 +36,7 @@ const flags_ui::FeatureEntry::FeatureParam
     kZCashShieldedTransactionsDisabled[] = {
         {"zcash_shielded_transactions_enabled", "false"}};
 const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
-    {{"zcash_shielded_transactions_enabled", "false"}};
+    {{"zcash_shielded_transactions_enabled", "true"}};
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      std::size(kZCashShieldedTransactionsDisabled), nullptr},
