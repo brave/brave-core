@@ -3753,14 +3753,6 @@ extension Strings {
     comment:
       "Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes"
   )
-  public static let themesDisplayBrightnessFooter = NSLocalizedString(
-    "ThemesDisplayBrightnessFooter",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "These settings are not applied in private browsing mode.",
-    comment:
-      "Text specifying that the above setting does not impact the user interface while they user is in private browsing mode."
-  )
   public static let themesAutomaticOption = NSLocalizedString(
     "ThemesAutomaticOption",
     tableName: "BraveShared",

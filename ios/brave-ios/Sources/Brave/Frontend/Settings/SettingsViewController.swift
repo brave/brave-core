@@ -986,7 +986,6 @@ class SettingsViewController: TableViewController {
         }
       )
       optionsViewController.headerText = Strings.themesDisplayBrightness
-      optionsViewController.footerText = Strings.themesDisplayBrightnessFooter
       optionsViewController.navigationItem.title = Strings.themesDisplayBrightness
 
       let nightModeSection = Section(
