@@ -26,6 +26,9 @@ class ContainerModel {
   const std::string& id() const { return container_->id; }
   const std::string& name() const { return container_->name; }
   const ui::ImageModel& icon() const { return icon_; }
+  const SkColor& background_color() const {
+    return container_->background_color;
+  }
   const mojom::ContainerPtr& container() const { return container_; }
 
  private:

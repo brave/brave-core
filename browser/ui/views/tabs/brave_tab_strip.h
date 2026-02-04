@@ -11,7 +11,13 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/container_model.h"
+#include "content/public/browser/storage_partition_config.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 class Tab;
 class BraveTabStrip : public TabStrip {
@@ -38,6 +44,23 @@ class BraveTabStrip : public TabStrip {
   bool IsVerticalTabsFloating() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
+
+  // TabSlotController:
+  bool ShouldPaintTabAccent(const Tab* tab) const override;
+  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override;
+  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
+
+ private:
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // Internal helper methods for container detection
+  content::StoragePartitionConfig GetStoragePartitionConfigForTab(
+      const Tab* tab) const;
+  bool IsTabInContainer(const Tab* tab) const;
+
+  // These methods must be called only when IsTabInContainer() returns true.
+  std::string GetContainerIdForTab(const Tab* tab) const;
+  containers::ContainerModel GetContainerModelForTab(const Tab* tab) const;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
