@@ -43,7 +43,7 @@ const char* ConnectBitFlyerWallet::WalletType() const {
 std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
   auto& config = engine_->Get<EnvironmentConfig>();
 
-  auto url = config.gate3_oauth_url("bitflyer").Resolve("auth");
+  auto url = config.bitflyer_oauth_url().Resolve("auth");
   url = AppendOrReplaceQueryParameters(
       url, {{"scope", "assets create_deposit_id withdraw_to_deposit_id"},
             {"state", oauth_info_.one_time_string},

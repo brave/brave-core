@@ -22,17 +22,15 @@ TEST_F(RewardsConnectBitflyerWalletTest, LoginURL) {
   auto& oauth_info = connect.GetOAuthStateForTesting();
   auto challenge = util::GeneratePKCECodeChallenge(oauth_info.code_verifier);
 
-  auto expected_url =
-      config.gate3_oauth_url("bitflyer")
-          .Resolve(base::StrCat(
-              {"auth"
-               "?scope=assets+create_deposit_id+withdraw_to_deposit_id"
-               "&state=",
-               oauth_info.one_time_string,
-               "&response_type=code"
-               "&code_challenge_method=S256"
-               "&code_challenge=",
-               challenge}));
+  auto expected_url = config.bitflyer_oauth_url().Resolve(
+      base::StrCat({"auth"
+                    "?scope=assets+create_deposit_id+withdraw_to_deposit_id"
+                    "&state=",
+                    oauth_info.one_time_string,
+                    "&response_type=code"
+                    "&code_challenge_method=S256"
+                    "&code_challenge=",
+                    challenge}));
 
   EXPECT_EQ(actual, expected_url.spec());
 }
