@@ -733,6 +733,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     private boolean maybeRequestDefaultBrowser() {
+        if (isActivityFinishingOrDestroyed()) {
+            return false;
+        }
         if (!isBraveSetAsDefaultBrowser(this)) {
             setDefaultBrowser(this);
             return true;
