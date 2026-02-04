@@ -81,9 +81,11 @@ bool IsTransactionSimulationsEnabled() {
       features::kBraveWalletTransactionSimulationsFeature);
 }
 
+#if BUILDFLAG(IS_IOS)
 bool IsWalletWebUIEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletWebUIFeature);
 }
+#endif
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kDefault;
