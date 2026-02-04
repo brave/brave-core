@@ -22,6 +22,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -383,7 +384,7 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
           if (auto v = request.headers.GetHeader("Authorization")) {
             seen_authorization = *v;
           }
-          if (auto v = request.headers.GetHeader("X-API-key")) {
+          if (auto v = request.headers.GetHeader(kBraveServicesKeyHeader)) {
             seen_api_key = *v;
           }
         }

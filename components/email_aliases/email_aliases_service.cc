@@ -15,6 +15,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/features.h"
@@ -80,8 +81,8 @@ auto MakeRequest(const std::string& bearer_token) {
   request.network_traffic_annotation_tag =
       net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
   brave_account::endpoint_client::SetBearerToken(request, bearer_token);
-  request.headers.SetHeader("Brave-Key", BUILDFLAG(BRAVE_SERVICES_KEY));
-  request.headers.SetHeader("X-API-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  request.headers.SetHeader(kBraveServicesKeyHeader,
+                            BUILDFLAG(BRAVE_SERVICES_KEY));
   return request;
 }
 
