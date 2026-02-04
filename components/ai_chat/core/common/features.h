@@ -109,7 +109,7 @@ BASE_DECLARE_FEATURE(kNEARModels);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsNEARModelsEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-BASE_DECLARE_FEATURE(kConversationAPIV2);
+BASE_DECLARE_FEATURE(kAIChatConversationAPIV2);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatConversationAPIV2Enabled();
 
 // Whether we should show rich search widgets in the conversation.

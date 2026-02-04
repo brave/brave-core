@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -19,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -46,6 +48,7 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "printing/buildflags/buildflags.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "ui/compositor/compositor_switches.h"
 #include "url/gurl.h"
 
@@ -90,9 +93,23 @@ std::unique_ptr<net::test_server::HttpResponse> HandleSearchQuerySummaryRequest(
 
 }  // namespace
 
-class AIChatUIBrowserTest : public InProcessBrowserTest {
+class AIChatUIBrowserTest : public InProcessBrowserTest,
+                            public testing::WithParamInterface<bool> {
  public:
-  AIChatUIBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+  AIChatUIBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    std::vector<base::test::FeatureRef> enabled_features;
+    std::vector<base::test::FeatureRef> disabled_features;
+
+    if (IsConversationAPIV2Enabled()) {
+      enabled_features.push_back(ai_chat::features::kAIChatConversationAPIV2);
+    } else {
+      disabled_features.push_back(ai_chat::features::kAIChatConversationAPIV2);
+    }
+
+    scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
+  }
+
+  bool IsConversationAPIV2Enabled() const { return GetParam(); }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -224,6 +241,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
   raw_ptr<ai_chat::AIChatTabHelper, DanglingUntriaged> chat_tab_helper_ =
       nullptr;
@@ -232,7 +250,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest, PrintPreviewDisabled) {
   prefs()->SetBoolean(prefs::kPrintPreviewDisabled, true);
 
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
@@ -240,13 +258,13 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   FetchPageContent(FROM_HERE, "");
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary_NoMetaTag) {
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest, FetchSearchQuerySummary_NoMetaTag) {
   // Test when meta tag is not present, should return null result.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchPageContentPDF) {
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest, FetchPageContentPDF) {
   constexpr char kExpectedText[] = "This is the way\nI have spoken";
   NavigateURL(https_server_.GetURL("a.com", "/dummy.pdf"));
   ASSERT_TRUE(
@@ -276,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchPageContentPDF) {
   FetchPageContent(FROM_HERE, kExpectedText);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest,
                        FetchSearchQuerySummary_NotBraveSearchSERP) {
   // Test non-brave search SERP URL, should return null result.
   NavigateURL(https_server_.GetURL("brave.com", "/search?q=query"));
@@ -288,7 +306,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest,
                        FetchSearchQuerySummary_EmptyMetaTag) {
   // Test empty summarizer-key meta tag, should return null result.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
@@ -300,7 +318,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest,
                        FetchSearchQuerySummary_DynamicMetaTag_SingleQuery) {
   // Test when summarizer-key meta tag is dynamically inserted, should return
   // the search query summary from the mock response.
@@ -318,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                               "key').content = 'multi';"));
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest,
                        FetchSearchQuerySummary_DynamicMetaTag_MultiQuery) {
   // Test when summarizer-key meta tag is dynamically inserted, should return
   // the search query summary from the mock response.
@@ -334,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                                           {"test query 2", "test summary 2"}}));
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest, PdfScreenshot) {
   NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"));
   ASSERT_TRUE(
       pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
@@ -346,7 +364,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
       result.value(), [](const auto& entry) { return !entry->data.empty(); }));
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
+IN_PROC_BROWSER_TEST_P(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
   auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
   side_panel_ui->Show(SidePanelEntryId::kChatUI);
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
@@ -362,3 +380,11 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
       side_panel_web_contents->GetPrimaryMainFrame(), "document.hasFocus()");
   EXPECT_TRUE(has_focus.ExtractBool());
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    AIChatUIBrowserTest,
+    testing::Bool(),
+    [](const testing::TestParamInfo<AIChatUIBrowserTest::ParamType>& info) {
+      return info.param ? "ConversationAPIV2" : "ConversationAPIV1";
+    });
