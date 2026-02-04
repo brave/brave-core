@@ -11,6 +11,8 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
+#include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
 
 namespace brave_rewards::internal {
 
@@ -169,6 +171,11 @@ std::string EnvironmentConfig::bitflyer_fee_address() const {
 
 GURL EnvironmentConfig::bitflyer_oauth_url() const {
   return BuildGate3OAuthURL("bitflyer");
+}
+
+std::string EnvironmentConfig::brave_services_key_header() const {
+  return std::string(kBraveServicesKeyHeader) + ": " +
+         BUILDFLAG(BRAVE_SERVICES_KEY);
 }
 
 GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {

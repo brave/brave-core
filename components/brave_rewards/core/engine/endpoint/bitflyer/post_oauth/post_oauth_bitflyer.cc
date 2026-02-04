@@ -12,7 +12,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/engine/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/url_loader.h"
@@ -111,7 +110,8 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content = GeneratePayload(external_account_id, code, code_verifier);
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
-  request->headers.push_back(endpoints::GetBraveServicesKeyHeader());
+  request->headers.push_back(
+      engine_->Get<EnvironmentConfig>().brave_services_key_header());
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kNone,
