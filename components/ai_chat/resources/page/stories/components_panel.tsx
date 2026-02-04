@@ -14,12 +14,6 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as Mojom from '../../common/mojom'
-import {
-  ActiveChatContext,
-  SelectedChatDetails,
-} from '../state/active_chat_context'
-import { AIChatProvider } from '../state/ai_chat_context'
-import { ConversationProvider } from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
@@ -46,16 +40,7 @@ import { taskConversationEntries } from './story_utils/history'
 import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
 import { Content } from '../components/input_box/editable_content'
 import { getToolUseEvent } from '../../common/test_data_utils'
-import createAIChatApi from '../api'
-import createConversationApi from '../api/conversation_api'
-import {
-  createMockConversationHandler,
-  createMockService,
-  createMockUIHandler,
-  createMockBookmarksService,
-  createMockHistoryService,
-  createMockMetrics,
-} from '../api/mock_interfaces'
+import { MockContext } from '../state/mock_context'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -1098,10 +1083,10 @@ const meta: Meta<CustomArgs> = {
   args,
   decorators: [
     (Story, options) => {
-      const [, setArgs] = useArgs()
+      const [args, setArgs] = useArgs<CustomArgs>()
       return (
         <StoryContext
-          args={options.args}
+          args={args}
           setArgs={setArgs}
         >
           <Story />
@@ -1192,333 +1177,190 @@ const SAMPLE_HISTORY_ENTRIES: Mojom.HistoryEntry[] = [
   },
 ]
 
-/**
- * Creates the AIChatApi using real factory with mock handlers.
- * Returns a stable reference that won't change across renders.
- *
- * Uses a ref pattern so mock functions always read current storybook args.
- * Invalidate queries when relevant storybook controls change.
- *
- * @param args - CustomArgs from storybook controls (used via ref for reactivity)
- */
-function useStoryAIChatApi(args: CustomArgs) {
-  // Ref holds current args - updated every render before any queries
-  const argsRef = React.useRef(args)
-  argsRef.current = args
-
-  const [aiChatApi] = React.useState(() => {
-    // Compute conversations list based on args
-    const getConversationsForArgs = () => {
-      const count = argsRef.current.conversationListCount
-      if (CONVERSATIONS.length <= count) {
-        return CONVERSATIONS
-      }
-      return CONVERSATIONS.slice(0, count)
-    }
-
-    const mockService = createMockService({
-      // Mocks read from ref, always getting current storybook args
-      getConversations: () =>
-        Promise.resolve({ conversations: getConversationsForArgs() }),
-      getActionMenuList: () => Promise.resolve({ actionList: ACTIONS_LIST }),
-      getSkills: () => Promise.resolve({ skills: SAMPLE_SKILLS }),
-      getPremiumStatus: () =>
-        Promise.resolve({
-          status: argsRef.current.isPremiumUser
-            ? argsRef.current.isPremiumUserDisconnected
-              ? Mojom.PremiumStatus.ActiveDisconnected
-              : Mojom.PremiumStatus.Active
-            : Mojom.PremiumStatus.Inactive,
-          info: null,
-        }),
-    })
-
-    const mockUIHandler = createMockUIHandler()
-
-    const mockBookmarksService = createMockBookmarksService({
-      getBookmarks: () => Promise.resolve({ bookmarks: SAMPLE_BOOKMARKS }),
-    })
-
-    const mockHistoryService = createMockHistoryService({
-      getHistory: () =>
-        Promise.resolve({
-          history: argsRef.current.isHistoryEnabled
-            ? SAMPLE_HISTORY_ENTRIES
-            : [],
-        }),
-    })
-
-    const mockMetrics = createMockMetrics()
-
-    const api = createAIChatApi(
-      mockService,
-      mockUIHandler,
-      mockBookmarksService,
-      mockHistoryService,
-      mockMetrics,
-    )
-
-    // Push initial state data synchronously (state endpoints don't have query
-    // functions so they need to be updated directly)
-    api.api.tabs.update(SAMPLE_TABS)
-    api.api.isStandalone.update(argsRef.current.isStandalone)
-    api.api.state.update({
-      hasAcceptedAgreement: argsRef.current.hasAcceptedAgreement,
-      isStoragePrefEnabled: argsRef.current.isStoragePrefEnabled,
-      isStorageNoticeDismissed: argsRef.current.isStorageNoticeDismissed,
-      canShowPremiumPrompt: argsRef.current.canShowPremiumPrompt,
-    })
-
-    return api
-  })
-
-  // When storybook controls change, invalidate all queries to trigger refetch.
-  // The ref already has new data, invalidation causes queries to re-run with
-  // fresh data from the mock functions.
-  React.useEffect(() => {
-    aiChatApi.api.invalidateAll()
-  }, [aiChatApi.api, args])
-
-  // Update state endpoints when their args change (these don't have query
-  // functions so invalidateAll won't help - they need direct updates)
-  React.useLayoutEffect(() => {
-    aiChatApi.api.state.update({
-      hasAcceptedAgreement: args.hasAcceptedAgreement,
-      isStoragePrefEnabled: args.isStoragePrefEnabled,
-      isStorageNoticeDismissed: args.isStorageNoticeDismissed,
-      canShowPremiumPrompt: args.canShowPremiumPrompt,
-    })
-    aiChatApi.api.isStandalone.update(args.isStandalone)
-  }, [
-    aiChatApi.api,
-    args.hasAcceptedAgreement,
-    args.isStoragePrefEnabled,
-    args.isStorageNoticeDismissed,
-    args.canShowPremiumPrompt,
-    args.isStandalone,
-  ])
-
-  return aiChatApi
-}
-
-/**
- * Creates the ConversationApi using real factory with mock handlers.
- * Returns a stable reference that won't change across renders.
- *
- * Uses a ref pattern so mock functions always read current storybook args.
- * Invalidate queries when relevant storybook controls change.
- *
- * @param args - CustomArgs from storybook controls (used via ref for reactivity)
- */
-function useStoryConversationApi(args: CustomArgs) {
-  // Ref holds current args - updated every render before any queries
-  const argsRef = React.useRef(args)
-  argsRef.current = args
-
-  const [conversationApi] = React.useState(() => {
-    // Helper to compute derived values from current args
-    const getAssociatedContent = () =>
-      argsRef.current.hasAssociatedContent
-        ? ASSOCIATED_CONTENT
-        : new Mojom.AssociatedContent()
-
-    const getSuggestedQuestions = () =>
-      argsRef.current.hasSuggestedQuestions
-        ? SAMPLE_QUESTIONS
-        : argsRef.current.hasAssociatedContent
-          ? [SAMPLE_QUESTIONS[0]]
-          : []
-
-    const getCurrentModel = () =>
-      MODELS.find((m) => m.displayName === argsRef.current.model)
-
-    const getConversationHistory = () =>
-      argsRef.current.hasConversation
-        ? argsRef.current.useMemoryHistory
-          ? MEMORY_HISTORY
-          : HISTORY
-        : []
-
-    const mockHandler = createMockConversationHandler({
-      // Mocks read from ref, always getting current storybook args
-      getState: () =>
-        Promise.resolve({
-          conversationState: {
-            conversationUuid: argsRef.current.isNewConversation
-              ? 'new-conversation'
-              : CONVERSATIONS[1].uuid,
-            isRequestInProgress: argsRef.current.isGenerating,
-            currentModelKey: getCurrentModel()?.key ?? MODELS[0].key,
-            defaultModelKey: MODELS[0].key,
-            allModels: MODELS,
-            suggestedQuestions: getSuggestedQuestions(),
-            suggestionStatus:
-              Mojom.SuggestionGenerationStatus[
-                argsRef.current.suggestionStatus
-              ],
-            associatedContent: [getAssociatedContent()],
-            error: Mojom.APIError[argsRef.current.currentErrorState],
-            temporary: argsRef.current.isTemporaryChat,
-            toolUseTaskState: Mojom.TaskState[argsRef.current.toolUseTaskState],
-          },
-        }),
-      getConversationHistory: () =>
-        Promise.resolve({ conversationHistory: getConversationHistory() }),
-    })
-
-    const api = createConversationApi(mockHandler)
-
-    return api
-  })
-
-  // When storybook controls change, invalidate all queries to trigger refetch.
-  // The ref already has new data, invalidation causes queries to re-run with
-  // fresh data from the mock functions.
-  React.useEffect(() => {
-    conversationApi.api.invalidateAll()
-  }, [conversationApi.api, args])
-
-  return conversationApi
-}
-
 function StoryContext(
   props: React.PropsWithChildren<{
     args: CustomArgs
     setArgs: (newArgs: Partial<CustomArgs>) => void
   }>,
 ) {
-  const { args: storyArgs, setArgs: _setArgs } = props
-  // setArgs is available for future use when we need to update storybook
-  // controls from within the story (e.g. for interactive actions)
-  void _setArgs
-
-  // Create APIs using real factories with mock handlers.
-  // The hooks use a ref pattern so mock functions always read current args.
-  // Query invalidation happens inside the hooks when relevant args change.
-  const aiChatApi = useStoryAIChatApi(storyArgs)
-  const conversationApi = useStoryConversationApi(storyArgs)
+  const { args } = props
+  // Ref holds current args - for inside function lookup
+  const argsRef = React.useRef(args)
+  argsRef.current = args
 
   // Compute derived values from args for UntrustedConversationContext
-  const associatedContent = storyArgs.hasAssociatedContent
-    ? ASSOCIATED_CONTENT
-    : new Mojom.AssociatedContent()
+  const getAssociatedContent = () =>
+    argsRef.current.hasAssociatedContent
+      ? ASSOCIATED_CONTENT
+      : new Mojom.AssociatedContent()
 
-  const currentError = Mojom.APIError[storyArgs.currentErrorState]
-  const currentModel = MODELS.find((m) => m.displayName === storyArgs.model)
+  const currentError = Mojom.APIError[args.currentErrorState]
+  const currentModel = MODELS.find((m) => m.displayName === args.model)
 
-  const conversationHistory = storyArgs.hasConversation
-    ? storyArgs.useMemoryHistory
-      ? MEMORY_HISTORY
-      : HISTORY
-    : []
+  const getConversationHistory = () =>
+    argsRef.current.hasConversation
+      ? argsRef.current.useMemoryHistory
+        ? MEMORY_HISTORY
+        : HISTORY
+      : []
 
-  // ActiveChatContext for conversation selection
-  const activeChatContext: SelectedChatDetails = React.useMemo(
-    () => ({
-      api: conversationApi.api,
-      selectedConversationId: CONVERSATIONS[0].uuid,
-      updateSelectedConversationId: () => {},
-      createNewConversation: () => {},
-      isTabAssociated: storyArgs.isDefaultConversation,
-    }),
-    [conversationApi.api, storyArgs.isDefaultConversation],
-  )
-
-  // UntrustedConversationContext - still uses manual object since not migrated
-  const conversationEntriesContext: UntrustedConversationContext =
-    React.useMemo(
-      () => ({
-        conversationHistory,
-        conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
-        isGenerating: storyArgs.isGenerating,
-        isToolExecuting: storyArgs.isToolExecuting,
-        toolUseTaskState: Mojom.TaskState[storyArgs.toolUseTaskState],
-        isLeoModel: true,
-        contentUsedPercentage: storyArgs.shouldShowLongPageWarning ? 48 : 100,
-        visualContentUsedPercentage:
-          storyArgs.shouldShowLongVisualContentWarning ? 75 : undefined,
-        totalTokens: BigInt(storyArgs.totalTokens),
-        trimmedTokens: BigInt(storyArgs.trimmedTokens),
-        canSubmitUserEntries: currentError === Mojom.APIError.None,
-        isMobile: storyArgs.isMobile,
-        allModels: MODELS,
-        currentModelKey: currentModel?.key ?? '',
-        associatedContent: [associatedContent],
-        isPremiumUser: storyArgs.isPremiumUser,
-        uiHandler: {
-          hasMemory: (memory: string) => {
-            // Return false for the "undone" example to show undone state
-            if (memory === 'Likes cats') {
-              return Promise.resolve({ exists: false })
-            }
-            // Return true for others to show success state
-            return Promise.resolve({ exists: true })
-          },
-        } as unknown as Mojom.UntrustedUIHandlerRemote,
-      }),
-      [
-        conversationHistory,
-        storyArgs.isGenerating,
-        storyArgs.isToolExecuting,
-        storyArgs.toolUseTaskState,
-        storyArgs.shouldShowLongPageWarning,
-        storyArgs.shouldShowLongVisualContentWarning,
-        storyArgs.totalTokens,
-        storyArgs.trimmedTokens,
-        storyArgs.isMobile,
-        storyArgs.isPremiumUser,
-        currentError,
-        currentModel?.key,
-        associatedContent,
-      ],
-    )
+  // UntrustedConversationContext - still uses context object since not migrated
+  // to createInterfaceApi yet.
+  const conversationEntriesContext: UntrustedConversationContext = {
+    conversationHistory: getConversationHistory(),
+    conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
+    isGenerating: args.isGenerating,
+    isToolExecuting: args.isToolExecuting,
+    toolUseTaskState: Mojom.TaskState[args.toolUseTaskState],
+    isLeoModel: true,
+    contentUsedPercentage: args.shouldShowLongPageWarning ? 48 : 100,
+    visualContentUsedPercentage: args.shouldShowLongVisualContentWarning
+      ? 75
+      : undefined,
+    totalTokens: BigInt(args.totalTokens),
+    trimmedTokens: BigInt(args.trimmedTokens),
+    canSubmitUserEntries: currentError === Mojom.APIError.None,
+    isMobile: args.isMobile,
+    allModels: MODELS,
+    currentModelKey: currentModel?.key ?? '',
+    associatedContent: [getAssociatedContent()],
+    isPremiumUser: args.isPremiumUser,
+    uiHandler: {
+      hasMemory: (memory: string) => {
+        // Return false for the "undone" example to show undone state
+        if (memory === 'Likes cats') {
+          return Promise.resolve({ exists: false })
+        }
+        // Return true for others to show success state
+        return Promise.resolve({ exists: true })
+      },
+    } as unknown as Mojom.UntrustedUIHandlerRemote,
+  }
 
   return (
-    <AIChatProvider
-      api={aiChatApi.api}
-      conversationEntriesComponent={StorybookConversationEntries}
+    <MockContext
+      service={{
+        getConversations: () => {
+          const count = argsRef.current.conversationListCount
+          const conversations =
+            CONVERSATIONS.length <= count
+              ? CONVERSATIONS
+              : CONVERSATIONS.slice(0, count)
+          return Promise.resolve({ conversations })
+        },
+        getActionMenuList: () => Promise.resolve({ actionList: ACTIONS_LIST }),
+        getSkills: () => Promise.resolve({ skills: SAMPLE_SKILLS }),
+        getPremiumStatus: () =>
+          Promise.resolve({
+            status: argsRef.current.isPremiumUser
+              ? argsRef.current.isPremiumUserDisconnected
+                ? Mojom.PremiumStatus.ActiveDisconnected
+                : Mojom.PremiumStatus.Active
+              : Mojom.PremiumStatus.Inactive,
+            info: null,
+          }),
+      }}
+      bookmarksService={{
+        getBookmarks: () => Promise.resolve({ bookmarks: SAMPLE_BOOKMARKS }),
+      }}
+      historyService={{
+        getHistory: () =>
+          Promise.resolve({
+            history: argsRef.current.isHistoryEnabled
+              ? SAMPLE_HISTORY_ENTRIES
+              : [],
+          }),
+      }}
+      initialState={React.useMemo(
+        () => ({
+          tabs: SAMPLE_TABS,
+          isStandalone: argsRef.current.isStandalone,
+          serviceState: {
+            hasAcceptedAgreement: argsRef.current.hasAcceptedAgreement,
+            isStoragePrefEnabled: argsRef.current.isStoragePrefEnabled,
+            isStorageNoticeDismissed: argsRef.current.isStorageNoticeDismissed,
+            canShowPremiumPrompt: argsRef.current.canShowPremiumPrompt,
+          },
+        }),
+        [argsRef.current],
+      )}
+      conversationHandler={{
+        getState: () => {
+          return Promise.resolve({
+            conversationState: {
+              conversationUuid: argsRef.current.isNewConversation
+                ? 'new-conversation'
+                : CONVERSATIONS[1].uuid,
+              isRequestInProgress: argsRef.current.isGenerating,
+              currentModelKey:
+                MODELS.find((m) => m.displayName === argsRef.current.model)?.key
+                ?? MODELS[0].key,
+              defaultModelKey: MODELS[0].key,
+              allModels: MODELS,
+              suggestedQuestions: argsRef.current.hasSuggestedQuestions
+                ? SAMPLE_QUESTIONS
+                : argsRef.current.hasAssociatedContent
+                  ? [SAMPLE_QUESTIONS[0]]
+                  : [],
+              suggestionStatus:
+                Mojom.SuggestionGenerationStatus[
+                  argsRef.current.suggestionStatus
+                ],
+              associatedContent: [
+                argsRef.current.hasAssociatedContent
+                  ? ASSOCIATED_CONTENT
+                  : new Mojom.AssociatedContent(),
+              ],
+              error: Mojom.APIError[argsRef.current.currentErrorState],
+              temporary: argsRef.current.isTemporaryChat,
+              toolUseTaskState:
+                Mojom.TaskState[argsRef.current.toolUseTaskState],
+            },
+          })
+        },
+        getConversationHistory: () =>
+          Promise.resolve({
+            conversationHistory: getConversationHistory(),
+          }),
+      }}
+      conversationProps={{
+        selectedConversationId: CONVERSATIONS[0].uuid,
+        isTabAssociated: args.isDefaultConversation,
+      }}
       // Overrides for values that come from internal hooks (useState, etc.)
       // and can't be controlled via API mocks
-      overrides={{
-        editingConversationId: storyArgs.editingConversationId,
-        deletingConversationId: storyArgs.deletingConversationId,
-        initialized: storyArgs.initialized,
+
+      aiChatOverrides={{
+        conversationEntriesComponent: StorybookConversationEntries,
+        editingConversationId: args.editingConversationId,
+        deletingConversationId: args.deletingConversationId,
+        initialized: args.initialized,
         isAIChatAgentProfileFeatureEnabled:
-          storyArgs.isAIChatAgentProfileFeatureEnabled,
-        isAIChatAgentProfile: storyArgs.isAIChatAgentProfile,
-        isMobile: storyArgs.isMobile,
-        isHistoryFeatureEnabled: storyArgs.isHistoryEnabled,
-        skillDialog: storyArgs.skillDialog,
+          args.isAIChatAgentProfileFeatureEnabled,
+        isAIChatAgentProfile: args.isAIChatAgentProfile,
+        isMobile: args.isMobile,
+        isHistoryFeatureEnabled: args.isHistoryEnabled,
+        skillDialog: args.skillDialog,
       }}
+      conversationOverrides={{
+        isFeedbackFormVisible: args.isFeedbackFormVisible,
+        ratingTurnUuid: args.ratingTurnUuid,
+        inputText: args.inputText,
+        selectedActionType: args.selectedActionType,
+        selectedSkill: args.selectedSkill,
+        attachmentsDialog: args.attachmentsDialog,
+        isDragActive: args.isDragActive,
+        isDragOver: args.isDragOver,
+        generatedUrlToBeOpened: args.generatedUrlToBeOpened,
+      }}
+      deps={[...Object.values(args)]}
     >
-      <ActiveChatContext.Provider value={activeChatContext}>
-        <ConversationProvider
-          api={conversationApi.api}
-          selectedConversationId={CONVERSATIONS[0].uuid}
-          updateSelectedConversationId={() => {}}
-          createNewConversation={() => {}}
-          isTabAssociated={storyArgs.isDefaultConversation}
-          // Overrides for values from internal hooks (useSendFeedback, useState)
-          overrides={{
-            isFeedbackFormVisible: storyArgs.isFeedbackFormVisible,
-            ratingTurnUuid: storyArgs.ratingTurnUuid,
-            inputText: storyArgs.inputText,
-            selectedActionType: storyArgs.selectedActionType,
-            selectedSkill: storyArgs.selectedSkill,
-            attachmentsDialog: storyArgs.attachmentsDialog,
-            isDragActive: storyArgs.isDragActive,
-            isDragOver: storyArgs.isDragOver,
-            generatedUrlToBeOpened: storyArgs.generatedUrlToBeOpened,
-          }}
-        >
-          <UntrustedConversationReactContext.Provider
-            value={conversationEntriesContext}
-          >
-            {props.children}
-          </UntrustedConversationReactContext.Provider>
-        </ConversationProvider>
-      </ActiveChatContext.Provider>
-    </AIChatProvider>
+      <UntrustedConversationReactContext.Provider
+        value={conversationEntriesContext}
+      >
+        {props.children}
+      </UntrustedConversationReactContext.Provider>
+    </MockContext>
   )
 }
 

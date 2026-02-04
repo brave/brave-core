@@ -56,13 +56,13 @@ export function useCharCountInfo(inputText: string) {
 
 // Each instance of ConversationContext should be provided with an API interface
 // connected to the relevant API endpoints.
-type ContextProps = SelectedChatDetails
+export type ConversationContextProps = SelectedChatDetails
 
 //
 // Given the provided conversation API connection, provides neccessary
 // react state so a conversation's UI can render.
 //
-export function useProvideConversationContext(props: ContextProps) {
+export function useProvideConversationContext(props: ConversationContextProps) {
   const [inputText, setInputText] = React.useState<Content>([])
   const [attachmentsDialog, setAttachmentsDialog] = React.useState<
     'tabs' | 'bookmarks' | 'history' | null

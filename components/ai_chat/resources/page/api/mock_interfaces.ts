@@ -4,16 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 /**
- * Mock Mojo interfaces for Storybook and tests.
+ * Mock Mojo interfaces for Storybook stories and unit tests.
  *
  * These mocks provide configurable default implementations for all interface
- * methods. Query methods return sensible empty/default results by default,
- * and action methods are no-op stubs that resolve immediately.
- *
- * Usage pattern:
- * 1. Create mock handlers using factory functions, optionally passing overrides
- * 2. Pass to real createConversationApi() / createAIChatApi()
- * 3. For reactive Storybook args, use a ref and invalidate queries on change
+ * methods.
  *
  * @example
  * // Basic usage with defaults
@@ -34,6 +28,44 @@
 import { Closable, makeCloseable } from '$web-common/api'
 import * as Mojom from '../../common/mojom'
 
+export const defaultServiceState: Mojom.ServiceState = {
+  hasAcceptedAgreement: false,
+  isStoragePrefEnabled: false,
+  isStorageNoticeDismissed: false,
+  canShowPremiumPrompt: false,
+}
+
+export const defaultConversationState: Mojom.ConversationState = {
+  conversationUuid: 'test-conversation',
+  isRequestInProgress: false,
+  currentModelKey: 'test-model',
+  defaultModelKey: 'test-model',
+  allModels: [],
+  suggestedQuestions: [],
+  suggestionStatus: Mojom.SuggestionGenerationStatus.None,
+  associatedContent: [],
+  error: Mojom.APIError.None,
+  temporary: false,
+  toolUseTaskState: Mojom.TaskState.kNone,
+}
+
+const emptyTurn: Mojom.ConversationTurn = {
+  uuid: '',
+  text: '',
+  characterType: Mojom.CharacterType.HUMAN,
+  actionType: Mojom.ActionType.UNSPECIFIED,
+  prompt: undefined,
+  selectedText: undefined,
+  edits: [],
+  createdTime: { internalValue: BigInt(0) },
+  events: [],
+  uploadedFiles: [],
+  fromBraveSearchSERP: false,
+  skill: undefined,
+  modelKey: '',
+  nearVerificationStatus: undefined,
+}
+
 /**
  * Creates a mock ConversationHandlerInterface for Storybook/tests.
  * All methods have sensible defaults that can be overridden.
@@ -42,40 +74,15 @@ import * as Mojom from '../../common/mojom'
  */
 export function createMockConversationHandler(
   overrides: Partial<Mojom.ConversationHandlerInterface> = {},
+  initialState: Partial<Mojom.ConversationState> = {},
 ): Closable<Mojom.ConversationHandlerInterface> {
-  const emptyTurn: Mojom.ConversationTurn = {
-    uuid: '',
-    text: '',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt(0) },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '',
-    nearVerificationStatus: undefined,
-  }
-
   return makeCloseable({
     // Query methods - return empty/default results
     getState: () =>
       Promise.resolve({
         conversationState: {
-          conversationUuid: '',
-          isRequestInProgress: false,
-          currentModelKey: '',
-          defaultModelKey: '',
-          allModels: [],
-          suggestedQuestions: [],
-          suggestionStatus: Mojom.SuggestionGenerationStatus.None,
-          associatedContent: [],
-          error: Mojom.APIError.None,
-          temporary: false,
-          toolUseTaskState: Mojom.TaskState.kNone,
+          ...defaultConversationState,
+          ...initialState,
         },
       }),
     getConversationHistory: () => Promise.resolve({ conversationHistory: [] }),
@@ -125,6 +132,7 @@ export function createMockConversationHandler(
  */
 export function createMockService(
   overrides: Partial<Mojom.ServiceInterface> = {},
+  initialState: Partial<Mojom.ServiceState> = {},
 ): Closable<Mojom.ServiceInterface> {
   return makeCloseable({
     // Query methods - return empty/default results
@@ -149,10 +157,8 @@ export function createMockService(
     bindObserver: () =>
       Promise.resolve({
         state: {
-          hasAcceptedAgreement: false,
-          isStoragePrefEnabled: false,
-          isStorageNoticeDismissed: false,
-          canShowPremiumPrompt: false,
+          ...defaultServiceState,
+          ...initialState,
         },
       }),
     bindMetrics: () => {},

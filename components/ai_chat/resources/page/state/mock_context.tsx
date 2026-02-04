@@ -3,17 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/**
- * Test utilities for AI Chat components.
- *
- * Provides a MockContext component that wraps components with properly
- * configured mock APIs, making it easy to test components that use
- * useAIChat() and useConversation() hooks.
- *
- * This component accepts direct Mojo interface overrides, matching the pattern
- * used in mock_interfaces.ts and components_panel.tsx.
- */
-
 import * as React from 'react'
 import * as Mojom from '../../common/mojom'
 import createAIChatApi from '../api'
@@ -25,18 +14,20 @@ import {
   createMockBookmarksService,
   createMockHistoryService,
   createMockMetrics,
+  defaultConversationState,
+  defaultServiceState,
 } from '../api/mock_interfaces'
 import { AIChatContext, AIChatProvider } from './ai_chat_context'
 import {
   ConversationContext,
+  ConversationContextProps,
   ConversationProvider,
 } from './conversation_context'
-import { ActiveChatContext, SelectedChatDetails } from './active_chat_context'
 
 export interface MockContextProps {
   children: React.ReactNode
 
-  // Direct Mojo interface overrides (all optional, defaults from mock_interfaces.ts)
+  // Direct Mojo interface overrides
   service?: Partial<Mojom.ServiceInterface>
   uiHandler?: Partial<Mojom.AIChatUIHandlerInterface>
   bookmarksService?: Partial<Mojom.BookmarksPageHandlerInterface>
@@ -44,7 +35,7 @@ export interface MockContextProps {
   metrics?: Partial<Mojom.MetricsInterface>
   conversationHandler?: Partial<Mojom.ConversationHandlerInterface>
 
-  // Initial state for state-type endpoints (tabs, isStandalone, etc.)
+  // Initial state for state-type endpoints
   initialState?: {
     tabs?: Mojom.TabData[]
     isStandalone?: boolean
@@ -55,6 +46,11 @@ export interface MockContextProps {
   // Context-level overrides (for things computed in the provider hooks)
   aiChatOverrides?: Partial<AIChatContext>
   conversationOverrides?: Partial<ConversationContext>
+
+  // Context-level props
+  conversationProps?: Partial<ConversationContextProps>
+
+  deps?: React.DependencyList
 }
 
 /**
@@ -90,14 +86,25 @@ export interface MockContextProps {
  *   )
  * })
  *
- * // Test with callback
- * it('calls associateTab', () => {
- *   const associateTab = jest.fn()
- *   render(
- *     <MockContext uiHandler={{ associateTab }}>
- *       <MyComponent />
- *     </MockContext>
+ * // Get access to the api
+ * it('handled an event', () => {\
+ *   const wrapper = ({ children }: { children: React.ReactNode }) => (
+       <MockContext>{children}</MockContext>
  *   )
+ *
+ *   const onDragStart = jest.fn()
+ *
+ *   act(() => {
+ *     return renderHook(() => {
+ *       const aiChat = useAIChat()
+ *       aiChat.useOnDragStart(onDragStart)
+ *       useAIChat().api.emitEvent('dragStart', [])
+ *     }, {
+ *       wrapper,
+ *     })
+ *   })
+ *
+ *   expect(onDragStart).toHaveBeenCalled()
  * })
  * ```
  */
@@ -113,6 +120,8 @@ export function MockContext(props: MockContextProps) {
     initialState = {},
     aiChatOverrides,
     conversationOverrides,
+    conversationProps = {},
+    deps = [],
   } = props
 
   // Use ref to hold current props for mock functions that need reactive data
@@ -135,70 +144,55 @@ export function MockContext(props: MockContextProps) {
       mockMetrics,
     )
 
-    // Set initial service state
-    api.api.state.update({
-      hasAcceptedAgreement: true,
-      isStoragePrefEnabled: true,
-      isStorageNoticeDismissed: true,
-      canShowPremiumPrompt: false,
-      ...initialState.serviceState,
-    })
-
-    // Set initial standalone state
-    api.api.isStandalone.update(initialState.isStandalone ?? false)
-
-    // Set initial tabs
-    if (initialState.tabs) {
-      api.api.tabs.update(initialState.tabs)
-    }
-
     return api
   })
 
   const [conversationApi] = React.useState(() => {
-    const conversationState: Mojom.ConversationState = {
-      conversationUuid: 'test-conversation',
-      isRequestInProgress: false,
-      currentModelKey: 'test-model',
-      defaultModelKey: 'test-model',
-      allModels: [],
-      suggestedQuestions: [],
-      suggestionStatus: Mojom.SuggestionGenerationStatus.None,
-      associatedContent: [],
-      error: Mojom.APIError.None,
-      temporary: false,
-      toolUseTaskState: Mojom.TaskState.kNone,
-      ...initialState.conversationState,
-    }
-    const mockHandler = createMockConversationHandler({
-      getState: () => Promise.resolve({ conversationState }),
-      getConversationHistory: () =>
-        Promise.resolve({ conversationHistory: [] }),
-      ...conversationHandler,
-    })
+    const mockHandler = createMockConversationHandler(
+      conversationHandler,
+      initialState.conversationState ?? {},
+    )
 
     const conversation = createConversationApi(mockHandler)
-
-    // Update anything we can synchronously so some tests don't have to wait for
-    // the query.
-    conversation.api.getState.update((old) => ({
-      ...old,
-      ...conversationState,
-    }))
 
     return conversation
   })
 
-  const activeChatContext: SelectedChatDetails = React.useMemo(
-    () => ({
-      api: conversationApi.api,
-      selectedConversationId: 'test-conversation',
-      updateSelectedConversationId: () => {},
-      createNewConversation: () => {},
-      isTabAssociated: false,
-    }),
-    [conversationApi.api],
-  )
+  React.useLayoutEffect(() => {
+    if (deps.length) {
+      aiChatApi.api.invalidateAll()
+      conversationApi.api.invalidateAll()
+      // Ensure that this effect is followed by the state.update effect so
+      // we re-populate with intended data.
+    }
+  }, [deps])
+
+  React.useLayoutEffect(() => {
+    // Update anything that doesn't have a query and is provided via events
+    aiChatApi.api.state.update({
+      ...defaultServiceState,
+      ...initialState.serviceState,
+    })
+
+    aiChatApi.api.isStandalone.update(initialState.isStandalone ?? false)
+
+    if (initialState.tabs) {
+      aiChatApi.api.tabs.update(initialState.tabs)
+    }
+
+    if (initialState.conversationState) {
+      conversationApi.api.getState.update({
+        ...defaultConversationState,
+        ...initialState.conversationState,
+      })
+    }
+  }, [
+    deps,
+    initialState.serviceState,
+    initialState.isStandalone,
+    initialState.tabs,
+    initialState.conversationState,
+  ])
 
   return (
     <AIChatProvider
@@ -211,18 +205,20 @@ export function MockContext(props: MockContextProps) {
         ...aiChatOverrides,
       }}
     >
-      <ActiveChatContext.Provider value={activeChatContext}>
-        <ConversationProvider
-          api={conversationApi.api}
-          selectedConversationId='test-conversation'
-          updateSelectedConversationId={() => {}}
-          createNewConversation={() => {}}
-          isTabAssociated={false}
-          overrides={conversationOverrides}
-        >
-          {children}
-        </ConversationProvider>
-      </ActiveChatContext.Provider>
+      <ConversationProvider
+        api={conversationApi.api}
+        selectedConversationId={
+          initialState.conversationState?.conversationUuid
+          ?? defaultConversationState.conversationUuid
+        }
+        updateSelectedConversationId={() => {}}
+        createNewConversation={() => {}}
+        isTabAssociated={false}
+        {...conversationProps}
+        overrides={conversationOverrides}
+      >
+        {children}
+      </ConversationProvider>
     </AIChatProvider>
   )
 }
