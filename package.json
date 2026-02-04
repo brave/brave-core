@@ -142,6 +142,7 @@
     "eslint": "9.39.2",
     "eslint-config-love": "149.0.0",
     "eslint-config-prettier": "10.1.8",
+    "eslint-formatter-checkstyle": "9.0.1",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jest": "29.12.1",
     "eslint-plugin-licenses": "1.0.2",
