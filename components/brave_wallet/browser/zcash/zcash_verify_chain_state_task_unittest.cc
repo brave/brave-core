@@ -116,10 +116,7 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
     InitSyncState();
   }
 
-  void TearDown() override {
-    sync_state_.Reset();
-    task_environment().RunUntilIdle();
-  }
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   void InitSyncState() {
     auto lambda = base::BindLambdaForTesting(
@@ -171,28 +168,27 @@ TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock + 1000u, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock + 1000u, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb00", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb00", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -221,35 +217,34 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock - 1u, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock - 1u, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock - 100) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb0022", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb00", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock - 100) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb0022", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        if (block->height == kLatestScannedBlock) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb00", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
 
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -281,37 +276,36 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock + 1000u, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock + 1000u, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock) {
-              // Hash differs from the latest scanned block hash
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb0011", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // New tree state for the new latest scanned block
-            if (block->height == kLatestScannedBlock - 100) {
-              // Hash differs from the latest scanned block hash
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb0022", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock) {
+          // Hash differs from the latest scanned block hash
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb0011", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // New tree state for the new latest scanned block
+        if (block->height == kLatestScannedBlock - 100) {
+          // Hash differs from the latest scanned block hash
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb0022", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -343,34 +337,33 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock - 100) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "1122", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb33", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock - 100) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "1122", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        if (block->height == kLatestScannedBlock) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb33", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -402,28 +395,27 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb33", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb33", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -452,28 +444,27 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb33", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb33", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -509,26 +500,26 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
       });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock - 100) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "1122", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb00", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        if (block->height == kLatestScannedBlock - 100) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "1122", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        if (block->height == kLatestScannedBlock) {
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb00", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+          return;
+        }
+        // Valid tree state
+        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
+                                                       "aabb", 0, "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   ZCashActionContext context = CreateContext();
 
@@ -557,12 +548,11 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_TreeStateFailed) {
       });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          [](const std::string& chain_id,
-             ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock, std::vector<uint8_t>({})));
-          });
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(zcash::mojom::BlockID::New(
+            kLatestScannedBlock, std::vector<uint8_t>({})));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault([](const std::string& chain_id,

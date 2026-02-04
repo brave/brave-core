@@ -129,7 +129,7 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
                       ->account_id.Clone();
   }
 
-  void TearDown() override { sync_state_.Reset(); }
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   MockZCashWalletService& zcash_wallet_service() {
     return *zcash_wallet_service_;

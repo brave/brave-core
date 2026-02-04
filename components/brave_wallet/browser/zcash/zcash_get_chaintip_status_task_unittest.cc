@@ -115,10 +115,7 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
   }
 
-  void TearDown() override {
-    sync_state_.Reset();
-    task_environment().RunUntilIdle();
-  }
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   ZCashActionContext CreateContext() {
     return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id_);
@@ -259,13 +256,12 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_AccountNotShielded) {
 
 TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetAccountMeta) {
   ON_CALL(mocked_sync_state(), GetAccountMeta(_))
-      .WillByDefault(
-          [](const mojom::AccountIdPtr& account_id) {
-            OrchardStorage::AccountMeta meta;
-            meta.latest_scanned_block_id = 100;
-            return base::unexpected(OrchardStorage::Error{
-                OrchardStorage::ErrorCode::kInternalError, ""});
-          });
+      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+        OrchardStorage::AccountMeta meta;
+        meta.latest_scanned_block_id = 100;
+        return base::unexpected(OrchardStorage::Error{
+            OrchardStorage::ErrorCode::kInternalError, ""});
+      });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,

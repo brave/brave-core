@@ -108,7 +108,7 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
                       ->account_id.Clone();
   }
 
-  void TearDown() override { sync_state_.Reset(); }
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   MockOrchardSyncState& mock_orchard_sync_state() {
     return *mock_orchard_sync_state_;
@@ -657,12 +657,11 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, NotEnoughFunds) {
 
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, Error) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          [&](const mojom::AccountIdPtr& account_id,
-              const OrchardAddrRawPart& internal_addr) {
-            return base::unexpected(OrchardStorage::Error{
-                OrchardStorage::ErrorCode::kConsistencyError, ""});
-          });
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& internal_addr) {
+        return base::unexpected(OrchardStorage::Error{
+            OrchardStorage::ErrorCode::kConsistencyError, ""});
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 

@@ -76,39 +76,41 @@ class ZCashBlocksBatchScanTest : public testing::Test {
     InitZCashRpc();
   }
 
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
+
   void InitZCashRpc() {
     ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-        .WillByDefault(
-            [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-               ZCashRpc::GetTreeStateCallback callback) {
-              // Valid tree state
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-            });
+        .WillByDefault([](const std::string& chain_id,
+                          zcash::mojom::BlockIDPtr block,
+                          ZCashRpc::GetTreeStateCallback callback) {
+          // Valid tree state
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb", 0, "", "");
+          std::move(callback).Run(std::move(tree_state));
+        });
 
     ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
-        .WillByDefault(
-            [](const std::string& chain_id, uint32_t from, uint32_t to,
-               ZCashRpc::GetCompactBlocksCallback callback) {
-              // Only 600 blocks available
-              if (to > kNu5BlockUpdate + 600u) {
-                std::move(callback).Run(base::unexpected("error"));
-                return;
-              }
-              std::vector<zcash::mojom::CompactBlockPtr> blocks;
-              for (uint32_t i = from; i <= to; i++) {
-                auto chain_metadata = zcash::mojom::ChainMetadata::New();
-                chain_metadata->orchard_commitment_tree_size = 0;
-                // Create empty block for testing
-                blocks.push_back(zcash::mojom::CompactBlock::New(
-                    0u, i, std::vector<uint8_t>({0xbb, 0xaa}),
-                    std::vector<uint8_t>(), 0u, std::vector<uint8_t>(),
-                    std::vector<zcash::mojom::CompactTxPtr>(),
-                    std::move(chain_metadata)));
-              }
-              std::move(callback).Run(std::move(blocks));
-            });
+        .WillByDefault([](const std::string& chain_id, uint32_t from,
+                          uint32_t to,
+                          ZCashRpc::GetCompactBlocksCallback callback) {
+          // Only 600 blocks available
+          if (to > kNu5BlockUpdate + 600u) {
+            std::move(callback).Run(base::unexpected("error"));
+            return;
+          }
+          std::vector<zcash::mojom::CompactBlockPtr> blocks;
+          for (uint32_t i = from; i <= to; i++) {
+            auto chain_metadata = zcash::mojom::ChainMetadata::New();
+            chain_metadata->orchard_commitment_tree_size = 0;
+            // Create empty block for testing
+            blocks.push_back(zcash::mojom::CompactBlock::New(
+                0u, i, std::vector<uint8_t>({0xbb, 0xaa}),
+                std::vector<uint8_t>(), 0u, std::vector<uint8_t>(),
+                std::vector<zcash::mojom::CompactTxPtr>(),
+                std::move(chain_metadata)));
+          }
+          std::move(callback).Run(std::move(blocks));
+        });
   }
 
   ZCashActionContext CreateContext() {

@@ -74,6 +74,8 @@ class ZCashAutoSyncManagerTest : public testing::Test {
                            account_id_));
   }
 
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
+
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
   MockZCashWalletService& mock_zcash_wallet_service() {
