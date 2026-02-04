@@ -16,10 +16,7 @@ transpile_web_ui("brave_vpn_panel_ui") {
       ] ]
   resource_name = "brave_vpn_panel"
 
-  imports_from = [
-    "//brave/components/brave_vpn/resources/panel/",
-    "//brave/components/web-components",
-  ]
+  imports_from = [ "//brave/components/brave_vpn/resources/panel/" ]
 
   deps = [
     "//brave/components/brave_vpn/common/mojom:mojom_js",

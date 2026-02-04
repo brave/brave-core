@@ -24,10 +24,7 @@ transpile_web_ui("ai_chat_ui") {
     ],
   ]
 
-  imports_from = [
-    "//brave/components/ai_chat/resources/",
-    "//brave/components/web-components",
-  ]
+  imports_from = [ "//brave/components/ai_chat/resources/" ]
 
   deps = [
     "//brave/components/ai_chat/core/common/mojom:mojom_js",

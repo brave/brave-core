@@ -11,10 +11,7 @@ transpile_web_ui("resources") {
         rebase_path("brave_welcome_page.tsx"),
       ] ]
   resource_name = "brave_welcome_page"
-  imports_from = [
-    "//brave/browser/resources/brave_welcome_page/",
-    "//brave/components/web-components/",
-  ]
+  imports_from = [ "//brave/browser/resources/brave_welcome_page/" ]
 }
 
 pack_web_resources("generated_resources") {
