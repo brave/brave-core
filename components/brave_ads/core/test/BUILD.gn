@@ -647,6 +647,7 @@ source_set("brave_ads_unit_tests") {
     "//components/variations",
     "//net",
     "//third_party/re2",
+    "//ui/base",
   ]
 
   data = [ "//brave/components/brave_ads/core/test/data/" ]

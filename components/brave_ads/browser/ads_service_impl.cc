@@ -1426,11 +1426,10 @@ void AdsServiceImpl::NotifyDidCloseTab(int32_t tab_id) {
   }
 }
 
-void AdsServiceImpl::NotifyUserGestureEventTriggered(
-    int32_t page_transition_type) {
+void AdsServiceImpl::NotifyUserGestureEventTriggered(int32_t page_transition) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyUserGestureEventTriggered(
-        page_transition_type);
+        page_transition);
   }
 }
 

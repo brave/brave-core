@@ -13,6 +13,7 @@
 #include "base/observer_list_types.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
@@ -90,10 +91,10 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}
 
   // Called when a page navigation was initiated by a user gesture.
-  // `page_transition_type` containing the page transition type, see enums for
-  // `PageTransitionType`.
-  virtual void OnNotifyUserGestureEventTriggered(int32_t page_transition_type) {
-  }
+  // `page_transition` containing the page transition type, see enums for
+  // `ui::PageTransition`.
+  virtual void OnNotifyUserGestureEventTriggered(
+      ui::PageTransition page_transition) {}
 
   // Invoked when a user has been idle for the given threshold. NOTE: This
   // should not be called on mobile devices.

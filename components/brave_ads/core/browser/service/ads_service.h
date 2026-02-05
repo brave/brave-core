@@ -263,10 +263,9 @@ class AdsService : public KeyedService {
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
-  // `page_transition_type` containing the page transition type, see enums for
-  // `PageTransitionType`.
-  virtual void NotifyUserGestureEventTriggered(
-      int32_t page_transition_type) = 0;
+  // `page_transition` containing the page transition type, see enums for
+  // `ui::PageTransition`.
+  virtual void NotifyUserGestureEventTriggered(int32_t page_transition) = 0;
 
   // Called when the browser did become active.
   virtual void NotifyBrowserDidBecomeActive() = 0;

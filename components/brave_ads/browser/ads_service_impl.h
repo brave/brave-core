@@ -302,7 +302,7 @@ class AdsServiceImpl final : public AdsService,
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
-  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+  void NotifyUserGestureEventTriggered(int32_t page_transition) override;
 
   void NotifyBrowserDidBecomeActive() override;
   void NotifyBrowserDidResignActive() override;

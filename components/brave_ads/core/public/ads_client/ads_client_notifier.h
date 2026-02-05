@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_interface.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+#include "ui/base/page_transition_types.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
@@ -62,7 +63,8 @@ class AdsClientNotifier final : public AdsClientNotifierInterface {
                           bool is_visible) override;
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
-  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+  void NotifyUserGestureEventTriggered(
+      ui::PageTransition page_transition) override;
   void NotifyUserDidBecomeIdle() override;
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                  bool screen_was_locked) override;

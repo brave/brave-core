@@ -58,6 +58,7 @@ source_set("headers") {
   public_deps = [
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_ads/core/mojom",
+    "//ui/base",
   ]
 }
 

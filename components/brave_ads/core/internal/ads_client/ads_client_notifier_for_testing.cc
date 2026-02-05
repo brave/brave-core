@@ -127,8 +127,8 @@ void AdsClientNotifierForTesting::NotifyDidCloseTab(int32_t tab_id) {
 }
 
 void AdsClientNotifierForTesting::NotifyUserGestureEventTriggered(
-    int32_t page_transition_type) {
-  ads_client_notifier_.NotifyUserGestureEventTriggered(page_transition_type);
+    ui::PageTransition page_transition) {
+  ads_client_notifier_.NotifyUserGestureEventTriggered(page_transition);
 
   RunTaskEnvironmentUntilIdle();
 }

@@ -428,7 +428,7 @@ void AdsServiceImplIOS::NotifyDidCloseTab(int32_t /*tab_id*/) {
 }
 
 void AdsServiceImplIOS::NotifyUserGestureEventTriggered(
-    int32_t /*page_transition_type*/) {
+    int32_t /*page_transition*/) {
   // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
   // AdsClientNotifier in AdsServiceImplIOS
   NOTIMPLEMENTED() << "Not used on iOS.";

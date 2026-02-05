@@ -5,81 +5,39 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_util.h"
 
+#include "ui/base/page_transition_types.h"
+
 namespace brave_ads {
 
-namespace {
-
-PageTransitionType PageTransitionGetCoreValue(PageTransitionType type) {
-  return static_cast<PageTransitionType>(type & ~kPageTransitionQualifierMask);
-}
-
-PageTransitionType PageTransitionGetQualifier(PageTransitionType type) {
-  return static_cast<PageTransitionType>(type & kPageTransitionQualifierMask);
-}
-
-}  // namespace
-
-bool IsNewNavigation(PageTransitionType type) {
-  return PageTransitionGetQualifier(type) != kPageTransitionForwardBack &&
-         PageTransitionGetCoreValue(type) != kPageTransitionReload;
-}
-
-bool DidUseBackOrFowardButtonToTriggerNavigation(PageTransitionType type) {
-  return PageTransitionGetQualifier(type) == kPageTransitionForwardBack;
-}
-
-bool DidUseAddressBarToTriggerNavigation(PageTransitionType type) {
-  return PageTransitionGetQualifier(type) == kPageTransitionFromAddressBar;
-}
-
-bool DidNavigateToHomePage(PageTransitionType type) {
-  return PageTransitionGetQualifier(type) == kPageTransitionHomePage;
-}
-
-bool DidTransitionFromExternalApplication(PageTransitionType type) {
-  return PageTransitionGetQualifier(type) == kPageTransitionFromAPI;
-}
-
 std::optional<UserActivityEventType> ToUserActivityEventType(
-    PageTransitionType type) {
-  const PageTransitionType core_value = PageTransitionGetCoreValue(type);
-
-  switch (core_value) {
-    case kPageTransitionLink: {
+    ui::PageTransition page_transition) {
+  switch (ui::PageTransitionStripQualifier(page_transition)) {
+    case ui::PAGE_TRANSITION_LINK:
       return UserActivityEventType::kClickedLink;
-    }
 
-    case kPageTransitionTyped: {
+    case ui::PAGE_TRANSITION_TYPED:
       return UserActivityEventType::kTypedUrl;
-    }
 
-    case kPageTransitionAutoBookmark: {
+    case ui::PAGE_TRANSITION_AUTO_BOOKMARK:
       return UserActivityEventType::kClickedBookmark;
-    }
 
-    case kPageTransitionGenerated: {
+    case ui::PAGE_TRANSITION_GENERATED:
       return UserActivityEventType::kTypedAndSelectedNonUrl;
-    }
 
-    case kPageTransitionFormSubmit: {
+    case ui::PAGE_TRANSITION_FORM_SUBMIT:
       return UserActivityEventType::kSubmittedForm;
-    }
 
-    case kPageTransitionReload: {
+    case ui::PAGE_TRANSITION_RELOAD:
       return UserActivityEventType::kClickedReloadButton;
-    }
 
-    case kPageTransitionKeyword: {
+    case ui::PAGE_TRANSITION_KEYWORD:
       return UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider;
-    }
 
-    case kPageTransitionKeywordGenerated: {
+    case ui::PAGE_TRANSITION_KEYWORD_GENERATED:
       return UserActivityEventType::kGeneratedKeyword;
-    }
 
-    default: {
+    default:
       return std::nullopt;
-    }
   }
 }
 

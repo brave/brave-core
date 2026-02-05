@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/page_transition_types.h"
 
 namespace brave_ads {
 
@@ -54,7 +55,7 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
   MOCK_METHOD(void, OnNotifyTabDidLoad, (int32_t, int));
   MOCK_METHOD(void, OnNotifyDidCloseTab, (int32_t));
 
-  MOCK_METHOD(void, OnNotifyUserGestureEventTriggered, (int32_t));
+  MOCK_METHOD(void, OnNotifyUserGestureEventTriggered, (ui::PageTransition));
 
   MOCK_METHOD(void, OnNotifyUserDidBecomeIdle, ());
   MOCK_METHOD(void, OnNotifyUserDidBecomeActive, (base::TimeDelta, bool));

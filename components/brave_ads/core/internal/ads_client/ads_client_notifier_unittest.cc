@@ -12,6 +12,7 @@
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/page_transition_types.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -34,8 +35,6 @@ constexpr bool kIsRestoring = false;
 constexpr bool kIsVisible = true;
 
 constexpr int kHttpResponseCode = net::HTTP_OK;
-
-constexpr int32_t kPageTransitionType = 2;
 
 constexpr base::TimeDelta kIdleTime = base::Minutes(1);
 constexpr bool kScreenWasLocked = true;
@@ -76,7 +75,8 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
     ads_client_notifier_.NotifyTabDidLoad(kTabId, kHttpResponseCode);
     ads_client_notifier_.NotifyDidCloseTab(kTabId);
 
-    ads_client_notifier_.NotifyUserGestureEventTriggered(kPageTransitionType);
+    ads_client_notifier_.NotifyUserGestureEventTriggered(
+        ui::PAGE_TRANSITION_TYPED);
     ads_client_notifier_.NotifyUserDidBecomeIdle();
     ads_client_notifier_.NotifyUserDidBecomeActive(kIdleTime, kScreenWasLocked);
 
@@ -136,7 +136,11 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
         .Times(expected_call_count);
 
     EXPECT_CALL(ads_client_notifier_observer_mock_,
-                OnNotifyUserGestureEventTriggered(kPageTransitionType))
+                OnNotifyUserGestureEventTriggered(
+                    ::testing::Truly([](ui::PageTransition page_transition) {
+                      return ui::PageTransitionTypeIncludingQualifiersIs(
+                          page_transition, ui::PAGE_TRANSITION_TYPED);
+                    })))
         .Times(expected_call_count);
     EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyUserDidBecomeIdle())
         .Times(expected_call_count);

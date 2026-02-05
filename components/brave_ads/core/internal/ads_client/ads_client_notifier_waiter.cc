@@ -170,7 +170,7 @@ void AdsClientNotifierWaiter::OnNotifyDidCloseTab(int32_t /*tab_id*/) {
 }
 
 void AdsClientNotifierWaiter::OnNotifyUserGestureEventTriggered(
-    int32_t /*page_transition_type*/) {
+    ui::PageTransition /*page_transition*/) {
   on_notify_user_gesture_event_triggered_run_loop_.Quit();
 }
 

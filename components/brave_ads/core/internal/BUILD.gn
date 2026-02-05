@@ -960,7 +960,6 @@ static_library("internal") {
     "targeting/geographical/subdivision/subdivision_targeting_util.cc",
     "targeting/geographical/subdivision/subdivision_targeting_util.h",
     "targeting/geographical/subdivision/supported_subdivisions.cc",
-    "user_attention/user_activity/page_transition_types.h",
     "user_attention/user_activity/page_transition_util.cc",
     "user_attention/user_activity/page_transition_util.h",
     "user_attention/user_activity/user_activity_event_info.h",
@@ -1170,6 +1169,7 @@ static_library("internal") {
     "//third_party/boringssl",
     "//third_party/re2",
     "//third_party/zlib",
+    "//ui/base",
     "//url",
   ]
 

@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -200,15 +201,15 @@ void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
 }
 
 void AdsClientNotifier::NotifyUserGestureEventTriggered(
-    int32_t page_transition_type) {
+    ui::PageTransition page_transition) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyUserGestureEventTriggered,
-                       weak_factory_.GetWeakPtr(), page_transition_type));
+                       weak_factory_.GetWeakPtr(), page_transition));
   }
 
   for (auto& observer : observers_) {
-    observer.OnNotifyUserGestureEventTriggered(page_transition_type);
+    observer.OnNotifyUserGestureEventTriggered(page_transition);
   }
 }
 

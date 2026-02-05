@@ -13,6 +13,7 @@
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+#include "ui/base/page_transition_types.h"
 
 class GURL;
 
@@ -78,7 +79,8 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
                             bool is_visible) override;
   void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
-  void OnNotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+  void OnNotifyUserGestureEventTriggered(
+      ui::PageTransition page_transition) override;
   void OnNotifyUserDidBecomeIdle() override;
   void OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                    bool screen_was_locked) override;

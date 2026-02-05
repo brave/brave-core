@@ -51,7 +51,7 @@ interface BatAdsClientNotifier {
                    int32 http_status_code);
   NotifyDidCloseTab(int32 tab_id);
 
-  NotifyUserGestureEventTriggered(int32 page_transition_type);
+  NotifyUserGestureEventTriggered(int32 page_transition);
 
   NotifyUserDidBecomeIdle();
   NotifyUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,

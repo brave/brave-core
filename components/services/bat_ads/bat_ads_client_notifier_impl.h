@@ -102,9 +102,9 @@ class BatAdsClientNotifierImpl final
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   // Called when a page navigation was initiated by a user gesture.
-  // `page_transition_type` containing the page transition type, see enums for
-  // `PageTransitionType`.
-  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+  // `page_transition` containing the page transition type, see enums for
+  // `ui::PageTransition`.
+  void NotifyUserGestureEventTriggered(int32_t page_transition) override;
 
   // Invoked when a user has been idle for the threshold set in
   // `prefs::kIdleTimeThreshold`. NOTE: This should not be called on mobile
