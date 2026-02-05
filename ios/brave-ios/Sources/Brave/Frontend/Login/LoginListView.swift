@@ -135,6 +135,9 @@ struct LoginListView: View {
             LoginListRow(
               credential: credential,
               isEditMode: isEditMode,
+              passwordAPI: passwordAPI,
+              windowProtection: windowProtection,
+              settingsDelegate: settingsDelegate,
               onTap: {
                 if !isEditMode {
                   onCredentialSelected?(credential)
@@ -159,6 +162,9 @@ struct LoginListView: View {
               LoginListRow(
                 credential: credential,
                 isEditMode: isEditMode,
+                passwordAPI: passwordAPI,
+                windowProtection: windowProtection,
+                settingsDelegate: settingsDelegate,
                 onTap: {
                   if !isEditMode {
                     onCredentialSelected?(credential)
@@ -190,12 +196,20 @@ struct LoginListView: View {
 private struct LoginListRow: View {
   let credential: PasswordForm
   let isEditMode: Bool
+  let passwordAPI: BravePasswordAPI
+  let windowProtection: WindowProtection?
+  let settingsDelegate: SettingsDelegate?
   let onTap: () -> Void
   let onDelete: () -> Void
 
   var body: some View {
     NavigationLink {
-
+      LoginInfoViewControllerRepresentable(
+        passwordAPI: passwordAPI,
+        credentials: credential,
+        windowProtection: windowProtection,
+        settingsDelegate: settingsDelegate
+      )
     } label: {
       if let baseDomain = URL(string: credential.signOnRealm)?.baseDomain, !baseDomain.isEmpty {
         HStack(spacing: 12) {
@@ -211,5 +225,27 @@ private struct LoginListRow: View {
         EmptyView()
       }
     }
+    .disabled(isEditMode)
+  }
+}
+
+// TODO: Remove LoginInfoViewControllerRepresentable after updting LoginInfoView to new design
+private struct LoginInfoViewControllerRepresentable: UIViewControllerRepresentable {
+  let passwordAPI: BravePasswordAPI
+  let credentials: PasswordForm
+  let windowProtection: WindowProtection?
+  let settingsDelegate: SettingsDelegate?
+
+  func makeUIViewController(context: Context) -> LoginInfoViewController {
+    let vc = LoginInfoViewController(
+      passwordAPI: passwordAPI,
+      credentials: credentials,
+      windowProtection: windowProtection
+    )
+    vc.settingsDelegate = settingsDelegate
+    return vc
+  }
+
+  func updateUIViewController(_ uiViewController: LoginInfoViewController, context: Context) {
   }
 }
