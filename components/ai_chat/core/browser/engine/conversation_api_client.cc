@@ -555,8 +555,8 @@ ConversationAPIClient::ParseResponseEvent(base::DictValue& response_event,
                  << item.DebugString();
         continue;
       }
-      web_sources_event->sources.push_back(
-          mojom::WebSource::New(*title, item_url, item_favicon_url));
+      web_sources_event->sources.push_back(mojom::WebSource::New(
+          *title, item_url, item_favicon_url, std::nullopt, std::nullopt));
     }
 
     // Rich Data

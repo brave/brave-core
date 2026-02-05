@@ -70,6 +70,13 @@ std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
     size_t number,
     mojom::UploadedFileType type);
 
+mojom::WebSourcePtr CreateWebSource(
+    const std::string& title,
+    const std::string& url,
+    const std::string& favicon_url,
+    std::optional<std::string> page_content = std::nullopt,
+    std::optional<std::vector<std::string>> extra_snippets = std::nullopt);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_TEST_UTILS_H_

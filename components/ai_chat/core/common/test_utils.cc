@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "crypto/random.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
@@ -26,6 +27,17 @@ std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
                                  file_data.size(), file_data, type));
   }
   return uploaded_files;
+}
+
+mojom::WebSourcePtr CreateWebSource(
+    const std::string& title,
+    const std::string& url,
+    const std::string& favicon_url,
+    std::optional<std::string> page_content,
+    std::optional<std::vector<std::string>> extra_snippets) {
+  return mojom::WebSource::New(title, GURL(url), GURL(favicon_url),
+                               std::move(page_content),
+                               std::move(extra_snippets));
 }
 
 }  // namespace ai_chat

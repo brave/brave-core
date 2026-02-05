@@ -181,6 +181,8 @@ struct WebSource {
   string title;
   url.mojom.Url url;
   url.mojom.Url favicon_url;
+  string? page_content;
+  array<string>? extra_snippets;
 };
 
 // Content block for parsed web sources from search tool results.

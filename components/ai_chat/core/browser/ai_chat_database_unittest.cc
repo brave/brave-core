@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "sql/init_status.h"
@@ -274,19 +275,19 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
   {
     std::vector<mojom::WebSourcePtr> sources_first;
     sources_first.emplace_back(
-        mojom::WebSource::New("title1", GURL("https://example.com/source1"),
-                              GURL("https://www.example.com/source1favicon")));
+        CreateWebSource("title1", "https://example.com/source1",
+                        "https://www.example.com/source1favicon"));
     sources_first.emplace_back(
-        mojom::WebSource::New("title2", GURL("https://example.com/source2"),
-                              GURL("https://www.example.com/source2favicon")));
+        CreateWebSource("title2", "https://example.com/source2",
+                        "https://www.example.com/source2favicon"));
 
     std::vector<mojom::WebSourcePtr> sources_second;
     sources_second.emplace_back(
-        mojom::WebSource::New("2title1", GURL("https://2example.com/source1"),
-                              GURL("https://www.2example.com/source1favicon")));
+        CreateWebSource("2title1", "https://2example.com/source1",
+                        "https://www.2example.com/source1favicon"));
     sources_second.emplace_back(
-        mojom::WebSource::New("2title2", GURL("https://2example.com/source2"),
-                              GURL("https://www.2example.com/source2favicon")));
+        CreateWebSource("2title2", "https://2example.com/source2",
+                        "https://www.2example.com/source2favicon"));
 
     history[1]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
@@ -322,18 +323,18 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
   auto history = CreateSampleChatHistory(3u);
   {
     std::vector<mojom::WebSourcePtr> sources_first;
-    sources_first.emplace_back(mojom::WebSource::New(
-        "title1", GURL(""), GURL("https://www.example.com/source1favicon")));
+    sources_first.emplace_back(CreateWebSource(
+        "title1", "", "https://www.example.com/source1favicon"));
     sources_first.emplace_back(
-        mojom::WebSource::New("title2", GURL("https://example.com/source2"),
-                              GURL("https://www.example.com/source2favicon")));
+        CreateWebSource("title2", "https://example.com/source2",
+                        "https://www.example.com/source2favicon"));
 
     std::vector<mojom::WebSourcePtr> sources_second;
     sources_second.emplace_back(
-        mojom::WebSource::New("2title1", GURL("https://2example.com/source1"),
-                              GURL("https://www.2example.com/source1favicon")));
-    sources_second.emplace_back(mojom::WebSource::New(
-        "2title2", GURL("https://2example.com/source2"), GURL("")));
+        CreateWebSource("2title1", "https://2example.com/source1",
+                        "https://www.2example.com/source1favicon"));
+    sources_second.emplace_back(
+        CreateWebSource("2title2", "https://2example.com/source2", ""));
 
     history[1]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
@@ -552,19 +553,19 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
 
   std::vector<mojom::WebSourcePtr> sources_first;
   sources_first.emplace_back(
-      mojom::WebSource::New("title1", GURL("https://example.com/source1"),
-                            GURL("https://www.example.com/source1favicon")));
+      CreateWebSource("title1", "https://example.com/source1",
+                      "https://www.example.com/source1favicon"));
   sources_first.emplace_back(
-      mojom::WebSource::New("title2", GURL("https://example.com/source2"),
-                            GURL("https://www.example.com/source2favicon")));
+      CreateWebSource("title2", "https://example.com/source2",
+                      "https://www.example.com/source2favicon"));
 
   std::vector<mojom::WebSourcePtr> sources_second;
   sources_second.emplace_back(
-      mojom::WebSource::New("2title1", GURL("https://2example.com/source1"),
-                            GURL("https://www.2example.com/source1favicon")));
+      CreateWebSource("2title1", "https://2example.com/source1",
+                      "https://www.2example.com/source1favicon"));
   sources_second.emplace_back(
-      mojom::WebSource::New("2title2", GURL("https://2example.com/source2"),
-                            GURL("https://www.2example.com/source2favicon")));
+      CreateWebSource("2title2", "https://2example.com/source2",
+                      "https://www.2example.com/source2favicon"));
 
   auto tool_event_first =
       mojom::ToolUseEvent::New("test_tool", "tool_id_123", R"({
