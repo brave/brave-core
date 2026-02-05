@@ -123,7 +123,6 @@ export function endpointsFor<
     if ('response' in mapper) {
       const endpoint = query({
         ...mapper,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unnecessary-type-assertion
         query: async (...args: any[]) => {
           const raw = await (impl[key] as (...args: any[]) => Promise<any>)(
             ...(args as any),

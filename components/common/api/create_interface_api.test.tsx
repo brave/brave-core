@@ -723,13 +723,13 @@ describe('createInterfaceApi', () => {
   })
 
   it('fires and handles events', () => {
-    let emitter: (...args: [String, number]) => void = () => {}
+    let emitter: (...args: [string, number]) => void = () => {}
     const api = createInterfaceApi({
       key: 'test-events',
       actions: {},
       endpoints: {},
       events: {
-        myEvent: event<[], [String, number]>((emit) => {
+        myEvent: event<[], [string, number]>((emit) => {
           emitter = emit
         }),
       },
