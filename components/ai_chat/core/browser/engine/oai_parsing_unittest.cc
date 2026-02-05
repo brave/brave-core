@@ -503,7 +503,9 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
       {
         "title": "Site 1",
         "url": "https://site1.com",
-        "favicon": "https://imgs.search.brave.com/favicon1.png"
+        "favicon": "https://imgs.search.brave.com/favicon1.png",
+        "page_content": "Full page content here",
+        "extra_snippets": ["snippet 1", "snippet 2"]
       },
       {
         "title": "Site 2",
@@ -526,9 +528,90 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://site1.com/");
   EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
             "https://imgs.search.brave.com/favicon1.png");
+  ASSERT_TRUE(web_sources->sources[0]->page_content.has_value());
+  EXPECT_EQ(web_sources->sources[0]->page_content.value(),
+            "Full page content here");
+  ASSERT_TRUE(web_sources->sources[0]->extra_snippets.has_value());
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets->size(), 2u);
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets->at(0), "snippet 1");
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets->at(1), "snippet 2");
   EXPECT_EQ(web_sources->sources[1]->title, "Site 2");
-  // Second source should have default favicon
+  // Second source should have default favicon and no
+  // page_content/extra_snippets
   EXPECT_EQ(web_sources->sources[1]->favicon_url.spec(), kDefaultFaviconUrl);
+  EXPECT_FALSE(web_sources->sources[1]->page_content.has_value());
+  EXPECT_FALSE(web_sources->sources[1]->extra_snippets.has_value());
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesWithPageContent) {
+  // Test sources with mixed presence of page_content and
+  // extra_snippets fields.
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "title": "With All",
+        "url": "https://all.com",
+        "page_content": "content A",
+        "extra_snippets": ["s1"]
+      },
+      {
+        "title": "Content Only",
+        "url": "https://content.com",
+        "page_content": "content B"
+      },
+      {
+        "title": "Snippets Only",
+        "url": "https://snippets.com",
+        "extra_snippets": ["s2", "s3"]
+      },
+      {
+        "title": "Neither",
+        "url": "https://neither.com"
+      },
+      {
+        "title": "Empty Snippets",
+        "url": "https://empty.com",
+        "extra_snippets": []
+      },
+      {
+        "title": "Non-String Snippets",
+        "url": "https://nonstring.com",
+        "extra_snippets": [123, true]
+      }
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  const auto& ws = (*result)->get_web_sources_content_block();
+  ASSERT_EQ(ws->sources.size(), 6u);
+
+  // Source 0: has both
+  EXPECT_EQ(ws->sources[0]->page_content, "content A");
+  ASSERT_TRUE(ws->sources[0]->extra_snippets.has_value());
+  EXPECT_EQ(ws->sources[0]->extra_snippets->size(), 1u);
+
+  // Source 1: page_content only
+  EXPECT_EQ(ws->sources[1]->page_content, "content B");
+  EXPECT_FALSE(ws->sources[1]->extra_snippets.has_value());
+
+  // Source 2: extra_snippets only
+  EXPECT_FALSE(ws->sources[2]->page_content.has_value());
+  ASSERT_TRUE(ws->sources[2]->extra_snippets.has_value());
+  EXPECT_EQ(ws->sources[2]->extra_snippets->size(), 2u);
+
+  // Source 3: neither
+  EXPECT_FALSE(ws->sources[3]->page_content.has_value());
+  EXPECT_FALSE(ws->sources[3]->extra_snippets.has_value());
+
+  // Source 4: empty array -> not set
+  EXPECT_FALSE(ws->sources[4]->extra_snippets.has_value());
+
+  // Source 5: non-string items -> not set
+  EXPECT_FALSE(ws->sources[5]->extra_snippets.has_value());
 }
 
 TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidFavicon) {

@@ -134,8 +134,32 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
           continue;
         }
 
-        sources.push_back(mojom::WebSource::New(*title, std::move(url),
-                                                std::move(favicon_url)));
+        auto web_source = mojom::WebSource::New();
+        web_source->title = *title;
+        web_source->url = std::move(url);
+        web_source->favicon_url = std::move(favicon_url);
+
+        const std::string* page_content =
+            source_dict.FindString("page_content");
+        if (page_content) {
+          web_source->page_content = *page_content;
+        }
+
+        const base::Value::List* extra_snippets =
+            source_dict.FindList("extra_snippets");
+        if (extra_snippets) {
+          std::vector<std::string> snippets;
+          for (const auto& snippet : *extra_snippets) {
+            if (snippet.is_string()) {
+              snippets.push_back(snippet.GetString());
+            }
+          }
+          if (!snippets.empty()) {
+            web_source->extra_snippets = std::move(snippets);
+          }
+        }
+
+        sources.push_back(std::move(web_source));
       }
     }
 
