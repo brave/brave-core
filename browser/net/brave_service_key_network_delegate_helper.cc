@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/no_destructor.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/update_client/buildflags.h"
@@ -17,17 +17,24 @@
 #include "net/http/http_request_headers.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/common/constants.h"
+#endif
+
 namespace brave {
 
 int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  static const base::NoDestructor<std::vector<std::string>> allowed_domains{
-      {kExtensionUpdaterDomain,
-       std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
-       std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()),
-       std::string(GURL(brave_wallet::kGate3URL).host())}};
+  static const base::NoDestructor<std::vector<std::string>> allowed_domains{{
+      kExtensionUpdaterDomain,
+      std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
+      std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      std::string(GURL(brave_rewards::kGate3URL).host()),
+#endif
+  }};
 
   const GURL& url = ctx->request_url;
 
