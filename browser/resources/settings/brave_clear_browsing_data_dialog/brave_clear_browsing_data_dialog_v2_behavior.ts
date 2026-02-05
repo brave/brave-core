@@ -8,7 +8,8 @@ import {sanitizeInnerHtml} from 'chrome://resources/js/parse_html_subset.js';
 
 import {
   SettingsClearBrowsingDataDialogV2Element,
-  getDataTypePrefName
+  getDataTypePrefName,
+  BrowsingDataTypeOption
 } from '../clear_browsing_data_dialog/clear_browsing_data_dialog_v2.js'
 
 import {
@@ -23,8 +24,8 @@ import {
   BraveClearBrowsingDataDialogBrowserProxyImpl
 } from './brave_clear_browsing_data_dialog_proxy.js'
 
-// Used "ts-ignore" to access or override private vars/methods
-// @ts-ignore - override some private methods
+// Uses `const priv = this as any` to access private properties/methods from parent class
+// @ts-ignore overrides private method from parent class
 export class BraveSettingsClearBrowsingDataDialogV2Element
   extends SettingsClearBrowsingDataDialogV2Element {
   declare private braveRewardsEnabled_: boolean
@@ -32,8 +33,6 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
   declare private selectedTabIndex_: number
   declare private isNonGoogleDse_: boolean
   declare private nonGoogleSearchHistoryString_: TrustedHTML
-  private onClearBraveAdsDataClickHandler_: ((e: Event) => void)
-  private onSaveOnExitSettingsConfirmHandler_: (() => void)
 
   static get observers() {
     return [
@@ -56,8 +55,6 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
     this.selectedTabIndex_ = 0
     this.isNonGoogleDse_ = false
     this.nonGoogleSearchHistoryString_ = sanitizeInnerHtml('')
-    this.onClearBraveAdsDataClickHandler_ = () => { }
-    this.onSaveOnExitSettingsConfirmHandler_ = () => { }
   }
 
   override ready() {
@@ -93,22 +90,18 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
     super.connectedCallback()
 
     // Set up event listeners
-
     this.addEventListener('clear-data-on-exit-page-change',
-      this.onClearDataOnExitPageChange_.bind(this))
+      this.onClearDataOnExitPageChange_)
 
-    this.onClearBraveAdsDataClickHandler_ = this.clearBraveAdsData_.bind(this)
     this.shadowRoot!.querySelector('#clearBraveAdsData')!
-      .addEventListener('click', this.onClearBraveAdsDataClickHandler_)
+      .addEventListener('click', this.clearBraveAdsData_)
 
-    this.onSaveOnExitSettingsConfirmHandler_ = this.saveOnExitSettings_.bind(this)
     this.shadowRoot!.querySelector('#saveOnExitSettingsConfirm')!
-      .addEventListener('click', this.onSaveOnExitSettingsConfirmHandler_)
+      .addEventListener('click', this.saveOnExitSettings_)
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-    this.onClearBraveAdsDataClickHandler_ = () => { }
   }
 
   /**
@@ -139,7 +132,7 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
   /**
    * Handles changes to the "On Exit" page settings
    */
-  private onClearDataOnExitPageChange_() {
+  private onClearDataOnExitPageChange_ = () => {
     const saveButton = this.querySelectorById_('#saveOnExitSettingsConfirm') as HTMLButtonElement
 
     if (saveButton) {
@@ -147,7 +140,7 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
         querySelector<SettingsBraveClearBrowsingDataOnExitPageV2Element>(
           '#onExitTab')!.isModified_
     }
- }
+  }
 
   private querySelectorById_(selector: string): HTMLElement | null {
     return this.shadowRoot?.querySelector(selector) || null
@@ -155,31 +148,26 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
 
   // @ts-ignore override private method
   override setUpDataTypeOptionLists_() {
-    // @ts-ignore call private method
+    const priv = this as any
+    // @ts-ignore call private parent method
     super.setUpDataTypeOptionLists_()
 
     // Merge "more" list into expanded list to show all items by default
-    // @ts-ignore - moreBrowsingDataTypeOptionsList_ is private in parent class
-    if (this.moreBrowsingDataTypeOptionsList_ && this.moreBrowsingDataTypeOptionsList_.length > 0) {
-      // @ts-ignore - expandedBrowsingDataTypeOptionsList_ is private in parent class
-      this.expandedBrowsingDataTypeOptionsList_ = [
-        // @ts-ignore - expandedBrowsingDataTypeOptionsList_ is private in parent class
-        ...this.expandedBrowsingDataTypeOptionsList_,
-        // @ts-ignore - moreBrowsingDataTypeOptionsList_ is private in parent class
-        ...this.moreBrowsingDataTypeOptionsList_
+    if (priv.moreBrowsingDataTypeOptionsList_ && priv.moreBrowsingDataTypeOptionsList_.length > 0) {
+      priv.expandedBrowsingDataTypeOptionsList_ = [
+        ...priv.expandedBrowsingDataTypeOptionsList_,
+        ...priv.moreBrowsingDataTypeOptionsList_
       ]
       // Clear the "more" list to ensure all items are always visible.
       // This prevents Chromium's parent class from conditionally showing/hiding items
       // and ensures the show more button logic finds no additional items to display.
-      // @ts-ignore - moreBrowsingDataTypeOptionsList_ is private in parent class
-      this.moreBrowsingDataTypeOptionsList_ = []
+      priv.moreBrowsingDataTypeOptionsList_ = []
     }
 
     // <if expr="enable_ai_chat">
     if (loadTimeData.getBoolean('isLeoAssistantAllowed')
       && loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')) {
-      // @ts-ignore call private method
-      this.updateCounterText_(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT),
+      priv.updateCounterText_(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT),
         loadTimeData.getString('aiChatClearHistoryDataSubLabel'))
     } else {
       this.removeLeoAIFromList()
@@ -192,27 +180,24 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
   }
 
   private removeLeoAIFromList() {
-      // @ts-ignore - expandedBrowsingDataTypeOptionsList_ is private in parent class
-    const leoExpandedIndex = this.expandedBrowsingDataTypeOptionsList_.map(
-        option => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
+    const priv = this as any
+    const leoExpandedIndex = priv.expandedBrowsingDataTypeOptionsList_.map(
+        (option: BrowsingDataTypeOption) => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
     if (leoExpandedIndex !== -1) {
-      // @ts-ignore - expandedBrowsingDataTypeOptionsList_ is private in parent class
-      this.expandedBrowsingDataTypeOptionsList_.splice(leoExpandedIndex, 1);
+      priv.expandedBrowsingDataTypeOptionsList_.splice(leoExpandedIndex, 1);
       return
     }
 
-    // @ts-ignore - moreBrowsingDataTypeOptionsList_ is private in parent class
-    const leoMoreIndex = this.moreBrowsingDataTypeOptionsList_.map(
-        option => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
+    const leoMoreIndex = priv.moreBrowsingDataTypeOptionsList_.map(
+        (option: BrowsingDataTypeOption) => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
     assert(leoMoreIndex !== -1)
-    // @ts-ignore - moreBrowsingDataTypeOptionsList_ is private in parent class
-    this.moreBrowsingDataTypeOptionsList_.splice(leoMoreIndex, 1);
+    priv.moreBrowsingDataTypeOptionsList_.splice(leoMoreIndex, 1);
   }
 
   /**
    * Saves on exit settings selections.
    */
-  private saveOnExitSettings_() {
+  private saveOnExitSettings_ = () => {
     const changed = this.shadowRoot!.
       querySelector<SettingsBraveClearBrowsingDataOnExitPageV2Element>(
         '#onExitTab')!.getChangedSettings()
@@ -225,7 +210,7 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
   /**
    * Clears Brave Ads data.
    */
-  private clearBraveAdsData_(e: Event) {
+  private clearBraveAdsData_ = (e: Event) => {
     e.preventDefault()
     this.clearDataBrowserProxy_.clearBraveAdsData()
     this.$.deleteBrowsingDataDialog.close()

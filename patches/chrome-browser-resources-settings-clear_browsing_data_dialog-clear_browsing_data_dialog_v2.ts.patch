@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..6e0845f41462dcb205efaeb9a04ce214cb07cb32 100644
+index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..b3ee2eec7da02e94c09c69bef9209efd7ca05b1c 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-@@ -81,10 +81,11 @@ export interface SettingsClearBrowsingDataDialogV2Element {
+@@ -81,10 +81,12 @@ export interface SettingsClearBrowsingDataDialogV2Element {
   * The list of all available Browsing Data types in the default order they
   * should appear in the dialog.
   */
--const ALL_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
-+export const ALL_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
++export
+ const ALL_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
    BrowsingDataType.HISTORY,
    BrowsingDataType.SITE_DATA,
    BrowsingDataType.CACHE,
@@ -15,23 +15,22 @@ index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..6e0845f41462dcb205efaeb9a04ce214
    BrowsingDataType.DOWNLOADS,
    BrowsingDataType.FORM_DATA,
    BrowsingDataType.SITE_SETTINGS,
-@@ -98,13 +99,13 @@ const DEFAULT_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
+@@ -98,12 +100,14 @@ const DEFAULT_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
    BrowsingDataType.CACHE,
  ];
  
--interface BrowsingDataTypeOption {
-+export interface BrowsingDataTypeOption {
++export
+ interface BrowsingDataTypeOption {
    label: string;
    subLabel?: string;
    pref: chrome.settingsPrivate.PrefObject;
  }
  
--function getDataTypeLabel(datatypes: BrowsingDataType) {
-+export function getDataTypeLabel(datatypes: BrowsingDataType) {
++export
+ function getDataTypeLabel(datatypes: BrowsingDataType) {
    switch (datatypes) {
      case BrowsingDataType.HISTORY:
-       return loadTimeData.getString('clearBrowsingHistory');
-@@ -120,6 +121,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
+@@ -120,6 +124,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
        return loadTimeData.getString('clearDownloadHistory');
      case BrowsingDataType.HOSTED_APPS_DATA:
        return loadTimeData.getString('clearHostedAppData');
@@ -39,7 +38,7 @@ index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..6e0845f41462dcb205efaeb9a04ce214
      default:
        assertNotReachedCase(datatypes);
    }
-@@ -141,6 +143,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
+@@ -141,6 +146,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
        return 'browser.clear_data.download_history';
      case BrowsingDataType.HOSTED_APPS_DATA:
        return 'browser.clear_data.hosted_apps_data';
