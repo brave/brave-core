@@ -81,6 +81,12 @@
 -CDM_11/ECKEncryptedMediaTest.VerifyCdmHostTest/0
 -CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
 
+# This test relies on command line switches for watermark opacity that only work
+# on non-STABLE, non-BETA channels. On Windows, OFFICIAL builds use
+# ScopedInstallDetails with default index 0 (STABLE), causing GetChannel() to
+# return STABLE and block the command line switches.
+-WatermarkSettingsCommandLineBrowserTest.GetColors
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*
