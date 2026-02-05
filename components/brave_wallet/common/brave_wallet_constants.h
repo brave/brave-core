@@ -8,6 +8,8 @@
 
 namespace brave_wallet {
 
+inline constexpr char kGate3URL[] = "https://gate3.wallet.brave.com";
+
 inline constexpr size_t kSolanaKeypairSize = 64;
 inline constexpr size_t kSolanaSignatureSize = 64;
 inline constexpr size_t kSolanaPrikeySize = 32;
