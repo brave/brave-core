@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_news/browser/publishers_controller.h"
 
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -401,6 +400,36 @@ TEST_F(BraveNewsPublishersControllerTest, CanGetPublishers) {
 
   auto result = GetPublishers();
   EXPECT_EQ(3u, result.size());
+}
+
+TEST_F(BraveNewsPublishersControllerTest, DirectFeedsHandling) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
+                                       net::HTTP_OK);
+  // Add a direct feed to the preferences.
+  const auto direct_feed_id = pref_manager_->AddDirectPublisher(
+      GURL("https://example.com/feed1.xml"), "Test Feed 1");
+  EXPECT_TRUE(DirectSourceExists(direct_feed_id));
+
+  {
+    const auto& result = GetPublishers();  // This populates the cache
+    const auto& cached_result = GetPublishers();
+
+    EXPECT_EQ(cached_result.size(), 4u);
+    EXPECT_EQ(result.size(), 4u);
+    EXPECT_EQ(result.at(direct_feed_id)->type,
+              mojom::PublisherType::DIRECT_SOURCE);
+    EXPECT_EQ(result.at("111")->type, mojom::PublisherType::COMBINED_SOURCE);
+  }
+
+  {
+    // Remove the direct feed from the preferences.
+    pref_manager_->SetPublisherSubscribed(direct_feed_id,
+                                          mojom::UserEnabled::DISABLED);
+    EXPECT_FALSE(DirectSourceExists(direct_feed_id));
+
+    const auto& result = GetPublishers();
+    EXPECT_EQ(result.size(), 3u);
+  }
 }
 
 }  // namespace brave_news

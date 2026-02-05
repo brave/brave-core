@@ -74,7 +74,7 @@ void ApplySubscriptions(Publishers& publishers,
   // Remove all direct feeds - they'll get re-added.
   for (auto it = publishers.begin(); it != publishers.end();) {
     if (it->second->type == mojom::PublisherType::DIRECT_SOURCE) {
-      publishers.erase(it);
+      it = publishers.erase(it);
     } else {
       it++;
     }
