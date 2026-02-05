@@ -116,7 +116,7 @@ void ExampleServiceFactory::BindRemoteForProfile(
 
 static jlong JNI_ExampleService_GetForProfile(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
       ExampleServiceFactory::GetInstance()->GetRemoteService(profile);

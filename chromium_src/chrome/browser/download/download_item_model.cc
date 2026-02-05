@@ -5,6 +5,7 @@
 
 #include "chrome/browser/download/download_item_model.h"
 
+#include "base/functional/callback_helpers.h"
 #include "chrome/browser/download/download_commands.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 

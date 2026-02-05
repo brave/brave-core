@@ -51,26 +51,27 @@ int GetXCoordinateAdjustmentForMultiSelectedTabs(
 
 }  // namespace
 
-TabDragController::TabDragController() = default;
+BraveTabDragController::BraveTabDragController() = default;
 
-TabDragController::~TabDragController() = default;
+BraveTabDragController::~BraveTabDragController() = default;
 
-TabDragController::Liveness TabDragController::Init(
+BraveTabDragController::Liveness BraveTabDragController::Init(
     TabDragContext* source_context,
     TabSlotView* source_view,
     const std::vector<TabSlotView*>& dragging_views,
-    const gfx::Point& mouse_offset,
-    int source_view_offset,
+    const gfx::Point& offset_from_first_dragged_view,
+    const gfx::Point& offset_from_source_view,
     ui::ListSelectionModel initial_selection_model,
     ui::mojom::DragEventSource event_source) {
-  if (TabDragControllerChromium::Init(
-          source_context, source_view, dragging_views, mouse_offset,
-          source_view_offset, initial_selection_model, event_source) ==
-      TabDragController::TabDragController::Liveness::kDeleted) {
-    return TabDragController::TabDragController::Liveness::kDeleted;
+  if (TabDragController::Init(source_context, source_view, dragging_views,
+                              offset_from_first_dragged_view,
+                              offset_from_source_view, initial_selection_model,
+                              event_source) ==
+      BraveTabDragController::BraveTabDragController::Liveness::kDeleted) {
+    return BraveTabDragController::BraveTabDragController::Liveness::kDeleted;
   }
 
-  mouse_offset_ = mouse_offset;
+  offset_from_first_dragged_view_ = offset_from_first_dragged_view;
 
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
@@ -94,7 +95,7 @@ TabDragController::Liveness TabDragController::Init(
   is_showing_vertical_tabs_ = tabs::utils::ShouldShowVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_) {
-    return TabDragController::TabDragController::Liveness::kAlive;
+    return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
   }
 
   // Update IsMaximized and IsFullscreen states for vertical mode.
@@ -104,19 +105,18 @@ TabDragController::Liveness TabDragController::Init(
   was_source_fullscreen_ = top_level_widget->IsFullscreen();
 
   // Adjust coordinate for vertical mode.
-  const int x =
-      mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
-                             dragging_views, drag_data_.source_view_index_);
-  source_view_offset = mouse_offset.y();
-  start_point_in_screen_ = gfx::Point(x, source_view_offset);
+  const int x = offset_from_first_dragged_view.x() -
+                GetXCoordinateAdjustmentForMultiSelectedTabs(
+                    dragging_views, drag_data_.source_view_index_);
+  start_point_in_screen_ = gfx::Point(x, offset_from_first_dragged_view.y());
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
-  return TabDragController::TabDragController::Liveness::kAlive;
+  return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
 }
 
-gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
-  gfx::Vector2d offset = TabDragControllerChromium::CalculateWindowDragOffset();
+gfx::Vector2d BraveTabDragController::CalculateWindowDragOffset() {
+  gfx::Vector2d offset = TabDragController::CalculateWindowDragOffset();
   if (!is_showing_vertical_tabs_) {
     return offset;
   }
@@ -132,19 +132,20 @@ gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
   return new_offset.OffsetFromOrigin();
 }
 
-void TabDragController::StartDraggingTabsSession(
+void BraveTabDragController::StartDraggingTabsSession(
     bool initial_move,
     gfx::Point start_point_in_screen) {
-  TabDragControllerChromium::StartDraggingTabsSession(initial_move,
-                                                      start_point_in_screen);
+  TabDragController::StartDraggingTabsSession(initial_move,
+                                              start_point_in_screen);
   CHECK(dragging_tabs_session_);
-  dragging_tabs_session_->set_mouse_y_offset(mouse_offset_.y());
+  dragging_tabs_session_->set_mouse_y_offset(
+      offset_from_first_dragged_view_.y());
   dragging_tabs_session_->set_is_showing_vertical_tabs(
       is_showing_vertical_tabs_);
 }
 
-views::Widget* TabDragController::GetAttachedBrowserWidget() {
-  auto* widget = TabDragControllerChromium::GetAttachedBrowserWidget();
+views::Widget* BraveTabDragController::GetAttachedBrowserWidget() {
+  auto* widget = TabDragController::GetAttachedBrowserWidget();
   if (!is_showing_vertical_tabs_) {
     return widget;
   }
@@ -157,7 +158,7 @@ views::Widget* TabDragController::GetAttachedBrowserWidget() {
   return top_level_widget;
 }
 
-TabDragController::Liveness TabDragController::GetLocalProcessWindow(
+BraveTabDragController::Liveness BraveTabDragController::GetLocalProcessWindow(
     const gfx::Point& screen_point,
     bool exclude_dragged_view,
     gfx::NativeWindow* window) {
@@ -172,23 +173,23 @@ TabDragController::Liveness TabDragController::GetLocalProcessWindow(
       DCHECK(top_level_widget);
       exclude.insert(top_level_widget->GetNativeWindow());
     }
-    base::WeakPtr<TabDragControllerChromium> ref(weak_factory_.GetWeakPtr());
+    base::WeakPtr<TabDragController> ref(weak_factory_.GetWeakPtr());
     *window =
         window_finder_->GetLocalProcessWindowAtPoint(screen_point, exclude);
-    return ref ? TabDragController::Liveness::kAlive
-               : TabDragController::Liveness::kDeleted;
+    return ref ? BraveTabDragController::Liveness::kAlive
+               : BraveTabDragController::Liveness::kDeleted;
   }
 
-  return TabDragControllerChromium::GetLocalProcessWindow(
-      screen_point, exclude_dragged_view, window);
+  return TabDragController::GetLocalProcessWindow(screen_point,
+                                                  exclude_dragged_view, window);
 }
 
-void TabDragController::DetachAndAttachToNewContext(
+void BraveTabDragController::DetachAndAttachToNewContext(
     ReleaseCapture release_capture,
     TabDragContext* target_context) {
   if (!is_showing_vertical_tabs_) {
-    TabDragControllerChromium::DetachAndAttachToNewContext(release_capture,
-                                                           target_context);
+    TabDragController::DetachAndAttachToNewContext(release_capture,
+                                                   target_context);
     return;
   }
 
@@ -217,26 +218,17 @@ void TabDragController::DetachAndAttachToNewContext(
     vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   }
 
-  TabDragControllerChromium::DetachAndAttachToNewContext(release_capture,
-                                                         target_context);
+  TabDragController::DetachAndAttachToNewContext(release_capture,
+                                                 target_context);
 
   auto* region_view = get_region_view();
 
   vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   // Relayout tabs with expanded bounds.
-  attached_context_->ForceLayout();
-
-  std::vector<TabSlotView*> views(drag_data_.tab_drag_data_.size());
-  for (size_t i = 0; i < drag_data_.tab_drag_data_.size(); ++i) {
-    views[i] = drag_data_.tab_drag_data_[i].attached_view.get();
-  }
-
-  attached_context_->LayoutDraggedViewsAt(
-      std::move(views), drag_data_.source_view_drag_data()->attached_view,
-      GetCursorScreenPoint(), false);
+  attached_context_->GetPositioningDelegate()->ForceLayout();
 }
 
-gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
+gfx::Vector2d BraveTabDragController::GetVerticalTabStripWidgetOffset() {
   auto* browser_widget = GetAttachedBrowserWidget();
   DCHECK(browser_widget);
   auto browser_widget_bounds = browser_widget->GetWindowBoundsInScreen();
@@ -254,9 +246,9 @@ gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
   return browser_widget_bounds.origin() - tabstrip_widget_bounds.origin();
 }
 
-void TabDragController::RestoreAttachedWindowForDrag() {
+void BraveTabDragController::RestoreAttachedWindowForDrag() {
   if (!is_showing_vertical_tabs_) {
-    TabDragControllerChromium::RestoreAttachedWindowForDrag();
+    TabDragController::RestoreAttachedWindowForDrag();
     return;
   }
 

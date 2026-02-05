@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
+index c28d10c38a4e1657ded452a1f73df1e6d44cb83a..a18fece0d56fc1b41116a4fc9d6fe1c08291de12 100644
+--- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
++++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
+@@ -134,7 +134,7 @@ class TabDragController : public views::WidgetObserver,
+   // and is only non-empty if the original selection isn't the same as the
+   // dragging set. Returns Liveness::DELETED if `this` was deleted during this
+   // call, and Liveness::ALIVE if `this` still exists.
+-  [[nodiscard]] Liveness Init(TabDragContext* source_context,
++  [[nodiscard]] virtual Liveness Init(TabDragContext* source_context,
+                               TabSlotView* source_view,
+                               const std::vector<TabSlotView*>& dragging_views,
+                               const gfx::Point& offset_from_first_dragged_view,

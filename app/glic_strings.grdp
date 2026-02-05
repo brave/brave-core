@@ -231,6 +231,9 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_2" desc="Part of the description of the 'Share current tab by default' setting. It informs the user about what information is going to be shared with Gemini.">
     Tabs opened from a chat or a shared tab are also shared with Gemini. In Live mode, only the current tab is shared by default.
   </message>
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_2_NO_LIVE" desc="Part of the description of the 'Share current tab by default' setting. It informs the user about what information is going to be shared with Gemini. This version is used when Live mode is not available for the user.">
+    Tabs opened from a chat or a shared tab are also shared with Gemini.
+  </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_CONSIDER_1" desc="First point in 'things to consider' column of the 'default tab access' expands">
     When tabs are shared, their page contents, media and URLs are sent to Brave.
   </message>
@@ -321,6 +324,9 @@
       =1 {Sharing selected tab would exceed the sharing limit}
     other {Sharing # tabs would exceed the sharing limit}}
   </message>
+  <message name="IDS_TAB_CXMENU_GLIC_CREATE_NEW_CHAT" desc="The label of the 'Start new chat' item in the Glic submenu.">
+    Start new chat with Gemini
+  </message>
   </if>
   <if expr="use_titlecase">
   <message name="IDS_TAB_CXMENU_GLIC_START_SHARE" desc="The label of the tab context menu submenu for starting sharing the given tab or tabs with Gemini. [ICU syntax]">
@@ -338,7 +344,14 @@
       =1 {Sharing Selected Tab Would Exceed the Sharing Limit}
     other {Sharing # Tabs Would Exceed the Sharing Limit}}
   </message>
+  <message name="IDS_TAB_CXMENU_GLIC_CREATE_NEW_CHAT" desc="The label of the 'Start new chat' item in the Glic submenu.">
+    Start New Chat with Gemini
+  </message>
   </if>
+
+  <message name="IDS_TAB_CXMENU_GLIC_UNSHARE" desc="The label of the tab context menu item for stopping sharing the selected tab or tabs with Gemini.">
+    Unshare with Gemini
+  </message>
 
   <!-- Glic button context menu. -->
   <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic.">

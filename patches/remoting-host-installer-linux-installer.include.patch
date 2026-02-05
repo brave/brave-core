@@ -1,8 +1,8 @@
 diff --git a/remoting/host/installer/linux/installer.include b/remoting/host/installer/linux/installer.include
-index 3c2946d335fb8325395ec6468209eafa1c8836b2..037eca85d776e036144aa8c7cd372ab8389f28b2 100644
+index 1659892790b5844697fe5968628d4790325c3661..96b1c729ad6c4bfd81668f1f5222658431d7680f 100644
 --- a/remoting/host/installer/linux/installer.include
 +++ b/remoting/host/installer/linux/installer.include
-@@ -142,6 +142,8 @@ stage_install_common() {
+@@ -145,6 +145,8 @@ stage_install_common() {
      install -m 644 "${OUTPUTDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
  
@@ -11,7 +11,7 @@ index 3c2946d335fb8325395ec6468209eafa1c8836b2..037eca85d776e036144aa8c7cd372ab8
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${OUTPUTDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -280,13 +282,15 @@ stage_install_common() {
+@@ -283,13 +285,15 @@ stage_install_common() {
  
    # app icons
    local icon_suffix=""

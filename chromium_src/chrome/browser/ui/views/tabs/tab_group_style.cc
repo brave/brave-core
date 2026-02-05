@@ -85,7 +85,8 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(
 }
 
 bool TabGroupStyle::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(
+      tab_group_views_->GetBrowserWindowInterface());
 }
 
 float TabGroupStyle::GetEmptyChipSize() const {

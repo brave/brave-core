@@ -25,17 +25,21 @@
 
 #define JNI_WebsitePreferenceBridge_ClearCookieData \
   JNI_WebsitePreferenceBridge_ClearCookieData_ChromiumImpl
-
+// Suppress DEFINE_JNI in included file - we call it ourselves at the end
+#pragma push_macro("DEFINE_JNI")
+#undef DEFINE_JNI
+#define DEFINE_JNI(...)
 #include <components/browser_ui/site_settings/android/website_preference_bridge.cc>
-
+#undef DEFINE_JNI
+#pragma pop_macro("DEFINE_JNI")
 #undef BACKGROUND_SYNC
 #undef CLIPBOARD_READ_WRITE
 #undef JNI_WebsitePreferenceBridge_ClearCookieData
 
 static void JNI_WebsitePreferenceBridge_ClearCookieData(
     JNIEnv* env,
-    const JavaParamRef<jobject>& jbrowser_context_handle,
-    const JavaParamRef<jstring>& jorigin) {
+    const jni_zero::JavaRef<jobject>& jbrowser_context_handle,
+    const jni_zero::JavaRef<jstring>& jorigin) {
   JNI_WebsitePreferenceBridge_ClearCookieData_ChromiumImpl(
       env, jbrowser_context_handle, jorigin);
 
@@ -58,3 +62,6 @@ static void JNI_WebsitePreferenceBridge_ClearCookieData(
         ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());
   }
 }
+
+DEFINE_JNI(GeolocationSetting)
+DEFINE_JNI(WebsitePreferenceBridge)

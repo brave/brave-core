@@ -5,7 +5,19 @@
 
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 
+// Unfortunately we have to suppress `-Wheader-hygiene` because the compiler
+// treats `curve25519.cc` as a header file when included from this shadow
+// source, and this causes this warning to go off with:
+//
+// error: using namespace directive in global context in header.
+//    44 | using namespace bssl;
+//       |
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wheader-hygiene"
+
 #include <third_party/boringssl/src/crypto/curve25519/curve25519.cc>
+
+#pragma clang diagnostic pop
 
 #ifdef UNSAFE_BUFFERS_BUILD
 #pragma allow_unsafe_buffers

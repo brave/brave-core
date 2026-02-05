@@ -37,7 +37,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   base::android::ScopedJavaLocalRef<jstring> GetSyncCodeWords(JNIEnv* env);
 
   void SaveCodeWords(JNIEnv* env,
-                     const base::android::JavaParamRef<jstring>& passphrase);
+                     const base::android::JavaRef<jstring>& passphrase);
 
   void RequestSync(JNIEnv* env);
 
@@ -49,11 +49,11 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   void PermanentlyDeleteAccount(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& callback);
+      const base::android::JavaRef<jobject>& callback);
 
   void SetJoinSyncChainCallback(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& callback);
+      const base::android::JavaRef<jobject>& callback);
 
   void ClearAccountDeletedNoticePending(JNIEnv* env);
   bool IsAccountDeletedNoticePending(JNIEnv* env);

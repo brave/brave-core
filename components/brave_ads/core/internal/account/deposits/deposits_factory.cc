@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
 
+#include <utility>
+
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -51,7 +52,7 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
   }
 
   NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
-               << base::to_underlying(mojom_confirmation_type);
+               << std::to_underlying(mojom_confirmation_type);
 }
 
 }  // namespace brave_ads

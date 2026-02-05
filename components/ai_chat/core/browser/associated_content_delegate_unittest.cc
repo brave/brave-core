@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "testing/gmock/include/gmock/gmock.h"

@@ -68,18 +68,18 @@ class ProfileMiscMetricsService : public KeyedService {
   raw_ptr<PrefService> profile_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
 
-  std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
-  std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
-  std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
+  std::unique_ptr<AutofillMetrics> autofill_metrics_;
+  std::unique_ptr<LanguageMetrics> language_metrics_;
+  std::unique_ptr<PageMetrics> page_metrics_;
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
+  std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<MiscAndroidMetrics> misc_android_metrics_ = nullptr;
+  std::unique_ptr<MiscAndroidMetrics> misc_android_metrics_;
 #else
-  std::unique_ptr<ExtensionMetrics> extension_metrics_ = nullptr;
-  std::unique_ptr<ThemeMetrics> theme_metrics_ = nullptr;
-  std::unique_ptr<ProfileNewTabMetrics> new_tab_metrics_ = nullptr;
+  std::unique_ptr<ExtensionMetrics> extension_metrics_;
+  std::unique_ptr<ThemeMetrics> theme_metrics_;
+  std::unique_ptr<ProfileNewTabMetrics> new_tab_metrics_;
 #endif
 };
 

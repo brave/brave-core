@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -40,25 +41,11 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
       int tab_index) {
     auto* controller = static_cast<BraveBrowserTabStripController*>(
         BrowserView::GetBrowserViewForBrowser(browser())
-            ->tabstrip()
+            ->horizontal_tab_strip_for_testing()
             ->controller());
 
-    auto context_menu_controller = std::make_unique<TabContextMenuController>(
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandChecked,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandEnabled,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandAlerted,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::ExecuteContextMenuCommand,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::GetContextMenuAccelerator,
-            base::Unretained(controller)));
+    auto context_menu_controller =
+        std::make_unique<TabContextMenuController>(tab_index, controller);
 
     return context_menu_controller;
   }

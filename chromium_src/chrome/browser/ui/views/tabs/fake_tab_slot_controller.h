@@ -8,10 +8,6 @@
 
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
-#define IsGroupCollapsed(...)                   \
-  IsGroupCollapsed(__VA_ARGS__) const override; \
-  const Browser* GetBrowser()
-
 // Add override for
 // ShouldAlwaysHideTabCloseButton()/CanCloseTabViaMiddleButtonClick() and
 // setters to control its return value in tests.
@@ -46,6 +42,5 @@
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge
-#undef IsGroupCollapsed
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_FAKE_TAB_SLOT_CONTROLLER_H_

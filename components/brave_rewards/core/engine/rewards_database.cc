@@ -224,7 +224,7 @@ mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
 
     initialized_ = true;
     memory_pressure_listener_registration_ =
-        std::make_unique<base::MemoryPressureListenerRegistration>(
+        std::make_unique<base::AsyncMemoryPressureListenerRegistration>(
             FROM_HERE, base::MemoryPressureListenerTag::kRewardsDatabase, this);
   } else {
     table_version = meta_table_.GetVersionNumber();

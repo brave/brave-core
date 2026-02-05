@@ -5,14 +5,14 @@
 
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "ui/views/widget/widget.h"
 
 // Prevent unrelated StackAtTop re-define.
 #if BUILDFLAG(IS_OZONE)
 #include "ui/ozone/public/ozone_platform.h"
 #endif
-
-#define TabDragController TabDragControllerChromium
 
 // StackAtTop() is called to bring browser window to the front.
 // It's called for TabDragContext()->GetWidget(). In horizontal tab,
@@ -28,4 +28,3 @@
 #undef GetWindowBoundsInScreen
 #undef StackAtTop
 #undef GetBrowserViewForNativeWindow
-#undef TabDragController

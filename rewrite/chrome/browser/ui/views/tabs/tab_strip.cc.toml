@@ -17,3 +17,8 @@ replace = '\1\n      BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX'
 description = 'allow to expand tab groups only when tabstrip is editable inside SetSelection()'
 re_pattern = '(TabStrip::SetSelection\(const ui::ListSelectionModel& new_selection\) {[\s\S]*if \()(IsGroupCollapsed\(new_group\))'
 replace = '\1\2 && IsTabStripEditable()'
+
+[[substitution]]
+description = 'Use BraveTabDragController instead of TabDragController'
+pattern = 'std::make_unique<TabDragController>()'
+replace = 'std::make_unique<BraveTabDragController>()'

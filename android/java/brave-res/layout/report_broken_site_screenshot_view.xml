@@ -34,7 +34,7 @@
 
     <View
         android:id="@+id/divider"
-        android:background="@macro/divider_line_bg_color"
+        android:background="@color/divider_color"
         android:layout_above="@id/footer"
         android:layout_height="1dp"
         android:layout_width="match_parent"/>

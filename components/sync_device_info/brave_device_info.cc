@@ -32,6 +32,7 @@ BraveDeviceInfo::BraveDeviceInfo(
     const std::string& fcm_registration_token,
     const DataTypeSet& interested_data_types,
     std::optional<base::Time> floating_workspace_last_signin_timestamp,
+    bool desktop_to_ios_promo_receiving_enabled,
     bool is_self_delete_supported)
     : DeviceInfo(guid,
                  client_name,
@@ -52,7 +53,8 @@ BraveDeviceInfo::BraveDeviceInfo(
                  paask_info,
                  fcm_registration_token,
                  interested_data_types,
-                 floating_workspace_last_signin_timestamp),
+                 floating_workspace_last_signin_timestamp,
+                 desktop_to_ios_promo_receiving_enabled),
       is_self_delete_supported_(is_self_delete_supported) {}
 
 bool BraveDeviceInfo::is_self_delete_supported() const {

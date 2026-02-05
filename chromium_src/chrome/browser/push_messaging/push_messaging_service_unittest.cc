@@ -13,8 +13,15 @@
 #define RecordsRevocationAndSourceUiWithReporterTest \
   DISABLED_RecordsRevocationAndSourceUiWithReporterTest
 
+// This test fails because we disable features::kDestroyProfileOnBrowserClose,
+// which allows PushMessagingServiceImpl::OnMessage to find a profile to keep
+// alive and then be able to dispatch the message. We disable the feature to
+// make clear browsing data on exit to work.
+#define ProfileDestructionTest DISABLED_ProfileDestructionTest
+
 #define TestingProfile BraveTestingProfile
 #include <chrome/browser/push_messaging/push_messaging_service_unittest.cc>
 #undef TestingProfile
+#undef ProfileDestructionTest
 #undef RecordsRevocationAndSourceUiWithReporterTest
 #undef RecordsRevocationAndSourceUiNoReporterTest

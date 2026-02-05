@@ -81,11 +81,11 @@ class PasswordUiViewAndroid
       const base::android::JavaRef<jobject>& error_callback);
   void HandleShowPasswordEntryEditingView(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& context,
+      const base::android::JavaRef<jobject>& context,
       int index);
   void HandleShowBlockedCredentialView(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& context,
+      const base::android::JavaRef<jobject>& context,
       int index);
   void HandleImportPasswordsFromCsv(
       JNIEnv* env,

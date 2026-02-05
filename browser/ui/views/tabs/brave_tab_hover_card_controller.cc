@@ -38,8 +38,10 @@ void BraveTabHoverCardController::UpdateHoverCardArrow() {
 void BraveTabHoverCardController::CreateHoverCard(Tab* tab) {
   hover_card_image_previews_enabled_ =
       AreHoverCardImagesEnabled() ||
-      brave_tabs::AreCardPreviewsEnabled(
-          tab->controller()->GetBrowser()->profile()->GetPrefs());
+      brave_tabs::AreCardPreviewsEnabled(tab->controller()
+                                             ->GetBrowserWindowInterface()
+                                             ->GetProfile()
+                                             ->GetPrefs());
 
   TabHoverCardController::CreateHoverCard(tab);
 
@@ -50,7 +52,7 @@ void BraveTabHoverCardController::OnHovercardImagesEnabledChanged() {
   hover_card_image_previews_enabled_ =
       AreHoverCardImagesEnabled() ||
       brave_tabs::AreCardPreviewsEnabled(
-          tab_strip_->GetBrowser()->profile()->GetPrefs());
+          tab_strip_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
   if (!hover_card_image_previews_enabled_) {
     thumbnail_subscription_ = base::CallbackListSubscription();
     thumbnail_observer_.reset();

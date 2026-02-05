@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.MenuItem;
@@ -44,10 +45,14 @@ import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
+import org.chromium.base.supplier.SettableObservableSupplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -59,6 +64,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
@@ -81,7 +87,6 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.infobar.InfoBarContainerView;
-import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
@@ -138,7 +143,6 @@ import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor.UiState;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
-import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.HomeButtonDisplay;
@@ -147,6 +151,7 @@ import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
@@ -198,6 +203,7 @@ import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.ViewProvider;
+import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
@@ -359,6 +365,8 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator")); // presubmit: ignore-long-line
@@ -937,6 +945,17 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/settings/SettingsIntentUtil",
+                        "createIntent",
+                        MethodModifier.STATIC,
+                        Intent.class,
+                        Context.class,
+                        String.class,
+                        Bundle.class,
+                        boolean.class,
+                        String.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
                         "showNotification",
                         MethodModifier.REGULAR,
@@ -1314,6 +1333,13 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         int.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper",
+                        "getObservableConstraints",
+                        MethodModifier.STATIC,
+                        ObservableSupplier.class,
+                        Tab.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1373,8 +1399,7 @@ public class BytecodeTest {
                         boolean.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
-                        Supplier.class,
-                        MultiInstanceManager.class));
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -1486,6 +1511,7 @@ public class BytecodeTest {
                         Activity.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
+                        Supplier.class,
                         SnackbarManager.class,
                         ActivityLifecycleDispatcher.class,
                         TabModelSelector.class,
@@ -1500,8 +1526,9 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         Supplier.class,
                         HomeSurfaceTracker.class,
+                        ActivityResultTracker.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1529,23 +1556,23 @@ public class BytecodeTest {
                         Supplier.class,
                         HistoryDelegate.class,
                         boolean.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
                         DesktopWindowStateManager.class,
                         OneshotSupplier.class,
+                        TabStripTransitionHandler.class,
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BackButtonCoordinator.class,
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
-                        ExtensionToolbarCoordinator.class,
                         TopControlsStacker.class,
-                        BrowserControlsStateProvider.class,
+                        BrowserControlsVisibilityManager.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1841,7 +1868,7 @@ public class BytecodeTest {
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        ObservableSupplierImpl.class,
+                        SettableObservableSupplier.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
@@ -1849,9 +1876,10 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
+                        PersistableBundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        ManualFillingComponentSupplier.class,
+                        ObservableSupplier.class,
                         EdgeToEdgeManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1881,6 +1909,7 @@ public class BytecodeTest {
                         Runnable.class,
                         BooleanSupplier.class,
                         BookmarkManagerOpener.class,
+                        SnackbarManager.class,
                         View.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1910,7 +1939,7 @@ public class BytecodeTest {
                         RecyclerView.class,
                         DragReorderableRecyclerViewAdapter.class,
                         boolean.class,
-                        ObservableSupplierImpl.class,
+                        SettableNonNullObservableSupplier.class,
                         Profile.class,
                         BookmarkUndoController.class,
                         ModelList.class,
@@ -1957,7 +1986,8 @@ public class BytecodeTest {
                         Profile.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/firstrun/FreIntentCreator",

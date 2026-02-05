@@ -80,7 +80,7 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
 using StopEngineCallback = base::OnceCallback<void(mojom::Result)>;
 using RequestImageCallback = base::RepeatingCallback<int(
     const GURL& url,
-    base::OnceCallback<void(const SkBitmap& bitmap)>,
+    base::OnceCallback<void(SkBitmap bitmap)>,
     const net::NetworkTrafficAnnotationTag& traffic_annotation)>;
 using CancelImageRequestCallback = base::RepeatingCallback<void(int)>;
 class RewardsServiceImpl final : public RewardsService,
@@ -335,7 +335,7 @@ class RewardsServiceImpl final : public RewardsService,
   void OnFetchFavIconCompleted(FetchFavIconCallback callback,
                                const std::string& favicon_key,
                                const GURL& url,
-                               const SkBitmap& image);
+                               SkBitmap image);
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     FetchFavIconCallback callback,
                                     bool success);

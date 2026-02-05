@@ -1,8 +1,8 @@
 diff --git a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
-index 392e6c90e36dfdb65ddb244937dc84d577672039..923400daaa120117993ce8a470ac9ed63dd9bc83 100644
+index 9f4a76671507e252842de7957acb8f673aa658b0..1b72366eed30cf9d53b18793606a531a0b0978df 100644
 --- a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
 +++ b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
-@@ -69,6 +69,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+@@ -68,6 +68,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
            return is_delete_list;
          }
          break;
@@ -10,7 +10,7 @@ index 392e6c90e36dfdb65ddb244937dc84d577672039..923400daaa120117993ce8a470ac9ed6
      }
    }
  
-@@ -99,6 +100,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+@@ -97,6 +98,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
        return origin_all_context_predicate();
      case OriginMatchingMode::kOriginAndThirdParty:
        return third_party_predicate() || origin_all_context_predicate();

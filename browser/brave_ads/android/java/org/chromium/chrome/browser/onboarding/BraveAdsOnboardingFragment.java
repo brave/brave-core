@@ -32,7 +32,6 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
 
     private int mProgress;
     private static final int END_TIME_SECONDS = 3;
-    private boolean mNativeInitialized;
 
     private LottieAnimationView mAnimatedView;
 
@@ -62,6 +61,8 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
 
         setActions();
 
+        startCountdown();
+
         return root;
     }
 
@@ -78,14 +79,6 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
                 mAnimatedView.playAnimation();
             }
         }
-    }
-
-    @Override
-    public void onNativeInitialized() {
-        assert !mNativeInitialized;
-
-        mNativeInitialized = true;
-        startCountdown();
     }
 
     @Override

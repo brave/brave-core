@@ -1,5 +1,5 @@
 diff --git a/definitions/prepopulated_engines.json b/definitions/prepopulated_engines.json
-index cad62324df4ec2f9ee3825aec8a13cbec7f0effe..fa50a57978878bf6547aaaff201c092ebbc699dc 100644
+index 052ba20eb3ce7978bd863187541ffbfe553417d2..9eb1fcf71ee3283f79724dfeaf53c2f48ea5028d 100644
 --- a/definitions/prepopulated_engines.json
 +++ b/definitions/prepopulated_engines.json
 @@ -117,25 +117,6 @@

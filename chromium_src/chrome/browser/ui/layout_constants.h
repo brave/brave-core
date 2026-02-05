@@ -6,7 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_LAYOUT_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_LAYOUT_CONSTANTS_H_
 
+// Use our own version of GetLayoutConstant to include Brave values.
+#define GetLayoutConstant GetLayoutConstant_ChromiumImpl
 #include <chrome/browser/ui/layout_constants.h>  // IWYU pragma: export
+#undef GetLayoutConstant
+
+int GetLayoutConstant(LayoutConstant constant);
 
 namespace tabs {
 

@@ -10,7 +10,13 @@
 
 #define JNI_AboutSettingsBridge_GetApplicationVersion \
   JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl
+// Suppress DEFINE_JNI in included file - we call it ourselves at the end
+#pragma push_macro("DEFINE_JNI")
+#undef DEFINE_JNI
+#define DEFINE_JNI(...)
 #include <chrome/browser/android/preferences/about_settings_bridge.cc>
+#undef DEFINE_JNI
+#pragma pop_macro("DEFINE_JNI")
 #undef JNI_AboutSettingsBridge_GetApplicationVersion
 
 static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
@@ -25,3 +31,5 @@ static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
 
   return application;
 }
+
+DEFINE_JNI(AboutSettingsBridge)

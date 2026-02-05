@@ -6,17 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_
 
-// In order to replace TabDragController with ours easily, rename upstream's
-// implementation. Ours is in brave/browser/ui/views/tabs/tab_drag_controller.h
-// and the file will be included at the end of this file.
-class TabDragController;
-using TabDragControllerBrave = TabDragController;
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 
-#define TabDragController TabDragControllerChromium
-
-#define CompleteDrag             \
-  CompleteDrag_Unused();         \
-  friend TabDragControllerBrave; \
+#define CompleteDrag                   \
+  CompleteDrag_Unused();               \
+  friend class BraveTabDragController; \
   void CompleteDrag
 
 #define GetAttachedBrowserWidget      \
@@ -46,7 +40,5 @@ using TabDragControllerBrave = TabDragController;
 #undef GetAttachedBrowserWidget
 #undef TabDragController
 #undef CompleteDrag
-
-#include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_

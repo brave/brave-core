@@ -171,14 +171,11 @@
       <message name="IDS_FUSEBOX_ADD_CURRENT_TAB" desc="The text displayed in the omnibox attachments popup. When clicked - adds the curernt tab as context." formatter_data="android_java">
         Add current tab
       </message>
-      <message name="IDS_FUSEBOX_MAX_ATTACHMENTS" desc="The text displayed in a snackbar when the max number of omnibox attachments is reached" formatter_data="android_java">
-        Add up to 10 files, tabs, or images
-      </message>
       <message name="IDS_FUSEBOX_UPLOAD_FAILED" desc="The text displayed in a snackbar when an attachment fails to upload" formatter_data="android_java">
         Unable to add attachments
       </message>
       <message name="IDS_OMNIBOX_CREATE_IMAGE" desc="The text displayed in the omnibox attachments popup. When clicked - enables image creation." formatter_data="android_java">
-        Create Image
+        Create image
       </message>
       <message name="IDS_OMNIBOX_EMPTY_HINT_FOR_IMAGE_GENERATION" desc="The text displayed in the omnibox when it is empty and image generation is selected." formatter_data="android_java">
         Describe your image
@@ -407,7 +404,27 @@
   <message name="IDS_AI_MODE_ENTRYPOINT_HINT" desc="Label for the Omnibox entrypoint that encourages the user to toggle AIMode on" formatter_data="android_java">
     Try AI Mode
   </message>
-
+  <message name="IDS_ACC_SEND_BUTTON_SEARCH_OR_NAVIGATE" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the search/open URL context" formatter_data="android_java">
+    Navigate
+  </message>
+  <message name="IDS_ACC_SEND_BUTTON_SEND_TO_AI" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the AI Mode context" formatter_data="android_java">
+    Send to assistant
+  </message>
+  <message name="IDS_ACC_SEND_BUTTON_CREATE_IMAGE" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the Create Image context" formatter_data="android_java">
+    Create image
+  </message>
+  <message name="IDS_ACC_REMOVE_IMAGE_ATTACHMENT" desc="Accessibility text for the remove button of image attachment, announced when the user selects an image as an attachment" formatter_data="android_java">
+    Remove image attachment
+  </message>
+  <message name="IDS_ACC_REMOVE_ATTACHMENT" desc="Accessibility text for the remove button of tab or file attachment, announced when the user selects a tab or file as an attachment" formatter_data="android_java">
+    Remove attachment
+  </message>
+  <message name="IDS_ACC_AI_MODE_SELECTED" desc="Accessibility announcement when the `AI Mode` option in the Omnibox `Add context` popup is selected." formatter_data="android_java">
+    AI Mode selected
+  </message>
+  <message name="IDS_ACC_CREATE_IMAGE_SELECTED" desc="Accessibility announcement when the `Create Image` option in the Omnibox `Add context` popup is selected." formatter_data="android_java">
+    Create image selected
+  </message>
 
   <!-- Accessibility labels for autocomplete match types.
        These are parameterized on the text being completed into the omnibox.
@@ -559,10 +576,6 @@
   </message>
   <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_NAME" desc="The name of the Brave AI Mode search engine as it appears on chrome://settings/searchEngines.">
     Brave AI Mode
-  </message>
-  <!-- TODO(b/463741789): Utilize "IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_IN_GOOGLE_SEARCH_NAME" in the UI. -->
-  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_IN_GOOGLE_SEARCH_NAME" desc="The name of the Brave AI Mode search engine as it appears on chrome://settings/searchEngines.">
-    AI Mode in Brave Search
   </message>
   <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_KEYWORD" desc="The keyword required to trigger the Brave AI Mode search engine. This will be stripped of whitespace and prepended with an '@'.">
     AI Mode

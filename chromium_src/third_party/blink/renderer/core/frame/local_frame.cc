@@ -28,15 +28,8 @@
 
 #define ScriptEnabled ScriptEnabled_ChromiumImpl
 
-#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#define BRAVE_LOCAL_FRAME_TRACE visitor->Trace(page_graph_);
-#else
-#define BRAVE_LOCAL_FRAME_TRACE
-#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-
 #include <third_party/blink/renderer/core/frame/local_frame.cc>
 
-#undef BRAVE_LOCAL_FRAME_TRACE
 #undef ScriptEnabled
 #undef AddInspectorTraceEvents
 
