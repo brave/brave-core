@@ -59,6 +59,11 @@ class FakePassageEmbedderFactory : public mojom::PassageEmbedderFactory {
  public:
   explicit FakePassageEmbedderFactory(FakeWorker* worker) : worker_(worker) {}
 
+  void Init(mojom::ModelFilesPtr model_files,
+            InitCallback callback) override {
+    std::move(callback).Run(true);
+  }
+
   void Bind(mojo::PendingReceiver<mojom::PassageEmbedder> receiver) override {
     worker_->AddReceiver(std::move(receiver));
   }
