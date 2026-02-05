@@ -1,12 +1,11 @@
-//
-//  LoginListView.swift
-//  Brave
-//
-//  Created by Eli Hini on 2026-02-03.
-//
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveStrings
+import BraveUI
 import Favicon
 import Preferences
 import SwiftUI
@@ -42,12 +41,15 @@ struct LoginListView: View {
       Color(.braveGroupedBackground)
         .ignoresSafeArea()
 
-      if viewModel.credentialList.isEmpty && viewModel.blockedList.isEmpty && !viewModel.isRefreshing {
+      if viewModel.credentialList.isEmpty && viewModel.blockedList.isEmpty
+        && !viewModel.isRefreshing
+      {
         emptyStateView
       } else {
         populatedStateView
       }
     }
+    .toolbarBackground(.visible, for: .navigationBar)
     .navigationTitle(Strings.Autofill.managePasswordstNavigationBarTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -109,6 +111,105 @@ struct LoginListView: View {
   }
 
   private var populatedStateView: some View {
-    EmptyView()
+    Group {
+      Form {
+        Section {
+          EmptyView()
+        } footer: {
+          Text(Strings.Autofill.managePasswordsInstructions)
+            .font(.footnote)
+        }
+        .listRowBackground(Color.clear)
+        .background(Color.clear)
+        .listRowSeparator(.hidden)
+
+        Toggle(Strings.Autofill.managePasswordsOfferToSavePasswords, isOn: $saveLogins.value)
+          .tint(Color(braveSystemName: .primary40))
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
+        Section {
+          ForEach(
+            Array(viewModel.credentialList.enumerated()),
+            id: \.element.signOnRealm
+          ) { index, credential in
+            LoginListRow(
+              credential: credential,
+              isEditMode: isEditMode,
+              onTap: {
+                if !isEditMode {
+                  onCredentialSelected?(credential)
+                }
+              },
+              onDelete: {
+                deleteConfirmation = credential
+              }
+            )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
+        } header: {
+          Text(Strings.Autofill.managePasswordsListHeaderTitle)
+            .font(.subheadline)
+        }
+
+        if !viewModel.blockedList.isEmpty {
+          Section(header: Text(Strings.Login.loginListNeverSavedHeaderTitle.uppercased())) {
+            ForEach(Array(viewModel.blockedList.enumerated()), id: \.element.signOnRealm) {
+              index,
+              credential in
+              LoginListRow(
+                credential: credential,
+                isEditMode: isEditMode,
+                onTap: {
+                  if !isEditMode {
+                    onCredentialSelected?(credential)
+                  }
+                },
+                onDelete: {
+                  deleteConfirmation = credential
+                }
+              )
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            }
+          }
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .padding(.top, 112)
+      .ignoresSafeArea(.all, edges: .vertical)
+
+      VStack {
+        SearchBar(text: $searchText, isFocused: $isSearchActive)
+          .padding(.horizontal, 12)
+        Spacer()
+      }
+    }
+  }
+}
+
+private struct LoginListRow: View {
+  let credential: PasswordForm
+  let isEditMode: Bool
+  let onTap: () -> Void
+  let onDelete: () -> Void
+
+  var body: some View {
+    NavigationLink {
+
+    } label: {
+      if let baseDomain = URL(string: credential.signOnRealm)?.baseDomain, !baseDomain.isEmpty {
+        HStack(spacing: 12) {
+          LetterBadge(baseDomain.uppercased().first!)
+            .font(.caption)
+            .fontWeight(.semibold)
+          Text(baseDomain)
+          Spacer()
+        }
+        .foregroundColor(Color(.braveLabel))
+        .padding(.vertical, 4)
+      } else {
+        EmptyView()
+      }
+    }
   }
 }

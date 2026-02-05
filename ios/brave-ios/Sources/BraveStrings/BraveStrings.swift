@@ -2593,13 +2593,6 @@ extension Strings {
     value: "Privacy",
     comment: "Settings privacy section title"
   )
-  public static let saveLogins = NSLocalizedString(
-    "SaveLogins",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Save Logins",
-    comment: "Setting to enable the built-in password manager"
-  )
   public static let alwaysRequestDesktopSite = NSLocalizedString(
     "AlwaysRequestDesktopSite",
     tableName: "BraveShared",
@@ -9400,6 +9393,37 @@ extension Strings {
       value: "There are no passwords saved, you can save the first one by using the \"Add New\" button.",
       comment:
         "The message displayed on the password list screen when there is no saved"
+    )
+    public static let managePasswordsInstructions = NSLocalizedString(
+      "autofill.managePasswords.instructions",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Create, save and manage your passwords to easily sign in to sites and apps.",
+      comment:
+        "The message displayed on the manage passwords list screen, when there's at least one password, explain the feature"
+    )
+    public static let managePasswordsListHeaderTitle = NSLocalizedString(
+      "autofill.managePasswords.headerTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sites",
+      comment:
+        "Title for the section header in the Manage Passwords list screen, that lists the sites"
+    )
+    public static let managePasswordsListSearchWebsitesPrompt = NSLocalizedString(
+      "autofill.managePasswords.searchWebsitesPrompt",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Search Websites",
+      comment:
+        "Prompt that is diplayed in the search bar of the Manage Passwords list screen"
+    )
+    public static let managePasswordsOfferToSavePasswords = NSLocalizedString(
+      "autofill.managePasswords.offerToSavePasswords",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Offer to save passwords",
+      comment: "Display text for the option to offer to save passwords"
     )
   }
 }
