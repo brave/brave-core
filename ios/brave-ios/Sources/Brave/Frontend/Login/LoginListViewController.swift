@@ -15,23 +15,23 @@ class LoginListViewController: UIHostingController<LoginListView> {
       rootView.settingsDelegate = settingsDelegate
     }
   }
-  
+
   private let passwordAPI: BravePasswordAPI
   private let windowProtection: WindowProtection?
-  
+
   init(passwordAPI: BravePasswordAPI, windowProtection: WindowProtection?) {
     self.passwordAPI = passwordAPI
     self.windowProtection = windowProtection
-    
+
     let loginView = LoginListView(
       passwordAPI: passwordAPI,
       windowProtection: windowProtection,
       settingsDelegate: nil,
       onCredentialSelected: nil
     )
-    
+
     super.init(rootView: loginView)
-    
+
     // Set up the navigation handler after super.init
     rootView.onCredentialSelected = { [weak self] credential in
       guard let self = self else { return }
