@@ -82,11 +82,8 @@ namespace ai_chat {
 class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
  public:
   AIChatConversationTaskBrowserTest() {
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        {{::features::kGlicActor,
-          {{::features::kGlicActorPolicyControlExemption.name, "true"}}},
-         {features::kAIChatAgentProfile, {}}},
-        {});
+    scoped_feature_list_.InitAndEnableFeature(
+        ai_chat::features::kAIChatAgentProfile);
   }
 
   ~AIChatConversationTaskBrowserTest() override = default;

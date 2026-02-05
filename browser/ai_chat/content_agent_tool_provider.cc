@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
+#include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
 #include "brave/browser/ai_chat/page_content_blocks.h"
 #include "brave/browser/ai_chat/tools/click_tool.h"
 #include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
@@ -28,6 +29,7 @@
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/actor_task_metadata.h"
+#include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -74,7 +76,8 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // If we want each conversation message to act on a different set of tabs and
   // not have access to any tabs previously acted on in the same conversation,
   // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
-  task_id_ = actor_service_->CreateTask();
+  task_id_ = actor_service_->CreateTask(
+      AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
 
   actor_task_state_changed_subscription_ =
       actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
@@ -124,7 +127,8 @@ void ContentAgentToolProvider::ResumeAllTasks() {
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     actor::TaskId stopping_task_id = std::move(task_id_);
-    task_id_ = actor_service_->CreateTask();
+    task_id_ = actor_service_->CreateTask(
+        AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }

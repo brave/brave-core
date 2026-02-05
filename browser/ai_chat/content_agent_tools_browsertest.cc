@@ -50,12 +50,8 @@ const char kToolResultSuccessSubstring[] = "successful";
 class ContentAgentToolsTest : public InProcessBrowserTest {
  public:
   ContentAgentToolsTest() {
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        /*enabled_features=*/{{::features::kGlicActor,
-                               {{::features::kGlicActorPolicyControlExemption
-                                     .name,
-                                 "true"}}},
-                              {features::kAIChatAgentProfile, {}}},
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{features::kAIChatAgentProfile},
         /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 

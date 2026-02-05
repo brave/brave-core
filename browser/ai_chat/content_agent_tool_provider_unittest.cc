@@ -54,12 +54,8 @@ class ContentAgentToolProviderTest : public testing::Test {
   ContentAgentToolProviderTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
-    // Enable the AI Chat Agent Profile feature and allow acting on web
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        {{::features::kGlicActor,
-          {{::features::kGlicActorPolicyControlExemption.name, "true"}}},
-         {ai_chat::features::kAIChatAgentProfile, {}}},
-        {});
+    scoped_feature_list_.InitAndEnableFeature(
+        ai_chat::features::kAIChatAgentProfile);
   }
   ~ContentAgentToolProviderTest() override = default;
 
