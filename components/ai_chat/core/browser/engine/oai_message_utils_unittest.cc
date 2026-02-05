@@ -8,7 +8,9 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -1070,6 +1072,240 @@ TEST_F(OAIMessageUtilsTest, BuildChunkedTabFocusMessages_WithTopic) {
     VerifyFilterTabsBlock(FROM_HERE, chunked_messages[i][0].content[0],
                           expected_chunked_tabs_json[i], topic);
   }
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_SelectiveWebSourceRemoval) {
+  // Generate 3 assistant turns with large tool results containing
+  // WebSourcesContentBlock. The oldest should be stripped (metadata
+  // kept, placeholder added), the 2 most recent kept intact.
+  // kMaxCountLargeToolUseEvents defaults to 2.
+  std::string large_text_content(1500, 'a');
+
+  EngineConsumer::ConversationHistory history;
+  for (int i = 0; i < 3; ++i) {
+    // Human turn
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 2), mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY, "search query " + base::NumberToString(i),
+        std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+        std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr));
+
+    // Build tool output with WebSourcesContentBlock + large text
+    auto web_sources = mojom::WebSourcesContentBlock::New();
+    web_sources->query = "test query " + base::NumberToString(i);
+    web_sources->rich_results.push_back("{\"type\":\"result" +
+                                        base::NumberToString(i) + "\"}");
+    web_sources->sources.push_back(CreateWebSource(
+        "Source " + base::NumberToString(i),
+        "https://example" + base::NumberToString(i) + ".com",
+        "https://example" + base::NumberToString(i) + ".com/favicon.ico",
+        "Page content for source " + base::NumberToString(i),
+        std::vector<std::string>{"snippet A " + base::NumberToString(i),
+                                 "snippet B " + base::NumberToString(i)}));
+
+    std::vector<mojom::ContentBlockPtr> tool_output;
+    tool_output.push_back(
+        mojom::ContentBlock::NewWebSourcesContentBlock(std::move(web_sources)));
+    tool_output.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New(large_text_content)));
+
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("Searching...")));
+    events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "search", "call_" + base::NumberToString(i), "{}",
+            std::move(tool_output), nullptr, false)));
+
+    // Assistant turn with tool use
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 2 + 1),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "Searching...", std::nullopt, std::nullopt, std::move(events),
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+        std::nullopt, nullptr));
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 10000, [](std::string&) {});
+
+  // 3 human + 3 assistant + 3 tool = 9 messages
+  ASSERT_EQ(messages.size(), 9u);
+
+  // Tool result 0 (oldest, index 1): should be stripped
+  // OAI messages: human[0], assistant[1], tool[2],
+  //               human[3], assistant[4], tool[5],
+  //               human[6], assistant[7], tool[8]
+  const auto& stripped_tool = messages[2];
+  EXPECT_EQ(stripped_tool.role, "tool");
+  EXPECT_EQ(stripped_tool.tool_call_id, "call_0");
+  // Should have: stripped web sources + text + placeholder
+  ASSERT_EQ(stripped_tool.content.size(), 3u);
+  VerifyWebSourcesBlock(FROM_HERE, stripped_tool.content[0],
+                        {{"Source 0", "https://example0.com"}}, "test query 0",
+                        {"{\"type\":\"result0\"}"});
+  // Verify stripped source has no page_content/extra_snippets
+  const auto& stripped_ws =
+      stripped_tool.content[0]->get_web_sources_content_block();
+  ASSERT_EQ(stripped_ws->sources.size(), 1u);
+  EXPECT_FALSE(stripped_ws->sources[0]->page_content.has_value());
+  EXPECT_FALSE(stripped_ws->sources[0]->extra_snippets.has_value());
+  VerifyTextBlock(FROM_HERE, stripped_tool.content[1], large_text_content);
+  VerifyTextBlock(FROM_HERE, stripped_tool.content[2],
+                  "[Large search results trimmed. "
+                  "Metadata and sources preserved]");
+
+  // Tool result 1 (index 5): should be kept intact
+  const auto& kept_tool1 = messages[5];
+  EXPECT_EQ(kept_tool1.role, "tool");
+  EXPECT_EQ(kept_tool1.tool_call_id, "call_1");
+  ASSERT_EQ(kept_tool1.content.size(), 2u);
+  EXPECT_TRUE(kept_tool1.content[0]->is_web_sources_content_block());
+  // Verify kept source retains page_content/extra_snippets
+  const auto& kept_ws1 = kept_tool1.content[0]->get_web_sources_content_block();
+  ASSERT_EQ(kept_ws1->sources.size(), 1u);
+  EXPECT_EQ(kept_ws1->sources[0]->page_content, "Page content for source 1");
+  ASSERT_TRUE(kept_ws1->sources[0]->extra_snippets.has_value());
+  EXPECT_EQ(kept_ws1->sources[0]->extra_snippets->size(), 2u);
+  VerifyTextBlock(FROM_HERE, kept_tool1.content[1], large_text_content);
+
+  // Tool result 2 (newest, index 8): should be kept intact
+  const auto& kept_tool2 = messages[8];
+  EXPECT_EQ(kept_tool2.role, "tool");
+  EXPECT_EQ(kept_tool2.tool_call_id, "call_2");
+  ASSERT_EQ(kept_tool2.content.size(), 2u);
+  EXPECT_TRUE(kept_tool2.content[0]->is_web_sources_content_block());
+  // Verify kept source retains page_content/extra_snippets
+  const auto& kept_ws2 = kept_tool2.content[0]->get_web_sources_content_block();
+  ASSERT_EQ(kept_ws2->sources.size(), 1u);
+  EXPECT_EQ(kept_ws2->sources[0]->page_content, "Page content for source 2");
+  ASSERT_TRUE(kept_ws2->sources[0]->extra_snippets.has_value());
+  EXPECT_EQ(kept_ws2->sources[0]->extra_snippets->size(), 2u);
+  VerifyTextBlock(FROM_HERE, kept_tool2.content[1], large_text_content);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_NonWebSourceRemoval_Unchanged) {
+  // Non-web-source large tool results should still get fully
+  // replaced with placeholder text (existing behavior).
+  std::string image_url = "data:image/png;base64,ABC=";
+
+  EngineConsumer::ConversationHistory history;
+  for (int i = 0; i < 3; ++i) {
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 2), mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY, "query", std::nullopt, std::nullopt,
+        std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, nullptr,
+        false, std::nullopt, nullptr));
+
+    std::vector<mojom::ContentBlockPtr> tool_output;
+    tool_output.push_back(mojom::ContentBlock::NewImageContentBlock(
+        mojom::ImageContentBlock::New(GURL(image_url))));
+
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("Looking...")));
+    events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "get_page", "call_" + base::NumberToString(i), "{}",
+            std::move(tool_output), nullptr, false)));
+
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 2 + 1),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "Looking...", std::nullopt, std::nullopt, std::move(events),
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+        std::nullopt, nullptr));
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 9u);
+
+  // Oldest tool result (index 2): should be fully replaced
+  const auto& removed_tool = messages[2];
+  EXPECT_EQ(removed_tool.role, "tool");
+  ASSERT_EQ(removed_tool.content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, removed_tool.content[0],
+                  "[Large result removed to save "
+                  "space for subsequent results]");
+
+  // Recent tool results should be kept intact
+  const auto& kept_tool1 = messages[5];
+  ASSERT_EQ(kept_tool1.content.size(), 1u);
+  EXPECT_TRUE(kept_tool1.content[0]->is_image_content_block());
+
+  const auto& kept_tool2 = messages[8];
+  ASSERT_EQ(kept_tool2.content.size(), 1u);
+  EXPECT_TRUE(kept_tool2.content[0]->is_image_content_block());
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_WebSourceMixedContent) {
+  // Tool result with WebSourcesContentBlock + ImageContentBlock.
+  // When marked for removal: web sources stripped, image dropped,
+  // text kept.
+  std::string image_url = "data:image/png;base64,ABC=";
+
+  EngineConsumer::ConversationHistory history;
+  for (int i = 0; i < 3; ++i) {
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 2), mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY, "query", std::nullopt, std::nullopt,
+        std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, nullptr,
+        false, std::nullopt, nullptr));
+
+    auto web_sources = mojom::WebSourcesContentBlock::New();
+    web_sources->query = "test query";
+    web_sources->sources.push_back(CreateWebSource(
+        "Title", "https://example.com", "https://example.com/fav.ico"));
+
+    std::vector<mojom::ContentBlockPtr> tool_output;
+    tool_output.push_back(
+        mojom::ContentBlock::NewWebSourcesContentBlock(std::move(web_sources)));
+    tool_output.push_back(mojom::ContentBlock::NewImageContentBlock(
+        mojom::ImageContentBlock::New(GURL(image_url))));
+    tool_output.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("Some text")));
+
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("Searching...")));
+    events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "search", "call_" + base::NumberToString(i), "{}",
+            std::move(tool_output), nullptr, false)));
+
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-" + base::NumberToString(i * 2 + 1),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        "Searching...", std::nullopt, std::nullopt, std::move(events),
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+        std::nullopt, nullptr));
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 9u);
+
+  // Oldest tool (index 2): web sources stripped, image dropped,
+  // text kept, placeholder added
+  const auto& stripped_tool = messages[2];
+  EXPECT_EQ(stripped_tool.role, "tool");
+  // web sources + text + placeholder = 3 blocks
+  ASSERT_EQ(stripped_tool.content.size(), 3u);
+  VerifyWebSourcesBlock(FROM_HERE, stripped_tool.content[0],
+                        {{"Title", "https://example.com"}}, "test query", {});
+  VerifyTextBlock(FROM_HERE, stripped_tool.content[1], "Some text");
+  VerifyTextBlock(FROM_HERE, stripped_tool.content[2],
+                  "[Large search results trimmed. "
+                  "Metadata and sources preserved]");
+
+  // Recent tools (indices 5, 8): kept intact with all 3 blocks
+  ASSERT_EQ(messages[5].content.size(), 3u);
+  EXPECT_TRUE(messages[5].content[0]->is_web_sources_content_block());
+  EXPECT_TRUE(messages[5].content[1]->is_image_content_block());
+  VerifyTextBlock(FROM_HERE, messages[5].content[2], "Some text");
 }
 
 }  // namespace ai_chat

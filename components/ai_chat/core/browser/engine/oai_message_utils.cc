@@ -79,6 +79,30 @@ std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
   return mojom::MemoryContentBlock::New(std::move(result));
 }
 
+// Creates a stripped version of WebSourcesContentBlock with only
+// metadata. Large content fields (page_content, extra_snippets)
+// are removed to save context space while preserving source URLs
+// and titles for model context.
+mojom::WebSourcesContentBlockPtr CreateStrippedWebSourcesBlock(
+    const mojom::WebSourcesContentBlock& original) {
+  auto stripped = mojom::WebSourcesContentBlock::New();
+  stripped->sources.reserve(original.sources.size());
+  for (const auto& source : original.sources) {
+    auto stripped_source = mojom::WebSource::New();
+    stripped_source->title = source->title;
+    stripped_source->url = source->url;
+    stripped_source->favicon_url = source->favicon_url;
+    // page_content and extra_snippets are intentionally not
+    // copied. This function strips large content fields.
+    stripped->sources.push_back(std::move(stripped_source));
+  }
+
+  stripped->query = original.query;
+  stripped->rich_results = original.rich_results;
+
+  return stripped;
+}
+
 }  // namespace
 
 OAIMessage::OAIMessage() = default;
@@ -200,10 +224,22 @@ std::vector<OAIMessage> BuildOAIMessages(
             break;
           } else if (content->is_text_content_block()) {
             content_size += content->get_text_content_block()->text.size();
-            if (content_size >= features::kContentSizeLargeToolUseEvent.Get()) {
-              is_large = true;
-              break;
+          } else if (content->is_web_sources_content_block()) {
+            const auto& ws = content->get_web_sources_content_block();
+            for (const auto& source : ws->sources) {
+              if (source->page_content.has_value()) {
+                content_size += source->page_content->size();
+              }
+              if (source->extra_snippets.has_value()) {
+                for (const auto& s : source->extra_snippets.value()) {
+                  content_size += s.size();
+                }
+              }
             }
+          }
+          if (content_size >= features::kContentSizeLargeToolUseEvent.Get()) {
+            is_large = true;
+            break;
           }
         }
 
@@ -386,12 +422,36 @@ std::vector<OAIMessage> BuildOAIMessages(
             tool_result_message.content.push_back(item.Clone());
           }
         } else {
-          // Add text block for truncated result
-          tool_result_message.content.push_back(
-              mojom::ContentBlock::NewTextContentBlock(
-                  mojom::TextContentBlock::New(
-                      "[Large result removed to save space for "
-                      "subsequent results]")));
+          // Selective removal: preserve web source metadata
+          // and text blocks, drop images and other large
+          // content.
+          bool has_web_sources = false;
+          for (const auto& item : tool_event->output.value()) {
+            if (item->is_web_sources_content_block()) {
+              has_web_sources = true;
+              tool_result_message.content.push_back(
+                  mojom::ContentBlock::NewWebSourcesContentBlock(
+                      CreateStrippedWebSourcesBlock(
+                          *item->get_web_sources_content_block())));
+            } else if (item->is_text_content_block()) {
+              tool_result_message.content.push_back(item.Clone());
+            }
+            // Images and other large content are dropped.
+          }
+
+          if (has_web_sources) {
+            tool_result_message.content.push_back(
+                mojom::ContentBlock::NewTextContentBlock(
+                    mojom::TextContentBlock::New(
+                        "[Large search results trimmed. "
+                        "Metadata and sources preserved]")));
+          } else {
+            tool_result_message.content.push_back(
+                mojom::ContentBlock::NewTextContentBlock(
+                    mojom::TextContentBlock::New(
+                        "[Large result removed to save "
+                        "space for subsequent results]")));
+          }
         }
 
         oai_messages.emplace_back(std::move(tool_result_message));

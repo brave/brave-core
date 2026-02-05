@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_TEST_UTILS_H_
 
+#include <optional>
+#include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -89,6 +92,13 @@ void VerifyFilterTabsBlock(const base::Location& location,
                            const mojom::ContentBlockPtr& block,
                            std::string_view expected_tabs_json,
                            std::string_view expected_topic);
+
+void VerifyWebSourcesBlock(
+    const base::Location& location,
+    const mojom::ContentBlockPtr& block,
+    const std::vector<std::pair<std::string, std::string>>& expected_sources,
+    const std::optional<std::string>& expected_query,
+    const std::vector<std::string>& expected_rich_results);
 
 // Returns mock tabs and their JSON string representation.
 // - escape_for_json_string=true: Returns escaped JSON (e.g., {\"id\":\"0\"})

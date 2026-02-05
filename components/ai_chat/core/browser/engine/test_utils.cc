@@ -238,6 +238,27 @@ void VerifyFilterTabsBlock(const base::Location& location,
   EXPECT_EQ(filter_block->topic, expected_topic);
 }
 
+void VerifyWebSourcesBlock(
+    const base::Location& location,
+    const mojom::ContentBlockPtr& block,
+    const std::vector<std::pair<std::string, std::string>>& expected_sources,
+    const std::optional<std::string>& expected_query,
+    const std::vector<std::string>& expected_rich_results) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kWebSourcesContentBlock);
+  const auto& web_block = block->get_web_sources_content_block();
+  ASSERT_EQ(web_block->sources.size(), expected_sources.size());
+  for (size_t i = 0; i < expected_sources.size(); ++i) {
+    EXPECT_EQ(web_block->sources[i]->title, expected_sources[i].first);
+    EXPECT_EQ(web_block->sources[i]->url, GURL(expected_sources[i].second));
+  }
+  EXPECT_EQ(web_block->query, expected_query);
+  ASSERT_EQ(web_block->rich_results.size(), expected_rich_results.size());
+  for (size_t i = 0; i < expected_rich_results.size(); ++i) {
+    EXPECT_EQ(web_block->rich_results[i], expected_rich_results[i]);
+  }
+}
+
 std::pair<std::vector<Tab>, std::vector<std::string>>
 GetMockTabsAndExpectedTabsJsonString(size_t num_tabs,
                                      bool escape_for_json_string) {
