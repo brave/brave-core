@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -89,7 +90,13 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
   network::SimpleURLLoader* url_loader =
       constellation_url_loaders_[log_type].get();
 
-  url_loader->AttachStringForUpload(compressed_log_data, "text/plain");
+  std::string decoded_data;
+  if (!base::Base64Decode(compressed_log_data, &decoded_data)) {
+    // This request will never succeed. Ignore this request.
+    upload_callback_.Run(true, 0, log_type);
+    return;
+  }
+  url_loader->AttachStringForUpload(decoded_data, "application/octet-stream");
 
   url_loader->DownloadHeadersOnly(
       url_loader_factory_.get(),

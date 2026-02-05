@@ -336,7 +336,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry(log_type);
     return;
   }
-  const std::string* pk_value = root.FindString("publicKey");
+  const std::string* pk_value = root.FindString("publicKeyV2");
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> pk =
       DecodeServerPublicKey(pk_value);
 
