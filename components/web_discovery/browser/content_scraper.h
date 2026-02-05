@@ -33,7 +33,7 @@ struct PageScrapeResult {
   // A map of DOM selectors to list of scraped values embedded in a Dict.
   // Each dict contains arbitrary keys (defined in the patterns) to scraped
   // values.
-  base::flat_map<std::string, std::vector<base::Value::Dict>> fields;
+  base::flat_map<std::string, std::vector<base::DictValue>> fields;
   std::string id;
 
   // Only available for non-strict scrapes with "searchQuery"/"widgetTitle"

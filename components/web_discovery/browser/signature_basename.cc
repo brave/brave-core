@@ -35,8 +35,8 @@ constexpr char kExpiresAtKey[] = "expires_at";
 constexpr char kUsedCountsKey[] = "counts";
 
 void RecurseFlattenObject(const base::Value& value,
-                          const base::Value::List& parent_keys,
-                          base::Value::List& output) {
+                          const base::ListValue& parent_keys,
+                          base::ListValue& output) {
   if (value.is_dict()) {
     const auto& dict = value.GetDict();
     base::flat_set<std::string> keys;
@@ -45,19 +45,19 @@ void RecurseFlattenObject(const base::Value& value,
       keys.insert(key);
     }
     for (const auto& key : keys) {
-      base::Value::List next_parent_keys = parent_keys.Clone();
+      base::ListValue next_parent_keys = parent_keys.Clone();
       next_parent_keys.Append(key);
       RecurseFlattenObject(*dict.Find(key), next_parent_keys, output);
     }
   } else if (value.is_list()) {
     const auto& list = value.GetList();
     for (size_t i = 0; i < list.size(); i++) {
-      base::Value::List next_parent_keys = parent_keys.Clone();
+      base::ListValue next_parent_keys = parent_keys.Clone();
       next_parent_keys.Append(base::NumberToString(i));
       RecurseFlattenObject(list[i], next_parent_keys, output);
     }
   } else {
-    base::Value::List flattened_value;
+    base::ListValue flattened_value;
     flattened_value.Append(parent_keys.Clone());
     flattened_value.Append(value.Clone());
     output.Append(std::move(flattened_value));
@@ -65,8 +65,8 @@ void RecurseFlattenObject(const base::Value& value,
 }
 
 base::Value FlattenObject(const base::Value& obj) {
-  base::Value::List result;
-  RecurseFlattenObject(obj, base::Value::List(), result);
+  base::ListValue result;
+  RecurseFlattenObject(obj, base::ListValue(), result);
   return base::Value(std::move(result));
 }
 
@@ -150,7 +150,7 @@ BasenameResult::~BasenameResult() = default;
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
     const ServerConfig& server_config,
-    const base::Value::Dict& payload) {
+    const base::DictValue& payload) {
   const std::string* action = payload.FindString(kActionKey);
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -168,12 +168,12 @@ std::optional<BasenameResult> GenerateBasename(
     VLOG(1) << "No inner payload";
     return std::nullopt;
   }
-  base::Value::List tag_list;
+  base::ListValue tag_list;
   tag_list.Append(*action);
   tag_list.Append(static_cast<int>(action_config->second->period));
   tag_list.Append(static_cast<int>(action_config->second->limit));
 
-  base::Value::List key_values;
+  base::ListValue key_values;
   for (const auto& key : action_config->second->keys) {
     auto parts = base::SplitStringUsingSubstr(
         key, "->", base::WhitespaceHandling::TRIM_WHITESPACE,

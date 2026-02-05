@@ -52,7 +52,7 @@ enum class PayloadResultType {
 
 // Contains functions for refining the scraped value. The inner vector
 // contains the function name and arguments for the function.
-using RefineFunctionList = std::vector<base::Value::List>;
+using RefineFunctionList = std::vector<base::ListValue>;
 
 // Defines rule for scraping an attribute from a given selected element.
 struct ScrapeRule {

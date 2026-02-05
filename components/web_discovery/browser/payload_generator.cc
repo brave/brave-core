@@ -39,7 +39,7 @@ bool ValueHasContent(const base::Value& value) {
   return false;
 }
 
-bool AggregatedDictHasContent(const base::Value::Dict& dict) {
+bool AggregatedDictHasContent(const base::DictValue& dict) {
   for (const auto [_k1, value] : dict) {
     const auto* value_dict = value.GetIfDict();
     if (!value_dict) {
@@ -56,7 +56,7 @@ bool AggregatedDictHasContent(const base::Value::Dict& dict) {
 
 bool IsPrivateResult(const PayloadRule& rule,
                      const PatternsURLDetails* matching_url_details,
-                     const base::Value::Dict& dict) {
+                     const base::DictValue& dict) {
   if (rule.key != kSearchResultKey) {
     return false;
   }
@@ -75,9 +75,9 @@ bool ShouldDropSearchResultPayload(const PayloadRule& rule,
   return result_size < kMinSearchResultSize;
 }
 
-base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
-                                    base::Value::Dict inner_payload) {
-  base::Value::Dict payload;
+base::DictValue CreatePayloadDict(const PayloadRuleGroup& rule_group,
+                                  base::DictValue inner_payload) {
+  base::DictValue payload;
   payload.Set(kActionKey, rule_group.action);
   payload.Set(kInnerPayloadKey, std::move(inner_payload));
   return payload;
@@ -87,8 +87,8 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     bool is_query_action,
     const PayloadRule& rule,
     const PatternsURLDetails* matching_url_details,
-    const std::vector<base::Value::Dict>& attribute_values) {
-  base::Value::Dict joined_data;
+    const std::vector<base::DictValue>& attribute_values) {
+  base::DictValue joined_data;
   size_t counter = 0;
   for (const auto& value : attribute_values) {
     if (value.empty()) {
@@ -112,11 +112,11 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
   return base::Value(std::move(joined_data));
 }
 
-std::optional<base::Value::Dict> GenerateClusteredPayload(
+std::optional<base::DictValue> GenerateClusteredPayload(
     const PayloadRuleGroup& rule_group,
     const PatternsURLDetails* matching_url_details,
     const PageScrapeResult* scrape_result) {
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   for (const auto& rule : rule_group.rules) {
     base::Value payload_rule_data;
     auto attribute_values_it = scrape_result->fields.find(rule.selector);
@@ -154,7 +154,7 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
 void GenerateSinglePayloads(const ServerConfig& server_config,
                             const PayloadRuleGroup& rule_group,
                             const PageScrapeResult* scrape_result,
-                            std::vector<base::Value::Dict>& payloads) {
+                            std::vector<base::DictValue>& payloads) {
   auto attribute_values_it = scrape_result->fields.find(rule_group.key);
   if (attribute_values_it == scrape_result->fields.end()) {
     return;
@@ -168,11 +168,11 @@ void GenerateSinglePayloads(const ServerConfig& server_config,
 
 }  // namespace
 
-std::vector<base::Value::Dict> GenerateQueryPayloads(
+std::vector<base::DictValue> GenerateQueryPayloads(
     const ServerConfig& server_config,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result) {
-  std::vector<base::Value::Dict> payloads;
+  std::vector<base::DictValue> payloads;
   for (const auto& rule_group : url_details->payload_rule_groups) {
     if (rule_group.rule_type == PayloadRuleType::kQuery &&
         rule_group.result_type == PayloadResultType::kClustered) {
@@ -190,13 +190,13 @@ std::vector<base::Value::Dict> GenerateQueryPayloads(
   return payloads;
 }
 
-base::Value::Dict GenerateAlivePayload(const ServerConfig& server_config,
-                                       std::string date_hour) {
-  auto inner_payload = base::Value::Dict()
+base::DictValue GenerateAlivePayload(const ServerConfig& server_config,
+                                     std::string date_hour) {
+  auto inner_payload = base::DictValue()
                            .Set(kStatusFieldName, true)
                            .Set(kTimestampFieldName, date_hour)
                            .Set(kCountryCodeFieldName, server_config.location);
-  auto payload = base::Value::Dict()
+  auto payload = base::DictValue()
                      .Set(kActionKey, kAliveAction)
                      .Set(kInnerPayloadKey, std::move(inner_payload));
   return payload;

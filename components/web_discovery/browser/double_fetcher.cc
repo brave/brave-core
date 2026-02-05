@@ -79,7 +79,7 @@ DoubleFetcher::~DoubleFetcher() = default;
 
 void DoubleFetcher::ScheduleDoubleFetch(const GURL& url,
                                         base::Value associated_data) {
-  base::Value::Dict fetch_dict;
+  base::DictValue fetch_dict;
   fetch_dict.Set(kUrlKey, url.spec());
   fetch_dict.Set(kAssociatedDataKey, std::move(associated_data));
 

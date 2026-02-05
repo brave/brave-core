@@ -226,7 +226,7 @@ class ContentScraperImpl : public ContentScraper {
       if (rule_group == url_details->scrape_rule_groups.end()) {
         continue;
       }
-      base::Value::Dict attribute_values;
+      base::DictValue attribute_values;
       for (const auto& [key, value_str] : attribute_result->attribute_values) {
         ProcessAttributeValue(rule_group->second, *scrape_result, key,
                               value_str, attribute_values);
@@ -255,7 +255,7 @@ class ContentScraperImpl : public ContentScraper {
       if (rule_group == url_details->scrape_rule_groups.end()) {
         continue;
       }
-      base::Value::Dict attribute_values;
+      base::DictValue attribute_values;
       for (const auto& pair : attribute_result.attribute_pairs) {
         ProcessAttributeValue(
             rule_group->second, *scrape_result, std::string(pair.key),
@@ -310,7 +310,7 @@ class ContentScraperImpl : public ContentScraper {
                              PageScrapeResult& scrape_result,
                              std::string key,
                              std::optional<std::string> value_str,
-                             base::Value::Dict& attribute_values) {
+                             base::DictValue& attribute_values) {
     const auto rule = rule_group.find(key);
     if (rule == rule_group.end()) {
       return;
@@ -351,11 +351,11 @@ PageScrapeResult::PageScrapeResult(GURL url, std::string id)
 PageScrapeResult::~PageScrapeResult() = default;
 
 base::Value PageScrapeResult::SerializeToValue() {
-  base::Value::Dict result;
-  base::Value::Dict fields_dict;
+  base::DictValue result;
+  base::DictValue fields_dict;
 
   for (const auto& [root_selector, inner_fields] : fields) {
-    base::Value::List list;
+    base::ListValue list;
     for (const auto& values : inner_fields) {
       list.Append(values.Clone());
     }

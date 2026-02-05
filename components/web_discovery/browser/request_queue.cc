@@ -43,8 +43,8 @@ RequestQueue::RequestQueue(
 
 RequestQueue::~RequestQueue() = default;
 
-void RequestQueue::ScheduleRequest(base::Value::Dict request_data) {
-  base::Value::Dict fetch_dict;
+void RequestQueue::ScheduleRequest(base::DictValue request_data) {
+  base::DictValue fetch_dict;
   fetch_dict.Set(kDataKey, std::move(request_data));
   fetch_dict.Set(kRequestTimeKey, base::TimeToValue(base::Time::Now()));
 

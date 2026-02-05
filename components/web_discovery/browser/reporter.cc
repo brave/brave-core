@@ -90,8 +90,8 @@ constexpr char kMessageContentType[] = "application/octet-stream";
 constexpr char kKeyDateHeader[] = "Key-Date";
 constexpr char kEncryptionHeader[] = "Encryption";
 
-base::Value GenerateFinalPayload(const base::Value::Dict& pre_payload) {
-  base::Value::Dict result = pre_payload.Clone();
+base::Value GenerateFinalPayload(const base::DictValue& pre_payload) {
+  base::DictValue result = pre_payload.Clone();
 
   result.Set(kTypeField, kWdpType);
   result.Set(kReporterVersionField, kCurrentReporterVersion);
@@ -153,7 +153,7 @@ Reporter::Reporter(PrefService* profile_prefs,
 
 Reporter::~Reporter() = default;
 
-void Reporter::ScheduleSend(base::Value::Dict payload) {
+void Reporter::ScheduleSend(base::DictValue payload) {
   request_queue_.ScheduleRequest(std::move(payload));
 }
 

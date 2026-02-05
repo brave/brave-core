@@ -49,7 +49,7 @@ class Reporter {
   Reporter& operator=(const Reporter&) = delete;
 
   // Schedule a generated payload for submission.
-  void ScheduleSend(base::Value::Dict payload);
+  void ScheduleSend(base::DictValue payload);
 
  private:
   void PrepareRequest(const base::Value& request_data);

@@ -147,7 +147,7 @@ void CredentialManager::JoinGroups() {
 void CredentialManager::StartJoinGroup(
     const std::string& date,
     const std::vector<uint8_t>& group_pub_key) {
-  auto challenge_elements = base::Value::List::with_capacity(2);
+  auto challenge_elements = base::ListValue::with_capacity(2);
   challenge_elements.Append(*rsa_public_key_b64_);
   challenge_elements.Append(base::Base64Encode(group_pub_key));
 
@@ -166,7 +166,7 @@ void CredentialManager::OnJoinRequestReady(
     std::string date,
     std::vector<uint8_t> group_pub_key,
     StartJoinInitialization generate_join_result) {
-  base::Value::Dict body_fields;
+  base::DictValue body_fields;
 
   body_fields.Set(kJoinDateField, date);
   body_fields.Set(kJoinMessageField, generate_join_result.request_b64);

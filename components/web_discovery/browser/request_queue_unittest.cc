@@ -53,7 +53,7 @@ class WebDiscoveryRequestQueueTest : public testing::Test {
 };
 
 TEST_F(WebDiscoveryRequestQueueTest, BasicRequest) {
-  base::Value::Dict request;
+  base::DictValue request;
   request.Set("test", "value");
   queue_->ScheduleRequest(std::move(request));
   EXPECT_EQ(requests_made_, 0u);
@@ -74,7 +74,7 @@ TEST_F(WebDiscoveryRequestQueueTest, BasicRequest) {
 }
 
 TEST_F(WebDiscoveryRequestQueueTest, RetryRequest) {
-  base::Value::Dict request;
+  base::DictValue request;
   request.Set("test", "value");
   queue_->ScheduleRequest(std::move(request));
 
@@ -97,7 +97,7 @@ TEST_F(WebDiscoveryRequestQueueTest, RetryRequest) {
 }
 
 TEST_F(WebDiscoveryRequestQueueTest, MaxRetriesExceeded) {
-  base::Value::Dict request;
+  base::DictValue request;
   request.Set("test", "value");
   queue_->ScheduleRequest(std::move(request));
 
@@ -125,11 +125,11 @@ TEST_F(WebDiscoveryRequestQueueTest, MaxRetriesExceeded) {
 }
 
 TEST_F(WebDiscoveryRequestQueueTest, MultipleRequests) {
-  base::Value::Dict request1;
+  base::DictValue request1;
   request1.Set("test", "value1");
   queue_->ScheduleRequest(std::move(request1));
 
-  base::Value::Dict request2;
+  base::DictValue request2;
   request2.Set("test", "value2");
   queue_->ScheduleRequest(std::move(request2));
 

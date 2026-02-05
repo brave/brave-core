@@ -40,10 +40,10 @@ base::TimeDelta TimeUntilNextPeriod(int period, int epoch_period_hours) {
 std::vector<uint8_t> GenerateExpectedBasename(std::string action,
                                               int period,
                                               int limit,
-                                              base::Value::List key_list,
+                                              base::ListValue key_list,
                                               size_t actual_count,
                                               int epoch_period_hours) {
-  base::Value::List expected_tag_list;
+  base::ListValue expected_tag_list;
   expected_tag_list.Append(action);
   expected_tag_list.Append(period);
   expected_tag_list.Append(limit);
@@ -59,9 +59,9 @@ std::vector<uint8_t> GenerateExpectedBasename(std::string action,
   return std::vector<uint8_t>(tag_hash.begin(), tag_hash.end());
 }
 
-base::Value::Dict GeneratePayload(std::string action,
-                                  base::Value::Dict inner_payload) {
-  base::Value::Dict payload;
+base::DictValue GeneratePayload(std::string action,
+                                base::DictValue inner_payload) {
+  base::DictValue payload;
   payload.Set("action", action);
   payload.Set("payload", std::move(inner_payload));
   return payload;
@@ -112,10 +112,10 @@ class WebDiscoverySignatureBasenameTest : public testing::Test {
 TEST_F(WebDiscoverySignatureBasenameTest, BasenameForURL) {
   base::flat_set<size_t> used_counts;
 
-  base::Value::List key_list;
+  base::ListValue key_list;
   key_list.Append("examplecomtesttestpage");
 
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   inner_payload.Set("q", "https://www.EXample.com/test test/page");
   auto payload = GeneratePayload("query", std::move(inner_payload));
 
@@ -142,7 +142,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForURL) {
 }
 
 TEST_F(WebDiscoverySignatureBasenameTest, BasenameNotSaved) {
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   inner_payload.Set("q", "https://www.example.com/test/page");
   auto payload = GeneratePayload("query", std::move(inner_payload));
 
@@ -152,7 +152,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameNotSaved) {
 }
 
 TEST_F(WebDiscoverySignatureBasenameTest, BasenameLimitExpiry) {
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   inner_payload.Set("q", "https://www.example.com/test/page");
   auto payload = GeneratePayload("query", std::move(inner_payload));
 
@@ -192,7 +192,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
     ]
   ])");
 
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   inner_payload.Set("field", std::move(field_obj));
   auto payload = GeneratePayload("img", std::move(inner_payload));
 
@@ -214,10 +214,10 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
 }
 
 TEST_F(WebDiscoverySignatureBasenameTest, BasenameSimple) {
-  base::Value::List key_list;
+  base::ListValue key_list;
   key_list.Append("test");
 
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   inner_payload.Set("field", "test");
   auto payload = GeneratePayload("basic", std::move(inner_payload));
 
@@ -234,7 +234,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameSimple) {
 }
 
 TEST_F(WebDiscoverySignatureBasenameTest, BasenameNoAction) {
-  base::Value::Dict inner_payload;
+  base::DictValue inner_payload;
   inner_payload.Set("field", "test");
   auto payload = GeneratePayload("bad_action", std::move(inner_payload));
 
