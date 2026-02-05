@@ -6,15 +6,13 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 
 import {
-  SearchState,
   SearchActions,
   SearchEngineInfo,
-  defaultSearchActions,
-} from './search_state'
+  defaultSearchStore,
+} from './search_store'
 
 const enabledSearchEnginesStorageKey = 'search-engines'
 
@@ -63,11 +61,12 @@ function storeEnabledSearchEngines(engines: Set<string>) {
   localStorage.setItem(enabledSearchEnginesStorageKey, JSON.stringify(record))
 }
 
-export function createSearchHandler(
-  store: StateStore<SearchState>,
-): SearchActions {
+export function createSearchStore() {
+  const store = defaultSearchStore()
+
   if (!loadTimeData.getBoolean('ntpSearchFeatureEnabled')) {
-    return defaultSearchActions()
+    store.update({ initialized: true })
+    return store
   }
 
   const defaultSearchEngine = loadTimeData.getString('ntpSearchDefaultHost')
@@ -145,7 +144,7 @@ export function createSearchHandler(
 
   loadData()
 
-  return {
+  const actions: SearchActions = {
     setShowSearchBox(showSearchBox) {
       store.update({ showSearchBox })
       newTabProxy.handler.setShowSearchBox(showSearchBox)
@@ -249,4 +248,8 @@ export function createSearchHandler(
       }
     },
   }
+
+  store.update({ actions })
+
+  return store
 }

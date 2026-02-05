@@ -6,19 +6,15 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
-import {
-  VpnState,
-  VpnActions,
-  defaultVpnActions,
-  ConnectionState,
-} from './vpn_state'
+import { VpnActions, defaultVpnStore, ConnectionState } from './vpn_store'
 
-export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
+export function createVpnStore() {
+  const store = defaultVpnStore()
+
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
     store.update({ initialized: true })
-    return defaultVpnActions()
+    return store
   }
 
   const newTabProxy = NewTabPageProxy.getInstance()
@@ -78,7 +74,7 @@ export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
 
   loadData()
 
-  return {
+  const actions: VpnActions = {
     setShowVpnWidget(showVpnWidget) {
       handler.setShowVPNWidget(showVpnWidget)
     },
@@ -117,4 +113,8 @@ export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
       handler.openVPNPanel()
     },
   }
+
+  store.update({ actions })
+
+  return store
 }

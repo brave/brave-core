@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
+
 import {
   ConnectionState,
   Region,
@@ -17,17 +19,27 @@ export interface VpnState {
   vpnPurchased: boolean
   vpnConnectionState: ConnectionState
   vpnConnectionRegion: Region | null
+  actions: VpnActions
 }
 
-export function defaultVpnState(): VpnState {
-  return {
+export type VpnStore = StateStore<VpnState>
+
+export function defaultVpnStore(): VpnStore {
+  return createStateStore<VpnState>({
     initialized: false,
     vpnFeatureEnabled: false,
     showVpnWidget: false,
     vpnPurchased: false,
     vpnConnectionState: ConnectionState.DISCONNECTED,
     vpnConnectionRegion: null,
-  }
+    actions: {
+      setShowVpnWidget(showVpnWidget) {},
+      startVpnTrial() {},
+      restoreVpnPurchase() {},
+      toggleVpnConnection() {},
+      openVpnPanel() {},
+    },
+  })
 }
 
 export interface VpnActions {
@@ -36,14 +48,4 @@ export interface VpnActions {
   restoreVpnPurchase: () => void
   toggleVpnConnection: () => void
   openVpnPanel: () => void
-}
-
-export function defaultVpnActions(): VpnActions {
-  return {
-    setShowVpnWidget(showVpnWidget) {},
-    startVpnTrial() {},
-    restoreVpnPurchase() {},
-    toggleVpnConnection() {},
-    openVpnPanel() {},
-  }
 }

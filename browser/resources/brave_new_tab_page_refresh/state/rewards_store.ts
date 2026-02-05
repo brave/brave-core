@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
+
 import { ExternalWallet } from '../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { ProviderPayoutStatus } from '../../../../components/brave_rewards/resources/shared/lib/provider_payout_status'
 
@@ -18,10 +20,13 @@ export interface RewardsState {
   minEarningsPreviousMonth: number
   payoutStatus: Record<string, ProviderPayoutStatus>
   tosUpdateRequired: boolean
+  actions: RewardsActions
 }
 
-export function defaultRewardsState(): RewardsState {
-  return {
+export type RewardsStore = StateStore<RewardsState>
+
+export function defaultRewardsStore(): RewardsStore {
+  return createStateStore<RewardsState>({
     initialized: false,
     rewardsFeatureEnabled: false,
     showRewardsWidget: false,
@@ -33,17 +38,14 @@ export function defaultRewardsState(): RewardsState {
     minEarningsPreviousMonth: 0,
     payoutStatus: {},
     tosUpdateRequired: false,
-  }
+    actions: {
+      setShowRewardsWidget(showRewardsWidget) {},
+      recordNewTabOnboardingClick() {},
+    },
+  })
 }
 
 export interface RewardsActions {
   setShowRewardsWidget: (showRewardsWidget: boolean) => void
   recordNewTabOnboardingClick: () => void
-}
-
-export function defaultRewardsActions(): RewardsActions {
-  return {
-    setShowRewardsWidget(showRewardsWidget) {},
-    recordNewTabOnboardingClick() {},
-  }
 }
