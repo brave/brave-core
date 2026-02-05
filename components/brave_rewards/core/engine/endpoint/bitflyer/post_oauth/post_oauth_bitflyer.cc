@@ -111,7 +111,7 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
   request->headers.push_back(
-      engine_->Get<EnvironmentConfig>().brave_services_key_header());
+      engine_->Get<EnvironmentConfig>().BraveServicesKeyHeader());
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kNone,

@@ -51,7 +51,7 @@ class EnvironmentConfig : public RewardsEngineHelper,
   std::string bitflyer_fee_address() const;
   GURL bitflyer_oauth_url() const;
 
-  std::string brave_services_key_header() const;
+  std::string BraveServicesKeyHeader() const;
 
   // Unit tests should be able to execute even if the build-time config values
   // are not specified. Calling this method in unit tests will allow certain

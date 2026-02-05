@@ -173,7 +173,7 @@ GURL EnvironmentConfig::bitflyer_oauth_url() const {
   return BuildGate3OAuthURL("bitflyer");
 }
 
-std::string EnvironmentConfig::brave_services_key_header() const {
+std::string EnvironmentConfig::BraveServicesKeyHeader() const {
   return base::StrCat(
       {kBraveServicesKeyHeader, ": ", BUILDFLAG(BRAVE_SERVICES_KEY)});
 }
