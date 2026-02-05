@@ -1,0 +1,49 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_NOTES_H_
+#define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_NOTES_H_
+
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "base/memory/raw_ptr.h"
+#include "brave/components/email_aliases/email_aliases_api.h"
+
+class PrefRegistrySimple;
+class PrefService;
+
+namespace email_aliases {
+
+namespace prefs {
+
+inline constexpr char kEmailAliasesNotes[] = "brave.email_alises_notes";
+
+}
+
+class EmailAliasesNotes {
+ public:
+  EmailAliasesNotes(PrefService* pref_service,
+                    const std::string& primary_email,
+                    const std::vector<AliasListEntry>& active_aliases);
+  ~EmailAliasesNotes();
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  std::optional<std::string> GetNote(const std::string& alias);
+  void UpdateNote(const std::string& alias, const std::string& notes);
+  void RemoveNote(const std::string& alias);
+
+ private:
+  void RemoveInactiveNotes(const std::vector<AliasListEntry>& active_aliases);
+
+  const raw_ptr<PrefService> pref_service_ = nullptr;
+  const std::string primary_email_;
+};
+
+}  // namespace email_aliases
+
+#endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_NOTES_H_

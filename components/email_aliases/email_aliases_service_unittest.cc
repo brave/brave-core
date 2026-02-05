@@ -122,7 +122,7 @@ class EmailAliasesAPITest : public ::testing::Test {
           service_->UpdateAlias(alias_email, /*note=*/std::string("note"),
                                 std::move(cb));
         });
-    if (wait_for_update) {
+    if (wait_for_update && result_out.has_value()) {
       EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     }
     return result_out;
@@ -137,7 +137,9 @@ class EmailAliasesAPITest : public ::testing::Test {
         InvokeAndWait<std::monostate>([this, &alias_email](auto cb) {
           service_->DeleteAlias(alias_email, std::move(cb));
         });
-    EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
+    if (result_out.has_value()) {
+      EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
+    }
     return result_out;
   }
 

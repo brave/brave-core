@@ -107,7 +107,9 @@ EmailAliasesService::EmailAliasesService(
 EmailAliasesService::~EmailAliasesService() = default;
 
 // static
-void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {}
+void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  EmailAliasesNotes::RegisterProfilePrefs(registry);
+}
 
 void EmailAliasesService::Shutdown() {
   receivers_.Clear();
@@ -197,11 +199,11 @@ void EmailAliasesService::OnGenerateAliasResponse(
 }
 
 void EmailAliasesService::OnEditAliasResponse(
+    const std::string& alias_email,
     base::OnceCallback<void(base::expected<std::monostate, std::string>)>
         user_callback,
     bool update_expected,
     endpoints::UpdateAlias::Response response) {
-  RefreshAliases();
 
   auto parsed = HandleEmailAliasesResponse(
       std::move(response), update_expected ? "updated" : "deleted");
@@ -209,6 +211,14 @@ void EmailAliasesService::OnEditAliasResponse(
       parsed.has_value()
           ? base::expected<std::monostate, std::string>(std::monostate{})
           : base::unexpected(parsed.error());
+
+  if (result.has_value()) {
+    if (!update_expected && email_aliases_notes_) {
+      // Response for deletion.
+      email_aliases_notes_->RemoveNote(alias_email);
+    }
+    RefreshAliases();
+  }
   std::move(user_callback).Run(std::move(result));
 }
 
@@ -304,10 +314,15 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     LOG(ERROR) << "Email Aliases service error: Invalid response format";
     return;
   }
+
+  email_aliases_notes_.emplace(pref_service_, GetAuthEmail(),
+                               list_response->result);
+
   std::vector<email_aliases::mojom::AliasPtr> aliases;
   for (const auto& entry : response.body.value()->result) {
     auto alias_obj = email_aliases::mojom::Alias::New();
     alias_obj->email = entry.alias;
+    alias_obj->note = email_aliases_notes_->GetNote(entry.alias);
     aliases.push_back(std::move(alias_obj));
   }
   for (auto& observer : observers_) {
