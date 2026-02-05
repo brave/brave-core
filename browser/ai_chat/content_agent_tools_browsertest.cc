@@ -12,6 +12,7 @@
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -20,7 +21,6 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
-#include "chrome/browser/actor/actor_policy_checker.h"
 #include "chrome/browser/actor/site_policy.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -379,10 +379,11 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   base::test::TestFuture<actor::MayActOnUrlBlockReason> allowed;
   auto* actor_service =
       actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
-  ::actor::MayActOnUrl(GURL("https://chromewebstore.google.com/example"), false,
-                       agent_profile_, actor_service->GetJournal(),
-                       actor::TaskId(), actor_service->GetPolicyChecker(),
-                       allowed.GetCallback());
+  ::actor::MayActOnUrl(
+      GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
+      actor_service->GetJournal(), actor::TaskId(),
+      *AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+      allowed.GetCallback());
   EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);
 }
 

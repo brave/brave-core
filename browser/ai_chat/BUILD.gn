@@ -347,6 +347,8 @@ source_set("browser_tests") {
       "//brave/components/text_recognition/common/buildflags",
       "//brave/components/tor/buildflags",
       "//chrome/browser",
+      "//chrome/browser/glic",
+      "//chrome/browser/glic/actor",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
       "//chrome/browser/ui/browser_window",
