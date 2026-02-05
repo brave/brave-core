@@ -731,6 +731,14 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     // Pause the task
     EXPECT_TRUE(ClickElement("pause-task-button"));
 
+    // Wait for paused state to be confirmed before sending the tool use event
+    // to avoid race condition where tool use is processed before pause takes
+    // effect.
+    EXPECT_TRUE(base::test::RunUntil([this]() {
+      return GetConversationState()->tool_use_task_state ==
+             mojom::TaskState::kPaused;
+    }));
+
     data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Hmm, I want a different thing")),
