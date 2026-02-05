@@ -17,7 +17,7 @@ class BraveTabDragController : public TabDragController {
   BraveTabDragController();
   ~BraveTabDragController() override;
 
-  // TabDragControllerChromium:
+  // TabDragController:
   [[nodiscard]] Liveness Init(TabDragContext* source_context,
                               TabSlotView* source_view,
                               const std::vector<TabSlotView*>& dragging_views,
