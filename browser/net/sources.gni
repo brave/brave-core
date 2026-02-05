@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -65,12 +66,12 @@ brave_browser_net_deps = [
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_referrals/browser",
   "//brave/components/brave_rewards/core",
+  "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_search/common",
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_shields/core/browser",
   "//brave/components/brave_shields/core/common",
-  "//brave/components/brave_wallet/common:common_constants",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/constants",
   "//brave/components/constants:brave_service_key_helper",
@@ -124,4 +125,9 @@ if (enable_brave_ads) {
   ]
 
   brave_browser_net_deps += [ "//brave/components/brave_ads/core" ]
+}
+
+if (enable_brave_rewards) {
+  brave_browser_net_deps +=
+      [ "//brave/components/brave_rewards/core/common:constants" ]
 }
