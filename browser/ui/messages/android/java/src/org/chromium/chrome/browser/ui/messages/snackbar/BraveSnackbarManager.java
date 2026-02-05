@@ -14,6 +14,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Brave's extension of SnackbarManager. */
 @NullMarked
@@ -31,8 +32,14 @@ public class BraveSnackbarManager extends SnackbarManager {
             ViewGroup snackbarParentView,
             @Nullable WindowAndroid windowAndroid,
             @Nullable MonotonicObservableSupplier<EdgeToEdgeController>
-                    edgeToEdgeControllerSupplier) {
-        super(activity, snackbarParentView, windowAndroid, edgeToEdgeControllerSupplier);
+                    edgeToEdgeControllerSupplier,
+            @Nullable ModalDialogManager modalDialogManager) {
+        super(
+                activity,
+                snackbarParentView,
+                windowAndroid,
+                edgeToEdgeControllerSupplier,
+                modalDialogManager);
     }
 
     @Override
