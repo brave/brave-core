@@ -223,7 +223,7 @@ void PermissionExpirations::UpdateExpirationsPref(
     if (key_expirations_it == key_expirations_map.end() ||
         key_expirations_it->second.empty()) {
       // Remove a key element if it's absent or empty in a runtime container.
-      base::Value::Dict* content_type_expirations =
+      base::DictValue* content_type_expirations =
           key_expirations->FindDict(content_type_name);
       if (content_type_expirations) {
         content_type_expirations->Remove(key);
@@ -313,13 +313,13 @@ PermissionExpirations::ParseExpiringPermissions(
   return expiring_permissions;
 }
 
-base::Value::List PermissionExpirations::ExpiringPermissionsToList(
+base::ListValue PermissionExpirations::ExpiringPermissionsToList(
     const ExpiringPermissions& expiring_permissions) const {
-  base::Value::List items;
+  base::ListValue items;
   items.reserve(expiring_permissions.size());
 
   for (const auto& expiring_permission : expiring_permissions) {
-    base::Value::Dict value;
+    base::DictValue value;
     value.Set(kRequestingOriginKey,
               expiring_permission.requesting_origin().spec());
     if (expiring_permission.embedding_origin() !=

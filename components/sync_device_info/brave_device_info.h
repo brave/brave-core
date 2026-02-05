@@ -59,7 +59,7 @@ class BraveDeviceInfo : public DeviceInfo {
 
   // Converts the |DeviceInfo| values to a JS friendly DictionaryValue,
   // which extension APIs can expose to third party apps.
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 
  private:
   bool is_self_delete_supported_;

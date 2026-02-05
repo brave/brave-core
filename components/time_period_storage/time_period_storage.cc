@@ -206,7 +206,7 @@ void TimePeriodStorage::Load() {
   DCHECK(daily_values_.empty());
   const auto& pref_value = prefs_->GetValue(pref_name_);
 
-  const base::Value::List* list;
+  const base::ListValue* list;
   if (dict_key_) {
     list = pref_value.GetDict().FindList(dict_key_);
   } else {
@@ -217,7 +217,7 @@ void TimePeriodStorage::Load() {
   }
   for (const auto& it : *list) {
     DCHECK(it.is_dict());
-    const base::Value::Dict& dict = it.GetDict();
+    const base::DictValue& dict = it.GetDict();
     auto day = dict.FindDouble("day");
     auto value = dict.FindDouble("value");
     if (!day || !value) {
@@ -235,11 +235,11 @@ void TimePeriodStorage::Save() {
   DCHECK(!daily_values_.empty());
   DCHECK_LE(daily_values_.size(), period_days_);
 
-  base::Value::List list;
+  base::ListValue list;
   // TODO(iefremov): Optimize if needed.
   list.clear();
   for (const auto& u : daily_values_) {
-    base::Value::Dict value;
+    base::DictValue value;
     value.Set("day", u.day.InSecondsFSinceUnixEpoch());
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));

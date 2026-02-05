@@ -85,11 +85,9 @@ bool AddRule(
   return false;
 }
 
-void AddRules(
-  const base::Value::List& include_strings,
-  const base::Value::Dict& rule_dict,
-  PatternsByWebcompatTypeMap& patterns_by_webcompat_type
-) {
+void AddRules(const base::ListValue& include_strings,
+              const base::DictValue& rule_dict,
+              PatternsByWebcompatTypeMap& patterns_by_webcompat_type) {
   const base::Value* exceptions = rule_dict.Find(kExceptions);
   if (exceptions->is_list()) {
     for (const base::Value& include_string : include_strings) {

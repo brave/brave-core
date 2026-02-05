@@ -57,7 +57,7 @@ class BatAdsImpl final : public mojom::BatAds {
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void ParseAndSaveNewTabPageAds(
-      base::Value::Dict data,
+      base::DictValue data,
       ParseAndSaveNewTabPageAdsCallback callback) override;
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(

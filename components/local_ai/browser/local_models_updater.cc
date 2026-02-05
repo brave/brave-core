@@ -62,7 +62,7 @@ LocalModelsComponentInstallerPolicy::~LocalModelsComponentInstallerPolicy() =
     default;
 
 bool LocalModelsComponentInstallerPolicy::VerifyInstallation(
-    const base::Value::Dict& manifest,
+    const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }
@@ -78,7 +78,7 @@ bool LocalModelsComponentInstallerPolicy::RequiresNetworkEncryption() const {
 
 update_client::CrxInstaller::Result
 LocalModelsComponentInstallerPolicy::OnCustomInstall(
-    const base::Value::Dict& manifest,
+    const base::DictValue& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(update_client::InstallError::NONE);
 }
@@ -88,7 +88,7 @@ void LocalModelsComponentInstallerPolicy::OnCustomUninstall() {}
 void LocalModelsComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
-    base::Value::Dict manifest) {
+    base::DictValue manifest) {
   if (install_dir.empty()) {
     return;
   }

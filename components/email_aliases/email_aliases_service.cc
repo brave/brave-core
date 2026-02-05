@@ -174,7 +174,7 @@ void EmailAliasesService::OnAuthChanged() {
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
-  base::Value::Dict body_value;  // empty JSON object required by the API
+  base::DictValue body_value;  // empty JSON object required by the API
   auto wrapper = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), base::unexpected(std::string()));
   ApiFetch(email_aliases_service_base_url_,
@@ -248,7 +248,7 @@ void EmailAliasesService::ApiFetch(const GURL& url,
 
 void EmailAliasesService::ApiFetch(const GURL& url,
                                    const std::string_view method,
-                                   const base::Value::Dict& body_value,
+                                   const base::DictValue& body_value,
                                    BodyAsStringCallback callback) {
   CHECK(method == net::HttpRequestHeaders::kPostMethod ||
         method == net::HttpRequestHeaders::kPutMethod ||
@@ -343,7 +343,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
   // Remove this check once the backend is updated to return a dictionary.
   if (parsed && parsed->is_list()) {
     // Wrap the list in a dictionary to match the AliasListResponse shape.
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("result", std::move(*parsed));
     parsed = base::Value(std::move(dict));
   }
@@ -351,7 +351,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     LOG(ERROR) << "Email Aliases service error: Invalid response format";
     return;
   }
-  const base::Value::Dict& parsed_dict = parsed->GetDict();
+  const base::DictValue& parsed_dict = parsed->GetDict();
   if (const std::string* error_message = parsed_dict.FindString("message")) {
     LOG(ERROR) << "Email Aliases service error: " << *error_message;
     return;

@@ -50,9 +50,9 @@ std::optional<base::Value> ConvertCompsToValue(
   if (components.empty()) {
     return std::nullopt;
   }
-  auto components_list = base::Value::List();
+  auto components_list = base::ListValue();
   for (const auto& component : components) {
-    base::Value::Dict component_dict;
+    base::DictValue component_dict;
     component_dict.Set(kComponentItemName, component->name);
     component_dict.Set(kComponentItemId, component->id);
     component_dict.Set(kComponentItemVersion, component->version);
@@ -78,7 +78,7 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
 
   const GURL upload_url(BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT));
 
-  base::Value::Dict report_details_dict;
+  base::DictValue report_details_dict;
 
   if (report_info->report_url) {
     auto url = GURL(report_info->report_url.value());
@@ -170,7 +170,7 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
 
   if (report_info->webcompat_reporter_errors &&
       !report_info->webcompat_reporter_errors->empty()) {
-    base::Value::List errors_list;
+    base::ListValue errors_list;
     for (const auto& error : report_info->webcompat_reporter_errors.value()) {
       errors_list.Append(error);
     }

@@ -274,7 +274,7 @@ class SkusServiceTestUnitTest : public testing::Test {
 };
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
-  base::Value::Dict state;
+  base::DictValue state;
   auto env = skus::GetDefaultEnvironment();
   auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
@@ -290,7 +290,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
-  base::Value::Dict state;
+  base::DictValue state;
   auto env = skus::GetDefaultEnvironment();
   auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
@@ -311,7 +311,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryWrongEnv) {
-  base::Value::Dict state;
+  base::DictValue state;
   auto testing_payload = GenerateTestingCreds("vpn.brave.software");
   state.Set("skus:staging", testing_payload);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));

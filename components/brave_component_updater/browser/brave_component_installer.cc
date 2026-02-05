@@ -28,12 +28,12 @@ using InstallError = update_client::InstallError;
 
 namespace {
 bool RewriteManifestFile(const base::FilePath& extension_root,
-                         const base::Value::Dict& manifest,
+                         const base::DictValue& manifest,
                          const std::string& public_key) {
   // Add the public key
   DCHECK(!public_key.empty());
 
-  base::Value::Dict final_manifest = manifest.Clone();
+  base::DictValue final_manifest = manifest.Clone();
   final_manifest.Set("key", public_key);
 
   std::string manifest_json;
@@ -48,7 +48,7 @@ bool RewriteManifestFile(const base::FilePath& extension_root,
   return base::WriteFile(manifest_path, manifest_json);
 }
 
-std::string GetManifestString(base::Value::Dict* manifest,
+std::string GetManifestString(base::DictValue* manifest,
                               const std::string& public_key) {
   manifest->Set("key", public_key);
 
@@ -78,7 +78,7 @@ BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
 BraveComponentInstallerPolicy::~BraveComponentInstallerPolicy() = default;
 
 bool BraveComponentInstallerPolicy::VerifyInstallation(
-    const base::Value::Dict& manifest,
+    const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
   // The manifest file will generate a random ID if we don't provide one.
   // We want to write one with the actual extensions public key so we get
@@ -101,7 +101,7 @@ bool BraveComponentInstallerPolicy::RequiresNetworkEncryption() const {
 
 update_client::CrxInstaller::Result
 BraveComponentInstallerPolicy::OnCustomInstall(
-    const base::Value::Dict& manifest,
+    const base::DictValue& manifest,
     const base::FilePath& install_dir) {
   return Result(InstallError::NONE);
 }
@@ -111,7 +111,7 @@ void BraveComponentInstallerPolicy::OnCustomUninstall() {}
 void BraveComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
-    base::Value::Dict manifest) {
+    base::DictValue manifest) {
   ready_callback_.Run(install_dir,
                       GetManifestString(&manifest, base64_public_key_));
 }

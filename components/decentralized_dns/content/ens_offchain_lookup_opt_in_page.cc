@@ -65,7 +65,7 @@ void EnsOffchainLookupOptInPage::CommandReceived(const std::string& command) {
 }
 
 void EnsOffchainLookupOptInPage::PopulateInterstitialStrings(
-    base::Value::Dict& load_time_data) {
+    base::DictValue& load_time_data) {
   std::u16string learn_more_link =
       u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
 

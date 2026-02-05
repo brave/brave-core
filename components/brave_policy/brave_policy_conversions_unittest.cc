@@ -29,8 +29,8 @@ class StubPolicyConversionsClient : public PolicyConversionsClient {
 
   // PolicyConversionsClient overrides
   bool HasUserPolicies() const override { return false; }
-  base::Value::List GetExtensionPolicies(PolicyDomain policy_domain) override {
-    return base::Value::List();
+  base::ListValue GetExtensionPolicies(PolicyDomain policy_domain) override {
+    return base::ListValue();
   }
   PolicyService* GetPolicyService() const override { return nullptr; }
   SchemaRegistry* GetPolicySchemaRegistry() const override { return nullptr; }
@@ -39,7 +39,7 @@ class StubPolicyConversionsClient : public PolicyConversionsClient {
   }
 
   // Expose the protected method for testing
-  base::Value::Dict GetPolicyValuesForTest(
+  base::DictValue GetPolicyValuesForTest(
       const PolicyMap& map,
       const std::optional<PolicyConversions::PolicyToSchemaMap>&
           known_policy_schemas) const {
@@ -70,12 +70,11 @@ TEST_F(BravePolicyConversionsTest, BraveInPolicyConversions) {
 
   // Use the client to get policy values
   StubPolicyConversionsClient client;
-  base::Value::Dict policy_values =
+  base::DictValue policy_values =
       client.GetPolicyValuesForTest(policy_map, std::nullopt);
 
   // Find our test policy in the returned policy values
-  const base::Value::Dict* test_policy =
-      policy_values.FindDict(test_policy_name);
+  const base::DictValue* test_policy = policy_values.FindDict(test_policy_name);
   ASSERT_NE(test_policy, nullptr);
 
   // Check that the source is properly labeled as "policySourceBrave"
@@ -105,16 +104,16 @@ TEST_F(BravePolicyConversionsTest, BraveInPolicySourcesArray) {
 // hitting NOTREACHED()
 TEST_F(BravePolicyConversionsTest, GetSourceHandlesBrave) {
   // Create a policy dictionary with POLICY_SOURCE_BRAVE
-  base::Value::Dict test_policy;
+  base::DictValue test_policy;
   test_policy.Set("level", static_cast<int>(POLICY_LEVEL_MANDATORY));
   test_policy.Set("scope", static_cast<int>(POLICY_SCOPE_USER));
   test_policy.Set("source", static_cast<int>(POLICY_SOURCE_BRAVE));
   test_policy.Set("value", base::Value("test_value"));
 
-  base::Value::Dict chrome_policies;
+  base::DictValue chrome_policies;
   chrome_policies.Set("TestBravePolicy", std::move(test_policy));
 
-  base::Value::Dict policies;
+  base::DictValue policies;
   policies.Set("chromePolicies", std::move(chrome_policies));
 
   // Test that AppendChromePolicyInfoIntoProfileReport handles Brave

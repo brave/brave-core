@@ -75,8 +75,8 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
 
   void OnUrlCosmeticResources(base::OnceClosure callback,
                               base::Value result);
-  void CSSRulesRoutine(const base::Value::Dict& resources_dict);
-  void OnHiddenClassIdSelectors(base::Value::Dict result);
+  void CSSRulesRoutine(const base::DictValue& resources_dict);
+  void OnHiddenClassIdSelectors(base::DictValue result);
   bool OnIsFirstParty(const std::string& url_string);
   void OnAddSiteCosmeticFilter(const std::string& selector);
   void OnManageCustomFilters();
@@ -114,7 +114,7 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;
   GURL url_;
-  std::optional<base::Value::Dict> resources_dict_;
+  std::optional<base::DictValue> resources_dict_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
 
   // True if the content_cosmetic.bundle.js has injected in the current frame.

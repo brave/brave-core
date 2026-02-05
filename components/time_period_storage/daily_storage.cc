@@ -67,7 +67,7 @@ void DailyStorage::Load() {
   base::Time min = clock_->Now() - base::Days(1);
   for (const auto& it : list) {
     DCHECK(it.is_dict());
-    const base::Value::Dict& dict = it.GetDict();
+    const base::DictValue& dict = it.GetDict();
     auto day = dict.FindDouble("day");
     auto value = dict.FindDouble("value");
     // Validate correct data format
@@ -85,9 +85,9 @@ void DailyStorage::Load() {
 
 void DailyStorage::Save() {
   FilterToDay();
-  base::Value::List list;
+  base::ListValue list;
   for (const auto& u : daily_values_) {
-    base::Value::Dict value;
+    base::DictValue value;
     value.Set("day", u.time.InSecondsFSinceUnixEpoch());
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
