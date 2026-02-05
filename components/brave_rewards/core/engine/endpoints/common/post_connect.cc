@@ -31,7 +31,7 @@ Result ParseGeoCountry(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* geo_country = dict.FindString("geoCountry");
   if (!geo_country || geo_country->empty()) {
     engine.LogError(FROM_HERE) << "Missing geoCountry response field";
@@ -49,7 +49,7 @@ Result ParseErrorMessage(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* message = dict.FindString("message");
   if (!message) {
     engine.LogError(FROM_HERE) << "Failed to parse body";

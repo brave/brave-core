@@ -41,7 +41,7 @@ mojom::UICardItemPtr ReadItem(const base::Value& value) {
   return item;
 }
 
-std::vector<mojom::UICardItemPtr> ReadItemList(const base::Value::List& list) {
+std::vector<mojom::UICardItemPtr> ReadItemList(const base::ListValue& list) {
   std::vector<mojom::UICardItemPtr> items;
   for (auto& elem : list) {
     if (auto item = ReadItem(elem)) {
@@ -52,7 +52,7 @@ std::vector<mojom::UICardItemPtr> ReadItemList(const base::Value::List& list) {
 }
 
 std::optional<std::vector<mojom::UICardPtr>> ReadResponseBody(
-    const base::Value::Dict& body) {
+    const base::DictValue& body) {
   std::vector<mojom::UICardPtr> cards;
 
   for (auto [key, value] : body) {

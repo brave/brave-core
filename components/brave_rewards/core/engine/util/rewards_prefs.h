@@ -42,8 +42,8 @@ class RewardsPrefs : public RewardsEngineHelper,
   void Set(std::string_view path, const base::Value& value);
   const base::Value& GetValue(std::string_view path);
 
-  void SetDict(std::string_view path, base::Value::Dict dict);
-  const base::Value::Dict& GetDict(std::string_view path);
+  void SetDict(std::string_view path, base::DictValue dict);
+  const base::DictValue& GetDict(std::string_view path);
 
   void SetInt64(std::string_view path, int64_t value);
   int64_t GetInt64(std::string_view path);

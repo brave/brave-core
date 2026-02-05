@@ -117,7 +117,7 @@ void LinkageChecker::UpdateSelfCustodyAvailableDict(
 
   // Returns true if the supplied Dict has a true value for some supported
   // wallet provider key.
-  auto has_available_provider = [&](const base::Value::Dict& dict) {
+  auto has_available_provider = [&](const base::DictValue& dict) {
     for (auto [key, entry_value] : dict) {
       if (auto bool_value = entry_value.GetIfBool()) {
         if (*bool_value && engine().GetExternalWalletProvider(key)) {

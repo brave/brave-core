@@ -34,7 +34,7 @@ Result ParseBody(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* message = dict.FindString("message");
   if (!message) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -138,7 +138,7 @@ std::optional<std::string> PatchWallets::Content() const {
     return std::nullopt;
   }
 
-  base::Value::Dict content;
+  base::DictValue content;
   content.Set("geoCountry", geo_country_);
 
   std::string json;

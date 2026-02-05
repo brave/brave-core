@@ -35,14 +35,14 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
                                          std::string* recipient_id) {
   DCHECK(recipient_id);
 
-  std::optional<base::Value::Dict> value =
+  std::optional<base::DictValue> value =
       base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* result = dict.FindString("result");
   if (!result || *result != "OK") {
     engine_->LogError(FROM_HERE) << "Failed creating recipient_id";
@@ -60,7 +60,7 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
 }
 
 std::string PostRecipientId::GeneratePayload() {
-  base::Value::Dict payload;
+  base::DictValue payload;
   payload.Set("label", kRecipientLabel);
 
   std::string json;

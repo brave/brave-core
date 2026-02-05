@@ -73,7 +73,7 @@ std::optional<std::vector<std::string>> PostCommitTransactionBitFlyer::Headers(
 }
 
 std::optional<std::string> PostCommitTransactionBitFlyer::Content() const {
-  base::Value::Dict payload;
+  base::DictValue payload;
   payload.Set("currency_code", "BAT");
   payload.Set("amount", transaction_->amount);
   payload.Set("dry_run", false);

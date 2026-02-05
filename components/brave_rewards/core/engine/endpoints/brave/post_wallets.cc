@@ -119,7 +119,7 @@ std::optional<std::string> PostWallets::Content() const {
     return std::nullopt;
   }
 
-  base::Value::Dict content;
+  base::DictValue content;
   content.Set("geoCountry", *geo_country_);
 
   std::string json;

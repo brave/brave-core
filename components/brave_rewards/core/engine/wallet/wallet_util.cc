@@ -74,7 +74,7 @@ void MaybeAssignWalletLinks(RewardsEngine& engine,
 mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
                                                    std::string wallet_string,
                                                    std::string wallet_type) {
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> value = base::JSONReader::ReadDict(
       wallet_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine.LogError(FROM_HERE)
@@ -82,7 +82,7 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
     return nullptr;
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   auto wallet = mojom::ExternalWallet::New();
   wallet->type = wallet_type;
 
@@ -185,12 +185,12 @@ bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr wallet) {
     return false;
   }
 
-  base::Value::Dict fees;
+  base::DictValue fees;
   for (const auto& fee : wallet->fees) {
     fees.Set(fee.first, fee.second);
   }
 
-  base::Value::Dict new_wallet;
+  base::DictValue new_wallet;
   new_wallet.Set("token", wallet->token);
   new_wallet.Set("address", wallet->address);
   new_wallet.Set("status", static_cast<int>(wallet->status));

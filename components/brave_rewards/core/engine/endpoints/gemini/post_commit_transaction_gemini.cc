@@ -74,7 +74,7 @@ std::optional<std::string> PostCommitTransactionGemini::Url() const {
 
 std::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
     const std::string&) const {
-  base::Value::Dict payload;
+  base::DictValue payload;
   payload.Set("tx_ref", transaction_->transaction_id);
   payload.Set("amount", transaction_->amount);
   payload.Set("currency", "BAT");
