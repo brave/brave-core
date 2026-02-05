@@ -724,6 +724,13 @@
 -BrowserUserEducationServiceTest.CheckFeaturePromoActions
 -BrowserUserEducationServiceTest.CheckFeaturePromoHistograms
 
+# These tests are flaky upstream, failing intermittently due to race condition where
+# ProtocolHandlersManager keyed service may not be created before extensions are loaded.
+# See https://github.com/brave/brave-browser/issues/52476
+# Upstream commit: https://chromium.googlesource.com/chromium/src/+/41015f71bcdd352f79f965e10a982b598d8e9557
+-ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
+-ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
