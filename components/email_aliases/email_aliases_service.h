@@ -89,6 +89,7 @@ class EmailAliasesService : public KeyedService,
   void OnAuthChanged();
 
   // Refreshes the aliases list from the server and notifies observers.
+  void RefreshAliases();
   void RefreshAliasesWithToken(TokenResult token);
 
   void GenerateAliasWithToken(GenerateAliasCallback user_callback,

@@ -29,6 +29,10 @@ EmailAliasesAuth::EmailAliasesAuth(
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      brave_account::prefs::kBraveAccountAuthenticationToken,
+      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       brave_account::prefs::kBraveAccountEmailAddress,
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
                           base::Unretained(this)));
