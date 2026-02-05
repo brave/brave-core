@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
-#include "brave/components/constants/brave_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 
@@ -182,8 +182,8 @@ GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
   std::string environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
-  return GURL(base::StrCat(
-      {brave::kGate3URL, "/api/oauth/", provider, "/", environment, "/"}));
+  return GURL(base::StrCat({brave_wallet::kGate3URL, "/api/oauth/", provider,
+                            "/", environment, "/"}));
 }
 
 GURL EnvironmentConfig::URLValue(std::string value) const {
