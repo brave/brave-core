@@ -7,6 +7,8 @@
 import {
   AssetIdsByCollectionNameRegistry,
   BraveWallet,
+  SupportedBridgeCoinTypes,
+  SupportedSwapCoinTypes,
 } from '../constants/types'
 import {
   TokenBalancesRegistry, //
@@ -555,6 +557,10 @@ export function getCoinTypeName(coin: BraveWallet.CoinType) {
   return ''
 }
 
-export const getDoesCoinSupportSwapOrBridge = (coin: BraveWallet.CoinType) => {
-  return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
+export const getDoesCoinSupportSwap = (coin: BraveWallet.CoinType) => {
+  return SupportedSwapCoinTypes.includes(coin)
+}
+
+export const getDoesCoinSupportBridge = (coin: BraveWallet.CoinType) => {
+  return SupportedBridgeCoinTypes.includes(coin)
 }
