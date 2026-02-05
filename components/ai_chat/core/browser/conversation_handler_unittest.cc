@@ -2453,7 +2453,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
               EXPECT_EQ(history_span.size(), 2u);
 
               // Create a mock response with an ID
-              base::Value::Dict response_dict;
+              base::DictValue response_dict;
               response_dict.Set("id", "test-rating-current-model");
               base::Value response(std::move(response_dict));
 
@@ -2514,7 +2514,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
               EXPECT_EQ(history_span.size(), 2u);
 
               // Create a mock response with an ID
-              base::Value::Dict response_dict;
+              base::DictValue response_dict;
               response_dict.Set("id", "test-rating-123");
               base::Value response(std::move(response_dict));
 

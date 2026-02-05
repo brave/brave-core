@@ -126,19 +126,19 @@ std::string_view GetContentBlockTypeString(
 }  // namespace
 
 // static
-base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
+base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
-  base::Value::List serialized_messages;
+  base::ListValue serialized_messages;
   for (auto& message : messages) {
-    base::Value::Dict message_dict;
+    base::DictValue message_dict;
 
     // Set role
     message_dict.Set("role", std::move(message.role));
 
     // Content blocks
-    base::Value::List content_list;
+    base::ListValue content_list;
     for (auto& block : message.content) {
-      base::Value::Dict content_block_dict;
+      base::DictValue content_block_dict;
 
       // Set type for all blocks
       content_block_dict.Set("type", GetContentBlockTypeString(block));
@@ -171,7 +171,7 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
 
         case mojom::ContentBlock::Tag::kImageContentBlock: {
           const auto& image = block->get_image_content_block();
-          base::Value::Dict image_url;
+          base::DictValue image_url;
           image_url.Set("url", image->image_url.spec());
           content_block_dict.Set("image_url", std::move(image_url));
           break;
@@ -179,7 +179,7 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
 
         case mojom::ContentBlock::Tag::kFileContentBlock: {
           const auto& file = block->get_file_content_block();
-          base::Value::Dict file_dict;
+          base::DictValue file_dict;
           file_dict.Set("filename", file->filename);
           file_dict.Set("file_data", file->file_data.spec());
           content_block_dict.Set("file", std::move(file_dict));
@@ -196,12 +196,12 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
 
         case mojom::ContentBlock::Tag::kMemoryContentBlock: {
           const auto& memory_block = block->get_memory_content_block();
-          base::Value::Dict memory_dict;
+          base::DictValue memory_dict;
           for (const auto& [key, memory_value] : memory_block->memory) {
             if (memory_value->is_string_value()) {
               memory_dict.Set(key, memory_value->get_string_value());
             } else if (memory_value->is_list_value()) {
-              base::Value::List list;
+              base::ListValue list;
               for (const auto& val : memory_value->get_list_value()) {
                 list.Append(val);
               }
@@ -246,13 +246,13 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
 
     // Tool calls
     if (!message.tool_calls.empty()) {
-      base::Value::List tool_call_dicts;
+      base::ListValue tool_call_dicts;
       for (const auto& tool_event : message.tool_calls) {
-        base::Value::Dict tool_call_dict;
+        base::DictValue tool_call_dict;
         tool_call_dict.Set("id", tool_event->id);
         tool_call_dict.Set("type", "function");
 
-        base::Value::Dict function_dict;
+        base::DictValue function_dict;
         function_dict.Set("name", tool_event->tool_name);
 
         function_dict.Set("arguments", tool_event->arguments_json);
@@ -295,7 +295,7 @@ void ConversationAPIV2Client::ClearAllQueries() {
 
 void ConversationAPIV2Client::PerformRequest(
     std::vector<OAIMessage> messages,
-    std::optional<base::Value::List> oai_tool_definitions,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     GenerationDataCallback data_received_callback,
@@ -313,12 +313,12 @@ void ConversationAPIV2Client::PerformRequest(
 
 std::string ConversationAPIV2Client::CreateJSONRequestBody(
     std::vector<OAIMessage> messages,
-    std::optional<base::Value::List> oai_tool_definitions,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   dict.Set("messages", SerializeOAIMessages(std::move(messages)));
 
@@ -343,7 +343,7 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
 
 void ConversationAPIV2Client::PerformRequestWithCredentials(
     std::vector<OAIMessage> messages,
-    std::optional<base::Value::List> oai_tool_definitions,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     const std::optional<std::string>& model_name,
@@ -499,10 +499,10 @@ void ConversationAPIV2Client::OnQueryDataReceived(
 
   // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
   // or choices[0].message.tool_calls
-  const base::Value::Dict* content_container =
+  const base::DictValue* content_container =
       GetOAIContentContainer(result_params);
   if (content_container) {
-    if (const base::Value::List* tool_calls =
+    if (const base::ListValue* tool_calls =
             content_container->FindList("tool_calls")) {
       // Provide any valid tool use events to the callback
       // ToolUseEventFromToolCallsResponse handles per-tool alignment_check
@@ -517,7 +517,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
 }
 
 std::optional<std::string> ConversationAPIV2Client::GetLeoModelKeyFromResponse(
-    const base::Value::Dict& response) {
+    const base::DictValue& response) {
   const std::string* model = response.FindString("model");
   if (!model_service_ || !model) {
     return std::nullopt;

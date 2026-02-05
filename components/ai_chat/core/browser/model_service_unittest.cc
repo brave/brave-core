@@ -433,7 +433,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
 
   // Delete all models with endpoint1
   GetService()->MaybeDeleteCustomModels(base::BindLambdaForTesting(
-      [&endpoint1](const base::Value::Dict& model_dict) {
+      [&endpoint1](const base::DictValue& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
         return endpoint_str && GURL(*endpoint_str) == endpoint1;
@@ -482,7 +482,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
 
   // Delete only model1
   GetService()->MaybeDeleteCustomModels(base::BindLambdaForTesting(
-      [&endpoint](const base::Value::Dict& model_dict) {
+      [&endpoint](const base::DictValue& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
         const std::string* model_name =
@@ -533,7 +533,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
 
   // Delete the model
   GetService()->MaybeDeleteCustomModels(base::BindLambdaForTesting(
-      [&endpoint](const base::Value::Dict& model_dict) {
+      [&endpoint](const base::DictValue& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
         return endpoint_str && GURL(*endpoint_str) == endpoint;

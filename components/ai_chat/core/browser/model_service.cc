@@ -510,8 +510,8 @@ std::string DecryptAPIKey(const std::string& encoded_api_key) {
   return api_key;
 }
 
-base::Value::Dict GetModelDict(mojom::ModelPtr model) {
-  base::Value::Dict model_dict = base::Value::Dict();
+base::DictValue GetModelDict(mojom::ModelPtr model) {
+  base::DictValue model_dict = base::DictValue();
 
   mojom::CustomModelOptions options =
       *model->options->get_custom_model_options();
@@ -856,9 +856,9 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
     }
   }
 
-  base::Value::List custom_models_pref =
+  base::ListValue custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
-  base::Value::Dict model_dict = GetModelDict(std::move(model));
+  base::DictValue model_dict = GetModelDict(std::move(model));
   custom_models_pref.Append(std::move(model_dict));
   pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
 
@@ -880,7 +880,7 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   // Set metrics for AI Chat content length warnings
   SetAssociatedContentLengthMetrics(*model);
 
-  base::Value::List custom_models_pref =
+  base::ListValue custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
 
   if (index >= custom_models_pref.size() || index < 0) {
@@ -898,7 +898,7 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
       << "Model key mismatch. Existing key: " << existing_key
       << ", sent model key: " << model->key << ".";
 
-  base::Value::Dict model_dict = GetModelDict(std::move(model));
+  base::DictValue model_dict = GetModelDict(std::move(model));
   model_iter->GetDict().Merge(std::move(model_dict));
 
   pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
@@ -907,7 +907,7 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
 }
 
 void ModelService::DeleteCustomModel(uint32_t index) {
-  base::Value::List custom_models_pref =
+  base::ListValue custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
 
   if (index >= custom_models_pref.size() || index < 0) {
@@ -946,7 +946,7 @@ void ModelService::MaybeDeleteCustomModels(CustomModelPredicate predicate) {
   // Remove models matching predicate
   auto it = update->begin();
   while (it != update->end()) {
-    const base::Value::Dict& model_dict = it->GetDict();
+    const base::DictValue& model_dict = it->GetDict();
 
     if (predicate.Run(model_dict)) {
       std::string removed_key = *model_dict.FindString(kCustomModelItemKey);
@@ -1019,11 +1019,11 @@ const std::string& ModelService::GetDefaultModelKey() {
 const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
   std::vector<mojom::ModelPtr> models;
 
-  const base::Value::List& custom_models_pref =
+  const base::ListValue& custom_models_pref =
       pref_service_->GetList(kCustomModelsList);
 
   for (const base::Value& item : custom_models_pref) {
-    const base::Value::Dict& model_pref = item.GetDict();
+    const base::DictValue& model_pref = item.GetDict();
     auto custom_model_opts = mojom::CustomModelOptions::New();
     custom_model_opts->model_request_name =
         *model_pref.FindString(kCustomModelItemModelKey);

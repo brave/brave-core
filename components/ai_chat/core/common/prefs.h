@@ -58,7 +58,7 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteAllMemoriesFromPrefs(PrefService& prefs);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(PrefService& prefs);
+std::optional<base::DictValue> GetUserMemoryDictFromPrefs(PrefService& prefs);
 
 // Skills prefs
 // Returns skills from the skills dictionary in the pref.

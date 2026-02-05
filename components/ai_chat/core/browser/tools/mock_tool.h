@@ -28,19 +28,19 @@ class MockTool : public Tool {
       std::string_view name,
       std::string_view description = "",
       std::string_view type = "",
-      std::optional<base::Value::Dict> input_properties = std::nullopt,
+      std::optional<base::DictValue> input_properties = std::nullopt,
       std::optional<std::vector<std::string>> required_properties =
           std::nullopt,
-      std::optional<base::Value::Dict> extra_params = std::nullopt,
+      std::optional<base::DictValue> extra_params = std::nullopt,
       bool requires_user_interaction_before_handling = false);
   ~MockTool() override;
 
   std::string_view Name() const override;
   std::string_view Description() const override;
   std::string_view Type() const override;
-  std::optional<base::Value::Dict> InputProperties() const override;
+  std::optional<base::DictValue> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
-  std::optional<base::Value::Dict> ExtraParams() const override;
+  std::optional<base::DictValue> ExtraParams() const override;
   bool IsSupportedByModel(const mojom::Model& model) const override;
   bool SupportsConversation(
       bool is_temporary,
@@ -75,9 +75,9 @@ class MockTool : public Tool {
   std::string name_;
   std::string description_;
   std::string type_;
-  std::optional<base::Value::Dict> input_properties_;
+  std::optional<base::DictValue> input_properties_;
   std::optional<std::vector<std::string>> required_properties_;
-  std::optional<base::Value::Dict> extra_params_;
+  std::optional<base::DictValue> extra_params_;
   bool requires_user_interaction_before_handling_;
   bool is_supported_by_model_ = true;
   bool supports_conversation_ = true;

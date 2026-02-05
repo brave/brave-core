@@ -16,39 +16,39 @@
 
 namespace ai_chat {
 
-// Helper functions for building JSON schema properties as base::Value::Dict
+// Helper functions for building JSON schema properties as base::DictValue
 // objects for use in Tool::InputProperties()
 
 // Creates a string property with optional enum values
 // Example: StringProperty("Location for weather")
 // Example: StringProperty("Temperature unit", {"celsius", "fahrenheit"})
-base::Value::Dict StringProperty(
+base::DictValue StringProperty(
     const std::string& description,
     const std::optional<std::vector<std::string>>& enum_values = std::nullopt);
 
 // Creates an array property with items schema
 // Example: ArrayProperty("List of locations", StringProperty("A location"))
-base::Value::Dict ArrayProperty(const std::string& description,
-                                base::Value::Dict items);
+base::DictValue ArrayProperty(const std::string& description,
+                              base::DictValue items);
 
 // Creates an object property with nested properties
 // Example: ObjectProperty("Configuration", {{"enabled", BooleanProperty("Enable
 // feature")}})
-base::Value::Dict ObjectProperty(
+base::DictValue ObjectProperty(
     const std::string& description,
-    std::initializer_list<std::pair<const std::string, base::Value::Dict>>
+    std::initializer_list<std::pair<const std::string, base::DictValue>>
         properties);
 
-base::Value::Dict BooleanProperty(const std::string& description);
+base::DictValue BooleanProperty(const std::string& description);
 
 // Create a property for either integer or floating-point numbers
-base::Value::Dict NumberProperty(const std::string& description);
+base::DictValue NumberProperty(const std::string& description);
 
 // Create a property for integer (non floating-point) values
-base::Value::Dict IntegerProperty(const std::string& description);
+base::DictValue IntegerProperty(const std::string& description);
 
-base::Value::Dict CreateInputProperties(
-    std::initializer_list<std::pair<const std::string, base::Value::Dict>>
+base::DictValue CreateInputProperties(
+    std::initializer_list<std::pair<const std::string, base::DictValue>>
         properties);
 
 }  // namespace ai_chat

@@ -78,7 +78,7 @@ class ModelService : public KeyedService {
 
   // Delete custom models matching a predicate
   using CustomModelPredicate =
-      base::RepeatingCallback<bool(const base::Value::Dict&)>;
+      base::RepeatingCallback<bool(const base::DictValue&)>;
   void MaybeDeleteCustomModels(CustomModelPredicate predicate);
 
   // Get all custom models

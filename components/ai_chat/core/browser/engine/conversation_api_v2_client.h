@@ -56,7 +56,7 @@ class ConversationAPIV2Client {
 
   virtual void PerformRequest(
       std::vector<OAIMessage> messages,
-      std::optional<base::Value::List> oai_tool_definitions,
+      std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       GenerationDataCallback data_received_callback,
@@ -76,14 +76,13 @@ class ConversationAPIV2Client {
 
   std::string CreateJSONRequestBody(
       std::vector<OAIMessage> messages,
-      std::optional<base::Value::List> oai_tool_definitions,
+      std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
       const bool is_sse_enabled);
 
-  static base::Value::List SerializeOAIMessages(
-      std::vector<OAIMessage> messages);
+  static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest_ContentBlocks,
@@ -95,7 +94,7 @@ class ConversationAPIV2Client {
 
   void PerformRequestWithCredentials(
       std::vector<OAIMessage> messages,
-      std::optional<base::Value::List> oai_tool_definitions,
+      std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
@@ -110,7 +109,7 @@ class ConversationAPIV2Client {
                            base::expected<base::Value, std::string> result);
 
   std::optional<std::string> GetLeoModelKeyFromResponse(
-      const base::Value::Dict& response);
+      const base::DictValue& response);
 
   const std::string model_name_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;

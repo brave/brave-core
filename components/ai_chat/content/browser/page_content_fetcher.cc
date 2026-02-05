@@ -281,10 +281,10 @@ class PageContentFetcherInternal {
           std::move(request), GetVideoNetworkTrafficAnnotationTag());
 
       // Set up request body
-      base::Value::Dict body;
+      base::DictValue body;
       body.Set("videoId", config->video_id);
-      base::Value::Dict context;
-      base::Value::Dict client;
+      base::DictValue context;
+      base::DictValue client;
       client.Set("clientName", "ANDROID");
       client.Set("clientVersion", "20.10.38");
       context.Set("client", std::move(client));

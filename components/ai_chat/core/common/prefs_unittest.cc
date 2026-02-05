@@ -38,7 +38,7 @@ TEST_F(AIChatPrefsTest, GetCustomizationsFromPrefs_EmptyPref) {
 
 TEST_F(AIChatPrefsTest, GetCustomizationsFromPrefs_WithData) {
   // Set up test data
-  auto dict = base::Value::Dict()
+  auto dict = base::DictValue()
                   .Set("name", "John Doe")
                   .Set("job", "Software Engineer")
                   .Set("tone", "Professional")
@@ -56,7 +56,7 @@ TEST_F(AIChatPrefsTest, GetCustomizationsFromPrefs_WithData) {
 TEST_F(AIChatPrefsTest, GetCustomizationsFromPrefs_PartialData) {
   // Set up test data with only some fields
   auto dict =
-      base::Value::Dict().Set("name", "Jane Smith").Set("job", "Designer");
+      base::DictValue().Set("name", "Jane Smith").Set("job", "Designer");
   pref_service_.SetDict(kBraveAIChatUserCustomizations, std::move(dict));
 
   auto customizations = GetCustomizationsFromPrefs(pref_service_);
@@ -73,7 +73,7 @@ TEST_F(AIChatPrefsTest, SetCustomizationsToPrefs) {
 
   SetCustomizationsToPrefs(customizations, pref_service_);
 
-  const base::Value::Dict& stored_dict =
+  const base::DictValue& stored_dict =
       pref_service_.GetDict(kBraveAIChatUserCustomizations);
   EXPECT_EQ(*stored_dict.FindString("name"), "Alice Johnson");
   EXPECT_EQ(*stored_dict.FindString("job"), "Product Manager");
@@ -86,7 +86,7 @@ TEST_F(AIChatPrefsTest, SetCustomizationsToPrefs_EmptyValues) {
 
   SetCustomizationsToPrefs(customizations, pref_service_);
 
-  const base::Value::Dict& stored_dict =
+  const base::DictValue& stored_dict =
       pref_service_.GetDict(kBraveAIChatUserCustomizations);
   EXPECT_EQ(*stored_dict.FindString("name"), "");
   EXPECT_EQ(*stored_dict.FindString("job"), "");
@@ -102,7 +102,7 @@ TEST_F(AIChatPrefsTest, GetMemoriesFromPrefs_EmptyPref) {
 
 TEST_F(AIChatPrefsTest, GetMemoriesFromPrefs_WithData) {
   // Set up test data
-  auto list = base::Value::List();
+  auto list = base::ListValue();
   list.Append("I work as a software engineer");
   list.Append("I prefer dark mode");
   list.Append("I use Brave browser");
@@ -205,7 +205,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_BothDisabled) {
   pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
 
   // Set up customization data
-  auto customizations_dict = base::Value::Dict()
+  auto customizations_dict = base::DictValue()
                                  .Set("name", "John Doe")
                                  .Set("job", "Software Engineer")
                                  .Set("tone", "Professional")
@@ -227,7 +227,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_CustomizationOnly) {
   pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
 
   // Set up customization data
-  auto customizations_dict = base::Value::Dict()
+  auto customizations_dict = base::DictValue()
                                  .Set("name", "John Doe")
                                  .Set("job", "Software Engineer")
                                  .Set("tone", "Professional")
@@ -254,7 +254,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_MemoryOnly) {
   pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, true);
 
   // Set up customization data
-  auto customizations_dict = base::Value::Dict()
+  auto customizations_dict = base::DictValue()
                                  .Set("name", "John Doe")
                                  .Set("job", "Software Engineer")
                                  .Set("tone", "Professional")
@@ -263,7 +263,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_MemoryOnly) {
                         std::move(customizations_dict));
 
   // Set up memory data
-  auto memories_list = base::Value::List();
+  auto memories_list = base::ListValue();
   memories_list.Append("I work as a software engineer");
   memories_list.Append("I prefer dark mode");
   pref_service_.SetList(kBraveAIChatUserMemories, std::move(memories_list));
@@ -276,7 +276,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_MemoryOnly) {
   EXPECT_FALSE(result->Find("tone"));
   EXPECT_FALSE(result->Find("other"));
 
-  const base::Value::List* memories = result->FindList("memories");
+  const base::ListValue* memories = result->FindList("memories");
   EXPECT_TRUE(memories);
   EXPECT_EQ(memories->size(), 2u);
   EXPECT_EQ((*memories)[0].GetString(), "I work as a software engineer");
@@ -293,7 +293,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_BothEnabled) {
   EXPECT_FALSE(result.has_value());
 
   // Set up customization data
-  auto customizations_dict = base::Value::Dict()
+  auto customizations_dict = base::DictValue()
                                  .Set("name", "Jane Smith")
                                  .Set("job", "Designer")
                                  .Set("tone", "Friendly")
@@ -313,7 +313,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_BothEnabled) {
   EXPECT_EQ(*result->FindString("tone"), "Friendly");
   EXPECT_EQ(*result->FindString("other"), "Enjoys art");
 
-  const base::Value::List* memories = result->FindList("memories");
+  const base::ListValue* memories = result->FindList("memories");
   ASSERT_TRUE(memories);
   ASSERT_EQ(memories->size(), 2u);
   EXPECT_EQ((*memories)[0].GetString(), "I love creating beautiful designs");
@@ -326,7 +326,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_EmptyCustomizations) {
   pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
 
   // Set up empty customization data
-  auto customizations_dict = base::Value::Dict()
+  auto customizations_dict = base::DictValue()
                                  .Set("name", "")
                                  .Set("job", "")
                                  .Set("tone", "")
@@ -345,7 +345,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_PartialCustomizations) {
   pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
 
   // Set up partial customization data
-  auto customizations_dict = base::Value::Dict()
+  auto customizations_dict = base::DictValue()
                                  .Set("name", "Alice")
                                  .Set("job", "")
                                  .Set("tone", "Casual")
@@ -368,7 +368,7 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_EmptyMemories) {
   pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, true);
 
   // Set up empty memory data
-  auto memories_list = base::Value::List();
+  auto memories_list = base::ListValue();
   pref_service_.SetList(kBraveAIChatUserMemories, std::move(memories_list));
 
   auto result = GetUserMemoryDictFromPrefs(pref_service_);
@@ -381,7 +381,7 @@ TEST_F(AIChatPrefsTest, HasMemoryFromPrefs) {
   EXPECT_FALSE(HasMemoryFromPrefs("Any memory", pref_service_));
 
   // Set up test data
-  auto list = base::Value::List();
+  auto list = base::ListValue();
   list.Append("I work as a software engineer");
   list.Append("I live in San Francisco");
   list.Append("I use Brave browser");
@@ -402,9 +402,9 @@ TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_EmptyPref) {
 
 TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_WithData) {
   // Set up test data with timestamps
-  auto dict = base::Value::Dict();
+  auto dict = base::DictValue();
   auto skill_dict =
-      base::Value::Dict()
+      base::DictValue()
           .Set("shortcut", "test")
           .Set("prompt", "Test prompt")
           .Set("model", "test_model")
@@ -423,9 +423,9 @@ TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_WithData) {
 }
 
 TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_WithoutModel) {
-  auto dict = base::Value::Dict();
+  auto dict = base::DictValue();
   auto skill_dict =
-      base::Value::Dict()
+      base::DictValue()
           .Set("shortcut", "test")
           .Set("prompt", "Test prompt")
           .Set("created_time", base::TimeToValue(base::Time::Now()))
@@ -442,15 +442,15 @@ TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_WithoutModel) {
 }
 
 TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_MalformedData) {
-  auto dict = base::Value::Dict();
+  auto dict = base::DictValue();
 
   // Add malformed entry (missing required fields)
-  auto bad_skill_dict = base::Value::Dict().Set("shortcut", "test");
+  auto bad_skill_dict = base::DictValue().Set("shortcut", "test");
   dict.Set("bad-id", std::move(bad_skill_dict));
 
   // Add valid entry
   auto good_skill_dict =
-      base::Value::Dict()
+      base::DictValue()
           .Set("shortcut", "good")
           .Set("prompt", "Good prompt")
           .Set("created_time", base::TimeToValue(base::Time::Now()))
@@ -468,9 +468,9 @@ TEST_F(AIChatPrefsTest, GetSkillsFromPrefs_MalformedData) {
 }
 
 TEST_F(AIChatPrefsTest, GetSkillFromPrefs_ExistingId) {
-  auto dict = base::Value::Dict();
+  auto dict = base::DictValue();
   auto skill_dict =
-      base::Value::Dict()
+      base::DictValue()
           .Set("shortcut", "single")
           .Set("prompt", "Single prompt")
           .Set("model", "single_model")
@@ -494,8 +494,8 @@ TEST_F(AIChatPrefsTest, GetSkillFromPrefs_NonexistentId) {
 }
 
 TEST_F(AIChatPrefsTest, GetSkillFromPrefs_MalformedData) {
-  auto dict = base::Value::Dict();
-  auto bad_skill_dict = base::Value::Dict().Set("shortcut", "test");
+  auto dict = base::DictValue();
+  auto bad_skill_dict = base::DictValue().Set("shortcut", "test");
   dict.Set("malformed-id", std::move(bad_skill_dict));
 
   pref_service_.SetDict(kBraveAIChatSkills, std::move(dict));

@@ -62,7 +62,7 @@ TEST_F(MemoryStorageToolTest, UseTool_ValidInput) {
   EXPECT_EQ(result[0]->get_text_content_block()->text, "");
 
   // Verify memory was stored in prefs
-  const base::Value::List& memories =
+  const base::ListValue& memories =
       pref_service_.GetList(prefs::kBraveAIChatUserMemories);
   ASSERT_EQ(memories.size(), 1u);
   EXPECT_EQ(memories[0].GetString(), "User prefers TypeScript");
@@ -82,7 +82,7 @@ TEST_F(MemoryStorageToolTest, UseTool_InvalidJson) {
             "Error: Invalid JSON input, input must be a JSON object");
 
   // Verify no memory was stored
-  const base::Value::List& memories =
+  const base::ListValue& memories =
       pref_service_.GetList(prefs::kBraveAIChatUserMemories);
   EXPECT_EQ(memories.size(), 0u);
 }
@@ -101,7 +101,7 @@ TEST_F(MemoryStorageToolTest, UseTool_MissingMemoryField) {
             "Error: Missing or empty 'memory' field");
 
   // Verify no memory was stored
-  const base::Value::List& memories =
+  const base::ListValue& memories =
       pref_service_.GetList(prefs::kBraveAIChatUserMemories);
   EXPECT_EQ(memories.size(), 0u);
 }
@@ -120,7 +120,7 @@ TEST_F(MemoryStorageToolTest, UseTool_EmptyMemoryField) {
             "Error: Missing or empty 'memory' field");
 
   // Verify no memory was stored
-  const base::Value::List& memories =
+  const base::ListValue& memories =
       pref_service_.GetList(prefs::kBraveAIChatUserMemories);
   EXPECT_EQ(memories.size(), 0u);
 }
@@ -142,7 +142,7 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
             "Error: Memory content exceeds 512 character limit");
 
   // Verify no memory was stored
-  const base::Value::List& memories =
+  const base::ListValue& memories =
       pref_service_.GetList(prefs::kBraveAIChatUserMemories);
   EXPECT_EQ(memories.size(), 0u);
 }

@@ -84,12 +84,12 @@ void AIChatFeedbackAPI::SendRating(
     const base::span<const mojom::ConversationTurnPtr>& history,
     const std::string& model_name,
     api_request_helper::APIRequestHelper::ResultCallback on_complete_callback) {
-  base::Value::Dict payload;
+  base::DictValue payload;
 
-  base::Value::List chat;
+  base::ListValue chat;
   int id = 0;
   for (auto& turn : history) {
-    base::Value::Dict turn_dict;
+    base::DictValue turn_dict;
     turn_dict.Set("id", id);
     turn_dict.Set("type", turn->character_type == mojom::CharacterType::HUMAN
                               ? "human"
@@ -127,7 +127,7 @@ void AIChatFeedbackAPI::SendFeedback(
     const std::string& rating_id,
     const std::optional<std::string>& hostname,
     api_request_helper::APIRequestHelper::ResultCallback on_complete_callback) {
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   dict.Set("ymd", brave_stats::GetDateAsYMD(base::Time::Now()));
   dict.Set("category", category);

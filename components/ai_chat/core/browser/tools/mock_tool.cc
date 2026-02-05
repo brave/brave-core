@@ -14,9 +14,9 @@ namespace ai_chat {
 MockTool::MockTool(std::string_view name,
                    std::string_view description,
                    std::string_view type,
-                   std::optional<base::Value::Dict> input_properties,
+                   std::optional<base::DictValue> input_properties,
                    std::optional<std::vector<std::string>> required_properties,
-                   std::optional<base::Value::Dict> extra_params,
+                   std::optional<base::DictValue> extra_params,
                    bool requires_user_interaction_before_handling)
     : name_(name),
       description_(description),
@@ -47,7 +47,7 @@ std::string_view MockTool::Type() const {
   return type_;
 }
 
-std::optional<base::Value::Dict> MockTool::InputProperties() const {
+std::optional<base::DictValue> MockTool::InputProperties() const {
   if (input_properties_.has_value()) {
     return input_properties_->Clone();
   }
@@ -58,7 +58,7 @@ std::optional<std::vector<std::string>> MockTool::RequiredProperties() const {
   return required_properties_;
 }
 
-std::optional<base::Value::Dict> MockTool::ExtraParams() const {
+std::optional<base::DictValue> MockTool::ExtraParams() const {
   if (extra_params_.has_value()) {
     return extra_params_->Clone();
   }

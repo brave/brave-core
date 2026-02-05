@@ -37,7 +37,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidSingleToolCall) {
     }
   ])";
 
-  base::Value::List tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+  base::ListValue tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
 
   auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
 
@@ -352,7 +352,7 @@ TEST(OaiParsingTest, ToolApiDefinitionsFromTools_FunctionToolWithDescription) {
 
 TEST(OaiParsingTest,
      ToolApiDefinitionsFromTools_FunctionToolWithInputProperties) {
-  base::Value::Dict properties;
+  base::DictValue properties;
   // String property
   properties.Set("location", StringProperty("The location to get weather for"));
   // Object property - specific coordinates
@@ -440,7 +440,7 @@ TEST(OaiParsingTest,
 
 TEST(OaiParsingTest,
      ToolApiDefinitionsFromTools_FunctionToolWithRequiredProperties) {
-  base::Value::Dict properties;
+  base::DictValue properties;
   properties.Set("location", StringProperty("The location to get weather for"));
   properties.Set("units", StringProperty("Temperature units"));
 
@@ -482,7 +482,7 @@ TEST(OaiParsingTest,
 
 TEST(OaiParsingTest,
      ToolApiDefinitionsFromTools_NonFunctionTypeWithExtraParams) {
-  base::Value::Dict extra_params;
+  base::DictValue extra_params;
   extra_params.Set("width", 1920);
   extra_params.Set("height", 1080);
   auto mock_tool = std::make_unique<MockTool>(
@@ -511,7 +511,7 @@ TEST(OaiParsingTest, ToolApiDefinitionsFromTools_FunctionTypeWithExtraParams) {
     SCOPED_TRACE(testing::Message()
                  << "function type: "
                  << (function_type.empty() ? "[empty]" : function_type));
-    base::Value::Dict extra_params;
+    base::DictValue extra_params;
     extra_params.Set("width", 1920);
     extra_params.Set("height", 1080);
     auto mock_tool = std::make_unique<MockTool>(
@@ -533,7 +533,7 @@ TEST(OaiParsingTest, ToolApiDefinitionsFromTools_FunctionTypeWithExtraParams) {
     ])";
     EXPECT_THAT(*result, base::test::IsJson(kExptectedJson));
   }
-  base::Value::Dict extra_params;
+  base::DictValue extra_params;
   extra_params.Set("width", 1920);
   extra_params.Set("height", 1080);
   auto mock_tool = std::make_unique<MockTool>(
@@ -581,13 +581,13 @@ TEST(OaiParsingTest, ToolApiDefinitionsFromTools_MultipleTools) {
   auto function_tool =
       std::make_unique<MockTool>("weather_tool", "Get weather");
 
-  base::Value::Dict extra_params;
+  base::DictValue extra_params;
   extra_params.Set("screen_width", 1920);
   auto custom_tool = std::make_unique<MockTool>(
       "screen_tool", "", "computer_20241022", std::nullopt, std::nullopt,
       std::move(extra_params));
 
-  base::Value::Dict properties;
+  base::DictValue properties;
   properties.Set("query", StringProperty(""));
 
   std::vector<std::string> required_props = {"query"};

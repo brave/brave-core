@@ -21,11 +21,11 @@
 namespace ai_chat {
 
 std::optional<std::string> ChooseCaptionTrackUrl(
-    const base::Value::List& caption_tracks) {
+    const base::ListValue& caption_tracks) {
   if (caption_tracks.empty()) {
     return std::nullopt;
   }
-  const base::Value::Dict* track;
+  const base::DictValue* track;
   // When only single track, use that
   if (caption_tracks.size() == 1) {
     track = caption_tracks.front().GetIfDict();
@@ -35,7 +35,7 @@ std::optional<std::string> ChooseCaptionTrackUrl(
     // TODO(petemill): Consider preferring user's language.
     auto iter =
         std::ranges::find_if(caption_tracks, [](const base::Value& track_raw) {
-          const base::Value::Dict* language_track = track_raw.GetIfDict();
+          const base::DictValue* language_track = track_raw.GetIfDict();
           auto* kind = language_track->FindString("kind");
           if (kind && *kind == "asr") {
             return false;
@@ -49,7 +49,7 @@ std::optional<std::string> ChooseCaptionTrackUrl(
     if (iter == caption_tracks.end()) {
       iter = std::ranges::find_if(
           caption_tracks, [](const base::Value& track_raw) {
-            const base::Value::Dict* language_track = track_raw.GetIfDict();
+            const base::DictValue* language_track = track_raw.GetIfDict();
             auto* lang = language_track->FindString("languageCode");
             if (lang && *lang == "en") {
               return true;
@@ -163,8 +163,7 @@ std::string ParseYoutubeTranscriptXml(const base::Value& root) {
     // ...
     // </body>
     // </timedtext>
-    const base::Value::List* children =
-        data_decoder::GetXmlElementChildren(root);
+    const base::ListValue* children = data_decoder::GetXmlElementChildren(root);
     if (!children) {
       return transcript_text;
     }
@@ -172,7 +171,7 @@ std::string ParseYoutubeTranscriptXml(const base::Value& root) {
       if (!data_decoder::IsXmlElementNamed(child, "body")) {
         continue;
       }
-      const base::Value::List* body_children =
+      const base::ListValue* body_children =
           data_decoder::GetXmlElementChildren(child);
       if (!body_children) {
         continue;
@@ -182,7 +181,7 @@ std::string ParseYoutubeTranscriptXml(const base::Value& root) {
           continue;
         }
 
-        const base::Value::List* s_children =
+        const base::ListValue* s_children =
             data_decoder::GetXmlElementChildren(p);
         bool all_s = s_children &&
                      std::ranges::all_of(*s_children, [](const base::Value& s) {
