@@ -129,17 +129,12 @@ class EnvConfig {
   }
 
   /**
-   * Retrieves a path configuration value and resolves it relative to the config
-   * directory if the path is relative.
-   *
-   * The method uses the same lookup order as get():
-   *   1. .env file values
-   *   2. package.json values
-   *   3. The provided defaultValue
-   *
-   * If the retrieved path is relative, it will be resolved relative to the
-   * config directory. Absolute paths are returned as-is. Paths starting with
+   * Returns an absolute path from a configuration value. Relative paths are
+   * resolved relative to the *initial config directory*. Paths starting with
    * `~` are expanded to the user's home directory.
+   *
+   * Values from `include_env` configs are resolved relative to the same
+   * *initial config directory*, not the included file's location.
    *
    * @param {string[]} keyPath - Array of keys forming the config path
    * @returns {string|undefined} The resolved absolute path, or undefined
@@ -161,14 +156,7 @@ class EnvConfig {
     }
 
     // Normalize the path.
-    pathValue = path.normalize(pathValue)
-
-    // Replace Windows separators with POSIX separators.
-    if (process.platform === 'win32') {
-      pathValue = pathValue.replaceAll(path.win32.sep, path.posix.sep)
-    }
-
-    return pathValue
+    return path.normalize(pathValue)
   }
 
   /**

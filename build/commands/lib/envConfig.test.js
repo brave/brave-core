@@ -595,36 +595,35 @@ describe('EnvConfig', () => {
 
     it('should resolve relative paths to absolute paths', () => {
       const result = envConfig.getPath(['relative_path'])
-      const expected = path
-        .resolve(configDir, 'subdir/file.txt')
-        .replaceAll(path.sep, path.posix.sep)
+      const expected = path.resolve(configDir, 'subdir/file.txt')
       expect(result).toBe(expected)
       expect(path.isAbsolute(result)).toBe(true)
     })
 
     it('should resolve relative paths from .env to absolute paths', () => {
       const result = envConfig.getPath(['ENV', 'RELATIVE', 'PATH'])
-      const expected = path
-        .resolve(configDir, 'relative/path.txt')
-        .replaceAll(path.sep, path.posix.sep)
+      const expected = path.resolve(configDir, 'relative/path.txt')
       expect(result).toBe(expected)
       expect(path.isAbsolute(result)).toBe(true)
     })
 
-    it('should get absolute path on posix', () => {
-      const posixResult = envConfig.getPath(['absolute_path_unix'])
-      expect(posixResult).toBe('/usr/local/bin/tool')
-    })
-
     if (process.platform === 'win32') {
       it('should get absolute path on windows', () => {
-        const windowsResult = envConfig.getPath(['ENV', 'WINDOWS', 'PATH'])
-        expect(windowsResult).toBe('D:/projects/brave')
+        expect(envConfig.getPath(['absolute_path_windows'])).toBe(
+          'C:\\Program Files\\Tool\\tool.exe',
+        )
+        expect(envConfig.getPath(['ENV', 'WINDOWS', 'PATH'])).toBe(
+          'D:\\projects\\brave',
+        )
       })
-
-      it('should normalize paths to posix separators on win32', () => {
-        const windowsResult = envConfig.getPath(['absolute_path_windows'])
-        expect(windowsResult).toBe('C:/Program Files/Tool/tool.exe')
+    } else {
+      it('should get absolute path on posix', () => {
+        expect(envConfig.getPath(['absolute_path_unix'])).toBe(
+          '/usr/local/bin/tool',
+        )
+        expect(envConfig.getPath(['ENV', 'ABSOLUTE', 'PATH'])).toBe(
+          '/home/user/project',
+        )
       })
     }
 
@@ -633,9 +632,7 @@ describe('EnvConfig', () => {
       envConfig = new EnvConfig(configDir)
 
       const result = envConfig.getPath(['relative_path'])
-      const expected = path
-        .resolve(configDir, 'env/override.txt')
-        .replaceAll(path.sep, path.posix.sep)
+      const expected = path.resolve(configDir, 'env/override.txt')
       expect(result).toBe(expected)
     })
 
@@ -649,12 +646,9 @@ describe('EnvConfig', () => {
       envConfig = new EnvConfig(configDir)
 
       const result = envConfig.getPath(['home_path'])
-      const expected = path
-        .join(os.homedir(), '.config/app')
-        .replaceAll(path.sep, path.posix.sep)
+      const expected = path.join(os.homedir(), '.config/app')
       expect(result).toBe(expected)
       expect(path.isAbsolute(result)).toBe(true)
-      expect(result).not.toContain('\\')
     })
 
     it('should expand ~ from .env to home directory', () => {
@@ -662,12 +656,9 @@ describe('EnvConfig', () => {
       envConfig = new EnvConfig(configDir)
 
       const result = envConfig.getPath(['HOME', 'PATH'])
-      const expected = path
-        .join(os.homedir(), 'projects/brave')
-        .replaceAll(path.sep, path.posix.sep)
+      const expected = path.join(os.homedir(), 'projects/brave')
       expect(result).toBe(expected)
       expect(path.isAbsolute(result)).toBe(true)
-      expect(result).not.toContain('\\')
     })
 
     it('should handle ~ as exact home directory', () => {
@@ -675,7 +666,7 @@ describe('EnvConfig', () => {
       envConfig = new EnvConfig(configDir)
 
       const result = envConfig.getPath(['HOME', 'DIR'])
-      const expectedPosix = os.homedir().replaceAll(path.sep, path.posix.sep)
+      const expectedPosix = os.homedir()
       expect(result).toBe(expectedPosix)
     })
   })
