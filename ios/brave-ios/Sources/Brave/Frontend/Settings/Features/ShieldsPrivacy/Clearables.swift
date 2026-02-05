@@ -63,9 +63,6 @@ class CookiesAndCacheClearable: Clearable {
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )
     UserDefaults.standard.synchronize()
-    for coin in [BraveWallet.CoinType.eth, BraveWallet.CoinType.sol] {
-      await Domain.clearAllWalletPermissions(for: coin)
-    }
   }
 }
 
