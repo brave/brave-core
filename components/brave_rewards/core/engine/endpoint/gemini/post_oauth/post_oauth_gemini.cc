@@ -36,7 +36,7 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("client_id", config.gemini_client_id());
   dict.Set("client_secret", config.gemini_client_secret());
   dict.Set("code", code);
@@ -52,14 +52,14 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
                                    std::string* token) {
   DCHECK(token);
 
-  std::optional<base::Value::Dict> value =
+  std::optional<base::DictValue> value =
       base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     engine_->LogError(FROM_HERE) << "Missing access token";

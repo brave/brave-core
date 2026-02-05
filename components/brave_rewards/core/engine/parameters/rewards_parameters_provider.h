@@ -41,10 +41,10 @@ class RewardsParametersProvider
   // backend if no locally-cached data exists.
   void GetParameters(GetParametersCallback callback);
 
-  // Converts a base::Value::Dict into RewardsParameters. Returns an empty ptr
+  // Converts a base::DictValue into RewardsParameters. Returns an empty ptr
   // if the value cannot be converted.
   static mojom::RewardsParametersPtr DictToParameters(
-      const base::Value::Dict& dict);
+      const base::DictValue& dict);
 
  private:
   void Fetch(GetParametersCallback callback);

@@ -51,14 +51,14 @@ mojom::Result GetCard::CheckStatusCode(const int status_code) {
 mojom::Result GetCard::ParseBody(const std::string& body, double* available) {
   DCHECK(available);
 
-  std::optional<base::Value::Dict> value =
+  std::optional<base::DictValue> value =
       base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* available_str = dict.FindString("available");
   if (!available_str) {
     engine_->LogError(FROM_HERE) << "Missing available";

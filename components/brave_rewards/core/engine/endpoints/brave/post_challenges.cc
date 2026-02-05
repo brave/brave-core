@@ -53,7 +53,7 @@ mojom::UrlRequestPtr PostChallenges::CreateRequest() {
     return nullptr;
   }
 
-  base::Value::Dict content_data;
+  base::DictValue content_data;
   content_data.Set("paymentId", rewards_wallet->payment_id);
 
   if (!base::JSONWriter::Write(content_data, &request->content)) {

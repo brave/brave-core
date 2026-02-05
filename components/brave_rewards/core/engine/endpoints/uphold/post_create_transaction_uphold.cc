@@ -72,11 +72,11 @@ std::optional<std::vector<std::string>> PostCreateTransactionUphold::Headers(
 }
 
 std::optional<std::string> PostCreateTransactionUphold::Content() const {
-  base::Value::Dict denomination;
+  base::DictValue denomination;
   denomination.Set("amount", transaction_->amount);
   denomination.Set("currency", "BAT");
 
-  base::Value::Dict payload;
+  base::DictValue payload;
   payload.Set("destination", transaction_->destination);
   payload.Set("denomination", std::move(denomination));
 

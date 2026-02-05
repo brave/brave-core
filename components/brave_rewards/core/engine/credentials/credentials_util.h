@@ -34,7 +34,7 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& tokens);
 
 std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
 
-std::optional<base::Value::List> ParseStringToBaseList(
+std::optional<base::ListValue> ParseStringToBaseList(
     const std::string& string_list);
 
 base::expected<std::vector<std::string>, std::string> UnBlindCreds(
@@ -44,19 +44,19 @@ std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds);
 
 std::string ConvertRewardTypeToString(const mojom::RewardsType type);
 
-base::Value::List GenerateCredentials(
+base::ListValue GenerateCredentials(
     RewardsEngine& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body);
 
-std::optional<base::Value::Dict> GenerateSuggestion(
+std::optional<base::DictValue> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
     const std::string& suggestion_encoded);
 
-base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
-                                         const std::string& public_key,
-                                         const std::string& suggestion_encoded);
+base::DictValue GenerateSuggestionMock(const std::string& token_value,
+                                       const std::string& public_key,
+                                       const std::string& suggestion_encoded);
 
 }  // namespace credential
 }  // namespace brave_rewards::internal

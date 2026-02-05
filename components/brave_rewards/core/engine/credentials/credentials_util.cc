@@ -43,7 +43,7 @@ std::vector<Token> GenerateCreds(const int count) {
 }
 
 std::string GetCredsJSON(const std::vector<Token>& creds) {
-  base::Value::List creds_list;
+  base::ListValue creds_list;
   for (auto& cred : creds) {
     creds_list.Append(cred.EncodeBase64());
   }
@@ -67,7 +67,7 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& creds) {
 
 std::string GetBlindedCredsJSON(
     const std::vector<BlindedToken>& blinded_creds) {
-  base::Value::List blinded_list;
+  base::ListValue blinded_list;
   for (auto& cred : blinded_creds) {
     blinded_list.Append(cred.EncodeBase64());
   }
@@ -182,13 +182,13 @@ std::string ConvertRewardTypeToString(const mojom::RewardsType type) {
   }
 }
 
-base::Value::List GenerateCredentials(
+base::ListValue GenerateCredentials(
     RewardsEngine& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body) {
-  base::Value::List credentials;
+  base::ListValue credentials;
   for (auto& item : token_list) {
-    std::optional<base::Value::Dict> token;
+    std::optional<base::DictValue> token;
     if (engine.options().is_testing) {
       token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
@@ -204,7 +204,7 @@ base::Value::List GenerateCredentials(
   return credentials;
 }
 
-std::optional<base::Value::Dict> GenerateSuggestion(
+std::optional<base::DictValue> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
     const std::string& body) {
@@ -226,17 +226,17 @@ std::optional<base::Value::Dict> GenerateSuggestion(
   std::string pre_image = unblinded->Preimage().EncodeBase64();
   std::string enconded_signature = signature->EncodeBase64();
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("t", std::move(pre_image));
   dict.Set("publicKey", public_key);
   dict.Set("signature", std::move(enconded_signature));
   return dict;
 }
 
-base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
-                                         const std::string& public_key,
-                                         const std::string& body) {
-  base::Value::Dict dict;
+base::DictValue GenerateSuggestionMock(const std::string& token_value,
+                                       const std::string& public_key,
+                                       const std::string& body) {
+  base::DictValue dict;
   dict.Set("t", token_value);
   dict.Set("publicKey", public_key);
   dict.Set("signature", token_value);

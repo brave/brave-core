@@ -26,7 +26,7 @@ std::optional<std::string> PostConnectBitflyer::Content() const {
     return std::nullopt;
   }
 
-  base::Value::Dict content;
+  base::DictValue content;
   content.Set("linkingInfo", linking_info_);
 
   std::string json;
