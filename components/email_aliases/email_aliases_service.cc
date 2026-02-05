@@ -140,6 +140,7 @@ void EmailAliasesService::OnAuthChanged() {
   for (auto& observer : observers_) {
     observer->OnAuthStateChanged(mojom::AuthState::New(status, email));
   }
+  RefreshAliases();
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
@@ -176,6 +177,7 @@ void EmailAliasesService::AddObserver(
   if (remote) {
     remote->OnAuthStateChanged(
         mojom::AuthState::New(GetCurrentStatus(), GetAuthEmail()));
+    RefreshAliases();
   }
 }
 
@@ -199,9 +201,7 @@ void EmailAliasesService::OnEditAliasResponse(
         user_callback,
     bool update_expected,
     endpoints::UpdateAlias::Response response) {
-  auth_->GetServiceToken(
-      base::BindOnce(&EmailAliasesService::RefreshAliasesWithToken,
-                     weak_factory_.GetWeakPtr()));
+  RefreshAliases();
 
   auto parsed = HandleEmailAliasesResponse(
       std::move(response), update_expected ? "updated" : "deleted");
@@ -210,6 +210,16 @@ void EmailAliasesService::OnEditAliasResponse(
           ? base::expected<std::monostate, std::string>(std::monostate{})
           : base::unexpected(parsed.error());
   std::move(user_callback).Run(std::move(result));
+}
+
+void EmailAliasesService::RefreshAliases() {
+  CHECK(auth_);
+  if (observers_.empty() || !auth_->IsAuthenticated()) {
+    return;
+  }
+  auth_->GetServiceToken(
+      base::BindOnce(&EmailAliasesService::RefreshAliasesWithToken,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void EmailAliasesService::RefreshAliasesWithToken(TokenResult token) {

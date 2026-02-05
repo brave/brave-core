@@ -160,6 +160,7 @@ class EmailAliasesAPITest : public ::testing::Test {
         brave_account_auth_.get(), url_loader_factory_.GetSafeWeakWrapper(),
         &prefs_);
     email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
+    service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
