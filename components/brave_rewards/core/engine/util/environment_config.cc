@@ -174,8 +174,8 @@ GURL EnvironmentConfig::bitflyer_oauth_url() const {
 }
 
 std::string EnvironmentConfig::brave_services_key_header() const {
-  return std::string(kBraveServicesKeyHeader) + ": " +
-         BUILDFLAG(BRAVE_SERVICES_KEY);
+  return base::StrCat(
+      {kBraveServicesKeyHeader, ": ", BUILDFLAG(BRAVE_SERVICES_KEY)});
 }
 
 GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
