@@ -36,6 +36,17 @@ mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
                << proto_source.favicon_url();
       continue;
     }
+    if (proto_source.has_page_content()) {
+      mojom_source->page_content = proto_source.page_content();
+    }
+    if (proto_source.extra_snippets_size() > 0) {
+      std::vector<std::string> snippets;
+      snippets.reserve(proto_source.extra_snippets_size());
+      for (const auto& s : proto_source.extra_snippets()) {
+        snippets.push_back(s);
+      }
+      mojom_source->extra_snippets = std::move(snippets);
+    }
     mojom_event->sources.push_back(std::move(mojom_source));
   }
 
@@ -66,6 +77,14 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
     proto_source->set_title(mojom_source->title);
     proto_source->set_url(mojom_source->url.spec());
     proto_source->set_favicon_url(mojom_source->favicon_url.spec());
+    if (mojom_source->page_content.has_value()) {
+      proto_source->set_page_content(mojom_source->page_content.value());
+    }
+    if (mojom_source->extra_snippets.has_value()) {
+      for (const auto& snippet : mojom_source->extra_snippets.value()) {
+        proto_source->add_extra_snippets(snippet);
+      }
+    }
   }
 
   proto_event->clear_rich_results();
@@ -123,6 +142,17 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
                   << "Invalid WebSourcesContentBlock favicon url in database: "
                   << proto_source.favicon_url();
               continue;
+            }
+            if (proto_source.has_page_content()) {
+              mojom_source->page_content = proto_source.page_content();
+            }
+            if (proto_source.extra_snippets_size() > 0) {
+              std::vector<std::string> snippets;
+              snippets.reserve(proto_source.extra_snippets_size());
+              for (const auto& s : proto_source.extra_snippets()) {
+                snippets.push_back(s);
+              }
+              mojom_source->extra_snippets = std::move(snippets);
             }
             mojom_sources->sources.push_back(std::move(mojom_source));
           }
@@ -206,6 +236,15 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
             proto_source->set_title(mojom_source->title);
             proto_source->set_url(mojom_source->url.spec());
             proto_source->set_favicon_url(mojom_source->favicon_url.spec());
+            if (mojom_source->page_content.has_value()) {
+              proto_source->set_page_content(
+                  mojom_source->page_content.value());
+            }
+            if (mojom_source->extra_snippets.has_value()) {
+              for (const auto& snippet : mojom_source->extra_snippets.value()) {
+                proto_source->add_extra_snippets(snippet);
+              }
+            }
           }
           if (mojom_sources->query.has_value()) {
             proto_sources->set_query(mojom_sources->query.value());

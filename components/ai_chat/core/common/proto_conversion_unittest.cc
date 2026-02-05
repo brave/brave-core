@@ -22,21 +22,22 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   // Create mojom WebSourcesEvent
   auto mojom_event = mojom::WebSourcesEvent::New();
 
-  auto source1 =
-      mojom::WebSource::New("Test Title 1", GURL("https://example.com/page1"),
-                            GURL("https://example.com/favicon1.ico"));
-  mojom_event->sources.push_back(std::move(source1));
+  mojom_event->sources.push_back(CreateWebSource(
+      "Test Title 1", "https://example.com/page1",
+      "https://example.com/favicon1.ico", "Full page content for source 1",
+      std::vector<std::string>{"snippet A", "snippet B"}));
 
-  auto source2 =
-      mojom::WebSource::New("Test Title 2", GURL("https://example.com/page2"),
-                            GURL("https://example.com/favicon2.ico"));
-  mojom_event->sources.push_back(std::move(source2));
+  // Source 2 has no page_content or extra_snippets
+  mojom_event->sources.push_back(
+      CreateWebSource("Test Title 2", "https://example.com/page2",
+                      "https://example.com/favicon2.ico"));
 
   // Add rich_results
+  mojom_event->rich_results.push_back(R"({"type":"knowledge_graph",)"
+                                      R"("title":"Test Knowledge Graph"})");
   mojom_event->rich_results.push_back(
-      R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
-  mojom_event->rich_results.push_back(
-      R"({"type":"video","url":"https://example.com/video.mp4"})");
+      R"({"type":"video",)"
+      R"("url":"https://example.com/video.mp4"})");
 
   // Serialize to proto
   store::WebSourcesEventProto proto_event;
@@ -48,17 +49,26 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   EXPECT_EQ(proto_event.sources(0).url(), "https://example.com/page1");
   EXPECT_EQ(proto_event.sources(0).favicon_url(),
             "https://example.com/favicon1.ico");
+  EXPECT_TRUE(proto_event.sources(0).has_page_content());
+  EXPECT_EQ(proto_event.sources(0).page_content(),
+            "Full page content for source 1");
+  ASSERT_EQ(proto_event.sources(0).extra_snippets_size(), 2);
+  EXPECT_EQ(proto_event.sources(0).extra_snippets(0), "snippet A");
+  EXPECT_EQ(proto_event.sources(0).extra_snippets(1), "snippet B");
   EXPECT_EQ(proto_event.sources(1).title(), "Test Title 2");
   EXPECT_EQ(proto_event.sources(1).url(), "https://example.com/page2");
   EXPECT_EQ(proto_event.sources(1).favicon_url(),
             "https://example.com/favicon2.ico");
+  EXPECT_FALSE(proto_event.sources(1).has_page_content());
+  EXPECT_EQ(proto_event.sources(1).extra_snippets_size(), 0);
 
   // Verify rich_results in proto
   ASSERT_EQ(proto_event.rich_results_size(), 2);
-  EXPECT_EQ(proto_event.rich_results(0),
-            R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
+  EXPECT_EQ(proto_event.rich_results(0), R"({"type":"knowledge_graph",)"
+                                         R"("title":"Test Knowledge Graph"})");
   EXPECT_EQ(proto_event.rich_results(1),
-            R"({"type":"video","url":"https://example.com/video.mp4"})");
+            R"({"type":"video",)"
+            R"("url":"https://example.com/video.mp4"})");
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
@@ -71,20 +81,16 @@ TEST(ProtoConversionTest, SerializeWebSourcesEvent_InvalidUrls) {
   // Create mojom WebSourcesEvent with invalid URLs
   auto mojom_event = mojom::WebSourcesEvent::New();
 
-  auto valid_source =
-      mojom::WebSource::New("Valid Source", GURL("https://example.com/valid"),
-                            GURL("https://example.com/valid.ico"));
-  mojom_event->sources.push_back(std::move(valid_source));
+  mojom_event->sources.push_back(
+      CreateWebSource("Valid Source", "https://example.com/valid",
+                      "https://example.com/valid.ico"));
 
-  auto invalid_url_source =
-      mojom::WebSource::New("Invalid URL Source", GURL("invalid-url"),
-                            GURL("https://example.com/valid.ico"));
-  mojom_event->sources.push_back(std::move(invalid_url_source));
+  mojom_event->sources.push_back(CreateWebSource(
+      "Invalid URL Source", "invalid-url", "https://example.com/valid.ico"));
 
-  auto invalid_favicon_source = mojom::WebSource::New(
-      "Invalid Favicon Source", GURL("https://example.com/valid"),
-      GURL("invalid-favicon-url"));
-  mojom_event->sources.push_back(std::move(invalid_favicon_source));
+  mojom_event->sources.push_back(CreateWebSource("Invalid Favicon Source",
+                                                 "https://example.com/valid",
+                                                 "invalid-favicon-url"));
 
   // Serialize to proto
   store::WebSourcesEventProto proto_event;
@@ -146,9 +152,8 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResults) {
   // Test with complex nested JSON in rich_results
   auto mojom_event = mojom::WebSourcesEvent::New();
 
-  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
-                                      GURL("https://example.com/favicon.ico"));
-  mojom_event->sources.push_back(std::move(source));
+  mojom_event->sources.push_back(CreateWebSource(
+      "Example", "https://example.com", "https://example.com/favicon.ico"));
 
   // Add complex nested JSON structures
   mojom_event->rich_results.push_back(R"({
@@ -181,9 +186,8 @@ TEST(ProtoConversionTest,
   // Test with empty strings in rich_results
   auto mojom_event = mojom::WebSourcesEvent::New();
 
-  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
-                                      GURL("https://example.com/favicon.ico"));
-  mojom_event->sources.push_back(std::move(source));
+  mojom_event->sources.push_back(CreateWebSource(
+      "Example", "https://example.com", "https://example.com/favicon.ico"));
 
   // Add valid and empty rich_results
   mojom_event->rich_results.push_back(R"({"type":"valid_data"})");
@@ -344,7 +348,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_IsServerResult) {
 
 TEST(ProtoConversionTest,
      SerializeDeserializeToolUseEvent_WithWebSourcesContentBlock) {
-  // Create mojom ToolUseEvent with WebSourcesContentBlock output
+  // Create mojom ToolUseEvent with WebSourcesContentBlock
   auto mojom_event = mojom::ToolUseEvent::New(
       "brave_web_search", "tooluse_search123",
       R"({"query": "weather", "country": "US"})",
@@ -354,15 +358,16 @@ TEST(ProtoConversionTest,
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
   web_sources_block->query = "weather in San Jose";
 
-  auto source1 =
-      mojom::WebSource::New("Weather.com", GURL("https://weather.com/sanjose"),
-                            GURL("https://weather.com/favicon.ico"));
-  web_sources_block->sources.push_back(std::move(source1));
+  // Source 1 has page_content and extra_snippets
+  web_sources_block->sources.push_back(CreateWebSource(
+      "Weather.com", "https://weather.com/sanjose",
+      "https://weather.com/favicon.ico", "San Jose weather forecast",
+      std::vector<std::string>{"High 72F", "Low 55F"}));
 
-  auto source2 = mojom::WebSource::New(
-      "AccuWeather", GURL("https://accuweather.com/sanjose"),
-      GURL("https://accuweather.com/favicon.ico"));
-  web_sources_block->sources.push_back(std::move(source2));
+  // Source 2 has no page_content or extra_snippets
+  web_sources_block->sources.push_back(
+      CreateWebSource("AccuWeather", "https://accuweather.com/sanjose",
+                      "https://accuweather.com/favicon.ico"));
 
   web_sources_block->rich_results.push_back(
       R"({"type":"weather","temp":"72F"})");
@@ -390,7 +395,15 @@ TEST(ProtoConversionTest,
   EXPECT_EQ(proto_sources.sources(0).url(), "https://weather.com/sanjose");
   EXPECT_EQ(proto_sources.sources(0).favicon_url(),
             "https://weather.com/favicon.ico");
+  EXPECT_TRUE(proto_sources.sources(0).has_page_content());
+  EXPECT_EQ(proto_sources.sources(0).page_content(),
+            "San Jose weather forecast");
+  ASSERT_EQ(proto_sources.sources(0).extra_snippets_size(), 2);
+  EXPECT_EQ(proto_sources.sources(0).extra_snippets(0), "High 72F");
+  EXPECT_EQ(proto_sources.sources(0).extra_snippets(1), "Low 55F");
   EXPECT_EQ(proto_sources.sources(1).title(), "AccuWeather");
+  EXPECT_FALSE(proto_sources.sources(1).has_page_content());
+  EXPECT_EQ(proto_sources.sources(1).extra_snippets_size(), 0);
   ASSERT_EQ(proto_sources.rich_results_size(), 2);
   EXPECT_EQ(proto_sources.rich_results(0),
             R"({"type":"weather","temp":"72F"})");
@@ -414,9 +427,8 @@ TEST(ProtoConversionTest,
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
   // No query set
 
-  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
-                                      GURL("https://example.com/favicon.ico"));
-  web_sources_block->sources.push_back(std::move(source));
+  web_sources_block->sources.push_back(CreateWebSource(
+      "Example", "https://example.com", "https://example.com/favicon.ico"));
 
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
       std::move(web_sources_block)));
@@ -451,9 +463,8 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_MixedContentBlocks) {
   // Add WebSourcesContentBlock
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
   web_sources_block->query = "test query";
-  auto source = mojom::WebSource::New("Test Site", GURL("https://test.com"),
-                                      GURL("https://test.com/favicon.ico"));
-  web_sources_block->sources.push_back(std::move(source));
+  web_sources_block->sources.push_back(CreateWebSource(
+      "Test Site", "https://test.com", "https://test.com/favicon.ico"));
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
       std::move(web_sources_block)));
 
@@ -489,21 +500,16 @@ TEST(ProtoConversionTest,
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
 
   // Valid source
-  auto valid_source =
-      mojom::WebSource::New("Valid", GURL("https://valid.com"),
-                            GURL("https://valid.com/favicon.ico"));
-  web_sources_block->sources.push_back(std::move(valid_source));
+  web_sources_block->sources.push_back(CreateWebSource(
+      "Valid", "https://valid.com", "https://valid.com/favicon.ico"));
 
   // Invalid URL source
-  auto invalid_url_source =
-      mojom::WebSource::New("Invalid URL", GURL("invalid-url"),
-                            GURL("https://valid.com/favicon.ico"));
-  web_sources_block->sources.push_back(std::move(invalid_url_source));
+  web_sources_block->sources.push_back(CreateWebSource(
+      "Invalid URL", "invalid-url", "https://valid.com/favicon.ico"));
 
   // Invalid favicon source
-  auto invalid_favicon_source = mojom::WebSource::New(
-      "Invalid Favicon", GURL("https://valid.com"), GURL("invalid-favicon"));
-  web_sources_block->sources.push_back(std::move(invalid_favicon_source));
+  web_sources_block->sources.push_back(CreateWebSource(
+      "Invalid Favicon", "https://valid.com", "invalid-favicon"));
 
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
       std::move(web_sources_block)));
