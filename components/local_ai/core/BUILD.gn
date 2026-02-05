@@ -30,6 +30,7 @@ static_library("core") {
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/resources:strings_grit",
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
     "//components/update_client",

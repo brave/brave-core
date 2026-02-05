@@ -1,0 +1,123 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_LOCAL_AI_CONTENT_CANDLE_SERVICE_H_
+#define BRAVE_COMPONENTS_LOCAL_AI_CONTENT_CANDLE_SERVICE_H_
+
+#include <memory>
+#include <vector>
+
+#include "base/functional/callback.h"
+#include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
+#include "brave/components/local_ai/core/candle.mojom.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
+
+namespace content {
+class BrowserContext;
+class WebContents;
+}  // namespace content
+
+namespace local_ai {
+
+class CandleService;
+
+// Helper class to observe WebContents for WASM page load events.
+// This is separated from CandleService so the service can be shared
+// with platforms that don't have content::WebContentsObserver.
+class WasmWebContentsObserver : public content::WebContentsObserver {
+ public:
+  explicit WasmWebContentsObserver(CandleService* service,
+                                   content::WebContents* web_contents);
+  ~WasmWebContentsObserver() override;
+
+  WasmWebContentsObserver(const WasmWebContentsObserver&) = delete;
+  WasmWebContentsObserver& operator=(const WasmWebContentsObserver&) = delete;
+
+ private:
+  // content::WebContentsObserver:
+  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                     const GURL& validated_url) override;
+
+  raw_ptr<CandleService> service_;
+};
+
+class CandleService : public KeyedService, public mojom::CandleService {
+ public:
+  explicit CandleService(content::BrowserContext* browser_context);
+  ~CandleService() override;
+
+  CandleService(const CandleService&) = delete;
+  CandleService& operator=(const CandleService&) = delete;
+
+  void BindReceiver(mojo::PendingReceiver<mojom::CandleService> receiver);
+
+  void BindEmbeddingGemma(
+      mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
+
+  void Embed(const std::string& text, EmbedCallback callback) override;
+
+  // Called by WasmWebContentsObserver when the WASM page finishes
+  // loading
+  void OnWasmPageLoaded();
+
+ private:
+  friend class WasmWebContentsObserver;
+
+  // KeyedService:
+  void Shutdown() override;
+
+  void EnsureWasmWebContents();
+  void CloseWasmWebContents();
+  void StartIdleTimer();
+  void StopIdleTimer();
+
+  raw_ptr<content::BrowserContext> browser_context_ = nullptr;
+
+  // The single WebContents that loads the WASM and maintains the
+  // model
+  std::unique_ptr<content::WebContents> wasm_web_contents_;
+
+  // Observer for WASM WebContents load events
+  std::unique_ptr<WasmWebContentsObserver> wasm_web_contents_observer_;
+
+  mojo::ReceiverSet<mojom::CandleService> receivers_;
+
+  // Single embedder remote (shared by all callers)
+  mojo::Remote<mojom::EmbeddingGemmaInterface> embedding_gemma_remote_;
+
+  // Track readiness conditions
+  bool wasm_page_loaded_ = false;
+  bool embedding_ready_ = false;
+
+  // Queue for pending Embed requests while model is initializing
+  struct PendingEmbedRequest {
+    PendingEmbedRequest();
+    PendingEmbedRequest(std::string text, EmbedCallback callback);
+    ~PendingEmbedRequest();
+    PendingEmbedRequest(PendingEmbedRequest&&);
+    PendingEmbedRequest& operator=(PendingEmbedRequest&&);
+
+    std::string text;
+    EmbedCallback callback;
+  };
+  std::vector<PendingEmbedRequest> pending_embed_requests_;
+
+  void ProcessPendingEmbedRequests();
+
+  // Idle timer to close WebContents when not in use
+  base::OneShotTimer idle_timer_;
+
+  base::WeakPtrFactory<CandleService> weak_ptr_factory_{this};
+};
+
+}  // namespace local_ai
+
+#endif  // BRAVE_COMPONENTS_LOCAL_AI_CONTENT_CANDLE_SERVICE_H_

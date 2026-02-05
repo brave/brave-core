@@ -7,12 +7,18 @@ static_library("content") {
   sources = [
     "background_web_contents.cc",
     "background_web_contents.h",
+    "candle_service.cc",
+    "candle_service.h",
   ]
 
   public_deps = [ "//base" ]
 
   deps = [
+    "//brave/components/constants",
+    "//brave/components/local_ai/core:mojom",
+    "//components/keyed_service/core",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
     "//ui/base",
     "//url",
