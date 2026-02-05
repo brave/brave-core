@@ -154,8 +154,10 @@ base::Time SerpMetrics::GetStartOfStalePeriod() const {
     return {};
   }
 
-  // Return the day after the last checked date.
-  return last_checked_at.LocalMidnight() + base::Days(1);
+  // Return the start of the ping day. The ping associated with `kLastCheckYMD`
+  // reports SERP metrics collected through the end of the prior day and does
+  // not include any data from `kLastCheckYMD` itself.
+  return last_checked_at.LocalMidnight();
 }
 
 size_t SerpMetrics::GetBraveSearchCountForStalePeriod() const {

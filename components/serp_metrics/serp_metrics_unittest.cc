@@ -260,12 +260,70 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesOnOrBeforeLastCheckedDate) {
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
   EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
   EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
+  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
 
   local_state_.SetString(kLastCheckYMD, last_checked_at_2);
-  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest,
+       ReportAllSearchesUpToYesterdayWhenLastCheckedDateIsEmpty) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 1: Stale
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 2: Yesterday
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 3: Today
+  serp_metrics_->RecordBraveSearch();
+
+  local_state_.SetString(kLastCheckYMD, std::string());
+  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest,
+       ReportAllSearchesUpToYesterdayWhenLastCheckedDateIsInvalid) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 2: Today
+  serp_metrics_->RecordOtherSearch();
+
+  local_state_.SetString(kLastCheckYMD, "invalid");
+  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, DoNotExcludeYesterdayWhenLastCheckedDateIsToday) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordGoogleSearch();
+  const std::string last_checked_today = NowAsYMD();
+  AdvanceClockToStartOfLocalDayAfterDays(1);
+
+  // Day 2: Today
+  serp_metrics_->RecordOtherSearch();
+
+  local_state_.SetString(kLastCheckYMD, last_checked_today);
+  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
   EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
