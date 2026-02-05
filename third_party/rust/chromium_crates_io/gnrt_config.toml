@@ -260,6 +260,9 @@ extra_kv = { allow_unsafe = false }
 [crate.cipher]
 extra_kv = { allow_unsafe = true }
 
+[crate.cobs]
+extra_kv = { allow_unsafe = false }
+
 [crate.const_format]
 extra_kv = { allow_unsafe = true }
 
@@ -695,6 +698,10 @@ if (target_cpu == "x64" || target_cpu == "x86") {
       deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
 }
 ''' , allow_unsafe = true }
+
+[crate.postcard]
+extra_input_roots = [ "../README.md" ]
+extra_kv = { allow_unsafe = true }
 
 [crate.ppoprf]
 license_files = ['LICENSE']
