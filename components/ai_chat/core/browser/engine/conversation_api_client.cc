@@ -87,7 +87,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-base::Value::List ConversationEventsToList(
+base::ListValue ConversationEventsToList(
     std::vector<ConversationEvent> conversation) {
   static constexpr auto kRoleMap =
       base::MakeFixedFlatMap<ConversationEventRole, std::string_view>(
@@ -127,9 +127,9 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::kShorten, "requestShorten"},
            {ConversationEventType::kExpand, "requestExpand"}});
 
-  base::Value::List events;
+  base::ListValue events;
   for (auto& event : conversation) {
-    base::Value::Dict event_dict;
+    base::DictValue event_dict;
 
     // Set role
     auto role_it = kRoleMap.find(event.role);
@@ -149,13 +149,13 @@ base::Value::List ConversationEventsToList(
       // For some reason the server currently expects chat messages that contain
       // tool calls as well as regular content to have a different type.
       event_dict.Set("type", "toolCalls");
-      base::Value::List tool_call_dicts;
+      base::ListValue tool_call_dicts;
       for (const auto& tool_event : event.tool_calls) {
-        base::Value::Dict tool_call_dict;
+        base::DictValue tool_call_dict;
         tool_call_dict.Set("id", tool_event->id);
         tool_call_dict.Set("type", "function");
 
-        base::Value::Dict function_dict;
+        base::DictValue function_dict;
         function_dict.Set("name", tool_event->tool_name);
 
         function_dict.Set("arguments", tool_event->arguments_json);
@@ -195,7 +195,7 @@ ConversationAPIClient::ConversationEvent::ConversationEvent(
     ConversationEventType type,
     Content content,
     const std::string& topic,
-    std::optional<base::Value::Dict> user_memory,
+    std::optional<base::DictValue> user_memory,
     std::vector<mojom::ToolUseEventPtr> tool_calls,
     const std::string& tool_call_id,
     const std::string& tone)
@@ -239,7 +239,7 @@ void ConversationAPIClient::ClearAllQueries() {
 
 void ConversationAPIClient::PerformRequest(
     std::vector<ConversationEvent> conversation,
-    std::optional<base::Value::List> oai_tool_definitions,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     GenerationDataCallback data_received_callback,
@@ -257,12 +257,12 @@ void ConversationAPIClient::PerformRequest(
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
     std::vector<ConversationEvent> conversation,
-    std::optional<base::Value::List> oai_tool_definitions,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   static constexpr auto kCapabilityMap =
       base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
@@ -296,7 +296,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 
 void ConversationAPIClient::PerformRequestWithCredentials(
     std::vector<ConversationEvent> conversation,
-    std::optional<base::Value::List> oai_tool_definitions,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     const std::optional<std::string>& model_name,
@@ -444,11 +444,11 @@ void ConversationAPIClient::OnQueryDataReceived(
   }
 
   // Tool calls - they may happen individually or combined with a response event
-  if (const base::Value::List* tool_calls =
+  if (const base::ListValue* tool_calls =
           result_params.FindList("tool_calls")) {
     // Check for alignment_check that applies to tool calls in this response
     mojom::PermissionChallengePtr permission_challenge = nullptr;
-    if (const base::Value::Dict* alignment_dict =
+    if (const base::DictValue* alignment_dict =
             result_params.FindDict("alignment_check")) {
       if (!alignment_dict->FindBool("allowed").value_or(true)) {
         const std::string* assessment = alignment_dict->FindString("reasoning");
@@ -480,7 +480,7 @@ void ConversationAPIClient::OnQueryDataReceived(
 
 // static
 std::optional<ConversationAPIClient::GenerationResultData>
-ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
+ConversationAPIClient::ParseResponseEvent(base::DictValue& response_event,
                                           ModelService* model_service) {
   mojom::ConversationEntryEventPtr event;
   const std::string* model = response_event.FindString("model");
@@ -505,7 +505,7 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
     event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
         mojom::SearchStatusEvent::New());
   } else if (*type == "searchQueries") {
-    const base::Value::List* queries = response_event.FindList("queries");
+    const base::ListValue* queries = response_event.FindList("queries");
     if (!queries) {
       return std::nullopt;
     }
@@ -518,7 +518,7 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
     event = mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         std::move(search_queries_event));
   } else if (*type == "webSources") {
-    const base::Value::List* sources = response_event.FindList("sources");
+    const base::ListValue* sources = response_event.FindList("sources");
     if (!sources) {
       return std::nullopt;
     }
@@ -527,7 +527,7 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
       if (!item.is_dict()) {
         continue;
       }
-      const base::Value::Dict& source = item.GetDict();
+      const base::DictValue& source = item.GetDict();
       const std::string* title = source.FindString("title");
       const std::string* url = source.FindString("url");
       const std::string* favicon_url = source.FindString("favicon");
@@ -560,7 +560,7 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
     }
 
     // Rich Data
-    const base::Value::List* rich_results =
+    const base::ListValue* rich_results =
         response_event.FindList("rich_results");
     if (rich_results) {
       for (auto& item : *rich_results) {
@@ -568,7 +568,7 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
           continue;
         }
 
-        const base::Value::List* rich_sources_item =
+        const base::ListValue* rich_sources_item =
             item.GetDict().FindList("results");
         if (!rich_sources_item) {
           continue;

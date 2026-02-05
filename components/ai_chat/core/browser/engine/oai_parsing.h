@@ -20,23 +20,22 @@ namespace ai_chat {
 // Construct a tool use event from a tool calls part of a Chat API-style
 // response
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
-    const base::Value::List* tool_calls_api_response);
+    const base::ListValue* tool_calls_api_response);
 
 // Convert some Tools to Chat API-style JSON list of tool definitions
-std::optional<base::Value::List> ToolApiDefinitionsFromTools(
+std::optional<base::ListValue> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools);
 
 // Extract the content container (delta or message) from an OpenAI response.
 // Returns nullptr if the response doesn't follow OpenAI format.
-const base::Value::Dict* GetOAIContentContainer(
-    const base::Value::Dict& response);
+const base::DictValue* GetOAIContentContainer(const base::DictValue& response);
 
 // Parse OpenAI-format completion response for both streaming and
 // non-streaming requests. Response can have either delta.content (streaming)
 // or message.content (non-streaming).
 // model_key: Optional, will be propergated into returned result.
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
-    const base::Value::Dict& response,
+    const base::DictValue& response,
     std::optional<std::string> model_key);
 
 }  // namespace ai_chat

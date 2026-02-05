@@ -45,7 +45,7 @@ std::string_view MemoryStorageTool::Description() const {
          "on failure. Call this tool at most once per turn.";
 }
 
-std::optional<base::Value::Dict> MemoryStorageTool::InputProperties() const {
+std::optional<base::DictValue> MemoryStorageTool::InputProperties() const {
   std::string description = base::StrCat(
       {"Store ONLY the new information the user just asked to be "
        "remembered. "

@@ -118,22 +118,21 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildPageContentMessages_UTF8Truncation_FitsExactly);
 
-  base::Value::List BuildPageContentMessages(
+  base::ListValue BuildPageContentMessages(
       const PageContents& page_contents,
       uint32_t& max_associated_content_length,
       int video_message_id,
       int page_message_id,
       std::optional<uint32_t> max_per_content_length = std::nullopt);
 
-  base::Value::List BuildMessages(
+  base::ListValue BuildMessages(
       const mojom::CustomModelOptions& model_options,
       PageContentsMap& page_contents,
-      std::optional<base::Value::Dict> user_memory_message,
+      std::optional<base::DictValue> user_memory_message,
       const std::optional<std::string>& selected_text,
       const EngineConsumer::ConversationHistory& conversation_history);
 
-  std::optional<base::Value::Dict> BuildUserMemoryMessage(
-      bool is_temporary_chat);
+  std::optional<base::DictValue> BuildUserMemoryMessage(bool is_temporary_chat);
 
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,

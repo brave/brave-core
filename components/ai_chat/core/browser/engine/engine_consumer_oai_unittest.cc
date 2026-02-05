@@ -103,7 +103,7 @@ class MockOAIAPIClient : public OAIAPIClient {
   MOCK_METHOD(void,
               PerformRequest,
               (const mojom::CustomModelOptions&,
-               base::Value::List,
+               base::ListValue,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::vector<std::string>>&),
@@ -580,7 +580,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &human_input, &assistant_response](
-              const mojom::CustomModelOptions&, base::Value::List messages,
+              const mojom::CustomModelOptions&, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -653,7 +653,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &assistant_input](
-              const mojom::CustomModelOptions, base::Value::List messages,
+              const mojom::CustomModelOptions, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -711,7 +711,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message](
-              const mojom::CustomModelOptions, base::Value::List messages,
+              const mojom::CustomModelOptions, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -768,7 +768,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [kTestPrompt, kAssistantResponse, &uploaded_images](
-              const mojom::CustomModelOptions, base::Value::List messages,
+              const mojom::CustomModelOptions, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -861,7 +861,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [kTestPrompt, kAssistantResponse, &uploaded_pdfs](
-              const mojom::CustomModelOptions, base::Value::List messages,
+              const mojom::CustomModelOptions, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -942,7 +942,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([kTestPrompt, kAssistantResponse, &uploaded_pdfs](
-                    const mojom::CustomModelOptions, base::Value::List messages,
+                    const mojom::CustomModelOptions, base::ListValue messages,
                     EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback
                         completed_callback,
@@ -1034,7 +1034,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([kTestPrompt, kAssistantResponse](
-                    const mojom::CustomModelOptions, base::Value::List messages,
+                    const mojom::CustomModelOptions, base::ListValue messages,
                     EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback
                         completed_callback,
@@ -1047,26 +1047,26 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
 
         // Check uploaded images message
         EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-        const base::Value::List* images_content =
+        const base::ListValue* images_content =
             messages[1].GetDict().FindList("content");
         ASSERT_TRUE(images_content);
         EXPECT_EQ(images_content->size(), 3u);  // text + 2 images
 
         // Verify first item is tex
-        const base::Value::Dict* text_item = (*images_content)[0].GetIfDict();
+        const base::DictValue* text_item = (*images_content)[0].GetIfDict();
         ASSERT_TRUE(text_item);
         EXPECT_EQ(*text_item->FindString("type"), "text");
         EXPECT_EQ(*text_item->FindString("text"),
                   "These images are uploaded by the user");
 
         // Verify second and third items are image_url types
-        const base::Value::Dict* image_item1 = (*images_content)[1].GetIfDict();
+        const base::DictValue* image_item1 = (*images_content)[1].GetIfDict();
         ASSERT_TRUE(image_item1);
         EXPECT_EQ(*image_item1->FindString("type"), "image_url");
         EXPECT_TRUE(image_item1->FindDict("image_url"));
         EXPECT_TRUE(image_item1->FindDict("image_url")->FindString("url"));
 
-        const base::Value::Dict* image_item2 = (*images_content)[2].GetIfDict();
+        const base::DictValue* image_item2 = (*images_content)[2].GetIfDict();
         ASSERT_TRUE(image_item2);
         EXPECT_EQ(*image_item2->FindString("type"), "image_url");
         EXPECT_TRUE(image_item2->FindDict("image_url"));
@@ -1074,13 +1074,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
 
         // Check screenshots message
         EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-        const base::Value::List* screenshots_content =
+        const base::ListValue* screenshots_content =
             messages[2].GetDict().FindList("content");
         ASSERT_TRUE(screenshots_content);
         EXPECT_EQ(screenshots_content->size(), 2u);  // text + 1 screensho
 
         // Verify first item is tex
-        const base::Value::Dict* screenshot_text_item =
+        const base::DictValue* screenshot_text_item =
             (*screenshots_content)[0].GetIfDict();
         ASSERT_TRUE(screenshot_text_item);
         EXPECT_EQ(*screenshot_text_item->FindString("type"), "text");
@@ -1088,7 +1088,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
                   "These images are screenshots");
 
         // Verify second item is image_url type
-        const base::Value::Dict* screenshot_item =
+        const base::DictValue* screenshot_item =
             (*screenshots_content)[1].GetIfDict();
         ASSERT_TRUE(screenshot_item);
         EXPECT_EQ(*screenshot_item->FindString("type"), "image_url");
@@ -1097,23 +1097,23 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
 
         // Check PDFs message
         EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-        const base::Value::List* pdfs_content =
+        const base::ListValue* pdfs_content =
             messages[3].GetDict().FindList("content");
         ASSERT_TRUE(pdfs_content);
         EXPECT_EQ(pdfs_content->size(), 2u);  // text + 1 pdf
 
         // Verify first item is tex
-        const base::Value::Dict* pdf_text_item = (*pdfs_content)[0].GetIfDict();
+        const base::DictValue* pdf_text_item = (*pdfs_content)[0].GetIfDict();
         ASSERT_TRUE(pdf_text_item);
         EXPECT_EQ(*pdf_text_item->FindString("type"), "text");
         EXPECT_EQ(*pdf_text_item->FindString("text"),
                   "These PDFs are uploaded by the user");
 
         // Verify second item is file type with filename and file_data
-        const base::Value::Dict* pdf_item = (*pdfs_content)[1].GetIfDict();
+        const base::DictValue* pdf_item = (*pdfs_content)[1].GetIfDict();
         ASSERT_TRUE(pdf_item);
         EXPECT_EQ(*pdf_item->FindString("type"), "file");
-        const base::Value::Dict* file_dict = pdf_item->FindDict("file");
+        const base::DictValue* file_dict = pdf_item->FindDict("file");
         ASSERT_TRUE(file_dict);
         EXPECT_EQ(*file_dict->FindString("filename"), "report.pdf");
         EXPECT_TRUE(file_dict->FindString("file_data"));
@@ -1157,7 +1157,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
-          [](const mojom::CustomModelOptions, base::Value::List messages,
+          [](const mojom::CustomModelOptions, base::ListValue messages,
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
@@ -1263,7 +1263,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
-          [](const mojom::CustomModelOptions, base::Value::List messages,
+          [](const mojom::CustomModelOptions, base::ListValue messages,
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
@@ -1339,8 +1339,8 @@ TEST_F(EngineConsumerOAIUnitTest,
           IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
 
   // Setup the expected user memory message with HTML escaped values.
-  base::Value::Dict expected_user_memory_dict;
-  base::Value::List memories_list;
+  base::DictValue expected_user_memory_dict;
+  base::ListValue memories_list;
   memories_list.Append("I like to eat apple");
   memories_list.Append("&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;");
   expected_user_memory_dict.Set("memories", std::move(memories_list));
@@ -1358,7 +1358,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::Value::List messages,
+          [&](const mojom::CustomModelOptions, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1428,7 +1428,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::Value::List messages,
+          [&](const mojom::CustomModelOptions, base::ListValue messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -2527,7 +2527,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSkill) {
   // skill definition message and the main user message
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
-          [](const mojom::CustomModelOptions&, base::Value::List messages,
+          [](const mojom::CustomModelOptions&, base::ListValue messages,
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {

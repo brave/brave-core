@@ -118,7 +118,7 @@ class OAIAPIUnitTest : public testing::Test {
 
   std::string GetMessagesJson(std::string_view body_json) {
     auto dict = base::test::ParseJsonDict(body_json);
-    base::Value::List* events = dict.FindList("messages");
+    base::ListValue* events = dict.FindList("messages");
     EXPECT_TRUE(events);
     std::string events_json;
     base::JSONWriter::WriteWithOptions(
@@ -247,7 +247,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
                     const base::flat_map<std::string, std::string>& headers,
                     const api_request_helper::APIRequestOptions& options) {
         auto dict = base::test::ParseJsonDict(body);
-        base::Value::List* stop_list = dict.FindList("stop");
+        base::ListValue* stop_list = dict.FindList("stop");
         EXPECT_TRUE(stop_list);
         EXPECT_EQ(stop_list->size(), 2u);
         EXPECT_EQ((*stop_list)[0].GetString(), "/title");
@@ -361,7 +361,7 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
       base::UTF8ToUTF16(std::string("Page excerpt content")));
 
   // First message
-  const base::Value::Dict* msg0 = serialized[0].GetIfDict();
+  const base::DictValue* msg0 = serialized[0].GetIfDict();
   ASSERT_TRUE(msg0);
   std::string expected_msg1_json = absl::StrFormat(R"({
     "role": "user",
@@ -372,14 +372,13 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
     ]
   })",
                                                    kTestImageUrl, page_excerpt);
-  base::Value::Dict expected_msg1 =
-      base::test::ParseJsonDict(expected_msg1_json);
+  base::DictValue expected_msg1 = base::test::ParseJsonDict(expected_msg1_json);
   EXPECT_EQ(*msg0, expected_msg1);
 
   // Second message
-  const base::Value::Dict* msg1 = serialized[1].GetIfDict();
+  const base::DictValue* msg1 = serialized[1].GetIfDict();
   ASSERT_TRUE(msg1);
-  base::Value::Dict expected_msg2 = base::test::ParseJsonDict(R"({
+  base::DictValue expected_msg2 = base::test::ParseJsonDict(R"({
     "role": "assistant",
     "content": [
       {"type": "text", "text": "I see the image"}
@@ -388,9 +387,9 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
   EXPECT_EQ(*msg1, expected_msg2);
 
   // Third message
-  const base::Value::Dict* msg2 = serialized[2].GetIfDict();
+  const base::DictValue* msg2 = serialized[2].GetIfDict();
   ASSERT_TRUE(msg2);
-  base::Value::Dict expected_msg3 = base::test::ParseJsonDict(R"({
+  base::DictValue expected_msg3 = base::test::ParseJsonDict(R"({
     "role": "user",
     "content": [
       {"type": "text", "text": "Can you improve this?"}
@@ -421,22 +420,22 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
   }
 
   auto content_block = params.content_factory.Run();
-  base::Value::Dict expected_msg = base::Value::Dict().Set("role", "user");
-  base::Value::Dict expected_content_block =
-      base::Value::Dict().Set("type", params.expected_type);
+  base::DictValue expected_msg = base::DictValue().Set("role", "user");
+  base::DictValue expected_content_block =
+      base::DictValue().Set("type", params.expected_type);
 
   if (content_block->which() == mojom::ContentBlock::Tag::kImageContentBlock) {
     const auto& img = content_block->get_image_content_block();
 
-    base::Value::Dict image_url_dict;
+    base::DictValue image_url_dict;
     image_url_dict.Set("url", img->image_url.spec());
 
     expected_content_block.Set("image_url", std::move(image_url_dict));
   } else {
     expected_content_block.Set("text", expected_text);
   }
-  expected_msg.Set(
-      "content", base::Value::List().Append(std::move(expected_content_block)));
+  expected_msg.Set("content",
+                   base::ListValue().Append(std::move(expected_content_block)));
 
   std::vector<OAIMessage> messages;
   OAIMessage message;
@@ -447,7 +446,7 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
   auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
 
   ASSERT_EQ(serialized.size(), 1u);
-  const base::Value::Dict* message_dict = serialized[0].GetIfDict();
+  const base::DictValue* message_dict = serialized[0].GetIfDict();
   ASSERT_TRUE(message_dict);
   EXPECT_EQ(*message_dict, expected_msg);
 }
@@ -604,7 +603,7 @@ TEST_P(OAIAPIInvalidResponseTest,
 
   // Begin request
   client_->PerformRequest(
-      *model_options, base::Value::List(),
+      *model_options, base::ListValue(),
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

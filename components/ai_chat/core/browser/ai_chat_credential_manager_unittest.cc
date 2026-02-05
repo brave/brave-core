@@ -189,7 +189,7 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
   }
 
   void SetSkusState(const std::string& skusStateValue) {
-    base::Value::Dict state;
+    base::DictValue state;
     // Unofficial builds will use the unofficial default for
     // Leo SKUs, which is staging. Official builds will use
     // production by default.
@@ -260,7 +260,7 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
 TEST_F(AIChatCredentialManagerUnitTest, CacheDefault) {
   // Should be an empty dictionary by default
   EXPECT_EQ(prefs_service_.GetDict(prefs::kBraveChatPremiumCredentialCache),
-            base::Value::Dict());
+            base::DictValue());
 }
 
 TEST_F(AIChatCredentialManagerUnitTest, PutCredentialInCache) {

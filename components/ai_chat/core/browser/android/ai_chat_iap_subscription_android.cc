@@ -58,7 +58,7 @@ void AIChatIAPSubscription::GetPurchaseTokenOrderId(
     order_id_string = prefs_->GetString(prefs::kBraveChatOrderIdAndroid);
   }
 
-  base::Value::Dict response;
+  base::DictValue response;
   response.Set("type", "android");
   response.Set("raw_receipt", purchase_token_string);
   response.Set("package", package_string);

@@ -117,7 +117,7 @@ class ConversationAPIClient {
     std::string topic;
 
     // Only in a role=User type=UserMemory event.
-    std::optional<base::Value::Dict> user_memory;
+    std::optional<base::DictValue> user_memory;
 
     // Only for a role=Assistant type=ChatMessage event. Contains the calls
     // the assistant wants to make to provided tools.
@@ -136,7 +136,7 @@ class ConversationAPIClient {
                       ConversationEventType,
                       Content,
                       const std::string& topic = "",
-                      std::optional<base::Value::Dict> memory = std::nullopt,
+                      std::optional<base::DictValue> memory = std::nullopt,
                       std::vector<mojom::ToolUseEventPtr> tool_calls = {},
                       const std::string& tool_call_id = "",
                       const std::string& tone = "");
@@ -160,7 +160,7 @@ class ConversationAPIClient {
 
   virtual void PerformRequest(
       std::vector<ConversationEvent> conversation,
-      std::optional<base::Value::List> oai_tool_definitions,
+      std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       GenerationDataCallback data_received_callback,
@@ -170,13 +170,13 @@ class ConversationAPIClient {
   void ClearAllQueries();
 
   static std::optional<GenerationResultData> ParseResponseEvent(
-      base::Value::Dict& response_event,
+      base::DictValue& response_event,
       ModelService* model_service);
 
  protected:
   std::string CreateJSONRequestBody(
       std::vector<ConversationEvent> conversation,
-      std::optional<base::Value::List> oai_tool_definitions,
+      std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
@@ -193,7 +193,7 @@ class ConversationAPIClient {
  private:
   void PerformRequestWithCredentials(
       std::vector<ConversationEvent> conversation,
-      std::optional<base::Value::List> oai_tool_definitions,
+      std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,

@@ -60,7 +60,7 @@ struct ContentBlockTestParam {
   std::string expected_json;
 };
 
-std::pair<std::vector<OAIMessage>, base::Value::List>
+std::pair<std::vector<OAIMessage>, base::ListValue>
 GetMockMessagesAndExpectedMessagesJson() {
   std::vector<OAIMessage> messages;
 
@@ -279,7 +279,7 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
   // Returns a pair of system_language and selected_langauge
   // The system language is the OS locale.
   // The system language is the browser language
-  std::string GetSystemLanguage(const base::Value::Dict& body) {
+  std::string GetSystemLanguage(const base::DictValue& body) {
     const std::string* system_language = body.FindString("system_language");
     // The system language should always be present
     EXPECT_TRUE(system_language != nullptr);
@@ -311,7 +311,7 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
   message.content.emplace_back(std::move(block));
   messages.push_back(std::move(message));
 
-  base::Value::List serialized =
+  base::ListValue serialized =
       ConversationAPIV2Client::SerializeOAIMessages(std::move(messages));
   std::string expected_json = absl::StrFormat(
       R"([{"role": "user", "content": [%s]}])", params.expected_json);
@@ -565,7 +565,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_TRUE(*stream);
 
         // Verify messages content matches expected
-        const base::Value::List* messages_list = body_dict.FindList("messages");
+        const base::ListValue* messages_list = body_dict.FindList("messages");
         EXPECT_TRUE(messages_list);
         EXPECT_EQ(*messages_list, expected_messages_json);
 
@@ -690,7 +690,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
         EXPECT_TRUE(*stream);
 
         // Verify messages content matches expected
-        const base::Value::List* messages_list = dict.FindList("messages");
+        const base::ListValue* messages_list = dict.FindList("messages");
         EXPECT_TRUE(messages_list);
         EXPECT_EQ(*messages_list, expected_messages_json);
 
@@ -1119,7 +1119,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
             EXPECT_FALSE(*stream);
 
             // Verify messages content matches expected
-            const base::Value::List* messages_list = dict.FindList("messages");
+            const base::ListValue* messages_list = dict.FindList("messages");
             EXPECT_TRUE(messages_list);
             EXPECT_EQ(*messages_list, expected_messages_json);
 

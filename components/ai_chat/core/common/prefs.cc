@@ -25,7 +25,7 @@ namespace {
 
 // Helper function to convert a dictionary to Skill
 mojom::SkillPtr SkillDictToStruct(const std::string& id,
-                                  const base::Value::Dict& skill_dict) {
+                                  const base::DictValue& skill_dict) {
   const std::string* shortcut = skill_dict.FindString("shortcut");
   const std::string* prompt = skill_dict.FindString("prompt");
   const std::string* model = skill_dict.FindString("model");
@@ -55,8 +55,8 @@ mojom::SkillPtr SkillDictToStruct(const std::string& id,
 }
 
 // Helper function to convert Skill to dictionary
-base::Value::Dict SkillStructToDict(const mojom::SkillPtr& skill) {
-  base::Value::Dict skill_dict;
+base::DictValue SkillStructToDict(const mojom::SkillPtr& skill) {
+  base::DictValue skill_dict;
   skill_dict.Set("shortcut", skill->shortcut);
   skill_dict.Set("prompt", skill->prompt);
   if (skill->model) {
@@ -82,8 +82,7 @@ bool IsValidAndUniqueShortcut(const PrefService& prefs,
   }
 
   // Check for duplicates
-  const base::Value::Dict& skills_dict =
-      prefs.GetDict(prefs::kBraveAIChatSkills);
+  const base::DictValue& skills_dict = prefs.GetDict(prefs::kBraveAIChatSkills);
 
   for (const auto [id, skill_value] : skills_dict) {
     if (!skill_value.is_dict()) {
@@ -108,7 +107,7 @@ bool IsValidAndUniqueShortcut(const PrefService& prefs,
 }  // namespace
 
 mojom::CustomizationsPtr GetCustomizationsFromPrefs(const PrefService& prefs) {
-  const base::Value::Dict& customizations_dict =
+  const base::DictValue& customizations_dict =
       prefs.GetDict(prefs::kBraveAIChatUserCustomizations);
 
   auto get_string_or_empty =
@@ -124,7 +123,7 @@ mojom::CustomizationsPtr GetCustomizationsFromPrefs(const PrefService& prefs) {
 
 void SetCustomizationsToPrefs(const mojom::CustomizationsPtr& customizations,
                               PrefService& prefs) {
-  auto dict = base::Value::Dict()
+  auto dict = base::DictValue()
                   .Set("name", customizations->name)
                   .Set("job", customizations->job)
                   .Set("tone", customizations->tone)
@@ -137,7 +136,7 @@ void ResetCustomizationsPref(PrefService& prefs) {
 }
 
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs) {
-  const base::Value::List& memories_list =
+  const base::ListValue& memories_list =
       prefs.GetList(prefs::kBraveAIChatUserMemories);
   std::vector<std::string> memories;
   for (const auto& memory : memories_list) {
@@ -176,7 +175,7 @@ void DeleteMemoryFromPrefs(const std::string& memory, PrefService& prefs) {
 }
 
 bool HasMemoryFromPrefs(const std::string& memory, const PrefService& prefs) {
-  const base::Value::List& memories_list =
+  const base::ListValue& memories_list =
       prefs.GetList(prefs::kBraveAIChatUserMemories);
   for (const auto& item : memories_list) {
     if (item.is_string() && item.GetString() == memory) {
@@ -190,8 +189,7 @@ void DeleteAllMemoriesFromPrefs(PrefService& prefs) {
   prefs.ClearPref(prefs::kBraveAIChatUserMemories);
 }
 
-std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(
-    PrefService& prefs) {
+std::optional<base::DictValue> GetUserMemoryDictFromPrefs(PrefService& prefs) {
   bool customization_enabled =
       prefs.GetBoolean(prefs::kBraveAIChatUserCustomizationEnabled);
   bool memory_enabled = prefs.GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
@@ -199,9 +197,9 @@ std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(
     return std::nullopt;
   }
 
-  base::Value::Dict user_memory;
+  base::DictValue user_memory;
   if (customization_enabled) {
-    const base::Value::Dict& customizations_dict =
+    const base::DictValue& customizations_dict =
         prefs.GetDict(prefs::kBraveAIChatUserCustomizations);
 
     // Only set values when they have actual content
@@ -228,7 +226,7 @@ std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(
   }
 
   if (memory_enabled) {
-    const base::Value::List& memories =
+    const base::ListValue& memories =
         prefs.GetList(prefs::kBraveAIChatUserMemories);
     if (!memories.empty()) {
       user_memory.Set("memories", memories.Clone());
@@ -243,8 +241,7 @@ std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(
 }
 
 std::vector<mojom::SkillPtr> GetSkillsFromPrefs(const PrefService& prefs) {
-  const base::Value::Dict& skills_dict =
-      prefs.GetDict(prefs::kBraveAIChatSkills);
+  const base::DictValue& skills_dict = prefs.GetDict(prefs::kBraveAIChatSkills);
 
   std::vector<mojom::SkillPtr> skills;
 
@@ -264,8 +261,7 @@ std::vector<mojom::SkillPtr> GetSkillsFromPrefs(const PrefService& prefs) {
 
 mojom::SkillPtr GetSkillFromPrefs(const PrefService& prefs,
                                   const std::string& id) {
-  const base::Value::Dict& skills_dict =
-      prefs.GetDict(prefs::kBraveAIChatSkills);
+  const base::DictValue& skills_dict = prefs.GetDict(prefs::kBraveAIChatSkills);
 
   const base::Value* skill_value = skills_dict.Find(id);
   if (!skill_value || !skill_value->is_dict()) {
@@ -289,7 +285,7 @@ void AddSkillToPrefs(const std::string& shortcut,
   auto skill = mojom::Skill::New(id, shortcut, prompt, model, now, now);
 
   ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
-  base::Value::Dict& skills_dict = update.Get();
+  base::DictValue& skills_dict = update.Get();
 
   skills_dict.Set(id, SkillStructToDict(skill));
 }
@@ -304,9 +300,9 @@ void UpdateSkillInPrefs(const std::string& id,
   }
 
   ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
-  base::Value::Dict& skills_dict = update.Get();
+  base::DictValue& skills_dict = update.Get();
 
-  base::Value::Dict* skill_dict = skills_dict.FindDict(id);
+  base::DictValue* skill_dict = skills_dict.FindDict(id);
   if (!skill_dict) {
     return;
   }
@@ -322,13 +318,13 @@ void UpdateSkillInPrefs(const std::string& id,
 
 void DeleteSkillFromPrefs(const std::string& id, PrefService& prefs) {
   ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
-  base::Value::Dict& skills_dict = update.Get();
+  base::DictValue& skills_dict = update.Get();
   skills_dict.Remove(id);
 }
 
 void UpdateSkillLastUsedInPrefs(const std::string& id, PrefService& prefs) {
   ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
-  base::Value::Dict* skill_dict = update->FindDict(id);
+  base::DictValue* skill_dict = update->FindDict(id);
   if (!skill_dict) {
     return;
   }
