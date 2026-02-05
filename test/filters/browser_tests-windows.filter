@@ -31,6 +31,12 @@
 -WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
 -WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
+# Flaky Chromium test - resize event fires during print preview due to Brave UI
+# layout (sidebar, vertical tabs, side panel). Chromium also disables this on
+# Linux/Ozone. Already disabled on Linux via PrintBrowserTest.* wildcard.
+# https://github.com/brave/brave-browser/issues/52475
+-PrintBrowserTest.NoResizeEvent
+
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
