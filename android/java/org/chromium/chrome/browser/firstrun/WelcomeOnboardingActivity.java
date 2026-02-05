@@ -187,13 +187,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     private void enableWebDiscoverPreference() {
-        final ProfileProvider profileProvider = getProfileProviderSupplier().get();
-        if (profileProvider == null) {
-            return;
-        }
         if ((isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE)
                 || isVariantB()) {
-            UserPrefs.get(profileProvider.getOriginalProfile())
+            UserPrefs.get(assumeNonNull(getProfileProviderSupplier().get()).getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
         }
     }
@@ -254,10 +250,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (!BraveConfig.WEB_DISCOVERY_ENABLED) {
             return false;
         }
-
-        final ProfileProvider profileProvider = getProfileProviderSupplier().get();
-        return profileProvider != null
-                && !UserPrefs.get(profileProvider.getOriginalProfile())
+        return !UserPrefs.get(assumeNonNull(getProfileProviderSupplier().get()).getOriginalProfile())
                         .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
