@@ -26,12 +26,16 @@ struct ShredSettingsView: View {
           subtitle: nil
         )
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       ToggleView(
         title: Strings.Shields.shredHistoryRowTitle,
         subtitle: Strings.Shields.shredHistoryRowDescription,
         toggle: $settings.shredHistoryItems
       )
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Shields.shredSettingsViewTitle)
   }
 }
