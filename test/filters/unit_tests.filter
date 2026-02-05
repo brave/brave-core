@@ -648,7 +648,7 @@
 -BrowserReportGeneratorTest.GenerateBasicReportWithUpdate
 
 # We disable HATS
--HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
+-HatsHandlerTest.HandleSecurityPageHatsRequest_PassesArgumentsToHatsService
 -SafetyHubHatsServiceTest.GetOverallState_*
 
 # This test fails because we override FinalizeNewProfileSetup call in
