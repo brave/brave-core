@@ -26,7 +26,6 @@ include_polymer = !is_android && !is_ios
 
 group("grdp") {
   public_deps = [
-    ":candle_embedding_gemma",
     ":fonts_grdp",
     ":icons_grdp",
     ":leo_bundle",
