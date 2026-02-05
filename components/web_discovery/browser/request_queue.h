@@ -40,7 +40,7 @@ class RequestQueue {
 
   // Persist and schedule a request. The arbitrary data will be passed
   // to `start_request_callback` on the scheduled interval.
-  void ScheduleRequest(base::Value::Dict request_data);
+  void ScheduleRequest(base::DictValue request_data);
   // Returns data value if request is deleted from queue, due to the retry limit
   // or success
   std::optional<base::Value> NotifyRequestComplete(bool success);

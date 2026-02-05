@@ -58,7 +58,7 @@ class WebDiscoveryPayloadGeneratorTest : public testing::Test {
   }
 
  protected:
-  std::vector<base::Value::Dict> GenerateQueryPayloadsHelper(
+  std::vector<base::DictValue> GenerateQueryPayloadsHelper(
       std::unique_ptr<PageScrapeResult> scrape_result) {
     return GenerateQueryPayloads(*server_config_.get(), url_details_.get(),
                                  std::move(scrape_result));
@@ -74,22 +74,22 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   GURL test_url("https://example.com/test");
   auto scrape_result = std::make_unique<PageScrapeResult>(test_url, "test_id");
 
-  std::vector<base::Value::Dict> single_dicts;
+  std::vector<base::DictValue> single_dicts;
   single_dicts.push_back(
-      base::Value::Dict().Set("ab", "value1").Set("cd", "value2"));
+      base::DictValue().Set("ab", "value1").Set("cd", "value2"));
   single_dicts.push_back(
-      base::Value::Dict().Set("ef", "value3").Set("gh", "value4"));
+      base::DictValue().Set("ef", "value3").Set("gh", "value4"));
   scrape_result->fields[".single-element"] = std::move(single_dicts);
 
-  std::vector<base::Value::Dict> result_dicts1;
-  result_dicts1.push_back(base::Value::Dict().Set("njk", "joinvalue1"));
-  result_dicts1.push_back(base::Value::Dict().Set("abc", "joinvalue2"));
-  result_dicts1.push_back(base::Value::Dict().Set("njk", "joinvalue3"));
-  result_dicts1.push_back(base::Value::Dict().Set("abc", "joinvalue4"));
+  std::vector<base::DictValue> result_dicts1;
+  result_dicts1.push_back(base::DictValue().Set("njk", "joinvalue1"));
+  result_dicts1.push_back(base::DictValue().Set("abc", "joinvalue2"));
+  result_dicts1.push_back(base::DictValue().Set("njk", "joinvalue3"));
+  result_dicts1.push_back(base::DictValue().Set("abc", "joinvalue4"));
 
-  std::vector<base::Value::Dict> result_dicts2;
+  std::vector<base::DictValue> result_dicts2;
   result_dicts2.push_back(
-      base::Value::Dict().Set("qurl", "https://example.com/test1"));
+      base::DictValue().Set("qurl", "https://example.com/test1"));
   scrape_result->fields["#results"] = std::move(result_dicts1);
   scrape_result->fields["qurl"] = std::move(result_dicts2);
 
@@ -99,9 +99,9 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   const auto* payload = &payloads[0];
   EXPECT_THAT(payload,
               Pointee(IsSupersetOfValue(
-                  base::Value::Dict()
+                  base::DictValue()
                       .Set(kActionKey, "single_action")
-                      .Set(kInnerPayloadKey, base::Value::Dict()
+                      .Set(kInnerPayloadKey, base::DictValue()
                                                  .Set("ctry", "us")
                                                  .Set("ab", "value1")
                                                  .Set("cd", "value2")))));
@@ -109,9 +109,9 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   payload = &payloads[1];
   EXPECT_THAT(payload,
               Pointee(IsSupersetOfValue(
-                  base::Value::Dict()
+                  base::DictValue()
                       .Set(kActionKey, "single_action")
-                      .Set(kInnerPayloadKey, base::Value::Dict()
+                      .Set(kInnerPayloadKey, base::DictValue()
                                                  .Set("ctry", "us")
                                                  .Set("ef", "value3")
                                                  .Set("gh", "value4")))));
@@ -120,19 +120,17 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   ASSERT_THAT(
       payload,
       Pointee(IsSupersetOfValue(
-          base::Value::Dict()
+          base::DictValue()
               .Set(kActionKey, "query")
               .Set(kInnerPayloadKey,
-                   base::Value::Dict().Set(
-                       "r", base::Value::Dict()
-                                .Set("0", base::Value::Dict().Set("njk",
-                                                                  "joinvalue1"))
-                                .Set("1", base::Value::Dict().Set("abc",
-                                                                  "joinvalue2"))
-                                .Set("2", base::Value::Dict().Set("njk",
-                                                                  "joinvalue3"))
-                                .Set("3", base::Value::Dict().Set(
-                                              "abc", "joinvalue4")))))));
+                   base::DictValue().Set(
+                       "r",
+                       base::DictValue()
+                           .Set("0", base::DictValue().Set("njk", "joinvalue1"))
+                           .Set("1", base::DictValue().Set("abc", "joinvalue2"))
+                           .Set("2", base::DictValue().Set("njk", "joinvalue3"))
+                           .Set("3", base::DictValue().Set("abc",
+                                                           "joinvalue4")))))));
 }
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateAlivePayload) {
@@ -142,9 +140,9 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateAlivePayload) {
 
   ASSERT_THAT(
       alive_payload,
-      IsSupersetOfValue(base::Value::Dict()
+      IsSupersetOfValue(base::DictValue()
                             .Set(kActionKey, "alive")
-                            .Set(kInnerPayloadKey, base::Value::Dict()
+                            .Set(kInnerPayloadKey, base::DictValue()
                                                        .Set("ctry", "us")
                                                        .Set("t", date_hour)
                                                        .Set("status", true))));
@@ -154,9 +152,9 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
   GURL test_url("https://example.com/search");
   auto scrape_result = std::make_unique<PageScrapeResult>(test_url, "test_id");
 
-  std::vector<base::Value::Dict> result_dicts1;
+  std::vector<base::DictValue> result_dicts1;
   for (int i = 0; i < 5; i++) {
-    base::Value::Dict result_dict;
+    base::DictValue result_dict;
     std::string url = "https://example.com/result";
     if (i == 1) {
       url = "https://423947892374892879.com/example";
@@ -167,8 +165,8 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
     result_dicts1.push_back(std::move(result_dict));
   }
   scrape_result->fields["#results"] = std::move(result_dicts1);
-  std::vector<base::Value::Dict> result_dicts2;
-  base::Value::Dict qurl_dict;
+  std::vector<base::DictValue> result_dicts2;
+  base::DictValue qurl_dict;
   qurl_dict.Set("qurl", "https://example.com/test1");
   result_dicts2.push_back(std::move(qurl_dict));
   scrape_result->fields["qurl"] = std::move(result_dicts2);
@@ -177,17 +175,17 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
   ASSERT_EQ(payloads.size(), 1u);
   EXPECT_THAT(
       payloads[0],
-      IsSupersetOfValue(base::Value::Dict().Set(
+      IsSupersetOfValue(base::DictValue().Set(
           kInnerPayloadKey,
-          base::Value::Dict().Set(
-              "r", base::Value::Dict()
-                       .Set("0", base::Value::Dict().Set(
+          base::DictValue().Set(
+              "r", base::DictValue()
+                       .Set("0", base::DictValue().Set(
                                      "u", "https://example.com/result0"))
-                       .Set("1", base::Value::Dict().Set(
+                       .Set("1", base::DictValue().Set(
                                      "u", "https://example.com/result1"))
-                       .Set("2", base::Value::Dict().Set(
+                       .Set("2", base::DictValue().Set(
                                      "u", "https://example.com/result2"))
-                       .Set("3", base::Value::Dict().Set(
+                       .Set("3", base::DictValue().Set(
                                      "u", "https://example.com/result3"))))));
 }
 
@@ -195,17 +193,17 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ShouldDropSearchResult) {
   GURL test_url("https://example.com/search");
   auto scrape_result = std::make_unique<PageScrapeResult>(test_url, "test_id");
 
-  std::vector<base::Value::Dict> result_dicts;
+  std::vector<base::DictValue> result_dicts;
   for (int i = 0; i < 3; i++) {
-    base::Value::Dict result_dict;
+    base::DictValue result_dict;
     result_dict.Set("u",
                     "https://example.com/result" + base::NumberToString(i));
     result_dicts.push_back(std::move(result_dict));
   }
   scrape_result->fields["#results"] = std::move(result_dicts);
 
-  std::vector<base::Value::Dict> qurl_dicts;
-  base::Value::Dict qurl_dict;
+  std::vector<base::DictValue> qurl_dicts;
+  base::DictValue qurl_dict;
   qurl_dict.Set("qurl", "https://example.com/test1");
   qurl_dicts.push_back(std::move(qurl_dict));
   scrape_result->fields["qurl"] = std::move(qurl_dicts);
@@ -218,9 +216,9 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ContentMissing) {
   GURL test_url("https://example.com/search");
   auto scrape_result = std::make_unique<PageScrapeResult>(test_url, "test_id");
 
-  std::vector<base::Value::Dict> result_dicts;
+  std::vector<base::DictValue> result_dicts;
   for (int i = 0; i < 9; i++) {
-    base::Value::Dict result_dict;
+    base::DictValue result_dict;
     if (i < 5) {
       result_dict.Set("x", "");
     } else {
@@ -230,8 +228,8 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ContentMissing) {
   }
   scrape_result->fields["#results"] = std::move(result_dicts);
 
-  std::vector<base::Value::Dict> qurl_dicts;
-  base::Value::Dict qurl_dict;
+  std::vector<base::DictValue> qurl_dicts;
+  base::DictValue qurl_dict;
   qurl_dict.Set("qurl", "https://example.com/test1");
   qurl_dicts.push_back(std::move(qurl_dict));
   scrape_result->fields["qurl"] = std::move(qurl_dicts);

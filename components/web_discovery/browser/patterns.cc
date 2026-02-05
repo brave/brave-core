@@ -79,7 +79,7 @@ bool ParsePayloadRule(const base::Value& rule_value, PayloadRule* rule_out) {
 }
 
 std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
-    const base::Value::Dict* payload_dict) {
+    const base::DictValue* payload_dict) {
   std::vector<PayloadRuleGroup> result(payload_dict->size());
 
   auto rule_group_it = result.begin();
@@ -124,7 +124,7 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
   return result;
 }
 
-RefineFunctionList ParseFunctionsApplied(const base::Value::List* list) {
+RefineFunctionList ParseFunctionsApplied(const base::ListValue* list) {
   CHECK(list);
   RefineFunctionList result;
   for (auto& function_val : *list) {
@@ -138,7 +138,7 @@ RefineFunctionList ParseFunctionsApplied(const base::Value::List* list) {
 }
 
 std::optional<base::flat_map<std::string, ScrapeRuleGroup>> ParseScrapeRules(
-    const base::Value::Dict* scrape_url_dict) {
+    const base::DictValue* scrape_url_dict) {
   base::flat_map<std::string, ScrapeRuleGroup> result;
 
   for (const auto [selector, rule_group_value] : *scrape_url_dict) {
@@ -185,7 +185,7 @@ std::optional<base::flat_map<std::string, ScrapeRuleGroup>> ParseScrapeRules(
 }
 
 std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
-    const base::Value::Dict* root_dict) {
+    const base::DictValue* root_dict) {
   auto* url_patterns_list = root_dict->FindList(kUrlPatternsKey);
   auto* search_engines_list = root_dict->FindList(kSearchEnginesKey);
   auto* scrape_dict = root_dict->FindDict(kScrapeRulesKey);
