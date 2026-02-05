@@ -8,6 +8,7 @@ import {
   getReasoningText,
   removeReasoning,
   removeCitationsWithMissingLinks,
+  normalizeCitationSpacing,
   groupConversationEntries,
   isAssistantGroupTask,
 } from './conversation_entries_utils'
@@ -184,6 +185,34 @@ describe('removeCitationsWithMissingLinks', () => {
     expect(removeCitationsWithMissingLinks(input, citationLinks)).toBe(
       'Citation [1] and [2] thats it.',
     )
+  })
+})
+
+describe('normalizeCitationSpacing', () => {
+  it('should separate two consecutive citations to parse its own links', () => {
+    expect(
+      normalizeCitationSpacing('...set first dropped in Japan [2][3].'),
+    ).toBe('...set first dropped in Japan [2] [3].')
+  })
+
+  it('should separate five consecutive citations', () => {
+    expect(normalizeCitationSpacing('See [1][2][3][4][5] for sources.')).toBe(
+      'See [1] [2] [3] [4] [5] for sources.',
+    )
+  })
+
+  it('should add space before citation when it runs onto previous word', () => {
+    expect(normalizeCitationSpacing('in Japan[2].')).toBe('in Japan [2].')
+    expect(normalizeCitationSpacing('lair[2].')).toBe('lair [2].')
+  })
+
+  it('should leave already-spaced citations unchanged', () => {
+    const input = 'Citation [1] and [2] here.'
+    expect(normalizeCitationSpacing(input)).toBe(input)
+  })
+
+  it('should handle mixed consecutive citations and word boundary', () => {
+    expect(normalizeCitationSpacing('Japan[2][3].')).toBe('Japan [2] [3].')
   })
 })
 
