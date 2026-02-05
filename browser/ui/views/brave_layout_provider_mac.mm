@@ -11,9 +11,6 @@ int BraveLayoutProviderMac::GetCornerRadiusMetric(
     views::ShapeContextTokensOverride token) const {
   switch (token) {
     case views::ShapeContextTokensOverride::kRoundedCornersBorderRadius:
-      if (@available(macOS 26, *)) {
-        return 17;
-      }
       return 6;
     case views::ShapeContextTokensOverride::
         kRoundedCornersBorderRadiusAtWindowCorner:
