@@ -289,6 +289,24 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
           kRoundedCornersBorderRadiusAtWindowCorner);
 
   if (IsRoundedCornersEnabled()) {
+    // Check correct contents raidus with right-side sidebar.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return rounded_corners_border_radius_at_window_corner ==
+             browser_view()
+                 ->GetActiveContentsContainerView()
+                 ->contents_view()
+                 ->GetBackgroundRadii()
+                 .lower_left();
+    }));
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return rounded_corners_border_radius ==
+             browser_view()
+                 ->GetActiveContentsContainerView()
+                 ->contents_view()
+                 ->GetBackgroundRadii()
+                 .lower_right();
+    }));
+
     // Check contents container has margin by comparing simply its left & bottom
     // with main container's local bounds. As views local bounds' origin is (0,
     // 0), checking child view's margin with child view's bounds works.
@@ -348,6 +366,24 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   NewSplitTab();
   browser_view()->DeprecatedLayoutImmediately();
 
+  // Check correct contents raidus w/o split view.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return rounded_corners_border_radius_at_window_corner ==
+           browser_view()
+               ->GetContentsContainerViews()[0]
+               ->contents_view()
+               ->GetBackgroundRadii()
+               .lower_left();
+  }));
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return rounded_corners_border_radius == browser_view()
+                                                ->GetContentsContainerViews()[1]
+                                                ->contents_view()
+                                                ->GetBackgroundRadii()
+                                                .lower_right();
+  }));
+
   EXPECT_EQ(rounded_corners_margin,
             BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
   EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
@@ -366,17 +402,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                              ->GetContentsContainerViews()[0]
                                              ->contents_view()
                                              ->GetBackgroundRadii();
-
-  // Wait till end contents view gets proper rounded corners as it's newly
-  // created tabs by opening split view.
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return rounded_corners_border_radius == browser_view()
-                                                ->GetContentsContainerViews()[1]
-                                                ->contents_view()
-                                                ->GetBackgroundRadii()
-                                                .lower_right();
-  }));
-
   const auto end_contents_view_radii = browser_view()
                                            ->GetContentsContainerViews()[1]
                                            ->contents_view()
@@ -397,6 +422,24 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   browser_view()->DeprecatedLayoutImmediately();
 
   if (IsRoundedCornersEnabled()) {
+    // Check correct contents raidus w/o split view.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return rounded_corners_border_radius_at_window_corner ==
+             browser_view()
+                 ->GetActiveContentsContainerView()
+                 ->contents_view()
+                 ->GetBackgroundRadii()
+                 .lower_left();
+    }));
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return rounded_corners_border_radius ==
+             browser_view()
+                 ->GetActiveContentsContainerView()
+                 ->contents_view()
+                 ->GetBackgroundRadii()
+                 .lower_right();
+    }));
+
     EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
               browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom() + rounded_corners_margin,
@@ -441,6 +484,16 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   // Test with vertical tab.
   ToggleVerticalTabStrip();
   if (IsRoundedCornersEnabled()) {
+    // Check correct contents raidus with vertical tab.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return rounded_corners_border_radius ==
+             browser_view()
+                 ->GetActiveContentsContainerView()
+                 ->contents_view()
+                 ->GetBackgroundRadii()
+                 .lower_left();
+    }));
+
     auto contents_view_radii = browser_view()
                                    ->GetActiveContentsContainerView()
                                    ->contents_view()
@@ -464,6 +517,17 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.lower_left());
 
     region_view->ToggleState();
+
+    // Check correct contents raidus w/o vertical tab.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return rounded_corners_border_radius_at_window_corner ==
+             browser_view()
+                 ->GetActiveContentsContainerView()
+                 ->contents_view()
+                 ->GetBackgroundRadii()
+                 .lower_left();
+    }));
+
     contents_view_radii = browser_view()
                               ->GetActiveContentsContainerView()
                               ->contents_view()
