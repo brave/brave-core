@@ -165,4 +165,4 @@ class PassageEmbedderFactoryImpl {
 const factory = new PassageEmbedderFactoryImpl()
 localAIService.registerPassageEmbedderFactory(factory.getPendingRemote())
 
-console.log('[Candle WASM] Passage embedder factory bridge initialized')
+console.info('[on-device-model-worker] Passage embedder factory initialized')

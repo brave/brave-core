@@ -34,6 +34,7 @@ static_library("core") {
   public = [
     "background_web_contents.h",
     "local_ai_service.h",
+    "url_constants.h",
   ]
 
   sources = [
