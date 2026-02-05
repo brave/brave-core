@@ -204,7 +204,10 @@ brave_grit("strings") {
   ]
 
   if (is_ios) {
-    outputs += [ "grit/brave_components_swift_strings.h" ]
+    outputs += [
+      "grit/brave_components_swift_strings.h",
+      "grit/brave_components_swift_strings.mm",
+    ]
   }
 
   defines = [

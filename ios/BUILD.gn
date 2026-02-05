@@ -237,6 +237,8 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   sources = brave_core_public_headers
   sources += ios_web_view_public_headers
+  sources +=
+      [ "$root_gen_dir/components/grit/brave_components_swift_strings.mm" ]
 
   public_headers = get_target_outputs(":brave_core_umbrella_header")
   public_headers += brave_core_public_headers
