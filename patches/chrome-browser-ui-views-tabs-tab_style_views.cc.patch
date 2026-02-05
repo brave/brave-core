@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index aacd3e86550da8d2657b77b513c3d70ca9805c4d..60e9eab50fcc3453658cb88e0ed494bd6ca47ae9 100644
+index aacd3e86550da8d2657b77b513c3d70ca9805c4d..2de9de9c1731062ed65fa4160f01b0e14691e9c2 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -121,6 +121,7 @@ class TabStyleViewsImpl : public TabStyleViews {
@@ -10,7 +10,15 @@ index aacd3e86550da8d2657b77b513c3d70ca9805c4d..60e9eab50fcc3453658cb88e0ed494bd
    // Gets the bounds for the leading and trailing separators for a tab.
    TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -355,6 +356,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -130,6 +131,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
+ 
+   // Returns whether the mouse is currently hovering this tab.
++  virtual
+   bool IsHovering() const;
+ 
+   // Returns whether the hover animation is being shown.
+@@ -355,6 +357,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
    const bool compact_left_to_bottom = ShouldCompactLeadingEdge(path_type);
@@ -18,7 +26,7 @@ index aacd3e86550da8d2657b77b513c3d70ca9805c4d..60e9eab50fcc3453658cb88e0ed494bd
  
    float left_extension_corner_radius = extension_corner_radius;
    if (compact_left_to_bottom) {
-@@ -1023,14 +1025,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1023,14 +1026,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

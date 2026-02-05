@@ -50,7 +50,7 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
   SkPath GetPath(TabStyle::PathType path_type,
                  float scale,
                  const TabPathFlags& flags) const override;
-
+  bool IsHovering() const override;
   gfx::Insets GetContentsInsets() const override;
   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const override;
   float GetSeparatorOpacity(bool for_layout, bool leading) const override;
@@ -79,6 +79,12 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
     : TabStyleViewsImpl(tab) {}
+
+bool BraveVerticalTabStyle::IsHovering() const {
+  // Upstream gives true when the tab is in split tab and another tab is
+  // hovered. But, we only want to show hover effect for currently hovered tab.
+  return tab()->mouse_hovered();
+}
 
 SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
                                       float scale,
