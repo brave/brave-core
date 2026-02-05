@@ -19,9 +19,9 @@ void ParseAuthInfoAndHostname(std::string_view* hostname,
                               std::string_view* password) {
   url::Component user_component, password_component;
   url::Component host_component, port_component;
-  url::ParseAuthority(hostname->data(), url::Component(0, hostname->size()),
-                      &user_component, &password_component, &host_component,
-                      &port_component);
+  url::ParseAuthority(*hostname, url::Component(0, hostname->size()),
+                      url::ParserMode::kSpecialURL, &user_component,
+                      &password_component, &host_component, &port_component);
 
   // If host is not valid then extracting auth is meaningless since
   // url::CanonicalizeHost in ProxyServer::FromSchemeHostAndPort will fail
