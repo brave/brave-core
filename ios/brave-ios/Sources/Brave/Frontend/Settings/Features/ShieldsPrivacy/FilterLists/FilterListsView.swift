@@ -13,6 +13,27 @@ import SwiftUI
 
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
+  /// Used for section headers with description text so they are consistent
+  struct SectionHeaderView: View {
+    let title: String
+    let description: String
+
+    var body: some View {
+      VStack(alignment: .leading, spacing: 4) {
+        if LiquidGlassMode.isEnabled {
+          Text(title)
+          Text(description)
+            .font(.caption)
+        } else {
+          Text(title)
+            .textCase(.uppercase)
+          Text(description)
+            .textCase(.none)
+        }
+      }
+    }
+  }
+
   private static let dateFormatter = RelativeDateTimeFormatter()
   enum FilterListUpdateStatus: Equatable {
     case unknown
@@ -78,12 +99,10 @@ struct FilterListsView: View {
         }
         externalFilterListRows
       } header: {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(Strings.Shields.externalFilterLists)
-            .textCase(.uppercase)
-          Text(Strings.Shields.addCustomFilterListDescription)
-            .textCase(.none)
-        }
+        SectionHeaderView(
+          title: Strings.Shields.externalFilterLists,
+          description: Strings.Shields.addCustomFilterListDescription
+        )
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -92,12 +111,10 @@ struct FilterListsView: View {
         Section {
           customFiltersRows
         } header: {
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Shields.customFilters)
-              .textCase(.uppercase)
-            Text(Strings.Shields.customFiltersDescription)
-              .textCase(.none)
-          }
+          SectionHeaderView(
+            title: Strings.Shields.customFilters,
+            description: Strings.Shields.customFiltersDescription
+          )
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -114,12 +131,10 @@ struct FilterListsView: View {
         }
         defaultFilterListRows
       } header: {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(Strings.Shields.defaultFilterLists)
-            .textCase(.uppercase)
-          Text(Strings.Shields.filterListsDescription)
-            .textCase(.none)
-        }
+        SectionHeaderView(
+          title: Strings.Shields.defaultFilterLists,
+          description: Strings.Shields.filterListsDescription
+        )
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .fullScreenCover(
