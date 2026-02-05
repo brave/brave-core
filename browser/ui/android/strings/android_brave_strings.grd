@@ -796,7 +796,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Send anonymous diagnostic reports if you experience a crash or freeze.
       </message>
       <message name="IDS_SEND_P3A" desc="Text for sending anonymous product insight during onboarding phase">
-        Share completely private and anonymous product insights about what Brave features are being used.
+        Share private and anonymous product insights about what Brave features are being used.
       </message>
       <message name="IDS_SEND_P3A_TITLE" desc="Title for sending anonymous product insight during onboarding phase">
         Private product insights
