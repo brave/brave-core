@@ -120,7 +120,7 @@ void BraveLeoAssistantHandler::NotifyChatUiChanged(const bool& is_leo_visible) {
 }
 
 void BraveLeoAssistantHandler::HandleToggleLeoIcon(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(profile_);
 
   AllowJavascript();
@@ -130,7 +130,7 @@ void BraveLeoAssistantHandler::HandleToggleLeoIcon(
 }
 
 void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
 
   if (args.size() < 2 || !args[1].is_dict()) {
@@ -139,10 +139,10 @@ void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
     return;
   }
 
-  const base::Value::Dict& dict = args[1].GetDict();
+  const base::DictValue& dict = args[1].GetDict();
   GURL endpoint(*dict.FindString("url"));
 
-  base::Value::Dict response;
+  base::DictValue response;
 
   const bool is_valid = ai_chat::ModelValidator::IsValidEndpoint(endpoint);
 
@@ -159,7 +159,7 @@ void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
 }
 
 void BraveLeoAssistantHandler::HandleGetLeoIconVisibility(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(profile_);
   const auto hidden_items = service->GetHiddenDefaultSidebarItems();
   AllowJavascript();
@@ -169,8 +169,7 @@ void BraveLeoAssistantHandler::HandleGetLeoIconVisibility(
                                &sidebar::SidebarItem::built_in_item_type));
 }
 
-void BraveLeoAssistantHandler::HandleResetLeoData(
-    const base::Value::List& args) {
+void BraveLeoAssistantHandler::HandleResetLeoData(const base::ListValue& args) {
   auto* sidebar_service =
       sidebar::SidebarServiceFactory::GetForProfile(profile_);
 

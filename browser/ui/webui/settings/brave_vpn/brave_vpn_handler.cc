@@ -78,7 +78,7 @@ void BraveVpnHandler::OnWireguardServiceInstalled(
 }
 
 void BraveVpnHandler::HandleIsWireguardServiceInstalled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
 
   ResolveJavascriptCallback(
@@ -86,7 +86,7 @@ void BraveVpnHandler::HandleIsWireguardServiceInstalled(
       base::Value(brave_vpn::wireguard::IsWireguardServiceInstalled()));
 }
 
-void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {
+void BraveVpnHandler::HandleIsBraveVpnConnected(const base::ListValue& args) {
   AllowJavascript();
 
   auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
@@ -95,14 +95,14 @@ void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {
 }
 
 #if BUILDFLAG(IS_WIN)
-void BraveVpnHandler::HandleShowInSystemTray(const base::Value::List& args) {
+void BraveVpnHandler::HandleShowInSystemTray(const base::ListValue& args) {
   AllowJavascript();
 
   ResolveJavascriptCallback(args[0],
                             base::Value(brave_vpn::IsVPNTrayIconEnabled()));
 }
 
-void BraveVpnHandler::SetShowInSystemTray(const base::Value::List& args) {
+void BraveVpnHandler::SetShowInSystemTray(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   bool value = args[0].GetBool();
   brave_vpn::EnableVPNTrayIcon(value);

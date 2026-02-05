@@ -43,7 +43,7 @@ class BraveImportDataHandler : public ImportDataHandler,
 
   const user_data_importer::SourceProfile& GetSourceProfileAt(
       int browser_index);
-  void HandleImportData(const base::Value::List& args);
+  void HandleImportData(const base::ListValue& args);
   // ImportDataHandler overrides:
   void StartImport(const user_data_importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;
@@ -53,7 +53,7 @@ class BraveImportDataHandler : public ImportDataHandler,
                        Profile* profile);
   virtual void NotifyImportProgress(
       const user_data_importer::SourceProfile& source_profile,
-      const base::Value::Dict& info);
+      const base::DictValue& info);
   virtual void OnImportEnded(
       const user_data_importer::SourceProfile& source_profile);
 

@@ -39,16 +39,16 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void OnJavascriptDisallowed() override;
 
   // Custom message handlers:
-  void HandleGetDeviceList(const base::Value::List& args);
-  void HandleGetSyncCode(const base::Value::List& args);
-  void HandleGetPureSyncCode(const base::Value::List& args);
-  void HandleSetSyncCode(const base::Value::List& args);
-  void HandleGetQRCode(const base::Value::List& args);
-  void HandleReset(const base::Value::List& args);
-  void HandleDeleteDevice(const base::Value::List& args);
-  void HandlePermanentlyDeleteAccount(const base::Value::List& args);
-  void HandleSyncGetWordsCount(const base::Value::List& args);
-  void HandleCopySyncCodeToClipboard(const base::Value::List& args);
+  void HandleGetDeviceList(const base::ListValue& args);
+  void HandleGetSyncCode(const base::ListValue& args);
+  void HandleGetPureSyncCode(const base::ListValue& args);
+  void HandleSetSyncCode(const base::ListValue& args);
+  void HandleGetQRCode(const base::ListValue& args);
+  void HandleReset(const base::ListValue& args);
+  void HandleDeleteDevice(const base::ListValue& args);
+  void HandlePermanentlyDeleteAccount(const base::ListValue& args);
+  void HandleSyncGetWordsCount(const base::ListValue& args);
+  void HandleCopySyncCodeToClipboard(const base::ListValue& args);
 
   void OnResetDone(base::Value callback_id);
   void OnAccountPermanentlyDeleted(base::Value callback_id,
@@ -56,7 +56,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
 
   void OnJoinChainResult(base::Value callback_id, bool result);
 
-  base::Value::List GetSyncDeviceList();
+  base::ListValue GetSyncDeviceList();
   syncer::BraveSyncServiceImpl* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
   syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;

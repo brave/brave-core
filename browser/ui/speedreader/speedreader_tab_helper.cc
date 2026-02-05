@@ -60,7 +60,7 @@ namespace speedreader {
 
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<std::string_view, int>> resources) {
-  base::Value::Dict sr_data;
+  base::DictValue sr_data;
   sr_data.Set("ttsEnabled", features::kSpeedreaderTTS.Get());
   for (const auto& r : resources) {
     sr_data.Set(r.first, l10n_util::GetStringUTF16(r.second));

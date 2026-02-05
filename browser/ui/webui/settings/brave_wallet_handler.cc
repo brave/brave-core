@@ -32,18 +32,18 @@
 
 namespace {
 
-base::Value::Dict MakeSelectValue(const std::u16string& name,
-                                  ::brave_wallet::mojom::DefaultWallet value) {
-  base::Value::Dict item;
+base::DictValue MakeSelectValue(const std::u16string& name,
+                                ::brave_wallet::mojom::DefaultWallet value) {
+  base::DictValue item;
   item.Set("value", static_cast<int>(value));
   item.Set("name", name);
   return item;
 }
 
-base::Value::Dict MakeSelectValue(
+base::DictValue MakeSelectValue(
     const std::u16string& name,
     ::brave_wallet::mojom::BlowfishOptInStatus value) {
-  base::Value::Dict item;
+  base::DictValue item;
   item.Set("value", static_cast<int>(value));
   item.Set("name", name);
   return item;
@@ -158,7 +158,7 @@ void BraveWalletHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
+void BraveWalletHandler::GetAutoLockMinutes(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
@@ -166,9 +166,8 @@ void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
                                 brave_wallet::kBraveWalletAutoLockMinutes)));
 }
 
-void BraveWalletHandler::GetSolanaProviderOptions(
-    const base::Value::List& args) {
-  base::Value::List list;
+void BraveWalletHandler::GetSolanaProviderOptions(const base::ListValue& args) {
+  base::ListValue list;
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
@@ -185,8 +184,8 @@ void BraveWalletHandler::GetSolanaProviderOptions(
 }
 
 void BraveWalletHandler::GetCardanoProviderOptions(
-    const base::Value::List& args) {
-  base::Value::List list;
+    const base::ListValue& args) {
+  base::ListValue list;
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
       ::brave_wallet::mojom::DefaultWallet::BraveWallet));
@@ -199,8 +198,8 @@ void BraveWalletHandler::GetCardanoProviderOptions(
 }
 
 void BraveWalletHandler::GetTransactionSimulationOptInStatusOptions(
-    const base::Value::List& args) {
-  base::Value::List list;
+    const base::ListValue& args) {
+  base::ListValue list;
   list.Append(
       MakeSelectValue(l10n_util::GetStringUTF16(IDS_SETTINGS_SELECT_VALUE_ASK),
                       ::brave_wallet::mojom::BlowfishOptInStatus::kUnset));
@@ -216,7 +215,7 @@ void BraveWalletHandler::GetTransactionSimulationOptInStatusOptions(
   ResolveJavascriptCallback(args[0], list);
 }
 
-void BraveWalletHandler::RemoveChain(const base::Value::List& args) {
+void BraveWalletHandler::RemoveChain(const base::ListValue& args) {
   CHECK_EQ(args.size(), 3U);
   AllowJavascript();
 
@@ -231,7 +230,7 @@ void BraveWalletHandler::RemoveChain(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
-void BraveWalletHandler::ResetChain(const base::Value::List& args) {
+void BraveWalletHandler::ResetChain(const base::ListValue& args) {
   CHECK_EQ(args.size(), 3U);
   AllowJavascript();
 
@@ -248,9 +247,9 @@ void BraveWalletHandler::ResetChain(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
-void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
+void BraveWalletHandler::GetNetworksList(const base::ListValue& args) {
   CHECK_EQ(args.size(), 2U);
-  base::Value::Dict result;
+  base::DictValue result;
   auto coin = ToCoinType(args[1].GetIfInt());
   if (!coin) {
     ResolveJavascriptCallback(args[0], base::Value());
@@ -260,26 +259,26 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   result.Set("defaultNetwork",
              GetNetworkManager()->GetCurrentChainId(*coin, std::nullopt));
 
-  auto& networks = result.Set("networks", base::Value::List())->GetList();
+  auto& networks = result.Set("networks", base::ListValue())->GetList();
   for (const auto& it : GetNetworkManager()->GetAllChains()) {
     if (it->coin == coin) {
       networks.Append(brave_wallet::NetworkInfoToValue(*it));
     }
   }
   auto& known_networks =
-      result.Set("knownNetworks", base::Value::List())->GetList();
+      result.Set("knownNetworks", base::ListValue())->GetList();
   for (const auto& it : GetNetworkManager()->GetAllKnownChains(*coin)) {
     known_networks.Append(it->chain_id);
   }
 
   auto& custom_networks =
-      result.Set("customNetworks", base::Value::List())->GetList();
+      result.Set("customNetworks", base::ListValue())->GetList();
   for (const auto& it : GetNetworkManager()->GetAllCustomChains(*coin)) {
     custom_networks.Append(it->chain_id);
   }
 
   auto& hidden_networks =
-      result.Set("hiddenNetworks", base::Value::List())->GetList();
+      result.Set("hiddenNetworks", base::ListValue())->GetList();
   for (const auto& it : GetNetworkManager()->GetHiddenNetworks(*coin)) {
     hidden_networks.Append(it);
   }
@@ -289,11 +288,11 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
 }
 
 void BraveWalletHandler::GetPrepopulatedNetworksList(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-  base::Value::List networks;
+  base::ListValue networks;
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (!blockchain_registry) {
@@ -312,7 +311,7 @@ void BraveWalletHandler::OnAddChain(base::Value javascript_callback,
                                     const std::string& chain_id,
                                     brave_wallet::mojom::ProviderError error,
                                     const std::string& error_message) {
-  base::Value::List result;
+  base::ListValue result;
   result.Append(error == brave_wallet::mojom::ProviderError::kSuccess);
   result.Append(error_message);
   ResolveJavascriptCallback(javascript_callback, result);
@@ -321,7 +320,7 @@ void BraveWalletHandler::OnAddChain(base::Value javascript_callback,
   }
 }
 
-void BraveWalletHandler::AddChain(const base::Value::List& args) {
+void BraveWalletHandler::AddChain(const base::ListValue& args) {
   CHECK_EQ(args.size(), 2U);
   AllowJavascript();
   auto* brave_wallet_service =
@@ -332,7 +331,7 @@ void BraveWalletHandler::AddChain(const base::Value::List& args) {
       brave_wallet::ValueToNetworkInfo(args[1]);
 
   if (!chain || !brave_wallet_service) {
-    base::Value::List result;
+    base::ListValue result;
     result.Append(false);
     result.Append(l10n_util::GetStringUTF8(
         IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED));
@@ -346,7 +345,7 @@ void BraveWalletHandler::AddChain(const base::Value::List& args) {
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
 }
 
-void BraveWalletHandler::SetDefaultNetwork(const base::Value::List& args) {
+void BraveWalletHandler::SetDefaultNetwork(const base::ListValue& args) {
   CHECK_EQ(args.size(), 3U);
 
   auto* chain_id = args[1].GetIfString();
@@ -366,7 +365,7 @@ void BraveWalletHandler::SetDefaultNetwork(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
 
-void BraveWalletHandler::AddHiddenNetwork(const base::Value::List& args) {
+void BraveWalletHandler::AddHiddenNetwork(const base::ListValue& args) {
   CHECK_EQ(args.size(), 3U);
   auto* chain_id = args[1].GetIfString();
   auto coin = ToCoinType(args[2].GetIfInt());
@@ -380,7 +379,7 @@ void BraveWalletHandler::AddHiddenNetwork(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
-void BraveWalletHandler::RemoveHiddenNetwork(const base::Value::List& args) {
+void BraveWalletHandler::RemoveHiddenNetwork(const base::ListValue& args) {
   CHECK_EQ(args.size(), 3U);
   auto* chain_id = args[1].GetIfString();
   auto coin = ToCoinType(args[2].GetIfInt());
@@ -404,22 +403,21 @@ brave_wallet::NetworkManager* BraveWalletHandler::GetNetworkManager() {
       ->network_manager();
 }
 
-void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {
+void BraveWalletHandler::IsBitcoinEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsBitcoinEnabled()));
 }
 
-void BraveWalletHandler::IsZCashEnabled(const base::Value::List& args) {
+void BraveWalletHandler::IsZCashEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsZCashEnabled()));
 }
 
-void BraveWalletHandler::IsZCashShieldedTxEnabled(
-    const base::Value::List& args) {
+void BraveWalletHandler::IsZCashShieldedTxEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -427,14 +425,14 @@ void BraveWalletHandler::IsZCashShieldedTxEnabled(
       base::Value(::brave_wallet::IsZCashShieldedTransactionsEnabled()));
 }
 
-void BraveWalletHandler::IsCardanoEnabled(const base::Value::List& args) {
+void BraveWalletHandler::IsCardanoEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsCardanoEnabled()));
 }
 
-void BraveWalletHandler::IsPolkadotEnabled(const base::Value::List& args) {
+void BraveWalletHandler::IsPolkadotEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
@@ -442,7 +440,7 @@ void BraveWalletHandler::IsPolkadotEnabled(const base::Value::List& args) {
 }
 
 void BraveWalletHandler::IsCardanoDAppSupportEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -450,7 +448,7 @@ void BraveWalletHandler::IsCardanoDAppSupportEnabled(
 }
 
 void BraveWalletHandler::IsTransactionSimulationsEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -458,7 +456,7 @@ void BraveWalletHandler::IsTransactionSimulationsEnabled(
 }
 
 void BraveWalletHandler::SetWalletInPrivateWindowsEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 2U);
   bool enabled = args[1].GetBool();
   Profile::FromWebUI(web_ui())->GetPrefs()->SetBoolean(
@@ -468,7 +466,7 @@ void BraveWalletHandler::SetWalletInPrivateWindowsEnabled(
 }
 
 void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   bool enabled = Profile::FromWebUI(web_ui())->GetPrefs()->GetBoolean(
       brave_wallet::kBraveWalletPrivateWindowsEnabled);
@@ -476,9 +474,9 @@ void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
   ResolveJavascriptCallback(args[0], enabled);
 }
 
-void BraveWalletHandler::GetWeb3ProviderList(const base::Value::List& args) {
+void BraveWalletHandler::GetWeb3ProviderList(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
-  base::Value::List list;
+  base::ListValue list;
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
@@ -499,7 +497,7 @@ void BraveWalletHandler::GetWeb3ProviderList(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(json_string));
 }
 
-void BraveWalletHandler::IsNativeWalletEnabled(const base::Value::List& args) {
+void BraveWalletHandler::IsNativeWalletEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(

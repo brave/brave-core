@@ -50,9 +50,9 @@ namespace {
 
 void UpdateCustomNetworks(PrefService* prefs,
                           CoinType coin,
-                          std::vector<base::Value::Dict>* values) {
+                          std::vector<base::DictValue>* values) {
   ScopedDictPrefUpdate update(prefs, brave_wallet::kBraveWalletCustomNetworks);
-  base::Value::List* list =
+  base::ListValue* list =
       update->EnsureList(brave_wallet::GetPrefKeyForCoinType(coin));
   list->clear();
   for (auto& it : *values) {
@@ -116,25 +116,25 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 
   void RegisterMessages() override {}
 
-  void RemoveChain(const base::Value::List& args) {
+  void RemoveChain(const base::ListValue& args) {
     BraveWalletHandler::RemoveChain(args);
   }
-  void ResetChain(const base::Value::List& args) {
+  void ResetChain(const base::ListValue& args) {
     BraveWalletHandler::ResetChain(args);
   }
-  void GetNetworksList(const base::Value::List& args) {
+  void GetNetworksList(const base::ListValue& args) {
     BraveWalletHandler::GetNetworksList(args);
   }
-  void AddChain(const base::Value::List& args) {
+  void AddChain(const base::ListValue& args) {
     BraveWalletHandler::AddChain(args);
   }
-  void SetDefaultNetwork(const base::Value::List& args) {
+  void SetDefaultNetwork(const base::ListValue& args) {
     BraveWalletHandler::SetDefaultNetwork(args);
   }
-  void GetWeb3ProviderList(const base::Value::List& args) {
+  void GetWeb3ProviderList(const base::ListValue& args) {
     BraveWalletHandler::GetWeb3ProviderList(args);
   }
-  void IsNativeWalletEnabled(const base::Value::List& args) {
+  void IsNativeWalletEnabled(const base::ListValue& args) {
     BraveWalletHandler::IsNativeWalletEnabled(args);
   }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
@@ -159,7 +159,7 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 TEST(TestBraveWalletHandler, RemoveChain) {
   TestBraveWalletHandler handler;
 
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
   values.push_back(brave_wallet::NetworkInfoToValue(chain1));
 
@@ -168,7 +168,7 @@ TEST(TestBraveWalletHandler, RemoveChain) {
   UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("id"));
   args.Append(base::Value("chain_id"));
   args.Append(base::Value(static_cast<int>(CoinType::ETH)));
@@ -184,7 +184,7 @@ TEST(TestBraveWalletHandler, RemoveChain) {
 TEST(TestBraveWalletHandler, ResetChain) {
   TestBraveWalletHandler handler;
 
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1(
       brave_wallet::mojom::kPolygonMainnetChainId);
   values.push_back(brave_wallet::NetworkInfoToValue(chain1));
@@ -193,7 +193,7 @@ TEST(TestBraveWalletHandler, ResetChain) {
   UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("id"));
   args.Append(base::Value(brave_wallet::mojom::kPolygonMainnetChainId));
   args.Append(base::Value(static_cast<int>(CoinType::ETH)));
@@ -226,7 +226,7 @@ TEST(TestBraveWalletHandler, AddChain) {
       brave_wallet::GetTestNetworkInfo1("0x999");
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("id"));
   args.Append(brave_wallet::NetworkInfoToValue(chain1));
   handler.SetEthChainIdInterceptor(brave_wallet::GetActiveEndpointUrl(chain1),
@@ -241,7 +241,7 @@ TEST(TestBraveWalletHandler, AddChain) {
   EXPECT_THAT(brave_wallet::GetAllUserAssets(handler.prefs()),
               Contains(Eq(std::ref(expected_token))));
 
-  base::Value::List args2;
+  base::ListValue args2;
   args2.Append(base::Value("id"));
   args2.Append(brave_wallet::NetworkInfoToValue(chain1));
   handler.AddChain(args2);
@@ -265,7 +265,7 @@ TEST(TestBraveWalletHandler, AddChainWrongNetwork) {
 
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("id"));
   args.Append(brave_wallet::NetworkInfoToValue(chain1));
   handler.SetEthChainIdInterceptor(brave_wallet::GetActiveEndpointUrl(chain1),
@@ -289,7 +289,7 @@ TEST(TestBraveWalletHandler, AddChainWrongNetwork) {
 
 TEST(TestBraveWalletHandler, GetNetworkListEth) {
   TestBraveWalletHandler handler;
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
   values.push_back(brave_wallet::NetworkInfoToValue(chain1));
 
@@ -298,7 +298,7 @@ TEST(TestBraveWalletHandler, GetNetworkListEth) {
   UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("id"));
   args.Append(base::Value(static_cast<int>(CoinType::ETH)));
   handler.GetNetworksList(args);
@@ -322,7 +322,7 @@ TEST(TestBraveWalletHandler, GetNetworkListFilSol) {
   for (auto coin : {CoinType::FIL, CoinType::SOL}) {
     TestBraveWalletHandler handler;
 
-    base::Value::List args;
+    base::ListValue args;
     args.Append(base::Value("id"));
     args.Append(base::Value(static_cast<int>(coin)));
 
@@ -345,7 +345,7 @@ TEST(TestBraveWalletHandler, GetNetworkListFilSol) {
 TEST(TestBraveWalletHandler, SetDefaultNetwork) {
   TestBraveWalletHandler handler;
 
-  std::vector<base::Value::Dict> values;
+  std::vector<base::DictValue> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
   values.push_back(brave_wallet::NetworkInfoToValue(chain1));
 
@@ -358,7 +358,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
                               brave_wallet::kBraveWalletSelectedNetworks);
   update->Set(brave_wallet::kEthereumPrefKey, "chain_id");
   {
-    base::Value::List args;
+    base::ListValue args;
     args.Append(base::Value("id"));
     args.Append(base::Value("chain_id2"));
     args.Append(base::Value(static_cast<int>(CoinType::ETH)));
@@ -373,7 +373,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
               "chain_id2");
   }
   {
-    base::Value::List args;
+    base::ListValue args;
     args.Append(base::Value("id"));
     args.Append(base::Value("unknown_chain_id"));
     args.Append(base::Value(static_cast<int>(CoinType::ETH)));
@@ -392,7 +392,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
 TEST(TestBraveWalletHandler, GetWeb3ProviderList) {
   TestBraveWalletHandler handler;
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("test-callback-id"));
 
   handler.GetWeb3ProviderList(args);
@@ -410,7 +410,7 @@ TEST(TestBraveWalletHandler, GetWeb3ProviderList) {
   ASSERT_TRUE(parsed_json.has_value());
   ASSERT_TRUE(parsed_json->is_list());
 
-  const base::Value::List& provider_list = parsed_json->GetList();
+  const base::ListValue& provider_list = parsed_json->GetList();
   ASSERT_EQ(provider_list.size(), 3u);
 
   ASSERT_TRUE(provider_list[0].is_dict());
@@ -431,7 +431,7 @@ TEST(TestBraveWalletHandler, GetWeb3ProviderList) {
 TEST(TestBraveWalletHandler, IsNativeWalletEnabled) {
   TestBraveWalletHandler handler;
 
-  base::Value::List args;
+  base::ListValue args;
   args.Append(base::Value("test-callback-id"));
 
   handler.IsNativeWalletEnabled(args);
