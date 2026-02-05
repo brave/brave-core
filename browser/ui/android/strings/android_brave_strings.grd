@@ -1353,7 +1353,7 @@ Are you sure you want to do this?
         About
       </message>
       <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
-        Maybe Later
+        Maybe later
       </message>
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_1" desc="Text for block trackers and ads option.">
         Block trackers &amp; ads (Aggressive)
