@@ -27,10 +27,10 @@ class BraveClearBrowsingDataHandler : public ClearBrowsingDataHandler {
   // ClearBrowsingDataHandler:
   void RegisterMessages() override;
 
-  void HandleGetBraveRewardsEnabled(const base::Value::List& args);
+  void HandleGetBraveRewardsEnabled(const base::ListValue& args);
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  void HandleClearBraveAdsData(const base::Value::List& args);
+  void HandleClearBraveAdsData(const base::ListValue& args);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   void OnRewardsEnabledPreferenceChanged();

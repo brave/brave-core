@@ -91,7 +91,7 @@ class BraveSecureDnsHandlerTest : public InProcessBrowserTest {
         continue;
       }
 
-      const base::Value::Dict* dict = data->arg2()->GetIfDict();
+      const base::DictValue* dict = data->arg2()->GetIfDict();
       if (!dict) {
         return false;
       }

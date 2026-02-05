@@ -26,7 +26,7 @@ class BraveSiteSettingsHandler : public SiteSettingsHandler {
   void RegisterMessages() override;
 
   // Returns whether the pattern is valid given the type.
-  void HandleIsPatternValidForType(const base::Value::List& args);
+  void HandleIsPatternValidForType(const base::ListValue& args);
 
   bool IsPatternValidForBraveContentType(ContentSettingsType content_type,
                                          const std::string& pattern_string);

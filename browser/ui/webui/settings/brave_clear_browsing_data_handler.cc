@@ -54,7 +54,7 @@ void BraveClearBrowsingDataHandler::RegisterMessages() {
 }
 
 void BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
 
   const bool rewards_enabled =
@@ -66,7 +66,7 @@ void BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled(
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 void BraveClearBrowsingDataHandler::HandleClearBraveAdsData(
-    const base::Value::List& /*args*/) {
+    const base::ListValue& /*args*/) {
   if (auto* ads_service =
           brave_ads::AdsServiceFactory::GetForProfile(profile_)) {
     ads_service->ClearData(/*intentional*/ base::DoNothing());

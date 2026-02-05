@@ -70,8 +70,8 @@ bool IsPrivateNewTab(Profile* profile) {
   return profile->IsIncognitoProfile() || profile->IsGuestSession();
 }
 
-base::Value::Dict GetStatsDictionary(PrefService* prefs) {
-  base::Value::Dict stats_data;
+base::DictValue GetStatsDictionary(PrefService* prefs) {
+  base::DictValue stats_data;
   stats_data.Set("adsBlockedStat",
                  base::Int64ToValue(prefs->GetUint64(kAdsBlocked) +
                                     prefs->GetUint64(kTrackersBlocked)));
@@ -85,8 +85,8 @@ base::Value::Dict GetStatsDictionary(PrefService* prefs) {
   return stats_data;
 }
 
-base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
-  base::Value::Dict pref_data;
+base::DictValue GetPreferencesDictionary(PrefService* prefs) {
+  base::DictValue pref_data;
   pref_data.Set("showBackgroundImage",
                 prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.Set(
@@ -381,14 +381,14 @@ void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
 }
 
 void BraveNewTabMessageHandler::HandleGetPreferences(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
   ResolveJavascriptCallback(args[0], data);
 }
 
-void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
+void BraveNewTabMessageHandler::HandleGetStats(const base::ListValue& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
@@ -396,14 +396,14 @@ void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
 }
 
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
 
   ResolveJavascriptCallback(args[0], GetAdsDataDictionary());
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (args.size() != 2) {
     LOG(ERROR) << "Invalid input";
     return;
@@ -490,7 +490,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 }
 
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
 
   // Decrement original value only if there's actual branded content and we are
@@ -506,7 +506,7 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
 }
 
 void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   AllowJavascript();
   if (args.size() != 1) {
@@ -514,7 +514,7 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
     return;
   }
 
-  const base::Value::Dict* const dict = args[0].GetIfDict();
+  const base::DictValue* const dict = args[0].GetIfDict();
   CHECK(dict);
 
   ntp_background_images::ViewCounterService* const service =
@@ -545,18 +545,18 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
 }
 
 void BraveNewTabMessageHandler::HandleGetWallpaperData(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
 
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  base::Value::Dict wallpaper;
+  base::DictValue wallpaper;
 
   if (!service) {
     ResolveJavascriptCallback(args[0], wallpaper);
     return;
   }
 
-  std::optional<base::Value::Dict> data =
+  std::optional<base::DictValue> data =
       was_restored_ ? service->GetNextWallpaperForDisplay()
                     : service->GetCurrentWallpaperForDisplay();
 
@@ -614,7 +614,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 }
 
 void BraveNewTabMessageHandler::HandleCustomizeClicked(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
@@ -633,12 +633,12 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
   FireWebUIListener("preferences-changed", data);
 }
 
-base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
+base::DictValue BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   if (!ads_service_) {
     return {};
   }
 
-  return base::Value::Dict().Set(
+  return base::DictValue().Set(
       kNeedsBrowserUpgradeToServeAds,
       ads_service_->IsBrowserUpgradeRequiredToServeAds());
 }

@@ -114,7 +114,7 @@ void BraveImportDataHandler::StartImportImpl(
 
 void BraveImportDataHandler::NotifyImportProgress(
     const user_data_importer::SourceProfile& source_profile,
-    const base::Value::Dict& info) {
+    const base::DictValue& info) {
   const std::string* event = info.FindString("event");
   if (!event) {
     return;
@@ -128,7 +128,7 @@ void BraveImportDataHandler::NotifyImportProgress(
   }
 }
 
-void BraveImportDataHandler::HandleImportData(const base::Value::List& args) {
+void BraveImportDataHandler::HandleImportData(const base::ListValue& args) {
   ImportDataHandler::HandleImportData(args);
 }
 

@@ -25,18 +25,18 @@ class BraveTorHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void GetBridgesConfig(const base::Value::List& args);
-  void SetBridgesConfig(const base::Value::List& args);
-  void RequestBridgesCaptcha(const base::Value::List& args);
-  void ResolveBridgesCaptcha(const base::Value::List& args);
+  void GetBridgesConfig(const base::ListValue& args);
+  void SetBridgesConfig(const base::ListValue& args);
+  void RequestBridgesCaptcha(const base::ListValue& args);
+  void ResolveBridgesCaptcha(const base::ListValue& args);
 
   void SendResultToJavascript(bool reset_request,
                               const base::Value& callback_id,
                               const base::Value& response);
 
-  void SetTorEnabled(const base::Value::List& args);
-  void IsTorEnabled(const base::Value::List& args);
-  void IsTorManaged(const base::Value::List& args);
+  void SetTorEnabled(const base::ListValue& args);
+  void IsTorEnabled(const base::ListValue& args);
+  void IsTorManaged(const base::ListValue& args);
   void OnTorEnabledChanged();
 
   PrefChangeRegistrar local_state_change_registrar_;

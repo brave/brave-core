@@ -51,7 +51,7 @@ class SkusInternalsUI : public content::WebUIController,
   void FileSelectionCanceled() override;
 
   std::string GetLastVPNConnectionError() const;
-  base::Value::Dict GetOrderInfo(const std::string& location) const;
+  base::DictValue GetOrderInfo(const std::string& location) const;
   std::string GetSkusStateAsString() const;
 
   void EnsureMojoConnected();

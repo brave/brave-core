@@ -77,7 +77,7 @@ bool IsNTPPromotionEnabled(Profile* profile) {
   }
 
   // Only show promotion if current wallpaper is not sponsored images.
-  std::optional<base::Value::Dict> data =
+  std::optional<base::DictValue> data =
       service->GetCurrentWallpaperForDisplay();
   if (data) {
     if (const auto is_background =

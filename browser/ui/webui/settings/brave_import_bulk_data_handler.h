@@ -32,7 +32,7 @@ class BraveImportBulkDataHandler : public BraveImportDataHandler {
       delete;
 
  protected:
-  void HandleImportDataBulk(const base::Value::List& args);
+  void HandleImportDataBulk(const base::ListValue& args);
 
   std::optional<int> GetProfileIndex(
       const user_data_importer::SourceProfile& source_profile);
@@ -47,7 +47,7 @@ class BraveImportBulkDataHandler : public BraveImportDataHandler {
   // BraveImportDataHandler
   void NotifyImportProgress(
       const user_data_importer::SourceProfile& source_profile,
-      const base::Value::Dict& info) override;
+      const base::DictValue& info) override;
   void OnImportEnded(
       const user_data_importer::SourceProfile& source_profile) override;
 

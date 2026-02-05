@@ -61,7 +61,7 @@ class BraveAdblockInternalsMessageHandler
                             base::Unretained(this)));
   }
 
-  void GetDebugInfo(const base::Value::List& args) {
+  void GetDebugInfo(const base::ListValue& args) {
     CHECK_EQ(1U, args.size());
     const auto& callback_id = args[0].GetString();
     AllowJavascript();
@@ -87,7 +87,7 @@ class BraveAdblockInternalsMessageHandler
                                base::Value("failed to get dump"));
     }
 
-    base::Value::Dict mem_info;
+    base::DictValue mem_info;
     CHECK(!dump->process_dumps().empty());
     const auto& pmd = dump->process_dumps().front();
     for (const auto& metric : kCollectedMemoryMetrics) {
@@ -110,7 +110,7 @@ class BraveAdblockInternalsMessageHandler
                        std::move(mem_info)));
   }
 
-  void DiscardRegex(const base::Value::List& args) {
+  void DiscardRegex(const base::ListValue& args) {
     CHECK_EQ(1U, args.size());
     uint64_t regex_id = 0U;
     if (!base::StringToUint64(args[0].GetString(), &regex_id)) {
@@ -120,13 +120,13 @@ class BraveAdblockInternalsMessageHandler
   }
 
   void OnGetDebugInfo(const std::string& callback_id,
-                      base::Value::Dict mem_info,
-                      base::Value::Dict default_engine_info,
-                      base::Value::Dict additional_engine_info) {
+                      base::DictValue mem_info,
+                      base::DictValue default_engine_info,
+                      base::DictValue additional_engine_info) {
     if (!IsJavascriptAllowed()) {
       return;
     }
-    base::Value::Dict result;
+    base::DictValue result;
     result.Set("default_engine", std::move(default_engine_info));
     result.Set("additional_engine", std::move(additional_engine_info));
     result.Set("memory", std::move(mem_info));

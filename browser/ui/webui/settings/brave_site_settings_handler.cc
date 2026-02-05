@@ -47,7 +47,7 @@ bool BraveSiteSettingsHandler::IsPatternValidForBraveContentType(
 }
 
 void BraveSiteSettingsHandler::HandleIsPatternValidForType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(3U, args.size());
   const base::Value& callback_id = args[0];
   const std::string& pattern_string = args[1].GetString();
@@ -57,7 +57,7 @@ void BraveSiteSettingsHandler::HandleIsPatternValidForType(
       site_settings::ContentSettingsTypeFromGroupName(type);
 
   if (!IsPatternValidForBraveContentType(content_type, pattern_string)) {
-    base::Value::Dict return_value;
+    base::DictValue return_value;
     return_value.Set(kIsValidKey, base::Value(false));
     return_value.Set(kReasonKey, base::Value(l10n_util::GetStringUTF8(
                                      IDS_BRAVE_SHIELDS_NOT_VALID_ADDRESS)));

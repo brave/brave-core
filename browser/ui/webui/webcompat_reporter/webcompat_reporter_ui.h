@@ -59,17 +59,17 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  private:
   void InitAdditionalParameters(Profile* profile);
 
-  void HandleCaptureScreenshot(const base::Value::List& args);
+  void HandleCaptureScreenshot(const base::ListValue& args);
   void HandleCapturedScreenshotBitmap(SkBitmap bitmap, base::Value callback_id);
   void HandleEncodedScreenshotPNG(
       base::Value callback_id,
       std::optional<std::vector<unsigned char>> encoded_png);
 
-  void HandleGetCapturedScreenshot(const base::Value::List& args);
-  void HandleClearScreenshot(const base::Value::List& args);
+  void HandleGetCapturedScreenshot(const base::ListValue& args);
+  void HandleClearScreenshot(const base::ListValue& args);
 
-  void HandleSubmitReport(const base::Value::List& args);
-  void HandleInit(const base::Value::List& args);
+  void HandleSubmitReport(const base::ListValue& args);
+  void HandleInit(const base::ListValue& args);
 
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;

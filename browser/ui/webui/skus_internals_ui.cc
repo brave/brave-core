@@ -89,14 +89,14 @@ void SkusInternalsUI::GetSkusState(GetSkusStateCallback callback) {
 }
 
 void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
-  base::Value::Dict dict;
+  base::DictValue dict;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #if !BUILDFLAG(IS_ANDROID)
   dict.Set("Last connection error", GetLastVPNConnectionError());
 #endif
   auto* profile = Profile::FromWebUI(web_ui());
   if (!brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
-    dict.Set("Order", base::Value::Dict());
+    dict.Set("Order", base::DictValue());
   } else {
     auto order_info = GetOrderInfo("vpn.");
     order_info.Set(
@@ -110,16 +110,16 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 }
 
 void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("Order", GetOrderInfo("leo."));
   std::string result;
   base::JSONWriter::Write(dict, &result);
   std::move(callback).Run(result);
 }
 
-base::Value::Dict SkusInternalsUI::GetOrderInfo(
+base::DictValue SkusInternalsUI::GetOrderInfo(
     const std::string& location) const {
-  base::Value::Dict dict;
+  base::DictValue dict;
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
     if (!kv.first.starts_with("skus:")) {
@@ -137,7 +137,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
     if (!orders) {
       continue;
     }
-    base::Value::Dict order_dict_output;
+    base::DictValue order_dict_output;
     for (const auto order : *orders) {
       const auto* order_dict = order.second.GetIfDict();
       if (!order_dict) {
@@ -239,7 +239,7 @@ std::string SkusInternalsUI::GetLastVPNConnectionError() const {
 
 std::string SkusInternalsUI::GetSkusStateAsString() const {
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
-  base::Value::Dict dict;
+  base::DictValue dict;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* profile = Profile::FromWebUI(web_ui());

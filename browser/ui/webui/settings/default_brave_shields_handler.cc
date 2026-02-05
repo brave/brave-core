@@ -182,7 +182,7 @@ void DefaultBraveShieldsHandler::OnThirdPartyCookieBlockingChanged(
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
 
   ControlType setting = brave_shields::GetAdControlType(
@@ -193,8 +193,7 @@ void DefaultBraveShieldsHandler::IsAdControlEnabled(
                             base::Value(setting == ControlType::BLOCK));
 }
 
-void DefaultBraveShieldsHandler::SetAdControlType(
-    const base::Value::List& args) {
+void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
@@ -206,7 +205,7 @@ void DefaultBraveShieldsHandler::SetAdControlType(
 }
 
 void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -218,7 +217,7 @@ void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
 }
 
 void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
@@ -230,7 +229,7 @@ void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -243,7 +242,7 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
 }
 
 void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   const ControlType setting = brave_shields::GetCookieControlType(
@@ -260,7 +259,7 @@ void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
 }
 
 void DefaultBraveShieldsHandler::SetCookieControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
@@ -272,7 +271,7 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -284,7 +283,7 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
 }
 
 void DefaultBraveShieldsHandler::SetFingerprintingControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
@@ -296,7 +295,7 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -308,7 +307,7 @@ void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
 }
 
 void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
@@ -320,7 +319,7 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -332,7 +331,7 @@ void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
 }
 
 void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
@@ -343,7 +342,7 @@ void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
 }
 
 void DefaultBraveShieldsHandler::GetNoScriptControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   ControlType setting = brave_shields::GetNoScriptControlType(
@@ -355,7 +354,7 @@ void DefaultBraveShieldsHandler::GetNoScriptControlType(
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
@@ -367,7 +366,7 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
 }
 
 void DefaultBraveShieldsHandler::SetContactInfoSaveFlag(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   if (!args[0].is_bool()) {
@@ -383,7 +382,7 @@ void DefaultBraveShieldsHandler::SetContactInfoSaveFlag(
   }
 }
 
-void DefaultBraveShieldsHandler::GetContactInfo(const base::Value::List& args) {
+void DefaultBraveShieldsHandler::GetContactInfo(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   AllowJavascript();
@@ -392,7 +391,7 @@ void DefaultBraveShieldsHandler::GetContactInfo(const base::Value::List& args) {
       webcompat_reporter::WebcompatReporterServiceFactory::GetServiceForContext(
           profile_);
   if (!webcompat_reporter_service) {
-    base::Value::Dict params_dict;
+    base::DictValue params_dict;
     params_dict.Set("contactInfo", "");
     params_dict.Set("contactInfoSaveFlag", false);
     ResolveJavascriptCallback(args[0], std::move(params_dict));
@@ -408,14 +407,14 @@ void DefaultBraveShieldsHandler::OnGetContactInfo(
     const std::optional<std::string>& contact_info,
     const bool contact_info_save_flag,
     const std::vector<std::string>& components) {
-  base::Value::Dict params_dict;
+  base::DictValue params_dict;
   params_dict.Set("contactInfo", contact_info.value_or(""));
   params_dict.Set("contactInfoSaveFlag", contact_info_save_flag);
   ResolveJavascriptCallback(javascript_callback, std::move(params_dict));
 }
 
 void DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -425,7 +424,7 @@ void DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled(
 }
 
 void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -437,7 +436,7 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
 }
 
 void DefaultBraveShieldsHandler::GetAllowElementBlockerInPrivateModeEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -448,7 +447,7 @@ void DefaultBraveShieldsHandler::GetAllowElementBlockerInPrivateModeEnabled(
 }
 
 void DefaultBraveShieldsHandler::SetAllowElementBlockerInPrivateModeEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   if (!args[0].is_bool()) {

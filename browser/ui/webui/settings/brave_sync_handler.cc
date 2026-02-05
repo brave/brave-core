@@ -132,13 +132,13 @@ void BraveSyncHandler::OnDeviceInfoChange() {
   }
 }
 
-void BraveSyncHandler::HandleGetDeviceList(const base::Value::List& args) {
+void BraveSyncHandler::HandleGetDeviceList(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
   ResolveJavascriptCallback(args[0], GetSyncDeviceList());
 }
 
-void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
+void BraveSyncHandler::HandleGetSyncCode(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
 
@@ -161,7 +161,7 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
 }
 
 void BraveSyncHandler::HandleCopySyncCodeToClipboard(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
@@ -176,7 +176,7 @@ void BraveSyncHandler::HandleCopySyncCodeToClipboard(
   ResolveJavascriptCallback(args[0].Clone(), base::Value());
 }
 
-void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
+void BraveSyncHandler::HandleGetPureSyncCode(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
 
@@ -189,7 +189,7 @@ void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(sync_code));
 }
 
-void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
+void BraveSyncHandler::HandleGetQRCode(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
@@ -235,7 +235,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0].Clone(), base::Value(data_url));
 }
 
-void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
+void BraveSyncHandler::HandleSetSyncCode(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
@@ -308,7 +308,7 @@ void BraveSyncHandler::OnJoinChainResult(base::Value callback_id, bool result) {
   }
 }
 
-void BraveSyncHandler::HandleReset(const base::Value::List& args) {
+void BraveSyncHandler::HandleReset(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
 
@@ -339,7 +339,7 @@ void BraveSyncHandler::OnAccountPermanentlyDeleted(
 }
 
 void BraveSyncHandler::HandlePermanentlyDeleteAccount(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
 
@@ -357,7 +357,7 @@ void BraveSyncHandler::HandlePermanentlyDeleteAccount(
       weak_ptr_factory_.GetWeakPtr(), std::move(callback_id_arg)));
 }
 
-void BraveSyncHandler::HandleDeleteDevice(const base::Value::List& args) {
+void BraveSyncHandler::HandleDeleteDevice(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
@@ -405,14 +405,14 @@ void BraveSyncHandler::OnResetDone(base::Value callback_id) {
   ResolveJavascriptCallback(callback_id, base::Value(true));
 }
 
-base::Value::List BraveSyncHandler::GetSyncDeviceList() {
+base::ListValue BraveSyncHandler::GetSyncDeviceList() {
   AllowJavascript();
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
   DCHECK(tracker);
   const syncer::DeviceInfo* local_device_info =
       GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
-  base::Value::List device_list;
+  base::ListValue device_list;
 
   for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
     auto device_value = device->ToValue();
@@ -429,7 +429,7 @@ base::Value::List BraveSyncHandler::GetSyncDeviceList() {
   return device_list;
 }
 
-void BraveSyncHandler::HandleSyncGetWordsCount(const base::Value::List& args) {
+void BraveSyncHandler::HandleSyncGetWordsCount(const base::ListValue& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());

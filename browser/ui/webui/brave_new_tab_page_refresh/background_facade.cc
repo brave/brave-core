@@ -26,7 +26,7 @@ namespace {
 // Converts the sponsored image data returned as a Dict by `ViewCounterService`
 // into a mojo struct for use by the NTP.
 mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
-    const base::Value::Dict& data) {
+    const base::DictValue& data) {
   using ntp_background_images::kAltKey;
   using ntp_background_images::kCampaignIdKey;
   using ntp_background_images::kCreativeInstanceIDKey;

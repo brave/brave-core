@@ -73,25 +73,25 @@ constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
 constexpr base::ByteCount kMaxBodySize = base::KiB(256);
 
 base::Value FetchCaptchaData() {
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("type", "client-transports");
   data.Set("version", kMoatVersion);
-  base::Value::List supported_transports;
+  base::ListValue supported_transports;
 
   supported_transports.Append("obfs4");
   data.Set("supported", std::move(supported_transports));
 
-  base::Value::List list;
+  base::ListValue list;
   list.Append(std::move(data));
 
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("data", std::move(list));
   return base::Value(std::move(result));
 }
 
 base::Value SolveCaptchaData(const std::string& challenge,
                              const std::string& solution) {
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("id", "2");
   data.Set("version", kMoatVersion);
   data.Set("qrcode", "false");
@@ -100,10 +100,10 @@ base::Value SolveCaptchaData(const std::string& challenge,
   data.Set("challenge", challenge);
   data.Set("solution", solution);
 
-  base::Value::List list;
+  base::ListValue list;
   list.Append(std::move(data));
 
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("data", std::move(list));
   return base::Value(std::move(result));
 }
@@ -168,7 +168,7 @@ class BridgeRequest {
     if (!response_body) {
       return std::move(captcha_callback_).Run(base::Value());
     }
-    std::optional<base::Value::Dict> value =
+    std::optional<base::DictValue> value =
         base::JSONReader::ReadDict(*response_body, base::JSON_PARSE_RFC);
 
     if (!value.has_value()) {
@@ -210,7 +210,7 @@ class BridgeRequest {
       return std::move(captcha_callback_).Run(base::Value());
     }
 
-    base::Value::Dict result;
+    base::DictValue result;
     result.Set("captcha",
                "data:image/png;base64," + base::Base64Encode(*encoded));
     std::move(captcha_callback_).Run(base::Value(std::move(result)));
@@ -224,7 +224,7 @@ class BridgeRequest {
       return std::move(result_callback_).Run(base::Value());
     }
 
-    std::optional<base::Value::Dict> value =
+    std::optional<base::DictValue> value =
         base::JSONReader::ReadDict(*response_body, base::JSON_PARSE_RFC);
 
     if (!value.has_value()) {
@@ -319,7 +319,7 @@ void BraveTorHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void BraveTorHandler::GetBridgesConfig(const base::Value::List& args) {
+void BraveTorHandler::GetBridgesConfig(const base::ListValue& args) {
   AllowJavascript();
 
   CHECK_EQ(1u, args.size());
@@ -328,7 +328,7 @@ void BraveTorHandler::GetBridgesConfig(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], bridges_config.ToValue(false));
 }
 
-void BraveTorHandler::SetBridgesConfig(const base::Value::List& args) {
+void BraveTorHandler::SetBridgesConfig(const base::ListValue& args) {
   CHECK_EQ(1u, args.size());
   CHECK(args[0].is_dict());
 
@@ -337,7 +337,7 @@ void BraveTorHandler::SetBridgesConfig(const base::Value::List& args) {
   TorProfileServiceFactory::SetTorBridgesConfig(*bridges_config);
 }
 
-void BraveTorHandler::RequestBridgesCaptcha(const base::Value::List& args) {
+void BraveTorHandler::RequestBridgesCaptcha(const base::ListValue& args) {
   CHECK_EQ(1u, args.size());
 
   auto captcha_callback = base::BindOnce(
@@ -348,7 +348,7 @@ void BraveTorHandler::RequestBridgesCaptcha(const base::Value::List& args) {
       std::move(captcha_callback));
 }
 
-void BraveTorHandler::ResolveBridgesCaptcha(const base::Value::List& args) {
+void BraveTorHandler::ResolveBridgesCaptcha(const base::ListValue& args) {
   CHECK_EQ(2u, args.size());
 
   AllowJavascript();
@@ -378,14 +378,14 @@ void BraveTorHandler::SendResultToJavascript(bool reset_request,
   }
 }
 
-void BraveTorHandler::SetTorEnabled(const base::Value::List& args) {
+void BraveTorHandler::SetTorEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   const bool enabled = args[0].GetBool();
   AllowJavascript();
   TorProfileServiceFactory::SetTorDisabled(!enabled);
 }
 
-void BraveTorHandler::IsTorEnabled(const base::Value::List& args) {
+void BraveTorHandler::IsTorEnabled(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -401,7 +401,7 @@ void BraveTorHandler::OnTorEnabledChanged() {
   }
 }
 
-void BraveTorHandler::IsTorManaged(const base::Value::List& args) {
+void BraveTorHandler::IsTorManaged(const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
 
   const bool is_managed = TorProfileServiceFactory::IsTorManaged(

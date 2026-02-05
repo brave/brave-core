@@ -33,7 +33,7 @@ void BraveImporterObserver::ImportStarted() {
   if (import_started_called_)
     return;
   import_started_called_ = true;
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("importer_name", source_profile_.importer_name);
   data.Set("importer_type", source_profile_.importer_type);
   data.Set("items_to_import", imported_items_);
@@ -43,7 +43,7 @@ void BraveImporterObserver::ImportStarted() {
 
 void BraveImporterObserver::ImportItemStarted(
     user_data_importer::ImportItem item) {
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("importer_name", source_profile_.importer_name);
   data.Set("importer_type", source_profile_.importer_type);
   data.Set("items_to_import", imported_items_);
@@ -54,7 +54,7 @@ void BraveImporterObserver::ImportItemStarted(
 
 void BraveImporterObserver::ImportItemEnded(
     user_data_importer::ImportItem item) {
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("importer_name", source_profile_.importer_name);
   data.Set("importer_type", source_profile_.importer_type);
   data.Set("items_to_import", imported_items_);
@@ -64,7 +64,7 @@ void BraveImporterObserver::ImportItemEnded(
 }
 
 void BraveImporterObserver::ImportEnded() {
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("importer_name", source_profile_.importer_name);
   data.Set("importer_type", source_profile_.importer_type);
   data.Set("items_to_import", imported_items_);

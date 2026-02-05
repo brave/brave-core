@@ -34,7 +34,7 @@ class BraveAccountUIMessageHandler : public content::WebUIMessageHandler {
   // WebUIMessageHandler:
   void RegisterMessages() override;
 
-  void OnDialogCloseMessage(const base::Value::List& args);
+  void OnDialogCloseMessage(const base::ListValue& args);
 };
 
 void BraveAccountUIMessageHandler::RegisterMessages() {
@@ -45,7 +45,7 @@ void BraveAccountUIMessageHandler::RegisterMessages() {
 }
 
 void BraveAccountUIMessageHandler::OnDialogCloseMessage(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   web_ui()->GetWebContents()->Close();
 }
 }  // namespace

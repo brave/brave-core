@@ -41,23 +41,23 @@ class BraveAdBlockHandler
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
-  void GetRegionalLists(const base::Value::List& args);
-  void EnableFilterList(const base::Value::List& args);
-  void UpdateFilterLists(const base::Value::List& args);
-  void GetListSubscriptions(const base::Value::List& args);
-  void GetCustomFilters(const base::Value::List& args);
-  void AddSubscription(const base::Value::List& args);
-  void SetSubscriptionEnabled(const base::Value::List& args);
-  void UpdateSubscription(const base::Value::List& args);
-  void DeleteSubscription(const base::Value::List& args);
-  void ViewSubscriptionSource(const base::Value::List& args);
-  void UpdateCustomFilters(const base::Value::List& args);
-  void GetCustomScriptlets(const base::Value::List& args);
+  void GetRegionalLists(const base::ListValue& args);
+  void EnableFilterList(const base::ListValue& args);
+  void UpdateFilterLists(const base::ListValue& args);
+  void GetListSubscriptions(const base::ListValue& args);
+  void GetCustomFilters(const base::ListValue& args);
+  void AddSubscription(const base::ListValue& args);
+  void SetSubscriptionEnabled(const base::ListValue& args);
+  void UpdateSubscription(const base::ListValue& args);
+  void DeleteSubscription(const base::ListValue& args);
+  void ViewSubscriptionSource(const base::ListValue& args);
+  void UpdateCustomFilters(const base::ListValue& args);
+  void GetCustomScriptlets(const base::ListValue& args);
   void OnGetCustomScriptlets(const std::string& callback_id,
                              base::Value custom_resources);
-  void AddCustomScriptlet(const base::Value::List& args);
-  void UpdateCustomScriptlet(const base::Value::List& args);
-  void RemoveCustomScriptlet(const base::Value::List& args);
+  void AddCustomScriptlet(const base::ListValue& args);
+  void UpdateCustomScriptlet(const base::ListValue& args);
+  void RemoveCustomScriptlet(const base::ListValue& args);
   void OnScriptletUpdateStatus(
       const std::string& callback_id,
       brave_shields::AdBlockCustomResourceProvider::ErrorCode error_code);
@@ -65,7 +65,7 @@ class BraveAdBlockHandler
   void RefreshSubscriptionsList();
   void RefreshCustomFilters();
 
-  base::Value::List GetSubscriptions();
+  base::ListValue GetSubscriptions();
 
   void OnFilterListsUpdated(std::string callback_id, bool success);
 

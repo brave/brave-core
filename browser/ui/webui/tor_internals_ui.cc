@@ -37,11 +37,11 @@ void TorInternalsDOMHandler::RegisterMessages() {
 }
 
 void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
 
-  base::Value::Dict info;
+  base::DictValue info;
 
   info.Set("torVersion", tor_launcher_factory_->GetTorVersion());
   info.Set("torPid", static_cast<int>(tor_launcher_factory_->GetTorPid()));
@@ -50,7 +50,7 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
   CallJavascriptFunction("tor_internals.onGetTorGeneralInfo", info);
 }
 
-void TorInternalsDOMHandler::HandleGetTorLog(const base::Value::List& args) {
+void TorInternalsDOMHandler::HandleGetTorLog(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
   tor_launcher_factory_->GetTorLog(base::BindOnce(

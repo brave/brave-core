@@ -107,7 +107,7 @@ void BraveImportBulkDataHandler::PrepareProfile(
 }
 
 void BraveImportBulkDataHandler::HandleImportDataBulk(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_GE(args.size(), 2u);
   const auto& list = args[0].GetList();
   // Bulk profiles import assumes new profiles will be created on our side if
@@ -115,7 +115,7 @@ void BraveImportBulkDataHandler::HandleImportDataBulk(
   for (const auto& it : list) {
     int browser_index = it.GetInt();
     importing_profiles_.insert(browser_index);
-    base::Value::List single_profile_args;
+    base::ListValue single_profile_args;
     single_profile_args.Append(browser_index);
     single_profile_args.Append(args[1].Clone());
     BraveImportDataHandler::HandleImportData(single_profile_args);
@@ -163,7 +163,7 @@ void BraveImportBulkDataHandler::StartImport(
 
 void BraveImportBulkDataHandler::NotifyImportProgress(
     const user_data_importer::SourceProfile& source_profile,
-    const base::Value::Dict& info) {
+    const base::DictValue& info) {
   FireWebUIListener("brave-import-data-status-changed", info);
 }
 

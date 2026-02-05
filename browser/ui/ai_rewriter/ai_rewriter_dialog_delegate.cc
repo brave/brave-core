@@ -253,7 +253,7 @@ AIRewriterDialogDelegate::AIRewriterDialogDelegate(
   set_dialog_modal_type(ui::mojom::ModalType::kWindow);
   set_dialog_content_url(GURL(kRewriterUIURL));
   set_dialog_size(gfx::Size(600, 550));
-  set_dialog_args(*base::WriteJson(base::Value::Dict()));
+  set_dialog_args(*base::WriteJson(base::DictValue()));
   set_show_dialog_title(false);
   set_delete_on_close(false);
 }

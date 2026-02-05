@@ -18,21 +18,21 @@ class BraveImporterObserverUnitTest : public testing::Test {
  public:
   BraveImporterObserverUnitTest() {}
 
-  void SetExpectedInfo(base::Value::Dict value) {
+  void SetExpectedInfo(base::DictValue value) {
     expected_info_ = std::move(value);
   }
   void SetExpectedCalls(int value) { expected_calls_ = value; }
   int GetExpectedCalls() { return expected_calls_; }
   void NotifyImportProgress(
       const user_data_importer::SourceProfile& source_profile,
-      const base::Value::Dict& info) {
+      const base::DictValue& info) {
     EXPECT_EQ(expected_info_, info);
     expected_calls_++;
   }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  base::Value::Dict expected_info_;
+  base::DictValue expected_info_;
   int expected_calls_ = 0;
   raw_ptr<BraveExternalProcessImporterHost> _ = nullptr;
 };

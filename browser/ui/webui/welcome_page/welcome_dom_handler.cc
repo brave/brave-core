@@ -127,13 +127,12 @@ void WelcomeDOMHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void WelcomeDOMHandler::HandleImportNowRequested(
-    const base::Value::List& args) {
+void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue& args) {
   chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(),
                                              chrome::kImportDataSubPage);
 }
 
-void WelcomeDOMHandler::HandleGetDefaultBrowser(const base::Value::List& args) {
+void WelcomeDOMHandler::HandleGetDefaultBrowser(const base::ListValue& args) {
   CHECK_EQ(1U, args.size());
   const auto& callback_id = args[0].GetString();
   AllowJavascript();
@@ -156,7 +155,7 @@ void WelcomeDOMHandler::OnGetDefaultBrowser(
   default_browser_name_ = browser_name;
 }
 
-void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
+void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue& args) {
   CHECK_EQ(1U, args.size());
   CHECK(args[0].is_int());
 
@@ -165,7 +164,7 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
   RecordP3AHistogram(last_onboarding_phase_);
 }
 
-void WelcomeDOMHandler::HandleOpenSettingsPage(const base::Value::List& args) {
+void WelcomeDOMHandler::HandleOpenSettingsPage(const base::ListValue& args) {
   CHECK(profile_);
   Browser* browser = chrome::FindBrowserWithProfile(profile_);
   if (browser) {
@@ -178,7 +177,7 @@ void WelcomeDOMHandler::HandleOpenSettingsPage(const base::Value::List& args) {
 }
 
 void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   if (!args[0].is_bool()) {
     return;
@@ -188,8 +187,7 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
       enabled, ChangeMetricsReportingStateCalledFrom::kUiSettings);
 }
 
-void WelcomeDOMHandler::HandleEnableWebDiscovery(
-    const base::Value::List& args) {
+void WelcomeDOMHandler::HandleEnableWebDiscovery(const base::ListValue& args) {
   CHECK(profile_);
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
@@ -197,7 +195,7 @@ void WelcomeDOMHandler::HandleEnableWebDiscovery(
 }
 
 void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(1U, args.size());
   const auto& callback_id = args[0].GetString();
   AllowJavascript();
@@ -229,7 +227,7 @@ void WelcomeDOMHandler::OnGettingStartedServerCheck(
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
     const std::string& path,
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   if (!args[0].is_bool()) {
     return;
@@ -240,6 +238,6 @@ void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
   local_state->SetBoolean(path, enabled);
 }
 
-void WelcomeDOMHandler::SetP3AEnabled(const base::Value::List& args) {
+void WelcomeDOMHandler::SetP3AEnabled(const base::ListValue& args) {
   SetLocalStateBooleanEnabled(p3a::kP3AEnabled, args);
 }
