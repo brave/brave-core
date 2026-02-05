@@ -6,26 +6,24 @@
 import {
   LocalAIService,
   PassageEmbedderFactoryReceiver,
+  PassageEmbedderInterface,
+  PassageEmbedderFactoryInterface,
+  PassageEmbedderPendingReceiver,
   PassageEmbedderReceiver,
 } from 'gen/brave/components/local_ai/core/local_ai.mojom.m.js'
 
 // Initialize connection to the browser-side LocalAIService
 const localAIService = LocalAIService.getRemote()
 
-// Implement the PassageEmbedder Mojo interface
-class PassageEmbedderImpl {
-  // Implementation of PassageEmbedder::GenerateEmbeddings
-  async generateEmbeddings(
-    _text: string,
-  ): Promise<{ embedding: number[] }> {
+class PassageEmbedderImpl implements PassageEmbedderInterface {
+  async generateEmbeddings(_text: string) {
     // TODO(https://github.com/brave/brave-browser/issues/52722):
     // stub until model loading is wired up
     return { embedding: [] }
   }
 }
 
-// Implement the PassageEmbedderFactory Mojo interface (stub).
-class PassageEmbedderFactoryImpl {
+class PassageEmbedderFactoryImpl implements PassageEmbedderFactoryInterface {
   receiver: PassageEmbedderFactoryReceiver
   boundEmbedders: PassageEmbedderReceiver[]
 
@@ -34,7 +32,7 @@ class PassageEmbedderFactoryImpl {
     this.boundEmbedders = []
   }
 
-  bind(receiver: any): void {
+  bind(receiver: PassageEmbedderPendingReceiver) {
     const impl = new PassageEmbedderImpl()
     const bound = new PassageEmbedderReceiver(impl)
     bound.$.bindHandle(receiver.handle)
@@ -48,8 +46,6 @@ class PassageEmbedderFactoryImpl {
 
 // Create and register the PassageEmbedderFactory implementation
 const factory = new PassageEmbedderFactoryImpl()
-localAIService.registerPassageEmbedderFactory(
-  factory.getPendingRemote(),
-)
+localAIService.registerPassageEmbedderFactory(factory.getPendingRemote())
 
-console.log('[Candle WASM] Passage embedder factory bridge initialized')
+console.debug('[on-device-model-worker] Passage embedder factory initialized')

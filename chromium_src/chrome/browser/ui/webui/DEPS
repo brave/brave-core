@@ -15,4 +15,5 @@ include_rules = [
   "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/speedreader/common/buildflags",
   "+brave/components/email_aliases",
+  "+brave/components/local_ai/core/features.h",
 ]

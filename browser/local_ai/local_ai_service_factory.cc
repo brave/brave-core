@@ -10,10 +10,10 @@
 
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai_service.h"
+#include "brave/components/local_ai/core/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"

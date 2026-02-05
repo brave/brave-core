@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//tools/grit/repack.gni")
 
 transpile_web_ui("candle_embedding_module") {
   resource_name = "candle_embedding_module"
@@ -25,4 +26,11 @@ transpile_web_ui("candle_embedding_module") {
 
   no_iife = true
   output_module = true
+  public_asset_path = "chrome-untrusted://on-device-model-worker/"
+}
+
+pack_web_resources("candle_embedding_module_generated") {
+  resource_name = "candle_embedding_module"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":candle_embedding_module" ]
 }

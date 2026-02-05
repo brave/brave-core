@@ -230,11 +230,11 @@
     "META": {"sizes": {"includes": [1]}},
     "includes": [54030],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_gemma/candle_embedding_gemma.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_module/candle_embedding_module.grd": {
     "META": {"sizes": {"includes": [2]}},
     "includes": [54035],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_gemma_bridge/candle_embedding_gemma_bridge.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_model_worker/on_device_model_worker.grd": {
     "META": {"sizes": {"includes": [1]}},
     "includes": [54037],
   },

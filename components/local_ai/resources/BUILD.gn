@@ -10,24 +10,21 @@ import("//tools/grit/repack.gni")
 
 # Untrusted WebUI for WASM execution at
 # chrome-untrusted://on-device-model-worker/
-transpile_web_ui("candle_embedding_gemma_bridge_ui") {
+transpile_web_ui("on_device_model_worker_ui") {
   entry_points = [ [
-        "candle_embedding_gemma_bridge",
-        rebase_path("candle_embedding_gemma_bridge.ts"),
+        "on_device_model_worker",
+        rebase_path("on_device_model_worker.ts"),
       ] ]
   webpack_aliases = [ "browser" ]
-  resource_name = "candle_embedding_gemma_bridge"
+  resource_name = "on_device_model_worker"
 
   imports_from = [ "//brave/components/local_ai/resources/" ]
 
   deps = [ "//brave/components/local_ai/core:mojom_js" ]
 }
 
-pack_web_resources("candle_embedding_gemma_bridge_generated") {
-  resource_name = "candle_embedding_gemma_bridge"
+pack_web_resources("on_device_model_worker_generated") {
+  resource_name = "on_device_model_worker"
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
-  deps = [
-    ":candle_embedding_gemma_bridge_ui",
-    "//brave/components/local_ai/resources/candle_embedding_gemma:candle_embedding_module",
-  ]
+  deps = [ ":on_device_model_worker_ui" ]
 }
