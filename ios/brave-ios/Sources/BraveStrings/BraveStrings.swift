@@ -2593,13 +2593,6 @@ extension Strings {
     value: "Privacy",
     comment: "Settings privacy section title"
   )
-  public static let autofill = NSLocalizedString(
-    "Autofill",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Autofill",
-    comment: "Settings autofill section title"
-  )
   public static let saveLogins = NSLocalizedString(
     "SaveLogins",
     tableName: "BraveShared",
@@ -6465,23 +6458,6 @@ extension Strings {
 
 extension Strings {
   public struct Login {
-    public static let loginListEmptyScreenTitle =
-      NSLocalizedString(
-        "login.loginListEmptyScreenTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "No logins found",
-        comment:
-          "The message displayed on the password list screen when there is not password found"
-      )
-    public static let loginListNavigationTitle =
-      NSLocalizedString(
-        "login.loginListNavigationTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Logins & Passwords",
-        comment: "Title for navigation bar of the login list screen"
-      )
     public static let loginListSearchBarPlaceHolderTitle =
       NSLocalizedString(
         "login.loginListSearchBarPlaceHolderTitle",
@@ -9374,6 +9350,56 @@ extension Strings {
       bundle: .module,
       value: "The contact file could not be read. It may be corrupted or in an unsupported format.",
       comment: "Message for error alert when a VCard contact file cannot be parsed or opened"
+    )
+  }
+}
+
+// MARK: - Autofill
+extension Strings {
+  public struct Autofill {
+    public static let settingsSectionTitle = NSLocalizedString(
+      "autofill.settings.title",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Autofill",
+      comment: "Settings autofill section title"
+    )
+    public static let loginAndPasswordsSettingsItemTitle = NSLocalizedString(
+      "autofill.settings.loginAndPasswordsSettingsItemTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Login & Passwords",
+      comment: "Autofill settings item Login and Passwords Title"
+    )
+    public static let managePasswordstNavigationBarTitle = NSLocalizedString(
+      "autofill.managePasswords.navigationBarTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Manage Passwords",
+      comment: "Title for navigation bar of the Manage Passwords screen"
+    )
+    public static let managePasswordsAddNewButtonTitle = NSLocalizedString(
+        "autofill.managePasswords.addNewButtonTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Add New",
+        comment: "Title for Add New Password button on the navigation bar of the Manage Passwords screen"
+      )
+    public static let managePasswordsEmptyListTitle = NSLocalizedString(
+      "autofill.managePasswords.emptyListTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "No Passwords Saved",
+      comment:
+        "The message title displayed on the Manage Passwords screen when the list is empty"
+    )
+    public static let managePasswordsEmptyListDetail = NSLocalizedString(
+      "autofill.managePasswords.emptyListDetail",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "There are no passwords saved, you can save the first one by using the \"Add New\" button.",
+      comment:
+        "The message displayed on the password list screen when there is no saved"
     )
   }
 }

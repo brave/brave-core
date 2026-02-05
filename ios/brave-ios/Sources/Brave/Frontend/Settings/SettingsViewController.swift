@@ -1210,10 +1210,10 @@ class SettingsViewController: TableViewController {
 
   private lazy var autofillSection: Static.Section = {
     return Section(
-      header: .title(Strings.autofill),
+      header: .title(Strings.Autofill.settingsSectionTitle),
       rows: [
         Row(
-          text: Strings.Login.loginListNavigationTitle,
+          text: Strings.Autofill.loginAndPasswordsSettingsItemTitle,
           selection: { [unowned self] in
             let loginsPasswordsViewController = LoginListViewController(
               passwordAPI: self.passwordAPI,

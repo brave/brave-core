@@ -143,3 +143,71 @@ class LoginListDataSource {
     }
   }
 }
+
+@Observable
+class LoginListViewModel {
+  var credentialList: [PasswordForm] = []
+  var blockedList: [PasswordForm] = []
+  var isRefreshing: Bool = false
+
+  private let passwordAPI: BravePasswordAPI
+  private let dataSource: LoginListDataSource
+  private var passwordStoreListener: PasswordStoreListener?
+  private var searchTimer: Timer?
+
+  init(passwordAPI: BravePasswordAPI) {
+    self.passwordAPI = passwordAPI
+    self.dataSource = LoginListDataSource(with: passwordAPI)
+
+    // Adding the Password store observer to watch credentials changes
+    passwordStoreListener = passwordAPI.add(
+      PasswordStoreStateObserver { [weak self] _ in
+        guard let self = self, !self.dataSource.isCredentialsBeingSearched else {
+          return
+        }
+        DispatchQueue.main.async {
+          self.fetchLoginInfo()
+        }
+      }
+    )
+  }
+
+  deinit {
+    if let observer = passwordStoreListener {
+      passwordAPI.removeObserver(observer)
+    }
+  }
+
+  func fetchLoginInfo(_ searchQuery: String? = nil) {
+    guard !isRefreshing else { return }
+    isRefreshing = true
+    dataSource.fetchLoginInfo(searchQuery) { [weak self] _ in
+      DispatchQueue.main.async {
+        self?.credentialList = self?.dataSource.credentialList ?? []
+        self?.blockedList = self?.dataSource.blockedList ?? []
+        self?.isRefreshing = false
+      }
+    }
+  }
+
+  func performSearch(query: String) {
+    searchTimer?.invalidate()
+
+    if query.isEmpty {
+      dataSource.isCredentialsBeingSearched = false
+      fetchLoginInfo(nil)
+      return
+    }
+
+    dataSource.isCredentialsBeingSearched = true
+    searchTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
+      self?.fetchLoginInfo(query)
+    }
+  }
+
+  func removeLogin(_ credential: PasswordForm) {
+    passwordAPI.removeLogin(credential)
+    fetchLoginInfo()
+  }
+}
+
