@@ -251,6 +251,16 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
             source_dict.Set("title", source->title);
             source_dict.Set("url", source->url.spec());
             source_dict.Set("favicon", source->favicon_url.spec());
+            if (source->page_content.has_value()) {
+              source_dict.Set("page_content", source->page_content.value());
+            }
+            if (source->extra_snippets.has_value()) {
+              base::Value::List snippets_list;
+              for (const auto& snippet : source->extra_snippets.value()) {
+                snippets_list.Append(snippet);
+              }
+              source_dict.Set("extra_snippets", std::move(snippets_list));
+            }
             sources_list.Append(std::move(source_dict));
           }
           content_block_dict.Set("sources", std::move(sources_list));

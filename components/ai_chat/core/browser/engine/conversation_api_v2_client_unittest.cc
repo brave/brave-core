@@ -500,10 +500,20 @@ INSTANTIATE_TEST_SUITE_P(
             })"},
         ContentBlockTestParam{
             "WebSources", base::BindRepeating([]() {
+              auto source1 = mojom::WebSource::New();
+              source1->title = "Example Title";
+              source1->url = GURL("https://example.com/page");
+              source1->favicon_url = GURL("https://example.com/favicon.ico");
+              source1->page_content = "Full page text";
+              source1->extra_snippets =
+                  std::vector<std::string>{"snippet1", "snippet2"};
+              auto source2 = mojom::WebSource::New();
+              source2->title = "No Content";
+              source2->url = GURL("https://example2.com/page");
+              source2->favicon_url = GURL("https://example2.com/fav.ico");
               std::vector<mojom::WebSourcePtr> sources;
-              sources.push_back(mojom::WebSource::New(
-                  "Example Title", GURL("https://example.com/page"),
-                  GURL("https://example.com/favicon.ico")));
+              sources.push_back(std::move(source1));
+              sources.push_back(std::move(source2));
               std::vector<std::string> rich_results;
               rich_results.push_back(
                   R"({"type":"knowledge_graph","title":"Test Title"})");
@@ -516,15 +526,26 @@ INSTANTIATE_TEST_SUITE_P(
             }),
             R"({
               "type": "brave-chat.webSources",
-              "sources": [{
-                "title": "Example Title",
-                "url": "https://example.com/page",
-                "favicon": "https://example.com/favicon.ico"
-              }],
+              "sources": [
+                {
+                  "title": "Example Title",
+                  "url": "https://example.com/page",
+                  "favicon": "https://example.com/favicon.ico",
+                  "page_content": "Full page text",
+                  "extra_snippets": ["snippet1", "snippet2"]
+                },
+                {
+                  "title": "No Content",
+                  "url": "https://example2.com/page",
+                  "favicon": "https://example2.com/fav.ico"
+                }
+              ],
               "query": "test query",
               "rich_results": [
-                {"type": "knowledge_graph", "title": "Test Title"},
-                {"type": "video", "url": "https://video.example.com"}
+                {"type": "knowledge_graph",
+                 "title": "Test Title"},
+                {"type": "video",
+                 "url": "https://video.example.com"}
               ]
             })"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
