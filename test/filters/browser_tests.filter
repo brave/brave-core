@@ -1807,6 +1807,11 @@
 # This test fails because we disable commerce::kShoppingList
 -CommerceInternalsBrowserTest.InternalsPageOpen
 
+# Flaky - race condition between viewport size capture and async screenshot capture.
+# Viewport size can change between GetViewportPhysicalSize() and GetPageContext()
+# due to UI state changes (toolbars, etc.). Screenshot height may not match.
+-TabContextualizationControllerBrowserTest.GetPageContextForWebpage
+
 # Flaky upstream.
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/PDFExtensionScrollTest.WithArrowLeftRightScrollToPage/*
