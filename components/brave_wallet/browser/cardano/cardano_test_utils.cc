@@ -12,7 +12,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
@@ -129,7 +128,7 @@ void CardanoTestRpcServer::RequestInterceptor(
   }
 
   if (auto txid = IsGetTransactionRequest(request)) {
-    if (base::Contains(confirmed_transactions_, *txid)) {
+    if (std::ranges::contains(confirmed_transactions_, *txid)) {
       cardano_rpc::blockfrost_api::Transaction tx;
       tx.hash = *txid;
       url_loader_factory_.AddResponse(

@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
@@ -56,7 +55,7 @@ class DebounceTabHelper
   }
   void ClearRedirectChain() { redirects_.clear(); }
   bool IsInRedirectChain(const GURL& url) {
-    return base::Contains(redirects_, url.host());
+    return std::ranges::contains(redirects_, url.host());
   }
 
  private:

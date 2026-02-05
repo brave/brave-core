@@ -7,7 +7,8 @@
 
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 
-#include "base/containers/contains.h"
+#include <algorithm>
+
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
@@ -76,7 +77,7 @@ BraveBrowserCommandHandler::~BraveBrowserCommandHandler() = default;
 void BraveBrowserCommandHandler::CanExecuteCommand(
     brave_browser_command::mojom::Command command_id,
     CanExecuteCommandCallback callback) {
-  if (!base::Contains(supported_commands_, command_id)) {
+  if (!std::ranges::contains(supported_commands_, command_id)) {
     std::move(callback).Run(false);
     return;
   }
@@ -106,7 +107,7 @@ void BraveBrowserCommandHandler::CanExecuteCommand(
 void BraveBrowserCommandHandler::ExecuteCommand(
     brave_browser_command::mojom::Command command_id,
     ExecuteCommandCallback callback) {
-  if (!base::Contains(supported_commands_, command_id)) {
+  if (!std::ranges::contains(supported_commands_, command_id)) {
     std::move(callback).Run(false);
     return;
   }

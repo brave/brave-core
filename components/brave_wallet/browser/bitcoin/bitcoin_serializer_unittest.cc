@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
@@ -220,7 +219,7 @@ TEST(BitcoinSerializer, AddressToScriptPubkey_BitcoinCoreTestVectors) {
       continue;
     }
 
-    if (base::Contains(not_supported_addresses, address)) {
+    if (std::ranges::contains(not_supported_addresses, address)) {
       skipped_tests++;
       continue;
     }

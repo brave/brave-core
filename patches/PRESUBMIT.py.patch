@@ -1,0 +1,27 @@
+diff --git a/PRESUBMIT.py b/PRESUBMIT.py
+index 492a3beed9f74115cfd6a830c9d33938136bfdab..51fc87525e5d8e77bfc3e1afd2e22851a63ac62e 100644
+--- a/PRESUBMIT.py
++++ b/PRESUBMIT.py
+@@ -1424,6 +1424,22 @@ _BANNED_CPP_FUNCTIONS: Sequence[BanRule] = (
+             # Constrained algorithms: non-modifying sequence operations
+             'all_of',
+             'any_of',
++            'contains',
++            'contains_subrange',
++            'starts_with',
++            'ends_with',
++            'find_last',
++            'find_last_if',
++            'find_last_if_not',
++            'iota',
++            'shift_left',
++            'shift_right',
++            'fold_left',
++            'fold_left_first',
++            'fold_right',
++            'fold_right_last',
++            'fold_left_with_iter',
++            'fold_left_first_with_iter',
+             'none_of',
+             'for_each',
+             'for_each_n',

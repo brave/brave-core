@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
@@ -534,8 +533,8 @@ void SharedPinnedTabService::OnTabRemoved(
   DVLOG(2) << __FUNCTION__;
   DCHECK(remove);
 
-  if (base::Contains(closing_browsers_, tab_strip_model,
-                     &Browser::tab_strip_model)) {
+  if (std::ranges::contains(closing_browsers_, tab_strip_model,
+                            &Browser::tab_strip_model)) {
     // We don't close pinned tabs if this browser is being closed.
     return;
   }
@@ -583,8 +582,8 @@ void SharedPinnedTabService::OnActiveTabChanged(
     return;
   }
 
-  if (base::Contains(closing_browsers_, tab_strip_model,
-                     &Browser::tab_strip_model)) {
+  if (std::ranges::contains(closing_browsers_, tab_strip_model,
+                            &Browser::tab_strip_model)) {
     return;
   }
 

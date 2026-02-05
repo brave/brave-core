@@ -15,7 +15,6 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -359,7 +358,7 @@ void SidebarService::UpdateItem(const GURL& old_url,
   // is different. If both are same, only title will be updated.
   // Sidebar can't have two items with same url.
   if (old_url != new_url &&
-      base::Contains(items_, new_url, &SidebarItem::url)) {
+      std::ranges::contains(items_, new_url, &SidebarItem::url)) {
     return;
   }
 
@@ -433,7 +432,8 @@ std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
 
   auto to_remove =
       std::ranges::remove_if(default_items, [&added_default_items](auto& item) {
-        return base::Contains(added_default_items, item.built_in_item_type);
+        return std::ranges::contains(added_default_items,
+                                     item.built_in_item_type);
       });
   default_items.erase(to_remove.begin(), to_remove.end());
   return default_items;
