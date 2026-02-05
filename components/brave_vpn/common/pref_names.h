@@ -17,10 +17,6 @@ inline constexpr char kBraveVPNLocalStateMigrated[] =
     "brave.brave_vpn.migrated";
 inline constexpr char kBraveVPNRootPref[] = "brave.brave_vpn";
 inline constexpr char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
-inline constexpr char kBraveVPNRegionList[] = "brave.brave_vpn.region_list";
-// Cached fetched date for trying to refresh region_list once per day
-inline constexpr char kBraveVPNRegionListFetchedDate[] =
-    "brave.brave_vpn.region_list_fetched_date";  // DEPRECATED
 inline constexpr char kBraveVPNDeviceRegion[] =
     "brave.brave_vpn.device_region_name";
 
@@ -92,6 +88,12 @@ inline constexpr char kBraveVPNWidgetUsageWeeklyStorage[] =
     "brave.brave_vpn.widget_usage";
 inline constexpr char kBraveVPNConnectedMinutesWeeklyStorage[] =
     "brave.brave_vpn.connected_minutes";
+
+// Deprecated prefs. Should not be used in new code.
+inline constexpr char kBraveVPNRegionList[] =
+    "brave.brave_vpn.region_list";  // DEPRECATED
+inline constexpr char kBraveVPNRegionListFetchedDate[] =
+    "brave.brave_vpn.region_list_fetched_date";  // DEPRECATED
 }  // namespace prefs
 
 }  // namespace brave_vpn

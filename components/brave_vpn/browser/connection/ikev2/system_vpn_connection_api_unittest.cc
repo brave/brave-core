@@ -311,11 +311,6 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         timezone;
   }
 
-  void LoadCachedRegionData() {
-    GetBraveVPNConnectionManager()->GetRegionDataManager().
-        LoadCachedRegionData();
-  }
-
   void ClearRegions() {
     GetBraveVPNConnectionManager()->GetRegionDataManager().regions_.clear();
   }
@@ -367,29 +362,6 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVPNConnectionManager> connection_manager_;
 };
-
-TEST_F(SystemVPNConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
-  // Initially, prefs doesn't have region data.
-  EXPECT_FALSE(device_region());
-  EXPECT_TRUE(regions().empty());
-
-  // Set proper data to store them in prefs.
-  OnFetchRegionList(GetRegionsData(), true);
-  SetTestTimezone("Asia/Seoul");
-  OnFetchTimezones(GetTimeZonesData(), true);
-
-  // Check region data is set with above data.
-  EXPECT_TRUE(device_region());
-  EXPECT_FALSE(regions().empty());
-
-  // Clear region data from api instance.
-  ClearRegions();
-  EXPECT_TRUE(regions().empty());
-
-  // Check region data is loaded from prefs.
-  LoadCachedRegionData();
-  EXPECT_FALSE(regions().empty());
-}
 
 TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   // Initially, prefs doesn't have region data.

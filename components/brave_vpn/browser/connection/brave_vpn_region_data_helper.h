@@ -22,7 +22,6 @@ base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region);
 bool IsValidRegionValue(const base::Value::Dict& value);
 mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value);
 mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value);
-bool ValidateCachedRegionData(const base::Value::List& region_value);
 std::vector<mojom::RegionPtr> ParseRegionList(
     const base::Value::List& region_list);
 

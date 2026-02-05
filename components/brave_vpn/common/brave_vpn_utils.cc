@@ -33,7 +33,6 @@ namespace {
 
 void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
-  registry->RegisterListPref(prefs::kBraveVPNRegionList);
   registry->RegisterIntegerPref(prefs::kBraveVPNRegionListVersion, 1);
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
@@ -299,6 +298,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 02/2026
+  registry->RegisterListPref(prefs::kBraveVPNRegionList);
   registry->RegisterTimePref(prefs::kBraveVPNRegionListFetchedDate, {});
 #endif
 }
@@ -312,6 +312,7 @@ void MigrateLocalStatePrefs(PrefService* local_prefs) {
   }
 
   // Added 02/2026
+  local_prefs->ClearPref(prefs::kBraveVPNRegionList);
   local_prefs->ClearPref(prefs::kBraveVPNRegionListFetchedDate);
 #endif
 }

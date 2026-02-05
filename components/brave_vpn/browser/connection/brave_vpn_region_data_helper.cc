@@ -148,17 +148,6 @@ mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value) {
   return region;
 }
 
-bool ValidateCachedRegionData(const base::Value::List& region_value) {
-  for (const auto& value : region_value) {
-    // Make sure cached one has all latest properties.
-    if (!value.is_dict() || !IsValidRegionValue(value.GetDict())) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 std::vector<mojom::RegionPtr> ParseRegionList(
     const base::Value::List& region_list) {
   std::vector<mojom::RegionPtr> regions;
