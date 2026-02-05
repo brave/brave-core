@@ -200,7 +200,7 @@ bool BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(Profile* profile) {
   if (GetClearBrowsingDataOnExitSettings(profile, &remove_mask, &origin_mask)) {
     return true;
   }
-  const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
+  const base::ListValue& clear_on_exit_list = profile->GetPrefs()->GetList(
       browsing_data::prefs::kClearBrowsingDataOnExitList);
   return !clear_on_exit_list.empty();
 }

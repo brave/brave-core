@@ -89,7 +89,7 @@ class NTPBackgroundPrefs final {
   std::vector<std::string> GetCustomImageList() const;
 
  private:
-  const base::Value::Dict* GetPrefValue() const;
+  const base::DictValue* GetPrefValue() const;
 
   raw_ptr<PrefService> service_ = nullptr;
 };

@@ -415,10 +415,10 @@ void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
 
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
-  base::Value::Dict root;
+  base::DictValue root;
   root.Set("total", balance_.total);
 
-  base::Value::Dict json_wallets;
+  base::DictValue json_wallets;
   for (const auto & item : balance_.wallets) {
     json_wallets.Set(item.first, item.second);
   }
@@ -824,7 +824,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
   if (!banner) {
     json_banner_info = "";
   } else {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("publisher_key", banner->publisher_key);
     dict.Set("title", banner->title);
 
@@ -835,7 +835,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
     dict.Set("provider", banner->provider);
     dict.Set("web3_url", banner->web3_url);
 
-    base::Value::Dict links;
+    base::DictValue links;
     for (auto const& link : banner->links) {
       links.Set(link.first, link.second);
     }
@@ -857,7 +857,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     // If the user does not have an external wallet, expose a default/empty
     // wallet for backward compatibility with Android code that expects an
     // external wallet structure with a NOT_CONNECTED status.
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("token", "");
     dict.Set("address", "");
     dict.Set("status", static_cast<int32_t>(
@@ -867,7 +867,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.Set("account_url", "");
     json_wallet = base::WriteJson(dict).value_or("");
   } else {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("token", wallet->token);
     dict.Set("address", wallet->address);
 

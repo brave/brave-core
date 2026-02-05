@@ -59,7 +59,7 @@ NTPBackgroundPrefs::~NTPBackgroundPrefs() = default;
 // static
 void NTPBackgroundPrefs::RegisterPref(
     user_prefs::PrefRegistrySyncable* registry) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set(kTypeKey, TypeToString(Type::kBrave));
   dict.Set(kRandomKey, false);
   dict.Set(kSelectedValueKey, "");
@@ -158,6 +158,6 @@ std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
   return result;
 }
 
-const base::Value::Dict* NTPBackgroundPrefs::GetPrefValue() const {
+const base::DictValue* NTPBackgroundPrefs::GetPrefValue() const {
   return &service_->GetDict(kPrefName);
 }

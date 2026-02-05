@@ -996,7 +996,7 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForDot) {
-  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::ListValue());
 
   auto dot_mainnet_token = GetPolkadotNativeToken(mojom::kPolkadotMainnet);
   auto dot_testnet_token = GetPolkadotNativeToken(mojom::kPolkadotTestnet);
@@ -1019,7 +1019,7 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForDot) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
-  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::ListValue());
 
   auto btc_mainnet_token = GetBitcoinNativeToken(mojom::kBitcoinMainnet);
   auto btc_testnet_token = GetBitcoinNativeToken(mojom::kBitcoinTestnet);
@@ -1047,7 +1047,7 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForZec) {
         features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "false"}});
 
-    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::ListValue());
 
     auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
     auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
@@ -1074,7 +1074,7 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForZec) {
         features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}});
 
-    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::ListValue());
 
     auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
     auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
@@ -1658,7 +1658,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   observer_->Reset();
   {
     ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
-    base::Value::List* list = update->FindList(kEthereumPrefKey);
+    base::ListValue* list = update->FindList(kEthereumPrefKey);
     list->EraseIf([&](const base::Value& v) {
       auto* chain_id_value = v.GetDict().FindString("chainId");
       if (!chain_id_value) {
@@ -1717,7 +1717,7 @@ TEST_F(BraveWalletServiceUnitTest,
 TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
   json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
 
-  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::ListValue());
 
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();

@@ -130,7 +130,7 @@ bool BraveNTPCustomBackgroundServiceDelegate::HasPreferredBraveBackground()
   return GURL(selected_value).is_valid();
 }
 
-base::Value::Dict
+base::DictValue
 BraveNTPCustomBackgroundServiceDelegate::GetPreferredBraveBackground() const {
   DCHECK(HasPreferredBraveBackground());
 

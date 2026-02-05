@@ -20,7 +20,7 @@ enum class NewTabPageShowsOptions {
 };
 
 GURL GetNewTabPageURL(Profile* profile);
-base::Value::List GetNewTabShowsOptionsList(Profile* profile);
+base::ListValue GetNewTabShowsOptionsList(Profile* profile);
 bool ShouldUseNewTabURLForNewTab(Profile* profile);
 bool ShouldNewTabShowDashboard(Profile* profile);
 bool ShouldNewTabShowBlankpage(Profile* profile);

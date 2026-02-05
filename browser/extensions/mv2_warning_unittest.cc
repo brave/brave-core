@@ -22,7 +22,7 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
   main_extra_parts.PreProfileInit();
 
   auto get_manifest = [](std::optional<int> manifest_version) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("name", "My Extension");
     dict.Set("version", "0.1");
     dict.Set("description", "An awesome extension");

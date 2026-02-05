@@ -50,11 +50,11 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, UpdateBuiltin) {
   bridges_config.provided_bridges.push_back("bridge3");
 
   auto create_bridge = [](const std::string& t) {
-    base::Value::List l;
+    base::ListValue l;
     l.Append(t);
     return l;
   };
-  base::Value::Dict builtin;
+  base::DictValue builtin;
   builtin.Set("snowflake", create_bridge("s1"));
   builtin.Set("obfs4", create_bridge("o1"));
   builtin.Set("meek-azure", create_bridge("m1"));

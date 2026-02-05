@@ -43,7 +43,7 @@ void ExtensionRewardsServiceObserver::OnRewardsWalletCreated() {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnRewardsWalletCreated::kEventName,
-        base::Value::List()));
+        base::ListValue()));
   }
 }
 
@@ -53,7 +53,7 @@ void ExtensionRewardsServiceObserver::OnTermsOfServiceUpdateAccepted() {
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnTermsOfServiceUpdateAccepted::
             kEventName,
-        base::Value::List()));
+        base::ListValue()));
   }
 }
 
@@ -194,7 +194,7 @@ void ExtensionRewardsServiceObserver::OnExternalWalletConnected() {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnExternalWalletConnected::kEventName,
-        base::Value::List()));
+        base::ListValue()));
   }
 }
 
@@ -203,7 +203,7 @@ void ExtensionRewardsServiceObserver::OnExternalWalletLoggedOut() {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnExternalWalletLoggedOut::kEventName,
-        base::Value::List()));
+        base::ListValue()));
   }
 }
 
@@ -213,7 +213,7 @@ void ExtensionRewardsServiceObserver::OnExternalWalletDisconnected() {
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnExternalWalletDisconnected::
             kEventName,
-        base::Value::List()));
+        base::ListValue()));
   }
 }
 

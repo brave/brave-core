@@ -59,9 +59,9 @@ class NTPBackgroundImagesBridge
       ntp_background_images::NTPSponsoredImagesData* data) override;
 
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(
-      const base::Value::Dict& data);
+      const base::DictValue& data);
   base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
-      const base::Value::Dict& data);
+      const base::DictValue& data);
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<ntp_background_images::ViewCounterService> view_counter_service_ =

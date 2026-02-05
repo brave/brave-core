@@ -245,12 +245,12 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
   auto default_list = mojom::Playlist::New();
   default_list->id = kDefaultPlaylistID;
 
-  base::Value::Dict playlists_value;
+  base::DictValue playlists_value;
   playlists_value.Set(kDefaultPlaylistID,
                       playlist::ConvertPlaylistToValue(default_list));
   registry->RegisterDictionaryPref(kPlaylistsPref, std::move(playlists_value));
 
-  auto order_list = base::Value::List();
+  auto order_list = base::ListValue();
   order_list.Append(kDefaultPlaylistID);
   registry->RegisterListPref(kPlaylistOrderPref, std::move(order_list));
 
