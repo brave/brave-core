@@ -6,41 +6,12 @@
 import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
-import {
-  ConversationReactContext,
-  ConversationContext,
-  defaultContext as defaultConversationContext,
-} from '../../state/conversation_context'
 import { act, render, waitFor } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
 import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 import * as Mojom from '../../../common/mojom'
-import {
-  MockContext as AIChatMockContext,
-  MockContextProps,
-} from '../../state/mock_context'
+import { MockContext } from '../../state/mock_context'
 import TabsMenu from './attachments_menu'
-
-const MockContext = (
-  props: React.PropsWithChildren<
-    Partial<MockContextProps & ConversationContext>
-  >,
-) => {
-  const { children, ...contextOverrides } = props
-
-  return (
-    <AIChatMockContext {...contextOverrides}>
-      <ConversationReactContext.Provider
-        value={{
-          ...defaultConversationContext,
-          ...contextOverrides,
-        }}
-      >
-        {children}
-      </ConversationReactContext.Provider>
-    </AIChatMockContext>
-  )
-}
 
 // Render and flush async state updates from usePromise hooks.
 async function renderTabsMenu(
@@ -92,20 +63,22 @@ describe('TabsMenu', () => {
   it('should filter out attached tabs', async () => {
     const { queryByText } = await renderTabsMenu(
       <MockContext
-        associatedContentInfo={[
-          {
-            conversationTurnUuid: '1',
-            contentId: 1,
-            title: 'Test 1',
-            url: {
-              url: 'https://test1.com',
-            },
-            contentType: ContentType.PageContent,
-            contentUsedPercentage: 0,
-            uuid: '1',
-          },
-        ]}
         initialState={{
+          conversationState: {
+            associatedContent: [
+              {
+                conversationTurnUuid: '1',
+                contentId: 1,
+                title: 'Test 1',
+                url: {
+                  url: 'https://test1.com',
+                },
+                contentType: ContentType.PageContent,
+                contentUsedPercentage: 0,
+                uuid: '1',
+              },
+            ],
+          },
           tabs: [
             {
               contentId: 1,
@@ -133,7 +106,7 @@ describe('TabsMenu', () => {
   it('should be open when query starts with @', async () => {
     const { container } = await renderTabsMenu(
       <MockContext
-        inputText={['@']}
+        conversationOverrides={{ inputText: ['@'] }}
         initialState={{
           tabs: [
             {
@@ -156,13 +129,13 @@ describe('TabsMenu', () => {
 
   it('should be close when @ is removed', async () => {
     await renderTabsMenu(
-      <MockContext inputText={['@']}>
+      <MockContext conversationOverrides={{ inputText: ['@'] }}>
         <TabsMenu />
       </MockContext>,
     )
 
     const { container } = await renderTabsMenu(
-      <MockContext inputText={['hi']}>
+      <MockContext conversationOverrides={{ inputText: ['hi'] }}>
         <TabsMenu />
       </MockContext>,
     )
@@ -177,7 +150,7 @@ describe('TabsMenu', () => {
       async () =>
         await renderTabsMenu(
           <MockContext
-            inputText={['@2']}
+            conversationOverrides={{ inputText: ['@2'] }}
             initialState={{
               tabs: [
                 {
@@ -217,8 +190,7 @@ describe('TabsMenu', () => {
     }
     const { queryByText, findByText } = await renderTabsMenu(
       <MockContext
-        conversationUuid='1'
-        inputText={['@']}
+        conversationOverrides={{ inputText: ['@'] }}
         initialState={{
           tabs: [
             tab1,
@@ -229,6 +201,9 @@ describe('TabsMenu', () => {
               id: 2,
             },
           ],
+          conversationState: {
+            conversationUuid: '1',
+          },
         }}
         uiHandler={{ associateTab }}
       >
@@ -278,7 +253,7 @@ describe('TabsMenu', () => {
 
     const { container } = await renderTabsMenu(
       <MockContext
-        inputText={['@brave']}
+        conversationOverrides={{ inputText: ['@brave'] }}
         bookmarksService={{
           getBookmarks: () => {
             onFetch()
@@ -344,7 +319,7 @@ describe('TabsMenu', () => {
 
     const { container } = await renderTabsMenu(
       <MockContext
-        inputText={['@search']}
+        conversationOverrides={{ inputText: ['@search'] }}
         historyService={{
           getHistory: () => {
             onFetchHistory()
@@ -392,7 +367,7 @@ describe('TabsMenu', () => {
 
     await renderTabsMenu(
       <MockContext
-        inputText={['@ab']}
+        conversationOverrides={{ inputText: ['@ab'] }}
         historyService={{ getHistory }}
       >
         <TabsMenu />
@@ -405,19 +380,23 @@ describe('TabsMenu', () => {
   it('should filter out already attached history items', async () => {
     const { findByText, queryByText } = await renderTabsMenu(
       <MockContext
-        associatedContentInfo={[
-          {
-            conversationTurnUuid: undefined,
-            contentId: 1,
-            title: 'Brave Search',
-            url: {
-              url: 'https://search.brave.com',
-            },
-            contentType: ContentType.PageContent,
-            contentUsedPercentage: 0,
-            uuid: '1',
+        initialState={{
+          conversationState: {
+            associatedContent: [
+              {
+                conversationTurnUuid: undefined,
+                contentId: 1,
+                title: 'Brave Search',
+                url: {
+                  url: 'https://search.brave.com',
+                },
+                contentType: ContentType.PageContent,
+                contentUsedPercentage: 0,
+                uuid: '1',
+              },
+            ],
           },
-        ]}
+        }}
         historyService={{
           getHistory: () =>
             Promise.resolve({

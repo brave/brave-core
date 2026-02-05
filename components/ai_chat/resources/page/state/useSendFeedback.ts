@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { showAlert } from '@brave/leo/react/alertCenter'
-import * as Mojom from '../../common/mojom'
 import { getLocale } from '$web-common/locale'
+import { ConversationAPI } from '../api/conversation_api'
 import { useAIChat } from './ai_chat_context'
 
 /**
@@ -45,7 +45,7 @@ export const defaultSendFeedbackState: SendFeedbackState = {
  * be implemented in the parent frame UI.
  */
 export default function useSendFeedback(
-  conversationHandler: Mojom.ConversationHandlerRemote,
+  api: ConversationAPI,
 ): SendFeedbackState {
   const aiChat = useAIChat()
 
@@ -75,7 +75,10 @@ export default function useSendFeedback(
       }
 
       // Rate the message.
-      const response = await conversationHandler?.rateMessage(isLiked, turnUuid)
+      const response = await api.conversationHandler.rateMessage(
+        isLiked,
+        turnUuid,
+      )
       if (!response.ratingId) {
         showAlert({
           type: 'error',
@@ -112,7 +115,7 @@ export default function useSendFeedback(
       }
       setRatingTurnUuid(undefined)
     },
-    [conversationHandler, ratingTurnUuid],
+    [api, ratingTurnUuid],
   )
 
   // Listen to ratings requests from the child frame
@@ -132,7 +135,7 @@ export default function useSendFeedback(
     shouldSendUrl: boolean,
   ) {
     if (feedbackId.current) {
-      const response = await conversationHandler?.sendFeedback(
+      const response = await api.conversationHandler.sendFeedback(
         selectedCategory,
         feedbackText,
         feedbackId.current,

@@ -94,7 +94,8 @@ function Main() {
 
   const showAttachments = !!conversationContext.attachmentsDialog
 
-  const showTemporaryChatInfo = conversationContext.isTemporaryChat
+  const showTemporaryChatInfo =
+    conversationContext.api.useGetState().data.temporary
 
   let currentErrorElement = null
 
