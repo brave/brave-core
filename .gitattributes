@@ -36,6 +36,7 @@
 *.xml   text eol=lf
 *.xslt  text eol=lf
 *.xtb   text eol=lf
+*.toml  text eol=lf
 
 .ci_features             text eol=lf linguist-language=ini
 .clang*                  text eol=lf
