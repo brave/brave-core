@@ -212,6 +212,8 @@ class SettingsViewController: TableViewController {
     super.viewWillAppear(animated)
     // Reset dev options access count
     aboutHeaderTapCount = 0
+    // Hide toolbar in case it was enabled by a child controller
+    navigationController?.setToolbarHidden(true, animated: animated)
   }
 
   private func displayRewardsDebugMenu() {
@@ -1231,22 +1233,35 @@ class SettingsViewController: TableViewController {
 
   private lazy var autofillSection: Static.Section = {
     return Section(
-      header: .title(Strings.autofill),
+      header: .title(Strings.Autofill.settingsSectionTitle),
       rows: [
         Row(
-          text: Strings.Login.loginListNavigationTitle,
+          text: Strings.Autofill.managePasswordsTitle,
           selection: { [unowned self] in
-            let loginsPasswordsViewController = LoginListViewController(
-              passwordAPI: self.passwordAPI,
-              windowProtection: self.windowProtection
-            )
-            loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
-            self.navigationController?.pushViewController(
-              loginsPasswordsViewController,
-              animated: true
-            )
+
+            if FeatureList.kUseChromiumWebViewsAutofill.enabled,
+              let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
+            {
+              let managePasswordsViewController = ManagePasswordsViewController(
+                autofillDataManager: autofillDataManager
+              )
+              self.navigationController?.pushViewController(
+                managePasswordsViewController,
+                animated: true
+              )
+            } else {
+              let loginsPasswordsViewController = LoginListViewController(
+                passwordAPI: passwordAPI,
+                windowProtection: windowProtection
+              )
+              loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
+              self.navigationController?.pushViewController(
+                loginsPasswordsViewController,
+                animated: true
+              )
+            }
           },
-          image: UIImage(braveSystemNamed: "leo.outside"),
+          image: UIImage(braveSystemNamed: "leo.key"),
           accessory: .disclosureIndicator
         )
       ]
