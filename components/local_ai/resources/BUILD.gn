@@ -1,4 +1,4 @@
-# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -23,11 +23,39 @@ transpile_web_ui("candle_embedding_gemma_bridge_ui") {
   deps = [ "//brave/components/local_ai/core:mojom_js" ]
 }
 
+transpile_web_ui("candle_embedding_gemma") {
+  resource_name = "candle_embedding_gemma"
+
+  imports_from = [ "//brave/ui/webui/resources/wasm/" ]
+
+  entry_points = [ [
+        "candle_embedding_gemma",
+        rebase_path(
+            "//brave/ui/webui/resources/wasm/candle_embedding_gemma/index.js"),
+      ] ]
+
+  inputs = [
+    rebase_path("//brave/ui/webui/resources/wasm/Cargo.lock"),
+    rebase_path(
+        "//brave/ui/webui/resources/wasm/candle_embedding_gemma/src/lib.rs"),
+  ]
+
+  rust_packages = [ rebase_path(
+          "//brave/ui/webui/resources/wasm/candle_embedding_gemma/Cargo.toml") ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome-untrusted://on-device-model-worker/"
+}
+
+pack_web_resources("candle_embedding_gemma_generated") {
+  resource_name = "candle_embedding_gemma"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":candle_embedding_gemma" ]
+}
+
 pack_web_resources("candle_embedding_gemma_bridge_generated") {
   resource_name = "candle_embedding_gemma_bridge"
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
-  deps = [
-    ":candle_embedding_gemma_bridge_ui",
-    "//brave/ui/webui/resources:candle_embedding_gemma",
-  ]
+  deps = [ ":candle_embedding_gemma_bridge_ui" ]
 }

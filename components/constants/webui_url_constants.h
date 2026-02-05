@@ -65,6 +65,8 @@ inline constexpr char kUntrustedMarketURL[] =
 inline constexpr char kUntrustedTrezorHost[] = "trezor-bridge";
 inline constexpr char kUntrustedTrezorURL[] =
     "chrome-untrusted://trezor-bridge/";
+inline constexpr char kUntrustedOnDeviceModelWorkerHost[] =
+    "on-device-model-worker";
 inline constexpr char kUntrustedOnDeviceModelWorkerURL[] =
     "chrome-untrusted://on-device-model-worker/";
 inline constexpr char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";

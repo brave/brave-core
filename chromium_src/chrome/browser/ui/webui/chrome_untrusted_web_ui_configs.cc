@@ -40,6 +40,9 @@
 #include "brave/components/playlist/core/common/features.h"
 #endif
 
+#include "brave/browser/ui/webui/candle_wasm/candle_embedding_gemma_ui.h"
+#include "brave/components/local_ai/core/features.h"
+
 #define RegisterChromeUntrustedWebUIConfigs \
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl
 
@@ -63,6 +66,10 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<local_ai::UntrustedCandleEmbeddingGemmaUIConfig>());
+  }
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
