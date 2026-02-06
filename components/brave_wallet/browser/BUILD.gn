@@ -433,7 +433,7 @@ source_set("constants") {
 
   deps = [
     "//base",
-    "//brave/components/brave_rewards/core/common:constants",
+    "//brave/brave_domains:constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
     "//ui/base",
