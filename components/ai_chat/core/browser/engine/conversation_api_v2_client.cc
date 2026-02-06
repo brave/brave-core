@@ -244,9 +244,9 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
 
         case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
           const auto& web_sources = block->get_web_sources_content_block();
-          base::Value::List sources_list;
+          base::ListValue sources_list;
           for (const auto& source : web_sources->sources) {
-            base::Value::Dict source_dict;
+            base::DictValue source_dict;
             source_dict.Set("title", source->title);
             source_dict.Set("url", source->url.spec());
             source_dict.Set("favicon", source->favicon_url.spec());
