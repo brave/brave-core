@@ -32,8 +32,8 @@ namespace {
 void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
   if (!url.SchemeIsHTTPOrHTTPS())
     return;
-  std::optional<size_t> copy_position =
-      menu_contents->GetIndexOfCommandId(views::Textfield::kCopy);
+  std::optional<size_t> copy_position = menu_contents->GetIndexOfCommandId(
+      std::to_underlying(ui::TouchEditable::MenuCommands::kCopy));
   if (!copy_position)
     return;
   menu_contents->InsertItemWithStringIdAt(
@@ -112,7 +112,8 @@ bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
   if (base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkByDefault)) {
     bool is_url = const_cast<BraveOmniboxViewViews*>(this)->SelectedTextIsURL();
     if (is_url) {
-      if (command_id == kCopy) {
+      if (command_id ==
+          std::to_underlying(ui::TouchEditable::MenuCommands::kCopy)) {
         return false;
       }
       if (command_id == IDC_COPY_CLEAN_LINK) {

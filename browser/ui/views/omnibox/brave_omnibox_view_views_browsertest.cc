@@ -174,7 +174,8 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
 
   omnibox_view()->SelectAll(true);
-  omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);
+  omnibox_view()->ExecuteCommand(
+      std::to_underlying(ui::TouchEditable::MenuCommands::kCopy), 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
   std::string text_from_clipboard;
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
@@ -221,7 +222,8 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
 
   omnibox_view()->SelectAll(true);
-  omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);
+  omnibox_view()->ExecuteCommand(
+      std::to_underlying(ui::TouchEditable::MenuCommands::kCopy), 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
   std::string text_from_clipboard;
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
@@ -267,7 +269,8 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, DoNotSanitizeInternalURLS) {
   base::RunLoop().RunUntilIdle();
 
   omnibox_view()->SelectAll(true);
-  omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);
+  omnibox_view()->ExecuteCommand(
+      std::to_underlying(ui::TouchEditable::MenuCommands::kCopy), 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
   std::string text_from_clipboard;
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
