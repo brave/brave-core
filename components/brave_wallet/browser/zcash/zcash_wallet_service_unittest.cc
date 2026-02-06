@@ -67,7 +67,7 @@ std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   return sized_vec;
 }
 
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
   OrchardMerkleHash hash;
   base::span(hash).copy_from(*PrefixedHexStringToBytes(hex));
@@ -1574,7 +1574,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
 }
 
 // Disabled on android due timeout failures
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 
 TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   // Creating authorized orchard bundle may take a time
