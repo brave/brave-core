@@ -189,9 +189,9 @@ void PolkadotWalletService::SignAndSendTransaction(
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     SignAndSendTransactionCallback callback) {
   GenerateSignedTransferExtrinsic(
-      std::move(chain_id), std::move(account_id), send_amount, recipient,
+      chain_id, std::move(account_id), send_amount, recipient,
       base::BindOnce(&PolkadotWalletService::OnGenerateSignedTransfer,
-                     weak_ptr_factory_.GetWeakPtr(), std::string(chain_id),
+                     weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
 }
 
