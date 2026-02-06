@@ -1138,3 +1138,15 @@ export interface ParsedSwapInfo {
   destinationAddress: string
   provider: BraveWallet.SwapProvider | undefined
 }
+
+export const SupportedSwapCoinTypes = [
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH,
+]
+
+export const SupportedBridgeCoinTypes = [
+  ...SupportedSwapCoinTypes,
+  BraveWallet.CoinType.BTC,
+  BraveWallet.CoinType.ZEC,
+  BraveWallet.CoinType.ADA,
+]
