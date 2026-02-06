@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEditUiFactory;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEntryFragmentViewBase;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -20,8 +21,6 @@ import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
-
-import java.util.function.Supplier;
 
 @NullMarked
 public class BraveFragmentDependencyProvider extends FragmentDependencyProvider {
@@ -33,7 +32,7 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
             OneshotSupplier<SnackbarManager> snackbarManagerSupplier,
             OneshotSupplier<BottomSheetController> bottomSheetControllerSupplier,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
-            Supplier<SettingsSearchCoordinator> searchCoordinator) {
+            @Nullable SettingsSearchCoordinator searchCoordinator) {
         super(
                 context,
                 profile,
