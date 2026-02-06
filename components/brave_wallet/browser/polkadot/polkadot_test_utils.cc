@@ -371,6 +371,8 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
             "result": "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d"
           })");
       }
+
+      return true;
     }
   }
 
