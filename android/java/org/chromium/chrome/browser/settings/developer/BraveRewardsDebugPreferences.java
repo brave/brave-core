@@ -14,7 +14,8 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
@@ -31,7 +32,8 @@ public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
     private Preference mExportRewardsDb;
     private BraveDbUtil mDbUtil;
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

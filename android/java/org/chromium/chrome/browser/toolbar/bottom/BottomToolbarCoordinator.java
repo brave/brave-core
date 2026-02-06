@@ -23,8 +23,9 @@ import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -70,8 +71,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
 
-    private final ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
-            new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<OnClickListener>
+            mShareButtonListenerSupplier = ObservableSuppliers.createMonotonic();
     private final CallbackController mCallbackController = new CallbackController();
     MonotonicObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private final Runnable mOriginalHomeButtonRunnable;

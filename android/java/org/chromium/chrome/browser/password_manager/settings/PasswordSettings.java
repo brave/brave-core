@@ -32,7 +32,8 @@ import androidx.preference.PreferenceGroup;
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -109,7 +110,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private @Nullable Preference mExportPasswordsPreference;
 
     private @ManagePasswordsReferrer int mManagePasswordsReferrer;
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     /** For controlling the UX flow of exporting passwords. */
     private final ExportFlow mExportFlow = new ExportFlow();

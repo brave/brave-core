@@ -14,7 +14,8 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -38,7 +39,8 @@ public class BraveStatsPreferences extends BravePreferenceFragment
 
     private final DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     public static int getPreferenceSummary() {
         return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
