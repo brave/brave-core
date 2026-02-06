@@ -1028,7 +1028,7 @@ bool AIChatDatabase::AddConversationEntry(
           store::WebSourcesEventProto proto_event;
           SerializeWebSourcesEvent(event->get_sources_event(), &proto_event);
           if (proto_event.sources().empty()) {
-            DVLOG(0) << "Empty WebSourcesEvent found for persistence";
+            DVLOG(1) << "Empty WebSourcesEvent found for persistence";
             break;
           }
           event_statement.BindInt(0, static_cast<int>(i));

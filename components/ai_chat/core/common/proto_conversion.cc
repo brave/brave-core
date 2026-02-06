@@ -26,15 +26,14 @@ mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
     mojom_source->title = proto_source.title();
     mojom_source->url = GURL(proto_source.url());
     if (!mojom_source->url.is_valid()) {
-      DLOG(ERROR) << "Invalid WebSourcesEvent found in database with url: "
-                  << proto_source.url();
+      DVLOG(1) << "Invalid WebSourcesEvent found in database with url: "
+               << proto_source.url();
       continue;
     }
     mojom_source->favicon_url = GURL(proto_source.favicon_url());
     if (!mojom_source->favicon_url.is_valid()) {
-      DLOG(ERROR)
-          << "Invalid WebSourcesEvent found in database with favicon url: "
-          << proto_source.favicon_url();
+      DVLOG(1) << "Invalid WebSourcesEvent found in database with favicon url: "
+               << proto_source.favicon_url();
       continue;
     }
     mojom_event->sources.push_back(std::move(mojom_source));
@@ -58,9 +57,9 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
   for (const auto& mojom_source : mojom_event->sources) {
     if (!mojom_source->url.is_valid() ||
         !mojom_source->favicon_url.is_valid()) {
-      DLOG(ERROR) << "Invalid WebSourcesEvent found for persistence, with url: "
-                  << mojom_source->url.spec()
-                  << " and favicon url: " << mojom_source->favicon_url.spec();
+      DVLOG(1) << "Invalid WebSourcesEvent found for persistence, with url: "
+               << mojom_source->url.spec()
+               << " and favicon url: " << mojom_source->favicon_url.spec();
       continue;
     }
     store::WebSourceProto* proto_source = proto_event->add_sources();
@@ -114,13 +113,13 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
             mojom_source->title = proto_source.title();
             mojom_source->url = GURL(proto_source.url());
             if (!mojom_source->url.is_valid()) {
-              DLOG(ERROR) << "Invalid WebSourcesContentBlock url in database: "
-                          << proto_source.url();
+              DVLOG(1) << "Invalid WebSourcesContentBlock url in database: "
+                       << proto_source.url();
               continue;
             }
             mojom_source->favicon_url = GURL(proto_source.favicon_url());
             if (!mojom_source->favicon_url.is_valid()) {
-              DLOG(ERROR)
+              DVLOG(1)
                   << "Invalid WebSourcesContentBlock favicon url in database: "
                   << proto_source.favicon_url();
               continue;
@@ -194,7 +193,7 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
           for (const auto& mojom_source : mojom_sources->sources) {
             if (!mojom_source->url.is_valid() ||
                 !mojom_source->favicon_url.is_valid()) {
-              DLOG(ERROR)
+              DVLOG(1)
                   << "Invalid WebSourcesContentBlock found for persistence";
               continue;
             }

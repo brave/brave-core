@@ -27,7 +27,7 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
   std::vector<mojom::ToolUseEventPtr> tool_use_events;
   for (auto& tool_call_raw : *tool_calls_api_response) {
     if (!tool_call_raw.is_dict()) {
-      DLOG(ERROR) << "Tool call is not a dictionary.";
+      DVLOG(1) << "Tool call is not a dictionary.";
       continue;
     }
     const auto& tool_call = tool_call_raw.GetDict();
@@ -47,7 +47,7 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallRequest(
     const base::DictValue& tool_call) {
   const base::DictValue* function = tool_call.FindDict("function");
   if (!function) {
-    DLOG(ERROR) << "No function info found in tool call.";
+    DVLOG(1) << "No function info found in tool call.";
     return std::nullopt;
   }
 
@@ -110,7 +110,7 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
         const std::string* favicon_str = source_dict.FindString("favicon");
 
         if (!title || !url_str) {
-          DVLOG(2) << "Missing required fields in webSource";
+          DVLOG(1) << "Missing required fields in webSource";
           continue;
         }
 
@@ -162,13 +162,13 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
     const base::DictValue& tool_call) {
   const base::ListValue* output_content = tool_call.FindList("output_content");
   if (!output_content) {
-    DLOG(ERROR) << "No output_content found in tool result.";
+    DVLOG(1) << "No output_content found in tool result.";
     return std::nullopt;
   }
 
   const std::string* id = tool_call.FindString("id");
   if (!id) {
-    DLOG(ERROR) << "Tool result missing required id field.";
+    DVLOG(1) << "Tool result missing required id field.";
     return std::nullopt;
   }
 
