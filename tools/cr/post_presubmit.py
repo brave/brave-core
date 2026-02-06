@@ -52,13 +52,17 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
     ]
 
     active_report_hashes = set()
-    for category, notifications in presubmit_entries.items():
+    for category, reports in presubmit_entries.items():
         if category == 'notifications':
             # There's no need to report info messages to PRs, as they are not
             # actionable, and become noise.
             continue
 
-        for report in notifications:
+        for report in reports:
+            # Check that the report has a message key
+            if not isinstance(report, dict) or not 'message' in report:
+                continue
+
             # Hashing of the report is done so we can add it to the comment
             # itself as a html comment, and then check if it already exists,
             # so we don't post the same comment multiple times.
