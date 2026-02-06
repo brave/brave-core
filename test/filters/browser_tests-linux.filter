@@ -79,6 +79,7 @@
 -NewTabUIBrowserTest.*
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*
+-ParameterizedFrameNodeImplBrowserTest.ViewportIntersection_OutOfView/*
 -PolicyTestPrefetchProxyBrowserTest.*
 -PolicyTestSetTimeoutWithout1MsClamp.DisablePolicy
 -PPAPINaClPNaClNonSfiTest.*
