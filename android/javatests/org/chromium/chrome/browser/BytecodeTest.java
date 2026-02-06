@@ -121,6 +121,7 @@ import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileKeyedMap;
+import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
@@ -2038,7 +2039,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
-                        Supplier.class));
+                        SettingsSearchCoordinator.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/firstrun/FreIntentCreator",
@@ -2145,7 +2146,7 @@ public class BytecodeTest {
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
                         DesktopWindowStateManager.class,
-                        MonotonicObservableSupplier.class));
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
@@ -2189,7 +2190,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerCompat",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat", // presubmit: ignore-long-line
                         Activity.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
         Assert.assertTrue(
@@ -2197,7 +2198,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy", // presubmit: ignore-long-line
                         Activity.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
         Assert.assertTrue(

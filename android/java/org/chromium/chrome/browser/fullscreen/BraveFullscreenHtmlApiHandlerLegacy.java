@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.fullscreen;
 
 import android.app.Activity;
 
-import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 
 public class BraveFullscreenHtmlApiHandlerLegacy extends FullscreenHtmlApiHandlerLegacy {
@@ -23,7 +23,7 @@ public class BraveFullscreenHtmlApiHandlerLegacy extends FullscreenHtmlApiHandle
      */
     public BraveFullscreenHtmlApiHandlerLegacy(
             Activity activity,
-            MonotonicObservableSupplier<Boolean> areControlsHidden,
+            NonNullObservableSupplier<Boolean> areControlsHidden,
             boolean exitFullscreenOnStop,
             MultiWindowModeStateDispatcher multiWindowDispatcher) {
         super(activity, areControlsHidden, exitFullscreenOnStop, multiWindowDispatcher);
