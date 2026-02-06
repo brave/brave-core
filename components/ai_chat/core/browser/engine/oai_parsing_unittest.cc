@@ -20,9 +20,13 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
+
+constexpr char kDefaultFaviconUrl[] =
+    "chrome-untrusted://resources/brave-icons/globe.svg";
 
 // Tests for ParseToolCallRequest
 
@@ -323,7 +327,7 @@ TEST(OaiParsingTest, ParseToolCallResult_ValidTextOutput) {
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE((*result)->output.has_value());
   ASSERT_EQ((*result)->output->size(), 1u);
-  EXPECT_TRUE((*result)->output->at(0)->is_text_content_block());
+  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
   EXPECT_EQ((*result)->output->at(0)->get_text_content_block()->text,
             "The weather is sunny");
 }
@@ -380,7 +384,7 @@ TEST(OaiParsingTest, ParseToolCallResult_WebSourcesOutput) {
   EXPECT_EQ((*result)->id, "call_search");
   ASSERT_TRUE((*result)->output.has_value());
   ASSERT_EQ((*result)->output->size(), 1u);
-  EXPECT_TRUE((*result)->output->at(0)->is_web_sources_content_block());
+  ASSERT_TRUE((*result)->output->at(0)->is_web_sources_content_block());
 
   const auto& web_sources =
       (*result)->output->at(0)->get_web_sources_content_block();
@@ -388,6 +392,8 @@ TEST(OaiParsingTest, ParseToolCallResult_WebSourcesOutput) {
   ASSERT_EQ(web_sources->sources.size(), 1u);
   EXPECT_EQ(web_sources->sources[0]->title, "Example Site");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
+            "https://imgs.search.brave.com/icon.png");
 }
 
 TEST(OaiParsingTest, ParseToolCallResult_MixedOutputContent) {
@@ -420,9 +426,23 @@ TEST(OaiParsingTest, ParseToolCallResult_MixedOutputContent) {
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE((*result)->output.has_value());
   ASSERT_EQ((*result)->output->size(), 3u);
-  EXPECT_TRUE((*result)->output->at(0)->is_text_content_block());
-  EXPECT_TRUE((*result)->output->at(1)->is_web_sources_content_block());
-  EXPECT_TRUE((*result)->output->at(2)->is_text_content_block());
+
+  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
+  EXPECT_EQ((*result)->output->at(0)->get_text_content_block()->text,
+            "Search results:");
+
+  ASSERT_TRUE((*result)->output->at(1)->is_web_sources_content_block());
+  const auto& web_sources =
+      (*result)->output->at(1)->get_web_sources_content_block();
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Result 1");
+  EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/1");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(), kDefaultFaviconUrl);
+  EXPECT_EQ(web_sources->query, std::nullopt);
+
+  ASSERT_TRUE((*result)->output->at(2)->is_text_content_block());
+  EXPECT_EQ((*result)->output->at(2)->get_text_content_block()->text,
+            "More text");
 }
 
 TEST(OaiParsingTest, ParseToolCallResult_UnsupportedTypeSerializedAsText) {
@@ -443,9 +463,10 @@ TEST(OaiParsingTest, ParseToolCallResult_UnsupportedTypeSerializedAsText) {
   ASSERT_TRUE((*result)->output.has_value());
   ASSERT_EQ((*result)->output->size(), 1u);
   // Unsupported types get serialized as JSON text
-  EXPECT_TRUE((*result)->output->at(0)->is_text_content_block());
-  EXPECT_TRUE((*result)->output->at(0)->get_text_content_block()->text.find(
-                  "custom_type") != std::string::npos);
+  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
+  EXPECT_THAT(
+      (*result)->output->at(0)->get_text_content_block()->text,
+      base::test::IsJson(R"({"type":"custom_type","data":"some value"})"));
 }
 
 // Tests for ParseContentBlockFromDict
@@ -507,8 +528,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
             "https://imgs.search.brave.com/favicon1.png");
   EXPECT_EQ(web_sources->sources[1]->title, "Site 2");
   // Second source should have default favicon
-  EXPECT_EQ(web_sources->sources[1]->favicon_url.spec(),
-            "chrome-untrusted://resources/brave-icons/globe.svg");
+  EXPECT_EQ(web_sources->sources[1]->favicon_url.spec(), kDefaultFaviconUrl);
 }
 
 TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidFavicon) {
