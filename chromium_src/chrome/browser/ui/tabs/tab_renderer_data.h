@@ -10,14 +10,8 @@
   FromTabInterface_ChromiumImpl(tabs::TabInterface* tab); \
   static TabRendererData FromTabInterface
 
-// Extend member variable to check if the title is custom.
-#define is_monochrome_favicon    \
-  is_monochrome_favicon = false; \
-  bool is_custom_title
-
 #include <chrome/browser/ui/tabs/tab_renderer_data.h>  // IWYU pragma: export
 
-#undef is_monochrome_favicon
 #undef FromTabInterface
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_RENDERER_DATA_H_

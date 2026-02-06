@@ -24,8 +24,6 @@ class BraveTabStrip : public TabStrip {
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
 
-  void EnterTabRenameModeAt(int index);
-
   bool ShouldShowPinnedTabsInGrid() const;
 
   // TabStrip:
@@ -36,9 +34,6 @@ class BraveTabStrip : public TabStrip {
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
-  void SetCustomTitleForTab(
-      Tab* tab,
-      const std::optional<std::u16string>& title) override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
   bool CanPaintThrobberToLayer() const override;
