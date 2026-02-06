@@ -97,9 +97,9 @@ struct BraveShieldsSetting
   static base::Value DefaultValue() { return ToValue(kDefaultValue); }
 
   static base::Value ToValue(SettingType setting) {
-    return base::Value(base::Value::Dict().Set(
-        BraveShieldsSetting::kName,
-        traits::SettingTraits<SettingType>::To(setting)));
+    return base::Value(
+        base::DictValue().Set(BraveShieldsSetting::kName,
+                              traits::SettingTraits<SettingType>::To(setting)));
   }
 
   static SettingType FromValue(const base::Value& value) {

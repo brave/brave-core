@@ -16,9 +16,8 @@
 
 namespace playlist {
 
-std::vector<mojom::PlaylistItemPtr> ExtractPlaylistItems(
-    const GURL& url,
-    base::Value::List list) {
+std::vector<mojom::PlaylistItemPtr> ExtractPlaylistItems(const GURL& url,
+                                                         base::ListValue list) {
   /* Expected input:
     [
       {

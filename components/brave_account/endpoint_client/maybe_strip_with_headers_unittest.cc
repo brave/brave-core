@@ -22,7 +22,7 @@ namespace {
 using detail::MaybeStripWithHeaders;
 
 struct TestRequestBody {
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 };
 
 using TestRequest = POST<TestRequestBody>;

@@ -758,7 +758,7 @@ void BraveAccountService::OnGetServiceToken(
                 pref_service_->GetDict(prefs::kBraveAccountServiceTokens)
                     .Clone();
             service_tokens.Set(service_name,
-                               base::Value::Dict()
+                               base::DictValue()
                                    .Set(prefs::keys::kServiceToken,
                                         std::move(encrypted_service_token))
                                    .Set(prefs::keys::kLastFetched,

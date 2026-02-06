@@ -97,7 +97,7 @@ void BraveVPNRegionDataManager::SetFallbackDeviceRegion() {
 }
 
 void BraveVPNRegionDataManager::SetDeviceRegionWithTimezone(
-    const base::Value::List& timezones_value) {
+    const base::ListValue& timezones_value) {
   const std::string current_time_zone = GetCurrentTimeZone();
   if (current_time_zone.empty()) {
     return;
@@ -239,7 +239,7 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
     CHECK_IS_TEST();
   }
   api_request_.reset();
-  std::optional<base::Value::List> value = base::JSONReader::ReadList(
+  std::optional<base::ListValue> value = base::JSONReader::ReadList(
       region_list, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (value && ParseAndCacheRegionList(*value, true)) {
     VLOG(2) << "Got valid region list";
@@ -258,7 +258,7 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
 }
 
 bool BraveVPNRegionDataManager::ParseAndCacheRegionList(
-    const base::Value::List& region_value,
+    const base::ListValue& region_value,
     bool save_to_prefs) {
   auto new_regions = ParseRegionList(region_value);
   VLOG(2) << __func__ << " : has regionlist: " << !new_regions.empty();
@@ -283,7 +283,7 @@ void BraveVPNRegionDataManager::OnFetchTimezones(
   api_request_.reset();
 
   if (success) {
-    std::optional<base::Value::List> value = base::JSONReader::ReadList(
+    std::optional<base::ListValue> value = base::JSONReader::ReadList(
         timezones_list, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     success = value.has_value();
     if (success) {
@@ -304,7 +304,7 @@ void BraveVPNRegionDataManager::OnFetchTimezones(
 void BraveVPNRegionDataManager::SetRegionListToPrefs() {
   DCHECK(!regions_.empty());
 
-  base::Value::List regions_list;
+  base::ListValue regions_list;
   for (const auto& region : regions_) {
     regions_list.Append(GetValueFromRegion(region));
   }

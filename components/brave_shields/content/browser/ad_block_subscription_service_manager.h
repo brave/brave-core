@@ -147,7 +147,7 @@ class AdBlockSubscriptionServiceManager {
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
   base::FilePath subscription_path_;
-  base::Value::Dict subscriptions_ GUARDED_BY_CONTEXT(sequence_checker_);
+  base::DictValue subscriptions_ GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
       subscription_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);

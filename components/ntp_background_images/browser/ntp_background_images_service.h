@@ -48,7 +48,7 @@ class NTPBackgroundImagesService {
     virtual void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) {}
 
     // Called when the sponsored content component is updated.
-    virtual void OnSponsoredContentDidUpdate(const base::Value::Dict& data) {}
+    virtual void OnSponsoredContentDidUpdate(const base::DictValue& data) {}
 
    protected:
     virtual ~Observer() = default;

@@ -23,9 +23,9 @@ class CosmeticResourceMergeTest : public testing::Test {
                                std::string_view b,
                                bool force_hide,
                                std::string_view expected) {
-    base::Value::Dict a_val = base::test::ParseJsonDict(a);
-    base::Value::Dict b_val = base::test::ParseJsonDict(b);
-    base::Value::Dict expected_val = base::test::ParseJsonDict(expected);
+    base::DictValue a_val = base::test::ParseJsonDict(a);
+    base::DictValue b_val = base::test::ParseJsonDict(b);
+    base::DictValue expected_val = base::test::ParseJsonDict(expected);
 
     AdBlockService::MergeResourcesInto(std::move(b_val), a_val, force_hide);
 

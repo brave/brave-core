@@ -21,7 +21,7 @@ void RegisterPrefs(PrefRegistrySimple* registry) {
                                  std::string());
     registry->RegisterStringPref(kBraveAccountEmailAddress, std::string());
     registry->RegisterDictionaryPref(kBraveAccountServiceTokens,
-                                     base::Value::Dict());
+                                     base::DictValue());
   }
 }
 

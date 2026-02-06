@@ -46,7 +46,7 @@ WireguardProfileCredentials::FromServerResponse(
   if (server_response.empty() || client_private_key.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> value = base::JSONReader::ReadDict(
       server_response, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value.has_value()) {
     return std::nullopt;
@@ -78,7 +78,7 @@ WireguardProfileCredentials::FromString(const std::string& credentials) {
   if (credentials.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> value = base::JSONReader::ReadDict(
       credentials, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value.has_value()) {
     return std::nullopt;
@@ -121,7 +121,7 @@ std::optional<std::string> WireguardProfileCredentials::ToString() const {
     return std::nullopt;
   }
 
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("server-public-key", server_public_key);
   data.Set("client-private-key", client_private_key);
   data.Set("mapped-ipv4-address", mapped_ip4_address);
