@@ -218,6 +218,7 @@ void PolkadotWalletService::OnSubmitSignedExtrinsic(
     return std::move(callback).Run(base::unexpected(*error_str));
   }
 
+  CHECK(transaction_hash.has_value());
   std::move(callback).Run(base::ok(transaction_hash.value()));
 }
 
