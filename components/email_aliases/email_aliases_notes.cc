@@ -12,13 +12,10 @@
 
 namespace email_aliases {
 
-EmailAliasesNotes::EmailAliasesNotes(
-    PrefService* pref_service,
-    const std::string& primary_email,
-    const std::vector<AliasListEntry>& active_aliases)
+EmailAliasesNotes::EmailAliasesNotes(PrefService* pref_service,
+                                     const std::string& primary_email)
     : pref_service_(pref_service), primary_email_(primary_email) {
   CHECK(pref_service_);
-  RemoveInactiveNotes(active_aliases);
 }
 
 EmailAliasesNotes::~EmailAliasesNotes() = default;

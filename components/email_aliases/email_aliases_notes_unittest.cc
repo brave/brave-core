@@ -52,7 +52,7 @@ class EmailAliasesNotesTest : public ::testing::Test {
   TestingPrefServiceSimple prefs_;
 };
 
-TEST_F(EmailAliasesNotesTest, Init) {
+TEST_F(EmailAliasesNotesTest, InitAndRemoveInactive) {
   base::DictValue notes;
   notes.Set("a@prima.ry", CreateNotes({{"alias1", "note1"},
                                        {"alias2", "note2"},
@@ -66,15 +66,17 @@ TEST_F(EmailAliasesNotesTest, Init) {
   GetPrefs()->SetDict(prefs::kEmailAliasesNotes, std::move(notes));
 
   {
-    EmailAliasesNotes email_aliases_notes(GetPrefs(), "a@prima.ry", {});
+    EmailAliasesNotes email_aliases_notes(GetPrefs(), "a@prima.ry");
     // No active aliases for `a@primay.ry`
+    email_aliases_notes.RemoveInactiveNotes({});
     EXPECT_EQ(2u, GetPrefs()->GetDict(prefs::kEmailAliasesNotes).size());
     EXPECT_EQ(std::nullopt, email_aliases_notes.GetNote("alias1"));
   }
 
   {
-    EmailAliasesNotes email_aliases_notes(GetPrefs(), "b@prima.ry",
-                                          CreateAliases({"alias1", "alias3"}));
+    EmailAliasesNotes email_aliases_notes(GetPrefs(), "b@prima.ry");
+    email_aliases_notes.RemoveInactiveNotes(
+        CreateAliases({"alias1", "alias3"}));
     EXPECT_EQ(2u, GetPrefs()->GetDict(prefs::kEmailAliasesNotes).size());
     EXPECT_EQ(2u, GetPrefs()
                       ->GetDict(prefs::kEmailAliasesNotes)
@@ -85,8 +87,8 @@ TEST_F(EmailAliasesNotesTest, Init) {
     EXPECT_EQ("note3", email_aliases_notes.GetNote("alias3"));
   }
   {
-    EmailAliasesNotes email_aliases_notes(
-        GetPrefs(), "c@prima.ry",
+    EmailAliasesNotes email_aliases_notes(GetPrefs(), "c@prima.ry");
+    email_aliases_notes.RemoveInactiveNotes(
         CreateAliases({"alias1", "alias2", "alias3"}));
     EXPECT_EQ(2u, GetPrefs()->GetDict(prefs::kEmailAliasesNotes).size());
     EXPECT_EQ(3u, GetPrefs()
@@ -106,8 +108,7 @@ TEST_F(EmailAliasesNotesTest, Update) {
                                        {"alias3", "note3"}}));
   GetPrefs()->SetDict(prefs::kEmailAliasesNotes, std::move(notes));
 
-  EmailAliasesNotes email_aliases_notes(
-      GetPrefs(), "a@prima.ry", CreateAliases({"alias1", "alias2", "alias3"}));
+  EmailAliasesNotes email_aliases_notes(GetPrefs(), "a@prima.ry");
 
   email_aliases_notes.UpdateNote("alias1", "updated1");
   email_aliases_notes.UpdateNote("alias2", "updated2");
@@ -127,8 +128,7 @@ TEST_F(EmailAliasesNotesTest, Remove) {
                                        {"alias3", "note3"}}));
   GetPrefs()->SetDict(prefs::kEmailAliasesNotes, std::move(notes));
 
-  EmailAliasesNotes email_aliases_notes(
-      GetPrefs(), "a@prima.ry", CreateAliases({"alias1", "alias2", "alias3"}));
+  EmailAliasesNotes email_aliases_notes(GetPrefs(), "a@prima.ry");
 
   email_aliases_notes.RemoveNote("alias1");
   EXPECT_EQ(std::nullopt, email_aliases_notes.GetNote("alias1"));

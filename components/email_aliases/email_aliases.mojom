@@ -30,6 +30,15 @@ struct Alias {
   array<string>? domains;
 };
 
+struct AliasUpdateData {
+  // Change the alias's status: active/inactive
+  bool? active;
+  // Change the alias's note
+  string? note;
+  // Change domains list where aliase is used
+  array<string>? domains;
+};
+
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
 
@@ -47,7 +56,7 @@ interface EmailAliasesService {
   GenerateAlias() => result<string, string>;
 
   // Create or Update an existing email alias.
-  UpdateAlias(string alias_email, string? note) =>
+  UpdateAlias(string alias_email, AliasUpdateData update_data) =>
     result<mojo_base.mojom.Empty, string>;
 
   // Delete an email alias.

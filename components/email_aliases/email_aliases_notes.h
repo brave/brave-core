@@ -27,8 +27,7 @@ inline constexpr char kEmailAliasesNotes[] = "brave.email_alises_notes";
 class EmailAliasesNotes {
  public:
   EmailAliasesNotes(PrefService* pref_service,
-                    const std::string& primary_email,
-                    const std::vector<AliasListEntry>& active_aliases);
+                    const std::string& primary_email);
   ~EmailAliasesNotes();
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -36,10 +35,9 @@ class EmailAliasesNotes {
   std::optional<std::string> GetNote(const std::string& alias);
   void UpdateNote(const std::string& alias, const std::string& notes);
   void RemoveNote(const std::string& alias);
-
- private:
   void RemoveInactiveNotes(const std::vector<AliasListEntry>& active_aliases);
 
+ private:
   const raw_ptr<PrefService> pref_service_ = nullptr;
   const std::string primary_email_;
 };

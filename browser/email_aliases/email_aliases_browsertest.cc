@@ -483,26 +483,4 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
   Wait("#create-new-item-button");  // Logged-in state.
 }
 
-IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
-  // Prepare auth token
-  EmailAliasesAuth auth(
-      browser()->profile()->GetPrefs(),
-      test::GetEncryptor(g_browser_process->os_crypt_async()));
-  auth.SetAuthEmail(kSuccessEmail);
-  auth.SetAuthToken("success_token");
-
-  // Settings in logged-in state
-  Navigate(GURL("chrome://settings/email-aliases"));
-  InjectHelpers(ActiveWebContents());
-  Wait("#create-new-item-button");
-
-  // Reset token
-  auth.SetAuthToken({});
-  Wait("#get-login-link-button");  // Settings in sing-in state.
-
-  // Logged-in again
-  auth.SetAuthToken("success_token");
-  Wait("#create-new-item-button");  // Logged-in state.
-}
-
 }  // namespace email_aliases

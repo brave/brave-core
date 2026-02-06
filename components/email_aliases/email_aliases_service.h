@@ -15,7 +15,6 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_auth.h"
 #include "brave/components/email_aliases/email_aliases_endpoints.h"
-#include "brave/components/email_aliases/email_aliases_notes.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -59,7 +58,7 @@ class EmailAliasesService : public KeyedService,
 
   // Creates or updates an alias identified by |alias_email| with optional note.
   void UpdateAlias(const std::string& alias_email,
-                   const std::optional<std::string>& note,
+                   mojom::AliasUpdateDataPtr update_data,
                    UpdateAliasCallback callback) override;
 
   // Deletes the alias identified by |alias_email|.
@@ -99,7 +98,7 @@ class EmailAliasesService : public KeyedService,
   void GenerateAliasWithToken(GenerateAliasCallback user_callback,
                               TokenResult token);
   void UpdateAliasWithToken(const std::string& alias_email,
-                            const std::optional<std::string>& note,
+                            mojom::AliasUpdateDataPtr update_data,
                             UpdateAliasCallback callback,
                             TokenResult token);
   void DeleteAliasWithToken(const std::string& alias_email,
@@ -136,8 +135,6 @@ class EmailAliasesService : public KeyedService,
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
-
-  std::optional<EmailAliasesNotes> email_aliases_notes_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
