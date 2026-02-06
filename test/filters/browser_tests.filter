@@ -1249,6 +1249,8 @@
 # These tests fail because we change the default value for kPromptForDownload to
 # true.
 -All/PDFExtensionTest.SandboxedPdfIframeNavigationDownloads/*
+-All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
 -WebViewTests/WebViewTest.DownloadCookieIsolation_CrossSession/SiteIsolationForGuestsDisabled
 -WebViewTests/WebViewTest.DownloadCookieIsolation_CrossSession/SiteIsolationForGuestsEnabled
 
