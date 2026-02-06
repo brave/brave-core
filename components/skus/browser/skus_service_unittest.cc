@@ -243,6 +243,13 @@ class SkusServiceTestUnitTest : public testing::Test {
         prefs(), url_loader_factory_.GetSafeWeakWrapper());
   }
 
+  void TearDown() override {
+    if (skus_service_) {
+      skus_service_->Shutdown();
+      task_environment_.RunUntilIdle();
+    }
+  }
+
   std::string GetCredentialsSummary(const std::string& domain) {
     skus::mojom::SkusResultPtr result;
     bool callback_called = false;

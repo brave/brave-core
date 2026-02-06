@@ -26,7 +26,10 @@ SkusServiceImpl::SkusServiceImpl(
       {base::TaskPriority::USER_BLOCKING});
 }
 
-SkusServiceImpl::~SkusServiceImpl() = default;
+SkusServiceImpl::~SkusServiceImpl() {
+  DCHECK(sdks_.empty())
+      << "Shutdown() must be called before destroying SkusServiceImpl";
+}
 
 void SkusServiceImpl::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -40,6 +43,7 @@ void SkusServiceImpl::Shutdown() {
         FROM_HERE, base::BindOnce([](::rust::Box<skus::CppSDK> sdk) {},
                                   std::move(sdks_.extract(it++).mapped())));
   }
+  sdks_.clear();
 }
 
 mojo::PendingRemote<mojom::SkusService> SkusServiceImpl::MakeRemote() {
