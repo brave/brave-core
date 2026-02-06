@@ -1213,7 +1213,7 @@ class SettingsViewController: TableViewController {
       header: .title(Strings.Autofill.settingsSectionTitle),
       rows: [
         Row(
-          text: Strings.Autofill.loginAndPasswordsSettingsItemTitle,
+          text: Strings.Autofill.managePasswordstTitle,
           selection: { [unowned self] in
             let loginsPasswordsViewController = LoginListViewController(
               passwordAPI: self.passwordAPI,
@@ -1225,7 +1225,7 @@ class SettingsViewController: TableViewController {
               animated: true
             )
           },
-          image: UIImage(braveSystemNamed: "leo.outside"),
+          image: UIImage(braveSystemNamed: "autofill.key"),
           accessory: .disclosureIndicator
         )
       ]

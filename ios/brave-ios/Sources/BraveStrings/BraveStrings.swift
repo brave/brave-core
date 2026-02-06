@@ -6467,14 +6467,6 @@ extension Strings {
         value: "Saved Logins",
         comment: "The header title displayed over the login list"
       )
-    public static let loginListNeverSavedHeaderTitle =
-      NSLocalizedString(
-        "login.loginListNeverSavedHeaderTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Never Saved",
-        comment: "The header title displayed over the never saved login list entry"
-      )
     public static let loginInfoDetailsHeaderTitle =
       NSLocalizedString(
         "login.loginInfoDetailsHeaderTitle",
@@ -9357,15 +9349,8 @@ extension Strings {
       value: "Autofill",
       comment: "Settings autofill section title"
     )
-    public static let loginAndPasswordsSettingsItemTitle = NSLocalizedString(
-      "autofill.settings.loginAndPasswordsSettingsItemTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Login & Passwords",
-      comment: "Autofill settings item Login and Passwords Title"
-    )
-    public static let managePasswordstNavigationBarTitle = NSLocalizedString(
-      "autofill.managePasswords.navigationBarTitle",
+    public static let managePasswordstTitle = NSLocalizedString(
+      "autofill.managePasswords.title",
       tableName: "BraveShared",
       bundle: .module,
       value: "Manage Passwords",
@@ -9425,5 +9410,13 @@ extension Strings {
       value: "Offer to save passwords",
       comment: "Display text for the option to offer to save passwords"
     )
+    public static let loginListNeverSavedListHeaderTitle =
+      NSLocalizedString(
+        "login.managePasswords.loginListNeverSavedListHeaderTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Never Saved",
+        comment: "The header title displayed over the never saved login list entry"
+      )
   }
 }

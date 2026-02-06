@@ -42,7 +42,7 @@ struct LoginListView: View {
         .ignoresSafeArea()
 
       if viewModel.credentialList.isEmpty && viewModel.blockedList.isEmpty
-        && !viewModel.isRefreshing
+        && !viewModel.isRefreshing && !isSearchActive
       {
         emptyStateView
       } else {
@@ -50,7 +50,7 @@ struct LoginListView: View {
       }
     }
     .toolbarBackground(.visible, for: .navigationBar)
-    .navigationTitle(Strings.Autofill.managePasswordstNavigationBarTitle)
+    .navigationTitle(Strings.Autofill.managePasswordstTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {
@@ -70,7 +70,7 @@ struct LoginListView: View {
       viewModel.fetchLoginInfo()
     }
     .onChange(of: searchText) {
-      viewModel.performSearch(query: searchText)
+      viewModel.performSearch(query: searchText.lowercased())
     }
     .alert(
       Strings.deleteLoginAlertTitle,
@@ -111,27 +111,57 @@ struct LoginListView: View {
   }
 
   private var populatedStateView: some View {
-    Group {
-      Form {
-        Section {
-          EmptyView()
-        } footer: {
+    Form {
+      Section {
+        EmptyView()
+      } footer: {
+        if !isSearchActive {
           Text(Strings.Autofill.managePasswordsInstructions)
             .font(.footnote)
         }
-        .listRowBackground(Color.clear)
-        .background(Color.clear)
-        .listRowSeparator(.hidden)
+      }
+      .listRowBackground(Color.clear)
+      .background(Color.clear)
+      .listRowSeparator(.hidden)
 
+      if !isSearchActive {
         Toggle(Strings.Autofill.managePasswordsOfferToSavePasswords, isOn: $saveLogins.value)
           .tint(Color(braveSystemName: .primary40))
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
 
-        Section {
-          ForEach(
-            Array(viewModel.credentialList.enumerated()),
-            id: \.element.signOnRealm
-          ) { index, credential in
+      Section {
+        ForEach(
+          Array(viewModel.credentialList.enumerated()),
+          id: \.element.signOnRealm
+        ) { index, credential in
+          LoginListRow(
+            credential: credential,
+            isEditMode: isEditMode,
+            passwordAPI: passwordAPI,
+            windowProtection: windowProtection,
+            settingsDelegate: settingsDelegate,
+            onTap: {
+              if !isEditMode {
+                onCredentialSelected?(credential)
+              }
+            },
+            onDelete: {
+              deleteConfirmation = credential
+            }
+          )
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+      } header: {
+        Text(Strings.Autofill.managePasswordsListHeaderTitle)
+          .font(.subheadline)
+      }
+
+      if !viewModel.blockedList.isEmpty {
+        Section(header: Text(Strings.Autofill.loginListNeverSavedListHeaderTitle)) {
+          ForEach(Array(viewModel.blockedList.enumerated()), id: \.element.signOnRealm) {
+            index,
+            credential in
             LoginListRow(
               credential: credential,
               isEditMode: isEditMode,
@@ -149,48 +179,15 @@ struct LoginListView: View {
             )
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
-        } header: {
-          Text(Strings.Autofill.managePasswordsListHeaderTitle)
-            .font(.subheadline)
         }
-
-        if !viewModel.blockedList.isEmpty {
-          Section(header: Text(Strings.Login.loginListNeverSavedHeaderTitle.uppercased())) {
-            ForEach(Array(viewModel.blockedList.enumerated()), id: \.element.signOnRealm) {
-              index,
-              credential in
-              LoginListRow(
-                credential: credential,
-                isEditMode: isEditMode,
-                passwordAPI: passwordAPI,
-                windowProtection: windowProtection,
-                settingsDelegate: settingsDelegate,
-                onTap: {
-                  if !isEditMode {
-                    onCredentialSelected?(credential)
-                  }
-                },
-                onDelete: {
-                  deleteConfirmation = credential
-                }
-              )
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
-            }
-          }
-        }
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      .scrollContentBackground(.hidden)
-      .padding(.top, 112)
-      .ignoresSafeArea(.all, edges: .vertical)
-
-      VStack {
-        SearchBar(text: $searchText, isFocused: $isSearchActive)
-          .padding(.horizontal, 12)
-        Spacer()
       }
     }
-  }
+    .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    .searchable(text: $searchText, prompt: Strings.Autofill.managePasswordsListSearchWebsitesPrompt)
+    .scrollContentBackground(.hidden)
+    .padding(.top, 112)
+    .ignoresSafeArea(.all, edges: .vertical)
+    }
 }
 
 private struct LoginListRow: View {
