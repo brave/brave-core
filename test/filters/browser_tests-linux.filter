@@ -117,3 +117,13 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
+
+# These tests fail on Linux because kPromptForDownload defaults to true,
+# triggering the GTK file chooser dialog which causes g_malloc leaks
+# detected by LSan on ASAN builds and timeouts.
+# https://github.com/brave/brave-browser/issues/52572
+# https://github.com/brave/brave-browser/issues/52649
+# https://github.com/brave/brave-browser/issues/52569
+-All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-ChromeMojoProxyResolverFactoryBrowserTest.*
+-PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
