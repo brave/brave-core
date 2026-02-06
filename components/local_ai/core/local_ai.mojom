@@ -1,0 +1,26 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module local_ai.mojom;
+
+// Browser-side service that manages on-device ML model lifecycle and
+// dispatches inference requests. Implemented by LocalAIService in the
+// browser process; called by the WASM bridge page in the renderer.
+interface LocalAIService {
+  // Receives the renderer-side EmbeddingGemmaInterface implementation
+  // so the browser can forward inference requests to the WASM model.
+  BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
+
+  // Generates a dense embedding vector for the given text.
+  Embed(string text) => (array<double> embedding);
+};
+
+// Renderer-side interface implemented by the WASM bridge page.
+// Performs actual model inference using the Candle ML framework
+// compiled to WebAssembly.
+interface EmbeddingGemmaInterface {
+  // Produces a dense embedding vector for the given input text.
+  Embed(string input) => (array<double> output);
+};

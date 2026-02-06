@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_LOCAL_AI_CONTENT_CANDLE_SERVICE_H_
-#define BRAVE_COMPONENTS_LOCAL_AI_CONTENT_CANDLE_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_LOCAL_AI_CONTENT_LOCAL_AI_SERVICE_H_
+#define BRAVE_COMPONENTS_LOCAL_AI_CONTENT_LOCAL_AI_SERVICE_H_
 
 #include <memory>
 #include <vector>
@@ -12,7 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
-#include "brave/components/local_ai/core/candle.mojom.h"
+#include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -27,14 +27,14 @@ class WebContents;
 
 namespace local_ai {
 
-class CandleService;
+class LocalAIService;
 
 // Helper class to observe WebContents for WASM page load events.
-// This is separated from CandleService so the service can be shared
+// This is separated from LocalAIService so the service can be shared
 // with platforms that don't have content::WebContentsObserver.
 class WasmWebContentsObserver : public content::WebContentsObserver {
  public:
-  explicit WasmWebContentsObserver(CandleService* service,
+  explicit WasmWebContentsObserver(LocalAIService* service,
                                    content::WebContents* web_contents);
   ~WasmWebContentsObserver() override;
 
@@ -46,18 +46,30 @@ class WasmWebContentsObserver : public content::WebContentsObserver {
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 
-  raw_ptr<CandleService> service_;
+  raw_ptr<LocalAIService> service_;
 };
 
-class CandleService : public KeyedService, public mojom::CandleService {
+// LocalAIService provides on-device machine learning capabilities, currently
+// using the Candle ML framework for execution via WebAssembly.
+//
+// This service manages:
+// - A hidden WebContents that loads and runs the WASM-based ML model
+// - Communication between the browser process and the WASM renderer via Mojo
+// - Request queueing while the model initializes
+// - Automatic cleanup after idle timeout to free memory
+//
+// The service is currently implemented using Candle (see candle_embedding_gemma
+// resources), but the API is framework-agnostic to allow future flexibility.
+class LocalAIService : public KeyedService, public mojom::LocalAIService {
  public:
-  explicit CandleService(content::BrowserContext* browser_context);
-  ~CandleService() override;
+  explicit LocalAIService(content::BrowserContext* browser_context);
+  ~LocalAIService() override;
 
-  CandleService(const CandleService&) = delete;
-  CandleService& operator=(const CandleService&) = delete;
+  LocalAIService(const LocalAIService&) = delete;
+  LocalAIService& operator=(const LocalAIService&) = delete;
 
-  void BindReceiver(mojo::PendingReceiver<mojom::CandleService> receiver);
+  mojo::PendingRemote<mojom::LocalAIService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::LocalAIService> receiver);
 
   void BindEmbeddingGemma(
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
@@ -88,7 +100,7 @@ class CandleService : public KeyedService, public mojom::CandleService {
   // Observer for WASM WebContents load events
   std::unique_ptr<WasmWebContentsObserver> wasm_web_contents_observer_;
 
-  mojo::ReceiverSet<mojom::CandleService> receivers_;
+  mojo::ReceiverSet<mojom::LocalAIService> receivers_;
 
   // Single embedder remote (shared by all callers)
   mojo::Remote<mojom::EmbeddingGemmaInterface> embedding_gemma_remote_;
@@ -97,7 +109,8 @@ class CandleService : public KeyedService, public mojom::CandleService {
   bool wasm_page_loaded_ = false;
   bool embedding_ready_ = false;
 
-  // Queue for pending Embed requests while model is initializing
+  // Holds an Embed() call that arrived before the WASM model was ready.
+  // Requests are drained in FIFO order once the model is initialized.
   struct PendingEmbedRequest {
     PendingEmbedRequest();
     PendingEmbedRequest(std::string text, EmbedCallback callback);
@@ -115,9 +128,9 @@ class CandleService : public KeyedService, public mojom::CandleService {
   // Idle timer to close WebContents when not in use
   base::OneShotTimer idle_timer_;
 
-  base::WeakPtrFactory<CandleService> weak_ptr_factory_{this};
+  base::WeakPtrFactory<LocalAIService> weak_ptr_factory_{this};
 };
 
 }  // namespace local_ai
 
-#endif  // BRAVE_COMPONENTS_LOCAL_AI_CONTENT_CANDLE_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_LOCAL_AI_CONTENT_LOCAL_AI_SERVICE_H_

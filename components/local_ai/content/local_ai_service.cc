@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/local_ai/content/candle_service.h"
+#include "brave/components/local_ai/content/local_ai_service.h"
 
 #include "base/logging.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -13,19 +13,19 @@
 
 namespace local_ai {
 
-CandleService::PendingEmbedRequest::PendingEmbedRequest() = default;
-CandleService::PendingEmbedRequest::PendingEmbedRequest(std::string text,
-                                                        EmbedCallback callback)
+LocalAIService::PendingEmbedRequest::PendingEmbedRequest() = default;
+LocalAIService::PendingEmbedRequest::PendingEmbedRequest(std::string text,
+                                                         EmbedCallback callback)
     : text(std::move(text)), callback(std::move(callback)) {}
-CandleService::PendingEmbedRequest::~PendingEmbedRequest() = default;
-CandleService::PendingEmbedRequest::PendingEmbedRequest(PendingEmbedRequest&&) =
-    default;
-CandleService::PendingEmbedRequest&
-CandleService::PendingEmbedRequest::operator=(PendingEmbedRequest&&) = default;
+LocalAIService::PendingEmbedRequest::~PendingEmbedRequest() = default;
+LocalAIService::PendingEmbedRequest::PendingEmbedRequest(
+    PendingEmbedRequest&&) = default;
+LocalAIService::PendingEmbedRequest&
+LocalAIService::PendingEmbedRequest::operator=(PendingEmbedRequest&&) = default;
 
 // WasmWebContentsObserver implementation
 WasmWebContentsObserver::WasmWebContentsObserver(
-    CandleService* service,
+    LocalAIService* service,
     content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents), service_(service) {}
 
@@ -45,28 +45,33 @@ namespace {
 constexpr base::TimeDelta kIdleTimeout = base::Minutes(1);
 }  // namespace
 
-// CandleService implementation
-CandleService::CandleService(content::BrowserContext* browser_context)
+// LocalAIService implementation
+LocalAIService::LocalAIService(content::BrowserContext* browser_context)
     : browser_context_(browser_context) {
-  DVLOG(3) << "CandleService created for browser context";
+  DVLOG(3) << "LocalAIService created for browser context";
 
   if (!browser_context_) {
-    DVLOG(0) << "CandleService: No browser context available";
+    DVLOG(0) << "LocalAIService: No browser context available";
     return;
   }
 }
 
-CandleService::~CandleService() {
+LocalAIService::~LocalAIService() {
   CloseWasmWebContents();
 }
 
-void CandleService::BindReceiver(
-    mojo::PendingReceiver<mojom::CandleService> receiver) {
-  receivers_.Add(this, std::move(receiver));
-  DVLOG(3) << "BindReceiver called";
+mojo::PendingRemote<mojom::LocalAIService> LocalAIService::MakeRemote() {
+  mojo::PendingRemote<mojom::LocalAIService> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
 }
 
-void CandleService::BindEmbeddingGemma(
+void LocalAIService::Bind(
+    mojo::PendingReceiver<mojom::LocalAIService> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void LocalAIService::BindEmbeddingGemma(
     mojo::PendingRemote<mojom::EmbeddingGemmaInterface> pending_remote) {
   // Bind the single embedder remote from our WASM WebContents
   if (embedding_gemma_remote_.is_bound()) {
@@ -79,7 +84,7 @@ void CandleService::BindEmbeddingGemma(
   // Set up disconnect handler - this handles renderer crashes,
   // manual kills, etc.
   embedding_gemma_remote_.set_disconnect_handler(base::BindOnce(
-      [](CandleService* service) {
+      [](LocalAIService* service) {
         DVLOG(1) << "EmbeddingGemma remote disconnected "
                     "(renderer crash or manual kill)";
         // Clear pending requests on disconnect
@@ -100,7 +105,7 @@ void CandleService::BindEmbeddingGemma(
   ProcessPendingEmbedRequests();
 }
 
-void CandleService::Embed(const std::string& text, EmbedCallback callback) {
+void LocalAIService::Embed(const std::string& text, EmbedCallback callback) {
   // Stop idle timer since we have activity
   StopIdleTimer();
 
@@ -120,13 +125,13 @@ void CandleService::Embed(const std::string& text, EmbedCallback callback) {
   StartIdleTimer();
 }
 
-void CandleService::OnWasmPageLoaded() {
-  DVLOG(3) << "CandleService: WASM page loaded";
+void LocalAIService::OnWasmPageLoaded() {
+  DVLOG(3) << "LocalAIService: WASM page loaded";
   wasm_page_loaded_ = true;
 }
 
-void CandleService::Shutdown() {
-  DVLOG(3) << "CandleService: Shutting down";
+void LocalAIService::Shutdown() {
+  DVLOG(3) << "LocalAIService: Shutting down";
 
   // Clear any pending requests
   for (auto& request : pending_embed_requests_) {
@@ -137,7 +142,7 @@ void CandleService::Shutdown() {
   CloseWasmWebContents();
 }
 
-void CandleService::ProcessPendingEmbedRequests() {
+void LocalAIService::ProcessPendingEmbedRequests() {
   if (!embedding_ready_ || !embedding_gemma_remote_) {
     return;
   }
@@ -155,12 +160,12 @@ void CandleService::ProcessPendingEmbedRequests() {
   StartIdleTimer();
 }
 
-void CandleService::EnsureWasmWebContents() {
+void LocalAIService::EnsureWasmWebContents() {
   if (wasm_web_contents_) {
     return;  // Already created
   }
 
-  DVLOG(3) << "CandleService: Creating WASM WebContents";
+  DVLOG(3) << "LocalAIService: Creating WASM WebContents";
 
   // Create a hidden WebContents to load the WASM
   content::WebContents::CreateParams create_params(browser_context_);
@@ -174,14 +179,14 @@ void CandleService::EnsureWasmWebContents() {
   // Navigate to the WASM page - this will trigger
   // BindEmbeddingGemma automatically
   GURL wasm_url(kUntrustedCandleEmbeddingGemmaWasmURL);
-  DVLOG(3) << "CandleService: Loading WASM from " << wasm_url;
+  DVLOG(3) << "LocalAIService: Loading WASM from " << wasm_url;
   wasm_web_contents_->GetController().LoadURL(wasm_url, content::Referrer(),
                                               ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
                                               std::string());
 }
 
-void CandleService::CloseWasmWebContents() {
-  DVLOG(3) << "CandleService: Closing WASM WebContents "
+void LocalAIService::CloseWasmWebContents() {
+  DVLOG(3) << "LocalAIService: Closing WASM WebContents "
               "to free memory";
 
   idle_timer_.Stop();
@@ -198,13 +203,13 @@ void CandleService::CloseWasmWebContents() {
   embedding_ready_ = false;
 }
 
-void CandleService::StartIdleTimer() {
+void LocalAIService::StartIdleTimer() {
   idle_timer_.Start(FROM_HERE, kIdleTimeout,
-                    base::BindOnce(&CandleService::CloseWasmWebContents,
+                    base::BindOnce(&LocalAIService::CloseWasmWebContents,
                                    weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CandleService::StopIdleTimer() {
+void LocalAIService::StopIdleTimer() {
   idle_timer_.Stop();
 }
 

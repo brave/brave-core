@@ -13,7 +13,7 @@ mojom_component("mojom") {
   generate_legacy_js_bindings = true
   webui_module_path = "/"
 
-  sources = [ "candle.mojom" ]
+  sources = [ "local_ai.mojom" ]
 }
 
 static_library("core") {
