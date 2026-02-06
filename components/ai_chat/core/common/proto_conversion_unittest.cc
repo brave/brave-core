@@ -511,6 +511,60 @@ TEST(ProtoConversionTest,
   EXPECT_EQ(
       proto_event.output(0).web_sources_content_block().sources(0).title(),
       "Valid");
+  EXPECT_EQ(proto_event.output(0).web_sources_content_block().sources(0).url(),
+            "https://valid.com/");
+  EXPECT_EQ(proto_event.output(0)
+                .web_sources_content_block()
+                .sources(0)
+                .favicon_url(),
+            "https://valid.com/favicon.ico");
+}
+
+TEST(ProtoConversionTest,
+     DeserializeToolUseEvent_WebSourcesContentBlockInvalidUrls) {
+  // Test that invalid URLs in WebSourcesContentBlock are skipped during
+  // deserialization
+  store::ToolUseEventProto proto_event;
+  proto_event.set_tool_name("brave_web_search");
+  proto_event.set_id("tooluse_789");
+
+  auto* proto_block = proto_event.add_output();
+  auto* proto_sources = proto_block->mutable_web_sources_content_block();
+  proto_sources->set_query("test query");
+
+  // Valid source
+  auto* valid_source = proto_sources->add_sources();
+  valid_source->set_title("Valid");
+  valid_source->set_url("https://valid.com");
+  valid_source->set_favicon_url("https://valid.com/favicon.ico");
+
+  // Invalid URL source
+  auto* invalid_url_source = proto_sources->add_sources();
+  invalid_url_source->set_title("Invalid URL");
+  invalid_url_source->set_url("invalid-url");
+  invalid_url_source->set_favicon_url("https://valid.com/favicon.ico");
+
+  // Invalid favicon URL source
+  auto* invalid_favicon_source = proto_sources->add_sources();
+  invalid_favicon_source->set_title("Invalid Favicon");
+  invalid_favicon_source->set_url("https://valid.com");
+  invalid_favicon_source->set_favicon_url("invalid-favicon");
+
+  // Deserialize to mojom
+  auto mojom_event = DeserializeToolUseEvent(proto_event);
+
+  // Only the valid source should be deserialized
+  ASSERT_TRUE(mojom_event->output.has_value());
+  ASSERT_EQ(mojom_event->output->size(), 1u);
+  ASSERT_TRUE(mojom_event->output->at(0)->is_web_sources_content_block());
+  const auto& web_sources =
+      mojom_event->output->at(0)->get_web_sources_content_block();
+  EXPECT_EQ(web_sources->query, "test query");
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Valid");
+  EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://valid.com/");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
+            "https://valid.com/favicon.ico");
 }
 
 TEST(ProtoConversionTest, SerializeDeserializeSkillEntry) {
