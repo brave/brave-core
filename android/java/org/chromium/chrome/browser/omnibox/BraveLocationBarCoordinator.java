@@ -174,4 +174,11 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
         return BottomToolbarConfiguration.isBraveBottomControlsEnabled()
                 && BraveMenuButtonCoordinator.isMenuFromBottom();
     }
+
+    public @Nullable BraveLocationBarMediator getLocationBarMediator() {
+        if (mLocationBarMediator instanceof BraveLocationBarMediator) {
+            return (BraveLocationBarMediator) mLocationBarMediator;
+        }
+        return null;
+    }
 }
