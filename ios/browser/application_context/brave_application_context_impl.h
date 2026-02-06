@@ -39,6 +39,7 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
   // ApplicationContextImpl
   ukm::UkmRecorder* GetUkmRecorder() override;
   gcm::GCMDriver* GetGCMDriver() override;
+  void PreMainMessageLoopRun() override;
 
   // BraveApplicationContextImpl
   brave::URLSanitizerComponentInstaller* url_sanitizer_component_installer();
