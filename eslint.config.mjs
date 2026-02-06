@@ -10,46 +10,69 @@ import licenses from 'eslint-plugin-licenses'
 import noUnsanitized from 'eslint-plugin-no-unsanitized'
 import reactHooks from 'eslint-plugin-react-hooks'
 import love from 'eslint-config-love'
-import prettier from 'eslint-config-prettier'
+import prettier from 'eslint-config-prettier/flat'
 import tslint from 'typescript-eslint'
+import eslintJs from '@eslint/js'
 
+// Config layout: each plugin or override is a separate array entry.
+// Guidelines:
+//   - One section per plugin; do not combine rules from different plugins
+//     in one section.
+//   - Each section should have a comment stating its purpose and which files
+//     it targets.
+// Verify changes with: npm run eslint (about 1 min).
 export default defineConfig([
+  // Turn off rules that conflict with Prettier formatting (all files).
   prettier,
+
+  // ESLint core recommended rules for JavaScript (.js files + related).
+  eslintJs.configs.recommended,
+
+  // Prevents unsafe DOM injection, e.g. innerHTML (all files).
+  noUnsanitized.configs.recommended,
+
+  // React Hooks rules and related React best practices (.tsx and .jsx files).
+  reactHooks.configs.flat.recommended,
+
+  // Jest test lint rules. (.ts and .js test files).
+  jest.configs['flat/recommended'],
+
+  // TypeScript syntax and basic correctness; does not use type information (.ts, .tsx, .mts files).
   tslint.configs.recommended,
+
+  // Stricter TypeScript rules using the type checker
   {
     ...love,
+    files: ['**/*.{ts,tsx,mts}'],
     languageOptions: {
+      ...love.languageOptions,
       parserOptions: {
         project: './tsconfig-lint.json',
       },
     },
-    plugins: {
-      jest,
-      licenses,
-      'no-unsanitized': noUnsanitized,
-      'react-hooks': reactHooks,
-    },
+  },
 
+  // Enforce license header in file (all files). Overlaps with PRESUBMIT.
+  {
+    plugins: {
+      licenses,
+    },
     rules: {
-      // Enable rules
       'licenses/header': [
         2,
         {
-          'tryUseCreatedYear': true,
-
-          'comment': {
-            'allow': 'both',
-            'prefer': 'line',
+          tryUseCreatedYear: true,
+          comment: {
+            allow: 'both',
+            prefer: 'line',
           },
-
-          'header': [
+          header: [
             'Copyright (c) {YEAR} The Brave Authors. All rights reserved.',
             'This Source Code Form is subject to the terms of the Mozilla Public',
             'License, v. 2.0. If a copy of the MPL was not distributed with this file,',
             'You can obtain one at https://mozilla.org/MPL/2.0/.',
           ],
-
-          'altHeaders': [
+          altHeaders: [
             [
               'Copyright (c) {YEAR} The Brave Authors. All rights reserved.',
               '* This Source Code Form is subject to the terms of the Mozilla Public',
@@ -70,79 +93,9 @@ export default defineConfig([
           ],
         },
       ],
-
-      'no-unsanitized/method': 'error',
-      'no-unsanitized/property': 'error',
-
-      // Disable rules
-      '@typescript-eslint/array-type': 0,
-      '@typescript-eslint/await-thenable': 0,
-      '@typescript-eslint/ban-ts-comment': 0,
-      '@typescript-eslint/ban-types': 0,
-      '@typescript-eslint/class-literal-property-style': 0,
-      '@typescript-eslint/consistent-generic-constructors': 0,
-      '@typescript-eslint/consistent-indexed-object-style': 0,
-      '@typescript-eslint/consistent-type-assertions': 0,
-      '@typescript-eslint/consistent-type-definitions': 0,
-      '@typescript-eslint/consistent-type-exports': 0,
-      '@typescript-eslint/consistent-type-imports': 0,
-      '@typescript-eslint/explicit-function-return-type': 0,
-      '@typescript-eslint/indent': 0,
-      '@typescript-eslint/no-base-to-string': 0,
-      '@typescript-eslint/no-confusing-void-expression': 0,
-      '@typescript-eslint/no-dynamic-delete': 0,
-      '@typescript-eslint/no-empty-interface': 0,
-      '@typescript-eslint/no-empty-object-type': 0,
-      '@typescript-eslint/no-explicit-any': 0,
-      '@typescript-eslint/no-floating-promises': 0,
-      '@typescript-eslint/no-implied-eval': 0,
-      '@typescript-eslint/no-invalid-void-type': 0,
-      '@typescript-eslint/no-misused-promises': 0,
-      '@typescript-eslint/no-namespace': 0,
-      '@typescript-eslint/no-non-null-assertion': 0,
-      '@typescript-eslint/no-redeclare': 0,
-      '@typescript-eslint/no-this-alias': 0,
-      '@typescript-eslint/no-unsafe-argument': 0,
-      '@typescript-eslint/no-unsafe-function-type': 0,
-      '@typescript-eslint/no-unused-expressions': 0,
-      '@typescript-eslint/no-unused-vars': 0,
-      '@typescript-eslint/no-useless-constructor': 0,
-      '@typescript-eslint/no-var-requires': 0,
-      '@typescript-eslint/prefer-nullish-coalescing': 0,
-      '@typescript-eslint/prefer-optional-chain': 0,
-      '@typescript-eslint/prefer-readonly': 0,
-      '@typescript-eslint/promise-function-async': 0,
-      '@typescript-eslint/require-array-sort-compare': 0,
-      '@typescript-eslint/restrict-plus-operands': 0,
-      '@typescript-eslint/restrict-template-expressions': 0,
-      '@typescript-eslint/return-await': 0,
-      '@typescript-eslint/strict-boolean-expressions': 0,
-      '@typescript-eslint/unbound-method': 0,
-      'array-callback-return': 0,
-      'consistent-type-definitions': 0,
-      'import/first': 0,
-      'import/no-absolute-path': 0,
-      'multiline-ternary': 0,
-      'n/no-callback-literal': 0,
-      'no-async-promise-executor': 0,
-      'no-case-declarations': 0,
-      'no-fallthrough': 0,
-      'no-loss-of-precision': 0,
-      'no-mixed-operators': 0,
-      'no-prototype-builtins': 0,
-      'no-return-assign': 0,
-      'no-template-curly-in-string': 0,
-      'no-unsafe-negation': 0,
-      'no-useless-call': 0,
-      'no-useless-escape': 0,
-      'node/no-callback-literal': 0,
-      'object-shorthand': 0,
-      'prefer-const': 0,
-      'prefer-promise-reject-errors': 0,
-      'prefer-regex-literals': 0,
-      'promise/param-names': 0,
     },
   },
+
   globalIgnores([
     '.storybook/*',
     'browser/*',
@@ -150,35 +103,201 @@ export default defineConfig([
     '**/*.js',
     '**/*.d.ts',
     'tools/chromium_src/lit_mangler/*.ts',
-    '!build/**/*.js',
-    '!components/playlist/resources/media_detector/*.js',
-  ]),
-  {
-    files: [
-      'components/brave_wallet/**/*.js',
-      'components/brave_wallet/**/*.ts',
-      'components/brave_wallet/**/*.tsx',
-      'components/brave_wallet_ui/**/*.js',
-      'components/brave_wallet_ui/**/*.ts',
-      'components/brave_wallet_ui/**/*.tsx',
-    ],
 
-    rules: {
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-    },
-  },
+    // External or vendored code; not maintained in this repo
+    'vendor/',
+    'third_party/',
+    'tools/crates/vendor/',
+
+    // Not purely JavaScript, contains `<template>` expressions.
+    'ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/',
+    'ios/brave-ios/Sources/Brave/Assets/**/*.js',
+
+
+    // Generated by scripts, skip linting
+    'ios/brave-ios/Sources/AIChat/Components/Markdown/CodeHighlight/Scripts/highlight.min.js',
+    'components/brave_wallet/resources/solana_web3_script.js',
+  ]),
+
   {
-    files: ['components/**/*.stories.tsx', 'components/**/stories/*.tsx'],
+    // Project-wide disabled rules (all files).
     rules: {
+      'array-callback-return': 'off',
+      'arrow-body-style': 'off',
+      'complexity': 'off',
+      'curly': 'off',
+      'eqeqeq': 'off',
+      'guard-for-in': 'off',
+      'logical-assignment-operators': 'off',
+      'max-lines': 'off',
+      'max-nested-callbacks': 'off',
+      'new-cap': 'off',
+      'no-alert': 'off',
+      'no-async-promise-executor': 'off',
+      'no-await-in-loop': 'off',
+      'no-case-declarations': 'off',
+      'no-console': 'off',
+      'no-fallthrough': 'off',
+      'no-implicit-globals': 'off',
+      'no-lonely-if': 'off',
+      'no-multi-assign': 'off',
+      'no-named-default': 'off',
+      'no-negated-condition': 'off',
+      'no-new-func': 'off',
+      'no-new-wrappers': 'off',
+      'no-param-reassign': 'off',
+      'no-plusplus': 'off',
+      'no-promise-executor-return': 'off',
+      'no-prototype-builtins': 'off',
+      'no-return-assign': 'off',
+      'no-template-curly-in-string': 'off',
+      'no-useless-assignment': 'off',
+      'no-useless-concat': 'off',
+      'no-useless-escape': 'off',
+      'operator-assignment': 'off',
+      'prefer-arrow-callback': 'off',
+      'prefer-const': 'off',
+      'prefer-exponentiation-operator': 'off',
+      'prefer-named-capture-group': 'off',
+      'prefer-object-spread': 'off',
+      'prefer-regex-literals': 'off',
+      'prefer-spread': 'off',
+      'prefer-template': 'off',
+      'preserve-caught-error': 'off',
+      'promise/avoid-new': 'off',
+      'radix': 'off',
+      'require-atomic-updates': 'off',
+      'require-unicode-regexp': 'off',
+      'strict': 'off',
+
+      '@typescript-eslint/array-type': 'off',
+      '@typescript-eslint/await-thenable': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/class-literal-property-style': 'off',
+      '@typescript-eslint/class-methods-use-this': 'off',
+      '@typescript-eslint/consistent-generic-constructors': 'off',
+      '@typescript-eslint/consistent-indexed-object-style': 'off',
+      '@typescript-eslint/consistent-type-assertions': 'off',
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/consistent-type-exports': 'off',
+      '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/dot-notation': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/init-declarations': 'off',
+      '@typescript-eslint/max-params': 'off',
+      '@typescript-eslint/method-signature-style': 'off',
+      '@typescript-eslint/no-base-to-string': 'off',
+      '@typescript-eslint/no-confusing-void-expression': 'off',
+      '@typescript-eslint/no-deprecated': 'off',
+      '@typescript-eslint/no-duplicate-type-constituents': 'off',
+      '@typescript-eslint/no-dynamic-delete': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-implied-eval': 'off',
+      '@typescript-eslint/no-import-type-side-effects': 'off',
+      '@typescript-eslint/no-inferrable-types': 'off',
+      '@typescript-eslint/no-invalid-void-type': 'off',
+      '@typescript-eslint/no-magic-numbers': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/no-misused-spread': 'off',
+      '@typescript-eslint/no-namespace': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
+      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
+      '@typescript-eslint/no-unnecessary-template-expression': 'off',
+      '@typescript-eslint/no-unnecessary-type-arguments': 'off',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+      '@typescript-eslint/no-unnecessary-type-conversion': 'off',
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-declaration-merging': 'off',
+      '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-type-assertion': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-useless-constructor': 'off',
+      '@typescript-eslint/no-useless-default-assignment': 'off',
+      '@typescript-eslint/no-wrapper-object-types': 'off',
+      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+      '@typescript-eslint/prefer-destructuring': 'off',
+      '@typescript-eslint/prefer-find': 'off',
+      '@typescript-eslint/prefer-for-of': 'off',
+      '@typescript-eslint/prefer-literal-enum-member': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      '@typescript-eslint/prefer-optional-chain': 'off',
+      '@typescript-eslint/prefer-promise-reject-errors': 'off',
+      '@typescript-eslint/prefer-readonly': 'off',
+      '@typescript-eslint/prefer-regexp-exec': 'off',
+      '@typescript-eslint/prefer-string-starts-ends-with': 'off',
+      '@typescript-eslint/promise-function-async': 'off',
+      '@typescript-eslint/require-array-sort-compare': 'off',
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/restrict-plus-operands': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
+      '@typescript-eslint/return-await': 'off',
+      '@typescript-eslint/strict-boolean-expressions': 'off',
+      '@typescript-eslint/strict-void-return': 'off',
+      '@typescript-eslint/switch-exhaustiveness-check': 'off',
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
+
+      '@eslint-community/eslint-comments/disable-enable-pair': 'off',
+      '@eslint-community/eslint-comments/no-duplicate-disable': 'off',
+      '@eslint-community/eslint-comments/require-description': 'off',
+
+      'import/enforce-node-protocol-usage': 'off',
+      'import/first': 'off',
+      'import/no-absolute-path': 'off',
+      'import/no-named-default': 'off',
+
+      'react-hooks/immutability': 'off',
+      'react-hooks/preserve-manual-memoization': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/refs': 'off',
       'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/static-components': 'off',
+      'react-hooks/use-memo': 'off',
+
+      'jest/no-alias-methods': 'off',
+      'jest/no-conditional-expect': 'off',
+      'jest/no-export': 'off',
+      'jest/no-identical-title': 'off',
+      'jest/no-jasmine-globals': 'off',
+      'jest/no-mocks-import': 'off',
+      'jest/no-standalone-expect': 'off',
+      'jest/valid-expect': 'off',
+      'jest/valid-title': 'off',
     },
   },
-  // Currently, our build scripts use require() for imports.
   {
-    files: ['build/commands/scripts/**/*.js', 'build/commands/lib/**/*.js'],
+    // Rules disabled for plain JavaScript.
+    files: ['**/*.{js,jsx,mjs,cjs}'],
     rules: {
       '@typescript-eslint/no-require-imports': 'off',
+
+      'no-cond-assign': 'off',
+      'no-control-regex': 'off',
+      'no-empty': 'off',
+      'no-redeclare': 'off',
+      'no-setter-return': 'off',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+    },
+  },
+  {
+    // Test data files; skip license header requirement.
+    files: ['test/data/**/*.js'],
+    rules: {
+      'licenses/header': 'off',
     },
   },
 ])
