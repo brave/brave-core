@@ -136,26 +136,6 @@ extension BrowserViewController {
     }
   }
 
-  // Present a popup when VPN server region has been changed
-  private func presentVPNServerRegionPopup() {
-    let controller = PopupViewController(
-      rootView: BraveVPNRegionConfirmationView(
-        country: BraveVPN.serverLocationDetailed.country,
-        city: BraveVPN.serverLocationDetailed.city,
-        countryISOCode: BraveVPN.serverLocation.isoCode
-      ),
-      isDismissable: true
-    )
-    if let presentedViewController {
-      presentedViewController.present(controller, animated: true)
-    } else {
-      present(controller, animated: true)
-    }
-    Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
-      controller?.dismiss(animated: true)
-    }
-  }
-
   func presentBrowserMenu(
     from sourceView: UIView,
     activities: [UIActivity],
@@ -232,11 +212,7 @@ extension BrowserViewController {
           }
         case .vpnRegionPicker:
           let vc = UIHostingController(
-            rootView: BraveVPNRegionListView(
-              onServerRegionSet: { _ in
-                self.presentVPNServerRegionPopup()
-              }
-            )
+            rootView: BraveVPNRegionListView(onServerRegionSet: nil)
           )
           vc.title = Strings.VPN.vpnRegionListServerScreenTitle
           self.dismiss(animated: true) {
