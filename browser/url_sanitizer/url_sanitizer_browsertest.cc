@@ -14,7 +14,6 @@
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -25,7 +24,6 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
-#include "ui/views/test/widget_activation_waiter.h"
 
 namespace {
 
@@ -145,18 +143,6 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
     return text_from_clipboard;
   }
 
-  void FocusWebContents(content::WebContents* web_contents = nullptr) {
-#if BUILDFLAG(IS_MAC)
-    content::HandleMissingKeyWindow();
-#endif
-    if (!web_contents) {
-      web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-    }
-    web_contents->Focus();
-    views::test::WaitForWidgetActive(
-        BrowserView::GetBrowserViewForBrowser(browser())->GetWidget(), true);
-  }
-
   void Check() {
     SetSanitizerRules(kYoutubeRules, kYoutubePermissions);
     const GURL url("https://www.YoUtUbE.com/url_sanitizer/js_api.html");
@@ -164,18 +150,15 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
 
     auto check = [this](const std::string& name, bool should_sanitize,
                         const std::string& expected_text) {
-      auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
       {
-        // This is required because writing to the clipboard fails if it's
-        // attempted by JS while the page is not focused.
-        FocusWebContents(web_contents);
-
         ui::ScopedClipboardWriter clear_clipboard(
             ui::ClipboardBuffer::kCopyPaste);
         clear_clipboard.Reset();
         clear_clipboard.WriteText(u"empty");
       }
       WaitClipboardEmpty();
+
+      auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
       static constexpr char kClickButton[] =
           R"js(
@@ -186,6 +169,7 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
         )js";
       const auto script =
           base::ReplaceStringPlaceholders(kClickButton, {name}, nullptr);
+      web_contents->Focus();
       ASSERT_TRUE(content::ExecJs(web_contents, script));
 
       const std::string text_from_clipboard = WaitClipboard();
