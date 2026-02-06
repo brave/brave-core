@@ -11,15 +11,15 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
-#include "brave/components/brave_rewards/core/common/constants.h"
+#include "brave/brave_domains/constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_wallet {
 
-// Re-export from brave_rewards
-using brave_rewards::kGate3URL;
+// Re-export from brave_domains
+using brave_domains::kGate3URL;
 
 inline constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
 

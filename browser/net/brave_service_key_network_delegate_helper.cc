@@ -18,7 +18,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#include "brave/components/brave_rewards/core/common/constants.h"
+#include "brave/brave_domains/constants.h"
 #endif
 
 namespace brave {
@@ -32,7 +32,7 @@ int OnBeforeStartTransaction_BraveServiceKey(
       std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
       std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()),
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-      std::string(GURL(brave_rewards::kGate3URL).host()),
+      std::string(GURL(brave_domains::kGate3URL).host()),
 #endif
   }};
 

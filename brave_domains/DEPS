@@ -1,3 +1,5 @@
 include_rules = [
+  "+brave/components/brave_rewards/core/buildflags",
+  "+brave/components/brave_wallet/common/buildflags",
   "+third_party/googletest",
 ]

@@ -32,12 +32,12 @@ static_library("content") {
 
   deps = [
     "//base",
+    "//brave/brave_domains:constants",
     "//brave/components/api_request_helper",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
-    "//brave/components/brave_rewards/core/common:constants",
     "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/ntp_background_images/common",

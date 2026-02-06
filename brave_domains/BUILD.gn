@@ -23,6 +23,14 @@ source_set("brave_domains") {
   }
 }
 
+source_set("constants") {
+  sources = [ "constants.h" ]
+  deps = [
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+  ]
+}
+
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
