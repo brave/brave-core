@@ -11,7 +11,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/views/frame/top_container_background.h"
+#include "chrome/browser/ui/views/frame/themed_background.h"
 #include "third_party/skia/include/core/SkMatrix.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkPathBuilder.h"
@@ -91,7 +91,7 @@ void BraveMultiContentsViewMiniToolbar::OnBoundsChanged(
 void BraveMultiContentsViewMiniToolbar::OnPaint(gfx::Canvas* canvas) {
   // Bypassing MultiContentsViewMiniToolbar::OnPaint() and Paint the mini
   // toolbar background to match the toolbar.
-  TopContainerBackground::PaintBackground(canvas, this, browser_view_);
+  ThemedBackground::PaintBackground(canvas, this, browser_view_);
 
   // Draw the bordering stroke.
   cc::PaintFlags flags;
