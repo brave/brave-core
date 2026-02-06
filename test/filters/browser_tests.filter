@@ -1812,6 +1812,12 @@
 # due to UI state changes (toolbars, etc.). Screenshot height may not match.
 -TabContextualizationControllerBrowserTest.GetPageContextForWebpage
 
+# Flaky Chromium test: already disabled on Mac/Linux upstream
+# (crbug.com/355104619), also fails intermittently on Windows. Histogram
+# ServiceWorker.RouterEvaluator.SubresourceTotalEvaluationTime is not recorded
+# when subresource loading timing is non-deterministic.
+-ChromeServiceWorkerTest.StaticRoutingAPISubresourceHistogramTest
+
 # Flaky upstream.
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/PDFExtensionScrollTest.WithArrowLeftRightScrollToPage/*
