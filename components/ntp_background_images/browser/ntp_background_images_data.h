@@ -50,7 +50,7 @@ struct NTPBackgroundImagesData {
 
   [[nodiscard]] bool IsValid() const;
 
-  base::Value::Dict GetBackgroundAt(size_t index) const;
+  base::DictValue GetBackgroundAt(size_t index) const;
 
   std::vector<Background> backgrounds;
   std::string url_prefix;

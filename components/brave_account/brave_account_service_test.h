@@ -84,7 +84,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                               ? endpoint_response_body->has_value()
                                     ? endpoint_response_body->value().ToValue()
                                     : endpoint_response_body->error().ToValue()
-                              : base::Value::Dict());
+                              : base::DictValue());
         const auto body = base::WriteJson(value);
         CHECK(body);
 

@@ -20,7 +20,7 @@ void SetPsstWebsiteSettings(HostContentSettingsMap* map,
                             ConsentStatus consent_status,
                             int script_version,
                             std::string_view user_id,
-                            base::Value::List urls_to_skip);
+                            base::ListValue urls_to_skip);
 
 // Returns the PSST settings for the (origin, user_id) pair if exists
 std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(

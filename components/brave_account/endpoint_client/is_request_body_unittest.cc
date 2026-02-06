@@ -22,7 +22,7 @@ struct RequestBodyNoToValue {
 
 struct RequestBodyStaticToValue {
   static constexpr char kName[] = "RequestBodyStaticToValue";
-  static base::Value::Dict ToValue();
+  static base::DictValue ToValue();
 };
 
 struct RequestBodyToValueWithWrongReturnType {
@@ -32,12 +32,12 @@ struct RequestBodyToValueWithWrongReturnType {
 
 struct RequestBodyToValueWithWrongParameterType {
   static constexpr char kName[] = "RequestBodyToValueWithWrongParameterType";
-  base::Value::Dict ToValue(int) const;
+  base::DictValue ToValue(int) const;
 };
 
 struct ValidRequestBody {
   static constexpr char kName[] = "ValidRequestBody";
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 };
 
 template <typename T>

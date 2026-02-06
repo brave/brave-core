@@ -37,7 +37,7 @@ class NTPBackgroundImagesServiceWaiter
   // NTPBackgroundImagesService::Observer:
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
-  void OnSponsoredContentDidUpdate(const base::Value::Dict& dict) override;
+  void OnSponsoredContentDidUpdate(const base::DictValue& dict) override;
 
   const raw_ref<NTPBackgroundImagesService> service_;
 

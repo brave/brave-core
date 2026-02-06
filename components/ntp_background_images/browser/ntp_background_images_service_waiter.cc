@@ -45,7 +45,7 @@ void NTPBackgroundImagesServiceWaiter::OnSponsoredImagesDataDidUpdate(
 }
 
 void NTPBackgroundImagesServiceWaiter::OnSponsoredContentDidUpdate(
-    const base::Value::Dict& /*dict*/) {
+    const base::DictValue& /*dict*/) {
   on_sponsored_content_did_update_run_loop_.Quit();
 }
 

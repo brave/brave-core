@@ -77,8 +77,8 @@ TEST_F(AdBlockListP3ATest, ReportFilterListUsage) {
   // Set up regional filters: 1 default enabled (shouldn't count),
   // 1 locale-specific enabled (shouldn't count), 5 non-default enabled.
   {
-    base::Value::Dict regional_filters;
-    base::Value::Dict filter_settings;
+    base::DictValue regional_filters;
+    base::DictValue filter_settings;
     filter_settings.Set("enabled", true);
     regional_filters.Set("default-uuid", filter_settings.Clone());
     regional_filters.Set("locale-uuid", filter_settings.Clone());

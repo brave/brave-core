@@ -62,7 +62,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
     const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
-  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> dict = base::JSONReader::ReadDict(
       json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
@@ -74,9 +74,9 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     return;
   }
 
-  if (const base::Value::List* const list = dict->FindList(kImagesKey)) {
+  if (const base::ListValue* const list = dict->FindList(kImagesKey)) {
     for (const auto& value : *list) {
-      const base::Value::Dict* const image_dict = value.GetIfDict();
+      const base::DictValue* const image_dict = value.GetIfDict();
       if (!dict) {
         continue;
       }
@@ -127,14 +127,14 @@ bool NTPBackgroundImagesData::IsValid() const {
   return !backgrounds.empty();
 }
 
-base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) const {
+base::DictValue NTPBackgroundImagesData::GetBackgroundAt(size_t index) const {
   DCHECK(index < backgrounds.size());
 
   if (!IsValid()) {
     return {};
   }
 
-  return base::Value::Dict()
+  return base::DictValue()
       .Set(kWallpaperURLKey,
            url_prefix + backgrounds[index].file_path.BaseName().AsUTF8Unsafe())
       .Set(kWallpaperFilePathKey, backgrounds[index].file_path.AsUTF8Unsafe())

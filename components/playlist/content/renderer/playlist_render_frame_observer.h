@@ -75,7 +75,7 @@ class PlaylistRenderFrameObserver final
   void Inject(const std::string& script_text,
               v8::Local<v8::Context> context,
               std::vector<v8::Local<v8::Value>> args = {}) const;
-  void OnMediaDetected(base::Value::List media);
+  void OnMediaDetected(base::ListValue media);
 
   IsPlaylistEnabledCallback is_playlist_enabled_callback_;
 #if !BUILDFLAG(IS_ANDROID)

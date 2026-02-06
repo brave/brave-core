@@ -551,7 +551,7 @@ class BraveVPNServiceTest : public testing::Test {
                                       bool active_subscription = true) {
     std::string domain = skus::GetDomain("vpn", env);
     auto testing_payload = GenerateTestingCreds(domain, active_subscription);
-    base::Value::Dict state;
+    base::DictValue state;
     state.Set("skus:" + env, testing_payload);
     local_pref_service_.SetDict(skus::prefs::kSkusState, std::move(state));
     SetInterceptorResponse(GetRegionsData());

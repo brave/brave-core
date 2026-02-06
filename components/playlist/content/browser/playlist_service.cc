@@ -149,7 +149,7 @@ bool PlaylistService::AddItemsToPlaylist(
   DCHECK(!playlist_id.empty());
 
   ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-  base::Value::Dict* target_playlist = playlists_update->FindDict(playlist_id);
+  base::DictValue* target_playlist = playlists_update->FindDict(playlist_id);
   if (!target_playlist) {
     LOG(ERROR) << __func__ << " Playlist " << playlist_id << " not found";
     return false;
@@ -203,7 +203,7 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
     auto target_playlist_id =
         playlist_id->empty() ? kDefaultPlaylistID : *playlist_id;
-    base::Value::Dict* playlist_value =
+    base::DictValue* playlist_value =
         playlists_update->FindDict(target_playlist_id);
     if (!playlist_value) {
       VLOG(2) << __func__ << " Playlist " << playlist_id << " not found";
@@ -261,7 +261,7 @@ void PlaylistService::ReorderItemFromPlaylist(
 
   {
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-    base::Value::Dict* playlist_value =
+    base::DictValue* playlist_value =
         playlists_update->FindDict(target_playlist_id);
     DCHECK(playlist_value) << " Playlist " << playlist_id << " not found";
 
@@ -379,7 +379,7 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
   const auto& items = prefs_->GetDict(kPlaylistItemsPref);
-  const base::Value::Dict* playlist_info = items.FindDict(id);
+  const base::DictValue* playlist_info = items.FindDict(id);
   return !!playlist_info;
 }
 
@@ -778,8 +778,7 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 
   {
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-    base::Value::Dict* target_playlist =
-        playlists_update->FindDict(playlist_id);
+    base::DictValue* target_playlist = playlists_update->FindDict(playlist_id);
     if (!target_playlist) {
       LOG(ERROR) << __func__ << " Playlist " << playlist_id << " not found";
       return;
@@ -834,7 +833,7 @@ void PlaylistService::RenamePlaylist(const std::string& playlist_id,
   ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   auto target_playlist_id =
       playlist_id.empty() ? kDefaultPlaylistID : playlist_id;
-  base::Value::Dict* playlist_value =
+  base::DictValue* playlist_value =
       playlists_update->FindDict(target_playlist_id);
   DCHECK(playlist_value) << " Playlist " << playlist_id << " not found";
 
@@ -1194,7 +1193,7 @@ void PlaylistService::OnGetOrphanedPaths(
 
 void PlaylistService::MigratePlaylistValues() {
   // Migration code here should be gone after a few versions
-  base::Value::List order = prefs_->GetList(kPlaylistOrderPref).Clone();
+  base::ListValue order = prefs_->GetList(kPlaylistOrderPref).Clone();
   MigratePlaylistOrder(prefs_->GetDict(kPlaylistsPref), order);
   prefs_->SetList(kPlaylistOrderPref, std::move(order));
 }

@@ -13,7 +13,7 @@
 namespace brave_vpn {
 
 TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
-  base::Value::Dict ticket_value = GetValueWithTicketInfos(
+  base::DictValue ticket_value = GetValueWithTicketInfos(
       "brave-vpn@brave.com", "It's cool feature", "Love the Brave VPN!",
       "credential", "USA/Boston");
 

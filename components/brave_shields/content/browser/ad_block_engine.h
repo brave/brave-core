@@ -59,12 +59,12 @@ class AdBlockEngine {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  base::Value::Dict GetDebugInfo();
+  base::DictValue GetDebugInfo();
   void DiscardRegex(uint64_t regex_id);
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 
-  base::Value::Dict UrlCosmeticResources(const std::string& url);
-  base::Value::List HiddenClassIdSelectors(
+  base::DictValue UrlCosmeticResources(const std::string& url);
+  base::ListValue HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);

@@ -28,11 +28,11 @@ bool BraveNTPCustomBackgroundService::ShouldShowCustomBackground() const {
          delegate_->HasPreferredBraveBackground();
 }
 
-base::Value::Dict BraveNTPCustomBackgroundService::GetBackground() const {
+base::DictValue BraveNTPCustomBackgroundService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
   if (delegate_->HasPreferredBraveBackground()) {
-    base::Value::Dict background = delegate_->GetPreferredBraveBackground();
+    base::DictValue background = delegate_->GetPreferredBraveBackground();
     if (background.empty()) {
       // Return empty value so that it falls back to random Brave background.
       return background;
@@ -44,7 +44,7 @@ base::Value::Dict BraveNTPCustomBackgroundService::GetBackground() const {
 
   // The |data| will be mapped to NewTab.BackgroundWallpaper type from JS side.
   // So we need to keep names of properties same.
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set(kIsBackgroundKey, true);
   if (delegate_->IsCustomImageBackgroundEnabled()) {
     data.Set(kWallpaperURLKey, delegate_->GetCustomBackgroundImageURL().spec());

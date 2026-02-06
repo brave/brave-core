@@ -46,9 +46,8 @@ mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
   return region_list[0].Clone();
 }
 
-base::Value::Dict GetValueFromRegionWithoutCity(
-    const mojom::RegionPtr& region) {
-  base::Value::Dict region_dict;
+base::DictValue GetValueFromRegionWithoutCity(const mojom::RegionPtr& region) {
+  base::DictValue region_dict;
   region_dict.Set(kRegionNameKey, region->name);
   region_dict.Set(kRegionNamePrettyKey, region->name_pretty);
   region_dict.Set(kRegionCountryKey, region->country);
@@ -63,10 +62,10 @@ base::Value::Dict GetValueFromRegionWithoutCity(
   return region_dict;
 }
 
-base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region) {
-  base::Value::Dict region_dict = GetValueFromRegionWithoutCity(region);
+base::DictValue GetValueFromRegion(const mojom::RegionPtr& region) {
+  base::DictValue region_dict = GetValueFromRegionWithoutCity(region);
   if (!region->cities.empty()) {
-    base::Value::List cities;
+    base::ListValue cities;
     for (const auto& city : region->cities) {
       cities.Append(GetValueFromRegionWithoutCity(city));
     }
@@ -75,7 +74,7 @@ base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region) {
   return region_dict;
 }
 
-bool IsValidRegionValue(const base::Value::Dict& value) {
+bool IsValidRegionValue(const base::DictValue& value) {
   if (!value.FindString(kRegionNameKey) ||
       !value.FindString(kRegionNamePrettyKey) ||
       !value.FindString(kRegionCountryKey) ||
@@ -93,7 +92,7 @@ bool IsValidRegionValue(const base::Value::Dict& value) {
   return true;
 }
 
-mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
+mojom::RegionPtr GetRegionFromValueWithoutCity(const base::DictValue& value) {
   mojom::RegionPtr region = mojom::Region::New();
   if (auto* name = value.FindString(brave_vpn::kRegionNameKey)) {
     region->name = *name;
@@ -136,7 +135,7 @@ mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
   return region;
 }
 
-mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value) {
+mojom::RegionPtr GetRegionFromValue(const base::DictValue& value) {
   mojom::RegionPtr region = GetRegionFromValueWithoutCity(value);
   if (value.FindList(kRegionCitiesKey)) {
     const auto* cities = value.FindList(kRegionCitiesKey);
@@ -149,7 +148,7 @@ mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value) {
 }
 
 std::vector<mojom::RegionPtr> ParseRegionList(
-    const base::Value::List& region_list) {
+    const base::ListValue& region_list) {
   std::vector<mojom::RegionPtr> regions;
   for (const auto& value : region_list) {
     DCHECK(value.is_dict());

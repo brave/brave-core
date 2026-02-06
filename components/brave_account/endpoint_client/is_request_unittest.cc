@@ -18,7 +18,7 @@ namespace brave_account::endpoint_client::detail {
 namespace {
 
 struct ValidRequestBody {
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 };
 
 template <typename T>

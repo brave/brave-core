@@ -117,9 +117,9 @@ class AdBlockService {
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  base::Value::Dict UrlCosmeticResources(const std::string& url,
-                                         bool aggressive_blocking);
-  base::Value::Dict HiddenClassIdSelectors(
+  base::DictValue UrlCosmeticResources(const std::string& url,
+                                       bool aggressive_blocking);
+  base::DictValue HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
@@ -136,7 +136,7 @@ class AdBlockService {
 
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =
-      base::OnceCallback<void(base::Value::Dict, base::Value::Dict)>;
+      base::OnceCallback<void(base::DictValue, base::DictValue)>;
   void GetDebugInfoAsync(GetDebugInfoCallback callback);
   void DiscardRegex(uint64_t regex_id);
 
@@ -167,16 +167,16 @@ class AdBlockService {
 
   void OnGetDebugInfoFromDefaultEngine(
       GetDebugInfoCallback callback,
-      base::Value::Dict default_engine_debug_info);
+      base::DictValue default_engine_debug_info);
 
   void TagExistsForTest(const std::string& tag,
                         base::OnceCallback<void(bool)> cb);
 
-  static void MergeResourcesInto(base::Value::Dict from,
-                                 base::Value::Dict& into,
+  static void MergeResourcesInto(base::DictValue from,
+                                 base::DictValue& into,
                                  bool force_hide);
 
-  static void StripProceduralFilters(base::Value::Dict& resources);
+  static void StripProceduralFilters(base::DictValue& resources);
 
   raw_ptr<PrefService> local_state_;
   std::string locale_;

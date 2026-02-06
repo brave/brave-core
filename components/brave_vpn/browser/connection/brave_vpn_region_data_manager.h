@@ -58,10 +58,10 @@ class BraveVPNRegionDataManager {
   void SetDeviceRegion(std::string_view name);
 
   void SetFallbackDeviceRegion();
-  void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
+  void SetDeviceRegionWithTimezone(const base::ListValue& timezons_value);
 
   void OnFetchRegionList(const std::string& region_list, bool success);
-  bool ParseAndStoreRegionList(const base::Value::List& region_value);
+  bool ParseAndStoreRegionList(const base::ListValue& region_value);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
 
   // Notify it's ready when |regions_| is not empty.

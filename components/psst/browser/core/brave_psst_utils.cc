@@ -25,8 +25,8 @@ constexpr char kConsentStatusSettingsKey[] = "consent_status";
 constexpr char kScriptVersionSettingsKey[] = "script_version";
 constexpr char kUrlsToSkipSettingsKey[] = "urls_to_skip";
 
-base::Value::List VectorToList(std::vector<std::string> values) {
-  base::Value::List list;
+base::ListValue VectorToList(std::vector<std::string> values) {
+  base::ListValue list;
   list.reserve(values.size());
   for (auto& value : values) {
     list.Append(std::move(value));
@@ -34,8 +34,8 @@ base::Value::List VectorToList(std::vector<std::string> values) {
   return list;
 }
 
-base::Value::Dict CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
-  base::Value::Dict object;
+base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
+  base::DictValue object;
   object.Set(kUserIdSettingsKey, psst_metadata.user_id);
   object.Set(kConsentStatusSettingsKey, ToString(psst_metadata.consent_status));
   object.Set(kScriptVersionSettingsKey, psst_metadata.script_version);
@@ -70,9 +70,9 @@ void SetPsstWebsiteSettings(HostContentSettingsMap* map,
                             ConsentStatus consent_status,
                             int script_version,
                             std::string_view user_id,
-                            base::Value::List urls_to_skip) {
+                            base::ListValue urls_to_skip) {
   auto psst_metadata = PsstWebsiteSettings::FromValue(
-      base::Value::Dict()
+      base::DictValue()
           .Set(kUserIdSettingsKey, user_id)
           .Set(kConsentStatusSettingsKey, ToString(consent_status))
           .Set(kScriptVersionSettingsKey, script_version)
@@ -105,7 +105,7 @@ void SetPsstWebsiteSettings(HostContentSettingsMap* map,
   } else {
     map->SetWebsiteSettingDefaultScope(
         origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
-        base::Value(base::Value::Dict().Set(
+        base::Value(base::DictValue().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
 }

@@ -316,7 +316,7 @@ void SystemVPNConnectionAPIImplBase::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : received profile credential";
 
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> value = base::JSONReader::ReadDict(
       profile_credential, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (value) {
     constexpr char kUsernameKey[] = "eap-username";

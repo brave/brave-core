@@ -185,13 +185,13 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   // Set policy to disable shields for specific domain.
-  base::Value::List disabled_list;
+  base::ListValue disabled_list;
   disabled_list.Append("[*.]host2.com");
   disabled_list.Append("*.*");
   profile()->GetTestingPrefService()->SetManagedPref(
       kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
 
-  base::Value::List enabled_list;
+  base::ListValue enabled_list;
   enabled_list.Append("[*.]host1.com");
   profile()->GetTestingPrefService()->SetManagedPref(
       kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
@@ -222,7 +222,7 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, host2));
 
-  base::Value::List disabled_list;
+  base::ListValue disabled_list;
   disabled_list.Append("[*.]host2.com");
   profile()->GetTestingPrefService()->SetManagedPref(
       kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
@@ -233,7 +233,7 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, GURL("http://host1.com")));
 
-  base::Value::List enabled_list;
+  base::ListValue enabled_list;
   enabled_list.Append("[*.]host1.com");
   profile()->GetTestingPrefService()->SetManagedPref(
       kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));

@@ -47,7 +47,7 @@ class AdBlockComponentServiceManager
       const AdBlockComponentServiceManager&) = delete;
   ~AdBlockComponentServiceManager() override;
 
-  base::Value::List GetRegionalLists();
+  base::ListValue GetRegionalLists();
 
   bool NeedsLocaleListsMigration(
       std::vector<std::reference_wrapper<FilterListCatalogEntry const>>

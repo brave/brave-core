@@ -72,7 +72,7 @@ class BraveOriginPolicyManagerTest : public testing::Test {
   }
 
   void SetPolicyInLocalState(const std::string& key, bool value) {
-    base::Value::Dict policies_dict =
+    base::DictValue policies_dict =
         pref_service_.GetDict(kBraveOriginPolicies).Clone();
     policies_dict.Set(key, value);
     pref_service_.SetDict(kBraveOriginPolicies, std::move(policies_dict));

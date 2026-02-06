@@ -515,7 +515,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // User script result is an empty dictionary
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           base::Value(base::Value::Dict())));
+                                           base::Value(base::DictValue())));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -525,7 +525,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  EXPECT_EQ(base::Value::Dict(), user_script_insert_future.Take());
+  EXPECT_EQ(base::DictValue(), user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -546,7 +546,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // User script result is an empty dictionary
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           base::Value(base::Value::Dict())));
+                                           base::Value(base::DictValue())));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -556,7 +556,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  EXPECT_EQ(base::Value::Dict(), user_script_insert_future.Take());
+  EXPECT_EQ(base::DictValue(), user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -572,11 +572,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // User script result is an dictionary, and user key is not empty
-  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+  auto script_params = base::Value(base::DictValue().Set("user", "value"));
 
   // Policy script result is a dictionary, but it is not deserializable
   auto policy_script_result =
-      base::Value(base::Value::Dict().Set("prop", "value"));
+      base::Value(base::DictValue().Set("prop", "value"));
 
   // Call UI delegate method once (Failed state) as policy_script_result
   // is not deserializable
@@ -626,7 +626,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an dictionary, but user key is empty
-  auto script_params = base::Value(base::Value::Dict().Set("user", ""));
+  auto script_params = base::Value(base::DictValue().Set("user", ""));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -658,7 +658,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   // Create a dictionary with unsupported blob storage value
   auto script_params = base::Value(
-      base::Value::Dict()
+      base::DictValue()
           .Set("user", "value")
           .Set("prop",
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
@@ -720,15 +720,15 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // Create a user script return value
-  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+  auto script_params = base::Value(base::DictValue().Set("user", "value"));
 
   // prepare return value for policy script (status should be STARTED)
   auto policy_script_result =
-      base::Value(base::Value::Dict()
+      base::Value(base::DictValue()
                       .Set("progress", progress)
                       .Set("applied_tasks",
-                           base::Value::List().Append(
-                               base::Value::Dict()
+                           base::ListValue().Append(
+                               base::DictValue()
                                    .Set("url", url.spec())
                                    .Set("description", task_description))));
 
@@ -796,7 +796,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   // Create a user script return value
-  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+  auto script_params = base::Value(base::DictValue().Set("user", "value"));
 
   // User script's callback is delayed, causing the flow to fail
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))

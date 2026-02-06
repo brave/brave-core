@@ -24,7 +24,7 @@ namespace {
 struct InvalidRequest {};
 
 struct ValidRequestBody {
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 };
 
 using ValidRequest = POST<ValidRequestBody>;
