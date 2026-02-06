@@ -55,7 +55,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
-import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -251,8 +250,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (!BraveConfig.WEB_DISCOVERY_ENABLED) {
             return false;
         }
-        return !UserPrefs.get(assumeNonNull(getProfileProviderSupplier().get()).getOriginalProfile())
-                        .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
+        return !UserPrefs.get(
+                        assumeNonNull(getProfileProviderSupplier().get()).getOriginalProfile())
+                .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
     private void handleAnalyticsConsentPage() {
