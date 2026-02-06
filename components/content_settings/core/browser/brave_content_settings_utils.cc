@@ -96,7 +96,7 @@ std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
 // Extract a SessionModel from |dict[key]|. Will return
 // SessionModel::Durable if no model exists.
 content_settings::mojom::SessionModel GetSessionModelFromDictionary(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const char* key) {
   std::optional<int> model_int = dict.FindInt(key);
   if (!model_int.has_value() ||

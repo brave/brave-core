@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
 #include <string>
+#include <string_view>
 
 #include "base/functional/callback_forward.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -31,6 +32,9 @@ bool HasUserOptedIn(PrefService* prefs);
 void SetUserOptedIn(PrefService* prefs, bool opted_in);
 
 bool IsBraveSearchSERP(const GURL& url);
+
+// Check if tool_name is a Brave server-side search tool
+bool IsBraveSearchTool(std::string_view tool_name);
 
 bool IsPremiumStatus(mojom::PremiumStatus status);
 

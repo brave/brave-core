@@ -88,7 +88,7 @@ class BraveOriginPolicyManager {
   // Internal helper to get policy value with policy key and default value
   bool GetPolicyValueInternal(std::string_view policy_key,
                               bool default_value,
-                              const base::Value::Dict& policies_dict,
+                              const base::DictValue& policies_dict,
                               std::optional<std::string_view> profile_id) const;
 
   bool initialized_ = false;

@@ -31,7 +31,7 @@ constexpr auto kPrivateIPRegexps = std::to_array<std::string_view>(
      "(::f{4}:)?169\\.254\\.([0-9]{1,3})\\.([0-9]{1,3})", "f[cd][0-9a-f]{2}:.*",
      "fe80:.*", "::1", "::"});
 
-void WriteNetworkAuditResultsToDisk(const base::Value::Dict& results_dic,
+void WriteNetworkAuditResultsToDisk(const base::DictValue& results_dic,
                                     const base::FilePath& path) {
   std::string results;
   JSONFileValueSerializer serializer(path);
@@ -50,13 +50,13 @@ bool isPrivateURL(const GURL& url) {
 }
 
 bool PerformNetworkAuditProcess(
-    base::Value::List* events,
+    base::ListValue* events,
     const std::vector<std::string>& extra_allowed_prefixes) {
   DCHECK(events);
 
   bool failed = false;
   events->EraseIf([&failed, &extra_allowed_prefixes](base::Value& event_value) {
-    base::Value::Dict* event_dict = event_value.GetIfDict();
+    base::DictValue* event_dict = event_value.GetIfDict();
     EXPECT_TRUE(event_dict);
 
     std::optional<int> event_type = event_dict->FindInt("type");

@@ -79,8 +79,8 @@ namespace {
 
 template <detail::StaticString Key>
 struct Body {
-  base::Value::Dict ToValue() const {
-    return base::Value::Dict().Set(Key.value, text);
+  base::DictValue ToValue() const {
+    return base::DictValue().Set(Key.value, text);
   }
 
   static std::optional<Body> FromValue(const base::Value& value) {
@@ -104,7 +104,7 @@ struct Body {
 
 template <>
 struct Body<""> {
-  base::Value::Dict ToValue() const { return base::Value::Dict(); }
+  base::DictValue ToValue() const { return base::DictValue(); }
 
   static std::optional<Body> FromValue(const base::Value& value) {
     return value.is_dict() ? Body() : std::optional<Body>();

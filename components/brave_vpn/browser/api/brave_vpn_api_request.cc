@@ -97,7 +97,7 @@ void BraveVpnAPIRequest::GetHostnamesForRegion(
       base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegionNew);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("region", region);
   dict.Set("region-precision", region_precision);
   std::string request_body = CreateJSONRequestBody(dict);
@@ -112,7 +112,7 @@ void BraveVpnAPIRequest::GetProfileCredentials(
       base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(hostname, kProfileCredential);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("subscriber-credential", subscriber_credential);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
@@ -127,7 +127,7 @@ void BraveVpnAPIRequest::GetWireguardProfileCredentials(
       base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(hostname, kCredential);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("subscriber-credential", subscriber_credential);
   dict.Set("public-key", public_key);
   dict.Set("transport-protocol", "wireguard");
@@ -146,7 +146,7 @@ void BraveVpnAPIRequest::VerifyCredentials(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url =
       GetURLWithPath(hostname, kCredential + client_id + "/verify-credentials");
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("subscriber-credential", subscriber_credential);
   dict.Set("api-auth-token", api_auth_token);
   std::string request_body = CreateJSONRequestBody(dict);
@@ -164,7 +164,7 @@ void BraveVpnAPIRequest::InvalidateCredentials(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(
       hostname, kCredential + client_id + "/invalidate-credentials");
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("subscriber-credential", subscriber_credential);
   dict.Set("api-auth-token", api_auth_token);
   std::string request_body = CreateJSONRequestBody(dict);
@@ -180,7 +180,7 @@ void BraveVpnAPIRequest::VerifyPurchaseToken(ResponseCallback callback,
       base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kVerifyPurchaseToken);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("purchase-token", purchase_token);
   dict.Set("product-id", product_id);
   dict.Set("product-type", product_type);
@@ -200,7 +200,7 @@ void BraveVpnAPIRequest::GetSubscriberCredential(
       base::BindOnce(&BraveVpnAPIRequest::OnGetSubscriberCredential,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("product-type", product_type);
   dict.Set("product-id", product_id);
   dict.Set("validation-method", validation_method);
@@ -220,7 +220,7 @@ void BraveVpnAPIRequest::GetSubscriberCredentialV12(
 
   const GURL base_url =
       GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("validation-method", "brave-premium");
   dict.Set("brave-vpn-premium-monthly-pass", skus_credential);
   std::string request_body = CreateJSONRequestBody(dict);

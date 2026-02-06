@@ -73,7 +73,7 @@ namespace brave_wallet {
 
 namespace {
 
-base::Value::List ParamsListFromJson(std::string_view json) {
+base::ListValue ParamsListFromJson(std::string_view json) {
   return std::move(*ParseJsonDict(json).FindList("params"));
 }
 
@@ -379,7 +379,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   std::pair<bool, base::Value> Send(const std::string& method,
-                                    base::Value::List params) {
+                                    base::ListValue params) {
     base::RunLoop run_loop;
     std::pair<bool, base::Value> response;
     provider()->Send(method, std::move(params),
@@ -1652,7 +1652,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
             }
           }"]})",
         method, account_0->address);
-    base::Value::Dict request_payload =
+    base::DictValue request_payload =
         base::test::ParseJsonDict(request_payload_json);
     auto response = CommonRequestOrSendAsync(ParseJson(request_payload_json));
 
@@ -2235,7 +2235,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
         ASSERT_TRUE(header_value);
 
         if (*header_value == "eth_getLogs") {
-          const base::Value::Dict req_body_payload = ParseJsonDict(
+          const base::DictValue req_body_payload = ParseJsonDict(
               R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":
 [{"address":["0x1111", "0x1112"],"fromBlock":"0x2211","toBlock":"0xab65",
 "topics":["0x2edc","0xb832","0x8dc8"]}]})");
@@ -2261,7 +2261,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
       R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
   "params": ["logs", {"address": ["0x1111", "0x1112"], "fromBlock": "0x2211",
   "toBlock": "0xab65",  "topics":  ["0x2edc", "0xb832", "0x8dc8"]}]})";
-  base::Value::Dict request_payload =
+  base::DictValue request_payload =
       base::test::ParseJsonDict(request_payload_json);
   std::string error_message;
   auto response = CommonRequestOrSendAsync(ParseJson(request_payload_json));
@@ -2743,7 +2743,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
   // Wallet that is not created should return empty base::Value for eth_coinbase
   std::string request_payload_json =
       R"({"id":1,"jsonrpc:": "2.0","method":"eth_coinbase"})";
-  base::Value::Dict request_payload =
+  base::DictValue request_payload =
       base::test::ParseJsonDict(request_payload_json);
   auto response = CommonRequestOrSendAsync(ParseJson(request_payload_json));
   EXPECT_EQ(response.first, false);
@@ -2817,14 +2817,14 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   // And responses for request are not in JsonRpcResponse format.
   // Success case:
   SetInterceptor(success_rpc_response);
-  base::Value::Dict expected_dict =
+  base::DictValue expected_dict =
       base::test::ParseJsonDict(success_rpc_response);
   // Type of id is string in JsonRpcResponse interface.
   // https://docs.metamask.io/guide/ethereum-provider.html#legacy-methods
   expected_dict.Set("id", "1");
   base::Value expected_value = base::Value(std::move(expected_dict));
 
-  auto response = Send("eth_chainId", base::Value::List());
+  auto response = Send("eth_chainId", base::ListValue());
   EXPECT_FALSE(response.first);
   EXPECT_EQ(response.second, expected_value);
 
@@ -2842,7 +2842,7 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   expected_dict.Set("id", "1");
   expected_value = base::Value(std::move(expected_dict));
 
-  response = Send("eth_chainId", base::Value::List());
+  response = Send("eth_chainId", base::ListValue());
   EXPECT_TRUE(response.first);
   EXPECT_EQ(response.second, expected_value);
 
@@ -2875,7 +2875,7 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   AddEthereumPermission(account_0->account_id);
   response = Enable();
   EXPECT_FALSE(response.first);
-  base::Value::List expected_list;
+  base::ListValue expected_list;
   expected_list.Append(base::Value(address_0));
   EXPECT_EQ(response.second, base::Value(std::move(expected_list)));
 }

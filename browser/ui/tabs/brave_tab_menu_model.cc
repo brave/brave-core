@@ -138,10 +138,6 @@ void BraveTabMenuModel::Build(Browser* browser,
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-  if (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
-    BuildItemForCustomization(tab_strip_model, selected_index);
-  }
-
   // Replace SplitTabMenuModel with BraveSplitTabMenuModel.
   if (arrange_split_view_submenu_) {
     auto arrange_submenu_index =
@@ -199,17 +195,3 @@ void BraveTabMenuModel::BuildItemForContainers(
                               containers_submenu_.get());
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-void BraveTabMenuModel::BuildItemForCustomization(
-    TabStripModel* tab_strip_model,
-    int tab_index) {
-  if (tab_strip_model->IsTabPinned(tab_index)) {
-    // In case of pinned tabs, we don't show titles at all, so we don't need to
-    // show the rename option.
-    return;
-  }
-
-  const auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
-  InsertItemWithStringIdAt(index, TabStripModel::CommandRenameTab,
-                           IDS_TAB_CXMENU_RENAME_TAB);
-}

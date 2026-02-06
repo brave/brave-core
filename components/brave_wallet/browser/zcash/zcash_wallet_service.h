@@ -25,11 +25,8 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
-
-#if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
-#endif
 
 namespace brave_wallet {
 
@@ -46,9 +43,7 @@ class ZCashResolveTransactionStatusTask;
 class ZCashTxMeta;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
-#if BUILDFLAG(ENABLE_ORCHARD)
                            public ZCashShieldSyncService::Observer,
-#endif
                            KeyringServiceObserverBase {
  public:
   enum class ResolveTransactionStatusResult {
@@ -154,7 +149,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                                          uint64_t amount,
                                          CreateTransactionCallback callback);
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   void CreateOrchardToOrchardTransaction(mojom::AccountIdPtr account_id,
                                          const std::string& address_to,
                                          uint64_t amount,
@@ -171,7 +165,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       const std::string& address_to,
       uint64_t amount,
       CreateTransactionCallback callback);
-#endif
 
   void GetTransactionStatus(const mojom::AccountIdPtr& account_id,
                             std::unique_ptr<ZCashTxMeta> tx_meta,
@@ -263,7 +256,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       SignAndPostTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> result);
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   void MaybeInitAutoSyncManagers();
 
   void OnCreateTransparentToOrchardTransactionTaskDone(
@@ -336,7 +328,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void OverrideSyncStateForTesting(
       base::SequenceBound<OrchardSyncState> sync_state);
-#endif
 
   ZCashActionContext CreateActionContext(const mojom::AccountIdPtr& account_id);
 
@@ -359,7 +350,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   TaskContainer<ZCashResolveTransactionStatusTask>
       resolve_transaction_status_tasks_;
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   base::SequenceBound<OrchardSyncState> sync_state_;
   TaskContainer<ZCashCreateTransparentToOrchardTransactionTask>
       create_shield_transaction_tasks_;
@@ -373,7 +363,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       auto_sync_managers_;
   TaskContainer<ZCashGetZCashChainTipStatusTask>
       get_zcash_chain_tip_status_tasks_;
-#endif
 
   mojo::RemoteSet<mojom::ZCashWalletServiceObserver> observers_;
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;

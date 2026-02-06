@@ -172,7 +172,7 @@ void SubscriptionRenderFrameObserver::BindFunctionToObject(
 }
 
 void SubscriptionRenderFrameObserver::SetLinkStatus(
-    base::Value::Dict status_dict) {
+    base::DictValue status_dict) {
   // The payload looks like that
   // { status: <value>}
   // where value 0 means it's not linked otherwise it's linked.

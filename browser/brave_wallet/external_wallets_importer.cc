@@ -45,7 +45,7 @@ namespace brave_wallet {
 
 namespace {
 
-void OnRunWithStorage(base::OnceCallback<void(base::Value::Dict)> callback,
+void OnRunWithStorage(base::OnceCallback<void(base::DictValue)> callback,
                       ValueStore* storage) {
   DCHECK(IsOnBackendSequence());
   DCHECK(storage);
@@ -53,7 +53,7 @@ void OnRunWithStorage(base::OnceCallback<void(base::Value::Dict)> callback,
 }
 
 std::string GetLegacyCryptoWalletsPassword(const std::string& password,
-                                           base::Value::Dict dict) {
+                                           base::DictValue dict) {
   std::string legacy_crypto_wallets_password;
   const auto* argon_params =
       dict.FindDictByDottedPath("data.KeyringController.argonParams");
@@ -251,7 +251,7 @@ void ExternalWalletsImporter::GetLocalStorage(
 }
 
 void ExternalWalletsImporter::OnGetLocalStorage(InitCallback callback,
-                                                base::Value::Dict dict) {
+                                                base::DictValue dict) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   storage_data_ = std::move(dict);
   std::move(callback).Run(true);
@@ -401,7 +401,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
        number_of_accounts ? static_cast<size_t>(*number_of_accounts) : 1})));
 }
 
-void ExternalWalletsImporter::SetStorageDataForTesting(base::Value::Dict data) {
+void ExternalWalletsImporter::SetStorageDataForTesting(base::DictValue data) {
   storage_data_ = std::move(data);
 }
 

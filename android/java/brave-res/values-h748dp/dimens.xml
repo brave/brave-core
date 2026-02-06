@@ -10,4 +10,13 @@
     <dimen name="onboarding_bottom_sheet_height">235dp</dimen>
     <dimen name="onboarding_counter_layout_height">330dp</dimen>
     <dimen name="onboarding_counter_height">230dp</dimen>
+
+    <dimen name="onboarding_padding_top">16dp</dimen>
+    <dimen name="onboarding_main_container_horizontal_margin">24dp</dimen>
+    <dimen name="onboarding_buttons_vertical_margin">24dp</dimen>
+    <dimen name="onboarding_illustration_margin_top">24dp</dimen>
+    <dimen name="onboarding_illustration_padding">24dp</dimen>
+    <dimen name="onboarding_title_margin_top">24dp</dimen>
+    <dimen name="onboarding_subtitle_margin_top">16dp</dimen>
+    <item name="onboarding_image_top_guide_percent" format="float" type="dimen">0.20</item>
 </resources>

@@ -63,7 +63,7 @@ TEST(BraveVPNUtilsUnitTest, MigrateAndMerge) {
       profile_pref_service.HasPrefPath(brave_vpn::prefs::kBraveVPNRootPref));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNRootPref));
-  base::Value::Dict result = std::move(vpn_settings);
+  base::DictValue result = std::move(vpn_settings);
   result.Merge(std::move(p3a_settings));
   EXPECT_EQ(
       local_state_pref_service.GetDict(brave_vpn::prefs::kBraveVPNRootPref),

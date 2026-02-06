@@ -5,12 +5,9 @@
 
 #include "brave/components/serp_metrics/serp_metrics.h"
 
-#include <cstddef>
 #include <memory>
-#include <string>
 
 #include "absl/strings/str_format.h"
-#include "base/check_op.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
@@ -21,21 +18,13 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// Day numbering is relative to test start. Day 0 is the first day of the test;
-// Day 1 is the next day, and so on. "Today" always refers to the latest day.
+// Day numbering is relative to the start of the test: Day 0 is the first day,
+// Day 1 is the next day, and so on. "Today" always refers to the most recent
+// day. Daily usage pings are simulated at specific times to verify which
+// metrics are included or excluded based on the `kLastCheckYMD`. Usage pings
+// report metrics from yesterday as well as from the stale period.
 
 namespace serp_metrics {
-
-namespace {
-
-std::string NowAsYMD() {
-  base::Time::Exploded now_exploded;
-  base::Time::Now().LocalExplode(&now_exploded);
-  return absl::StrFormat("%04d-%02d-%02d", now_exploded.year,
-                         now_exploded.month, now_exploded.day_of_month);
-}
-
-}  // namespace
 
 class SerpMetricsTest : public testing::Test {
  public:
@@ -45,9 +34,9 @@ class SerpMetricsTest : public testing::Test {
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
 
-    // Register last check date pref (YYYY-MM-DD). This pref is part of the
-    // daily usage ping, and is used to determine the last day that was already
-    // reported so we don't re-report metrics that have already been sent.
+    // Register `kLastCheckYMD` pref (YYYY-MM-DD). This pref is part of the
+    // daily usage ping and tracks the last reported day so we don't re-report
+    // previously sent metrics.
     local_state_.registry()->RegisterStringPref(kLastCheckYMD,
                                                 "");  // Never checked.
 
@@ -57,16 +46,34 @@ class SerpMetricsTest : public testing::Test {
     serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_, &prefs_);
   }
 
-  // Advances the clock to local midnight at the beginning of the day that is
-  // `days` calendar days from the current time. `days` must be greater than 0
-  // to ensure the clock advances forward.
-  void AdvanceClockToStartOfLocalDayAfterDays(size_t days) {
-    CHECK_GT(days, 0U);
+  // Advances the clock to one millisecond shy of a brand new day.
+  void AdvanceClockToJustBeforeNextDay() {
+    const base::Time now = base::Time::Now();
+    const base::Time end_of_day =
+        now.LocalMidnight() + base::Days(1) - base::Milliseconds(1);
+    task_environment_.AdvanceClock(end_of_day - now);
+  }
 
-    base::Time now = base::Time::Now();
-    base::Time distant_future_at_midnight =
-        now.LocalMidnight() + base::Days(days);
-    task_environment_.AdvanceClock(distant_future_at_midnight - now);
+  // Advances the clock to the start of a brand new day.
+  void AdvanceClockToNextDay() {
+    task_environment_.AdvanceClock(base::Days(1));
+  }
+
+  // Advances the clock beyond retention, dropping expired metrics.
+  void AdvanceClockByRetentionPeriod() {
+    task_environment_.AdvanceClock(
+        base::Days(kSerpMetricsTimePeriodInDays.Get()));
+  }
+
+  // Simulates sending the daily usage ping by updating `kLastCheckYMD`.
+  // Searches are reported by calendar day based on the last checked date.
+  void SimulateSendingDailyUsagePingAt(base::Time at) {
+    base::Time::Exploded now_exploded;
+    at.LocalExplode(&now_exploded);
+    local_state_.SetString(
+        kLastCheckYMD,
+        absl::StrFormat("%04d-%02d-%02d", now_exploded.year, now_exploded.month,
+                        now_exploded.day_of_month));
   }
 
  protected:
@@ -80,14 +87,21 @@ class SerpMetricsTest : public testing::Test {
   std::unique_ptr<SerpMetrics> serp_metrics_;
 };
 
+TEST_F(SerpMetricsTest, NoSearchCountsWhenNoSearchesRecorded) {
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
 TEST_F(SerpMetricsTest, NoBraveSearchCountForYesterday) {
   // Day 0: Stale
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
-  // Day 1: Yesterday (no recorded searches)
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  // Day 1: Yesterday (no searches)
+  AdvanceClockToNextDay();
 
   // Day 2: Today
   serp_metrics_->RecordBraveSearch();
@@ -101,7 +115,7 @@ TEST_F(SerpMetricsTest, BraveSearchCountForYesterday) {
   // Day 0: Yesterday
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 1: Today
   serp_metrics_->RecordBraveSearch();
@@ -111,35 +125,14 @@ TEST_F(SerpMetricsTest, BraveSearchCountForYesterday) {
   EXPECT_EQ(2U, serp_metrics_->GetBraveSearchCountForYesterday());
 }
 
-TEST_F(SerpMetricsTest, BraveSearchCountForStalePeriod) {
-  // Day 0: Stale
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Yesterday
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Today
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordBraveSearch();
-
-  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
 TEST_F(SerpMetricsTest, NoGoogleSearchCountForYesterday) {
   // Day 0: Stale
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
-  // Day 1: Yesterday (no recorded searches)
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  // Day 1: Yesterday (no searches)
+  AdvanceClockToNextDay();
 
   // Day 2: Today
   serp_metrics_->RecordGoogleSearch();
@@ -153,7 +146,7 @@ TEST_F(SerpMetricsTest, GoogleSearchCountForYesterday) {
   // Day 0: Yesterday
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 1: Today
   serp_metrics_->RecordGoogleSearch();
@@ -163,35 +156,14 @@ TEST_F(SerpMetricsTest, GoogleSearchCountForYesterday) {
   EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForYesterday());
 }
 
-TEST_F(SerpMetricsTest, GoogleSearchCountForStalePeriod) {
-  // Day 0: Stale
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Yesterday
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Today
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordGoogleSearch();
-
-  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
 TEST_F(SerpMetricsTest, NoOtherSearchCountForYesterday) {
   // Day 0: Stale
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
-  // Day 1: Yesterday (no recorded searches)
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  // Day 1: Yesterday (no searches)
+  AdvanceClockToNextDay();
 
   // Day 2: Today
   serp_metrics_->RecordOtherSearch();
@@ -205,156 +177,14 @@ TEST_F(SerpMetricsTest, OtherSearchCountForYesterday) {
   // Day 0: Yesterday
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 1: Today
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
+
   EXPECT_EQ(2U, serp_metrics_->GetOtherSearchCountForYesterday());
-}
-
-TEST_F(SerpMetricsTest, OtherSearchCountForStalePeriod) {
-  // Day 0: Stale
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Yesterday
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Today
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-
-  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
-TEST_F(SerpMetricsTest, DoNotCountSearchesOnOrBeforeLastCheckedDate) {
-  // Day 0: Stale
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordGoogleSearch();
-  const std::string last_checked_at_1 = NowAsYMD();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Stale
-  serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Yesterday
-  serp_metrics_->RecordBraveSearch();
-  const std::string last_checked_at_2 = NowAsYMD();
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 3: Today
-  serp_metrics_->RecordBraveSearch();
-
-  local_state_.SetString(kLastCheckYMD, last_checked_at_1);
-  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
-  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
-
-  local_state_.SetString(kLastCheckYMD, last_checked_at_2);
-  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
-TEST_F(SerpMetricsTest,
-       ReportAllSearchesUpToYesterdayWhenLastCheckedDateIsEmpty) {
-  // Day 0: Stale
-  serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Stale
-  serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Yesterday
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 3: Today
-  serp_metrics_->RecordBraveSearch();
-
-  local_state_.SetString(kLastCheckYMD, std::string());
-  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
-  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
-TEST_F(SerpMetricsTest,
-       ReportAllSearchesUpToYesterdayWhenLastCheckedDateIsInvalid) {
-  // Day 0: Stale
-  serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Yesterday
-  serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Today
-  serp_metrics_->RecordOtherSearch();
-
-  local_state_.SetString(kLastCheckYMD, "invalid");
-  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
-TEST_F(SerpMetricsTest, DoNotExcludeYesterdayWhenLastCheckedDateIsToday) {
-  // Day 0: Stale
-  serp_metrics_->RecordBraveSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Yesterday
-  serp_metrics_->RecordGoogleSearch();
-  const std::string last_checked_today = NowAsYMD();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Today
-  serp_metrics_->RecordOtherSearch();
-
-  local_state_.SetString(kLastCheckYMD, last_checked_today);
-  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
-}
-
-TEST_F(SerpMetricsTest, SearchCountForStalePeriodOverMultipleDays) {
-  // Day 0: Stale
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordGoogleSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 1: Stale
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordOtherSearch();
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 2: Stale
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 3: Yesterday
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
-
-  // Day 4: Today
-  serp_metrics_->RecordBraveSearch();
-  serp_metrics_->RecordGoogleSearch();
-  serp_metrics_->RecordOtherSearch();
-
-  EXPECT_EQ(6U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, SearchCountForYesterday) {
@@ -365,7 +195,7 @@ TEST_F(SerpMetricsTest, SearchCountForYesterday) {
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 1: Today
   serp_metrics_->RecordBraveSearch();
@@ -385,16 +215,14 @@ TEST_F(SerpMetricsTest, SearchCountForYesterdayOnCuspOfDayRollover) {
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 1: Today
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordOtherSearch();
-  task_environment_.AdvanceClock(
-      base::Days(1) -
-      base::Milliseconds(1));  // One millisecond shy of a brand new day.
 
+  AdvanceClockToJustBeforeNextDay();
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
   EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForYesterday());
   EXPECT_EQ(3U, serp_metrics_->GetOtherSearchCountForYesterday());
@@ -408,35 +236,142 @@ TEST_F(SerpMetricsTest, SearchCountForYesterdayWhenTodayHasNoRecordedSearches) {
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
-  // Day 1: Today (no recorded searches)
+  // Day 1: Today (no searches)
 
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
   EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForYesterday());
   EXPECT_EQ(3U, serp_metrics_->GetOtherSearchCountForYesterday());
 }
 
-TEST_F(SerpMetricsTest, ZeroSearchCounts) {
-  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
-  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+TEST_F(SerpMetricsTest, DailyUsagePingIncludesYesterdayCounts) {
+  // Verifies that yesterday’s searches are included when the last daily usage
+  // ping was sent on the previous day.
+
+  // Day 0: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  SimulateSendingDailyUsagePingAt(base::Time::Now());
+  AdvanceClockToNextDay();
+
+  // Day 1: Today
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+
+  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
 }
 
-TEST_F(SerpMetricsTest, SearchCounts) {
+TEST_F(SerpMetricsTest, BraveSearchCountForStalePeriod) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordBraveSearch();
+
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, GoogleSearchCountForStalePeriod) {
+  // Day 0: Stale
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, OtherSearchCountForStalePeriod) {
+  // Day 0: Stale
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, SearchCountForStalePeriodOverMultipleDays) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Stale
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 2: Stale
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 3: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 4: Today
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+
+  EXPECT_EQ(6U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, SearchCountsForYesterdayAndStalePeriod) {
   // Day 0: Stale
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 1: Yesterday
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordOtherSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 2: Today
   serp_metrics_->RecordGoogleSearch();
@@ -447,26 +382,153 @@ TEST_F(SerpMetricsTest, SearchCounts) {
   EXPECT_EQ(4U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
-TEST_F(SerpMetricsTest, ExpireSearchCountsAfterGivenTimePeriod) {
+TEST_F(SerpMetricsTest, DoNotCountSearchesBeforeLastDailyUsagePingWasSent) {
+  // Verifies that sending the daily usage ping updates the reporting cutoff
+  // and prevents re-reporting older searches.
+
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Stale
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  const base::Time first_daily_usage_ping_at = base::Time::Now();
+  AdvanceClockToNextDay();
+
+  // Day 2: Stale
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 3: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  const base::Time second_daily_usage_ping_at = base::Time::Now();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 4: Today
+  serp_metrics_->RecordBraveSearch();
+
+  // First daily usage ping. Searches from Day 0 have already been reported.
+  // Searches from Day 1, Day 2, and yesterday are counted.
+  SimulateSendingDailyUsagePingAt(first_daily_usage_ping_at);
+  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(3U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(4U, serp_metrics_->GetSearchCountForStalePeriod());
+
+  // Second daily usage ping. Searches from Day 1 and Day 2 have already been
+  // reported. Only yesterday’s searches are counted.
+  SimulateSendingDailyUsagePingAt(second_daily_usage_ping_at);
+  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(2U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(3U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+
+  // Final daily usage ping. Yesterday’s searches are already reported. We are
+  // all caught up. Nothing else to include.
+  SimulateSendingDailyUsagePingAt(base::Time::Now());
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, CountAllSearchesIfDailyUsagePingWasNeverSent) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Stale
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 2: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 3: Today
+  serp_metrics_->RecordBraveSearch();
+
+  local_state_.SetString(kLastCheckYMD, "");  // Never checked.
+  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, CountAllSearchesIfLastCheckedDateIsInvalid) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Stale
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 2: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  serp_metrics_->RecordOtherSearch();
+  AdvanceClockToNextDay();
+
+  // Day 3: Today
+  serp_metrics_->RecordBraveSearch();
+
+  local_state_.SetString(kLastCheckYMD, "invalid");
+  EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, DoNotCountSearchesWhenLastCheckedDateIsInFuture) {
+  // Day 0: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  serp_metrics_->RecordGoogleSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Today
+  serp_metrics_->RecordOtherSearch();
+
+  SimulateSendingDailyUsagePingAt(
+      base::Time::Now() +
+      base::Days(365));  // Time travel for testing purposes only.
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForYesterday());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, DoNotCountSearchesOutsideGivenRetentionPeriod) {
   // Day 0: Stale
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordOtherSearch();
+  AdvanceClockByRetentionPeriod();
 
-  // Advance by the full retention period (`kSerpMetricsTimePeriodInDays` days).
-  AdvanceClockToStartOfLocalDayAfterDays(kSerpMetricsTimePeriodInDays.Get());
-
-  // Day 7: Stale
+  // Day 7: Stale (day 0 falls outside the retention window)
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
   // Day 8: Yesterday
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordGoogleSearch();
   serp_metrics_->RecordOtherSearch();
-  AdvanceClockToStartOfLocalDayAfterDays(1);
+  AdvanceClockToNextDay();
 
-  // Day 9: Today
+  // Day 9: Today (no searches)
+
   EXPECT_EQ(1U, serp_metrics_->GetBraveSearchCountForYesterday());
   EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
   EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());

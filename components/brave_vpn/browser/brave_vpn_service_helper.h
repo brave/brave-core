@@ -17,14 +17,12 @@ class PrefService;
 
 namespace base {
 class Time;
-class Value;
 }  // namespace base
 
 namespace brave_vpn {
 // False if subscription is expired.
-bool IsValidCredentialSummary(const base::Value::Dict& summary);
-bool IsValidCredentialSummaryButNeedActivation(
-    const base::Value::Dict& summary);
+bool IsValidCredentialSummary(const base::DictValue& summary);
+bool IsValidCredentialSummaryButNeedActivation(const base::DictValue& summary);
 bool HasSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 std::optional<base::Time> GetExpirationTime(PrefService* local_prefs);

@@ -342,7 +342,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Properties) {
   {
     auto result = EvalJs(web_contents(browser()),
                          "window.cardano.brave.supportedExtensions");
-    EXPECT_EQ(base::Value::List(), result);
+    EXPECT_EQ(base::ListValue(), result);
   }
 
   {
@@ -448,7 +448,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, EnableFail) {
         }
         connect();)");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-3));
   error_value.Set("info", "Refused");
 
@@ -522,7 +522,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetNetworkId_Error) {
                        "(async () => { try { return await (await "
                        "window.cardano.brave.enable()).getNetworkId() } "
                        "catch(err){return err;}})();");
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-1));
   error_value.Set("info", "Invalid");
 
@@ -548,7 +548,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses) {
       EvalJs(web_contents(browser()),
              "(async () => { return await (await "
              "window.cardano.brave.enable()).getUsedAddresses() })();");
-  base::Value::List list_value;
+  base::ListValue list_value;
   list_value.Append(base::Value("1"));
   list_value.Append(base::Value("2"));
 
@@ -575,7 +575,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses_Error) {
                        "(async () => { try { return await (await "
                        "window.cardano.brave.enable()).getUsedAddresses() } "
                        "catch(err) {return err;}})();");
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-4));
   error_value.Set("info", "Account change");
 
@@ -601,7 +601,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses) {
       EvalJs(web_contents(browser()),
              "(async () => { return await (await "
              "window.cardano.brave.enable()).getUnusedAddresses() })();");
-  base::Value::List list_value;
+  base::ListValue list_value;
   list_value.Append(base::Value("1"));
   list_value.Append(base::Value("2"));
 
@@ -629,7 +629,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses_Error) {
                        "window.cardano.brave.enable()).getUnusedAddresses() } "
                        "catch(err) {return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-2));
   error_value.Set("info", "Internal");
 
@@ -679,7 +679,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetBalance_Error) {
                        "window.cardano.brave.enable()).getBalance() } "
                        "catch(err) {return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-2));
   error_value.Set("info", "Internal");
 
@@ -730,7 +730,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetChangeAddress_Error) {
                        "window.cardano.brave.enable()).getChangeAddress() } "
                        "catch(err) {return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-2));
   error_value.Set("info", "Internal");
 
@@ -758,7 +758,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses) {
              "(async () => { return await (await "
              "window.cardano.brave.enable()).getRewardAddresses() })();");
 
-  base::Value::List list_value;
+  base::ListValue list_value;
   list_value.Append(base::Value("1"));
   list_value.Append(base::Value("2"));
 
@@ -787,7 +787,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses_Error) {
                        "window.cardano.brave.enable()).getRewardAddresses() } "
                        "catch(err){return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(-2));
   error_value.Set("info", "Internal");
 
@@ -823,7 +823,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                "window.cardano.brave.enable()).getUtxos(\"1\", {page: "
                "2, limit:3}) })();");
 
-    base::Value::List list_value;
+    base::ListValue list_value;
     list_value.Append(base::Value("1"));
     list_value.Append(base::Value("2"));
     EXPECT_EQ(list_value, result);
@@ -855,7 +855,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                "(async () => { return await (await "
                "window.cardano.brave.enable()).getUtxos(undefined) })();");
 
-    base::Value::List list_value;
+    base::ListValue list_value;
     list_value.Append(base::Value("1"));
     list_value.Append(base::Value("2"));
     EXPECT_EQ(list_value, result);
@@ -889,7 +889,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                "window.cardano.brave.enable()).getUtxos(undefined, {page: "
                "2, limit:3}) })();");
 
-    base::Value::List list_value;
+    base::ListValue list_value;
     list_value.Append(base::Value("1"));
     list_value.Append(base::Value("2"));
     EXPECT_EQ(list_value, result);
@@ -921,7 +921,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
         "(async () => { return await (await "
         "window.cardano.brave.enable()).getUtxos(undefined, undefined) })();");
 
-    base::Value::List list_value;
+    base::ListValue list_value;
     list_value.Append(base::Value("1"));
     list_value.Append(base::Value("2"));
     EXPECT_EQ(list_value, result);
@@ -953,7 +953,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                "(async () => { return await (await "
                "window.cardano.brave.enable()).getUtxos(\"1\") })();");
 
-    base::Value::List list_value;
+    base::ListValue list_value;
     list_value.Append(base::Value("1"));
     list_value.Append(base::Value("2"));
 
@@ -986,7 +986,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
         "(async () => { return await (await "
         "window.cardano.brave.enable()).getUtxos(\"1\", undefined) })();");
 
-    base::Value::List list_value;
+    base::ListValue list_value;
     list_value.Append(base::Value("1"));
     list_value.Append(base::Value("2"));
 
@@ -1017,7 +1017,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoArgs) {
                        "(async () => { return await (await "
                        "window.cardano.brave.enable()).getUtxos() })();");
 
-  base::Value::List list_value;
+  base::ListValue list_value;
   list_value.Append(base::Value("1"));
   list_value.Append(base::Value("2"));
 
@@ -1109,7 +1109,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
                          "(async () => { try { return await (await "
                          "window.cardano.brave.enable()).getUtxos() } "
                          "catch(error) {return error} })();");
-    base::Value::Dict dict_value;
+    base::DictValue dict_value;
     dict_value.Set("maxSize", base::Value(2));
 
     EXPECT_EQ(dict_value, result);
@@ -1194,7 +1194,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_Error) {
                        "window.cardano.brave.enable()).signTx(\"tx\", true) } "
                        "catch(err) {return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(1));
   error_value.Set("info", "Proof error");
 
@@ -1298,7 +1298,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData) {
                          TestCardanoApi::SignDataCallback callback) {
         EXPECT_EQ("addr", address);
         EXPECT_EQ("data", data);
-        base::Value::Dict signature_dict;
+        base::DictValue signature_dict;
         signature_dict.Set("key", "key_value");
         signature_dict.Set("signature", "signature_value");
         std::move(callback).Run(std::move(signature_dict), nullptr);
@@ -1309,7 +1309,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData) {
       "(async () => { return await (await "
       "window.cardano.brave.enable()).signData(\"addr\", \"data\") })();");
 
-  base::Value::Dict dict_value;
+  base::DictValue dict_value;
   dict_value.Set("key", base::Value("key_value"));
   dict_value.Set("signature", base::Value("signature_value"));
 
@@ -1331,7 +1331,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
                          TestCardanoApi::SignDataCallback callback) {
         EXPECT_EQ("addr", address);
         EXPECT_EQ("data", data);
-        base::Value::Dict signature_dict;
+        base::DictValue signature_dict;
         signature_dict.Set("key", "key_value");
         signature_dict.Set("signature", "signature_value");
         std::move(callback).Run(std::move(signature_dict), nullptr);
@@ -1395,7 +1395,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_Error) {
                        "window.cardano.brave.enable()).signData(\"addr\", "
                        "\"data\") } catch(err) {return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(2));
   error_value.Set("info", "Data sign error");
 
@@ -1426,7 +1426,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_Error) {
                        "window.cardano.brave.enable()).submitTx(\"1\") } "
                        "catch(err) {return err}})();");
 
-  base::Value::Dict error_value;
+  base::DictValue error_value;
   error_value.Set("code", base::Value(1));
   error_value.Set("info", "Refused");
 
@@ -1509,7 +1509,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetExtensions) {
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { return await (await "
                        "window.cardano.brave.enable()).getExtensions()})();");
-  EXPECT_EQ(base::Value::List(), result);
+  EXPECT_EQ(base::ListValue(), result);
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetCollateral) {
@@ -1534,7 +1534,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetCollateral) {
                        "window.cardano.brave.enable()).getCollateral({amount: "
                        "\"amount\"}) })();");
 
-  base::Value::List list_value;
+  base::ListValue list_value;
   list_value.Append(base::Value("1"));
   list_value.Append(base::Value("2"));
   EXPECT_EQ(list_value, result);

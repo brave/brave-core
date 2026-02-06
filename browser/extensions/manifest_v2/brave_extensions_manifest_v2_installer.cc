@@ -51,7 +51,7 @@ GURL GetUpdaterExtensionDownloadUrl(
   return url;
 }
 
-GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
+GURL GetCrxDownloadUrl(const base::DictValue& update_manifest,
                        std::string_view extension_id) {
   const auto* gupdate = update_manifest.FindDict("gupdate");
   if (!gupdate) {

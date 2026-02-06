@@ -31,8 +31,8 @@ auto RequiredProperties() {
   std::vector<mojom::PlaylistItemPtr> items;
   items.push_back(std::move(item));
 
-  return std::pair(base::Value::List().Append(
-                       base::Value::Dict()
+  return std::pair(base::ListValue().Append(
+                       base::DictValue()
                            .Set("name", "Video 1")
                            .Set("pageTitle", "Example page")
                            .Set("pageSrc", "https://example.com/redirected")
@@ -43,7 +43,7 @@ auto RequiredProperties() {
 }
 
 auto RequiredPropertiesMissing() {
-  return std::pair(base::Value::List().Append(base::Value::Dict()),
+  return std::pair(base::ListValue().Append(base::DictValue()),
                    std::vector<mojom::PlaylistItemPtr>());
 }
 
@@ -63,8 +63,8 @@ auto OptionalProperties() {
   items.push_back(std::move(item));
 
   return std::pair(
-      base::Value::List().Append(
-          base::Value::Dict()
+      base::ListValue().Append(
+          base::DictValue()
               .Set("name", "Video 1")
               .Set("pageTitle", "Example page")
               .Set("pageSrc", "https://example.com/redirected")
@@ -78,8 +78,8 @@ auto OptionalProperties() {
 }
 
 auto UnsupportedSrcSchemeHTTP() {
-  return std::pair(base::Value::List().Append(
-                       base::Value::Dict()
+  return std::pair(base::ListValue().Append(
+                       base::DictValue()
                            .Set("name", "Video 1")
                            .Set("pageTitle", "Example page")
                            .Set("pageSrc", "https://example.com/redirected")
@@ -90,8 +90,8 @@ auto UnsupportedSrcSchemeHTTP() {
 }
 
 auto UnsupportedSrcSchemeBlobHTTP() {
-  return std::pair(base::Value::List().Append(
-                       base::Value::Dict()
+  return std::pair(base::ListValue().Append(
+                       base::DictValue()
                            .Set("name", "Video 1")
                            .Set("pageTitle", "Example page")
                            .Set("pageSrc", "https://example.com/redirected")
@@ -104,7 +104,7 @@ auto UnsupportedSrcSchemeBlobHTTP() {
 
 using ParamType = std::pair<
     std::string,  // test name suffix
-    std::pair<base::Value::List, std::vector<mojom::PlaylistItemPtr>> (*)()>;
+    std::pair<base::ListValue, std::vector<mojom::PlaylistItemPtr>> (*)()>;
 
 class PlaylistRenderFrameObserverHelperTest
     : public testing::TestWithParam<ParamType> {};

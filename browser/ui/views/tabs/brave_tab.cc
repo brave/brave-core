@@ -6,16 +6,11 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include <algorithm>
-#include <memory>
 #include <optional>
-#include <string>
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_is_test.h"
-#include "base/feature_list.h"
-#include "base/functional/callback_forward.h"
-#include "base/notimplemented.h"
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -29,117 +24,12 @@
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
-#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/label.h"
-#include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/view_class_properties.h"
 
-namespace {
-
-// MouseWatcherHost implementation that tells whether mouse clicks outside
-// of tracked area.
-class ClickWatcherHost : public views::MouseWatcherHost {
- public:
-  explicit ClickWatcherHost(views::Textfield& textfield)
-      : textfield_(textfield) {}
-  ~ClickWatcherHost() override = default;
-
-  bool Contains(const gfx::Point& screen_point, EventType type) override {
-    if (type != EventType::kPress) {
-      // We only tracks mouse press events
-      return true;
-    }
-
-    auto bounds = textfield_->GetLocalBounds();
-    views::View::ConvertRectToScreen(base::to_address(textfield_), &bounds);
-    return bounds.Contains(screen_point);
-  }
-
- private:
-  raw_ref<views::Textfield> textfield_;
-};
-
-}  // namespace
-
-BraveTab::RenameTextfield::RenameTextfield(
-    base::RepeatingClosure on_click_outside_callback)
-    : on_click_outside_callback_(std::move(on_click_outside_callback)),
-      mouse_watcher_(std::make_unique<ClickWatcherHost>(*this), this) {
-  SetBorder(nullptr);
-  SetBackgroundEnabled(false);
-}
-
-BraveTab::RenameTextfield::~RenameTextfield() = default;
-
-// views::Textfield:
-void BraveTab::RenameTextfield::VisibilityChanged(views::View* starting_from,
-                                                  bool is_visible) {
-  if (starting_from != this) {
-    return;
-  }
-
-  // We start or stop mouse watcher based on visibility of the textfield.
-  if (is_visible) {
-    auto* widget = GetWidget();
-    if (!widget) {
-      CHECK_IS_TEST();
-      return;
-    }
-
-    mouse_watcher_.Start(widget->GetNativeWindow());
-  } else {
-    mouse_watcher_.Stop();
-  }
-}
-
-// views::MouseWatcherListener:
-void BraveTab::RenameTextfield::MouseMovedOutOfHost() {
-  CHECK(on_click_outside_callback_);
-  on_click_outside_callback_.Run();
-}
-
-BEGIN_METADATA(BraveTab, RenameTextfield)
-END_METADATA
-
-BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
-    : Tab(std::move(handle), controller) {
-  if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
-    return;
-  }
-  rename_textfield_ =
-      AddChildView(std::make_unique<RenameTextfield>(base::BindRepeating(
-          // This is safe to pass base::Unretained(this), as BraveTab is the
-          // owner of RenameTextfield and outlives it.
-          &BraveTab::CommitRename, base::Unretained(this))));
-  rename_textfield_->SetVisible(false);
-  rename_textfield_->set_controller(this);
-  rename_textfield_->SetBorder(nullptr);
-  rename_textfield_->SetBackgroundEnabled(false);
-}
-
 BraveTab::~BraveTab() = default;
-
-void BraveTab::EnterRenameMode() {
-  if (!rename_textfield_) {
-    return;
-  }
-
-  if (in_renaming_mode()) {
-    return;  // Already in rename mode.
-  }
-
-  // Fill the textfield with the current title of the tab and select all text.
-  if (rename_textfield_->GetText().empty()) {
-    rename_textfield_->SetText(title_->GetText());
-  }
-  rename_textfield_->SelectAll(/*reversed=*/false);
-  UpdateRenameTextfieldBounds();
-  rename_textfield_->SetVisible(true);
-  title_->SetVisible(false);
-  rename_textfield_->RequestFocus();
-}
 
 void BraveTab::UpdateTabStyle() {
   ResetTabStyle(TabStyleViews::CreateForTab(this));
@@ -252,11 +142,6 @@ void BraveTab::Layout(PassKey) {
       ink_drop->HostSizeChanged(close_button_->size());
     }
   }
-
-  if (in_renaming_mode()) {
-    UpdateRenameTextfieldBounds();
-    title_->SetVisible(false);
-  }
 }
 
 gfx::Insets BraveTab::GetInsets() const {
@@ -327,55 +212,6 @@ bool BraveTab::IsActive() const {
   // When SideBySide is enabled, chromium gives true if tab is in split tab even
   // it's not active. We want to give true only for current active tab.
   return controller_->IsActiveTab(this);
-}
-
-bool BraveTab::HandleKeyEvent(views::Textfield* sender,
-                              const ui::KeyEvent& key_event) {
-  if (key_event.type() != ui::EventType::kKeyPressed) {
-    return false;
-  }
-
-  switch (key_event.key_code()) {
-    case ui::VKEY_ESCAPE:
-      // Cancel the rename on Escape key press.
-      ExitRenameMode();
-      return true;
-    case ui::VKEY_RETURN:
-      // Commit the rename on Enter key press.
-      CommitRename();
-      return true;
-    default:
-      break;
-  }
-
-  return false;
-}
-
-void BraveTab::CommitRename() {
-  auto text = rename_textfield_->GetText();
-  controller_->SetCustomTitleForTab(
-      this,
-      text.empty() ? std::nullopt : std::make_optional(std::u16string(text)));
-  ExitRenameMode();
-}
-
-void BraveTab::ExitRenameMode() {
-  CHECK(in_renaming_mode());
-
-  rename_textfield_->SetVisible(false);
-  title_->SetVisible(true);
-
-  rename_textfield_->SetText(std::u16string());
-}
-
-void BraveTab::UpdateRenameTextfieldBounds() {
-  int constexpr kHeight = 18;
-
-  // Update the bounds of the rename textfield to match the title bounds.
-  auto bounds = title_->bounds();
-  bounds.set_y(bounds.CenterPoint().y() - kHeight / 2);
-  bounds.set_height(kHeight);
-  rename_textfield_->SetBoundsRect(bounds);
 }
 
 BEGIN_METADATA(BraveTab)

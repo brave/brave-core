@@ -271,12 +271,12 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
   } else {
     // Always store something so that we know migration is done
     // when pref isn't default value.
-    prefs_->SetList(kSidebarHiddenBuiltInItems, base::Value::List());
+    prefs_->SetList(kSidebarHiddenBuiltInItems, base::ListValue());
   }
 
   // Fix items pref, if needed
   if (items_are_modified) {
-    base::Value::List sidebar_items;
+    base::ListValue sidebar_items;
     for (const auto& item_value : new_items) {
       auto* item = item_value.GetIfDict();
       DCHECK(item);
@@ -384,14 +384,14 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   // We also need to explicitly store which built-in items have been hidden
   // so that we know which new items the user has been exposed to and which
   // they've chosen to hide.
-  base::Value::List items;
+  base::ListValue items;
   DVLOG(2) << "Serializing items (count: " << items_.size() << ")";
 
   // Serialize each item
   for (const auto& item : items_) {
     DVLOG(2) << "Adding item to pref list: "
              << static_cast<int>(item.built_in_item_type);
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set(kSidebarItemTypeKey, static_cast<int>(item.type));
     dict.Set(kSidebarItemBuiltInItemTypeKey,
              static_cast<int>(item.built_in_item_type));
@@ -405,7 +405,7 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   prefs_->SetList(kSidebarItems, std::move(items));
 
   // Store which built-in items should be hidden
-  base::Value::List builtin_items;
+  base::ListValue builtin_items;
   // TODO(petemill): If we make any hidden-by-default built-in items,
   // then this logic needs to change to only consider shown-by-default items,
   // and perhaps use a dict for each item to store whether built-in item is

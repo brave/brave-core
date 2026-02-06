@@ -65,7 +65,7 @@ void MenuMetrics::RecordMenuGroupAction(MenuGroup group) {
   VLOG(2) << "MenuMetrics: recorded " << group_pref_key;
 
   ScopedDictPrefUpdate update(local_state_, kMiscMetricsMenuGroupActionCounts);
-  base::Value::Dict& update_dict = update.Get();
+  base::DictValue& update_dict = update.Get();
 
   update_dict.Set(group_pref_key,
                   update_dict.FindDouble(group_pref_key).value_or(0) + 1);

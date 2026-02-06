@@ -198,21 +198,20 @@ std::optional<std::string> AdBlockService::GetCspDirectives(
   return csp_directives;
 }
 
-base::Value::Dict AdBlockService::UrlCosmeticResources(
-    const std::string& url,
-    bool aggressive_blocking) {
+base::DictValue AdBlockService::UrlCosmeticResources(const std::string& url,
+                                                     bool aggressive_blocking) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
   TRACE_EVENT("brave.adblock", "UrlCosmeticResources", "url", url);
-  base::Value::Dict resources = default_engine_->UrlCosmeticResources(url);
+  base::DictValue resources = default_engine_->UrlCosmeticResources(url);
 
   if (!aggressive_blocking) {
     // `:has` procedural selectors from the default engine should not be hidden
     // in standard blocking mode.
-    base::Value::List* default_hide_selectors =
+    base::ListValue* default_hide_selectors =
         resources.FindList("hide_selectors");
     if (default_hide_selectors) {
-      base::Value::List::iterator it = default_hide_selectors->begin();
+      base::ListValue::iterator it = default_hide_selectors->begin();
       while (it < default_hide_selectors->end()) {
         DCHECK(it->is_string());
         if (it->GetString().find(":has(") != std::string::npos) {
@@ -228,7 +227,7 @@ base::Value::Dict AdBlockService::UrlCosmeticResources(
     StripProceduralFilters(resources);
   }
 
-  base::Value::Dict additional_resources =
+  base::DictValue additional_resources =
       additional_filters_engine_->UrlCosmeticResources(url);
 
   MergeResourcesInto(std::move(additional_resources), resources,
@@ -246,7 +245,7 @@ base::Value::Dict AdBlockService::UrlCosmeticResources(
 // For now, this returns a dict with two properties:
 //  - "hide_selectors" - wraps the result from the default engine
 //  - "force_hide_selectors" - wraps appended results from all other engines
-base::Value::Dict AdBlockService::HiddenClassIdSelectors(
+base::DictValue AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
@@ -254,16 +253,16 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
 
   TRACE_EVENT("brave.adblock", "HiddenClassIdSelectors", "classes", classes,
               "ids", ids);
-  base::Value::List hide_selectors =
+  base::ListValue hide_selectors =
       default_engine_->HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Value::List additional_selectors =
+  base::ListValue additional_selectors =
       additional_filters_engine_->HiddenClassIdSelectors(classes, ids,
                                                          exceptions);
 
-  base::Value::List force_hide_selectors = std::move(additional_selectors);
+  base::ListValue force_hide_selectors = std::move(additional_selectors);
 
-  base::Value::Dict result;
+  base::DictValue result;
   result.Set("hide_selectors", std::move(hide_selectors));
   result.Set("force_hide_selectors", std::move(force_hide_selectors));
   return result;
@@ -476,7 +475,7 @@ AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
 
 void AdBlockService::OnGetDebugInfoFromDefaultEngine(
     GetDebugInfoCallback callback,
-    base::Value::Dict default_engine_debug_info) {
+    base::DictValue default_engine_debug_info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // base::Unretained() is safe because |additional_filters_engine_| is deleted
@@ -507,21 +506,21 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
 // `force_hide_selectors`.
 //
 // static
-void AdBlockService::MergeResourcesInto(base::Value::Dict from,
-                                        base::Value::Dict& into,
+void AdBlockService::MergeResourcesInto(base::DictValue from,
+                                        base::DictValue& into,
                                         bool force_hide) {
   TRACE_EVENT("brave.adblock", "MergeResourcesInto");
-  base::Value::List* resources_hide_selectors = nullptr;
+  base::ListValue* resources_hide_selectors = nullptr;
   if (force_hide) {
     resources_hide_selectors = into.FindList("force_hide_selectors");
     if (!resources_hide_selectors) {
       resources_hide_selectors =
-          into.Set("force_hide_selectors", base::Value::List())->GetIfList();
+          into.Set("force_hide_selectors", base::ListValue())->GetIfList();
     }
   } else {
     resources_hide_selectors = into.FindList("hide_selectors");
   }
-  base::Value::List* from_resources_hide_selectors =
+  base::ListValue* from_resources_hide_selectors =
       from.FindList("hide_selectors");
   if (resources_hide_selectors && from_resources_hide_selectors) {
     for (auto& selector : *from_resources_hide_selectors) {
@@ -532,8 +531,8 @@ void AdBlockService::MergeResourcesInto(base::Value::Dict from,
   constexpr std::string_view kListKeys[] = {
       "exceptions", kCosmeticResourcesProceduralActions};
   for (const auto& key_ : kListKeys) {
-    base::Value::List* resources = into.FindList(key_);
-    base::Value::List* from_resources = from.FindList(key_);
+    base::ListValue* resources = into.FindList(key_);
+    base::ListValue* from_resources = from.FindList(key_);
     if (resources && from_resources) {
       for (auto& exception : *from_resources) {
         resources->Append(std::move(exception));
@@ -564,12 +563,12 @@ void AdBlockService::MergeResourcesInto(base::Value::Dict from,
 // https://docs.rs/adblock/latest/adblock/cosmetic_filter_cache/struct.ProceduralOrActionFilter.html
 //
 // static
-void AdBlockService::StripProceduralFilters(base::Value::Dict& resources) {
+void AdBlockService::StripProceduralFilters(base::DictValue& resources) {
   TRACE_EVENT("brave.adblock", "StripProceduralFilters");
-  base::Value::List* procedural_actions =
+  base::ListValue* procedural_actions =
       resources.FindList(kCosmeticResourcesProceduralActions);
   if (procedural_actions) {
-    base::Value::List::iterator it = procedural_actions->begin();
+    base::ListValue::iterator it = procedural_actions->begin();
     while (it < procedural_actions->end()) {
       DCHECK(it->is_string());
       auto* pfilter_str = it->GetIfString();

@@ -6,7 +6,6 @@
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 
 #include "base/check.h"
-#include "base/feature_list.h"
 
 #define FromTabInModel FromTabInModel_ChromiumImpl
 #include <chrome/browser/ui/tabs/tab_renderer_data.cc>
@@ -83,15 +82,5 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
       data.should_show_discard_status = true;
     }
   }
-
-  if (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
-    tabs::TabInterface* const tab = model->GetTabAtIndex(index);
-    CHECK(tab);
-
-    TabUIHelper* const tab_ui_helper = TabUIHelper::From(tab);
-    CHECK(tab_ui_helper);
-    data.is_custom_title = tab_ui_helper->has_custom_title();
-  }
-
   return data;
 }

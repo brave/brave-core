@@ -203,8 +203,6 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
   }
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
-
 TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -372,7 +370,5 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress_Testnet) {
               "anm333qykxyy92dqn");
   }
 }
-
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

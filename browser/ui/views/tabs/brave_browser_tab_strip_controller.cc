@@ -35,18 +35,6 @@ BraveBrowserTabStripController::BraveBrowserTabStripController(
 
 BraveBrowserTabStripController::~BraveBrowserTabStripController() = default;
 
-void BraveBrowserTabStripController::EnterTabRenameModeAt(int index) {
-  CHECK(base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs));
-  return static_cast<BraveTabStrip*>(tabstrip_)->EnterTabRenameModeAt(index);
-}
-
-void BraveBrowserTabStripController::SetCustomTitleForTab(
-    int index,
-    const std::optional<std::u16string>& title) {
-  static_cast<BraveTabStripModel*>(model_.get())
-      ->SetCustomTitleForTab(index, title);
-}
-
 bool BraveBrowserTabStripController::IsCommandEnabledForTab(
     TabStripModel::ContextMenuCommand command_id,
     const Tab* tab) {
@@ -135,11 +123,6 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
-  if (command_id == TabStripModel::CommandRenameTab) {
-    EnterTabRenameModeAt(index);
-    return;
-  }
-
   BrowserTabStripController::ExecuteContextMenuCommand(index, command_id,
                                                        event_flags);
 }
@@ -189,8 +172,7 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   if (command_id == TabStripModel::CommandShowVerticalTabs ||
       command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
-      command_id == TabStripModel::CommandOpenInContainer ||
-      command_id == TabStripModel::CommandRenameTab) {
+      command_id == TabStripModel::CommandOpenInContainer) {
     return true;
   }
 

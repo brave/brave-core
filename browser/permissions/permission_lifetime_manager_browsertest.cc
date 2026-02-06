@@ -198,7 +198,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(serializer.Serialize(pre_test_data_));
   }
 
-  const base::Value::Dict& GetExpirationsPrefValue() {
+  const base::DictValue& GetExpirationsPrefValue() {
     return browser()->profile()->GetPrefs()->GetDict(
         prefs::kPermissionLifetimeExpirations);
   }
@@ -238,7 +238,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<MockPermissionLifetimePromptFactory> prompt_factory_;
-  base::Value::Dict pre_test_data_;
+  base::DictValue pre_test_data_;
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {

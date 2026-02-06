@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.89.5",
+  "version": "1.89.8",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -196,7 +196,7 @@
     "typescript-eslint": "8.54.0",
     "typescript-plugin-css-modules": "5.1.0",
     "typescript-plugin-styled-components": "3.0.0",
-    "webpack": "5.97.1",
+    "webpack": "5.105.0",
     "webpack-cli": "5.1.4"
   },
   "dependencies": {

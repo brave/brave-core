@@ -33,8 +33,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_ORCHARD)
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/test/scoped_run_loop_timeout.h"
@@ -43,7 +41,6 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
-#endif
 
 using testing::_;
 using testing::Eq;
@@ -55,12 +52,10 @@ namespace brave_wallet {
 
 namespace {
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 constexpr char kGateJuniorMnemonic[] =
     "gate junior chunk maple cage select orange circle price air tortoise "
     "jelly art frequent fence middle ice moral wage toddler attitude sign "
     "lesson grain";
-#endif
 
 std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::vector<uint8_t> vec;
@@ -72,7 +67,7 @@ std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   return sized_vec;
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
   OrchardMerkleHash hash;
   base::span(hash).copy_from(*PrefixedHexStringToBytes(hex));
@@ -124,7 +119,6 @@ class MockZCashRPC : public ZCashRpc {
                     GetLightdInfoCallback callback));
 };
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 class MockOrchardSyncState : public OrchardSyncState {
  public:
   explicit MockOrchardSyncState(const base::FilePath& path_to_database)
@@ -177,7 +171,6 @@ class MockOrchardSyncStateProxy : public OrchardSyncState {
  private:
   raw_ptr<OrchardSyncState> instance_;
 };
-#endif
 
 }  // namespace
 
@@ -196,9 +189,7 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-#if BUILDFLAG(ENABLE_ORCHARD)
     mocked_sync_state_ = std::make_unique<MockOrchardSyncState>(db_path_);
-#endif
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         db_path_, *keyring_service_,
         std::make_unique<testing::NiceMock<MockZCashRPC>>());
@@ -231,7 +222,6 @@ class ZCashWalletServiceUnitTest : public testing::Test {
 
   base::FilePath& db_path() { return db_path_; }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashAutoSyncManager>>&
   auto_sync_managers() {
     return zcash_wallet_service_->auto_sync_managers_;
@@ -249,7 +239,6 @@ class ZCashWalletServiceUnitTest : public testing::Test {
       base::SequenceBound<OrchardSyncState> sync_state) {
     zcash_wallet_service_->OverrideSyncStateForTesting(std::move(sync_state));
   }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   KeyringService* keyring_service() { return keyring_service_.get(); }
 
@@ -264,9 +253,7 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
 
   std::unique_ptr<KeyringService> keyring_service_;
-#if BUILDFLAG(ENABLE_ORCHARD)
   std::unique_ptr<MockOrchardSyncState> mocked_sync_state_;
-#endif
   std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
 
   base::test::TaskEnvironment task_environment_;
@@ -377,7 +364,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
   task_environment_.RunUntilIdle();
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
@@ -570,7 +556,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
 }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 // https://zcashblockexplorer.com/transactions/3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101/raw
 TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
@@ -921,7 +906,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Eth address, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -932,18 +916,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         account_id_1.Clone(), true,
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
-#else
-  // Eth address, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
-  }
-#endif
 
   // Unified address - mainnet.
   {
@@ -974,7 +946,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         callback.Get());
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Malformed unified address - mainnet, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -989,23 +960,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         "1",
         callback.Get());
   }
-#else
-  // Malformed unified address - mainnet, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
-        "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
-        "1",
-        callback.Get());
-  }
-#endif
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Sapling unified address - mainnet.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -1020,23 +975,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         "6ezc5c7tjwlrnnl79tjtrxmqd42c5mpyz7g",
         callback.Get());
   }
-#else
-  // Sapling unified address - mainnet.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        "u187vrwl4ampyxd5m6aj38n4ndkmj8v6gs97hkt23aps3sn5k89a0gk2smluexgdprcrtm"
-        "5"
-        "6ezc5c7tjwlrnnl79tjtrxmqd42c5mpyz7g",
-        callback.Get());
-  }
-#endif
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Sapling unified address - mainnet, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -1051,21 +990,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         "6ezc5c7tjwlrnnl79tjtrxmqd42c5mpyz7g",
         callback.Get());
   }
-#else
-  // Sapling unified address - mainnet, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        "u187vrwl4ampyxd5m6aj38n4ndkmj8v6gs97hkt23aps3sn5k89a0gk2smluexgdprcrtm"
-        "5"
-        "6ezc5c7tjwlrnnl79tjtrxmqd42c5mpyz7g",
-        callback.Get());
-  }
-#endif
 
   // Testnet unified address with mainnet account (network mismatch).
   {
@@ -1123,7 +1047,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                                               callback.Get());
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Empty address, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -1133,17 +1056,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), true, "",
                                               callback.Get());
   }
-#else
-  // Empty address, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), true, "",
-                                              callback.Get());
-  }
-#endif
 }
 
 TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
@@ -1205,7 +1117,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Eth address, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -1216,18 +1127,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
         account_id_1.Clone(), true,
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
-#else
-  // Eth address, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
-  }
-#endif
 
   // Unified address - testnet.
   {
@@ -1257,7 +1156,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
         callback.Get());
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Malformed Unified address - testnet, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -1272,21 +1170,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
         "956j0",
         callback.Get());
   }
-#else
-  // Malformed Unified address - testnet, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
-        "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
-        "956j0",
-        callback.Get());
-  }
-#endif
 
   // Mainnet unified address with testnet account (network mismatch).
   {
@@ -1324,7 +1207,6 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                                               callback.Get());
   }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   // Empty address, shielded pool.
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
@@ -1334,20 +1216,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
     zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), true, "",
                                               callback.Get());
   }
-#else
-  // Empty address, shielded pool.
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), true, "",
-                                              callback.Get());
-  }
-#endif
 }
-
-#if BUILDFLAG(ENABLE_ORCHARD)
 
 TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
   base::test::ScopedFeatureList feature_list;
@@ -1480,7 +1349,6 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
   }
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
@@ -1560,25 +1428,6 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
         callback.Get());
   }
 }
-#else
-TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
-  auto account_1 =
-      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id_1 = account_1->account_id.Clone();
-
-  {
-    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback,
-                Run(Eq(mojom::ZCashTxType::kUnknown),
-                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
-    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
-    zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
-        account_info->next_transparent_receive_address->address_string,
-        callback.Get());
-  }
-}
-#endif
 
 TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
   auto account_1 =
@@ -3868,7 +3717,6 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync_FeatureDisabled) {
 }
 
 #endif
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 TEST_F(ZCashWalletServiceUnitTest,
        OnCompleteTransactionTaskDone_InvalidTransaction) {

@@ -5,7 +5,6 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/common/config.gni")
 import("//build/config/features.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -373,34 +372,32 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:mojom",
   ]
 
-  if (enable_orchard) {
-    sources += [
-      "zcash/zcash_auto_sync_manager.cc",
-      "zcash/zcash_auto_sync_manager.h",
-      "zcash/zcash_blocks_batch_scan_task.cc",
-      "zcash/zcash_blocks_batch_scan_task.h",
-      "zcash/zcash_create_orchard_to_orchard_transaction_task.cc",
-      "zcash/zcash_create_orchard_to_orchard_transaction_task.h",
-      "zcash/zcash_create_orchard_to_transparent_transaction_task.cc",
-      "zcash/zcash_create_orchard_to_transparent_transaction_task.h",
-      "zcash/zcash_create_transparent_to_orchard_transaction_task.cc",
-      "zcash/zcash_create_transparent_to_orchard_transaction_task.h",
-      "zcash/zcash_get_zcash_chain_tip_status_task.cc",
-      "zcash/zcash_get_zcash_chain_tip_status_task.h",
-      "zcash/zcash_scan_blocks_task.cc",
-      "zcash/zcash_scan_blocks_task.h",
-      "zcash/zcash_shield_sync_service.cc",
-      "zcash/zcash_shield_sync_service.h",
-      "zcash/zcash_verify_chain_state_task.cc",
-      "zcash/zcash_verify_chain_state_task.h",
-    ]
+  sources += [
+    "zcash/zcash_auto_sync_manager.cc",
+    "zcash/zcash_auto_sync_manager.h",
+    "zcash/zcash_blocks_batch_scan_task.cc",
+    "zcash/zcash_blocks_batch_scan_task.h",
+    "zcash/zcash_create_orchard_to_orchard_transaction_task.cc",
+    "zcash/zcash_create_orchard_to_orchard_transaction_task.h",
+    "zcash/zcash_create_orchard_to_transparent_transaction_task.cc",
+    "zcash/zcash_create_orchard_to_transparent_transaction_task.h",
+    "zcash/zcash_create_transparent_to_orchard_transaction_task.cc",
+    "zcash/zcash_create_transparent_to_orchard_transaction_task.h",
+    "zcash/zcash_get_zcash_chain_tip_status_task.cc",
+    "zcash/zcash_get_zcash_chain_tip_status_task.h",
+    "zcash/zcash_scan_blocks_task.cc",
+    "zcash/zcash_scan_blocks_task.h",
+    "zcash/zcash_shield_sync_service.cc",
+    "zcash/zcash_shield_sync_service.h",
+    "zcash/zcash_verify_chain_state_task.cc",
+    "zcash/zcash_verify_chain_state_task.h",
+  ]
 
-    deps += [
-      "//brave/components/brave_wallet/browser/internal:orchard_bundle",
-      "//brave/components/brave_wallet/browser/internal/orchard_storage",
-      "//sql",
-    ]
-  }
+  deps += [
+    "//brave/components/brave_wallet/browser/internal:orchard_bundle",
+    "//brave/components/brave_wallet/browser/internal/orchard_storage",
+    "//sql",
+  ]
 }
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be
@@ -869,29 +866,27 @@ source_set("unit_tests") {
     "//url",
   ]
 
-  if (enable_orchard) {
-    sources += [
-      "internal/hd_key_zip32_unittest.cc",
-      "internal/orchard_block_scanner_unittest.cc",
-      "internal/orchard_bundle_manager_unittest.cc",
-      "internal/orchard_storage/orchard_storage_unittest.cc",
-      "internal/orchard_sync_state_unittest.cc",
-      "zcash/zcash_auto_sync_manager_unittest.cc",
-      "zcash/zcash_blocks_batch_scan_task_unittest.cc",
-      "zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
-      "zcash/zcash_create_orchard_to_transparent_transaction_task_unittest.cc",
-      "zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
-      "zcash/zcash_get_chaintip_status_task_unittest.cc",
-      "zcash/zcash_scan_blocks_task_unittest.cc",
-      "zcash/zcash_shield_sync_service_unittest.cc",
-      "zcash/zcash_verify_chain_state_task_unittest.cc",
-    ]
-    deps += [
-      "//brave/components/brave_wallet/browser/internal:orchard_bundle",
-      "//brave/components/brave_wallet/browser/internal:test_support",
-      "//brave/components/brave_wallet/browser/internal/orchard_storage",
-    ]
-  }
+  sources += [
+    "internal/hd_key_zip32_unittest.cc",
+    "internal/orchard_block_scanner_unittest.cc",
+    "internal/orchard_bundle_manager_unittest.cc",
+    "internal/orchard_storage/orchard_storage_unittest.cc",
+    "internal/orchard_sync_state_unittest.cc",
+    "zcash/zcash_auto_sync_manager_unittest.cc",
+    "zcash/zcash_blocks_batch_scan_task_unittest.cc",
+    "zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
+    "zcash/zcash_create_orchard_to_transparent_transaction_task_unittest.cc",
+    "zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
+    "zcash/zcash_get_chaintip_status_task_unittest.cc",
+    "zcash/zcash_scan_blocks_task_unittest.cc",
+    "zcash/zcash_shield_sync_service_unittest.cc",
+    "zcash/zcash_verify_chain_state_task_unittest.cc",
+  ]
+  deps += [
+    "//brave/components/brave_wallet/browser/internal:orchard_bundle",
+    "//brave/components/brave_wallet/browser/internal:test_support",
+    "//brave/components/brave_wallet/browser/internal/orchard_storage",
+  ]
 
   if (use_blink) {
     sources += [ "permission_utils_unittest.cc" ]

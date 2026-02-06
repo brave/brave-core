@@ -12,8 +12,6 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-static_assert(BUILDFLAG(ENABLE_ORCHARD));
-
 namespace brave_wallet {
 
 TEST(HDKeyZip32Test, GenerateFromSeed) {

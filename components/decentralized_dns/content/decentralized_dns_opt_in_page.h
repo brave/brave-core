@@ -11,10 +11,6 @@
 
 #include "components/security_interstitials/content/security_interstitial_page.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace content {
 class WebContents;
 }  // namespace content
@@ -52,7 +48,7 @@ class DecentralizedDnsOptInPage
 
  protected:
   // SecurityInterstitialPage::
-  void PopulateInterstitialStrings(base::Value::Dict& load_time_data) override;
+  void PopulateInterstitialStrings(base::DictValue& load_time_data) override;
   int GetHTMLTemplateId() override;
 
  private:

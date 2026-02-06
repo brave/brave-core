@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/onboarding_main_container_horizontal_margin">
+
+    <TextView
+        android:id="@+id/brave_onboarding_title"
+        style="@style/HeadingH2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wdp_title"
+        android:textColor="@color/text_primary"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/onboarding_title_margin_top"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/brave_onboarding_subtitle"/>
+
+    <TextView
+        android:id="@+id/brave_onboarding_subtitle"
+        style="@style/LargeRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/onboarding_subtitle_margin_top"
+        app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_title"
+        app:layout_constraintBottom_toTopOf="@+id/image_top_guide"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/image_top_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="@dimen/onboarding_image_top_guide_percent" />
+
+    <ImageView
+        android:id="@+id/onboarding_illustration"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/onboarding_illustration_margin_top"
+        android:src="@drawable/onboarding_illustration"
+        android:background="@drawable/onboarding_rounded_corners"
+        android:padding="@dimen/onboarding_illustration_padding"
+        android:contentDescription="@string/brave_onboarding_help_brave_search_illustration_description"
+        app:layout_constraintTop_toBottomOf="@+id/image_top_guide"
+        app:layout_constraintBottom_toTopOf="@+id/onboarding_later"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/onboarding_later"
+        android:layout_width="0dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/maybe_later"
+        style="@style/LargeOutlineButton"
+        android:layout_marginVertical="@dimen/onboarding_buttons_vertical_margin"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/onboarding_sure" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/onboarding_sure"
+        android:layout_width="0dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/sure_ill_help_onboarding"
+        style="@style/LargeFilledButton"
+        android:layout_marginVertical="@dimen/onboarding_buttons_vertical_margin"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/onboarding_later"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

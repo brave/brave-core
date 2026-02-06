@@ -124,14 +124,12 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(&BraveDefaultExtensionsHandler::ResetTransactionInfo,
                           base::Unretained(this)));
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   if (brave_wallet::IsZCashShieldedTransactionsEnabled()) {
     web_ui()->RegisterMessageCallback(
         "resetZCashSyncState",
         base::BindRepeating(&BraveDefaultExtensionsHandler::ResetZCashSyncState,
                             base::Unretained(this)));
   }
-#endif
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // TODO(petemill): If anything outside this handler is responsible for causing
@@ -195,7 +193,6 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if BUILDFLAG(ENABLE_ORCHARD)
 void BraveDefaultExtensionsHandler::ResetZCashSyncState(
     const base::ListValue& args) {
   auto* brave_wallet_service =
@@ -209,7 +206,6 @@ void BraveDefaultExtensionsHandler::ResetZCashSyncState(
   }
   zcash_wallet_service->Reset();
 }
-#endif
 
 void BraveDefaultExtensionsHandler::ResetWallet(const base::ListValue& args) {
   auto* brave_wallet_service =

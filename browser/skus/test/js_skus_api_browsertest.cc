@@ -125,7 +125,7 @@ class SkusAPIBrowserTest : public PlatformBrowserTest {
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
     local_state_ = g_browser_process->local_state();
-    base::Value::Dict state;
+    base::DictValue state;
     state.Set("skus:development", kSkusState);
     local_state_->SetDict(skus::prefs::kSkusState, std::move(state));
 

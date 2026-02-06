@@ -258,7 +258,6 @@ class KeyringService : public mojom::KeyringService {
   std::optional<std::vector<uint8_t>> GetZCashPubKey(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);
-#if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<OrchardAddrRawPart> GetOrchardRawBytes(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);
@@ -266,7 +265,6 @@ class KeyringService : public mojom::KeyringService {
       const mojom::AccountIdPtr& account_id);
   std::optional<OrchardSpendingKey> GetOrchardSpendingKey(
       const mojom::AccountIdPtr& account_id);
-#endif
 
   void UpdateNextUnusedAddressForCardanoAccount(
       const mojom::AccountIdPtr& account_id,

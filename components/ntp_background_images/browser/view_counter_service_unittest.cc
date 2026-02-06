@@ -183,7 +183,7 @@ class BraveNTPCustomBackgroundServiceDelegateMock
 
   bool HasPreferredBraveBackground() const override { return false; }
 
-  base::Value::Dict GetPreferredBraveBackground() const override { return {}; }
+  base::DictValue GetPreferredBraveBackground() const override { return {}; }
 
  private:
   bool is_custom_image_background_enabled_ = false;
@@ -305,11 +305,11 @@ class ViewCounterServiceTest : public testing::Test {
     EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
   }
 
-  std::optional<base::Value::Dict>
+  std::optional<base::DictValue>
   CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper() {
     // Loading initial count times.
     for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
-      const std::optional<base::Value::Dict> wallpaper =
+      const std::optional<base::DictValue> wallpaper =
           view_counter_service_->GetCurrentWallpaperForDisplay();
       EXPECT_TRUE(wallpaper);
       EXPECT_TRUE(wallpaper->FindBool(kIsBackgroundKey));

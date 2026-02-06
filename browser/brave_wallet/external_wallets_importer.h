@@ -52,14 +52,14 @@ class ExternalWalletsImporter {
   bool IsExternalWalletInitialized() const;
   void GetImportInfo(const std::string& password, GetImportInfoCallback) const;
 
-  void SetStorageDataForTesting(base::Value::Dict);
+  void SetStorageDataForTesting(base::DictValue);
   void SetExternalWalletInstalledForTesting(bool installed);
 
  private:
   const extensions::Extension* GetMetaMask() const;
 
   void GetLocalStorage(const extensions::Extension&, InitCallback);
-  void OnGetLocalStorage(InitCallback, base::Value::Dict);
+  void OnGetLocalStorage(InitCallback, base::DictValue);
 
   void GetMnemonic(bool is_legacy_crypto_wallets,
                    GetImportInfoCallback callback,
@@ -68,7 +68,7 @@ class ExternalWalletsImporter {
   bool is_external_wallet_installed_for_testing_ = false;
   mojom::ExternalWalletType type_;
   raw_ptr<content::BrowserContext> context_ = nullptr;
-  std::optional<base::Value::Dict> storage_data_;
+  std::optional<base::DictValue> storage_data_;
   scoped_refptr<extensions::Extension> extension_;
 
   SEQUENCE_CHECKER(sequence_checker_);

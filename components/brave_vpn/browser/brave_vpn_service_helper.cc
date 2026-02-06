@@ -23,15 +23,14 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_vpn {
-bool IsValidCredentialSummary(const base::Value::Dict& summary) {
+bool IsValidCredentialSummary(const base::DictValue& summary) {
   const bool active = summary.FindBool("active").value_or(false);
   const int remaining_credential_count =
       summary.FindInt("remaining_credential_count").value_or(0);
   return active && remaining_credential_count > 0;
 }
 
-bool IsValidCredentialSummaryButNeedActivation(
-    const base::Value::Dict& summary) {
+bool IsValidCredentialSummaryButNeedActivation(const base::DictValue& summary) {
   const bool active = summary.FindBool("active").value_or(false);
   const int remaining_credential_count =
       summary.FindInt("remaining_credential_count").value_or(0);
@@ -39,7 +38,7 @@ bool IsValidCredentialSummaryButNeedActivation(
 }
 
 bool HasSubscriberCredential(PrefService* local_prefs) {
-  const base::Value::Dict& sub_cred_dict =
+  const base::DictValue& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
   return !sub_cred_dict.empty();
 }
@@ -48,7 +47,7 @@ std::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
   if (!HasValidSubscriberCredential(local_prefs))
     return std::nullopt;
 
-  const base::Value::Dict& sub_cred_dict =
+  const base::DictValue& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
 
   const base::Value* expiration_time_value =
@@ -63,7 +62,7 @@ std::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
 void SetSubscriberCredential(PrefService* local_prefs,
                              const std::string& subscriber_credential,
                              const base::Time& expiration_time) {
-  base::Value::Dict cred_dict;
+  base::DictValue cred_dict;
   cred_dict.Set(kSubscriberCredentialKey, subscriber_credential);
   cred_dict.Set(kSubscriberCredentialExpirationKey,
                 base::TimeToValue(expiration_time));
@@ -78,7 +77,7 @@ void ClearSubscriberCredential(PrefService* local_prefs) {
 void SetSkusCredential(PrefService* local_prefs,
                        const std::string& skus_credential,
                        const base::Time& expiration_time) {
-  base::Value::Dict cred_dict;
+  base::DictValue cred_dict;
   cred_dict.Set(kSkusCredentialKey, skus_credential);
   cred_dict.Set(kSubscriberCredentialExpirationKey,
                 base::TimeToValue(expiration_time));
@@ -94,7 +93,7 @@ void SetSkusCredentialFetchingRetried(PrefService* local_prefs, bool retried) {
 }
 
 bool IsRetriedSkusCredential(PrefService* local_prefs) {
-  const base::Value::Dict& sub_cred_dict =
+  const base::DictValue& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
   return sub_cred_dict.FindBool(kRetriedSkusCredentialKey).value_or(false);
 }
@@ -102,7 +101,7 @@ bool IsRetriedSkusCredential(PrefService* local_prefs) {
 base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs) {
   CHECK(HasValidSkusCredential(local_prefs));
 
-  const base::Value::Dict& sub_cred_dict =
+  const base::DictValue& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
 
   const base::Value* expiration_time_value =

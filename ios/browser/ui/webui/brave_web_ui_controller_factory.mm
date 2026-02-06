@@ -12,10 +12,10 @@
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
@@ -68,8 +68,7 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
     return &NewRegularProfileOnlyWebUIIOS<AIChatUntrustedConversationUI>;
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletWebUIIOS)) {
+  if (brave_wallet::IsWalletWebUIEnabled()) {
     if (url_host == kUntrustedNftHost) {
       return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
     } else if (url_host == kUntrustedMarketHost) {
@@ -107,8 +106,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
              ai_chat::features::IsAIChatWebUIEnabled()) {
     return &NewRegularProfileOnlyWebUIIOS<AIChatUI>;
   } else if (url_host == kWalletPageHost &&
-             base::FeatureList::IsEnabled(
-                 brave_wallet::features::kBraveWalletWebUIIOS)) {
+             brave_wallet::IsWalletWebUIEnabled()) {
     return &NewRegularProfileOnlyWebUIIOS<WalletPageUI>;
   }
   return nullptr;

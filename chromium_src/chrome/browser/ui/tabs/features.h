@@ -30,8 +30,6 @@ BASE_DECLARE_FEATURE(kBraveVerticalTabHideCompletely);
 
 BASE_DECLARE_FEATURE(kBraveTreeTab);
 
-BASE_DECLARE_FEATURE(kBraveRenamingTabs);
-
 bool HorizontalTabsUpdateEnabled();
 
 }  // namespace tabs

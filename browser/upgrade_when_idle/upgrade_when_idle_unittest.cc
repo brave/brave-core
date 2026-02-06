@@ -87,7 +87,7 @@ class UpgradeWhenIdleTest : public testing::Test {
 
   void SetClearBrowsingDataOnExitList(
       std::initializer_list<const char*> data_types) {
-    base::Value::List list;
+    base::ListValue list;
     for (const char* data_type : data_types) {
       list.Append(data_type);
     }

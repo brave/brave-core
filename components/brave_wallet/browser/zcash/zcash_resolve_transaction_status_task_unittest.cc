@@ -100,9 +100,7 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
 
   ZCashActionContext CreateContext() {
     return ZCashActionContext(zcash_rpc_,
-#if BUILDFLAG(ENABLE_ORCHARD)
                               {}, sync_state_,
-#endif
                               account_id_);
   }
 
@@ -112,9 +110,7 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
 
  private:
   base::test::TaskEnvironment task_environment_;
-#if BUILDFLAG(ENABLE_ORCHARD)
   base::SequenceBound<OrchardSyncState> sync_state_;
-#endif
 
   base::ScopedTempDir temp_dir_;
 

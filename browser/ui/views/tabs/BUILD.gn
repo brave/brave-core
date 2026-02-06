@@ -45,6 +45,7 @@ source_set("unit_tests") {
     "brave_tab_strip_layout_helper_unittest.cc",
     "brave_tab_strip_unittest.cc",
     "brave_tab_unittest.cc",
+    "tab_style_views_unittest.cc",
   ]
 
   deps = [
@@ -52,8 +53,10 @@ source_set("unit_tests") {
     "//brave/common",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
+    "//components/tabs:public",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/events",
   ]
 }

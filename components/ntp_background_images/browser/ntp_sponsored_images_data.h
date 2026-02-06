@@ -94,7 +94,7 @@ struct Campaign {
 
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
-  NTPSponsoredImagesData(const base::Value::Dict& dict,
+  NTPSponsoredImagesData(const base::DictValue& dict,
                          const base::FilePath& installed_dir);
 
   NTPSponsoredImagesData(const NTPSponsoredImagesData&);
@@ -107,13 +107,13 @@ struct NTPSponsoredImagesData {
 
   [[nodiscard]] bool IsValid() const;
 
-  void ParseCampaigns(const base::Value::List& list,
+  void ParseCampaigns(const base::ListValue& list,
                       const base::FilePath& installed_dir);
 
-  std::optional<base::Value::Dict> MaybeGetBackgroundAt(
+  std::optional<base::DictValue> MaybeGetBackgroundAt(
       size_t campaign_index,
       size_t creative_index) const;
-  std::optional<base::Value::Dict> MaybeGetBackground(
+  std::optional<base::DictValue> MaybeGetBackground(
       const brave_ads::mojom::NewTabPageAdInfo& ad);
 
   const Creative* GetCreativeByInstanceId(

@@ -60,8 +60,8 @@ ContentSettingsPattern SecondaryUrlToPattern(const GURL& gurl) {
   }
 }
 
-base::Value::Dict* InitializeCommonSettingsAndGetPerResourceDictionary(
-    base::Value::Dict* dict,
+base::DictValue* InitializeCommonSettingsAndGetPerResourceDictionary(
+    base::DictValue* dict,
     const base::Time& last_modified_time) {
   const uint64_t last_modified_time_in_ms =
       last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
@@ -77,10 +77,10 @@ base::Value::Dict* InitializeCommonSettingsAndGetPerResourceDictionary(
 }
 
 void InitializeAllShieldSettingsInDictionary(
-    base::Value::Dict* dict,
+    base::DictValue* dict,
     const base::Time& last_modified_time,
     int value) {
-  base::Value::Dict* per_resource_dict =
+  base::DictValue* per_resource_dict =
       InitializeCommonSettingsAndGetPerResourceDictionary(dict,
                                                           last_modified_time);
   per_resource_dict->Set(brave_shields::kAds, value);
@@ -94,30 +94,30 @@ void InitializeAllShieldSettingsInDictionary(
 }
 
 void InitializeBraveShieldsSettingInDictionary(
-    base::Value::Dict* dict,
+    base::DictValue* dict,
     const base::Time& last_modified_time,
     int value) {
-  base::Value::Dict* per_resource_dict =
+  base::DictValue* per_resource_dict =
       InitializeCommonSettingsAndGetPerResourceDictionary(dict,
                                                           last_modified_time);
   per_resource_dict->Set(brave_shields::kBraveShields, value);
 }
 
 void InitializeUnsupportedShieldSettingInDictionary(
-    base::Value::Dict* dict,
+    base::DictValue* dict,
     const base::Time& last_modified_time) {
-  base::Value::Dict* per_resource_dict =
+  base::DictValue* per_resource_dict =
       InitializeCommonSettingsAndGetPerResourceDictionary(dict,
                                                           last_modified_time);
   per_resource_dict->Set("unknown_setting", 1);
 }
 
 void CheckMigrationFromResourceIdentifierForDictionary(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     std::string_view patterns_string,
     const std::optional<base::Time> expected_last_modified,
     std::optional<int> expected_setting_value) {
-  const base::Value::Dict* settings_dict = dict.FindDict(patterns_string);
+  const base::DictValue* settings_dict = dict.FindDict(patterns_string);
   EXPECT_NE(settings_dict, nullptr);
 
   auto actual_value = settings_dict->FindInt(kSettingPath);
@@ -184,7 +184,7 @@ class ShieldsCookieSetting : public ShieldsSetting {
         prefs_(prefs) {}
 
   void RollbackShieldsCookiesVersion() {
-    base::Value::Dict shieldsCookies =
+    base::DictValue shieldsCookies =
         prefs_->GetDict("profile.content_settings.exceptions.shieldsCookiesV3")
             .Clone();
     prefs_->Set("profile.content_settings.exceptions.shieldsCookies",
@@ -311,7 +311,7 @@ class DirectAccessContentSettings {
   void AddRule(const std::string& primary,
                const std::string& secondary,
                ContentSetting setting) {
-    base::Value::Dict value;
+    base::DictValue value;
     value.Set("setting", setting);
 
     prefs_value_.Set(primary + "," + secondary, std::move(value));
@@ -319,14 +319,14 @@ class DirectAccessContentSettings {
 
   void AddRule(const std::string& primary,
                const std::string& secondary,
-               base::Value::Dict setting) {
+               base::DictValue setting) {
     prefs_value_.Set(primary + "," + secondary,
                      base::DictValue().Set("setting", std::move(setting)));
   }
 
   void AddRuleWithoutSettingValue(const std::string& primary,
                                   const std::string& secondary) {
-    prefs_value_.Set(primary + "," + secondary, base::Value::Dict());
+    prefs_value_.Set(primary + "," + secondary, base::DictValue());
   }
 
   void Write() { prefs_->SetDict(GetPrefName(), prefs_value_.Clone()); }
@@ -358,7 +358,7 @@ class DirectAccessContentSettings {
   const ContentSettingsType content_type_;
   const std::string pref_name_;
   const raw_ptr<const WebsiteSettingsInfo> info_ = nullptr;
-  base::Value::Dict prefs_value_;
+  base::DictValue prefs_value_;
 };
 
 }  // namespace
@@ -617,14 +617,14 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
   base::Time expected_last_modified = base::Time::Now();
 
   // Seed global shield settings with non-default values.
-  base::Value::Dict* global_settings = plugins.value()->EnsureDict("*,*");
+  base::DictValue* global_settings = plugins.value()->EnsureDict("*,*");
 
   const int expected_global_settings_value = 1;
   InitializeAllShieldSettingsInDictionary(
       global_settings, expected_last_modified, expected_global_settings_value);
 
   // Change all of those global settings for www.example.com.
-  base::Value::Dict* example_settings =
+  base::DictValue* example_settings =
       plugins.value()->EnsureDict("www.example.com,*");
 
   const int expected_example_com_settings_value = 1;
@@ -633,7 +633,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
                                           expected_example_com_settings_value);
 
   // Disable Brave Shields for www.brave.com.
-  base::Value::Dict* brave_settings =
+  base::DictValue* brave_settings =
       plugins.value()->EnsureDict("www.brave.com,*");
 
   const int expected_brave_com_settings_value = 1;
@@ -699,10 +699,10 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   // For a list of supported names, see |kBraveContentSettingstypes| inside the
   // components/content_settings/core/browser/content_settings_registry.cc
   // override, in the chromium_src/ directory.
-  base::Value::Dict* global_settings = plugins.value()->EnsureDict("*,*");
+  base::DictValue* global_settings = plugins.value()->EnsureDict("*,*");
   InitializeUnsupportedShieldSettingInDictionary(global_settings,
                                                  base::Time::Now());
-  base::Value::Dict* example_settings =
+  base::DictValue* example_settings =
       plugins.value()->EnsureDict("www.example.com,*");
   InitializeUnsupportedShieldSettingInDictionary(example_settings,
                                                  base::Time::Now());
@@ -900,13 +900,13 @@ TEST_F(BravePrefProviderTest, ObsoleteBraveLocalhostPermission) {
 
   testing_profile()->GetPrefs()->SetDict(
       GetShieldsSettingUserPrefsPath(kBraveLocalhostPermission),
-      base::Value::Dict().Set("test", "value"));
+      base::DictValue().Set("test", "value"));
 
   DirectAccessContentSettings unused_site_permissions(
       testing_profile()->GetPrefs(),
       ContentSettingsType::REVOKED_UNUSED_SITE_PERMISSIONS);
 
-  base::Value::Dict value;
+  base::DictValue value;
   value.Set("string", "string");
   value.Set("int", 10);
   value.Set("dict", base::DictValue().Set("test", "test"));

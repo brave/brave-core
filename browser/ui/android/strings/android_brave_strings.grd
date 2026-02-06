@@ -736,7 +736,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         With Brave as default, every link you tap opens with Brave's privacy protections.
       </message>
       <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
-        Help make Brave better.
+        Help make Brave better
+      </message>
+        <message name="IDS_P3A_SUBTITLE" desc="Text for p3a subtitle onboarding">
+        Let us know which features you're enjoying the most.
       </message>
       <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
         Send diagnostic reports if you experience a crash or freeze.
@@ -747,11 +750,56 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_WDP_TITLE" desc="Text for WDP title onboarding">
         Help Brave Search grow
       </message>
+      <message name="IDS_BLOCK_INTERRUPTIONS" desc="Block video ads title onboarding">
+        Block interruptions when you stream
+      </message>
       <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
         Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
       </message>
+      <message name="IDS_BRAVE_ONBOARDING_SPLASH_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding splash logo">
+        Brave logo
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_BACKGROUND_DESCRIPTION" desc="Accessibility description for the onboarding background image">
+        Onboarding background
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_TOP_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding top leaf decoration">
+        Top leaf decoration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_BOTTOM_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding bottom leaf decoration">
+        Bottom leaf decoration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_ARROW_DOWN_DESCRIPTION" desc="Accessibility description for the onboarding down arrow">
+        Scroll down
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding Brave logo">
+        Brave logo
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_HELP_BRAVE_SEARCH_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the help Brave Search onboarding illustration">
+        Help Brave Search illustration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_BLOCK_INTERRUPTIONS_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the block interruptions onboarding illustration">
+        Block interruptions illustration
+      </message>
+      <message name="IDS_BRAVE_ONBOARDING_MAKE_BRAVE_BETTER_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the make Brave better onboarding illustration">
+        Make Brave better illustration
+      </message>
+      <message name="IDS_BLOCK_INTERRUPTIONS_SUBTITLE" desc="Block video ads subtitle onboarding">
+        Block annoying interruptions on your favorite streaming sites.
+      </message>
       <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
         Sure, I'll help
+      </message>
+      <message name="IDS_SEND_REPORTS_TITLE" desc="Title for sending anonymous diagnostic reports during onboarding phase">
+        Send crash reports
+      </message>
+      <message name="IDS_SEND_REPORTS" desc="Text for sending anonymous diagnostic reports during onboarding phase">
+        Send anonymous diagnostic reports if you experience a crash or freeze.
+      </message>
+      <message name="IDS_SEND_P3A" desc="Text for sending anonymous product insight during onboarding phase">
+        Share private and anonymous product insights about what Brave features are being used.
+      </message>
+      <message name="IDS_SEND_P3A_TITLE" desc="Title for sending anonymous product insight during onboarding phase">
+        Private product insights
       </message>
       <message name="IDS_SHIELD_ONBOARDING" desc="Text for shield tooltip onboarding">
         Tap to view Brave Shields
@@ -1305,7 +1353,7 @@ Are you sure you want to do this?
         About
       </message>
       <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
-        Maybe Later
+        Maybe later
       </message>
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_1" desc="Text for block trackers and ads option.">
         Block trackers &amp; ads (Aggressive)

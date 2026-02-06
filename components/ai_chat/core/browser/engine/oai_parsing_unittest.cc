@@ -20,176 +20,90 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidSingleToolCall) {
-  // Test parsing a valid single tool call
-  constexpr char kToolCallsJson[] = R"([
-    {
-      "id": "call_123",
-      "type": "function",
-      "function": {
-        "name": "get_weather",
-        "arguments": "{\"location\":\"New York\"}"
-      }
+constexpr char kDefaultFaviconUrl[] =
+    "chrome-untrusted://resources/brave-icons/globe.svg";
+
+// Tests for ParseToolCallRequest
+
+TEST(OaiParsingTest, ParseToolCallRequest_ValidToolCall) {
+  constexpr char kToolCallJson[] = R"({
+    "id": "call_123",
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "arguments": "{\"location\":\"New York\"}"
     }
-  ])";
+  })";
 
-  base::ListValue tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+  auto tool_call = base::test::ParseJsonDict(kToolCallJson);
+  auto result = ParseToolCallRequest(tool_call);
 
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+  ASSERT_TRUE(result.has_value());
 
   auto expected = mojom::ToolUseEvent::New("get_weather", "call_123",
                                            "{\"location\":\"New York\"}",
                                            std::nullopt, nullptr, false);
 
-  EXPECT_MOJOM_EQ(result[0], expected);
+  EXPECT_MOJOM_EQ(*result, expected);
 }
 
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidMultipleToolCalls) {
-  // Test parsing multiple valid tool calls
-  constexpr char kToolCallsJson[] = R"([
-    {
-      "id": "call_123",
-      "type": "function",
-      "function": {
-        "name": "get_weather",
-        "arguments": "{\"location\":\"New York\"}"
-      }
-    },
-    {
-      "id": "call_456",
-      "type": "function",
-      "function": {
-        "name": "search_web",
-        "arguments": "{\"query\":\"Hello, world!\"}"
-      }
+TEST(OaiParsingTest, ParseToolCallRequest_MissingId) {
+  constexpr char kToolCallJson[] = R"({
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "arguments": "{\"location\":\"New York\"}"
     }
-  ])";
+  })";
 
-  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+  auto tool_call = base::test::ParseJsonDict(kToolCallJson);
+  auto result = ParseToolCallRequest(tool_call);
 
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+  ASSERT_TRUE(result.has_value());
 
-  ASSERT_EQ(result.size(), 2u);
-
-  // First tool call
-  EXPECT_MOJOM_EQ(result[0],
-                  mojom::ToolUseEvent::New("get_weather", "call_123",
-                                           "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr, false));
-
-  // Second tool call
-  EXPECT_MOJOM_EQ(result[1],
-                  mojom::ToolUseEvent::New("search_web", "call_456",
-                                           "{\"query\":\"Hello, world!\"}",
-                                           std::nullopt, nullptr, false));
-}
-
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {
-  // Test tool call without id field, should be skipped
-  constexpr char kToolCallsJson[] = R"([
-    {
-      "type": "function",
-      "function": {
-        "name": "get_weather",
-        "arguments": "{\"location\":\"New York\"}"
-      }
-    }
-  ])";
-
-  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
-
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
-
-  ASSERT_EQ(result.size(), 1u);
-
-  EXPECT_MOJOM_EQ(
-      result[0],
-      mojom::ToolUseEvent::New("get_weather", "", "{\"location\":\"New York\"}",
+  EXPECT_MOJOM_EQ(*result, mojom::ToolUseEvent::New(
+                               "get_weather", "", "{\"location\":\"New York\"}",
                                std::nullopt, nullptr, false));
 }
 
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
-  // Test tool call without function name, should be skipped
-  constexpr char kToolCallsJson[] = R"([
-    {
-      "id": "call_123",
-      "type": "function",
-      "function": {
-        "arguments": "{\"location\":\"New York\"}"
-      }
+TEST(OaiParsingTest, ParseToolCallRequest_MissingFunctionName) {
+  constexpr char kToolCallJson[] = R"({
+    "id": "call_123",
+    "type": "function",
+    "function": {
+      "arguments": "{\"location\":\"New York\"}"
     }
-  ])";
+  })";
 
-  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+  auto tool_call = base::test::ParseJsonDict(kToolCallJson);
+  auto result = ParseToolCallRequest(tool_call);
 
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+  ASSERT_TRUE(result.has_value());
 
-  ASSERT_EQ(result.size(), 1u);
-
-  EXPECT_MOJOM_EQ(result[0], mojom::ToolUseEvent::New(
-                                 "", "call_123", "{\"location\":\"New York\"}",
-                                 std::nullopt, nullptr, false));
+  EXPECT_MOJOM_EQ(*result, mojom::ToolUseEvent::New(
+                               "", "call_123", "{\"location\":\"New York\"}",
+                               std::nullopt, nullptr, false));
 }
 
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionObject) {
+TEST(OaiParsingTest, ParseToolCallRequest_MissingFunctionObject) {
   // Test tool call without function object, should be skipped
-  constexpr char kToolCallsJson[] = R"([
-    {
-      "id": "call_123",
-      "type": "function"
-    }
-  ])";
+  constexpr char kToolCallJson[] = R"({
+    "id": "call_123",
+    "type": "function"
+  })";
 
-  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+  auto tool_call = base::test::ParseJsonDict(kToolCallJson);
+  auto result = ParseToolCallRequest(tool_call);
 
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
-
-  EXPECT_EQ(result.size(), 0u);
+  EXPECT_FALSE(result.has_value());
 }
 
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_InvalidToolCall) {
-  // Test with non-dict tool call, should be skipped
-  constexpr char kToolCallsJson[] = R"([
-    "invalid_string_entry",
-    {
-      "id": "call_123",
-      "type": "function",
-      "function": {
-        "name": "get_weather",
-        "arguments": "{\"location\":\"New York\"}"
-      }
-    }
-  ])";
-
-  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
-
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
-
-  // Should only contain the valid tool call, invalid one should be skipped
-  EXPECT_EQ(result.size(), 1u);
-
-  EXPECT_MOJOM_EQ(result[0],
-                  mojom::ToolUseEvent::New("get_weather", "call_123",
-                                           "{\"location\":\"New York\"}",
-                                           std::nullopt, nullptr, false));
-}
-
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_EmptyList) {
-  // Test with empty tool calls list
-  constexpr char kToolCallsJson[] = R"([])";
-
-  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
-
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
-
-  EXPECT_EQ(result.size(), 0u);
-}
-
-TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
+TEST(OaiParsingTest, ParseToolCallRequest_AlignmentCheck) {
   // Test parsing alignment_check in tool calls covering all scenarios
   constexpr char kToolCallsJson[] = R"([
     {
@@ -258,22 +172,26 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
   ])";
 
   auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
-  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+  ASSERT_EQ(tool_calls_list.size(), 6u);
 
-  ASSERT_EQ(result.size(), 6u);
-
-  EXPECT_MOJOM_EQ(result[0],
-                  mojom::ToolUseEvent::New("allowed_by_default", "no_check",
-                                           "{}", std::nullopt, nullptr, false))
+  auto result0 = ParseToolCallRequest(tool_calls_list[0].GetDict());
+  ASSERT_TRUE(result0.has_value());
+  EXPECT_MOJOM_EQ(
+      *result0, mojom::ToolUseEvent::New("allowed_by_default", "no_check", "{}",
+                                         std::nullopt, nullptr, false))
       << "No alignment_check should result in no PermissionChallenge";
 
-  EXPECT_MOJOM_EQ(result[1], mojom::ToolUseEvent::New(
-                                 "explicitly_allowed", "explicit_allow", "{}",
-                                 std::nullopt, nullptr, false))
+  auto result1 = ParseToolCallRequest(tool_calls_list[1].GetDict());
+  ASSERT_TRUE(result1.has_value());
+  EXPECT_MOJOM_EQ(
+      *result1, mojom::ToolUseEvent::New("explicitly_allowed", "explicit_allow",
+                                         "{}", std::nullopt, nullptr, false))
       << "alignment_check.allowed=true should not create PermissionChallenge";
 
+  auto result2 = ParseToolCallRequest(tool_calls_list[2].GetDict());
+  ASSERT_TRUE(result2.has_value());
   EXPECT_MOJOM_EQ(
-      result[2],
+      *result2,
       mojom::ToolUseEvent::New(
           "denied_tool", "deny_with_reason", "{}", std::nullopt,
           mojom::PermissionChallenge::New("Security risk", std::nullopt),
@@ -281,25 +199,505 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_AlignmentCheck) {
       << "alignment_check.allowed=false with reasoning should create "
          "PermissionChallenge with reasoning";
 
+  auto result3 = ParseToolCallRequest(tool_calls_list[3].GetDict());
+  ASSERT_TRUE(result3.has_value());
   EXPECT_MOJOM_EQ(
-      result[3],
+      *result3,
       mojom::ToolUseEvent::New(
           "denied_no_explanation", "deny_no_reason", "{}", std::nullopt,
           mojom::PermissionChallenge::New(std::nullopt, std::nullopt), false))
       << "alignment_check.allowed=false without reasoning should create "
          "PermissionChallenge with null reasoning";
 
-  EXPECT_MOJOM_EQ(result[4], mojom::ToolUseEvent::New(
-                                 "invalid_alignment", "malformed_check", "{}",
-                                 std::nullopt, nullptr, false))
+  auto result4 = ParseToolCallRequest(tool_calls_list[4].GetDict());
+  ASSERT_TRUE(result4.has_value());
+  EXPECT_MOJOM_EQ(
+      *result4, mojom::ToolUseEvent::New("invalid_alignment", "malformed_check",
+                                         "{}", std::nullopt, nullptr, false))
       << "alignment_check without allowed field should be treated as allowed, "
          "no PermissionChallenge";
 
-  EXPECT_MOJOM_EQ(result[5],
-                  mojom::ToolUseEvent::New("empty_alignment", "empty_check",
-                                           "{}", std::nullopt, nullptr, false))
+  auto result5 = ParseToolCallRequest(tool_calls_list[5].GetDict());
+  ASSERT_TRUE(result5.has_value());
+  EXPECT_MOJOM_EQ(
+      *result5, mojom::ToolUseEvent::New("empty_alignment", "empty_check", "{}",
+                                         std::nullopt, nullptr, false))
       << "Empty alignment_check should be treated as allowed, no "
          "PermissionChallenge";
+}
+
+// Tests for ToolUseEventFromToolCallsResponse
+// Note: Single tool call parsing is tested via ParseToolCallRequest tests.
+// These tests focus on list-level behavior.
+
+TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MultipleToolCalls) {
+  // Test parsing multiple valid tool calls
+  constexpr char kToolCallsJson[] = R"([
+    {
+      "id": "call_123",
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "arguments": "{\"location\":\"New York\"}"
+      }
+    },
+    {
+      "id": "call_456",
+      "type": "function",
+      "function": {
+        "name": "search_web",
+        "arguments": "{\"query\":\"Hello, world!\"}"
+      }
+    }
+  ])";
+
+  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+
+  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+
+  ASSERT_EQ(result.size(), 2u);
+
+  // First tool call
+  EXPECT_MOJOM_EQ(result[0],
+                  mojom::ToolUseEvent::New("get_weather", "call_123",
+                                           "{\"location\":\"New York\"}",
+                                           std::nullopt, nullptr, false));
+
+  // Second tool call
+  EXPECT_MOJOM_EQ(result[1],
+                  mojom::ToolUseEvent::New("search_web", "call_456",
+                                           "{\"query\":\"Hello, world!\"}",
+                                           std::nullopt, nullptr, false));
+}
+
+TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_SkipsInvalidEntries) {
+  // Test with non-dict tool call, should be skipped
+  constexpr char kToolCallsJson[] = R"([
+    "invalid_string_entry",
+    {
+      "id": "call_123",
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "arguments": "{\"location\":\"New York\"}"
+      }
+    }
+  ])";
+
+  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+
+  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+
+  // Should only contain the valid tool call, invalid one should be skipped
+  EXPECT_EQ(result.size(), 1u);
+
+  EXPECT_MOJOM_EQ(result[0],
+                  mojom::ToolUseEvent::New("get_weather", "call_123",
+                                           "{\"location\":\"New York\"}",
+                                           std::nullopt, nullptr, false));
+}
+
+TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_EmptyList) {
+  // Test with empty tool calls list
+  constexpr char kToolCallsJson[] = R"([])";
+
+  auto tool_calls_list = base::test::ParseJsonList(kToolCallsJson);
+
+  auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
+
+  EXPECT_EQ(result.size(), 0u);
+}
+
+// Tests for ParseToolCallResult
+
+TEST(OaiParsingTest, ParseToolCallResult_ValidTextOutput) {
+  constexpr char kToolResultJson[] = R"({
+    "id": "call_123",
+    "output_content": [
+      {
+        "type": "text",
+        "text": "The weather is sunny"
+      }
+    ]
+  })";
+
+  auto tool_result = base::test::ParseJsonDict(kToolResultJson);
+  auto result = ParseToolCallResult(tool_result);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->output.has_value());
+  ASSERT_EQ((*result)->output->size(), 1u);
+  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
+  EXPECT_EQ((*result)->output->at(0)->get_text_content_block()->text,
+            "The weather is sunny");
+}
+
+TEST(OaiParsingTest, ParseToolCallResult_MissingId) {
+  constexpr char kToolResultJson[] = R"({
+    "output_content": [
+      {
+        "type": "text",
+        "text": "Result"
+      }
+    ]
+  })";
+
+  auto tool_result = base::test::ParseJsonDict(kToolResultJson);
+  auto result = ParseToolCallResult(tool_result);
+
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(OaiParsingTest, ParseToolCallResult_MissingOutputContent) {
+  constexpr char kToolResultJson[] = R"({
+    "id": "call_123"
+  })";
+
+  auto tool_result = base::test::ParseJsonDict(kToolResultJson);
+  auto result = ParseToolCallResult(tool_result);
+
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(OaiParsingTest, ParseToolCallResult_WebSourcesOutput) {
+  constexpr char kToolResultJson[] = R"({
+    "id": "call_search",
+    "output_content": [
+      {
+        "type": "brave-chat.webSources",
+        "sources": [
+          {
+            "title": "Example Site",
+            "url": "https://example.com",
+            "favicon": "https://imgs.search.brave.com/icon.png"
+          }
+        ],
+        "query": "test search"
+      }
+    ]
+  })";
+
+  auto tool_result = base::test::ParseJsonDict(kToolResultJson);
+  auto result = ParseToolCallResult(tool_result);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ((*result)->id, "call_search");
+  ASSERT_TRUE((*result)->output.has_value());
+  ASSERT_EQ((*result)->output->size(), 1u);
+  ASSERT_TRUE((*result)->output->at(0)->is_web_sources_content_block());
+
+  const auto& web_sources =
+      (*result)->output->at(0)->get_web_sources_content_block();
+  EXPECT_EQ(web_sources->query, "test search");
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Example Site");
+  EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
+            "https://imgs.search.brave.com/icon.png");
+}
+
+TEST(OaiParsingTest, ParseToolCallResult_MixedOutputContent) {
+  constexpr char kToolResultJson[] = R"({
+    "id": "call_mixed",
+    "output_content": [
+      {
+        "type": "text",
+        "text": "Search results:"
+      },
+      {
+        "type": "brave-chat.webSources",
+        "sources": [
+          {
+            "title": "Result 1",
+            "url": "https://example.com/1"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "text": "More text"
+      }
+    ]
+  })";
+
+  auto tool_result = base::test::ParseJsonDict(kToolResultJson);
+  auto result = ParseToolCallResult(tool_result);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->output.has_value());
+  ASSERT_EQ((*result)->output->size(), 3u);
+
+  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
+  EXPECT_EQ((*result)->output->at(0)->get_text_content_block()->text,
+            "Search results:");
+
+  ASSERT_TRUE((*result)->output->at(1)->is_web_sources_content_block());
+  const auto& web_sources =
+      (*result)->output->at(1)->get_web_sources_content_block();
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Result 1");
+  EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/1");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(), kDefaultFaviconUrl);
+  EXPECT_EQ(web_sources->query, std::nullopt);
+
+  ASSERT_TRUE((*result)->output->at(2)->is_text_content_block());
+  EXPECT_EQ((*result)->output->at(2)->get_text_content_block()->text,
+            "More text");
+}
+
+TEST(OaiParsingTest, ParseToolCallResult_UnsupportedTypeSerializedAsText) {
+  constexpr char kToolResultJson[] = R"({
+    "id": "call_custom",
+    "output_content": [
+      {
+        "type": "custom_type",
+        "data": "some value"
+      }
+    ]
+  })";
+
+  auto tool_result = base::test::ParseJsonDict(kToolResultJson);
+  auto result = ParseToolCallResult(tool_result);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->output.has_value());
+  ASSERT_EQ((*result)->output->size(), 1u);
+  // Unsupported types get serialized as JSON text
+  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
+  EXPECT_THAT(
+      (*result)->output->at(0)->get_text_content_block()->text,
+      base::test::IsJson(R"({"type":"custom_type","data":"some value"})"));
+}
+
+// Tests for ParseContentBlockFromDict
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_TextType) {
+  constexpr char kBlockJson[] = R"({
+    "type": "text",
+    "text": "Hello, world!"
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_text_content_block());
+  EXPECT_EQ((*result)->get_text_content_block()->text, "Hello, world!");
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_TextTypeMissingText) {
+  constexpr char kBlockJson[] = R"({
+    "type": "text"
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "title": "Site 1",
+        "url": "https://site1.com",
+        "favicon": "https://imgs.search.brave.com/favicon1.png"
+      },
+      {
+        "title": "Site 2",
+        "url": "https://site2.com"
+      }
+    ],
+    "query": "search query"
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  EXPECT_EQ(web_sources->query, "search query");
+  ASSERT_EQ(web_sources->sources.size(), 2u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Site 1");
+  EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://site1.com/");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
+            "https://imgs.search.brave.com/favicon1.png");
+  EXPECT_EQ(web_sources->sources[1]->title, "Site 2");
+  // Second source should have default favicon
+  EXPECT_EQ(web_sources->sources[1]->favicon_url.spec(), kDefaultFaviconUrl);
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidFavicon) {
+  // Favicon from disallowed host should cause source to be skipped
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "title": "Valid Source",
+        "url": "https://valid.com",
+        "favicon": "https://imgs.search.brave.com/valid.png"
+      },
+      {
+        "title": "Invalid Favicon Host",
+        "url": "https://invalid.com",
+        "favicon": "https://evil.com/favicon.png"
+      },
+      {
+        "title": "Invalid Favicon Scheme",
+        "url": "https://another.com",
+        "favicon": "http://imgs.search.brave.com/insecure.png"
+      }
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  // Only the valid source should be included
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Valid Source");
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesEmptySources) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": []
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  // Empty sources and no query should return nullopt
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesQueryOnly) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [],
+    "query": "search term"
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  // Query without sources should still be valid
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+  EXPECT_EQ((*result)->get_web_sources_content_block()->query, "search term");
+  EXPECT_TRUE((*result)->get_web_sources_content_block()->sources.empty());
+}
+
+TEST(OaiParsingTest,
+     ParseContentBlockFromDict_WebSourcesMissingRequiredFields) {
+  // Sources missing title or url should be skipped
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "url": "https://notitle.com"
+      },
+      {
+        "title": "No URL"
+      },
+      {
+        "title": "Valid",
+        "url": "https://valid.com"
+      }
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Valid");
+}
+
+TEST(OaiParsingTest,
+     ParseContentBlockFromDict_WebSourcesSkipsNonDictSourceItems) {
+  // Non-dict items in sources list should be skipped
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      "invalid string",
+      123,
+      {
+        "title": "Valid Source",
+        "url": "https://valid.com"
+      },
+      null
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Valid Source");
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidUrl) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "title": "Invalid URL",
+        "url": "not-a-valid-url"
+      },
+      {
+        "title": "Valid",
+        "url": "https://valid.com"
+      }
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Valid");
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_MissingType) {
+  constexpr char kBlockJson[] = R"({
+    "text": "No type field"
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_UnsupportedType) {
+  constexpr char kBlockJson[] = R"({
+    "type": "unknown_type",
+    "data": "some data"
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  EXPECT_FALSE(result.has_value());
 }
 
 // Tests for ToolApiDefinitionsFromTools

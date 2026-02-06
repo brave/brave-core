@@ -278,7 +278,6 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
   }
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // No inputs, Orchard output.
   {
@@ -602,7 +601,6 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     EXPECT_EQ(result->inputs[1].block_id, 2u);
   }
 }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 TEST(ZCashTransactionUtilsUnitTest, CalculateZCashTxFee) {
   // https://github.com/zcash/librustzcash/blob/e190b6b7baec244899556abed8f12f21fff19abf/zcash_client_backend/src/data_api/testing/pool.rs#L3961

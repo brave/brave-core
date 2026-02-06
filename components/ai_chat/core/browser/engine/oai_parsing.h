@@ -17,10 +17,23 @@
 
 namespace ai_chat {
 
-// Construct a tool use event from a tool calls part of a Chat API-style
-// response
+// Construct tool use events from tool calls (tool requests with function)
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     const base::ListValue* tool_calls_api_response);
+
+// Parse a single tool call dict with function (tool request)
+std::optional<mojom::ToolUseEventPtr> ParseToolCallRequest(
+    const base::DictValue& tool_call);
+
+// Parse a single tool call dict with output_content (tool result)
+std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
+    const base::DictValue& tool_call);
+
+// Parse a JSON dict into ContentBlock based on its "type" field.
+// Supports "text" and "brave-chat.webSources" types.
+// Returns nullopt if type is unsupported or parsing fails.
+std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
+    const base::DictValue& dict);
 
 // Convert some Tools to Chat API-style JSON list of tool definitions
 std::optional<base::ListValue> ToolApiDefinitionsFromTools(

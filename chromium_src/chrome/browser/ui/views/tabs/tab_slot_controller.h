@@ -6,11 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
-#define ShiftGroupLeft(...)                                                    \
-  SetCustomTitleForTab(Tab* tab, const std::optional<std::u16string>& title) { \
-  }                                                                            \
-  virtual void ShiftGroupLeft(__VA_ARGS__)
-
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.
 #define ShouldCompactLeadingEdge()      \

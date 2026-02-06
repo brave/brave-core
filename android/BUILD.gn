@@ -80,10 +80,13 @@ android_library("qrreader_java") {
 # Brave-specific resources.
 android_resources("java_resources") {
   sources = [
+    "java/brave-res/anim/fast_fade_in.xml",
     "java/brave-res/anim/slide_in_bottom.xml",
     "java/brave-res/anim/slide_in_top.xml",
     "java/brave-res/anim/slide_out_bottom.xml",
     "java/brave-res/anim/slide_out_top.xml",
+    "java/brave-res/color/brave_checkbox_background_color_selector.xml",
+    "java/brave-res/color/brave_checkbox_color_selector.xml",
     "java/brave-res/color/brave_switch_stroke_color.xml",
     "java/brave-res/color/crypto_wallet_onboarding_button_text_color.xml",
     "java/brave-res/color/wallet_checkbox_background_color_selector.xml",
@@ -248,6 +251,8 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_sync_top_rounded_light.xml",
     "java/brave-res/drawable/browser_group.xml",
     "java/brave-res/drawable/btn_right_tablet.xml",
+    "java/brave-res/drawable/button_full.xml",
+    "java/brave-res/drawable/button_outline.xml",
     "java/brave-res/drawable/card_bg.xml",
     "java/brave-res/drawable/circular_progress.xml",
     "java/brave-res/drawable/country_spinner_background.xml",
@@ -743,6 +748,7 @@ android_resources("java_resources") {
     "java/brave-res/values/brave_attrs.xml",
     "java/brave-res/values/brave_ids.xml",
     "java/brave-res/values/brave_styles.xml",
+    "java/brave-res/values/dimens.xml",
     "java/brave-res/values/shimmer_attrs.xml",
     "java/brave-res/xml/background_images_preferences.xml",
     "java/brave-res/xml/brave_appearance_preferences.xml",

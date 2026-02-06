@@ -150,7 +150,7 @@ void PlaylistRenderFrameObserver::Inject(
                                args.empty() ? nullptr : args.data());
 }
 
-void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
+void PlaylistRenderFrameObserver::OnMediaDetected(base::ListValue media) {
   const auto url = render_frame()->GetWebFrame()->GetDocument().Url();
   DVLOG(2) << __FUNCTION__ << " - " << url << ":\n" << media;
 

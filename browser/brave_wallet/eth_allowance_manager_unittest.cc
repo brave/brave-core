@@ -166,7 +166,7 @@ using AllowancesMapCallback = base::OnceCallback<void(const AllowancesMap&)>;
 using OnDiscoverEthAllowancesCompletedValidation =
     base::RepeatingCallback<void(const std::vector<mojom::AllowanceInfoPtr>&)>;
 
-void FillAllowanceLogItem(base::Value::Dict& current_item,
+void FillAllowanceLogItem(base::DictValue& current_item,
                           const std::string& contract_address,
                           const uint256_t& log_index,
                           const std::string& approver_address,
@@ -189,7 +189,7 @@ void FillAllowanceLogItem(base::Value::Dict& current_item,
   }
 }
 
-mojom::AllowanceInfoPtr GetAllowanceInfo(const base::Value::Dict& current_item,
+mojom::AllowanceInfoPtr GetAllowanceInfo(const base::DictValue& current_item,
                                          const std::string& chain_id) {
   const auto* contract_addr_ptr = current_item.FindString("address");
   DCHECK(contract_addr_ptr);
@@ -239,7 +239,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   void CreateCachedAllowancesPrefs(const std::string& json) {
-    base::Value::Dict allowance_cache = base::test::ParseJsonDict(json);
+    base::DictValue allowance_cache = base::test::ParseJsonDict(json);
 
     GetPrefs()->SetDict(kBraveWalletEthAllowancesCache,
                         std::move(allowance_cache));
@@ -312,7 +312,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
                                               get_block_response_str);
             } else if (request.url.spec() == url.spec() &&
                        *header_value == "eth_getLogs") {
-              base::Value::Dict request_dict =
+              base::DictValue request_dict =
                   base::test::ParseJsonDict(request.request_body->elements()
                                                 ->at(0)
                                                 .As<network::DataElementBytes>()
@@ -338,7 +338,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
                 const auto request_approver_address =
                     (*topics_ptr)[1].GetString();
 
-                base::Value::Dict potential_response_dict =
+                base::DictValue potential_response_dict =
                     base::test::ParseJsonDict(potential_response);
 
                 const auto* pr_error_ptr =
@@ -455,12 +455,12 @@ class EthAllowanceManagerUnitTest : public testing::Test {
       std::string_view response_json,
       const std::vector<std::string>& eth_account_address,
       const TokenListMap& token_list_map,
-      base::RepeatingCallback<void(base::Value::Dict,
+      base::RepeatingCallback<void(base::DictValue,
                                    const mojom::BlockchainTokenPtr&,
                                    uint256_t&,
                                    const std::string&,
                                    const std::string&,
-                                   base::Value::List*)> per_addr_action) {
+                                   base::ListValue*)> per_addr_action) {
     std::map<GURL, std::map<std::string, std::string>> result;
     for (auto const& [key, token_info] : token_list_map) {
       std::string chain_id;
@@ -612,10 +612,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoading) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1);
                   expected_allowances.push_back(
@@ -673,10 +673,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoadingFailedGetBlock) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1);
                   expected_allowances.push_back(
@@ -707,10 +707,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesRevoked) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1);
                   auto revoke_item = allovance_item.Clone();
@@ -750,10 +750,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesIgnorePendingBlocks) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   // Mark block number as 0x0 like for pending state.
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1, "0x0");
@@ -789,10 +789,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesIgnoreWrongTopicsData) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1);
                   auto* topics_ptr = allovance_item.FindList("topics");
@@ -831,10 +831,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesIgnoreWrongAmountData) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1);
                   // Set amount to wrong format.
@@ -871,10 +871,10 @@ TEST_F(EthAllowanceManagerUnitTest, NoAllowancesLoaded) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   // Do nothing
                 }));
       });
@@ -940,10 +940,10 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoadingReset) {
         return PrepareResponses(
             kEthAllowanceDetectedResponse, eth_account_address, token_list_map,
             base::BindLambdaForTesting(
-                [&](base::Value::Dict allovance_item,
+                [&](base::DictValue allovance_item,
                     const mojom::BlockchainTokenPtr& tkn, uint256_t& log_index,
                     const std::string& addr, const std::string& chain_id,
-                    base::Value::List* pr_result_ptr) {
+                    base::ListValue* pr_result_ptr) {
                   FillAllowanceLogItem(allovance_item, tkn->contract_address,
                                        ++log_index, addr, 1);
                   expected_allowances.push_back(

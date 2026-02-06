@@ -120,6 +120,8 @@ std::string_view GetContentBlockTypeString(
       auto it = kSimpleRequestTypeMap.find(request->type);
       return it->second;
     }
+    case mojom::ContentBlock::Tag::kWebSourcesContentBlock:
+      return "brave-chat.webSources";
   }
 }
 
@@ -239,6 +241,23 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
           // Server currently requires the empty text field to be passed.
           content_block_dict.Set("text", "");
           break;
+
+        case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
+          const auto& web_sources = block->get_web_sources_content_block();
+          base::ListValue sources_list;
+          for (const auto& source : web_sources->sources) {
+            base::DictValue source_dict;
+            source_dict.Set("title", source->title);
+            source_dict.Set("url", source->url.spec());
+            source_dict.Set("favicon", source->favicon_url.spec());
+            sources_list.Append(std::move(source_dict));
+          }
+          content_block_dict.Set("sources", std::move(sources_list));
+          if (web_sources->query.has_value()) {
+            content_block_dict.Set("query", web_sources->query.value());
+          }
+          break;
+        }
       }
       content_list.Append(std::move(content_block_dict));
     }

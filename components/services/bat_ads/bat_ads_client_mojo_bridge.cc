@@ -335,12 +335,12 @@ bool BatAdsClientMojoBridge::HasLocalStatePrefPath(
   return value;
 }
 
-base::Value::Dict BatAdsClientMojoBridge::GetVirtualPrefs() const {
+base::DictValue BatAdsClientMojoBridge::GetVirtualPrefs() const {
   if (!bat_ads_client_associated_remote_.is_bound()) {
     return {};
   }
 
-  base::Value::Dict virtual_prefs;
+  base::DictValue virtual_prefs;
   bat_ads_client_associated_remote_->GetVirtualPrefs(&virtual_prefs);
   return virtual_prefs;
 }

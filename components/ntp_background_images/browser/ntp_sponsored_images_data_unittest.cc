@@ -87,21 +87,21 @@ constexpr char kTestSponsoredRichMediaCampaign[] = R"(
     })";
 
 TEST(NTPSponsoredImagesDataTest, EmptyJson) {
-  base::Value::Dict dict;
+  base::DictValue dict;
   base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
   NTPSponsoredImagesData data(dict, installed_dir);
   EXPECT_THAT(data.IsValid(), testing::IsFalse());
 }
 
 TEST(NTPSponsoredImagesDataTest, EmptyCampaigns) {
-  base::Value::Dict dict = base::test::ParseJsonDict(kTestEmptyCampaigns);
+  base::DictValue dict = base::test::ParseJsonDict(kTestEmptyCampaigns);
   base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
   NTPSponsoredImagesData data(dict, installed_dir);
   EXPECT_THAT(data.IsValid(), testing::IsFalse());
 }
 
 TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
-  base::Value::Dict dict =
+  base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
   base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
   NTPSponsoredImagesData data(dict, installed_dir);
@@ -135,7 +135,7 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
 }
 
 TEST(NTPSponsoredImagesDataTest, ParseSponsoredRichMediaCampaign) {
-  base::Value::Dict dict =
+  base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredRichMediaCampaign);
   base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
   NTPSponsoredImagesData data(dict, installed_dir);
@@ -166,7 +166,7 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredRichMediaCampaign) {
 
 TEST(NTPSponsoredImagesDataTest,
      GetCreativeByInstanceIdFromSponsoredImagesCampaign) {
-  base::Value::Dict dict =
+  base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
   base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
   NTPSponsoredImagesData data(dict, installed_dir);
@@ -182,7 +182,7 @@ TEST(NTPSponsoredImagesDataTest,
 
 TEST(NTPSponsoredImagesDataTest,
      GetCreativeByInstanceIdFromSponsoredRichMediaCampaign) {
-  base::Value::Dict dict =
+  base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredRichMediaCampaign);
   base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
   NTPSponsoredImagesData data(dict, installed_dir);

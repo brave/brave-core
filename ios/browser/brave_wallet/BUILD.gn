@@ -15,8 +15,6 @@ source_set("brave_wallet") {
     "brave_wallet_ipfs_service_factory.mm",
     "brave_wallet_service_factory.h",
     "brave_wallet_service_factory.mm",
-    "features.h",
-    "features.mm",
     "meld_integration_service_factory.h",
     "meld_integration_service_factory.mm",
     "swap_service_factory.h",

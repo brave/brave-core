@@ -204,7 +204,7 @@ void AdBlockComponentServiceManager::UpdateFilterListPrefs(
   }
   {
     ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
-    base::Value::Dict regional_filter_dict;
+    base::DictValue regional_filter_dict;
     regional_filter_dict.Set("enabled", enabled);
     update->Set(uuid, std::move(regional_filter_dict));
   }
@@ -378,11 +378,11 @@ AdBlockComponentServiceManager::GetFilterListCatalog() {
   return filter_list_catalog_;
 }
 
-base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
+base::ListValue AdBlockComponentServiceManager::GetRegionalLists() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(local_state_);
 
-  base::Value::List list;
+  base::ListValue list;
   const bool show_hidden = base::FeatureList::IsEnabled(
       brave_shields::features::kBraveAdblockShowHiddenComponents);
   for (const auto& region_list : filter_list_catalog_) {
@@ -392,7 +392,7 @@ base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
     }
     // Most settings come directly from the regional catalog from
     // https://github.com/brave/adblock-resources
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("uuid", region_list.uuid);
     dict.Set("url", region_list.url);
     dict.Set("title", region_list.title);

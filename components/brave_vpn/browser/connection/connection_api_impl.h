@@ -73,7 +73,7 @@ class ConnectionAPIImpl
                         const std::string& hostnames,
                         bool success);
   void ParseAndCacheHostnames(const std::string& region,
-                              const base::Value::List& hostnames_value);
+                              const base::ListValue& hostnames_value);
   void ResetHostname();
 
   const raw_ref<BraveVPNConnectionManager> manager_;  // owner

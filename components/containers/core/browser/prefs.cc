@@ -30,7 +30,7 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
       LOG(ERROR) << "Container is not a dictionary";
       continue;
     }
-    const base::Value::Dict& dict = container.GetDict();
+    const base::DictValue& dict = container.GetDict();
     auto* id = dict.FindString("id");
     auto* name = dict.FindString("name");
     auto icon = dict.FindInt("icon");
@@ -49,9 +49,9 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
 void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
                           PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  base::Value::List list;
+  base::ListValue list;
   for (const auto& container : containers) {
-    list.Append(base::Value::Dict()
+    list.Append(base::DictValue()
                     .Set("id", container->id)
                     .Set("name", container->name)
                     .Set("icon", std::to_underlying(container->icon))

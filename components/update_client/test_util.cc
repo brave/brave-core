@@ -36,7 +36,7 @@ bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer) {
       base::BindRepeating([](PrefService* pref) { return pref; }, pref.get()),
       nullptr);
 
-  std::vector<base::Value::Dict> events(2);
+  std::vector<base::DictValue> events(2);
   events[0].Set("download_time_ms", 9965);
   events[0].Set("eventresult", 1);
   events[1].Set("eventtype", 63);

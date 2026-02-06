@@ -30,6 +30,9 @@ bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 bool IsWalletDebugEnabled();
+#if BUILDFLAG(IS_IOS)
+bool IsWalletWebUIEnabled();
+#endif
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);

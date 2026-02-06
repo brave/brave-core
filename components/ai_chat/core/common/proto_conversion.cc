@@ -26,15 +26,14 @@ mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
     mojom_source->title = proto_source.title();
     mojom_source->url = GURL(proto_source.url());
     if (!mojom_source->url.is_valid()) {
-      DLOG(ERROR) << "Invalid WebSourcesEvent found in database with url: "
-                  << proto_source.url();
+      DVLOG(1) << "Invalid WebSourcesEvent found in database with url: "
+               << proto_source.url();
       continue;
     }
     mojom_source->favicon_url = GURL(proto_source.favicon_url());
     if (!mojom_source->favicon_url.is_valid()) {
-      DLOG(ERROR)
-          << "Invalid WebSourcesEvent found in database with favicon url: "
-          << proto_source.favicon_url();
+      DVLOG(1) << "Invalid WebSourcesEvent found in database with favicon url: "
+               << proto_source.favicon_url();
       continue;
     }
     mojom_event->sources.push_back(std::move(mojom_source));
@@ -58,9 +57,9 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
   for (const auto& mojom_source : mojom_event->sources) {
     if (!mojom_source->url.is_valid() ||
         !mojom_source->favicon_url.is_valid()) {
-      DLOG(ERROR) << "Invalid WebSourcesEvent found for persistence, with url: "
-                  << mojom_source->url.spec()
-                  << " and favicon url: " << mojom_source->favicon_url.spec();
+      DVLOG(1) << "Invalid WebSourcesEvent found for persistence, with url: "
+               << mojom_source->url.spec()
+               << " and favicon url: " << mojom_source->favicon_url.spec();
       continue;
     }
     store::WebSourceProto* proto_source = proto_event->add_sources();
@@ -103,6 +102,36 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
           text_block->text = proto_block.text_content_block().text();
           mojom_event->output->push_back(
               mojom::ContentBlock::NewTextContentBlock(std::move(text_block)));
+          break;
+        }
+        case store::ContentBlockProto::kWebSourcesContentBlock: {
+          const auto& proto_sources = proto_block.web_sources_content_block();
+          auto mojom_sources = mojom::WebSourcesContentBlock::New();
+          mojom_sources->sources.reserve(proto_sources.sources_size());
+          for (const auto& proto_source : proto_sources.sources()) {
+            auto mojom_source = mojom::WebSource::New();
+            mojom_source->title = proto_source.title();
+            mojom_source->url = GURL(proto_source.url());
+            if (!mojom_source->url.is_valid()) {
+              DVLOG(1) << "Invalid WebSourcesContentBlock url in database: "
+                       << proto_source.url();
+              continue;
+            }
+            mojom_source->favicon_url = GURL(proto_source.favicon_url());
+            if (!mojom_source->favicon_url.is_valid()) {
+              DVLOG(1)
+                  << "Invalid WebSourcesContentBlock favicon url in database: "
+                  << proto_source.favicon_url();
+              continue;
+            }
+            mojom_sources->sources.push_back(std::move(mojom_source));
+          }
+          if (proto_sources.has_query()) {
+            mojom_sources->query = proto_sources.query();
+          }
+          mojom_event->output->push_back(
+              mojom::ContentBlock::NewWebSourcesContentBlock(
+                  std::move(mojom_sources)));
           break;
         }
         case store::ContentBlockProto::CONTENT_NOT_SET:
@@ -154,6 +183,28 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
         case mojom::ContentBlock::Tag::kTextContentBlock: {
           auto* proto_text = proto_block->mutable_text_content_block();
           proto_text->set_text(mojom_block->get_text_content_block()->text);
+          break;
+        }
+        case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
+          const auto& mojom_sources =
+              mojom_block->get_web_sources_content_block();
+          auto* proto_sources =
+              proto_block->mutable_web_sources_content_block();
+          for (const auto& mojom_source : mojom_sources->sources) {
+            if (!mojom_source->url.is_valid() ||
+                !mojom_source->favicon_url.is_valid()) {
+              DVLOG(1)
+                  << "Invalid WebSourcesContentBlock found for persistence";
+              continue;
+            }
+            store::WebSourceProto* proto_source = proto_sources->add_sources();
+            proto_source->set_title(mojom_source->title);
+            proto_source->set_url(mojom_source->url.spec());
+            proto_source->set_favicon_url(mojom_source->favicon_url.spec());
+          }
+          if (mojom_sources->query.has_value()) {
+            proto_sources->set_query(mojom_sources->query.value());
+          }
           break;
         }
         default:

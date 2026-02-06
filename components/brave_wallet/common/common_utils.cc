@@ -52,11 +52,7 @@ bool IsZCashEnabled() {
 }
 
 bool IsZCashShieldedTransactionsEnabled() {
-#if BUILDFLAG(ENABLE_ORCHARD)
   return IsZCashEnabled() && features::kZCashShieldedTransactionsEnabled.Get();
-#else
-  return false;
-#endif
 }
 
 bool IsPolkadotEnabled() {
@@ -80,6 +76,12 @@ bool IsTransactionSimulationsEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletTransactionSimulationsFeature);
 }
+
+#if BUILDFLAG(IS_IOS)
+bool IsWalletWebUIEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletWebUIFeature);
+}
+#endif
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kDefault;

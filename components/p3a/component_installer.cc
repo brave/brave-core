@@ -55,21 +55,21 @@ class P3AComponentInstallerPolicy
   bool RequiresNetworkEncryption() const override { return false; }
 
   update_client::CrxInstaller::Result OnCustomInstall(
-      const base::Value::Dict& manifest,
+      const base::DictValue& manifest,
       const base::FilePath& install_dir) override {
     return update_client::CrxInstaller::Result(0);
   }
 
   void OnCustomUninstall() override {}
 
-  bool VerifyInstallation(const base::Value::Dict& manifest,
+  bool VerifyInstallation(const base::DictValue& manifest,
                           const base::FilePath& install_dir) const override {
     return base::PathExists(install_dir.Append(kP3AManifestFileName));
   }
 
   void ComponentReady(const base::Version& version,
                       const base::FilePath& install_dir,
-                      base::Value::Dict manifest) override {
+                      base::DictValue manifest) override {
     if (remote_config_manager_) {
       remote_config_manager_->LoadRemoteConfig(install_dir);
     }

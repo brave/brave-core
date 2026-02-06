@@ -26,7 +26,7 @@ class StripProceduralFiltersTest : public testing::Test {
 
   void TearDown() override {}
 
-  base::Value::Dict ResourcesForRules(const std::string& rules) {
+  base::DictValue ResourcesForRules(const std::string& rules) {
     auto f = adblock::new_filter_set();
     f->add_filter_list(std::vector<uint8_t>(rules.cbegin(), rules.cend()));
     auto e = adblock::engine_from_filter_set(std::move(f)).value;
@@ -35,7 +35,7 @@ class StripProceduralFiltersTest : public testing::Test {
     return base::test::ParseJsonDict(result.c_str());
   }
 
-  void StripProceduralFilters(base::Value::Dict& resources) {
+  void StripProceduralFilters(base::DictValue& resources) {
     AdBlockService::StripProceduralFilters(resources);
   }
 };

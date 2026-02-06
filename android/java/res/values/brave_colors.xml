@@ -333,6 +333,7 @@
     <color name="text_tertiary">#78787c</color>
     <color name="primary_20">#dfe4f6</color>
     <color name="button_background">#434fcf</color>
+    <color name="button_background_10">#19434FCF</color>
 
     <color name="divider_interactive">#bcc6f3</color>
 
@@ -363,6 +364,7 @@
     <color name="schemes_on_primary">#ffffff</color>
     <color name="schemes_surface_container_highest">#e4e4e5</color>
     <color name="schemes_surface_container_lowest">#ffffff</color>
+    <color name="schemes_surface_container">#F2F2F3</color>
 
     <color name="button_background_widget_promo">#4551D1</color>
 

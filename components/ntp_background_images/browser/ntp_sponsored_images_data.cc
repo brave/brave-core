@@ -60,7 +60,7 @@ std::optional<std::string> ToString(WallpaperType wallpaper_type) {
 }
 
 std::optional<Campaign> MaybeParseCampaign(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const base::FilePath& installed_dir) {
   Campaign campaign;
 
@@ -88,15 +88,14 @@ std::optional<Campaign> MaybeParseCampaign(
     }
   }
 
-  const base::Value::List* const creative_sets =
-      dict.FindList(kCreativeSetsKey);
+  const base::ListValue* const creative_sets = dict.FindList(kCreativeSetsKey);
   if (!creative_sets) {
     // Creative sets are required.
     return std::nullopt;
   }
 
   for (const auto& creative_set_value : *creative_sets) {
-    const base::Value::Dict* const creative_set_dict =
+    const base::DictValue* const creative_set_dict =
         creative_set_value.GetIfDict();
     if (!creative_set_dict) {
       // Invalid creative set.
@@ -110,7 +109,7 @@ std::optional<Campaign> MaybeParseCampaign(
       continue;
     }
 
-    const base::Value::List* const creatives =
+    const base::ListValue* const creatives =
         creative_set_dict->FindList(kCreativesKey);
     if (!creatives) {
       // Creative are required.
@@ -120,7 +119,7 @@ std::optional<Campaign> MaybeParseCampaign(
     for (const auto& creative_value : *creatives) {
       Creative creative;
 
-      const base::Value::Dict* const creative_dict = creative_value.GetIfDict();
+      const base::DictValue* const creative_dict = creative_value.GetIfDict();
       if (!creative_dict) {
         // Invalid creative.
         continue;
@@ -164,7 +163,7 @@ std::optional<Campaign> MaybeParseCampaign(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
       // Wallpaper.
-      const base::Value::Dict* const wallpaper_dict =
+      const base::DictValue* const wallpaper_dict =
           creative_dict->FindDict(kWallpaperKey);
       if (!wallpaper_dict) {
         // Wallpaper is required.
@@ -317,7 +316,7 @@ bool Campaign::IsValid() const {
 
 NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
 NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
   const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
@@ -330,7 +329,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
                                kBrandedWallpaperHost);
   url_prefix += kSponsoredImagesPath;
 
-  if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {
+  if (const base::ListValue* const value = dict.FindList(kCampaignsKey)) {
     ParseCampaigns(*value, installed_dir);
   }
 }
@@ -350,10 +349,10 @@ NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 void NTPSponsoredImagesData::ParseCampaigns(
-    const base::Value::List& list,
+    const base::ListValue& list,
     const base::FilePath& installed_dir) {
   for (const auto& value : list) {
-    const base::Value::Dict* const dict = value.GetIfDict();
+    const base::DictValue* const dict = value.GetIfDict();
     if (!dict) {
       // Invalid campaign.
       continue;
@@ -389,7 +388,7 @@ const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
   return nullptr;
 }
 
-std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
+std::optional<base::DictValue> NTPSponsoredImagesData::MaybeGetBackgroundAt(
     size_t campaign_index,
     size_t creative_index) const {
   CHECK(campaign_index < campaigns.size());
@@ -406,7 +405,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
     return std::nullopt;
   }
 
-  return base::Value::Dict()
+  return base::DictValue()
       .Set(kCampaignIdKey, campaign.campaign_id)
       .Set(kCreativeInstanceIDKey, creative.creative_instance_id)
       .Set(kIsSponsoredKey, true)
@@ -418,7 +417,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
       .Set(kWallpaperFocalPointXKey, creative.focal_point.x())
       .Set(kWallpaperFocalPointYKey, creative.focal_point.y())
       .Set(kLogoKey,
-           base::Value::Dict()
+           base::DictValue()
                .Set(kImageKey, creative.logo.image_url)
                .Set(kImagePathKey, creative.logo.image_file.AsUTF8Unsafe())
                .Set(kCompanyNameKey, creative.logo.company_name)
@@ -427,7 +426,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
       .Set(kWallpaperTypeKey, *wallpaper_type);
 }
 
-std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackground(
+std::optional<base::DictValue> NTPSponsoredImagesData::MaybeGetBackground(
     const brave_ads::mojom::NewTabPageAdInfo& ad) {
   // Find campaign
   size_t campaign_index = 0;
@@ -456,7 +455,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackground(
     return std::nullopt;
   }
 
-  std::optional<base::Value::Dict> dict =
+  std::optional<base::DictValue> dict =
       MaybeGetBackgroundAt(campaign_index, creative_index);
   if (dict) {
     dict->Set(kWallpaperIDKey, ad.placement_id);

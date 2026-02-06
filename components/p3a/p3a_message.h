@@ -89,11 +89,11 @@ class MessageMetainfo {
   raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
 };
 
-base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
-                                         uint64_t metric_value,
-                                         MetricLogType log_type,
-                                         const MessageMetainfo& meta,
-                                         const std::string& upload_type);
+base::DictValue GenerateP3AMessageDict(std::string_view metric_name,
+                                       uint64_t metric_value,
+                                       MetricLogType log_type,
+                                       const MessageMetainfo& meta,
+                                       const std::string& upload_type);
 
 std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,

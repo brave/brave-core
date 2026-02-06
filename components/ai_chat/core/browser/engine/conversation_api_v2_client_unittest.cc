@@ -497,6 +497,25 @@ INSTANTIATE_TEST_SUITE_P(
             R"({
               "type": "brave-reduce-focus-topics",
               "text": "[\"Shopping\",\"News\"]"
+            })"},
+        ContentBlockTestParam{
+            "WebSources", base::BindRepeating([]() {
+              std::vector<mojom::WebSourcePtr> sources;
+              sources.push_back(mojom::WebSource::New(
+                  "Example Title", GURL("https://example.com/page"),
+                  GURL("https://example.com/favicon.ico")));
+              return mojom::ContentBlock::NewWebSourcesContentBlock(
+                  mojom::WebSourcesContentBlock::New(std::move(sources),
+                                                     "test query"));
+            }),
+            R"({
+              "type": "brave-chat.webSources",
+              "sources": [{
+                "title": "Example Title",
+                "url": "https://example.com/page",
+                "favicon": "https://example.com/favicon.ico"
+              }],
+              "query": "test query"
             })"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
       return info.param.name;

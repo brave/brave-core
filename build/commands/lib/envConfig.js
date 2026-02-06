@@ -7,6 +7,7 @@
 
 const assert = require('assert')
 const fs = require('fs')
+const os = require('os')
 const path = require('path')
 const { parseEnv } = require('node:util')
 const Log = require('./logging')
@@ -21,6 +22,9 @@ const Log = require('./logging')
  *   3. Default values provided by caller (lowest priority)
  */
 class EnvConfig {
+  /** Directory containing package.json and .env files.
+   *  @type {string}  */
+  #configDir
   /** Package.json object.
    *  @type {Record<string, any>}  */
   #packageJson
@@ -43,6 +47,7 @@ class EnvConfig {
    * files
    */
   constructor(configDir) {
+    this.#configDir = configDir
     this.#packageJson = EnvConfig.#loadPackageJson(configDir)
     this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
     this.#seenDefaultValues = {}
@@ -121,6 +126,37 @@ class EnvConfig {
     }
 
     return mergedObject
+  }
+
+  /**
+   * Returns an absolute path from a configuration value. Relative paths are
+   * resolved relative to the *initial config directory*. Paths starting with
+   * `~` are expanded to the user's home directory.
+   *
+   * Values from `include_env` configs are resolved relative to the same
+   * *initial config directory*, not the included file's location.
+   *
+   * @param {string[]} keyPath - Array of keys forming the config path
+   * @returns {string|undefined} The resolved absolute path, or undefined
+   */
+  getPath(keyPath) {
+    let pathValue = this.get(keyPath, '')
+    if (!pathValue) {
+      return undefined
+    }
+
+    // Expand ~ to home directory.
+    if (pathValue.startsWith('~')) {
+      pathValue = path.join(os.homedir(), pathValue.slice(1))
+    }
+
+    // If the path is relative, resolve it relative to the config directory.
+    if (!path.isAbsolute(pathValue)) {
+      pathValue = path.resolve(this.#configDir, pathValue)
+    }
+
+    // Normalize the path.
+    return path.normalize(pathValue)
   }
 
   /**

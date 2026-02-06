@@ -65,6 +65,9 @@
         <ignore regexp="The resource `R.style.BottomSheetActivityTheme` appears to be unused" />
         <ignore regexp="The resource `R.style.BraveAccountTheme` appears to be unused" />
         <ignore regexp="The resource `R.style.BottomSheetAnimation` appears to be unused" />
+        <ignore regexp="The resource `R.style.FadeEnterAnimation` appears to be unused" />
+        <ignore regexp="The resource `R.style.Theme_Brave_WelcomeOnboarding` appears to be unused" />
+        <ignore regexp="The resource `R.anim.fast_fade_in` appears to be unused" />
 
         <!-- These are used at brave/android/java/brave-res/xml/quick_action_search_and_bookmark_widget_info.xml -->
         <ignore regexp="The resource `R.xml.quick_action_search_and_bookmark_widget_info` appears to be unused" />

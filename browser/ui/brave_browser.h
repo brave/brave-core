@@ -70,10 +70,6 @@ class BraveBrowser : public Browser {
                       scoped_refptr<content::FileSelectListener> listener,
                       const blink::mojom::FileChooserParams& params) override;
 
-  void TabCustomTitleChanged(
-      content::WebContents* contents,
-      const std::optional<std::string>& custom_title) override;
-
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();

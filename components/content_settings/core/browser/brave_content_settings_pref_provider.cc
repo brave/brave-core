@@ -202,7 +202,7 @@ void BravePrefProvider::DiscardObsoletePreferences() {
   // The code below iterates through all lists within UNUSED_SITE_PERMISSIONS
   // and removes references to obsolete permissions.
 
-  base::Value::Dict unused_site_permissions =
+  base::DictValue unused_site_permissions =
       prefs_->GetDict(GetShieldsSettingUserPrefsPath(kUnusedSitePermissions))
           .Clone();
 
@@ -217,8 +217,7 @@ void BravePrefProvider::DiscardObsoletePreferences() {
       if (!value.second.is_dict()) {
         continue;
       }
-      base::Value::Dict* setting =
-          value.second.GetDict().FindDict(kSettingPath);
+      base::DictValue* setting = value.second.GetDict().FindDict(kSettingPath);
       if (!setting) {
         continue;
       }
@@ -315,7 +314,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
 
   for (const auto [key, value] : plugins_dict) {
     const std::string& patterns_string(key);
-    const base::Value::Dict* settings_dict = value.GetIfDict();
+    const base::DictValue* settings_dict = value.GetIfDict();
     DCHECK(settings_dict);
 
     base::Time expiration =
@@ -324,7 +323,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
     content_settings::mojom::SessionModel session_model =
         GetSessionModelFromDictionary(*settings_dict, kSessionModelPath);
 
-    const base::Value::Dict* resource_dict =
+    const base::DictValue* resource_dict =
         settings_dict->FindDictByDottedPath(kPerResourcePath);
     if (resource_dict) {
       base::Time last_modified =
@@ -348,7 +347,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           const auto pref_path =
               GetShieldsSettingUserPrefsPath(shields_preference_name);
           if (!prefs_->HasPrefPath(pref_path)) {
-            prefs_->SetDict(pref_path, base::Value::Dict());
+            prefs_->SetDict(pref_path, base::DictValue());
           }
         } else {
           shields_preference_name = resource_identifier;
@@ -396,7 +395,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
 
   ScopedDictPrefUpdate update(prefs_, preference_path);
 
-  base::Value::Dict* shield_settings = update->EnsureDict(patterns_string);
+  base::DictValue* shield_settings = update->EnsureDict(patterns_string);
   DCHECK(shield_settings);
 
   shield_settings->Set(
@@ -660,12 +659,12 @@ void BravePrefProvider::MigrateCosmeticFilteringSettings() {
   const auto* info = WebsiteSettingsRegistry::GetInstance()->Get(
       ContentSettingsType::BRAVE_COSMETIC_FILTERING);
 
-  base::Value::Dict clone;
+  base::DictValue clone;
   for (const auto rule : cosmetic_filtering) {
-    // Premigrate values to be consistent with base::Value::Dict() default
+    // Premigrate values to be consistent with base::DictValue() default
     // value.
     clone.Set(rule.first,
-              base::Value::Dict().Set("setting", rule.second.Clone()));
+              base::DictValue().Set("setting", rule.second.Clone()));
   }
 
   prefs_->SetDict(info->pref_name(), std::move(clone));

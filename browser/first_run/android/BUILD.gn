@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/firstrun/OnboardingStepAdapter.java",
+    "java/src/org/chromium/chrome/browser/firstrun/PageBounceAnimator.java",
+  ]
+
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//brave/build/android:android_brave_strings_grd",
+    "//third_party/android_deps:com_airbnb_android_lottie_java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//third_party/androidx:androidx_viewpager2_viewpager2_java",
+  ]
+
+  resources_package = "org.chromium.brave.browser.firstrun"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/animator/ic_brave_splash_scale.xml",
+    "java/res/drawable/ic_brave_splash.xml",
+    "java/res/drawable/ic_brave_splash_animated.xml",
+    "java/res/drawable/onboarding_bottom_rounded_corners.xml",
+    "java/res/drawable/onboarding_illustration.xml",
+    "java/res/drawable/onboarding_p3a_illustration.xml",
+    "java/res/drawable/onboarding_rounded_corners.xml",
+    "java/res/drawable/onboarding_top_rounded_corners.xml",
+    "java/res/layout/block_interruptions.xml",
+    "java/res/layout/help_brave_search.xml",
+    "java/res/layout/make_brave_better.xml",
+    "java/res/raw-night/no_video_ads.json",
+    "java/res/raw/no_video_ads.json",
+  ]
+}
+
+robolectric_library("junit") {
+  resources_package = "org.chromium.brave.browser.firstrun"
+  sources = [ "javatests/src/org/chromium/chrome/browser/firstrun/OnboardingStepAdapterTest.java" ]
+
+  deps = [
+    ":java",
+    "//chrome/android/junit:chrome_junit_tests_helper",
+    "//third_party/androidx:androidx_viewpager2_viewpager2_java",
+  ]
+}

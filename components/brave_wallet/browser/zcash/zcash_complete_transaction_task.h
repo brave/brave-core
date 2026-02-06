@@ -48,7 +48,6 @@ class ZCashCompleteTransactionTask {
   void OnGetLatestBlockHeight(
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   void CalculateWitness();
   void OnWitnessCalculateResult(
       base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
@@ -60,7 +59,6 @@ class ZCashCompleteTransactionTask {
   void SignOrchardPart();
   void OnSignOrchardPartComplete(
       std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   void SignTransparentPart();
 
@@ -74,10 +72,8 @@ class ZCashCompleteTransactionTask {
   std::optional<uint32_t> consensus_branch_id_;
   std::optional<uint32_t> chain_tip_height_;
 
-#if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<std::vector<OrchardInput>> witness_inputs_;
   std::optional<zcash::mojom::TreeStatePtr> anchor_tree_state_;
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   base::WeakPtrFactory<ZCashCompleteTransactionTask> weak_ptr_factory_{this};
 };

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const fs = require('fs')
+const os = require('os')
 const path = require('path')
 const EnvConfig = require('./envConfig')
 
@@ -556,6 +557,117 @@ describe('EnvConfig', () => {
 
       expect(envConfig.get(['TEST', 'VALUE'])).toBe('value')
       expect(envConfig.get(['SECOND', 'VALUE'])).toBe('second')
+    })
+  })
+
+  describe('getPath', () => {
+    let envConfig
+
+    beforeEach(() => {
+      mockFiles[packageJsonPath] = {
+        version: '1.0.0',
+        config: {
+          relative_path: 'subdir/file.txt',
+          absolute_path_unix: '/usr/local/bin/tool',
+          absolute_path_windows: 'C:\\Program Files\\Tool\\tool.exe',
+          empty_path: '',
+        },
+      }
+      mockFiles[envPath] = [
+        'ENV_RELATIVE_PATH=relative/path.txt',
+        'ENV_ABSOLUTE_PATH=/home/user/project',
+        'ENV_WINDOWS_PATH=D:/projects/brave',
+        'ENV_EMPTY_PATH=',
+      ]
+
+      envConfig = new EnvConfig(configDir)
+    })
+
+    it('should return undefined for non-existent path', () => {
+      const result = envConfig.getPath(['nonexistent', 'path'])
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined for empty path value', () => {
+      const result = envConfig.getPath(['empty_path'])
+      expect(result).toBeUndefined()
+    })
+
+    it('should resolve relative paths to absolute paths', () => {
+      const result = envConfig.getPath(['relative_path'])
+      const expected = path.resolve(configDir, 'subdir/file.txt')
+      expect(result).toBe(expected)
+      expect(path.isAbsolute(result)).toBe(true)
+    })
+
+    it('should resolve relative paths from .env to absolute paths', () => {
+      const result = envConfig.getPath(['ENV', 'RELATIVE', 'PATH'])
+      const expected = path.resolve(configDir, 'relative/path.txt')
+      expect(result).toBe(expected)
+      expect(path.isAbsolute(result)).toBe(true)
+    })
+
+    if (process.platform === 'win32') {
+      it('should get absolute path on windows', () => {
+        expect(envConfig.getPath(['absolute_path_windows'])).toBe(
+          'C:\\Program Files\\Tool\\tool.exe',
+        )
+        expect(envConfig.getPath(['ENV', 'WINDOWS', 'PATH'])).toBe(
+          'D:\\projects\\brave',
+        )
+      })
+    } else {
+      it('should get absolute path on posix', () => {
+        expect(envConfig.getPath(['absolute_path_unix'])).toBe(
+          '/usr/local/bin/tool',
+        )
+        expect(envConfig.getPath(['ENV', 'ABSOLUTE', 'PATH'])).toBe(
+          '/home/user/project',
+        )
+      })
+    }
+
+    it('should prioritize .env values over package.json values', () => {
+      mockFiles[envPath] = 'relative_path=env/override.txt'
+      envConfig = new EnvConfig(configDir)
+
+      const result = envConfig.getPath(['relative_path'])
+      const expected = path.resolve(configDir, 'env/override.txt')
+      expect(result).toBe(expected)
+    })
+
+    it('should expand ~ to home directory', () => {
+      mockFiles[packageJsonPath] = {
+        version: '1.0.0',
+        config: {
+          home_path: '~/.config/app',
+        },
+      }
+      envConfig = new EnvConfig(configDir)
+
+      const result = envConfig.getPath(['home_path'])
+      const expected = path.join(os.homedir(), '.config/app')
+      expect(result).toBe(expected)
+      expect(path.isAbsolute(result)).toBe(true)
+    })
+
+    it('should expand ~ from .env to home directory', () => {
+      mockFiles[envPath] = 'HOME_PATH=~/projects/brave'
+      envConfig = new EnvConfig(configDir)
+
+      const result = envConfig.getPath(['HOME', 'PATH'])
+      const expected = path.join(os.homedir(), 'projects/brave')
+      expect(result).toBe(expected)
+      expect(path.isAbsolute(result)).toBe(true)
+    })
+
+    it('should handle ~ as exact home directory', () => {
+      mockFiles[envPath] = 'HOME_DIR=~'
+      envConfig = new EnvConfig(configDir)
+
+      const result = envConfig.getPath(['HOME', 'DIR'])
+      const expectedPosix = os.homedir()
+      expect(result).toBe(expectedPosix)
     })
   })
 })

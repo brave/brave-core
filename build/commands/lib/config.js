@@ -58,14 +58,6 @@ print(json.dumps(result))
   return JSON.parse(result.stdout.toString().trim())
 }
 
-const getDepotToolsDir = (rootDir) => {
-  let depotToolsDir = getEnvConfig(['projects', 'depot_tools', 'dir'])
-  if (!path.isAbsolute(depotToolsDir)) {
-    depotToolsDir = path.join(rootDir, depotToolsDir)
-  }
-  return path.normalize(depotToolsDir)
-}
-
 const parseExtraInputs = (inputs, accumulator, callback) => {
   for (let input of inputs) {
     let separatorIndex = input.indexOf(':')
@@ -123,7 +115,7 @@ const Config = function () {
   this.braveCoreDir = braveCoreDir
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
-  this.depotToolsDir = getDepotToolsDir(this.braveCoreDir)
+  this.depotToolsDir = envConfig.getPath(['projects', 'depot_tools', 'dir'])
   this.depotToolsRepo = getEnvConfig([
     'projects',
     'depot_tools',
@@ -158,10 +150,11 @@ const Config = function () {
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
   this.isBraveOriginBranded = getEnvConfig(['is_brave_origin_branded'])
-  this.git_cache_path = getEnvConfig(['git_cache_path'])
+  this.gitCachePath =
+    envConfig.getPath(['git_cache_path']) || process.env.GIT_CACHE_PATH
   this.rbeService = getEnvConfig(['rbe_service']) || ''
-  this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
-  this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
+  this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
+  this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
@@ -181,7 +174,7 @@ const Config = function () {
   this.extraGnGenOpts = getEnvConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
   this.sisoJobsLimit = undefined
-  this.sisoCacheDir = getEnvConfig(['siso_cache_dir'])
+  this.sisoCacheDir = envConfig.getPath(['siso_cache_dir'])
   this.braveAndroidSafeBrowsingApiKey = getEnvConfig([
     'brave_safebrowsing_api_key',
   ])
@@ -1033,10 +1026,6 @@ Object.defineProperty(Config.prototype, 'targetOS', {
   },
 })
 
-Config.prototype.getCachePath = function () {
-  return this.git_cache_path || process.env.GIT_CACHE_PATH
-}
-
 Config.prototype.isIOS = function () {
   return this.targetOS === 'ios'
 }
@@ -1116,10 +1105,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
       env.GYP_MSVS_HASH_e4305f407e = '7a2a21dbe7'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
-    }
-
-    if (this.getCachePath()) {
-      env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
     if (this.rbeService) {

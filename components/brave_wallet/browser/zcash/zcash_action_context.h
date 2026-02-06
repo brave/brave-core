@@ -23,17 +23,13 @@ class ZCashRpc;
 struct ZCashActionContext {
   ZCashActionContext(
       ZCashRpc& zcash_rpc,
-#if BUILDFLAG(ENABLE_ORCHARD)
       const std::optional<OrchardAddrRawPart>& account_internal_addr,
       base::SequenceBound<OrchardSyncState>& sync_state,
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
       const mojom::AccountIdPtr& account_id);
   ~ZCashActionContext();
   raw_ref<ZCashRpc> zcash_rpc;
-#if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<OrchardAddrRawPart> account_internal_addr;
   raw_ref<base::SequenceBound<OrchardSyncState>> sync_state;
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
   ZCashActionContext(ZCashActionContext&) = delete;
   ZCashActionContext& operator=(ZCashActionContext&) = delete;
   ZCashActionContext& operator=(ZCashActionContext&&);

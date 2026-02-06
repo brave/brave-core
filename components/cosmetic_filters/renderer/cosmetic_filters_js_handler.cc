@@ -753,7 +753,7 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
-    const base::Value::Dict& resources_dict) {
+    const base::DictValue& resources_dict) {
   SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.CosmeticFilters.CSSRulesRoutine");
   TRACE_EVENT1("brave.adblock", "CSSRulesRoutine", "url", url_.spec());
 
@@ -820,7 +820,7 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 }
 
 void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
-    base::Value::Dict result) {
+    base::DictValue result) {
   if (generichide_) {
     return;
   }
@@ -829,12 +829,12 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
       "Brave.CosmeticFilters.OnHiddenClassIdSelectors");
   TRACE_EVENT1("brave.adblock", "OnHiddenClassIdSelectors", "url", url_.spec());
 
-  base::Value::List* hide_selectors = result.FindList("hide_selectors");
+  base::ListValue* hide_selectors = result.FindList("hide_selectors");
   if (!hide_selectors) {
     return;
   }
 
-  base::Value::List* force_hide_selectors =
+  base::ListValue* force_hide_selectors =
       result.FindList("force_hide_selectors");
 
   if (force_hide_selectors && force_hide_selectors->size() != 0) {

@@ -139,7 +139,7 @@ std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
   // future customization on a feed. For now we just store a bool, and
   // remove the entire entry if a user unsubscribes from a user feed.
   ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
-  base::Value::Dict value;
+  base::DictValue value;
   value.Set(prefs::kBraveNewsDirectFeedsKeySource, url.spec());
   value.Set(prefs::kBraveNewsDirectFeedsKeyTitle, entry_title);
   update->SetByDottedPath(entry_id, std::move(value));

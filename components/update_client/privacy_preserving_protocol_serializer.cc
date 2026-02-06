@@ -27,8 +27,8 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
     return upstream_result;
   }
 
-  base::Value::Dict& root_dict = root->GetDict();
-  base::Value::Dict* request_dict = root_dict.FindDict("request");
+  base::DictValue& root_dict = root->GetDict();
+  base::DictValue* request_dict = root_dict.FindDict("request");
   if (!request_dict) {
     return upstream_result;
   }
@@ -37,20 +37,20 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
   // protocol specification requires it to be present. All its fields have
   // default values and are therefore optional. We therefore remain
   // spec-compliant by simply sending an empty hw dictionary.
-  if (base::Value::Dict* hw_dict = request_dict->FindDict("hw")) {
+  if (base::DictValue* hw_dict = request_dict->FindDict("hw")) {
     hw_dict->clear();
   }
 
-  if (base::Value::List* apps = request_dict->FindList("apps")) {
+  if (base::ListValue* apps = request_dict->FindList("apps")) {
     for (auto& app : *apps) {
       if (!app.is_dict()) {
         continue;
       }
 
-      base::Value::Dict& app_dict = app.GetDict();
+      base::DictValue& app_dict = app.GetDict();
       app_dict.Remove("lang");
 
-      if (base::Value::List* events = app_dict.FindList("events")) {
+      if (base::ListValue* events = app_dict.FindList("events")) {
         for (auto& event : *events) {
           if (event.is_dict()) {
             event.GetDict().Remove("download_time_ms");

@@ -47,7 +47,7 @@ class BraveNTPCustomBackgroundServiceDelegate
   std::string GetColor() const override;
   bool ShouldUseRandomValue() const override;
   bool HasPreferredBraveBackground() const override;
-  base::Value::Dict GetPreferredBraveBackground() const override;
+  base::DictValue GetPreferredBraveBackground() const override;
 
   raw_ptr<Profile> profile_ = nullptr;
 

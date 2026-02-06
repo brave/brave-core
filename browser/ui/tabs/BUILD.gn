@@ -18,10 +18,6 @@ source_set("tabs_public") {
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/tabs:tabs_public",
   ]
-
-  if (!is_android) {
-    sources += [ "public/constants.h" ]
-  }
 }
 
 if (!is_android) {

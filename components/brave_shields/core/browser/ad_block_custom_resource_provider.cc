@@ -77,14 +77,12 @@ const std::string& GetResourceName(const base::Value& resource) {
   return *resource.GetDict().FindString(kNameField);
 }
 
-base::Value::List::iterator FindResource(base::Value::List& resources,
-                                         const std::string& name) {
+base::ListValue::iterator FindResource(base::ListValue& resources,
+                                       const std::string& name) {
   return std::ranges::find_if(resources, [name](const base::Value& v) {
     return GetResourceName(v) == name;
   });
 }
-
-
 
 }  // namespace
 

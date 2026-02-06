@@ -21,10 +21,16 @@ message TextContentBlockProto {
   string text = 1;
 }
 
+message WebSourcesContentBlockProto {
+  repeated WebSourceProto sources = 1;
+  optional string query = 2;
+}
+
 message ContentBlockProto {
   oneof content {
     ImageContentBlockProto image_content_block = 1;
     TextContentBlockProto text_content_block = 2;
+    WebSourcesContentBlockProto web_sources_content_block = 3;
   }
 }
 

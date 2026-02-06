@@ -25,8 +25,6 @@ base::CheckedNumeric<uint64_t> CalculateInputsAmount(
   return total_value;
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
-
 base::CheckedNumeric<uint64_t> CalculateInputsAmount(
     const std::vector<OrchardNote>& notes) {
   base::CheckedNumeric<uint64_t> total_value = 0u;
@@ -35,8 +33,6 @@ base::CheckedNumeric<uint64_t> CalculateInputsAmount(
   }
   return total_value;
 }
-
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 // https://github.com/zcash/orchard/blob/9d89b504c52dc69064ca431e8311a4cd1c279b44/src/builder.rs#L93-L94
 base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
@@ -189,7 +185,6 @@ PickOrchardInputsResult::PickOrchardInputsResult(
 PickOrchardInputsResult::PickOrchardInputsResult(
     PickOrchardInputsResult&& other) = default;
 
-#if BUILDFLAG(ENABLE_ORCHARD)
 std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
     uint64_t amount,
@@ -246,6 +241,5 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
 
   return std::nullopt;
 }
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

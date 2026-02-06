@@ -146,7 +146,7 @@ class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
     policies.Set(policy::key::kJavaScriptAllowedForUrls,
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                  policy::POLICY_SOURCE_PLATFORM, base::Value(), nullptr);
-    auto blocked_list = base::Value::List().Append("http://a.com");
+    auto blocked_list = base::ListValue().Append("http://a.com");
     policies.Set(policy::key::kJavaScriptBlockedForUrls,
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                  policy::POLICY_SOURCE_PLATFORM,
