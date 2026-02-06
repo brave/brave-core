@@ -67,7 +67,7 @@ void ConstellationLogStore::UpdateMessage(const std::string& histogram_name,
                                           const std::string& msg) {
   ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
   std::string epoch_key = base::NumberToString(epoch);
-  base::Value::Dict* epoch_dict = update->EnsureDict(epoch_key);
+  base::DictValue* epoch_dict = update->EnsureDict(epoch_key);
   epoch_dict->Set(histogram_name, msg);
 
   LogKey key(epoch, histogram_name);
@@ -82,7 +82,7 @@ void ConstellationLogStore::RemoveMessageIfExists(const LogKey& key) {
   // Update the persistent value.
   ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
   std::string epoch_key = base::NumberToString(key.epoch);
-  base::Value::Dict* epoch_dict = update->EnsureDict(epoch_key);
+  base::DictValue* epoch_dict = update->EnsureDict(epoch_key);
   epoch_dict->Remove(key.histogram_name);
 
   if (has_staged_log() && staged_entry_key_->epoch == key.epoch &&
@@ -184,7 +184,7 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
 
   std::vector<std::string> epochs_to_remove;
 
-  const base::Value::Dict& log_dict = local_state_->GetDict(GetPrefName());
+  const base::DictValue& log_dict = local_state_->GetDict(GetPrefName());
   for (const auto [epoch_key, inner_epoch_dict] : log_dict) {
     uint64_t parsed_epoch;
     if (!base::StringToUint64(epoch_key, &parsed_epoch)) {

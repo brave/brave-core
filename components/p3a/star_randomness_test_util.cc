@@ -50,12 +50,12 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
                                       .As<network::DataElementBytes>()
                                       .AsStringPiece());
 
-  base::Value::Dict req_parsed_val = base::test::ParseJsonDict(request_string);
+  base::DictValue req_parsed_val = base::test::ParseJsonDict(request_string);
 
   EXPECT_EQ(*req_parsed_val.FindInt("epoch"), expected_epoch);
 
   rust::Vec<constellation::VecU8> req_points_rust;
-  const base::Value::List* points_list = req_parsed_val.FindList("points");
+  const base::ListValue* points_list = req_parsed_val.FindList("points");
 
   EXPECT_GE(points_list->size(), 5U);
   EXPECT_LE(points_list->size(), 9U);
@@ -76,7 +76,7 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
   EXPECT_GE(rand_result.points.size(), 5U);
   EXPECT_LE(rand_result.points.size(), 9U);
 
-  base::Value::List resp_points_list;
+  base::ListValue resp_points_list;
   for (const constellation::VecU8& resp_point_rust : rand_result.points) {
     std::vector<uint8_t> resp_point;
     std::copy(resp_point_rust.data.cbegin(), resp_point_rust.data.cend(),
@@ -84,7 +84,7 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
     resp_points_list.Append(base::Base64Encode(resp_point));
   }
 
-  base::Value::Dict resp_value;
+  base::DictValue resp_value;
   resp_value.Set("epoch", base::Value(expected_epoch));
   resp_value.Set("points", std::move(resp_points_list));
   std::string resp_json;

@@ -157,9 +157,9 @@ void StarRandomnessMeta::RequestServerInfo(MetricLogType log_type) {
 
   if (!update_state->has_used_cached_info) {
     // Using cached server info, if available.
-    const base::Value::Dict& meta_dict =
+    const base::DictValue& meta_dict =
         local_state_->GetDict(kRandomnessMetaDictPrefName);
-    const base::Value::Dict* meta_type_dict =
+    const base::DictValue* meta_type_dict =
         meta_dict.FindDict(MetricLogTypeToString(log_type));
     if (meta_type_dict != nullptr) {
       update_state->last_cached_epoch =
@@ -314,7 +314,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry(log_type);
     return;
   }
-  base::Value::Dict& root = parsed_value->GetDict();
+  base::DictValue& root = parsed_value->GetDict();
   std::optional<int> epoch = root.FindInt("currentEpoch");
   std::string* next_epoch_time_str = root.FindString("nextEpochTime");
   if (!epoch || !next_epoch_time_str) {
@@ -341,7 +341,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
       DecodeServerPublicKey(pk_value);
 
   ScopedDictPrefUpdate update(local_state_, kRandomnessMetaDictPrefName);
-  base::Value::Dict* meta_type_dict =
+  base::DictValue* meta_type_dict =
       update->EnsureDict(MetricLogTypeToString(log_type));
   if (pk_value != nullptr) {
     meta_type_dict->Set(kCurrentPKPrefKey, *pk_value);

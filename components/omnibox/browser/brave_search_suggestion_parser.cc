@@ -14,7 +14,7 @@
 
 namespace omnibox {
 
-bool ParseSuggestResults(const base::Value::List& root_list,
+bool ParseSuggestResults(const base::ListValue& root_list,
                          const AutocompleteInput& input,
                          bool is_keyword_result,
                          SearchSuggestionParser::Results* results) {

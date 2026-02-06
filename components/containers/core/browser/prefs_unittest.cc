@@ -59,31 +59,31 @@ TEST_F(ContainersPrefsTest, SetAndGetContainerList) {
 
 TEST_F(ContainersPrefsTest, GetContainerListInvalidData) {
   // Test with invalid list items
-  base::Value::List invalid_list;
+  base::ListValue invalid_list;
   invalid_list.Append(base::Value(42));  // Not a dictionary
   invalid_list.Append(
-      base::Value::Dict()
+      base::DictValue()
           // Missing name field
           .Set("id", "test-id")
           .Set("icon", std::to_underlying(mojom::Icon::kPersonal))
           .Set("background_color", static_cast<int>(SK_ColorWHITE)));
 
   invalid_list.Append(
-      base::Value::Dict()
+      base::DictValue()
           // Missing id field
           .Set("name", "Test Container")
           .Set("icon", std::to_underlying(mojom::Icon::kPersonal))
           .Set("background_color", static_cast<int>(SK_ColorWHITE)));
 
   invalid_list.Append(
-      base::Value::Dict()
+      base::DictValue()
           // Missing icon field
           .Set("id", "test-id")
           .Set("name", "Test Container")
           .Set("background_color", static_cast<int>(SK_ColorWHITE)));
 
   invalid_list.Append(
-      base::Value::Dict()
+      base::DictValue()
           // Missing background_color field
           .Set("id", "test-id")
           .Set("name", "Test Container")
@@ -99,7 +99,7 @@ TEST_F(ContainersPrefsTest, SetContainerListEmpty) {
   std::vector<mojom::ContainerPtr> empty_containers;
   SetContainersToPrefs(empty_containers, prefs_);
 
-  const base::Value::List& list = prefs_.GetList(prefs::kContainersList);
+  const base::ListValue& list = prefs_.GetList(prefs::kContainersList);
   EXPECT_TRUE(list.empty());
 }
 

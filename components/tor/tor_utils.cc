@@ -101,7 +101,7 @@ const std::vector<std::string>& GetBuiltinBridges(
   }
 }
 
-std::vector<std::string> LoadBridgesList(const base::Value::List* v) {
+std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
   std::vector<std::string> result;
   if (!v) {
     return result;
@@ -134,7 +134,7 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
   return ::GetBuiltinBridges(use_builtin);
 }
 
-void BridgesConfig::UpdateBuiltinBridges(const base::Value::Dict& dict) {
+void BridgesConfig::UpdateBuiltinBridges(const base::DictValue& dict) {
   auto load_builtin = [&](BuiltinType type) {
     auto list = LoadBridgesList(dict.FindList(GetBuiltinTypeName(type)));
     if (!list.empty()) {
@@ -148,7 +148,7 @@ void BridgesConfig::UpdateBuiltinBridges(const base::Value::Dict& dict) {
 
 // static
 std::optional<BridgesConfig> BridgesConfig::FromDict(
-    const base::Value::Dict& dict) {
+    const base::DictValue& dict) {
   BridgesConfig result;
   result.use_bridges =
       CastToEnum<Usage>(dict.FindInt(kUseBridgesKey).value_or(0));
@@ -173,13 +173,13 @@ std::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   return FromDict(v->GetDict());
 }
 
-base::Value::Dict BridgesConfig::ToDict(bool include_builtin) const {
-  base::Value::Dict result;
+base::DictValue BridgesConfig::ToDict(bool include_builtin) const {
+  base::DictValue result;
   result.Set(kUseBridgesKey, static_cast<int>(use_bridges));
   result.Set(kUseBuiltinBridgesKey, static_cast<int>(use_builtin));
 
   auto save_list = [](const std::vector<std::string>& bridges) {
-    base::Value::List list;
+    base::ListValue list;
     for (const auto& bridge : bridges) {
       list.Append(bridge);
     }
@@ -187,7 +187,7 @@ base::Value::Dict BridgesConfig::ToDict(bool include_builtin) const {
   };
 
   if (include_builtin) {
-    base::Value::Dict builtin;
+    base::DictValue builtin;
     for (const auto& v : builtin_bridges) {
       builtin.Set(GetBuiltinTypeName(v.first), save_list(v.second));
     }

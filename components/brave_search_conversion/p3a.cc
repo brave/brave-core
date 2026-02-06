@@ -128,7 +128,7 @@ void UpdateHistograms(PrefService* prefs) {
 
   const bool default_engine_triggered =
       prefs->GetBoolean(prefs::kP3ADefaultEngineConverted);
-  const base::Value::Dict& action_statuses =
+  const base::DictValue& action_statuses =
       prefs->GetDict(prefs::kP3AActionStatuses);
   for (const auto type : types) {
     const char* shown_key_name = GetPromoShownKeyName(type);

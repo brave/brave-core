@@ -11,7 +11,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BraveSearchSuggestionParser, ParseSuggestResults_EmptyRootList) {
-  base::Value::List root_list;
+  base::ListValue root_list;
   AutocompleteInput input;
   bool is_keyword_result = false;
   SearchSuggestionParser::Results results;
@@ -21,7 +21,7 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_EmptyRootList) {
 }
 
 TEST(BraveSearchSuggestionParser, ParseSuggestResults_EntityType) {
-  base::Value::Dict suggestion;
+  base::DictValue suggestion;
   suggestion.Set("is_entity", base::Value(true));
   suggestion.Set("q", base::Value("helldivers 2"));
   suggestion.Set("name", base::Value("Helldivers 2"));
@@ -37,10 +37,10 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_EntityType) {
                   "aWEvZW4vZS9lNy9I/ZWxsZGl2ZXJzMmNv/dmVyLnBuZw"));
   suggestion.Set("logo", base::Value(false));
 
-  base::Value::List suggestion_list;
+  base::ListValue suggestion_list;
   suggestion_list.Append(std::move(suggestion));
 
-  base::Value::List root_list;
+  base::ListValue root_list;
   root_list.Append(base::Value("hel"));
   root_list.Append(base::Value(std::move(suggestion_list)));
 
@@ -71,14 +71,14 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_EntityType) {
 }
 
 TEST(BraveSearchSuggestionParser, ParseSuggestResults_NonEntityType) {
-  base::Value::Dict suggestion;
+  base::DictValue suggestion;
   suggestion.Set("is_entity", base::Value(false));
   suggestion.Set("q", base::Value("1+2+3+4+...+n formula"));
 
-  base::Value::List suggestion_list;
+  base::ListValue suggestion_list;
   suggestion_list.Append(std::move(suggestion));
 
-  base::Value::List root_list;
+  base::ListValue root_list;
   root_list.Append(base::Value("1 + 2"));
   root_list.Append(base::Value(std::move(suggestion_list)));
 
@@ -102,7 +102,7 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_NonEntityType) {
 }
 
 TEST(BraveSearchSuggestionParser, ParseSuggestResults_FilterSVGImage) {
-  base::Value::Dict suggestion;
+  base::DictValue suggestion;
   suggestion.Set("is_entity", base::Value(true));
   suggestion.Set("q", base::Value("helldivers 2"));
   suggestion.Set("name", base::Value("Helldivers 2"));
@@ -118,10 +118,10 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_FilterSVGImage) {
                   "aWEvZW4vZS9lNy9I/ZWxsZGl2ZXJzMmNv/dmVyLnBuZw.svg"));
   suggestion.Set("logo", base::Value(false));
 
-  base::Value::List suggestion_list;
+  base::ListValue suggestion_list;
   suggestion_list.Append(std::move(suggestion));
 
-  base::Value::List root_list;
+  base::ListValue root_list;
   root_list.Append(base::Value("hel"));
   root_list.Append(base::Value(std::move(suggestion_list)));
 

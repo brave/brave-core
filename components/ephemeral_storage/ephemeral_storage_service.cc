@@ -47,7 +47,7 @@ base::Value GetFirstPartyStorageValueToCleanup(
   if (storage_partition_config.is_default()) {
     return base::Value(url.spec());
   }
-  return base::Value(base::Value::Dict()
+  return base::Value(base::DictValue()
                          .Set("u", url.spec())
                          .Set("pd", storage_partition_config.partition_domain())
                          .Set("pn", storage_partition_config.partition_name()));

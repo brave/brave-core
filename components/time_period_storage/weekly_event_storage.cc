@@ -89,9 +89,9 @@ void WeeklyEventStorage::Load() {
 }
 
 void WeeklyEventStorage::Save() {
-  base::Value::List list;
+  base::ListValue list;
   for (const auto& u : events_) {
-    base::Value::Dict value;
+    base::DictValue value;
     value.Set("day", base::TimeToValue(u.day));
     value.Set("value", static_cast<int>(u.value));
     list.Append(std::move(value));

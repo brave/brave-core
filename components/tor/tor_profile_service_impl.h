@@ -74,7 +74,7 @@ class TorProfileServiceImpl
 
   void OnBridgesConfigChanged();
 
-  void OnBuiltinBridgesResponse(const base::Value::Dict& bridges);
+  void OnBuiltinBridgesResponse(const base::DictValue& bridges);
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;

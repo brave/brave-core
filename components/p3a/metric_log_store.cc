@@ -106,7 +106,7 @@ void MetricLogStore::UpdateValue(const std::string& histogram_name,
 
   // Update the persistent value.
   ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
-  base::Value::Dict* log_dict = update->EnsureDict(histogram_name);
+  base::DictValue* log_dict = update->EnsureDict(histogram_name);
   log_dict->Set(kLogValueKey, base::NumberToString(value));
   log_dict->Set(kLogSentKey, entry.sent);
 }
@@ -146,7 +146,7 @@ void MetricLogStore::ResetUploadStamps() {
       it->second.ResetSentState();
 
       // Update persistent values.
-      base::Value::Dict* log_dict = update->EnsureDict(it->first);
+      base::DictValue* log_dict = update->EnsureDict(it->first);
       log_dict->Set(kLogSentKey, it->second.sent);
       log_dict->Set(kLogTimestampKey,
                     it->second.sent_timestamp.InSecondsFSinceUnixEpoch());
@@ -235,7 +235,7 @@ void MetricLogStore::DiscardStagedLog(std::string_view reason) {
 
   // Update the persistent value.
   ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
-  base::Value::Dict* log_dict = update->EnsureDict(log_iter->first);
+  base::DictValue* log_dict = update->EnsureDict(log_iter->first);
   log_dict->Set(kLogSentKey, log_iter->second.sent);
   log_dict->Set(kLogTimestampKey,
                 log_iter->second.sent_timestamp.InSecondsFSinceUnixEpoch());
@@ -261,10 +261,10 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
 
   const char* pref_name = GetPrefName();
 
-  const base::Value::Dict& log_dict = local_state_->GetDict(pref_name);
+  const base::DictValue& log_dict = local_state_->GetDict(pref_name);
   for (const auto [name, value] : log_dict) {
     LogEntry entry;
-    const base::Value::Dict& dict = value.GetDict();
+    const base::DictValue& dict = value.GetDict();
     if (const std::string* v = dict.FindString(kLogValueKey)) {
       if (!base::StringToUint64(*v, &entry.value)) {
         return;

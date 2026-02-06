@@ -68,7 +68,7 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 }
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
-    base::Value::Dict& load_time_data) {
+    base::DictValue& load_time_data) {
   const std::u16string infura = u"Infura";
   const std::u16string infura_tou = u"https://consensys.net/terms-of-use/";
   const std::u16string infura_privacy_policy =

@@ -387,9 +387,9 @@ TEST_F(PermissionExpirationsTest, RemoveExpiredDifferentTypes) {
 }
 
 TEST_F(PermissionExpirationsTest, ClearInvalidContentType) {
-  base::Value::Dict val;
-  val.Set("_invalid_content_type_", base::Value::Dict());
-  val.Set("another_invalid_content_type_", base::Value::Dict());
+  base::DictValue val;
+  val.Set("_invalid_content_type_", base::DictValue());
+  val.Set("another_invalid_content_type_", base::DictValue());
   prefs()->SetDict(prefs::kPermissionLifetimeExpirations, std::move(val));
 
   // Check data stored in prefs.
