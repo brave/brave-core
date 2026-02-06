@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.top;
 
+import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
@@ -411,7 +412,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public boolean isUrlBarFocused() {
         if (getLocationBar() instanceof BraveLocationBarCoordinator) {
-            return ((BraveLocationBarCoordinator) getLocationBar()).isUrlBarFocused();
+            BraveLocationBarCoordinator coordinator =
+                    (BraveLocationBarCoordinator) getLocationBar();
+            assertNonNull(coordinator.getLocationBarMediator());
+            return coordinator.getLocationBarMediator().isUrlBarFocused();
         }
         return false;
     }
