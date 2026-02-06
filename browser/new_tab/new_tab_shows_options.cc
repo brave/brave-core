@@ -47,10 +47,10 @@ GURL GetNewTabPageURL(Profile* profile) {
   }
 }
 
-base::Value::List GetNewTabShowsOptionsList(Profile* profile) {
-  base::Value::List list;
+base::ListValue GetNewTabShowsOptionsList(Profile* profile) {
+  base::ListValue list;
 
-  base::Value::Dict dashboard_option;
+  base::DictValue dashboard_option;
   dashboard_option.Set("value",
                        static_cast<int>(NewTabPageShowsOptions::kDashboard));
   dashboard_option.Set("name",
@@ -58,7 +58,7 @@ base::Value::List GetNewTabShowsOptionsList(Profile* profile) {
                            IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD));
   list.Append(std::move(dashboard_option));
 
-  base::Value::Dict homepage_option;
+  base::DictValue homepage_option;
   homepage_option.Set("value",
                       static_cast<int>(NewTabPageShowsOptions::kHomepage));
   homepage_option.Set("name",
@@ -66,7 +66,7 @@ base::Value::List GetNewTabShowsOptionsList(Profile* profile) {
                           IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE));
   list.Append(std::move(homepage_option));
 
-  base::Value::Dict blankpage_option;
+  base::DictValue blankpage_option;
   blankpage_option.Set("value",
                        static_cast<int>(NewTabPageShowsOptions::kBlankpage));
   blankpage_option.Set("name",

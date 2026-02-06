@@ -180,7 +180,7 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     return;
   }
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("publisherKey", info->id);
   dict.Set("name", info->name);
   dict.Set("percentage", static_cast<int>(info->percent));
@@ -236,7 +236,7 @@ void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
     return;
   }
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("publisherKey", info->id);
   dict.Set("name", info->name);
   dict.Set("percentage", static_cast<int>(info->percent));
@@ -268,41 +268,41 @@ BraveRewardsGetRewardsParametersFunction::Run() {
 
 void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     ::brave_rewards::mojom::RewardsParametersPtr parameters) {
-  base::Value::Dict data;
+  base::DictValue data;
 
   if (!parameters) {
     data.Set("rate", 0.0);
-    data.Set("monthlyTipChoices", base::Value::List());
-    data.Set("payoutStatus", base::Value::Dict());
-    data.Set("walletProviderRegions", base::Value::Dict());
+    data.Set("monthlyTipChoices", base::ListValue());
+    data.Set("payoutStatus", base::DictValue());
+    data.Set("walletProviderRegions", base::DictValue());
     data.Set("vbatExpired", false);
     return Respond(WithArguments(std::move(data)));
   }
 
   data.Set("rate", parameters->rate);
-  base::Value::List monthly_choices;
+  base::ListValue monthly_choices;
   for (auto const& item : parameters->monthly_tip_choices) {
     monthly_choices.Append(item);
   }
   data.Set("monthlyTipChoices", std::move(monthly_choices));
 
-  base::Value::Dict payout_status;
+  base::DictValue payout_status;
   for (const auto& [key, value] : parameters->payout_status) {
     payout_status.Set(key, value);
   }
   data.Set("payoutStatus", std::move(payout_status));
 
-  base::Value::Dict provider_regions;
+  base::DictValue provider_regions;
   for (const auto& [provider, regions] : parameters->wallet_provider_regions) {
-    base::Value::List allow;
+    base::ListValue allow;
     for (const auto& country : regions->allow) {
       allow.Append(country);
     }
-    base::Value::List block;
+    base::ListValue block;
     for (const auto& country : regions->block) {
       block.Append(country);
     }
-    base::Value::Dict regions_dict;
+    base::DictValue regions_dict;
     regions_dict.Set("allow", std::move(allow));
     regions_dict.Set("block", std::move(block));
     provider_regions.Set(provider, std::move(regions_dict));
@@ -368,7 +368,7 @@ BraveRewardsGetAvailableCountriesFunction::Run() {
 
 void BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback(
     std::vector<std::string> countries) {
-  base::Value::List country_list;
+  base::ListValue country_list;
   for (auto& country : countries) {
     country_list.Append(std::move(country));
   }
@@ -472,7 +472,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
 void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
     const ::brave_rewards::mojom::Result result,
     ::brave_rewards::mojom::BalanceReportInfoPtr report) {
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("ads", report ? report->earning_from_ads : 0.0);
   data.Set("contribute", 0.0);
   data.Set("tips", report ? report->one_time_donation : 0.0);
@@ -548,12 +548,12 @@ ExtensionFunction::ResponseAction BraveRewardsGetRecurringTipsFunction::Run() {
 
 void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
     std::vector<::brave_rewards::mojom::PublisherInfoPtr> list) {
-  base::Value::Dict result;
-  base::Value::List recurring_tips;
+  base::DictValue result;
+  base::ListValue recurring_tips;
 
   if (!list.empty()) {
     for (const auto& item : list) {
-      base::Value::Dict tip;
+      base::DictValue tip;
       tip.Set("publisherKey", item->id);
       tip.Set("amount", item->weight);
       recurring_tips.Append(std::move(tip));
@@ -599,7 +599,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
 
-  base::Value::List list;
+  base::ListValue list;
 
   if (!rewards_service) {
     return RespondNow(WithArguments(std::move(list)));
@@ -608,12 +608,12 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   auto notifications = rewards_service->GetAllNotifications();
 
   for (auto const& notification : notifications) {
-    base::Value::Dict item;
+    base::DictValue item;
     item.Set("id", notification.second.id_);
     item.Set("type", notification.second.type_);
     item.Set("timestamp", static_cast<double>(notification.second.timestamp_));
 
-    base::Value::List args;
+    base::ListValue args;
     for (auto const& arg : notification.second.args_) {
       args.Append(arg);
     }
@@ -651,7 +651,7 @@ BraveRewardsGetExternalWalletProvidersFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetExternalWalletProvidersFunction::Run() {
-  base::Value::List providers;
+  base::ListValue providers;
 
   auto* profile = Profile::FromBrowserContext(browser_context());
   if (auto* rewards_service = RewardsServiceFactory::GetForProfile(profile)) {
@@ -684,7 +684,7 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
     return Respond(NoArguments());
   }
 
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("type", wallet->type);
   data.Set("address", wallet->address);
   data.Set("status", static_cast<int>(wallet->status));
@@ -736,7 +736,7 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
   if (!statement) {
     Respond(WithArguments(false));
   } else {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("nextPaymentDate",
              statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000);
     auto& ad_type_map = statement->ads_summary_this_month;
@@ -788,7 +788,7 @@ BraveRewardsDismissSelfCustodyInviteFunction::Run() {
     event_router->BroadcastEvent(std::make_unique<Event>(
         events::BRAVE_START,
         brave_rewards::OnSelfCustodyInviteDismissed::kEventName,
-        base::Value::List()));
+        base::ListValue()));
   }
   return RespondNow(NoArguments());
 }
@@ -843,7 +843,7 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
   brave_adaptive_captcha_service->GetScheduledCaptchaInfo(
       &url, &max_attempts_exceeded);
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("url", url);
   dict.Set("maxAttemptsExceeded", max_attempts_exceeded);
 

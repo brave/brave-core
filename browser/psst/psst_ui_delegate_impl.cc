@@ -27,7 +27,7 @@ void PsstUiDelegateImpl::Show(
   // Implementation for showing the consent dialog to the user.
 
   // When dialog accepted by the user
-  OnUserAcceptedPsstSettings(origin, base::Value::List());
+  OnUserAcceptedPsstSettings(origin, base::ListValue());
 }
 
 void PsstUiDelegateImpl::UpdateTasks(
@@ -46,7 +46,7 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
 
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     const url::Origin& origin,
-    base::Value::List urls_to_skip) {
+    base::ListValue urls_to_skip) {
   // Save the PSST settings when user accepts the dialog
   SetPsstWebsiteSettings(host_content_settings_map_, origin,
                          ConsentStatus::kAllow, dialog_data_->script_version,

@@ -128,7 +128,7 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPBackgroundImagesBridge::CreateWallpaper(const base::Value::Dict& data) {
+NTPBackgroundImagesBridge::CreateWallpaper(const base::DictValue& data) {
   JNIEnv* env = AttachCurrentThread();
 
   auto* image_path =
@@ -143,8 +143,7 @@ NTPBackgroundImagesBridge::CreateWallpaper(const base::Value::Dict& data) {
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPBackgroundImagesBridge::CreateBrandedWallpaper(
-    const base::Value::Dict& data) {
+NTPBackgroundImagesBridge::CreateBrandedWallpaper(const base::DictValue& data) {
   JNIEnv* env = AttachCurrentThread();
 
   auto* image_path =
@@ -212,7 +211,7 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(JNIEnv* env,
     return base::android::ScopedJavaLocalRef<jobject>();
   }
 
-  std::optional<base::Value::Dict> data =
+  std::optional<base::DictValue> data =
       view_counter_service_->GetCurrentWallpaperForDisplay(
           allow_sponsored_image);
   if (!data) {

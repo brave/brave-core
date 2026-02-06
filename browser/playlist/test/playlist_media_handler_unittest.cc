@@ -23,14 +23,14 @@ namespace playlist {
 namespace {
 auto GetPlaylistItems() {
   return ExtractPlaylistItems(
-      GURL(), base::Value::List().Append(
-                  base::Value::Dict()
-                      .Set("name", "")
-                      .Set("pageTitle", "")
-                      .Set("pageSrc", "")
-                      .Set("mimeType", "")
-                      .Set("src", "https://example.com/video.mp4")
-                      .Set("srcIsMediaSourceObjectURL", false)));
+      GURL(),
+      base::ListValue().Append(base::DictValue()
+                                   .Set("name", "")
+                                   .Set("pageTitle", "")
+                                   .Set("pageSrc", "")
+                                   .Set("mimeType", "")
+                                   .Set("src", "https://example.com/video.mp4")
+                                   .Set("srcIsMediaSourceObjectURL", false)));
 }
 }  // namespace
 

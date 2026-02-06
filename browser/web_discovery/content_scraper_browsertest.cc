@@ -206,14 +206,14 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RendererScrape) {
 
               EXPECT_THAT(
                   (*fields)[0],
-                  IsSupersetOfValue(base::Value::Dict()
+                  IsSupersetOfValue(base::DictValue()
                                         .Set("href", "https://example.com/foo1")
                                         .Set("text", "Foo1")
                                         .Set("q", "A query")));
 
               EXPECT_THAT(
                   (*fields)[1],
-                  IsSupersetOfValue(base::Value::Dict()
+                  IsSupersetOfValue(base::DictValue()
                                         .Set("href", "https://example.com/foo2")
                                         .Set("text", "Foo2")
                                         .Set("q", base::Value())));
@@ -223,9 +223,8 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RendererScrape) {
               fields = &field_map_it->second;
 
               ASSERT_EQ(fields->size(), 1u);
-              EXPECT_THAT((*fields)[0],
-                          IsSupersetOfValue(
-                              base::Value::Dict().Set("q2", "testquery")));
+              EXPECT_THAT((*fields)[0], IsSupersetOfValue(base::DictValue().Set(
+                                            "q2", "testquery")));
             }();
             run_loop_->Quit();
           }));
@@ -255,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RustParseAndScrape) {
               ASSERT_EQ(fields->size(), 1u);
 
               EXPECT_THAT((*fields)[0],
-                          IsSupersetOfValue(base::Value::Dict()
+                          IsSupersetOfValue(base::DictValue()
                                                 .Set("text", "Foo3")
                                                 .Set("input", "Foo4")));
 
@@ -264,9 +263,8 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RustParseAndScrape) {
               fields = &field_map_it->second;
 
               ASSERT_EQ(fields->size(), 1u);
-              EXPECT_THAT(
-                  (*fields)[0],
-                  IsSupersetOfValue(base::Value::Dict().Set("ctry", "us")));
+              EXPECT_THAT((*fields)[0], IsSupersetOfValue(base::DictValue().Set(
+                                            "ctry", "us")));
             }();
             run_loop_->Quit();
           }));

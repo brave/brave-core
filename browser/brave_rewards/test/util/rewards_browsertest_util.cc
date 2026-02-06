@@ -95,7 +95,7 @@ void StartProcessWithConnectedUser(Profile* profile) {
 
   prefs->SetString(prefs::kWalletBrave, kRewardsWalletJSON);
 
-  base::Value::Dict wallet;
+  base::DictValue wallet;
   wallet.Set("token", "token");
   wallet.Set("address", GetUpholdExternalAddress());
   wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));

@@ -131,7 +131,7 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
 
   void AddExtension(const std::string& id) {
     auto extension = extensions::ExtensionBuilder()
-                         .SetManifest(base::Value::Dict()
+                         .SetManifest(base::DictValue()
                                           .Set("name", "ext")
                                           .Set("version", "0.1")
                                           .Set("manifest_version", 2))

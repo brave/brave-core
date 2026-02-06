@@ -62,7 +62,7 @@ void BraveSyncDevicesAndroid::OnDeviceInfoChange() {
       weak_java_brave_sync_worker_.get(env));
 }
 
-base::Value::List BraveSyncDevicesAndroid::GetSyncDeviceList() {
+base::ListValue BraveSyncDevicesAndroid::GetSyncDeviceList() {
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   syncer::DeviceInfoTracker* tracker =
@@ -71,7 +71,7 @@ base::Value::List BraveSyncDevicesAndroid::GetSyncDeviceList() {
   const syncer::DeviceInfo* local_device_info = device_info_service
      ->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
-  base::Value::List device_list;
+  base::ListValue device_list;
 
   for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
     auto device_value = device->ToValue();

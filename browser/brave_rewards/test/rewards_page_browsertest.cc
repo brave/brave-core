@@ -165,7 +165,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   }
 
   void GivenUserIsConnected() {
-    base::Value::Dict wallet;
+    base::DictValue wallet;
     wallet.Set("token", "token");
     wallet.Set("address", "abe5f454-fedd-4ea9-9203-470ae7315bb3");
     wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));

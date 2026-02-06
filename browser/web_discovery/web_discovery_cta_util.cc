@@ -122,7 +122,7 @@ bool ShouldShowWebDiscoveryInfoBar(TemplateURLService* service,
 void SetWebDiscoveryCTAStateToPrefs(PrefService* prefs,
                                     const WebDiscoveryCTAState& state) {
   ScopedDictPrefUpdate update(prefs, kWebDiscoveryCTAState);
-  base::Value::Dict& dict = update.Get();
+  base::DictValue& dict = update.Get();
   dict.Set(kWebDiscoveryCTAStateIdKey, state.id);
   dict.Set(kWebDiscoveryCTAStateCountKey, state.count);
   dict.Set(kWebDiscoveryCTAStateDismissedKey, state.dismissed);

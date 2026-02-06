@@ -16,20 +16,20 @@
 
 namespace {
 
-base::Value::List VectorToList(const std::vector<std::string>& values) {
-  base::Value::List list;
+base::ListValue VectorToList(const std::vector<std::string>& values) {
+  base::ListValue list;
   for (auto& value : values) {
     list.Append(value);
   }
   return list;
 }
 
-base::Value::Dict CreatePsstSettingsDict(
+base::DictValue CreatePsstSettingsDict(
     psst::ConsentStatus consent_status,
     int script_version,
     const std::string& user_id,
     const std::vector<std::string>& urls_to_skip) {
-  base::Value::Dict object;
+  base::DictValue object;
   object.Set("user_id", user_id);
   object.Set("consent_status", ToString(consent_status));
   object.Set("script_version", script_version);
@@ -78,7 +78,7 @@ TEST_F(BravePsstUtilsUnitTest, DontAllowToSaveMetadataForWrongSchema) {
   SetPsstWebsiteSettings(map(), http_scheme_origin,
                          first_metadata->consent_status,
                          first_metadata->script_version,
-                         first_metadata->user_id, base::Value::List());
+                         first_metadata->user_id, base::ListValue());
   ASSERT_FALSE(GetPsstWebsiteSettings(map(), http_scheme_origin,
                                       first_metadata->user_id));
   const url::Origin file_scheme_origin =
@@ -88,7 +88,7 @@ TEST_F(BravePsstUtilsUnitTest, DontAllowToSaveMetadataForWrongSchema) {
   SetPsstWebsiteSettings(map(), file_scheme_origin,
                          first_metadata->consent_status,
                          first_metadata->script_version,
-                         first_metadata->user_id, base::Value::List());
+                         first_metadata->user_id, base::ListValue());
   ASSERT_FALSE(GetPsstWebsiteSettings(map(), file_scheme_origin,
                                       first_metadata->user_id));
   const url::Origin brave_scheme_origin =
@@ -98,7 +98,7 @@ TEST_F(BravePsstUtilsUnitTest, DontAllowToSaveMetadataForWrongSchema) {
   SetPsstWebsiteSettings(map(), brave_scheme_origin,
                          first_metadata->consent_status,
                          first_metadata->script_version,
-                         first_metadata->user_id, base::Value::List());
+                         first_metadata->user_id, base::ListValue());
   ASSERT_FALSE(GetPsstWebsiteSettings(map(), brave_scheme_origin,
                                       first_metadata->user_id));
 
@@ -109,7 +109,7 @@ TEST_F(BravePsstUtilsUnitTest, DontAllowToSaveMetadataForWrongSchema) {
   SetPsstWebsiteSettings(map(), chrome_scheme_origin,
                          first_metadata->consent_status,
                          first_metadata->script_version,
-                         first_metadata->user_id, base::Value::List());
+                         first_metadata->user_id, base::ListValue());
   ASSERT_FALSE(GetPsstWebsiteSettings(map(), chrome_scheme_origin,
                                       first_metadata->user_id));
 }
@@ -131,12 +131,12 @@ TEST_F(BravePsstUtilsUnitTest, CreateOrUpdateMetadata) {
 
   SetPsstWebsiteSettings(map(), origin, first_metadata->consent_status,
                          first_metadata->script_version,
-                         first_metadata->user_id, base::Value::List());
+                         first_metadata->user_id, base::ListValue());
 
   ASSERT_EQ(GetContentSettingsCountByOrigin(map(), origin), 1u);
   SetPsstWebsiteSettings(map(), origin, second_metadata->consent_status,
                          second_metadata->script_version,
-                         second_metadata->user_id, base::Value::List());
+                         second_metadata->user_id, base::ListValue());
   ASSERT_EQ(GetContentSettingsCountByOrigin(map(), origin), 2u);
 
   auto first_metadata_value =
@@ -167,7 +167,7 @@ TEST_F(BravePsstUtilsUnitTest, CreateOrUpdateMetadata) {
           first_metadata->user_id, std::vector<std::string>()));
   SetPsstWebsiteSettings(map(), origin, modified_metadata->consent_status,
                          modified_metadata->script_version,
-                         modified_metadata->user_id, base::Value::List());
+                         modified_metadata->user_id, base::ListValue());
 
   auto modified_metadata_value =
       GetPsstWebsiteSettings(map(), origin, modified_metadata->user_id);
