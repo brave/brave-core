@@ -69,6 +69,9 @@ class BraveHistoryURLProviderTest : public testing::Test,
   void TearDown() override {
     autocomplete_ = nullptr;
     client_.reset();
+    // Process InMemoryURLIndex pending tasks to avoid false-positive
+    // memory leaks on shutdown (LSan).
+    task_environment_.RunUntilIdle();
   }
 
   // Does the real setup.
