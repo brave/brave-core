@@ -15,8 +15,6 @@
 # These tests pass locally but fail on CI (flaky).
 -AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
--EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
--EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
 -HeadlessModeProtocolBrowserTest.InputClipboardOps
 -InfoBarUiTest.InvokeUi_bad_flags
@@ -26,7 +24,6 @@
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 -PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
--ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
