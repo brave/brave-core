@@ -25,9 +25,7 @@
 -AutomationApiTest.*
 -AutomationApiTestWithLanguageDetection.DetectedLanguage
 -ManifestUpdateManagerBrowserTest.UninstallDialogCancelStillShowsAppUpdateDialog
--ExtensionUninstallDialogViewBrowserTest.WebAppWindowAshCrash
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
--TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
 -WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
 -WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
@@ -38,14 +36,6 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
-
-# This test fails because we modify the Profile Picker UI to skip the initial
-# screen and the tests ends up creating 2 profiles instead of the intended one.
--ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
-
-# This test fails because we force StartupTabProviderImpl::CanShowWelcome to
-# always return true.
--StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
 # These tests fail on CI but passes locally
 -All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
@@ -64,7 +54,6 @@
 # These tests fail because we override colors.
 -NativeChromeColorMixerWinBrowserTest.AccentColorAvailableWithFrameColorDisabled
 -NativeChromeColorMixerWinBrowserTest.HeaderColorsFollowAccentColor
--NativeChromeColorMixerWinBrowserTest.NativeThemeForWebWithAccentColor
 
 # These tests fail because in Release we set GOOGLE_CHROME_BRANDING in
 # extensions/browser/install_verifier.cc (on Win and Mac), which causes
@@ -82,7 +71,6 @@
 -CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
 
 # Tests below this point have not been diagnosed or had issues created yet.
--All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*
 -All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
 -All/WebAppOfflinePageTest.WebAppOfflineWithEmptyServiceWorker/*
@@ -107,21 +95,17 @@
 -EdgeImporterBrowserTest.EdgeImporter
 -Enabled/NetworkServiceSandboxEnabledTest.IsRespected/0
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
--ExtensionInstalledBubbleViewsBrowserTest.*
 -FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
 -IEImporterBrowserTest.*
 -ImageWriterUtilityClientTest.*
 -InfoBarUiTest.*
 -InstanceIDApiTest.*
--IsolatedAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDuetoPushNotification
 -KnownInterceptionDisclosureUITest.*
 -LocalePolicyTest.*
--MediaSessionPictureInPictureWindowControllerBrowserTest.*
 -NetErrorTabHelperWithFencedFrameTest.*
 -NotificationHelperLaunchesChrome.ChromeLaunchTest
 -NotSet/RendererAppContainerEnabledTest.IsRespected/0
 -OnlyAllowProfileWithNoPrimaryAccount/ExistingWinBrowserSigninUtilTest.*
--OutOfMemoryReporterPrerenderBrowserTest.*
 -PaymentRequestContactInfoEditorTest.*
 -PaymentRequestPaymentResponseAllContactDetailsTest.*
 -PaymentRequestShippingOptionViewControllerTest.*
@@ -129,34 +113,24 @@
 -PdfToEmfConverterBrowserTest.*
 -PictureInPictureLazyBackgroundPageApiTest.*
 -PictureInPicturePixelComparisonBrowserTest.*
--PictureInPictureWindowControllerBrowserTest.*
 -PictureInPictureWindowControllerFencedFrameBrowserTest.*
 -PictureInPictureWindowControllerPrerenderBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -ProfileShortcutManagerBrowserTest.*
 -PushMessagingBrowserTestWithAbusiveOriginPermissionRevocation.OriginIsNotOnSafeBrowsingBlockingList
 -PushMessagingBrowserTestWithAbusiveOriginPermissionRevocation.PushEventPermissionRevoked
--PushMessagingBrowserTestWithNotificationTriggersEnabled.PushEventIgnoresScheduledNotificationsForEnforcement
 -PushMessagingDisallowSenderIdsBrowserTest.SubscriptionWithSenderIdFails
--PushSubscriptionChangeEventTest.FiredAfterPermissionRevoked
--PushSubscriptionChangeEventTest.OnInvalidation
--PushSubscriptionChangeEventTest.PushSubscriptionChangeEventSuccess
 -PushSubscriptionWithExpirationTimeTest.GetSubscriptionWithExpirationTime
 -PushSubscriptionWithExpirationTimeTest.SubscribeGetSubscriptionWithExpirationTime
 -PushSubscriptionWithoutExpirationTimeTest.SubscribeDocumentExpirationTimeNull
 -PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
 -SaveCardBubbleViewsFullFormBrowserTest.*
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ClickingIconShowsManageCards
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ClickingSaveClosesBubble
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ManageCardsDoneButtonClosesBubble
 -ScriptingAPITest.*
 -ServiceWorker/ExtensionI18nTest.*
 -ServiceWorker/ExtensionManagementApiTest.*
 -ServiceWorkerPushMessagingTest.OnPush
--SigninUtilWinBrowserTest5/SigninUtilWinBrowserTest.*
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.FixReauth/0
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.Run/0
--SigninUtilWinBrowserTest6/SigninUtilWinBrowserTest.*
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.FixReauth/0
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.Run/0
 -SigninUtilWinNoStartingWindowBrowserTest.FRESigninFlow
@@ -166,9 +140,6 @@
 -StartupMetricsTest.*
 -StatusBubbleViewsTest.*
 -TabSearchBubbleHostBrowserTest.*
--WebAppBrowserTest_FileHandler.RegKeysFileExtension
--WebAppGlassBrowserFrameViewTest.*
--WebAppIntegrationBrowserTestWin.*
 -WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
 -WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
 -WebAppTagWebAppTest.WebAppTaskCreatedForTab

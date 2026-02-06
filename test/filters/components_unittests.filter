@@ -42,9 +42,6 @@
 -AutocompleteControllerTest.ShouldRunProvider_StarterPack
 -FeaturedSearchProviderTest.*
 
-# These tests pass locally but fail on CI (flaky).
--SupervisedUserServiceTest.CantEnableFilteringUsingUserControls
-
 # These tests fail because we stub out
 # optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
 # optimization_guide::features::IsModelDownloadingEnabled
@@ -52,17 +49,10 @@
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*
 -OnDeviceAssetManagerTest.*
--OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
 -PDPMetricsTest.TestPDPIsRecorded
 -PredictionManagerTest.*
-
-# These tests fail because we disable commerce::kShoppingList
--All/ShoppingServiceTest.TestShoppingList*/*
-
-# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
--DocumentProviderTest.IsDocumentProviderAllowed
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
@@ -104,7 +94,6 @@
 # consent level
 -AccountUtilsTest.*
 -ContextualTasksServiceImplTest.CreateTaskFromUrl_MatchesPrimaryAccount
--WebSigninTrackerTest.FreshCookiesWithSigninAccountShouldTriggerSuccessResult
 
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
@@ -127,24 +116,14 @@
 # GetUkmSourceId override.
 -Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
 
-# These tests fail because we override WalletHttpClientImpl.
--WalletHttpClientImplTest.*
-
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
--GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
--RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
 -SuspiciousSiteTriggerTest.MonitorMode_SuspiciousHitDuringLoad
 -TriggerManagerTest.AdSamplerTrigger
--TriggerManagerTest.CollectionWhenSBERDisabledByPolicy_WithSBERDeprecation
--TriggerManagerTest.DataCollection_SBEROptInDisallowed_WithSBERDeprecation_ESB
 -TriggerManagerTest.NoCollectionWhenOutOfQuota
 -TriggerManagerTest.ReportSentWhenEsbIsEnabled
 -TriggerManagerTest.StartAndFinishCollectingThreatDetails
--TriggerManagerTest.UserOptedOutOfSBER_DataCollected_ReportSent_WithSBERDeprecation
--TriggerManagerTest.UserOptsInToESB_DataCollected_ReportSent
--TriggerManagerTest.UserOptsOutOfSBER_DataCollected_ReportSent_WithSBERDeprecation
 
 # These tests fail because the text contains "Google" instead of "Brave" (the
 # string is hard-coded into the test)
@@ -161,7 +140,7 @@
 -AggregatableTriggerConfigTest.Create
 -AggregatableTriggerConfigTest.ParseTriggerContextId
 -AggregatableTriggerConfigTest.Serialize
--All/AccountReconcilorDiceTestWithUnoDesktop.PendingStateThenClearPrimaryAccount/1
+-All/AccountReconcilorDiceTest.PendingStateThenClearPrimaryAccount/1
 -All/PasswordFormManagerTest.Autofill/*
 -All/PrivacySandboxAttestationsTest.*
 -All/WellKnownChangePasswordStateTest.PrefetchCallbackTriggersOnProcessingFinished/*
@@ -193,7 +172,6 @@
 -CustomLinksManagerImplTest.AddLinkWhenAtMaxLinks
 -DataTypeManagerImplTest.PrioritizedConfiguration
 -DefaultSearchManagerTest.DefaultSearchSetByUserPref
--DiceTableMultilogin/AccountReconcilorTestDiceMultilogin.TableRowTest/*
 -Dice_Mirror/AccountReconcilorMethodParamTest.StartReconcileWithSessionInfoExpiredDefault/*
 -DocumentProviderTest.MatchDescriptionString
 -DocumentProviderTest.ProductDescriptionStringsAndAccessibleLabels
@@ -201,9 +179,6 @@
 -DownloadItemTest.AnnotationWithEmptyURLInIncognito
 -EntryPointDisplayReasonTest.ShouldShowPromoIfHasNoValidTargetDevice
 -EntryPointDisplayReasonTest.ShouldShowPromoIfSignedOut
--FCMNetworkHandlerTest.*
--FCMNetworkHandlerTestWithTTL.ShouldNotProvideTTLWithFakeSenderID
--FCMNetworkHandlerTestWithTTL.ShouldProvideTTLWithPolicySenderID
 -FeedbackUploaderDispatchTest.VariationHeaders
 -FeedbackUploaderDispatchTest.VariationHeadersForProductID
 -GetUserPopulationTest.PopulatesPopulation
@@ -213,14 +188,12 @@
 -IdentityManagerBuilderTest.BuildIdentityManagerInitParameters
 -IdentityManagerTest.*
 -IdentityTestEnvironmentTest.TriggerListAccount
--LeakDetectionDelegateTest.StartCheckWithEnhancedProtection
 -LocationBarModelUtilTest.GetSecurityVectorIconWithSecureLevel
 -MirrorTableMultilogin/AccountReconcilorTestMirrorMultilogin.TableRowTest/*
 -OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
 -OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
 -OnDeviceModelAdaptationLoaderTest.*
 -OnDeviceModelComponentTest.*
--OnDeviceModelComponentTest.PerformanceClassChangesAfterInstall
 -OnDeviceModelServiceControllerTest.*
 -OnDeviceModelServiceControllerTsIntervalTests/OnDeviceModelServiceControllerTsIntervalTest.DetectsRepeatsWithSafetyModel/*
 -OptimizationGuideFeaturesTest.OptimizationGuidePersonalizedFetchingDefaultBehaviour
@@ -250,7 +223,6 @@
 -PrimaryAccountManagerTest.*
 -PrimaryAccountMutatorTest.RevokeSyncConsent
 -PrivacySandboxSettingsSharedStorageDebugTest.NoEnrollments
--PrivacySandboxSurveyServiceSentimentSurveyPsdTest/PrivacySandboxSurveyServiceSentimentSurveyPsdTest.SetsPsd/4
 -RankerModelLoaderImplTest.*
 -RealTimePolicyEngineTest.TestCanPerformFullURLLookupWithToken_ClientControlledWithEnhancedProtection
 -RealTimePolicyEngineTest.TestCanPerformFullURLLookup_EnhancedProtection
@@ -272,9 +244,7 @@
 -SafeBrowsingMetricsCollectorTest.*
 -SafeBrowsingPrefsTest.EnhancedProtection
 -SafeBrowsingPrefsTest.GetSafeBrowsingExtendedReportingLevelWhenSBERDeprecated
--SearchEngineChoiceEligibilityTest.ChoiceScreenConditions_SkipFor3p
 -SearchEngineChoiceServiceTest.RecordChoiceMade
--SearchEngineChoiceUtilsResourceIdsTest.GetIconResourceId
 -ShortcutsProviderTest.DaysAgoMatches
 -ShortcutsProviderTest.FragmentLengthMatches
 -ShortcutsProviderTest.HistoryClusterSuggestions
@@ -286,18 +256,9 @@
 -StructuredMetricsRecorderTest.*
 -StructuredMetricsServiceTest.*
 -SubresourceFilterFeaturesTest.*
--SyncPrefsTest.PasswordSyncAllowed_DefaultValue
--SyncPrefsTest.PasswordSyncAllowed_ExplicitValue
 -SyncServiceImplStartupTest.*
 -SyncServiceImplTest.*
 -SyncServiceImplBookmarksLimitExceededErrorTest.*
--SyncServiceImplStartupTest.WebSignoutAfterInitialization
--SyncServiceImplWithBatchUploadDesktopTest.ShouldForwardUponSelectTypeAndMigrateLocalDataItemsWhenActive
--SyncServiceImplWithBatchUploadDesktopTest.ShouldForwardUponSelectTypeAndMigrateLocalDataItemsWhenActiveWithDataTypeDisabled
--SyncServiceImplWithBatchUploadDesktopTest.ShouldNotForwardUponSelectTypeAndMigrateLocalDataItemsWhenActiveWithoutTransportOnlyMode
--SyncServiceImplWithBatchUploadDesktopTest.ShouldNotForwardUponSelectTypeAndMigrateLocalDataItemsWhenActiveWithEnterprisePolicy
--SyncServiceImplWithBatchUploadDesktopTest.ShouldNotForwardUponSelectTypeAndMigrateLocalDataItemsWhenActiveWithTypeDisabledByPolicy
--SyncServiceImplWithBatchUploadDesktopTest.ShouldNotForwardUponTriggerLocalDataMigrationForItemsIfSyncDisabled
 -SyncServiceUtilsTest.UploadToGoogleDisabledIfCustomPassphraseInUse
 -SyncSessionDurationsMetricsRecorderTest.*
 -SyncUIUtilTestAbout.ConstructAboutInformationWithTrustedSpecifiedVaultAutoUpgradeExperiment
@@ -311,7 +272,6 @@
 -TemplateURLPrepopulateDataTest.GetPrepopulatedEngineFromFullList
 -TemplateURLPrepopulateDataTest.NumberOfEntriesPerCountryConsistency
 -TemplateURLPrepopulateDataTest.ProvidersFromPrepopulated
--TemplateURLPrepopulateDataTest.SearchEnginesOrderChangesOnChromeUpdate
 -TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/CountryOverride
 -TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DbCountryMissing
 -TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DbMoreRecent
@@ -321,7 +281,6 @@
 -TemplateURLServiceUtilLoadTest.GetSearchProvidersUsingLoadedEngines_InEea
 -TemplateURLServiceUtilLoadTest.GetSearchProvidersUsingLoadedEngines_OutOfEea
 -TextEliderTest.FormatOriginForSecurityDisplay
--ThrottleManagerEnabledTestSuiteInstantiation/ThrottleManagerEnabledTest.*
 -TranslateLanguageListTest.GetSupportedLanguagesFetch
 -TranslateLanguageListTest.TranslateLanguageUrl
 -TranslateScriptTest.CheckScriptParameters
