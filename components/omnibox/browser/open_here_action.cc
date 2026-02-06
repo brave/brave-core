@@ -38,5 +38,5 @@ const gfx::VectorIcon& OpenHereAction::GetVectorIcon() const {
 #endif
 
 OmniboxActionId OpenHereAction::ActionId() const {
-  return OmniboxActionId::UNKNOWN;
+  return OmniboxActionId::OPEN_HERE;
 }
