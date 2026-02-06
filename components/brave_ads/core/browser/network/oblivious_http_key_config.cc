@@ -16,7 +16,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_view_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/browser/network/network_client_util.h"
+#include "brave/components/brave_ads/core/browser/network/http_client_util.h"
 #include "brave/components/brave_ads/core/browser/network/oblivious_http_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_service.h"

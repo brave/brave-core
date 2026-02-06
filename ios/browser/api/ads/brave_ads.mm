@@ -28,7 +28,7 @@
 #include "base/types/optional_ref.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
-#include "brave/components/brave_ads/core/browser/network/network_client.h"
+#include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -112,7 +112,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @interface BraveAds () <AdsClientBridge> {
   std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
-  std::unique_ptr<brave_ads::NetworkClient> networkClient;
+  std::unique_ptr<brave_ads::HttpClient> httpClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -162,7 +162,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
         self.profilePrefService, self.localStatePrefService,
         std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
 
-    networkClient = std::make_unique<brave_ads::NetworkClient>(
+    httpClient = std::make_unique<brave_ads::HttpClient>(
         *self.localStatePrefService, profile->GetSharedURLLoaderFactory(),
         base::BindRepeating(
             [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
@@ -183,7 +183,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   virtualPrefProvider.reset();
 
-  networkClient.reset();
+  httpClient.reset();
 
   [self deallocAdsClientNotifier];
 
@@ -1329,9 +1329,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback {
   CHECK(url_request);
-  CHECK(networkClient);
+  CHECK(httpClient);
 
-  networkClient->SendRequest(
+  httpClient->SendRequest(
       std::move(url_request),
       base::BindOnce(
           [](brave_ads::UrlRequestCallback callback,

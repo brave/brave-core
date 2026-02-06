@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_NETWORK_CLIENT_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_NETWORK_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_HTTP_CLIENT_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_HTTP_CLIENT_H_
 
 #include <memory>
 #include <optional>
@@ -14,7 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_ads/core/browser/network/network_client_callback.h"
+#include "brave/components/brave_ads/core/browser/network/http_client_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "url/gurl.h"
@@ -35,18 +35,17 @@ class ObliviousHttpKeyConfig;
 // Sends network requests, supporting both standard HTTP and Oblivious HTTP
 // (OHTTP). Standard HTTP requests are issued via SimpleURLLoader, while OHTTP
 // requests are routed through the network service’s OHTTP implementation.
-class NetworkClient {
+class HttpClient {
  public:
-  NetworkClient(
-      PrefService& local_state,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      network::NetworkContextGetter network_context_getter,
-      bool use_ohttp_staging);
+  HttpClient(PrefService& local_state,
+             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+             network::NetworkContextGetter network_context_getter,
+             bool use_ohttp_staging);
 
-  NetworkClient(const NetworkClient&) = delete;
-  NetworkClient& operator=(const NetworkClient&) = delete;
+  HttpClient(const HttpClient&) = delete;
+  HttpClient& operator=(const HttpClient&) = delete;
 
-  ~NetworkClient();
+  ~HttpClient();
 
   // Issues a network request described by `mojom::UrlRequestInfo`. When the
   // request completes, `callback` is invoked with a `mojom::UrlResponseInfo`.
@@ -85,9 +84,9 @@ class NetworkClient {
   const std::unique_ptr<ObliviousHttpKeyConfig> oblivious_http_key_config_;
   const GURL oblivious_http_relay_url_;
 
-  base::WeakPtrFactory<NetworkClient> weak_ptr_factory_{this};
+  base::WeakPtrFactory<HttpClient> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_NETWORK_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_HTTP_CLIENT_H_

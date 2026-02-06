@@ -118,7 +118,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
 
-  auto network_client = std::make_unique<NetworkClient>(
+  auto http_client = std::make_unique<HttpClient>(
       *local_state,
       default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
       base::BindRepeating(&GetNetworkContextForProfile, context),
@@ -127,7 +127,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
           brave_rewards::RewardsFlags::Environment::kProduction);
 
   return std::make_unique<AdsServiceImpl>(
-      std::move(delegate), prefs, local_state, std::move(network_client),
+      std::move(delegate), prefs, local_state, std::move(http_client),
       std::make_unique<VirtualPrefProviderDelegate>(*profile),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
       std::make_unique<DeviceIdImpl>(),

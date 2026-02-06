@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/browser/network/network_client.h"
+#include "brave/components/brave_ads/core/browser/network/http_client.h"
 
 #include <cstddef>
 #include <utility>
@@ -15,7 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/browser/network/network_client_util.h"
+#include "brave/components/brave_ads/core/browser/network/http_client_util.h"
 #include "brave/components/brave_ads/core/browser/network/oblivious_http_client_impl.h"
 #include "brave/components/brave_ads/core/browser/network/oblivious_http_feature.h"
 #include "brave/components/brave_ads/core/browser/network/oblivious_http_key_config.h"
@@ -114,7 +114,7 @@ void ReportError(const GURL& url,
 
 }  // namespace
 
-NetworkClient::NetworkClient(
+HttpClient::HttpClient(
     PrefService& local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     network::NetworkContextGetter network_context_getter,
@@ -135,10 +135,10 @@ NetworkClient::NetworkClient(
   }
 }
 
-NetworkClient::~NetworkClient() = default;
+HttpClient::~HttpClient() = default;
 
-void NetworkClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
-                                SendRequestCallback callback) {
+void HttpClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                             SendRequestCallback callback) {
   CHECK(mojom_url_request);
 
   const bool use_ohttp =
@@ -152,14 +152,14 @@ void NetworkClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                        std::move(callback));
 }
 
-void NetworkClient::CancelRequests() {
+void HttpClient::CancelRequests() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NetworkClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
-                                SendRequestCallback callback) {
+void HttpClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                             SendRequestCallback callback) {
   CHECK(mojom_url_request);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
@@ -184,12 +184,12 @@ void NetworkClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
 
   raw_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&NetworkClient::HttpRequestCallback,
+      base::BindOnce(&HttpClient::HttpRequestCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(url_loader),
                      std::move(callback)));
 }
 
-void NetworkClient::HttpRequestCallback(
+void HttpClient::HttpRequestCallback(
     std::unique_ptr<network::SimpleURLLoader> url_loader,
     SendRequestCallback callback,
     std::optional<std::string> response_body) {
@@ -213,7 +213,7 @@ void NetworkClient::HttpRequestCallback(
   std::move(callback).Run(std::move(mojom_url_response));
 }
 
-void NetworkClient::ObliviousHttpRequest(
+void HttpClient::ObliviousHttpRequest(
     mojom::UrlRequestInfoPtr mojom_url_request,
     const GURL& relay_url,
     SendRequestCallback callback) {
@@ -242,7 +242,7 @@ void NetworkClient::ObliviousHttpRequest(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<ObliviousHttpClientImpl>(
           mojom_url_request->url,
-          base::BindOnce(&NetworkClient::ObliviousHttpRequestCallback,
+          base::BindOnce(&HttpClient::ObliviousHttpRequestCallback,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback))),
       mojom_pending_remote.InitWithNewPipeAndPassReceiver());
 
@@ -251,7 +251,7 @@ void NetworkClient::ObliviousHttpRequest(
       std::move(mojom_pending_remote));
 }
 
-void NetworkClient::ObliviousHttpRequestCallback(
+void HttpClient::ObliviousHttpRequestCallback(
     SendRequestCallback callback,
     mojom::UrlResponseInfoPtr mojom_url_response) {
   if (mojom_url_response &&

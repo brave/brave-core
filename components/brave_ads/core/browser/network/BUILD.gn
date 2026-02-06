@@ -9,11 +9,11 @@ assert(enable_brave_ads)
 
 source_set("network") {
   sources = [
-    "network_client.cc",
-    "network_client.h",
-    "network_client_callback.h",
-    "network_client_util.cc",
-    "network_client_util.h",
+    "http_client.cc",
+    "http_client.h",
+    "http_client_callback.h",
+    "http_client_util.cc",
+    "http_client_util.h",
     "oblivious_http_client_impl.cc",
     "oblivious_http_client_impl.h",
     "oblivious_http_constants.h",
@@ -44,7 +44,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "network_client_util_unittest.cc",
+    "http_client_util_unittest.cc",
     "oblivious_http_feature_unittest.cc",
   ]
 

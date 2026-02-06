@@ -24,7 +24,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
-#include "brave/components/brave_ads/core/browser/network/network_client.h"
+#include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
@@ -73,12 +73,12 @@ class AdsServiceImpl final : public AdsService,
                              public brave_rewards::RewardsServiceObserver,
                              public content_settings::Observer {
  public:
-  // `network_client` can be `nullptr` in tests.
+  // `http_client` can be `nullptr` in tests.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService* prefs,
       PrefService* local_state,
-      std::unique_ptr<NetworkClient> network_client,
+      std::unique_ptr<HttpClient> http_client,
       std::unique_ptr<VirtualPrefProvider::Delegate>
           virtual_pref_provider_delegate,
       std::string_view channel_name,
@@ -435,7 +435,7 @@ class AdsServiceImpl final : public AdsService,
 
   const std::unique_ptr<VirtualPrefProvider> virtual_pref_provider_;
 
-  const std::unique_ptr<NetworkClient> network_client_;
+  const std::unique_ptr<HttpClient> http_client_;
 
   const std::string channel_name_;
 

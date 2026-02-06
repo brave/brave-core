@@ -119,7 +119,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<Delegate> delegate,
     PrefService* prefs,
     PrefService* local_state,
-    std::unique_ptr<NetworkClient> network_client,
+    std::unique_ptr<HttpClient> http_client,
     std::unique_ptr<VirtualPrefProvider::Delegate>
         virtual_pref_provider_delegate,
     std::string_view channel_name,
@@ -138,7 +138,7 @@ AdsServiceImpl::AdsServiceImpl(
           prefs_,
           local_state_,
           std::move(virtual_pref_provider_delegate))),
-      network_client_(std::move(network_client)),
+      http_client_(std::move(http_client)),
       channel_name_(channel_name),
       history_service_(history_service),
       host_content_settings_map_(host_content_settings_map),
@@ -1062,8 +1062,8 @@ void AdsServiceImpl::ShutdownAdsService() {
   bat_ads_client_associated_receiver_.reset();
   bat_ads_service_remote_.reset();
 
-  if (network_client_) {
-    network_client_->CancelRequests();
+  if (http_client_) {
+    http_client_->CancelRequests();
   }
 
   idle_state_timer_.Stop();
@@ -1529,8 +1529,8 @@ void AdsServiceImpl::GetSiteHistory(int max_count,
 
 void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
                                 UrlRequestCallback callback) {
-  if (network_client_) {
-    network_client_->SendRequest(std::move(url_request), std::move(callback));
+  if (http_client_) {
+    http_client_->SendRequest(std::move(url_request), std::move(callback));
   }
 }
 
