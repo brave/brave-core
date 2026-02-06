@@ -34,19 +34,6 @@ enum EthTransactionType : uint8_t {
   kEip1559 = 2   // https://eips.ethereum.org/EIPS/eip-1559#specification
 };
 
-// Special address that presents contract creation.
-class EthContractCreation {
- public:
-  EthContractCreation();
-  ~EthContractCreation();
-
-  std::string ToHex() const { return "0x"; }
-
-  std::vector<uint8_t> bytes() const { return std::vector<uint8_t>(); }
-
-  bool operator==(const EthContractCreation&) const;
-};
-
 class EthTransaction {
  public:
   EthTransaction();
@@ -64,7 +51,9 @@ class EthTransaction {
   std::optional<uint256_t> nonce() const { return nonce_; }
   uint256_t gas_price() const { return gas_price_; }
   uint256_t gas_limit() const { return gas_limit_; }
-  std::variant<EthAddress, EthContractCreation> to() const { return to_; }
+  std::variant<EthAddress, EthContractCreationAddress> to() const {
+    return to_;
+  }
   uint256_t value() const { return value_; }
   std::vector<uint8_t> data() const { return data_; }
   uint256_t v() const { return v_; }
@@ -72,7 +61,7 @@ class EthTransaction {
   std::vector<uint8_t> s() const { return s_; }
 
   void set_to(const EthAddress& to) { to_ = to; }
-  void set_to(const EthContractCreation& to) { to_ = to; }
+  void set_to(const EthContractCreationAddress& to) { to_ = to; }
   void set_value(uint256_t value) { value_ = value; }
   void set_nonce(std::optional<uint256_t> nonce) { nonce_ = nonce; }
   void set_data(const std::vector<uint8_t>& data) { data_ = data; }
@@ -82,7 +71,7 @@ class EthTransaction {
                   const std::vector<uint8_t>& r,
                   const std::vector<uint8_t>& s);
   bool IsToCreationAddress() const {
-    return std::get_if<EthContractCreation>(&to_);
+    return std::get_if<EthContractCreationAddress>(&to_);
   }
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
@@ -123,7 +112,7 @@ class EthTransaction {
   std::optional<uint256_t> nonce_;
   uint256_t gas_price_;
   uint256_t gas_limit_;
-  std::variant<EthAddress, EthContractCreation> to_;
+  std::variant<EthAddress, EthContractCreationAddress> to_;
   uint256_t value_;
   std::vector<uint8_t> data_;
 
@@ -135,7 +124,7 @@ class EthTransaction {
   EthTransaction(std::optional<uint256_t> nonce,
                  uint256_t gas_price,
                  uint256_t gas_limit,
-                 std::variant<EthAddress, EthContractCreation> to,
+                 std::variant<EthAddress, EthContractCreationAddress> to,
                  uint256_t value,
                  const std::vector<uint8_t>& data);
 

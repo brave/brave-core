@@ -30,6 +30,14 @@ bool HasMixedCaseLetters(std::string_view address_without_prefix) {
 
 }  // namespace
 
+EthContractCreationAddress::EthContractCreationAddress() = default;
+EthContractCreationAddress::~EthContractCreationAddress() = default;
+
+bool EthContractCreationAddress::operator==(
+    const EthContractCreationAddress&) const {
+  return true;
+}
+
 EthAddress::EthAddress() = default;
 
 EthAddress::EthAddress(base::span<const uint8_t, kEthAddressLength> bytes) {

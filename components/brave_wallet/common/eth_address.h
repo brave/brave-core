@@ -18,6 +18,19 @@ namespace brave_wallet {
 inline constexpr size_t kEthAddressLength = 20u;
 inline constexpr size_t kEthPublicKeyLength = 64u;
 
+// Special address that presents contract creation.
+class EthContractCreationAddress {
+ public:
+  EthContractCreationAddress();
+  ~EthContractCreationAddress();
+
+  std::string ToHex() const { return "0x"; }
+
+  std::vector<uint8_t> bytes() const { return std::vector<uint8_t>(); }
+
+  bool operator==(const EthContractCreationAddress&) const;
+};
+
 class EthAddress {
  public:
   EthAddress(const EthAddress& other);

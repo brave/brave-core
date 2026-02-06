@@ -80,16 +80,17 @@ class Eip1559Transaction : public Eip2930Transaction {
   base::DictValue ToValue() const override;
 
  protected:
-  Eip1559Transaction(std::optional<uint256_t> nonce,
-                     uint256_t gas_price,
-                     uint256_t gas_limit,
-                     const std::variant<EthAddress, EthContractCreation>& to,
-                     uint256_t value,
-                     const std::vector<uint8_t>& data,
-                     uint256_t chain_id,
-                     uint256_t max_priority_fee_per_gas,
-                     uint256_t max_fee_per_gas,
-                     GasEstimation gas_estimation);
+  Eip1559Transaction(
+      std::optional<uint256_t> nonce,
+      uint256_t gas_price,
+      uint256_t gas_limit,
+      const std::variant<EthAddress, EthContractCreationAddress>& to,
+      uint256_t value,
+      const std::vector<uint8_t>& data,
+      uint256_t chain_id,
+      uint256_t max_priority_fee_per_gas,
+      uint256_t max_fee_per_gas,
+      GasEstimation gas_estimation);
 
   uint256_t max_priority_fee_per_gas_;
   uint256_t max_fee_per_gas_;

@@ -27,23 +27,20 @@ constexpr uint256_t kTxDataZeroCostPerByte = 4;
 constexpr uint256_t kTxDataCostPerByte = 16;
 }  // namespace
 
-EthContractCreation::EthContractCreation() = default;
-EthContractCreation::~EthContractCreation() = default;
-
-bool EthContractCreation::operator==(const EthContractCreation&) const {
-  return true;
-}
-
 EthTransaction::EthTransaction()
-    : gas_price_(0), gas_limit_(0), to_(EthContractCreation()), value_(0) {}
+    : gas_price_(0),
+      gas_limit_(0),
+      to_(EthContractCreationAddress()),
+      value_(0) {}
 
 EthTransaction::EthTransaction(const EthTransaction&) = default;
-EthTransaction::EthTransaction(std::optional<uint256_t> nonce,
-                               uint256_t gas_price,
-                               uint256_t gas_limit,
-                               std::variant<EthAddress, EthContractCreation> to,
-                               uint256_t value,
-                               const std::vector<uint8_t>& data)
+EthTransaction::EthTransaction(
+    std::optional<uint256_t> nonce,
+    uint256_t gas_price,
+    uint256_t gas_limit,
+    std::variant<EthAddress, EthContractCreationAddress> to,
+    uint256_t value,
+    const std::vector<uint8_t>& data)
     : nonce_(nonce),
       gas_price_(gas_price),
       gas_limit_(gas_limit),
@@ -75,8 +72,9 @@ std::optional<EthTransaction> EthTransaction::FromTxData(
     return std::nullopt;
   }
 
-  if (tx_data->to.empty() || tx_data->to == EthContractCreation().ToHex()) {
-    tx.to_ = EthContractCreation();
+  if (tx_data->to.empty() ||
+      tx_data->to == EthContractCreationAddress().ToHex()) {
+    tx.to_ = EthContractCreationAddress();
   } else {
     auto addr = EthAddress::From0xHex(tx_data->to);
     if (!addr) {
@@ -129,8 +127,8 @@ std::optional<EthTransaction> EthTransaction::FromValue(
     return std::nullopt;
   }
 
-  if (to->empty() || *to == EthContractCreation().ToHex()) {
-    tx.set_to(EthContractCreation());
+  if (to->empty() || *to == EthContractCreationAddress().ToHex()) {
+    tx.set_to(EthContractCreationAddress());
   } else {
     auto addr = EthAddress::From0xHex(*to);
     if (!addr) {
@@ -322,7 +320,7 @@ base::Value EthTransaction::Serialize() const {
 }
 
 std::vector<uint8_t> EthTransaction::GetToBytes() const {
-  auto* contract_creation = std::get_if<EthContractCreation>(&to_);
+  auto* contract_creation = std::get_if<EthContractCreationAddress>(&to_);
   auto* eth_addr = std::get_if<EthAddress>(&to_);
   CHECK(contract_creation || eth_addr);
   if (contract_creation) {
@@ -333,7 +331,7 @@ std::vector<uint8_t> EthTransaction::GetToBytes() const {
 }
 
 std::string EthTransaction::GetToHex() const {
-  auto* contract_creation = std::get_if<EthContractCreation>(&to_);
+  auto* contract_creation = std::get_if<EthContractCreationAddress>(&to_);
   auto* eth_addr = std::get_if<EthAddress>(&to_);
   CHECK(contract_creation || eth_addr);
   if (contract_creation) {
@@ -344,7 +342,7 @@ std::string EthTransaction::GetToHex() const {
 }
 
 std::string EthTransaction::GetToChecksumAddress() const {
-  auto* contract_creation = std::get_if<EthContractCreation>(&to_);
+  auto* contract_creation = std::get_if<EthContractCreationAddress>(&to_);
   auto* eth_addr = std::get_if<EthAddress>(&to_);
   CHECK(contract_creation || eth_addr);
   if (contract_creation) {
