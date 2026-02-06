@@ -31,6 +31,7 @@
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
+#include "brave/components/misc_metrics/quick_search_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/p3a/metric_log_store.h"
@@ -239,6 +240,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
 
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
+#if BUILDFLAG(IS_ANDROID)
+  misc_metrics::QuickSearchMetrics::RegisterPrefs(registry);
+#endif
   brave_search::BackupResultsMetrics::RegisterPrefs(registry);
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);

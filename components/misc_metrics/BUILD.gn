@@ -37,6 +37,13 @@ static_library("misc_metrics") {
     "uptime_monitor.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "quick_search_metrics.cc",
+      "quick_search_metrics.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/components/brave_new_tab_ui:mojom",
@@ -80,6 +87,10 @@ source_set("unit_tests") {
     "tab_metrics_unittest.cc",
   ]
 
+  if (is_android) {
+    sources += [ "quick_search_metrics_unittest.cc" ]
+  }
+
   deps = [
     "//base",
     "//base/test:test_support",
@@ -87,6 +98,7 @@ source_set("unit_tests") {
     "//components/language/core/browser",
     "//components/prefs:test_support",
     "//components/search_engines",
+    "//components/search_engines:test_support",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//services/media_session/public/cpp/test:test_support",
