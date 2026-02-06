@@ -9,8 +9,15 @@
 
 #include "base/check.h"
 #include "base/strings/strcat.h"
-#include "brave/brave_domains/constants.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
+
+// This target compiles even when rewards is disabled, but kGate3URL is
+// conditionally defined. Guard needed until the engine target is gated
+// behind enable_brave_rewards at the GN level.
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/brave_domains/constants.h"
+#endif
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 
@@ -179,11 +186,15 @@ std::string EnvironmentConfig::BraveServicesKeyHeader() const {
 }
 
 GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
+#if !BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  return GURL();
+#else
   std::string environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
   return GURL(base::StrCat({brave_domains::kGate3URL, "/api/oauth/", provider,
                             "/", environment, "/"}));
+#endif
 }
 
 GURL EnvironmentConfig::URLValue(std::string value) const {
