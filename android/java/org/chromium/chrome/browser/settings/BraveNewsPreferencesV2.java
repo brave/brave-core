@@ -29,7 +29,8 @@ import com.airbnb.lottie.model.KeyPath;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
@@ -79,7 +80,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     // SettingsNavigation injected from main Settings Activity.
     private SettingsNavigation mSettingsLauncher;
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @Override
     public View onCreateView(

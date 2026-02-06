@@ -9,7 +9,8 @@ import android.os.Bundle;
 
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -27,7 +28,8 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
     private static final String PREF_BRAVE_LICENSE_TEXT = "brave_license_text";
     private static final String ASSET_BRAVE_LICENSE = "LICENSE.html";
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @SuppressWarnings("ScannerUseDelimiter")
     @Override

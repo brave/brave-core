@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave_wallet.mojom.DefaultWallet;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.build.annotations.NullMarked;
@@ -66,7 +67,8 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     private @Nullable KeyringService mKeyringService;
     private @Nullable WalletModel mWalletModel;
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     public static boolean getPrefWeb3NotificationsEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();

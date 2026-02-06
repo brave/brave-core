@@ -26,8 +26,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowPackageManager;
 
-import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Restriction;
 import org.chromium.chrome.R;
@@ -60,7 +60,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
     @Mock private DisplayAndroid mDisplayAndroid;
 
     private ToolbarLongPressMenuHandler mToolbarLongPressMenuHandler;
-    private MonotonicObservableSupplier<Profile> mProfileSupplier;
+    private SettableNullableObservableSupplier<Profile> mProfileSupplier;
 
     private Activity mActivity;
     private boolean mShouldSuppress;

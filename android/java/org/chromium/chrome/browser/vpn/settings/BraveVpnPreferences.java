@@ -27,7 +27,8 @@ import com.wireguard.crypto.KeyPair;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -87,7 +88,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private ChromeBasePreference mSubscriptionExpires;
     private ChromeBasePreference mLinkSubscriptionPreference;
     private BraveVpnPrefModel mBraveVpnPrefModel;
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

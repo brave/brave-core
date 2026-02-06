@@ -22,7 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -40,7 +41,8 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
 
     private @Nullable FilterListAndroidHandler mFilterListAndroidHandler;
     private EditText mEtCustomFilters;
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @Override
     public View onCreateView(

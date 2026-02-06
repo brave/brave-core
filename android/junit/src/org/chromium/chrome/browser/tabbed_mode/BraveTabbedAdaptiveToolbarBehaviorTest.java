@@ -16,7 +16,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.RuntimeEnvironment;
 
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -43,9 +45,10 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
         Context context = RuntimeEnvironment.getApplication();
         AdaptiveToolbarBehavior.sValidButtons.clear();
 
-        ObservableSupplierImpl<BookmarkModel> bookmarkModelSupplier =
-                new ObservableSupplierImpl<>();
-        ObservableSupplierImpl<Integer> tabStripVisibilitySupplier = new ObservableSupplierImpl<>();
+        SettableNullableObservableSupplier<BookmarkModel> bookmarkModelSupplier =
+                ObservableSuppliers.createNullable();
+        SettableMonotonicObservableSupplier<Integer> tabStripVisibilitySupplier =
+                ObservableSuppliers.createMonotonic();
         tabStripVisibilitySupplier.set(StripVisibilityState.VISIBLE);
 
         ActivityLifecycleDispatcher lifecycleDispatcher =

@@ -15,7 +15,8 @@ import androidx.preference.PreferenceGroup;
 
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.brave_origin.BraveOriginServiceFactory;
 import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
@@ -54,7 +55,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_SUBSCRIPTION_MANAGE = "subscription_manage";
     private static final String PREF_LINK_SUBSCRIPTION = "link_subscription";
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
     @Nullable private BraveOriginSettingsHandler mBraveOriginSettingsHandler;
 
     @Override
