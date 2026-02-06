@@ -365,7 +365,7 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
 
   cardano_wallet_service_->CreateCardanoTransaction(
       account_id(), *CardanoAddress::FromString(kMockCardanoAddress1), 8800000,
-      std::nullopt, create_tx_future.GetCallback());
+      false, std::nullopt, create_tx_future.GetCallback());
 
   auto captured_tx = create_tx_future.Take();
 

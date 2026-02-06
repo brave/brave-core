@@ -146,7 +146,7 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction) {
   std::string to_account = kMockCardanoAddress1;
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, std::nullopt, nullptr);
+      1000000, false, std::nullopt, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -202,7 +202,7 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, std::nullopt, nullptr);
+      1000000, false, std::nullopt, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -259,7 +259,7 @@ TEST_F(CardanoTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, std::nullopt, swap_info.Clone());
+      1000000, false, std::nullopt, swap_info.Clone());
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       add_tx_future;

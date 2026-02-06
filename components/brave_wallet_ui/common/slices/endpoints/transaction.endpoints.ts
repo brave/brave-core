@@ -711,10 +711,9 @@ export const transactionEndpoints = ({
             chainId: payload.network.chainId,
             from: payload.fromAccount.accountId,
             to: payload.to,
-            amountToSend: payload.sendingMaxAmount
-              ? undefined
-              : BigInt(payload.value),
-            tokenToSend: payload.tokenId,
+            amount: BigInt(payload.value),
+            sendingMaxAmount: payload.sendingMaxAmount,
+            token: payload.tokenId,
             swapInfo: payload.swapInfo,
           }
 

@@ -2711,8 +2711,9 @@ struct NewCardanoTransactionParams {
   string chain_id;
   AccountId from;
   string to;
-  uint64? amount_to_send;  // Send all if null, otherwise specified amount.
-  string? token_to_send;  // Send lovelace if null, otherwise specified token(hex).
+  uint64 amount;
+  bool sending_max_amount;
+  string? token;  // Send lovelace if null, otherwise specified token(hex).
   SwapInfo? swap_info;
 };
 

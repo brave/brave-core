@@ -67,10 +67,9 @@ void CardanoTxManager::AddUnapprovedCardanoTransaction(
   }
 
   std::optional<cardano_rpc::TokenId> token_to_send;
-  if (params->token_to_send) {
+  if (params->token) {
     token_to_send.emplace();
-    if (!base::HexStringToBytes(*params->token_to_send,
-                                &token_to_send.value())) {
+    if (!base::HexStringToBytes(*params->token, &token_to_send.value())) {
       std::move(callback).Run(false, "", WalletInternalErrorMessage());
       return;
     }
@@ -81,8 +80,8 @@ void CardanoTxManager::AddUnapprovedCardanoTransaction(
   std::optional<url::Origin> origin = std::nullopt;
 
   cardano_wallet_service_->CreateCardanoTransaction(
-      params->from.Clone(), *address_to, params->amount_to_send,
-      std::move(token_to_send),
+      params->from.Clone(), *address_to, params->amount,
+      params->sending_max_amount, std::move(token_to_send),
       base::BindOnce(&CardanoTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
                      origin, std::move(params->swap_info),

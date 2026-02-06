@@ -44,6 +44,19 @@ class CardanoKnapsackSolver {
   void RunSolverForTransaction(
       const CardanoTransaction& transaction,
       std::optional<CardanoTransaction>& current_best_solution);
+
+ private:
+  // Setup target output. In case of lovelace transfer validate if amount fits
+  // min output limit. In case of token send also set min required lovelace
+  // amount.
+  static std::optional<std::string> SetupOutputs(
+      CardanoTransaction& tx,
+      const TxBuilderParms& builder_params);
+
+  // Sort inputs by the token amount in descending order. If the token amount
+  // is the same, sort by the utxo value in descending order.
+  static void SetupInputs(std::vector<CardanoTransaction::TxInput>& inputs,
+                          const TxBuilderParms& builder_params);
 };
 
 }  // namespace brave_wallet

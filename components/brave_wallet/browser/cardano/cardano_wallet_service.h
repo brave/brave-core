@@ -59,7 +59,8 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   void CreateCardanoTransaction(
       mojom::AccountIdPtr account_id,
       const CardanoAddress& address_to,
-      std::optional<uint64_t> amount_to_send,
+      uint64_t amount_to_send,
+      bool sending_max_amount,
       std::optional<cardano_rpc::TokenId> token_to_send,
       CardanoCreateTransactionTaskCallback callback);
 

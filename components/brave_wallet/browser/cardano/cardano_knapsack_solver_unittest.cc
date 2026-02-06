@@ -41,7 +41,8 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
   TxBuilderParms MakeTxBuilderParams(uint64_t amount,
                                      uint32_t receive_index = 123) {
     TxBuilderParms builder_params;
-    builder_params.amount_to_send = amount;
+    builder_params.amount = amount;
+    builder_params.sending_max_amount = false;
     builder_params.send_to_address = *CardanoAddress::FromString(
         keyring_
             .GetAddress(1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal,

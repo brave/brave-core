@@ -48,12 +48,14 @@ CardanoCreateTransactionTask::CardanoCreateTransactionTask(
     CardanoWalletService& cardano_wallet_service,
     const mojom::AccountIdPtr& account_id,
     const CardanoAddress& address_to,
-    std::optional<uint64_t> amount_to_send,
+    uint64_t amount,
+    bool sending_max_amount,
     std::optional<cardano_rpc::TokenId> token_to_send)
     : cardano_wallet_service_(cardano_wallet_service),
       account_id_(account_id.Clone()),
       address_to_(address_to),
-      amount_to_send_(amount_to_send),
+      amount_(amount),
+      sending_max_amount_(sending_max_amount),
       token_to_send_(token_to_send) {
   CHECK(IsCardanoAccount(account_id));
 }
@@ -107,7 +109,8 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
   CHECK(IsAllRequiredDataFetched());
 
   TxBuilderParms builder_params;
-  builder_params.amount_to_send = amount_to_send_;
+  builder_params.amount = amount_;
+  builder_params.sending_max_amount = sending_max_amount_;
   builder_params.token_to_send = token_to_send_;
   builder_params.send_to_address = address_to_;
   builder_params.change_address = *change_address_;
@@ -115,7 +118,7 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
   builder_params.invalid_after = latest_block_->slot + kTxValiditySeconds;
 
   base::expected<CardanoTransaction, std::string> solved_transaction;
-  if (!builder_params.amount_to_send) {
+  if (builder_params.sending_max_amount) {
     if (!builder_params.token_to_send) {
       CardanoMaxLovelaceSendSolver solver(std::move(builder_params),
                                           TxInputsFromUtxos(*utxos_));

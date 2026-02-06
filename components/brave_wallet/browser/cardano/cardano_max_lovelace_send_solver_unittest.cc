@@ -48,7 +48,8 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
             ->address_string);
     builder_params.invalid_after = 12345;
     builder_params.epoch_parameters = latest_epoch_parameters();
-    builder_params.amount_to_send = std::nullopt;
+    builder_params.amount = 0;
+    builder_params.sending_max_amount = true;
     builder_params.change_address = GetChangeAddress();
 
     return builder_params;

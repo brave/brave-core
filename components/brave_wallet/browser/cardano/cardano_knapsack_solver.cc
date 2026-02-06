@@ -24,53 +24,6 @@ namespace {
 
 constexpr int kCardanoKnapsackSolverIterations = 1000;
 
-// Setup target output. In case of lovelace transfer validate if amount fits min
-// output limit. In case of token send also set min required lovelace amount.
-std::optional<std::string> SetupOutputs(CardanoTransaction& tx,
-                                        const TxBuilderParms& builder_params) {
-  tx.SetupTargetOutput(builder_params.send_to_address);
-  if (!builder_params.token_to_send) {
-    tx.TargetOutput()->amount = *builder_params.amount_to_send;
-    if (!CardanoTransactionSerializer().ValidateMinValue(
-            *tx.TargetOutput(), builder_params.epoch_parameters)) {
-      return WalletAmountTooSmallErrorMessage();
-    }
-  } else {
-    tx.TargetOutput()->tokens[*builder_params.token_to_send] =
-        *builder_params.amount_to_send;
-    auto min_ada_required_target =
-        CardanoTransactionSerializer::CalcMinAdaRequired(
-            *tx.TargetOutput(), builder_params.epoch_parameters);
-    if (!base::OptionalUnwrapTo(min_ada_required_target,
-                                tx.TargetOutput()->amount)) {
-      return WalletInsufficientBalanceErrorMessage();
-    }
-  }
-  return std::nullopt;
-}
-
-// Sort inputs by the token amount in descending order. If the token amount is
-// the same, sort by the utxo value in descending order.
-void SetupInputs(std::vector<CardanoTransaction::TxInput>& inputs,
-                 const TxBuilderParms& builder_params) {
-  std::sort(
-      inputs.begin(), inputs.end(),
-      [&builder_params](const CardanoTransaction::TxInput& i1,
-                        const CardanoTransaction::TxInput& i2) {
-        if (builder_params.token_to_send) {
-          const auto& token_id = *builder_params.token_to_send;
-          auto it1 = i1.utxo_tokens.find(token_id);
-          auto it2 = i2.utxo_tokens.find(token_id);
-          uint64_t amount1 = it1 != i1.utxo_tokens.end() ? it1->second : 0;
-          uint64_t amount2 = it2 != i2.utxo_tokens.end() ? it2->second : 0;
-          if (amount1 != amount2) {
-            return amount1 > amount2;
-          }
-        }
-        return i1.utxo_value > i2.utxo_value;
-      });
-}
-
 }  // namespace
 
 CardanoKnapsackSolver::CardanoKnapsackSolver(
@@ -147,7 +100,7 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
 }
 
 base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
-  CHECK(builder_params_.amount_to_send);
+  CHECK(!builder_params_.sending_max_amount);
 
   CardanoTransaction base_transaction;
   base_transaction.set_invalid_after(builder_params_.invalid_after);
@@ -178,6 +131,53 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   DCHECK_GT(current_best_solution->fee(), 0u);
   DCHECK(current_best_solution->witnesses().empty());
   return base::ok(std::move(*current_best_solution));
+}
+
+// static
+std::optional<std::string> CardanoKnapsackSolver::SetupOutputs(
+    CardanoTransaction& tx,
+    const TxBuilderParms& builder_params) {
+  tx.SetupTargetOutput(builder_params.send_to_address);
+  if (!builder_params.token_to_send) {
+    tx.TargetOutput()->amount = builder_params.amount;
+    if (!CardanoTransactionSerializer().ValidateMinValue(
+            *tx.TargetOutput(), builder_params.epoch_parameters)) {
+      return WalletAmountTooSmallErrorMessage();
+    }
+  } else {
+    tx.TargetOutput()->tokens[*builder_params.token_to_send] =
+        builder_params.amount;
+    auto min_ada_required_target =
+        CardanoTransactionSerializer::CalcMinAdaRequired(
+            *tx.TargetOutput(), builder_params.epoch_parameters);
+    if (!base::OptionalUnwrapTo(min_ada_required_target,
+                                tx.TargetOutput()->amount)) {
+      return WalletInsufficientBalanceErrorMessage();
+    }
+  }
+  return std::nullopt;
+}
+
+// static
+void CardanoKnapsackSolver::SetupInputs(
+    std::vector<CardanoTransaction::TxInput>& inputs,
+    const TxBuilderParms& builder_params) {
+  std::sort(
+      inputs.begin(), inputs.end(),
+      [&builder_params](const CardanoTransaction::TxInput& i1,
+                        const CardanoTransaction::TxInput& i2) {
+        if (builder_params.token_to_send) {
+          const auto& token_id = *builder_params.token_to_send;
+          auto it1 = i1.utxo_tokens.find(token_id);
+          auto it2 = i2.utxo_tokens.find(token_id);
+          uint64_t amount1 = it1 != i1.utxo_tokens.end() ? it1->second : 0;
+          uint64_t amount2 = it2 != i2.utxo_tokens.end() ? it2->second : 0;
+          if (amount1 != amount2) {
+            return amount1 > amount2;
+          }
+        }
+        return i1.utxo_value > i2.utxo_value;
+      });
 }
 
 }  // namespace brave_wallet

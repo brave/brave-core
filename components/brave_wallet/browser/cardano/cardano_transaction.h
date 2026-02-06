@@ -29,7 +29,12 @@ struct TxBuilderParms {
   TxBuilderParms(TxBuilderParms&&);
   TxBuilderParms& operator=(TxBuilderParms&&);
 
-  std::optional<uint64_t> amount_to_send;
+  // Amount of a lovelaces or tokens being sent.
+  uint64_t amount = 0;
+  // True if exact amount was not specified but we are sending all possible
+  // amount of given token or lovelaces.
+  bool sending_max_amount = false;
+  // Token being sent if set, otherwise lovelaces are being sent.
   std::optional<cardano_rpc::TokenId> token_to_send;
 
   // Destination address for funds being sent.

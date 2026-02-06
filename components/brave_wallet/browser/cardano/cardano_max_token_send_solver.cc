@@ -96,7 +96,8 @@ CardanoMaxTokenSendSolver::~CardanoMaxTokenSendSolver() = default;
 
 base::expected<CardanoTransaction, std::string>
 CardanoMaxTokenSendSolver::Solve() {
-  CHECK(!builder_params_.amount_to_send);
+  CHECK(builder_params_.sending_max_amount);
+  CHECK_EQ(builder_params_.amount, 0u);
   CHECK(builder_params_.token_to_send);
 
   auto [token_inputs, other_inputs] = SplitInputsForTokenSend(
