@@ -23,6 +23,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using testing::ElementsAre;
+
 namespace brave_wallet {
 
 namespace {
@@ -128,6 +130,76 @@ class CardanoMaxTokenSendSolverUnitTest : public testing::Test {
 
   uint32_t next_input_id_ = 0;
 };
+
+TEST_F(CardanoMaxTokenSendSolverUnitTest, SetupOutputs) {
+  auto builder_params = MakeTxBuilderParams(GetMockTokenId("brave"));
+  CardanoTransaction tx;
+  tx.set_invalid_after(builder_params.invalid_after);
+
+  // No brave token.
+  EXPECT_FALSE(CardanoMaxTokenSendSolver::SetupOutputs(tx, builder_params));
+  tx.AddInput(MakeMockTxInput(3'000'000u, {{GetMockTokenId("baz"), 123}}));
+  EXPECT_FALSE(CardanoMaxTokenSendSolver::SetupOutputs(tx, builder_params));
+
+  std::vector<CardanoTransaction::TxInput> inputs;
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 2}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 3},
+                                                {GetMockTokenId("foo"), 300}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 4},
+                                                {GetMockTokenId("bar"), 777}}));
+  tx.AddInputs(inputs);
+
+  EXPECT_FALSE(tx.TargetOutput());
+  EXPECT_FALSE(tx.ChangeOutput());
+  EXPECT_TRUE(CardanoMaxTokenSendSolver::SetupOutputs(tx, builder_params));
+  EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
+  EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
+  EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);  // min ADA required.
+  EXPECT_EQ(tx.TargetOutput()->tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 9}}));
+  EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
+  EXPECT_EQ(tx.ChangeOutput()->amount, 0u);
+  EXPECT_EQ(tx.ChangeOutput()->tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("foo"), 300},
+                                 {GetMockTokenId("bar"), 777},
+                                 {GetMockTokenId("baz"), 123}}));
+  EXPECT_EQ(tx.fee(), 0u);
+}
+
+TEST_F(CardanoMaxTokenSendSolverUnitTest, ExtractTokenInputs) {
+  std::vector<CardanoTransaction::TxInput> inputs;
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 2}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 3},
+                                                {GetMockTokenId("foo"), 300}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("baz"), 123}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 4},
+                                                {GetMockTokenId("bar"), 777}}));
+
+  auto original = inputs;
+  auto token_inputs = CardanoMaxTokenSendSolver::ExtractTokenInputs(
+      GetMockTokenId("brave"), inputs);
+
+  EXPECT_THAT(token_inputs, ElementsAre(original[0], original[1], original[3]));
+  EXPECT_THAT(inputs, ElementsAre(original[2]));
+}
+
+TEST_F(CardanoMaxTokenSendSolverUnitTest, SortInputs) {
+  std::vector<CardanoTransaction::TxInput> inputs;
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 2}}));
+  inputs.push_back(MakeMockTxInput(4'000'000u, {{GetMockTokenId("brave"), 3},
+                                                {GetMockTokenId("foo"), 300}}));
+  inputs.push_back(MakeMockTxInput(5'000'000u, {{GetMockTokenId("baz"), 123}}));
+  inputs.push_back(MakeMockTxInput(6'000'000u, {{GetMockTokenId("brave"), 4},
+                                                {GetMockTokenId("bar"), 777}}));
+  inputs.push_back(MakeMockTxInput(7'000'000u, {}));
+  inputs.push_back(MakeMockTxInput(10'000'000u, {}));
+
+  auto original = inputs;
+  CardanoMaxTokenSendSolver::SortInputs(inputs);
+
+  EXPECT_THAT(inputs, ElementsAre(original[5], original[4], original[2],
+                                  original[0], original[3], original[1]));
+}
 
 TEST_F(CardanoMaxTokenSendSolverUnitTest, NoInputs) {
   auto builder_params = MakeTxBuilderParams(GetMockTokenId("brave"));

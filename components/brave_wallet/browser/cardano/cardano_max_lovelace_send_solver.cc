@@ -16,12 +16,16 @@
 
 namespace brave_wallet {
 
-namespace {
+CardanoMaxLovelaceSendSolver::CardanoMaxLovelaceSendSolver(
+    TxBuilderParms builder_params,
+    std::vector<CardanoTransaction::TxInput> inputs)
+    : builder_params_(std::move(builder_params)), inputs_(std::move(inputs)) {}
+CardanoMaxLovelaceSendSolver::~CardanoMaxLovelaceSendSolver() = default;
 
-// If any of inputs have tokens attached to corresponding utxos make sure there
-// is a valid change output having these tokens set to it.
-bool SetupOutputs(CardanoTransaction& tx,
-                  const TxBuilderParms& builder_params) {
+// static
+bool CardanoMaxLovelaceSendSolver::SetupOutputs(
+    CardanoTransaction& tx,
+    const TxBuilderParms& builder_params) {
   tx.SetupTargetOutput(builder_params.send_to_address);
 
   auto tokens = tx.GetTotalInputTokensAmount();
@@ -48,14 +52,6 @@ bool SetupOutputs(CardanoTransaction& tx,
 
   return true;
 }
-
-}  // namespace
-
-CardanoMaxLovelaceSendSolver::CardanoMaxLovelaceSendSolver(
-    TxBuilderParms builder_params,
-    std::vector<CardanoTransaction::TxInput> inputs)
-    : builder_params_(std::move(builder_params)), inputs_(std::move(inputs)) {}
-CardanoMaxLovelaceSendSolver::~CardanoMaxLovelaceSendSolver() = default;
 
 base::expected<CardanoTransaction, std::string>
 CardanoMaxLovelaceSendSolver::Solve() {

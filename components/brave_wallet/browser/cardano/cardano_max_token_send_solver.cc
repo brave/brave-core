@@ -17,23 +17,25 @@
 
 namespace brave_wallet {
 
-namespace {
-
 // Setup outputs for tx to send all inputs with a given token.
 // Target output gets all amount of given token and some min lovelace to cover
 // fee.
 // Change output gets everything else.
-bool SetupOutputs(CardanoTransaction& tx,
-                  const TxBuilderParms& builder_params) {
+// static
+bool CardanoMaxTokenSendSolver::SetupOutputs(
+    CardanoTransaction& tx,
+    const TxBuilderParms& builder_params) {
   auto tokens = tx.GetTotalInputTokensAmount();
   if (!tokens) {
     return false;
   }
-  if (tokens->empty()) {
+
+  auto token_value = tokens->find(builder_params.token_to_send.value());
+  if (token_value == tokens->end()) {
     return false;
   }
 
-  auto token_sum = tokens->at(builder_params.token_to_send.value());
+  auto token_sum = token_value->second;
   CHECK_GT(token_sum, 0u);
   tx.SetupTargetOutput(builder_params.send_to_address);
   tx.TargetOutput()->tokens[builder_params.token_to_send.value()] = token_sum;
@@ -54,16 +56,11 @@ bool SetupOutputs(CardanoTransaction& tx,
   return true;
 }
 
-// Splits collection of inputs into two vectors.
-// First vector gets all inputs having given token. All of these inputs will be
-// added to transactions.
-// Second vector gets all other inputs. These inputs will be used if transaction
-// needs more lovelaces to cover fee. Sorted so it is preferred to pick inputs
-// with less tokens with higher lovelace amount.
-std::pair<std::vector<CardanoTransaction::TxInput>,
-          std::vector<CardanoTransaction::TxInput>>
-SplitInputsForTokenSend(const cardano_rpc::TokenId& token_id,
-                        std::vector<CardanoTransaction::TxInput> inputs) {
+// static
+std::vector<CardanoTransaction::TxInput>
+CardanoMaxTokenSendSolver::ExtractTokenInputs(
+    const cardano_rpc::TokenId& token_id,
+    std::vector<CardanoTransaction::TxInput>& inputs) {
   std::vector<CardanoTransaction::TxInput> token_inputs;
   std::vector<CardanoTransaction::TxInput> other_inputs;
   for (auto& input : inputs) {
@@ -73,20 +70,23 @@ SplitInputsForTokenSend(const cardano_rpc::TokenId& token_id,
       other_inputs.push_back(std::move(input));
     }
   }
+  inputs = std::move(other_inputs);
 
+  return token_inputs;
+}
+
+// static
+void CardanoMaxTokenSendSolver::SortInputs(
+    std::vector<CardanoTransaction::TxInput>& inputs) {
   std::sort(
-      other_inputs.begin(), other_inputs.end(),
+      inputs.begin(), inputs.end(),
       [](CardanoTransaction::TxInput& i1, CardanoTransaction::TxInput& i2) {
         if (i1.utxo_tokens.size() != i2.utxo_tokens.size()) {
           return i1.utxo_tokens.size() < i2.utxo_tokens.size();
         }
         return i1.utxo_value > i2.utxo_value;
       });
-
-  return {token_inputs, other_inputs};
 }
-
-}  // namespace
 
 CardanoMaxTokenSendSolver::CardanoMaxTokenSendSolver(
     TxBuilderParms builder_params,
@@ -100,13 +100,15 @@ CardanoMaxTokenSendSolver::Solve() {
   CHECK_EQ(builder_params_.amount, 0u);
   CHECK(builder_params_.token_to_send);
 
-  auto [token_inputs, other_inputs] = SplitInputsForTokenSend(
-      *builder_params_.token_to_send, std::move(inputs_));
+  auto token_inputs =
+      ExtractTokenInputs(*builder_params_.token_to_send, inputs_);
+
   if (token_inputs.empty()) {
     return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
-  auto other_inputs_span = base::span(other_inputs);
+  SortInputs(inputs_);
+  auto other_inputs_span = base::span(inputs_);
 
   std::vector<CardanoTransaction::TxInput> cur_inputs;
 

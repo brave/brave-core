@@ -119,16 +119,19 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
 
   base::expected<CardanoTransaction, std::string> solved_transaction;
   if (builder_params.sending_max_amount) {
-    if (!builder_params.token_to_send) {
-      CardanoMaxLovelaceSendSolver solver(std::move(builder_params),
-                                          TxInputsFromUtxos(*utxos_));
-      solved_transaction = solver.Solve();
-    } else {
+    if (builder_params.token_to_send) {
+      // Sending max amount of specified token.
       CardanoMaxTokenSendSolver solver(std::move(builder_params),
                                        TxInputsFromUtxos(*utxos_));
       solved_transaction = solver.Solve();
+    } else {
+      // Sending max amount of lovelace.
+      CardanoMaxLovelaceSendSolver solver(std::move(builder_params),
+                                          TxInputsFromUtxos(*utxos_));
+      solved_transaction = solver.Solve();
     }
   } else {
+    // Sending specified amount of lovelace or token.
     CardanoKnapsackSolver solver(std::move(builder_params),
                                  TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();

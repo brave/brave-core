@@ -72,6 +72,26 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
     return tx_input;
   }
 
+  CardanoTransaction::TxInput MakeMockTxInput(
+      uint64_t amount,
+      const cardano_rpc::Tokens& tokens) {
+    auto address = keyring_
+                       .GetAddress(0, mojom::CardanoKeyId(
+                                          mojom::CardanoKeyRole::kExternal, 0))
+                       ->address_string;
+
+    uint32_t id = next_input_id_++;
+    CardanoTransaction::TxInput tx_input;
+    tx_input.utxo_address = *CardanoAddress::FromString(address);
+    tx_input.utxo_outpoint.txid =
+        crypto::hash::Sha256(base::byte_span_from_ref(id));
+    tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
+    tx_input.utxo_value = amount;
+    tx_input.utxo_tokens = tokens;
+
+    return tx_input;
+  }
+
   CardanoAddress GetChangeAddress() {
     return *CardanoAddress::FromString(
         keyring_
@@ -98,6 +118,47 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
 
   uint32_t next_input_id_ = 0;
 };
+
+TEST_F(CardanoMaxLovelaceSendSolverUnitTest, SetupOutputs) {
+  auto builder_params = MakeTxBuilderParams();
+  CardanoTransaction tx;
+  tx.set_invalid_after(builder_params.invalid_after);
+
+  // No inputs.
+  EXPECT_TRUE(CardanoMaxLovelaceSendSolver::SetupOutputs(tx, builder_params));
+  EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
+  EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
+  EXPECT_EQ(tx.TargetOutput()->amount, 0u);
+  EXPECT_FALSE(tx.ChangeOutput());
+
+  tx = {};
+  tx.set_invalid_after(builder_params.invalid_after);
+
+  std::vector<CardanoTransaction::TxInput> inputs;
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("baz"), 123}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 2}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 3},
+                                                {GetMockTokenId("foo"), 300}}));
+  inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 4},
+                                                {GetMockTokenId("bar"), 777}}));
+  tx.AddInputs(inputs);
+
+  EXPECT_FALSE(tx.TargetOutput());
+  EXPECT_FALSE(tx.ChangeOutput());
+  EXPECT_TRUE(CardanoMaxLovelaceSendSolver::SetupOutputs(tx, builder_params));
+  EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
+  EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
+  EXPECT_EQ(tx.TargetOutput()->amount, 0u);
+  EXPECT_EQ(tx.TargetOutput()->tokens, cardano_rpc::Tokens());
+  EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
+  EXPECT_EQ(tx.ChangeOutput()->amount, 1'361'960u);  // min ADA required.
+  EXPECT_EQ(tx.ChangeOutput()->tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 9},
+                                 {GetMockTokenId("foo"), 300},
+                                 {GetMockTokenId("bar"), 777},
+                                 {GetMockTokenId("baz"), 123}}));
+  EXPECT_EQ(tx.fee(), 0u);
+}
 
 TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NoInputs) {
   auto builder_params = MakeTxBuilderParams();

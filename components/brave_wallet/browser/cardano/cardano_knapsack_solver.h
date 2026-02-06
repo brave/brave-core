@@ -33,19 +33,6 @@ class CardanoKnapsackSolver {
   base::expected<CardanoTransaction, std::string> Solve();
 
  private:
-  // Various params required to create transaction.
-  TxBuilderParms builder_params_;
-
-  // Set of possible inputs to pick for transaction.
-  std::vector<CardanoTransaction::TxInput> inputs_;
-
-  // Runs solver algorithm for the `transaction`.
-  // Updates `current_best_solution` when transaction with lesser fee is found.
-  void RunSolverForTransaction(
-      const CardanoTransaction& transaction,
-      std::optional<CardanoTransaction>& current_best_solution);
-
- private:
   // Setup target output. In case of lovelace transfer validate if amount fits
   // min output limit. In case of token send also set min required lovelace
   // amount.
@@ -57,6 +44,18 @@ class CardanoKnapsackSolver {
   // is the same, sort by the utxo value in descending order.
   static void SetupInputs(std::vector<CardanoTransaction::TxInput>& inputs,
                           const TxBuilderParms& builder_params);
+
+  // Various params required to create transaction.
+  TxBuilderParms builder_params_;
+
+  // Set of possible inputs to pick for transaction.
+  std::vector<CardanoTransaction::TxInput> inputs_;
+
+  // Runs solver algorithm for the `transaction`.
+  // Updates `current_best_solution` when transaction with lesser fee is found.
+  void RunSolverForTransaction(
+      const CardanoTransaction& transaction,
+      std::optional<CardanoTransaction>& current_best_solution);
 };
 
 }  // namespace brave_wallet

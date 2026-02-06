@@ -24,6 +24,13 @@ class CardanoMaxLovelaceSendSolver {
   base::expected<CardanoTransaction, std::string> Solve();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(CardanoMaxLovelaceSendSolverUnitTest, SetupOutputs);
+
+  // If any of inputs have tokens attached to corresponding utxos make sure
+  // there is a valid change output having these tokens set to it. static
+  static bool SetupOutputs(CardanoTransaction& tx,
+                           const TxBuilderParms& builder_params);
+
   // Various params required to create transaction.
   TxBuilderParms builder_params_;
   // Set of possible inputs to pick for transaction.
