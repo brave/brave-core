@@ -2664,10 +2664,15 @@
 -StaticStorageQuotaPolicyFeatureDisabledTest.StaticStorageQuotaEnabled
 -StaticStorageQuotaPolicyFeatureEnabledTest.StaticStorageQuotaDisabled
 
-# These tests fails because we disable kPrivateMetricsFeature.
+# These tests fail because we disable kPrivateMetricsFeature.
 -PumaBrowserTest.IncognitoPlusRegularBrowserCheck
 -PumaBrowserTest.PumaServiceCheck
 -PumaBrowserTest.RegularBrowserPlusIncognitoCheck
+
+# Test expects CHANNEL_UNKNOWN in test environment but Brave's channel detection
+# returns CHANNEL_STABLE due to chromium_src/chrome/common/channel_info_win.cc
+# override that enables GOOGLE_CHROME_BRANDING behavior in OFFICIAL_BUILD.
+-PumaBrowserTest.VerifyRcCoarseSystemProfile
 
 # This test fails because dragging is not enabled on Brave's NTP.
 -MultiContentsViewBrowserTest.DragAndDropDisabledForChromePages
