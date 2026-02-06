@@ -61,6 +61,7 @@ cargo_crate("lib") {
 
   deps = [ "//brave/third_party/rust/memchr/v2:lib" ]
   features = [
+    "default",
     "perf-literal",
     "std",
   ]

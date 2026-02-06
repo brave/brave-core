@@ -1,0 +1,9 @@
+Name: candle-embedder-ffi
+URL: https://crates.io/crates/candle-embedder-ffi
+Version: 0.1.0
+License: MPL-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: 

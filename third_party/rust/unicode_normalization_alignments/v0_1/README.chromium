@@ -1,0 +1,14 @@
+Name: unicode-normalization-alignments
+URL: https://crates.io/crates/unicode-normalization-alignments
+Version: 0.1.12
+Revision: 9ca696060d7bedd591f903b6285c29abaab716fa
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-alignments-v0_1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: This crate provides functions for normalization of
+Unicode strings, including Canonical and Compatible
+Decomposition and Recomposition, as described in
+Unicode Standard Annex #15.
+

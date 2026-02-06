@@ -1,10 +1,11 @@
 # rand_chacha
 
-[![Test Status](https://github.com/rust-random/rand/actions/workflows/test.yml/badge.svg?event=push)](https://github.com/rust-random/rand/actions)
+[![Test Status](https://github.com/rust-random/rand/workflows/Tests/badge.svg?event=push)](https://github.com/rust-random/rand/actions)
 [![Latest version](https://img.shields.io/crates/v/rand_chacha.svg)](https://crates.io/crates/rand_chacha)
 [![Book](https://img.shields.io/badge/book-master-yellow.svg)](https://rust-random.github.io/book/)
 [![API](https://img.shields.io/badge/api-master-yellow.svg)](https://rust-random.github.io/rand/rand_chacha)
 [![API](https://docs.rs/rand_chacha/badge.svg)](https://docs.rs/rand_chacha)
+[![Minimum rustc version](https://img.shields.io/badge/rustc-1.36+-lightgray.svg)](https://github.com/rust-random/rand#rust-version-requirements)
 
 A cryptographically secure random number generator that uses the ChaCha
 algorithm.
@@ -35,8 +36,7 @@ Links:
 
 `rand_chacha` is `no_std` compatible when disabling default features; the `std`
 feature can be explicitly required to re-enable `std` support. Using `std`
-allows detection of CPU features and thus better optimisation. Using `std`
-also enables `os_rng` functionality, such as `ChaCha20Rng::from_os_rng()`.
+allows detection of CPU features and thus better optimisation.
 
 
 # License

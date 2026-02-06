@@ -19,6 +19,9 @@
 //! [`SeedableRng`] is an extension trait for construction from fixed seeds and
 //! other random number generators.
 //!
+//! [`Error`] is provided for error-handling. It is safe to use in `no_std`
+//! environments.
+//!
 //! The [`impls`] and [`le`] sub-modules include a few small functions to assist
 //! implementation of [`RngCore`].
 //!
@@ -32,28 +35,32 @@
 #![deny(missing_docs)]
 #![deny(missing_debug_implementations)]
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(doc_cfg, feature(doc_cfg))]
 #![no_std]
 
-#[cfg(feature = "std")]
-extern crate std;
+use core::convert::AsMut;
+use core::default::Default;
 
-use core::{fmt, ops::DerefMut};
+#[cfg(feature = "std")] extern crate std;
+#[cfg(feature = "alloc")] extern crate alloc;
+#[cfg(feature = "alloc")] use alloc::boxed::Box;
+
+pub use error::Error;
+#[cfg(feature = "getrandom")] pub use os::OsRng;
+
 
 pub mod block;
+mod error;
 pub mod impls;
 pub mod le;
-#[cfg(feature = "os_rng")]
-mod os;
+#[cfg(feature = "getrandom")] mod os;
 
-#[cfg(feature = "os_rng")]
-pub use os::{OsError, OsRng};
 
-/// Implementation-level interface for RNGs
+/// The core of a random number generator.
 ///
 /// This trait encapsulates the low-level functionality common to all
 /// generators, and is the "back end", to be implemented by generators.
-/// End users should normally use the [`rand::Rng`] trait
+/// End users should normally use the `Rng` trait from the [`rand`] crate,
 /// which is automatically implemented for every type implementing `RngCore`.
 ///
 /// Three different methods for generating random data are provided since the
@@ -63,6 +70,11 @@ pub use os::{OsError, OsRng};
 /// values and drop any remaining unused bytes. The same can happen with the
 /// [`next_u32`] and [`next_u64`] methods, implementations may discard some
 /// random bits for efficiency.
+///
+/// The [`try_fill_bytes`] method is a variant of [`fill_bytes`] allowing error
+/// handling; it is not deemed sufficiently useful to add equivalents for
+/// [`next_u32`] or [`next_u64`] since the latter methods are almost always used
+/// with algorithmic generators (PRNGs), which are normally infallible.
 ///
 /// Implementers should produce bits uniformly. Pathological RNGs (e.g. always
 /// returning the same value, or never setting certain bits) can break rejection
@@ -77,10 +89,6 @@ pub use os::{OsError, OsRng};
 /// Typically an RNG will implement only one of the methods available
 /// in this trait directly, then use the helper functions from the
 /// [`impls`] module to implement the other methods.
-///
-/// Note that implementors of [`RngCore`] also automatically implement
-/// the [`TryRngCore`] trait with the `Error` associated type being
-/// equal to [`Infallible`].
 ///
 /// It is recommended that implementations also implement:
 ///
@@ -102,7 +110,7 @@ pub use os::{OsError, OsRng};
 ///
 /// ```
 /// #![allow(dead_code)]
-/// use rand_core::{RngCore, impls};
+/// use rand_core::{RngCore, Error, impls};
 ///
 /// struct CountingRng(u64);
 ///
@@ -116,17 +124,21 @@ pub use os::{OsError, OsRng};
 ///         self.0
 ///     }
 ///
-///     fn fill_bytes(&mut self, dst: &mut [u8]) {
-///         impls::fill_bytes_via_next(self, dst)
+///     fn fill_bytes(&mut self, dest: &mut [u8]) {
+///         impls::fill_bytes_via_next(self, dest)
+///     }
+///
+///     fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+///         Ok(self.fill_bytes(dest))
 ///     }
 /// }
 /// ```
 ///
-/// [`rand::Rng`]: https://docs.rs/rand/latest/rand/trait.Rng.html
+/// [`rand`]: https://docs.rs/rand
+/// [`try_fill_bytes`]: RngCore::try_fill_bytes
 /// [`fill_bytes`]: RngCore::fill_bytes
 /// [`next_u32`]: RngCore::next_u32
 /// [`next_u64`]: RngCore::next_u64
-/// [`Infallible`]: core::convert::Infallible
 pub trait RngCore {
     /// Return the next random `u32`.
     ///
@@ -146,226 +158,89 @@ pub trait RngCore {
     ///
     /// RNGs must implement at least one method from this trait directly. In
     /// the case this method is not implemented directly, it can be implemented
-    /// via [`impls::fill_bytes_via_next`].
+    /// via [`impls::fill_bytes_via_next`] or
+    /// via [`RngCore::try_fill_bytes`]; if this generator can
+    /// fail the implementation must choose how best to handle errors here
+    /// (e.g. panic with a descriptive message or log a warning and retry a few
+    /// times).
     ///
     /// This method should guarantee that `dest` is entirely filled
     /// with new data, and may panic if this is impossible
     /// (e.g. reading past the end of a file that is being used as the
     /// source of randomness).
-    fn fill_bytes(&mut self, dst: &mut [u8]);
+    fn fill_bytes(&mut self, dest: &mut [u8]);
+
+    /// Fill `dest` entirely with random data.
+    ///
+    /// This is the only method which allows an RNG to report errors while
+    /// generating random data thus making this the primary method implemented
+    /// by external (true) RNGs (e.g. `OsRng`) which can fail. It may be used
+    /// directly to generate keys and to seed (infallible) PRNGs.
+    ///
+    /// Other than error handling, this method is identical to [`RngCore::fill_bytes`];
+    /// thus this may be implemented using `Ok(self.fill_bytes(dest))` or
+    /// `fill_bytes` may be implemented with
+    /// `self.try_fill_bytes(dest).unwrap()` or more specific error handling.
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error>;
 }
 
-impl<T: DerefMut> RngCore for T
-where
-    T::Target: RngCore,
-{
-    #[inline]
-    fn next_u32(&mut self) -> u32 {
-        self.deref_mut().next_u32()
-    }
-
-    #[inline]
-    fn next_u64(&mut self) -> u64 {
-        self.deref_mut().next_u64()
-    }
-
-    #[inline]
-    fn fill_bytes(&mut self, dst: &mut [u8]) {
-        self.deref_mut().fill_bytes(dst);
-    }
-}
-
-/// A marker trait over [`RngCore`] for securely unpredictable RNGs
+/// A marker trait used to indicate that an [`RngCore`] or [`BlockRngCore`]
+/// implementation is supposed to be cryptographically secure.
 ///
-/// This marker trait indicates that the implementing generator is intended,
-/// when correctly seeded and protected from side-channel attacks such as a
-/// leaking of state, to be a cryptographically secure generator. This trait is
-/// provided as a tool to aid review of cryptographic code, but does not by
-/// itself guarantee suitability for cryptographic applications.
-///
-/// Implementors of `CryptoRng` automatically implement the [`TryCryptoRng`]
-/// trait.
-///
-/// Implementors of `CryptoRng` should only implement [`Default`] if the
-/// `default()` instances are themselves secure generators: for example if the
-/// implementing type is a stateless interface over a secure external generator
-/// (like [`OsRng`]) or if the `default()` instance uses a strong, fresh seed.
-///
-/// Formally, a CSPRNG (Cryptographically Secure Pseudo-Random Number Generator)
-/// should satisfy an additional property over other generators: assuming that
-/// the generator has been appropriately seeded and has unknown state, then
-/// given the first *k* bits of an algorithm's output
+/// *Cryptographically secure generators*, also known as *CSPRNGs*, should
+/// satisfy an additional properties over other generators: given the first
+/// *k* bits of an algorithm's output
 /// sequence, it should not be possible using polynomial-time algorithms to
 /// predict the next bit with probability significantly greater than 50%.
 ///
-/// An optional property of CSPRNGs is backtracking resistance: if the CSPRNG's
-/// state is revealed, it will not be computationally-feasible to reconstruct
-/// prior output values. This property is not required by `CryptoRng`.
-pub trait CryptoRng: RngCore {}
-
-impl<T: DerefMut> CryptoRng for T where T::Target: CryptoRng {}
-
-/// A potentially fallible variant of [`RngCore`]
+/// Some generators may satisfy an additional property, however this is not
+/// required by this trait: if the CSPRNG's state is revealed, it should not be
+/// computationally-feasible to reconstruct output prior to this. Some other
+/// generators allow backwards-computation and are considered *reversible*.
 ///
-/// This trait is a generalization of [`RngCore`] to support potentially-
-/// fallible IO-based generators such as [`OsRng`].
+/// Note that this trait is provided for guidance only and cannot guarantee
+/// suitability for cryptographic applications. In general it should only be
+/// implemented for well-reviewed code implementing well-regarded algorithms.
 ///
-/// All implementations of [`RngCore`] automatically support this `TryRngCore`
-/// trait, using [`Infallible`][core::convert::Infallible] as the associated
-/// `Error` type.
+/// Note also that use of a `CryptoRng` does not protect against other
+/// weaknesses such as seeding from a weak entropy source or leaking state.
 ///
-/// An implementation of this trait may be made compatible with code requiring
-/// an [`RngCore`] through [`TryRngCore::unwrap_err`]. The resulting RNG will
-/// panic in case the underlying fallible RNG yields an error.
-pub trait TryRngCore {
-    /// The type returned in the event of a RNG error.
-    type Error: fmt::Debug + fmt::Display;
+/// [`BlockRngCore`]: block::BlockRngCore
+pub trait CryptoRng {}
 
-    /// Return the next random `u32`.
-    fn try_next_u32(&mut self) -> Result<u32, Self::Error>;
-    /// Return the next random `u64`.
-    fn try_next_u64(&mut self) -> Result<u64, Self::Error>;
-    /// Fill `dest` entirely with random data.
-    fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error>;
-
-    /// Wrap RNG with the [`UnwrapErr`] wrapper.
-    fn unwrap_err(self) -> UnwrapErr<Self>
-    where
-        Self: Sized,
-    {
-        UnwrapErr(self)
-    }
-
-    /// Wrap RNG with the [`UnwrapMut`] wrapper.
-    fn unwrap_mut(&mut self) -> UnwrapMut<'_, Self> {
-        UnwrapMut(self)
-    }
-
-    /// Convert an [`RngCore`] to a [`RngReadAdapter`].
-    #[cfg(feature = "std")]
-    fn read_adapter(&mut self) -> RngReadAdapter<'_, Self>
-    where
-        Self: Sized,
-    {
-        RngReadAdapter { inner: self }
-    }
+/// An extension trait that is automatically implemented for any type
+/// implementing [`RngCore`] and [`CryptoRng`].
+///
+/// It may be used as a trait object, and supports upcasting to [`RngCore`] via
+/// the [`CryptoRngCore::as_rngcore`] method.
+///
+/// # Example
+///
+/// ```
+/// use rand_core::CryptoRngCore;
+///
+/// #[allow(unused)]
+/// fn make_token(rng: &mut dyn CryptoRngCore) -> [u8; 32] {
+///     let mut buf = [0u8; 32];
+///     rng.fill_bytes(&mut buf);
+///     buf
+/// }
+/// ```
+pub trait CryptoRngCore: CryptoRng + RngCore {
+    /// Upcast to an [`RngCore`] trait object.
+    fn as_rngcore(&mut self) -> &mut dyn RngCore;
 }
 
-// Note that, unfortunately, this blanket impl prevents us from implementing
-// `TryRngCore` for types which can be dereferenced to `TryRngCore`, i.e. `TryRngCore`
-// will not be automatically implemented for `&mut R`, `Box<R>`, etc.
-impl<R: RngCore + ?Sized> TryRngCore for R {
-    type Error = core::convert::Infallible;
-
-    #[inline]
-    fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
-        Ok(self.next_u32())
-    }
-
-    #[inline]
-    fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
-        Ok(self.next_u64())
-    }
-
-    #[inline]
-    fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
-        self.fill_bytes(dst);
-        Ok(())
+impl<T: CryptoRng + RngCore> CryptoRngCore for T {
+    fn as_rngcore(&mut self) -> &mut dyn RngCore {
+        self
     }
 }
-
-/// A marker trait over [`TryRngCore`] for securely unpredictable RNGs
-///
-/// This trait is like [`CryptoRng`] but for the trait [`TryRngCore`].
-///
-/// This marker trait indicates that the implementing generator is intended,
-/// when correctly seeded and protected from side-channel attacks such as a
-/// leaking of state, to be a cryptographically secure generator. This trait is
-/// provided as a tool to aid review of cryptographic code, but does not by
-/// itself guarantee suitability for cryptographic applications.
-///
-/// Implementors of `TryCryptoRng` should only implement [`Default`] if the
-/// `default()` instances are themselves secure generators: for example if the
-/// implementing type is a stateless interface over a secure external generator
-/// (like [`OsRng`]) or if the `default()` instance uses a strong, fresh seed.
-pub trait TryCryptoRng: TryRngCore {}
-
-impl<R: CryptoRng + ?Sized> TryCryptoRng for R {}
-
-/// Wrapper around [`TryRngCore`] implementation which implements [`RngCore`]
-/// by panicking on potential errors.
-#[derive(Debug, Default, Clone, Copy, Eq, PartialEq, Hash)]
-pub struct UnwrapErr<R: TryRngCore>(pub R);
-
-impl<R: TryRngCore> RngCore for UnwrapErr<R> {
-    #[inline]
-    fn next_u32(&mut self) -> u32 {
-        self.0.try_next_u32().unwrap()
-    }
-
-    #[inline]
-    fn next_u64(&mut self) -> u64 {
-        self.0.try_next_u64().unwrap()
-    }
-
-    #[inline]
-    fn fill_bytes(&mut self, dst: &mut [u8]) {
-        self.0.try_fill_bytes(dst).unwrap()
-    }
-}
-
-impl<R: TryCryptoRng> CryptoRng for UnwrapErr<R> {}
-
-/// Wrapper around [`TryRngCore`] implementation which implements [`RngCore`]
-/// by panicking on potential errors.
-#[derive(Debug, Eq, PartialEq, Hash)]
-pub struct UnwrapMut<'r, R: TryRngCore + ?Sized>(pub &'r mut R);
-
-impl<'r, R: TryRngCore + ?Sized> UnwrapMut<'r, R> {
-    /// Reborrow with a new lifetime
-    ///
-    /// Rust allows references like `&T` or `&mut T` to be "reborrowed" through
-    /// coercion: essentially, the pointer is copied under a new, shorter, lifetime.
-    /// Until rfcs#1403 lands, reborrows on user types require a method call.
-    #[inline(always)]
-    pub fn re<'b>(&'b mut self) -> UnwrapMut<'b, R>
-    where
-        'r: 'b,
-    {
-        UnwrapMut(self.0)
-    }
-}
-
-impl<R: TryRngCore + ?Sized> RngCore for UnwrapMut<'_, R> {
-    #[inline]
-    fn next_u32(&mut self) -> u32 {
-        self.0.try_next_u32().unwrap()
-    }
-
-    #[inline]
-    fn next_u64(&mut self) -> u64 {
-        self.0.try_next_u64().unwrap()
-    }
-
-    #[inline]
-    fn fill_bytes(&mut self, dst: &mut [u8]) {
-        self.0.try_fill_bytes(dst).unwrap()
-    }
-}
-
-impl<R: TryCryptoRng + ?Sized> CryptoRng for UnwrapMut<'_, R> {}
 
 /// A random number generator that can be explicitly seeded.
 ///
 /// This trait encapsulates the low-level functionality common to all
 /// pseudo-random number generators (PRNGs, or algorithmic generators).
-///
-/// A generator implementing `SeedableRng` will usually be deterministic, but
-/// beware that portability and reproducibility of results **is not implied**.
-/// Refer to documentation of the generator, noting that generators named after
-/// a specific algorithm are usually tested for reproducibility against a
-/// reference vector, while `SmallRng` and `StdRng` specifically opt out of
-/// reproducibility guarantees.
 ///
 /// [`rand`]: https://docs.rs/rand
 pub trait SeedableRng: Sized {
@@ -381,28 +256,22 @@ pub trait SeedableRng: Sized {
     ///
     /// # Implementing `SeedableRng` for RNGs with large seeds
     ///
-    /// Note that [`Default`] is not implemented for large arrays `[u8; N]` with
-    /// `N` > 32. To be able to implement the traits required by `SeedableRng`
-    /// for RNGs with such large seeds, the newtype pattern can be used:
+    /// Note that the required traits `core::default::Default` and
+    /// `core::convert::AsMut<u8>` are not implemented for large arrays
+    /// `[u8; N]` with `N` > 32. To be able to implement the traits required by
+    /// `SeedableRng` for RNGs with such large seeds, the newtype pattern can be
+    /// used:
     ///
     /// ```
     /// use rand_core::SeedableRng;
     ///
     /// const N: usize = 64;
-    /// #[derive(Clone)]
     /// pub struct MyRngSeed(pub [u8; N]);
-    /// # #[allow(dead_code)]
     /// pub struct MyRng(MyRngSeed);
     ///
     /// impl Default for MyRngSeed {
     ///     fn default() -> MyRngSeed {
     ///         MyRngSeed([0; N])
-    ///     }
-    /// }
-    ///
-    /// impl AsRef<[u8]> for MyRngSeed {
-    ///     fn as_ref(&self) -> &[u8] {
-    ///         &self.0
     ///     }
     /// }
     ///
@@ -420,7 +289,7 @@ pub trait SeedableRng: Sized {
     ///     }
     /// }
     /// ```
-    type Seed: Clone + Default + AsRef<[u8]> + AsMut<[u8]>;
+    type Seed: Sized + Default + AsMut<[u8]>;
 
     /// Create a new PRNG using the given seed.
     ///
@@ -494,7 +363,7 @@ pub trait SeedableRng: Sized {
         Self::from_seed(seed)
     }
 
-    /// Create a new PRNG seeded from an infallible `Rng`.
+    /// Create a new PRNG seeded from another `Rng`.
     ///
     /// This may be useful when needing to rapidly seed many PRNGs from a master
     /// PRNG, and to allow forking of PRNGs. It may be considered deterministic.
@@ -518,16 +387,7 @@ pub trait SeedableRng: Sized {
     /// (in prior versions this was not required).
     ///
     /// [`rand`]: https://docs.rs/rand
-    fn from_rng(rng: &mut impl RngCore) -> Self {
-        let mut seed = Self::Seed::default();
-        rng.fill_bytes(seed.as_mut());
-        Self::from_seed(seed)
-    }
-
-    /// Create a new PRNG seeded from a potentially fallible `Rng`.
-    ///
-    /// See [`from_rng`][SeedableRng::from_rng] docs for more information.
-    fn try_from_rng<R: TryRngCore>(rng: &mut R) -> Result<Self, R::Error> {
+    fn from_rng<R: RngCore>(mut rng: R) -> Result<Self, Error> {
         let mut seed = Self::Seed::default();
         rng.try_fill_bytes(seed.as_mut())?;
         Ok(Self::from_seed(seed))
@@ -538,77 +398,91 @@ pub trait SeedableRng: Sized {
     /// This method is the recommended way to construct non-deterministic PRNGs
     /// since it is convenient and secure.
     ///
-    /// Note that this method may panic on (extremely unlikely) [`getrandom`] errors.
-    /// If it's not desirable, use the [`try_from_os_rng`] method instead.
-    ///
     /// In case the overhead of using [`getrandom`] to seed *many* PRNGs is an
     /// issue, one may prefer to seed from a local PRNG, e.g.
-    /// `from_rng(rand::rng()).unwrap()`.
+    /// `from_rng(thread_rng()).unwrap()`.
     ///
     /// # Panics
     ///
     /// If [`getrandom`] is unable to provide secure entropy this method will panic.
     ///
     /// [`getrandom`]: https://docs.rs/getrandom
-    /// [`try_from_os_rng`]: SeedableRng::try_from_os_rng
-    #[cfg(feature = "os_rng")]
-    fn from_os_rng() -> Self {
-        match Self::try_from_os_rng() {
-            Ok(res) => res,
-            Err(err) => panic!("from_os_rng failed: {}", err),
-        }
-    }
-
-    /// Creates a new instance of the RNG seeded via [`getrandom`] without unwrapping
-    /// potential [`getrandom`] errors.
-    ///
-    /// In case the overhead of using [`getrandom`] to seed *many* PRNGs is an
-    /// issue, one may prefer to seed from a local PRNG, e.g.
-    /// `from_rng(&mut rand::rng()).unwrap()`.
-    ///
-    /// [`getrandom`]: https://docs.rs/getrandom
-    #[cfg(feature = "os_rng")]
-    fn try_from_os_rng() -> Result<Self, getrandom::Error> {
+    #[cfg(feature = "getrandom")]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = "getrandom")))]
+    fn from_entropy() -> Self {
         let mut seed = Self::Seed::default();
-        getrandom::fill(seed.as_mut())?;
-        let res = Self::from_seed(seed);
-        Ok(res)
+        if let Err(err) = getrandom::getrandom(seed.as_mut()) {
+            panic!("from_entropy failed: {}", err);
+        }
+        Self::from_seed(seed)
     }
 }
 
-/// Adapter that enables reading through a [`io::Read`](std::io::Read) from a [`RngCore`].
-///
-/// # Examples
-///
-/// ```no_run
-/// # use std::{io, io::Read};
-/// # use std::fs::File;
-/// # use rand_core::{OsRng, TryRngCore};
-///
-/// io::copy(&mut OsRng.read_adapter().take(100), &mut File::create("/tmp/random.bytes").unwrap()).unwrap();
-/// ```
-#[cfg(feature = "std")]
-pub struct RngReadAdapter<'a, R: TryRngCore + ?Sized> {
-    inner: &'a mut R,
+// Implement `RngCore` for references to an `RngCore`.
+// Force inlining all functions, so that it is up to the `RngCore`
+// implementation and the optimizer to decide on inlining.
+impl<'a, R: RngCore + ?Sized> RngCore for &'a mut R {
+    #[inline(always)]
+    fn next_u32(&mut self) -> u32 {
+        (**self).next_u32()
+    }
+
+    #[inline(always)]
+    fn next_u64(&mut self) -> u64 {
+        (**self).next_u64()
+    }
+
+    #[inline(always)]
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        (**self).fill_bytes(dest)
+    }
+
+    #[inline(always)]
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+        (**self).try_fill_bytes(dest)
+    }
+}
+
+// Implement `RngCore` for boxed references to an `RngCore`.
+// Force inlining all functions, so that it is up to the `RngCore`
+// implementation and the optimizer to decide on inlining.
+#[cfg(feature = "alloc")]
+impl<R: RngCore + ?Sized> RngCore for Box<R> {
+    #[inline(always)]
+    fn next_u32(&mut self) -> u32 {
+        (**self).next_u32()
+    }
+
+    #[inline(always)]
+    fn next_u64(&mut self) -> u64 {
+        (**self).next_u64()
+    }
+
+    #[inline(always)]
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        (**self).fill_bytes(dest)
+    }
+
+    #[inline(always)]
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+        (**self).try_fill_bytes(dest)
+    }
 }
 
 #[cfg(feature = "std")]
-impl<R: TryRngCore + ?Sized> std::io::Read for RngReadAdapter<'_, R> {
-    #[inline]
+impl std::io::Read for dyn RngCore {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize, std::io::Error> {
-        self.inner.try_fill_bytes(buf).map_err(|err| {
-            std::io::Error::new(std::io::ErrorKind::Other, std::format!("RNG error: {err}"))
-        })?;
+        self.try_fill_bytes(buf)?;
         Ok(buf.len())
     }
 }
 
-#[cfg(feature = "std")]
-impl<R: TryRngCore + ?Sized> std::fmt::Debug for RngReadAdapter<'_, R> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("ReadAdapter").finish()
-    }
-}
+// Implement `CryptoRng` for references to a `CryptoRng`.
+impl<'a, R: CryptoRng + ?Sized> CryptoRng for &'a mut R {}
+
+// Implement `CryptoRng` for boxed references to a `CryptoRng`.
+#[cfg(feature = "alloc")]
+impl<R: CryptoRng + ?Sized> CryptoRng for Box<R> {}
 
 #[cfg(test)]
 mod test {
@@ -653,119 +527,5 @@ mod test {
 
         // value-breakage test:
         assert_eq!(results[0], 5029875928683246316);
-    }
-
-    // A stub RNG.
-    struct SomeRng;
-
-    impl RngCore for SomeRng {
-        fn next_u32(&mut self) -> u32 {
-            unimplemented!()
-        }
-        fn next_u64(&mut self) -> u64 {
-            unimplemented!()
-        }
-        fn fill_bytes(&mut self, _: &mut [u8]) {
-            unimplemented!()
-        }
-    }
-
-    impl CryptoRng for SomeRng {}
-
-    #[test]
-    fn dyn_rngcore_to_tryrngcore() {
-        // Illustrates the need for `+ ?Sized` bound in `impl<R: RngCore> TryRngCore for R`.
-
-        // A method in another crate taking a fallible RNG
-        fn third_party_api(_rng: &mut (impl TryRngCore + ?Sized)) -> bool {
-            true
-        }
-
-        // A method in our crate requiring an infallible RNG
-        fn my_api(rng: &mut dyn RngCore) -> bool {
-            // We want to call the method above
-            third_party_api(rng)
-        }
-
-        assert!(my_api(&mut SomeRng));
-    }
-
-    #[test]
-    fn dyn_cryptorng_to_trycryptorng() {
-        // Illustrates the need for `+ ?Sized` bound in `impl<R: CryptoRng> TryCryptoRng for R`.
-
-        // A method in another crate taking a fallible RNG
-        fn third_party_api(_rng: &mut (impl TryCryptoRng + ?Sized)) -> bool {
-            true
-        }
-
-        // A method in our crate requiring an infallible RNG
-        fn my_api(rng: &mut dyn CryptoRng) -> bool {
-            // We want to call the method above
-            third_party_api(rng)
-        }
-
-        assert!(my_api(&mut SomeRng));
-    }
-
-    #[test]
-    fn dyn_unwrap_mut_tryrngcore() {
-        // Illustrates the need for `+ ?Sized` bound in
-        // `impl<R: TryRngCore> RngCore for UnwrapMut<'_, R>`.
-
-        fn third_party_api(_rng: &mut impl RngCore) -> bool {
-            true
-        }
-
-        fn my_api(rng: &mut (impl TryRngCore + ?Sized)) -> bool {
-            let mut infallible_rng = rng.unwrap_mut();
-            third_party_api(&mut infallible_rng)
-        }
-
-        assert!(my_api(&mut SomeRng));
-    }
-
-    #[test]
-    fn dyn_unwrap_mut_trycryptorng() {
-        // Illustrates the need for `+ ?Sized` bound in
-        // `impl<R: TryCryptoRng> CryptoRng for UnwrapMut<'_, R>`.
-
-        fn third_party_api(_rng: &mut impl CryptoRng) -> bool {
-            true
-        }
-
-        fn my_api(rng: &mut (impl TryCryptoRng + ?Sized)) -> bool {
-            let mut infallible_rng = rng.unwrap_mut();
-            third_party_api(&mut infallible_rng)
-        }
-
-        assert!(my_api(&mut SomeRng));
-    }
-
-    #[test]
-    fn reborrow_unwrap_mut() {
-        struct FourRng;
-
-        impl TryRngCore for FourRng {
-            type Error = core::convert::Infallible;
-            fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
-                Ok(4)
-            }
-            fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
-                unimplemented!()
-            }
-            fn try_fill_bytes(&mut self, _: &mut [u8]) -> Result<(), Self::Error> {
-                unimplemented!()
-            }
-        }
-
-        let mut rng = FourRng;
-        let mut rng = rng.unwrap_mut();
-
-        assert_eq!(rng.next_u32(), 4);
-        let mut rng2 = rng.re();
-        assert_eq!(rng2.next_u32(), 4);
-        drop(rng2);
-        assert_eq!(rng.next_u32(), 4);
     }
 }

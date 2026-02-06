@@ -1,0 +1,140 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "candle_core"
+  epoch = "0.9"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/accelerate.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/backend.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/backprop.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/conv.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/convert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu/avx.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu/erf.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu/kernels.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu/neon.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu/simd128.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu_backend/conv2d.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu_backend/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cpu_backend/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cuda_backend/cudnn.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cuda_backend/device.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cuda_backend/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cuda_backend/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/cuda_backend/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/custom_op.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/device.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/display.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/dtype.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/dummy_cuda_backend.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/dummy_dtype.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/dummy_metal_backend.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/indexer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/layout.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/metal_backend/device.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/metal_backend/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/mkl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/npy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/op.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/pickle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/avx.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/cuda.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/dummy_cuda.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/dummy_metal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/ggml_file.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/gguf_file.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/imatrix_file.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/k_quants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/metal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/neon.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/simd128.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/quantized/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/safetensors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/scalar.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/shape.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/sort.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/storage.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/streaming.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/strided_index.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/tensor.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/tensor_cat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/test_utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/src/variable.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_name = "candle-core"
+  cargo_pkg_description = "Minimalist ML framework."
+  cargo_pkg_repository = "https://github.com/huggingface/candle"
+  cargo_pkg_version = "0.9.2"
+
+  allow_unsafe = true
+
+  deps = [
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/float8/v0_6:lib",
+    "//brave/third_party/rust/gemm/v0_19:lib",
+    "//brave/third_party/rust/half/v2:lib",
+    "//brave/third_party/rust/libm/v0_2:lib",
+    "//brave/third_party/rust/memmap2/v0_9:lib",
+    "//brave/third_party/rust/num_cpus/v1:lib",
+    "//brave/third_party/rust/num_traits/v0_2:lib",
+    "//brave/third_party/rust/rand/v0_9:lib",
+    "//brave/third_party/rust/rand_distr/v0_5:lib",
+    "//brave/third_party/rust/rayon/v1:lib",
+    "//brave/third_party/rust/safetensors/v0_7:lib",
+    "//brave/third_party/rust/thiserror/v2:lib",
+    "//brave/third_party/rust/yoke/v0_8:lib",
+    "//brave/third_party/rust/zip/v7:lib",
+  ]
+  features = [ "default" ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

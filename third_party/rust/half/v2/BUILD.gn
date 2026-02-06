@@ -40,7 +40,22 @@ cargo_crate("lib") {
 
   allow_unsafe = true
 
-  deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
+  deps = [
+    "//brave/third_party/rust/bytemuck/v1:lib",
+    "//brave/third_party/rust/cfg_if/v1:lib",
+    "//brave/third_party/rust/num_traits/v0_2:lib",
+    "//brave/third_party/rust/rand/v0_9:lib",
+    "//brave/third_party/rust/rand_distr/v0_5:lib",
+  ]
+  features = [
+    "alloc",
+    "bytemuck",
+    "default",
+    "num-traits",
+    "rand_distr",
+    "std",
+    "use-intrinsics",
+  ]
   rustenv = []
   rustflags = []
 

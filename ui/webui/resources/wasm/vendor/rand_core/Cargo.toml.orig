@@ -1,6 +1,6 @@
 [package]
 name = "rand_core"
-version = "0.9.3"
+version = "0.6.4"
 authors = ["The Rand Project Developers", "The Rust Project Developers"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -12,23 +12,22 @@ Core random number generator traits and tools for implementation.
 """
 keywords = ["random", "rng"]
 categories = ["algorithms", "no-std"]
-edition = "2021"
-rust-version = "1.63"
+edition = "2018"
 
 [package.metadata.docs.rs]
 # To build locally:
-# RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
+# RUSTDOCFLAGS="--cfg doc_cfg" cargo +nightly doc --all-features --no-deps --open
 all-features = true
-rustdoc-args = ["--generate-link-to-definition"]
+rustdoc-args = ["--cfg", "doc_cfg"]
 
 [package.metadata.playground]
 all-features = true
 
 [features]
-std = ["getrandom?/std"]
-os_rng = ["dep:getrandom"]
-serde = ["dep:serde"] # enables serde for BlockRng wrapper
+std = ["alloc", "getrandom", "getrandom/std"]    # use std library; should be default but for above bug
+alloc = []  # enables Vec and Box support without std
+serde1 = ["serde"] # enables serde for BlockRng wrapper
 
 [dependencies]
 serde = { version = "1", features = ["derive"], optional = true }
-getrandom = { version = "0.3.0", optional = true }
+getrandom = { version = "0.2", optional = true }

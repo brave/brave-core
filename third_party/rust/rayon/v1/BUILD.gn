@@ -1,0 +1,165 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "rayon"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/binary_heap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/btree_map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/btree_set.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/hash_map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/hash_set.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/linked_list.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/collections/vec_deque.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/cannot_collect_filtermap_data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/cannot_zip_filtered_data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/cell_par_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/must_use.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/no_send_par_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/compile_fail/rc_par_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/delegate.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/blocks.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/chain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/chunks.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/cloned.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/collect/consumer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/collect/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/collect/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/copied.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/empty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/enumerate.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/extend.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/filter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/filter_map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/find.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/find_first_last/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/find_first_last/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/flat_map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/flat_map_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/flatten.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/flatten_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/fold.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/fold_chunks.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/fold_chunks_with.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/for_each.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/from_par_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/inspect.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/interleave.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/interleave_shortest.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/intersperse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/len.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/map_with.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/multizip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/noop.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/once.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/panic_fuse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/par_bridge.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/plumbing/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/positions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/product.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/reduce.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/repeat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/rev.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/skip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/skip_any.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/skip_any_while.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/splitter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/step_by.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/sum.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/take.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/take_any.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/take_any_while.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/try_fold.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/try_reduce.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/try_reduce_with.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/unzip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/update.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/walk_tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/while_some.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/zip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/zip_eq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/math.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/option.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/par_either.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/prelude.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/private.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/range.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/range_inclusive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/result.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/slice/chunk_by.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/slice/chunks.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/slice/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/slice/rchunks.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/slice/sort.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/slice/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/split_producer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/vec.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/rayon-v1/src/iter/plumbing/README.md" ]
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_name = "rayon"
+  cargo_pkg_description = "Simple work-stealing parallelism for Rust"
+  cargo_pkg_repository = "https://github.com/rayon-rs/rayon"
+  cargo_pkg_version = "1.11.0"
+
+  allow_unsafe = true
+
+  deps = [
+    "//brave/third_party/rust/either/v1:lib",
+    "//brave/third_party/rust/rayon_core/v1:lib",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

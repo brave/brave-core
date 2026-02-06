@@ -1,0 +1,10 @@
+Name: float8
+URL: https://crates.io/crates/float8
+Version: 0.6.0
+Revision: 50cddd7c395a4ebac47b37869ca7f7825881855a
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/float8-v0_6/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: 8-bit floating point types for Rust

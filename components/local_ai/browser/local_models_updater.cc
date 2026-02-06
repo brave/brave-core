@@ -16,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
@@ -89,7 +90,10 @@ void LocalModelsComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     base::Value::Dict manifest) {
+  DVLOG(1) << "ComponentReady called, version=" << version.GetString()
+           << ", install_dir=" << install_dir;
   if (install_dir.empty()) {
+    DVLOG(0) << "ComponentReady: install_dir is empty!";
     return;
   }
   LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
@@ -123,6 +127,25 @@ LocalModelsUpdaterState* LocalModelsUpdaterState::GetInstance() {
   return instance.get();
 }
 
+void LocalModelsUpdaterState::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+
+  // If component is already ready, notify immediately
+  if (!install_dir_.empty()) {
+    observer->OnComponentReady(install_dir_);
+  }
+}
+
+void LocalModelsUpdaterState::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void LocalModelsUpdaterState::NotifyObservers() {
+  for (auto& observer : observers_) {
+    observer.OnComponentReady(embeddinggemma_model_dir_);
+  }
+}
+
 void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   if (install_dir.empty()) {
     return;
@@ -135,6 +158,11 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaConfigFile);
   embeddinggemma_tokenizer_path_ =
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaTokenizerFile);
+  embeddinggemma_dense1_path_ =
+      embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaDense1File);
+  embeddinggemma_dense2_path_ =
+      embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaDense2File);
+  NotifyObservers();
 }
 
 const base::FilePath& LocalModelsUpdaterState::GetInstallDir() const {
@@ -157,6 +185,14 @@ const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaConfig() const {
 const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaTokenizer()
     const {
   return embeddinggemma_tokenizer_path_;
+}
+
+const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaDense1() const {
+  return embeddinggemma_dense1_path_;
+}
+
+const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaDense2() const {
+  return embeddinggemma_dense2_path_;
 }
 
 LocalModelsUpdaterState::LocalModelsUpdaterState() = default;

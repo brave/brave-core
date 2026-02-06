@@ -1,0 +1,10 @@
+Name: raw-cpuid
+URL: https://crates.io/crates/raw-cpuid
+Version: 11.6.0
+Revision: aefadf7dd8d9e37ad94171d617158cad2133f3f7
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/raw-cpuid-v11/LICENSE.md
+Shipped: yes
+Security Critical: yes
+
+Description: A library to parse the x86 CPUID instruction, written in rust with no external dependencies. The implementation closely resembles the Intel CPUID manual description. The library does only depend on libcore.

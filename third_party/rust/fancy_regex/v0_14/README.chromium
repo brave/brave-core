@@ -1,0 +1,10 @@
+Name: fancy-regex
+URL: https://crates.io/crates/fancy-regex
+Version: 0.14.0
+Revision: 810a8f3c1662ea33f8dbfb1864d31aa0d2da6c3c
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/fancy-regex-v0_14/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: An implementation of regexes, supporting a relatively rich set of features, including backreferences and look-around.

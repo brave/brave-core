@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("lib") {
+  crate_name = "candle_embedder_ffi"
+  crate_root = "src/lib.rs"
+  sources = [ "src/lib.rs" ]
+  edition = "2021"
+  allow_unsafe = true
+
+  deps = [
+    "//brave/components/local_ai/rust/lib",
+    "//brave/third_party/rust/libc/v0_2:lib",
+  ]
+}
+
+source_set("ffi") {
+  sources = [
+    "candle_embedder.cc",
+    "candle_embedder.h",
+    "candle_embedder_ffi.h",
+  ]
+
+  deps = [
+    ":lib",
+    "//base",
+  ]
+}

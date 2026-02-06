@@ -1,0 +1,98 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "candle_nn"
+  epoch = "0.9"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/activation.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/batch_norm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/conv.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/cpu_flash_attention.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/embedding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/encoding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/func.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/group_norm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/init.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/kv_cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/layer_norm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/linear.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/loss.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/moe.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/ops.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/optim.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/rnn.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/rotary_emb.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/sampling.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/sequential.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/var_builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/candle-nn-v0_9/src/var_map.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_name = "candle-nn"
+  cargo_pkg_description = "Minimalist ML framework."
+  cargo_pkg_repository = "https://github.com/huggingface/candle"
+  cargo_pkg_version = "0.9.2"
+
+  allow_unsafe = true
+
+  deps = [
+    "//brave/third_party/rust/candle_core/v0_9:lib",
+    "//brave/third_party/rust/half/v2:lib",
+    "//brave/third_party/rust/libc/v0_2:lib",
+    "//brave/third_party/rust/num_traits/v0_2:lib",
+    "//brave/third_party/rust/rayon/v1:lib",
+    "//brave/third_party/rust/safetensors/v0_7:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/thiserror/v2:lib",
+  ]
+  aliased_deps = {
+    candle = "//brave/third_party/rust/candle_core/v0_9:lib"
+  }
+  features = [ "default" ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

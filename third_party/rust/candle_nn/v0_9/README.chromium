@@ -1,0 +1,10 @@
+Name: candle-nn
+URL: https://crates.io/crates/candle-nn
+Version: 0.9.2
+Revision: 3b39794c14b1de8ba4c2d10d49354d557a415547
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Minimalist ML framework.

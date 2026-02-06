@@ -1,0 +1,10 @@
+Name: sysctl
+URL: https://crates.io/crates/sysctl
+Version: 0.6.0
+Revision: c21917246d825b260ca0490e311df9de4252a9a1
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/sysctl-v0_6/LICENSE-MIT
+Shipped: yes
+Security Critical: yes
+
+Description: Simplified interface to libc::sysctl

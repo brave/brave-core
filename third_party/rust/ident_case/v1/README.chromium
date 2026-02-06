@@ -1,0 +1,10 @@
+Name: ident_case
+URL: https://crates.io/crates/ident_case
+Version: 1.0.1
+Revision: bf0d863e3006b40a0d923a81d7b2dd2db1136c2c
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/ident_case-v1/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Utility for applying case rules to Rust identifiers.

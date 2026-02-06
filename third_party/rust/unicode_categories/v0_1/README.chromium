@@ -1,0 +1,9 @@
+Name: unicode_categories
+URL: https://crates.io/crates/unicode_categories
+Version: 0.1.1
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode_categories-v0_1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Query Unicode category membership for chars

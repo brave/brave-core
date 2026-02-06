@@ -1,0 +1,10 @@
+Name: candle-core
+URL: https://crates.io/crates/candle-core
+Version: 0.9.2
+Revision: 3b39794c14b1de8ba4c2d10d49354d557a415547
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/candle-core-v0_9/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Minimalist ML framework.
