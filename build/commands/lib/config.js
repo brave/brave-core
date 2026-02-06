@@ -153,8 +153,8 @@ const Config = function () {
   this.gitCachePath =
     envConfig.getPath(['git_cache_path']) || process.env.GIT_CACHE_PATH
   this.rbeService = getEnvConfig(['rbe_service']) || ''
-  this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
-  this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
+  this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
+  this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
