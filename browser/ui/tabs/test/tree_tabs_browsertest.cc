@@ -917,3 +917,122 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
               tabs::TabCollection::Type::TREE_NODE);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabsRecursive_FlatTabs_ReordersAtUnpinnedLevel) {
+  SetTreeTabsEnabled(true);
+
+  // Add tabs without opener so each is a top-level tree node.
+  for (int i = 0; i < 3; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+
+  // 4 tabs total: initial + 3 added. Order: tab0, tab1, tab2, tab3.
+  ASSERT_EQ(4, tab_strip_model().count());
+  auto* tab0 = tab_strip_model().GetTabAtIndex(0);
+  auto* tab1 = tab_strip_model().GetTabAtIndex(1);
+  auto* tab2 = tab_strip_model().GetTabAtIndex(2);
+  auto* tab3 = tab_strip_model().GetTabAtIndex(3);
+
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    ASSERT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+    ASSERT_EQ(tab_strip_model()
+                  .GetTabAtIndex(i)
+                  ->GetParentCollection()
+                  ->GetParentCollection(),
+              &unpinned_collection());
+  }
+
+  // Move tab at index 0 to index 2. Triggers MoveTabsRecursive.
+  // Expected order after move: tab1, tab2, tab0, tab3.
+  tab_strip_model().MoveWebContentsAt(0, 2, false);
+
+  EXPECT_EQ(4, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), tab1);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), tab2);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), tab0);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(3), tab3);
+
+  // All should still be tree nodes under unpinned.
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+    EXPECT_EQ(tab_strip_model()
+                  .GetTabAtIndex(i)
+                  ->GetParentCollection()
+                  ->GetParentCollection(),
+              &unpinned_collection());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabsRecursive_MoveTabWithChildren_PromotesChildren) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Add two children under the first tab.
+  for (int i = 0; i < 2; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_interface->set_opener(parent_tab);
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+
+  // Order: parent_tab, child0, child1. Parent's TreeTabNode has 3 children.
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* child0 = tab_strip_model().GetTabAtIndex(1);
+  auto* child1 = tab_strip_model().GetTabAtIndex(2);
+  ASSERT_EQ(parent_tab->GetParentCollection()->ChildCount(), 3u);
+
+  // Move the parent tab (index 0) to the end (index 2).
+  // MoveTabsRecursive should move the tree node; children are first moved to
+  // the parent's parent (unpinned), then the node is moved.
+  // Expected: child0, child1 become top-level; then parent moves to end.
+  // So final order: child0, child1, parent_tab.
+  tab_strip_model().MoveWebContentsAt(0, 2, false);
+
+  EXPECT_EQ(3, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), child0);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), child1);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), parent_tab);
+
+  // All three should be direct children of unpinned (each in own tree node).
+  EXPECT_EQ(child0->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+  EXPECT_EQ(child1->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+  EXPECT_EQ(parent_tab->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabsRecursive_MoveToEnd_InsertAfterLast) {
+  SetTreeTabsEnabled(true);
+
+  for (int i = 0; i < 2; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab0 = tab_strip_model().GetTabAtIndex(0);
+  auto* tab1 = tab_strip_model().GetTabAtIndex(1);
+  auto* tab2 = tab_strip_model().GetTabAtIndex(2);
+
+  // Move first tab to the end (destination_index >= count means insert after
+  // last).
+  tab_strip_model().MoveWebContentsAt(0, 3, false);
+
+  EXPECT_EQ(3, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), tab1);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), tab2);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), tab0);
+}

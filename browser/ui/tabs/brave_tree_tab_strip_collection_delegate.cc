@@ -259,8 +259,67 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state,
     const std::set<tabs::TabCollection::Type>& retain_collection_types) const {
-  // TODO(https://github.com/brave/brave-browser/issues/49790)
-  NOTIMPLEMENTED();
+  CHECK(!tab_indices.empty());
+  std::vector<tabs::TabInterface*> moving_tabs;
+  std::ranges::transform(
+      tab_indices, std::back_inserter(moving_tabs),
+      [this](int index) { return collection_->GetTabAtIndexRecursive(index); });
+  CHECK(!moving_tabs.empty());
+
+  // Before removing the tree tab node from the parent, make sure all
+  // children of the tree tab node are moved to the parent.
+  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+    auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
+    MoveChildrenOfTreeTabNodeToParent(
+        static_cast<tabs::TreeTabNodeTabCollection*>(moving_tab_tree_node));
+  }
+
+  // Remove the moving tab first from the original parent.
+  std::vector<std::unique_ptr<tabs::TabCollection>>
+      unique_moving_tab_collections;
+  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+    auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
+    CHECK(moving_tab_tree_node);
+
+    auto* moving_tab_parent_node = GetAttachableCollectionForTreeTabNode(
+        moving_tab_tree_node->GetParentCollection());
+    unique_moving_tab_collections.push_back(
+        moving_tab_parent_node->MaybeRemoveCollection(moving_tab_tree_node));
+  }
+
+  // We'll move the moving tab's tree node into the collection of the
+  // destination index.
+  const auto tab_count = collection_->TabCountRecursive();
+  const bool insert_after = destination_index >= tab_count;
+  auto* destination_tab = collection_->GetTabAtIndexRecursive(
+      destination_index >= tab_count ? tab_count - 1 : destination_index);
+  auto* destination_tree_node =
+      GetParentTreeNodeCollectionOfTab(destination_tab);
+
+  // Insert the parent tree node collection to the destination parent collection
+  // so that the parent tree node could be located before the destination parent
+  // collection.
+  auto* new_parent_node_for_moving_tab =
+      destination_tree_node->GetParentCollection();
+  CHECK(new_parent_node_for_moving_tab);
+  while (new_parent_node_for_moving_tab->type() !=
+             tabs::TabCollection::Type::TREE_NODE &&
+         new_parent_node_for_moving_tab->type() !=
+             tabs::TabCollection::Type::UNPINNED) {
+    new_parent_node_for_moving_tab =
+        new_parent_node_for_moving_tab->GetParentCollection();
+    CHECK(new_parent_node_for_moving_tab);
+  }
+
+  // Insert the moving tab collection into the new parent collection.
+  auto index = new_parent_node_for_moving_tab->GetIndexOfCollection(
+      destination_tree_node);
+  CHECK(index.has_value());
+  index = insert_after ? *index + 1 : *index;
+  for (auto& unique_moving_tab_collection : unique_moving_tab_collections) {
+    new_parent_node_for_moving_tab->AddCollection(
+        std::move(unique_moving_tab_collection), *index);
+  }
 }
 
 void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToParent(
@@ -301,4 +360,32 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
             }},
         child);
   }
+}
+
+tabs::TreeTabNodeTabCollection*
+BraveTreeTabStripCollectionDelegate::GetParentTreeNodeCollectionOfTab(
+    tabs::TabInterface* tab) const {
+  auto* parent_collection = collection_->GetParentCollection(tab, GetPassKey());
+  CHECK(parent_collection);
+  while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    parent_collection = parent_collection->GetParentCollection();
+    CHECK(parent_collection);
+    if (parent_collection->type() == tabs::TabCollection::Type::UNPINNED) {
+      return nullptr;
+    }
+  }
+  return static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
+}
+
+tabs::TabCollection*
+BraveTreeTabStripCollectionDelegate::GetAttachableCollectionForTreeTabNode(
+    tabs::TabCollection* attachable_collection) const {
+  CHECK(attachable_collection);
+  while (attachable_collection->type() !=
+             tabs::TabCollection::Type::TREE_NODE &&
+         attachable_collection->type() != tabs::TabCollection::Type::UNPINNED) {
+    attachable_collection = attachable_collection->GetParentCollection();
+    CHECK(attachable_collection);
+  }
+  return attachable_collection;
 }
