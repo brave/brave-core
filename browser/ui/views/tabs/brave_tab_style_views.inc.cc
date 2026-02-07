@@ -419,11 +419,6 @@ int BraveVerticalTabStyle::GetStrokeThickness(
 void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
   const auto* brave_tab = static_cast<const BraveTab*>(tab());
   CHECK(brave_tab);
-  const bool should_paint_tab_accent = brave_tab->ShouldPaintTabAccent();
-  if (should_paint_tab_accent) {
-    PaintTabAccentBackground(canvas);
-  }
-
   if (ShouldShowVerticalTabs()) {
     // For vertical tabs, bypass the upstream logic to paint theme backgrounds,
     // as this can cause crashes due to the vertical tabstrip living in a
@@ -434,6 +429,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     TabStyleViewsImpl::PaintTab(canvas);
   }
 
+  const bool should_paint_tab_accent = brave_tab->ShouldPaintTabAccent();
   if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs() &&
       !should_paint_tab_accent) {
     // No additional painting is needed.
@@ -468,6 +464,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
 
   // Paint tab accent if needed.
   if (should_paint_tab_accent) {
+    PaintTabAccentBackground(canvas);
     PaintTabAccentBorder(canvas);
     PaintTabAccentIcon(canvas);
   }
@@ -678,8 +675,8 @@ std::optional<SkColor> BraveVerticalTabStyle::GetTargetTabBackgroundColor(
   }
 
   if (selection_state == TabStyle::TabSelectionState::kSelected) {
-    // Use the same color if the tab is selected via multiselection. Fallback
-    // on upstream code.
+    // Use the same color if the tab is selected via multiselection. Fallback on
+    // upstream code.
     return std::nullopt;
   }
 

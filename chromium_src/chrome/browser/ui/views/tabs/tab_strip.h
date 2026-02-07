@@ -20,17 +20,20 @@ class BraveTabHoverCardController;
   friend class BraveVerticalTabStripRegionView; \
   void UpdateHoverCard
 
-#define GetDragContext                                                  \
-  Unused_GetDragContext() {                                             \
-    return nullptr;                                                     \
-  }                                                                     \
-  bool ShouldAlwaysHideCloseButton() const override;                    \
-  bool CanCloseTabViaMiddleButtonClick() const override;                \
-  bool IsVerticalTabsFloating() const override;                         \
-  static constexpr bool IsUsingBraveTabHoverCardController() {          \
-    return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>, \
-                          decltype(TabStrip::hover_card_controller_)>;  \
-  }                                                                     \
+#define GetDragContext                                                     \
+  Unused_GetDragContext() {                                                \
+    return nullptr;                                                        \
+  }                                                                        \
+  bool ShouldAlwaysHideCloseButton() const override;                       \
+  bool CanCloseTabViaMiddleButtonClick() const override;                   \
+  bool IsVerticalTabsFloating() const override;                            \
+  bool ShouldPaintTabAccent(const Tab* tab) const override;                \
+  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
+  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \
+  static constexpr bool IsUsingBraveTabHoverCardController() {             \
+    return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>,    \
+                          decltype(TabStrip::hover_card_controller_)>;     \
+  }                                                                        \
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController

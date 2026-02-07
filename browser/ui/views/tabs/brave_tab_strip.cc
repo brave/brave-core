@@ -312,6 +312,7 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
   return ui::ImageModel::FromVectorIcon(icon, SK_ColorWHITE, 16);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
 bool BraveTabStrip::IsTabInContainer(const Tab* tab) const {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
@@ -371,6 +372,7 @@ containers::ContainerModel BraveTabStrip::GetContainerModelForTab(
       std::move(*container_it),
       widget ? widget->GetCompositor()->device_scale_factor() : 1.0f);
 }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 BEGIN_METADATA(BraveTabStrip)
 END_METADATA
