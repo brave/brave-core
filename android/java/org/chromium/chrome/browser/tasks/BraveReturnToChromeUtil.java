@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.tasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
@@ -29,7 +30,10 @@ public final class BraveReturnToChromeUtil {
 
     /** Returns whether should show a NTP as the home surface at startup. */
     public static boolean shouldShowNtpAsHomeSurfaceAtStartup(
-            Intent intent, Bundle bundle, ChromeInactivityTracker inactivityTracker) {
+            Intent intent,
+            Bundle bundle,
+            PersistableBundle persistableBundle,
+            ChromeInactivityTracker inactivityTracker) {
         // When feature is disabled, use Brave's default behavior
         if (!BraveFreshNtpHelper.isEnabled()) {
             return false;
