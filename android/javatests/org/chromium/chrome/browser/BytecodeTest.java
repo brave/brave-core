@@ -739,6 +739,7 @@ public class BytecodeTest {
                         boolean.class,
                         Intent.class,
                         Bundle.class,
+                        PersistableBundle.class,
                         ChromeInactivityTracker.class));
         Assert.assertTrue(
                 methodExists(
