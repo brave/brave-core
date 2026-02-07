@@ -528,58 +528,20 @@ void BraveVerticalTabStyle::PaintTabAccentBorder(gfx::Canvas* canvas) const {
 }
 
 void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
-  const auto* brave_tab = static_cast<const BraveTab*>(tab());
-  CHECK(brave_tab);
+  auto* brave_tab = static_cast<const BraveTab*>(tab());
+  auto accent_icon = brave_tab->GetTabAccentIcon();
 
-  const bool should_show_large_accent_icon =
-      brave_tab->ShouldShowLargeAccentIcon();
-  const bool is_vertical_tabs = ShouldShowVerticalTabs();
+  // getBounds() call to find the actual border bounds.
+  auto bounds = GetPath(TabStyle::PathType::kBorder, 1, /*flags=*/{},
+                        /*inset_tab_accent_area=*/false)
+                    .getBounds();
 
-  // Paddings that the tab border has. We should consider theme when positioning
-  // the icon
-  int x_padding = 0;
-  int y_padding = 0;
-  if (is_vertical_tabs) {
-    if (IsSplitTab(tab())) {
-      if (!tab()->data().pinned) {
-        x_padding += kPaddingForVerticalTabInTile;
-      }
-
-      if (IsStartSplitTab(tab())) {
-        if (should_show_large_accent_icon) {
-          y_padding += kPaddingForVerticalTabInTile / 2;
-        }
-      } else {
-        y_padding -= kPaddingForVerticalTabInTile / 2;
-      }
-    }
-  } else {
-    x_padding += tabs::kHorizontalTabInset;
-    if (!tab()->data().pinned && IsStartSplitTab(tab())) {
-      x_padding += kPaddingForHorizontalTabInTile;
-    }
-
-    if (!tab()->data().pinned && IsSplitTab(tab())) {
-      constexpr int kAdditionalVerticalPadding =
-          tabs::kHorizontalSplitViewTabVerticalSpacing -
-          tabs::kHorizontalTabGap;
-      y_padding -= kAdditionalVerticalPadding;
-    }
-  }
-
-  if (!should_show_large_accent_icon) {
+  if (!brave_tab->ShouldShowLargeAccentIcon()) {
     // Small icon is painted on the left-bottom corner of the tab.
     // We need 16x16 bounding circle and centered icon in it.
     constexpr auto circle_size = 16;
-
-    int center_x = x_padding + circle_size / 2;
-    int center_y = y_padding + (tab()->bounds().height() - circle_size / 2);
-    if (!is_vertical_tabs) {
-      center_y -= tabs::kHorizontalTabInset +
-                  GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) +
-                  1 /* 1px for stroke */;
-    }
-
+    int center_x = bounds.x() + circle_size / 2;
+    int center_y = bounds.bottom() - circle_size / 2;
     if (auto background_color = brave_tab->GetTabAccentColor().value()) {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
@@ -588,7 +550,6 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
       canvas->DrawCircle(gfx::PointF(center_x, center_y), 8, flags);
     }
 
-    auto accent_icon = brave_tab->GetTabAccentIcon();
     if (accent_icon.IsEmpty()) {
       return;
     }
@@ -603,17 +564,16 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
     return;
   }
 
-  auto accent_icon = brave_tab->GetTabAccentIcon();
   if (accent_icon.IsEmpty()) {
     return;
   }
 
+  // Large accent icon is painted in center of the the left area of the tab
   gfx::ScopedCanvas scoped_canvas(canvas);
   const auto image_size = accent_icon.Size();
   const int x =
-      (BraveTab::kTabAccentIconAreaWidth - image_size.width()) / 2 + x_padding;
-  const int y =
-      (tab()->bounds().height() - image_size.height()) / 2 + y_padding;
+      bounds.x() + (BraveTab::kTabAccentIconAreaWidth - image_size.width()) / 2;
+  const int y = bounds.y() + (bounds.height() - image_size.height()) / 2;
   canvas->DrawImageInt(accent_icon.Rasterize(tab()->GetColorProvider()), x, y);
 }
 
