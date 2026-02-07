@@ -269,6 +269,12 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
     if (!is_panel_visible) {
       HideSidebarAll();
+    } else {
+      // Panel is open — hide just the control view (icon strip) and let the
+      // panel keep its space. This matches the user's intent: sidebar hidden
+      // but side panel extensions still usable.
+      sidebar_control_view_->SetVisible(false);
+      PreferredSizeChanged();
     }
     return;
   }
@@ -334,8 +340,9 @@ void SidebarContainerView::Layout(PassKey) {
   int control_view_width =
       std::min(sidebar_control_view_->GetPreferredSize().width(), width());
 
-  // Control view should not be shown in panel-initiated fullscreen.
-  if (IsFullscreenForCurrentEntry()) {
+  // Control view should not take space when hidden (kShowNever with panel
+  // open) or in panel-initiated fullscreen.
+  if (!sidebar_control_view_->GetVisible() || IsFullscreenForCurrentEntry()) {
     control_view_width = 0;
   }
 
@@ -357,8 +364,14 @@ void SidebarContainerView::Layout(PassKey) {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
-  if (!initialized_ || !sidebar_control_view_->GetVisible() ||
-      IsFullscreenByTab()) {
+  if (!initialized_ || IsFullscreenByTab()) {
+    return View::CalculatePreferredSize(available_size);
+  }
+
+  // Only bail early if neither child is visible. When kShowNever is set but
+  // a side panel is open, the control view is hidden but the panel is visible
+  // and needs space allocated.
+  if (!sidebar_control_view_->GetVisible() && !side_panel_->GetVisible()) {
     return View::CalculatePreferredSize(available_size);
   }
 
@@ -528,8 +541,10 @@ void SidebarContainerView::ShowSidebarControlView() {
   ShowSidebar(false);
 }
 
-void SidebarContainerView::ShowSidebar(bool show_side_panel) {
-  DVLOG(1) << __func__ << ": show panel: " << show_side_panel;
+void SidebarContainerView::ShowSidebar(bool show_side_panel,
+                                       bool show_sidebar_control) {
+  DVLOG(1) << __func__ << ": show panel: " << show_side_panel
+           << ", show control: " << show_sidebar_control;
 
   // Don't need to show again if it's showing now.
   if (width_animation_.is_animating() && width_animation_.IsShowing()) {
@@ -551,7 +566,10 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the show animation.
   animation_start_width_ = width();
-  animation_end_width_ = sidebar_control_view_->GetPreferredSize().width();
+  animation_end_width_ =
+      show_sidebar_control
+          ? sidebar_control_view_->GetPreferredSize().width()
+          : 0;
   if (show_side_panel) {
     // Note: as margins of |side_panel_| are part of |width()| we need to add
     // them when calculating the ideal width of the contents.
@@ -564,7 +582,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   DVLOG(1) << __func__ << ": show animation (start, end) width: ("
            << animation_start_width_ << ", " << animation_end_width_ << ")";
 
-  sidebar_control_view_->SetVisible(true);
+  sidebar_control_view_->SetVisible(show_sidebar_control);
   side_panel_->SetVisible(show_side_panel);
 
   if (animation_start_width_ == animation_end_width_) {
@@ -603,7 +621,9 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
           std::min(animation_end_width_, target_sidebar_width);
       side_panel_->set_fixed_contents_width(
           animation_end_width_ -
-          sidebar_control_view_->GetPreferredSize().width());
+          (show_sidebar_control
+               ? sidebar_control_view_->GetPreferredSize().width()
+               : 0));
     }
 
     width_animation_.Show();
@@ -617,7 +637,12 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
 }
 
 void SidebarContainerView::ShowSidebarAll() {
-  ShowSidebar(true);
+  // When kShowNever is set, show only the side panel without the control
+  // view (icon strip). This respects the user's preference to hide the
+  // sidebar while still allowing side panel extensions to function.
+  const bool show_control =
+      show_sidebar_option_ != ShowSidebarOption::kShowNever;
+  ShowSidebar(true, show_control);
 }
 
 void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
