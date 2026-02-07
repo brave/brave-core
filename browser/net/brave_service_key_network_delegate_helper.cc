@@ -31,6 +31,9 @@ int OnBeforeStartTransaction_BraveServiceKey(
       kExtensionUpdaterDomain,
       std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
       std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()),
+// Gate3 is used by both Rewards and Wallet, but only Rewards OAuth requests
+// go through this network delegate path. Wallet gate3 requests use
+// APIRequestHelper which adds the services key explicitly.
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       std::string(GURL(brave_domains::kGate3URL).host()),
 #endif
