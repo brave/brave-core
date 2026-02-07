@@ -61,6 +61,7 @@ brave_browser_net_deps = [
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
+  "//brave/brave_domains:constants",
   "//brave/common",
   "//brave/components/brave_ads/buildflags",
   "//brave/components/brave_component_updater/browser",
@@ -127,6 +128,3 @@ if (enable_brave_ads) {
   brave_browser_net_deps += [ "//brave/components/brave_ads/core" ]
 }
 
-if (enable_brave_rewards) {
-  brave_browser_net_deps += [ "//brave/brave_domains:constants" ]
-}
