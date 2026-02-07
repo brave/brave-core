@@ -4,8 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
+  bitflyer_production_client_id = ""
+  bitflyer_production_client_secret = ""
   bitflyer_production_fee_address = ""
   bitflyer_production_url = ""
+  bitflyer_sandbox_client_id = ""
+  bitflyer_sandbox_client_secret = ""
   bitflyer_sandbox_fee_address = ""
   bitflyer_sandbox_url = ""
   gemini_production_api_url = ""
@@ -39,6 +43,8 @@ declare_args() {
 
 if (is_official_build) {
   if (!is_ios) {
+    assert(bitflyer_production_client_id != "")
+    assert(bitflyer_production_client_secret != "")
     assert(bitflyer_production_fee_address != "")
     assert(bitflyer_production_url != "")
     assert(gemini_production_api_url != "")

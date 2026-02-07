@@ -156,14 +156,22 @@ GURL EnvironmentConfig::bitflyer_url() const {
                       : BUILDFLAG(BITFLYER_SANDBOX_URL));
 }
 
+std::string EnvironmentConfig::bitflyer_client_id() const {
+  return current_environment() == mojom::Environment::kProduction
+             ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_ID)
+             : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID);
+}
+
+std::string EnvironmentConfig::bitflyer_client_secret() const {
+  return current_environment() == mojom::Environment::kProduction
+             ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_SECRET)
+             : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_SECRET);
+}
+
 std::string EnvironmentConfig::bitflyer_fee_address() const {
   return current_environment() == mojom::Environment::kProduction
              ? BUILDFLAG(BITFLYER_PRODUCTION_FEE_ADDRESS)
              : BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS);
-}
-
-GURL EnvironmentConfig::bitflyer_oauth_url() const {
-  return BuildGate3OAuthURL("bitflyer");
 }
 
 std::string EnvironmentConfig::BraveServicesKeyHeader() const {

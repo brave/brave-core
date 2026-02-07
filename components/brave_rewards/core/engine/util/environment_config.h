@@ -46,8 +46,9 @@ class EnvironmentConfig : public RewardsEngineHelper,
   std::string zebpay_client_secret() const;
 
   GURL bitflyer_url() const;
+  std::string bitflyer_client_id() const;
+  std::string bitflyer_client_secret() const;
   std::string bitflyer_fee_address() const;
-  GURL bitflyer_oauth_url() const;
 
   std::string BraveServicesKeyHeader() const;
 

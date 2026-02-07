@@ -43,9 +43,12 @@ const char* ConnectBitFlyerWallet::WalletType() const {
 std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
   auto& config = engine_->Get<EnvironmentConfig>();
 
-  auto url = config.bitflyer_oauth_url().Resolve("auth");
+  auto url = config.bitflyer_url().Resolve("/ex/OAuth/authorize");
+
   url = AppendOrReplaceQueryParameters(
-      url, {{"scope", "assets create_deposit_id withdraw_to_deposit_id"},
+      url, {{"client_id", config.bitflyer_client_id()},
+            {"scope", "assets create_deposit_id withdraw_to_deposit_id"},
+            {"redirect_uri", "rewards://bitflyer/authorization"},
             {"state", oauth_info_.one_time_string},
             {"response_type", "code"},
             {"code_challenge_method", "S256"},
