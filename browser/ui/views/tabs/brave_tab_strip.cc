@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
@@ -302,13 +303,20 @@ bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
 
 std::optional<SkColor> BraveTabStrip::GetTabAccentColor(const Tab* tab) const {
   auto container_model = GetContainerModelForTab(tab);
-  return container_model.background_color();
+  if (!container_model.has_value()) {
+    return std::nullopt;
+  }
+  return container_model->background_color();
 }
 
 ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
   auto container_model = GetContainerModelForTab(tab);
+  if (!container_model.has_value()) {
+    return ui::ImageModel();
+  }
+
   auto& icon =
-      containers::GetVectorIconFromIconType(container_model.container()->icon);
+      containers::GetVectorIconFromIconType(container_model->container()->icon);
   return ui::ImageModel::FromVectorIcon(icon, SK_ColorWHITE, 16);
 }
 
@@ -345,8 +353,8 @@ std::string BraveTabStrip::GetContainerIdForTab(const Tab* tab) const {
   return GetStoragePartitionConfigForTab(tab).partition_name();
 }
 
-containers::ContainerModel BraveTabStrip::GetContainerModelForTab(
-    const Tab* tab) const {
+std::optional<containers::ContainerModel>
+BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
   CHECK(IsTabInContainer(tab));
@@ -366,7 +374,10 @@ containers::ContainerModel BraveTabStrip::GetContainerModelForTab(
       });
 
   auto* widget = GetWidget();
-  CHECK(container_it != containers.end());
+  if (container_it == containers.end()) {
+    CHECK_IS_TEST();
+    return std::nullopt;
+  }
 
   return containers::ContainerModel(
       std::move(*container_it),

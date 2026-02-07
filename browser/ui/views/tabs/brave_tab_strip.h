@@ -59,7 +59,8 @@ class BraveTabStrip : public TabStrip {
 
   // These methods must be called only when IsTabInContainer() returns true.
   std::string GetContainerIdForTab(const Tab* tab) const;
-  containers::ContainerModel GetContainerModelForTab(const Tab* tab) const;
+  std::optional<containers::ContainerModel> GetContainerModelForTab(
+      const Tab* tab) const;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
  private:

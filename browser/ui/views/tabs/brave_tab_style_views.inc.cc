@@ -539,10 +539,11 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
     constexpr auto circle_size = 16;
     int center_x = bounds.x() + circle_size / 2;
     int center_y = bounds.bottom() - circle_size / 2;
-    if (auto background_color = brave_tab->GetTabAccentColor().value()) {
+    if (auto background_color = brave_tab->GetTabAccentColor();
+        background_color.has_value()) {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
-      flags.setColor(background_color);
+      flags.setColor(background_color.value());
       flags.setStyle(cc::PaintFlags::kFill_Style);
       canvas->DrawCircle(gfx::PointF(center_x, center_y), 8, flags);
     }
