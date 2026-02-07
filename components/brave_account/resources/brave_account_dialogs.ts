@@ -63,9 +63,45 @@ export class BraveAccountDialogs extends CrLitElement {
   }
 
   private onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && !hasKeyModifiers(e)) {
-      this.onCloseDialog()
-      e.preventDefault()
+    // Ignore keys pressed with modifiers (Ctrl, Shift, etc.).
+    if (hasKeyModifiers(e)) {
+      return
+    }
+
+    switch (e.key) {
+      // Clicks the action button (only if there's exactly one enabled).
+      case 'Enter': {
+        const dialog = [...(this.shadowRoot?.children ?? [])].find(
+          (el) => el instanceof HTMLElement && el.shadowRoot,
+        )
+
+        const buttons = dialog?.shadowRoot?.querySelectorAll<HTMLElement>(
+          'leo-button[slot="buttons"]:not([isDisabled])',
+        )
+
+        if (buttons?.length === 1) {
+          buttons[0]!.click()
+          e.preventDefault()
+        }
+        break
+      }
+      // Navigates back (unless in an input field).
+      case 'Backspace': {
+        const isInInput = e
+          .composedPath()
+          .some((el) => (el as HTMLElement).tagName === 'LEO-INPUT')
+
+        if (!isInInput) {
+          this.onBackButtonClicked()
+          e.preventDefault()
+        }
+        break
+      }
+      // Closes the dialog.
+      case 'Escape':
+        this.onCloseDialog()
+        e.preventDefault()
+        break
     }
   }
 
