@@ -167,6 +167,11 @@ bool TimePeriodStorage::IsOnePeriodPassed() const {
   return daily_values_.size() == period_days_;
 }
 
+void TimePeriodStorage::Clear() {
+  daily_values_.clear();
+  prefs_->ClearPref(pref_name_);
+}
+
 void TimePeriodStorage::FilterToPeriod() {
   base::Time now_midnight = clock_->Now().LocalMidnight();
   base::Time last_saved_midnight;

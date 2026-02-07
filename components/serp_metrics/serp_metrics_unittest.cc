@@ -329,7 +329,7 @@ TEST_F(SerpMetricsTest, OtherSearchCountForStalePeriod) {
   EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
-TEST_F(SerpMetricsTest, SearchCountForStalePeriodOverMultipleDays) {
+TEST_F(SerpMetricsTest, SearchCountForStalePeriodAcrossMultipleDays) {
   // Day 0: Stale
   serp_metrics_->RecordBraveSearch();
   serp_metrics_->RecordGoogleSearch();
@@ -533,6 +533,88 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesOutsideGivenRetentionPeriod) {
   EXPECT_EQ(1U, serp_metrics_->GetGoogleSearchCountForYesterday());
   EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForYesterday());
   EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, ClearHistoryClearsAllSearchCounts) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  ASSERT_EQ(1U, serp_metrics_->GetBraveSearchCountForTesting());
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordGoogleSearch();
+  ASSERT_EQ(1U, serp_metrics_->GetGoogleSearchCountForTesting());
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordOtherSearch();
+  ASSERT_EQ(1U, serp_metrics_->GetOtherSearchCountForTesting());
+
+  serp_metrics_->ClearHistory();
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForTesting());
+}
+
+TEST_F(SerpMetricsTest, ClearHistoryDoesNotRestoreClearedSearchCounts) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  ASSERT_EQ(1U, serp_metrics_->GetBraveSearchCountForTesting());
+  AdvanceClockToNextDay();
+
+  // Day 2: Yesterday
+  serp_metrics_->RecordGoogleSearch();
+  ASSERT_EQ(1U, serp_metrics_->GetGoogleSearchCountForTesting());
+  AdvanceClockToNextDay();
+
+  // Day 3: Today
+  serp_metrics_->RecordOtherSearch();
+  ASSERT_EQ(1U, serp_metrics_->GetOtherSearchCountForTesting());
+
+  serp_metrics_->ClearHistory();
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForTesting());
+
+  serp_metrics_->RecordOtherSearch();
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(1U, serp_metrics_->GetOtherSearchCountForTesting());
+}
+
+TEST_F(SerpMetricsTest, ClearHistoryWithNoSearchesRecorded) {
+  // Day 0: Today (no searches)
+
+  serp_metrics_->ClearHistory();
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForTesting());
+}
+
+TEST_F(SerpMetricsTest, ClearHistoryDoesNotAffectDailyUsagePing) {
+  // Day 0: Stale
+  serp_metrics_->RecordBraveSearch();
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordBraveSearch();
+  SimulateSendingDailyUsagePingAt(base::Time::Now());
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordBraveSearch();
+
+  serp_metrics_->ClearHistory();
+  EXPECT_EQ(0U, serp_metrics_->GetBraveSearchCountForTesting());
+}
+
+TEST_F(SerpMetricsTest, ClearHistoryIsIdempotent) {
+  // Day 0: Today
+  serp_metrics_->RecordOtherSearch();
+
+  serp_metrics_->ClearHistory();
+  serp_metrics_->ClearHistory();
+  EXPECT_EQ(0U, serp_metrics_->GetOtherSearchCountForTesting());
 }
 
 }  // namespace serp_metrics

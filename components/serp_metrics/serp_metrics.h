@@ -48,6 +48,8 @@ class SerpMetrics {
 
   virtual size_t GetSearchCountForStalePeriod() const;
 
+  virtual void ClearHistory();
+
   // Test helpers to return the total search count stored in `TimePeriodStorage`
   // without filtering by time range or staleness.
   size_t GetBraveSearchCountForTesting() const;

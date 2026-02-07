@@ -34,6 +34,8 @@ class SerpMetricsMock final : public SerpMetrics {
   MOCK_METHOD(size_t, GetOtherSearchCountForYesterday, (), (const));
 
   MOCK_METHOD(size_t, GetSearchCountForStalePeriod, (), (const));
+
+  MOCK_METHOD(void, ClearHistory, (), ());
 };
 
 }  // namespace serp_metrics

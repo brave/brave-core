@@ -135,6 +135,12 @@ size_t SerpMetrics::GetSearchCountForStalePeriod() const {
          GetOtherSearchCountForStalePeriod();
 }
 
+void SerpMetrics::ClearHistory() {
+  brave_search_engine_time_period_storage_.Clear();
+  google_search_engine_time_period_storage_.Clear();
+  other_search_engine_time_period_storage_.Clear();
+}
+
 size_t SerpMetrics::GetBraveSearchCountForTesting() const {
   return brave_search_engine_time_period_storage_.GetPeriodSum();
 }
