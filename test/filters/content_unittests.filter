@@ -43,6 +43,15 @@
 -PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleUrlOnlyWhenNotInIncognito/8
 -PrefetchServiceEventTest.*
 
+# Intermittent Mojo data pipe race: response_body().ReadData() returns 0 bytes
+# after RunUntilComplete() because data hasn't been flushed through the pipe yet.
+# Variant /1 is stable upstream (0.0% flake rate) so it is not filtered.
+# https://github.com/brave/brave-browser/issues/52657
+-WebUIURLLoaderFactoryTest.RangeRequest/0
+-WebUIURLLoaderFactoryTest.RangeRequest/2
+-WebUIURLLoaderFactoryTest.RangeRequest/3
+-WebUIURLLoaderFactoryTest.RangeRequest/4
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplBAndATest.*
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*
