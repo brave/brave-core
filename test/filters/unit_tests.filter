@@ -685,6 +685,7 @@
 # These tests fail because we disable uploading these event logs
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
+-UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
 
 # The following test uses Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
