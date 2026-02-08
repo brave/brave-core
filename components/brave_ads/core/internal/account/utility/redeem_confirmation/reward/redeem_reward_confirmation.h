@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REWARD_REDEEM_REWARD_CONFIRMATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REWARD_REDEEM_REWARD_CONFIRMATION_H_
 
-#include <string>
-#include <tuple>
-
 #include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_result_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
@@ -50,8 +47,7 @@ class RedeemRewardConfirmation final {
       RedeemRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& mojom_url_response);
-  static base::expected<void, std::tuple<std::string, bool>>
-  HandleCreateConfirmationUrlResponse(
+  static UrlResponseResultInfo<void> HandleCreateConfirmationUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
 
   static void FetchPaymentTokenAfter(
@@ -64,7 +60,7 @@ class RedeemRewardConfirmation final {
       RedeemRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& mojom_url_response);
-  static base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
+  static UrlResponseResultInfo<PaymentTokenInfo>
   HandleFetchPaymentTokenUrlResponse(
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& mojom_url_response);

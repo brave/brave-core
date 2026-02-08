@@ -11,9 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/location.h"
-#include "base/strings/strcat.h"
 #include "base/time/time.h"
-#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
@@ -34,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_result_info.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -123,42 +122,42 @@ void RefillConfirmationTokens::RequestSignedTokensCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleRequestSignedTokensUrlResponse(mojom_url_response);
-  if (!result.has_value()) {
-    const auto& [failure, should_retry] = result.error();
-
-    BLOG(0, failure);
-
-    return should_retry ? FailedToRefillAndRetry() : FailedToRefill();
+  const UrlResponseResultInfo<void> result =
+      HandleRequestSignedTokensUrlResponse(mojom_url_response);
+  if (const auto* error = GetError(result)) {
+    BLOG(0, error->message);
+    if (error->should_retry) {
+      return FailedToRefillAndRetry();
+    }
+    return FailedToRefill();
   }
 
   GetSignedTokens();
 }
 
-base::expected<void, std::tuple<std::string, bool>>
+UrlResponseResultInfo<void>
 RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
   if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
-    AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
-
-    return base::unexpected(std::make_tuple(
-        "Failed to request signed tokens as a browser upgrade is required",
-        /*should_retry=*/false));
+    return UrlResponseError{
+        .message =
+            "Failed to request signed tokens as a browser upgrade is required",
+        .should_retry = false};
   }
 
   if (mojom_url_response.code != net::HTTP_CREATED) {
     const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
                               HttpStatusCodeClassType::kClientError;
-    return base::unexpected(
-        std::make_tuple("Failed to request signed tokens", should_retry));
+    return UrlResponseError{.message = "Failed to request signed tokens",
+                            .should_retry = should_retry};
   }
 
   std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
-    return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
-        /*should_retry=*/false));
+    return UrlResponseError{
+        .message = "Failed to parse response: " + mojom_url_response.body,
+        .should_retry = false};
   }
 
   const bool is_eligible = ParseIsEligible(*dict).value_or(true);
@@ -168,11 +167,11 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
 
   nonce_ = ParseNonce(*dict);
   if (!nonce_) {
-    return base::unexpected(
-        std::make_tuple("Failed to parse nonce", /*should_retry=*/false));
+    return UrlResponseError{.message = "Failed to parse nonce",
+                            .should_retry = false};
   }
 
-  return base::ok();
+  return UrlResponseSuccess<void>{};
 }
 
 void RefillConfirmationTokens::GetSignedTokens() {
@@ -196,19 +195,20 @@ void RefillConfirmationTokens::GetSignedTokensCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleGetSignedTokensUrlResponse(mojom_url_response);
-  if (!result.has_value()) {
-    const auto& [failure, should_retry] = result.error();
-
-    BLOG(0, failure);
-
-    return should_retry ? FailedToRefillAndRetry() : FailedToRefill();
+  const UrlResponseResultInfo<void> result =
+      HandleGetSignedTokensUrlResponse(mojom_url_response);
+  if (const auto* error = GetError(result)) {
+    BLOG(0, error->message);
+    if (error->should_retry) {
+      return FailedToRefillAndRetry();
+    }
+    return FailedToRefill();
   }
 
   SuccessfullyRefilled();
 }
 
-base::expected<void, std::tuple<std::string, bool>>
+UrlResponseResultInfo<void>
 RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
   CHECK(tokens_);
@@ -216,61 +216,60 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
 
   if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
-
-    return base::unexpected(std::make_tuple(
-        "Failed to get signed tokens as a browser upgrade is required",
-        /*should_retry=*/false));
+    return UrlResponseError{
+        .message =
+            "Failed to get signed tokens as a browser upgrade is required",
+        .should_retry = false};
   }
 
   if (mojom_url_response.code != net::HTTP_OK &&
       mojom_url_response.code != net::HTTP_UNAUTHORIZED) {
-    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                              HttpStatusCodeClassType::kClientError;
-    return base::unexpected(
-        std::make_tuple("Failed to get signed tokens", should_retry));
+    return UrlResponseError{
+        .message = "Failed to get signed tokens",
+        .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                        HttpStatusCodeClassType::kClientError};
   }
 
   std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
-    return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
-        /*should_retry=*/false));
+    return UrlResponseError{
+        .message = "Failed to parse response: " + mojom_url_response.body,
+        .should_retry = false};
   }
 
   if (mojom_url_response.code == net::HTTP_UNAUTHORIZED) {
     ParseAndRequireCaptcha(*dict);
-
-    return base::unexpected(std::make_tuple(
-        "Captcha is required to refill confirmation tokens", /*should_retry=*/
-        false));
+    return UrlResponseError{
+        .message = "Captcha is required to refill confirmation tokens",
+        .should_retry = false};
   }
 
   std::optional<cbr::PublicKey> public_key = ParsePublicKey(*dict);
   if (!public_key.has_value()) {
-    return base::unexpected(std::make_tuple("Failed to parse public key",
-                                            /*should_retry=*/false));
+    return UrlResponseError{.message = "Failed to parse public key",
+                            .should_retry = false};
   }
 
   if (!TokenIssuerPublicKeyExistsForType(TokenIssuerType::kConfirmations,
                                          *public_key)) {
-    return base::unexpected(
-        std::make_tuple("Confirmations public key does not exist",
-                        /*should_retry=*/true));
+    return UrlResponseError{
+        .message = "Confirmations public key does not exist",
+        .should_retry = true};
   }
 
   std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       ParseVerifyAndUnblindTokens(*dict, *tokens_, *blinded_tokens_,
                                   *public_key);
   if (!unblinded_tokens) {
-    return base::unexpected(
-        std::make_tuple("Failed to parse, verify and unblind signed tokens",
-                        /*should_retry=*/false));
+    return UrlResponseError{
+        .message = "Failed to parse, verify and unblind signed tokens",
+        .should_retry = false};
   }
 
   BuildAndAddConfirmationTokens(*unblinded_tokens, *public_key, wallet_);
 
-  return base::ok();
+  return UrlResponseSuccess<void>{};
 }
 
 void RefillConfirmationTokens::ParseAndRequireCaptcha(
