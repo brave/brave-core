@@ -29,7 +29,6 @@
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 -PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
--ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
 
 # This test runs fine when run individually, but times out when run with test
