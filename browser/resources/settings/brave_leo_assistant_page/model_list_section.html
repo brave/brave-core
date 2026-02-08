@@ -1,4 +1,8 @@
 <style include="cr-shared-style settings-shared">
+  .ollama-toggle {
+    margin-bottom: var(--leo-spacing-xl);
+  }
+
   .list {
     display: flex;
     flex-direction: column;
@@ -65,7 +69,7 @@
   if="[[isOllamaConnected_]]"
 >
   <settings-toggle-button
-    class="cr-row"
+    class="cr-row ollama-toggle"
     label="$i18n{braveLeoAssistantOllamaSyncLabel}"
     icon="ollama"
     pref="{{prefs.brave.ai_chat.ollama_fetch_enabled}}">
