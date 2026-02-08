@@ -3506,3 +3506,8 @@
 # covering this - safe to disable the upstream one.
 # For more info, see https://github.com/brave/brave-browser/issues/46011
 -SecureDnsHandlerTest.OtherPoliciesSet
+
+# https://github.com/brave/brave-browser/issues/52659
+# Flaky favicon fetch failure. Also disabled on Mac upstream
+# (crbug.com/333331507).
+-InstallableManagerBrowserTest.CheckFavicon
