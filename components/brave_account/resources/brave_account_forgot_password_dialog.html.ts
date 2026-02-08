@@ -19,6 +19,7 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
       <div slot="inputs">
         <leo-input
           placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
+          type="email"
           @input=${this.onEmailInput}
         >
           <div

@@ -19,6 +19,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
         <leo-input
           placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
           showErrors
+          type="email"
           @input=${this.onEmailInput}
         >
           <div
