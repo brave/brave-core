@@ -3,6 +3,11 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.7
+
+Add `<date>` element in the `<desc>` metadata field for a timestamp
+of when the graph was created.
+
 ## Version 0.7.6
 
 Remove all header and request-size handling code. Handling this correctly

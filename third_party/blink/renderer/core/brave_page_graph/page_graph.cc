@@ -32,6 +32,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_page_graph/common/features.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -196,7 +197,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.7.6";
+constexpr char kPageGraphVersion[] = "0.7.7";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -1142,6 +1143,9 @@ String PageGraph::ToGraphML() const {
     xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
                     XmlUtf8String(source_url_).get());
   }
+  const auto date = base::Time::Now().InSecondsFSinceUnixEpoch();
+  xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "date",
+                  BAD_CAST base::NumberToString(date).c_str());
 
   xmlNodePtr time_container_node =
       xmlNewChild(desc_container_node, nullptr, BAD_CAST "time", nullptr);
