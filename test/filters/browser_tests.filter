@@ -3488,3 +3488,15 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
+
+# This test is disabled because we diverge from Chromium when it comes to
+# secure DNS. If any policies are present, we do not force secure DNS to be
+# set to 'off'. It's still configurable by user. We have our own browser test
+# covering this - safe to disable the upstream one.
+# For more info, see https://github.com/brave/brave-browser/issues/46011
+-SecureDnsHandlerTest.OtherPoliciesSet
+
+# https://github.com/brave/brave-browser/issues/52659
+# Flaky favicon fetch failure. Also disabled on Mac upstream
+# (crbug.com/333331507).
+-InstallableManagerBrowserTest.CheckFavicon
