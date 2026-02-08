@@ -195,6 +195,19 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
   UpdateMarginsForSideBar();
+
+  if (delegate().ShouldDrawVerticalTabStrip()) {
+    return;
+  }
+
+  auto* const toolbar_background =
+      static_cast<CustomCornersBackground*>(views().toolbar->background());
+  CustomCornersBackground::Corners toolbar_corners;
+  toolbar_corners.upper_trailing.type =
+      CustomCornersBackground::CornerType::kRoundedWithBackground;
+  toolbar_corners.upper_leading.type =
+      CustomCornersBackground::CornerType::kRoundedWithBackground;
+  toolbar_background->SetCorners(toolbar_corners);
 }
 
 BrowserViewTabbedLayoutImpl::TopSeparatorType
