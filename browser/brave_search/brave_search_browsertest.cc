@@ -10,7 +10,6 @@
 #include "base/strings/strcat.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/thread_test_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/common/features.h"
@@ -25,8 +24,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_terms_data.h"
+#include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -126,11 +126,14 @@ class BraveSearchTest : public InProcessBrowserTest {
     GURL url = https_server()->GetURL("google.com", "/search");
     brave_search::BraveSearchFallbackHost::SetBackupProviderForTest(url);
 
-    // Force default search engine to Google
-    // Some tests will fail if Brave is default
+    // Force default search engine to Google.
+    // Some tests will fail if Brave is default.
+    // Wait for the service to load first to ensure keyword lookup succeeds.
     auto* template_url_service =
         TemplateURLServiceFactory::GetForProfile(browser()->profile());
+    search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
     TemplateURL* google = template_url_service->GetTemplateURLForKeyword(u":g");
+    ASSERT_TRUE(google) << "Google search engine not found by keyword :g";
     template_url_service->SetUserSelectedDefaultSearchProvider(google);
   }
 
@@ -193,13 +196,6 @@ class BraveSearchTest : public InProcessBrowserTest {
   }
 
   bool GetFallbackSetsCookie() { return fallback_sets_cookie_; }
-
-  void NonBlockingDelay(base::TimeDelta delay) {
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitClosure(), delay);
-    run_loop.Run();
-  }
 
  protected:
   base::test::ScopedFeatureList feature_list_;
@@ -269,8 +265,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
-  search_test_utils::WaitForTemplateURLServiceToLoad(
-      TemplateURLServiceFactory::GetForProfile(browser()->profile()));
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -278,20 +274,26 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   EXPECT_EQ(url, contents->GetURL());
   EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
 
-  // Wait for the opensearch XML to be fetched, TemplateURL to be created,
-  // and all async initialization to complete. Use manual polling loop to avoid
-  // nested run loops (EvalJs creates its own run loop).
-  const base::TimeTicks deadline = base::TimeTicks::Now() + base::Seconds(10);
-  for (;;) {
-    NonBlockingDelay(base::Milliseconds(10));
-    if (content::EvalJs(contents, kScriptDefaultAPIGetValue).ExtractBool()) {
-      break;
+  // Wait for a TemplateURL matching the allowed domain to exist and be eligible
+  // to be made default. This ensures the opensearch XML has been fetched and
+  // processed (or the built-in entry is ready) before calling the JS API.
+  // We check in C++ to avoid calling getCanSetDefaultSearchProvider()
+  // repeatedly, which has side effects (it records each call against a
+  // rate limit, causing subsequent calls to return false).
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    for (const TemplateURL* t_url : template_url_service->GetTemplateURLs()) {
+      if (t_url->url_ref().GetHost(SearchTermsData()) == kAllowedDomain &&
+          template_url_service->CanMakeDefault(t_url)) {
+        return true;
+      }
     }
-    if (base::TimeTicks::Now() >= deadline) {
-      FAIL() << "Timeout waiting for getCanSetDefaultSearchProvider to return "
-                "true";
-    }
-  }
+    return false;
+  })) << "Timeout waiting for a TemplateURL for "
+      << kAllowedDomain << " that can be made default";
+
+  // Now call the JS API exactly once. The preconditions are met so this
+  // should return true.
+  EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIGetValue));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIHiddenUnknownHost) {

@@ -31,6 +31,12 @@
 -WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
 -WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
+# Flaky Chromium test - resize event fires during print preview due to Brave UI
+# layout (sidebar, vertical tabs, side panel). Chromium also disables this on
+# Linux/Ozone. Already disabled on Linux via PrintBrowserTest.* wildcard.
+# https://github.com/brave/brave-browser/issues/52475
+-PrintBrowserTest.NoResizeEvent
+
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
@@ -80,6 +86,12 @@
 -CDM_10/ECKEncryptedMediaTest.VerifyCdmHostTest/0
 -CDM_11/ECKEncryptedMediaTest.VerifyCdmHostTest/0
 -CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+
+# This test relies on command line switches for watermark opacity that only work
+# on non-STABLE, non-BETA channels. On Windows, OFFICIAL builds use
+# ScopedInstallDetails with default index 0 (STABLE), causing GetChannel() to
+# return STABLE and block the command line switches.
+-WatermarkSettingsCommandLineBrowserTest.GetColors
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1

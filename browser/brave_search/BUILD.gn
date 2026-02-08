@@ -54,6 +54,7 @@ if (!is_android) {
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/search_engines",
       "//content/test:test_support",
       "//net:test_support",
     ]
