@@ -6,23 +6,21 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_AI_CHAT_ENTERPRISE_POLICY_CHECKER_H_
 #define BRAVE_BROWSER_AI_CHAT_AI_CHAT_ENTERPRISE_POLICY_CHECKER_H_
 
-#include "chrome/browser/actor/enterprise_policy_checker.h"
+#include "chrome/browser/actor/enterprise_policy_url_checker.h"
 
 class GURL;
 
 namespace ai_chat {
 
-class AIChatEnterprisePolicyChecker : public actor::EnterprisePolicyChecker {
+class AIChatEnterprisePolicyChecker : public actor::EnterprisePolicyUrlChecker {
  public:
-  static const actor::EnterprisePolicyChecker* NoEnterprisePolicyChecker();
+  static const actor::EnterprisePolicyUrlChecker* NoEnterprisePolicyChecker();
 
   explicit AIChatEnterprisePolicyChecker(
       actor::EnterprisePolicyBlockReason reason);
   ~AIChatEnterprisePolicyChecker();
 
-  bool CanActOnWeb() const override;
   actor::EnterprisePolicyBlockReason Evaluate(const GURL& url) const override;
-  CannotActReason CannotActOnWebReason() const override;
 
  private:
   actor::EnterprisePolicyBlockReason reason_;
