@@ -40,9 +40,20 @@ const testContext: InputBoxProps['context'] = {
   openAIChatAgentProfile: () => {},
 }
 
+// Render InputBox and flush async state updates from usePromise.
+async function renderInputBox(
+  ...args: Parameters<typeof render>
+): Promise<ReturnType<typeof render>> {
+  let result: ReturnType<typeof render>
+  await act(async () => {
+    result = render(...args)
+  })
+  return result!
+}
+
 describe('input box', () => {
-  it('associated content is rendered in input box when not associated with a turn', () => {
-    const { container } = render(
+  it('associated content is rendered in input box when not associated with a turn', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -70,8 +81,8 @@ describe('input box', () => {
     ).toBeInTheDocument()
   })
 
-  it('associated content is not rendered in input box when there is no associated content', () => {
-    const { container } = render(
+  it('associated content is not rendered in input box when there is no associated content', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -87,8 +98,8 @@ describe('input box', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('associated content is not rendered in input box after being associated with a turn', () => {
-    const { container } = render(
+  it('associated content is not rendered in input box after being associated with a turn', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -114,8 +125,8 @@ describe('input box', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('send button is disabled when the input text is empty', () => {
-    const { container } = render(
+  it('send button is disabled when the input text is empty', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -130,8 +141,8 @@ describe('input box', () => {
     expect(sendButton).toHaveClass('sendButtonDisabled')
   })
 
-  it('send button is enabled when the input text is not empty', () => {
-    const { container } = render(
+  it('send button is enabled when the input text is not empty', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -146,8 +157,8 @@ describe('input box', () => {
     expect(sendButton).not.toHaveClass('sendButtonDisabled')
   })
 
-  it('streaming button is shown while generating', () => {
-    const { container } = render(
+  it('streaming button is shown while generating', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{ ...testContext, isGenerating: true }}
         conversationStarted={false}
@@ -210,8 +221,8 @@ describe('input box', () => {
 
   it.each(contentAgentParams)(
     'Content Agent button is shown only if the feature is enabled',
-    (params: ContentAgentParams) => {
-      render(
+    async (params: ContentAgentParams) => {
+      await renderInputBox(
         <InputBox
           context={{
             ...testContext,
@@ -244,8 +255,8 @@ describe('input box', () => {
     },
   )
 
-  it('documents show up in attachment wrapper', () => {
-    const { container } = render(
+  it('documents show up in attachment wrapper', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -267,8 +278,8 @@ describe('input box', () => {
     expect(attachmentWrapper).toBeInTheDocument()
   })
 
-  it('attachments are shown if only documents are available', () => {
-    const { container } = render(
+  it('attachments are shown if only documents are available', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -300,8 +311,8 @@ describe('input box', () => {
     expect(attachmentItems.length).toBeGreaterThanOrEqual(2)
   })
 
-  it('combinations of associated content, images and documents show up', () => {
-    const { container } = render(
+  it('combinations of associated content, images and documents show up', async () => {
+    const { container } = await renderInputBox(
       <InputBox
         context={{
           ...testContext,
@@ -377,7 +388,7 @@ describe('input box', () => {
 
     it('filters image files and calls attachImages on paste', async () => {
       const mockAttachImages = jest.fn()
-      const { container } = render(
+      const { container } = await renderInputBox(
         <InputBox
           context={{
             ...testContext,
@@ -424,8 +435,8 @@ describe('input box', () => {
   it(
     'Content Agent warning is shown if the conversation has not started'
       + ' and isAIChatAgentProfile is true',
-    () => {
-      const { container } = render(
+    async () => {
+      const { container } = await renderInputBox(
         <InputBox
           context={{
             ...testContext,
@@ -444,8 +455,8 @@ describe('input box', () => {
   it(
     'Content Agent warning is not shown after the conversation has started'
       + ' and isAIChatAgentProfile is true',
-    () => {
-      const { container } = render(
+    async () => {
+      const { container } = await renderInputBox(
         <InputBox
           context={{
             ...testContext,
@@ -464,8 +475,8 @@ describe('input box', () => {
   it(
     'Content Agent warning is not shown if isAIChatAgentProfile'
       + 'is not true',
-    () => {
-      const { container } = render(
+    async () => {
+      const { container } = await renderInputBox(
         <InputBox
           context={{
             ...testContext,
