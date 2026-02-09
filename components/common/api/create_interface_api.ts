@@ -206,8 +206,8 @@ export function createInterfaceApi<
    */
   const ExposedActions extends Record<
     string,
-    | ((...args: readonly any[]) => any)
-    | Record<string, (...args: readonly any[]) => any>
+    | Function
+    | Record<string, Function>
   >,
   const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
   EventDefinitions extends Record<string, EventDef<any[], any>> = {},

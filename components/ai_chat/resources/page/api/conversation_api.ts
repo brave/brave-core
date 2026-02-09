@@ -51,7 +51,7 @@ export default function createConversationApi(
         'pauseTask',
         'resumeTask',
         'stopTask',
-      ] as const),
+      ]),
     },
 
     // Define the data-retrieval and mutation functions we'll cache or mutate
