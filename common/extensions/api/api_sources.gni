@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 
 brave_extensions_api_uncompiled_sources = []
@@ -11,13 +12,16 @@ brave_extensions_api_schema_include_rules =
     "//brave/common/extensions/api:extensions::api::%(namespace)s"
 
 schema_sources_ = [
-  "brave_rewards.json",
   "brave_theme.json",
   "web_discovery.json",
 ]
 
 if (enable_brave_talk) {
   schema_sources_ += [ "brave_talk.json" ]
+}
+
+if (enable_brave_rewards) {
+  schema_sources_ += [ "brave_rewards.json" ]
 }
 
 brave_extensions_api_schema_sources = get_path_info(schema_sources_, "abspath")

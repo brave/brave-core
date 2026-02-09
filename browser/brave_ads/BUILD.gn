@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//build/config/ozone.gni")
 import("//build/config/ui.gni")
 
@@ -61,12 +62,12 @@ source_set("impl") {
     "//brave/browser/brave_ads/device_id",
     "//brave/browser/brave_ads/services",
     "//brave/browser/brave_ads/tooltips",
-    "//brave/browser/brave_rewards",
-    "//brave/browser/brave_rewards:util",
     "//brave/browser/brave_stats",
     "//brave/browser/ui/brave_ads",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser/application_state",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/p3a_utils",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
@@ -87,6 +88,10 @@ source_set("impl") {
     "//ui/gfx",
     "//ui/message_center/public/cpp",
   ]
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/browser/brave_rewards" ]
+  }
 
   if (toolkit_views) {
     deps += [ "//ui/views" ]

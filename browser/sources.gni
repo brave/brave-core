@@ -8,7 +8,6 @@ import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_account/android/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
-import("//brave/browser/brave_rewards/android/sources.gni")
 import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
@@ -44,6 +43,7 @@ import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -57,6 +57,10 @@ import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//printing/buildflags/buildflags.gni")
+
+if (enable_brave_rewards) {
+  import("//brave/browser/brave_rewards/android/sources.gni")
+}
 
 if (enable_brave_wallet) {
   import("//brave/browser/brave_wallet/android/sources.gni")
@@ -135,8 +139,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
   "//brave/browser/brave_origin",
-  "//brave/browser/brave_rewards:brave_rewards_impl",
-  "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_search",
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
@@ -289,6 +291,13 @@ brave_chrome_browser_deps = [
   "//ui/base",
   "//url",
 ]
+
+if (enable_brave_rewards) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/brave_rewards:brave_rewards_impl",
+    "//brave/browser/brave_rewards:util",
+  ]
+}
 
 if (enable_psst) {
   brave_chrome_browser_deps += [
@@ -500,10 +509,13 @@ if (is_android) {
   ]
 
   brave_chrome_browser_sources += brave_browser_brave_account_android_sources
-  brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
   brave_chrome_browser_sources += brave_browser_misc_metrics_android_sources
   brave_chrome_browser_deps += brave_browser_brave_account_android_deps
-  brave_chrome_browser_deps += brave_browser_brave_rewards_android_deps
+
+  if (enable_brave_rewards) {
+    brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
+    brave_chrome_browser_deps += brave_browser_brave_rewards_android_deps
+  }
 
   if (enable_brave_wallet) {
     brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources

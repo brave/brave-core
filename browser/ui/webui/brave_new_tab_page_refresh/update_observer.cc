@@ -10,6 +10,7 @@
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -58,7 +59,9 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(brave_talk::prefs::kNewTabPageShowBraveTalk, Source::kTalk);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   AddPrefListener(kNewTabPageShowRewards, Source::kRewards);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   AddPrefListener(kNewTabPageShowBraveVPN, Source::kVPN);

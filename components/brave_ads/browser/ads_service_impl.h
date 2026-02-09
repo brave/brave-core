@@ -30,6 +30,7 @@
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -44,6 +45,10 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/base/idle/idle.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/content/rewards_service.h"
+#endif
+
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
@@ -52,10 +57,6 @@ namespace base {
 class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
-
-namespace brave_rewards {
-class RewardsService;
-}  // namespace brave_rewards
 
 namespace brave_ads {
 
@@ -70,7 +71,9 @@ class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsObserver,
                              BackgroundHelper::Observer,
                              public ResourceComponentObserver,
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
                              public brave_rewards::RewardsServiceObserver,
+#endif
                              public content_settings::Observer {
  public:
   // `http_client` can be `nullptr` in tests.
@@ -88,7 +91,9 @@ class AdsServiceImpl final : public AdsService,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       ResourceComponent* resource_component,
       history::HistoryService* history_service,
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       brave_rewards::RewardsService* rewards_service,
+#endif
       HostContentSettingsMap* host_content_settings);
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
@@ -171,9 +176,11 @@ class AdsServiceImpl final : public AdsService,
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void GetRewardsWallet();
   void NotifyRewardsWalletDidUpdate(
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
+#endif
 
   void RefetchNewTabPageAd();
   void RefetchNewTabPageAdCallback(bool success);
@@ -389,10 +396,12 @@ class AdsServiceImpl final : public AdsService,
                                     const std::string& id) override;
   void OnDidUnregisterResourceComponent(const std::string& id) override;
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // RewardsServiceObserver:
   void OnRewardsWalletCreated() override;
   void OnExternalWalletConnected() override;
   void OnCompleteReset(bool success) override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   // content_settings::Observer:
   void OnContentSettingChanged(
@@ -461,9 +470,11 @@ class AdsServiceImpl final : public AdsService,
 
   const base::FilePath ads_service_path_;
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

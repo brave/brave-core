@@ -4,13 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/scoped_observation.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/content/rewards_service.h"
-#include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -27,6 +25,12 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/content/rewards_service.h"
+#include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/components/speedreader/speedreader_service.h"
@@ -36,6 +40,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 namespace {
 class TestRewardsServiceObserver
     : public brave_rewards::RewardsServiceObserver {
@@ -60,6 +65,7 @@ class TestRewardsServiceObserver
       observer_{this};
 };
 }  // namespace
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
  protected:
@@ -91,16 +97,20 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void WaitForRewardsServiceInitialized() {
     auto* rewards_service = brave_rewards::RewardsServiceFactory::GetForProfile(
         browser()->profile());
     TestRewardsServiceObserver observer;
     observer.WaitForServiceInitialized(rewards_service);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 };
 
 IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, PRE_Default) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   WaitForRewardsServiceInitialized();
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
@@ -113,7 +123,9 @@ IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   EXPECT_TRUE(BraveNewsAreEnabled());
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   WaitForRewardsServiceInitialized();
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   auto* prefs = browser()->profile()->GetPrefs();
