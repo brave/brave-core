@@ -20,7 +20,9 @@
 using testing::_;
 
 namespace brave_wallet {
+
 namespace {
+
 constexpr char kTxid1[] =
     "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5";
 constexpr char kTxid2[] =
@@ -175,6 +177,18 @@ TEST(CardanoTransaction, Value) {
   EXPECT_EQ(parsed_no_fee->fee(), 555667277u);
 }
 
+TEST(CardanoTransaction, SetupTargetOutput) {
+  CardanoTransaction tx;
+
+  EXPECT_FALSE(tx.TargetOutput());
+  tx.SetupTargetOutput(*CardanoAddress::FromString(kAddress1));
+  EXPECT_TRUE(tx.TargetOutput());
+  EXPECT_EQ(tx.TargetOutput()->address, *CardanoAddress::FromString(kAddress1));
+  EXPECT_EQ(tx.TargetOutput()->amount, 0u);
+  EXPECT_EQ(tx.TargetOutput()->tokens, cardano_rpc::Tokens());
+  EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
+}
+
 TEST(CardanoTransaction, SetupChangeOutput) {
   CardanoTransaction tx;
 
@@ -296,6 +310,22 @@ TEST(CardanoTransaction, GetTotalInputTokensAmount) {
   tx.AddInput(input4);
   // Sum of baz tokens overflows.
   EXPECT_FALSE(tx.GetTotalInputTokensAmount());
+}
+
+TEST(CardanoTransaction, GetToAddress) {
+  CardanoTransaction tx;
+  EXPECT_FALSE(tx.GetToAddress());
+  tx.SetupTargetOutput(*CardanoAddress::FromString(kAddress1));
+  EXPECT_EQ(tx.GetToAddress()->ToString(), kAddress1);
+}
+
+TEST(CardanoTransaction, IsSendTokenTransaction) {
+  CardanoTransaction tx;
+  EXPECT_FALSE(tx.IsSendTokenTransaction());
+  tx.SetupTargetOutput(*CardanoAddress::FromString(kAddress1));
+  EXPECT_FALSE(tx.IsSendTokenTransaction());
+  tx.TargetOutput()->tokens[GetMockTokenId("foo")] = 1u;
+  EXPECT_TRUE(tx.IsSendTokenTransaction());
 }
 
 TEST(CardanoTransaction, GetTotalOutputTokensAmount) {

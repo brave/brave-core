@@ -88,13 +88,13 @@ base::DictValue CardanoTxMeta::ToValue() const {
 }
 
 mojom::TransactionInfoPtr CardanoTxMeta::ToTransactionInfo() const {
-  auto tx_type = tx_->IsSendTokenTransaction()
-                     ? mojom::TransactionType::CardanoSendToken
-                     : mojom::TransactionType::CardanoSendLovelace;
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewCardanoTxData(ToCardanoTxData(*tx_)), status_,
-      tx_type, std::vector<std::string>() /* tx_params */,
+      tx_->IsSendTokenTransaction()
+          ? mojom::TransactionType::CardanoSendToken
+          : mojom::TransactionType::CardanoSendLovelace,
+      std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
       base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),

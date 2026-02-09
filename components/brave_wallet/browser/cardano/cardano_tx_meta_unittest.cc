@@ -91,6 +91,7 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   EXPECT_EQ(tx_data->outputs[1]->tokens[0],
             mojom::CardanoTxTokenValue::New(
                 base::HexEncodeLower(GetMockTokenId("foo")), 1));
+  EXPECT_EQ(ti->tx_type, mojom::TransactionType::CardanoSendLovelace);
 }
 
 TEST(CardanoTxMeta, ToValue) {

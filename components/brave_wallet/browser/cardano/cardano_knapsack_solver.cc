@@ -24,6 +24,25 @@ namespace {
 
 constexpr int kCardanoKnapsackSolverIterations = 1000;
 
+bool CheckBalance(const std::vector<CardanoTransaction::TxInput>& inputs,
+                  const TxBuilderParms& builder_params) {
+  base::CheckedNumeric<uint64_t> total_amount = 0;
+  for (const auto& input : inputs) {
+    if (!builder_params.token_to_send) {
+      total_amount += input.utxo_value;
+    } else {
+      auto it = input.utxo_tokens.find(*builder_params.token_to_send);
+      if (it != input.utxo_tokens.end()) {
+        total_amount += it->second;
+      }
+    }
+  }
+  if (!total_amount.IsValid()) {
+    return false;
+  }
+  return total_amount.ValueOrDie() >= builder_params.amount;
+}
+
 }  // namespace
 
 CardanoKnapsackSolver::CardanoKnapsackSolver(
@@ -33,7 +52,7 @@ CardanoKnapsackSolver::CardanoKnapsackSolver(
 CardanoKnapsackSolver::~CardanoKnapsackSolver() = default;
 
 // static
-std::optional<std::string> CardanoKnapsackSolver::SetupOutputs(
+base::expected<void, std::string> CardanoKnapsackSolver::SetupOutputs(
     CardanoTransaction& tx,
     const TxBuilderParms& builder_params) {
   tx.SetupTargetOutput(builder_params.send_to_address);
@@ -41,7 +60,7 @@ std::optional<std::string> CardanoKnapsackSolver::SetupOutputs(
     tx.TargetOutput()->amount = builder_params.amount;
     if (!CardanoTransactionSerializer().ValidateMinValue(
             *tx.TargetOutput(), builder_params.epoch_parameters)) {
-      return WalletAmountTooSmallErrorMessage();
+      return base::unexpected(WalletAmountTooSmallErrorMessage());
     }
   } else {
     tx.TargetOutput()->tokens[*builder_params.token_to_send] =
@@ -51,14 +70,14 @@ std::optional<std::string> CardanoKnapsackSolver::SetupOutputs(
             *tx.TargetOutput(), builder_params.epoch_parameters);
     if (!base::OptionalUnwrapTo(min_ada_required_target,
                                 tx.TargetOutput()->amount)) {
-      return WalletInsufficientBalanceErrorMessage();
+      return base::unexpected(WalletInsufficientBalanceErrorMessage());
     }
   }
-  return std::nullopt;
+  return base::ok();
 }
 
 // static
-void CardanoKnapsackSolver::SetupInputs(
+void CardanoKnapsackSolver::SortInputs(
     std::vector<CardanoTransaction::TxInput>& inputs,
     const TxBuilderParms& builder_params) {
   std::sort(
@@ -117,30 +136,30 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
         try_transaction.AddInput(inputs_[input_index]);
 
         // We must move all tokens from inputs into change output.
-        if (!try_transaction.EnsureTokensInChangeOutput()) {
-          continue;
+        if (try_transaction.EnsureTokensInChangeOutput()) {
+          // Given set of inputs and outputs try to find valid outputs' amounts
+          // and tx fee.
+          if (auto found_valid_tx =
+                  CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
+                      std::move(try_transaction),
+                      builder_params_.epoch_parameters, false)) {
+            // Found a valid tx with given inputs. Check if it is the best
+            // tx so far and don't update `cur_transaction` as it doesn't make
+            // sense to add new inputs into it.
+            has_valid_transaction_for_iteration = true;
+            if (!current_best_solution ||
+                current_best_solution->fee() > found_valid_tx->fee()) {
+              current_best_solution = std::move(*found_valid_tx);
+            }
+
+            continue;
+          }
         }
 
-        // Given set of inputs and outputs try to find valid outputs' amounts
-        // and tx fee.
-        if (auto found_valid_tx =
-                CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-                    std::move(try_transaction),
-                    builder_params_.epoch_parameters, false)) {
-          // Found a valid tx with given inputs. Check if it is the best
-          // tx so far and don't update `cur_transaction` as it doesn't make
-          // sense to add new inputs into it.
-          has_valid_transaction_for_iteration = true;
-          if (!current_best_solution ||
-              current_best_solution->fee() > found_valid_tx->fee()) {
-            current_best_solution = std::move(*found_valid_tx);
-          }
-        } else {
-          // Could not find a valid tx with given inputs. proceed to the next
-          // iteration with current input added to `cur_transaction`.
-          picked_inputs[input_index] = true;
-          cur_transaction.AddInput(inputs_[input_index]);
-        }
+        // Could not make a valid tx with given inputs. Proceed to the next
+        // iteration with current input added to `cur_transaction`.
+        picked_inputs[input_index] = true;
+        cur_transaction.AddInput(inputs_[input_index]);
       }
     }
   }
@@ -149,13 +168,20 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
 base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   CHECK(!builder_params_.sending_max_amount);
 
-  CardanoTransaction base_transaction;
-  base_transaction.set_invalid_after(builder_params_.invalid_after);
-  if (auto err = SetupOutputs(base_transaction, builder_params_)) {
-    return base::unexpected(std::move(*err));
+  // Fail fast if we don't have enough balance(lovelace or token) to send to
+  // destination address.
+  if (!CheckBalance(inputs_, builder_params_)) {
+    return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
-  SetupInputs(inputs_, builder_params_);
+  CardanoTransaction base_transaction;
+  base_transaction.set_invalid_after(builder_params_.invalid_after);
+  if (auto err = SetupOutputs(base_transaction, builder_params_);
+      !err.has_value()) {
+    return base::unexpected(err.error());
+  }
+
+  SortInputs(inputs_, builder_params_);
 
   std::optional<CardanoTransaction> current_best_solution;
 

@@ -33,17 +33,19 @@ class CardanoKnapsackSolver {
   base::expected<CardanoTransaction, std::string> Solve();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(CardanoKnapsackSolverUnitTest, SetupOutputs);
+  FRIEND_TEST_ALL_PREFIXES(CardanoKnapsackSolverUnitTest, SortInputs);
   // Setup target output. In case of lovelace transfer validate if amount fits
   // min output limit. In case of token send also set min required lovelace
   // amount.
-  static std::optional<std::string> SetupOutputs(
+  static base::expected<void, std::string> SetupOutputs(
       CardanoTransaction& tx,
       const TxBuilderParms& builder_params);
 
   // Sort inputs by the token amount in descending order. If the token amount
   // is the same, sort by the utxo value in descending order.
-  static void SetupInputs(std::vector<CardanoTransaction::TxInput>& inputs,
-                          const TxBuilderParms& builder_params);
+  static void SortInputs(std::vector<CardanoTransaction::TxInput>& inputs,
+                         const TxBuilderParms& builder_params);
 
   // Various params required to create transaction.
   TxBuilderParms builder_params_;
