@@ -8,21 +8,11 @@
 
 #include <memory>
 
-#include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/url_context.h"
-
-namespace net {
-class HttpResponseHeaders;
-}  // namespace net
-
-class GURL;
 
 namespace brave {
 
 int OnHeadersReceived_AdBlockCspWork(
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-    GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 

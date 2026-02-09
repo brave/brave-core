@@ -10,17 +10,12 @@
 
 #include "brave/browser/net/url_context.h"
 
-namespace net {
-class HttpRequestHeaders;
-}  // namespace net
-
 namespace brave {
 
 inline constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
 inline constexpr char kSearchAdsDisabledValue[] = "?0";
 
 int OnBeforeStartTransaction_SearchAdsHeader(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 

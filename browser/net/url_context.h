@@ -97,7 +97,7 @@ struct BraveRequestInfo {
 
   raw_ptr<content::BrowserContext, DanglingUntriaged> browser_context = nullptr;
   raw_ptr<net::HttpRequestHeaders> headers = nullptr;
-  // The following two sets are populated by |OnBeforeStartTransactionCallback|.
+  // The following two sets are populated by OnBeforeStartTransaction callbacks.
   // |set_headers| contains headers which values were added or modified.
   std::set<std::string> set_headers;
   std::set<std::string> removed_headers;
@@ -145,20 +145,12 @@ struct BraveRequestInfo {
   raw_ptr<GURL, DanglingUntriaged> new_url = nullptr;
 };
 
-// ResponseListener
-using OnBeforeURLRequestCallback =
+// Unified callback type for all network delegate events. All event-specific
+// data (headers, response_headers, etc.) is accessed via the BraveRequestInfo
+// context object, which is populated before the callback chain is invoked.
+using BraveRequestCallback =
     base::RepeatingCallback<int(const ResponseCallback& next_callback,
                                 std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnBeforeStartTransactionCallback =
-    base::RepeatingCallback<int(net::HttpRequestHeaders* headers,
-                                const ResponseCallback& next_callback,
-                                std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnHeadersReceivedCallback = base::RepeatingCallback<int(
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-    GURL* allowed_unsafe_redirect_url,
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
 

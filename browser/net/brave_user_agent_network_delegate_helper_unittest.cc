@@ -67,7 +67,8 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
     headers.SetHeader(header_name_2, header_value_2);
     auto ctx = std::make_shared<BraveRequestInfo>();
     ctx->tab_origin = GURL(tab_origin);
-    int result = OnBeforeStartTransaction_UserAgentWork(&headers, {}, ctx);
+    ctx->headers = &headers;
+    int result = OnBeforeStartTransaction_UserAgentWork({}, ctx);
     EXPECT_EQ(result, net::OK);
     return {headers.GetHeader(kSecCHUAHeader),
             headers.GetHeader(kSecCHUAFullVersionListHeader)};

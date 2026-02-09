@@ -19,7 +19,6 @@
 namespace brave {
 
 int OnBeforeStartTransaction_BraveServiceKey(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   static const base::NoDestructor<std::vector<std::string>> allowed_domains{
@@ -33,8 +32,8 @@ int OnBeforeStartTransaction_BraveServiceKey(
     if (std::any_of(
             allowed_domains->begin(), allowed_domains->end(),
             [&url](const auto& domain) { return url.DomainIs(domain); })) {
-      headers->SetHeader(kBraveServicesKeyHeader,
-                         BUILDFLAG(BRAVE_SERVICES_KEY));
+      ctx->headers->SetHeader(kBraveServicesKeyHeader,
+                              BUILDFLAG(BRAVE_SERVICES_KEY));
     }
   }
   return net::OK;

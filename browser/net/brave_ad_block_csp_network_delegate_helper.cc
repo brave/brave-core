@@ -59,14 +59,12 @@ void OnReceiveCspDirectives(
 }
 
 int OnHeadersReceived_AdBlockCspWork(
-    const net::HttpResponseHeaders* response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-    GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!response_headers || !ctx->allow_brave_shields || ctx->allow_ads) {
+  if (!ctx->original_response_headers || !ctx->allow_brave_shields ||
+      ctx->allow_ads) {
     return net::OK;
   }
 
@@ -75,16 +73,17 @@ int OnHeadersReceived_AdBlockCspWork(
     // If the override_response_headers have already been populated, we should
     // use those directly.  Otherwise, we populate them from the original
     // headers.
-    if (!*override_response_headers) {
-      *override_response_headers =
-          new net::HttpResponseHeaders(response_headers->raw_headers());
+    if (!*ctx->override_response_headers) {
+      *ctx->override_response_headers = new net::HttpResponseHeaders(
+          ctx->original_response_headers->raw_headers());
     }
 
     std::optional<std::string> original_csp =
-        (*override_response_headers)
+        (*ctx->override_response_headers)
             ->GetNormalizedHeader("Content-Security-Policy");
 
-    (*override_response_headers)->RemoveHeader("Content-Security-Policy");
+    (*ctx->override_response_headers)
+        ->RemoveHeader("Content-Security-Policy");
 
     g_brave_browser_process->ad_block_service()
         ->GetTaskRunner()
@@ -92,7 +91,7 @@ int OnHeadersReceived_AdBlockCspWork(
             FROM_HERE,
             base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx, original_csp),
             base::BindOnce(&OnReceiveCspDirectives, next_callback, ctx,
-                           *override_response_headers));
+                           *ctx->override_response_headers));
     return net::ERR_IO_PENDING;
   }
 

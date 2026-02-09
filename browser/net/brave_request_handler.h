@@ -6,17 +6,14 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_REQUEST_HANDLER_H_
 #define BRAVE_BROWSER_NET_BRAVE_REQUEST_HANDLER_H_
 
-#include <map>
 #include <memory>
-#include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/completion_once_callback.h"
-
-class PrefChangeRegistrar;
 
 // Contains different network stack hooks (similar to capabilities of WebRequest
 // API).
@@ -50,12 +47,12 @@ class BraveRequestHandler {
   void SetupCallbacks();
   void RunNextCallback(std::shared_ptr<brave::BraveRequestInfo> ctx);
 
-  std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
-  std::vector<brave::OnBeforeStartTransactionCallback>
-      before_start_transaction_callbacks_;
-  std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
+  // Unified callback storage keyed by event type.
+  base::flat_map<brave::BraveNetworkDelegateEventType,
+                 std::vector<brave::BraveRequestCallback>>
+      callbacks_by_event_;
 
-  std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
+  base::flat_map<uint64_t, net::CompletionOnceCallback> pending_callbacks_;
 
   base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
 };

@@ -79,7 +79,6 @@ std::string FarbleAcceptLanguageHeader(
 }
 
 int OnBeforeStartTransaction_ReduceLanguageWork(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
@@ -103,7 +102,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     return net::OK;
   }
 
-  if (headers->HasHeader(net::HttpRequestHeaders::kAcceptLanguage)) {
+  if (ctx->headers->HasHeader(net::HttpRequestHeaders::kAcceptLanguage)) {
     // For virtually all requests (HTML, CSS, JS, images, XHR), this header will
     // not exist yet. If the request headers already include an Accept-Language
     // value here, it means something explicitly set it, e.g. a page script
@@ -137,8 +136,8 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
       NOTREACHED();
   }
 
-  headers->SetHeader(net::HttpRequestHeaders::kAcceptLanguage,
-                     accept_language_string);
+  ctx->headers->SetHeader(net::HttpRequestHeaders::kAcceptLanguage,
+                           accept_language_string);
   ctx->set_headers.insert(net::HttpRequestHeaders::kAcceptLanguage);
 
   return net::OK;

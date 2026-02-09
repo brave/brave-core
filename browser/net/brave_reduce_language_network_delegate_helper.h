@@ -17,11 +17,6 @@ class PrefService;
 class Profile;
 struct BraveRequestInfo;
 
-namespace net {
-class HttpRequestHeaders;
-class URLRequest;
-}  // namespace net
-
 namespace brave {
 
 std::string FarbleAcceptLanguageHeader(
@@ -30,7 +25,6 @@ std::string FarbleAcceptLanguageHeader(
     HostContentSettingsMap* content_settings);
 
 int OnBeforeStartTransaction_ReduceLanguageWork(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 

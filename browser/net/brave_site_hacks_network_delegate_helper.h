@@ -10,10 +10,6 @@
 
 #include "brave/browser/net/url_context.h"
 
-namespace net {
-class URLRequest;
-}
-
 namespace brave {
 
 int OnBeforeURLRequest_SiteHacksWork(
@@ -21,7 +17,6 @@ int OnBeforeURLRequest_SiteHacksWork(
     std::shared_ptr<BraveRequestInfo> ctx);
 
 int OnBeforeStartTransaction_SiteHacksWork(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 

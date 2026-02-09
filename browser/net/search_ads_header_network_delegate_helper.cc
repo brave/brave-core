@@ -42,7 +42,6 @@ bool ShouldSetHeaderForProfile(Profile* profile) {
 namespace brave {
 
 int OnBeforeStartTransaction_SearchAdsHeader(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> request) {
   // The header should be set if (to disable search ads):
@@ -67,7 +66,7 @@ int OnBeforeStartTransaction_SearchAdsHeader(
       brave_search::IsAllowedHost(request->request_url) &&
       (brave_search::IsAllowedHost(request->tab_origin) ||
        brave_search::IsAllowedHost(request->initiator_url))) {
-    headers->SetHeader(kSearchAdsHeader, kSearchAdsDisabledValue);
+    request->headers->SetHeader(kSearchAdsHeader, kSearchAdsDisabledValue);
     request->set_headers.insert(kSearchAdsHeader);
   }
 
