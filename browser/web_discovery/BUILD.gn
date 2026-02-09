@@ -55,7 +55,7 @@ source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "content_scraper_browsertest.cc" ]
+    sources = []
 
     if (!is_android) {
       sources += [ "web_discovery_browsertest.cc" ]
@@ -65,10 +65,6 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/components/constants",
       "//brave/components/search_engines",
-      "//brave/components/web_discovery/browser",
-      "//brave/components/web_discovery/browser:internal",
-      "//brave/components/web_discovery/common",
-      "//brave/components/web_discovery/common:mojom",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
@@ -77,10 +73,20 @@ source_set("browser_tests") {
       "//components/prefs",
       "//content/public/browser",
       "//content/test:test_support",
-      "//net:test_support",
-      "//services/service_manager/public/cpp",
       "//testing/gmock",
       "//testing/gtest",
     ]
+
+    if (enable_web_discovery_native) {
+      sources += [ "content_scraper_browsertest.cc" ]
+      deps += [
+        "//brave/components/web_discovery/browser",
+        "//brave/components/web_discovery/browser:internal",
+        "//brave/components/web_discovery/common",
+        "//brave/components/web_discovery/common:mojom",
+        "//net:test_support",
+        "//services/service_manager/public/cpp",
+      ]
+    }
   }
 }
