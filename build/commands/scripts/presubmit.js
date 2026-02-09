@@ -30,9 +30,7 @@ program
   .option('--json <output>', 'An output file for a JSON report')
   .action(runPresubmit)
 
-const options = program.opts()
-
-function runPresubmit() {
+function runPresubmit(options) {
   if (!options.base) {
     options.base = 'origin/master'
   }
