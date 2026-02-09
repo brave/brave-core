@@ -134,7 +134,6 @@
 <translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
 <translation id="1162706247109707219">እሺን ጠቅ በማድረግ የ Brave ጭነትዎ ወደ Windows 10 ወይም ከዚያ በኋላ እስካላዘመኑ ድረስ ወሳኝ የደህንነት ጥገናዎችን እንደማይቀበል እውቅና ይሰጣሉ። ይህ ማሳሰቢያ እንደገና አይታይም።</translation>
 <translation id="9164786361657554526">እሺን ጠቅ በማድረግ የ Brave ጭነትዎ ወደ macOS 10.15 ወይም ከዚያ በኋላ እስካላዘመኑ ድረስ ወሳኝ የደህንነት ጥገናዎችን እንደማይቀበል እውቅና ይሰጣሉ። ይህ ማሳሰቢያ እንደገና አይታይም።</translation>
-<translation id="2770465223704140727">ከዝርዝር  አስወግድ</translation>
 <translation id="6020553119523541665">ይህ ሳብ በሌላ መስኮት ውስጥ አቅል።</translation>
 <translation id="4987392683074136770">ከህዝብ ነበኘውበጋሌውና ወደ እነዚህ አሥርታ እና የተከታታይ ገናቅሎ.</translation>
 <translation id="8355523213948477234">ትክክለኛ እይታ ስርዓት አዝራር</translation>
@@ -227,6 +226,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">በ Brave VPN ውስጥ የ WireGuard ፕሮቶኮልን ይጠቀሙ</translation>
 <translation id="8519170191215826548">Brave VPN ሲገናኝ ይህ ቅንብር ሊቀየር አይችልም።</translation>
+<translation id="1177917174080821247">VPN ትሪ አዶን አሳይ</translation>
+<translation id="3747459938663420752">ሲነቃቃ ነፃ ቀጠሮ ሲኖረው፣ የWindows ሥርዓት አሞሌ ላይ የBrave VPN አዶ አይኮን ይታያል።</translation>
 <translation id="4235920711083356755">የ VPN ቁልፍን ማሳየት</translation>
 <translation id="4070612712151038707">በቱልባር ውስጥ የ VPN ቁልፍን ያሳያል</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -238,7 +239,6 @@
 <translation id="8030169304546394654">ግንኙነቱ ተቋርጧል</translation>
 <translation id="1863950594388384201">በቱልባር ውስጥ የ VPN ቁልፍን ማሳየት</translation>
 <translation id="5187139277471084437">በቱልባር ውስጥ የ VPN ቁልፍን መደበቅ</translation>
-<translation id="1177917174080821247">VPN ትሪ አዶን አሳይ</translation>
 <translation id="8041089156583427627">ግብረ መልስ ላክ</translation>
 <translation id="4049186905514157504">My Plan ማስተዳደር</translation>
 <translation id="7570585565843385325">በቱልባር ውስጥ የ VPN ቁልፍን ማሳየት</translation>
@@ -384,6 +384,7 @@
 <translation id="5860254591544742609">የርዕስ አሞሌ አሳይ</translation>
 <translation id="4691131445504068802">ሲቀነስ ሙሉ በሙሉ ደብቅ</translation>
 <translation id="6763346436728173884">የትር መዝጊያ አዝራርን ሁልጊዜ ደብቅ</translation>
+<translation id="8082625757059443808">ታብዎችን ለመዝጋት የመካከለኛውን አዝራር መጫን ፍቀድ</translation>
 <translation id="4909269867860362936">ሲቀነስ በመቆየት ራሱን በራሱ ያሰፋ</translation>
 <translation id="3367129510799209147">የትር ማንዣበብ ሁናቴ</translation>
 <translation id="8925055964134259461">ሁሉም መስኮቶች ለተለያዩ በራሳቸው በቀስታ ታብ እንዲተፉ አድርግ</translation>
@@ -519,12 +520,12 @@
 <translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
 <translation id="1051600834033686945">ሙሉ የ Brave Rewards ቅንብሮችን ይክፈቱ</translation>
 <translation id="8826461509529116322">የBrave ሽልማቶችን ቁልፍ አሳይ</translation>
-<translation id="3328713589982547433">ማስታወቂያ መከልከያ ብቻ የሚያከናውን አብቃ</translation>
-<translation id="1574253307550419595">በማስታወቂያ መከልከያ ብቻ ሁኔታ ውስጥ Brave Shields ያካትቱ</translation>
-<translation id="738717058053657696">ማስታወቂያ መከልከያ ብቻ ዘዴ የBrave Shields ዋና የማስታወቂያ መከልከያ መመሪያዎችን ይጠብቃል። ማስጠንቀቂያ፡ መስተዋትነትን ሁሉንም ያስወግዳል። እባክዎን፣ በBrave የመስተዋትነት መከላከያ ቢሰበሩ ነው የነበሩ መስመሮችን ለእያንዳንዱ ድህረገፅ Shieldsን ወደ ታች ማሰናከል እንደሚቻል ያስታውሰናል። ይህ የሙከራ ሁኔታ ነው። <ph name="BEGIN_LINK"/>ተጨማሪ ተመልከት<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">ማስታወቂያ መከልከያ ብቻ ሁኔታ</translation>
+<translation id="4146834954839563870">ማስታወቂያ መከልከያ ብቻ ሁኔታን ይጠቀሙ</translation>
+<translation id="420732343671200734">ማስታወቂያ መከልከያ ብቻ ሁኔታ የBrave Shields ዋና የማስታወቂያ መከልከያ መመሪያዎችን ይጠብቃል። ማስጠንቀቂያ፡ መስተዋትነትን ሁሉንም ያስወግዳል። እባክዎን፣ በBrave የመስተዋትነት መከላከያ ቢሰበሩ ነው የነበሩ መስመሮችን ለእያንዳንዱ ድህረ ገፅ Shieldsን ወደ ታች ማሰናከል እንደሚቻል ያስታውሱ። ይህ የሙከራ ሁኔታ ነው። <ph name="BEGIN_LINK"/>ተጨማሪ መረጃ<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">የShields አማራጮች አሁን ተሰናክለዋል።</translation>
-<translation id="516439939408671102">ማስታወቂያ መከልከያ ብቻ ሁኔታ የBrave Shields ዋና የማስታወቂያ መከልከያ መመሪያዎችን በመጠበቅ የተለያዩ የእርስዎን መስተዋትነትን መከላከሎች ይሰናካል። የማስታወቂያ መከልከያ መከላከያም ወደ ነባሪው ማድረግ ከፈለጉ፣ ይህንን ሁኔታ አሰናክሉ።</translation>
-<translation id="177233004755519660">ማስታወቂያ መከልከያ ብቻ ዘዴን አጥፋ</translation>
+<translation id="2687830906359353344">ማስታወቂያ መከልከያ ብቻ ሁኔታ የBrave Shields ዋና የማስታወቂያ መከልከያ መመሪያዎችን ይጠብቃል እና የመስተዋትነት መከላከያዎችን ይሰናካል። ነባሪ የShields መሳሪያዎችን ለማስተናገድ ከፈለጉ፣ እባክዎን ይህንን ሁኔታ አሰናክሉ።</translation>
+<translation id="3809423899581611047">ማስታወቂያ መከልከያ ብቻ ሁኔታን አጥፋ</translation>
 <translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="7791141927430186653">X (ከ Twitter በፊት) የተከተተ ትዊት ይፍቀዱ</translation>
@@ -665,8 +666,6 @@
 <translation id="7029809446516969842">የይለፍ ቃላት</translation>
 <translation id="6011308810877101166">ኢንተርኔት ፈልግ አቋማቸን አንሳብ</translation>
 <translation id="2332576387809612040">በአሁኗ በርት እየዳረጉ ብራቭ ከሆነ እንቅስቃሴም እያከነበበ በሉት። በማንነት መስኮት ላይ ታህተው እንኩዋም አብረውን እንሣሐቢ።</translation>
-<translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
-<translation id="5526883767168905185">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ -ሰር ይጠቁማል።</translation>
 <translation id="5522403133543437426">በአድራሻ ግምገማ ጕዚፍ</translation>
 <translation id="280472502078788655">በግል መስኮቶች ውስጥ በአድራሻ ግምገማ ጕዚፍ</translation>
 <translation id="7232120595886556478">ተለመደ መስኮት</translation>
@@ -871,6 +870,8 @@
 <translation id="7311244614769792472">ምንም ውጤቶች አልተገኙም።</translation>
 <translation id="1838374766361614909">ፍለጋን አጽዳ</translation>
 <translation id="5126255551970171328">አእምሮ ለማፈላለጊያ ይፈልጉ</translation>
+<translation id="7402116145895962069">የእርስዎን የOllama አካባቢ ሞዴሎች ያመሳሰሉ</translation>
+<translation id="4835154437390745810">በOllama የሚተቆጠፉ</translation>
 <translation id="5985516785067818307">የእብሪት መራጭ</translation>
 <translation id="8347743943525229984">ብረትን እንዲያስለቅሉ ያስችለዋል</translation>
 <translation id="3204080538332044581">ብረት እቃዎችን በአዲስ ትር ማስገባት ተወሳኺነት ሰጠናል። ትኩስ መረጃዎችን እና የተረጋገጡ ሴፋቶቾችን እንዲሁም የአሳምአጃ ተግባሮችን በቅርብ እንዲፈቱ ይጠቀሙ። <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>

@@ -492,6 +492,15 @@
 <translation id="4915997950539925115">रीसेट करने पर, आपका वर्तमान Brave Rewards प्रोफ़ाइल डिलीट कर दिया जायेगा , और Brave Rewards भी डिसेबल हो जायेंगे. अगर आप बाद में Brave Rewards को फिर से इनेबल करते हैं, तो आप एक नई प्रोफ़ाइल के साथ शुरुआत करेंगे. ज़्यादा जानकारी के लिए <ph name="LINK_END"/>रीसेट करने के बारे में हमारा <ph name="LINK_BEGIN"/>सहायता आर्टिकल पढ़ें.</translation>
 <translation id="4806029412510565611">मुझे समझ है कि मेरे डिवाइस से मेरी मौजूदा Brave रिवॉर्ड प्रोफ़ाइल और Brave रिवॉर्ड डेटा मिट जाएँगे और मैंने <ph name="LINK_BEGIN"/>रीसेटिंग से जुड़ा सहायता लेख<ph name="LINK_END"/> पढ़ लिया है.</translation>
 <translation id="8835777704176513489">रिवॉर्ड बंद और रीसेट करें</translation>
+<translation id="1570055891464728855">अभी रीसेट करें</translation>
+<translation id="6431824580671230473">चिंता न करें: रीसेट करने से आपके <ph name="PROVIDER"/> अकाउंट में पहले से मौजूद कोई भी BAT प्रभावित नहीं होगा।</translation>
+<translation id="2881473942058010900"><ph name="PROVIDER"/> से जुड़े रहने के दौरान आप ऐड के लिए कमाई नहीं करेंगे। कमाई जारी रखने के लिए Brave Rewards रीसेट करें और एक अलग भुगतान अकाउंट कनेक्ट करें। <ph name="LINK_BEGIN"/>और जानें<ph name="LINK_END"/></translation>
+<translation id="5803444802570526678"><ph name="PROVIDER"/> अकाउंट अब समर्थित नहीं है।</translation>
+<translation id="3794463124070392793">अपने क्षेत्र की पुष्टि करें</translation>
+<translation id="4620879582500359234">आपके <ph name="PROVIDER"/> अकाउंट में जो भी BAT पहले से हैं, वे वहीं रहेंगे।</translation>
+<translation id="935303782545595866">आपकी 30-दिन की ऐड हिस्ट्री और अन्य Brave Rewards सेटिंग्स रीसेट हो जाएंगी।</translation>
+<translation id="6279637499952804615">इस स्टेप के बाद आप एक अलग भुगतान अकाउंट चुन सकते हैं।</translation>
+<translation id="5419770758409992826">आपका <ph name="PROVIDER"/> अकाउंट डिस्कनेक्ट कर दिया जाएगा, और आपका Brave Rewards प्रोफ़ाइल रीसेट हो जाएगा।</translation>
 <translation id="7717357606512850995">स्टेटस देखें</translation>
 <translation id="6473937687348632190"><ph name="MONTH"/> महीने के रिवॉर्ड का भुगतान हो गया है.</translation>
 <translation id="1711367267038576241"><ph name="MONTH"/> महीने के रिवॉर्ड के लिए भुगतान की प्रक्रिया <ph name="DATE"/> तक शुरू हो जाएगी.</translation>
@@ -516,15 +525,15 @@
     }</translation>
 <translation id="3264975266761862670">कमाई शुरू करने के लिए तैयार हैं?</translation>
 <translation id="2784412028126205842">payout अकाउंट कनेक्ट करें</translation>
-<translation id="766126983336630294">{ADS_VIEWED, plural,
-      =0 {आपने देखा है<ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> इस महीने}
-      =1 {आपको इसके लिए पेमेंट मिल सकता है<ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> आपने इस महीने देखा है.}
-      other {आपको इसके लिए पेमेंट मिल सकता है<ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> आपने इस महीने देखा है.}
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+      =0 {आपने देखा है <ph name="COUNT_BEGIN"/> # ऐड्स<ph name="COUNT_END"/> इस महीने}
+      =1 {आपको इसके लिए पेमेंट मिल सकता है <ph name="COUNT_BEGIN"/> # ऐड<ph name="COUNT_END"/> आपने इस महीने देखा है।}
+      other {आपको इसके लिए पेमेंट मिल सकता है <ph name="COUNT_BEGIN"/> # ऐड्स<ph name="COUNT_END"/> आपने इस महीने देखा है।}
     }</translation>
-<translation id="8611388433418909120">{ADS_VIEWED, plural,
-      =0 {आपने इस महीने <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> को देखा है}
-      =1 {आप इस महीने <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> को देखने के लिए कमा रहे हैं}
-      other {आप इस महीने <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> this month}
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+      =0 {आपने इस महीने <ph name="COUNT_BEGIN"/> # ऐड्स<ph name="COUNT_END"/> को देखा है}
+      =1 {आप इस महीने <ph name="COUNT_BEGIN"/> # ऐड<ph name="COUNT_END"/> को देखने के लिए कमा रहे हैं}
+      other {आप इस महीने <ph name="COUNT_BEGIN"/> # ऐड्स<ph name="COUNT_END"/> को देखने के लिए कमा रहे हैं}
     }</translation>
 <translation id="6067959437127691361">Brave रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
@@ -603,7 +612,7 @@
 <translation id="5802986777701714573">हमने आपके लिए मासिक BAT रिवॉर्ड प्राप्त करने का एक नया तरीका जोड़ा है। अभी कमाना शुरू करने के लिए हमारे किसी भागीदार से अकाउंट कनेक्ट करें या नए सेल्फ़-कस्टडी विकल्प का उपयोग करें।</translation>
 <translation id="3251885322612056119">सेवा की अपडेटेड शर्तें</translation>
 <translation id="7454675823870922788">हमने Brave Rewards के लिए सेवा की शर्तें अपडेट कर दी हैं. हमने अपनी शर्तों को स्पष्ट करने और यह सुनिश्चित करने के लिए ये अपडेट किए हैं कि उनमें नई सुविधाएँ शामिल हों. अगर आप Brave Rewards का इस्तेमाल करना जारी रखते हैं, तो आप अपडेटेड सेवा की शर्तों से सहमत हैं. अगर आप सहमत नहीं हैं, तो आप <ph name="LINK_BEGIN"/> Brave Rewards <ph name="LINK_END"/> को रीसेट कर सकते हैं, जिससे सुविधा डिसेबल कर दी जाएंगी.</translation>
-<translation id="56057964000416013">हमने अपनी सेवा की शर्तें अपडेट कर दी हैं। Brave Rewards इस्तेमाल करते रहने के लिए, कृपया अपडेट की गई शर्तों की समीक्षा करके उनसे सहमत हों।</translation>
+<translation id="616595399243298960">हमने अपनी सेवा की शर्तें अपडेट कर दी हैं। Brave Rewards इस्तेमाल करते रहने के लिए, कृपया अपडेट की गई शर्तों की समीक्षा करके उनसे सहमत हों।</translation>
 <translation id="5192526308598085294">Brave Rewards सेवा की शर्तों के बारे में<ph name="LINK_END"/> <ph name="LINK_BEGIN"/> देखें</translation>
 <translation id="4130750466177569591">मैं सहमत हूँ</translation>
 <translation id="343114360276812078">शर्तों की समीक्षा करें</translation>
@@ -651,6 +660,8 @@
 <translation id="6751803821780922506">यह चुनें कि आप अपने BAT कहाँ लेना चाहेंगे</translation>
 <translation id="3162035476318501831">क्षेत्र और सपोर्ट के बारे में और जानें।</translation>
 <translation id="7329170127335794328">फ़िलहाल आपके क्षेत्र में उपलब्ध नहीं है</translation>
+<translation id="1947910788470806100">आपके क्षेत्र में अभी हमारे पास कोई भुगतान विकल्प उपलब्ध नहीं हैं। आप बाद में फिर से जांच सकते हैं कि क्या उपलब्धता बदल गई है।</translation>
+<translation id="271689813824682404">भुगतान विकल्प उपलब्ध नहीं हैं</translation>
 <translation id="966956302643313970">बेसिक अटेंशन टोकन (BAT) रिवॉर्ड कमाना शुरू करने के लिए कोई अकाउंट कनेक्ट करें. आप जो भी BAT कमाएँगे, वे अपने-आप हर महीने आपके अकाउंट में ट्रांसफ़र हो जाएँगे.</translation>
 <translation id="4009439571146350519">या दूसरा वॉलेट, जो Solana को सपोर्ट करता है</translation>
 <translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>उपयोग की शर्तें<ph name="TOS_LINK_END"/> और<ph name="PP_LINK_BEGIN"/>गोपनीयता नीति<ph name="PP_LINK_END"/>।</translation>
@@ -861,6 +872,7 @@
 <translation id="6264944956989873014">ब्रिज की पुष्टि करें</translation>
 <translation id="7067917728851842589">सेंड करने की पुष्टि करें</translation>
 <translation id="2351357639951873714">शील्ड की पुष्टि करें</translation>
+<translation id="7480044382160806610">अनशील्ड की पुष्टि करें</translation>
 <translation id="8332923694292360653">खर्च करें</translation>
 <translation id="3735740477244556633">इसके अनुसार क्रम से लगाएं</translation>
 <translation id="6484605214219822434">ब्रिज रिव्यु करें</translation>
@@ -882,6 +894,8 @@
 <translation id="7465227658364622464">Jupiter लेन-देन (राशि की जानकारी पाने के साथ) को पूरा करने के लिए Solana पते और IP पते को प्रोसेस करेगा. Jupiter इस डेटा का इस्तेमाल सिर्फ़ लेनदेन को प्रोसेस करने के लिए करेगा.</translation>
 <translation id="712738518060477110">बताई गई राशि में <ph name="SWAP_FEE_PERCENTAGE"/> Brave शुल्क शामिल है.</translation>
 <translation id="8368540604723748428">कई दशमलव स्थान</translation>
+<translation id="4797709125717981664">न्यूनतम आवश्यक है 1 ADA</translation>
+<translation id="3826737479910350533">भेजी गई राशि बहुत कम है</translation>
 <translation id="6575120282593094155">आपके पास अभी तक <ph name="ACCOUNT_TYPE"/> अकाउंट नहीं है। क्या आप अभी एक अकाउंट बनाना चाहते हैं?</translation>
 <translation id="1426410128494586442">हां</translation>
 <translation id="4250680216510889253">नहीं</translation>
@@ -928,7 +942,7 @@
 <translation id="2274014756904854136">जारी रखने के लिए स्क्रीन पर दो बार टैप करें</translation>
 <translation id="7795718119973968770">आपकी सुरक्षा के लिए आपका वॉलेट लॉक किया गया है. जारी रखने के लिए वॉलेट को अनलॉक करें.</translation>
 <translation id="9175546523521600401">वॉलेट लॉक करें</translation>
-<translation id="765834632354589737">बैकअप बटुआ</translation>
+<translation id="7117128722034148989">वॉलेट का बैकअप लें</translation>
 <translation id="1108298724135935307">जुड़ी हुई साइटें</translation>
 <translation id="5716350339763180836">बैलेंस</translation>
 <translation id="5538251867290702601">ग्राफ़</translation>
@@ -1030,6 +1044,7 @@
 <translation id="2416098547200943834">ध्यान दें : हेक्स-एनकोडेड JSON के तौर पर प्राइवेट की दी जाती है, जिसमें प्राइवेट की और प्रोटोकॉल की जानकारी होती है. <ph name="LINK_START"/>और जानें<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ध्यान दें : ज़रूरी है कि प्राइवेट की हेक्स-एनकोडेड JSON के तौर पर दिया जाए, जिसमें प्राइवेट की और प्रोटोकॉल की जानकारी हो. <ph name="LINK_START"/>और जानें<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ध्यान दें: सिर्फ़ <ph name="FORMAT"/> एक्सटेंडेड की काम करती हैं।</translation>
+<translation id="9133762451347918196">Testnet अकाउंट्स</translation>
 <translation id="42126664696688958">एक्सपोर्ट करें</translation>
 <translation id="1366855498335432549">जमा</translation>
 <translation id="790104325876206743">अकाउंट सेटिंग्स</translation>
@@ -1037,6 +1052,7 @@
 <translation id="836614343069504000">शुरू करने के लिए टोकन जमा करें या खरीदें. अगर आपको इम्पोर्ट किए गए अकाउंट में टोकन नहीं दिखते हैं, तो फ़िल्टर और डिसप्ले की सेटिंग को देखें. अनजान टोकन को कस्टम एसेट के तौर पर जोड़ना पड़ सकता है.</translation>
 <translation id="2902856457593699108">की दिखाएं</translation>
 <translation id="8033497299373164724">की छिपाएँ</translation>
+<translation id="7514365320538308">डाउनलोड करें</translation>
 <translation id="2702143907607790516">अकाउंट नेम अपडेट नहीं हो पाया, कृपया दोबारा कोशिश करें.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1057,9 +1073,6 @@
 <translation id="1506421160138798546">अंदाज़ा</translation>
 <translation id="59223531494896848">सीमा</translation>
 <translation id="8569380433211549748">में मूल्य</translation>
-<translation id="2490428413101944234">टेस्ट फ़ॉसेट</translation>
-<translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/> के लिए फ़ोसेट से Ether पाएँ</translation>
-<translation id="6449626816252815844">खरीदारी का तरीका चुनें</translation>
 <translation id="8009571545960303544">आपके हस्ताक्षर का अनुरोध किया जा रहा है</translation>
 <translation id="5294062982587710720">ध्यान दें कि यदि आप हस्ताक्षर करते हैं तो Brave यह सत्यापित नहीं कर सकता कि क्या होगा. एक हस्ताक्षर आपके अकाउंट में या आपकी ओर से लगभग किसी भी संचालन को अधिकृत कर सकता है, जिसमें अनुरोध करने वाली साइट को आपके अकाउंट और क्रिप्टो संपत्तियों का पूरा कंट्रोल देना शामिल है (लेकिन इन्हीं तक सीमित नहीं). केवल तभी हस्ताक्षर करें जब आप सुनिश्चित हों कि आप यह कार्रवाई करना चाहते हैं, और अनुरोध करने वाली साइट पर विश्वास करें.</translation>
 <translation id="3474375934783434676">अपने जोखिम पर साइन करें</translation>
@@ -1067,6 +1080,7 @@
 <translation id="3586931643579894722">विवरण छुपाएं</translation>
 <translation id="7702907602086592255">डोमेन</translation>
 <translation id="3586752056660754651">साइन</translation>
+<translation id="4217653732094303705">पब्लिक एनक्रिप्शन 'की'</translation>
 <translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
 <translation id="2300240008330189182"><ph name="URL"/> की ओर से आपके वॉलेट की पब्लिक एनक्रिप्शन की का अनुरोध किया जा रहा है. अगर आप यह की देने के लिए सहमति देते हैं, तो यह साइट आपको एनक्रिप्ट किए हुए मैसेज भेज पाएगी.</translation>
 <translation id="3340247553212049934">प्रदान करें</translation>
@@ -1303,9 +1317,7 @@
 <translation id="4312994183947987913">खरीदें/जमा करें</translation>
 <translation id="5133421763709317473">सर्च या फ़िल्टर से मेल खाने वाला कोई ऐसेट नहीं मिला</translation>
 <translation id="6423985584914773314">यह कोई मान्य FIL पता नहीं है</translation>
-<translation id="5522073372365069684">Ramp के ज़रिए खरीदें</translation>
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/> के साथ बिक्री करें</translation>
-<translation id="3301984548406568819">हमारे Onramp पार्टनर द्वारा वित्तीय और लेन-देन का डेटा मैनेज किया जाता है. Brave न ऐसे डेटा को संग्रह करता है, न ही इसके पास इसका एक्सेस होता है.</translation>
 <translation id="5795821518596541838">लेन-देन पार्टनर</translation>
 <translation id="1916136859742693273">Brave वॉलेट आपके इलाके में अलग-अलग क्रिप्टो प्रोवाइडर्स को इकट्ठा करके दिखाने के लिए Meld.io का इस्तेमाल करता है। लेन-देन पूरा करने के लिए, हम Meld.io के साथ जानकारी शेयर करें, जिसमें आपका वॉलेट पता और देश का कोड शामिल हो। ज़्यादा जानकारी के लिए, कृपया Meld के इस्तेमाल की शर्तें पढ़ें।</translation>
 <translation id="245827814248186739">मैंने <ph name="LINK_BEFORE"/>Meld के इस्तेमाल की शर्तें<ph name="LINK_AFTER"/> पढ़ ली हैं और उनसे सहमत हूँ</translation>
@@ -1326,17 +1338,8 @@
 <translation id="4196022627437957774">क्या आप <ph name="ACCOUNT_TYPE"/> अकाउंट बनाना चाहते हैं?</translation>
 <translation id="5982914754413312620"><ph name="TOKEN_SYMBOL"/> पाने के लिए, आपको <ph name="ACCOUNT_TYPE"/> अकाउंट चाहिए होगा।</translation>
 <translation id="3067168166931605141">अकाउंट नेम</translation>
-<translation id="6534275647567011533">Transak के साथ खरीदारी करें</translation>
-<translation id="5973390321030037823">Link से खरीदें</translation>
-<translation id="1932640759496708012">Coinbase Pay से खरीदें</translation>
-<translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="503018546142690471">Transak</translation>
-<translation id="7295150312737713113">Stripe की ओर से Link</translation>
-<translation id="7191335763519723663">Coinbase Pay</translation>
-<translation id="7667423728712601865">Visa या Mastercard के ज़रिए क्रिप्टो खरीदें.</translation>
-<translation id="3101839349578102016">आपके बैंक अकाउंट से तुरंत खरीदारी. कम शुल्क में.</translation>
-<translation id="8280898387224328221">क्रेडिट, डेबिट या बैक अकाउंट से भुगतान करें</translation>
-<translation id="2218174283683424104">क्रिप्टो के सबसे भरोसेमंद नाम के साथ खरीदें.</translation>
+<translation id="1213870770696612739">न्यूनतम राशि: <ph name="AMOUNT"/></translation>
+<translation id="3041074161036535192">अधिकतम राशि: <ph name="AMOUNT"/></translation>
 <translation id="8528916244724490964">सभी नेटवर्क</translation>
 <translation id="7721139939763655123">नीचे से ऊपर</translation>
 <translation id="5458608274117818139">ऊपर से नीचे</translation>
@@ -1382,7 +1385,9 @@
 <translation id="8419958386475786929"><ph name="NETWORK"/> पर <ph name="SWAPPING_OR_BRIDGING"/></translation>
 <translation id="7903225589949400974"><ph name="NETWORK"/> पर <ph name="SWAP_OR_BRIDGE"/> करने की कोशिश में गड़बड़ी हुई</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> को शील्ड कर रहा है</translation>
+<translation id="6439110433198887239"><ph name="AMOUNT"/> को अनशील्ड किया जा रहा है</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> को शील्ड किया गया है</translation>
+<translation id="3860973324426281816"><ph name="AMOUNT"/> को अनशील्ड किया गया है</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} और ट्रांस्जैक्शन पेंडिंग हैं.}
       other {{PENDING_TRANSACTIONS} और ट्रांस्जैक्शन पेंडिंग हैं.}
@@ -1577,8 +1582,6 @@
 <translation id="1422451606553326863">क्रिप्टो खरीदें</translation>
 <translation id="3887541341068007345">वॉलेट एक्सटेंशन का पता लगाया जा रहा है...</translation>
 <translation id="8407091560429310499">कोई ऐसेट चुनें</translation>
-<translation id="756590380936155533">अपनी <ph name="ASSET_TICKER"/> की खरीदारी पूरी करने के लिए, हमारे किसी पार्टनर को चुनें</translation>
-<translation id="7880860489474966219">पूरा होने पर, आपका फ़ंड आपके Brave वॉलेट में ट्रांसफ़र कर दिया जाएगा</translation>
 <translation id="6182661078713714878">क्रिप्टो डिपॉज़िट करें</translation>
 <translation id="3683305208314702347"><ph name="VALUE"/> डिपॉज़िट करें</translation>
 <translation id="5768739294929936862">Solana या SPL टोकन डिपॉज़िट करें</translation>
@@ -1817,10 +1820,14 @@
 <translation id="7747318989577709780">अकाउंट सिंक हो रहा है</translation>
 <translation id="9086302186042011942">सिंक हो रहा है</translation>
 <translation id="99991973626409495">समीक्षा शील्ड</translation>
+<translation id="6779429520470417361">अनशील्ड की समीक्षा करें</translation>
 <translation id="3114681061018999547">शील्ड हो रहा है</translation>
+<translation id="1564172583156967455">अनशील्ड कर रहा है</translation>
 <translation id="8897189056319316783">Shield ZEC</translation>
+<translation id="508249542337194541">Unshield ZEC</translation>
 <translation id="3382275793825152362">फ़ंड शील्ड करें</translation>
 <translation id="8631765320256788981">आप अपने ट्रांसपेरेंट अकाउंट से अपने शील्ड किए गए अकाउंट में पैसे भेज रहे हैं।</translation>
+<translation id="3860364671495430495">आप अपने शील्ड किए गए अकाउंट से अपने ट्रांसपेरेंट अकाउंट में पैसे भेज रहे हैं।</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="9094621390791852268">ट्रांज़ैक्शन प्रीव्यू नहीं किया जा सका.</translation>
 <translation id="4982713341035600933">अनुमानित बैलेंस का बदलाव</translation>
@@ -2097,6 +2104,8 @@
 <translation id="4292565651642921086">अगले टैब ग्रुप पर फ़ोकस करें</translation>
 <translation id="874783686573493196">पिछले टैब ग्रुप पर फ़ोकस करें</translation>
 <translation id="9169594135889675189">ग्रुप में नया टैब जोड़ें</translation>
+<translation id="1722567105086139392">लिंक</translation>
+<translation id="4729794914864902904">अनलिंक</translation>
 <translation id="1926106318101432555">बुकमार्क खोलें...</translation>
 <translation id="6118819645013156507">किसी और विंडो पर स्विच करें...</translation>
 <translation id="1623204575967809688">मौजूदा विंडो को इसमें मिलाएँ...</translation>
@@ -2186,10 +2195,8 @@
 <translation id="8151638057146502721">क़ॉन्फ़िगर करें</translation>
 <translation id="999273441077650169">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="7127671672828944579">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 14B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="2328524194917949829">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Gemma 3 12B द्वारा संचालित हूँ, जो Google DeepMind द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Gemma हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="634682910381645550">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek R1 द्वारा संचालित हूँ, जो DeepSeek द्वारा बनाया गया एक मॉडल है जो डीप रीज़निंग कार्य करता है। DeepSeek R1 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="1021134081694325196">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek V3.1 द्वारा संचालित हूँ, जो DeepSeek द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। DeepSeek V3.1 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="3852808100039989429">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen VL 30B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="6406961656408495869">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek V3.1 द्वारा संचालित हूँ, जो DeepSeek द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। DeepSeek V3.1 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">नमस्ते, मैं Leo हूँ। मैं Brave का एक एआई सहायक हूँ। मुझे Claude Instant द्वारा शक्ति प्रदान की गई है, जिसे Anthropic ने संवाद और पाठ संसाधन कार्यों के लिए बनाया है। Claude Instant को Brave की सुरक्षा पर होस्ट किया गया है।<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
@@ -2206,6 +2213,7 @@
 <translation id="963346402440669081">प्रीमियम</translation>
 <translation id="5807427080183870259">लोकल</translation>
 <translation id="830868413617744215">बीटा</translation>
+<translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">सुझाए गए मॉडल</translation>
 <translation id="6568044140836233369">सभी मॉडल दिखाएँ</translation>
 <translation id="6187065185557150870">चैट</translation>
@@ -2294,7 +2302,8 @@
 <translation id="1243966363662220847">रिस्पॉन्स फ़ीडबैक</translation>
 <translation id="7417895556119762861">किसी जवाब को लाइक या डिसलाइक करने से Leo में सुधार करने के लिए Brave को रेटिंग, बातचीत, मॉडल, भाा और प्रीमियम स्थिति भेजी जाएगी।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">लियो को मैसेज भेजें</translation>
-<translation id="4084869091337186002">Leo AI Content Agent हमेशा इस प्रोफ़ाइल में चालू होता है</translation>
+<translation id="6222803935921999130">AI ब्राउज़िंग प्रोफ़ाइल विंडो खोलें</translation>
+<translation id="1530903352777607099">AI ब्राउज़िंग इस प्रोफ़ाइल में हमेशा चालू होता है</translation>
 <translation id="8650874793377330048">जवाब देना बंद करें</translation>
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="1093419424466417703">लियो के लिए पेज बहुत लंबा है. हो सकता है बातचीत से कुछ संदर्भ पूरी तरह से ना हों. लियो पेज के <ph name="PERCENTAGE"/> कंटेंट को पढ़ सकता है.</translation>
@@ -2317,9 +2326,8 @@
 <translation id="1602382615168212961">Leo को बातचीत के लिए ज़्यादा संदर्भ देने के लिए अपने बुकमार्क्स टैब्स से पेज कंटेंट भेजें।</translation>
 <translation id="4808122506413075135">Leo को बातचीत के लिए ज़्यादा संदर्भ देने के लिए अपने ब्राउज़र इतिहास से पेज कंटेंट भेजें।</translation>
 <translation id="220541218939267992">आपकी संदेशों के साथ इस पेज की सामग्री भी Leo को भेजी जाएगी।</translation>
-<translation id="8164365899016970783">संदर्भ के लिए टैब और बुकमार्क कॉन्टेंट्स जोड़ें। कॉन्टेंट्स को आपके मैसेज के साथ Leo को भेजा जाएगा।</translation>
+<translation id="2152389270152475874">संदर्भ के लिए टैब, बुकमार्क या हिस्ट्री जोड़ें। चयनित कॉन्टेंट्स को आपके मैसेज के साथ Leo को भेजा जाएगा।</translation>
 <translation id="6237410387937453423">कोई मेल खाने वाला अटैचमेंट नहीं</translation>
-<translation id="8076492880354921740">टैब</translation>
 <translation id="2315654674554095762">Leo अब आपकी बातचीतों को याद रखेगा, ताकि आप उन्हें वापस देख सकें। वे आपके डिवाइस पर एन्क्रिप्ट होकर स्टोर रहते हैं, और आप उन्हें किसी भी समय डिलीट कर सकते हैं।</translation>
 <translation id="7821251979960635244">जब आप कोई बातचीत शुरू करेंगे, तो आपकी बातचीत का इतिहास यहाँ दिखेगा।</translation>
 <translation id="887511360213807449">इतिहास बंद है</translation>
@@ -2328,10 +2336,10 @@
 <translation id="3185367320601718531">बातचीत और टेक्स्ट जनरेशन</translation>
 <translation id="2793458212460902934">तेज़ • सर्च • टूल्स</translation>
 <translation id="8506027496671575183">सर्च • विज़न • टूल्स</translation>
-<translation id="3213834013136637671">सर्च • विज़न</translation>
-<translation id="7697693533305615127">सर्च • थिंकिंग</translation>
+<translation id="3184606955650139158">तेज़ • सर्च • विज़न</translation>
 <translation id="7465032796278724624">NEAR AI TEE के साथ सत्यापित रूप से निजी</translation>
 <translation id="8782867266498869301">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है</translation>
+<translation id="3213834013136637671">सर्च • विज़न</translation>
 <translation id="3965507912994218570">लियो सेटिंग्स</translation>
 <translation id="3754337604877048671">Leo AI का परिचय</translation>
 <translation id="5295261408976371809">आपका <ph name="TEXT_BEFORE"/>निजी<ph name="TEXT_AFTER"/> एआई सहायक, ब्राउज़र में ही निर्मित।</translation>
@@ -2409,20 +2417,28 @@
 <translation id="4798146464408730445">कोई स्किल नहीं मिली। "New" बटन क्लिक कर नई स्किल बनाएँ।</translation>
 <translation id="271033894570825754">New</translation>
 <translation id="8266605059880650542">पेज से बाद में उपयोग के लिए जानकारी नोट की जा रही है</translation>
-<translation id="7049849063044248805">एजेंट मोड उन मॉडलों के साथ काम करता है जिनमें टूल सपोर्ट होता है। असंगत मॉडल इस सूची से छिपाए जाते हैं।</translation>
+<translation id="5103625298494362646">एजेंट मोड उन मॉडलों के साथ काम करता है जिनमें टूल सपोर्ट होता है। असंगत मॉडल इस सूची से छिपाए जाते हैं।</translation>
 <translation id="3397808797783614750">आपके लिए स्वचालित रूप से ब्राउज़ करने के लिए AI को सक्षम करना आपकी गोपनीयता, वित्त और ऑनलाइन संचार के लिए हानिकारक, अनपेक्षित परिणाम दे सकता है। <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">सुरक्षा चेतावनी</translation>
 <translation id="6077070599873946984">Brave AI को इसके लिए आपकी अनुमति की आवश्यकता है: <ph name="TOOL_LABEL"/></translation>
 <translation id="4163837693685963037">यह ऑपरेशन सम्भवतः आपके अनुरोध से मेल नहीं खा रहा था:</translation>
 <translation id="3927932062596804919">अस्वीकार करें</translation>
 <translation id="4569155249847375786">सत्यापित</translation>
-<translation id="3240988198391588806">एजेंट मोड</translation>
-<translation id="538066983058750776">Leo प्रोफ़ाइल के बारे में</translation>
-<translation id="1577570612997320961">आपके डेटा की सुरक्षा के लिए, यह आइसोलेटेड Brave प्रोफ़ाइल AI एक्सेस को आपके मुख्य ब्राउज़िंग प्रोफ़ाइल तक सीमित करती है। Leo AI को यहाँ साइटों पर जाने और इंटरैक्ट करने के लिए अतिरिक्त अनुमतियाँ प्राप्त हैं, ताकि आप इसे कार्य सौंप सकें और एक साथ ब्राउज़िंग कर सके और उत्पादकता को बढ़ा सकें।</translation>
+<translation id="8200772114523450471">फिर से शुरू करें</translation>
+<translation id="7607002721634913082">रोकें</translation>
+<translation id="4773299976671772492">रोक दिया गया</translation>
+<translation id="6946722113367118030">सोच रहा है</translation>
+<translation id="2113810663179257944">कोड निष्पादन</translation>
+<translation id="4790888275629207278">sandbox में कोड निष्पादित किया गया</translation>
+<translation id="4379566111233326721">कोड:</translation>
+<translation id="3542130965673205258">आउटपुट:</translation>
+<translation id="3428245742224818842">AI ब्राउज़िंग</translation>
+<translation id="2854657728271352435">AI ब्राउज़िंग प्रोफ़ाइल के बारे में</translation>
+<translation id="2301685062527585986">आपके डेटा की सुरक्षा के लिए, यह आइसोलेटेड AI ब्राउज़िंग प्रोफ़ाइल सुनिश्चित करती है कि AI एजेंट को आपकी मुख्य ब्राउज़िंग प्रोफ़ाइल तक कोई पहुँच न हो, केवल आवश्यकतानुसार साइटों पर जाने और इंटरैक्ट करने की अनुमति होती है। आप इसे कार्य देकर और इसे आपके लिए ब्राउज़ करने की अनुमति देकर अपनी उत्पादकता बढ़ा सकते हैं।</translation>
 <translation id="648116453147783450">आपका डेटा और सेशन्स</translation>
-<translation id="3906161204878017619">जब आप इस प्रोफ़ाइल का उपयोग करके किसी वेबसाइट में लॉग इन करते हैं, तो यदि वह साइट खुली है, तो Leo उस साइट की जानकारी देख सकता है, या तो जब वह स्वयं साइट पर जाता है या जब आप उससे वहाँ कोई कार्य करने को कहते हैं।</translation>
+<translation id="4879348540868082026">जब आप इस प्रोफ़ाइल का उपयोग करके किसी वेबसाइट में लॉग इन करते हैं, तो यदि वह साइट खुली है, तो Brave का AI ब्राउज़िंग एजेंट उस साइट की जानकारी देख सकता है, या तो जब वह स्वयं साइट पर जाता है या जब आप उससे वहाँ कोई कार्य करने को कहते हैं।</translation>
 <translation id="5583803492921648196">वापस स्विच करें</translation>
-<translation id="8068929004144221259">आप मुख्य मेनू या अपने टूलबार में Leo अवतार से कभी भी अपनी रेग्युलर प्रोफ़ाइल पर वापस स्विच कर सकते हैं। एजेंट मोड हमेशा इस प्रोफ़ाइल में ही खुलेगा।</translation>
+<translation id="864117099189791993">आप मुख्य मेनू या टूलबार पर प्रोफ़ाइल मेनू का उपयोग करके कभी भी अपनी नियमित प्रोफ़ाइल पर वापस स्विच कर सकते हैं। AI ब्राउज़िंग हमेशा AI ब्राउज़िंग प्रोफ़ाइल में ही खुलेगा।</translation>
 <translation id="3486480638399578250">अपना व्यक्तिगत ईमेल पता निजी रखें</translation>
 <translation id="7765422154906712751">यूनीक, रैंडम पते बनाएँ, जो आपके ब्राउज़र अकाउंट ईमेल पर फ़ॉरवर्ड होते हैं और किसी भी समय हटाए जा सकते हैं। अपने असली ईमेल पते का खुलासा करने या विज्ञापनदाताओं द्वारा उनका इस्तेमाल किए जाने से बचें।</translation>
 <translation id="5222676887888702881">साइन आउट करें</translation>
@@ -2522,13 +2538,13 @@
 <translation id="3620004479054499575">क्या आपको इस साइट पर समस्या हो रही है?</translation>
 <translation id="9176447766421988172">हम वेबसाइट की संगतता बेहतर करने के लिए एक प्रयोग कर रहे हैं, जिसमें हम केवल ऐड ब्लॉकिंग चालू रखते हैं। चेतावनी: इससे सभी गोपनीयता सुरक्षाएँ हट जाती हैं। क्या आप इसे आज़माना चाहते हैं? <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/>।</translation>
 <translation id="5372101283158221516">कृपया ध्यान रखें कि Brave की गोपनीयता सुरक्षा द्वारा प्रभावित किसी भी वेबसाइट के लिए आप शील्ड को डाउन कर सकते हैं।</translation>
-<translation id="1836572675775891780">केवल ऐड ब्लॉकिंग मोड सक्षम करें</translation>
+<translation id="2850777974644218370">केवल ऐड ब्लॉकिंग मोड सक्षम करें</translation>
 <translation id="6623668214089604469">क्या यह साइट अब सही से काम कर रही है?</translation>
 <translation id="8978860854770042258">अगर यह साइट अभी भी टूटी हुई लग रही है, तो कृपया रिपोर्ट सबमिट करने पर विचार करें।</translation>
 <translation id="4677356505199464553">सब कुछ ठीक दिख रहा है</translation>
 <translation id="1992750560347846445">साइट की रिपोर्ट करें</translation>
-<translation id="2887186586339544116">केवल ऐड ब्लॉक मोड चालू है</translation>
-<translation id="673665019618844072">आप अभी केवल ऐड ब्लॉकिंग मोड का उपयोग कर रहे हैं। यह मोड केवल ऐड ब्लॉकिंग सुरक्षा देता है। यदि आप पूर्ण शील्ड्स मोड पर लौटना चाहते हैं, तो सेटिंग्स से इस मोड को अक्षम करें।</translation>
+<translation id="2863270180245144869">केवल ऐड ब्लॉक मोड चालू है</translation>
+<translation id="2302218429308447288">आप अभी केवल ऐड ब्लॉकिंग मोड का उपयोग कर रहे हैं। यह मोड केवल ऐड ब्लॉकिंग सुरक्षा प्रदान करता है। यदि आप पूर्ण Shields मोड पर लौटना चाहते हैं, तो सेटिंग्स से यह मोड अक्षम करें।</translation>
 <translation id="4820891023903368625">ऐड ब्लॉक किए गए <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads, and more blocked <ph name="LINK_BEFORE"/>और जानें <ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave शील्ड से सुरक्षित नहीं है <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
@@ -2561,6 +2577,8 @@
 <translation id="6975864539539353406">जब आप कोई साइट बंद करते हैं तो कुकीज़ और अन्य साइट डेटा साफ़ करता है</translation>
 <translation id="6486971767955110687">खराब साइटों की रिपोर्ट के लिए संपर्क जानकारी स्टोर करें</translation>
 <translation id="4085787265464238844">अगर आप संपर्क जानकारी देते हैं, तो इसे भविष्य की रिपोर्ट के लिए स्टोर किया जाएगा</translation>
+<translation id="7740929262043547697">प्राइवेट Windows में तत्व ब्लॉकिंग की अनुमति दें</translation>
+<translation id="1260864846935682371">प्राइवेट Windows में Shields का Block Elements फ़ीचर सक्षम करता है। ध्यान दें कि प्राइवेट Windows में ब्लॉक किए गए तत्व नॉन-प्राइवेट Windows में भी ब्लॉक होंगे।</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="8366221601425141146">फिंगरप्रिंटिंग ब्लॉक किया गया</translation>
@@ -2613,7 +2631,7 @@
 <translation id="6764845498618413165">और जानें.</translation>
 <translation id="7818938154803162778">मैं बिलकुल मदद करूंगा</translation>
 <translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
-<translation id="293854220404217065">मिडनाइट थीम</translation>
+<translation id="4988030440045495002">अत्यंत गहरी थीम</translation>
 <translation id="2422927186524098759">साइडबार</translation>
 <translation id="2361906291514218784">लियो AI</translation>
 <translation id="7705524343798198388">VPN</translation>

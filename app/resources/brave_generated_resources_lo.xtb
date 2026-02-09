@@ -131,7 +131,6 @@
 <translation id="780301667611848630">ບໍ່ເປັນຫຍັງ ຂອບໃຈ</translation>
 <translation id="1162706247109707219">ໂດຍການກົດ OK, ທ່າCommasຢ່າງມາດເຜີຊິຄຳຫມາມືມຕານຂັດຂ້ອງພາຍໃນສາງຕອນໃນຮູບເປັນ້ຮູບເປັນແລະພາຍນໍໄວ້ກວດ</translation>
 <translation id="9164786361657554526">ໂດຍການກົດ OK, ທ່ານຊະນົກລຸ່ມຕາຍກໍາມາດໂທວາໄດໄດໃນໂອໂຜຫມື່ນໄລ້ 15 ຫລືດັດຊື່ມາດເດຸ...ແລູາໄດເວກດັງບໍເດິດໃໝ່</translation>
-<translation id="2770465223704140727">ຖອນອອກຈາກລາຍການ</translation>
 <translation id="6020553119523541665">ແທບນີ້ແມ່ນກຳລັງເຜຜູ້ອີກນາມ</translation>
 <translation id="4987392683074136770">ກາລັງກົດກັບແທບນີ້ຈະເວິ່ນໄປໂມ່ນສານການຕອນ</translation>
 <translation id="8355523213948477234">ບຸດເມນູການແບ່ງເວິໆ</translation>
@@ -196,6 +195,8 @@
 <translation id="191143826155037518">Brave ຖືກມີພ້ອມໃຫ້ທ່ານພາຍໃຕ້ <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) ແລະມີ <ph name="BEGIN_LINK_OSS"/>ໂປແກຼມເປີດເທົາ<ph name="END_LINK_OSS"/>ໃຕ້ພາບໃຫຍ່ຂອງໃບອະນຸຍາດອື່ນໆ ທ່ານສາມາດອ່ານ <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ຄູ່ມືການດາວໂຫລດແລະກໍ່ສ້າງດ້ວຍຕົນເອງ<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ຊອດໂຄດສ້າງຕົ້ນສະບັບນີ້ <ph name="BEGIN_LINK_SOURCE_CODE"/>ທີ່ຖືກນຳໃຊ້ເພື່ອສ້າງສຳເນົານີ້<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="3987546108749866209">ໃຊ້ແຖບແນວນອນ</translation>
+<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}</translation>
+<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}</translation>
 <translation id="2289567621059034186">ແຖບໃຫມ່ທາງລຸ່ມ</translation>
 <translation id="3228962656492373217">ປິດແຖບທາງລຸ່ມ</translation>
 <translation id="8030501904366631501">ຄວາມທຸກແຖບມາຢູ່ໜ້າຕ່າງນີ້</translation>
@@ -205,6 +206,8 @@
 <translation id="7302999361397024774">ປ່ຽນຊື່ແຖບ</translation>
 <translation id="2336228925368920074">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="2523967823495420116">ໃຊ້ແຖບແນວນອນ</translation>
+<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}</translation>
+<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}</translation>
 <translation id="4405580203042711503">ແຖບໃຫມ່ທາງລຸ່ມ</translation>
 <translation id="5611474372949142946">ປິດແຖບທາງລຸ່ມ</translation>
 <translation id="573844928911967687">ຄວາມທຸກແຖບມາຢູ່ໜ້າຕ່າງນີ້</translation>
@@ -219,6 +222,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">ການໃຊ້ໂປໂຕຄອນ WireGuard ໃນ Brave VPN</translation>
 <translation id="8519170191215826548">ບໍ່ສາມາດປ່ຽນຕັ້ງຄ່ານີ້ໄດ້ເວລາ Brave VPN ເຊື່ອມຕໍ່.</translation>
+<translation id="1177917174080821247">ສະແດງໄອຄອນ VPN ໃນຖານສຶກສາ</translation>
+<translation id="3747459938663420752">ເມື່ອເປີດໃຊ້ງານ ແຖບວຽກງານຂອງ Windows ຈະສະແດງໄອຄອນຖາດລະບົບສໍາລັບ Brave VPN.</translation>
 <translation id="4235920711083356755">ສະແດງປຸ່ມ VPN</translation>
 <translation id="4070612712151038707">ສະແດງປຸ່ມ VPN ໃນແຖບເຄື່ອງມື</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -230,7 +235,6 @@
 <translation id="8030169304546394654">ຕັດການເຊື່ອມຕໍ່ສຳເລັດ</translation>
 <translation id="1863950594388384201">ສະແດງປຸ່ມ VPN ໃນແຖບເຄรื่องມື</translation>
 <translation id="5187139277471084437">ເອົາປຸ່ມ VPN ອອກຈາກແຖບເຄື່ອງມື</translation>
-<translation id="1177917174080821247">ສະແດງໄອຄອນ VPN ໃນຖານສຶກສາ</translation>
 <translation id="8041089156583427627">ສົ່ງຄວາມຄິດເຫັນ</translation>
 <translation id="4049186905514157504">ຈັດການແຜນຂອງຂ້ອຍ</translation>
 <translation id="7570585565843385325">ສະແດງປຸ່ມ VPN ໃນແຖບເຄື່ອງມື</translation>
@@ -376,6 +380,7 @@
 <translation id="5860254591544742609">ສະແດງແຖບชื่อໜ້າ</translation>
 <translation id="4691131445504068802">ເຊື່ອມບັງໂຕໃຫ້ມິດເມື່ອຫົວແຖບຕັ້ງຖືກຂະໝອດ</translation>
 <translation id="6763346436728173884">ເຊື່ອງປິດແທັບຈະຖືກເຊື່ອງເຊື່ອນໄວ້ຕະຫຼອດເວລາ</translation>
+<translation id="8082625757059443808">ອະນຸຍາດໃຫ້ຄລິກປຸ່ມກາງເພື່ອປິດແຖບ</translation>
 <translation id="4909269867860362936">ຂະໝອດແຖບຕັ້ງໂດຍອັດຕະໂນມັດໃນການເລື່ອນເມົາເມື່ອຖືກຂະໝອດ</translation>
 <translation id="3367129510799209147">ໂໝດເຊື່ອມແທບ</translation>
 <translation id="8925055964134259461">ຂະໝອດແຖບຕັ້ງຕໍ່ແຕ່ຫນ້າຕ່າງໂດຍອັດຕະໂນມັດ</translation>
@@ -511,12 +516,12 @@
 <translation id="413570371620795359">ເປີດລາງວັນສະແດງເພື່ອເປີດໃຊ້ງານແລະເລີ່ມຕົ້ນ</translation>
 <translation id="1051600834033686945">ເປີດການຕັ້ງຄ່າ Brave Rewards ເຕັມຮູບແບບ</translation>
 <translation id="8826461509529116322">ສະແດງປຸ່ມ Brave Rewards</translation>
-<translation id="3328713589982547433">ໂໝດບລັອກໂຄສະນາຢ່າງດຽວ</translation>
-<translation id="1574253307550419595">ໃຊ້ໂໝດບລັອກໂຄສະນາຢ່າງດຽວ</translation>
-<translation id="738717058053657696">ໂໝດບລັອກໂຄສະນາຢ່າງດຽວຈະຮັກສາກົດການບລັອກໂຄສະນາພື້ນຖານຂອງ Brave Shields. ຄໍາເຕືອນ: ຈະລຶບການປົກປ້ອງຄວາມເປັນສ່ວນຕົວທັງໝົດ. ກະລຸນາສັງເກດວ່າສໍາລັບເວັບໄຊທ໌ບາງເວັບທີ່ເສຍໂດຍເນື່ອງຈາກຂໍ້ຈໍາກັດຄວາມເປັນສ່ວນຕົວຂອງ Brave ທ່ານສາມາດຕັ້ງໃຫ້ Shields ຢູ່ໃນສະຖານະ DOWN ໄດ້. ນີ້ແມ່ນໂໝດທົດລອງ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">ໂໝດບລັອກໂຄສະນາຢ່າງດຽວ</translation>
+<translation id="4146834954839563870">ໃຊ້ໂໝດບລັອກໂຄສະນາຢ່າງດຽວ</translation>
+<translation id="420732343671200734">ໂໝດບລັອກໂຄສະນາຢ່າງດຽວຈະຮັກສາກົດການບລັອກໂຄສະນາພື້ນຖານຂອງ Brave Shields. ເຕືອນ: ຈະລຶບການປົກປ້ອງຄວາມເປັນສ່ວນຕົວທັງໝົດ. ກະລຸນາຮັບຊາບວ່າ ສໍາລັບເວັບໄຊທີ່ເກີດຂໍ້ບົກພ່ອງຈາກການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງ Brave, ທ່ານສາມາດຕັ້ງຄ່າ Shields ໄປທີ່ ລົງ. ນີ້ແມ່ນໂໝດທົດລອງ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">ຕົວເລືອກ Shields ໃນປັດຈຸບັນຖືກປິດໃຊ້ງານ.</translation>
-<translation id="516439939408671102">ໂໝດບລັອກໂຄສະນາຢ່າງດຽວຈະຮັກສາກົດການບລັອກໂຄສະນາພື້ນຖານຂອງ Brave Shields ແລະປິດການປົກປ້ອງຄວາມເປັນສ່ວນຕົວ. ຖ້າທ່ານຕ້ອງການເປີດໃຊ້ Shields ມາດຕະຖານ ກະລຸນາປິດໂໝດນີ້ກ່ອນ.</translation>
-<translation id="177233004755519660">ປິດໂໝດບລັອກໂຄສະນາຢ່າງດຽວ</translation>
+<translation id="2687830906359353344">ໂໝດບລັອກໂຄສະນາຢ່າງດຽວຈະຮັກສາກົດການບລັອກໂຄສະນາພື້ນຖານຂອງ Brave Shields ແລະປິດການປົກປ້ອງຄວາມເປັນສ່ວນຕົວ. ຖ້າທ່ານຕ້ອງການເປີດໃຊ້ Shields ມາດຕະຖານ ກະລຸນາປິດໂໝດນີ້ກ່ອນ.</translation>
+<translation id="3809423899581611047">ປິດໂໝດບລັອກໂຄສະນາຢ່າງດຽວ</translation>
 <translation id="9185018653595759199">ປິດສັງຄົມມີເດຍ</translation>
 <translation id="863171915776379000">ອະນຸຍາດໃຫ້ເຂົ້າລະຫັດ Facebook ແລະໂພສແນບ</translation>
 <translation id="7791141927430186653">ອະນຸຍາດໃຫ້ເພດທີ່ແນບໄວ້ຂອງ X (ເດີມ Twitter)</translation>
@@ -655,8 +660,6 @@
 <translation id="7029809446516969842">ລະຫັດຜ່ານ</translation>
 <translation id="6011308810877101166">ພັດທະນາການແນະນຳການຄົ້ນຫາ</translation>
 <translation id="2332576387809612040">ເມື່ອເປີດ, Brave ຈະສົ່ງສິ່ງທີ່ທ່ານພິມໃນແຖບທີ່ຢູ່ ຫຼື ກ່ອງຄົ້ນຫາໄປຫາເຄື່ອງມືຄົ້ນຫາເລີ່ມຕົ້ນຂອງທ່ານເພື່ອໄດ້ຮັບຄໍາແນະນໍາທີ່ດີກວ່າ. ເມື່ອປິດ, Brave ຈະສະແດງຄໍາ້ແນະນໍາທີ່ສ້າງຂຶ້ນຈາກອຸປະກອນຂອງທ່ານພຽງຢ່າງດຽວ. ນີ້ຈະຖືກປິດຢູ່ໃນຫ້ອງສ່ວນຕົວສະເໝີ.</translation>
-<translation id="6285118765755298263">ເພື່ອເພີ່ມເຄືອງມືບ້ານຫາຫລາຍຂຶ້ນ</translation>
-<translation id="5526883767168905185">ຈັດລຽບໄຊ້ເວັບໄຊຕ໌ທີ່ປະຕິບັດຕາມມາດຕິຖານ OpenSearch</translation>
 <translation id="5522403133543437426">ເຄື່ອງມືຄົ້ນຫາທີ່ໃຊ້ຢູ່ແຖບທີ່ຢູ່ຫລອດ.</translation>
 <translation id="280472502078788655">ເຄື່ອງມືຄົ້ນຫາທີ່ໃຊ້ຢູ່ແຖບທີ່ຢູ່ຫລອດສໍາລັບໜ້າຕ່າງສ່ວນຕົວ.</translation>
 <translation id="7232120595886556478">ໜ້າຕ່າງປົກກະຕິ</translation>
@@ -861,6 +864,8 @@
 <translation id="7311244614769792472">ບໍພົບຫາຜົນການຫາ</translation>
 <translation id="1838374766361614909">ລ້າງການຄົ້ນຫາ</translation>
 <translation id="5126255551970171328">ຄົ້ນຫາຂໍ້ມູນຄວາມຈໍາ</translation>
+<translation id="7402116145895962069">ຊິງໂມເດລໃນຄອມພິວເຕີຂອງ Ollama ຂອງທ່ານ</translation>
+<translation id="4835154437390745810">ບໍ່ສາມາດແກ້ໄຂ (Managed) ໂດຍ Ollama</translation>
 <translation id="5985516785067818307">ຜູ້ຮ່ວມກອງສຳພາດ</translation>
 <translation id="8347743943525229984">ອະນຸຍາດການສໍານັນການສຳພາດ Brave</translation>
 <translation id="3204080538332044581">ອະນຸຍາດໃຫ້ Brave ສະແດງລິ້ງໄປຫາແບບສຳຫຼວດສ່ວນຕົວໃນໜ້າແຖບໃໝ່. ແບບສຳຫຼວດຊ່ວຍໃຫ້ພວກເຮົາສ້າງຄຸນສົມບັດທີ່ດີຂຶ້ນ ແລະ ວັດແທກປະສິດທິພາບຂອງແຄມເປນໂຄສະນາທີ່ອີງໃສ່ໂປຣແກຣມທ່ອງເວັບ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>

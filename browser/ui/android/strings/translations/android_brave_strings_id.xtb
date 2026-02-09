@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Tampilkan saran peramban</translation>
 <translation id="8982438328166986164">Menampilkan usulan situs web berdasarkan markah dan riwayat penelusuran Anda.</translation>
 <translation id="924029461438529367">Tampilkan saran pencarian</translation>
-<translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
-<translation id="919715748352669592">Susun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Penyaringan Konten</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Jangan tingkatkan koneksi ke HTTPS (dinonaktifkan)</translation>
 <translation id="693506469193748756">Lupakan saya ketika saya menutup situs ini</translation>
 <translation id="6975864539539353406">Hapus kuki dan data situs lainnya ketika Anda menutup situs</translation>
+<translation id="7740929262043547697">Izinkan pemblokiran elemen di jendela privat</translation>
+<translation id="1260864846935682371">Mengaktifkan fitur Pemblokiran Elemen Perisai di jendela privat. Perhatikan bahwa elemen yang diblokir di jendela privat juga akan diblokir di jendela non-privat.</translation>
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
 <translation id="7142548388914389999">Memungkinkan analitik produk yang menjaga privasi (P3A)</translation>
 <translation id="5254037869598726291">Info P3A yang anonim membantu Brave memperkirakan penggunaan keseluruhan, dan memastikan kami meningkatkan fitur yang populer.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">NANTI SAJA</translation>
 <translation id="4117451092682672487">Privasi. Dapatkan dengan mudah.</translation>
 <translation id="7909375417585209817">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.</translation>
-<translation id="7370959926683925817">Memblokir iklan. Menyimpan data. Setiap hari.</translation>
-<translation id="7281027579943912834">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk mendapat perlindungan pemblokiran iklan Brave. Setiap halaman, video, dan aliran.</translation>
 <translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
 <translation id="6718362830686703942">Kirimkan laporan diagnostik jika Anda mengalami kerusakan atau kebekuan.</translation>
 <translation id="8616157231067364693">Bagikanlah wawasan produk secara privat dan anonim tentang fitur-fitur yang digunakan pengguna Brave.</translation>
@@ -371,6 +369,11 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8793108040181436796">Tombol</translation>
 <translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
 <translation id="7275773481201277457">Tampilkan Statistik Brave</translation>
+<translation id="7462178177755090262">Layar Pembuka</translation>
+<translation id="5365434987337264071">Tab terakhir dibuka</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Tab baru setelah tidak aktif selama <ph name="HOURS_ONE"/> jam} other {Tab baru setelah tidak aktif selama <ph name="HOURS_MANY"/> jam}}</translation>
+<translation id="5233638681132016545">Tab baru</translation>
+<translation id="8395271296293035055">Kembali ke tab terbaru Anda</translation>
 <translation id="8297488609722895137">Foto oleh <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Buka tautan eksternal di Brave</translation>
 <translation id="5616508928556767259">Buka tautan dari aplikasi lain di tampilan web Brave. Catatan: Brave harus ditetapkan sebagai peramban bawaan.</translation>
@@ -761,7 +764,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6889920539620318793">Ditetapkan sebagai aktif</translation>
 <translation id="2653659639078652383">Kirim</translation>
 <translation id="4945690646623486292">Pilih Jaringan</translation>
-<translation id="5233638681132016545">Tab baru</translation>
 <translation id="8006088103295786154">Mengakses Dompet Brave</translation>
 <translation id="5308380583665731573">Hubungkan</translation>
 <translation id="8030169304546394654">Terputus</translation>
@@ -1069,6 +1071,10 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4650851936784160359">Daftar filter tidak dapat diperbarui. Silakan coba lagi.</translation>
 <translation id="3098054327870766317">Tampilkan tombol urungkan saat tab ditutup</translation>
 <translation id="1336494649091412226">Apakah Anda yakin ingin keluar dari Brave?</translation>
+<translation id="6061635824229591714">Musnahkan data situs?</translation>
+<translation id="1265051174491933207">Pemusnahan data akan menghapus data situs dan menutup semua tab '<ph name="SITE_NAME"/>'. Tindakan ini tidak dapat dibatalkan.</translation>
+<translation id="4279349293084858577">Hancurkan</translation>
+<translation id="4426990318287827331">Musnahkan Data</translation>
 <translation id="7942415993090181327">Riwayat obrolan</translation>
 <translation id="6859935199732075666">Tampilkan kesalahan dari Safe Browsing</translation>
 <translation id="2735247450315842119">Izinkan tangkapan layar di tab pribadi</translation>

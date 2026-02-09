@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Show browser suggestions</translation>
 <translation id="8982438328166986164">Displays website suggestions based on your bookmarks and browsing history.</translation>
 <translation id="924029461438529367">Show search suggestions</translation>
-<translation id="6285118765755298263">Index other search engines</translation>
-<translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
 <translation id="9148058034647219655">Exit</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Content filtering</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Don't upgrade connections to HTTPS (disabled)</translation>
 <translation id="693506469193748756">Forget me when I close this site</translation>
 <translation id="6975864539539353406">Clears cookies and other site data when you close a site</translation>
+<translation id="7740929262043547697">Allow element blocking in private windows</translation>
+<translation id="1260864846935682371">Enables the Shields Block Elements feature in private windows. Note that elements blocked in private windows will also be blocked in non-private windows.</translation>
 <translation id="1680858055899097121">Don't persist tabs between browsing sessions</translation>
 <translation id="7142548388914389999">Allow privacy-preserving product analytics (P3A)</translation>
 <translation id="5254037869598726291">Anonymised P3A info helps Brave estimate overall usage and ensure we’re improving popular features.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">LATER</translation>
 <translation id="4117451092682672487">Privacy. Made simple.</translation>
 <translation id="7909375417585209817">With Brave as default, every link you tap opens with Brave's privacy protections.</translation>
-<translation id="7370959926683925817">Block ads. Save data. Every single day.</translation>
-<translation id="7281027579943912834">With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.</translation>
 <translation id="5148943178722443958">Help make Brave better.</translation>
 <translation id="6718362830686703942">Send diagnostic reports if you experience a crash or freeze.</translation>
 <translation id="8616157231067364693">Share private and anonymous product insights about what features are being used by Brave's users.</translation>
@@ -371,6 +369,14 @@ Are you sure you want to do this?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Show Top Sites</translation>
 <translation id="7275773481201277457">Show Brave Stats</translation>
+<translation id="7462178177755090262">Opening Screen</translation>
+<translation id="5365434987337264071">Last open tab</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {New tab after <ph name="HOURS_ONE"/> hour of inactivity}
+          other {New tab after <ph name="HOURS_MANY"/> hours of inactivity}
+        }</translation>
+<translation id="5233638681132016545">New tab</translation>
+<translation id="8395271296293035055">Return to your most recently used tab</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Open external links in Brave</translation>
 <translation id="5616508928556767259">Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.</translation>
@@ -761,7 +767,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6889920539620318793">Set as active</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="4945690646623486292">Select network</translation>
-<translation id="5233638681132016545">New tab</translation>
 <translation id="8006088103295786154">Access Brave Wallet</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="8030169304546394654">Disconnected</translation>
@@ -1069,6 +1074,10 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4650851936784160359">Filter list could not be updated. Please try again</translation>
 <translation id="3098054327870766317">Show undo button when tabs are closed</translation>
 <translation id="1336494649091412226">Are you sure you want to exit Brave?</translation>
+<translation id="6061635824229591714">Shred site data?</translation>
+<translation id="1265051174491933207">Shredding will delete site data and close all '<ph name="SITE_NAME"/>' tabs. This cannot be undone.</translation>
+<translation id="4279349293084858577">Shred</translation>
+<translation id="4426990318287827331">Shred data</translation>
 <translation id="7942415993090181327">Chat history</translation>
 <translation id="6859935199732075666">Show Safe Browsing errors</translation>
 <translation id="2735247450315842119">Allow screenshots in private tabs</translation>

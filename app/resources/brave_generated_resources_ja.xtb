@@ -131,7 +131,6 @@
 <translation id="780301667611848630">いいえ</translation>
 <translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
 <translation id="9164786361657554526">OKをクリックすることで、お客様はmacOS 10.15以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
-<translation id="2770465223704140727">リストから削除</translation>
 <translation id="6020553119523541665">このタブは別のウィンドウで有効になっています</translation>
 <translation id="4987392683074136770">このタブをクリックすると、コンテンツがこのウィンドウに表示されます</translation>
 <translation id="8355523213948477234">「スプリットビュー」メニューボタン</translation>
@@ -224,6 +223,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPNでWireGuardプロトコルを使用します</translation>
 <translation id="8519170191215826548">Brave VPNの接続中は、この設定を変更できません。</translation>
+<translation id="1177917174080821247">VPNトレイアイコンを表示</translation>
+<translation id="3747459938663420752">有効にすると、Windows のタスクバーに Brave VPN のトレイアイコンが表示されます。</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -235,7 +236,6 @@
 <translation id="8030169304546394654">切断されました</translation>
 <translation id="1863950594388384201">ツールバーにVPNボタンを表示</translation>
 <translation id="5187139277471084437">ツールバーにVPNボタンを非表示</translation>
-<translation id="1177917174080821247">VPNトレイアイコンを表示</translation>
 <translation id="8041089156583427627">フィードバックを送信</translation>
 <translation id="4049186905514157504">プランの管理</translation>
 <translation id="7570585565843385325">ツールバーにVPNボタンを表示</translation>
@@ -333,7 +333,7 @@
 <translation id="1533980864758658574"><ph name="TOPIC"/>の新しいウィンドウが作成されました。</translation>
 <translation id="7985042437720138349">この機能は、開いているタブに関するデータをBraveのブラウザAIアシスタント、Leoに送信します。</translation>
 <translation id="6165508094623778733">詳しく知る</translation>
-<translation id="7557539689487606886">プレミアムプラン</translation>
+<translation id="7557539689487606886">プレミアムプランへ</translation>
 <translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
 <translation id="9082792303833649978">この設定は、管理者または別のBraveポリシーによって管理されています。</translation>
@@ -381,6 +381,7 @@
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="4691131445504068802">最小化時に完全に非表示にする</translation>
 <translation id="6763346436728173884">タブの閉じるボタンを常に非表示にする</translation>
+<translation id="8082625757059443808">ミドルボタンクリックでタブを閉じることを許可する</translation>
 <translation id="4909269867860362936">最小化時にホバーで自動的に展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
 <translation id="8925055964134259461">垂直タブをウィンドウごとに独立して自動展開</translation>
@@ -462,7 +463,7 @@
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
 <translation id="101592339984642584">コンテンツフィルター</translation>
-<translation id="2398817776566547893">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます</translation>
+<translation id="2398817776566547893">カスタムフィルターを有効にすると、地域や言語に対応するトラッカーや不快な表示をブロックできます</translation>
 <translation id="3482656215021340727">カスタムフィルターのリストを追加</translation>
 <translation id="1020877116991797978">信頼できるコミュニティにより作成および管理されているリストを追加します。</translation>
 <translation id="7617831480435794399">信頼できる作成者のリストにのみ登録してください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
@@ -516,12 +517,12 @@
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="1051600834033686945">Braveリワードの設定を開く</translation>
 <translation id="8826461509529116322">Brave Rewardsボタンを表示する</translation>
-<translation id="3328713589982547433">広告ブロック専用モード</translation>
-<translation id="1574253307550419595">広告ブロック専用モードを使用する</translation>
-<translation id="738717058053657696">広告ブロックのみモードは、Brave Shieldsのコア広告ブロックルールを保持します。警告: すべてのプライバシー保護を削除します。Braveのプライバシー保護によって破壊された個々のウェブサイトについては、ShieldsをDOWNに設定できることに注意してください。 <ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">広告ブロック専用モード</translation>
+<translation id="4146834954839563870">広告ブロック専用モードを使用する</translation>
+<translation id="420732343671200734">広告ブロックのみモードは、Brave Shieldsのコア広告ブロックルールを保持します。警告: すべてのプライバシー保護を削除します。Braveのプライバシー保護によって破壊された個々のウェブサイトについては、ShieldsをDOWNに設定できることに注意してください。これは試験的なモードです。<ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">シールドのオプションは現在無効になっています</translation>
-<translation id="516439939408671102">広告ブロック専用モードは、ブレイブシールドのコアな広告ブロックルールを保持し、プライバシー保護をオフにします。標準のシールドを有効にしたい場合は、このモードを無効にしてください。</translation>
-<translation id="177233004755519660">広告ブロック専用モードをオフにする</translation>
+<translation id="2687830906359353344">広告ブロック専用モードは、Brave Shieldsのコア広告ブロックルールを保持し、プライバシー保護をオフにします。標準のShieldsを有効にしたい場合は、このモードを無効にしてください。</translation>
+<translation id="3809423899581611047">広告ブロック専用モードをオフにする</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="7791141927430186653">X (旧Twitter) の埋め込みツイートを許可する</translation>
@@ -665,8 +666,6 @@
 <translation id="7029809446516969842">パスワード</translation>
 <translation id="6011308810877101166">検索候補の品質を改善</translation>
 <translation id="2332576387809612040">これをオンにすると、Braveはアドレスバーや検索ボックスに入力した内容をデフォルトの検索エンジンに送信し、より適切な候補が表示されるようにします。オフにすると、Braveはあなたのデバイスで生成された候補のみを表示します。この機能はプライベートウィンドウでは常にオフになっています。</translation>
-<translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
-<translation id="5526883767168905185">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="5522403133543437426">アドレスバーで使用される検索エンジン。</translation>
 <translation id="280472502078788655">プライベートウィンドウのアドレスバーで使用される検索エンジン。</translation>
 <translation id="7232120595886556478">標準ウィンドウ</translation>
@@ -872,6 +871,8 @@
 <translation id="7311244614769792472">結果が見つかりませんでした。</translation>
 <translation id="1838374766361614909">検索を消去</translation>
 <translation id="5126255551970171328">メモリを検索</translation>
+<translation id="7402116145895962069">Ollamaローカルモデルを同期する</translation>
+<translation id="4835154437390745810">Ollamaにより管理されています</translation>
 <translation id="5985516785067818307">調査パネリスト</translation>
 <translation id="8347743943525229984">Braveアンケートを許可</translation>
 <translation id="3204080538332044581">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>

@@ -491,6 +491,15 @@
 <translation id="4915997950539925115">ໂດຍການຕັ້ງຄ່າໃໝ່, ໂປຣໄຟລ໌ Brave Rewards ປັດຈຸບັນຂອງທ່ານຈະຖືກລຶບອອກ, ແລະ Brave Rewards ຈະບໍ່ຖືກເປີດໃຊ້ງານອີກຕໍ່ໄປ. ຖ້າທ່ານເປີດໃຊ້ Brave Rewards ອີກຄັ້ງໃນພາຍຫຼັງ, ທ່ານຈະເລີ່ມຕົ້ນດ້ວຍໂປຣໄຟລ໌ໃໝ່. ອ່ານ <ph name="LINK_BEGIN"/>ບົດຄວາມຊ່ວຍເຫຼືອກ່ຽວກັບການຕັ້ງຄ່າໃໝ່<ph name="LINK_END"/> ຂອງພວກເຮົາສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.</translation>
 <translation id="4806029412510565611">ຂ້ອຍເຂົ້າໃຈວ່າໂປຣໄຟລ໌ Brave Rewards ປັດຈຸບັນຂອງຂ້ອຍ ແລະ ຂໍ້ມູນ Brave Rewards ຈະຖືກລຶບອອກຈາກອຸປະກອນຂອງຂ້ອຍ, ແລະ ຂ້ອຍໄດ້ອ່ານ <ph name="LINK_BEGIN"/>ບົດຄວາມຊ່ວຍເຫຼືອກ່ຽວກັບການຕັ້ງຄ່າໃໝ່<ph name="LINK_END"/> ແລ້ວ.</translation>
 <translation id="8835777704176513489">ຕັດວາດແລະໂຫມດຮັບ Rewards</translation>
+<translation id="1570055891464728855">ຣີເຊັດ​ຕອນນີ້</translation>
+<translation id="6431824580671230473">ຢ່າກັງວົນ: BAT ໃດໆທີ່ຢູ່ໃນບັນຊີ <ph name="PROVIDER"/> ຂອງທ່ານຊ່ວຍຈະບໍ່ຖືກກະທົບໂດຍການຣີເຊັດ.</translation>
+<translation id="2881473942058010900">ທ່ານຈະບໍ່ໄດ້ຮັບລາງວັນສໍາລັບໂຄສະນາໃນຂະນະທີ່ເຊື່ອມຕໍ່ກັບ <ph name="PROVIDER"/>. ຣີເຊັດ Brave Rewards ແລະເຊື່ອມຕໍ່ບັນຊີຮັບຊໍາລະໃໝ່ພື່ອສືບຕໍ່ການຮັບລາງວັນ. <ph name="LINK_BEGIN"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
+<translation id="5803444802570526678">ບັນຊີ <ph name="PROVIDER"/> ບໍ່ຮອງຮັບອີກຕໍ່ໄປ.</translation>
+<translation id="3794463124070392793">ຢືນຢັນພູມິພາກຂອງທ່ານ</translation>
+<translation id="4620879582500359234">BAT ໃດໆທີ່ຢູ່ໃນບັນຊີ <ph name="PROVIDER"/> ຂອງທ່ານຊ່ວຍຈະຍັງຄົງຢູ່ທີ່ນັ້ນ.</translation>
+<translation id="935303782545595866">ປະຫວັດໂຄສະນາ 30 ມື້ ແລະການຕັ້ງຄ່າ Brave Rewards ອື່ນໆ ຂອງທ່ານຈະຖືກຣີເຊັດ.</translation>
+<translation id="6279637499952804615">ທ່ານສາມາດເລືອກບັນຊີຮັບຊໍາລະໃໝ່ໄດ້ຫຼັງຈາກຂັ້ນຕອນນີ້.</translation>
+<translation id="5419770758409992826">ບັນຊີ <ph name="PROVIDER"/> ຂອງທ່ານຈະຖືກຕັດການເຊື່ອມຕໍ່ ແລະໂປຣໄຟລ໌ Brave Rewards ຂອງທ່ານຈະຖືກຣີເຊັດ.</translation>
 <translation id="7717357606512850995">ກວດສະຖານະ</translation>
 <translation id="6473937687348632190">ການຊໍາລະເງິນສໍາລັບລາງວັນ <ph name="MONTH"/> ສຳເລັດແລ້ວ.</translation>
 <translation id="1711367267038576241">ການຊໍາລະເງິນຂອງສົ່ງໃຫ້ເລີມເຂົ້າການຊຳລາຮັກຂອງ <ph name="MONTH"/> <ph name="DATE"/></translation>
@@ -512,8 +521,8 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,=1 {ໃນເດືອນນີ້, ເຈົ້າໄດ້ເຂົ້າຊົມຜູ້ສ້າງ 1 ລາຍທີ່ຮັບການສະໜັບສະໜູນໂດຍ Brave Rewards}other {ໃນເດືອນນີ້, ເຈົ້າໄດ້ເຂົ້າຊົມຜູ້ສ້າງ # ລາຍທີ່ຮັບການສະໜັບສະໜູນໂດຍ Brave Rewards}}</translation>
 <translation id="3264975266761862670">ພ້ອມເລີ່ມຮັບລາຍໄດ້ແລ້ວຫຼືບໍ່?</translation>
 <translation id="2784412028126205842">ເອົາບັນຊີກົນການເຮັດທຸລະກຳ</translation>
-<translation id="766126983336630294">{ADS_VIEWED, plural,=0 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/># ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້}=1 {ເຈົ້າອາດຈະໄດ້ຮັບການຈ່າຍເງິນສໍາລັບ <ph name="COUNT_BEGIN"/># ໂຄສະນາ<ph name="COUNT_END"/> ທີ່ເຈົ້າໄດ້ເບິ່ງໃນເດືອນນີ້.}other {ເຈົ້າອາດຈະໄດ້ຮັບການຈ່າຍເງິນສໍາລັບ <ph name="COUNT_BEGIN"/># ໂຄສະນາ<ph name="COUNT_END"/> ທີ່ເຈົ້າໄດ້ເບິ່ງໃນເດືອນນີ້.}}</translation>
-<translation id="8611388433418909120">{ADS_VIEWED, plural, =0 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/># ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} =1 {ເຈົ້າກຳລັງຮັບລາງວັນສໍາລັບການເບິ່ງ <ph name="COUNT_BEGIN"/># ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} other {ເຈົ້າກຳລັງຮັບລາງວັນສໍາລັບການເບິ່ງ <ph name="COUNT_BEGIN"/># ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້}}</translation>
+<translation id="1789518312567918588">{ADS_VIEWED, plural, =0 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} =1 {ເຈົ້າສາມາດຮັບຄ່າຕອບແທນໄດ້ຈາກ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ທີ່ເຈົ້າໄດ້ເຫັນໃນເດືອນນີ້.} other {ເຈົ້າສາມາດຮັບຄ່າຕອບແທນໄດ້ຈາກ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ທີ່ເຈົ້າໄດ້ເຫັນໃນເດືອນນີ້.}}</translation>
+<translation id="1100743684843603297">{ADS_VIEWED, plural, =0 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} =1 {ເຈົ້າກໍາລັງຮັບລາງວັນສໍາລັບການເບິ່ງ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} other {ເຈົ້າກໍາລັງຮັບລາງວັນສໍາລັບການເບິ່ງ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້}}</translation>
 <translation id="6067959437127691361">ການໃຊ້ Brave Rewards ຊ່າວາລາຍເນື້ອໃນ, ແລະເວັດ BAT.</translation>
 <translation id="2359808026110333948">ດຳເນີນການຕໍ່</translation>
 <translation id="3863981251715594911">ວິທີໃຊ້ງານເປັນແນວໃດ?</translation>
@@ -590,7 +599,7 @@
 <translation id="5802986777701714573">ພວກເຮົາໄດ້ເພີ່ມວິທີໃໝ່ສຳລັບທ່ານໃນການນັບເງິນ BAT ປະຈຳເດືອນ. ເຊື່ອມຕໍ່ໄພດທີ່ຢູ່ເບິງແນລໍາພາກຫນ້າຫຼັກ</translation>
 <translation id="3251885322612056119">ເງື່ອນໄຂການໃຊ້ໃຫມ່</translation>
 <translation id="7454675823870922788">ພວກເຮົາໄດ້ອັບເດດເງື່ອນໄຂສຳລັບ Brave Rewards. ພວກເຮົາໄດ້ພັກເພັບອອມເພື່ອໃຫ້ມັນຊັດເຈນຫຼາຍຂຸ້ນແລະຄຸ້ມຄອງຢູ່ໃນພາກເປັນດູໝາຍໃຫ້ເຈີີັນເພີ່ອຍັງງັນພາກດຸໝາຍອື່ນ. ຖ້າທ່ານຢັງໃຊ້ Brave Rewards, ທ່ານໄດ້ຍອມຮັບເງື່ອນໄຂໃໝ່. ຖ້າທ່ານບໍ່ຮັບ, ທ່ານສາມາດ <ph name="LINK_BEGIN"/>reset<ph name="LINK_END"/> Brave Rewards, ຊຶ່ງຈະປິດຟັງຊັນລິການ.</translation>
-<translation id="56057964000416013">ພວກເຮົາໄດ້ປັບປຸງເງື່ອນໄຂການໃຊ້ບໍລິການຂອງເຮົາ. ເພື່ອທໍາໃຫ້ໃຊ້ງານ Brave Rewards, ກະລຸນາທົດສອບແລະເຫມາະສົມກັບເງື່ອນໄຂທີ່ປັບປຸງຂອງພວກເຮົາ.</translation>
+<translation id="616595399243298960">ພວກເຮົາໄດ້ປັບປຸງເງື່ອນໄຂການໃຊ້ບໍລິການຂອງພວກເຮົາ. ພ້ອມທີ່ຈະໃຊ້ງານ Brave Rewards ຕໍ່, ກະລຸນາກວດກາ ແລະຍອມຮັບເງື່ອນໄຂທີ່ປັບປຸງ.</translation>
 <translation id="5192526308598085294">ເບິ່ງ <ph name="LINK_BEGIN"/>ເງື່ອນໄຂການໃຊ້ Brave Rewards<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">ຍອມຮັບ</translation>
 <translation id="343114360276812078">ທົດສອບເງື່ອນໄຂ</translation>
@@ -638,6 +647,8 @@
 <translation id="6751803821780922506">ໃຫ້ເລືອກບ່ອນທີ່ທ່ານຕ້ອງການຮັບ BAT</translation>
 <translation id="3162035476318501831">ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບພາກເເລະການສະໜັງແດນ.</translation>
 <translation id="7329170127335794328">ບໍ່ມີໃນພາກທີ່ທ່ານຢູ່ໃນປັດຈຸບັນ</translation>
+<translation id="1947910788470806100">ພວກເຮົາຍັງບໍ່ມີຕົວເລືອກສົ່ງເງິນສໍາລັບພື້ນທີ່ຂອງທ່ານ. ທ່ານສາມາດກວດເບິ່ງອີກຄັ້ງໃນພາຍຫຼັງວ່າການພ້ອມໃຊ້ຖືກປ່ຽນແປງບໍ່.</translation>
+<translation id="271689813824682404">ບໍ່ມີຕົວເລືອກຮັບຈ່າຍ</translation>
 <translation id="966956302643313970">ເພື່ອເລີ່ມຄືນງານ BAT Rewards, ເປີດບັນຊີໃຫ້ຄ້ອງຄອງເພື່ອຈັດສົ່ງການຮັບ BAT Rewards.</translation>
 <translation id="4009439571146350519">ຫຼືອີກ Wallet ໃຫມ່ຂອງທ່ານໃນ Solana.</translation>
 <translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Terms of Use<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
@@ -845,6 +856,7 @@
 <translation id="6264944956989873014">ຢືນຢັນການເຊື່ອມຕໍ່</translation>
 <translation id="7067917728851842589">ຢືນຢັນການສົ່ງ</translation>
 <translation id="2351357639951873714">ຢືນຢັນການປົກປ້ອງ</translation>
+<translation id="7480044382160806610">ຢືນຢັນເປີດການປົກປ້ອງ</translation>
 <translation id="8332923694292360653">ໃຊ້ຈ່າຍ</translation>
 <translation id="3735740477244556633">ຕັ້ງລຽງຕາມ</translation>
 <translation id="6484605214219822434">ກວດກາເສັ້ນທາງ</translation>
@@ -866,6 +878,8 @@
 <translation id="7465227658364622464">Jupiter ວ່າແມ່ນຈະລອດປະມານທີ່ຢູ່ Solana ແລະ IP ທີ່ໃຊ້ເພື່ອປະເຕີບໄພໄລ. Jupiter ຈະເພີ່ມເປັນຂີ້ນທີ່ການເອື່ອນໄພໄລການ.</translation>
 <translation id="712738518060477110">ລາຄາຊື້ໃສ້ສານ <ph name="SWAP_FEE_PERCENTAGE"/> ຄ່າ Brave.</translation>
 <translation id="8368540604723748428">ຫຼາຍຫົວເເອ.</translation>
+<translation id="4797709125717981664">ຈໍານວນຕໍ່ໜ້າທີ່ຕ້ອງການແມ່ນ 1 ADA</translation>
+<translation id="3826737479910350533">ຈໍານວນທີ່ຈະສົ່ງນ້ອຍເກີນໄປ</translation>
 <translation id="6575120282593094155">ຍັງບໍ່ມີ <ph name="ACCOUNT_TYPE"/> ຄັງຄ່າ. ສ້າງໃຫມ່ດຽວນີ້?</translation>
 <translation id="1426410128494586442">ແມ່ນ</translation>
 <translation id="4250680216510889253">ບໍ່</translation>
@@ -912,7 +926,7 @@
 <translation id="2274014756904854136">ກອບແມບໄປຂ້າງພື້ນເພີ່ມ.</translation>
 <translation id="7795718119973968770">ກະເປົາຂອງທ່ານໄດ້ຖືກລັອກໄວ້ໃນການຄົງຄວາມປອດໄພ.</translation>
 <translation id="9175546523521600401">ລັອກກະເປົາ</translation>
-<translation id="765834632354589737">ສຳຮອງກະເປົາ</translation>
+<translation id="7117128722034148989">ສຳຮອງກະເປົາ</translation>
 <translation id="1108298724135935307">ເວັບໄຊທ໌ທີ່ເຊື່ອມຕ໇າງ</translation>
 <translation id="5716350339763180836">ດຸນລະຫັນທີ່ບໍ່ແມ່ນແລງສຳເລັດ.</translation>
 <translation id="5538251867290702601">ການທົບຂອງດຸນທີ່ບໍ່ປະສົບຜົນສຳເລັດ.</translation>
@@ -1014,6 +1028,7 @@
 <translation id="2416098547200943834">ໝາຍເຫດ: ລະຫັດສ່ວນຕົວຖືກສະໜອງໃຫ້ເປັນ JSON ທີ່ເຂົ້າລະຫັດ hex ເຊິ່ງປະກອບດ້ວຍລະຫັດສ່ວນຕົວ ແລະ ຂໍ້ມູນໂປໂຕຄອນ. <ph name="LINK_START"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ໝາຍເຫດ: ລະຫັດສ່ວນຕົວຕ້ອງໄດ້ສະໜອງໃຫ້ເປັນ JSON ທີ່ເຂົ້າລະຫັດດ້ວຍເລກຖານສິບຫົກ ເຊິ່ງປະກອບດ້ວຍລະຫັດສ່ວນຕົວ ແລະ ຂໍ້ມູນໂປຣໂຕຄອນ. <ph name="LINK_START"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ໝາຍເຫດ: ຮອງຮັບພຽງແຕ່ປຸ່ມທີ່ຂະຫຍາຍອອກ <ph name="FORMAT"/> ເທົ່ານັ້ນ.</translation>
+<translation id="9133762451347918196">ບັນຊີເທັດເນັດ</translation>
 <translation id="42126664696688958">ດາວນ໌ໂຫລດ</translation>
 <translation id="1366855498335432549">ຝາກເງິນເຂົ້າ</translation>
 <translation id="790104325876206743">ຕັ້ງຄ່າບັນຊີ</translation>
@@ -1021,6 +1036,7 @@
 <translation id="836614343069504000">ຝາກເງິນ ຫຼື ຊື້ໂທເຄັນເພື່ອເລີ່ມຕົ້ນ. ຖ້າທ່ານບໍ່ເຫັນໂທເຄັນຈາກບັນຊີທີ່ນຳເຂົ້າ, ໃຫ້ກວດສອບຕົວກອງ ແລະ ການຕັ້ງຄ່າການສະແດງຜົນ. ອາດຈະຕ້ອງເພີ່ມໂທເຄັນທີ່ບໍ່ຮູ້ຈັກເປັນຊັບສິນທີ່ກຳນົດເອງ.</translation>
 <translation id="2902856457593699108">ເຫັນກຸດ</translation>
 <translation id="8033497299373164724">ເຊື່ອງກຸດ</translation>
+<translation id="7514365320538308">ດາວໂຫຼດ</translation>
 <translation id="2702143907607790516">ອັບເດດຊື່ບັນຊີບໍ່ສຳເລັດ, ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1041,9 +1057,6 @@
 <translation id="1506421160138798546">ປະເມີນລາຄາ</translation>
 <translation id="59223531494896848">ຂອບລາຄາ</translation>
 <translation id="8569380433211549748">ລາຄາໃນ</translation>
-<translation id="2490428413101944234">ກ໊ອກວິທີການ</translation>
-<translation id="3352959425838279177">ຮັບອີເທີຈາກ faucet ສຳລັບ <ph name="SELECTED_NETWORK"/></translation>
-<translation id="6449626816252815844">ເລືອກວິທີການຊື້</translation>
 <translation id="8009571545960303544">ທ່ານກໍາລັງ!</translation>
 <translation id="5294062982587710720">ຫຼາຍນາຍນ້ານ</translation>
 <translation id="3474375934783434676">ເຮັດອິງໃສ່ນີ້</translation>
@@ -1051,6 +1064,7 @@
 <translation id="3586931643579894722">ເຊື່ອງລາຍລະອຽດ</translation>
 <translation id="7702907602086592255">ໂດເເມນ</translation>
 <translation id="3586752056660754651">ລາຍເຊັນ</translation>
+<translation id="4217653732094303705">ລະຫັດການເຂົ້າລະຫັດສາທາລະນະ</translation>
 <translation id="3484981968509595506">'ແອບ'ຕ້ອນການຂໍຫະດປາ</translation>
 <translation id="2300240008330189182"><ph name="URL"/> ກໍາລັງຮ້ອງຂອ້ນກະແຈເຂົ້າລຫັດສາທາລະນະຂອງກະເປົາເງິນຂອງທ່ານ. ຖ້າທ່ານຍິນຍອມ ການນີ້ຈະເຮັດໃຫ້ເວັບໄຊສາມາດສ້າງຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດໄດ້.</translation>
 <translation id="3340247553212049934">ສະໜອງ</translation>
@@ -1288,9 +1302,7 @@
 <translation id="4312994183947987913">ຊື້/ຝາກ</translation>
 <translation id="5133421763709317473">ບໍ່ພົບຊັບສິນທີ່ຕົງກັບການຄົ້ນຫາຫຼືການຕັ້ງກັນ</translation>
 <translation id="6423985584914773314">ທີ່ຢູ່ FIL ບໍ່ຖືກຕ້ອງ</translation>
-<translation id="5522073372365069684">ຊື້ດ້ວຍ Ramp</translation>
 <translation id="6153197326949684688">ຂາຍດ້ວຍ <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="3301984548406568819">ຂໍ້ມູນການເງິນແລະທຸລະກຳໄດ້ຖືກປະມວຍຜົນໂດຍຄູ່ຮ່ວມຂອງພວກເຮົາ. Brave ບໍ່ໄດ້ເກັບຮອງຫຼືມີການເຂົ້າເຖິງຂໍ້ມູນດັ່ງກ່າວ.</translation>
 <translation id="5795821518596541838">ເພື່ອນຄູ່ທຸລະກຳ</translation>
 <translation id="1916136859742693273">Brave Wallet ໃຊ້ Meld.io ເພື່ອຊ່ວຍປະມວຍຜົນແລະນໍາສະເຫນີຜູ້ໃຫ້ບໍລິການ crypto ຫລາກຫລາຍສຳລັບພື້ນທີ່ຂອງທ່ານ. ພວກເຮົາຈະແບ່ງປັນຂໍ້ມູນກັບ Meld.io ເພື່ອໃຫ້ການທຸລະກຳສຳເລັດລົງ, ຮວມທັງທີ່ຢູ່ກະເປົາແລະລະຫັດປະເທດ. ເພື່ອຂໍ້ມູນເພີ່ມຕື່ມ, ກະລຸນາອ່ານຂໍ້ຕົກລົງໃຊ້ງານຂອງ Meld.</translation>
 <translation id="245827814248186739">ຂ້ອຍໄດ້ອ່ານແລະຍອມຮັບ <ph name="LINK_BEFORE"/>ຂໍ້ຕົກລົງໃຊ້ງານของ Meld<ph name="LINK_AFTER"/></translation>
@@ -1311,17 +1323,8 @@
 <translation id="4196022627437957774">ເຈົ້າຕ້ອງການສ້າງບັນຊີ <ph name="ACCOUNT_TYPE"/> ຫລືບໍ?</translation>
 <translation id="5982914754413312620">ເພື່ອຮັບ <ph name="TOKEN_SYMBOL"/> ເຈົ້າຈະຕ້ອງມີບັນຊີ <ph name="ACCOUNT_TYPE"/>.</translation>
 <translation id="3067168166931605141">ຊື່ບັນຊີ</translation>
-<translation id="6534275647567011533">ຊື້ດ້ວຍ Transak</translation>
-<translation id="5973390321030037823">ຊື້ດ້ວຍ Link</translation>
-<translation id="1932640759496708012">ຊື້ດ້ວຍ Coinbase Pay</translation>
-<translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="503018546142690471">Transak</translation>
-<translation id="7295150312737713113">Link by Stripe</translation>
-<translation id="7191335763519723663">Coinbase Pay</translation>
-<translation id="7667423728712601865">ຊື້ crypto ດ້ວຍ Visa ຫລື Mastercard.</translation>
-<translation id="3101839349578102016">ຊື້ໂດຍດ່ວນດ້ວຍບັນຊີທະນາຄານຂອງເຈົ້າ. ຄ່າທຳນຽມຕ່ໍາກວ່າ.</translation>
-<translation id="8280898387224328221">ຈ່າຍດ້ວຍບັດເຄຣດິດ, ບັດເດບິດ, ບັນຊີທະນາຄານ</translation>
-<translation id="2218174283683424104">ຊື້ດ້ວຍຊື່ທີ່ເຊື່ອໃຈໄດ້ຫຼາຍທີ່ສຸດໃນດ້ານຄຣິບໂຕ.</translation>
+<translation id="1213870770696612739">ຈໍານວນຂັ້ນຕ່ໍາ: <ph name="AMOUNT"/></translation>
+<translation id="3041074161036535192">ຈໍານວນຂັ້ນສູງ: <ph name="AMOUNT"/></translation>
 <translation id="8528916244724490964">ທຸກເຄືອຂ່າຍ</translation>
 <translation id="7721139939763655123">ຕໍ່າຫາສູງ</translation>
 <translation id="5458608274117818139">ສູງຫາຕໍ່າ</translation>
@@ -1367,7 +1370,9 @@
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> ໃນ <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974">ມີຂໍ້ຜິດພາດໃນຄວາມພະຈໍາເພື່ອທົບຄືນ <ph name="SWAP_OR_BRIDGE"/> ໃນ <ph name="NETWORK"/></translation>
 <translation id="1778601041100951971">ກໍາລັງກວງເງິນ <ph name="AMOUNT"/></translation>
+<translation id="6439110433198887239">ກໍາລັງເປີດການປົກປ້ອງ <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> ໄດ້ຖືກກວງໄວ້ແລ້ວ</translation>
+<translation id="3860973324426281816"><ph name="AMOUNT"/> ໄດ້ຮັບການເປີດການປົກປ້ອງແລ້ວ</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural, =1 {{PENDING_TRANSACTIONS} more transaction pending.} other {{PENDING_TRANSACTIONS} more transactions pending.}}</translation>
 <translation id="6954150712710630841">ການແຈ້ງເຕືອນທຸລະກຳ</translation>
 <translation id="619697073289995370">ການຊື້ຂາຍເດີນການສຳເລັດແລ້ວ</translation>
@@ -1559,8 +1564,6 @@
 <translation id="1422451606553326863">ຊື້ຄຣິບໂຕ</translation>
 <translation id="3887541341068007345">ກຳລັງກວດສອບສະໄອເວື້ນກະເປົາ...</translation>
 <translation id="8407091560429310499">ເລືອກບັນຊີ</translation>
-<translation id="756590380936155533">ເພື່ອສຳເລັດການຊື້ <ph name="ASSET_TICKER"/> ຂອງທ່ານ, ເລືອກຫນຶ່ງໃນພັນທະມິດຂອງພວກເຮົາ</translation>
-<translation id="7880860489474966219">ເມື່ອປິດ, ເງິນຂອງທ່ານຈຶງຈະໄດ້ຮັບການໂອນໄປທີ່ Brave Wallet</translation>
 <translation id="6182661078713714878">ໃສ່ຄຣິບໂຕ</translation>
 <translation id="3683305208314702347">ເບີກຖອນ <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">ເບີກຖອນ Solana ຫຼື SPL tokens</translation>
@@ -1799,10 +1802,14 @@
 <translation id="7747318989577709780">ກຳລັງປະສານເວື່ອນາ</translation>
 <translation id="9086302186042011942">ກຳລັງປະສານ</translation>
 <translation id="99991973626409495">ຕະຫຼາດຂອງສານຊີ້ນ</translation>
+<translation id="6779429520470417361">ກວດຄືນການເປີດການປົກປ້ອງ</translation>
 <translation id="3114681061018999547">ກຳລັງສົ່ງສານ</translation>
+<translation id="1564172583156967455">ກໍາລັງເປີດການປົກປ້ອງ</translation>
 <translation id="8897189056319316783">ແມ່ນ ZEC</translation>
+<translation id="508249542337194541">ເປີດການປົກປ້ອງ ZEC</translation>
 <translation id="3382275793825152362">ປົກປ້ອງເງິນ</translation>
 <translation id="8631765320256788981">ທ່ານກໍາລັງສົ່ງເງິນຈາກບັນຊີໄຫຼເປນການປົກປ້ອງໄປຍັງບັນຊີປົກປ້ອງຂອງທ່ານ.</translation>
+<translation id="3860364671495430495">ທ່ານກໍາລັງສົ່ງເງິນຈາກບັນຊີປົກປ້ອງຂອງທ່ານໄປຍັງບັນຊີໄຫຼເປນການປົກປ້ອງ.</translation>
 <translation id="7144878232160441200">ລອງອີກຄັ້ງ</translation>
 <translation id="9094621390791852268">ການທົດສອບທຸລະກຳລົ້ມເຫລວ.</translation>
 <translation id="4982713341035600933">ບັນລຸປ່ຽນເເປັນຊື່ເອກະສານເດີມພິທີການຂຽນຂຶ້ນ</translation>
@@ -2079,6 +2086,8 @@
 <translation id="4292565651642921086">ໂຟກັຊກຸ່ມແຖບທີ່ຕໍ່ໃຈ</translation>
 <translation id="874783686573493196">ໂຟກັດກຸ່ມແທັບທີ່ຜ່ານມາ</translation>
 <translation id="9169594135889675189">ເພີ່ມແທັບໃໝ່ໃນກຸ່ມ</translation>
+<translation id="1722567105086139392">ລິ້ງ</translation>
+<translation id="4729794914864902904">ຍົກເລີກລິ້ງ</translation>
 <translation id="1926106318101432555">ເປີດບຸກມາກ...</translation>
 <translation id="6118819645013156507">ເປີດໜ້າຕ່າງ...</translation>
 <translation id="1623204575967809688">ເຊື່ອມໃນໜ້າຕ່າງ...</translation>
@@ -2142,12 +2151,20 @@
 <translation id="4611072979071082355">Brave Leo ແມ່ນເຄື່ອງມື AI ສະຫວັດດີ ທີ່ຊ່ວຍເຮັດໃຫ້ການໃຊ້ອິນເຕີເນັດຂອງທ່ານດີຂຶ້ນ. Leo ສາມາດໃຊ້ໄດ້ຟຣີພ້ອມກັບການເຂົ້າເຖິງທີ່ຈຳກັດ. Brave Leo Premium ອະນຸຍາດໃຫ້ເຂົ້າເຖິງຫຼາຍລູ່ນ, ຂອບເຂດທີ່ສູງຂື້ນ ແລະໃຫ້ຜູ້ຈາຍເງິນໄດ້ຮັບການເຂົ້າເຖິງທ່ານໃນລຸ່ນໃໝ່. ຮູບແບບຄ່າເລີ່ມຕົ້ນຈະປ່ຽນແປງຕາມເວລາ. ເບິ່ງຮູບແບບຢາງລະອຽດທີ່ <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/> ເພື່ອວຽກລະອຽດເພີ່ມເຕີມ.</translation>
 <translation id="7297056998057521697">ໂດຍຄ່າເລີ່ມຕົ້ນ, ເມື່ອທ່ານຖາມ Leo ກ່ຽວກັບເວັບໄຊທ໌ ຼກໂຄງຄ່ານໍານຳ ຫຼືໜ້າທ່ານກຳລັງເບິ່ງ, ລາຍລະອຽດຂອງເນື້ອຫາໜ້າ ຼກຄໍາສັ່ງ ༏ແລະແນວຂໍຂໍ້ຄື່ນຂອງທ່ານຈະຖືກສົ່ງໄປຫາເຊີເວີຂອງ Brave ເພື່ອໃຫ້ Leo ສາມາດໃຫ້ຄໍາຕອບ. ໃນບາງກໍລະນີ, Leo ຈະສົ່ງຄຳຖາມທີ່ໄດ້ມາຈາກການປ້ອນຂໍ້ມູນຂອງທ່ານໄປຫາ Brave Search ແລະໃຊ້ຜົນການຄົ້ນຫາເພື່ອຕອບຄຳຖາມຂອງທ່ານໄດ້ດີຂຶ້ນ. Brave ບໍ່ຮັບປະກັນຄວາມຖືກຕ້ອງຂອງຄຳຕອບ, ແລະ ຄຳຕອບອາດຈະປະກອບມີຂໍ້ມູນທີ່ບໍ່ຖືກຕ້ອງ, ເຮັດໃຫ້ເຂົ້າໃຈຜິດ ຫຼື ຂໍ້ມູນທີ່ບໍ່ຖືກຕ້ອງ. ຢ່າສົ່ງຂໍ້ມູນທີ່ລະອຽດອ່ອນ ຫຼື ສ່ວນຕົວໃຫ້ Brave Leo, ແລະ ໃຊ້ຄວາມລະມັດລະວັງກັບຄຳຕອບໃດໆທີ່ກ່ຽວຂ້ອງກັບສຸຂະພາບ, ການເງິນ, ຄວາມປອດໄພສ່ວນຕົວ ຫຼື ທີ່ຄ້າຍຄືກັນ. ທ່ານສາມາດປັບຕົວເລືອກຂອງ Leo ໃນການຕັ້ງຄ່າໄດ້ທຸກເວລາ. ໄປທີ່ການຕັ້ງຄ່າ &gt; Leo.</translation>
 <translation id="6644545214304085600">Leo ບໍ່ໄດ້ເກັບກຳຕົວລະບຸຕົວຕົນເຊັ່ນ: ທີ່ຢູ່ IP ຂອງທ່ານທີ່ສາມາດເຊື່ອມໂຍງກັບທ່ານໄດ້. ພວກເຮົາບໍ່ໄດ້ຝຶກອົບຮົມຮູບແບບຂອງພວກເຮົາໂດຍອີງໃສ່ຂໍ້ມູນຂອງທ່ານ, ລວມທັງຄຳຖາມຄົ້ນຫາຂອງທ່ານ ຫຼື ຄຳຕອບຂອງ Brave Leo. ບໍ່ມີຂໍ້ມູນສ່ວນຕົວໃດຖືກເກັບໄວ້ໃນເຊີບເວີຂອງພວກເຮົາ ຫຼື ເກັບຮັກສາໄວ້ໂດຍ Brave. ເບິ່ງ <ph name="LINK_BEFORE"/>ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ<ph name="LINK_AFTER"/> ສຳລັບຂໍ້ມູນເພີ່ມເຕີມ.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Ask a question about the content of this page}
+      other {Ask a question about the content of these pages}
+    }</translation>
 <translation id="6961721183181597848">ວັນນີ້ທ່ານຢາກໃຫ້ຊ່ວຍແນວໃດ?</translation>
 <translation id="2966135729673253768">ການຖາມຕໍ່</translation>
 <translation id="6219262425964000211">ວາງຟາຍບ່ອນນີ້</translation>
 <translation id="4313763911013851687">ວາງຟາຍໃດກໍ່ໄດ້ບ່ອນນີ້ເພື່ອເພີ່ມລົງໃນການສົນທະນາ</translation>
 <translation id="4524675003624341892">ແນະນຳຄຳຖາມ...</translation>
 <translation id="4567071417854988869">ສັງລວມວິດີໂອນີ້</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Summarize this page}
+      other {Summarize these pages}
+    }</translation>
 <translation id="7921782882718083488">ສັງລວມໜ້ານີ້</translation>
 <translation id="7932221068776853847">ຕັດຂາດການສົ່ງຂໍ້ຄວາມຂອງໜ້ານີ້ໄປໃຫ້ Leo, ແລະເລີ່ມການສົນທະນາໃໝ່</translation>
 <translation id="8743383817154663379">ມີບາງຢ່າງຕົວຍັງບໍ່ຖະລຸດ. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.</translation>
@@ -2160,10 +2177,8 @@
 <translation id="8151638057146502721">Configure</translation>
 <translation id="999273441077650169">ແບບລຸ່ນປ່ຽນແປງເພື່ອໃຊ້ລຸ່ນທີ່ດີທີ່ສຸດສໍາຫຼັບວຽກງານ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Llama 3.1 8B, ນາມິໄບໂດ້ສ້າງໂດຍ Meta ເພື່ອໃຫ້ມີຄວາມເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Llama ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="7127671672828944579">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Qwen 14B, ນາມິໄບໂດຍ Alibaba Cloud ເພື່ອໃຫ້ມີຄວາມເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Qwen ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="2328524194917949829">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Gemma 3 12B, ນາມິໄບໂດຍ Google DeepMind ເພື່ອໃຫ້ມີຄວາມເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Gemma ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="634682910381645550">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ DeepSeek R1, ນາມິໂດຍ DeepSeek ເພື່ອເຮັດຫນ້າທີ່ການເຫັນຣູບໂດຍລຶກ. DeepSeek R1 ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="1021134081694325196">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ DeepSeek V3.1, ນາມິໄບໂດຍ DeepSeek ເພື່ອໃຫ້ມີຄວາມເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. DeepSeek V3.1 ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="3852808100039989429">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Qwen VL 30B, ໂມເດລທີ່ສ້າງໂດຍ Alibaba Cloud ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Qwen ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງເຮົາເອງ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="6406961656408495869">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ DeepSeek V3.1, ໂມເດລທີ່ສ້າງໂດຍ DeepSeek ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. DeepSeek V3.1 ໄດ້ຖືກໂຮສໂດຍ NEAR ຜ່ານໂຄງສ້າງຄວາມປອດໄພທີ່ສາມາດກວດສອບໄດ້ຂອງພວກເຂົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">ສະບາຍດີ, ຂ້ອຍຄື Leo. ຂ້ອຍແມ່ນຜູ້ຊ່ວຍ AI ໂດຍ Brave. ຂ້ອຍຂັບເຄື່ອນດ້ວຍ Claude Instant, ຮູບແບບທີ່ Anthropic ສ້າງຂຶ້ນເພື່ອຮັບມືກັບວຽກງານການສົນທະນາແລະແປຂໍ້ຄວາມ. Claude Instant ແມ່ນໂຮສໂດຍ Brave ຜ່ານອິນຟຣາສະເຕຣັກເຊີຂອງພວກເຮົາເອງ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Haiku, ນາມິໄບໂດຍ Anthropic ເພື່ອເປັນພິທີການມືນຣືທີ່ແລະລຸງນີ້ສ່ອງອັກຮີກຳມານອາການແລະການດຳລັດຄວາມ. Claude Haiku ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Sonnet, ນາມິໄບໂດຍ Anthropic ເພື່ອເປັນພິທີການມືນຣືທີ່ແລະລຸງນີ້ສ່ອງອັກຮີກຳມານອາການແລະການດຳລັດຄວາມ. Claude Sonnet ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
@@ -2180,6 +2195,7 @@
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">ທ້ອງຖິ່ນ</translation>
 <translation id="830868413617744215">ບີຕ້າ</translation>
+<translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">ລຸ່ນທີ່ແນະນຳ</translation>
 <translation id="6568044140836233369">ສະແດງທຸກລຸ່ນ</translation>
 <translation id="6187065185557150870">ສົນທະນາ</translation>
@@ -2268,7 +2284,8 @@
 <translation id="1243966363662220847">ໃຫ້ຄຳເຫັນການຄືນສູ່ຂໍ້ມູນການຕອບກັບ</translation>
 <translation id="7417895556119762861">ການມັກ ຫຼື ບໍ່ມັກຄຳຕອບຈະສົ່ງການໃຫ້ຄະແນນ, ການສົນທະນາ, ໂມເດວ, ພາສາ, ເວີຊັນ ແລະ ສະຖານະພຣີມຽມໄປຫາ Brave ເພື່ອປັບປຸງ Leo. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">ສົ່ງຂໍ້ຄວາມໃຫ້ Leo</translation>
-<translation id="4084869091337186002">Leo AI Content Agent ເປີດໃຊ້ງານຢູ່ສະເໝີໃນໂປຣໄຟລ໌ນີ້</translation>
+<translation id="6222803935921999130">ເປີດໜ້າຕ່າງໂປຣໄຟລ໌ AI ໃນການທ່ອງເວັບ</translation>
+<translation id="1530903352777607099">AI ໃນການທ່ອງເວັບເປີດໃຊ້ງານຢູ່ສະເໝີໃນໂປຣໄຟລ໌ນີ້</translation>
 <translation id="8650874793377330048">ຢຸດການຕອບໂຕ້</translation>
 <translation id="8712637175834984815">ເຂົ້າໃຈແລ້ວ</translation>
 <translation id="1093419424466417703">ໜ້ານີ້ມີລາຍລະອຽດຍາວເກີນໄປສຳຫຼັບ Leo. ມີຂໍ່ມູນບາງຢ່າງທີ່ຫາຍໄປຈາກການສົນທະນາ. Leo ສາມາດອ່ານເນື້ອໃນ<ph name="PERCENTAGE"/>ຂອງໜ້ານີ້ໄດ້.</translation>
@@ -2291,9 +2308,8 @@
 <translation id="1602382615168212961">ສົ່ງເນື້ອຫາໜ້າເວັບຈາກແທບໃນບຸກມາກຂອງເຈົ້າໄປຫາ Leo ເພື່ອໃຫ້ບໍ່ອມມູນເພີ່ມຕໍ່ການສົນທະນາ.</translation>
 <translation id="4808122506413075135">ສົ່ງເນື້ອຫາໜ້າເວັບຈາກປະຫວັດບຣາວເຊີຂອງເຈົ້າໄປຫາ Leo ເພື່ອໃຫ້ບໍ່ອມມູນເພີ່ມຕໍ່ການສົນທະນາ.</translation>
 <translation id="220541218939267992">ໜ້າເນື້ອຫາຈະຖືກສົ່ງໄປຫາ Leo ພ້ອມກັບຂໍ້ຄວາມຂອງທ່ານ.</translation>
-<translation id="8164365899016970783">ເພີ່ມເນື້ອຫາແທບ ແລະບຸກມາກເພື່ອບໍ່ອມມູນ. ເນື້ອຫາຈະຖືກສົ່ງໄປຫາ Leo ຄຽງຄຽງກັບຂໍ້ຄວາມຂອງເຈົ້າ.</translation>
+<translation id="2152389270152475874">ເພີ່ມແທບ, ບຸກມາກ ຫຼືປະຫວັດເພື່ອສົ່ງຂໍ້ຄວາມ. ເນື້ອຫາທີ່ເລືອກໄວ້ຈະຖືກສົ່ງໄປຫາ Leo ຄຽງຄຽງກັບຂໍ້ຄວາມຂອງເຈົ້າ.</translation>
 <translation id="6237410387937453423">ບໍ່ມີໄຟລ໌ແນບທີ່ກົງກັບ</translation>
-<translation id="8076492880354921740">ແທັບ</translation>
 <translation id="2315654674554095762">Leo ຈະຈົດຈຳບົດສົນທະນາຂອງທ່ານໄວ້ ເພື່ອໃຫ້ກັບມາອ່ານໄດ້ອີກຄັ້ງ. ຂໍ້ມູນຈະຖືກເຂົ້າລະຫັດ ແລະ ເກັບໄວ້ໃນອຸປະກອນຂອງທ່ານ, ເຊິ່ງທ່ານສາມາດລົບໄດ້ຕະຫຼອດເວລາ.</translation>
 <translation id="7821251979960635244">Your conversation history will appear here once you start a conversation.</translation>
 <translation id="887511360213807449">History is disabled</translation>
@@ -2302,10 +2318,10 @@
 <translation id="3185367320601718531">ການສົນທະນາ ແລະການສ້າງຂໍ້ຄວາມ</translation>
 <translation id="2793458212460902934">ໄວ • ຊອກຫາ • ເຄື່ອງມື</translation>
 <translation id="8506027496671575183">ຊອກຫາ • ການເຫັນເປັນຮູບ • ເຄື່ອງມື</translation>
-<translation id="3213834013136637671">ຊອກຫາ • ການເຫັນເປັນຮູບ</translation>
-<translation id="7697693533305615127">ຊອກຫາ • ຄວາມຄິດເຫັນ</translation>
+<translation id="3184606955650139158">ໄວ • ຊອກຫາ • ວິຊັນ</translation>
 <translation id="7465032796278724624">ປ່ອນຂໍ້ມູນສ່ວນຕົວຢ່າງພິສູດໄດ້ດ້ວຍ NEAR AI TEE</translation>
 <translation id="8782867266498869301">ແບບລຸ່ນປ່ຽນແປງເພື່ອໃຊ້ລຸ່ນທີ່ດີທີ່ສຸດສໍາຫຼັບວຽກງານ</translation>
+<translation id="3213834013136637671">ຊອກຫາ • ການເຫັນເປັນຮູບ</translation>
 <translation id="3965507912994218570">ຕັ້ງຄ່າ Leo</translation>
 <translation id="3754337604877048671">ແນະນຳ Leo AI</translation>
 <translation id="5295261408976371809">ຜູ້ຊ່ວຍ AI <ph name="TEXT_BEFORE"/>ສ່ວນຕົວ<ph name="TEXT_AFTER"/> ຂອງທ່ານ ທີ່ສ້າງເຂົ້າໄປໃນບຣາວເຊີ.</translation>
@@ -2383,20 +2399,28 @@
 <translation id="4798146464408730445">ບໍ່ພົບ skill ໃດໆ. ສ້າງໃໝ່ໂດຍກົດປຸ່ມ "ໃໝ່".</translation>
 <translation id="271033894570825754">ໃໝ່</translation>
 <translation id="8266605059880650542">ບັນທຶກຂໍ້ມູນກ່ຽວກັບໜ້ານີ້ໄວ້ສຳລັບພາຍຫຼັງ</translation>
-<translation id="7049849063044248805">ໂໝດ Agent ເຮັດວຽກກັບໂມເດລທີ່ຮອງຮັບຄື່ງມື. ໂມເດລທີ່ບໍ່ສາມາດໃຊ້ໄດ້ຈະຖືກເຊື່ອງອອກຈາກລາຍຊື່ນີ້.</translation>
+<translation id="5103625298494362646">ໂໝດ Agent ເຮັດວຽກກັບໂມເດລທີ່ຮອງຮັບຄື່ງມື. ໂມເດລທີ່ບໍ່ສາມາດໃຊ້ໄດ້ຈະຖືກເຊື່ອງອອກຈາກລາຍຊື່ນີ້.</translation>
 <translation id="3397808797783614750">ການໃຫ້ AI ເບິ່ງເວັບໃຫ້ອັດຕະໂນມັດອາດຈະເຮັດໃຫ້ເກີດຜົນກະທົບຕໍ່ຄວາມສ່ຽງ, ການເງິນ, ແລະການສື່ສານອອນໄລນ໌ຂອງທ່ານ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ຕື່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">ຄຳເຕືອນຄວາມປອດໄພ</translation>
 <translation id="6077070599873946984">Brave AI ຕ້ອງການຄວາມຍິນຍອມຂອງທ່ານສຳລັບ: <ph name="TOOL_LABEL"/></translation>
 <translation id="4163837693685963037">ການປະຕິບັດຖືກກວດພົບວ່າອາດເຂົ້າຍ້າງຕໍ່ຄໍາຂໍຂອງທ່ານ:</translation>
 <translation id="3927932062596804919">ປະຕິເສດ</translation>
 <translation id="4569155249847375786">ຢືນຢັນແລ້ວ</translation>
-<translation id="3240988198391588806">ໂໝດ Agent</translation>
-<translation id="538066983058750776">ກ່ຽວກັບໂປຣໄຟລ໌ Leo</translation>
-<translation id="1577570612997320961">ເພື່ອປົກປ້ອງຂໍ້ມູນຂອງທ່ານ, ໂປຣໄຟລ໌ Brave ທີ່ແຍກຕ່າງຫາກນີ້ຈະຈຳກັດການເຂົ້າເຖິງ AI ຕໍ່ໂປຣໄຟລ໌ການທ່ອງເວັບຫຼັກຂອງທ່ານ. Leo AI ມີການອະນຸຍາດເພີ່ມເຕີມໃນບ່ອນນີ້ເພື່ອເຂົ້າໄປຢ້ຽມຊົມແລະປະຕິບັດຕໍ່ເວັບໄຊ, ດັ່ງນັ້ນທ່ານສາມາດລອງໃຫ້ມັນເຮັດຫນ້າທີ່ແລະທ່ອງເວັບຮ່ວມກັນເພື່ອເພີ່ມພູນຜົນຜະລິດ.</translation>
+<translation id="8200772114523450471">ດຳເນີນງານຕໍ່</translation>
+<translation id="7607002721634913082">ຢຸດ</translation>
+<translation id="4773299976671772492">ຢຸດການເຮັດວຽກ</translation>
+<translation id="6946722113367118030">ກຳລັງຄິດ</translation>
+<translation id="2113810663179257944">ການປະຕິບັດລະຫັດ</translation>
+<translation id="4790888275629207278">ເຮັດການປະຕິບັດລະຫັດໃນ sandbox</translation>
+<translation id="4379566111233326721">ລະຫັດ:</translation>
+<translation id="3542130965673205258">ເອົ້າພຸດ:</translation>
+<translation id="3428245742224818842">ການຄົ້ນຫາຂໍ້ມູນ AI</translation>
+<translation id="2854657728271352435">ກ່ຽວກັບໂປຣໄຟລ໌ການຄົ້ນຫາຂໍ້ມູນ AI</translation>
+<translation id="2301685062527585986">ເພື່ອປົກປ້ອງຂໍ້ມູນຂອງທ່ານ, ໂປຣໄຟລ໌ການຄົ້ນຫາ AI ທີ່ແຍກຄົນນີ້ ແນ່ໃຈໄດ້ວ່າ Agent AI ບໍ່ສາມາດເຂົ້າເຖິງໂປຣໄຟລ໌ການຄົ້ນຫາປົກກະຕິຂອງທ່ານໄດ້, ດ້ວຍສິດທິຈະເຂົ້າໄປເຂົ້າຮ່ວມກັບເວັບໄຊທ໌ຕາມທີ່ຈຳເປັນ. ທ່ານສາມາດໃຫ້ແມ່ນເວລາງານໂດຍການມອບໝາຍຫນ້າທີ່ໃຫ້ວັນແລະໃຫ້ມັນຄົ້ນຫາແທນເຈົ້າໄດ້.</translation>
 <translation id="648116453147783450">ຂໍ້ມູນແລະເຊສຊັນຂອງທ່ານ</translation>
-<translation id="3906161204878017619">ເມື່ອທ່ານເຂົ້າລະບົບເວັບໄຊດ້ວຍໂປຣໄຟລ໌ນີ້, Leo ສາມາດເບິ່ງຂໍ້ມູນໃນເວັບໄຊນັ້ນໄດ້ຖ້າມັນເປີດຢູ່, ບໍ່ວ່າໃນເວລາທີ່ມັນເຂົ້າໄປເບິ່ງເລີຍວ່າເທົ່າຫຼືໃນເວລາທີ່ທ່ານໃຫ້ມັນເຮັດຫ້າມຫຼິກ.</translation>
+<translation id="4879348540868082026">ເມື່ອເຈົ້າເຂົ້າລະບົບເຂົ້າໃສ່ website ໂດຍໃຊ້ໂປຣໄຟລ໌ນີ້, Agent ການຄົ້ນຫາຂອງ Brave ໂດຍ AI ສາມາດເຫັນຂໍ້ມູນໃນເວັບໄຊທ໌ນັ້ນໄດ້ຖ້າມັນເປີດຢູ່, ບໍ່ວ່າເວລາທີ່ມັນເຂົ້າເບິ່ງເວັບໄຊທ໌ໃຊ້ໂຕເອງ ຫຼືເມື່ອເຈົ້າຂໍໃຫ້ມັນເຮັດວຽກບໍ່</translation>
 <translation id="5583803492921648196">ກຳລັງສະບັບພິມກັບ</translation>
-<translation id="8068929004144221259">ທ່ານສາມາດກັບໄປຫາໂປຣໄຟລ໌ປົກກະຕິໄດ້ທຸກເວລາຈາກເມນູຫຼັກຫຼືຈາກ Avatar ຂອງ Leo ໃນແຖບເຄື່ອງມື. ໂໝດ Agent ຈະເປີດໃນໂປຣໄຟລ໌ນີ້ເທົ່ານັ້ນ.</translation>
+<translation id="864117099189791993">ທ່ານສາມາດກັບໄປຫາໂປຣໄຟລ໌ປົກກະຕິໄດ້ທຸກເວລາຈາກເມນູຫຼັກຫຼືຈາກໂມດເມນູໂປຣໄຟລ໌ໃນແຖບເຄື່ອງມື. ການຄົ້ນຫາ AI ຈະເປີດເປັນໂປຣໄຟລ໌ການຄົ້ນຫາ AI ຢູ່ສະເໝີ.</translation>
 <translation id="3486480638399578250">ເກັບທີ່ຢູ່ແທ້ຕົວຕົນຂອງທ່ານໃຫ້ແມ້ນ</translation>
 <translation id="7765422154906712751">ສ້າງທີ່ຢູ່ສຸມເໝາະທີ່ສຸມເໝາະທີ່ແນມາຫາອີເມລບັນຊີ Brave ແລະສາມາດຖືກລົບໄດ້ຕອເມລົດຕອໆມາ. ເລັກທີຢູ່ຂອງທ່ານແທ້ຈະບໍ່ຖືກໃຫຍ່ຊເຫນິນຫຼືນໍາໃຊ້ໂດຍພນຂາຍຂອງ.</translation>
 <translation id="5222676887888702881">ອອກແມ</translation>
@@ -2496,13 +2520,13 @@
 <translation id="3620004479054499575">ເຈົ້າກຳລັງພົບບັນຫາກັບເວັບໄຊທ໌ນີ້ບໍ?</translation>
 <translation id="9176447766421988172">ພວກເຮົາກຳລັງທົດລອງເພື່ອເພີ່ມຄວາມເຂົ້າກັນໄດ້ກັບເວັບໄຊທ໌, ໂດຍທີ່ຈະເປີດໃຊ້ສຽວກັນແຕ່ການບລ໋ອກຂໍ້ມູນໂຄສະນາ. ຄຳເຕືອນ: ຈະປິດການປົກປ້ອງຄວາມສ່ວນຕົວທັງໝົດ. ເຈົ້າຕ້ອງການລອງບໍ? <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">ກະລຸນາສັງເກດວ່າສຳລັບເວັບໄຊທ໌ລາຍບຸກຄົນທີ່ຖືກທຳລາຍໂດຍການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງ Brave, ເຈົ້າສາມາດປັບ Shields ໄປທີ່ DOWN.</translation>
-<translation id="1836572675775891780">ເປີດໂໝດບລ໋ອກໂຄສະນາເທົ່ານັ້ນ</translation>
+<translation id="2850777974644218370">ເປີດໂໝດບລ໋ອກໂຄສະນາເທົ່ານັ້ນ</translation>
 <translation id="6623668214089604469">ໃນຕອນນີ້ເວັບໄຊທ໌ນີ້ເຮັດວຽກຖືກຕ້ອງແລ້ວບໍ?</translation>
 <translation id="8978860854770042258">ກະລຸນາພິຈາລະນາສົ່ງລາຍງານຖ້າເວັບໄຊທ໌ນີ້ຍັງຄົງຜິດປົກກະຕິ.</translation>
 <translation id="4677356505199464553">ດູນ່າເຊື່ອຖືໄດ້</translation>
 <translation id="1992750560347846445">ລາຍງານເວັບໄຊ</translation>
-<translation id="2887186586339544116">ເປີດແລ້ວໂໝດບລ໋ອກໂຄສະນາເທົ່ານັ້ນ</translation>
-<translation id="673665019618844072">ເຈົ້າກຳລັງໃຊ້ໂໝດບລ໋ອກໂຄສະນາເທົ່ານັ້ນ. ໂໝດນີ້ຈະມີພຽງການປົກປ້ອງການບລ໋ອກໂຄສະນາ. ຖ້າເຈົ້າຕ້ອງການກັບໄປສູ່ໂໝດ Shields ເຕັມ, ປິດໂໝດນີ້ຈາກ settings.</translation>
+<translation id="2863270180245144869">ເປີດແລ້ວໂໝດບລ໋ອກໂຄສະນາເທົ່ານັ້ນ</translation>
+<translation id="2302218429308447288">ເຈົ້າກຳລັງໃຊ້ໂໝດບລ໋ອກໂຄສະນາເທົ່ານັ້ນ. ໂໝດນີ້ຈະມີພຽງການປົກປ້ອງການບລ໋ອກໂຄສະນາ. ຖ້າເຈົ້າຕ້ອງການກັບໄປສູ່ໂໝດ Shields ເຕັມ, ປິດໂໝດນີ້ຈາກ settings.</translation>
 <translation id="4820891023903368625">ໂຄສະນາຖືກບລ໋ອກ <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ຕົວຕິດຕາມ, ໂຄສະນາ, ແລະອື່ນໆທີ່ຖືກບລັອກ <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">ບໍ່ໄດ້ຮັບການປ້ອງກັນໂດຍ Brave Shields <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
@@ -2535,6 +2559,8 @@
 <translation id="6975864539539353406">ລົບ cookies ແລະຂໍ້ມູນເວັບໄຊອື່ນໆເມື່ອທ່ານປິດເວັບໄຊ</translation>
 <translation id="6486971767955110687">Store contact information for future broken site reports</translation>
 <translation id="4085787265464238844">If you provide contact info it will be stored for future reports</translation>
+<translation id="7740929262043547697">ຍອມໃຫ້ບລ໋ອກເພາະສ່ວນໃນໜ້າຕ່າງສ່ວນຕົວ</translation>
+<translation id="1260864846935682371">ເປີດໃຊ້ຟີເຈີບລ໋ອກເພາະສ່ວນຂອງ Shields ໃນໜ້າຕ່າງສ່ວນຕົວ. ເຊີ່ງເພາະສ່ວນທີ່ຖືກບລ໋ອກໃນໜ້າຕ່າງສ່ວນຕົວ ກໍ່ຈະຖືກບລ໋ອກໃນໜ້າຕ່າງທົ່ວໄປເຊັ່ນກັນ.</translation>
 <translation id="6883611015375728278">ບລອກຄຸກຄີ້ທັງໝົດ</translation>
 <translation id="5657156137487675418">ໃຫ້ອະນຸມັດຄຸກຄີ້ທັງໝົດ</translation>
 <translation id="8366221601425141146">ການຖືກບລັອກ Fingerprinting</translation>
@@ -2587,7 +2613,7 @@
 <translation id="6764845498618413165">ເບິ່ງຂໍ້ມູນເພີ່ມເຕີມ.</translation>
 <translation id="7818938154803162778">ໄດ້ເລີຍ, ຂ້ອຍຍິນດີຊ່ວຍ.</translation>
 <translation id="7207456302801184289">ຍິນດີຕອນຮັບສູ່ Brave</translation>
-<translation id="293854220404217065">ທີມກາງຄືນ</translation>
+<translation id="4988030440045495002">ຕີມສີຄືນສີມືດ</translation>
 <translation id="2422927186524098759">ບາເວນດ້ານ</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>

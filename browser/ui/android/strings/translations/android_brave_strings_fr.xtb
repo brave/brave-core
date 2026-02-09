@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Afficher les suggestions du navigateur</translation>
 <translation id="8982438328166986164">Affiche des sites suggérés en fonction de vos favoris et de votre historique de navigation.</translation>
 <translation id="924029461438529367">Afficher les suggestions de recherche</translation>
-<translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
-<translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrage du contenu</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Ne pas mettre à niveau les connexions vers HTTPS (désactivé)</translation>
 <translation id="693506469193748756">M'oublier quand je ferme ce site</translation>
 <translation id="6975864539539353406">Efface les cookies et autres données de site lorsque vous fermez un site</translation>
+<translation id="7740929262043547697">Autoriser le blocage d’éléments dans les fenêtres de navigation privée</translation>
+<translation id="1260864846935682371">Active la fonctionnalité Bloquer des éléments des boucliers dans les fenêtres de navigation privée. Notez que les éléments bloqués dans les fenêtres de navigation privée seront également bloqués dans les fenêtres non privées.</translation>
 <translation id="1680858055899097121">Ne gardez pas d'onglets entre les sessions de navigation</translation>
 <translation id="7142548388914389999">Autoriser l'analyse de produits respectueuse de la vie privée (P3A)</translation>
 <translation id="5254037869598726291">Les informations P3A anonymisées permettent à Brave d'estimer l'utilisation globale et de garantir que nous améliorons les fonctionnalités populaires.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">PLUS TARD</translation>
 <translation id="4117451092682672487">Protégez votre vie privée en toute simplicité.</translation>
 <translation id="7909375417585209817">En définissant Brave comme navigateur par défaut, chaque lien s'ouvrira avec les protections de confidentialité de Brave.</translation>
-<translation id="7370959926683925817">Bloquez les publicités. Économisez des données. Chaque jour.</translation>
-<translation id="7281027579943912834">Avec Brave comme valeur par défaut, chaque lien sur lequel vous appuyez bénéficie de la protection de blocage des publicités de Brave. Chaque page, chaque vidéo, chaque diffusion.</translation>
 <translation id="5148943178722443958">Aidez-nous à améliorer Brave.</translation>
 <translation id="6718362830686703942">Envoyer des rapports de diagnostic en cas de dysfonctionnement.</translation>
 <translation id="8616157231067364693">Partagez des informations privées et anonymes sur les fonctionnalités utilisées par les utilisateurs de Brave.</translation>
@@ -371,6 +369,10 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Afficher mes sites</translation>
 <translation id="7275773481201277457">Afficher les statistiques de Brave</translation>
+<translation id="7462178177755090262">Écran d’ouverture</translation>
+<translation id="5365434987337264071">Dernier onglet ouvert</translation>
+<translation id="5233638681132016545">Nouvel onglet</translation>
+<translation id="8395271296293035055">Revenez à votre onglet le plus récent</translation>
 <translation id="8297488609722895137">Photo de <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Ouvrir les liens externes dans Brave</translation>
 <translation id="5616508928556767259">Ouvre les liens d'autres applications sur Brave. Remarque : Brave doit être configuré comme navigateur par défaut.</translation>
@@ -761,7 +763,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6889920539620318793">Définir comme actif</translation>
 <translation id="2653659639078652383">Envoyer</translation>
 <translation id="4945690646623486292">Sélectionner le réseau</translation>
-<translation id="5233638681132016545">Nouvel onglet</translation>
 <translation id="8006088103295786154">Accéder au Portefeuille Brave</translation>
 <translation id="5308380583665731573">Se connecter</translation>
 <translation id="8030169304546394654">Déconnecté</translation>
@@ -1069,6 +1070,10 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4650851936784160359">La liste des filtres n'a pas pu être mise à jour. Veuillez réessayer.</translation>
 <translation id="3098054327870766317">Afficher le bouton Rétablir lorsque les onglets sont fermés</translation>
 <translation id="1336494649091412226">Voulez-vous vraiment fermer Brave ?</translation>
+<translation id="6061635824229591714">Effacer les données du site ?</translation>
+<translation id="1265051174491933207">La suppression fermera tous les onglets '<ph name="SITE_NAME"/>' et effacera les données du site. Cette action est irréversible.</translation>
+<translation id="4279349293084858577">Effacer les données</translation>
+<translation id="4426990318287827331">Effacer les données</translation>
 <translation id="7942415993090181327">Historique des conversations</translation>
 <translation id="6859935199732075666">Afficher les erreurs de navigation sécurisée</translation>
 <translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets de navigation privée</translation>

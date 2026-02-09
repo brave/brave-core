@@ -131,7 +131,6 @@
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="1162706247109707219">按一下「確定」，即表示您瞭解在更新到 Windows 10 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
 <translation id="9164786361657554526">按一下「確定」，即表示您瞭解在更新到 macOS 10.15 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
-<translation id="2770465223704140727">從清單中移除</translation>
 <translation id="6020553119523541665">此分頁在另一個視窗中使用中</translation>
 <translation id="4987392683074136770">點擊此分頁會將其內容帶到此窗口</translation>
 <translation id="8355523213948477234">分割畫面功能表按鈕</translation>
@@ -224,6 +223,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">在 Brave VPN 中使用 WireGuard 協定</translation>
 <translation id="8519170191215826548">連線至 Brave VPN 時無法變更此設定。</translation>
+<translation id="1177917174080821247">顯示 VPN 工作列圖示</translation>
+<translation id="3747459938663420752">啟用後，Windows 工作列將顯示 Brave VPN 的系統匣圖示。</translation>
 <translation id="4235920711083356755">顯示 VPN 按鈕</translation>
 <translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -235,7 +236,6 @@
 <translation id="8030169304546394654">已取消連結</translation>
 <translation id="1863950594388384201">在工具列中顯示 VPN 按鈕</translation>
 <translation id="5187139277471084437">在工具列中隱藏 VPN 按鈕</translation>
-<translation id="1177917174080821247">顯示 VPN 工作列圖示</translation>
 <translation id="8041089156583427627">提供意見</translation>
 <translation id="4049186905514157504">管理我的方案</translation>
 <translation id="7570585565843385325">在工具列中顯示 VPN 按鈕</translation>
@@ -381,6 +381,7 @@
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="4691131445504068802">最小化時完全隱藏</translation>
 <translation id="6763346436728173884">總是隱藏分頁關閉按鈕</translation>
+<translation id="8082625757059443808">允許中鍵點擊以關閉分頁</translation>
 <translation id="4909269867860362936">最小化時滑鼠懸停時自動展開</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
 <translation id="8925055964134259461">依視窗個別展開垂直分頁</translation>
@@ -516,12 +517,12 @@
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
 <translation id="8826461509529116322">顯示 Brave Rewards 按鈕</translation>
-<translation id="3328713589982547433">僅限廣告攔截模式</translation>
-<translation id="1574253307550419595">只使用廣告封鎖模式</translation>
-<translation id="738717058053657696">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則。警告：會移除所有隱私保護。請注意，對於被 Brave 隱私保護破壞的個別網站，您可以將盾牌設定為「關閉」。此為實驗模式。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">僅限廣告攔截模式</translation>
+<translation id="4146834954839563870">只使用廣告封鎖模式</translation>
+<translation id="420732343671200734">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則。警告：會移除所有隱私保護。請注意，對於被 Brave 隱私保護破壞的個別網站，您可以將盾牌設定為「關閉」。此為實驗模式。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">盾牌選項目前已停用。</translation>
-<translation id="516439939408671102">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則，並關閉隱私保護。如果您想啟用標準的盾牌功能，請停用此模式。</translation>
-<translation id="177233004755519660">關閉「僅限廣告封鎖」模式</translation>
+<translation id="2687830906359353344">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則，並關閉隱私保護。如果您想啟用標準的盾牌功能，請停用此模式。</translation>
+<translation id="3809423899581611047">關閉「僅限廣告封鎖」模式</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="7791141927430186653">允許 X (原為 Twitter) 嵌入的推文</translation>
@@ -666,8 +667,6 @@
 <translation id="7029809446516969842">密碼</translation>
 <translation id="6011308810877101166">改善搜尋建議</translation>
 <translation id="2332576387809612040">開啟時，Brave 會將您在位址列或搜尋方塊中輸入的內容傳送至預設搜尋引擎，以獲得更好的建議。關閉時，Brave 只會顯示您裝置上產生的建議。在無痕視窗中，此功能將常設為關閉。</translation>
-<translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
-<translation id="5526883767168905185">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="5522403133543437426">網址列中使用的搜尋引擎。</translation>
 <translation id="280472502078788655">無痕式視窗網址列中使用的搜尋引擎。</translation>
 <translation id="7232120595886556478">一般視窗</translation>
@@ -872,6 +871,8 @@
 <translation id="7311244614769792472">未找到結果。</translation>
 <translation id="1838374766361614909">清除搜尋</translation>
 <translation id="5126255551970171328">搜尋記憶項目</translation>
+<translation id="7402116145895962069">同步您的 Ollama 本機模型</translation>
+<translation id="4835154437390745810">由 Ollama 管理</translation>
 <translation id="5985516785067818307">調查小組成員</translation>
 <translation id="8347743943525229984">允許 Brave 調查</translation>
 <translation id="3204080538332044581">允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>

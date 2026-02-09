@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">顯示瀏覽器建議</translation>
 <translation id="8982438328166986164">根據您的書籤和瀏覽記錄顯示網站建議。</translation>
 <translation id="924029461438529367">顯示搜尋建議</translation>
-<translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
-<translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="9148058034647219655">結束</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">內容過濾</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">不要將連線升級至 HTTPS (停用)</translation>
 <translation id="693506469193748756">當我關閉此網站時忘記我</translation>
 <translation id="6975864539539353406">在您關閉網站時清除 cookie 和其他網站資料</translation>
+<translation id="7740929262043547697">在無痕式視窗中允許元素封鎖</translation>
+<translation id="1260864846935682371">在無痕式視窗中啟用盾牌的封鎖元素功能。請注意，在無痕式視窗中封鎖的元素，也會在非無痕式視窗中封鎖。</translation>
 <translation id="1680858055899097121">終止瀏覽後不要保留分頁</translation>
 <translation id="7142548388914389999">允許保護私隱的產品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 資訊可協助 Brave 預估整體使用量，並確保我們可以改進受歡迎的功能。</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">稍後</translation>
 <translation id="4117451092682672487">輕鬆捍衛個人隱私。</translation>
 <translation id="7909375417585209817">只要將 Brave 設為預設瀏覽器，您輕觸的每個連結都會在 Brave 的隱私保護功能下開啟。</translation>
-<translation id="7370959926683925817">封鎖廣告，節省數據，全年無休。</translation>
-<translation id="7281027579943912834">將 Brave 設為預設瀏覽器，您點按的每個連結都會受到 Brave 的廣告封鎖保護。所有頁面、影片和串流都能受益。</translation>
 <translation id="5148943178722443958">協助提升 Brave 品質。</translation>
 <translation id="6718362830686703942">系統當機或停止回應時傳送診斷報告。</translation>
 <translation id="8616157231067364693">分享不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。</translation>
@@ -371,6 +369,14 @@
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">顯示頂部網站</translation>
 <translation id="7275773481201277457">顯示 Brave 統計</translation>
+<translation id="7462178177755090262">開啟畫面</translation>
+<translation id="5365434987337264071">上次開啟的分頁</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {<ph name="HOURS_ONE"/> 一小時沒有活動後的新索引標籤}
+          other {<ph name="HOURS_MANY"/> 一小時沒有活動後的新索引標籤}
+        }</translation>
+<translation id="5233638681132016545">新增分頁</translation>
+<translation id="8395271296293035055">返回您最近的分頁</translation>
 <translation id="8297488609722895137">攝影者：<ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">在 Brave 中開啟外部連結</translation>
 <translation id="5616508928556767259">在 Brave Web 檢視中開啟來自其他應用程式的連結。注意：您必須將 Brave 設定為預設瀏覽器。</translation>
@@ -761,7 +767,6 @@
 <translation id="6889920539620318793">設定為啟用</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="4945690646623486292">選取網路</translation>
-<translation id="5233638681132016545">新增分頁</translation>
 <translation id="8006088103295786154">存取 Brave 錢包</translation>
 <translation id="5308380583665731573">連線</translation>
 <translation id="8030169304546394654">已取消連結</translation>
@@ -1069,6 +1074,10 @@
 <translation id="4650851936784160359">無法更新篩選清單。請再試一次</translation>
 <translation id="3098054327870766317">關閉標籤頁時顯示撤銷按鈕</translation>
 <translation id="1336494649091412226">您確定要退出 Brave 嗎？</translation>
+<translation id="6061635824229591714">要銷毀網站資料嗎？</translation>
+<translation id="1265051174491933207">銷毀將刪除網站資料並關閉所有「<ph name="SITE_NAME"/>」分頁。此操作無法復原。</translation>
+<translation id="4279349293084858577">銷毀</translation>
+<translation id="4426990318287827331">銷毀資料</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
 <translation id="6859935199732075666">顯示安全瀏覽錯誤</translation>
 <translation id="2735247450315842119">允許在無痕標籤頁中截圖</translation>

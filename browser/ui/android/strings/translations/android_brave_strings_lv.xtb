@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Rādīt pārlūka ieteikumus</translation>
 <translation id="8982438328166986164">Attēlo tīmekļa vietnes ierosinājumus, balstoties uz jūsu grāmatzīmēm un pārlūkošanas vēsturi.</translation>
 <translation id="924029461438529367">Rādīt meklēšanas ieteikumus</translation>
-<translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
-<translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="9148058034647219655">Iziet</translation>
 <translation id="7534079972563542000">Neapturamie domēni</translation>
 <translation id="6486983549008741930">Satura filtrēšana</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Neatjaunināt savienojumus uz HTTPS (atspējots)</translation>
 <translation id="693506469193748756">Aizmirst mani, kad aizveru šo vietni</translation>
 <translation id="6975864539539353406">Notīra sīkfailus un citus vietnes datus, kad aizverat vietni</translation>
+<translation id="7740929262043547697">Atļaut elementu bloķēšanu inkognito režīma logos</translation>
+<translation id="1260864846935682371">Iespējo Vairogu elementu bloķēšanas funkcionalitāti inkognito režīma logos. Ņemiet vērā — elementi, kas bloķēti inkognito režīmā, tiks bloķēti arī atvērtajos logos ārpus inkognito režīma.</translation>
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
 <translation id="5254037869598726291">Anonimizēta P3A informācija palīdz Brave noteikt vispārējo lietošanas apmēru un ļauj uzlabot populāras funkcijas.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">VĒLĀK</translation>
 <translation id="4117451092682672487">Privātums. Vienkārši.</translation>
 <translation id="7909375417585209817">Ja Brave būs noklusējuma pārlūks, visas saites, kam pieskaraties, tiks atvērtas ar Brave privātuma aizsardzību.</translation>
-<translation id="7370959926683925817">Bloķēt reklāmas. Saglabājiet datus. Katru dienu.</translation>
-<translation id="7281027579943912834">Izmantojot Brave kā noklusējuma pārlūku, katrai saitei, ko atverat, tiek nodrošināta Brave reklāmu bloķēšanas aizsardzība. Katra lapa, videoklips un straumēšana.</translation>
 <translation id="5148943178722443958">Palīdziet uzlabot Brave.</translation>
 <translation id="6718362830686703942">Sūtiet diagnostikas ziņojumus, ja programma avarē vai sastingst.</translation>
 <translation id="8616157231067364693">Kopīgojiet privātus un anonīmus viedokļus par produktiem un par to, kādas funkcijas izmanto Brave lietotāji.</translation>
@@ -371,6 +369,14 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8793108040181436796">Logrīki</translation>
 <translation id="8643377320501056697">Rādīt populāras vietnes</translation>
 <translation id="7275773481201277457">Rādīt Brave statistiku</translation>
+<translation id="7462178177755090262">Sākuma ekrāns</translation>
+<translation id="5365434987337264071">Pēdējā atvērtā cilne</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Jauna cilne pēc <ph name="HOURS_ONE"/> neaktivitātes stundu}
+          other {Jauna cilne pēc <ph name="HOURS_MANY"/> neaktivitātes stundu}
+        }</translation>
+<translation id="5233638681132016545">Jauna cilne</translation>
+<translation id="8395271296293035055">Atgriezties pie pēdējās cilnes</translation>
 <translation id="8297488609722895137">Fotografēja <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Atvērt ārējās saites Brave pārlūkā</translation>
 <translation id="5616508928556767259">Atvērt saites no citām lietotnēm Brave tīmekļa skatā. Piezīme: Brave ir jābūt iestatītam kā noklusējuma pārlūkam.</translation>
@@ -762,7 +768,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6889920539620318793">Iestatīt kā aktīvu</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
 <translation id="4945690646623486292">Atlasīt tīklu</translation>
-<translation id="5233638681132016545">Jauna cilne</translation>
 <translation id="8006088103295786154">Piekļūt Brave makam</translation>
 <translation id="5308380583665731573">Pievienošana</translation>
 <translation id="8030169304546394654">Atvienots</translation>
@@ -1070,6 +1075,10 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="4650851936784160359">Filtru sarakstu neizdevās atjaunināt. Mēģiniet vēlreiz</translation>
 <translation id="3098054327870766317">Rādīt atsaukšanas pogu, kad cilnes ir aizvērtas</translation>
 <translation id="1336494649091412226">Vai tiešām vēlaties aizvērt Brave?</translation>
+<translation id="6061635824229591714">Iznīcināt vietnes datus?</translation>
+<translation id="1265051174491933207">Iznīcināšana izdzēsīs vietnes datus un aizvērs visas '<ph name="SITE_NAME"/>' cilnes. Šo darbību nevar atsaukt.</translation>
+<translation id="4279349293084858577">Iznīcināt</translation>
+<translation id="4426990318287827331">Iznīcināt datus</translation>
 <translation id="7942415993090181327">Tērzēšanas vēsture</translation>
 <translation id="6859935199732075666">Rādīt drošās pārlūkošanas kļūdas</translation>
 <translation id="2735247450315842119">Atļaut ekrānuzņēmumu veikšanu inkognito cilnēs</translation>
