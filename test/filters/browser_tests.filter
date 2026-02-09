@@ -512,6 +512,7 @@
 -HoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
 -GWSPageLoadMetricsObserverBrowserTest.PrerenderSRPAndActivate
 -NewTabPageInitiatedPageLoadMetricsBrowserTest.NonNewTabPagePrerenderTriggeredByEmbedderAndActivate
+-NewTabPagePageLoadMetricsBrowserTest.MetricsAreRecordedForNTP
 -NewTabPagePageLoadMetricsBrowserTest.NonNewTabPagePrerenderTriggeredByEmbedderAndActivate
 -NewTabPagePreloadBrowserTest.*
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
@@ -541,6 +542,7 @@
 -SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
 -SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderNavigationTwice
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithIframeNavigation/0
+-ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
 -ServiceWorker/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -ServiceWorkerAndFalse/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -ServiceWorkerAndTrue/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
@@ -1806,6 +1808,17 @@
 # This test fails because we disable commerce::kShoppingList
 -CommerceInternalsBrowserTest.InternalsPageOpen
 
+# Flaky - race condition between viewport size capture and async screenshot capture.
+# Viewport size can change between GetViewportPhysicalSize() and GetPageContext()
+# due to UI state changes (toolbars, etc.). Screenshot height may not match.
+-TabContextualizationControllerBrowserTest.GetPageContextForWebpage
+
+# Flaky Chromium test: already disabled on Mac/Linux upstream
+# (crbug.com/355104619), also fails intermittently on Windows. Histogram
+# ServiceWorker.RouterEvaluator.SubresourceTotalEvaluationTime is not recorded
+# when subresource loading timing is non-deterministic.
+-ChromeServiceWorkerTest.StaticRoutingAPISubresourceHistogramTest
+
 # Flaky upstream.
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/PDFExtensionScrollTest.WithArrowLeftRightScrollToPage/*
@@ -2658,10 +2671,15 @@
 -StaticStorageQuotaPolicyFeatureDisabledTest.StaticStorageQuotaEnabled
 -StaticStorageQuotaPolicyFeatureEnabledTest.StaticStorageQuotaDisabled
 
-# These tests fails because we disable kPrivateMetricsFeature.
+# These tests fail because we disable kPrivateMetricsFeature.
 -PumaBrowserTest.IncognitoPlusRegularBrowserCheck
 -PumaBrowserTest.PumaServiceCheck
 -PumaBrowserTest.RegularBrowserPlusIncognitoCheck
+
+# Test expects CHANNEL_UNKNOWN in test environment but Brave's channel detection
+# returns CHANNEL_STABLE due to chromium_src/chrome/common/channel_info_win.cc
+# override that enables GOOGLE_CHROME_BRANDING behavior in OFFICIAL_BUILD.
+-PumaBrowserTest.VerifyRcCoarseSystemProfile
 
 # This test fails because dragging is not enabled on Brave's NTP.
 -MultiContentsViewBrowserTest.DragAndDropDisabledForChromePages
@@ -2671,7 +2689,10 @@
 -AdsPageLoadMetricsObserverBrowserTest.*
 -AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
 -All/AmpPageLoadMetricsBrowserTest.*
--All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/kLastHour
+# Chromium test flaky - disabled on Windows upstream (crbug.com/413259587). Race
+# condition between JavaScript cookie set via document.cookie and backend
+# SiteDataCountingHelper query. Brave has no modifications to this code.
+-All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/*
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
@@ -2853,6 +2874,7 @@
 -EventPage/CookiesApiTest.*
 -EventPage/DeclarativeNetRequestLazyApiTest.TestMatchOutcome/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithIframeNavigation/0
+-EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -EventPage/ExtensionContextMenuLazyTest.*
@@ -3267,6 +3289,7 @@
 -ServiceWorker/NTPInterceptionWebRequestAPITest.*
 -ServiceWorker/WebNavigationApiTestWithContextType.*
 -ServiceWorker/WebUiNtpInterceptionWebRequestAPITest.*
+-ServiceWorkerMessagingTest.TabToWorker_StopWorkerDisconnects
 -ServiceWorkerBackgroundSyncTest.*
 -ServiceWorkerBasedBackgroundTest.*
 -ServiceWorkerLifetimeKeepaliveBrowsertest.ShutdownWithActiveMessagePipe*

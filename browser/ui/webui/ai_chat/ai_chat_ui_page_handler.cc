@@ -355,6 +355,11 @@ void AIChatUIPageHandler::OnRequestArchive(
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
 
+  // chat_ui_ may not be bound yet if a navigation occurs before the WebUI
+  // frontend calls SetChatUI().
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
           ? std::make_optional(
@@ -363,6 +368,9 @@ void AIChatUIPageHandler::OnRequestArchive(
 }
 
 void AIChatUIPageHandler::OnFilesSelected() {
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
   chat_ui_->OnUploadFilesSelected();
 }
 
@@ -474,6 +482,9 @@ void AIChatUIPageHandler::NewConversation(
 
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
     mojo::PendingReceiver<mojom::ParentUIFrame> receiver) {
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
   chat_ui_->OnChildFrameBound(std::move(receiver));
 }
 
