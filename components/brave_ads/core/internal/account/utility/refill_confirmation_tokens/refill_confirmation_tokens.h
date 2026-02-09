@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_response_result_info.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_result.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
@@ -52,13 +52,13 @@ class RefillConfirmationTokens final {
   void RequestSignedTokens();
   void RequestSignedTokensCallback(
       const mojom::UrlResponseInfo& mojom_url_response);
-  UrlResponseResultInfo<void> HandleRequestSignedTokensUrlResponse(
+  UrlResponseResult<void> HandleRequestSignedTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
 
   void GetSignedTokens();
   void GetSignedTokensCallback(
       const mojom::UrlResponseInfo& mojom_url_response);
-  UrlResponseResultInfo<void> HandleGetSignedTokensUrlResponse(
+  UrlResponseResult<void> HandleGetSignedTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
   void ParseAndRequireCaptcha(const base::DictValue& dict) const;
 

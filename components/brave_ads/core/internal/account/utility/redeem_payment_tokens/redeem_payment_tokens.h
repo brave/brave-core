@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_response_result_info.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_result.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
@@ -40,7 +40,7 @@ class RedeemPaymentTokens final {
   void RedeemCallback(const PaymentTokenList& payment_tokens,
                       const mojom::UrlResponseInfo& mojom_url_response);
 
-  static UrlResponseResultInfo<void> HandleRedeemPaymentTokensUrlResponse(
+  static UrlResponseResult<void> HandleRedeemPaymentTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
 
   void SuccessfullyRedeemed(const PaymentTokenList& payment_tokens);

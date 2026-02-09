@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/url_request_builders/redeem_payment_tokens_url_request_builder.h"
@@ -95,29 +96,33 @@ void RedeemPaymentTokens::RedeemCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const UrlResponseResultInfo<void> result =
-      HandleRedeemPaymentTokensUrlResponse(mojom_url_response);
-  if (const auto* error = GetError(result)) {
-    BLOG(0, error->message);
-    return FailedToRedeem(error->should_retry);
-  }
-
-  SuccessfullyRedeemed(payment_tokens);
+  const UrlResponseResult<void> result =
+      HandleRedeemPaymentTokensUrlResponse(mojom_url_response)
+          .and_then([&]() -> UrlResponseResult<void> {
+            SuccessfullyRedeemed(payment_tokens);
+            return base::ok();
+          })
+          .or_else([&](const UrlResponseErrorInfo& error)
+                       -> UrlResponseResult<void> {
+            BLOG(0, error.message);
+            FailedToRedeem(error.should_retry);
+            return UrlResponseError(error);
+          });
 }
 
 // static
-UrlResponseResultInfo<void>
+UrlResponseResult<void>
 RedeemPaymentTokens::HandleRedeemPaymentTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
   if (mojom_url_response.code != net::HTTP_OK) {
     BLOG(0, "Failed to redeem payment tokens");
-    return UrlResponseError{
-        .message = "Failed to redeem payment tokens",
-        .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                        HttpStatusCodeClassType::kClientError};
+    return UrlResponseError(
+        {.message = "Failed to redeem payment tokens",
+         .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                         HttpStatusCodeClassType::kClientError});
   }
 
-  return UrlResponseSuccess<void>{};
+  return base::ok();
 }
 
 void RedeemPaymentTokens::SuccessfullyRedeemed(

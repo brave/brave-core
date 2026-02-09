@@ -8,7 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_response_result_info.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_result.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
@@ -47,7 +47,7 @@ class RedeemRewardConfirmation final {
       RedeemRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& mojom_url_response);
-  static UrlResponseResultInfo<void> HandleCreateConfirmationUrlResponse(
+  static UrlResponseResult<void> HandleCreateConfirmationUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
 
   static void FetchPaymentTokenAfter(
@@ -60,8 +60,7 @@ class RedeemRewardConfirmation final {
       RedeemRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& mojom_url_response);
-  static UrlResponseResultInfo<PaymentTokenInfo>
-  HandleFetchPaymentTokenUrlResponse(
+  static UrlResponseResult<PaymentTokenInfo> HandleFetchPaymentTokenUrlResponse(
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& mojom_url_response);
 
