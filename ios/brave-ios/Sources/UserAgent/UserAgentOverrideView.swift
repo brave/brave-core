@@ -17,6 +17,8 @@ public enum UserAgentOverride: Equatable, Identifiable, Hashable, CaseIterable {
   case chromeDesktopBraveComment
   case safariMobileBraveComment
   case safariDesktopBraveComment
+  case safariMobileBraveSuffix
+  case safariDesktopBraveSuffix
   case custom
 
   /// Name to display in the Picker / drop down
@@ -44,6 +46,10 @@ public enum UserAgentOverride: Equatable, Identifiable, Hashable, CaseIterable {
       return "Safari Mobile w/ Brave comment"
     case .safariDesktopBraveComment:
       return "Safari Desktop w/ Brave comment"
+    case .safariMobileBraveSuffix:
+      return "Safari Mobile w/ Brave suffix"
+    case .safariDesktopBraveSuffix:
+      return "Safari Desktop w/ Brave suffix"
     case .custom:
       return "Custom"
     }
@@ -100,6 +106,10 @@ public enum UserAgentOverride: Equatable, Identifiable, Hashable, CaseIterable {
         return safariUA.replacingCharacters(in: range, with: "Safari (Brave)")
       }
       return safariUA
+    case .safariMobileBraveSuffix:
+      return UserAgent.mobileMasked.appending(" Brave")
+    case .safariDesktopBraveSuffix:
+      return UserAgent.desktopMasked.appending(" Brave")
     case .custom:
       return nil
     }
