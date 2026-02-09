@@ -48,6 +48,8 @@ class SerpMetrics {
 
   virtual size_t GetSearchCountForStalePeriod() const;
 
+  virtual void ClearHistory();
+
  private:
   // Returns the start of the stale period in local time, based on the last day
   // for which usage metrics were reported. Metrics recorded on or before the
