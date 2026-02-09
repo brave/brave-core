@@ -14,21 +14,12 @@ AIChatEnterprisePolicyChecker::AIChatEnterprisePolicyChecker(
     : reason_(reason) {}
 AIChatEnterprisePolicyChecker::~AIChatEnterprisePolicyChecker() = default;
 
-bool AIChatEnterprisePolicyChecker::CanActOnWeb() const {
-  return true;
-}
-
-actor::EnterprisePolicyChecker::CannotActReason
-AIChatEnterprisePolicyChecker::CannotActOnWebReason() const {
-  return actor::EnterprisePolicyChecker::CannotActReason::kNone;
-}
-
 actor::EnterprisePolicyBlockReason AIChatEnterprisePolicyChecker::Evaluate(
     const GURL& url) const {
   return reason_;
 }
 
-const actor::EnterprisePolicyChecker*
+const actor::EnterprisePolicyUrlChecker*
 AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker() {
   static base::NoDestructor<AIChatEnterprisePolicyChecker> checker(
       actor::EnterprisePolicyBlockReason::kNotBlocked);
