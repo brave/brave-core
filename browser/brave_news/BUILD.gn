@@ -21,7 +21,6 @@ source_set("browser_tests") {
       "//brave/components/brave_news/browser",
       "//brave/components/brave_news/common",
       "//brave/components/brave_news/common:mojom",
-      "//brave/components/brave_rewards/content",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser:browser_process",
