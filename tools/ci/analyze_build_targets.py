@@ -25,32 +25,17 @@ import sys
 import tempfile
 from pathlib import Path
 
+SRC_DIR = Path(__file__).resolve().parent.parent.parent.parent
+sys.path.insert(0, str(SRC_DIR / 'third_party' / 'depot_tools'))
 
-def get_src_root() -> Path:
-    """Find the chromium src root directory."""
-    script_dir = Path(__file__).resolve().parent
-    src_root = script_dir.parent.parent.parent.parent
-    if (src_root / "brave").is_dir() and (src_root / ".gn").is_file():
-        return src_root
-    cwd = Path.cwd()
-    while cwd != cwd.parent:
-        if (cwd / "brave").is_dir() and (cwd / ".gn").is_file():
-            return cwd
-        cwd = cwd.parent
-    raise RuntimeError("Could not find chromium src root directory")
+from scm import GIT
 
 
-def get_changed_files(base_branch: str, src_root: Path) -> list[str]:
-    """Get list of changed files compared to base branch."""
-    result = subprocess.run(
-        ["git", "diff", "--name-only", f"{base_branch}...HEAD"],
-        cwd=src_root / "brave",
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    files = result.stdout.strip().split("\n")
-    return [f"//brave/{f}" for f in files if f]
+def get_changed_files(base_branch: str, repo_path: Path) -> list[str]:
+    """Get list of changed files using depot_tools scm module."""
+    status = GIT.CaptureStatus(str(repo_path), base_branch)
+    # Filter out deleted files (status 'D'), return source-absolute paths
+    return [f"//brave/{f}" for s, f in status if s != 'D']
 
 
 def run_gn_analyze(build_dir: str, files: list[str], src_root: Path) -> dict:
@@ -100,14 +85,8 @@ def main():
 
     args = parser.parse_args()
 
-    try:
-        src_root = get_src_root()
-    except RuntimeError as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(2)
-
     # Verify build directory exists
-    build_path = src_root / args.build_dir
+    build_path = SRC_DIR / args.build_dir
     if not (build_path / "build.ninja").is_file():
         print(f"Error: {args.build_dir} is not a valid build directory",
               file=sys.stderr)
@@ -125,9 +104,9 @@ def main():
                 files.append(f"//brave/{f}")
     else:
         try:
-            files = get_changed_files(args.base, src_root)
-        except subprocess.CalledProcessError as e:
-            print(f"Error getting changed files: {e.stderr}", file=sys.stderr)
+            files = get_changed_files(args.base, SRC_DIR / "brave")
+        except Exception as e:
+            print(f"Error getting changed files: {e}", file=sys.stderr)
             sys.exit(2)
 
     if not files:
@@ -136,7 +115,7 @@ def main():
 
     # Run analysis
     try:
-        result = run_gn_analyze(args.build_dir, files, src_root)
+        result = run_gn_analyze(args.build_dir, files, SRC_DIR)
     except subprocess.CalledProcessError as e:
         print(f"Error running gn analyze: {e.stderr}", file=sys.stderr)
         sys.exit(2)
