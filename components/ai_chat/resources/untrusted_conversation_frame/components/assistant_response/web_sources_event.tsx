@@ -18,8 +18,7 @@ function WebSource(props: { source: mojom.WebSource; citationNumber: number }) {
 
   const { source } = props
 
-  const handleOpenSource = (e: React.MouseEvent, source: mojom.WebSource) => {
-    e.preventDefault()
+  const handleOpenSource = (source: mojom.WebSource) => {
     context.uiHandler?.openURLFromResponse(source.url)
   }
 
@@ -30,16 +29,15 @@ function WebSource(props: { source: mojom.WebSource; citationNumber: number }) {
   const host = new URL(source.url.url).hostname
   return (
     <li>
-      <a
-        href={source.url.url}
+      <button
         title={source.title}
-        onClick={(e) => handleOpenSource(e, source)}
+        onClick={() => handleOpenSource(source)}
       >
         <span>
           <img src={faviconSrc} />
         </span>
         {props.citationNumber} - {host}
-      </a>
+      </button>
     </li>
   )
 }
