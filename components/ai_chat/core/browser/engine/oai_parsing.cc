@@ -47,7 +47,6 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallRequest(
     const base::DictValue& tool_call) {
   const base::DictValue* function = tool_call.FindDict("function");
   if (!function) {
-    DVLOG(1) << "No function info found in tool call.";
     return std::nullopt;
   }
 
@@ -162,7 +161,6 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
     const base::DictValue& tool_call) {
   const base::ListValue* output_content = tool_call.FindList("output_content");
   if (!output_content) {
-    DVLOG(1) << "No output_content found in tool result.";
     return std::nullopt;
   }
 
