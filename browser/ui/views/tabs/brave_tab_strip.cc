@@ -14,7 +14,6 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
@@ -52,6 +51,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -300,11 +300,15 @@ bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
 }
 
 std::optional<SkColor> BraveTabStrip::GetTabAccentColor(const Tab* tab) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
   auto container_model = GetContainerModelForTab(tab);
   if (!container_model.has_value()) {
     return std::nullopt;
   }
   return container_model->background_color();
+#else
+  return std::nullopt;
+#endif
 }
 
 ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
