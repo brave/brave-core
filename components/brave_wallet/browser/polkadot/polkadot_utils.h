@@ -12,9 +12,6 @@
 #include <optional>
 #include <string>
 
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
-
 namespace brave_wallet {
 
 // See definition for "path": ["sp_core", "crypto", "AccountId32"]
@@ -45,9 +42,6 @@ struct PolkadotAddress {
 // off of `const std::string&`.
 std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
                                                     uint16_t ss58_prefix);
-
-mojom::uint128Ptr Uint128ToMojom(uint128_t);
-uint128_t MojomToUint128(const mojom::uint128Ptr&);
 
 }  // namespace brave_wallet
 

@@ -137,8 +137,7 @@ TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedTransaction) {
   auto tx_data_union = mojom::TxDataUnion::NewPolkadotTxData(
-      mojom::PolkadotTxdata::New("", Uint128ToMojom(uint128_t{0}),
-                                 Uint128ToMojom(uint128_t{0}), false));
+      mojom::PolkadotTxdata::New("", uint128_t{0}, uint128_t{0}, false));
 
   auto account_id = mojom::AccountId::New();
   account_id->coin = mojom::CoinType::DOT;
@@ -203,7 +202,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
-        mojom::uint128::New(0, 1234), false, nullptr);
+        uint128_t{1234}, false, nullptr);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -245,8 +244,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBobSS58,
-        mojom::uint128::New(0xffffffffffffffff, 0xffffffffffffffff), false,
-        nullptr);
+        std::numeric_limits<uint128_t>::max(), false, nullptr);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -288,7 +286,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), "0x1234",
-        mojom::uint128::New(0, 1234), false, nullptr);
+        uint128_t{1234}, false, nullptr);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -313,8 +311,8 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(),
-        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
-        mojom::uint128::New(0, 1234), false, nullptr);
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", uint128_t{1234},
+        false, nullptr);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -339,7 +337,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
-        mojom::uint128::New(0, 1234), false, nullptr);
+        uint128_t{1234}, false, nullptr);
 
     polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -366,8 +364,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     account_id->address = "invalid_address";
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, std::move(account_id), kBob, mojom::uint128::New(0, 1234),
-        false, nullptr);
+        chain_id, std::move(account_id), kBob, uint128_t{1234}, false, nullptr);
 
     tx_service_->AddUnapprovedPolkadotTransaction(
         std::move(transaction_params),
@@ -423,7 +420,7 @@ TEST_F(PolkadotTxManagerUnitTest,
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_mainnet_account_->account_id.Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
+      uint128_t{1234}, false, nullptr);
 
   polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params),

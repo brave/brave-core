@@ -101,7 +101,7 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   PolkadotTxMeta tx_metadata;
 
   PolkadotTransaction tx;
-  tx.set_amount(MojomToUint128(params->amount));
+  tx.set_amount(params->amount);
   tx.set_recipient(*recipient);
   tx.set_transfer_all(params->sending_max_amount);
   tx_metadata.set_tx(std::move(tx));

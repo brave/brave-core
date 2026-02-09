@@ -12,17 +12,16 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet {
 
-using uint256_t = unsigned _BitInt(256);
-using int256_t = _BitInt(256);
-
 using uint128_t = unsigned _BitInt(128);
 using int128_t = _BitInt(128);
+
+using uint256_t = unsigned _BitInt(256);
+using int256_t = _BitInt(256);
 
 // 2^255 - 1
 inline constexpr int256_t kMax256BitInt = std::numeric_limits<int256_t>::max();
