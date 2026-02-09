@@ -23,28 +23,41 @@ import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/comm
 const MockContext = (
   props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,
 ) => {
+  const { children, ...contextOverrides } = props
+
   return (
     <AIChatReactContext.Provider
       value={{
         ...defaultAIChatContext,
-        ...props,
+        ...contextOverrides,
       }}
     >
       <ConversationReactContext.Provider
         value={{
           ...defaultConversationContext,
-          ...props,
+          ...contextOverrides,
         }}
       >
-        {props.children}
+        {children}
       </ConversationReactContext.Provider>
     </AIChatReactContext.Provider>
   )
 }
 
+// Render and flush async state updates from usePromise hooks.
+async function renderTabsMenu(
+  ...args: Parameters<typeof render>
+): Promise<ReturnType<typeof render>> {
+  let result: ReturnType<typeof render>
+  await act(async () => {
+    result = render(...args)
+  })
+  return result!
+}
+
 describe('TabsMenu', () => {
-  it('should render tabs', () => {
-    const { getByText, container } = render(
+  it('should render tabs', async () => {
+    const { getByText, container } = await renderTabsMenu(
       <MockContext
         tabs={[
           {
@@ -75,8 +88,8 @@ describe('TabsMenu', () => {
     expect(container.querySelector('img[src*="test2.com"]')).toBeInTheDocument()
   })
 
-  it('should filter out attached tabs', () => {
-    const { queryByText } = render(
+  it('should filter out attached tabs', async () => {
+    const { queryByText } = await renderTabsMenu(
       <MockContext
         associatedContentInfo={[
           {
@@ -118,8 +131,8 @@ describe('TabsMenu', () => {
     expect(queryByText('Test 2')).toBeInTheDocument()
   })
 
-  it('should be open when query starts with @', () => {
-    const { container } = render(
+  it('should be open when query starts with @', async () => {
+    const { container } = await renderTabsMenu(
       <MockContext
         inputText={['@']}
         tabs={[
@@ -142,14 +155,14 @@ describe('TabsMenu', () => {
     expect(menu).toHaveProperty('isOpen', true)
   })
 
-  it('should be close when @ is removed', () => {
-    render(
+  it('should be close when @ is removed', async () => {
+    await renderTabsMenu(
       <MockContext inputText={['@']}>
         <TabsMenu />
       </MockContext>,
     )
 
-    const { container } = render(
+    const { container } = await renderTabsMenu(
       <MockContext inputText={['hi']}>
         <TabsMenu />
       </MockContext>,
@@ -194,7 +207,7 @@ describe('TabsMenu', () => {
     expect(matches[0]).toHaveTextContent('2')
   })
 
-  it('selecting an element should clear text and attempt to associate with current conversation', () => {
+  it('selecting an element should clear text and attempt to associate with current conversation', async () => {
     const associateTab = jest.fn()
     const tab1 = {
       contentId: 1,
@@ -204,7 +217,7 @@ describe('TabsMenu', () => {
       },
       id: 1,
     }
-    const { queryByText } = render(
+    const { queryByText } = await renderTabsMenu(
       <MockContext
         conversationUuid='1'
         inputText={['@']}
@@ -230,14 +243,16 @@ describe('TabsMenu', () => {
       </MockContext>,
     )
 
-    queryByText('Test 1')?.click()
+    await act(async () => {
+      queryByText('Test 1')?.click()
+    })
 
     expect(associateTab).toHaveBeenCalledWith(tab1, '1')
     expect(queryByText('@')).not.toBeInTheDocument()
   })
 
   it('should render bookmarks in the list', async () => {
-    const { findByText } = render(
+    const { findByText } = await renderTabsMenu(
       <MockContext
         getBookmarks={() =>
           Promise.resolve([
@@ -293,7 +308,7 @@ describe('TabsMenu', () => {
   })
 
   it('should render history in the list', async () => {
-    const { findByText } = render(
+    const { findByText } = await renderTabsMenu(
       <MockContext
         getHistory={() =>
           Promise.resolve([
@@ -359,7 +374,7 @@ describe('TabsMenu', () => {
       ]),
     )
 
-    render(
+    await renderTabsMenu(
       <MockContext
         inputText={['@ab']}
         getHistory={getHistory}
@@ -372,7 +387,7 @@ describe('TabsMenu', () => {
   })
 
   it('should filter out already attached history items', async () => {
-    const { findByText, queryByText } = render(
+    const { findByText, queryByText } = await renderTabsMenu(
       <MockContext
         associatedContentInfo={[
           {
