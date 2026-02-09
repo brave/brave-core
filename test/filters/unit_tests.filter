@@ -246,6 +246,13 @@
 -IsolatedWebAppManagedAllowlistTest.AllowedAppInstalled
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
 
+# Upstream Chromium test: intermittent timing failure in IWA retry logic
+# using MOCK_TIME + BackoffEntry. Expected 2 install tasks but got 3 due to
+# retry firing earlier than expected. No Brave modifications in IWA policy area.
+# Flakes on all platforms (6% upstream flake rate per LUCI Analysis).
+# https://github.com/brave/brave-browser/issues/52658
+-IsolatedWebAppRetryTest.RetryTriggeredWhenAllTasksDone
+
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
@@ -678,6 +685,7 @@
 # These tests fail because we disable uploading these event logs
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
+-UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
 
 # The following test uses Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
