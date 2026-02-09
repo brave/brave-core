@@ -3,7 +3,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-
 """
 Analyzes whether a build is needed based on PR changes.
 
@@ -62,11 +61,13 @@ def run_gn_analyze(build_dir: str, files: list[str], src_root: Path) -> dict:
         "additional_compile_targets": ["all"],
     }
 
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json",
+                                     delete=False) as f:
         json.dump(input_data, f)
         input_path = f.name
 
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json",
+                                     delete=False) as f:
         output_path = f.name
 
     try:
@@ -86,11 +87,16 @@ def run_gn_analyze(build_dir: str, files: list[str], src_root: Path) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Check if a build is needed based on PR changes."
-    )
-    parser.add_argument("build_dir", help="Path to build directory (e.g., out/Component_arm64)")
-    parser.add_argument("--base", default="origin/master", help="Base branch (default: origin/master)")
-    parser.add_argument("--files", nargs="+", help="Specific files to analyze (instead of git diff)")
+        description="Check if a build is needed based on PR changes.")
+    parser.add_argument(
+        "build_dir",
+        help="Path to build directory (e.g., out/Component_arm64)")
+    parser.add_argument("--base",
+                        default="origin/master",
+                        help="Base branch (default: origin/master)")
+    parser.add_argument("--files",
+                        nargs="+",
+                        help="Specific files to analyze (instead of git diff)")
 
     args = parser.parse_args()
 
@@ -103,7 +109,8 @@ def main():
     # Verify build directory exists
     build_path = src_root / args.build_dir
     if not (build_path / "build.ninja").is_file():
-        print(f"Error: {args.build_dir} is not a valid build directory", file=sys.stderr)
+        print(f"Error: {args.build_dir} is not a valid build directory",
+              file=sys.stderr)
         sys.exit(2)
 
     # Get changed files
