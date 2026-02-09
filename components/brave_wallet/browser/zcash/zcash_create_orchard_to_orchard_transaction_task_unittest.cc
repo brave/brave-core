@@ -78,6 +78,9 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     feature_list_.InitAndEnableFeatureWithParameters(
         features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}});
+#if BUILDFLAG(IS_IOS)
+    feature_list_.InitAndEnableFeature(features::kBraveWalletWebUIFeature);
+#endif
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(

@@ -183,6 +183,10 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   void SetUp() override {
     feature_list_.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletZCashFeature);
+#if BUILDFLAG(IS_IOS)
+    feature_list_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletWebUIFeature);
+#endif
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     db_path_ = temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db"));
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
