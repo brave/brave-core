@@ -13,7 +13,6 @@
 namespace brave {
 
 int OnBeforeStartTransaction_UserAgentWork(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 

@@ -36,7 +36,6 @@ void ReplaceBraveWithGoogleChromeInHeader(net::HttpRequestHeaders* headers,
 }  // namespace
 
 int OnBeforeStartTransaction_UserAgentWork(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   if (ctx) {
@@ -45,8 +44,8 @@ int OnBeforeStartTransaction_UserAgentWork(
     if (exceptions) {
       bool show_brave = exceptions->CanShowBrave(ctx->tab_origin);
       if (!show_brave) {
-        ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA);
-        ReplaceBraveWithGoogleChromeInHeader(headers,
+        ReplaceBraveWithGoogleChromeInHeader(ctx->headers, kHeaderSecCHUA);
+        ReplaceBraveWithGoogleChromeInHeader(ctx->headers,
                                              kHeaderSecCHUAFullVersionList);
       }
     }

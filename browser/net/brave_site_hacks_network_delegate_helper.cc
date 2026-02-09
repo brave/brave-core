@@ -86,7 +86,6 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
 }
 
 int OnBeforeStartTransaction_SiteHacksWork(
-    net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   // Special case for handling top-level redirects. There is no other way to
