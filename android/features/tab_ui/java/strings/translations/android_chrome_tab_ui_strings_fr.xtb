@@ -49,7 +49,7 @@
 <translation id="2536366509642644298">Les groupes d'onglets "<ph name="TAB_GROUP_NAME_1"/>" et "<ph name="TAB_GROUP_NAME_2"/>" ne sont plus disponibles</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Réduisez <ph name="TABS_COUNT_ONE"/> onglet.}one{Réduisez le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglets.}other{Réduisez le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="2569352796411618312">Suggestion : <ph name="NUMBER_OF_TABS"/> des onglets ouverts n'ont pas été utilisés récemment. Voulez-vous les fermer ?</translation>
-<translation id="257674075312929031">Groupe</translation>
+<translation id="257674075312929031">Regrouper</translation>
 <translation id="2660792762186871190">{NUMBER_OF_TABS,plural, =1{Restaurer et ouvrir le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_ONE"/> onglet.}one{Restaurer et ouvrir le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglet.}other{Restaurer et ouvrir le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="2662028055331606429">Note de <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Accéder au site</translation>
@@ -80,6 +80,7 @@
 <translation id="3619255692378312441">Gérer l'accès</translation>
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{Fermer l'élément}one{Fermer l'élément}other{Fermer les éléments}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
+<translation id="3714430408451673233">Bottom sheet de l'onglet à mi-hauteur.</translation>
 <translation id="374923079891132274">Vignette de la feuille de partage.</translation>
 <translation id="3776329373944672717">Titre du groupe d'onglets <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">Gérer</translation>
@@ -124,20 +125,23 @@
 <translation id="5339733443032484186">Votre dernier onglet</translation>
 <translation id="5380159289133845234">Archiver les onglets en double</translation>
 <translation id="5446043142172831860">Supprimer l'onglet et quitter le groupe</translation>
+<translation id="5465437530117042974">Modifications apportées à la bottom sheet de l'onglet fermées.</translation>
 <translation id="5490235265819901748">Groupe d'onglets développé</translation>
 <translation id="5494920125229734069">Tout sélectionner</translation>
+<translation id="5505998972479309757">{LIMIT_COUNT,plural, =1{Ajoutez <ph name="LIMIT_COUNT_ONE"/> fichier, onglet ou image au maximum}one{Ajoutez <ph name="LIMIT_COUNT_MANY"/> fichier, onglet ou image au maximum}other{Ajoutez jusqu'à <ph name="LIMIT_COUNT_MANY"/> fichiers, onglets ou images}}</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Fermer le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_ONE"/> onglet.}one{Fermer le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglet.}other{Fermer le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="5556417849629758491">Afficher les infos sur le magasin, option disponible en haut de l'écran</translation>
 <translation id="5627941783489838464">Aucun onglet modifié</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> lien de Brave}one{<ph name="TABS_COUNT_MANY"/> lien de Brave}other{<ph name="TABS_COUNT_MANY"/> liens de Brave}}</translation>
 <translation id="5740354908255726955">{TAB_COUNT,plural, =1{Déplacer l'onglet vers la gauche}one{Déplacer l'onglet vers la gauche}other{Déplacer les onglets vers la gauche}}</translation>
-<translation id="5746204836956568669">Regrouper <ph name="NUMBER_OF_TABS"/> onglets pour travailler plus rapidement ?</translation>
+<translation id="5746204836956568669">Regrouper ces <ph name="NUMBER_OF_TABS"/> onglets pour travailler plus rapidement ?</translation>
 <translation id="5773295109010386583">Fermer automatiquement les éléments inactifs</translation>
 <translation id="58326064309361797">Faites glisser les onglets pour les regrouper</translation>
 <translation id="5972844218283131174">Tout désélectionner</translation>
 <translation id="6040143037577758943">Fermer</translation>
 <translation id="6051432659151380973">Vos groupes d'onglets sont enregistrés automatiquement</translation>
 <translation id="6054741997831917303">Le prix de cet article est récemment passé de <ph name="PREVIOUS_PRICE"/> à <ph name="NEW_PRICE"/></translation>
+<translation id="606985262342505139">Bottom sheet de l'onglet à pleine hauteur</translation>
 <translation id="6109251075362363230">Tous les onglets en double seront désormais également archivés, à l'exception de la dernière copie utilisée.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Fermer <ph name="TABS_COUNT_ONE"/> élément sélectionné}one{Fermer <ph name="TABS_COUNT_MANY"/> élément sélectionné}other{Fermer <ph name="TABS_COUNT_MANY"/> éléments sélectionnés}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Déplacer le groupe vers une nouvelle fenêtre}one{Déplacer le groupe vers une autre fenêtre}other{Déplacer le groupe vers une autre fenêtre}}</translation>
@@ -221,7 +225,6 @@
 <translation id="8428213095426709021">Paramètres</translation>
 <translation id="855081842937141170">Épingler l'onglet</translation>
 <translation id="8633025649649592204">Activité récente</translation>
-<translation id="8635822281281406185">Ajoutez jusqu'à 10 fichiers, onglets ou images</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="8714939927607906138">Prix inférieur</translation>
 <translation id="8730621377337864115">OK</translation>

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Pokaži prijedloge preglednika</translation>
 <translation id="8982438328166986164">Prikazuju se prijedlozi mrežnih mjesta na temelju vaših oznaka i povijesti pregledavanja.</translation>
 <translation id="924029461438529367">Prikaži prijedloge za pretraživanje</translation>
-<translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
-<translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
 <translation id="9148058034647219655">Izlaz</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtriranje sadržaja</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Onemogućivanje nadogradnje veza na HTTPS (onemogućeno)</translation>
 <translation id="693506469193748756">Zaboravi me kada zatvorim ovo mrežno mjesto</translation>
 <translation id="6975864539539353406">Kada zatvorite mrežno mjesto, brišu se kolačići i drugi podaci o mrežnom mjestu.</translation>
+<translation id="7740929262043547697">Dopusti blokiranje elemenata u privatnim Windows prozorima</translation>
+<translation id="1260864846935682371">Omogućuje značajku Štitova za blokiranje elemenata u privatnim Windows prozorima. Imajte na umu da će elementi blokirani u privatnim Windows prozorima također biti blokirani i u neprivatnim.</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledavanja</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
 <translation id="5254037869598726291">Anonimiziranim informacijama P3A pomaže se pri procjenjivanju ukupne upotrebe preglednikom Brave i jamčenju da radimo na poboljšanju popularnih značajki.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">KASNIJE</translation>
 <translation id="4117451092682672487">Pojednostavljena zaštita privatnosti.</translation>
 <translation id="7909375417585209817">Kad je Brave postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.</translation>
-<translation id="7370959926683925817">Blokirajte oglase. Uštedite podatke. Svaki dan.</translation>
-<translation id="7281027579943912834">Kad je Brave zadani preglednik, svaka poveznica koju dodirnete dobiva zaštitu od blokiranja oglasa preglednika Brave. Svaka stranica, videozapis i strujanje.</translation>
 <translation id="5148943178722443958">Pomognite poboljšati Brave.</translation>
 <translation id="6718362830686703942">Pošaljite dijagnostička izvješća ako iskusite pad ili zamrzavanje stranice.</translation>
 <translation id="8616157231067364693">Podijelite privatne i anonimne uvide u proizvod o tome koje značajke upotrebljavaju korisnici preglednika Brave.</translation>
@@ -371,6 +369,14 @@ Sigurno želite to napraviti?</translation>
 <translation id="8793108040181436796">Mali programi (widgeti)</translation>
 <translation id="8643377320501056697">Prikaži glavna mrežna mjesta</translation>
 <translation id="7275773481201277457">Prikaži stanja Brave</translation>
+<translation id="7462178177755090262">Zaslon za otvaranje</translation>
+<translation id="5365434987337264071">Zadnja otvorena kartica</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Novi tab nakon <ph name="HOURS_ONE"/> sata neaktivnosti}
+          other {Novi tab nakon <ph name="HOURS_MANY"/> sati neaktivnosti}
+        }</translation>
+<translation id="5233638681132016545">Nova kartica</translation>
+<translation id="8395271296293035055">Vrati se na najnoviju karticu</translation>
 <translation id="8297488609722895137">Autor fotografije <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Otvorite vanjske poveznice u pregledniku Brave</translation>
 <translation id="5616508928556767259">Otvorite poveznice iz drugih aplikacija u mrežnom prikazu Brave. Napomena: preglednik Brave mora biti postavljen kao vaš zadani preglednik.</translation>
@@ -763,7 +769,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="6889920539620318793">Postavi kao aktivno</translation>
 <translation id="2653659639078652383">Pošalji</translation>
 <translation id="4945690646623486292">Odaberi mrežu</translation>
-<translation id="5233638681132016545">Nova kartica</translation>
 <translation id="8006088103295786154">Pristupi novčaniku Brave</translation>
 <translation id="5308380583665731573">Poveži se</translation>
 <translation id="8030169304546394654">Prekinuta veza</translation>
@@ -1074,6 +1079,10 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="4650851936784160359">Nije se moglo ažurirati popis filtara. Pokušajte ponovno.</translation>
 <translation id="3098054327870766317">Pokaži dugme za poništavanje kad su kartice zatvorene</translation>
 <translation id="1336494649091412226">Jeste li sigurni da želite izaći iz Bravea?</translation>
+<translation id="6061635824229591714">Uništiti podatke s mrežne stranice?</translation>
+<translation id="1265051174491933207">Uništavanje će izbrisati podatke s mrežne stranice i zatvoriti sve kartice za '<ph name="SITE_NAME"/>'. Ovo se ne može poništiti.</translation>
+<translation id="4279349293084858577">Uništi</translation>
+<translation id="4426990318287827331">Uništavanje podataka</translation>
 <translation id="7942415993090181327">Povijest čavrljanja</translation>
 <translation id="6859935199732075666">Pokaži greške priliko sigurnog pregledavanja</translation>
 <translation id="2735247450315842119">Omogući snimke zaslona u privatnim karticama</translation>

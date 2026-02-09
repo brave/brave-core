@@ -131,7 +131,6 @@
 <translation id="780301667611848630">לא תודה</translation>
 <translation id="1162706247109707219">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-Windows 10 ואילך. אזהרה זו לא תופיע שוב.</translation>
 <translation id="9164786361657554526">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-macOS 10.15 ואילך. אזהרה זו לא תופיע שוב.</translation>
-<translation id="2770465223704140727">הסר מהרשימה</translation>
 <translation id="6020553119523541665">הלשונית הזאת פעילה בחלון אחר</translation>
 <translation id="4987392683074136770">הקשה על לשונית זו תביא את תוכנו לחלון זה</translation>
 <translation id="8355523213948477234">כפתור תפריט לתצוגה חצויה</translation>
@@ -223,6 +222,8 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">השתמש בפרוטוקול WireGuard ב-Brave VPN</translation>
 <translation id="8519170191215826548">לא ניתן לשנות הגדרה זו בזמן ש-Brave VPN מחובר</translation>
+<translation id="1177917174080821247">הצג את סמל מגש VPN</translation>
+<translation id="3747459938663420752">כאשר האפשרות מופעלת, סרגל המשימות של Windows יציג את הסמל של VPN של Brave.</translation>
 <translation id="4235920711083356755">הצג את לחצן VPN</translation>
 <translation id="4070612712151038707">מציג את לחצן VPN בסרגל הכלים</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -234,7 +235,6 @@
 <translation id="8030169304546394654">מנותק</translation>
 <translation id="1863950594388384201">הצג את לחצן VPN בסרגל הכלים</translation>
 <translation id="5187139277471084437">הסתר את לחצן VPN בסרגל הכלים</translation>
-<translation id="1177917174080821247">הצג את סמל מגש VPN</translation>
 <translation id="8041089156583427627">שליחת משוב</translation>
 <translation id="4049186905514157504">ניהול התוכנית שלי</translation>
 <translation id="7570585565843385325">הצג את לחצן VPN בסרגל הכלים</translation>
@@ -380,6 +380,7 @@
 <translation id="5860254591544742609">הצגת שורת הכותרת</translation>
 <translation id="4691131445504068802">הסתר לחלוטין כאשר ממוזער</translation>
 <translation id="6763346436728173884">הסתר תמיד את כפתור סגירת הלשונית</translation>
+<translation id="8082625757059443808">אפשר סגירת לשוניות בלחיצה על הכפתור האמצעי של העכבר</translation>
 <translation id="4909269867860362936">הרחבה אוטומטית כאשר מרחפים כאשר ממוזער</translation>
 <translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
 <translation id="8925055964134259461">הרחב לשוניות אנכיות באופן עצמאי בכל חלון</translation>
@@ -515,12 +516,12 @@
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
 <translation id="8826461509529116322">הצג את לחצן Brave Rewards</translation>
-<translation id="3328713589982547433">מצב חסימת מודעות בלבד</translation>
-<translation id="1574253307550419595">השתמש במצב חסימת מודעות בלבד</translation>
-<translation id="738717058053657696">מצב חסימת מודעות בלבד שומר על כללי חסימת המודעות הבסיסיים של Brave Shields. אזהרה: מסיר את כל הגנות הפרטיות. שימו לב שבאתרים בודדים שנפגעים מהגנות הפרטיות של Brave, תוכלו להגדיר את Shields למצב DOWN. זהו מצב ניסיוני. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">מצב חסימת מודעות בלבד</translation>
+<translation id="4146834954839563870">השתמש במצב חסימת מודעות בלבד</translation>
+<translation id="420732343671200734">מצב חסימת מודעות בלבד שומר על כללי חסימת המודעות הבסיסיים של מגיני Brave. אזהרה: מסיר את כל הגנות הפרטיות. שימו לב שבאתרים בודדים שנפגעים מהגנות הפרטיות של Brave, תוכלו להגדיר את המגנים למצב DOWN. זהו מצב ניסיוני. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">אפשרויות המגנים מושבתות כרגע.</translation>
-<translation id="516439939408671102">מצב חסימת מודעות בלבד שומר על כללי חסימת המודעות הבסיסיים של Brave Shields ומבטל את הגנות הפרטיות. אם ברצונך להפעיל את Shields הסטנדרטי, אנא השבת מצב זה.</translation>
-<translation id="177233004755519660">כבה את מצב חסימת פרסומות בלבד</translation>
+<translation id="2687830906359353344">מצב חסימת מודעות בלבד שומר על כללי חסימת המודעות הבסיסיים של מגיני Brave ומבטל את הגנות הפרטיות. אם ברצונך להפעיל את המגנים הסטנדרטיים, אנא השבת מצב זה.</translation>
+<translation id="3809423899581611047">כבה את מצב חסימת פרסומות בלבד</translation>
 <translation id="9185018653595759199">חסימת רשתות חברתיות</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="7791141927430186653">אפשר ציוצים מוטבעים של X (לשעבר Twitter)</translation>
@@ -663,8 +664,6 @@
 <translation id="7029809446516969842">סיסמאות</translation>
 <translation id="6011308810877101166">שיפור הצעות חיפוש</translation>
 <translation id="2332576387809612040">כשהאפשרות מופעלת, Brave שולח את מה שהקלדת בסרל הכתובת או תיבת החיפוש למנוע חיפוש ברירת המחדל שלך כדי קבל תוצאות טובות יותר. כשהאפשרות כבויה, Brave מציג רק הצעות שנוצרו במכשיר שלך. האפשרות כבויה תמיד עבור חלונות פרטיים.</translation>
-<translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
-<translation id="5526883767168905185">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch</translation>
 <translation id="5522403133543437426">מנוע חיפוש בשימוש בשורת הכתובת.</translation>
 <translation id="280472502078788655">מנוע חיפוש בשימוש בשורת הכתובת עבור חלונות פרטיים.</translation>
 <translation id="7232120595886556478">חלון רגיל</translation>
@@ -870,6 +869,8 @@
 <translation id="7311244614769792472">לא נמצאו תוצאות</translation>
 <translation id="1838374766361614909">ניקוי חיפוש</translation>
 <translation id="5126255551970171328">חפש זיכרון</translation>
+<translation id="7402116145895962069">סנכרן את המודלים המקומיים של Ollama</translation>
+<translation id="4835154437390745810">מנוהל על ידי Ollama</translation>
 <translation id="5985516785067818307">משתתפ/ת בסקר</translation>
 <translation id="8347743943525229984">הפעלת סקרי Brave</translation>
 <translation id="3204080538332044581">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>

@@ -494,6 +494,15 @@
 <translation id="4915997950539925115">リセットを行うと、現在のBraveリワードのプロフィールが削除され、Braveリワードが無効となります。後で再びBraveリワードを有効にする場合は、新しいプロフィールから設定を行ってください。詳細は、<ph name="LINK_BEGIN"/>リセットに関するサポート記事<ph name="LINK_END"/>をお読みください。</translation>
 <translation id="4806029412510565611">私は、現在のBrave RewardsプロファイルとBraveリワードデータが、デバイスから削除されることを理解しています。また、<ph name="LINK_BEGIN"/>リセットに関するサポート記事<ph name="LINK_END"/>も読んでいます。</translation>
 <translation id="8835777704176513489">Rewardsを無効化してリセット</translation>
+<translation id="1570055891464728855">今すぐリセット</translation>
+<translation id="6431824580671230473">ご安心ください：<ph name="PROVIDER"/> アカウント内のBATにはリセットの影響はありません。</translation>
+<translation id="2881473942058010900"><ph name="PROVIDER"/> に接続している間は広告による報酬を得られません。Brave Rewardsをリセットして、別の支払いアカウントに接続することで引き続き報酬を獲得できます。<ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/></translation>
+<translation id="5803444802570526678"><ph name="PROVIDER"/> アカウントはサポートされなくなりました。</translation>
+<translation id="3794463124070392793">地域を確認</translation>
+<translation id="4620879582500359234"><ph name="PROVIDER"/> アカウントにあるBATはそのまま保持されます。</translation>
+<translation id="935303782545595866">30日間の広告履歴およびその他のBrave Rewards設定はリセットされます。</translation>
+<translation id="6279637499952804615">このステップの後で、別の支払いアカウントを選択できます。</translation>
+<translation id="5419770758409992826"><ph name="PROVIDER"/> アカウントは切断され、Brave Rewardsのプロファイルがリセットされます。</translation>
 <translation id="7717357606512850995">ステータスを確認</translation>
 <translation id="6473937687348632190"><ph name="MONTH"/>リワードの支払いが完了しました。</translation>
 <translation id="1711367267038576241"><ph name="MONTH"/>リワードの支払い処理は<ph name="DATE"/>までに開始されます。</translation>
@@ -518,12 +527,12 @@
     }</translation>
 <translation id="3264975266761862670">報酬を受け取る準備はできましたか？</translation>
 <translation id="2784412028126205842">支払いアカウントに接続</translation>
-<translation id="766126983336630294">{ADS_VIEWED, plural,
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
       =0 {今月表示した広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
       =1 {今月表示した中で支払い対象となる広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
       other {今月表示した中で支払い対象となる広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
     }</translation>
-<translation id="8611388433418909120">{ADS_VIEWED, plural,
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
       =0 {今月表示した広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
       =1 {今月の報酬: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
       other {今月の報酬: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
@@ -604,7 +613,7 @@
 <translation id="5802986777701714573">毎月のBAT報酬の新しい受け取り方を追加しました。パートナーのアカウントに接続するか、新しいセルフカストディオプションを使って、今すぐ報酬を得ましょう。</translation>
 <translation id="3251885322612056119">利用規約を更新しました</translation>
 <translation id="7454675823870922788">Braveリワードの利用規約を更新しました。この更新は、規約をより明確に定義し、新機能を確実にカバーするためのものです。Braveリワードの利用を継続することにより、お客様は更新された利用規約に同意したものとみなされます。同意されない場合は、Braveリワードを<ph name="LINK_BEGIN"/>リセット<ph name="LINK_END"/>し、機能を無効にすることができます。</translation>
-<translation id="56057964000416013">当社のサービス利用規約が更新されました。Brave Rewardsを引き続きご利用いただくには、更新された規約をご確認の上、ご同意ください。</translation>
+<translation id="616595399243298960">当社のサービス規約が更新されました。Brave Rewardsを引き続きご利用いただくには、更新された規約をご確認の上、ご同意ください。</translation>
 <translation id="5192526308598085294"><ph name="LINK_BEGIN"/>Braveリワードの利用規約<ph name="LINK_END"/>を見る</translation>
 <translation id="4130750466177569591">同意する</translation>
 <translation id="343114360276812078">利用規約を確認する</translation>
@@ -652,6 +661,8 @@
 <translation id="6751803821780922506">BATの受取先を選択</translation>
 <translation id="3162035476318501831">地域とサポートについて。</translation>
 <translation id="7329170127335794328">お住まいの地域では現在ご利用いただけません</translation>
+<translation id="1947910788470806100">お住まいの地域では、現在利用可能な支払いオプションはありません。後から再度確認して利用可能状況をご覧ください。</translation>
+<translation id="271689813824682404">利用不可の支払いオプション</translation>
 <translation id="966956302643313970">Basic Attention Token（BAT）リワードを獲得するにはアカウントに接続してください。獲得したBATは毎月自動的にあなたのアカウントに振り込まれます。</translation>
 <translation id="4009439571146350519">または、Solanaをサポートする他のウォレット</translation>
 <translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>利用規約<ph name="TOS_LINK_END"/>および<ph name="PP_LINK_BEGIN"/>プライバシーポリシー<ph name="PP_LINK_END"/></translation>
@@ -862,6 +873,7 @@
 <translation id="6264944956989873014">ブリッジを確認</translation>
 <translation id="7067917728851842589">送信を確認</translation>
 <translation id="2351357639951873714">Shields を確認</translation>
+<translation id="7480044382160806610">シールド解除を確認</translation>
 <translation id="8332923694292360653">支払う</translation>
 <translation id="3735740477244556633">並べ替え</translation>
 <translation id="6484605214219822434">ブリッジをレビュー</translation>
@@ -883,6 +895,8 @@
 <translation id="7465227658364622464">Jupiterは、取引を完了するためにSolanaのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
 <translation id="712738518060477110">見積もりには<ph name="SWAP_FEE_PERCENTAGE"/> Brave手数料が含まれます。</translation>
 <translation id="8368540604723748428">小数点以下の桁数が多すぎます</translation>
+<translation id="4797709125717981664">最低送信額は1 ADAです</translation>
+<translation id="3826737479910350533">送信額が小さすぎます</translation>
 <translation id="6575120282593094155"><ph name="ACCOUNT_TYPE"/>アカウントがありません。作成しますか？</translation>
 <translation id="1426410128494586442">はい</translation>
 <translation id="4250680216510889253">いいえ</translation>
@@ -929,7 +943,7 @@
 <translation id="2274014756904854136">画面をダブルタップして継続</translation>
 <translation id="7795718119973968770">セキュリティ上の理由で、ウォレットがロックされました。ウォレットのロックを解除して継続してください。</translation>
 <translation id="9175546523521600401">ウォレットをロック</translation>
-<translation id="765834632354589737">ウォレットをバックアップする</translation>
+<translation id="7117128722034148989">ウォレットをバックアップする</translation>
 <translation id="1108298724135935307">接続したサイト</translation>
 <translation id="5716350339763180836">残高</translation>
 <translation id="5538251867290702601">グラフ</translation>
@@ -1031,6 +1045,7 @@
 <translation id="2416098547200943834">注: 秘密鍵は、秘密鍵およびプロトコル情報を含む16進エンコードされたJSONとして提供されます。<ph name="LINK_START"/>さらに詳しく<ph name="LINK_END"/></translation>
 <translation id="7657130382217527063">注: 秘密鍵は、秘密鍵とプロトコル情報を含む16進エンコードされたJSONとして提供する必要があります。<ph name="LINK_START"/>さらに詳しく<ph name="LINK_END"/></translation>
 <translation id="4482913669726886926">注: <ph name="FORMAT"/> の拡張キーのみがサポートされています。</translation>
+<translation id="9133762451347918196">Testnet アカウント</translation>
 <translation id="42126664696688958">エクスポート</translation>
 <translation id="1366855498335432549">振込</translation>
 <translation id="790104325876206743">アカウント設定</translation>
@@ -1038,6 +1053,7 @@
 <translation id="836614343069504000">トークンを入金または購入して開始します。インポートしたアカウントのトークンが表示されない場合は、フィルターと表示設定を確認してください。不明なトークンはカスタムアセットとしての追加が必要な場合があります。</translation>
 <translation id="2902856457593699108">キーを表示</translation>
 <translation id="8033497299373164724">キーを隠す</translation>
+<translation id="7514365320538308">ダウンロード</translation>
 <translation id="2702143907607790516">アカウント名の更新に失敗しました。もう一度やり直してください。</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1058,9 +1074,6 @@
 <translation id="1506421160138798546">推定</translation>
 <translation id="59223531494896848">リミット</translation>
 <translation id="8569380433211549748">価格</translation>
-<translation id="2490428413101944234">Faucet をテスト</translation>
-<translation id="3352959425838279177">Faucet から次の Ether を入手する: <ph name="SELECTED_NETWORK"/></translation>
-<translation id="6449626816252815844">購入方法を選択</translation>
 <translation id="8009571545960303544">署名がリクエストされています。</translation>
 <translation id="5294062982587710720">Brave は、署名した場合に何が起こるかを認証しているわけではないことに注意してください。署名は、リクエストを行うサイトにアカウントと暗号資産の完全な制御を与えることを含む (ただしこれらに限定されない)、あなたに代わってアカウント内外のほぼ全ての操作を許可する可能性があります。このアクションを実行することを望み、要求元のサイトを信頼する場合にのみ署名してください。</translation>
 <translation id="3474375934783434676">ご自身の責任で署名してください</translation>
@@ -1068,6 +1081,7 @@
 <translation id="3586931643579894722">詳細を非表示</translation>
 <translation id="7702907602086592255">ドメイン</translation>
 <translation id="3586752056660754651">署名</translation>
+<translation id="4217653732094303705">公開暗号化キー</translation>
 <translation id="3484981968509595506">DAppがあなたの公開暗号鍵を要求しています。</translation>
 <translation id="2300240008330189182"><ph name="URL"/>がウォレットの公開暗号化キーを要求しています。このキーの提供に同意すると、暗号化されたメッセージがサイトで作成されます。</translation>
 <translation id="3340247553212049934">提供</translation>
@@ -1304,9 +1318,7 @@
 <translation id="4312994183947987913">購入/振込</translation>
 <translation id="5133421763709317473">検索またはフィルタに一致するアセットが見つかりません。</translation>
 <translation id="6423985584914773314">有効なFILアドレスではありません</translation>
-<translation id="5522073372365069684">Rampで購入</translation>
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/>で販売</translation>
-<translation id="3301984548406568819">財務データおよび取引データは、OnRampパートナーによって処理されます。Braveはこのようなデータを収集したり、アクセスしたりすることはありません。</translation>
 <translation id="5795821518596541838">トランザクションパートナー</translation>
 <translation id="1916136859742693273">Brave WalletはMeld.ioを使用し、お住まいの地域のさまざまな暗号プロバイダを集約、表示します。ウォレットアドレスと国コードを含むトランザクションを完了するための情報は、Meld.ioに共有されます。詳細はMeldの利用規約をご覧ください。</translation>
 <translation id="245827814248186739">私は、<ph name="LINK_BEFORE"/>Meldの利用規約<ph name="LINK_AFTER"/> を読み、これに同意します。</translation>
@@ -1327,17 +1339,8 @@
 <translation id="4196022627437957774"><ph name="ACCOUNT_TYPE"/> アカウントを作成しますか？</translation>
 <translation id="5982914754413312620"><ph name="TOKEN_SYMBOL"/> を受け取るには、 <ph name="ACCOUNT_TYPE"/> アカウントが必要です。</translation>
 <translation id="3067168166931605141">アカウント名</translation>
-<translation id="6534275647567011533">Transakで購入</translation>
-<translation id="5973390321030037823">購入リンク</translation>
-<translation id="1932640759496708012">Coinbase Payで購入</translation>
-<translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="503018546142690471">Transak</translation>
-<translation id="7295150312737713113">Stripeにより発行</translation>
-<translation id="7191335763519723663">Coinbase Pay</translation>
-<translation id="7667423728712601865">VisaまたはMastercardで暗号資産を購入。</translation>
-<translation id="3101839349578102016">銀行口座で即座に購入。手数料が安くなる</translation>
-<translation id="8280898387224328221">クレジットカード、デビットカード、銀行口座で支払い</translation>
-<translation id="2218174283683424104">最も信頼されている企業で暗号資産を購入しましょう。</translation>
+<translation id="1213870770696612739">最小金額: <ph name="AMOUNT"/></translation>
+<translation id="3041074161036535192">最大金額: <ph name="AMOUNT"/></translation>
 <translation id="8528916244724490964">すべてのネットワーク</translation>
 <translation id="7721139939763655123">価格が低い順</translation>
 <translation id="5458608274117818139">価格が高い順</translation>
@@ -1383,7 +1386,9 @@
 <translation id="8419958386475786929"><ph name="NETWORK"/>)で<ph name="SWAPPING_OR_BRIDGING"/></translation>
 <translation id="7903225589949400974"><ph name="SWAP_OR_BRIDGE"/> を <ph name="NETWORK"/> で試み中にエラーが発生しました</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> をシールド中</translation>
+<translation id="6439110433198887239"><ph name="AMOUNT"/> をシールド解除中</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> がシールドされました</translation>
+<translation id="3860973324426281816"><ph name="AMOUNT"/> がシールド解除されました</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} 件以上のトランザクションが保留中です。}
       other {{PENDING_TRANSACTIONS} 件のトランザクションが保留中です。}
@@ -1578,8 +1583,6 @@
 <translation id="1422451606553326863">暗号資産を購入</translation>
 <translation id="3887541341068007345">ウォレットエクステンションのチェック...</translation>
 <translation id="8407091560429310499">アセットを選択する</translation>
-<translation id="756590380936155533"><ph name="ASSET_TICKER"/> 購入を完了するには、パートナーのいずれかを選択します。</translation>
-<translation id="7880860489474966219">完了すると、Brave Walletに資金が振り込まれます。</translation>
 <translation id="6182661078713714878">暗号を預ける</translation>
 <translation id="3683305208314702347"><ph name="VALUE"/>を預ける</translation>
 <translation id="5768739294929936862">ソラナトークンまたはSPLトークンの入金</translation>
@@ -1818,10 +1821,14 @@
 <translation id="7747318989577709780">アカウントを同期しています</translation>
 <translation id="9086302186042011942">同期中</translation>
 <translation id="99991973626409495">シールドをレビュー</translation>
+<translation id="6779429520470417361">シールド解除をレビュー</translation>
 <translation id="3114681061018999547">シールド中</translation>
+<translation id="1564172583156967455">シールド解除中</translation>
 <translation id="8897189056319316783">ZECをシールド</translation>
+<translation id="508249542337194541">ZECをシールド解除</translation>
 <translation id="3382275793825152362">資金をシールド</translation>
 <translation id="8631765320256788981">透明なアカウントからシールドされたアカウントに資金を送金します。</translation>
+<translation id="3860364671495430495">シールドされたアカウントから透明なアカウントへ送金しています。</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="9094621390791852268">トランザクションをプレビューできませんでした。</translation>
 <translation id="4982713341035600933">推定される残高の変化</translation>
@@ -2098,6 +2105,8 @@
 <translation id="4292565651642921086">次のタブグループにフォーカス</translation>
 <translation id="874783686573493196">前のタブグループにフォーカス</translation>
 <translation id="9169594135889675189">グループに新規タブを追加</translation>
+<translation id="1722567105086139392">リンク</translation>
+<translation id="4729794914864902904">リンク解除</translation>
 <translation id="1926106318101432555">ブックマークを開く...</translation>
 <translation id="6118819645013156507">ウィンドウに切り替える...</translation>
 <translation id="1623204575967809688">現在のウィンドウを次にマージ...</translation>
@@ -2187,10 +2196,8 @@
 <translation id="8151638057146502721">設定</translation>
 <translation id="999273441077650169">モデルはタスクに最適なものを動的に変更します。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama 3.1 8Bを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。LlamaはBrave独自の安全なインフラを通じて、ホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="7127671672828944579">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 14Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="2328524194917949829">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Gemma 3 12Bを搭載しています。このモデルはGoogle DeepMindによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GemmaはBrave独自の安全なインフラを通じて、ホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="634682910381645550">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、DeepSeek R1を搭載しています。このモデルはDeepSeekによって作成されたもので、深い推論タスクを実行するために設計されています。DeepSeek R1はBrave独自の安全なインフラを通じて、ホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="1021134081694325196">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、DeepSeek V3.1を搭載しています。このモデルはDeepSeekによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。DeepSeek V3.1はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="3852808100039989429">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen VL 30Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="6406961656408495869">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、DeepSeek V3.1を搭載しています。このモデルはDeepSeekによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。DeepSeek V3.1はNEARの検証可能なプライベートインフラストラクチャを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Instantを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude InstantはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Haikuを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Sonnetを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
@@ -2207,6 +2214,7 @@
 <translation id="963346402440669081">プレミアム</translation>
 <translation id="5807427080183870259">ローカル</translation>
 <translation id="830868413617744215">ベータ</translation>
+<translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">推奨モデル</translation>
 <translation id="6568044140836233369">すべてのモデルを表示</translation>
 <translation id="6187065185557150870">チャット</translation>
@@ -2295,7 +2303,8 @@
 <translation id="1243966363662220847">回答を評価</translation>
 <translation id="7417895556119762861">回答の良し悪しを答えると、評価、会話、モデル、言語、バージョン、プレミアムステータスがBraveが送信され、Leoを改善するために使われます。 <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Leoにメッセージを送信</translation>
-<translation id="4084869091337186002">このプロファイルでは、Leo AI Content Agentは常に有効になっています。</translation>
+<translation id="6222803935921999130">AIブラウジングプロファイルウィンドウを開く</translation>
+<translation id="1530903352777607099">このプロファイルでは、AI ブラウジングは常に有効になっています</translation>
 <translation id="8650874793377330048">回答を停止</translation>
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="1093419424466417703">このページはLeoには長すぎるため、会話から一部のコンテキストが欠ける可能性があります。Leoはページコンテンツの<ph name="PERCENTAGE"/>を解析可能です。</translation>
@@ -2318,9 +2327,8 @@
 <translation id="1602382615168212961">ブックマークのタブからページの内容を送信して、会話のコンテキストをLeoに教えます。</translation>
 <translation id="4808122506413075135">ブラウザの履歴からページの内容を送信して、会話のコンテキストをLeoに教えます。</translation>
 <translation id="220541218939267992">このページの内容は、メッセージとともにLeoに送信されます。</translation>
-<translation id="8164365899016970783">タブを追加し、文脈のためにブックマークのコンテンツを追加します。その内容はメッセージと一緒にレオに送られます。</translation>
+<translation id="2152389270152475874">コンテキストとして、タブ、ブックマーク、または履歴を追加します。選択した内容は、メッセージと一緒にLeoに送信されます。</translation>
 <translation id="6237410387937453423">一致するアタッチメントなし</translation>
-<translation id="8076492880354921740">タブ</translation>
 <translation id="2315654674554095762">Leoが会話履歴を保存するので、同じ会話に戻ることができます。会話は暗号化されてあなたのデバイスに保存され、いつでも削除できます。</translation>
 <translation id="7821251979960635244">会話を開始すると、会話履歴がここに表示されます。</translation>
 <translation id="887511360213807449">履歴が無効になりました</translation>
@@ -2329,10 +2337,10 @@
 <translation id="3185367320601718531">会話・テキスト生成</translation>
 <translation id="2793458212460902934">高速 • Search • ツール</translation>
 <translation id="8506027496671575183">Search • ビジョン • ツール</translation>
-<translation id="3213834013136637671">Search • ビジョン</translation>
-<translation id="7697693533305615127">Search • 思考</translation>
+<translation id="3184606955650139158">高速・検索・Vision</translation>
 <translation id="7465032796278724624">NEAR AI TEEで検証されたプライバシー</translation>
 <translation id="8782867266498869301">モデルはタスクに最適なものに動的に変わります</translation>
+<translation id="3213834013136637671">検索 • Vision</translation>
 <translation id="3965507912994218570">Leoの設定</translation>
 <translation id="3754337604877048671">Leo AI を紹介</translation>
 <translation id="5295261408976371809">ブラウザに組み込まれたあなたの<ph name="TEXT_BEFORE"/>プライベート<ph name="TEXT_AFTER"/>AIアシスタント</translation>
@@ -2410,20 +2418,28 @@
 <translation id="4798146464408730445">スキルが見つかりません。「新規」ボタンをクリックして新規作成してください。</translation>
 <translation id="271033894570825754">新しい</translation>
 <translation id="8266605059880650542">後に使うページ情報を保存しています</translation>
-<translation id="7049849063044248805">エージェントモードはツールに対応したモデルで動作します。非対応のモデルは一覧に表示されません。</translation>
+<translation id="5103625298494362646">エージェントモードはツールに対応したモデルで動作します。非対応のモデルは一覧に表示されません。</translation>
 <translation id="3397808797783614750">AIによる自動ブラウジングを有効にすると、プライバシー、財務、またはオンライン通信に対して有害な意図しない影響を及ぼす可能性があります。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">セキュリティ警告</translation>
 <translation id="6077070599873946984">Brave AIは、次の操作について許可を求めています: <ph name="TOOL_LABEL"/></translation>
 <translation id="4163837693685963037">この操作は、リクエストと一致していない可能性があると検出されました:</translation>
 <translation id="3927932062596804919">拒否</translation>
 <translation id="4569155249847375786">認証済み</translation>
-<translation id="3240988198391588806">エージェントモード</translation>
-<translation id="538066983058750776">Leoプロフィールについて</translation>
-<translation id="1577570612997320961">データを保護するため、LeoはBraveプロファイルとは別の環境で利用されます。Leo AIはここで特別に権限を与えられており、サイトを表示したり操作したりできます。より生産性を高めるため、Leoにタスクを与えたりブラウジングを任せたりしてみてください。</translation>
+<translation id="8200772114523450471">再開</translation>
+<translation id="7607002721634913082">一時停止</translation>
+<translation id="4773299976671772492">停止</translation>
+<translation id="6946722113367118030">考え中です</translation>
+<translation id="2113810663179257944">コードの実行</translation>
+<translation id="4790888275629207278">サンドボックスでコードを実行しました</translation>
+<translation id="4379566111233326721">コード：</translation>
+<translation id="3542130965673205258">出力:</translation>
+<translation id="3428245742224818842">AIブラウジング</translation>
+<translation id="2854657728271352435">AIブラウジングプロファイルについて</translation>
+<translation id="2301685062527585986">データを保護するため、この隔離されたAIブラウジングプロファイルでは、AIエージェントがメインのブラウジングプロファイルにアクセスすることはありません。必要に応じてのみ、サイトを訪問し操作することが許可されます。タスクを渡し、代理でブラウジングさせることで生産性を高めることができます。</translation>
 <translation id="648116453147783450">データとセッション</translation>
-<translation id="3906161204878017619">このプロファイルでウェブサイトにログインした場合、Leoはそのサイトを開いている間、そこにある情報を見ることができます。実際にサイトを訪問する場合や、何か操作を依頼する場合も同様です。</translation>
+<translation id="4879348540868082026">このプロファイルでウェブサイトにログインした場合、BraveのAIブラウジングエージェントは、そのサイトが開いている間に実際に訪問したり、操作を依頼された場合にその情報を見ることができます。</translation>
 <translation id="5583803492921648196">元のプロファイルに戻る</translation>
-<translation id="8068929004144221259">メインメニューまたはツールバーのLeoアバターから、いつでも通常のプロファイルに戻せます。エージェントモードは常にこのプロファイルで開かれます。</translation>
+<translation id="864117099189791993">メインメニューまたはツールバーのプロファイルメニューからいつでも通常のプロファイルに戻すことができます。AIブラウジングは常にAIブラウジングプロファイルで開きます。</translation>
 <translation id="3486480638399578250">個人メールアドレスを非公開に保つ</translation>
 <translation id="7765422154906712751">一意のランダムアドレスを作成して、Braveアカウントのメールアドレスに転送することができます。このランダムアドレスはいつでも削除できます。実際のメールアドレスが開示されたり、広告主に使用されたりするのを防ぎます。</translation>
 <translation id="5222676887888702881">サインアウト</translation>
@@ -2488,7 +2504,7 @@
 <translation id="466214682712474574"><ph name="PROVIDER"/>アカウントにログインして残高を確認</translation>
 <translation id="8332875111286275890">残高を確認するにはログインしてください</translation>
 <translation id="5430001801813715388">リワード</translation>
-<translation id="5966055668402779222">Brave Searchに尋ねる</translation>
+<translation id="5966055668402779222">Brave Searchで調べる</translation>
 <translation id="167018310108390163">新しいタブページをカスタマイズ</translation>
 <translation id="6851426306697017546">時計を表示</translation>
 <translation id="4844370919312937270">新しいタブページに検索ウィジェットを表示</translation>
@@ -2523,13 +2539,13 @@
 <translation id="3620004479054499575">このサイトに問題がありますか？</translation>
 <translation id="9176447766421988172">ウェブサイトの互換性を高めるため、広告ブロックのみを有効にしておく実験を行おうとしています。警告：プライバシー保護機能がすべて解除されます。 <ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Braveのプライバシー保護によって破壊された個々のウェブサイトについては、シールドを「下」に設定できることにご注意ください。</translation>
-<translation id="1836572675775891780">広告ブロック専用モードを有効にする</translation>
+<translation id="2850777974644218370">広告ブロック専用モードを有効にする</translation>
 <translation id="6623668214089604469">サイトは正常に機能していますか？</translation>
 <translation id="8978860854770042258">このサイトがまだ壊れている場合は、報告を提出することを検討してください。</translation>
 <translation id="4677356505199464553">良好です</translation>
 <translation id="1992750560347846445">サイトを報告</translation>
-<translation id="2887186586339544116">広告ブロックのみ有効</translation>
-<translation id="673665019618844072">現在、広告ブロックのみモードを使用しています。このモードは広告ブロックの保護のみを提供します。完全なシールドモードに戻したい場合は、設定からこのモードを無効にしてください。</translation>
+<translation id="2863270180245144869">広告ブロックのみ有効</translation>
+<translation id="2302218429308447288">現在、広告ブロックのみモードを使用しています。このモードは広告ブロックの保護のみを提供します。完全なShieldsモードに戻したい場合は、設定からこのモードを無効にしてください。</translation>
 <translation id="4820891023903368625">広告ブロック <ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">トラッカー、広告などをブロック。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Braveシールドで保護されていません。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
@@ -2562,6 +2578,8 @@
 <translation id="6975864539539353406">サイトを閉じる際に、Cookieやその他のサイトデータを消去します</translation>
 <translation id="6486971767955110687">今後の破損サイト報告のため、連絡先情報を保存する</translation>
 <translation id="4085787265464238844">連絡先情報を入力すると、今後の報告のために保存されます</translation>
+<translation id="7740929262043547697">プライベートウィンドウで要素のブロックを許可する</translation>
+<translation id="1260864846935682371">プライベートウィンドウでShieldsの要素ブロック機能を有効にします。なお、プライベートウィンドウでブロックされた要素は非プライベートウィンドウでもブロックされます。</translation>
 <translation id="6883611015375728278">全てのクッキーをブロック</translation>
 <translation id="5657156137487675418">全てのクッキーを許可する</translation>
 <translation id="8366221601425141146">フィンガープリントがブロックされました</translation>
@@ -2614,7 +2632,7 @@
 <translation id="6764845498618413165">詳細はこちら</translation>
 <translation id="7818938154803162778">はい、協力します</translation>
 <translation id="7207456302801184289">Braveへようこそ</translation>
-<translation id="293854220404217065">ミッドナイトテーマ</translation>
+<translation id="4988030440045495002">ウルトラダークテーマ</translation>
 <translation id="2422927186524098759">サイドバー</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>

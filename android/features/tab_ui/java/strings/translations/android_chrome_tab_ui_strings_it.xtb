@@ -49,7 +49,7 @@
 <translation id="2536366509642644298">I gruppi di schede "<ph name="TAB_GROUP_NAME_1"/>" e "<ph name="TAB_GROUP_NAME_2"/>" non sono più disponibili</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Comprimi <ph name="TABS_COUNT_ONE"/> scheda.}other{Comprimi il gruppo di schede con <ph name="TABS_COUNT_MANY"/> schede.}}</translation>
 <translation id="2569352796411618312">Suggerimento: <ph name="NUMBER_OF_TABS"/> delle tue schede non sono state usate ultimamente. Vuoi chiuderle?</translation>
-<translation id="257674075312929031">Gruppo</translation>
+<translation id="257674075312929031">Raggruppa</translation>
 <translation id="2660792762186871190">{NUMBER_OF_TABS,plural, =1{Ripristina e apri il gruppo di schede con <ph name="TABS_COUNT_ONE"/> scheda, colore <ph name="COLOR_NAME"/>.}other{Ripristina e apri il gruppo di schede con <ph name="TABS_COUNT_MANY"/> schede, colore <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="2662028055331606429">Valutazione di <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Visita il sito</translation>
@@ -80,6 +80,7 @@
 <translation id="3619255692378312441">Gestisci accesso</translation>
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{Chiudi elemento}other{Chiudi elementi}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
+<translation id="3714430408451673233">Riquadro inferiore della scheda nella parte inferiore dello schermo.</translation>
 <translation id="374923079891132274">Miniatura dell'anteprima del foglio di condivisione.</translation>
 <translation id="3776329373944672717">Titolo del gruppo di schede <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">Gestisci</translation>
@@ -124,20 +125,23 @@
 <translation id="5339733443032484186">Ultima scheda</translation>
 <translation id="5380159289133845234">Archivia le schede duplicate</translation>
 <translation id="5446043142172831860">Rimuovi scheda e esci dal gruppo</translation>
+<translation id="5465437530117042974">Modifiche al riquadro inferiore della scheda chiuse.</translation>
 <translation id="5490235265819901748">Gruppo di schede espanso</translation>
 <translation id="5494920125229734069">Seleziona tutto</translation>
+<translation id="5505998972479309757">{LIMIT_COUNT,plural, =1{Aggiungi fino a <ph name="LIMIT_COUNT_ONE"/> file, scheda o immagine}other{Aggiungi fino a <ph name="LIMIT_COUNT_MANY"/> file, schede o immagini}}</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Chiudi il gruppo di schede con <ph name="TABS_COUNT_ONE"/> scheda, colore <ph name="COLOR_NAME"/>.}other{Chiudi il gruppo di schede con <ph name="TABS_COUNT_MANY"/> schede, colore <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Visualizza informazioni sul negozio, opzione disponibile nella parte superiore dello schermo</translation>
 <translation id="5627941783489838464">Nessun aggiornamento della scheda</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link da Brave}other{<ph name="TABS_COUNT_MANY"/> link da Brave}}</translation>
 <translation id="5740354908255726955">{TAB_COUNT,plural, =1{Sposta scheda a sinistra}other{Sposta schede a sinistra}}</translation>
-<translation id="5746204836956568669">Vuoi raggruppare <ph name="NUMBER_OF_TABS"/> schede per lavorare più velocemente?</translation>
+<translation id="5746204836956568669">Raggruppare <ph name="NUMBER_OF_TABS"/> schede per lavorare più velocemente?</translation>
 <translation id="5773295109010386583">Chiudi automaticamente gli elementi non attivi</translation>
 <translation id="58326064309361797">Trascina le schede per raggrupparle</translation>
 <translation id="5972844218283131174">Deseleziona tutto</translation>
 <translation id="6040143037577758943">Chiudi</translation>
 <translation id="6051432659151380973">I gruppi di schede vengono salvati automaticamente</translation>
 <translation id="6054741997831917303">Il prezzo di questo articolo è recentemente sceso da <ph name="PREVIOUS_PRICE"/> a <ph name="NEW_PRICE"/></translation>
+<translation id="606985262342505139">Riquadro inferiore della scheda a schermo intero</translation>
 <translation id="6109251075362363230">Ora verranno archiviate anche tutte le schede duplicate, fatta eccezione per la copia utilizzata più di recente.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Chiudi <ph name="TABS_COUNT_ONE"/> elemento selezionato}other{Chiudi <ph name="TABS_COUNT_MANY"/> elementi selezionati}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Sposta gruppo in una nuova finestra}other{Sposta gruppo in un'altra finestra}}</translation>
@@ -221,7 +225,6 @@
 <translation id="8428213095426709021">Impostazioni</translation>
 <translation id="855081842937141170">Fissa scheda</translation>
 <translation id="8633025649649592204">Attività recente</translation>
-<translation id="8635822281281406185">Aggiungi fino a 10 file, schede o immagini</translation>
 <translation id="8712637175834984815">Ok</translation>
 <translation id="8714939927607906138">Prezzo più basso</translation>
 <translation id="8730621377337864115">Fine</translation>

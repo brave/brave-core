@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">显示浏览器建议</translation>
 <translation id="8982438328166986164">根据您的书签和浏览历史显示网站建议。</translation>
 <translation id="924029461438529367">显示搜索建议</translation>
-<translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
-<translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="9148058034647219655">退出</translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
 <translation id="6486983549008741930">内容过滤</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">不要将连接升级到 HTTPS（禁用）</translation>
 <translation id="693506469193748756">关闭此网站后遗忘我</translation>
 <translation id="6975864539539353406">关闭网站时清除 cookie 和其他网站数据</translation>
+<translation id="7740929262043547697">允许在无痕式窗口中进行元素拦截</translation>
+<translation id="1260864846935682371">在无痕式窗口中启用盾牌元素拦截功能。请注意，在无痕式窗口中被拦截的元素在非无痕窗口中也将被拦截。</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">后来</translation>
 <translation id="4117451092682672487">轻松保护个人隐私。</translation>
 <translation id="7909375417585209817">只要将 Brave 作为默认设置，您轻击的每个链接都会在 Brave 的隐私保护下打开。</translation>
-<translation id="7370959926683925817">每一天都屏蔽广告、保存数据。</translation>
-<translation id="7281027579943912834">如果将 Brave 设置为默认，您点击的每个链接都会受到 Brave 的广告屏蔽保护。每个页面、每个视频和每个流都会受到保护。</translation>
 <translation id="5148943178722443958">帮助让 Brave 变得更好。</translation>
 <translation id="6718362830686703942">如果遇到系统崩溃或冻结，请发送诊断报告。</translation>
 <translation id="8616157231067364693">分享与 Brave 用户正在使用哪些功能有关的私密、匿名的产品见解。</translation>
@@ -371,6 +369,14 @@
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">显示热门网站</translation>
 <translation id="7275773481201277457">显示 Brave 统计信息</translation>
+<translation id="7462178177755090262">启动屏幕</translation>
+<translation id="5365434987337264071">上次打开的标签页</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 { <ph name="HOURS_ONE"/> 不活动小时后的新选项卡}
+          other { <ph name="HOURS_MANY"/> 不活动小时后的新选项卡}
+        }</translation>
+<translation id="5233638681132016545">打开新的标签页</translation>
+<translation id="8395271296293035055">返回最近使用的标签页</translation>
 <translation id="8297488609722895137">照片提供者：<ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">在 Brave 中打开外部链接</translation>
 <translation id="5616508928556767259">在 Brave 网站浏览器中打开来自其他应用程序的链接。注意：必须将 Brave 设置为默认浏览器。</translation>
@@ -761,7 +767,6 @@
 <translation id="6889920539620318793">设为活动</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="4945690646623486292">选择网络</translation>
-<translation id="5233638681132016545">打开新的标签页</translation>
 <translation id="8006088103295786154">存取 Brave 钱包</translation>
 <translation id="5308380583665731573">连接</translation>
 <translation id="8030169304546394654">已断开连接</translation>
@@ -1072,6 +1077,10 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="4650851936784160359">无法更新筛选器列表。请重试</translation>
 <translation id="3098054327870766317">关闭标签页时显示撤消按钮</translation>
 <translation id="1336494649091412226">确定要退出 Brave 吗？</translation>
+<translation id="6061635824229591714">要销毁网站数据吗？</translation>
+<translation id="1265051174491933207">销毁操作将关闭所有“<ph name="SITE_NAME"/>”标签页，并删除所有网站数据。此操作无法撤销。</translation>
+<translation id="4279349293084858577">销毁</translation>
+<translation id="4426990318287827331">销毁数据</translation>
 <translation id="7942415993090181327">聊天记录</translation>
 <translation id="6859935199732075666">显示安全浏览时出错</translation>
 <translation id="2735247450315842119">允许在无痕标签页中截图</translation>

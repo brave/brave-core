@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Brauzer təkliflərini göstər</translation>
 <translation id="8982438328166986164">Əlfəcinlərinizə və baxış tarixçənizə əsaslanan veb-sayt təkliflərini göstərir.</translation>
 <translation id="924029461438529367">Axtarış təkliflərini göstər</translation>
-<translation id="6285118765755298263">Digər axtarış mühərriklərini indeksləşdir</translation>
-<translation id="919715748352669592">OpenSearch spesifikasiyasına riayət edən veb-saytları avtomatik indeksləşdirir.</translation>
 <translation id="9148058034647219655">Çıxış</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Məzmunun Filtrlənməsi</translation>
@@ -147,6 +145,8 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="4690906712010847708">Qoşulmaları HTTPS-ə yüksəltməyin (deaktiv olunub)</translation>
 <translation id="693506469193748756">Bu saytı bağladıqda məni unut</translation>
 <translation id="6975864539539353406">Vebsaytları bağladıqda kuki və digər sayt məlumatlarını təmizləyər</translation>
+<translation id="7740929262043547697">Gizli pəncərələrdə element bloklamaya icazə ver</translation>
+<translation id="1260864846935682371">Bu seçim, gizli pəncərələrdə Təhlükəsizlik Qalxanları ilə element bloklama funksiyasını aktivləşdirir. Qeyd edək ki, gizli pəncərələrdə bloklanan elementlər qeyri-gizli pəncərələrdə də bloklanacaq.</translation>
 <translation id="1680858055899097121">Nişanların hər sirh vaxtını tutmayan</translation>
 <translation id="7142548388914389999">Məxfilik qoruyan məhsul analitiklərinə (P3A) icazə verin</translation>
 <translation id="5254037869598726291">Anonimləşdirilmiş P3A məlumatları Brave-nin ümumi istifadəsini təxmin etməyə kömək edir və populyar funksiyaları yaxşılaşdırdığımızı təmin edir.</translation>
@@ -194,8 +194,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="834487290629916192">SONRA</translation>
 <translation id="4117451092682672487">Məxfilik. Sadə və asan.</translation>
 <translation id="7909375417585209817">Brave standart olaraq təyin edildikdə, toxunduğunuz hər keçid Brave-in məxfiliyin qorunması funksiyası ilə açılır.</translation>
-<translation id="7370959926683925817">Reklamları bloklayın. Məlumatları saxlayın. Hər gün.</translation>
-<translation id="7281027579943912834">Brave standart olaraq təyin edildikdə, toxunduğunuz hər keçid, hər səhifə, video və yayım Brave-in reklam bloklama qorumasından faydalanır.</translation>
 <translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
 <translation id="6718362830686703942">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
 <translation id="8616157231067364693">Brave istifadəçilərinin hansı funksiyalardan istifadə etdiyi ilə əlaqəli məxfi və anonim məhsul məlumatları paylaşın.</translation>
@@ -369,6 +367,11 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="8793108040181436796">Widget-lar</translation>
 <translation id="8643377320501056697">Ən Çox Seçilən Saytlar</translation>
 <translation id="7275773481201277457">Brave statistikasını göstər</translation>
+<translation id="7462178177755090262">Açılış ekranı</translation>
+<translation id="5365434987337264071">Son açılan vərəq</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {İnatkarlıqdan sonra <ph name="HOURS_ONE"/> saatdan sonra yeni vərəq aç} other {İnatkarlıqdan sonra <ph name="HOURS_MANY"/> saatdan sonra yeni vərəq aç}}</translation>
+<translation id="5233638681132016545">Yeni tabulyasiya</translation>
+<translation id="8395271296293035055">Ən son açılmış vərəqə qayıdın</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/> tərəfindən foto</translation>
 <translation id="2898634658146274982">Brave-də xarici keçidlər aç</translation>
 <translation id="5616508928556767259">Brave veb görünüşündə digər tətbiqlərin keçidlərini açır. Qeyd: Brave standart brauzeriniz kimi təyin olunmalıdır.</translation>
@@ -590,6 +593,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="4862812525895306758">Əməliyyat və nonce məlumatlarını təmizləyin</translation>
 <translation id="5693968582510626466">Əməliyyatların təmizlənməsi tərtibatçılar üçün və ya lokal serverdə vəziyyəti sıfırlamaq üçün faydalı ola bilər</translation>
 <translation id="5421107279168565467">Əməliyyat və nonce məlumatlarını sıfırlamaq istədiyinizə əminsinizmi? Bu seçim əsasən yerli test serverində işləyən developerlər tərəfindən istifadə olunur. Təsdiqləmək üçün "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
 <translation id="8146860193318415026">Videoları yayımlayın. Reklamsız.</translation>
 <translation id="6311019535466417620">Videonuzdan əvvəl reklam yoxdur</translation>
 <translation id="4274652342814424451">Videonuz zamanı reklam yoxdur</translation>
@@ -762,7 +766,6 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="6889920539620318793">Aktiv olaraq təyin et</translation>
 <translation id="2653659639078652383">Təsdiqlə</translation>
 <translation id="4945690646623486292">Şəbəkəni Seç</translation>
-<translation id="5233638681132016545">Yeni tabulyasiya</translation>
 <translation id="8006088103295786154">Brave Wallet'a daxil ol</translation>
 <translation id="5308380583665731573">Qoşul</translation>
 <translation id="8030169304546394654">Bağlandı</translation>
@@ -1070,6 +1073,10 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="4650851936784160359">Filtr siyahısını yeniləmək olmadı. Yenidən cəhd edin</translation>
 <translation id="3098054327870766317">Əlavələr bağlandığında ləğv düyməsini göstərin</translation>
 <translation id="1336494649091412226">Brave-dən çıxmaq istədiyinizə əminsiniz?</translation>
+<translation id="6061635824229591714">Sayt məlumatlarını məhv edək?</translation>
+<translation id="1265051174491933207">Məlumatların məhv edilməsi sayt məlumatlarını siləcək və '<ph name="SITE_NAME"/>' adlı bütün vərəqləri bağlayacaq. Bu əməl geri alına bilməz.</translation>
+<translation id="4279349293084858577">Məhv et</translation>
+<translation id="4426990318287827331">Məlumatları məhv et</translation>
 <translation id="7942415993090181327">Söhbət tarixçəsi</translation>
 <translation id="6859935199732075666">Güvənli Gəzinti səhvlərini göstər</translation>
 <translation id="2735247450315842119">Xüsusi tablarda ekran görüntülərini aktiv edin</translation>
