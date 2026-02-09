@@ -1225,7 +1225,7 @@ class SettingsViewController: TableViewController {
               animated: true
             )
           },
-          image: UIImage(braveSystemNamed: "autofill.key"),
+          image: UIImage(braveSystemNamed: "leo.key"),
           accessory: .disclosureIndicator
         )
       ]
