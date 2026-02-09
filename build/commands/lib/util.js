@@ -826,40 +826,6 @@ const util = {
       .split('\n')
   },
 
-  presubmit: (options = {}) => {
-    if (!options.base) {
-      options.base = 'origin/master'
-    }
-    // Temporary cleanup call, should be removed when everyone will remove
-    // 'gerrit.host' from their brave checkout.
-    util.runGit(
-      config.braveCoreDir,
-      ['config', '--unset-all', 'gerrit.host'],
-      true,
-    )
-    let cmdOptions = config.defaultOptions
-    cmdOptions.cwd = config.braveCoreDir
-    cmdOptions = util.mergeWithDefault(cmdOptions)
-    cmd = 'git'
-    // --upload mode is similar to `git cl upload`. Non-upload mode covers less
-    // checks.
-    args = ['cl', 'presubmit', options.base, '--force', '--upload']
-    if (options.all) args.push('--all')
-    if (options.files) args.push('--files', `"${options.files}"`)
-    if (options.verbose) {
-      args.push(...Array(options.verbose).fill('--verbose'))
-    }
-    if (options.json) {
-      args.push('-j')
-      args.push(options.json)
-    }
-
-    if (options.fix) {
-      cmdOptions.env.PRESUBMIT_FIX = '1'
-    }
-    util.run(cmd, args, cmdOptions)
-  },
-
   massRename: (options = {}) => {
     let cmdOptions = config.defaultOptions
     cmdOptions.cwd = config.braveCoreDir

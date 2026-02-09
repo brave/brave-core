@@ -429,23 +429,6 @@ program
   .arguments('[build_config]')
   .action(test.bind(null, parsedArgs.unknown))
 
-program
-  .command('presubmit')
-  .option('--base <base branch>', 'set the destination branch for the PR')
-  .option('--all', 'run presubmit on all files')
-  .option(
-    '--files <file list>',
-    'semicolon-separated list files to run presubmit on',
-  )
-  .option(
-    '--verbose [arg]',
-    'pass --verbose 2 for more debugging info',
-    JSON.parse,
-  )
-  .option('--fix', 'try to fix found issues automatically')
-  .option('--json <output>', 'An output file for a JSON report')
-  .action(util.presubmit)
-
 program.command('mass_rename').action(util.massRename)
 
 program

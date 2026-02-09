@@ -74,6 +74,26 @@ def CheckPatchFormatted(input_api, output_api):
 
 # Check and fix ESLint issues (supports --fix).
 def CheckESLint(input_api, output_api):
+    if os.environ.get('PRESUBMIT_ALL_FILES'):
+        cmd = [
+            brave_chromium_utils.wspath(
+                '//brave/node_modules/eslint/bin/eslint.js'),
+            '--quiet',
+            '.',
+        ]
+        if input_api.PRESUBMIT_FIX:
+            cmd.append('--fix')
+        try:
+            brave_node.RunNode(cmd, include_command_in_error=False)
+            return []
+        except RuntimeError as err:
+            return [
+                output_api.PresubmitError(
+                    f'ESLint issues found. '
+                    f'Run npm run eslint -- (--fix) to reproduce.\n\n{err}')
+            ]
+
+
     files_to_check = (
         r'.+\.js$',
         r'.+\.ts$',
