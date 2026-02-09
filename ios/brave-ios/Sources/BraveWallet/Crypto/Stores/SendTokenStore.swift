@@ -523,8 +523,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         addressError = .contractAddress
       } else {
         // Guard nil value for checksumAddress
-        guard let checksumAddress =
-           await keyringService.checksumEthAddress(sendAddress)
+        guard
+          let checksumAddress =
+            await keyringService.checksumEthAddress(sendAddress)
         else {
           addressError = .invalidChecksum
           return
