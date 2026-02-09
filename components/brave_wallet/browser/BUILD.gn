@@ -847,6 +847,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder",
     "//brave/components/brave_wallet/browser/internal:hd_key",
+    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",

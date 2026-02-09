@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
 
+#include "base/strings/strcat.h"  // IWYU pragma: export
+#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -34,6 +36,10 @@ TEST(PolkadotBlockHeader, BlockHashing) {
     EXPECT_TRUE(PrefixedHexStringToFixed(
         "0x03170a2e7597b7b7e3d84c05391d139a62b157e78786d8c082f29dcf4c111314",
         header.extrinsics_root));
+
+    EXPECT_TRUE(base::HexStringToBytes(
+        base::StrCat({base::HexEncodeLower(compact_scale_encode_u32(0))}),
+        &header.encoded_logs));
 
     EXPECT_EQ(
         base::HexEncodeLower(header.GetHash()),
@@ -76,15 +82,12 @@ TEST(PolkadotBlockHeader, BlockHashing) {
         "0x0dc76f4c9edd6695dd390b3a609c28aa65c41ee4da060a09530d7c8bb063fd41",
         header.extrinsics_root));
 
-    std::string_view logs[] = {
-        R"(0x0642414245b501030b0000003d638f10000000008432a99fa96f6fbee0dabdb01d2201e8e61bc1b0b4852340ee9f179db66507364a916e56341350e2a426aae6075d4ea966c73ab522f6d5b3001137a2c71b600164ab70e127c531d798eadd44da7e63e4e77904f8d15f580d1123f495a8fc1700)",
-        R"(0x0542414245010152fd10b29fafa11a76c50119261534c8c820884c5bd917bd2ff00343ded0ef1b759dc0866a12d9d3fa1373662ee45ac3ed7d2ac585be57035b47b353c8cc8586)"};
-
-    for (auto log : logs) {
-      std::vector<uint8_t> bytes;
-      EXPECT_TRUE(PrefixedHexStringToBytes(log, &bytes));
-      header.logs.push_back(std::move(bytes));
-    }
+    EXPECT_TRUE(base::HexStringToBytes(
+        base::StrCat(
+            {base::HexEncodeLower(compact_scale_encode_u32(2)),
+             R"(0642414245b501030b0000003d638f10000000008432a99fa96f6fbee0dabdb01d2201e8e61bc1b0b4852340ee9f179db66507364a916e56341350e2a426aae6075d4ea966c73ab522f6d5b3001137a2c71b600164ab70e127c531d798eadd44da7e63e4e77904f8d15f580d1123f495a8fc1700)",
+             R"(0542414245010152fd10b29fafa11a76c50119261534c8c820884c5bd917bd2ff00343ded0ef1b759dc0866a12d9d3fa1373662ee45ac3ed7d2ac585be57035b47b353c8cc8586)"}),
+        &header.encoded_logs));
 
     EXPECT_EQ(
         base::HexEncodeLower(header.GetHash()),
@@ -128,16 +131,13 @@ TEST(PolkadotBlockHeader, BlockHashing) {
         "0xcddf78abdf0cf9eafd030accb10fd09255a23e7a27a79a715976efc87f56b860",
         header.extrinsics_root));
 
-    std::string_view logs[] = {
-        R"(0x0642414245b50103110000009089951100000000484aca2d37ff7c027f36cfa05c61e96d727cf8f05d607718aac471fc4adf4c2b3ee9fa490164f3940f0f8811ededfb3ca41cee8352de675739c02244ab4a5400f20ba9f17802860380d545f6a31b8f473568871616542843af74a4f50d417901)",
-        R"(0x04424545468403fec302a6aba3ca535e4a1728789828bce6e662984b02dab84b73877c329abeae)",
-        R"(0x05424142450101ee5f00146ee70997c7e4c4043a82c39fa75fb377182d71f5101382e1cf68f144ca73c2383f315fbe95aeaa5c7b9130164b1141dce7c234b81eb8c2d719259d8d)"};
-
-    for (auto log : logs) {
-      std::vector<uint8_t> bytes;
-      EXPECT_TRUE(PrefixedHexStringToBytes(log, &bytes));
-      header.logs.push_back(std::move(bytes));
-    }
+    EXPECT_TRUE(base::HexStringToBytes(
+        base::StrCat(
+            {base::HexEncodeLower(compact_scale_encode_u32(3)),
+             R"(0642414245b50103110000009089951100000000484aca2d37ff7c027f36cfa05c61e96d727cf8f05d607718aac471fc4adf4c2b3ee9fa490164f3940f0f8811ededfb3ca41cee8352de675739c02244ab4a5400f20ba9f17802860380d545f6a31b8f473568871616542843af74a4f50d417901)"
+             R"(04424545468403fec302a6aba3ca535e4a1728789828bce6e662984b02dab84b73877c329abeae)"
+             R"(05424142450101ee5f00146ee70997c7e4c4043a82c39fa75fb377182d71f5101382e1cf68f144ca73c2383f315fbe95aeaa5c7b9130164b1141dce7c234b81eb8c2d719259d8d)"}),
+        &header.encoded_logs));
 
     EXPECT_EQ(
         base::HexEncodeLower(header.GetHash()),
@@ -181,16 +181,13 @@ TEST(PolkadotBlockHeader, BlockHashing) {
         "0x3cb6c9334c203622604044dc2b155017853cfdaddd47f9310cab7e215878e251",
         header.extrinsics_root));
 
-    std::string_view logs[] = {
-        R"(0x0642414245b501030801000062b49511000000001c776d503c6ce4fb778bf254bcbd3303983c8f8c4064b25835e632e327d2f57ac5c357846630e5a8f59f54610ba9e7bc7fca66f61dc9555ce38acc3ac9074c0597df44a2b3e06420b9d4392395f00a909135e16d41ec48761555ef27206fb603)",
-        R"(0x04424545468403d951e74bb9e6060d8983a20e36fb21e98b81a667ea6f679415af26f2ae789fa6)",
-        R"(0x0542414245010116e669292188cdd97f665e5e51cd208fed42e79e26688e07dba017971b33b476605322ee32c03141371ecd47b3ad9aa3f294e5c211ee30155c8fc69b0113a683)"};
-
-    for (auto log : logs) {
-      std::vector<uint8_t> bytes;
-      EXPECT_TRUE(PrefixedHexStringToBytes(log, &bytes));
-      header.logs.push_back(std::move(bytes));
-    }
+    EXPECT_TRUE(base::HexStringToBytes(
+        base::StrCat(
+            {base::HexEncodeLower(compact_scale_encode_u32(3)),
+             R"(0642414245b501030801000062b49511000000001c776d503c6ce4fb778bf254bcbd3303983c8f8c4064b25835e632e327d2f57ac5c357846630e5a8f59f54610ba9e7bc7fca66f61dc9555ce38acc3ac9074c0597df44a2b3e06420b9d4392395f00a909135e16d41ec48761555ef27206fb603)",
+             R"(04424545468403d951e74bb9e6060d8983a20e36fb21e98b81a667ea6f679415af26f2ae789fa6)",
+             R"(0542414245010116e669292188cdd97f665e5e51cd208fed42e79e26688e07dba017971b33b476605322ee32c03141371ecd47b3ad9aa3f294e5c211ee30155c8fc69b0113a683)"}),
+        &header.encoded_logs));
 
     EXPECT_EQ(
         base::HexEncodeLower(header.GetHash()),
@@ -228,13 +225,9 @@ TEST(PolkadotBlockHeader, BlockHashing) {
         "0x03170a2e7597b7b7e3d84c05391d139a62b157e78786d8c082f29dcf4c111314",
         header.extrinsics_root));
 
-    std::string_view logs[] = {};
-
-    for (auto log : logs) {
-      std::vector<uint8_t> bytes;
-      EXPECT_TRUE(PrefixedHexStringToBytes(log, &bytes));
-      header.logs.push_back(std::move(bytes));
-    }
+    EXPECT_TRUE(base::HexStringToBytes(
+        base::StrCat({base::HexEncodeLower(compact_scale_encode_u32(0))}),
+        &header.encoded_logs));
 
     EXPECT_EQ(
         base::HexEncodeLower(header.GetHash()),

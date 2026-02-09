@@ -241,17 +241,21 @@ std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
   // We need this for hashing the block header.
   // If we receive more than u32::MAX logs, it's safe to say we're getting bad
   // data from the remote.
-  if (!base::CheckedNumeric<uint32_t>(res.result->digest.logs.size())
-           .IsValid()) {
+  auto num_logs =
+      base::CheckedNumeric<uint32_t>(res.result->digest.logs.size());
+  if (!num_logs.IsValid()) {
     return std::nullopt;
   }
 
+  auto enc_num_logs = compact_scale_encode_u32(num_logs.ValueOrDie());
+
+  base::Extend(header.encoded_logs, enc_num_logs);
   for (const auto& log_str : res.result->digest.logs) {
     std::vector<uint8_t> log;
     if (!PrefixedHexStringToBytes(log_str, &log)) {
       return std::nullopt;
     }
-    header.logs.push_back(std::move(log));
+    base::Extend(header.encoded_logs, log);
   }
 
   return header;

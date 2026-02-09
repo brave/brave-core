@@ -31,7 +31,10 @@ struct PolkadotBlockHeader {
   uint32_t block_number = 0;
   std::array<uint8_t, kPolkadotBlockHashSize> state_root = {};
   std::array<uint8_t, kPolkadotBlockHashSize> extrinsics_root = {};
-  std::vector<std::vector<uint8_t>> logs;
+
+  // Store the logs from the block header as a single flat vector, prefixed by a
+  // Compact<u32> representing the number of logs present in the header.
+  std::vector<uint8_t> encoded_logs;
 };
 
 }  // namespace brave_wallet

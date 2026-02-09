@@ -685,14 +685,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
         base::HexEncodeLower(header->extrinsics_root),
         "0bd881aa73ac25f97052d9e34310b814a9ee500e7e04ef43940464e192234acb");
 
-    std::vector<std::string_view> logs = {
-        "066175726120ac1b7f1100000000",
-        R"(045250535290c612cd85d07c699b58d278616cbc9ddfe571eaab038455ee857274d0f313dc35a66bba06)",
-        R"(05617572610101ea4d72dd31de7db13b8a042c6d7519f059663e5a5ea6da72b6a5b7f35a8a894406e57d7577d4e64338991bb44363eab1a8f64a2c2d5109eaad1296974d4e088a)"};
-
-    for (size_t i = 0; i < logs.size(); ++i) {
-      EXPECT_EQ(base::HexEncodeLower(header->logs[i]), logs[i]);
-    }
+    EXPECT_EQ(
+        base::HexEncodeLower(header->encoded_logs),
+        "0c"
+        R"(066175726120ac1b7f1100000000)"
+        R"(045250535290c612cd85d07c699b58d278616cbc9ddfe571eaab038455ee857274d0f313dc35a66bba06)"
+        R"(05617572610101ea4d72dd31de7db13b8a042c6d7519f059663e5a5ea6da72b6a5b7f35a8a894406e57d7577d4e64338991bb44363eab1a8f64a2c2d5109eaad1296974d4e088a)");
 
     parent_hash = header->parent_hash;  // Make this available to the next test.
   }
@@ -767,14 +765,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
         base::HexEncodeLower(header->extrinsics_root),
         "f544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554");
 
-    std::vector<std::string_view> logs = {
-        "066175726120ab1b7f1100000000",
-        R"(04525053529041db728d7bcb58fab647191ba508a795f2434129c8266de0b83317d3e3bb0001a26bba06)",
-        R"(056175726101015827097fca69ea42dc9155f4c62220ebf2cdcf191915a497be0d35a19403937e7260444c17abb52af25f45caeb5f6117a727b4cec521e0a03d19661e2f64408b)"};
-
-    for (size_t i = 0; i < logs.size(); ++i) {
-      EXPECT_EQ(base::HexEncodeLower(header->logs[i]), logs[i]);
-    }
+    EXPECT_EQ(
+        base::HexEncodeLower(header->encoded_logs),
+        "0c"
+        R"(066175726120ab1b7f1100000000)"
+        R"(04525053529041db728d7bcb58fab647191ba508a795f2434129c8266de0b83317d3e3bb0001a26bba06)"
+        R"(056175726101015827097fca69ea42dc9155f4c62220ebf2cdcf191915a497be0d35a19403937e7260444c17abb52af25f45caeb5f6117a727b4cec521e0a03d19661e2f64408b)");
   }
 
   {
@@ -817,7 +813,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
         base::HexEncodeLower(header->extrinsics_root),
         "03170a2e7597b7b7e3d84c05391d139a62b157e78786d8c082f29dcf4c111314");
 
-    EXPECT_TRUE(header->logs.empty());
+    EXPECT_EQ(base::HexEncodeLower(header->encoded_logs), "00");
   }
 
   {
