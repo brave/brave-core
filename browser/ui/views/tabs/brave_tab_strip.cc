@@ -368,8 +368,8 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
   auto it = std::ranges::find_if(
       models, [&](const auto& model) { return model.id() == container_id; });
   if (it == models.end()) {
-    CHECK_IS_TEST();
-    return std::nullopt;
+    return containers::ContainerModel::CreateForUnknown(container_id,
+                                                        scale_factor);
   }
   return std::move(*it);
 }

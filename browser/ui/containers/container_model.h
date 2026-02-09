@@ -19,6 +19,13 @@ namespace containers {
 // A model for view that represents a container in the UI.
 class ContainerModel {
  public:
+  // As containers list is syncable, there could be a case where the container
+  // is not found from preferences but it is still needed to be represented in
+  // the UI. In this case, we use this method to create a ContainerModel for
+  // the unknown container with default UI representation.
+  static ContainerModel CreateForUnknown(const std::string& id,
+                                         float scale_factor);
+
   ContainerModel(mojom::ContainerPtr container, float scale_factor);
   ContainerModel(const ContainerModel&) = delete;
   ContainerModel& operator=(const ContainerModel&) = delete;

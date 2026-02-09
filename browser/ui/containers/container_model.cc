@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/geometry/size.h"
 
 namespace containers {
@@ -30,6 +31,16 @@ ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container,
 }
 
 }  // namespace
+
+// static
+ContainerModel ContainerModel::CreateForUnknown(const std::string& id,
+                                                float scale_factor) {
+  return ContainerModel(
+      mojom::Container::New(id, id, containers::mojom::Icon::kDefault,
+                            SkColorSetRGB(0xb7, 0x4d, 0x49)),
+
+      scale_factor);
+}
 
 ContainerModel::ContainerModel(mojom::ContainerPtr container,
                                float scale_factor)
