@@ -21,6 +21,13 @@ void WalletHttpClientImpl::UpsertPass(WalletPass pass,
       base::unexpected(WalletHttpClient::WalletRequestError::kGenericError));
 }
 
+void WalletHttpClientImpl::UpsertPrivatePass(
+    PrivatePass pass,
+    UpsertPrivatePassCallback callback) {
+  std::move(callback).Run(
+      base::unexpected(WalletHttpClient::WalletRequestError::kGenericError));
+}
+
 void WalletHttpClientImpl::GetUnmaskedPass(std::string_view pass_id,
                                            GetUnmaskedPassCallback callback) {
   std::move(callback).Run(
