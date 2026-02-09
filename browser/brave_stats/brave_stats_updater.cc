@@ -120,7 +120,8 @@ serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
 
   const base::FilePath initial_profile_dir =
       profile_manager->GetInitialProfileDir();
-  Profile* profile = profile_manager->GetProfileByPath(initial_profile_dir);
+  Profile* profile = profile_manager->GetProfileByPath(
+      profile_manager->user_data_dir().Append(initial_profile_dir));
   if (!profile) {
     profile = profile_manager->GetLastUsedProfileIfLoaded();
   }
