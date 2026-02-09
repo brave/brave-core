@@ -54,8 +54,10 @@ struct LoginListView: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {
-        Button(Strings.Autofill.managePasswordsAddNewButtonTitle) {
+        Button {
           // TODO: Handle Add New action
+        } label: {
+          Image(braveSystemName: "leo.plus.add")
         }
       }
 

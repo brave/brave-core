@@ -9356,13 +9356,6 @@ extension Strings {
       value: "Manage Passwords",
       comment: "Title for navigation bar of the Manage Passwords screen"
     )
-    public static let managePasswordsAddNewButtonTitle = NSLocalizedString(
-        "autofill.managePasswords.addNewButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Add New",
-        comment: "Title for Add New Password button on the navigation bar of the Manage Passwords screen"
-      )
     public static let managePasswordsEmptyListTitle = NSLocalizedString(
       "autofill.managePasswords.emptyListTitle",
       tableName: "BraveShared",
