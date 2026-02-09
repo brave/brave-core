@@ -600,7 +600,7 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
 
 TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
-  feature_list_.InitWithFeaturesAndParameters(
+  feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
