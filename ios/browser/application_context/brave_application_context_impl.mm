@@ -19,6 +19,7 @@
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "components/application_locale_storage/application_locale_storage.h"
+#include "ios/chrome/browser/application_context/model/application_context_impl.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -46,6 +47,14 @@ ukm::UkmRecorder* BraveApplicationContextImpl::GetUkmRecorder() {
 
 gcm::GCMDriver* BraveApplicationContextImpl::GetGCMDriver() {
   return nullptr;
+}
+
+void BraveApplicationContextImpl::PreMainMessageLoopRun() {
+  ApplicationContextImpl::PreMainMessageLoopRun();
+
+  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+      GetNetworkTimeTracker(),
+      base::SingleThreadTaskRunner::GetCurrentDefault());
 }
 
 // MARK: - BraveApplicationContextImpl
@@ -113,10 +122,6 @@ void BraveApplicationContextImpl::StartBraveServices() {
 
   // Start the local data file service
   local_data_files_service()->Start();
-
-  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
-      GetNetworkTimeTracker(),
-      base::SingleThreadTaskRunner::GetCurrentDefault());
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::WalletDataFilesInstaller::GetInstance().SetDelegate(
