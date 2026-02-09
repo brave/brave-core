@@ -6,9 +6,11 @@
 #include "brave/browser/ui/containers/container_model.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "ui/gfx/geometry/size.h"
 
 namespace containers {
@@ -42,5 +44,15 @@ ContainerModel& ContainerModel::operator=(ContainerModel&& other) noexcept =
     default;
 
 ContainerModel::~ContainerModel() = default;
+
+std::vector<ContainerModel> GetContainerModelsFromPrefs(
+    const PrefService& prefs,
+    float scale_factor) {
+  std::vector<ContainerModel> containers;
+  for (auto& container : GetContainersFromPrefs(prefs)) {
+    containers.emplace_back(std::move(container), scale_factor);
+  }
+  return containers;
+}
 
 }  // namespace containers

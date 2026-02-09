@@ -7,9 +7,12 @@
 #define BRAVE_BROWSER_UI_CONTAINERS_CONTAINER_MODEL_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "ui/base/models/image_model.h"
+
+class PrefService;
 
 namespace containers {
 
@@ -38,6 +41,11 @@ class ContainerModel {
   // This icon can be used by UI, such as menus and tabs.
   ui::ImageModel icon_;
 };
+
+// Builds ContainerModels from prefs; shared by menu model, tab strip, etc.
+std::vector<ContainerModel> GetContainerModelsFromPrefs(
+    const PrefService& prefs,
+    float scale_factor);
 
 }  // namespace containers
 

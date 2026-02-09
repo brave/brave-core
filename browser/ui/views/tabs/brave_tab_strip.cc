@@ -51,8 +51,8 @@
 #include "ui/views/layout/flex_layout.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/container_model.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
-#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -356,21 +356,18 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
   auto* prefs = profile->GetPrefs();
   CHECK(prefs);
 
-  auto containers = containers::GetContainersFromPrefs(*prefs);
-  auto container_it =
-      std::ranges::find_if(containers, [&](const auto& container) {
-        return container && container->id == container_id;
-      });
-
   auto* widget = GetWidget();
-  if (container_it == containers.end()) {
+  const float scale_factor =
+      widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
+  auto models = containers::GetContainerModelsFromPrefs(*prefs, scale_factor);
+
+  auto it = std::ranges::find_if(
+      models, [&](const auto& model) { return model.id() == container_id; });
+  if (it == models.end()) {
     CHECK_IS_TEST();
     return std::nullopt;
   }
-
-  return containers::ContainerModel(
-      std::move(*container_it),
-      widget ? widget->GetCompositor()->device_scale_factor() : 1.0f);
+  return std::move(*it);
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
