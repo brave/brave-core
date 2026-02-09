@@ -32,6 +32,7 @@ export class BraveAccountDialogs extends CrLitElement {
   static override get properties() {
     return {
       dialog: { type: Object },
+      isCapsLockOn: { type: Boolean, state: true },
     }
   }
 
@@ -50,11 +51,13 @@ export class BraveAccountDialogs extends CrLitElement {
     BraveAccountBrowserProxyImpl.getInstance()
 
   protected accessor dialog: Dialog = { type: 'ENTRY' }
+  protected accessor isCapsLockOn: boolean = false
 
   // <if expr="not is_android and not is_ios">
   override connectedCallback() {
     super.connectedCallback()
     this.eventTracker.add(document, 'keydown', this.onKeyDown)
+    this.eventTracker.add(document, 'keyup', this.onKeyUp)
   }
 
   override disconnectedCallback() {
@@ -63,6 +66,8 @@ export class BraveAccountDialogs extends CrLitElement {
   }
 
   private onKeyDown = (e: KeyboardEvent) => {
+    this.isCapsLockOn = e.getModifierState('CapsLock')
+
     // Ignore keys pressed with modifiers (Ctrl, Shift, etc.).
     if (hasKeyModifiers(e)) {
       return
@@ -103,6 +108,10 @@ export class BraveAccountDialogs extends CrLitElement {
         e.preventDefault()
         break
     }
+  }
+
+  private onKeyUp = (e: KeyboardEvent) => {
+    this.isCapsLockOn = e.getModifierState('CapsLock')
   }
 
   private eventTracker = new EventTracker()

@@ -11,7 +11,11 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
-import { Error, isEmailValid } from './brave_account_common.js'
+import {
+  Error,
+  isEmailValid,
+  makeFocusHandler,
+} from './brave_account_common.js'
 import { LoginError, LoginErrorCode } from './brave_account.mojom-webui.js'
 
 // @ts-expect-error
@@ -33,6 +37,8 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   static override get properties() {
     return {
       email: { type: String },
+      isCapsLockOn: { type: Boolean },
+      isPasswordInputFocused: { type: Boolean },
       password: { type: String },
     }
   }
@@ -98,7 +104,13 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   protected login = new Login()
 
   protected accessor email: string = ''
+  protected accessor isCapsLockOn: boolean = false
+  protected accessor isPasswordInputFocused: boolean = false
   protected accessor password: string = ''
+
+  protected readonly passwordFocusHandler = makeFocusHandler(
+    (f) => (this.isPasswordInputFocused = f),
+  )
 
   protected get isEmailValid(): boolean {
     return isEmailValid(this.email)

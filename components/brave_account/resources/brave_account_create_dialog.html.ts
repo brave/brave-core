@@ -5,8 +5,9 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { onEyeIconClicked } from './brave_account_common.js'
+import './brave_account_password_icons.js'
 import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
+import { onToggleVisibility } from './brave_account_common.js'
 
 export function getHtml(this: BraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
@@ -45,17 +46,20 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           showErrors
           type="password"
+          @blur=${this.passwordFocusHandler}
+          @focus=${this.passwordFocusHandler}
           @input=${this.onPasswordInput}
+          @toggle-visibility=${onToggleVisibility}
         >
           <div class="label">
             $i18n{BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL}
           </div>
-          <leo-icon
-            name="eye-off"
+          <brave-account-password-icons
             slot="right-icon"
-            @click=${onEyeIconClicked}
+            .isCapsLockOn=${this.isCapsLockOn}
+            .isInputFocused=${this.isPasswordInputFocused}
           >
-          </leo-icon>
+          </brave-account-password-icons>
           <div
             slot="errors"
             class="dropdown ${this.passwordStrength !== 0 ? 'visible' : ''}"
@@ -69,7 +73,10 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           placeholder="$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER}"
           showErrors
           type="password"
-          @input=${this.onConfirmPasswordInput}
+          @blur=${this.passwordConfirmationFocusHandler}
+          @focus=${this.passwordConfirmationFocusHandler}
+          @input=${this.onPasswordConfirmationInput}
+          @toggle-visibility=${onToggleVisibility}
         >
           <div
             class="label ${this.passwordConfirmation.length !== 0
@@ -79,12 +86,12 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           >
             $i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL}
           </div>
-          <leo-icon
-            name="eye-off"
+          <brave-account-password-icons
             slot="right-icon"
-            @click=${onEyeIconClicked}
+            .isCapsLockOn=${this.isCapsLockOn}
+            .isInputFocused=${this.isPasswordConfirmationInputFocused}
           >
-          </leo-icon>
+          </brave-account-password-icons>
           <div
             class="dropdown ${this.passwordConfirmation.length !== 0
               ? 'visible'

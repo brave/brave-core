@@ -25,6 +25,7 @@ export function getHtml(this: BraveAccountDialogs) {
     `,
     CREATE: () => html`
       <brave-account-create-dialog
+        .isCapsLockOn=${this.isCapsLockOn}
         @back-button-clicked=${this.onBackButtonClicked}
         @close-dialog=${this.onCloseDialog}
         @error-occurred=${(e: CustomEvent<Error>) =>
@@ -37,6 +38,7 @@ export function getHtml(this: BraveAccountDialogs) {
     `,
     SIGN_IN: () => html`
       <brave-account-sign-in-dialog
+        .isCapsLockOn=${this.isCapsLockOn}
         @back-button-clicked=${this.onBackButtonClicked}
         @close-dialog=${this.onCloseDialog}
         @error-occurred=${(e: CustomEvent<Error>) =>

@@ -6,8 +6,9 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
-import { onEyeIconClicked } from './brave_account_common.js'
+import './brave_account_password_icons.js'
 import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
+import { onToggleVisibility } from './brave_account_common.js'
 
 export function getHtml(this: BraveAccountSignInDialogElement) {
   return html`<!--_html_template_start_-->
@@ -29,7 +30,10 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
         <leo-input
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           type="password"
+          @blur=${this.passwordFocusHandler}
+          @focus=${this.passwordFocusHandler}
           @input=${this.onPasswordInput}
+          @toggle-visibility=${onToggleVisibility}
         >
           <div class="password">
             <div class="label">$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL}</div>
@@ -40,12 +44,12 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
               $i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL}
             </div>
           </div>
-          <leo-icon
-            name="eye-off"
+          <brave-account-password-icons
             slot="right-icon"
-            @click=${onEyeIconClicked}
+            .isCapsLockOn=${this.isCapsLockOn}
+            .isInputFocused=${this.isPasswordInputFocused}
           >
-          </leo-icon>
+          </brave-account-password-icons>
         </leo-input>
       </div>
       <leo-button

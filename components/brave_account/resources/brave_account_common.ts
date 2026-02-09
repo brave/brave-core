@@ -9,17 +9,17 @@ export type Error =
   | { flow: 'login'; details: LoginError }
   | { flow: 'register'; details: RegisterError }
 
-export function onEyeIconClicked(event: Event) {
-  event.preventDefault()
-  let type = 'password'
-  const target = event.target as Element
-  target.setAttribute(
-    'name',
-    target.getAttribute('name') === 'eye-off'
-      ? ((type = 'text'), 'eye-on')
-      : 'eye-off',
+export function makeFocusHandler(setFocused: (focused: boolean) => void) {
+  return (detail: { innerEvent: Event }) => {
+    setFocused(detail.innerEvent.type === 'focus')
+  }
+}
+
+export function onToggleVisibility(e: CustomEvent) {
+  ;(e.currentTarget as Element).setAttribute(
+    'type',
+    e.detail.show ? 'text' : 'password',
   )
-  target.parentElement!.setAttribute('type', type)
 }
 
 export function isEmailValid(input: string) {

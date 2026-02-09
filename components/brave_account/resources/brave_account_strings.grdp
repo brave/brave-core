@@ -153,6 +153,9 @@
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Create a password'/'Password' input fields" formatter_data="webui=BraveAccount">
     Enter your password
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_CAPS_LOCK_ON" translateable="false" desc="Tooltip message shown when Caps Lock is enabled on password input fields" formatter_data="webui=BraveAccount">
+    Caps Lock is on
+  </message>
 
   <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" translateable="false" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="webui=BraveAccountSettings android_java">
     Done
