@@ -74,7 +74,7 @@ def CheckPatchFormatted(input_api, output_api):
 
 # Check and fix ESLint issues (supports --fix).
 def CheckESLint(input_api, output_api):
-    if os.environ.get('PRESUBMIT_ALL_FILES'):
+    if input_api.PRESUBMIT_ALL_BRAVE:
         cmd = [
             brave_chromium_utils.wspath(
                 '//brave/node_modules/eslint/bin/eslint.js'),

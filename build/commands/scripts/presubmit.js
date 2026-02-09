@@ -28,7 +28,7 @@ program
   )
   .option('--fix', 'try to fix found issues automatically')
   .option('--json <output>', 'An output file for a JSON report')
-  .parse(process.argv)
+  .action(runPresubmit)
 
 const options = program.opts()
 
@@ -43,9 +43,7 @@ function runPresubmit() {
     ['config', '--unset-all', 'gerrit.host'],
     true,
   )
-  let cmdOptions = config.defaultOptions
-  cmdOptions.cwd = config.braveCoreDir
-  cmdOptions = util.mergeWithDefault(cmdOptions)
+  const cmdOptions = util.mergeWithDefault({ cwd: config.braveCoreDir })
 
   // --upload mode is similar to `git cl upload`. Non-upload mode covers less
   // checks.
@@ -53,7 +51,7 @@ function runPresubmit() {
 
   if (options.all) {
     if (options.all === 'brave' || options.all === true /* default value */) {
-      cmdOptions.env.PRESUBMIT_ALL_FILES = '1'
+      cmdOptions.env.PRESUBMIT_ALL_BRAVE = '1'
     } else if (options.all === 'chromium') {
       args.push('--all')
     } else {
@@ -77,4 +75,4 @@ function runPresubmit() {
   util.run('git', args, cmdOptions)
 }
 
-runPresubmit()
+program.parse(process.argv)
