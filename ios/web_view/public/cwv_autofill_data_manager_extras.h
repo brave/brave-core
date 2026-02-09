@@ -26,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Delete an existing local credit card from the database
 - (void)deleteCreditCard:(CWVCreditCard*)creditCard;
 
+/// Add a new local profile/address to the database
+- (void)addProfile:(CWVAutofillProfile*)profile;
+
+/// Creates a new CWVAutofillProfile pre-filled with the users current country
+/// code as the default
+- (CWVAutofillProfile*)defaultAutofillProfileForNewAddress;
+
 @end
 
 NS_ASSUME_NONNULL_END
