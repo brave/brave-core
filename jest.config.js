@@ -129,6 +129,7 @@ module.exports = {
       '<rootDir>/components/test/fileMock.ts',
     '\\.(css|less|scss)$': 'identity-obj-proxy',
     '^\\$web-common\\/(.*)': '<rootDir>/components/common/$1',
+    '^\\$wallet\\/(.*)': '<rootDir>/components/brave_wallet_ui/$1',
     '^\\$web-components\\/(.*)': '<rootDir>/components/web-components/$1',
     '^brave-ui$': '<rootDir>/node_modules/@brave/brave-ui',
     '^brave-ui\\/(.*)': '<rootDir>/node_modules/@brave/brave-ui/$1',
