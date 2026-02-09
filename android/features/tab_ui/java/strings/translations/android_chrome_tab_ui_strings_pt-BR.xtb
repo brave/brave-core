@@ -61,7 +61,7 @@
 <translation id="2801787514987684416">Ver informações da loja?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> guia fechada}one{<ph name="MANY_CLOSED"/> guia fechada}other{<ph name="MANY_CLOSED"/> guias fechadas}}</translation>
 <translation id="2894757982205307093">Nova guia no grupo</translation>
-<translation id="2918484639460781603">Ir a configurações</translation>
+<translation id="2918484639460781603">Ir para as configurações</translation>
 <translation id="4691798003247738043">Brave | Sobre a loja</translation>
 <translation id="2978860912612699943">{ITEMS_COUNT,plural, =1{<ph name="ITEMS_COUNT_ONE"/> selecionado}one{<ph name="ITEMS_COUNT_MANY"/> selecionado}other{<ph name="ITEMS_COUNT_MANY"/> selecionados}}</translation>
 <translation id="2991702137079525605">{TABS_COUNT,plural, =1{Fixar guia}one{Fixar guia}other{Fixar guias}}</translation>
@@ -80,6 +80,7 @@
 <translation id="3619255692378312441">Gerenciar o acesso</translation>
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{Fechar item}one{Fechar item}other{Fechar itens}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
+<translation id="3714430408451673233">Página inferior da guia na metade da altura.</translation>
 <translation id="374923079891132274">Miniatura da página de compartilhamento.</translation>
 <translation id="3776329373944672717">Título do grupo de guias <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">Gerenciar</translation>
@@ -124,8 +125,10 @@
 <translation id="5339733443032484186">Sua última guia</translation>
 <translation id="5380159289133845234">Arquivar guias duplicadas</translation>
 <translation id="5446043142172831860">Remover guia e sair do grupo</translation>
+<translation id="5465437530117042974">Mudanças na página inferior da guia encerradas.</translation>
 <translation id="5490235265819901748">Grupo de guias expandido</translation>
 <translation id="5494920125229734069">Selecionar todas</translation>
+<translation id="5505998972479309757">{LIMIT_COUNT,plural, =1{Adicione até <ph name="LIMIT_COUNT_ONE"/> arquivo, guia ou imagem}one{Adicione até <ph name="LIMIT_COUNT_MANY"/> arquivo, guia ou imagem}other{Adicione até <ph name="LIMIT_COUNT_MANY"/> arquivos, guias ou imagens}}</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Fechar o grupo de guias com <ph name="TABS_COUNT_ONE"/> guia na cor <ph name="COLOR_NAME"/>.}one{Fechar o grupo de guias com <ph name="TABS_COUNT_MANY"/> guia na cor <ph name="COLOR_NAME"/>.}other{Fechar o grupo de guias com <ph name="TABS_COUNT_MANY"/> guias na cor <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Ver informações da loja, opção disponível perto da parte superior da tela</translation>
 <translation id="5627941783489838464">Nenhuma atualização de guias</translation>
@@ -138,6 +141,7 @@
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="6051432659151380973">Seus grupos de guias são salvos automaticamente</translation>
 <translation id="6054741997831917303">O preço deste item caiu de <ph name="PREVIOUS_PRICE"/> para <ph name="NEW_PRICE"/></translation>
+<translation id="606985262342505139">Página inferior da guia na altura máxima</translation>
 <translation id="6109251075362363230">Todas as guias duplicadas serão arquivadas também, com exceção da cópia usada mais recentemente.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Fechar <ph name="TABS_COUNT_ONE"/> item selecionado}one{Fechar <ph name="TABS_COUNT_MANY"/> item selecionado}other{Fechar <ph name="TABS_COUNT_MANY"/> itens selecionados}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Mover grupo para nova janela}one{Mover grupo para outra janela}other{Mover grupo para outras janelas}}</translation>
@@ -221,7 +225,6 @@
 <translation id="8428213095426709021">Configurações</translation>
 <translation id="855081842937141170">Fixar guia</translation>
 <translation id="8633025649649592204">Atividade recente</translation>
-<translation id="8635822281281406185">Adicione até 10 arquivos, guias ou imagens</translation>
 <translation id="8712637175834984815">Entendi</translation>
 <translation id="8714939927607906138">Preço menor</translation>
 <translation id="8730621377337864115">Concluído</translation>

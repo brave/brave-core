@@ -440,7 +440,7 @@ def add_extra_translations_from_brave_xtb(brave_strings_xtb_file, xml_tree,
 def get_grd_message_tags(grd_file_path):
     """Obtains all message tags of the specified GRD file"""
     output_elements = []
-    elements = lxml.etree.parse(grd_file_path).findall('//message')
+    elements = lxml.etree.parse(grd_file_path).findall('.//message')
     for element in elements:
         if element.tag == 'message':
             output_elements.append(element)

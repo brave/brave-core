@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">A böngésző javaslatainak megjelenítése</translation>
 <translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
 <translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
-<translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
-<translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Tartalomszűrés</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Ne használjon HTTPS-kapcsolatokat (letiltva)</translation>
 <translation id="693506469193748756">Felejtsen el, amikor bezárom ezt az oldalt</translation>
 <translation id="6975864539539353406">Törli a cookie-kat és egyéb webhelyadatokat, amikor bezár egy adott oldalt</translation>
+<translation id="7740929262043547697">Elemblokkolás engedélyezése privát Windows-ablakokban</translation>
+<translation id="1260864846935682371">Engedélyezi a Shields elemblokkolás funkcióját privát Windows-ablakokban. Felhívjuk figyelmét, hogy a privát ablakaiban blokkolt elemek a nem privát Windows-ablakokban is blokkolva lesznek.</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
 <translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
 <translation id="5254037869598726291">Az anonimizált P3A információk segítségével a Brave felmérheti az átlagos használatot, és biztosíthatja a népszerű funkciók folyamatos fejlesztését.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">KÉSŐBB</translation>
 <translation id="4117451092682672487">Adatvédelem. Egyszerűen.</translation>
 <translation id="7909375417585209817">A Brave alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Brave adatvédelmi beállításaival fog megnyílni.</translation>
-<translation id="7370959926683925817">Blokkolja a hirdetéseket, és csökkentse az adatforgalmat, minden egyes nap.</translation>
-<translation id="7281027579943912834">Ha a Brave-et használja alapértelmezett böngészőként, a Brave hirdetésblokkoló védelme minden megnyitott hivatkozásra kiterjed – minden weblapra, videóra és adatfolyamra.</translation>
 <translation id="5148943178722443958">Segítsen a Brave továbbfejlesztésében.</translation>
 <translation id="6718362830686703942">Küldjön diagnosztikai jelentéseket, amikor a rendszer összeomlik vagy lefagy.</translation>
 <translation id="8616157231067364693">Osszon meg privát és anonim termékinformációkat arról, hogy milyen funkciókat használnak a Brave felhasználói.</translation>
@@ -371,6 +369,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8793108040181436796">Widgetek</translation>
 <translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
 <translation id="7275773481201277457">Brave statisztikák mutatása</translation>
+<translation id="7462178177755090262">Kezdőképernyő</translation>
+<translation id="5365434987337264071">Utoljára megnyitott lap</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Új lap <ph name="HOURS_ONE"/> óra tétlenség után} other {Új lap <ph name="HOURS_MANY"/> óra tétlenség után}}</translation>
+<translation id="5233638681132016545">Új lap</translation>
+<translation id="8395271296293035055">Térjen vissza a legutóbb megnyitott laphoz</translation>
 <translation id="8297488609722895137">A fénykép készítője: <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Külső hivatkozások megnyitása a Brave-ben</translation>
 <translation id="5616508928556767259">A más alkalmazásból származó hivatkozásokat Brave webes nézetben nyitja meg. Megjegyzés: ehhez a Brave-nek kell lennie az alapértelmezett böngészőnek.</translation>
@@ -761,7 +764,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6889920539620318793">Beállítás aktívként</translation>
 <translation id="2653659639078652383">Elküldés</translation>
 <translation id="4945690646623486292">Hálózat kiválasztása</translation>
-<translation id="5233638681132016545">Új lap</translation>
 <translation id="8006088103295786154">Hozzáférés a Brave pénztárcához</translation>
 <translation id="5308380583665731573">Csatlakozás</translation>
 <translation id="8030169304546394654">Nincs kapcsolat</translation>
@@ -1069,6 +1071,10 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="4650851936784160359">A szűrőlistát nem sikerült frissíteni. Kérjük, próbálja újra.</translation>
 <translation id="3098054327870766317">Visszavonás gomb megjelenítése a lapok bezárásakor</translation>
 <translation id="1336494649091412226">Biztosan kilép a Brave-ből?</translation>
+<translation id="6061635824229591714">Megsemmisíti a webhelyadatokat?</translation>
+<translation id="1265051174491933207">A megsemmisítés törli a webhelyadatokat, és bezárja az összes „<ph name="SITE_NAME"/>” lapot. Ez nem visszavonható.</translation>
+<translation id="4279349293084858577">Megsemmisítés</translation>
+<translation id="4426990318287827331">Adatok megsemmisítése</translation>
 <translation id="7942415993090181327">Csevegési előzmények</translation>
 <translation id="6859935199732075666">Biztonságos böngészés hibáinak megjelenítése</translation>
 <translation id="2735247450315842119">Képernyőképek engedélyezése privát lapokon</translation>

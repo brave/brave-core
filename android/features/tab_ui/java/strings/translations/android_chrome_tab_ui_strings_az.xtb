@@ -80,6 +80,7 @@
 <translation id="3619255692378312441">Girişi idarə edin</translation>
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{Elementi bağlayın}other{Elementləri bağlayın}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
+<translation id="3714430408451673233">Yarım hündürlükdə tab üzrə aşağıdakı vərəq.</translation>
 <translation id="374923079891132274">Paylaşım vərəqi önizləməsi üçün miniatür.</translation>
 <translation id="3776329373944672717">Tab qrupu başlığı <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">İdarə edin</translation>
@@ -124,8 +125,10 @@
 <translation id="5339733443032484186">Son tab</translation>
 <translation id="5380159289133845234">Dublikat tabları arxivləyin</translation>
 <translation id="5446043142172831860">Tabı silin və qrupu tərk edin</translation>
+<translation id="5465437530117042974">Tab üzrə aşağıdakı vərəq dəyişiklikləri bağlandı.</translation>
 <translation id="5490235265819901748">Tab qrupu genişləndirildi</translation>
 <translation id="5494920125229734069">Hamısını seçin</translation>
+<translation id="5505998972479309757">{LIMIT_COUNT,plural, =1{Maksimum <ph name="LIMIT_COUNT_ONE"/> fayl, tab və ya şəkil əlavə edin}other{Maksimum <ph name="LIMIT_COUNT_MANY"/> fayl, tab və ya şəkil əlavə edin}}</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> tabdan ibarət tab qrupunu bağlayın, rəng <ph name="COLOR_NAME"/>.}other{<ph name="TABS_COUNT_MANY"/> tabdan ibarət tab qrupunu bağlayın, rəng <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Mağaza məlumatlarına baxın, seçim ekranın yuxarı hissəsində əlçatandır</translation>
 <translation id="5627941783489838464">Tab yeniləməsi yoxdur</translation>
@@ -138,6 +141,7 @@
 <translation id="6040143037577758943">Qapat</translation>
 <translation id="6051432659151380973">Tab qruplarınız avtomatik olaraq yadda saxlanılır</translation>
 <translation id="6054741997831917303">Bu element bu yaxınlarda <ph name="PREVIOUS_PRICE"/> qiymətindən <ph name="NEW_PRICE"/> qiymətinə endirilib</translation>
+<translation id="606985262342505139">Tam hündürlükdə tab üzrə aşağıdakı vərəq</translation>
 <translation id="6109251075362363230">Ən son istifadə olunan nüsxə istisna olmaqla bütün dublikat tablar da artıq arxivlənəcək.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Seçilmiş <ph name="TABS_COUNT_ONE"/> elementi bağlayın}other{Seçilmiş <ph name="TABS_COUNT_MANY"/> elementi bağlayın}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Qrupu yeni pəncərəyə köçürün}other{Qrupu başqa pəncərəyə köçürün}}</translation>
@@ -221,7 +225,6 @@
 <translation id="8428213095426709021">Ayarlar</translation>
 <translation id="855081842937141170">Sancaq tabı</translation>
 <translation id="8633025649649592204">Son fəaliyyət</translation>
-<translation id="8635822281281406185">10-a qədər fayl, tab və ya şəkil əlavə edin</translation>
 <translation id="8712637175834984815">Anladım</translation>
 <translation id="8714939927607906138">Aşağı qiymət</translation>
 <translation id="8730621377337864115">Tamamdır</translation>

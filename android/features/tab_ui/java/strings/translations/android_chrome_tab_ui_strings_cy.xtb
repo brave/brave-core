@@ -82,6 +82,7 @@
 <translation id="3619255692378312441">Rheoli mynediad</translation>
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{Cau'r eitem}zero{Cau'r eitemau}two{Cau'r eitemau}few{Cau'r eitemau}many{Cau'r eitemau}other{Cau'r eitemau}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
+<translation id="3714430408451673233">Dalen Waelod Tab ar hanner uchder.</translation>
 <translation id="374923079891132274">Mân-lun ar gyfer rhagolwg taflen rhannu.</translation>
 <translation id="3776329373944672717">Enw'r grŵp tabiau <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">Rheoli</translation>
@@ -126,8 +127,10 @@
 <translation id="5339733443032484186">Eich tab diwethaf</translation>
 <translation id="5380159289133845234">Archifo tabiau dyblyg</translation>
 <translation id="5446043142172831860">Tynnu'r tab a gadael y grŵp</translation>
+<translation id="5465437530117042974">Newidiadau Dalen Waelod Tab wedi cau.</translation>
 <translation id="5490235265819901748">Mae'r grŵp tabiau wedi'i ehangu</translation>
 <translation id="5494920125229734069">Dewis pob un</translation>
+<translation id="5505998972479309757">{LIMIT_COUNT,plural, =1{Ychwanegwch hyd at <ph name="LIMIT_COUNT_ONE"/> ffeil, tab, neu lun}zero{Ychwanegwch hyd at <ph name="LIMIT_COUNT_MANY"/> ffeil, tab neu lun}two{Ychwanegwch hyd at <ph name="LIMIT_COUNT_MANY"/> ffeil, tab neu lun}few{Ychwanegwch hyd at <ph name="LIMIT_COUNT_MANY"/> ffeil, tab neu lun}many{Ychwanegwch hyd at <ph name="LIMIT_COUNT_MANY"/> ffeil, tab neu lun}other{Ychwanegwch hyd at <ph name="LIMIT_COUNT_MANY"/> ffeil, tab neu lun}}</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Cau grŵp tabiau gydag <ph name="TABS_COUNT_ONE"/> tab, lliw <ph name="COLOR_NAME"/>.}zero{Cau grŵp tabiau gyda <ph name="TABS_COUNT_MANY"/> tab, lliw <ph name="COLOR_NAME"/>.}two{Cau grŵp tabiau gyda <ph name="TABS_COUNT_MANY"/> dab, lliw <ph name="COLOR_NAME"/>.}few{Cau grŵp tabiau gyda <ph name="TABS_COUNT_MANY"/> thab, lliw <ph name="COLOR_NAME"/>.}many{Cau grŵp tabiau gyda <ph name="TABS_COUNT_MANY"/> thab, lliw <ph name="COLOR_NAME"/>.}other{Cau grŵp tabiau gyda <ph name="TABS_COUNT_MANY"/> tab, lliw <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Gweld gwybodaeth siop, opsiwn ar gael yn agos at frig y sgrîn</translation>
 <translation id="5627941783489838464">Dim diweddariadau tab</translation>
@@ -140,6 +143,7 @@
 <translation id="6040143037577758943">Cau</translation>
 <translation id="6051432659151380973">Mae eich grwpiau tab yn cadw'n awtomatig</translation>
 <translation id="6054741997831917303">Gwnaeth pris yr eitem hon ostwng yn ddiweddar o <ph name="PREVIOUS_PRICE"/> i <ph name="NEW_PRICE"/></translation>
+<translation id="606985262342505139">Dalen Waelod Tab ar uchder llawn</translation>
 <translation id="6109251075362363230">Bydd pob tab dyblyg nawr yn cael ei archifo hefyd, ac eithrio'r copi a ddefnyddiwyd yn fwyaf diweddar.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Cau'r <ph name="TABS_COUNT_ONE"/> eitem a ddewiswyd}zero{Cau'r <ph name="TABS_COUNT_MANY"/> eitemau a ddewiswyd}two{Cau'r <ph name="TABS_COUNT_MANY"/> eitem a ddewiswyd}few{Cau'r <ph name="TABS_COUNT_MANY"/> eitem a ddewiswyd}many{Cau'r <ph name="TABS_COUNT_MANY"/> eitem a ddewiswyd}other{Cau'r <ph name="TABS_COUNT_MANY"/> eitem a ddewiswyd}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Symud grŵp i ffenestr newydd}zero{Symud grŵp i ffenestr arall}two{Symud grŵp i ffenestr arall}few{Symud grŵp i ffenestr arall}many{Symud grŵp i ffenestr arall}other{Symud grŵp i ffenestr arall}}</translation>
@@ -223,7 +227,6 @@
 <translation id="8428213095426709021">Gosodiadau</translation>
 <translation id="855081842937141170">Pinio tab</translation>
 <translation id="8633025649649592204">Gweithgarwch diweddar</translation>
-<translation id="8635822281281406185">Ychwanegwch hyd at 10 ffeil, tabiau neu luniau</translation>
 <translation id="8712637175834984815">Iawn</translation>
 <translation id="8714939927607906138">Pris is</translation>
 <translation id="8730621377337864115">Wedi gorffen</translation>
