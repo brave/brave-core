@@ -144,8 +144,8 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
       second_metadata->user_id, base::ListValue());
   ASSERT_EQ(GetContentSettingsCountByOrigin(map(), origin), 2u);
 
-  auto first_metadata_value =
-      settings_service()->GetPsstWebsiteSettings(origin, first_metadata->user_id);
+  auto first_metadata_value = settings_service()->GetPsstWebsiteSettings(
+      origin, first_metadata->user_id);
   ASSERT_TRUE(first_metadata_value.has_value());
   ASSERT_EQ(first_metadata_value.value().consent_status,
             first_metadata->consent_status);
@@ -155,8 +155,8 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
   ASSERT_EQ(first_metadata_value.value().urls_to_skip,
             first_metadata->urls_to_skip);
 
-  auto second_metadata_value =
-      settings_service()->GetPsstWebsiteSettings(origin, second_metadata->user_id);
+  auto second_metadata_value = settings_service()->GetPsstWebsiteSettings(
+      origin, second_metadata->user_id);
   ASSERT_TRUE(second_metadata_value.has_value());
   ASSERT_EQ(second_metadata_value.value().consent_status,
             second_metadata->consent_status);
@@ -175,8 +175,8 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
       modified_metadata->script_version, modified_metadata->user_id,
       base::ListValue());
 
-  auto modified_metadata_value =
-      settings_service()->GetPsstWebsiteSettings(origin, modified_metadata->user_id);
+  auto modified_metadata_value = settings_service()->GetPsstWebsiteSettings(
+      origin, modified_metadata->user_id);
   ASSERT_TRUE(modified_metadata_value.has_value());
   ASSERT_EQ(modified_metadata_value.value().consent_status,
             modified_metadata->consent_status);
