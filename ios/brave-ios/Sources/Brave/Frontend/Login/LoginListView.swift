@@ -187,7 +187,7 @@ struct LoginListView: View {
     .scrollContentBackground(.hidden)
     .padding(.top, 112)
     .ignoresSafeArea(.all, edges: .vertical)
-    }
+  }
 }
 
 private struct LoginListRow: View {
@@ -208,11 +208,14 @@ private struct LoginListRow: View {
         settingsDelegate: settingsDelegate
       )
     } label: {
-      if let baseDomain = URL(string: credential.signOnRealm)?.baseDomain, !baseDomain.isEmpty {
+      if let realmURL = URL(string: credential.signOnRealm),
+        let baseDomain = realmURL.baseDomain,
+        !baseDomain.isEmpty
+      {
         HStack(spacing: 12) {
-          LetterBadge(baseDomain.uppercased().first!)
-            .font(.caption)
-            .fontWeight(.semibold)
+          FaviconImage(url: realmURL, isPrivateBrowsing: false)
+            .frame(width: 24, height: 24)
+            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
           Text(baseDomain)
           Spacer()
         }
