@@ -1335,7 +1335,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
       }
 
       // For server-side tool results, tool_name is empty but output exists.
-      // Find the tool use event created from tool call request and update it's
+      // Find the tool use event created from tool call request and update its
       // output. If there are any other client-side tool use requests to be
       // processed, we would handle it upon CompleteGeneration after server has
       // finished streaming everything for this generation request.
@@ -1608,16 +1608,16 @@ ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
   std::vector<mojom::WebSourcePtr> all_sources;
   std::vector<std::string> all_queries;
 
-  for (auto it = chat_history_.rbegin(); it != chat_history_.rend(); ++it) {
-    if ((*it)->character_type != CharacterType::ASSISTANT) {
+  for (const auto& entry : base::Reversed(chat_history_)) {
+    if (entry->character_type != CharacterType::ASSISTANT) {
       break;
     }
 
-    if (!(*it)->events.has_value()) {
+    if (!entry->events.has_value()) {
       continue;
     }
 
-    for (const auto& event : *(*it)->events) {
+    for (const auto& event : *entry->events) {
       if (!event->is_tool_use_event()) {
         continue;
       }

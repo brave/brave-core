@@ -516,7 +516,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     callback.Run(GenerationResultData(std::move(event), std::move(model_key)));
   } else if (*object_type == "brave-chat.toolStart") {
     const std::string* tool_name = result_params.FindString("tool_name");
-    if (IsBraveSearchTool(tool_name ? *tool_name : "")) {
+    if (tool_name && IsBraveSearchTool(*tool_name)) {
       auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
           mojom::SearchStatusEvent::New(true));
       callback.Run(GenerationResultData(std::move(event), std::nullopt));
@@ -537,23 +537,12 @@ void ConversationAPIV2Client::OnQueryDataReceived(
         const auto& tool_call_dict = tool_call_value.GetDict();
 
         // Parse tool request or server tool result
-        if (tool_call_dict.FindDict("function")) {
-          // Create ToolUseEvent for tool request
-          if (auto tool_use_event = ParseToolCallRequest(tool_call_dict)) {
-            auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
-                std::move(*tool_use_event));
-            callback.Run(
-                GenerationResultData(std::move(tool_event), model_key));
-          }
-        } else if (tool_call_dict.FindList("output_content")) {
-          // Create ToolUseEvent for tool result, which will be stored as the
-          // output in the tool request arrived before.
-          if (auto tool_use_event = ParseToolCallResult(tool_call_dict)) {
-            auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
-                std::move(*tool_use_event));
-            callback.Run(
-                GenerationResultData(std::move(tool_event), model_key));
-          }
+        std::optional<mojom::ToolUseEventPtr> tool_use_event;
+        if ((tool_use_event = ParseToolCallRequest(tool_call_dict)) ||
+            (tool_use_event = ParseToolCallResult(tool_call_dict))) {
+          auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+              std::move(*tool_use_event));
+          callback.Run(GenerationResultData(std::move(tool_event), model_key));
         }
       }
     }
