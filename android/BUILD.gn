@@ -431,6 +431,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_share.xml",
     "java/brave-res/drawable/ic_shield_done.xml",
     "java/brave-res/drawable/ic_shield_done_filled.xml",
+    "java/brave-res/drawable/ic_shield_done_nogradient.xml",
     "java/brave-res/drawable/ic_shield_done_outlined.xml",
     "java/brave-res/drawable/ic_site_settings.xml",
     "java/brave-res/drawable/ic_smartphone.xml",

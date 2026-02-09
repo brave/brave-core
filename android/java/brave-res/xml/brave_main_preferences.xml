@@ -54,7 +54,7 @@
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.privacy.BravePrivacySettings"
         android:key="brave_shields_and_privacy"
-        android:icon="@drawable/ic_brave"
+        android:icon="@drawable/ic_shield_done_nogradient"
         android:order="1"
         android:title="@string/brave_shields_and_privacy"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
