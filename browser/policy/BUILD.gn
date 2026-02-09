@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -12,6 +13,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("brave_simple_policy_map") {
@@ -21,7 +23,8 @@ source_set("brave_simple_policy_map") {
     "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:pref_names",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_talk/buildflags",
@@ -39,6 +42,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/query_filter",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
+    "//brave/components/web_discovery/buildflags",
     "//components/policy/core/browser",
     "//components/policy/core/common:common_constants",
   ]

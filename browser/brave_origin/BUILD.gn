@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -12,6 +13,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("brave_origin") {
@@ -28,7 +30,8 @@ source_set("brave_origin") {
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_origin",
     "//brave/components/brave_policy",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:pref_names",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
@@ -38,6 +41,7 @@ source_set("brave_origin") {
     "//brave/components/p3a",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
+    "//brave/components/web_discovery/buildflags",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles",
     "//components/keyed_service/content",
@@ -97,7 +101,8 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/policy:brave_simple_policy_map",
     "//brave/components/brave_origin",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:pref_names",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//chrome/browser/profiles",

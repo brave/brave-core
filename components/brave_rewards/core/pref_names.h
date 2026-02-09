@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PREF_NAMES_H_
 
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
+
 namespace brave_rewards::prefs {
 
 // Used to enable/disable Rewards via a policy.

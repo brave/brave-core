@@ -15,9 +15,14 @@ source_set("features") {
   ]
 }
 
+source_set("pref_names") {
+  sources = [ "pref_names.h" ]
+
+  public_deps = [ "//brave/components/brave_rewards/core/buildflags" ]
+}
+
 static_library("core") {
   sources = [
-    "pref_names.h",
     "pref_registry.cc",
     "pref_registry.h",
     "publisher_utils.cc",
@@ -28,6 +33,8 @@ static_library("core") {
     "rewards_util.cc",
     "rewards_util.h",
   ]
+
+  public_deps = [ ":pref_names" ]
 
   deps = [
     ":features",
