@@ -10,6 +10,8 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
+let isIOS: boolean | null
+let isMobile: boolean | null
 let btnCreateEnabledText: string
 let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
@@ -606,11 +608,11 @@ const launchElementPicker = (root: ShadowRoot) => {
   let hasSelectedTarget = false
 
   const btnShowRulesBox = root.getElementById('btn-show-rules-box')
-  if (isAndroid && btnShowRulesBox) {
+  if (isMobile && btnShowRulesBox) {
     btnShowRulesBox.style.display = 'none'
   }
 
-  if (isAndroid) {
+  if (isMobile) {
     const minimizeButton = root.getElementById('card-header')!
     minimizeButton.addEventListener('click', () => {
       setMinimizeState(true)
@@ -696,7 +698,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     })
   }
 
-  if (!isAndroid) {
+  if (!isMobile) {
     section.classList.add('desktop')
   }
 
@@ -707,13 +709,13 @@ const launchElementPicker = (root: ShadowRoot) => {
     } else {
       createButton.textContent = btnCreateDisabledText
     }
-    if (!isAndroid) {
+    if (!isMobile) {
       section.style.setProperty('opacity', show ? '1' : '0.2')
     }
   }
   targetedElems.togglePicker = togglePopup
 
-  if (isAndroid) {
+  if (isMobile) {
     const sc = root.getElementById('slider-container') as HTMLInputElement
     sc.style.display = 'none'
   }
@@ -896,6 +898,8 @@ const localizeTextData = (
 const active = document.getElementById('brave-element-picker')
 if (!active) {
   isAndroid = api.getPlatform() === 'android'
+  isIOS = api.getPlatform() === 'ios'
+  isMobile = isAndroid || isIOS
   const root = attachElementPicker()
   api.getLocalizedTexts(
     (
