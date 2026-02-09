@@ -94,12 +94,15 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
     : public testing::Test {
  public:
   void SetUp() override {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"}});
+    feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletZCashFeature,
+          {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
-    feature_list_.InitAndEnableFeature(features::kBraveWalletWebUIFeature);
+         {features::kBraveWalletWebUIFeature, {}}
 #endif
+        },
+        {}  // disabled features
+    );
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));

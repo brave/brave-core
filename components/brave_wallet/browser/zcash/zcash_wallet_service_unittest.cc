@@ -181,12 +181,16 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   ~ZCashWalletServiceUnitTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletZCashFeature);
+    feature_list_.InitWithFeatures(
+        {
+            brave_wallet::features::kBraveWalletZCashFeature,
 #if BUILDFLAG(IS_IOS)
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletWebUIFeature);
+            brave_wallet::features::kBraveWalletWebUIFeature,
 #endif
+        },
+        {}  // disabled features
+    );
+
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     db_path_ = temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db"));
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
@@ -1585,9 +1589,15 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  feature_list_.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
@@ -1666,9 +1676,15 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  feature_list_.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
@@ -2078,9 +2094,15 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  feature_list_.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
@@ -2459,9 +2481,15 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  feature_list_.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   ON_CALL(zcash_rpc(), GetLightdInfo(_, _))
       .WillByDefault([&](const std::string& chain_id,
@@ -2988,9 +3016,15 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  feature_list_.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   ON_CALL(zcash_rpc(), GetLightdInfo(_, _))
       .WillByDefault([&](const std::string& chain_id,
