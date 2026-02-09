@@ -3,8 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+config("config") {
+  # For our own public headers to be able to import the official public headers
+  include_dirs = [
+    "//ios/web_view/public",
+    "//brave/ios/web_view/public",
+  ]
+}
+
 source_set("autofill") {
   sources = [
+    "autofill_credit_card_util.h",
+    "autofill_credit_card_util.mm",
     "brave_web_view_autofill_client.h",
     "brave_web_view_autofill_client.mm",
   ]
@@ -12,6 +22,7 @@ source_set("autofill") {
     "//components/application_locale_storage",
     "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",
+    "//ios/chrome/browser/autofill/ui_bundled:util",
     "//ios/chrome/browser/passwords/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
@@ -19,4 +30,5 @@ source_set("autofill") {
     "//ios/chrome/browser/sync/model",
     "//ios/web_view/framework:web_view_sources",
   ]
+  configs += [ ":config" ]
 }
