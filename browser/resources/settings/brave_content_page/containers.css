@@ -80,7 +80,8 @@
   margin-block: var(--leo-spacing-m);
 }
 
-.background-colors-list, .icons-list {
+.background-colors-list,
+.icons-list {
   display: flex;
   gap: var(--leo-spacing-m);
   margin-block: var(--leo-spacing-m);
