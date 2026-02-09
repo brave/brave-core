@@ -145,6 +145,12 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   }
   install_dir_ = install_dir;
   if (install_dir.empty()) {
+    embeddinggemma_model_dir_ = base::FilePath();
+    embeddinggemma_model_path_ = base::FilePath();
+    embeddinggemma_dense1_path_ = base::FilePath();
+    embeddinggemma_dense2_path_ = base::FilePath();
+    embeddinggemma_config_path_ = base::FilePath();
+    embeddinggemma_tokenizer_path_ = base::FilePath();
     return;
   }
   embeddinggemma_model_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir);

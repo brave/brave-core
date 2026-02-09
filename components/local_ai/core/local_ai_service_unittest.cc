@@ -8,14 +8,18 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
+#include "brave/components/local_ai/core/local_models_updater.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -54,14 +58,15 @@ class FakeWorker : public mojom::PassageEmbedder {
   mojo::ReceiverSet<mojom::PassageEmbedder> receivers_;
 };
 
-// Fake PassageEmbedderFactory that binds directly to FakeWorker.
+// Fake PassageEmbedderFactory that binds directly to FakeWorker
+// and tracks Init() calls for model loading tests.
 class FakePassageEmbedderFactory : public mojom::PassageEmbedderFactory {
  public:
   explicit FakePassageEmbedderFactory(FakeWorker* worker) : worker_(worker) {}
 
-  void Init(mojom::ModelFilesPtr model_files,
-            InitCallback callback) override {
-    std::move(callback).Run(true);
+  void Init(mojom::ModelFilesPtr model_files, InitCallback callback) override {
+    init_count_++;
+    std::move(callback).Run(init_success_);
   }
 
   void Bind(mojo::PendingReceiver<mojom::PassageEmbedder> receiver) override {
@@ -72,8 +77,15 @@ class FakePassageEmbedderFactory : public mojom::PassageEmbedderFactory {
     return receiver_.BindNewPipeAndPassRemote();
   }
 
+  void ResetReceiver() { receiver_.reset(); }
+
+  void set_init_success(bool success) { init_success_ = success; }
+  int init_count() const { return init_count_; }
+
  private:
   raw_ptr<FakeWorker> worker_;
+  bool init_success_ = true;
+  int init_count_ = 0;
   mojo::Receiver<mojom::PassageEmbedderFactory> receiver_{this};
 };
 
@@ -116,6 +128,8 @@ class LocalAIServiceTest : public testing::Test {
   void TearDown() override {
     static_cast<KeyedService*>(service_.get())->Shutdown();
     service_.reset();
+    // Clear the singleton state for test isolation.
+    LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
   }
 
   std::unique_ptr<BackgroundWebContents> CreateFakeWebContents(
@@ -143,12 +157,65 @@ class LocalAIServiceTest : public testing::Test {
     return remote;
   }
 
+  // Set up dummy model files on disk and notify the updater state.
+  void SetUpModelFiles() {
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    base::FilePath dir = temp_dir_.GetPath();
+    base::FilePath model_dir = dir.AppendASCII(kEmbeddingGemmaModelDir);
+    ASSERT_TRUE(base::CreateDirectory(model_dir));
+    ASSERT_TRUE(
+        base::CreateDirectory(model_dir.AppendASCII(kEmbeddingGemmaDense1Dir)));
+    ASSERT_TRUE(
+        base::CreateDirectory(model_dir.AppendASCII(kEmbeddingGemmaDense2Dir)));
+
+    // Create dummy model files matching expected paths.
+    ASSERT_TRUE(
+        base::WriteFile(model_dir.AppendASCII(kEmbeddingGemmaModelFile), "w"));
+    ASSERT_TRUE(base::WriteFile(model_dir.AppendASCII(kEmbeddingGemmaDense1Dir)
+                                    .AppendASCII(kEmbeddingGemmaDenseModelFile),
+                                "d1"));
+    ASSERT_TRUE(base::WriteFile(model_dir.AppendASCII(kEmbeddingGemmaDense2Dir)
+                                    .AppendASCII(kEmbeddingGemmaDenseModelFile),
+                                "d2"));
+    ASSERT_TRUE(base::WriteFile(
+        model_dir.AppendASCII(kEmbeddingGemmaTokenizerFile), "t"));
+    ASSERT_TRUE(
+        base::WriteFile(model_dir.AppendASCII(kEmbeddingGemmaConfigFile), "c"));
+
+    // This fires OnLocalModelsReady on the service.
+    LocalModelsUpdaterState::GetInstance()->SetInstallDir(dir);
+  }
+
+  // Simulate both readiness conditions being met:
+  // 1. Component ready (OnLocalModelsReady via SetInstallDir)
+  // 2. Factory registered (RegisterPassageEmbedderFactory — also sets
+  //    wasm_page_loaded_)
+  // After these, TryLoadModel() will trigger Init() on the factory.
+  void MakeFullyReady() {
+    // Request an embedder (creates background contents, queues callback).
+    base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+    service_->GetPassageEmbedder(future.GetCallback());
+
+    // 1. Component ready (sets up files + notifies).
+    SetUpModelFiles();
+    // 2. Register the factory (sets wasm_page_loaded_, triggers
+    //    TryLoadModel which starts model loading).
+    RegisterFactory();
+
+    // Wait for model loading (thread-pool hop + factory Init round-trip)
+    // which also flushes the pending embedder callback.
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+    ASSERT_TRUE(future.Get().is_valid());
+  }
+
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<LocalAIService> service_;
   FakeWorker fake_worker_;
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
+  base::ScopedTempDir temp_dir_;
 };
 
 TEST_F(LocalAIServiceTest, GetPassageEmbedderCreatesBackgroundContents) {
@@ -157,30 +224,36 @@ TEST_F(LocalAIServiceTest, GetPassageEmbedderCreatesBackgroundContents) {
   service_->GetPassageEmbedder(future.GetCallback());
   EXPECT_TRUE(last_created_web_contents_);
 
-  // Register factory to flush the pending callback.
+  // Pending callback is only served once model is fully loaded.
+  SetUpModelFiles();
   RegisterFactory();
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
   EXPECT_TRUE(future.Get().is_valid());
 }
 
-TEST_F(LocalAIServiceTest, GetPassageEmbedderWaitsForFactory) {
-  // Call GetPassageEmbedder before factory is registered — callback
+TEST_F(LocalAIServiceTest, GetPassageEmbedderWaitsForModelReady) {
+  // Call GetPassageEmbedder before anything is ready — callback
   // should be deferred.
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
   service_->GetPassageEmbedder(future.GetCallback());
   EXPECT_FALSE(future.IsReady());
 
-  // Registering the factory flushes the pending callback.
+  // Model files alone aren't enough (no factory yet).
+  SetUpModelFiles();
+  EXPECT_FALSE(future.IsReady());
+
+  // Once factory registers and model loads, callback is served.
   RegisterFactory();
-  EXPECT_TRUE(future.IsReady());
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
   EXPECT_TRUE(future.Get().is_valid());
 }
 
 TEST_F(LocalAIServiceTest, EndToEndEmbedding) {
-  // Register factory first, then get embedder — callback should
-  // resolve immediately.
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
   service_->GetPassageEmbedder(future.GetCallback());
+  SetUpModelFiles();
   RegisterFactory();
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
 
   mojo::Remote<mojom::PassageEmbedder> embedder;
   embedder.Bind(future.Take());
@@ -200,7 +273,10 @@ TEST_F(LocalAIServiceTest, MultipleConsumersEachGetResults) {
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f2;
   service_->GetPassageEmbedder(f1.GetCallback());
   service_->GetPassageEmbedder(f2.GetCallback());
+  SetUpModelFiles();
   RegisterFactory();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return f1.IsReady() && f2.IsReady(); }));
 
   mojo::Remote<mojom::PassageEmbedder> embedder1;
   embedder1.Bind(f1.Take());
@@ -220,7 +296,9 @@ TEST_F(LocalAIServiceTest, MultipleConsumersEachGetResults) {
 TEST_F(LocalAIServiceTest, ShutdownDisconnectsConsumers) {
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
   service_->GetPassageEmbedder(future.GetCallback());
+  SetUpModelFiles();
   RegisterFactory();
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
 
   mojo::Remote<mojom::PassageEmbedder> embedder;
   embedder.Bind(future.Take());
@@ -252,7 +330,9 @@ TEST_F(LocalAIServiceTest, ShutdownCancelsPendingCallbacks) {
 TEST_F(LocalAIServiceTest, ReinitializesAfterDestroyed) {
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
   service_->GetPassageEmbedder(future.GetCallback());
+  SetUpModelFiles();
   RegisterFactory();
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
 
   ASSERT_TRUE(last_created_web_contents_);
   last_created_web_contents_->SimulateDestroyed();
@@ -272,23 +352,142 @@ TEST_F(LocalAIServiceTest, DoubleShutdownIsIdempotent) {
   keyed_service->Shutdown();
 }
 
-TEST_F(LocalAIServiceTest, FactoryDisconnectCancelsPendingCallbacks) {
-  // Queue a callback, register factory, then disconnect.
+TEST_F(LocalAIServiceTest, GetPassageEmbedderAfterModelReady) {
+  // Queue a callback, load model, register factory.
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>>
       pending_future;
   service_->GetPassageEmbedder(pending_future.GetCallback());
+  SetUpModelFiles();
   RegisterFactory();
 
-  // First callback should have been served.
+  // First callback should have been served after model loaded.
+  ASSERT_TRUE(base::test::RunUntil([&] { return pending_future.IsReady(); }));
   EXPECT_TRUE(pending_future.Get().is_valid());
 
-  // Queue another callback and simulate factory disconnect.
+  // Queue another callback — model is initialized and factory bound,
+  // so this callback should be served immediately.
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future2;
   service_->GetPassageEmbedder(future2.GetCallback());
-
-  // Factory is still bound, so this callback should be served
-  // immediately.
   EXPECT_TRUE(future2.Get().is_valid());
+}
+
+// Model loading tests
+
+TEST_F(LocalAIServiceTest, TryLoadModelWaitsForBothConditions) {
+  // Request embedder to create background contents.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+
+  // Only component ready - not enough (no factory).
+  SetUpModelFiles();
+  EXPECT_EQ(0, fake_factory_.init_count());
+
+  // Both conditions met - now Init() should be triggered on the factory.
+  RegisterFactory();
+
+  // Wait for thread-pool hop (LoadModelFiles) and mojo round-trip
+  // (factory_->Init) to complete.
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+  EXPECT_EQ(1, fake_factory_.init_count());
+}
+
+TEST_F(LocalAIServiceTest, TryLoadModelDoesNotLoadIfAlreadyInitialized) {
+  MakeFullyReady();
+  EXPECT_EQ(1, fake_factory_.init_count());
+}
+
+TEST_F(LocalAIServiceTest, ComponentReadyBeforeFactoryTriggersLoad) {
+  // Request embedder to create background contents.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+
+  // Component ready first, then factory registers.
+  SetUpModelFiles();
+  RegisterFactory();
+
+  // Wait for thread-pool hop (LoadModelFiles) and mojo round-trip
+  // (factory_->Init) to complete.
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+  EXPECT_EQ(1, fake_factory_.init_count());
+}
+
+TEST_F(LocalAIServiceTest, RegisterFactoryAloneIsNotReady) {
+  // Request embedder to create background contents.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  RegisterFactory();
+
+  // Factory registered but no model files — Init should not be called.
+  EXPECT_EQ(0, fake_factory_.init_count());
+}
+
+TEST_F(LocalAIServiceTest, InitFailureCancelsPendingCallbacks) {
+  fake_factory_.set_init_success(false);
+
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f1;
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f2;
+  service_->GetPassageEmbedder(f1.GetCallback());
+  service_->GetPassageEmbedder(f2.GetCallback());
+
+  SetUpModelFiles();
+  RegisterFactory();
+
+  // Init() fails — all pending consumers should get null remotes.
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return f1.IsReady() && f2.IsReady(); }));
+  EXPECT_FALSE(f1.Get().is_valid());
+  EXPECT_FALSE(f2.Get().is_valid());
+}
+
+TEST_F(LocalAIServiceTest, InitFailureAllowsRetryOnNewRequest) {
+  fake_factory_.set_init_success(false);
+
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f1;
+  service_->GetPassageEmbedder(f1.GetCallback());
+  SetUpModelFiles();
+  RegisterFactory();
+
+  // First attempt fails.
+  ASSERT_TRUE(base::test::RunUntil([&] { return f1.IsReady(); }));
+  EXPECT_FALSE(f1.Get().is_valid());
+  EXPECT_EQ(1, fake_factory_.init_count());
+
+  // Background contents should have been torn down.
+  EXPECT_FALSE(last_created_web_contents_);
+
+  // A new request recreates background contents, and once the factory
+  // re-registers the whole flow retries. Reset the receiver first —
+  // in production each WASM page creates a new factory instance; here
+  // we reuse the fake so need to unbind before rebinding.
+  fake_factory_.set_init_success(true);
+  fake_factory_.ResetReceiver();
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f2;
+  service_->GetPassageEmbedder(f2.GetCallback());
+  EXPECT_TRUE(last_created_web_contents_);
+
+  // Simulate the new WASM page registering its factory.
+  RegisterFactory();
+  ASSERT_TRUE(base::test::RunUntil([&] { return f2.IsReady(); }));
+  EXPECT_TRUE(f2.Get().is_valid());
+  EXPECT_EQ(2, fake_factory_.init_count());
+}
+
+TEST_F(LocalAIServiceTest, MissingModelFilesCancelsPendingCallbacks) {
+  // Set an install dir that exists but has no model files inside it.
+  ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+  base::FilePath dir = temp_dir_.GetPath();
+  ASSERT_TRUE(base::CreateDirectory(dir.AppendASCII(kEmbeddingGemmaModelDir)));
+  LocalModelsUpdaterState::GetInstance()->SetInstallDir(dir);
+
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  RegisterFactory();
+
+  // Disk read fails — consumer should get a null remote.
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
+  EXPECT_FALSE(future.Get().is_valid());
 }
 
 }  // namespace local_ai
