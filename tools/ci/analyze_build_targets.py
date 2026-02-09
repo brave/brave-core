@@ -85,10 +85,18 @@ def main():
 
     args = parser.parse_args()
 
-    # Verify build directory exists
-    build_path = SRC_DIR / args.build_dir
+    # Resolve build directory (can be absolute or relative to cwd)
+    build_path = Path(args.build_dir).resolve()
     if not (build_path / "build.ninja").is_file():
         print(f"Error: {args.build_dir} is not a valid build directory",
+              file=sys.stderr)
+        sys.exit(2)
+
+    # Get path relative to SRC_DIR for gn analyze
+    try:
+        build_dir = str(build_path.relative_to(SRC_DIR))
+    except ValueError:
+        print(f"Error: {args.build_dir} must be under {SRC_DIR}",
               file=sys.stderr)
         sys.exit(2)
 
@@ -115,9 +123,10 @@ def main():
 
     # Run analysis
     try:
-        result = run_gn_analyze(args.build_dir, files, SRC_DIR)
+        result = run_gn_analyze(build_dir, files, SRC_DIR)
     except subprocess.CalledProcessError as e:
-        print(f"Error running gn analyze: {e.stderr}", file=sys.stderr)
+        error_msg = e.stderr or e.stdout or str(e)
+        print(f"Error running gn analyze: {error_msg}", file=sys.stderr)
         sys.exit(2)
 
     if "error" in result:

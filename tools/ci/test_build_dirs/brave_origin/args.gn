@@ -1,0 +1,2 @@
+target_os="mac"
+is_brave_origin_branded=true
