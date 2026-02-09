@@ -16,7 +16,12 @@ namespace ai_chat::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
+#if BUILDFLAG(IS_IOS)
+    registry->RegisterBooleanPref(kBraveChatStorageEnabled,
+                                  ai_chat::features::IsAIChatWebUIEnabled());
+#else
     registry->RegisterBooleanPref(kBraveChatStorageEnabled, true);
+#endif
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
     registry->RegisterBooleanPref(kUserDismissedStorageNotice, false);
