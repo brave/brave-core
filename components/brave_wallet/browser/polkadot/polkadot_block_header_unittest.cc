@@ -36,7 +36,7 @@ TEST(PolkadotBlockHeader, BlockHashing) {
         header.extrinsics_root));
 
     EXPECT_EQ(
-        base::HexEncodeLower(header.hash()),
+        base::HexEncodeLower(header.GetHash()),
         "e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e");
   }
 
@@ -87,7 +87,7 @@ TEST(PolkadotBlockHeader, BlockHashing) {
     }
 
     EXPECT_EQ(
-        base::HexEncodeLower(header.hash()),
+        base::HexEncodeLower(header.GetHash()),
         "89f3078e21bacfecb8f892b43f995695f2ae28bc198d67e9e775756a524945be");
   }
 
@@ -140,7 +140,7 @@ TEST(PolkadotBlockHeader, BlockHashing) {
     }
 
     EXPECT_EQ(
-        base::HexEncodeLower(header.hash()),
+        base::HexEncodeLower(header.GetHash()),
         "524660d2802956c072ce112b5220ea6137cab900a87a806caf7d46ac0f225e42");
   }
 
@@ -193,7 +193,7 @@ TEST(PolkadotBlockHeader, BlockHashing) {
     }
 
     EXPECT_EQ(
-        base::HexEncodeLower(header.hash()),
+        base::HexEncodeLower(header.GetHash()),
         "b54e12ebd0843d187f19d39fb8e9472a217cfa38ad063210e912f1ec98b070f9");
   }
 
@@ -237,7 +237,7 @@ TEST(PolkadotBlockHeader, BlockHashing) {
     }
 
     EXPECT_EQ(
-        base::HexEncodeLower(header.hash()),
+        base::HexEncodeLower(header.GetHash()),
         "91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3");
   }
 }

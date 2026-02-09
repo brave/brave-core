@@ -25,7 +25,7 @@ struct PolkadotBlockHeader {
   PolkadotBlockHeader& operator=(const PolkadotBlockHeader&) = delete;
   PolkadotBlockHeader& operator=(PolkadotBlockHeader&&);
 
-  std::array<uint8_t, 32> hash() const;
+  std::array<uint8_t, 32> GetHash() const;
 
   std::array<uint8_t, kPolkadotBlockHashSize> parent_hash = {};
   uint32_t block_number = 0;

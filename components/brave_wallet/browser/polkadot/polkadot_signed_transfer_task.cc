@@ -192,7 +192,7 @@ void PolkadotSignedTransferTask::UpdateSigningHeader() {
     signing_header_ = std::move(finalized_header_);
   }
 
-  signing_block_hash_ = signing_header_->hash();
+  signing_block_hash_ = signing_header_->GetHash();
 
   GetPolkadotRpc()->GetRuntimeVersion(
       chain_id_, signing_header_->parent_hash,

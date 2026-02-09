@@ -19,7 +19,7 @@ PolkadotBlockHeader::~PolkadotBlockHeader() = default;
 PolkadotBlockHeader& PolkadotBlockHeader::operator=(PolkadotBlockHeader&&) =
     default;
 
-std::array<uint8_t, 32> PolkadotBlockHeader::hash() const {
+std::array<uint8_t, 32> PolkadotBlockHeader::GetHash() const {
   auto enc_block_num = compact_scale_encode_u32(block_number);
 
   // We can die here because it means our parsing layer failed and we have a
