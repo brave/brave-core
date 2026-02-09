@@ -15,8 +15,8 @@ WalletHttpClientImpl::WalletHttpClientImpl(
 
 WalletHttpClientImpl::~WalletHttpClientImpl() = default;
 
-void WalletHttpClientImpl::UpsertPass(WalletPass pass,
-                                      UpsertPassCallback callback) {
+void WalletHttpClientImpl::UpsertPublicPass(Pass pass,
+                                            UpsertPublicPassCallback callback) {
   std::move(callback).Run(
       base::unexpected(WalletHttpClient::WalletRequestError::kGenericError));
 }
