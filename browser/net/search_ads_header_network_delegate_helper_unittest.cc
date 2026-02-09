@@ -97,8 +97,8 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
       std::shared_ptr<BraveRequestInfo> request) {
     net::HttpRequestHeaders request_headers;
     request->headers = &request_headers;
-    const int result_code = OnBeforeStartTransaction_SearchAdsHeader(
-        ResponseCallback(), request);
+    const int result_code =
+        OnBeforeStartTransaction_SearchAdsHeader(ResponseCallback(), request);
     EXPECT_EQ(result_code, net::OK);
     EXPECT_TRUE(request_headers.HasHeader(kSearchAdsHeader));
     EXPECT_EQ(request_headers.GetHeader(kSearchAdsHeader),
@@ -109,8 +109,8 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
       std::shared_ptr<BraveRequestInfo> request) {
     net::HttpRequestHeaders request_headers;
     request->headers = &request_headers;
-    const int result_code = OnBeforeStartTransaction_SearchAdsHeader(
-        ResponseCallback(), request);
+    const int result_code =
+        OnBeforeStartTransaction_SearchAdsHeader(ResponseCallback(), request);
     EXPECT_EQ(result_code, net::OK);
     EXPECT_FALSE(request_headers.HasHeader(kSearchAdsHeader));
   }

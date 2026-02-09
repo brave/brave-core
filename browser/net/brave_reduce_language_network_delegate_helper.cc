@@ -137,7 +137,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   }
 
   ctx->headers->SetHeader(net::HttpRequestHeaders::kAcceptLanguage,
-                           accept_language_string);
+                          accept_language_string);
   ctx->set_headers.insert(net::HttpRequestHeaders::kAcceptLanguage);
 
   return net::OK;

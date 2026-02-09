@@ -58,8 +58,8 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, UANotAllowedTest) {
                       "(KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36");
     auto brave_request_info = MakeRequest(url);
     brave_request_info->headers = &headers;
-    int rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-        ResponseCallback(), brave_request_info);
+    int rc = brave::OnBeforeStartTransaction_SiteHacksWork(ResponseCallback(),
+                                                           brave_request_info);
     auto user_agent = headers.GetHeader(kUserAgentHeader);
     EXPECT_EQ(rc, net::OK);
     ASSERT_TRUE(user_agent.has_value());

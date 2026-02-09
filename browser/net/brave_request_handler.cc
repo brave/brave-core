@@ -102,8 +102,8 @@ void BraveRequestHandler::SetupCallbacks() {
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveReduceLanguage)) {
-    before_start_transaction.push_back(
-        base::BindRepeating(brave::OnBeforeStartTransaction_ReduceLanguageWork));
+    before_start_transaction.push_back(base::BindRepeating(
+        brave::OnBeforeStartTransaction_ReduceLanguageWork));
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -229,9 +229,8 @@ void BraveRequestHandler::RunNextCallback(
   while (callbacks.size() != ctx->next_url_request_index) {
     brave::BraveRequestCallback callback =
         callbacks[ctx->next_url_request_index++];
-    brave::ResponseCallback next_callback =
-        base::BindRepeating(&BraveRequestHandler::RunNextCallback,
-                            weak_factory_.GetWeakPtr(), ctx);
+    brave::ResponseCallback next_callback = base::BindRepeating(
+        &BraveRequestHandler::RunNextCallback, weak_factory_.GetWeakPtr(), ctx);
     rv = callback.Run(next_callback, ctx);
     if (rv == net::ERR_IO_PENDING) {
       return;

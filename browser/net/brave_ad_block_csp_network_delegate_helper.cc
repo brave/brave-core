@@ -82,8 +82,7 @@ int OnHeadersReceived_AdBlockCspWork(
         (*ctx->override_response_headers)
             ->GetNormalizedHeader("Content-Security-Policy");
 
-    (*ctx->override_response_headers)
-        ->RemoveHeader("Content-Security-Policy");
+    (*ctx->override_response_headers)->RemoveHeader("Content-Security-Policy");
 
     g_brave_browser_process->ad_block_service()
         ->GetTaskRunner()
