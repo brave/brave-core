@@ -19,6 +19,10 @@ class BraveStatsUpdaterTest;
 class GURL;
 class PrefService;
 
+namespace serp_metrics {
+class SerpMetrics;
+}  // namespace serp_metrics
+
 namespace brave_stats {
 
 inline constexpr char kHeadlessRefcode[] = "HED001";
@@ -28,8 +32,10 @@ bool IsHeadlessOrAutomationMode();
 class BraveStatsUpdaterParams {
  public:
   explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
+                                   serp_metrics::SerpMetrics* serp_metrics,
                                    const ProcessArch arch);
   BraveStatsUpdaterParams(PrefService* stats_pref_service,
+                          serp_metrics::SerpMetrics* serp_metrics,
                           const ProcessArch arch,
                           const std::string& ymd,
                           int woy,
@@ -58,6 +64,7 @@ class BraveStatsUpdaterParams {
   friend class ::BraveStatsUpdaterTest;
 
   raw_ptr<PrefService> stats_pref_service_ = nullptr;
+  const raw_ptr<serp_metrics::SerpMetrics> serp_metrics_;
   ProcessArch arch_;
   std::string ymd_;
   int woy_;
