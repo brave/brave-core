@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/functional/callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
@@ -18,11 +19,15 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_bubble_type.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -504,3 +509,95 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   EXPECT_FALSE(browser_view()->window_scrim_view()->GetVisible());
 }
 #endif  // !BUILDFLAG(IS_MAC)
+
+// Tests Brave's UpdateExclusiveAccessBubble override: fullscreen exit
+// instruction bubble is shown or hidden based on kShowFullscreenReminder pref,
+// for both tab-initiated and browser-initiated fullscreen.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       FullscreenBubbleHiddenWhenPrefDisabled_TabFullscreen) {
+  browser()->profile()->GetPrefs()->SetBoolean(kShowFullscreenReminder, false);
+
+  browser()
+      ->GetFeatures()
+      .exclusive_access_manager()
+      ->context()
+      ->UpdateExclusiveAccessBubble(
+          {
+              .origin = url::Origin::Create(GURL("http://www.example.com")),
+              .type = ExclusiveAccessBubbleType::
+                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION,
+              .force_update = true,
+          },
+          base::NullCallback());
+
+  EXPECT_FALSE(browser_view()
+                   ->GetExclusiveAccessContext()
+                   ->IsExclusiveAccessBubbleDisplayed());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveBrowserViewTest,
+    FullscreenBubbleHiddenWhenPrefDisabled_BrowserFullscreen) {
+  browser()->profile()->GetPrefs()->SetBoolean(kShowFullscreenReminder, false);
+
+  browser()
+      ->GetFeatures()
+      .exclusive_access_manager()
+      ->context()
+      ->UpdateExclusiveAccessBubble(
+          {
+              .origin = url::Origin::Create(GURL("http://www.example.com")),
+              .type = ExclusiveAccessBubbleType::
+                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION,
+              .force_update = true,
+          },
+          base::NullCallback());
+
+  EXPECT_FALSE(browser_view()
+                   ->GetExclusiveAccessContext()
+                   ->IsExclusiveAccessBubbleDisplayed());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       FullscreenBubbleShownWhenPrefEnabled_TabFullscreen) {
+  browser()->profile()->GetPrefs()->SetBoolean(kShowFullscreenReminder, true);
+
+  browser()
+      ->GetFeatures()
+      .exclusive_access_manager()
+      ->context()
+      ->UpdateExclusiveAccessBubble(
+          {
+              .origin = url::Origin::Create(GURL("http://www.example.com")),
+              .type = ExclusiveAccessBubbleType::
+                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION,
+              .force_update = true,
+          },
+          base::NullCallback());
+
+  EXPECT_TRUE(browser_view()
+                  ->GetExclusiveAccessContext()
+                  ->IsExclusiveAccessBubbleDisplayed());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       FullscreenBubbleShownWhenPrefEnabled_BrowserFullscreen) {
+  browser()->profile()->GetPrefs()->SetBoolean(kShowFullscreenReminder, true);
+
+  browser()
+      ->GetFeatures()
+      .exclusive_access_manager()
+      ->context()
+      ->UpdateExclusiveAccessBubble(
+          {
+              .origin = url::Origin::Create(GURL("http://www.example.com")),
+              .type = ExclusiveAccessBubbleType::
+                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION,
+              .force_update = true,
+          },
+          base::NullCallback());
+
+  EXPECT_TRUE(browser_view()
+                  ->GetExclusiveAccessContext()
+                  ->IsExclusiveAccessBubbleDisplayed());
+}
