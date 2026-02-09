@@ -7,12 +7,14 @@
 #define BRAVE_COMPONENTS_CONTAINERS_CONTENT_BROWSER_STORAGE_PARTITION_UTILS_H_
 
 #include <optional>
+#include <string>
 
 #include "base/component_export.h"
 #include "base/types/optional_ref.h"
 
 namespace content {
 class StoragePartitionConfig;
+class WebContents;
 }  // namespace content
 
 namespace containers {
@@ -35,6 +37,13 @@ COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
     base::optional_ref<const content::StoragePartitionConfig>
         storage_partition_config);
+
+// Gets the storage partition config from |web_contents|, checks internally if
+// it is a Containers storage partition, and returns the container ID if so.
+// Returns an empty string if |web_contents| is null, or if the tab is not in
+// a Containers storage partition.
+COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
+std::string GetContainerIdForWebContents(content::WebContents* web_contents);
 
 }  // namespace containers
 

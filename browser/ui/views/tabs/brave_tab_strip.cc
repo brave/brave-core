@@ -40,8 +40,6 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
-#include "content/public/browser/site_instance.h"
-#include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -324,19 +322,16 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
 bool BraveTabStrip::IsTabInContainer(const Tab* tab) const {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
-  auto storage_partition_config = GetStoragePartitionConfigForTab(tab);
-
-  return containers::IsContainersStoragePartition(storage_partition_config);
+  return !GetContainerIdForTab(tab).empty();
 }
 
-content::StoragePartitionConfig BraveTabStrip::GetStoragePartitionConfigForTab(
-    const Tab* tab) const {
+std::string BraveTabStrip::GetContainerIdForTab(const Tab* tab) const {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
   auto index = GetModelIndexOf(tab);
   if (!index) {
     // This can happen on shut-down.
-    return content::StoragePartitionConfig();
+    return std::string();
   }
 
   auto* contents =
@@ -344,13 +339,7 @@ content::StoragePartitionConfig BraveTabStrip::GetStoragePartitionConfigForTab(
           index.value());
   CHECK(contents);
 
-  return contents->GetSiteInstance()->GetStoragePartitionConfig();
-}
-
-std::string BraveTabStrip::GetContainerIdForTab(const Tab* tab) const {
-  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
-
-  return GetStoragePartitionConfigForTab(tab).partition_name();
+  return containers::GetContainerIdForWebContents(contents);
 }
 
 std::optional<containers::ContainerModel>

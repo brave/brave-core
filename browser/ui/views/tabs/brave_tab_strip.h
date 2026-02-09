@@ -16,7 +16,6 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/container_model.h"
-#include "content/public/browser/storage_partition_config.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 class Tab;
@@ -53,8 +52,6 @@ class BraveTabStrip : public TabStrip {
  private:
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Internal helper methods for container detection
-  content::StoragePartitionConfig GetStoragePartitionConfigForTab(
-      const Tab* tab) const;
   bool IsTabInContainer(const Tab* tab) const;
 
   // These methods must be called only when IsTabInContainer() returns true.

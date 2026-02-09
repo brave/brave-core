@@ -6,7 +6,9 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 
 #include "brave/components/containers/core/common/features.h"
+#include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "content/public/browser/web_contents.h"
 
 namespace containers {
 
@@ -28,6 +30,20 @@ std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
   }
 
   return std::nullopt;
+}
+
+std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return std::string();
+  }
+
+  const auto& config =
+      web_contents->GetSiteInstance()->GetStoragePartitionConfig();
+  if (!IsContainersStoragePartition(config)) {
+    return std::string();
+  }
+
+  return config.partition_name();
 }
 
 }  // namespace containers
