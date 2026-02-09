@@ -23,7 +23,7 @@ class NoDestructor;
 
 namespace local_ai {
 
-class LocalAIService;
+class LocalAIService;  // core/local_ai_service.h
 
 class LocalAIServiceFactory : public ProfileKeyedServiceFactory {
  public:
@@ -34,10 +34,9 @@ class LocalAIServiceFactory : public ProfileKeyedServiceFactory {
       Profile* profile,
       mojo::PendingReceiver<mojom::LocalAIService> receiver);
 
-  LocalAIServiceFactory();
-
  private:
   friend base::NoDestructor<LocalAIServiceFactory>;
+  LocalAIServiceFactory();
   ~LocalAIServiceFactory() override;
 
   static LocalAIService* GetServiceForProfile(Profile* profile);

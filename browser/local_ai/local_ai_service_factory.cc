@@ -9,9 +9,13 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "brave/components/local_ai/content/local_ai_service.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/content/background_web_contents_impl.h"
+#include "brave/components/local_ai/core/background_web_contents.h"
+#include "brave/components/local_ai/core/local_ai_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "url/gurl.h"
 
 namespace local_ai {
 
@@ -59,7 +63,17 @@ LocalAIServiceFactory::~LocalAIServiceFactory() = default;
 std::unique_ptr<KeyedService>
 LocalAIServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<LocalAIService>(context);
+  auto factory = base::BindRepeating(
+      [](content::BrowserContext* browser_context,
+         BackgroundWebContents::Delegate* delegate)
+          -> std::unique_ptr<BackgroundWebContents> {
+        return std::make_unique<BackgroundWebContentsImpl>(
+            browser_context, GURL(kUntrustedCandleEmbeddingGemmaWasmURL),
+            delegate);
+      },
+      context);
+
+  return std::make_unique<LocalAIService>(std::move(factory));
 }
 
 }  // namespace local_ai

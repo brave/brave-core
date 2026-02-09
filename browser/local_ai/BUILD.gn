@@ -10,17 +10,19 @@ source_set("local_ai") {
   ]
 
   public_deps = [
+    "//brave/components/local_ai/core:mojom",
     "//chrome/browser/profiles",
     "//mojo/public/cpp/bindings",
   ]
 
   deps = [
     "//base",
-    "//brave/components/local_ai/core:mojom",
+    "//brave/components/constants",
     "//brave/components/local_ai/content",
+    "//brave/components/local_ai/core",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
-    "//mojo/public/cpp/bindings",
+    "//url",
   ]
 }

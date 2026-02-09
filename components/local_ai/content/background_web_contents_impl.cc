@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/local_ai/content/background_web_contents.h"
+#include "brave/components/local_ai/content/background_web_contents_impl.h"
 
 #include "base/logging.h"
 #include "content/public/browser/navigation_controller.h"
@@ -14,7 +14,7 @@
 
 namespace local_ai {
 
-BackgroundWebContents::BackgroundWebContents(
+BackgroundWebContentsImpl::BackgroundWebContentsImpl(
     content::BrowserContext* browser_context,
     const GURL& url,
     Delegate* delegate,
@@ -41,13 +41,13 @@ BackgroundWebContents::BackgroundWebContents(
   web_contents_->SetDelegate(this);
   Observe(web_contents_.get());
 
-  DVLOG(3) << "BackgroundWebContents: Navigating to " << url;
+  DVLOG(3) << "BackgroundWebContentsImpl: Navigating to " << url;
   web_contents_->GetController().LoadURL(url, content::Referrer(),
                                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
                                          std::string());
 }
 
-BackgroundWebContents::~BackgroundWebContents() {
+BackgroundWebContentsImpl::~BackgroundWebContentsImpl() {
   // Prevent delegate callbacks during teardown.
   delegate_ = nullptr;
   if (web_contents_) {
@@ -57,23 +57,23 @@ BackgroundWebContents::~BackgroundWebContents() {
 
 // content::WebContentsDelegate:
 
-void BackgroundWebContents::CloseContents(content::WebContents* source) {
+void BackgroundWebContentsImpl::CloseContents(content::WebContents* source) {
   NotifyDestroyed(DestroyReason::kClose);
 }
 
-bool BackgroundWebContents::ShouldSuppressDialogs(
+bool BackgroundWebContentsImpl::ShouldSuppressDialogs(
     content::WebContents* source) {
   return true;
 }
 
-void BackgroundWebContents::CanDownload(
+void BackgroundWebContentsImpl::CanDownload(
     const GURL& url,
     const std::string& request_method,
     base::OnceCallback<void(bool)> callback) {
   std::move(callback).Run(false);
 }
 
-bool BackgroundWebContents::IsWebContentsCreationOverridden(
+bool BackgroundWebContentsImpl::IsWebContentsCreationOverridden(
     content::RenderFrameHost* opener,
     content::SiteInstance* source_site_instance,
     content::mojom::WindowContainerType window_container_type,
@@ -83,19 +83,19 @@ bool BackgroundWebContents::IsWebContentsCreationOverridden(
   return true;
 }
 
-bool BackgroundWebContents::CanEnterFullscreenModeForTab(
+bool BackgroundWebContentsImpl::CanEnterFullscreenModeForTab(
     content::RenderFrameHost* requesting_frame) {
   return false;
 }
 
-bool BackgroundWebContents::CanDragEnter(
+bool BackgroundWebContentsImpl::CanDragEnter(
     content::WebContents* source,
     const content::DropData& data,
     blink::DragOperationsMask operations_allowed) {
   return false;
 }
 
-void BackgroundWebContents::RequestKeyboardLock(
+void BackgroundWebContentsImpl::RequestKeyboardLock(
     content::WebContents* web_contents,
     bool esc_key_locked) {
   web_contents->GotResponseToKeyboardLockRequest(false);
@@ -103,13 +103,13 @@ void BackgroundWebContents::RequestKeyboardLock(
 
 // content::WebContentsObserver:
 
-void BackgroundWebContents::DidFinishLoad(
+void BackgroundWebContentsImpl::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
   if (!render_frame_host->IsInPrimaryMainFrame()) {
     return;
   }
-  DVLOG(3) << "BackgroundWebContents: Page loaded: " << validated_url;
+  DVLOG(3) << "BackgroundWebContentsImpl: Page loaded: " << validated_url;
   if (validated_url != expected_url_) {
     NotifyDestroyed(DestroyReason::kInvalidUrl);
     return;
@@ -119,14 +119,14 @@ void BackgroundWebContents::DidFinishLoad(
   }
 }
 
-void BackgroundWebContents::PrimaryMainFrameRenderProcessGone(
+void BackgroundWebContentsImpl::PrimaryMainFrameRenderProcessGone(
     base::TerminationStatus status) {
-  DVLOG(1) << "BackgroundWebContents: Renderer process gone, status="
+  DVLOG(1) << "BackgroundWebContentsImpl: Renderer process gone, status="
            << static_cast<int>(status);
   NotifyDestroyed(DestroyReason::kRendererGone);
 }
 
-void BackgroundWebContents::NotifyDestroyed(DestroyReason reason) {
+void BackgroundWebContentsImpl::NotifyDestroyed(DestroyReason reason) {
   if (delegate_) {
     delegate_->OnBackgroundContentsDestroyed(reason);
     // |this| is deleted.

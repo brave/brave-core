@@ -1,5 +1,5 @@
 include_rules = [
-  "+components/keyed_service",
+  "+brave/components/local_ai/core",
   "+content/public/browser",
   "+content/public/test",
   "+services/network/public",

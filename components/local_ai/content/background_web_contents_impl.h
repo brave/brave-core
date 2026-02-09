@@ -3,13 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_H_
-#define BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_H_
+#ifndef BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_IMPL_H_
+#define BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_IMPL_H_
 
 #include <memory>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/local_ai/core/background_web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "url/gurl.h"
@@ -20,51 +21,36 @@ class BrowserContext;
 
 namespace local_ai {
 
-// Manages a hidden WebContents that runs in the background without any
-// visible UI, modeled after chrome/browser/background/background_contents.h.
+// Content-layer implementation of BackgroundWebContents. Manages a hidden
+// WebContents that runs in the background without any visible UI, modeled
+// after chrome/browser/background/background_contents.h.
 //
 // The WebContents is created with is_never_composited=true and navigated
 // to the provided URL. Lifecycle events are forwarded to the Delegate.
 //
 // The destructor suppresses delegate callbacks during teardown, so
 // the owner can simply destroy this object without additional cleanup.
-class BackgroundWebContents : public content::WebContentsDelegate,
-                              public content::WebContentsObserver {
+class BackgroundWebContentsImpl : public BackgroundWebContents,
+                                  public content::WebContentsDelegate,
+                                  public content::WebContentsObserver {
  public:
-  enum class DestroyReason {
-    kClose,         // window.close() or CloseContents
-    kInvalidUrl,    // Navigated to an unexpected URL
-    kRendererGone,  // Renderer process crashed or was killed
-  };
-
-  class Delegate {
-   public:
-    // Called when DidFinishLoad fires on the background WebContents.
-    virtual void OnBackgroundContentsReady() = 0;
-
-    // Called when the background WebContents is destroyed.
-    virtual void OnBackgroundContentsDestroyed(DestroyReason reason) = 0;
-
-   protected:
-    virtual ~Delegate() = default;
-  };
-
   using WebContentsCreatedCallback =
       base::OnceCallback<void(content::WebContents*)>;
 
   // |web_contents_created_callback| is an optional callback invoked
   // immediately after the WebContents is created (e.g. for task manager
   // tagging). It runs before navigation begins.
-  BackgroundWebContents(
+  BackgroundWebContentsImpl(
       content::BrowserContext* browser_context,
       const GURL& url,
       Delegate* delegate,
       WebContentsCreatedCallback web_contents_created_callback =
           WebContentsCreatedCallback());
-  ~BackgroundWebContents() override;
+  ~BackgroundWebContentsImpl() override;
 
-  BackgroundWebContents(const BackgroundWebContents&) = delete;
-  BackgroundWebContents& operator=(const BackgroundWebContents&) = delete;
+  BackgroundWebContentsImpl(const BackgroundWebContentsImpl&) = delete;
+  BackgroundWebContentsImpl& operator=(const BackgroundWebContentsImpl&) =
+      delete;
 
   content::WebContents* web_contents() const { return web_contents_.get(); }
 
@@ -105,4 +91,4 @@ class BackgroundWebContents : public content::WebContentsDelegate,
 
 }  // namespace local_ai
 
-#endif  // BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_H_
+#endif  // BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_IMPL_H_
