@@ -47,13 +47,12 @@ std::u16string GetAutoplayIndicatorTitle() {
 // Camera and Microphone. We add AUTOPLAY to MEDIASTREAM, so we need to return
 // the appropriate title for it. Update is called from LocationBarView's
 // RefreshContentSettingViews.
-#define SetMessage(...)                                                     \
-  SetMessage(                                                               \
-      IsAutoplay(                                                           \
-          content_settings::PageSpecificContentSettings::GetForFrame(       \
-              location_bar_view_->GetWebContents()->GetPrimaryMainFrame()), \
-          indicator_model)                                                  \
-          ? GetAutoplayIndicatorTitle()                                     \
+#define SetMessage(...)                                                       \
+  SetMessage(                                                                 \
+      IsAutoplay(content_settings::PageSpecificContentSettings::GetForFrame(  \
+                     location_bar_->GetWebContents()->GetPrimaryMainFrame()), \
+                 indicator_model)                                             \
+          ? GetAutoplayIndicatorTitle()                                       \
           : GetIndicatorTitle(indicator_model))
 
 #include <chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc>
