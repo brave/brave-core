@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
 
 #include <memory>
 
@@ -46,4 +46,4 @@ class BraveAccountSettingsHandler : public mojom::RowHandlerFactory {
 
 }  // namespace brave_account
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_

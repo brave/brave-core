@@ -9,6 +9,8 @@ source_set("brave_account") {
   sources = [
     "brave_account_row_handler.cc",
     "brave_account_row_handler.h",
+    "brave_account_settings_handler.cc",
+    "brave_account_settings_handler.h",
   ]
 
   deps = [

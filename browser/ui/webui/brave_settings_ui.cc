@@ -20,7 +20,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
