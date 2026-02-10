@@ -19,6 +19,6 @@ SkColor GetTabSpinningColor(views::View* view) {
 
 #define GetCascadingAccentColor GetTabSpinningColor
 
-#include <chrome/browser/ui/views/tabs/tab_icon.cc>
+#include <chrome/browser/ui/views/tabs/tab/tab_icon.cc>
 
 #undef GetCascadingAccentColor
