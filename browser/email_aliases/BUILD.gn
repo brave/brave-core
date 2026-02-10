@@ -59,6 +59,7 @@ if (toolkit_views) {
       "//brave/browser/brave_account",
       "//brave/browser/ui/email_aliases",
       "//brave/components/brave_account",
+      "//brave/components/brave_account:test_support",
       "//brave/components/brave_account/endpoints",
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",

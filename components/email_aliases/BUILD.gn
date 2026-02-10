@@ -89,6 +89,7 @@ source_set("unit_tests") {
     ":test_utils",
     "//base/test:test_support",
     "//brave/components/brave_account",
+    "//brave/components/brave_account:test_support",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//components/os_crypt/async/browser:test_support",

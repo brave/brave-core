@@ -48,6 +48,21 @@ source_set("features") {
   deps = [ "//base" ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_brave_account_authentication.cc",
+    "mock_brave_account_authentication.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_account/mojom",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

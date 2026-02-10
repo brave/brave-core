@@ -13,7 +13,6 @@
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "testing/gmock/include/gmock/gmock.h"
 
 namespace email_aliases::test {
 
@@ -45,65 +44,6 @@ class AuthStateObserver
 
   mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver_{
       this};
-};
-
-class MockBraveAccountAuthentication
-    : public brave_account::mojom::Authentication {
- public:
-  MockBraveAccountAuthentication();
-  ~MockBraveAccountAuthentication() override;
-
-  MOCK_METHOD(void,
-              RegisterInitialize,
-              (const std::string& email,
-               const std::string& blinded_message,
-               brave_account::mojom::Authentication::RegisterInitializeCallback
-                   callback),
-              (override));
-
-  MOCK_METHOD(
-      void,
-      RegisterFinalize,
-      (const std::string& encrypted_verification_token,
-       const std::string& serialized_record,
-       brave_account::mojom::Authentication::RegisterFinalizeCallback callback),
-      (override));
-
-  MOCK_METHOD(
-      void,
-      ResendConfirmationEmail,
-      (brave_account::mojom::Authentication::ResendConfirmationEmailCallback
-           callback),
-      (override));
-
-  MOCK_METHOD(void, CancelRegistration, (), (override));
-
-  MOCK_METHOD(void,
-              LoginInitialize,
-              (const std::string& email,
-               const std::string& serialized_ke1,
-               LoginInitializeCallback callback),
-              (override));
-
-  MOCK_METHOD(void,
-              LoginFinalize,
-              (const std::string& encrypted_login_token,
-               const std::string& client_mac,
-               LoginFinalizeCallback callback),
-              (override));
-
-  MOCK_METHOD(void, LogOut, (), (override));
-
-  MOCK_METHOD(void,
-              GetServiceToken,
-              (brave_account::mojom::Service service,
-               GetServiceTokenCallback callback),
-              (override));
-
-  mojo::PendingRemote<brave_account::mojom::Authentication> BindAndGetRemote();
-
- private:
-  mojo::Receiver<brave_account::mojom::Authentication> receiver_{this};
 };
 
 GURL GetEmailAliasesServiceURL();

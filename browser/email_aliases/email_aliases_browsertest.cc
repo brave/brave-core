@@ -16,6 +16,7 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mock_brave_account_authentication.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
@@ -301,7 +302,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
                                  ui::mojom::MenuSourceType::kMouse);
   }
 
-  testing::NiceMock<test::MockBraveAccountAuthentication>&
+  testing::NiceMock<brave_account::MockBraveAccountAuthentication>&
   GetBraveAccountAuth() {
     return brave_account_auth_;
   }
@@ -309,7 +310,8 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
-  testing::NiceMock<test::MockBraveAccountAuthentication> brave_account_auth_;
+  testing::NiceMock<brave_account::MockBraveAccountAuthentication>
+      brave_account_auth_;
 };
 
 class EmailAliasesBrowserTest : public EmailAliasesBrowserTestBase {

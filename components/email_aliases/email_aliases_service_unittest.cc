@@ -20,6 +20,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mock_brave_account_authentication.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
@@ -147,7 +148,7 @@ class EmailAliasesAPITest : public ::testing::Test {
     brave_account::prefs::RegisterPrefs(prefs_.registry());
 
     brave_account_auth_ = std::make_unique<
-        testing::NiceMock<test::MockBraveAccountAuthentication>>();
+        testing::NiceMock<brave_account::MockBraveAccountAuthentication>>();
     ON_CALL(*brave_account_auth_,
             GetServiceToken(brave_account::mojom::Service::kEmailAliases, _))
         .WillByDefault([](auto service, auto callback) {
@@ -173,7 +174,8 @@ class EmailAliasesAPITest : public ::testing::Test {
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple prefs_;
-  std::unique_ptr<testing::NiceMock<test::MockBraveAccountAuthentication>>
+  std::unique_ptr<
+      testing::NiceMock<brave_account::MockBraveAccountAuthentication>>
       brave_account_auth_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
