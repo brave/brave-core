@@ -188,6 +188,7 @@
 -BoundSessionCookieRefreshServiceImplBrowserTest.CookieRotationOnStartup
 -BoundSessionOAuthMultiloginNewSessionTest.*/*
 -BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundTo*/*
+-BoundSessionOAuthMultiloginPrototypeNewSessionTest.*/*
 -BoundSessionOAuthMultiloginStandardWithPrototypeFallbackTest.StartsNewBoundSession
 -BoundSessionOAuthMultiloginStandardTest.*
 -BoundSessionOAuthMultiloginTest.*
@@ -2141,7 +2142,6 @@
 
 # These tests fail because we disable Isolated Web Apps
 -All/IsolatedWebApp*.*/*
--BorderlessBrowserTest.*
 -BorderlessIsolatedWebAppBrowserTest.*
 -BorderlessIsolatedWebAppBrowserTestDisabledFlag.AppCannotUseFeatureWhenBorderlessFlagIsDisabled
 -BrowserNavigatorIwaNewTabTest.*
@@ -2174,6 +2174,7 @@
 -SubAppsServiceImplPolicyDisabledBrowserTest.AddFailsWhenPolicyDisabled
 -TabDesktopMediaListIwaTest.*
 -TabDesktopMediaListWithIwaIncludedTest.*
+-UnframedTest.*
 -WebAppInternalsIwaInstallationBrowserTest.*
 -WebAppMenuBrowserTest.InvokeUi_main_isolated
 -WebAppTagIsolatedWebApp*.*
@@ -2663,11 +2664,30 @@
 # For more info, see https://github.com/brave/brave-browser/issues/46011
 -SecureDnsHandlerTest.OtherPoliciesSet
 
+# This test is disabled because we modify
+# `PinnedToolbarActionsContainer::ShowActionEphemerallyInToolbar` to only show
+# two possible toolbar buttons ephemerally (`kActionShowDownloads` and
+# `kActionSendTabToSelf`). However, this test tries to show
+# `kActionSendSharedTabGroupFeedback` ephemerally and triggers a CHECK.
+-VerticalTabViewDataSharingEnabledTest.LogsTabSwitchMetrics
+
 # Chromium test flaky - disabled on Windows upstream (crbug.com/413259587). Race
 # condition between JavaScript cookie set via document.cookie and backend
 # SiteDataCountingHelper query. Brave has no modifications to this code.
 -All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/*
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
+
+# This test is disabled because we diverge from Chromium when it comes to
+# secure DNS. If any policies are present, we do not force secure DNS to be
+# set to 'off'. It's still configurable by user. We have our own browser test
+# covering this - safe to disable the upstream one.
+# For more info, see https://github.com/brave/brave-browser/issues/46011
+-SecureDnsHandlerTest.OtherPoliciesSet
+
+# https://github.com/brave/brave-browser/issues/52659
+# Flaky favicon fetch failure. Also disabled on Mac upstream
+# (crbug.com/333331507).
+-InstallableManagerBrowserTest.CheckFavicon
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
@@ -3483,15 +3503,3 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
-
-# This test is disabled because we diverge from Chromium when it comes to
-# secure DNS. If any policies are present, we do not force secure DNS to be
-# set to 'off'. It's still configurable by user. We have our own browser test
-# covering this - safe to disable the upstream one.
-# For more info, see https://github.com/brave/brave-browser/issues/46011
--SecureDnsHandlerTest.OtherPoliciesSet
-
-# https://github.com/brave/brave-browser/issues/52659
-# Flaky favicon fetch failure. Also disabled on Mac upstream
-# (crbug.com/333331507).
--InstallableManagerBrowserTest.CheckFavicon
