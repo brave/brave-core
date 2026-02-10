@@ -11,6 +11,9 @@ import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 import { untrustedFrameDragHandlingSetup } from './hooks/useUntrustedFrameDragHandling'
+// <if expr="is_ios">
+import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
+// </if>
 
 import '../common/strings'
 
@@ -20,6 +23,9 @@ setIconBasePath('chrome-untrusted://resources/brave-icons')
 untrustedFrameDragHandlingSetup()
 
 function App() {
+  // <if expr="is_ios">
+  useIOSOneTapFix()
+  // </if>
   return (
     <UntrustedConversationContextProvider>
       <ConversationEntries />

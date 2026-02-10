@@ -118,12 +118,15 @@ function ConversationItem(props: ConversationItemProps) {
             className={styles.optionsMenu}
             onChange={handleButtonMenuChange}
           >
-            <div
+            <Button
               slot='anchor-content'
               className={styles.optionsButton}
+              kind='plain-faint'
+              fab
+              size='small'
             >
               <Icon name='more-vertical' />
-            </div>
+            </Button>
             <leo-menu-item onClick={handleEditTitle}>
               <div className={styles.optionsMenuItemWithIcon}>
                 <Icon name='edit-pencil' />

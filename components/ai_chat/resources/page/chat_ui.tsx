@@ -24,6 +24,9 @@ import Loading from './components/loading'
 import { ActiveChatProviderFromUrl } from './state/active_chat_context'
 
 import '../common/strings'
+// <if expr="is_ios">
+import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
+// </if>
 
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -31,6 +34,9 @@ setIconBasePath('chrome://resources/brave-icons')
 const api = getAPI()
 
 function App() {
+  // <if expr="is_ios">
+  useIOSOneTapFix()
+  // </if>
   React.useEffect(() => {
     document.getElementById('mountPoint')?.classList.add('loaded')
   }, [])
