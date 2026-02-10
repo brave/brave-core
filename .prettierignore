@@ -7,7 +7,10 @@
 *.html
 
 # Ignore some non-component top level folders (remove to opt-in):
-/chromium_src
+/chromium_src/chrome/
+/chromium_src/components/
+/chromium_src/third_party/
+/chromium_src/ui/
 /docs
 /ios
 /resources
