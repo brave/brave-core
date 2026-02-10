@@ -601,3 +601,28 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                   ->GetExclusiveAccessContext()
                   ->IsExclusiveAccessBubbleDisplayed());
 }
+
+// Ensure the bubble is shown for extension-initiated fullscreen when the
+// preference is enabled.
+IN_PROC_BROWSER_TEST_F(
+    BraveBrowserViewTest,
+    FullscreenBubbleShownWhenPrefEnabled_ExtensionFullscreen) {
+  browser()->profile()->GetPrefs()->SetBoolean(kShowFullscreenReminder, true);
+
+  browser()
+      ->GetFeatures()
+      .exclusive_access_manager()
+      ->context()
+      ->UpdateExclusiveAccessBubble(
+          {
+              .origin = url::Origin::Create(GURL("http://www.example.com")),
+              .type = ExclusiveAccessBubbleType::
+                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_EXTENSION_FULLSCREEN_EXIT_INSTRUCTION,
+              .force_update = true,
+          },
+          base::NullCallback());
+
+  EXPECT_TRUE(browser_view()
+                  ->GetExclusiveAccessContext()
+                  ->IsExclusiveAccessBubbleDisplayed());
+}
