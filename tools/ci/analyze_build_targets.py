@@ -26,6 +26,28 @@ import tempfile
 from pathlib import Path
 
 SRC_DIR = Path(__file__).resolve().parent.parent.parent.parent
+
+# Source file extensions that gn analyze can evaluate.
+# Any other file type change will trigger a build.
+SOURCE_EXTENSIONS = frozenset([
+    '.c',
+    '.cc',
+    '.cpp',
+    '.h',
+    '.hpp',  # C/C++
+    '.m',
+    '.mm',  # Objective-C/C++
+    '.rs',  # Rust
+    '.java',  # Java
+    '.swift',  # Swift
+    '.gn',
+    '.gni',  # gn
+])
+
+# File extensions that never affect builds and should be ignored.
+IGNORED_EXTENSIONS = frozenset([
+    '.md',  # Markdown
+])
 sys.path.insert(0, str(SRC_DIR / 'third_party' / 'depot_tools'))
 
 from scm import GIT
@@ -121,9 +143,33 @@ def main():
         print("No build needed (no changed files)")
         sys.exit(0)
 
-    # Run analysis
+    # Separate source files from non-source files, ignoring doc files
+    source_files = []
+    non_source_files = []
+    for f in files:
+        ext = Path(f).suffix.lower()
+        if ext in IGNORED_EXTENSIONS:
+            continue  # Skip files that never affect builds
+        if ext in SOURCE_EXTENSIONS:
+            source_files.append(f)
+        else:
+            non_source_files.append(f)
+
+    # Non-source file changes always trigger a build
+    if non_source_files:
+        print(
+            f"Build needed (non-source files changed: {len(non_source_files)})"
+        )
+        sys.exit(1)
+
+    # No source files to analyze
+    if not source_files:
+        print("No build needed (no source files changed)")
+        sys.exit(0)
+
+    # Run analysis on source files
     try:
-        result = run_gn_analyze(build_dir, files, SRC_DIR)
+        result = run_gn_analyze(build_dir, source_files, SRC_DIR)
     except subprocess.CalledProcessError as e:
         error_msg = e.stderr or e.stdout or str(e)
         print(f"Error running gn analyze: {error_msg}", file=sys.stderr)

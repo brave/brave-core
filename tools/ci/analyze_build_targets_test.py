@@ -36,11 +36,17 @@ def ensure_build_dirs():
 # Test cases: (config, file, expected_needs_build, description)
 TEST_CASES = [
     # java changes only build android
-    ('mac', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips mac'),
-    ('ios', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips ios'),
-    ('win', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips win'),
-    ('linux', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips linux'),
-    ('android', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', True,
+    ('mac', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java',
+     False, 'Java skips mac'),
+    ('ios', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java',
+     False, 'Java skips ios'),
+    ('win', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java',
+     False, 'Java skips win'),
+    ('linux',
+     'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False,
+     'Java skips linux'),
+    ('android',
+     'android/java/org/chromium/chrome/browser/app/BraveActivity.java', True,
      'Java triggers android'),
 
     # brave/browser changes don't build ios
@@ -56,19 +62,16 @@ TEST_CASES = [
      'brave/browser triggers android'),
 
     # ios changes only build ios
-    ('ios', 'ios/app/brave_core_main.mm', True,
-     'ios changes triggers ios'),
-    ('mac', 'ios/app/brave_core_main.mm', False,
-     'ios changes skip mac'),
-    ('win', 'ios/app/brave_core_main.mm', False,
-     'ios changes skip win'),
-    ('linux', 'ios/app/brave_core_main.mm', False,
-     'ios changes skip linux'),
+    ('ios', 'ios/app/brave_core_main.mm', True, 'ios changes triggers ios'),
+    ('mac', 'ios/app/brave_core_main.mm', False, 'ios changes skip mac'),
+    ('win', 'ios/app/brave_core_main.mm', False, 'ios changes skip win'),
+    ('linux', 'ios/app/brave_core_main.mm', False, 'ios changes skip linux'),
     ('android', 'ios/app/brave_core_main.mm', False,
      'ios changes skip android'),
 
     # brave origin
-    ('brave_origin', 'components/brave_ads/core/browser/service/ads_service.cc', True,
+    ('brave_origin',
+     'components/brave_ads/core/browser/service/ads_service.cc', True,
      'ads changes skip brave_origin'),
 ]
 
