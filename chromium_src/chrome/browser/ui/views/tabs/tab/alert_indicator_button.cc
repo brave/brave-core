@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
+#include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -14,15 +14,16 @@
 
 #define AlertIndicatorButton AlertIndicatorButtonBase
 
-#include <chrome/browser/ui/views/tabs/alert_indicator_button.cc>
+#include <chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc>
 
 #undef AlertIndicatorButton
 
 void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
   const bool was_enabled = GetEnabled();
   if (delegate_->IsTabMuteIndicatorNotClickable()) {
-    if (was_enabled)
+    if (was_enabled) {
       SetEnabled(false);
+    }
     return;
   }
   AlertIndicatorButtonBase::UpdateEnabledForMuteToggle();
