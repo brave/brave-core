@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.IntentUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeInactivityTracker;
@@ -30,8 +31,11 @@ public final class BraveReturnToChromeUtil {
     /** Returns whether should show a NTP as the home surface at startup. */
     public static boolean shouldShowNtpAsHomeSurfaceAtStartup(
             Intent intent, Bundle bundle, ChromeInactivityTracker inactivityTracker) {
-        // When feature is disabled, use Brave's default behavior
-        if (!BraveFreshNtpHelper.isEnabled()) {
+        // Only show NTP when launched from the main launcher icon. This prevents showing
+        // NTP + snackbar when the app is opened via an external link (e.g., clicking a URL
+        // in other apps or sharing a link).
+        // When feature is disabled, use Brave's default behavior.
+        if (!IntentUtils.isMainIntentFromLauncher(intent) || !BraveFreshNtpHelper.isEnabled()) {
             return false;
         }
 
