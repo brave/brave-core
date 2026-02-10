@@ -99,9 +99,8 @@ function ToolEventContent(
   }
 
   // defaults
-  const hasOutput = !!(toolUseEvent.output && toolUseEvent.output.length > 0)
   let content: ToolUseContent = {
-    toolLabel: getToolLabel(toolUseEvent.toolName, input, hasOutput),
+    toolLabel: getToolLabel(toolUseEvent.toolName, input),
     // Note: we're not providing anything for expanded content by default. We
     // could consider showing the tool input and output in a generic way,
     // especially in an advanced mode. But this is mainly so that tools can

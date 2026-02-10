@@ -900,7 +900,4 @@
   <message name="IDS_CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL" desc="Label for output section in code execution tool" formatter_data="webui=AiChat">
     Output:
   </message>
-  <message name="IDS_CHAT_UI_TOOL_LABEL_SEARCHED_FOR" desc="Label for when the assistant has searched for a query" formatter_data="webui=AiChat">
-    Searched for "<ph name="QUERY">$1<ex>latest news</ex></ph>"
-  </message>
 </grit-part>

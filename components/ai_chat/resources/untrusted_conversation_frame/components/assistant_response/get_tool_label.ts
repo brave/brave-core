@@ -40,11 +40,7 @@ function getHistoryToolNameLabel(toolInput: any) {
  * To display any more complex UI for a tool and not simply a string label,
  * the tool should get its own content component via ToolEventContent.
  */
-export function getToolLabel(
-  toolName: string,
-  toolInput: any,
-  hasOutput: boolean,
-) {
+export function getToolLabel(toolName: string, toolInput: any) {
   switch (toolName) {
     case Mojom.NAVIGATE_TOOL_NAME:
       return getNavigateToolNameLabel(toolInput)
@@ -66,19 +62,6 @@ export function getToolLabel(
       return getLocale(S.CHAT_UI_TOOL_LABEL_WAIT)
     case Mojom.CODE_EXECUTION_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
-    case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
-    case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME: {
-      // SearchStatusEvent handles the "searching" state, so only show label
-      // when tool has completed (has output)
-      if (!hasOutput) {
-        return null
-      }
-      const query = toolInput?.query
-      if (typeof query === 'string' && query) {
-        return formatLocale(S.CHAT_UI_TOOL_LABEL_SEARCHED_FOR, { $1: query })
-      }
-      return null
-    }
     default:
       return toolName
   }
