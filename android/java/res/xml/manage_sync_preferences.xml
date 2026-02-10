@@ -96,10 +96,10 @@
         java.lang.NullPointerException: Attempt to invoke virtual method
         'void org.chromium.components.browser_ui.settings.ChromeSwitchPreference.setChecked(boolean)'
         on a null object reference
-	at ManageSyncSettings.setupUrlKeyedAnonymizedDataPreference(ManageSyncSettings.java:633)
-	at ManageSyncSettings.setupSyncSettings(ManageSyncSettings.java:542)
-	at ManageSyncSettings.onCreatePreferences(ManageSyncSettings.java:250)
-	at BraveManageSyncSettings.onCreatePreferences(BraveManageSyncSettings.java:67)
+        at ManageSyncSettings.setupUrlKeyedAnonymizedDataPreference(ManageSyncSettings.java:633)
+        at ManageSyncSettings.setupSyncSettings(ManageSyncSettings.java:542)
+        at ManageSyncSettings.onCreatePreferences(ManageSyncSettings.java:250)
+        at BraveManageSyncSettings.onCreatePreferences(BraveManageSyncSettings.java:67)
     -->
     <PreferenceCategory
         android:key="search_and_browse_category"
