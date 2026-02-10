@@ -7,6 +7,7 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import '../settings_shared.css.js';
 
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {BaseMixin} from '../base_mixin.js';
@@ -33,7 +34,7 @@ export class SettingsBraveOriginOnboardingElement extends
 
   private onBuyNowClick_() {
     window.open(
-        'https://account.brave.com/?intent=checkout&product=origin&mtm_campaign=browser-settings',
+        loadTimeData.getString('braveOriginBuyUrl'),
         '_blank',
         'noopener');
   }
