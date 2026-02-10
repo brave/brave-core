@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Zobrazit návrhy prohlížeče</translation>
 <translation id="8982438328166986164">Zobrazuje návrhy webových stránek na základě vašich záložek a historie procházení.</translation>
 <translation id="924029461438529367">Zobrazit návrhy vyhledávání</translation>
-<translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
-<translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="9148058034647219655">Ukončit</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrování obsahu</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Neupgradovat připojení na HTTPS (vypnuto)</translation>
 <translation id="693506469193748756">Když zavřu tuto stránku, zapomeňte na mě.</translation>
 <translation id="6975864539539353406">Vymaže soubory cookie a další data webu při zavření webové stránky</translation>
+<translation id="7740929262043547697">Povolit blokování prvků v soukromých oknech</translation>
+<translation id="1260864846935682371">Povolí funkci Štítů Blokovat prvky v soukromých oknech. Všimněte si, že prvky blokované v soukromých oknech budou blokovány i v běžných oknech.</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
 <translation id="7142548388914389999">Umožnit analýzu produktů se zachováním soukromí (P3A)</translation>
 <translation id="5254037869598726291">Anonymizované informace P3A pomáhají společnosti Brave odhadnout celkové využití a zajistit, abychom mohli oblíbené funkce stále vylepšovat.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">POZDĚJI</translation>
 <translation id="4117451092682672487">Jednoduše soukromí.</translation>
 <translation id="7909375417585209817">Pokud je Brave nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Brave.</translation>
-<translation id="7370959926683925817">Blokování reklam. Zabezpečení dat. Každý den.</translation>
-<translation id="7281027579943912834">Pokud máte Brave nastavenou jako výchozí, každý odkaz, na který klepnete, získá ad-block Brave. Každá stránka, video i stream.</translation>
 <translation id="5148943178722443958">Pomozte vylepšit Brave.</translation>
 <translation id="6718362830686703942">Pokud dojde k pádu nebo zamrznutí, odešlete diagnostické hlášení.</translation>
 <translation id="8616157231067364693">Sdílejte soukromé a anonymní produktové informace o tom, jaké funkce Brave uživatelé používají.</translation>
@@ -371,6 +369,11 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8793108040181436796">Widgety</translation>
 <translation id="8643377320501056697">Ukázat Top stránky</translation>
 <translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
+<translation id="7462178177755090262">Úvodní obrazovka</translation>
+<translation id="5365434987337264071">Poslední otevřená záložka</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Nová karta po <ph name="HOURS_ONE"/> hodině nečinnosti} few {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} many {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} other {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti}}</translation>
+<translation id="5233638681132016545">Nová karta</translation>
+<translation id="8395271296293035055">Vraťte se k poslední otevřené záložce</translation>
 <translation id="8297488609722895137">Fotka od: <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Otevírat externí odkazy v prohlížeči Brave</translation>
 <translation id="5616508928556767259">Otevírat odkazy z jiných aplikací v prohlížeči Brave. Poznámka: Brave musí být nastaven jako váš výchozí prohlížeč.</translation>
@@ -761,7 +764,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6889920539620318793">Nastavit jako aktivní</translation>
 <translation id="2653659639078652383">Odeslat</translation>
 <translation id="4945690646623486292">Zvolit síť</translation>
-<translation id="5233638681132016545">Nová karta</translation>
 <translation id="8006088103295786154">Otevřít peněženku Brave</translation>
 <translation id="5308380583665731573">Propojit</translation>
 <translation id="8030169304546394654">Odpojeno</translation>
@@ -1070,6 +1072,10 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="4650851936784160359">Seznam filtrů se nepodařilo aktualizovat. Zkuste to prosím znovu</translation>
 <translation id="3098054327870766317">Zobrazit tlačítko „Zpět“ při zavření karet</translation>
 <translation id="1336494649091412226">Opravdu chcete opustit Brave?</translation>
+<translation id="6061635824229591714">Smazat data stránky?</translation>
+<translation id="1265051174491933207">Smazání odstraní data stránky a zavře všechny záložky „<ph name="SITE_NAME"/>“. Toto nelze vzít zpět.</translation>
+<translation id="4279349293084858577">Smazat</translation>
+<translation id="4426990318287827331">Smazat data</translation>
 <translation id="7942415993090181327">Historie chatů</translation>
 <translation id="6859935199732075666">Zobrazit chyby bezpečného procházení</translation>
 <translation id="2735247450315842119">Povolit snímky obrazovky na soukromých kartách</translation>

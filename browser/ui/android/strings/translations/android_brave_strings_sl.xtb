@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Pokaži predloge brskalnika</translation>
 <translation id="8982438328166986164">Prikazuje predloge spletnih mest na podlagi vaših zaznamkov in zgodovine brskanja.</translation>
 <translation id="924029461438529367">Pokaži predloge za iskanje</translation>
-<translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
-<translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
 <translation id="9148058034647219655">Zapri</translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
 <translation id="6486983549008741930">Filtriranje vsebine</translation>
@@ -146,6 +144,8 @@
 <translation id="4690906712010847708">Ne nadgradite povezav na HTTPS (onemogočeno)</translation>
 <translation id="693506469193748756">Pozabi me, ko zaprem to stran</translation>
 <translation id="6975864539539353406">Izbriše piškotke in druge podatke spletnega mesta, ko zaprete spletno mesto</translation>
+<translation id="7740929262043547697">Dovoli blokiranje elementov v zasebnih oknih</translation>
+<translation id="1260864846935682371">Omogoči funkcijo Blokiraj elemente v zasebnih oknih. Upoštevajte, da bodo elementi, blokirani v zasebnih oknih, prav tako blokirani v ne-zasebnih oknih.</translation>
 <translation id="1680858055899097121">Ne ohranjaj zavihkov med sejami brskanja</translation>
 <translation id="7142548388914389999">Dovoli analitiko izdelkov, ki varuje zasebnost (P3A)</translation>
 <translation id="5254037869598726291">Anonimizirani podatki P3A pomagajo Braveu oceniti splošno uporabo in zagotoviti, da izboljšujemo priljubljene funkcije.</translation>
@@ -193,8 +193,6 @@
 <translation id="834487290629916192">KASNEJE</translation>
 <translation id="4117451092682672487">Zasebnost. Enostavno preprosto.</translation>
 <translation id="7909375417585209817">Če je privzeta možnost Brave, se vsaka povezava, ki jo tapnete, odpre z zaščito zasebnosti Brave.</translation>
-<translation id="7370959926683925817">Blokirajte oglase. Shranite podatke. Vsak dan.</translation>
-<translation id="7281027579943912834">S privzeto funkcijo Brave vsaka povezava, ki se je dotaknete, prejme Braveovo zaščito za blokiranje oglasov. Vsaka stran, videoposnetek in prenos.</translation>
 <translation id="5148943178722443958">Pomagajte izboljšati Brave.</translation>
 <translation id="6718362830686703942">Pošljite diagnostična poročila, če pride do okvare ali zamrznitve.</translation>
 <translation id="8616157231067364693">Delite zasebne in anonimne vpoglede v izdelek o tem, katere funkcije uporabljajo uporabniki sistema Brave.</translation>
@@ -372,6 +370,11 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8793108040181436796">Pripomočki</translation>
 <translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="7275773481201277457">Pokaži Braveove statistike</translation>
+<translation id="7462178177755090262">Začetni zaslon</translation>
+<translation id="5365434987337264071">Zadnji odprt zavihek</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Nova kartica po <ph name="HOURS_ONE"/> uri neaktivnosti} two {Nova kartica po <ph name="HOURS_MANY"/> urah neaktivnosti} few {Nova kartica po <ph name="HOURS_MANY"/> urah neaktivnosti} other {Nova kartica po <ph name="HOURS_MANY"/> urah neaktivnosti}}</translation>
+<translation id="5233638681132016545">Nov zavihek</translation>
+<translation id="8395271296293035055">Nazaj na zadnji zavihek</translation>
 <translation id="8297488609722895137">Fotografija avtorja <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Odprite zunanje povezave v Brave</translation>
 <translation id="5616508928556767259">Odpre povezave iz drugih aplikacij v spletnem pogledu Brave. Opomba: Brave mora biti nastavljen kot privzeti brskalnik.</translation>
@@ -762,7 +765,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6889920539620318793">Nastavi kot aktivno</translation>
 <translation id="2653659639078652383">Pošlji</translation>
 <translation id="4945690646623486292">Izberite omrežje</translation>
-<translation id="5233638681132016545">Nov zavihek</translation>
 <translation id="8006088103295786154">Dostop do denarnice Brave</translation>
 <translation id="5308380583665731573">Povezovanje</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
@@ -1070,6 +1072,10 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4650851936784160359">Seznama filtrov ni bilo mogoče posodobiti. Prosimo, poskusite znova</translation>
 <translation id="3098054327870766317">Prikaži gumb za razveljavitev, ko so zavihki zaprti</translation>
 <translation id="1336494649091412226">Ste prepričani, da želite zapustiti Brave?</translation>
+<translation id="6061635824229591714">Uniči podatke mesta?</translation>
+<translation id="1265051174491933207">Brisanje bo izbrisalo podatke mesta in zaprlo vse zavihke '<ph name="SITE_NAME"/>'. Tega dejanja ni mogoče razveljaviti.</translation>
+<translation id="4279349293084858577">Uniči</translation>
+<translation id="4426990318287827331">Uniči podatke</translation>
 <translation id="7942415993090181327">Zgodovina klepetov</translation>
 <translation id="6859935199732075666">Prikaži napake Varnega brskanja</translation>
 <translation id="2735247450315842119">Omogočite posnetke zaslona v zasebnih zavihkih</translation>

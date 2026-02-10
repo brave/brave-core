@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Tunjukkan cadangan pelayar</translation>
 <translation id="8982438328166986164">Memaparkan cadangan tapak web berdasarkan penanda halaman dan sejarah penyemakan imbas anda.</translation>
 <translation id="924029461438529367">Tunjukkan cadangan carian</translation>
-<translation id="6285118765755298263">Indeks enjin carian lain</translation>
-<translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="7534079972563542000">Domain yang tidak dapat Dihentikan</translation>
 <translation id="6486983549008741930">Penapisan Kandungan</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Jangan tingkatkan sambungan kepada HTTPS (dinyahdayakan)</translation>
 <translation id="693506469193748756">Lupakan saya apabila saya menutup laman ini</translation>
 <translation id="6975864539539353406">Kosongkan kuki dan data laman lain apabila anda menutup laman</translation>
+<translation id="7740929262043547697">Benarkan penyekatan elemen dalam tetingkap peribadi</translation>
+<translation id="1260864846935682371">Mengaktifkan ciri Sekat Elemen Perisai dalam tetingkap peribadi. Ambil perhatian bahawa elemen yang disekat dalam tetingkap peribadi juga akan disekat dalam tetingkap bukan peribadi.</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
 <translation id="7142548388914389999">Benarkan analitik produk pengekalan privasi (P3A)</translation>
 <translation id="5254037869598726291">Maklumat P3A tanpa nama membantu Brave menganggarkan penggunaan keseluruhan, dan memastikan kami’ meningkatkan ciri popular.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">NANTI</translation>
 <translation id="4117451092682672487">Privasi. Dipermudahkan.</translation>
 <translation id="7909375417585209817">Apabila Brave ditetapkan sebagai lalai, setiap pautan yang anda ketik akan dibuka dengan perlindungan privasi Brave.</translation>
-<translation id="7370959926683925817">Sekat iklan. Simpan data. Setiap hari.</translation>
-<translation id="7281027579943912834">Dengan Brave sebagai pelayar lalai, setiap pautan yang anda ketik mendapat perlindungan sekatan iklan Brave. Setiap halaman, video dan strim.</translation>
 <translation id="5148943178722443958">Bantu usaha menambah baik Brave.</translation>
 <translation id="6718362830686703942">Hantar laporan diagnostik jika anda mengalami ranap atau beku.</translation>
 <translation id="8616157231067364693">Kongsikan cerapan produk yang bersifat peribadi dan tanpa nama tentang jenis ciri yang digunakan oleh pengguna Brave.</translation>
@@ -371,6 +369,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8793108040181436796">Widget</translation>
 <translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>
+<translation id="7462178177755090262">Skrin Pembukaan</translation>
+<translation id="5365434987337264071">Tab terakhir dibuka</translation>
+<translation id="5233638681132016545">Tab baharu</translation>
+<translation id="8395271296293035055">Kembali ke tab terakhir anda</translation>
 <translation id="8297488609722895137">Gambar oleh <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Buka pautan luaran dalam Brave</translation>
 <translation id="5616508928556767259">Buka pautan daripada apl lain dalam paparan web Brave. Nota: Brave mesti ditetapkan sebagai penyemak imbas lalai anda.</translation>
@@ -761,7 +763,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
 <translation id="2653659639078652383">Serah</translation>
 <translation id="4945690646623486292">Pilih Rangkaian</translation>
-<translation id="5233638681132016545">Tab baharu</translation>
 <translation id="8006088103295786154">Akses Dompet Brave</translation>
 <translation id="5308380583665731573">Sambung</translation>
 <translation id="8030169304546394654">Sambungan Terputus</translation>
@@ -1069,6 +1070,10 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4650851936784160359">Senarai penapis tidak dapat dikemas kini. Sila cuba semula</translation>
 <translation id="3098054327870766317">Papar butang buat asal apabila tab ditutup</translation>
 <translation id="1336494649091412226">Adakah anda pasti mahu keluar daripada Brave?</translation>
+<translation id="6061635824229591714">Hapuskan Data Laman?</translation>
+<translation id="1265051174491933207">Penghapusan akan memadamkan data laman dan menutup semua tab bagi '<ph name="SITE_NAME"/>'. Tindakan ini tidak boleh dibuat asal.</translation>
+<translation id="4279349293084858577">Hapus</translation>
+<translation id="4426990318287827331">Hapuskan Data</translation>
 <translation id="7942415993090181327">Sejarah sembang</translation>
 <translation id="6859935199732075666">Tunjukkan ralat Menyemak Imbas Secara Selamat</translation>
 <translation id="2735247450315842119">Benarkan tangkapan skrin dalam tab peribadi</translation>

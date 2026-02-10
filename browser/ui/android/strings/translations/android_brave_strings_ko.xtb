@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">브라우저 추천 항목 표시</translation>
 <translation id="8982438328166986164">북마크 및 인터넷 사용 기록을 기반으로 한 추천 웹사이트를 표시합니다.</translation>
 <translation id="924029461438529367">추천 검색어 표시</translation>
-<translation id="6285118765755298263">다른 검색 엔진 색인</translation>
-<translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="9148058034647219655">나가기</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">콘텐츠 필터링</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">연결을 HTTPS로 업그레이드하지 않음(비활성)</translation>
 <translation id="693506469193748756">이 사이트를 닫으면 기록 소거</translation>
 <translation id="6975864539539353406">사이트를 닫을 때 쿠키와 다른 사이트 데이터 삭제</translation>
+<translation id="7740929262043547697">비공개 창 내 요소 차단 허용</translation>
+<translation id="1260864846935682371">비공개 창에서 쉴드 요소 차단 기능을 활성화합니다. 비공개 창에서 차단된 요소는 비공개가 아닌 창에서도 차단됩니다.</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
 <translation id="5254037869598726291">익명 P3A 정보는 Brave가 총체적인 사용 패턴을 평가하여 인기 기능을 개선하는 데 도움이 됩니다.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">나중에</translation>
 <translation id="4117451092682672487">프라이버시. 더욱 간편하게.</translation>
 <translation id="7909375417585209817">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.</translation>
-<translation id="7370959926683925817">광고 차단. 데이터 절약. 언제나.</translation>
-<translation id="7281027579943912834">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크에서 Brave의 광고 차단으로 보호. 어떤 페이지, 비디오, 스트림에서도.</translation>
 <translation id="5148943178722443958">Brave 개선에 참여.</translation>
 <translation id="6718362830686703942">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
 <translation id="8616157231067364693">Brave 사용자가 사용하고 있는 기능에 대한 프라이빗 익명 제품 인사이트를 공유합니다.</translation>
@@ -371,6 +369,14 @@
 <translation id="8793108040181436796">위젯</translation>
 <translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="7275773481201277457">Brave Stats 보기</translation>
+<translation id="7462178177755090262">시작 화면</translation>
+<translation id="5365434987337264071">마지막으로 열었던 탭</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 { <ph name="HOURS_ONE"/> 비활성 시간 이후 새 탭}
+          other { <ph name="HOURS_MANY"/> 비활성 시간 이후 새 탭}
+        }</translation>
+<translation id="5233638681132016545">새 탭</translation>
+<translation id="8395271296293035055">가장 최근에 열었던 탭으로 돌아가기</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/>의 사진</translation>
 <translation id="2898634658146274982">Brave에서 외부 링크 열기</translation>
 <translation id="5616508928556767259">Brave 웹 보기에서 다른 앱 링크를 엽니다. 참고: Brave가 기본 그라우저로 설정되어 있어야 합니다.</translation>
@@ -761,7 +767,6 @@
 <translation id="6889920539620318793">활성으로 설정</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="4945690646623486292">네트워크 선택</translation>
-<translation id="5233638681132016545">새 탭</translation>
 <translation id="8006088103295786154">Brave 월렛에 액세스</translation>
 <translation id="5308380583665731573">연결</translation>
 <translation id="8030169304546394654">연결 해제됨</translation>
@@ -1069,6 +1074,10 @@
 <translation id="4650851936784160359">필터 목록을 업데이트할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="3098054327870766317">탭 종료 시 종료 취소 버튼 표시</translation>
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
+<translation id="6061635824229591714">사이트 데이터를 파쇄하시겠습니까?</translation>
+<translation id="1265051174491933207">파쇄하면 '<ph name="SITE_NAME"/>'의 모든 탭이 닫히고 사이트 데이터가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</translation>
+<translation id="4279349293084858577">파쇄</translation>
+<translation id="4426990318287827331">데이터 파쇄</translation>
 <translation id="7942415993090181327">대화 기록</translation>
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
 <translation id="2735247450315842119">비공개 탭에서 스크린샷 허용</translation>

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Browser-Empfehlungen anzeigen</translation>
 <translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
 <translation id="924029461438529367">Suchvorschläge anzeigen</translation>
-<translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
-<translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="9148058034647219655">Beenden</translation>
 <translation id="7534079972563542000">Unaufhaltsame Domains</translation>
 <translation id="6486983549008741930">Inhaltsfilterung</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Verbindungen nicht auf HTTPS upgraden (deaktiviert)</translation>
 <translation id="693506469193748756">Vergiss mich, wenn ich diese Seite schließe</translation>
 <translation id="6975864539539353406">Löscht Cookies und andere Seitendaten, wenn Sie eine Seite schließen</translation>
+<translation id="7740929262043547697">Elementblockierung in Privatfenstern erlauben</translation>
+<translation id="1260864846935682371">Aktiviert die Shields-Funktion „Elemente blockieren“ in Privatfenstern. Beachte, dass in Privatfenstern blockierte Elemente auch in nicht privaten Fenstern blockiert werden.</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
 <translation id="7142548388914389999">Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)</translation>
 <translation id="5254037869598726291">Mit anonymisierten P3A-Informationen kann Brave die Gesamtnutzung einschätzen und sicherstellen, dass wir beliebte Funktionen verbessern.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">SPÄTER</translation>
 <translation id="4117451092682672487">Privatsphäre. Ganz einfach gemacht.</translation>
 <translation id="7909375417585209817">Mit Brave als Standard öffnet sich jeder Link, auf den Sie tippen, mit Braves Datenschutzbestimmungen.</translation>
-<translation id="7370959926683925817">Werbung blockieren. Daten speichern. Jeden einzelnen Tag.</translation>
-<translation id="7281027579943912834">Mit Brave als Standardbrowser erhält jeder Link, auf den Sie tippen, den Werbeblockerschutz von Brave. Jede Seite, jedes Video und jeder Stream.</translation>
 <translation id="5148943178722443958">Brave mit Ihrer Hilfe verbessern.</translation>
 <translation id="6718362830686703942">Senden Sie einen Diagnosebericht, wenn Brave abstürzt oder hängen bleibt.</translation>
 <translation id="8616157231067364693">Teilen Sie private und anonyme Produkteinblicke darüber, welche Funktionen von Brave-Benutzern verwendet werden.</translation>
@@ -371,6 +369,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Die führenden Seiten anzeigen</translation>
 <translation id="7275773481201277457">Brave-Statistiken anzeigen</translation>
+<translation id="7462178177755090262">Startbildschirm</translation>
+<translation id="5365434987337264071">Zuletzt geöffnete Registerkarte</translation>
+<translation id="5233638681132016545">Neuem Tab</translation>
+<translation id="8395271296293035055">Zur zuletzt verwendeten Registerkarte zurückkehren</translation>
 <translation id="8297488609722895137">Foto von <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Externe Links in Brave öffnen</translation>
 <translation id="5616508928556767259">Öffnet Links aus anderen Apps in einer Brave-Webansicht. Hinweis: Brave muss als Standardbrowser festgelegt sein.</translation>
@@ -761,7 +763,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="2653659639078652383">Senden</translation>
 <translation id="4945690646623486292">Netzwerk auswählen</translation>
-<translation id="5233638681132016545">Neuer Tab</translation>
 <translation id="8006088103295786154">Zugriff auf Brave-Wallet</translation>
 <translation id="5308380583665731573">Verbinden</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
@@ -1069,6 +1070,10 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4650851936784160359">Die Filterliste konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.</translation>
 <translation id="3098054327870766317">Rückgängig-Schaltfläche anzeigen, wenn Registerkarten geschlossen werden</translation>
 <translation id="1336494649091412226">Bist du sicher, dass du Brave verlassen möchtest?</translation>
+<translation id="6061635824229591714">Daten der Website schreddern?</translation>
+<translation id="1265051174491933207">Beim Schreddern werden die Website-Daten gelöscht und alle '<ph name="SITE_NAME"/>'-Registerkarten geschlossen. Dies kann nicht rückgängig gemacht werden.</translation>
+<translation id="4279349293084858577">Schreddern</translation>
+<translation id="4426990318287827331">Daten schreddern</translation>
 <translation id="7942415993090181327">Chat-Verlauf</translation>
 <translation id="6859935199732075666">Safe Browsing-Fehler anzeigen</translation>
 <translation id="2735247450315842119">Screenshots in privaten Tabs erlauben</translation>

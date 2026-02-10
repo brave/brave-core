@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Browsersuggesties weergeven</translation>
 <translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
 <translation id="924029461438529367">Zoeksuggesties weergeven</translation>
-<translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
-<translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch spec volgen.</translation>
 <translation id="9148058034647219655">Sluiten</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Contentfilter</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Waardeer verbindingen niet op naar HTTPS (uitgeschakeld)</translation>
 <translation id="693506469193748756">Vergeet me zodra ik deze site afsluit</translation>
 <translation id="6975864539539353406">Verwijdert cookies en andere sitegegevens wanneer u een site afsluit</translation>
+<translation id="7740929262043547697">Elementblokkering toestaan in privévensters</translation>
+<translation id="1260864846935682371">Schakelt de functie Shields Elementen blokkeren in voor privévensters. Let op: elementen die worden geblokkeerd in privévensters worden ook geblokkeerd in niet-privévensters.</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
 <translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Brave het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">LATER</translation>
 <translation id="4117451092682672487">Privacy, eenvoudig geregeld.</translation>
 <translation id="7909375417585209817">Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar u op tikt.</translation>
-<translation id="7370959926683925817">Blokkeer advertenties. Bespaar data. Elke dag.</translation>
-<translation id="7281027579943912834">Met Brave als standaardbrowser, krijgt elke link die u aanklikt ad block-bescherming. Elke pagina, video en stream.</translation>
 <translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
 <translation id="6718362830686703942">Verzend diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
 <translation id="8616157231067364693">Deel anonieme productinzichten over welke functies worden gebruikt door de gebruikers van Brave.</translation>
@@ -371,6 +369,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Topsites Weergeven</translation>
 <translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
+<translation id="7462178177755090262">Startscherm</translation>
+<translation id="5365434987337264071">Laatst geopend tabblad</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Nieuw tabblad na <ph name="HOURS_ONE"/> uur inactiviteit} other {Nieuw tabblad na <ph name="HOURS_MANY"/> uur inactiviteit}}</translation>
+<translation id="5233638681132016545">Nieuw tabblad</translation>
+<translation id="8395271296293035055">Ga terug naar je meest recente tabblad</translation>
 <translation id="8297488609722895137">Foto gemaakt door <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Externe links in Brave openen</translation>
 <translation id="5616508928556767259">Opent links van andere apps in een Brave-webweergave. Let op: Brave moet ingesteld zijn als uw standaardbrowser.</translation>
@@ -761,7 +764,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6889920539620318793">Instellen als actief</translation>
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="4945690646623486292">Netwerk selecteren</translation>
-<translation id="5233638681132016545">Nieuw tabblad</translation>
 <translation id="8006088103295786154">Toegang tot Brave Wallet</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="8030169304546394654">Verbinding verbroken</translation>
@@ -1069,6 +1071,10 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4650851936784160359">Filterlijst kon niet worden bijgewerkt. Probeer het opnieuw.</translation>
 <translation id="3098054327870766317">Knop voor ongedaan maken tonen wanneer tabbladen worden gesloten</translation>
 <translation id="1336494649091412226">Weet je zeker dat je Brave wilt afsluiten?</translation>
+<translation id="6061635824229591714">Sitegegevens versnipperen?</translation>
+<translation id="1265051174491933207">Door de versnippering worden alle sitegegevens verwijderd en alle '<ph name="SITE_NAME"/>'-tabbladen gesloten. Deze actie kan niet ongedaan worden gemaakt.</translation>
+<translation id="4279349293084858577">Versnipperen</translation>
+<translation id="4426990318287827331">Versnipper gegevens</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
 <translation id="6859935199732075666">Safe Browsing-fouten weergeven</translation>
 <translation id="2735247450315842119">Screenshots op privétabbladen toestaan</translation>

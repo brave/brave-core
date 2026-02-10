@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Trego sugjerimet e shfletuesit</translation>
 <translation id="8982438328166986164">Tregon sugjerimet e faqeve të internetit bazuar në faqeshënuesit dhe historikun tënd të shfletimit.</translation>
 <translation id="924029461438529367">Trego sugjerimet e kërkimit</translation>
-<translation id="6285118765755298263">Indekso motorët e tjerë të kërkimit</translation>
-<translation id="919715748352669592">Indekson automatikisht faqet që ndjekin specifikimet OpenSearch.</translation>
 <translation id="9148058034647219655">Dil</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrimi i Përmbajtjes</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Mos përmirësoni lidhjet në HTTPS (çaktivizuar)</translation>
 <translation id="693506469193748756">Më harro kur të mbyll këtë sajt</translation>
 <translation id="6975864539539353406">Fshin cookies dhe të dhënat e tjera të faqes kur mbyllni një faqe</translation>
+<translation id="7740929262043547697">Lejo bllokimin e elementeve në dritare private</translation>
+<translation id="1260864846935682371">Aktivizon veçorinë Bllokimi i Elementeve e Mburojave në dritare private. Vini re se elementet e bllokuara në dritare private do të bllokohen edhe në dritaret jo-private.</translation>
 <translation id="1680858055899097121">Mos mbaj skeda gjatë seancave të shfletimit</translation>
 <translation id="7142548388914389999">Lejo analiza produkti që ruajnë privatësinë (P3A)</translation>
 <translation id="5254037869598726291">Informacioni i anomizuar P3A ndihmon Brave të vlerësojë përdorimin e përgjithshëm dhe të sigurojë që ne po përmirësojmë funksionet popullore.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">MË VONË</translation>
 <translation id="4117451092682672487">Privatësi. E thjeshtuar.</translation>
 <translation id="7909375417585209817">Ku paracakton Brave, çdo lidhje që prek hapet me mbrojtjet e privatësisë së Brave.</translation>
-<translation id="7370959926683925817">Bllokoni reklamat. Ruani të dhënat. Çdo ditë.</translation>
-<translation id="7281027579943912834">Kur paracakton Brave, çdo lidhje që prek merr mbrojtjen e bllokimit të reklamave të Brave. Çdo faqe, video dhe transmetim.</translation>
 <translation id="5148943178722443958">Ndihmo në përmirësimin e Brave.</translation>
 <translation id="6718362830686703942">Dërgo raporte diagnostikuese, nëse has në rënie ose ngrirje të programit.</translation>
 <translation id="8616157231067364693">Ndaj mendime private dhe anonime mbi produktet në lidhje me veçoritë që përdoren nga përdoruesit e Brave.</translation>
@@ -371,6 +369,11 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="8793108040181436796">Miniaplikacione</translation>
 <translation id="8643377320501056697">Shfaq Sajte Kryesues</translation>
 <translation id="7275773481201277457">Shfaq Statistika Brave-i</translation>
+<translation id="7462178177755090262">Ekrani i Hapjes</translation>
+<translation id="5365434987337264071">Skeda e fundit e hapur</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Skedë e re pas <ph name="HOURS_ONE"/> ore pasiviteti} other {Skedë e re pas <ph name="HOURS_MANY"/> orësh pasiviteti}}</translation>
+<translation id="5233638681132016545">Skedë e re</translation>
+<translation id="8395271296293035055">Kthehuni tek skeda juaj më e fundit</translation>
 <translation id="8297488609722895137">Foto nga <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Hap lidhje të jashtme në Brave</translation>
 <translation id="5616508928556767259">Hap lidhje nga aplikacione të tjera në Brave. Vërejtje: Brave duhet të paracaktohet si shfletuesi juaj i përhershëm.</translation>
@@ -759,7 +762,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="6889920539620318793">Cakto si aktiv</translation>
 <translation id="2653659639078652383">Parashtroje</translation>
 <translation id="4945690646623486292">Zgjidh Rrjetin</translation>
-<translation id="5233638681132016545">Skedë e re</translation>
 <translation id="8006088103295786154">Hyni në Kuletën Brave</translation>
 <translation id="5308380583665731573">Lidh</translation>
 <translation id="8030169304546394654">Jo e lidhur</translation>
@@ -1072,6 +1074,10 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="4650851936784160359">Lista e filtrave nuk mund të përditësohej. Ju lutemi provoni përsëri</translation>
 <translation id="3098054327870766317">Trego butonin e kthimit mbrapsht kur skedat janë mbyllur</translation>
 <translation id="1336494649091412226">Jeni i sigurt se doni të dilni nga Brave?</translation>
+<translation id="6061635824229591714">Shkatërroj të dhënat e faqes?</translation>
+<translation id="1265051174491933207">Shkatërrimi do të fshijë të dhënat e faqes dhe do të mbyllë të gjitha skedat '<ph name="SITE_NAME"/>'. Kjo nuk mund të zhbëhet.</translation>
+<translation id="4279349293084858577">Shkatërro</translation>
+<translation id="4426990318287827331">Shkatërro të dhënat</translation>
 <translation id="7942415993090181327">Historiku i bisedave</translation>
 <translation id="6859935199732075666">Trego gabimet e Sigurimit të Shfletimit</translation>
 <translation id="2735247450315842119">Lejo bëj screenshot në skeda private</translation>

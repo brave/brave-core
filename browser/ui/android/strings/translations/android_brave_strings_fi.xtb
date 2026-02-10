@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Näytä selainehdotukset</translation>
 <translation id="8982438328166986164">Näyttää verkkosivustoehdotuksia kirjanmerkkiesi ja selaushistoriasi perusteella.</translation>
 <translation id="924029461438529367">Näytä hakuehdotukset</translation>
-<translation id="6285118765755298263">Indeksoi muut hakukoneet</translation>
-<translation id="919715748352669592">Automaattisesti indeksoi sivustot, jotka seuraavat OpenSearch-määritystä.</translation>
 <translation id="9148058034647219655">Poistu</translation>
 <translation id="7534079972563542000">Pysäyttämättömät verkkotunnukset</translation>
 <translation id="6486983549008741930">Sisällön suodatus</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Älä päivitä yhteyksiä HTTPS:ään (pois käytöstä)</translation>
 <translation id="693506469193748756">Unohda minut, kun suljen tämän sivuston</translation>
 <translation id="6975864539539353406">Tyhjentää evästeet ja muut sivuston tiedot, kun suljet sivuston</translation>
+<translation id="7740929262043547697">Salli elementtien esto yksityisissä ikkunoissa</translation>
+<translation id="1260864846935682371">Ottaa käyttöön Suojaus-elementtien estotoiminnon yksityisissä Windows-ikkunoissa. Huomaa, että yksityisissä Windows-ikkunoissa estetyt elementit estetään myös ei-yksityisissä Windows-ikkunoissa.</translation>
 <translation id="1680858055899097121">Älä säilytä välilehtiä selausistuntojen välillä</translation>
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
 <translation id="5254037869598726291">Anonymisoidut P3A-tiedot auttavat Bravea arvioimaan kokonaiskäyttöä ja varmistamaan, että parannamme suosittuja ominaisuuksia.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">MYÖHEMMIN</translation>
 <translation id="4117451092682672487">Yksinkertainen tietosuoja.</translation>
 <translation id="7909375417585209817">Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.</translation>
-<translation id="7370959926683925817">Estä mainokset. Tallenna tiedot. Joka ikinen päivä.</translation>
-<translation id="7281027579943912834">Kun Brave on oletusselain, jokaisen napsauttamasi linkin kohdalla käytetään Brave-mainosestosuojausta. Jokaisen sivun, videon ja suoratoistoistunton kohdalla.</translation>
 <translation id="5148943178722443958">Auta parantamaan Bravea.</translation>
 <translation id="6718362830686703942">Lähetä diagnostiikkaraportteja, jos selain kaatuu tai jäätyy.</translation>
 <translation id="8616157231067364693">Jaa yksityisiä ja nimettömiä tuotetietoja siitä, mitä ominaisuuksia Braven käyttäjät käyttävät.</translation>
@@ -371,6 +369,11 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8793108040181436796">Widgetit</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
+<translation id="7462178177755090262">Aloitusnäyttö</translation>
+<translation id="5365434987337264071">Viimeksi avattu välilehti</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Uusi välilehti <ph name="HOURS_ONE"/> tunnin toimettomuuden jälkeen} other {Uusi välilehti <ph name="HOURS_MANY"/> tunnin toimettomuuden jälkeen}}</translation>
+<translation id="5233638681132016545">Uusi välilehti</translation>
+<translation id="8395271296293035055">Palaa viimeisimpään välilehteesi</translation>
 <translation id="8297488609722895137">Valokuvan ottanut <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Avaa ulkoiset linkit Bravessa</translation>
 <translation id="5616508928556767259">Avaa linkit muista sovelluksista Brave-verkkonäkymässä. Huomaa: Brave on asetettava oletusselaimeksi.</translation>
@@ -761,7 +764,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6889920539620318793">Aseta aktiiviseksi</translation>
 <translation id="2653659639078652383">Lähetä</translation>
 <translation id="4945690646623486292">Valitse verkko</translation>
-<translation id="5233638681132016545">Uusi välilehti</translation>
 <translation id="8006088103295786154">Käytä Brave-lompakkoa</translation>
 <translation id="5308380583665731573">Muodosta yhteys</translation>
 <translation id="8030169304546394654">Yhteys katkaistu</translation>
@@ -1069,6 +1071,10 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4650851936784160359">Suodatinluettelon päivitys ei onnistunut. Yritä uudellen.</translation>
 <translation id="3098054327870766317">Näytä peruutuspainike, kun välilehdet suljetaan</translation>
 <translation id="1336494649091412226">Haluatko varmasti poistua Bravesta?</translation>
+<translation id="6061635824229591714">Silppua sivuston tiedot?</translation>
+<translation id="1265051174491933207">Silppuaminen sulkee kaikki '<ph name="SITE_NAME"/>'-välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.</translation>
+<translation id="4279349293084858577">Silppua</translation>
+<translation id="4426990318287827331">Silppua tiedot</translation>
 <translation id="7942415993090181327">Chat-historia</translation>
 <translation id="6859935199732075666">Näytä Safe Browsing -virheet</translation>
 <translation id="2735247450315842119">Salli kuvakaappaukset yksityisissä välilehdissä</translation>

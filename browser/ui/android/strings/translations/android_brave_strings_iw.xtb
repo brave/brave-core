@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">הצג את הצעות הדפדפן</translation>
 <translation id="8982438328166986164">מציג הצעות לאתרים בהתבסס על הסימניות ועל היסטוריית הגלישה שלך.</translation>
 <translation id="924029461438529367">הצג הצעות חיפוש</translation>
-<translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
-<translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
 <translation id="9148058034647219655">יציאה</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
 <translation id="6486983549008741930">סינון תוכן</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">אל תשדרג חיבורים ל-HTTPS (מושבת)</translation>
 <translation id="693506469193748756">שכח אותי כשאסגור את האתר הזה.</translation>
 <translation id="6975864539539353406">מנקה קובצי Cookie ונתוני אתר אחרים כאשר אתה סוגר אתר</translation>
+<translation id="7740929262043547697">אפשר חסימת רכיבים בחלונות אנונימיים</translation>
+<translation id="1260864846935682371">מפעיל את תכונת חסימת רכיבים במגנים ב-Windows אנונימיים. שים לב שרכיבים שנחסמים בחלונות אנונימיים ייחסמו גם בחלונות שאינם אנונימיים.</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
 <translation id="5254037869598726291">מידע P3A אנונימי מסייע ל-Brave להעריך את השימוש הכולל, ולוודא שאנחנו’re משפרים את התכונות הפופולריות.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">אחר כך</translation>
 <translation id="4117451092682672487">פרטיות. בפשטות.</translation>
 <translation id="7909375417585209817">עם Brave כברירת מחדל, כל קישור שאתם מקישים עליו נפתח עם הגנות הפרטיות של Brave.</translation>
-<translation id="7370959926683925817">חסום פרסומות. שמור מידע. כל יום.</translation>
-<translation id="7281027579943912834">עם Brave כברירת מחדל, כל קישור שאתה מקיש מקבל את הגנת חסימת המודעות של Brave. כל עמוד, סרטון וזרם.</translation>
 <translation id="5148943178722443958">עזרו לנו להפוך את Brave לטוב יותר.</translation>
 <translation id="6718362830686703942">שלחו דוחות אבחון, במידה וחוויתם קריסה או הקפאה.</translation>
 <translation id="8616157231067364693">שתפו תובנות בנוגע למוצרים באופן פרטי ואנונימי בכל מה שקשור לתכונות שבהן משתמשי Brave עושים שימוש.</translation>
@@ -372,6 +370,14 @@
 <translation id="8793108040181436796">ווידג'טים</translation>
 <translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="7275773481201277457">הצג סטטיסטיקות Brave</translation>
+<translation id="7462178177755090262">מסך פתיחה</translation>
+<translation id="5365434987337264071">הכרטיסייה האחרונה שנפתחה</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {כרטיסייה חדשה לאחר <ph name="HOURS_ONE"/> שעה של חוסר פעילות}
+          other {כרטיסייה חדשה לאחר <ph name="HOURS_MANY"/> שעות של חוסר פעילות}
+        }</translation>
+<translation id="5233638681132016545">כרטיסייה חדשה</translation>
+<translation id="8395271296293035055">חזרה לכרטיסייה האחרונה שלך</translation>
 <translation id="8297488609722895137">תמונה מאת <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">פתח קישורים חיצוניים ב- Brave</translation>
 <translation id="5616508928556767259">פותח קישורים מיישומים אחרים בBrave webview. הערה: יש להגדיר את Brave כדפדפן ברירת המחדל שלך.</translation>
@@ -762,7 +768,6 @@
 <translation id="6889920539620318793">הגדר כפעיל</translation>
 <translation id="2653659639078652383">שלח</translation>
 <translation id="4945690646623486292">בחירת רשת</translation>
-<translation id="5233638681132016545">כרטיסייה חדשה</translation>
 <translation id="8006088103295786154">כניסה לארנק Brave</translation>
 <translation id="5308380583665731573">התחברות</translation>
 <translation id="8030169304546394654">מנותק</translation>
@@ -1070,6 +1075,10 @@
 <translation id="4650851936784160359">רשימת הסינון לא ניתנת לעדכון. אנא נסה שוב.</translation>
 <translation id="3098054327870766317">הצגת כפתור ביטול פעולה כשהכרטיסיות סגורות</translation>
 <translation id="1336494649091412226">בטוח שבא לך לצאת מ-Brave?</translation>
+<translation id="6061635824229591714">לגרוס נתוני אתר?</translation>
+<translation id="1265051174491933207">גריסה תמחק את נתוני האתר ותסגור את כל הכרטיסיות של '<ph name="SITE_NAME"/>'. פעולה זו לא ניתנת לביטול.</translation>
+<translation id="4279349293084858577">גרוס</translation>
+<translation id="4426990318287827331">גריסת נתונים</translation>
 <translation id="7942415993090181327">היסטוריית צ׳אטים</translation>
 <translation id="6859935199732075666">הצגת שגיאות גלישה בטוחה</translation>
 <translation id="2735247450315842119">לאפשר צילומי מסך בכרטיסיות פרטיות</translation>

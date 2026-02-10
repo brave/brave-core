@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Visa webbläsarförslag</translation>
 <translation id="8982438328166986164">Visa förslag på webbplatser baserat på dina bokmärken och webbhistorik.</translation>
 <translation id="924029461438529367">Visa sök förslag</translation>
-<translation id="6285118765755298263">Indexera andra sökmotorer</translation>
-<translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="9148058034647219655">Avsluta</translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
 <translation id="6486983549008741930">Innehållsfiltrering</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Uppgradera inte anslutningar till HTTPS (inaktiverad)</translation>
 <translation id="693506469193748756">Glöm mig när jag stänger den här webbplatsen</translation>
 <translation id="6975864539539353406">Rensa cookies och andra webbplatsdata när du stänger en webbplats</translation>
+<translation id="7740929262043547697">Tillåt elementblockering i privata fönster</translation>
+<translation id="1260864846935682371">Aktiverar funktionen Shields Blockera element i privata fönster. Observera att element som blockeras i privata fönster också blockeras i icke-privata fönster.</translation>
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
 <translation id="7142548388914389999">Tillåt integritetsbevarande produktanalys (P3A)</translation>
 <translation id="5254037869598726291">Anonymiserad P3A-info hjälper Brave att uppskatta den totala användningen och se till att vi förbättrar populära funktioner.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">SENARE</translation>
 <translation id="4117451092682672487">Sekretess har gjorts enkelt.</translation>
 <translation id="7909375417585209817">Om du gör Brave till standard öppnas alla länkar som du trycker på med Braves sekretesskydd.</translation>
-<translation id="7370959926683925817">Blockera annonser. Spara data. Varje dag.</translation>
-<translation id="7281027579943912834">Med Brave som standard får varje länk du trycker på Braves annonsblocksskydd. Varje sida, video och stream.</translation>
 <translation id="5148943178722443958">Hjälp till att göra Brave bättre.</translation>
 <translation id="6718362830686703942">Skicka diagnostikrapporter om du upplever en krasch eller frysning.</translation>
 <translation id="8616157231067364693">Dela anonyma produktinsikter om vilka funktioner som Brave-användarna använder.</translation>
@@ -371,6 +369,11 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8793108040181436796">Widgetar</translation>
 <translation id="8643377320501056697">Visa populäraste webbplatser</translation>
 <translation id="7275773481201277457">Visa Brave-statistik</translation>
+<translation id="7462178177755090262">Startskärm</translation>
+<translation id="5365434987337264071">Senast öppnade flik</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Ny flik efter <ph name="HOURS_ONE"/> timmes inaktivitet} other {Ny flik efter <ph name="HOURS_MANY"/> timmars inaktivitet}}</translation>
+<translation id="5233638681132016545">Ny flik</translation>
+<translation id="8395271296293035055">Återgå till din senaste flik</translation>
 <translation id="8297488609722895137">Foto: <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Öppna externa länkar i Brave</translation>
 <translation id="5616508928556767259">Öppnar länkar från andra appar i en Brave-webbvy. Brave måste vara vald som standardwebbläsare.</translation>
@@ -761,7 +764,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6889920539620318793">Ange som aktiv</translation>
 <translation id="2653659639078652383">Skicka</translation>
 <translation id="4945690646623486292">Välj nätverk</translation>
-<translation id="5233638681132016545">Ny flik</translation>
 <translation id="8006088103295786154">Åtkomst till Brave Wallet</translation>
 <translation id="5308380583665731573">Anslut</translation>
 <translation id="8030169304546394654">Frånkopplad</translation>
@@ -1069,6 +1071,10 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="4650851936784160359">Filterlistan kunde inte uppdateras. Försök igen</translation>
 <translation id="3098054327870766317">Visa ångra knappen när flikar är stängda</translation>
 <translation id="1336494649091412226">Är du säker på att du vill lämna Brave?</translation>
+<translation id="6061635824229591714">Vill du ta bort webbplatsdata?</translation>
+<translation id="1265051174491933207">Borttagning stänger alla flikar och tar bort alla webbplatsdata för '<ph name="SITE_NAME"/>'. Detta kan inte ångras.</translation>
+<translation id="4279349293084858577">Ta bort</translation>
+<translation id="4426990318287827331">Ta bort data</translation>
 <translation id="7942415993090181327">Chatthistorik</translation>
 <translation id="6859935199732075666">Visa fel i Säker surfning</translation>
 <translation id="2735247450315842119">Tillåt skärmdumpar i privata flikar</translation>

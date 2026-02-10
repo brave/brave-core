@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Rodyti naršyklės pasiūlymus</translation>
 <translation id="8982438328166986164">Remiantis jūsų žymomis ir naršymo istorija rodomi svetainių pasiūlymai.</translation>
 <translation id="924029461438529367">Rodyti paieškos pasiūlymus</translation>
-<translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
-<translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
 <translation id="9148058034647219655">Išeiti</translation>
 <translation id="7534079972563542000">„Unstoppable Domains“</translation>
 <translation id="6486983549008741930">Turinio filtravimas</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Nenaujinti ryšių su HTTPS (išjungta)</translation>
 <translation id="693506469193748756">Pamiršti mane, kai uždarau šią svetainę</translation>
 <translation id="6975864539539353406">Išvalo slapukus ir kitus svetainės duomenis, kai uždarote svetainę</translation>
+<translation id="7740929262043547697">Leisti blokuoti elementus inkognito languose</translation>
+<translation id="1260864846935682371">Įjungia "Shields" elementų blokavimo funkciją inkognito languose. Atkreipkite dėmesį, kad inkognito languose užblokuoti elementai bus taip pat blokuojami ir ne inkognito languose.</translation>
 <translation id="1680858055899097121">Nepalikti skirtukų tarp naršymo seansų</translation>
 <translation id="7142548388914389999">Leisti privatumo nepažeidžiančią produktų analizę (P3A)</translation>
 <translation id="5254037869598726291">Nuasmeninta P3A informacija padeda „Brave“ įvertinti bendrą naudojimą ir užtikrinti, kad mes tobulintume populiarias funkcijas.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">VĖLIAU</translation>
 <translation id="4117451092682672487">Privatumas. Paprastai.</translation>
 <translation id="7909375417585209817">Naudojant „Brave“ kaip numatytąją naršyklę, kiekviena paspausta nuoroda atveriama su „Brave“ privatumo apsauga.</translation>
-<translation id="7370959926683925817">Blokuokite reklamą. Išsaugokite duomenis. Kasdien.</translation>
-<translation id="7281027579943912834">Kai „Brave“ yra numatytoji naršyklė, kiekviena paliesta nuoroda bus apsaugota nuo reklamos. Kiekvienas puslapis, vaizdo įrašas ir srautas.</translation>
 <translation id="5148943178722443958">Padėkite tobulinti „Brave“.</translation>
 <translation id="6718362830686703942">Siųskite diagnostikos ataskaitas įvykus strigčiai.</translation>
 <translation id="8616157231067364693">Bendrinkite privačias ir anonimines įžvalgas apie produktus, pasakodami, kokias funkcijas naudoja „Brave“ naudotojai.</translation>
@@ -375,6 +373,14 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8793108040181436796">Valdikliai</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
+<translation id="7462178177755090262">Paleidimo ekranas</translation>
+<translation id="5365434987337264071">Paskutinė atidaryta kortelė</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Naujas skirtukas po <ph name="HOURS_ONE"/> neaktyvumo valandos}
+          other {Naujas skirtukas po <ph name="HOURS_MANY"/> neaktyvumo valandos}
+        }</translation>
+<translation id="5233638681132016545">Naujas skirtukas</translation>
+<translation id="8395271296293035055">Sugrįžkite į paskutinę naudotą kortelę</translation>
 <translation id="8297488609722895137">Nuotraukos autorius <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Atidaryti išorines nuorodas naudojant „Brave“</translation>
 <translation id="5616508928556767259">„Brave“ žiniatinklio rodinyje atidaro nuorodas iš kitų programų. Pastaba: „Brave“ turi būti nustatyta kaip jūsų numatytoji naršyklė.</translation>
@@ -765,7 +771,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6889920539620318793">Nustatyti kaip aktyvų</translation>
 <translation id="2653659639078652383">Pateikti</translation>
 <translation id="4945690646623486292">Pasirinkti tinklą</translation>
-<translation id="5233638681132016545">Naujas skirtukas</translation>
 <translation id="8006088103295786154">Eiti į „Brave“ piniginę</translation>
 <translation id="5308380583665731573">Prisijungti</translation>
 <translation id="8030169304546394654">Atsijungta</translation>
@@ -1073,6 +1078,10 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4650851936784160359">Filtrų sąrašo atnaujinti nepavyko. Bandykite dar kartą</translation>
 <translation id="3098054327870766317">Rodyti atšaukimo mygtuką, kai skirtukai uždaromi</translation>
 <translation id="1336494649091412226">Ar tikrai norite išeiti iš „Brave“?</translation>
+<translation id="6061635824229591714">Sunaikinti svetainės duomenis?</translation>
+<translation id="1265051174491933207">Duomenų naikinimas ištrins svetainės duomenis ir uždarys visas „<ph name="SITE_NAME"/>“ korteles. Šio veiksmo atšaukti neįmanoma.</translation>
+<translation id="4279349293084858577">Sunaikinti</translation>
+<translation id="4426990318287827331">Sunaikinti duomenis</translation>
 <translation id="7942415993090181327">Pokalbių istorija</translation>
 <translation id="6859935199732075666">Rodyti saugaus naršymo klaidas</translation>
 <translation id="2735247450315842119">Leidimas daryti ekrano kopijas privačiose kortelėse</translation>

@@ -491,6 +491,15 @@
 <translation id="4915997950539925115">Als u kiest voor 'opnieuw instellen', wordt uw huidige profiel van Brave Beloningen verwijderd en is Brave Beloningen niet meer ingeschakeld. Als u Brave Beloningen later opnieuw inschakelt, begint u opnieuw met een nieuw profiel. Lees ons <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> voor meer informatie.</translation>
 <translation id="4806029412510565611">Ik begrijp dat mijn huidige Brave Beloningen-profiel en Brave Beloningen-gegevens worden verwijderd van mijn apparaat en ik heb het <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> gelezen.</translation>
 <translation id="8835777704176513489">Rewards uitschakelen en resetten</translation>
+<translation id="1570055891464728855">Nu resetten</translation>
+<translation id="6431824580671230473">Geen zorgen: alle BAT die al in je <ph name="PROVIDER"/> account staan, worden niet beïnvloed door het resetten.</translation>
+<translation id="2881473942058010900">Je verdient geen beloningen voor Ads zolang je verbonden bent met <ph name="PROVIDER"/>. Reset Brave Rewards en verbind een ander uitbetalingsaccount om te blijven verdienen. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
+<translation id="5803444802570526678"><ph name="PROVIDER"/> account wordt niet langer ondersteund.</translation>
+<translation id="3794463124070392793">Bevestig je regio</translation>
+<translation id="4620879582500359234">Alle BAT die al in je <ph name="PROVIDER"/> account staan, blijven daar.</translation>
+<translation id="935303782545595866">Je 30-daagse Ads Geschiedenis en andere Brave Rewards-instellingen worden gereset.</translation>
+<translation id="6279637499952804615">Je kunt na deze stap een ander uitbetalingsaccount kiezen.</translation>
+<translation id="5419770758409992826">Je <ph name="PROVIDER"/> account wordt losgekoppeld en je Brave Rewards-profiel wordt gereset.</translation>
 <translation id="7717357606512850995">Status controleren</translation>
 <translation id="6473937687348632190">De uitbetaling van beloningen voor <ph name="MONTH"/> is voltooid.</translation>
 <translation id="1711367267038576241">De verwerking van uw uitbetaling van beloningen voor <ph name="MONTH"/> begint vanaf <ph name="DATE"/>.</translation>
@@ -515,15 +524,15 @@
     }</translation>
 <translation id="3264975266761862670">Klaar om te beginnen met verdienen?</translation>
 <translation id="2784412028126205842">Uitbetalingsaccount verbinden</translation>
-<translation id="766126983336630294">{ADS_VIEWED, plural,
-      =0 {Je hebt deze maand <ph name="COUNT_BEGIN"/># advertenties<ph name="COUNT_END"/> gezien}
-      =1 {Je kunt betaald krijgen voor <ph name="COUNT_BEGIN"/># advertentie<ph name="COUNT_END"/> die je deze maand hebt gezien.}
-      other {Je kunt betaald krijgen voor de <ph name="COUNT_BEGIN"/># advertenties<ph name="COUNT_END"/> die je deze maand hebt gezien.}
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+      =0 {Je hebt deze maand <ph name="COUNT_BEGIN"/> # advertenties<ph name="COUNT_END"/> gezien}
+      =1 {Je kunt betaald krijgen voor <ph name="COUNT_BEGIN"/> # advertentie<ph name="COUNT_END"/> die je deze maand hebt gezien.}
+      other {Je kunt betaald krijgen voor de <ph name="COUNT_BEGIN"/> # advertenties<ph name="COUNT_END"/> die je deze maand hebt gezien.}
     }</translation>
-<translation id="8611388433418909120">{ADS_VIEWED, plural,
-      =0 {Deze maand heb je <ph name="COUNT_BEGIN"/># advertenties<ph name="COUNT_END"/> bekeken}
-      =1 {Deze maand krijg je betaald voor het bekijken van <ph name="COUNT_BEGIN"/># advertentie<ph name="COUNT_END"/>}
-      other {Deze maand krijg je betaald voor het bekijken van <ph name="COUNT_BEGIN"/># advertenties<ph name="COUNT_END"/>}
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+      =0 {Deze maand heb je <ph name="COUNT_BEGIN"/> # advertenties<ph name="COUNT_END"/> bekeken}
+      =1 {Deze maand krijg je betaald voor het bekijken van <ph name="COUNT_BEGIN"/> # advertentie<ph name="COUNT_END"/>}
+      other {Deze maand krijg je betaald voor het bekijken van <ph name="COUNT_BEGIN"/> # advertenties<ph name="COUNT_END"/>}
     }</translation>
 <translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
@@ -601,7 +610,7 @@
 <translation id="5802986777701714573">We hebben een nieuwe manier toegevoegd waarop u uw maandelijkse BAT-beloningen kunt ontvangen. Verbind een account van een van onze partners of gebruik de nieuwe optie voor eigen beheer om nu te beginnen met verdienen.</translation>
 <translation id="3251885322612056119">Bijgewerkte Servicevoorwaarden</translation>
 <translation id="7454675823870922788">We hebben de Servicevoorwaarden voor Brave Rewards bijgewerkt. We hebben deze updates doorgevoerd om onze voorwaarden te verduidelijken en om ervoor te zorgen dat ze nieuwe functies dekken. Als u Brave Rewards blijft gebruiken, gaat u akkoord met de bijgewerkte Servicevoorwaarden. Als u niet akkoord gaat, kunt u Brave Rewards <ph name="LINK_BEGIN"/>opnieuw instellen<ph name="LINK_END"/>, waardoor de functie wordt uitgeschakeld.</translation>
-<translation id="56057964000416013">We hebben onze Servicevoorwaarden bijgewerkt. Als je Brave Rewards verder wilt gebruiken, moet je de bijgewerkte voorwaarden lezen en accepteren.</translation>
+<translation id="616595399243298960">We hebben onze Servicevoorwaarden bijgewerkt. Als je Brave Rewards verder wilt gebruiken, moet je de bijgewerkte voorwaarden lezen en accepteren.</translation>
 <translation id="5192526308598085294">Raadpleeg de <ph name="LINK_BEGIN"/>Servicevoorwaarden van Brave Rewards<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">Ik ga akkoord</translation>
 <translation id="343114360276812078">Voorwaarden lezen</translation>
@@ -649,6 +658,8 @@
 <translation id="6751803821780922506">Kies waar u BAT wilt ontvangen</translation>
 <translation id="3162035476318501831">Meer informatie over regio's en ondersteuning.</translation>
 <translation id="7329170127335794328">Momenteel niet beschikbaar in uw regio</translation>
+<translation id="1947910788470806100">We hebben nog geen uitbetalingsopties in jouw regio. Je kunt later opnieuw controleren of de beschikbaarheid is gewijzigd.</translation>
+<translation id="271689813824682404">Uitbetalingsopties niet beschikbaar</translation>
 <translation id="966956302643313970">Koppel een rekening om Basic Attention Token-beloningen (BAT) te ontvangen. BAT dat u hebt verdiend, wordt elke maand automatisch naar uw rekening overgeschreven.</translation>
 <translation id="4009439571146350519">Of andere wallet die Solana ondersteunt</translation>
 <translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Gebruiksvoorwaarden<ph name="TOS_LINK_END"/> en <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
@@ -859,6 +870,7 @@
 <translation id="6264944956989873014">Bridge bevestigen</translation>
 <translation id="7067917728851842589">Verzending bevestigen</translation>
 <translation id="2351357639951873714">Shield bevestigen</translation>
+<translation id="7480044382160806610">Bevestig onbescherming</translation>
 <translation id="8332923694292360653">Besteden</translation>
 <translation id="3735740477244556633">Sorteren op</translation>
 <translation id="6484605214219822434">Overbrugging bekijken</translation>
@@ -880,6 +892,8 @@
 <translation id="7465227658364622464">Jupiter zal het Solana adres en IP-adres verwerken om een transactie uit te voeren (inclusief het verkrijgen van offertes). Jupiter zal deze gegevens ALLEEN gebruiken voor het verwerken van transacties.</translation>
 <translation id="712738518060477110">Offerte is inclusief een <ph name="SWAP_FEE_PERCENTAGE"/> Brave-vergoeding.</translation>
 <translation id="8368540604723748428">Teveel decimalen</translation>
+<translation id="4797709125717981664">Minimaal vereist is 1 ADA</translation>
+<translation id="3826737479910350533">Verzendbedrag is te klein</translation>
 <translation id="6575120282593094155">U hebt nog geen <ph name="ACCOUNT_TYPE"/>-account. Wilt u er nu een aanmaken?</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4250680216510889253">Nee</translation>
@@ -926,7 +940,7 @@
 <translation id="2274014756904854136">Tik tweemaal op het scherm om door te gaan</translation>
 <translation id="7795718119973968770">Je wallet is vergrendeld voor je eigen veiligheid. Ontgrendel je wallet om door te gaan.</translation>
 <translation id="9175546523521600401">Wallet vergrendelen</translation>
-<translation id="765834632354589737">Back-up maken van wallet</translation>
+<translation id="7117128722034148989">Wallet back-up</translation>
 <translation id="1108298724135935307">Gekoppelde sites</translation>
 <translation id="5716350339763180836">Saldo's</translation>
 <translation id="5538251867290702601">Grafiek</translation>
@@ -1028,6 +1042,7 @@
 <translation id="2416098547200943834">OPMERKING: privésleutel wordt geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">OPMERKING: privésleutel moet worden geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">OPMERKING: Alleen uitgebreide <ph name="FORMAT"/>-sleutels worden ondersteund.</translation>
+<translation id="9133762451347918196">Testnet-accounts</translation>
 <translation id="42126664696688958">Exporteren</translation>
 <translation id="1366855498335432549">Storting</translation>
 <translation id="790104325876206743">Accountinstellingen</translation>
@@ -1035,6 +1050,7 @@
 <translation id="836614343069504000">Stort of koop tokens om te beginnen. Indien u geen tokens van een geïmporteerd account ziet, controleer dan de filter- en weergave-instellingen. Onbekende tokens moeten mogelijk worden toegevoegd als aangepaste assets.</translation>
 <translation id="2902856457593699108">Sleutel weergeven</translation>
 <translation id="8033497299373164724">Sleutel verbergen</translation>
+<translation id="7514365320538308">Download</translation>
 <translation id="2702143907607790516">Fout bij het bijwerken van de accountnaam; probeer het opnieuw.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1055,9 +1071,6 @@
 <translation id="1506421160138798546">schatting</translation>
 <translation id="59223531494896848">Begrenzing</translation>
 <translation id="8569380433211549748">Prijs in</translation>
-<translation id="2490428413101944234">Kraan testen</translation>
-<translation id="3352959425838279177">Haal Ether op uit een kraan voor <ph name="SELECTED_NETWORK"/></translation>
-<translation id="6449626816252815844">Betaalmethode selecteren</translation>
 <translation id="8009571545960303544">Uw handtekening wordt aangevraagd</translation>
 <translation id="5294062982587710720">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als je tekent. Een ondertekening kan bijna elke bewerking in jouw account of namens jouw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over jouw account en cryptoassets aan de website die het verzoek doet. Teken alleen als je deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
 <translation id="3474375934783434676">Tekenen op eigen risico</translation>
@@ -1065,6 +1078,7 @@
 <translation id="3586931643579894722">Details verbergen</translation>
 <translation id="7702907602086592255">Domein</translation>
 <translation id="3586752056660754651">Teken</translation>
+<translation id="4217653732094303705">Openbare encryptiesleutel</translation>
 <translation id="3484981968509595506">Een DApp vraagt uw openbare coderingssleutel aan</translation>
 <translation id="2300240008330189182"><ph name="URL"/> vraagt om de openbare encryptiesleutel van uw wallet. Als u deze sleutel deelt, kan de website versleutelde berichten aan u sturen.</translation>
 <translation id="3340247553212049934">Verlenen</translation>
@@ -1301,9 +1315,7 @@
 <translation id="4312994183947987913">Kopen/Storten</translation>
 <translation id="5133421763709317473">Geen activa gevonden die overeenkomen met een zoekopdracht of filter</translation>
 <translation id="6423985584914773314">Geen geldig FIL-adres</translation>
-<translation id="5522073372365069684">Kopen met Ramp</translation>
 <translation id="6153197326949684688">Verkopen met <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="3301984548406568819">Financiële gegevens en transactiegegevens worden verwerkt door onze on-ramppartners. Brave verzamelt zulke gegevens niet en heeft er geen toegang toe.</translation>
 <translation id="5795821518596541838">Transactiepartner</translation>
 <translation id="1916136859742693273">Brave Wallet maakt gebruik van Meld.io om verschillende aanbieders van cryptodiensten voor jouw regio samen te voegen. We delen informatie met Meld.io om de transactie te voltooien, waaronder je het adres van je wallet en de landcode. Lees voor meer informatie de Gebruiksvoorwaarden van Meld.</translation>
 <translation id="245827814248186739">Ik heb de <ph name="LINK_BEFORE"/>Gebruiksvoorwaarden van Meld<ph name="LINK_AFTER"/> gelezen en ga ermee akkoord.</translation>
@@ -1324,17 +1336,8 @@
 <translation id="4196022627437957774">Wil je een <ph name="ACCOUNT_TYPE"/>-account maken?</translation>
 <translation id="5982914754413312620">Als je <ph name="TOKEN_SYMBOL"/> wilt ontvangen, heb je een <ph name="ACCOUNT_TYPE"/>-account nodig.</translation>
 <translation id="3067168166931605141">Accountnaam</translation>
-<translation id="6534275647567011533">Kopen met Transak</translation>
-<translation id="5973390321030037823">Kopen met link</translation>
-<translation id="1932640759496708012">Kopen met Coinbase Pay</translation>
-<translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="503018546142690471">Transak</translation>
-<translation id="7295150312737713113">Link door Stripe</translation>
-<translation id="7191335763519723663">Coinbase Pay</translation>
-<translation id="7667423728712601865">Koop crypto met Visa of Mastercard.</translation>
-<translation id="3101839349578102016">Direct kopen met uw bankrekening. Lagere kosten.</translation>
-<translation id="8280898387224328221">Betalen met creditcard, betaalkaart, bankrekening</translation>
-<translation id="2218174283683424104">Koop met de meest vertrouwde naam in crypto.</translation>
+<translation id="1213870770696612739">Minimumbedrag: <ph name="AMOUNT"/></translation>
+<translation id="3041074161036535192">Maximumbedrag: <ph name="AMOUNT"/></translation>
 <translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="7721139939763655123">Laag naar hoog</translation>
 <translation id="5458608274117818139">Hoog naar laag</translation>
@@ -1380,7 +1383,9 @@
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> op <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974"><ph name="SWAP_OR_BRIDGE"/> op <ph name="NETWORK"/> is mislukt vanwege een fout</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> afschermen</translation>
+<translation id="6439110433198887239"><ph name="AMOUNT"/> wordt onbeschermd</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> is afgeschermd</translation>
+<translation id="3860973324426281816"><ph name="AMOUNT"/> is onbeschermd</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {Nog {PENDING_TRANSACTIONS} transacties in behandeling.}
       other {Nog {PENDING_TRANSACTIONS} transacties in behandeling.}
@@ -1575,8 +1580,6 @@
 <translation id="1422451606553326863">Koop crypto</translation>
 <translation id="3887541341068007345">Controleren op wallet-extensies...</translation>
 <translation id="8407091560429310499">Selecteer een activum</translation>
-<translation id="756590380936155533">Selecteer een van onze partners om uw <ph name="ASSET_TICKER"/> aankoop te voltooien</translation>
-<translation id="7880860489474966219">Na voltooiing zal uw geld worden overgemaakt naar uw Brave-wallet</translation>
 <translation id="6182661078713714878">Crypto storten</translation>
 <translation id="3683305208314702347"><ph name="VALUE"/> storten</translation>
 <translation id="5768739294929936862">Solana- of SPL-tokens storten</translation>
@@ -1815,10 +1818,14 @@
 <translation id="7747318989577709780">Account wordt gesynchroniseerd</translation>
 <translation id="9086302186042011942">Synchroniseren</translation>
 <translation id="99991973626409495">Bescherming controleren</translation>
+<translation id="6779429520470417361">Onbescherming controleren</translation>
 <translation id="3114681061018999547">Beschermen</translation>
+<translation id="1564172583156967455">Onbescherming</translation>
 <translation id="8897189056319316783">ZEC beschermen</translation>
+<translation id="508249542337194541">ZEC onbeschermen</translation>
 <translation id="3382275793825152362">Saldo afschermen</translation>
 <translation id="8631765320256788981">Je stuurt een bedrag van je transparante account naar je afgeschermde account.</translation>
+<translation id="3860364671495430495">Je stuurt een bedrag van je afgeschermde account naar je transparante account.</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="9094621390791852268">Geen transactievoorbeeld mogelijk.</translation>
 <translation id="4982713341035600933">Geschatte saldowijziging</translation>
@@ -2095,6 +2102,8 @@
 <translation id="4292565651642921086">Focus op volgende tabbladgroep</translation>
 <translation id="874783686573493196">Focus op vorige tabbladgroep</translation>
 <translation id="9169594135889675189">Nieuw tabblad aan groep toevoegen</translation>
+<translation id="1722567105086139392">Link</translation>
+<translation id="4729794914864902904">Link verwijderen</translation>
 <translation id="1926106318101432555">Bladwijzer openen...</translation>
 <translation id="6118819645013156507">Naar ander venster gaan...</translation>
 <translation id="1623204575967809688">Huidig venster samenvoegen met...</translation>
@@ -2184,10 +2193,8 @@
 <translation id="8151638057146502721">Configureren</translation>
 <translation id="999273441077650169">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Llama 3.1 8B, een model ontwikkeld door Meta om in vele gebruikssituaties efficiënt te zijn. Llama wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="7127671672828944579">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Qwen 14B, een model gecreëerd door Alibaba Cloud om in vele gebruikssituaties efficiënt te zijn. Qwen wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="2328524194917949829">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Gemma 3 12B, een model gecreëerd door Google DeepMind om in vele gebruikssituaties efficiënt te zijn. Gemma wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="634682910381645550">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van DeepSeek R1, een model gecreëerd door DeepSeek om diepgaande redeneertaken uit te voeren. DeepSeek R1 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="1021134081694325196">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van DeepSeek V3.1, een model ontwikkeld door DeepSeek om in vele gebruikssituaties efficiënt te zijn. DeepSeek V3.1 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="3852808100039989429">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Qwen VL 30B, een model gecreëerd door Alibaba Cloud om in vele gebruikssituaties efficiënt te zijn. Qwen wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="6406961656408495869">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van DeepSeek V3.1, een model ontwikkeld door DeepSeek om in vele gebruikssituaties efficiënt te zijn. DeepSeek V3.1 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hoi, ik ben Leo. Ik ben een AI-assistent van Brave. Ik word aangedreven door Claude Instant, een model ontwikkeld door Anthropic om gespreks- en tekstverwerkingstaken uit te voeren. Claude Instant wordt door Brave gehost via onze eigen beveiligde infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Haiku, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Haiku wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Sonnet, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Sonnet wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
@@ -2204,6 +2211,7 @@
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokaal</translation>
 <translation id="830868413617744215">Bèta</translation>
+<translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Aanbevolen modellen</translation>
 <translation id="6568044140836233369">Alle modellen tonen</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2292,7 +2300,8 @@
 <translation id="1243966363662220847">Feedback over reactie</translation>
 <translation id="7417895556119762861">Door aan te geven of je een antwoord goed of slecht vindt, stuur je je beoordeling, gesprek, model, taal, versie en premiumstatus naar Brave om Leo verder te verbeteren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Bericht naar Leo sturen</translation>
-<translation id="4084869091337186002">Leo AI Content Agent is altijd ingeschakeld in dit profiel</translation>
+<translation id="6222803935921999130">AI browsing profielvenster openen</translation>
+<translation id="1530903352777607099">AI Content Agent is altijd ingeschakeld in dit profiel</translation>
 <translation id="8650874793377330048">Antwoord stoppen</translation>
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="1093419424466417703">Deze pagina is te lang voor Leo. Sommige context van het gesprek kan ontbreken. Leo heeft <ph name="PERCENTAGE"/> van de content op de pagina kunnen lezen.</translation>
@@ -2315,9 +2324,8 @@
 <translation id="1602382615168212961">Stuur pagina-inhoud van tabbladen in uw bladwijzers om Leo meer context voor het gesprek te geven.</translation>
 <translation id="4808122506413075135">Stuur pagina-inhoud uit uw browsergeschiedenis om Leo meer context voor het gesprek te geven.</translation>
 <translation id="220541218939267992">Paginainhoud wordt samen met je berichten naar Leo verzonden.</translation>
-<translation id="8164365899016970783">Voeg tabblad- en bladwijzerinhoud toe voor context. De inhoud wordt samen met uw berichten naar Leo verzonden.</translation>
+<translation id="2152389270152475874">Voeg tabblad- en bladwijzerinhoud toe voor context. De inhoud wordt samen met uw berichten naar Leo verzonden.</translation>
 <translation id="6237410387937453423">Geen bijpassende bijlagen</translation>
-<translation id="8076492880354921740">Tabbladen</translation>
 <translation id="2315654674554095762">Leo onthoudt nu je gesprekken, zodat je ze later kunt bekijken. Ze worden versleuteld opgeslagen op je apparaat en je kunt ze altijd verwijderen.</translation>
 <translation id="7821251979960635244">Je gespreksgeschiedenis verschijnt hier zodra je een gesprek begint.</translation>
 <translation id="887511360213807449">Geschiedenis is uitgeschakeld</translation>
@@ -2326,10 +2334,10 @@
 <translation id="3185367320601718531">Gespreks- en tekstproductie</translation>
 <translation id="2793458212460902934">Snel • Zoek • Tools</translation>
 <translation id="8506027496671575183">Zoek • Beeld • Tools</translation>
-<translation id="3213834013136637671">Zoek • Beeld</translation>
-<translation id="7697693533305615127">Zoek • Denken</translation>
+<translation id="3184606955650139158">Snel • Zoek • Vision</translation>
 <translation id="7465032796278724624">Verifieerbaar privé met NEAR AI TEE</translation>
 <translation id="8782867266498869301">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt</translation>
+<translation id="3213834013136637671">Zoek • Beeld</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
 <translation id="3754337604877048671">Introductie van Leo AI</translation>
 <translation id="5295261408976371809">Je <ph name="TEXT_BEFORE"/>privé<ph name="TEXT_AFTER"/> AI-assistent, ingebouwd in de browser.</translation>
@@ -2407,20 +2415,28 @@
 <translation id="4798146464408730445">Geen vaardigheden gevonden. Maak een nieuwe aan door op de knop "Nieuw" te klikken.</translation>
 <translation id="271033894570825754">Nieuw</translation>
 <translation id="8266605059880650542">Noteer wat informatie voor later over de pagina</translation>
-<translation id="7049849063044248805">Agentmodus werkt met modellen die ondersteuning voor tools bieden. Niet-compatibele modellen zijn verborgen in deze lijst.</translation>
+<translation id="5103625298494362646">Agentmodus werkt met modellen die ondersteuning voor tools bieden. Niet-compatibele modellen zijn verborgen in deze lijst.</translation>
 <translation id="3397808797783614750">AI automatisch voor jou laten browsen kan schadelijke, onbedoelde gevolgen hebben voor je privacy, financiën en online communicatie. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Beveiligingswaarschuwing</translation>
 <translation id="6077070599873946984">Brave AI heeft jouw toestemming nodig voor: <ph name="TOOL_LABEL"/></translation>
 <translation id="4163837693685963037">Er is vastgesteld dat de bewerking mogelijk niet overeenkomt met jouw verzoek:</translation>
 <translation id="3927932062596804919">Weigeren</translation>
 <translation id="4569155249847375786">Geverifieerd</translation>
-<translation id="3240988198391588806">Agentmodus</translation>
-<translation id="538066983058750776">Over het Leo-profiel</translation>
-<translation id="1577570612997320961">Om je gegevens te beschermen, beperkt dit geïsoleerde Brave-profiel de AI-toegang tot je hoofdbrowserprofiel. Leo AI heeft hier extra machtigingen om sites te bezoeken en te gebruiken, zodat je hem taken kunt geven en samen kunt browsen om je productiviteit te verhogen.</translation>
+<translation id="8200772114523450471">Hervat</translation>
+<translation id="7607002721634913082">Onderbroken</translation>
+<translation id="4773299976671772492">Gestopt</translation>
+<translation id="6946722113367118030">Denken</translation>
+<translation id="2113810663179257944">Code-uitvoering</translation>
+<translation id="4790888275629207278">Code uitgevoerd in sandbox</translation>
+<translation id="4379566111233326721">Code:</translation>
+<translation id="3542130965673205258">Output:</translation>
+<translation id="3428245742224818842">AI-browsen</translation>
+<translation id="2854657728271352435">Over het AI-browsenprofiel</translation>
+<translation id="2301685062527585986">Om je gegevens te beschermen, zorgt dit geïsoleerde AI-browsenprofiel ervoor dat de AI-agent geen toegang heeft tot je hoofdprofiel en alleen toestemming heeft om websites te bezoeken en ermee te communiceren wanneer dat nodig is. Je kunt je productiviteit verhogen door taken toe te wijzen en de AI-agent te laten browsen voor jou.</translation>
 <translation id="648116453147783450">Jouw gegevens en sessies</translation>
-<translation id="3906161204878017619">Wanneer je je aanmeldt op een website via dit profiel, kan Leo de informatie op die site zien als deze geopend is, hetzij wanneer hij zelf de site bezoekt, hetzij wanneer jij hem vraagt daar iets te doen.</translation>
+<translation id="4879348540868082026">Wanneer je je aanmeldt op een website via dit profiel, kan de AI-agent van Brave de informatie op die site zien als deze geopend is, hetzij wanneer hij zelf de site bezoekt, hetzij wanneer jij hem vraagt daar iets te doen.</translation>
 <translation id="5583803492921648196">Terugschakelen</translation>
-<translation id="8068929004144221259">Je kunt op elk moment terugschakelen naar je gewone profiel via het hoofdmenu of op het Leo-avatarpictogram in je werkbalk klikken. Agentmodus opent altijd in dit profiel.</translation>
+<translation id="864117099189791993">Je kunt op elk moment terugschakelen naar je gewone profiel via het hoofdmenu of via het profielmenu in de werkbalk. AI-browsen opent altijd in het AI-browsenprofiel.</translation>
 <translation id="3486480638399578250">Houd je persoonlijke e-mailadres privé</translation>
 <translation id="7765422154906712751">Maak unieke, willekeurige adressen die je altijd kunt verwijderen en laat je e-mailberichten doorsturen naar je Brave-account. Voorkom dat je je echte e-mailadres moet delen met adverteerders.</translation>
 <translation id="5222676887888702881">Uitloggen</translation>
@@ -2520,13 +2536,13 @@
 <translation id="3620004479054499575">Ondervindt u problemen met deze site?</translation>
 <translation id="9176447766421988172">We proberen een experiment uit om de compatibiliteit van websites te vergroten, waarbij we alleen advertentieblokkering ingeschakeld houden. Waarschuwing: verwijdert alle privacybescherming. Wilt u het uitproberen? <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Houd er rekening mee dat u voor individuele websites die door de privacybescherming van Brave worden verbroken, Shields op DOWN kunt zetten.</translation>
-<translation id="1836572675775891780">Alleen advertentieblokmodus inschakelen</translation>
+<translation id="2850777974644218370">Alleen advertentieblokmodus inschakelen</translation>
 <translation id="6623668214089604469">Werkt de site nu goed?</translation>
 <translation id="8978860854770042258">Overweeg alstublieft om een rapport in te dienen als deze site nog steeds kapot is.</translation>
 <translation id="4677356505199464553">Ziet er goed uit</translation>
 <translation id="1992750560347846445">Website rapporteren</translation>
-<translation id="2887186586339544116">Alleen advertentieblokmodus ingeschakeld</translation>
-<translation id="673665019618844072">U gebruikt momenteel de modus Alleen advertentieblokkering. Deze modus biedt alleen bescherming tegen advertenties. Als u terug wilt naar de volledige Shields-modus, schakelt u deze modus uit via de instellingen.</translation>
+<translation id="2863270180245144869">Alleen advertentieblokmodus ingeschakeld</translation>
+<translation id="2302218429308447288">U gebruikt momenteel de modus Alleen advertentieblokkering. Deze modus biedt alleen bescherming tegen advertenties. Als u terug wilt naar de volledige Shields-modus, schakelt u deze modus uit via de instellingen.</translation>
 <translation id="4820891023903368625">Geblokkeerde advertenties <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, advertenties en meer hebben <ph name="LINK_BEFORE"/> geblokkeerd. Meer informatie over<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Niet beschermd door Brave Shields <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
@@ -2559,6 +2575,8 @@
 <translation id="6975864539539353406">Verwijdert cookies en andere sitegegevens wanneer u een site afsluit</translation>
 <translation id="6486971767955110687">Bewaar contactgegevens voor toekomstige foutrapporten over niet-werkende sites</translation>
 <translation id="4085787265464238844">Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten</translation>
+<translation id="7740929262043547697">Elementblokkering toestaan in privévensters</translation>
+<translation id="1260864846935682371">Schakelt de functie Shields Elementen blokkeren in voor privévensters. Let op: elementen die worden geblokkeerd in privévensters worden ook geblokkeerd in niet-privévensters.</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="8366221601425141146">Fingerprinting geblokkeerd</translation>
@@ -2611,7 +2629,7 @@
 <translation id="6764845498618413165">Meer informatie.</translation>
 <translation id="7818938154803162778">Natuurlijk, ik wil helpen</translation>
 <translation id="7207456302801184289">Welkom bij Brave</translation>
-<translation id="293854220404217065">Midnight-thema</translation>
+<translation id="4988030440045495002">Ultra donker thema</translation>
 <translation id="2422927186524098759">Zijbalk</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>

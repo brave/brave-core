@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Onyesha mapendekezo ya kivinjari</translation>
 <translation id="8982438328166986164">Huonyesha mapendekezo ya tovuti kulingana na ualamishaji wako na historia ya kuvinjari.</translation>
 <translation id="924029461438529367">Onyesha mapendekezo ya utafutaji</translation>
-<translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>
-<translation id="919715748352669592">Inaorodhesha kiotomatiki tovuti zinazofuata OpenSearch</translation>
 <translation id="9148058034647219655">Ondoka</translation>
 <translation id="7534079972563542000">Vikoa Visivyoweza Kusimamishwa</translation>
 <translation id="6486983549008741930">Kuchuja Maudhui</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Usipandishe miunganisho hadi HTTPS (imezimwa)</translation>
 <translation id="693506469193748756">Nisahau ninapofunga tovuti hii</translation>
 <translation id="6975864539539353406">Hufuta vidakuzi na data nyingine ya tovuti unapofunga tovuti</translation>
+<translation id="7740929262043547697">Ruhusu mzuia vipengele katika madirisha ya faragha</translation>
+<translation id="1260864846935682371">Huongeza kipengele cha Mizuia Vipengele ya Shields katika madirisha ya faragha. Kumbuka kuwa vipengele vilivyozuiwa kwenye madirisha ya faragha vitazuiwa pia katika madirisha yasiyo ya faragha.</translation>
 <translation id="1680858055899097121">Usisitize vichupo kati ya vipindi vya kuvinjari</translation>
 <translation id="7142548388914389999">Ruhusu changanuzi za bidhaa za kulinda faragha (P3A)</translation>
 <translation id="5254037869598726291">Maelezo ya P3A yasiyotambulisha husaidia Brave kukadiria matumizi ya jumla na kuhakikisha kuwa tunaboresha vipengele maarufu.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">BAADAYE</translation>
 <translation id="4117451092682672487">Faragha. Imerahisishwa.</translation>
 <translation id="7909375417585209817">Ukiwa na Brave kama chaguo-msingi, kila kiungo unachogusa hufunguka kikiwa na ulinzi wa faragha wa Brave.</translation>
-<translation id="7370959926683925817">Zuia matangazo. Hifadhi data. Kila siku.</translation>
-<translation id="7281027579943912834">Ukiwa na Brave kama chaguomsingi, kila kiungo unachogusa hupata ulinzi wa kuzuia matangazo wa Brave. Kila ukurasa, video, na utiririshaji.</translation>
 <translation id="5148943178722443958">Saidia kuboresha Brave.</translation>
 <translation id="6718362830686703942">Tuma ripoti za uchunguzi wa kubainisha matatizo ikiwa utakabiliwa na programu kuacha kufanya kazi vyema au kukwama.</translation>
 <translation id="8616157231067364693">Shiriki maarifa ya bidhaa ya faragha na yasiyokutambulisha kuhusu ni vipengele vipi vinavyotumiwa na watumiaji wa Brave.</translation>
@@ -371,6 +369,11 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="8793108040181436796">Wijeti</translation>
 <translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
 <translation id="7275773481201277457">Onyesha Takwimu za Brave</translation>
+<translation id="7462178177755090262">Skrini ya Kufungua</translation>
+<translation id="5365434987337264071">Kichupo kilichokuwa wazi mwisho</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Kichupo kipya baada ya <ph name="HOURS_ONE"/> saa ya kutotumika} other {Kichupo kipya baada ya <ph name="HOURS_MANY"/> saa za kutotumika}}</translation>
+<translation id="5233638681132016545">Kichupo kipya</translation>
+<translation id="8395271296293035055">Rudi kwenye kichupo chako cha hivi karibuni</translation>
 <translation id="8297488609722895137">Picha imepigwa na <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Fungua viungo vya nje kwenye Brave</translation>
 <translation id="5616508928556767259">Fungua viungo kutoka programu nyingine kwenye mwonekano wa wavuti wa Brave. Dokezo: Brave lazima iwe imewekwa kama programu yako chaguomsingi ya kuvinjari.</translation>
@@ -761,7 +764,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6889920539620318793">Weka iwe amilifu</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
 <translation id="4945690646623486292">Chagua Mtandao</translation>
-<translation id="5233638681132016545">Kichupo kipya</translation>
 <translation id="8006088103295786154">Fikia Brave Wallet</translation>
 <translation id="5308380583665731573">Unganisha</translation>
 <translation id="8030169304546394654">Imeondolewa</translation>
@@ -1069,6 +1071,10 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="4650851936784160359">Orodha ya vichujio haikuweza kusasishwa. Tafadhali jaribu tena</translation>
 <translation id="3098054327870766317">Onyesha kitufe cha futa wakati vichupo vinapofungwa</translation>
 <translation id="1336494649091412226">Una uhakika unataka kutoka Brave?</translation>
+<translation id="6061635824229591714">Futa data za tovuti?</translation>
+<translation id="1265051174491933207">Kufuta kutafuta kutafuta data za tovuti na kufunga vichupo vyote vya '<ph name="SITE_NAME"/>'. Hali hii haiwezi kutenduliwa.</translation>
+<translation id="4279349293084858577">Futa kwa usalama</translation>
+<translation id="4426990318287827331">Futa data</translation>
 <translation id="7942415993090181327">Historia ya mazungumzo</translation>
 <translation id="6859935199732075666">Onyesha makosa ya Kuvinjari Salama</translation>
 <translation id="2735247450315842119">Ruhusu kupiga picha za skrini katika vichupo vya faragha</translation>

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">የአሳሽ መመካከሪያ ምክርዎችን አሳይ</translation>
 <translation id="8982438328166986164">በእርስዎ ዕልባቶች እና የአሰሳ ታሪክ ላይ በመመስረት የድር ጣቢያ ጥቆማዎችን ያሳያል።</translation>
 <translation id="924029461438529367">የፍለጋ ምክሮችን አሳይ</translation>
-<translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
-<translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ -ሰር ይጠቁማል።</translation>
 <translation id="9148058034647219655">ውጣ</translation>
 <translation id="7534079972563542000">የማይቆሙ ጎራዎች</translation>
 <translation id="6486983549008741930">ይዘት ማጣራት</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">ግንኙነቶችን ወደ HTTPS አያዘምኑ (ጠፍቷል)</translation>
 <translation id="693506469193748756">ይህን ድህረ ገጽ ስዘጋው ይህ ቅንብር እርሳ</translation>
 <translation id="6975864539539353406">አንድ ጣቢያ ሲዘጉ ኩኪዎችን እና የሌላ ጣቢያ ውሂብን ያጸዳል</translation>
+<translation id="7740929262043547697">በግል መስኮቶች ውስጥ የአካላት መከለከያን ፍቀድ</translation>
+<translation id="1260864846935682371">በግል መስኮቶች ውስጥ የShields አካል መከለከያ ባህሪ ይነሳል። ከተከለከሉት እቃዎች በግል መስኮቶች ውስጥ የተከሉትም በማይሆኑ መስኮቶች ውስጥ እንደዚሁ ለመከለከያ ይደርሳሉ።</translation>
 <translation id="1680858055899097121">በማሰሻ ክፍለ ጊዜያት መካከል ትሮችን አይቀያይሩ</translation>
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
 <translation id="5254037869598726291">ስም የለሽ የ P3A መረጃ ጎበዝ አጠቃላይ አጠቃቀምን ለመገመት እና ታዋቂ ባህሪያትን እያሻሻልን መሆኑን ለማረጋገጥ ይረዳል።</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">በኋላ</translation>
 <translation id="4117451092682672487">ግላዊነት። ቀላል ተደርጓል።</translation>
 <translation id="7909375417585209817">Brave እንደ ነባሪ ሲሆን ጠቅ የሚያደርጉት አያንዳንዱ አገናኝ በBrave የግላዊነት ጥበቃዎች አማካኝነት ይከፍታል።</translation>
-<translation id="7370959926683925817">በ እያንዳንዱ ቀን፣ ማስታወቂያዎችን አግድ። ውሂብን ቆጥብ።</translation>
-<translation id="7281027579943912834">Brave በነባሪነት ሲጠቀሙ፣  እያንዳንዷ የሚንኳት ማገናኛ የ Brave የማስታወቂያ እገዳ ጥበቃን ታገኛለች። እያንዳንዱ ገጽ፣ ቪዲዮ እና ዥረት።</translation>
 <translation id="5148943178722443958">Brave ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
 <translation id="6718362830686703942">ብልሽት ወይም የማንቀሳቀስ ችግሮች ካጋጠምዎ፣ የምርመራ ሪፖርቶችን ይላኩ።</translation>
 <translation id="8616157231067364693">በብሬቭ ተጠቃሚዎች ምን አይነት ይዘቶች ጥቅም ላይ እንደሚውሉ፣ በግል እና ማንነትን በማያሳውቅ መንገድ አስተያየትዎን ያጋሩ።</translation>
@@ -371,6 +369,11 @@
 <translation id="8793108040181436796">ምግብሮች</translation>
 <translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
 <translation id="7275773481201277457">የ Brave ስታቲስቲክስ አሳይ</translation>
+<translation id="7462178177755090262">መከፈቻ ማብሪያ ማያ</translation>
+<translation id="5365434987337264071">መጨረሻ የተከፈተ ታብ</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {ከ<ph name="HOURS_ONE"/> ሰአት ዝምታ በኋላ አዲስ ታብ} other {ከ<ph name="HOURS_MANY"/> ሰአታት ዝምታ በኋላ አዲስ ታብ}}</translation>
+<translation id="5233638681132016545">አዲስ ትር</translation>
+<translation id="8395271296293035055">ወደ ከፍተኛ የነበረው ታብ ተመለስ</translation>
 <translation id="8297488609722895137">ፎቶ በ <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">የውጭ አገናኞችን በBrave ላይ ክፈት</translation>
 <translation id="5616508928556767259">ከሌሎች መተግበሪያዎች የሚመጡ አገናኞችን በBrave የገጽ እይታ ውስጥ ይከፍታል። ማስታወሻ፡ Brave እንደ ነባሪ አሳሽዎ መዘጋጀት አለብዎት።</translation>
@@ -753,7 +756,6 @@
 <translation id="6889920539620318793">እንደ ገቢር አቀናብር</translation>
 <translation id="2653659639078652383">አስገባ</translation>
 <translation id="4945690646623486292">አውታረ መረብ ይምረጡ</translation>
-<translation id="5233638681132016545">አዲስ ትር</translation>
 <translation id="8006088103295786154">የ Brave ን ዋሌት ይድረሱበት</translation>
 <translation id="5308380583665731573">አገናኝ</translation>
 <translation id="8030169304546394654">ግንኙነቱ ተቋርጧል</translation>
@@ -1065,6 +1067,10 @@
 <translation id="4650851936784160359">የማጣሪያ ዝርዝር ሊንቅ አልቻለም። እባክዎትን ዳግም ይሞክሩ።</translation>
 <translation id="3098054327870766317">ትሮች ሲዘጉ ያስተካክሉ ቁልፍን አሳይ</translation>
 <translation id="1336494649091412226">እርግጠኛ ነዎት እንደ Brave መዝጋት ትፈልጋላችሁ?</translation>
+<translation id="6061635824229591714">የsite ውሂብን በሙሉ ላጥም?</translation>
+<translation id="1265051174491933207">ማሰስ የsite ውሂብን ያጠፋል እና ሁሉንም '<ph name="SITE_NAME"/>' ታቦች ይዘጋል። ይህን መድገም አይቻልም።</translation>
+<translation id="4279349293084858577">ማሰስ</translation>
+<translation id="4426990318287827331">ውሂብ ማሰስ</translation>
 <translation id="7942415993090181327">የውይይት ታሪክ</translation>
 <translation id="6859935199732075666">የፍጹም ፍቶቅን እንድትክፍቱ ጥፍሩ እና ወገኖችቱን ለጥፍትበህ</translation>
 <translation id="2735247450315842119">በግል ትሮች ብሎስ ውስጥ እሴቶችን እንዲኖሩ እንድትፈቅዱ</translation>
