@@ -27,23 +27,32 @@ def ensure_build_dirs():
             continue
         if not (config_dir / 'build.ninja').exists():
             build_dir = str(config_dir.relative_to(SRC_DIR))
-            subprocess.run(['gn', 'gen', build_dir], cwd=SRC_DIR,
-                           capture_output=True, check=False)
+            subprocess.run(['gn', 'gen', build_dir],
+                           cwd=SRC_DIR,
+                           capture_output=True,
+                           check=False)
 
 
 # Test cases: (config, file, expected_needs_build, description)
 TEST_CASES = [
-    ('mac', 'browser/brave_stats/brave_stats_updater.cc', True, 'C++ triggers mac'),
+    ('mac', 'browser/brave_stats/brave_stats_updater.cc', True,
+     'C++ triggers mac'),
     ('mac', 'android/java/org/Example.java', False, 'Java skips mac'),
-    ('ios', 'components/brave_wallet/browser/brave_wallet_service.cc', True, 'C++ triggers ios'),
+    ('ios', 'components/brave_wallet/browser/brave_wallet_service.cc', True,
+     'C++ triggers ios'),
     ('ios', 'android/java/org/Example.java', False, 'Java skips ios'),
-    ('win', 'browser/brave_stats/brave_stats_updater.cc', True, 'C++ triggers win'),
+    ('win', 'browser/brave_stats/brave_stats_updater.cc', True,
+     'C++ triggers win'),
     ('win', 'android/java/org/Example.java', False, 'Java skips win'),
-    ('linux', 'browser/brave_stats/brave_stats_updater.cc', True, 'C++ triggers linux'),
+    ('linux', 'browser/brave_stats/brave_stats_updater.cc', True,
+     'C++ triggers linux'),
     ('linux', 'android/java/org/Example.java', False, 'Java skips linux'),
-    ('android', 'android/java/org/Example.java', True, 'Java triggers android'),
-    ('android', 'browser/brave_stats/brave_stats_updater.cc', True, 'C++ triggers android'),
-    ('brave_origin', 'browser/brave_stats/brave_stats_updater.cc', True, 'C++ triggers brave_origin'),
+    ('android', 'android/java/org/Example.java', True,
+     'Java triggers android'),
+    ('android', 'browser/brave_stats/brave_stats_updater.cc', True,
+     'C++ triggers android'),
+    ('brave_origin', 'browser/brave_stats/brave_stats_updater.cc', True,
+     'C++ triggers brave_origin'),
 ]
 
 
@@ -54,7 +63,9 @@ def run_test(config, file, expected):
         return None, 'SKIP (gn gen failed - cross-compile not available)'
 
     result = subprocess.run(
-        [sys.executable, str(SCRIPT), str(config_dir), '--files', file],
+        [sys.executable,
+         str(SCRIPT),
+         str(config_dir), '--files', file],
         cwd=SRC_DIR,
         capture_output=True,
         text=True,
@@ -67,7 +78,9 @@ def run_test(config, file, expected):
     actual = result.returncode == 1
     if actual == expected:
         return True, 'PASS'
-    return False, f'FAIL (expected {"build" if expected else "skip"}, got {"build" if actual else "skip"})'
+    exp = "build" if expected else "skip"
+    got = "build" if actual else "skip"
+    return False, f'FAIL (expected {exp}, got {got})'
 
 
 def main():
