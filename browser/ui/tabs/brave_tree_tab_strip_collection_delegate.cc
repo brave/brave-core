@@ -370,9 +370,9 @@ BraveTreeTabStripCollectionDelegate::GetParentTreeNodeCollectionOfTab(
   while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
     parent_collection = parent_collection->GetParentCollection();
     CHECK(parent_collection);
-    if (parent_collection->type() == tabs::TabCollection::Type::UNPINNED) {
-      return nullptr;
-    }
+    // We don't assume that unpinned tabs are attached to unpinned collection
+    // without being wrapped by a tree node.
+    CHECK_NE(parent_collection->type(), tabs::TabCollection::Type::UNPINNED);
   }
   return static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
 }
