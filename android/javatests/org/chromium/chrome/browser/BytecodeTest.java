@@ -282,7 +282,7 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils"));
+                        "org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(
                 classExists(
