@@ -86,7 +86,7 @@ public class BraveNewTabPage extends NewTabPage {
             NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
-            MonotonicObservableSupplier<TopInsetProvider> topInsetProviderSupplier,
+            TopInsetProvider topInsetProvider,
             StartupMetricsTracker startupMetricsTracker,
             MultiInstanceManager multiInstanceManager) {
         super(
@@ -113,7 +113,7 @@ public class BraveNewTabPage extends NewTabPage {
                 tabStripHeightSupplier,
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
-                topInsetProviderSupplier,
+                topInsetProvider,
                 startupMetricsTracker,
                 multiInstanceManager);
 

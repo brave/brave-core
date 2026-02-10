@@ -161,6 +161,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.appmenu.BraveAppMenu;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
+import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
@@ -1481,7 +1482,7 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
-                        MonotonicObservableSupplier.class,
+                        TopInsetProvider.class,
                         NonNullObservableSupplier.class,
                         PageZoomManager.class,
                         SnackbarManager.class,
@@ -1562,7 +1563,7 @@ public class BytecodeTest {
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
+                        TopInsetProvider.class,
                         StartupMetricsTracker.class,
                         MultiInstanceManager.class));
         Assert.assertTrue(
@@ -1770,7 +1771,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
+                        TopInsetProvider.class,
                         LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
@@ -1905,7 +1906,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         SettableMonotonicObservableSupplier.class,
-                        SettableMonotonicObservableSupplier.class,
+                        TopInsetProvider.class,
                         OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
