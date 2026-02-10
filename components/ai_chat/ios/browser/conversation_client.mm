@@ -57,6 +57,9 @@ void ConversationClient::OnModelDataChanged(
       [[NSMutableArray alloc] initWithCapacity:model_list.size()];
 
   for (auto& model : model_list) {
+    if (model->key == "chat-automatic") {
+      continue;
+    }
     [models addObject:[[AiChatModel alloc] initWithModelPtr:model->Clone()]];
   }
 

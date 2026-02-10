@@ -175,8 +175,17 @@
       [](void (^completion)(AiChatConversationState*),
          ai_chat::mojom::ConversationStatePtr state) {
         if (completion) {
-          completion([[AiChatConversationState alloc]
-              initWithConversationStatePtr:std::move(state)]);
+          auto* bridgedState = [[AiChatConversationState alloc]
+              initWithConversationStatePtr:std::move(state)];
+          NSMutableArray* models = [bridgedState.allModels mutableCopy];
+          // Remove the automatic model
+          [models filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(
+                                                        AiChatModel* model,
+                                                        NSDictionary*) {
+                    return ![model.key isEqualToString:@"chat-automatic"];
+                  }]];
+          bridgedState.allModels = [models copy];
+          completion(bridgedState);
         }
       },
       completion));
