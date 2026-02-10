@@ -79,7 +79,7 @@
 # These tests fail because Brave enables screen farbling
 # (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
 # screen dimension values returned to web content.
--HeadlessModeProtocolBrowserTest.OzoneScreenSizeOverride
+-HeadlessModeProtocolBrowserTest_OzoneScreenSizeOverride.OzoneScreenSizeOverride
 -MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginAllow
 -MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginDeny
 -MultiscreenWindowManagementPermissionContextTest.IsExtendedSameOriginAllow
