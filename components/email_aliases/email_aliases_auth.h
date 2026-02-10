@@ -12,6 +12,8 @@
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -24,7 +26,8 @@ class EmailAliasesAuth {
 
   explicit EmailAliasesAuth(
       PrefService* prefs_service,
-      brave_account::mojom::Authentication* brave_account_auth,
+      mojo::PendingRemote<brave_account::mojom::Authentication>
+          brave_account_auth,
       OnChangedCallback on_changed = base::DoNothing());
   ~EmailAliasesAuth();
 
@@ -38,13 +41,13 @@ class EmailAliasesAuth {
   void SetAuthEmailForTesting(const std::string& email);
 
  private:
+  void OnDisconnect();
   void OnPrefChanged(const std::string& pref_name);
 
   std::optional<std::string> auth_email_for_testing_;
 
   const raw_ptr<PrefService> prefs_service_ = nullptr;
-  const raw_ptr<brave_account::mojom::Authentication> brave_account_auth_ =
-      nullptr;
+  mojo::Remote<brave_account::mojom::Authentication> brave_account_auth_;
 
   PrefChangeRegistrar pref_change_registrar_;
   OnChangedCallback on_changed_;

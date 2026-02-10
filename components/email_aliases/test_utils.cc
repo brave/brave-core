@@ -61,6 +61,11 @@ void AuthStateObserver::OnAliasesUpdated(
 MockBraveAccountAuthentication::MockBraveAccountAuthentication() = default;
 MockBraveAccountAuthentication::~MockBraveAccountAuthentication() = default;
 
+mojo::PendingRemote<brave_account::mojom::Authentication>
+MockBraveAccountAuthentication::BindAndGetRemote() {
+  return receiver_.BindNewPipeAndPassRemote();
+}
+
 GURL GetEmailAliasesServiceURL() {
   return endpoints::GenerateAlias::URL();
 }

@@ -89,17 +89,16 @@ auto MakeRequest(const std::string& bearer_token) {
 }  // namespace
 
 EmailAliasesService::EmailAliasesService(
-    brave_account::mojom::Authentication* brave_account_auth,
+    mojo::PendingRemote<brave_account::mojom::Authentication>
+        brave_account_auth,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* pref_service)
-    : brave_account_auth_(brave_account_auth),
-      url_loader_factory_(url_loader_factory),
-      pref_service_(pref_service) {
+    : url_loader_factory_(url_loader_factory), pref_service_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
-  CHECK(brave_account_auth_);
+  CHECK(brave_account_auth);
   CHECK(pref_service_);
 
-  auth_.emplace(pref_service_, brave_account_auth_,
+  auth_.emplace(pref_service_, std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
 }

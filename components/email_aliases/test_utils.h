@@ -99,6 +99,11 @@ class MockBraveAccountAuthentication
               (brave_account::mojom::Service service,
                GetServiceTokenCallback callback),
               (override));
+
+  mojo::PendingRemote<brave_account::mojom::Authentication> BindAndGetRemote();
+
+ private:
+  mojo::Receiver<brave_account::mojom::Authentication> receiver_{this};
 };
 
 GURL GetEmailAliasesServiceURL();

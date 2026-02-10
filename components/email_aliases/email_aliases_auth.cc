@@ -14,14 +14,20 @@ namespace email_aliases {
 
 EmailAliasesAuth::EmailAliasesAuth(
     PrefService* prefs_service,
-    brave_account::mojom::Authentication* brave_account_auth,
+    mojo::PendingRemote<brave_account::mojom::Authentication>
+        brave_account_auth,
     OnChangedCallback on_changed)
     : prefs_service_(prefs_service),
-      brave_account_auth_(brave_account_auth),
+      brave_account_auth_(std::move(brave_account_auth)),
       on_changed_(std::move(on_changed)) {
   CHECK(prefs_service_);
   CHECK(brave_account_auth_);
   CHECK(on_changed_);
+
+  brave_account_auth_.set_disconnect_handler(base::BindOnce(
+      &EmailAliasesAuth::OnDisconnect,
+      base::Unretained(
+          this)));  // Unretained is safe because we own the remote<>
 
   pref_change_registrar_.Init(prefs_service_);
   pref_change_registrar_.Add(
@@ -41,7 +47,7 @@ EmailAliasesAuth::EmailAliasesAuth(
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return !GetAuthEmail().empty();
+  return brave_account_auth_ && !GetAuthEmail().empty();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
@@ -55,13 +61,22 @@ std::string EmailAliasesAuth::GetAuthEmail() const {
 
 void EmailAliasesAuth::GetServiceToken(
     brave_account::mojom::Authentication::GetServiceTokenCallback callback) {
-  CHECK_DEREF(brave_account_auth_)
-      .GetServiceToken(brave_account::mojom::Service::kEmailAliases,
-                       std::move(callback));
+  if (brave_account_auth_) {
+    brave_account_auth_->GetServiceToken(
+        brave_account::mojom::Service::kEmailAliases, std::move(callback));
+  } else {
+    auto error = brave_account::mojom::GetServiceTokenError::New();
+    std::move(callback).Run(base::unexpected(std::move(error)));
+  }
 }
 
 void EmailAliasesAuth::SetAuthEmailForTesting(const std::string& email) {
   auth_email_for_testing_ = email;
+  on_changed_.Run();
+}
+
+void EmailAliasesAuth::OnDisconnect() {
+  brave_account_auth_.reset();
   on_changed_.Run();
 }
 

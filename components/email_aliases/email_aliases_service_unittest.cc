@@ -157,8 +157,8 @@ class EmailAliasesAPITest : public ::testing::Test {
         });
 
     service_ = std::make_unique<EmailAliasesService>(
-        brave_account_auth_.get(), url_loader_factory_.GetSafeWeakWrapper(),
-        &prefs_);
+        brave_account_auth_->BindAndGetRemote(),
+        url_loader_factory_.GetSafeWeakWrapper(), &prefs_);
     email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
     service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 

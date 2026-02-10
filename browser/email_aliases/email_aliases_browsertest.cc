@@ -112,7 +112,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
           base::BindLambdaForTesting([&](content::BrowserContext* context)
                                          -> std::unique_ptr<KeyedService> {
             return std::make_unique<EmailAliasesService>(
-                &brave_account_auth_,
+                brave_account_auth_.BindAndGetRemote(),
                 context->GetDefaultStoragePartition()
                     ->GetURLLoaderFactoryForBrowserProcess(),
                 user_prefs::UserPrefs::Get(context));

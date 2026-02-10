@@ -17,6 +17,7 @@
 #include "brave/components/email_aliases/email_aliases_endpoints.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
@@ -37,7 +38,8 @@ class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
   EmailAliasesService(
-      brave_account::mojom::Authentication* brave_account_auth,
+      mojo::PendingRemote<brave_account::mojom::Authentication>
+          brave_account_auth,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* pref_service);
   ~EmailAliasesService() override;
@@ -123,9 +125,6 @@ class EmailAliasesService : public KeyedService,
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
 
   std::optional<EmailAliasesAuth> auth_;
-
-  const raw_ptr<brave_account::mojom::Authentication> brave_account_auth_ =
-      nullptr;
 
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

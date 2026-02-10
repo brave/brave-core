@@ -56,8 +56,11 @@ EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  mojo::PendingRemote<brave_account::mojom::Authentication> brave_account_auth;
+  brave_account::BraveAccountServiceFactory::GetFor(context)->BindInterface(
+      brave_account_auth.InitWithNewPipeAndPassReceiver());
   return std::make_unique<EmailAliasesService>(
-      brave_account::BraveAccountServiceFactory::GetFor(context),
+      std::move(brave_account_auth),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       user_prefs::UserPrefs::Get(context));
