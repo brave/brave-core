@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -17,13 +17,14 @@ import stat
 def main():
     args = parse_args()
 
-    with open(args.postinstall_template_path) as f:
+    with open(args.install_template_path) as f:
         script = f.read()
 
     replacements = {
         '@APP_DIR@': args.app_dir_name,
         '@APP_PRODUCT@': '',
         '@BRAND_CODE@': '',
+        '@BUNDLE_ID@': args.bundle_identifier,
         '@FRAMEWORK_DIR@': args.app_dir_name + '/' +
         args.framework_dir_in_app_dir,
         '@SHEBANG_GUARD@': '',
@@ -53,9 +54,10 @@ def main():
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument('postinstall_template_path')
+    parser.add_argument('install_template_path')
     parser.add_argument('app_dir_name')
     parser.add_argument('framework_dir_in_app_dir')
+    parser.add_argument('bundle_identifier')
     parser.add_argument('out_file')
     return parser.parse_args()
 
