@@ -156,7 +156,8 @@ BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
       GetApplicationContext()->GetLocalState(),
       user_prefs::UserPrefs::Get(profile), profile_id,
       profile->GetPolicyConnector()->GetPolicyService(),
-      GetApplicationContext()->GetBrowserPolicyConnector()->GetPolicyService());
+      GetApplicationContext()->GetBrowserPolicyConnector()->GetPolicyService(),
+      BraveOriginService::SkusServiceGetter());
 }
 
 // static

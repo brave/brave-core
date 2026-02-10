@@ -53,10 +53,27 @@ static_library("brave_origin") {
     "//mojo/public/cpp/bindings",
   ]
   deps = [
+    "//brave/brave_domains",
     "//brave/components/brave_policy:brave_policy_observer",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",
     "//components/policy/core/common",
     "//components/prefs",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_skus_service.cc",
+    "test/fake_skus_service.h",
+  ]
+
+  public_deps = [
+    "//brave/components/skus/common:mojom",
+    "//mojo/public/cpp/bindings",
   ]
 }
 
@@ -73,6 +90,7 @@ source_set("unit_tests") {
 
   deps = [
     ":brave_origin",
+    ":test_support",
     "//base/test:test_support",
     "//components/policy/core/common:test_support",
     "//components/prefs:test_support",
