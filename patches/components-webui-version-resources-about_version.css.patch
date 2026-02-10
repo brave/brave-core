@@ -1,11 +1,19 @@
 diff --git a/components/webui/version/resources/about_version.css b/components/webui/version/resources/about_version.css
-index bd41fd2492e79b9dad3197f91e22885f13edcfe2..5470c1ff239726c4f019bdde97a6c3ebc67d1319 100644
+index 474768656bdae1d5c212bfd3034c8f8bfe718983..dcae794035dc71dc55e05ea3c58eff33c33779dc 100644
 --- a/components/webui/version/resources/about_version.css
 +++ b/components/webui/version/resources/about_version.css
-@@ -135,3 +135,5 @@ body {
+@@ -39,6 +39,7 @@ body {
+ }
+
+ #inner {
++  border-spacing: 0 5px;
+   padding-top: 10px;
+   word-break: break-word;
+ }
+@@ -134,3 +135,6 @@ body {
    position: fixed;
    width: 1px;
  }
-+#inner { border-spacing: 0 5px; }
-+.label, .version { vertical-align: baseline; }
-\ No newline at end of file
++
++.label,
++.version { vertical-align: baseline; }
