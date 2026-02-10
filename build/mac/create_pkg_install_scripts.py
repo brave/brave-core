@@ -17,7 +17,7 @@ import stat
 def main():
     args = parse_args()
 
-    with open(args.preinstall_template_path) as f:
+    with open(args.install_template_path) as f:
         script = f.read()
 
     replacements = {
@@ -54,7 +54,7 @@ def main():
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument('preinstall_template_path')
+    parser.add_argument('install_template_path')
     parser.add_argument('app_dir_name')
     parser.add_argument('framework_dir_in_app_dir')
     parser.add_argument('bundle_identifier')
