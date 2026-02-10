@@ -6,6 +6,7 @@
 #include "brave/components/p3a/message_manager.h"
 
 #include <optional>
+#include <ranges>
 #include <string_view>
 
 #include "base/check.h"
@@ -331,6 +332,40 @@ void MessageManager::CleanupActivationDates() {
       it++;
     }
   }
+}
+
+void MessageManager::SetIsBrowserDefault(bool is_default) {
+  message_meta_.SetIsBrowserDefault(is_default);
+  for (auto& [_, log_store] : constellation_prep_log_stores_) {
+    log_store->ReevaluateDeferredEntries();
+  }
+}
+
+bool MessageManager::ShouldDeferMetric(
+    const std::string& histogram_name) const {
+  if (message_meta_.is_browser_default().has_value()) {
+    return false;
+  }
+
+  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
+  if (!metric_config) {
+    return false;
+  }
+
+  auto has_default_attr = [](const auto& attr) {
+    return attr.has_value() && *attr == MetricAttribute::kIsBrowserDefault;
+  };
+
+  if (metric_config->attributes) {
+    if (std::ranges::any_of(*metric_config->attributes, has_default_attr)) {
+      return true;
+    }
+  }
+  if (std::ranges::any_of(metric_config->append_attributes, has_default_attr)) {
+    return true;
+  }
+
+  return false;
 }
 
 bool MessageManager::IsActive() const {

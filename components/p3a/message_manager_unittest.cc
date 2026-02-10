@@ -20,6 +20,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/features.h"
+#include "brave/components/p3a/metric_config.h"
 #include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
@@ -49,6 +50,7 @@ constexpr size_t kUploadIntervalSeconds = 120;
 constexpr base::TimeDelta kEpochLenTimeDelta = base::Days(4);
 constexpr char kTestStarRandomnessHost[] = "https://localhost:9443";
 constexpr char kTestStarUploadHost[] = "https://localhost:10443";
+constexpr char kTestDefaultBrowserMetric[] = "Brave.Test.DefaultBrowserMetric";
 
 }  // namespace
 
@@ -77,11 +79,20 @@ class P3AMessageManagerTest : public testing::Test,
 
   const MetricConfig* GetMetricConfig(
       std::string_view histogram_name) const override {
+    if (histogram_name == kTestDefaultBrowserMetric) {
+      static constexpr MetricConfig kConfig = {
+          .append_attributes = {MetricAttribute::kIsBrowserDefault},
+      };
+      return &kConfig;
+    }
     return GetBaseMetricConfig(histogram_name);
   }
 
   std::optional<MetricLogType> GetLogTypeForHistogram(
       std::string_view histogram_name) const override {
+    if (histogram_name == kTestDefaultBrowserMetric) {
+      return MetricLogType::kTypical;
+    }
     return GetBaseLogTypeForHistogram(histogram_name);
   }
 
@@ -710,6 +721,33 @@ TEST_F(P3AMessageManagerTest, EphemeralMetricOnlySentOnce) {
   EXPECT_EQ(points_requests_made_[MetricLogType::kExpress], 0U);
   EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kExpress].size(),
             0U);
+}
+
+TEST_F(P3AMessageManagerTest, DeferredMetricSentAfterDefaultBrowserStatus) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+  SetUpManager();
+
+  message_manager_->UpdateMetricValue(kTestDefaultBrowserMetric, 1);
+
+  // The metric should be deferred and not sent.
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
+            0U);
+
+  // Set the default browser status; deferred entries should be reevaluated.
+  message_manager_->SetIsBrowserDefault(true);
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 1U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
+            1U);
 }
 
 }  // namespace p3a

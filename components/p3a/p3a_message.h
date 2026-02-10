@@ -58,6 +58,13 @@ class MessageMetainfo {
   base::Time date_of_survey() const { return date_of_survey_; }
   int woi() const { return woi_; }
 
+  void SetIsBrowserDefault(bool is_default) {
+    is_browser_default_ = is_default;
+  }
+  const std::optional<bool>& is_browser_default() const {
+    return is_browser_default_;
+  }
+
  private:
   // Used to report major/minor version numbers to reduce amount of
   // Constellation tags
@@ -85,6 +92,7 @@ class MessageMetainfo {
   RegionIdentifiers region_identifiers_;
   // May contain 'none', a 'BRV'-prefixed refcode, or 'other'.
   std::string ref_;
+  std::optional<bool> is_browser_default_;
 
   raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
 };

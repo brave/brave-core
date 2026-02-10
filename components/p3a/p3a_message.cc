@@ -19,6 +19,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/to_string.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/p3a/metric_config.h"
@@ -57,6 +58,7 @@ constexpr char kRegionAttributeName[] = "region";
 constexpr char kSubregionAttributeName[] = "subregion";
 constexpr char kCadenceAttributeName[] = "cadence";
 constexpr char kRefAttributeName[] = "ref";
+constexpr char kIsBrowserDefaultAttributeName[] = "is_default";
 
 constexpr char kSlowCadence[] = "slow";
 constexpr char kTypicalCadence[] = "typical";
@@ -214,6 +216,11 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
         break;
       case MetricAttribute::kRef:
         attributes.push_back({kRefAttributeName, meta.ref()});
+        break;
+      case MetricAttribute::kIsBrowserDefault:
+        attributes.push_back(
+            {kIsBrowserDefaultAttributeName,
+             base::ToString(meta.is_browser_default().value_or(false))});
         break;
     }
   }

@@ -101,7 +101,7 @@ void MetricLogStore::UpdateValue(const std::string& histogram_name,
 
   if (!entry.sent) {
     DCHECK(entry.sent_timestamp.is_null());
-    unsent_entries_.insert(histogram_name);
+    InsertUnsentEntry(histogram_name);
   }
 
   // Update the persistent value.
@@ -114,6 +114,7 @@ void MetricLogStore::UpdateValue(const std::string& histogram_name,
 void MetricLogStore::RemoveValueIfExists(const std::string& histogram_name) {
   log_.erase(histogram_name);
   unsent_entries_.erase(histogram_name);
+  deferred_entries_.erase(histogram_name);
 
   // Update the persistent value.
   ScopedDictPrefUpdate(&*local_state_, GetPrefName())->Remove(histogram_name);
@@ -159,10 +160,11 @@ void MetricLogStore::ResetUploadStamps() {
     RecordSentAnswersCount(log_.size() - unsent_entries_.size());
   }
 
-  // Rebuild the unsent set.
+  // Rebuild the unsent and deferred sets.
   unsent_entries_.clear();
+  deferred_entries_.clear();
   for (const auto& pair : log_) {
-    unsent_entries_.insert(pair.first);
+    InsertUnsentEntry(pair.first);
   }
 }
 
@@ -291,7 +293,18 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
 
     log_[name] = entry;
     if (!entry.sent) {
-      unsent_entries_.insert(name);
+      InsertUnsentEntry(name);
+    }
+  }
+}
+
+void MetricLogStore::ReevaluateDeferredEntries() {
+  for (auto it = deferred_entries_.begin(); it != deferred_entries_.end();) {
+    if (!delegate_->ShouldDeferMetric(*it)) {
+      unsent_entries_.insert(*it);
+      it = deferred_entries_.erase(it);
+    } else {
+      ++it;
     }
   }
 }
@@ -312,6 +325,14 @@ void MetricLogStore::RemoveObsoleteLogs() {
 const metrics::LogMetadata MetricLogStore::staged_log_metadata() const {
   DCHECK(has_staged_log());
   return {};
+}
+
+void MetricLogStore::InsertUnsentEntry(const std::string& histogram_name) {
+  if (delegate_->ShouldDeferMetric(histogram_name)) {
+    deferred_entries_.insert(histogram_name);
+  } else {
+    unsent_entries_.insert(histogram_name);
+  }
 }
 
 }  // namespace p3a

@@ -82,6 +82,8 @@ class MessageManager : public MetricLogStore::Delegate {
   void UpdateMetricValue(std::string_view histogram_name, size_t bucket);
   void RemoveMetricValue(std::string_view histogram_name);
 
+  void SetIsBrowserDefault(bool is_default);
+
   bool IsActive() const;
 
  private:
@@ -115,6 +117,7 @@ class MessageManager : public MetricLogStore::Delegate {
                            MetricLogType log_type,
                            const std::string& upload_type) override;
   bool IsEphemeralMetric(const std::string& histogram_name) const override;
+  bool ShouldDeferMetric(const std::string& histogram_name) const override;
 
   const raw_ref<PrefService, DanglingUntriaged> local_state_;
 

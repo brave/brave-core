@@ -41,6 +41,11 @@ class MetricLogStore : public metrics::LogStore {
     virtual std::optional<MetricLogType> GetLogTypeForHistogram(
         std::string_view histogram_name) const = 0;
     virtual bool IsEphemeralMetric(const std::string& histogram_name) const = 0;
+    // Returns true if the metric should be held in the deferred set
+    // instead of the unsent set (i.e. metrics that depend on browser default
+    // status). Deferred metrics are not eligible for staging/upload until
+    // ReevaluateDeferredEntries() moves them.
+    virtual bool ShouldDeferMetric(const std::string& histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 
@@ -85,6 +90,8 @@ class MetricLogStore : public metrics::LogStore {
   void LoadPersistedUnsentLogs() override;
   void RemoveObsoleteLogs();
 
+  void ReevaluateDeferredEntries();
+
  private:
   struct LogEntry {
     LogEntry() {}
@@ -104,6 +111,7 @@ class MetricLogStore : public metrics::LogStore {
   };
 
   const char* GetPrefName() const;
+  void InsertUnsentEntry(const std::string& histogram_name);
 
   const raw_ref<Delegate> delegate_;
   const raw_ref<PrefService, DanglingUntriaged> local_state_;
@@ -113,6 +121,7 @@ class MetricLogStore : public metrics::LogStore {
   // TODO(iefremov): Try to replace with std::string_view?
   base::flat_map<std::string, LogEntry> log_;
   base::flat_set<std::string> unsent_entries_;
+  base::flat_set<std::string> deferred_entries_;
 
   std::string staged_entry_key_;
   std::string staged_log_;

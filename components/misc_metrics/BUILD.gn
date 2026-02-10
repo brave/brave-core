@@ -3,12 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("default_browser_monitor") {
+  sources = [
+    "default_browser_monitor.cc",
+    "default_browser_monitor.h",
+  ]
+  deps = [ "//base" ]
+}
+
 static_library("misc_metrics") {
   sources = [
     "autofill_metrics.cc",
     "autofill_metrics.h",
-    "default_browser_monitor.cc",
-    "default_browser_monitor.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
     "language_metrics.cc",
@@ -49,7 +55,10 @@ static_library("misc_metrics") {
     "//url",
   ]
 
-  public_deps = [ "//brave/components/misc_metrics/common:mojom" ]
+  public_deps = [
+    ":default_browser_monitor",
+    "//brave/components/misc_metrics/common:mojom",
+  ]
 }
 
 source_set("unit_tests") {
