@@ -1,5 +1,5 @@
 #!/usr/bin/env vpython3
-# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -28,7 +28,7 @@ def ensure_build_dirs():
         if not (config_dir / 'build.ninja').exists():
             build_dir = str(config_dir.relative_to(SRC_DIR))
             subprocess.run(['gn', 'gen', build_dir], cwd=SRC_DIR,
-                           capture_output=True)
+                           capture_output=True, check=False)
 
 
 # Test cases: (config, file, expected_needs_build, description)
@@ -47,7 +47,7 @@ TEST_CASES = [
 ]
 
 
-def run_test(config, file, expected, desc):
+def run_test(config, file, expected):
     """Run a single test."""
     config_dir = TEST_OUT_DIR / config
     if not (config_dir / 'build.ninja').exists():
@@ -58,6 +58,7 @@ def run_test(config, file, expected, desc):
         cwd=SRC_DIR,
         capture_output=True,
         text=True,
+        check=False,
     )
 
     if result.returncode == 2:
@@ -74,7 +75,7 @@ def main():
     passed = failed = skipped = 0
 
     for config, file, expected, desc in TEST_CASES:
-        ok, msg = run_test(config, file, expected, desc)
+        ok, msg = run_test(config, file, expected)
         print(f'[{config}] {desc}: {msg}')
         if ok is None:
             skipped += 1
