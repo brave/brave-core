@@ -312,6 +312,7 @@ std::optional<SkColor> BraveTabStrip::GetTabAccentColor(const Tab* tab) const {
 }
 
 ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
   auto container_model = GetContainerModelForTab(tab);
   if (!container_model.has_value()) {
     return ui::ImageModel();
@@ -320,6 +321,9 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
   auto& icon =
       containers::GetVectorIconFromIconType(container_model->container()->icon);
   return ui::ImageModel::FromVectorIcon(icon, SK_ColorWHITE, 16);
+#else
+  return ui::ImageModel();
+#endif
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
