@@ -122,7 +122,6 @@ import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileKeyedMap;
 import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
-import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
@@ -2063,7 +2062,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
                         "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
                         TabContextMenuItemDelegate.class,
-                        ShareDelegate.class,
+                        Supplier.class,
                         List.class,
                         int.class,
                         Context.class,
