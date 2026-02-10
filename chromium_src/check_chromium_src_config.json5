@@ -54,78 +54,154 @@
     // These symbols found in associated paths will be ignored.
     // Please, keep paths and symbols in alphabetical order.
     "symbol_excludes": {
+        "android_webview/browser/aw_permission_manager.cc": [
+            "BRAVE_WALLET_PERMISSION_TYPES"
+        ],
         "base/debug/alias.h": [
-            "DEBUG_ALIAS_FOR_OBJECT",
+            "DEBUG_ALIAS_FOR_OBJECT"
         ],
         "base/trace_event/builtin_categories.h": [
-            "BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES",
+            "BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES"
         ],
         "build/buildflag.h": [
             "IF_BUILDFLAG",
             "IF_BUILDFLAG_IMPL",
             "IF_BUILDFLAG_IMPL_0",
             "IF_BUILDFLAG_IMPL_1",
-            "IF_BUILDFLAG_IMPL_CAT",
+            "IF_BUILDFLAG_IMPL_CAT"
         ],
         "chrome/browser/bookmarks/android/bookmark_bridge.cc": [
-            "BraveBookmarkBridge",
+            "BraveBookmarkBridge"
         ],
         "chrome/browser/chrome_content_browser_client.cc": [
             "CHROME_BROWSER_WEB_APPLICATIONS_POLICY_WEB_APP_POLICY_MANAGER_H_",
             "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
             "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_REGISTRAR_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_REGISTRAR_H_"
+        ],
+        "chrome/browser/flags/android/chrome_feature_list.cc": [
+            "BRAVE_AI_CHAT_FLAGS",
+            "BRAVE_NEW_TAB_PAGE_AD_FLAG",
+            "BRAVE_VPN_FLAG",
+            "BRAVE_WALLET_FLAG",
+            "BRAVE_WEB_DISCOVERY_FLAG"
+        ],
+        "chrome/browser/importer/importer_list.cc": [
+            "IDS_IMPORT_FROM_EDGE_OLD"
         ],
         "chrome/browser/metrics/google_update_metrics_provider_win.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION"
         ],
         "chrome/browser/prefs/browser_prefs.cc": [
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_"
+        ],
+        "chrome/browser/profiles/profile_attributes_storage.cc": [
+            "IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME_SAVE"
         ],
         "chrome/browser/sync/chrome_sync_client.cc": [
             "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_SYNC_BRIDGE_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_SYNC_BRIDGE_H_"
         ],
-        "chrome/browser/updater/browser_updater_client_util_mac.mm": [
-            "FILE_PATH_LITERAL",
+        "chrome/browser/ui/startup/first_run_service_browsertest.cc": [
+            "IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME_SAVE"
+        ],
+        "chrome/browser/ui/toolbar/app_menu_model.cc": [
+            "IDS_CAST_SAVE_AND_SHARE_MENU_OLD",
+            "IDS_NEW_INCOGNITO_WINDOW_OLD"
+        ],
+        "chrome/browser/ui/views/page_action/page_action_icon_controller.cc": [
+            "BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE",
+            "BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE"
         ],
         "chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc": [
             "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_"
+        ],
+        "chrome/browser/ui/webui/policy_indicator_localized_strings_provider.cc": [
+            "IDS_CONTROLLED_SETTING_POLICY_SAVE"
+        ],
+        "chrome/browser/ui/webui/settings/site_settings_helper.cc": [
+            "BRAVE_WALLET_CONTENT_SETTINGS_TYPES"
+        ],
+        "chrome/browser/updater/browser_updater_client_util_mac.mm": [
+            "FILE_PATH_LITERAL"
+        ],
+        "chrome/browser/win/jumplist.cc": [
+            "IDS_NEW_INCOGNITO_WINDOW_OLD"
+        ],
+        "chrome/common/chrome_constants.cc": [
+            "PRODUCT_STRING"
         ],
         "chrome/grit/generated_resources.h": [
-          "IDS_PERMISSIONS_BUBBLE_PROMPT",
+            "IDS_PERMISSIONS_BUBBLE_PROMPT"
         ],
         "chrome/install_static/chromium_install_modes.h": [
-            "CHROMIUM_INDEX",
+            "CHROMIUM_INDEX"
         ],
         "chrome/install_static/install_constants.h": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION"
         ],
         "chrome/install_static/install_util.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION"
+        ],
+        "chrome/installer/mini_installer/configuration.cc": [
+            "NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING"
+        ],
+        "chrome/installer/mini_installer/mini_installer.cc": [
+            "NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING"
+        ],
+        "chrome/installer/mini_installer/mini_installer_unittest.cc": [
+            "PREVIOUS_VERSION"
         ],
         "chrome/installer/setup/install_worker.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION"
         ],
         "components/password_manager/core/browser/password_manager_constants.cc": [
-            "IS_ANDROID_FORCED_TO_FALSE",
+            "IS_ANDROID_FORCED_TO_FALSE"
+        ],
+        "components/permissions/permission_request.cc": [
+            "BRAVE_ENUM_ITEMS_FOR_SWITCH",
+            "BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID",
+            "BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP"
         ],
         "components/permissions/permission_request_data.h": [
-            "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
+            "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE"
+        ],
+        "components/permissions/permission_util.cc": [
+            "BRAVE_WALLET_PERMISSION_TYPE_CASES",
+            "BRAVE_WALLET_UMA_CASES"
+        ],
+        "components/permissions/request_type.cc": [
+            "BRAVE_WALLET_ANDROID_CASES",
+            "BRAVE_WALLET_DESKTOP_CASES",
+            "BRAVE_WALLET_PERMISSION_KEYS"
         ],
         "components/qr_code_generator/bitmap_generator.cc": [
-            "UI_GFX_PAINT_VECTOR_ICON_H_",
+            "UI_GFX_PAINT_VECTOR_ICON_H_"
+        ],
+        "content/browser/permissions/permission_descriptor_util.cc": [
+            "BRAVE_WALLET_NUM_CASES"
         ],
         "sandbox/win/src/interceptors_64.h": [
             "TargetGetModuleFileNameExA64",
-            "TargetGetModuleFileNameExW64",
+            "TargetGetModuleFileNameExW64"
+        ],
+        "third_party/blink/common/permissions/permission_utils.cc": [
+            "BRAVE_WALLET_K_DISPLAY_CAPTURE",
+            "BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE",
+            "BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING"
+        ],
+        "third_party/blink/renderer/core/exported/web_view_impl.cc": [
+            "BRAVE_APPLY_WEB_PREFERENCES"
+        ],
+        "third_party/blink/renderer/modules/permissions/permission_utils.cc": [
+            "BRAVE_WALLET_WEB_PRINTING_CASES"
         ],
         "ui/color/color_id.h": [
             "BRAVE_MATERIAL_MISSING_COLOR_IDS"
         ],
         "v8/src/builtins/builtins-utils.h": [
-            "BUILTIN",
-        ],
+            "BUILTIN"
+        ]
     }
 }
