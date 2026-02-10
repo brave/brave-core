@@ -21,10 +21,12 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/sessions/session_restore_test_utils.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
@@ -162,6 +164,13 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
             .Build();
     ASSERT_TRUE(https_server_);
     ASSERT_TRUE(https_server_->Start());
+
+    // Wait for TemplateURLService to finish loading so that SerpClassifier can
+    // classify search URLs. Without this, navigations that complete before the
+    // service is loaded will not be classified.
+    search_test_utils::WaitForTemplateURLServiceToLoad(
+        TemplateURLServiceFactory::GetForProfile(
+            chrome_test_utils::GetProfile(this)));
   }
 
  protected:
