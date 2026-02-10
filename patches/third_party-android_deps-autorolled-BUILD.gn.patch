@@ -1,16 +1,16 @@
 diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
-index 76a05ca9a7a57d12a1e439b765718da4c0027a9a..7922ec826aa0396f9ea55e9cdb5d48b5129702ed 100644
+index caf7dfedbaf0c7713ecab765da053953f9c0c7a1..4f7484ca0f87eab6f87b752045f3240c5a3da61c 100644
 --- a/third_party/android_deps/autorolled/BUILD.gn
 +++ b/third_party/android_deps/autorolled/BUILD.gn
-@@ -1012,6 +1012,7 @@ template("define_autorolled_targets") {
-           "//third_party/android_deps:google_android_datatransport_transport_runtime_java",
+@@ -1082,6 +1082,7 @@ template("define_autorolled_targets") {
+           "$google_play_services_package:google_firebase_firebase_encoders_json_java",
            "//third_party/androidx:androidx_annotation_annotation_java",
          ]
 +        import("//brave/third_party/android_deps/sources.gni") visibility += brave_third_party_android_deps_visibility
        }
      }
  
-@@ -1036,6 +1037,7 @@ template("define_autorolled_targets") {
+@@ -1106,6 +1107,7 @@ template("define_autorolled_targets") {
            "//third_party/android_deps:javax_inject_javax_inject_java",
            "//third_party/androidx:androidx_annotation_annotation_java",
          ]
