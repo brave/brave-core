@@ -35,24 +35,41 @@ def ensure_build_dirs():
 
 # Test cases: (config, file, expected_needs_build, description)
 TEST_CASES = [
-    ('mac', 'browser/brave_stats/brave_stats_updater.cc', True,
-     'C++ triggers mac'),
-    ('mac', 'android/java/org/Example.java', False, 'Java skips mac'),
-    ('ios', 'components/brave_wallet/browser/brave_wallet_service.cc', True,
-     'C++ triggers ios'),
-    ('ios', 'android/java/org/Example.java', False, 'Java skips ios'),
-    ('win', 'browser/brave_stats/brave_stats_updater.cc', True,
-     'C++ triggers win'),
-    ('win', 'android/java/org/Example.java', False, 'Java skips win'),
-    ('linux', 'browser/brave_stats/brave_stats_updater.cc', True,
-     'C++ triggers linux'),
-    ('linux', 'android/java/org/Example.java', False, 'Java skips linux'),
-    ('android', 'android/java/org/Example.java', True,
+    # java changes only build android
+    ('mac', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips mac'),
+    ('ios', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips ios'),
+    ('win', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips win'),
+    ('linux', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', False, 'Java skips linux'),
+    ('android', 'android/java/org/chromium/chrome/browser/app/BraveActivity.java', True,
      'Java triggers android'),
-    ('android', 'browser/brave_stats/brave_stats_updater.cc', True,
-     'C++ triggers android'),
-    ('brave_origin', 'browser/brave_stats/brave_stats_updater.cc', True,
-     'C++ triggers brave_origin'),
+
+    # brave/browser changes don't build ios
+    ('ios', 'browser/brave_content_browser_client.cc', False,
+     'brave/browser changes skip ios'),
+    ('mac', 'browser/brave_content_browser_client.cc', True,
+     'brave/browser triggers mac'),
+    ('win', 'browser/brave_content_browser_client.cc', True,
+     'brave/browser triggers win'),
+    ('linux', 'browser/brave_content_browser_client.cc', True,
+     'brave/browser triggers linux'),
+    ('android', 'browser/brave_content_browser_client.cc', True,
+     'brave/browser triggers android'),
+
+    # ios changes only build ios
+    ('ios', 'ios/app/brave_core_main.mm', True,
+     'ios changes triggers ios'),
+    ('mac', 'ios/app/brave_core_main.mm', False,
+     'ios changes skip mac'),
+    ('win', 'ios/app/brave_core_main.mm', False,
+     'ios changes skip win'),
+    ('linux', 'ios/app/brave_core_main.mm', False,
+     'ios changes skip linux'),
+    ('android', 'ios/app/brave_core_main.mm', False,
+     'ios changes skip android'),
+
+    # brave origin
+    ('brave_origin', 'components/brave_ads/core/browser/service/ads_service.cc', True,
+     'ads changes skip brave_origin'),
 ]
 
 
