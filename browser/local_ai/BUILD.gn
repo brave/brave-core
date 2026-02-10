@@ -17,9 +17,11 @@ source_set("local_ai") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/components/constants",
     "//brave/components/local_ai/content",
     "//brave/components/local_ai/core",
+    "//chrome/browser/task_manager",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
