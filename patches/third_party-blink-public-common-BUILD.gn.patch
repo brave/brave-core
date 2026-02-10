@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
-index b99ad29cdafac25111c578f3e3d5789b3f4035ca..0561467368a1e7d900b0cfaa28c77aae22139939 100644
+index 5c9ec078225e7b038ea5da4ed6dc23e3d23f13d4..15931ba7d1646123d194e6c58e44ce9e6eb09754 100644
 --- a/third_party/blink/public/common/BUILD.gn
 +++ b/third_party/blink/public/common/BUILD.gn
 @@ -390,6 +390,7 @@ source_set("headers") {

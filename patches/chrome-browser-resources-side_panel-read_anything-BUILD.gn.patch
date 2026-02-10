@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/read_anything/BUILD.gn b/chrome/browser/resources/side_panel/read_anything/BUILD.gn
-index a7d7017bc27e73d14a55755ce01f60f74d17f4ad..7eaaffd073e954fdf15897a32d02ca56fe9d3919 100644
+index b273323c8702eda5877a23377e85b92a6b117fd6..f6352416b9201383733e5e8617c2e56421fc94ea 100644
 --- a/chrome/browser/resources/side_panel/read_anything/BUILD.gn
 +++ b/chrome/browser/resources/side_panel/read_anything/BUILD.gn
-@@ -115,7 +115,7 @@ build_webui("build") {
+@@ -114,7 +114,7 @@ build_webui("build") {
              target_gen_dir) ]
  
    webui_context_type = "untrusted"

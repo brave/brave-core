@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index 5f5dab6c7d871dc3faab39ca8ed34c5d8149e882..4e69b83092d63507a8a82e4da5d3dbd5023b8076 100644
+index 86d5ac08dffb657a040831656c2174e8748000a6..9a4fe5e006726ec7fda648d28e9b5aad9755ecfb 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -146,7 +146,7 @@ public class NotificationPlatformBridge {
@@ -11,7 +11,7 @@ index 5f5dab6c7d871dc3faab39ca8ed34c5d8149e882..4e69b83092d63507a8a82e4da5d3dbd5
          public final String notificationId;
          public final @NotificationType int notificationType;
          public final String origin;
-@@ -1034,7 +1034,7 @@ public class NotificationPlatformBridge {
+@@ -1033,7 +1033,7 @@ public class NotificationPlatformBridge {
                  .storeNotificationResourcesIfSuspended(notification);
      }
  

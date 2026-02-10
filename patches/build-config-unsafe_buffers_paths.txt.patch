@@ -1,8 +1,8 @@
 diff --git a/build/config/unsafe_buffers_paths.txt b/build/config/unsafe_buffers_paths.txt
-index 62db5eb3f46b8c4b93725c2a0e24472259bf967e..0f75b65285bf116ba46359f646864e46a140eac5 100644
+index ec12fe9208233cf9f2c26921f1171ca5e4abe893..da45db4fd5ca0f91809776a54a904a0c3b5f25be 100644
 --- a/build/config/unsafe_buffers_paths.txt
 +++ b/build/config/unsafe_buffers_paths.txt
-@@ -30,3 +30,10 @@ $../../
+@@ -31,3 +31,10 @@ $../../
  +third_party/liburlpattern/
  -tools/
  -v8/

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/res/xml/main_preferences.xml b/chrome/android/java/res/xml/main_preferences.xml
-index 389d8c42443aa58cdd779f44a52e817cd9983333..ced95a9d3107b17dda16a8363a7e6fe837199211 100644
+index be6ec7ec1720ee2ac3a124010962e011b6181f2f..4163222be34bdec4e8ce27f9c913d06feb55c5d9 100644
 --- a/chrome/android/java/res/xml/main_preferences.xml
 +++ b/chrome/android/java/res/xml/main_preferences.xml
-@@ -61,7 +61,7 @@ found in the LICENSE file.
+@@ -65,7 +65,7 @@ found in the LICENSE file.
          android:key="autofill_section"
          android:order="11"
          android:title="@string/prefs_section_autofill"/>

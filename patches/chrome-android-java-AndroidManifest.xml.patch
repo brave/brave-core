@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 07ff09e882dcca63d950d18714a2f0e5a77d2626..31fbd7afa72d49557a9297be3492d0f239af76e4 100644
+index 16e13fcb2441a3b6d75ffc0c8e8fbee5e7d7f0fc..58f954fdcddbd7f867d66c733cf4008daed3ba4d 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -38,6 +38,7 @@ by a child template that "extends" this file.
@@ -104,7 +104,7 @@ index 07ff09e882dcca63d950d18714a2f0e5a77d2626..31fbd7afa72d49557a9297be3492d0f2
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1180,7 +1198,7 @@ by a child template that "extends" this file.
+@@ -1177,7 +1195,7 @@ by a child template that "extends" this file.
              {% elif is_desktop_android == "true" %}
              android:foregroundServiceType="camera|microphone"
              {% elif enable_screen_capture == "true" %}
@@ -113,7 +113,7 @@ index 07ff09e882dcca63d950d18714a2f0e5a77d2626..31fbd7afa72d49557a9297be3492d0f2
              {% endif %}
              android:exported="false"/>
          <service android:name="org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerServices$PlaybackListenerService"
-@@ -1275,6 +1293,7 @@ by a child template that "extends" this file.
+@@ -1272,6 +1290,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

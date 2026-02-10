@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index f7d3ac043e245288211974d9c9cc10ea327f83a6..0d3ef781c071d7b83f25b657917a5ade73d716d4 100644
+index 5d83825d531c79c604175567b8ce80a945c089a5..e3564e29ced459bc70a335cd56eb4bef335630e7 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -202,6 +202,7 @@ static_library("with_no_strings") {
+@@ -204,6 +204,7 @@ static_library("with_no_strings") {
        "initial_preferences.h",
      ]
    }
@@ -10,7 +10,7 @@ index f7d3ac043e245288211974d9c9cc10ea327f83a6..0d3ef781c071d7b83f25b657917a5ade
  }
  
  # Use this version of installer_util to link to the generated strings in .rc
-@@ -234,6 +235,7 @@ generate_embedded_i18n("generate_strings") {
+@@ -236,6 +237,7 @@ generate_embedded_i18n("generate_strings") {
    output_file_name_base = "installer_util_strings"
  
    branding = branding_path_product

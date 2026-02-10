@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_browser_main_mac.mm b/chrome/browser/chrome_browser_main_mac.mm
-index 91ee1fc056fa5ce47b84643c48bc268a094dc7bd..b7b2c0c8613cbe57f5ee799bd259f9d6f1c03e09 100644
+index bdabbd8c0b3ac3bd947e523ea518918a5912c39b..ef1a76d4adfe2821af0759beb5130f30f19a6360 100644
 --- a/chrome/browser/chrome_browser_main_mac.mm
 +++ b/chrome/browser/chrome_browser_main_mac.mm
-@@ -101,6 +101,7 @@ void ChromeBrowserMainPartsMac::PreCreateMainMessageLoop() {
+@@ -102,6 +102,7 @@ void ChromeBrowserMainPartsMac::PreCreateMainMessageLoop() {
    // ChromeBrowserMainParts should have loaded the resource bundle by this
    // point (needed to load the nib).
    CHECK(ui::ResourceBundle::HasSharedInstance());

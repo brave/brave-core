@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/messages/android/BUILD.gn b/chrome/browser/ui/messages/android/BUILD.gn
-index 976eddf05dc43002e0bf5eb1b7f13e43ce7e2308..78eb9357339ea173f5bcd55b5b299ca72256d66c 100644
+index c9db8afb7c0ec55c954e7d8e12074549463b73b9..fd6d2214b1da276d6eb2d2e221ae902533f241c7 100644
 --- a/chrome/browser/ui/messages/android/BUILD.gn
 +++ b/chrome/browser/ui/messages/android/BUILD.gn
-@@ -33,6 +33,7 @@ android_library("java") {
+@@ -34,6 +34,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView.java",
    ]
  

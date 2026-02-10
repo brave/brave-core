@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 2730148ac116706c0b4a3f5ef6705c6c5da8c2f7..b5d519f1c2a28e922d76bbcf207b241aa32c0bef 100644
+index ecf8807ccd033dad19c2d985a1c1e00e35b687a2..c982c3e7620a6ca91714f99e86fc0ce6c5431fa9 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1449,6 +1449,7 @@ const FeatureEntry::FeatureVariation kPersistTabContextVariations[] = {
+@@ -1371,6 +1371,7 @@ const FeatureEntry::FeatureVariation kModelBasedPageClassificationVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({
