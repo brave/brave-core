@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
@@ -58,18 +57,15 @@ PostOAuthUphold::~PostOAuthUphold() = default;
 
 std::optional<std::string> PostOAuthUphold::Url() const {
   return engine_->Get<EnvironmentConfig>()
-      .uphold_api_url()
-      .Resolve("/oauth2/token")
+      .uphold_oauth_url()
+      .Resolve("token")
       .spec();
 }
 
 std::optional<std::vector<std::string>> PostOAuthUphold::Headers(
     const std::string&) const {
-  auto& config = engine_->Get<EnvironmentConfig>();
   return std::vector<std::string>{
-      "Authorization: Basic " +
-      base::Base64Encode(base::StrCat(
-          {config.uphold_client_id(), ":", config.uphold_client_secret()}))};
+      engine_->Get<EnvironmentConfig>().BraveServicesKeyHeader()};
 }
 
 std::optional<std::string> PostOAuthUphold::Content() const {

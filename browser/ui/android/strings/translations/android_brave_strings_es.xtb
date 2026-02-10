@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Mostrar sugerencias del navegador</translation>
 <translation id="8982438328166986164">Muestra sugerencias de sitios web en función de tus marcadores y de tu historial de navegación.</translation>
 <translation id="924029461438529367">Mostrar sugerencias de búsqueda</translation>
-<translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
-<translation id="919715748352669592">Indexa automáticamente los sitios web que siguen las especificaciones OpenSearch.</translation>
 <translation id="9148058034647219655">Salir</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrado de contenido</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">No actualizar las conexiones a HTTPS (desactivado)</translation>
 <translation id="693506469193748756">Olvidarme al cerrar este sitio</translation>
 <translation id="6975864539539353406">Borra las cookies y otros datos del sitio al cerrar un sitio</translation>
+<translation id="7740929262043547697">Permitir bloqueo de elementos en ventanas de Incógnito</translation>
+<translation id="1260864846935682371">Activa la función de bloqueo de elementos de Escudos en ventanas de Incógnito. Ten en cuenta que los elementos bloqueados en ventanas de Incógnito también se bloquearán en ventanas que no lo son.</translation>
 <translation id="1680858055899097121">No guardar las pestañas entre sesiones de navegación</translation>
 <translation id="7142548388914389999">Permitir estadísticas de productos que preservan la privacidad (P3A)</translation>
 <translation id="5254037869598726291">La información P3A anonimizada permite a Brave estimar el uso general y seguir mejorando las funciones más populares.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">MÁS TARDE</translation>
 <translation id="4117451092682672487">La privacidad, simplificada.</translation>
 <translation id="7909375417585209817">Si utilizas Brave de manera predeterminada, todos los enlaces que pulses se abrirán con las protecciones de privacidad de Brave.</translation>
-<translation id="7370959926683925817">Bloquea los anuncios. Ahorra datos. Todos los días.</translation>
-<translation id="7281027579943912834">De manera predeterminada, cada enlace que toques en Brave tendrá nuestra protección de bloqueo de anuncios. Cada página, cada vídeo y cada streaming.</translation>
 <translation id="5148943178722443958">Ayuda a mejorar Brave.</translation>
 <translation id="6718362830686703942">Envía informes de diagnóstico si sufres algún fallo o bloqueo.</translation>
 <translation id="8616157231067364693">Comparta de forma privada y anónima su opinión sobre las funciones que utilizan los usuarios de Brave.</translation>
@@ -371,6 +369,11 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Mostrar páginas principales</translation>
 <translation id="7275773481201277457">Mostrar Estadísticas de Brave</translation>
+<translation id="7462178177755090262">Pantalla de inicio</translation>
+<translation id="5365434987337264071">Última pestaña abierta</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Nueva pestaña después de <ph name="HOURS_ONE"/> hora de inactividad} other {Nueva pestaña después de <ph name="HOURS_MANY"/> horas de inactividad}}</translation>
+<translation id="5233638681132016545">Nueva pestaña</translation>
+<translation id="8395271296293035055">Volver a tu pestaña más reciente</translation>
 <translation id="8297488609722895137">Fotografía de <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Abrir enlaces externos en Brave</translation>
 <translation id="5616508928556767259">Abre enlaces de otras aplicaciones en una vista web de Brave. Nota: Brave debe estar configurado como tu navegador predeterminado.</translation>
@@ -761,7 +764,6 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="6889920539620318793">Establecer como activo</translation>
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="4945690646623486292">Seleccionar red</translation>
-<translation id="5233638681132016545">Nueva pestaña</translation>
 <translation id="8006088103295786154">Acceder a Cartera de Brave</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="8030169304546394654">Desconectada</translation>
@@ -1069,6 +1071,10 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="4650851936784160359">No se ha podido actualizar la lista de filtros. Inténtelo de nuevo.</translation>
 <translation id="3098054327870766317">Mostrar el botón de deshacer al cerrar pestañas</translation>
 <translation id="1336494649091412226">¿Estás seguro de que quieres salir de Brave?</translation>
+<translation id="6061635824229591714">¿Eliminar datos del sitio?</translation>
+<translation id="1265051174491933207">La eliminación destruirá los datos del sitio y cerrará todas las pestañas de '<ph name="SITE_NAME"/>'. Esto no se puede deshacer.</translation>
+<translation id="4279349293084858577">Eliminar</translation>
+<translation id="4426990318287827331">Eliminar datos</translation>
 <translation id="7942415993090181327">Historial del chat</translation>
 <translation id="6859935199732075666">Mostrar errores de navegación segura</translation>
 <translation id="2735247450315842119">Permitir capturas de pantalla en pestañas privadas</translation>

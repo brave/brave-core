@@ -129,7 +129,15 @@ void BraveTab::UpdateIconVisibility() {
 }
 
 void BraveTab::Layout(PassKey) {
+  // Try update insets - this might not be the best place to update insets.
+  // This is too frequent. Storage partition config was set to a contents
+  // explicitly, we should migrate these to the the notification.
+  if (GetInsets().left() != tab_style_views()->GetContentsInsets().left()) {
+    UpdateInsets();
+  }
+
   LayoutSuperclass<Tab>(this);
+
   if (IsAtMinWidthForVerticalTabStrip()) {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
@@ -143,16 +151,6 @@ void BraveTab::Layout(PassKey) {
   }
 }
 
-gfx::Insets BraveTab::GetInsets() const {
-  // As close button has more padding, it seems favicon is too close to the left
-  // edge of the tab left border comppared with close button. Give additional
-  // left padding to make both visible with same space from tab border.
-  // See https://www.github.com/brave/brave-browser/issues/30469.
-  auto insets = Tab::GetInsets();
-  insets.set_left(insets.left() + kExtraLeftPadding);
-  return insets;
-}
-
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
   if (!tabs::utils::ShouldShowBraveVerticalTabs(
@@ -164,6 +162,32 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
   // We keep favicon on fixed position so that it won't move left and right
   // during animation.
   bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
+  if (ShouldPaintTabAccent() && ShouldShowLargeAccentIcon()) {
+    bounds->set_x(bounds->x() + kTabAccentIconAreaWidth);
+  }
+}
+
+bool BraveTab::ShouldShowLargeAccentIcon() const {
+  if (!ShouldPaintTabAccent()) {
+    return false;
+  }
+
+  if (data().pinned) {
+    return false;
+  }
+
+  if (tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface())) {
+    return width() >= tabs::kVerticalTabMinWidth + kTabAccentIconAreaWidth;
+  }
+
+  if (IsActive()) {
+    return width() >= tab_style()->GetMinimumActiveWidth(split().has_value()) +
+                          kTabAccentIconAreaWidth;
+  }
+
+  return width() >= tab_style()->GetPinnedWidth(split().has_value()) +
+                        kTabAccentIconAreaWidth;
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {
@@ -211,6 +235,18 @@ bool BraveTab::IsActive() const {
   // When SideBySide is enabled, chromium gives true if tab is in split tab even
   // it's not active. We want to give true only for current active tab.
   return controller_->IsActiveTab(this);
+}
+
+bool BraveTab::ShouldPaintTabAccent() const {
+  return controller_->ShouldPaintTabAccent(this);
+}
+
+std::optional<SkColor> BraveTab::GetTabAccentColor() const {
+  return controller_->GetTabAccentColor(this);
+}
+
+ui::ImageModel BraveTab::GetTabAccentIcon() const {
+  return controller_->GetTabAccentIcon(this);
 }
 
 BEGIN_METADATA(BraveTab)

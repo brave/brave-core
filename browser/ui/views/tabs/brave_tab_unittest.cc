@@ -39,7 +39,7 @@ class BraveTabTest : public ChromeViewsTestBase {
     tab->SetBoundsRect(bounds);
     views::test::RunScheduledLayout(tab);
 
-    auto insets = tab->tab_style_views()->GetContentsInsets();
+    auto insets = tab->tab_style()->GetContentsInsets();
     int left_inset = insets.left();
     left_inset += BraveTab::kExtraLeftPadding;
     EXPECT_EQ(left_inset, tab->GetInsets().left());

@@ -22,13 +22,9 @@ declare_args() {
   rewards_grant_staging_endpoint = ""
   rewards_grant_prod_endpoint = ""
   uphold_production_api_url = ""
-  uphold_production_client_id = ""
-  uphold_production_client_secret = ""
   uphold_production_fee_address = ""
   uphold_production_oauth_url = ""
   uphold_sandbox_api_url = ""
-  uphold_sandbox_client_id = ""
-  uphold_sandbox_client_secret = ""
   uphold_sandbox_fee_address = ""
   uphold_sandbox_oauth_url = ""
   zebpay_production_api_url = ""
@@ -51,8 +47,6 @@ if (is_official_build) {
     assert(gemini_production_fee_address != "")
     assert(gemini_production_oauth_url != "")
     assert(uphold_production_api_url != "")
-    assert(uphold_production_client_id != "")
-    assert(uphold_production_client_secret != "")
     assert(uphold_production_fee_address != "")
     assert(uphold_production_oauth_url != "")
     assert(zebpay_production_api_url != "")

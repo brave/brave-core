@@ -7,6 +7,9 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -88,6 +91,9 @@ preprocess_if_expr("preprocess") {
   defines = [
     "enable_ai_chat=$enable_ai_chat",
     "enable_brave_ads=$enable_brave_ads",
+    "enable_brave_news=$enable_brave_news",
+    "enable_brave_rewards=$enable_brave_rewards",
+    "enable_brave_talk=$enable_brave_talk",
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
     "enable_brave_vpn=$enable_brave_vpn",

@@ -35,6 +35,7 @@
 <translation id="1140317858355046628">Nëse e fshin atë, të gjithë do të humbasin menjëherë qasjen te grupi i skedave "<ph name="GROUP_NAME"/>" dhe ai do të fshihet nga të gjitha pajisjet.</translation>
 <translation id="1142732900304639782">Mos ofro t'i përkthesh këto sajte</translation>
 <translation id="1143193470214071120">Mbyll një dritare ose menaxho dritaret</translation>
+<translation id="1149725087019908252"><ph name="FILE_NAME"/> po skanohet</translation>
 <translation id="7083341910267693582"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>"Kushtet e shërbimit" të Brave<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>"Kushtet shtesë të shërbimit" të Brave dhe të ChromeOS<ph name="END_LINK2"/>.</translation>
 <translation id="7443574521624544928">Nuk ke fjalëkalime të ruajtura te "Menaxheri i fjalëkalimeve i Brave".</translation>
 <translation id="115483310321669804">Përdor fjalëkalimin <ph name="PASSWORD"/></translation>
@@ -46,7 +47,6 @@
 <translation id="1181037720776840403">Hiq</translation>
 <translation id="4606796610935634842">Për t'u siguruar që mund t'i përdorësh gjithmonë fjalëkalimet në "Llogarinë tënde të Brave", verifiko që je ti</translation>
 <translation id="1187810343066461819">Gjithashtu, fshi faqeshënuesit, historikun dhe të tjera nga kjo makinë</translation>
-<translation id="1193589902336218259">Aktivizo njoftimet e këshillave</translation>
 <translation id="1193729455103054076">Të përdoret fjalëkalim i fortë?</translation>
 <translation id="11947597112837849">adresën tënde të email-it</translation>
 <translation id="1197267115302279827">Zhvendos faqeshënuesit</translation>
@@ -69,6 +69,7 @@
 <translation id="1263231323834454256">Lista e leximit</translation>
 <translation id="1269129608791067105">Këtu do të gjesh historikun tënd</translation>
 <translation id="1273937721055267968">Blloko <ph name="DOMAIN"/></translation>
+<translation id="1280921956537356716">Aktivizo njoftimet e këshillave</translation>
 <translation id="1283039547216852943">Trokit për të zgjeruar</translation>
 <translation id="1289129165308566697">Shiko historikun tënd në pajisje të tjera</translation>
 <translation id="129553762522093515">Të mbyllura së fundi</translation>
@@ -84,6 +85,7 @@
 <translation id="1336996151357442890">U çabonove nga <ph name="SITE_NAME"/>. Do të pyetesh përsëri gjatë vizitës sate të radhës.</translation>
 <translation id="1340839264183302272">Largohu nga grupi</translation>
 <translation id="873343310451048603">Për të kontrolluar për fjalëkalimet e komprometuara, shko te "Menaxheri i fjalëkalimeve i Brave"</translation>
+<translation id="4167284810587724062">Identifikohu në Brave</translation>
 <translation id="1344653310988386453">Përfshi lidhjen për te teksti i theksuar</translation>
 <translation id="1347468774581902829">Menaxho aktivitetin</translation>
 <translation id="1355088659320425659">Historiku dhe skedat</translation>
@@ -110,7 +112,6 @@ Për më shumë cilësime që përdorin të dhënat për të përmirësuar përv
 <translation id="3219606989239049572">Ruaj të dhëna në "Llogarinë tënde të Brave"</translation>
 <translation id="1414919006379339073">Mbyll dritaren aktuale</translation>
 <translation id="1416550906796893042">Versioni i aplikacionit</translation>
-<translation id="5171187478741797469">Të riniset Brave?</translation>
 <translation id="1428770807407000502">Të çaktivizohet sinkronizimi?</translation>
 <translation id="1430915738399379752">Printo</translation>
 <translation id="1435593198351412143">Hap automatikisht skedarët PDF</translation>
@@ -192,7 +193,6 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="1829244130665387512">Gjej në faqe</translation>
 <translation id="1832459821645506983">Po, jam dakord</translation>
 <translation id="4544426875066706571">Për të mbrojtur të dhënat e tua, lejo që Brave të heqë lejet nga sajtet që nuk i ke vizituar së fundi</translation>
-<translation id="3456819043493172402">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave ndaloi njoftimet nga ky sajt. Mund ta rishikosh dhe menaxhosh.}other{Brave ndaloi njoftimet nga këto sajte. Mund ta rishikosh dhe menaxhosh.}}</translation>
 <translation id="7175072311426658869">Hapi në shfletuesin Brave</translation>
 <translation id="5173820533850252773">Brave nuk është i përditësuar</translation>
 <translation id="1877073879466606884">Profili në të cilin je identifikuar është një profil i menaxhuar. Administratori yt mund të bëjë ndryshime në cilësimet e profilit tënd në distancë, mund të analizojë informacionet rreth shfletuesit nëpërmjet raportimit dhe mund të kryejë detyra të tjera të nevojshme.</translation>
@@ -239,10 +239,8 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="2063047797624276601">Organizata jote ka aktivizuar "Shfletimin e sigurt të përmirësuar"</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{1 shkarkim dështoi}other{# shkarkime dështuan}}</translation>
 <translation id="2067805253194386918">teksti</translation>
-<translation id="2072027001582274150">Skedat e papërdorura ose dublikatë</translation>
 <translation id="2079545284768500474">Zhbëj</translation>
 <translation id="2082238445998314030">Rezultati <ph name="RESULT_NUMBER"/> nga <ph name="TOTAL_RESULTS"/></translation>
-<translation id="8992364521253636633">Për të përfunduar konfigurimin e plotësimit automatik, rinis Brave tani. Skedat e tua do të rihapen automatikisht.</translation>
 <translation id="2091863218454846791">Po shfaqet pamja kompakte</translation>
 <translation id="2093731487903423814">15 minutat e fundit</translation>
 <translation id="2096577711562668473">Të ndryshohet shërbimi i plotësimit automatik?</translation>
@@ -413,6 +411,7 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="2842985007712546952">Dosja mëmë</translation>
 <translation id="2860954141821109167">Sigurohu që një aplikacion i telefonit të jetë i aktivizuar në këtë pajisje</translation>
 <translation id="6518254564747115579">Disa veçori të Brave nuk do të ofrohen më</translation>
+<translation id="2869416538780777323">{OTHER_TAB_COUNT,plural, =1{<ph name="URL"/> dhe 1 skedë tjetër}other{<ph name="URL"/> dhe <ph name="TAB_COUNT_MANY"/> skeda të tjera}}</translation>
 <translation id="2869430948265924908">Për të mbrojtur përmbajtjet e tua delikate në makinë, duhet të krijosh një kyçje të profilit të makinës.  Këtë mund ta bësh me një kod, fjalëkalim ose kod PIN.</translation>
 <translation id="2870560284913253234">Sajti</translation>
 <translation id="2871733351037274014">Ngarkimi paraprak i faqeve</translation>
@@ -430,6 +429,7 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="2904414404539560095">Lista e pajisjeve për të ndarë një skedë e hapur në lartësi të plotë.</translation>
 <translation id="2908243544703713905">Historitë e palexuara janë gati</translation>
 <translation id="7339921667754113786">Platforma e njoftimeve të Brave</translation>
+<translation id="2912247081180973411">Mbyll dritaret</translation>
 <translation id="2918484639460781603">Shko te cilësimet</translation>
 <translation id="2920713489113095380"><ph name="TAB_TITLE"/>, skeda e vendosur në heshtje</translation>
 <translation id="2923908459366352541">Emri është i pavlefshëm</translation>
@@ -486,7 +486,6 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="3159335509547415276">Mëso rreth llogarive të bllokuara</translation>
 <translation id="3161699713309727585"><ph name="BUTTON_TEXT"/>; hapet në një skedë të re</translation>
 <translation id="3166827708714933426">Shkurtoret e skedës dhe dritares</translation>
-<translation id="7249949543831830993">Brave është tashmë duke u ekzekutuar këtu.</translation>
 <translation id="3167258285411721858">Mund të kërkosh sajtin për celular për <ph name="HOST_NAME"/></translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3187472288455401631">Matja e reklamave</translation>
@@ -508,7 +507,6 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="3268048651973962414">Zvarrit lart për të shikuar rezultatet e kërkimit</translation>
 <translation id="3269093882174072735">Ngarko imazhin</translation>
 <translation id="3280562213547448728">Kërkimi me zë</translation>
-<translation id="82609232232243542">Identifikohu në Brave</translation>
 <translation id="3285065882678541460">{TAB_COUNT,plural, =1{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_ONE"/> skedë}other{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> skeda}}</translation>
 <translation id="8794905135160933967">{PASSWORDS_COUNT,plural, =1{1 fjalëkalim është ruajtur vetëm në këtë pajisje. Për ta përdorur atë në pajisje të tjera, ruaje në "Llogarinë tënde të Brave".}other{# fjalëkalime janë ruajtur vetëm në këtë pajisje. Për t'i përdorur në pajisjet e tua të tjera, ruaji në "Llogarinë tënde të Brave".}}</translation>
 <translation id="3293181007446299124">Historiku yt i shfletimit ruhet privat në pajisjen tënde dhe raportet dërgohen me një vonesë për të mbrojtur identitetin tënd</translation>
@@ -697,12 +695,14 @@ Vetëm dikush me frazën tënde të kalimit mund të lexojë të dhënat e tua t
 <translation id="414128724510021958">Sajtet për desktop kërkohen si parazgjedhje</translation>
 <translation id="4162867837470729563">Listë e opsioneve të ndarjes në lartësi të plotë.</translation>
 <translation id="4170011742729630528">Shërbimi nuk ofrohet. Provo përsëri më vonë.</translation>
+<translation id="4170577491341606575">Po merren gjërat e tua\u2026</translation>
 <translation id="4177222230309051052">Merr të gjithë faqeshënuesit e tu</translation>
 <translation id="4177501066905053472">Temat e reklamave</translation>
 <translation id="417865198503699526">Kërko për një cilësim</translation>
 <translation id="4180726336228139707">Vetëm në këtë pajisje</translation>
 <translation id="4181841719683918333">Gjuhët</translation>
 <translation id="4188221736490993796">Rendit nga Zh-ja në A</translation>
+<translation id="6423270958351890725">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave e ndaloi këtë sajt që të mos dërgojë njoftime për shkak të përmbajtjeve të bezdisshme ose mashtruese}other{Brave i ndaloi këto sajte që të mos dërgojnë njoftime për shkak të përmbajtjeve të bezdisshme ose mashtruese}}</translation>
 <translation id="4195643157523330669">Hape në një skedë të re</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{1 skedë në këtë pajisje}other{# skeda në këtë pajisje}}</translation>
 <translation id="4198423547019359126">Nuk ka vendndodhje shkarkimi</translation>
@@ -822,7 +822,6 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="468924408576231679">Kopjo lidhjen për te faqja e uebit <ph name="PAGE_TITLE"/>. Burimi: <ph name="PAGE_URL"/></translation>
 <translation id="469286762610133730">Merr përmbajtje më të mirë</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> tjetër}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> të tjera}}</translation>
-<translation id="4698061626562952596">Rishiko skedat e tua joaktive këtu</translation>
 <translation id="4698757800236023795">Aktiv (<ph name="ITEM_COUNT"/>)</translation>
 <translation id="4699172675775169585">Imazhet dhe skedarët në memorien specifike</translation>
 <translation id="4710167854527459075">Rendit nga më i riu</translation>
@@ -882,6 +881,7 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="4905823827770127520">Përfshi një lidhje për te faqja</translation>
 <translation id="3217997482476578430">"Zbulo" nga Brave</translation>
 <translation id="4910889077668685004">Aplikacionet e pagesës</translation>
+<translation id="4911042367886397055">Mirë se u ktheve, <ph name="USER_NAME"/>!</translation>
 <translation id="4912413785358399818">Lëviz skedën</translation>
 <translation id="4913169188695071480">Ndalo rifreskimin</translation>
 <translation id="367116267716122258">Për të marrë fjalëkalimet etj. në të gjitha pajisjet e tua, identifikohu në Brave si <ph name="EMAIL"/></translation>
@@ -919,6 +919,7 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="5039678609803776426">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> skedë - <ph name="URL_LIST"/>}other{<ph name="TAB_COUNT_MANY"/> skeda - <ph name="URL_LIST"/>}}</translation>
 <translation id="5040262127954254034">Privatësia</translation>
 <translation id="504456571576643789">Gjëra për t'u pasur parasysh</translation>
+<translation id="5052017727857614804">{WINDOW_COUNT,plural, =1{Është zgjedhur <ph name="WINDOW_COUNT_ONE"/> dritare}other{Janë zgjedhur <ph name="WINDOW_COUNT_NORMAL"/> dritare}}</translation>
 <translation id="5056587122125565772">Krijo një imazh</translation>
 <translation id="506254248375231072">Nuk ka skeda</translation>
 <translation id="5075939510584558547">Ruaj pa enkriptim</translation>
@@ -934,7 +935,6 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="5122378528687922675">Nëse ke nevojë për ndihmë, pyet prindin tënd (<ph name="PARENT_NAME_1"/> ose <ph name="PARENT_NAME_2"/>)</translation>
 <translation id="5142281402488957685">Për historitë e reja, tërhiq poshtë për të rifreskuar</translation>
 <translation id="8164849572238219995">Disa nga faqet që ti viziton janë të ngarkuara paraprakisht. Faqet mund të ngarkohen paraprakisht nëpërmjet serverëve të Brave kur lidhen nga një sajt ose aplikacion i Brave.</translation>
-<translation id="5145887002054615868">Skedat dublikatë ose ato që nuk janë përdorur për <ph name="DAYS_INACTIVE"/> ditë zhvendosen këtu<ph name="AUTODELETE_SECTION"/>. Këtë mund ta ndryshosh në çdo kohë te "<ph name="DECLUTTER_SETTINGS_TITLE"/>".</translation>
 <translation id="5152843274749979095">Nuk është instaluar asnjë aplikacion i mbështetur</translation>
 <translation id="5161254044473106830">Kërkohet titulli</translation>
 <translation id="5161262286013276579">Fleta e konfirmimit të çelësit të kalimit u hap</translation>
@@ -964,7 +964,6 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="5267572070504076962">Aktivizo "Shfletimin e sigurt" për të marrë mbrojtjen ndaj sajteve të rrezikshme</translation>
 <translation id="5271967389191913893">Pajisja nuk mund të hapë përmbajtjen që do të shkarkohet.</translation>
 <translation id="5273031377282080577">Administratori yt e menaxhon këtë cilësim.</translation>
-<translation id="5287338992381051621">{NUM_REVOKED_PERMISSIONS,plural, =1{U çabonove nga një sajt i papërdorur}other{U çregjistrove nga # sajte të papërdorura}}</translation>
 <translation id="5292796745632149097">Dërgo te</translation>
 <translation id="1078957913029848404">Je i identifikuar si <ph name="EMAIL"/>. Mund ta ndalosh sinkronizimin në çdo kohë te cilësimet. Brave mund t'i personalizojë "Kërko" dhe shërbimet e tjera bazuar në historikun tënd.</translation>
 <translation id="5304593522240415983">Kjo fushë nuk mund të jetë bosh</translation>
@@ -1004,6 +1003,7 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="5469852975082458401">Mund t'i navigosh faqet me një kursor teksti. Shtyp F7 për ta çaktivizuar.</translation>
 <translation id="5471273988133666918">Skeda <ph name="TAB_TITLE"/> nuk mund të zhvendoset</translation>
 <translation id="548278423535722844">Hape në aplikacionin e hartave</translation>
+<translation id="5494920125229734069">Zgjidh të gjitha</translation>
 <translation id="549660026907543296">Bashkohu si <ph name="MEMBER_FULL_NAME"/></translation>
 <translation id="5517326820028369152">Fleta e poshtme e aktivitetit të fundit</translation>
 <translation id="5526281268548144413">Nuk mund të mbyllen në disa dritare</translation>
@@ -1079,6 +1079,7 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="5833984609253377421">Ndaj lidhjen</translation>
 <translation id="2225291765389142805">Brave Dino</translation>
 <translation id="5841444063256914865">Dëshiron ta shkarkosh "<ph name="FILE_NAME"/>" gjithsesi?</translation>
+<translation id="4783542788057285695">Brave i ndaloi sajtet abuzive dhe të papërdorura që të dërgojnë njoftime</translation>
 <translation id="5848257610304005265">Të hapet skedari PDF me aplikacionin "<ph name="APP_NAME"/>"?</translation>
 <translation id="5849288995120328556">Të ndalohet ndarja?</translation>
 <translation id="5853623416121554550">në pauzë</translation>
@@ -1105,8 +1106,10 @@ Llogaria jote e Brave mund të ketë forma të tjera të historikut të shfletim
 <translation id="305870044889644984">Hap "Qendrën e ndihmës së Brave" në një skedë të re</translation>
 <translation id="59577092665511740">Zgjidh një llogari.</translation>
 <translation id="5958275228015807058">Gjej skedarët dhe faqet e tua te "Shkarkimet"</translation>
+<translation id="4262327329851675629">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave ndaloi një sajt që nuk e ke vizituar së fundi që të të dërgojë njoftime}other{Brave i ndaloi sajtet që nuk i ke vizituar së fundi që të të dërgojnë njoftime}}</translation>
 <translation id="5962718611393537961">Trokit për të palosur</translation>
 <translation id="5964869237734432770">Ndalo përshkrimet e imazheve</translation>
+<translation id="5972844218283131174">Anulo zgjedhjen për të gjitha</translation>
 <translation id="5975083100439434680">Zvogëlo</translation>
 <translation id="5977976211062815271">Në këtë pajisje</translation>
 <translation id="5978661847409534366">{ITEMS_COUNT,plural, =1{1 faqe në listën e leximit}other{# faqe në listën e leximit}}</translation>
@@ -1255,6 +1258,7 @@ Për shembull, disa uebsajte mund t'i përgjigjen kësaj kërkese duke të tregu
 <translation id="654871471440386944">Të aktivizohet shfletimi me kursorin e tekstit?</translation>
 <translation id="6702167990458635422">Nuk të mbron nga uebsajtet, shkarkimet dhe shtesat e rrezikshme. Cilësimet e tua të "Shfletimit të sigurt" në produktet e tjera të Brave nuk do të preken.</translation>
 <translation id="6554822972009632311">Filtri i përmbajtjes është aktiv</translation>
+<translation id="6556501700899673703">Lexend</translation>
 <translation id="6556542240154580383">{TAB_COUNT,plural, =1{<ph name="TAB_TITLE"/> dhe <ph name="TAB_COUNT_ONE"/> skedë tjetër do të mbyllen}other{<ph name="TAB_TITLE"/> dhe <ph name="TAB_COUNT_MANY"/> skeda të tjera do të mbyllen}}</translation>
 <translation id="6560414384669816528">Kërko me Sogou</translation>
 <translation id="656065428026159829">Shiko më shumë</translation>
@@ -1402,6 +1406,7 @@ Për shembull, disa uebsajte mund t'i përgjigjen kësaj kërkese duke të tregu
 <translation id="7115358764509798967">Parazgjedhja e sistemit</translation>
 <translation id="7117485132243600300">Menaxho përmbajtjet që ndjek dhe temat e kërkimet e sugjeruara</translation>
 <translation id="7119984597597798764">Mbyll "<ph name="INSTANCE_TITLE"/>"</translation>
+<translation id="721261350616678948">Identifikohu në Brave</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Lejet u rishikuan për 1 sajt}other{Lejet u rishikuan për # sajte}}</translation>
 <translation id="7138678301420049075">Tjetër</translation>
 <translation id="7140829094791862589">Rendit sipas renditjes manuale</translation>
@@ -1430,6 +1435,7 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="7197682514647286393">Fshi me shpejtësi të dhënat e tua të shfletimit</translation>
 <translation id="7207760545532569765">Restauro <ph name="TAB_COUNT"/> skeda si skeda të reja në sfond.</translation>
 <translation id="7221869452894271364">Ringarkoje këtë faqe</translation>
+<translation id="722681077040152344">U çabonove nga <ph name="COUNT"/> sajte</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 shkarkim në pritje}other{# shkarkime në pritje}}</translation>
 <translation id="8353574248857730978">"Menaxheri i fjalëkalimeve i Brave" ndaloi së funksionuari</translation>
 <translation id="7239496616545081903">Fshih "Modalitetin e leximit"</translation>
@@ -1525,7 +1531,6 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="649070405679044769">U identifikove te Brave si</translation>
 <translation id="7612989789287281429">Po identifikohesh…</translation>
 <translation id="7619072057915878432">Shkarkimi i <ph name="FILE_NAME"/> dështoi për shkak të problemeve të rrjetit.</translation>
-<translation id="7620958983792650214">{NUM_REVOKED_PERMISSIONS,plural, =1{U çabonove nga një sajt}other{U çabonove nga # sajte}}</translation>
 <translation id="7207456302801184289">Mirë se vjen në Brave</translation>
 <translation id="7628417132421583481">Shko te "Menaxheri i fjalëkalimeve"</translation>
 <translation id="7630202231528827509">URL-ja e ofruesit</translation>
@@ -1654,12 +1659,14 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="6337533477704327362">Nuk është nevoja ta kujtosh këtë fjalëkalim. Ai do të ruhet te "Menaxheri i fjalëkalimeve i Brave".</translation>
 <translation id="8152331954420209374">Shko te "Lentja"</translation>
 <translation id="8153206878708357851">Aktivizo/çaktivizo shfletimin me kursorin e tekstit</translation>
+<translation id="8154784523622173959">Personalizo sfondin e kësaj faqeje</translation>
 <translation id="6779735068647643024">Për të përdorur dhe për të ruajtur fjalëkalimet në "Llogarinë tënde të Brave", verifiko që je ti</translation>
 <translation id="8175940240143658258">{ARCHIVED_TAB_COUNT,plural, =1{(1) artikull joaktiv}other{(#) artikuj joaktivë}}</translation>
 <translation id="8186512483418048923"><ph name="FILES"/> skedarë të mbetur</translation>
 <translation id="8190358571722158785">1 ditë e mbetur</translation>
 <translation id="8192765420340770300">Fleta e poshtme e identifikimit u hap në lartësi të plotë</translation>
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Pajisjet e tua<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
+<translation id="8201752259339925400">Pastro termin e kërkimit</translation>
 <translation id="820568752112382238">Sajtet më të vizituara</translation>
 <translation id="8207867836430106322">{NUM_OTHER_MEMBERS,plural, =1{Bashkohu në grupin e skedave me <ph name="OWNER_FIRST_NAME"/> dhe <ph name="NUMBER_OF_OTHER_MEMBERS"/> tjetër}other{Bashkohu në grupin e skedave me <ph name="OWNER_FIRST_NAME"/> dhe <ph name="NUMBER_OF_OTHER_MEMBERS"/> të tjerë}}</translation>
 <translation id="8209050860603202033">Hape imazhin</translation>
@@ -1675,6 +1682,7 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="8244387390464017490">Personalizo faqen e skedës së re</translation>
 <translation id="8244444485683708655">Bashkëngjit fotografinë e kamerës</translation>
 <translation id="8250920743982581267">Dokumentet</translation>
+<translation id="8257429805444572809">U çabonove nga <ph name="DOMAIN"/></translation>
 <translation id="8258999165172757081">U shtua</translation>
 <translation id="2876689296031086375">Për shkak se faqet e ngarkuara paraprakisht janë të enkriptuara, Brave nuk do të mësojë asgjë rreth përmbajtjes së faqes së ngarkuar paraprakisht. Serverët e Brave do të mësojnë se cilat sajte janë ngarkuar paraprakisht në mënyrë private. Ky informacion përdoret vetëm për të ngarkuar paraprakisht faqet dhe nuk lidhet me informacione të tjera nga "Llogaria jote e Brave".</translation>
 <translation id="8260126382462817229">Provo të identifikohesh përsëri</translation>
@@ -1689,7 +1697,6 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="8281886186245836920">Kapërce</translation>
 <translation id="8282297628636750033">Zbato temën e errët për sajtet</translation>
 <translation id="8282950411412455249">Shko te cilësimet e sigurisë</translation>
-<translation id="922970047082941203">{NUM_WINDOWS,plural, =1{Mbyll 1 dritare të fshehtë}other{Mbyll # dritare të fshehta}}</translation>
 <translation id="831192587911042850">Shton sajtin aktual të uebit në listën e sajteve të uebit që po ndjek ti.</translation>
 <translation id="8317318757008452355">Hap opsionet për të printuar</translation>
 <translation id="8320212361750431956">Aktiviteti i fundit</translation>
@@ -1733,6 +1740,7 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="847433688444405067">Shfleto nëpër pajisje</translation>
 <translation id="8477178913400731244">Fshi të dhënat</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="8491317241605644838">Nuk ka dritare joaktive</translation>
 <translation id="8493948351860045254">Liro hapësirë</translation>
 <translation id="8497242791509864205">Hap opsionet e renditjes</translation>
 <translation id="8497480609928300907">Shpjegim i udhëzuesit të privatësisë</translation>
@@ -1825,6 +1833,7 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="85151160756468368">Për të mbajtur qasjen në fjalëkalimet e tua, eksportoji ato tani dhe më pas importoji te menaxheri yt i preferuar i fjalëkalimeve. "Menaxheri i fjalëkalimeve i Brave" ndaloi së funksionuari sepse shërbimet e Google Play nuk ofrohen.</translation>
 <translation id="8963117664422609631">Shko te cilësimet e faqes</translation>
 <translation id="8965591936373831584">në pritje</translation>
+<translation id="8969796057708736017">Shkarkimi yt do të përfundojë nëse skedari është në përputhje me politikat e organizatës sate</translation>
 <translation id="8970887620466824814">Ndodhi një gabim.</translation>
 <translation id="8972098258593396643">Të shkarkohet në dosjen e parazgjedhur?</translation>
 <translation id="2481553173340651149">Të dhënat e tua janë të enkriptuara me frazën tënde të kalimit. Fute atë për të përdorur dhe ruajtur të dhënat e Brave në "Llogarinë tënde të Brave".</translation>
@@ -1937,6 +1946,9 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="8120164982795455341">Skedë e re "e fshehtë"</translation>
 <translation id="3377025655491224618">Skedë private</translation>
 <translation id="8428257636009471988">Vizitoni Web Store</translation>
+<translation id="922970047082941203">{NUM_WINDOWS, plural,
+          =1 {Close 1 Private window}
+          other {Close # Private windows}}</translation>
 <translation id="1988906120194081364">Kalo te Private</translation>
 <translation id="4300497327999623298">Dilu nga Private</translation>
 <translation id="8820817407110198400">Shiriti i faqeshënuesve</translation>
@@ -1974,6 +1986,7 @@ Për ta ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>fshi të dhënat e Bra
 <translation id="3797119261502402695"><ph name="TAB_TITLE"/>, Shumëskeda Private</translation>
 <translation id="8511632746183549739"><ph name="TAB_TITLE"/>, Shumëskeda Private të Fiksuara</translation>
 <translation id="2280910239864711607">Hap një skedë të re në "Modalitetin e fshehtë"</translation>
+<translation id="4831439914611488655">Hap një dritare të re në modalitetin e fshehtë</translation>
 <translation id="7770295979628466744">Trego ose fsheh Faqerojtësit</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural, =1 {<ph name="TAB_COUNT_ONE"/> skedë private} other {<ph name="TAB_COUNT_NORMAL"/> skeda private}}</translation>
 <translation id="40716919553748435">{TAB_COUNT, plural, =1 {<ph name="TAB_COUNT_ONE"/> skedë} other {<ph name="TAB_COUNT_MANY"/> skeda, <ph name="TAB_COUNT_INCOGNITO"/> private}}</translation>

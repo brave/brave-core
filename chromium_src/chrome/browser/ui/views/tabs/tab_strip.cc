@@ -73,3 +73,15 @@ bool TabStrip::CanCloseTabViaMiddleButtonClick() const {
 bool TabStrip::IsVerticalTabsFloating() const {
   return false;
 }
+
+bool TabStrip::ShouldPaintTabAccent(const Tab* tab) const {
+  return false;
+}
+
+std::optional<SkColor> TabStrip::GetTabAccentColor(const Tab* tab) const {
+  return std::nullopt;
+}
+
+ui::ImageModel TabStrip::GetTabAccentIcon(const Tab* tab) const {
+  return ui::ImageModel();
+}

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">Mostrar suxestións de navegadores</translation>
 <translation id="8982438328166986164">Amosa suxestións de sitios web baseadas nos teus marcadores e no teu historial de navegación.</translation>
 <translation id="924029461438529367">Mostrar suxestións de busca</translation>
-<translation id="6285118765755298263">Indexa outros motores de busca</translation>
-<translation id="919715748352669592">Indexa automaticamente os sitios web que seguen a especificación OpenSearch.</translation>
 <translation id="9148058034647219655">Saír</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrado de contido</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">Non actualizar as conexións a HTTPS (desactivado)</translation>
 <translation id="693506469193748756">Esquecerse de min cando peche este sitio</translation>
 <translation id="6975864539539353406">Borra as cookies e os datos dos outros sitios cando pechas un sitio</translation>
+<translation id="7740929262043547697">Permitir o bloqueo de elementos nas ventás do modo de incógnito</translation>
+<translation id="1260864846935682371">Activa a función de bloqueo de elementos dos Escudos nas ventás do modo de incógnito. Ten en conta que os elementos bloqueados nas ventás do modo de incógnito tamén se bloquearán nas ventás non privadas.</translation>
 <translation id="1680858055899097121">Que non sigan as lapelas aí entre as sesións de navegación</translation>
 <translation id="7142548388914389999">Permitir análises de produtos que protexan a privacidade (P3A)</translation>
 <translation id="5254037869598726291">A información anónima de P3A axuda a Brave a calcular o uso xeral e a asegurar que estamos a mellorar as funcións máis populares.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">Máis tarde</translation>
 <translation id="4117451092682672487">Privacidade de xeito simplificado.</translation>
 <translation id="7909375417585209817">Se empregas Brave de xeito predefinido, abriranse todas as ligazóns que premas coas proteccións de privacidade de Brave.</translation>
-<translation id="7370959926683925817">Bloquea os anuncios e aforra datos todos os días.</translation>
-<translation id="7281027579943912834">De xeito predeterminado, todas as ligazóns que toques en Brave recibirán a protección de bloqueo de anuncios. Todas as páxinas, vídeos e transmisións.</translation>
 <translation id="5148943178722443958">Axúdanos a mellorar Brave.</translation>
 <translation id="6718362830686703942">Envía informes de diagnóstico anónimos se tes algún fallo ou bloqueo.</translation>
 <translation id="8616157231067364693">Comparte de xeito privado e anónimo a túa opinión sobre as funcións que usan os usuarios de Brave.</translation>
@@ -371,6 +369,11 @@ Seguro que queres facelo?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Ensinar os sitios máis importantes</translation>
 <translation id="7275773481201277457">Ensinar os estados de Brave</translation>
+<translation id="7462178177755090262">Pantalla de inicio</translation>
+<translation id="5365434987337264071">Última lapela aberta</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {Nova lapela despois de <ph name="HOURS_ONE"/> hora de inactividade} other {Nova lapela despois de <ph name="HOURS_MANY"/> horas de inactividade}}</translation>
+<translation id="5233638681132016545">Nova pestana</translation>
+<translation id="8395271296293035055">Volver á lapela máis recente</translation>
 <translation id="8297488609722895137">Foto pertencente a <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Abrir ligazóns externas en Brave</translation>
 <translation id="5616508928556767259">Abre ligazóns doutras aplicacións nunha visualización web de Brave. Nota: Cómpre que Brave estea configurado como o teu navegador predeterminado.</translation>
@@ -760,7 +763,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6889920539620318793">Configurar como activo</translation>
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="4945690646623486292">Seleccionar rede</translation>
-<translation id="5233638681132016545">Nova pestana</translation>
 <translation id="8006088103295786154">Acceder á Carteira de Brave</translation>
 <translation id="5308380583665731573">Conectar</translation>
 <translation id="8030169304546394654">Desconectado</translation>
@@ -1068,6 +1070,10 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="4650851936784160359">Non se puido actualizar a lista de filtros. Téntao de novo</translation>
 <translation id="3098054327870766317">Amosar o botón de desfacer cando se pechan os separadores</translation>
 <translation id="1336494649091412226">Queres saír de Brave?</translation>
+<translation id="6061635824229591714">Queres eliminar os datos do sitio?</translation>
+<translation id="1265051174491933207">A eliminación borrará os datos do sitio e pechará todas as lapelas de '<ph name="SITE_NAME"/>'. Isto non se poderá desfacer.</translation>
+<translation id="4279349293084858577">Eliminar permanentemente</translation>
+<translation id="4426990318287827331">Eliminar datos</translation>
 <translation id="7942415993090181327">Historial de conversas</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegación segura</translation>
 <translation id="2735247450315842119">Permitir capturas de pantalla nos separadores privados</translation>

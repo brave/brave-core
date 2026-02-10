@@ -39,7 +39,15 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
   break;                                                            \
   case template_url_starter_pack_data::kAiMode
 
+// Handle Brave-specific OPEN_HERE action ID to prevent unhandled enum value
+// error in upstream switch statement.
+#define STARTER_PACK_AI_MODE \
+  OPEN_HERE:                 \
+  break;                     \
+  case OmniboxActionId::STARTER_PACK_AI_MODE
+
 #include <components/omnibox/browser/autocomplete_match.cc>  // IWYU pragma: export
 
+#undef STARTER_PACK_AI_MODE
 #undef kAiMode
 #undef GetVectorIcon

@@ -68,8 +68,6 @@
 <translation id="7304425663107214334">ສະແດງຄຳແນະນຳເວັບໄຊ</translation>
 <translation id="8982438328166986164">ສະແດງຄຳແນະນຳທີ່ເວັບໄຊຂອງທ່ານໃນການຈັດຕັ້ງເຄືອຂ່າຍ</translation>
 <translation id="924029461438529367">ສະແດງຄຳແນະນຳການຄົ້ນຫາ</translation>
-<translation id="6285118765755298263">ດັດສະນີເຄື່ອງມືຄົ້ນຫາອື່ນໆ</translation>
-<translation id="919715748352669592">ເຮັດໃຫ້ເວັບໄຊທີ່ຕາມ OpenSearch ຖືກສະເຫນິຕະໄປທາງໃໝ່ຢ່າງອັດໂມດ.</translation>
 <translation id="9148058034647219655">ອອກ</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">ຕົວກ່ອງການຟິນເຕີປິ້ນໃນເນື່ອງຫມາຍ</translation>
@@ -145,6 +143,8 @@
 <translation id="4690906712010847708">ບໍ່ທຳການປຽນເປັນ HTTPS (disabled)</translation>
 <translation id="693506469193748756">ລືມຂ້ອຍເມື່ອຂ້ອຍປິດເວັບໄຊນີ້</translation>
 <translation id="6975864539539353406">ປັດໃຈຄຸກກີ້ແລະຂໍ້ມູນເວັບໄຊອື່ນເມື່ອທ່ານປິດເວັບໄຊ</translation>
+<translation id="7740929262043547697">ຍອມໃຫ້ບລ໋ອກເພາະສ່ວນໃນໜ້າຕ່າງສ່ວນຕົວ</translation>
+<translation id="1260864846935682371">ເປີດໃຊ້ຟີເຈີບລ໋ອກເພາະສ່ວນຂອງ Shields ໃນໜ້າຕ່າງສ່ວນຕົວ. ເຊີ່ງເພາະສ່ວນທີ່ຖືກບລ໋ອກໃນໜ້າຕ່າງສ່ວນຕົວ ກໍ່ຈະຖືກບລ໋ອກໃນໜ້າຕ່າງທົ່ວໄປເຊັ່ນກັນ.</translation>
 <translation id="1680858055899097121">ບໍ່ໃຊ້ໃຫມ່ແຖບໃນເວລາຫວ່າງການຄົ້ນຫາ</translation>
 <translation id="7142548388914389999">ອະນຸຍາດການວິເຄາະຜະລິດຕະພັນກ່ຽວກັບຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="5254037869598726291">P3A ທີ່ບໍ່ໄດ້ໄປໃຊ້ຂໍ້ມູນການເປັນນິຄົມແລະໃຫ້ເປັນຕາຫຼັ່ງນັກເມົາຫລາຍ.</translation>
@@ -192,8 +192,6 @@
 <translation id="834487290629916192">ໃນພາຍຫຼັງ</translation>
 <translation id="4117451092682672487">ຄວາມເປັນສ່ວນຕົວ. ໃຊ້ງານງ່າຍ.</translation>
 <translation id="7909375417585209817">ຖ້າຕັ້ງຄ່າໃຫ້ Brave ເປັນຄ່າເລີ່ມຕົ້ນ, ທຸກລິ້ງທີ່ທ່ານກົດຈະເປີດພ້ອມການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງ Brave.</translation>
-<translation id="7370959926683925817">ປິດໂຄສະນາ. ປະຢັດຂໍ້ມູນ. ໃນທຸກມື້.</translation>
-<translation id="7281027579943912834">ຖ້າຕັ້ງຄ່າໃຫ້ Brave ເປັນຄ່າເລີ່ມຕົ້ນ, ທຸກລິ້ງທີ່ທ່ານກົດຈະໄດ້ຮັບການບລັອກໂຄສະນາຈາກ Brave. ທັງໜ້າເວັບ, ວິດີໂອ ແລະ ການສະຕຣີມ.</translation>
 <translation id="5148943178722443958">ຊ່ວຍໃຫ້ Brave ດີຂຶ້ນ.</translation>
 <translation id="6718362830686703942">ສົ່ງລາຍງານການວິເຄາະຖ້າແອັບຂັດຂ້ອງ ຫຼື ຄ້າງ.</translation>
 <translation id="8616157231067364693">ແບ່ງປັນຂໍ້ມູນການໃຊ້ງານແບບບໍ່ລະບຸຕົວຕົນເພື່ອຊ່ວຍໃຫ້ Brave ເຂົ້າໃຈວ່າຜູ້ໃຊ້ໃຊ້ງານຄຸນສົມບັດໃດແນ່.</translation>
@@ -374,6 +372,11 @@ Enter the sync chain code words shown below.</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">ສະແດງເວັບໄຊທ໌ຫຼັກຂອງທ່ານ</translation>
 <translation id="7275773481201277457">ສະແດງສະຖິຕິຂອງ Brave</translation>
+<translation id="7462178177755090262">ຫນ້າເປີດ</translation>
+<translation id="5365434987337264071">ແທັບທີ່ເປີດລ່າສຸດ</translation>
+<translation id="6019856124237323989">{HOURS, plural, =1 {ແຖບໃໝ່ຫຼັງຈາກຢຸດການໃຊ້ງານ <ph name="HOURS_ONE"/> ຊົ່ວໂມງ} other {ແຖບໃໝ່ຫຼັງຈາກຢຸດການໃຊ້ງານ <ph name="HOURS_MANY"/> ຊົ່ວໂມງ}}</translation>
+<translation id="5233638681132016545">ເປີດໃນແທັບໃໝ່</translation>
+<translation id="8395271296293035055">ກັບໄປທີ່ແທັບລ່າສຸດຂອງທ່ານ</translation>
 <translation id="8297488609722895137">ຮູບພາບໂດຍ <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">ເປີດລິ້ງຈາກພາຍນອກດ້ວຍ Brave</translation>
 <translation id="5616508928556767259">ເປີດລິ້ງຈາກແອັບອື່ນຜ່ານ Brave Webview. ໝາຍເຫດ: ຕ້ອງຕັ້ງຄ່າໃຫ້ Brave ເປັນບຣາວເຊີ້ເລີ່ມຕົ້ນກ່ອນ.</translation>
@@ -661,6 +664,14 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1279441577056010362">ດຳເນີນຕໍ່ອີເມລ</translation>
 <translation id="7125582363614011660">ການສະໜອງການຊ່ວຍເຫລືອໄດ້ດ້ວຍການຊ່ວຍເໝືອດຂອງທີມ Guardian.\n\nກະລຸນາເລືອກຂໍ້ມູນທີ່ທ່ານພໍໃຈແບ່ງປັນໃຫ້ພວກເຮົາ.\n\nຫາກເຈົ້າແບ່ງປັນຂໍ້ມູນທີ່ເພິ່ມມາມາກຂຶ້ນໃນຕອນທຳອິດ,ການແກ້ໄຂຂໍ້ຂັດຂ້ອງຂອງເຈົ້າກັບບຸກຄະລາກອນໃນການສະໜອງການຊ່ວຍເຫລືອຂອງພວກເຮົາຈະງ່າຍຂຶ້ນ.</translation>
 <translation id="8813171284214934811">ເລືອກພື້ນທີ່ເຊີບເວີ VPN ໃກ້ທີ່ສຸດອັດຕະໂນມັດຕາມເຂດເວລາຂອງທ່ານ. ຕົວເລືອກນີ້ແນະນຳໃຫ້ໃຊ້ເພື່ອໃຫ້ຄວາມໄວອິນເຕີເນັດສູງສຸດ.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> city - }
+          other {<ph name="CITY_COUNT_MANY"/> cities - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servers}
+        }</translation>
 <translation id="3199127022143353223">ເຄື່ອງມື</translation>
 <translation id="5431902940483264007">ເຫມາະສົມ</translation>
 <translation id="6527596624419285047">ໃຊ້ເຊີບເວີທີ່ດີທີ່ສຸດທີ່ມີຢູ່</translation>
@@ -754,7 +765,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="6889920539620318793">ຕັ້ງເປັນທີ່ໃຊ້ວຽກ</translation>
 <translation id="2653659639078652383">ສົ່ງຂໍ້ມູນ</translation>
 <translation id="4945690646623486292">ເລືອກເຄືອຂ່າຍ</translation>
-<translation id="5233638681132016545">ເປີດໃນແທັບໃໝ່</translation>
 <translation id="8006088103295786154">ເຂົ້າເຖິງ Brave Wallet</translation>
 <translation id="5308380583665731573">ເຊື່ອມຕໍ່</translation>
 <translation id="8030169304546394654">ຕັດການເຊື່ອມຕໍ່ສຳເລັດ</translation>
@@ -1062,6 +1072,10 @@ Enter the sync chain code words shown below.</translation>
 <translation id="4650851936784160359">ບໍ່ສາມາດອັບເດດບັນຊີຍການອັດຕາການປ້ອງກັນ. ກະລຸນາລອງອີກຄັ້ງ</translation>
 <translation id="3098054327870766317">ສະແດງປຸ່ມກັບຄືນເມື່ອແທັບຖືກປິດ</translation>
 <translation id="1336494649091412226">ທ່ານແນ່ໃຈທີ່ຈະອອກຈາກ Brave ບໍ?</translation>
+<translation id="6061635824229591714">ທ່ານຈະກຳຈັດຂໍ້ມູນເວັບໄຊທ໌ນີ້ບໍ?</translation>
+<translation id="1265051174491933207">ການກຳຈັດຈະລຶບຂໍ້ມູນເວັບໄຊທ໌ ແລະປິດແທັບ '<ph name="SITE_NAME"/>' ທັງໝົດ. ບໍ່ສາມາດຍ້ອນກັບໄດ້.</translation>
+<translation id="4279349293084858577">ກຳຈັດ</translation>
+<translation id="4426990318287827331">ກຳຈັດຂໍ້ມູນ</translation>
 <translation id="7942415993090181327">ປະຫວັດການສົນທະນາ</translation>
 <translation id="6859935199732075666">ສະແດງຄວາມຜິດພາດຂອງ Safe Browsing</translation>
 <translation id="2735247450315842119">ເະົາຈັບພາບຢູ່ໃນແທັບສ່ວນຕົວ</translation>

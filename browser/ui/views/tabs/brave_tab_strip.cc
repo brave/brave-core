@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -38,12 +39,22 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
+#include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/image_model.h"
+#include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/containers/containers_icon_generator.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
     : TabStrip(std::move(controller)) {
@@ -275,6 +286,98 @@ void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return &tab_container_.get();  // IN-TEST
 }
+
+bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return false;
+  }
+
+  return IsTabInContainer(tab);
+#else
+  return false;
+#endif
+}
+
+std::optional<SkColor> BraveTabStrip::GetTabAccentColor(const Tab* tab) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  auto container_model = GetContainerModelForTab(tab);
+  if (!container_model.has_value()) {
+    return std::nullopt;
+  }
+  return container_model->background_color();
+#else
+  return std::nullopt;
+#endif
+}
+
+ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  auto container_model = GetContainerModelForTab(tab);
+  if (!container_model.has_value()) {
+    return ui::ImageModel();
+  }
+
+  auto& icon =
+      containers::GetVectorIconFromIconType(container_model->container()->icon);
+  return ui::ImageModel::FromVectorIcon(icon, SK_ColorWHITE, 16);
+#else
+  return ui::ImageModel();
+#endif
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+bool BraveTabStrip::IsTabInContainer(const Tab* tab) const {
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  return !GetContainerIdForTab(tab).empty();
+}
+
+std::string BraveTabStrip::GetContainerIdForTab(const Tab* tab) const {
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  auto index = GetModelIndexOf(tab);
+  if (!index) {
+    // This can happen on shut-down.
+    return std::string();
+  }
+
+  auto* contents =
+      GetBrowserWindowInterface()->GetTabStripModel()->GetWebContentsAt(
+          index.value());
+  CHECK(contents);
+
+  return containers::GetContainerIdForWebContents(contents);
+}
+
+std::optional<containers::ContainerModel>
+BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  CHECK(IsTabInContainer(tab));
+  auto container_id = GetContainerIdForTab(tab);
+  CHECK(!container_id.empty());
+
+  auto* profile = GetBrowserWindowInterface()->GetProfile();
+  CHECK(profile);
+
+  auto* prefs = profile->GetPrefs();
+  CHECK(prefs);
+
+  auto* widget = GetWidget();
+  const float scale_factor =
+      widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
+  auto models = containers::GetContainerModelsFromPrefs(*prefs, scale_factor);
+
+  auto it = std::ranges::find_if(
+      models, [&](const auto& model) { return model.id() == container_id; });
+  if (it == models.end()) {
+    return containers::ContainerModel::CreateForUnknown(container_id,
+                                                        scale_factor);
+  }
+  return std::move(*it);
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 BEGIN_METADATA(BraveTabStrip)
 END_METADATA

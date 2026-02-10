@@ -61,9 +61,11 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
 
   private showDefaultViews_() {
     const views = ['parent'];
+    // <if expr="enable_containers">
     if (this.pageVisibility_.containers) {
       views.push('containers');
     }
+    // </if>
     if (this.showPage_(this.pageVisibility_.playlist)) {
       views.push('playlist');
     }

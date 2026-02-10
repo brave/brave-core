@@ -17,7 +17,7 @@
 <translation id="1066338698580889414">ヒント通知のプロモーションが画面全体に表示されています</translation>
 <translation id="1070689840697074178">ここから PDF をダウンロードできます</translation>
 <translation id="107147699690128016">ファイル拡張子を変更すると、ファイルが別のアプリケーションで開かれる可能性があり、場合によってはデバイスに損害が生じます。</translation>
-<translation id="1073328695547557412">Brave レンズのアイコンをタップします</translation>
+<translation id="1073328695547557412">Brave レンズのアイコンをタップ</translation>
 <translation id="1086486568852410168">Brave レンズで検索</translation>
 <translation id="1087799850623149508">アドレスバーを長押しすると、一番下に移動できます</translation>
 <translation id="1089606299949659462">確認が終わりました</translation>
@@ -35,10 +35,11 @@
 <translation id="1140317858355046628">削除すると、全員が「<ph name="GROUP_NAME"/>」タブグループに直ちにアクセスできなくなり、すべてのデバイスから削除されます。</translation>
 <translation id="1142732900304639782">これらのサイトを翻訳するか尋ねない</translation>
 <translation id="1143193470214071120">ウィンドウを閉じるか、管理してください</translation>
+<translation id="1149725087019908252"><ph name="FILE_NAME"/> をスキャンしています</translation>
 <translation id="7083341910267693582">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および ChromeOS 追加利用規約<ph name="END_LINK2"/>に同意したものと見なされます。</translation>
 <translation id="7443574521624544928">パスワードは Brave パスワード マネージャーに保存されていません。</translation>
 <translation id="115483310321669804">パスワード <ph name="PASSWORD"/> を使用</translation>
-<translation id="1165109137568919258">写真を撮るか、フォト ギャラリーから画像を追加して検索します</translation>
+<translation id="1165109137568919258">写真を撮るか、フォト ギャラリーから画像を追加して検索</translation>
 <translation id="1173894706177603556">名前を変更</translation>
 <translation id="7947699437047020219">画面の幅が狭い場合、Brave はモバイルサイトをリクエストします</translation>
 <translation id="3336989427111006280">管理者は、ユーザーのプロフィールやブラウザをリモートで変更したり、レポートを通じてブラウザに関する情報を分析したり、その他の必要なタスクを行ったりすることができます。このデバイスでのアクティビティは、Brave 以外でも管理されている可能性があります。</translation>
@@ -46,7 +47,6 @@
 <translation id="1181037720776840403">削除</translation>
 <translation id="4606796610935634842">Brave アカウントのパスワードを常に使用できるようにするには、本人確認を行ってください</translation>
 <translation id="1187810343066461819">この車のブックマーク、履歴、その他の設定も削除する</translation>
-<translation id="1193589902336218259">ヒントの通知をオンにする</translation>
 <translation id="1193729455103054076">安全なパスワードを使用しますか？</translation>
 <translation id="11947597112837849">メールアドレス</translation>
 <translation id="1197267115302279827">ブックマークを移動</translation>
@@ -69,6 +69,7 @@
 <translation id="1263231323834454256">リーディング リスト</translation>
 <translation id="1269129608791067105">履歴はここに表示されます</translation>
 <translation id="1273937721055267968"><ph name="DOMAIN"/> をブロック</translation>
+<translation id="1280921956537356716">ヒントの通知をオンにする</translation>
 <translation id="1283039547216852943">タップして展開</translation>
 <translation id="1289129165308566697">他のデバイスでの履歴を表示</translation>
 <translation id="129553762522093515">最近閉じたタブ</translation>
@@ -84,6 +85,7 @@
 <translation id="1336996151357442890"><ph name="SITE_NAME"/> の登録を解除しました。次回のアクセス時に再度確認メッセージが表示されます。</translation>
 <translation id="1340839264183302272">グループから退出</translation>
 <translation id="873343310451048603">Brave パスワード マネージャーに移動して、不正使用されたパスワードを確認してください。</translation>
+<translation id="4167284810587724062">Brave にログイン</translation>
 <translation id="1344653310988386453">選択箇所へのリンクを含める</translation>
 <translation id="1347468774581902829">アクティビティを管理</translation>
 <translation id="1355088659320425659">履歴とタブ</translation>
@@ -92,7 +94,7 @@
 <translation id="1366525380420346469">オンにした場合</translation>
 <translation id="1372840539168747818">{NUM_SITES,plural, =1{今後、このサイトからの通知の送信を停止できます}other{今後、これらのサイトからの通知の送信を停止できます}}</translation>
 <translation id="1373696734384179344">選択したコンテンツをダウンロードするにはメモリが不足しています。</translation>
-<translation id="137496472437646183">[保護強化機能] を選択します</translation>
+<translation id="137496472437646183">[保護強化機能] を選択</translation>
 <translation id="1376578503827013741">計算中...</translation>
 <translation id="1381838868249179644">安全を確保するため、いくつかのサイトから権限を削除しました</translation>
 <translation id="1383876407941801731">検索</translation>
@@ -110,7 +112,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3219606989239049572">Brave アカウントにデータを保存する</translation>
 <translation id="1414919006379339073">現在のウィンドウを閉じる</translation>
 <translation id="1416550906796893042">アプリケーションのバージョン</translation>
-<translation id="5171187478741797469">Brave を再起動しますか？</translation>
 <translation id="1428770807407000502">同期を OFF にしますか？</translation>
 <translation id="1430915738399379752">印刷</translation>
 <translation id="1435593198351412143">PDF を自動的に開く</translation>
@@ -186,13 +187,12 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="1815975907734103433"><ph name="TAB_TITLE"/>、録画中のタブ</translation>
 <translation id="1820408774134375111">ログインのボトムシート</translation>
 <translation id="1823492026305965829"><ph name="USER_FULL_NAME"/> としてログイン</translation>
-<translation id="1824902652744048041">[閲覧履歴データの削除] をタップします</translation>
+<translation id="1824902652744048041">[閲覧履歴データの削除] をタップ</translation>
 <translation id="1902518199598615730">Google Pay のお支払い方法と住所は暗号化されません。また、Brave の閲覧履歴は同期されません。
 パスフレーズを知っているユーザーだけが暗号化されたデータを見ることができます。パスフレーズは Brave には送信されず、保存されることもありません。パスフレーズを忘れた場合や、この設定を変更する場合は、<ph name="BEGIN_LINK"/>アカウントの Brave データを削除<ph name="END_LINK"/>してください。</translation>
 <translation id="1829244130665387512">ページ内検索</translation>
 <translation id="1832459821645506983">ON にする</translation>
 <translation id="4544426875066706571">データ保護のため、最近アクセスしていないサイトから権限を自動的に削除します</translation>
-<translation id="3456819043493172402">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave はこのサイトからの通知を停止しました。通知設定は確認、管理できます。}other{Brave はこれらのサイトからの通知を停止しました。通知設定は確認、管理できます。}}</translation>
 <translation id="7175072311426658869">Brave ブラウザで開く</translation>
 <translation id="5173820533850252773">Brave は古いバージョンです</translation>
 <translation id="1877073879466606884">現在ログインしているプロフィールは、管理対象プロフィールです。管理者は、プロフィール設定をリモートで変更したり、レポートを通じてブラウザに関する情報を分析したり、その他の必要なタスクを行ったりすることができます。</translation>
@@ -239,10 +239,8 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="2063047797624276601">セーフ ブラウジング保護強化機能は組織によってオンにされています</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{1 件のダウンロードが失敗しました}other{# 件のダウンロードが失敗しました}}</translation>
 <translation id="2067805253194386918">テキスト</translation>
-<translation id="2072027001582274150">未使用または重複しているタブ</translation>
 <translation id="2079545284768500474">元に戻す</translation>
 <translation id="2082238445998314030">結果 <ph name="TOTAL_RESULTS"/> 件中 <ph name="RESULT_NUMBER"/> 件目</translation>
-<translation id="8992364521253636633">自動入力の設定を完了するには、Brave を今すぐ再起動してください。タブは自動的に再度開きます。</translation>
 <translation id="2091863218454846791">コンパクト表示を表示しています</translation>
 <translation id="2093731487903423814">過去 15 分間</translation>
 <translation id="2096577711562668473">自動入力サービスを変更しますか？</translation>
@@ -275,7 +273,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="2227444325776770048"><ph name="USER_FULL_NAME"/> として続行</translation>
 <translation id="2230777942707397948">空のウィンドウ</translation>
 <translation id="223356358902285214">ウェブとアプリのアクティビティ</translation>
-<translation id="2233735624724508540">期間を選択して [データを削除] をタップします</translation>
+<translation id="2233735624724508540">期間を選択して [データを削除] をタップ</translation>
 <translation id="2234827758954819389">プライバシー ガイド</translation>
 <translation id="2238038374973843156">グループを別のウィンドウに移動</translation>
 <translation id="2239812875700136898">Discover ボタンのオプションから記事を管理できます</translation>
@@ -413,6 +411,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="2842985007712546952">親フォルダ</translation>
 <translation id="2860954141821109167">このデバイスで通話アプリが有効になっていることを確認してください</translation>
 <translation id="6518254564747115579">Brave の一部の機能は使用できなくなります</translation>
+<translation id="2869416538780777323">{OTHER_TAB_COUNT,plural, =1{<ph name="URL"/>、他 1 個のタブ}other{<ph name="URL"/>、他 <ph name="TAB_COUNT_MANY"/> 個のタブ}}</translation>
 <translation id="2869430948265924908">車内で機密性の高いコンテンツを保護するには、車のプロフィールのロックを作成する必要があります。ロックには PIN、コード、パスワードを使用できます。</translation>
 <translation id="2870560284913253234">ウェブサイト</translation>
 <translation id="2871733351037274014">ページをプリロードする</translation>
@@ -430,6 +429,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="2904414404539560095">タブを共有するデバイスのリストが画面全体に表示されました。</translation>
 <translation id="2908243544703713905">未読の記事があります</translation>
 <translation id="7339921667754113786">Brave 通知プラットフォーム</translation>
+<translation id="2912247081180973411">ウィンドウを閉じる</translation>
 <translation id="2918484639460781603">設定に移動</translation>
 <translation id="2920713489113095380"><ph name="TAB_TITLE"/>、ミュート中のタブ</translation>
 <translation id="2923908459366352541">名前が無効です</translation>
@@ -486,7 +486,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3159335509547415276">アカウントのブロックに関する詳細</translation>
 <translation id="3161699713309727585"><ph name="BUTTON_TEXT"/>、新しいタブで開く</translation>
 <translation id="3166827708714933426">タブとウィンドウのショートカット</translation>
-<translation id="7249949543831830993">Brave はここですでに実行中です。</translation>
 <translation id="3167258285411721858"><ph name="HOST_NAME"/> のモバイルサイトをリクエストできます</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3187472288455401631">広告の測定</translation>
@@ -508,7 +507,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3268048651973962414">上にドラッグすると検索結果を確認できます</translation>
 <translation id="3269093882174072735">画像を読み込む</translation>
 <translation id="3280562213547448728">音声検索</translation>
-<translation id="82609232232243542">Brave にログイン</translation>
 <translation id="3285065882678541460">{TAB_COUNT,plural, =1{<ph name="TAB_GROUPS_PART"/>、<ph name="TAB_COUNT_ONE"/> 個のタブ}other{<ph name="TAB_GROUPS_PART"/>、<ph name="TAB_COUNT_MANY"/> 個のタブ}}</translation>
 <translation id="8794905135160933967">{PASSWORDS_COUNT,plural, =1{1 件のパスワードがこのデバイスのみに保存されています。他のデバイスで使用するには、Brave アカウントに保存してください。}other{# 件のパスワードがこのデバイスのみに保存されています。他のデバイスで使用するには、Brave アカウントに保存してください。}}</translation>
 <translation id="3293181007446299124">閲覧履歴はプライバシーを保つためデバイスに保存され、レポートはユーザーを特定できないように遅れて送信されます</translation>
@@ -697,12 +695,14 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="414128724510021958">PC 版サイトをデフォルトでリクエスト</translation>
 <translation id="4162867837470729563">共有オプションのリストが画面全体に表示されています。</translation>
 <translation id="4170011742729630528">このサービスはご利用になれません。しばらくしてからもう一度お試しください。</translation>
+<translation id="4170577491341606575">データを取得しています\u2026</translation>
 <translation id="4177222230309051052">すべてのブックマークにアクセス</translation>
 <translation id="4177501066905053472">広告のトピック</translation>
 <translation id="417865198503699526">設定を検索</translation>
 <translation id="4180726336228139707">このデバイスのみ</translation>
 <translation id="4181841719683918333">言語</translation>
 <translation id="4188221736490993796">降順で並べ替え</translation>
+<translation id="6423270958351890725">{NUM_REVOKED_PERMISSIONS,plural, =1{スパムまたは虚偽のコンテンツのため、このサイトからの通知の送信を停止しました}other{スパムまたは虚偽のコンテンツのため、これらのサイトからの通知の送信を停止しました}}</translation>
 <translation id="4195643157523330669">新しいタブで開く</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{このデバイスの 1 個のタブ}other{このデバイスの # 個のタブ}}</translation>
 <translation id="4198423547019359126">ダウンロードの保存先はありません</translation>
@@ -795,7 +795,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="4585751637295612750">質問に追加するには新しいタブを開いてください</translation>
 <translation id="4587589328781138893">ウェブサイト</translation>
 <translation id="4594952190837476234">このオフライン ページは <ph name="CREATION_TIME"/> 時点のものであり、オンライン版とは異なる可能性があります。</translation>
-<translation id="4595237294768457124">新しいタブページを開きます</translation>
+<translation id="4595237294768457124">新しいタブページを開く</translation>
 <translation id="4595276580892809760">ギャラリーの画像を添付</translation>
 <translation id="2724914440849807699">Brave アカウントのエラー</translation>
 <translation id="4601095002996233687">不審なダウンロードを詳しくスキャンします。</translation>
@@ -810,7 +810,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="465657074423018424">セーフ ブラウジングでは不正なウェブサイトからデバイスを保護します。オフにする場合は、パスワード入力時など、ブラウジングの際は十分に気を付けてください。</translation>
 <translation id="4662373422909645029">ニックネームに数字を含めることはできません</translation>
 <translation id="4663756553811254707"><ph name="NUMBER_OF_BOOKMARKS"/> 件のブックマークを削除しました</translation>
-<translation id="4665799914191099447">[プライバシーとセキュリティ] &gt; [セーフ ブラウジング] をタップします</translation>
+<translation id="4665799914191099447">[プライバシーとセキュリティ] &gt; [セーフ ブラウジング] をタップ</translation>
 <translation id="4668279686271488041">広告測定データはデバイスから定期的に削除されます</translation>
 <translation id="4668347365065281350">サイトによって保存されたすべてのデータ（Cookie やローカルに保存された他のデータを含む）</translation>
 <translation id="4675298276894277358">このサイトは今後表示されません</translation>
@@ -822,7 +822,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="468924408576231679">ウェブページ「<ph name="PAGE_TITLE"/>」へのリンクをコピーします。ソース: <ph name="PAGE_URL"/></translation>
 <translation id="469286762610133730">関連性の高いコンテンツを表示</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 他 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 件}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 他 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 件}}</translation>
-<translation id="4698061626562952596">ここでアクティブでないタブを確認できます</translation>
 <translation id="4698757800236023795">アクティブ（<ph name="ITEM_COUNT"/>）</translation>
 <translation id="4699172675775169585">キャッシュされた画像とファイル</translation>
 <translation id="4710167854527459075">新しい順に並べ替え</translation>
@@ -882,6 +881,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="4905823827770127520">このページへのリンクを含める</translation>
 <translation id="3217997482476578430">Discover by Brave</translation>
 <translation id="4910889077668685004">お支払いアプリ</translation>
+<translation id="4911042367886397055">おかえりなさい、<ph name="USER_NAME"/> さん</translation>
 <translation id="4912413785358399818">タブを移動</translation>
 <translation id="4913169188695071480">更新を停止</translation>
 <translation id="367116267716122258">すべてのデバイスでパスワードやその他の設定を使用するには、Brave に <ph name="EMAIL"/> としてログインしてください</translation>
@@ -919,6 +919,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="5039678609803776426">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> 個のタブ - <ph name="URL_LIST"/>}other{<ph name="TAB_COUNT_MANY"/> 個のタブ - <ph name="URL_LIST"/>}}</translation>
 <translation id="5040262127954254034">プライバシー</translation>
 <translation id="504456571576643789">留意事項</translation>
+<translation id="5052017727857614804">{WINDOW_COUNT,plural, =1{<ph name="WINDOW_COUNT_ONE"/> 個のウィンドウを選択しました}other{<ph name="WINDOW_COUNT_NORMAL"/> 個のウィンドウを選択しました}}</translation>
 <translation id="5056587122125565772">画像を作成</translation>
 <translation id="506254248375231072">タブはありません</translation>
 <translation id="5075939510584558547">暗号化せずに保存</translation>
@@ -934,7 +935,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="5122378528687922675">わからないことがあるときは、保護者の方（<ph name="PARENT_NAME_1"/> または <ph name="PARENT_NAME_2"/>）に聞いてください</translation>
 <translation id="5142281402488957685">新しい記事を表示するには、下にスワイプして更新します</translation>
 <translation id="8164849572238219995">アクセスしたページの一部はプリロードされます。ページが Brave サイトまたはアプリからリンクされている場合、Brave サーバーを介してプリロードされる可能性があります。</translation>
-<translation id="5145887002054615868">重複しているタブや <ph name="DAYS_INACTIVE"/> 日間使用していないタブはここに移動され、<ph name="AUTODELETE_SECTION"/>。これは [<ph name="DECLUTTER_SETTINGS_TITLE"/>] でいつでも変更できます。</translation>
 <translation id="5152843274749979095">サポートされているアプリがインストールされていません</translation>
 <translation id="5161254044473106830">タイトルが必要です</translation>
 <translation id="5161262286013276579">パスキー確認シートを開きました</translation>
@@ -964,7 +964,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="5267572070504076962">セーフ ブラウジングをオンにすると危険なサイトから保護されます</translation>
 <translation id="5271967389191913893">デバイスでダウンロード コンテンツを開くことができません。</translation>
 <translation id="5273031377282080577">管理者がこの設定を管理しています。</translation>
-<translation id="5287338992381051621">{NUM_REVOKED_PERMISSIONS,plural, =1{使用していない 1 件のサイトの登録を解除しました}other{使用していない # 件のサイトの登録を解除しました}}</translation>
 <translation id="5292796745632149097">送信先</translation>
 <translation id="1078957913029848404"><ph name="EMAIL"/> でログインしています。同期は [設定] でいつでも停止できます。Brave では、履歴に基づいて検索やその他のサービスをパーソナライズすることがあります。</translation>
 <translation id="5304593522240415983">この項目は必須です</translation>
@@ -1004,6 +1003,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="5469852975082458401">テキスト カーソルを使ってページ間を移動できます。オフにするには F7 キーを押します。</translation>
 <translation id="5471273988133666918">タブ <ph name="TAB_TITLE"/> を移動できません</translation>
 <translation id="548278423535722844">マップアプリで開く</translation>
+<translation id="5494920125229734069">すべて選択</translation>
 <translation id="549660026907543296"><ph name="MEMBER_FULL_NAME"/> として参加</translation>
 <translation id="5517326820028369152">最近のアクティビティのボトムシート</translation>
 <translation id="5526281268548144413">複数のウィンドウでタブを閉じることはできません</translation>
@@ -1079,6 +1079,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="5833984609253377421">リンクを共有</translation>
 <translation id="2225291765389142805">Brave Dino</translation>
 <translation id="5841444063256914865">このまま「<ph name="FILE_NAME"/>」をダウンロードしますか？</translation>
+<translation id="4783542788057285695">不正なサイトや使用していないサイトからの通知の送信を停止しました</translation>
 <translation id="5848257610304005265"><ph name="APP_NAME"/> で PDF を開きますか？</translation>
 <translation id="5849288995120328556">共有を停止しますか？</translation>
 <translation id="5853623416121554550">一時停止中</translation>
@@ -1105,8 +1106,10 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="305870044889644984">Brave ヘルプセンターを新しいタブで開く</translation>
 <translation id="59577092665511740">アカウントを選択してください。</translation>
 <translation id="5958275228015807058">[ダウンロード] で自分のファイルやページを探すことができます</translation>
+<translation id="4262327329851675629">{NUM_REVOKED_PERMISSIONS,plural, =1{最近アクセスしていないサイトからの通知の送信を停止しました}other{最近アクセスしていないサイトからの通知の送信を停止しました}}</translation>
 <translation id="5962718611393537961">タップして折りたたむ</translation>
 <translation id="5964869237734432770">画像の説明文の取得を停止する</translation>
+<translation id="5972844218283131174">すべての選択を解除</translation>
 <translation id="5975083100439434680">縮小する</translation>
 <translation id="5977976211062815271">保存先: このデバイス</translation>
 <translation id="5978661847409534366">{ITEMS_COUNT,plural, =1{リーディング リストの 1 件のページ}other{リーディング リストの # 件のページ}}</translation>
@@ -1255,6 +1258,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="654871471440386944">カーソル ブラウジングをオンにしますか？</translation>
 <translation id="6702167990458635422">危険なウェブサイト、ダウンロード、拡張機能から保護しません。他の Brave サービスのセーフ ブラウジング設定には影響しません。</translation>
 <translation id="6554822972009632311">コンテンツ フィルタはオンです</translation>
+<translation id="6556501700899673703">Lexend</translation>
 <translation id="6556542240154580383">{TAB_COUNT,plural, =1{「<ph name="TAB_TITLE"/>」と <ph name="TAB_COUNT_ONE"/> 個以上のタブが閉じられます}other{「<ph name="TAB_TITLE"/>」と <ph name="TAB_COUNT_MANY"/> 個以上のタブが閉じられます}}</translation>
 <translation id="6560414384669816528">Sogou で検索します</translation>
 <translation id="656065428026159829">もっと見る</translation>
@@ -1393,7 +1397,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="7077143737582773186">SD カード</translation>
 <translation id="4947532681094581238">Brave データもこのデバイスから削除する</translation>
 <translation id="7080145768121641840"><ph name="TAB_TITLE"/>、選択されたミュート中の固定のタブ</translation>
-<translation id="7084115944294706056">アドレスバーの位置を選択する</translation>
+<translation id="7084115944294706056">アドレスバーの位置を選択</translation>
 <translation id="5499149312981370855">Brave の履歴などを Brave サービスのパーソナライズに使用するかどうかを選択します</translation>
 <translation id="8208853227947884571">Brave は最新の状態です</translation>
 <translation id="7106762743910369165">お使いのブラウザは組織によって管理されています</translation>
@@ -1402,6 +1406,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="7115358764509798967">システムのデフォルト</translation>
 <translation id="7117485132243600300">フォローしているコンテンツ、おすすめのトピックと検索候補を管理します</translation>
 <translation id="7119984597597798764"><ph name="INSTANCE_TITLE"/> を閉じる</translation>
+<translation id="721261350616678948">Brave にログイン</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{1 件のサイトの権限を確認しました}other{# 件のサイトの権限を確認しました}}</translation>
 <translation id="7138678301420049075">その他</translation>
 <translation id="7140829094791862589">手動で並べ替え</translation>
@@ -1430,6 +1435,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="7197682514647286393">閲覧データをすばやく削除</translation>
 <translation id="7207760545532569765"><ph name="TAB_COUNT"/> 個のタブを新しいバックグラウンドのタブとして復元します。</translation>
 <translation id="7221869452894271364">このページを再読み込みします</translation>
+<translation id="722681077040152344"><ph name="COUNT"/> 件のサイトの登録を解除しました</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 件のダウンロードが保留中です}other{# 件のダウンロードが保留中です}}</translation>
 <translation id="8353574248857730978">Brave パスワード マネージャーが動作を停止しました</translation>
 <translation id="7239496616545081903">リーディング モードを非表示</translation>
@@ -1440,7 +1446,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="727288900855680735"><ph name="ONE_TIME_CODE"/> を <ph name="ORIGIN"/> に送信しますか？</translation>
 <translation id="7274013316676448362">ブロック中のサイト</translation>
 <translation id="7276868533747677875">以前にパスワードをエクスポートしている場合は、デバイスで CSV ファイルを探し、ご希望のパスワード マネージャーにインポートしてください。</translation>
-<translation id="728377807486816582">アドレスバーをタップします</translation>
+<translation id="728377807486816582">アドレスバーをタップ</translation>
 <translation id="2700309900785251885">Brave の最高強度のセキュリティで保護されています</translation>
 <translation id="7289303553784750393">オンラインであるにもかかわらず問題が解消しない場合は、<ph name="SITE_ETLD_PLUS_ONE"/> で続行するための別の方法をお試しください。</translation>
 <translation id="7290209999329137901">名前の変更はできません</translation>
@@ -1525,7 +1531,6 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="649070405679044769">Brave にログイン済みのユーザー</translation>
 <translation id="7612989789287281429">ログインしています…</translation>
 <translation id="7619072057915878432">ネットワーク障害が発生したため、<ph name="FILE_NAME"/> をダウンロードできませんでした。</translation>
-<translation id="7620958983792650214">{NUM_REVOKED_PERMISSIONS,plural, =1{1 件のサイトの登録を解除しました}other{# 件のサイトの登録を解除しました}}</translation>
 <translation id="7207456302801184289">Brave へようこそ</translation>
 <translation id="7628417132421583481">パスワード マネージャーに移動</translation>
 <translation id="7630202231528827509">プロバイダの URL</translation>
@@ -1654,12 +1659,14 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="6337533477704327362">このパスワードを覚えておく必要はありません。パスワードは Brave パスワード マネージャーに保存されます。</translation>
 <translation id="8152331954420209374">レンズに移動</translation>
 <translation id="8153206878708357851">カーソル ブラウジングを切り替える</translation>
+<translation id="8154784523622173959">このページの背景をカスタマイズ</translation>
 <translation id="6779735068647643024">Brave アカウントでパスワードを使用、保存するには、本人確認を行ってください</translation>
 <translation id="8175940240143658258">{ARCHIVED_TAB_COUNT,plural, =1{（1 個）非アクティブ アイテム}other{（# 個）非アクティブ アイテム}}</translation>
 <translation id="8186512483418048923">残り <ph name="FILES"/> ファイル</translation>
 <translation id="8190358571722158785">残り 1 日</translation>
 <translation id="8192765420340770300">ログインのボトムシートが画面全体に表示されています</translation>
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>あなたのデバイス<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
+<translation id="8201752259339925400">検索クエリをクリア</translation>
 <translation id="820568752112382238">よくアクセスするサイト</translation>
 <translation id="8207867836430106322">{NUM_OTHER_MEMBERS,plural, =1{<ph name="OWNER_FIRST_NAME"/> さんと他 <ph name="NUMBER_OF_OTHER_MEMBERS"/> 人のタブグループに参加}other{<ph name="OWNER_FIRST_NAME"/> さんと他 <ph name="NUMBER_OF_OTHER_MEMBERS"/> 人のタブグループに参加}}</translation>
 <translation id="8209050860603202033">画像を開く</translation>
@@ -1675,6 +1682,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="8244387390464017490">新しいタブページをカスタマイズ</translation>
 <translation id="8244444485683708655">カメラの写真を添付</translation>
 <translation id="8250920743982581267">ドキュメント</translation>
+<translation id="8257429805444572809"><ph name="DOMAIN"/> の登録を解除しました</translation>
 <translation id="8258999165172757081">追加済み</translation>
 <translation id="2876689296031086375">プリロードされたページは暗号化されているため、Brave はプリロードされたページのコンテンツを一切把握できません。Brave サーバーは、どのサイトが非公開でプリロードされたかを把握します。この情報はページをプリロードするためにのみ使用され、Brave アカウントから他の情報にリンクされることはありません。</translation>
 <translation id="8260126382462817229">もう一度ログインしてみてください</translation>
@@ -1732,6 +1740,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="847433688444405067">複数のデバイスでブラウジング</translation>
 <translation id="8477178913400731244">データを削除</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="8491317241605644838">非アクティブなウィンドウはありません</translation>
 <translation id="8493948351860045254">容量を空ける</translation>
 <translation id="8497242791509864205">並べ替えオプションを開く</translation>
 <translation id="8497480609928300907">プライバシー ガイドの説明</translation>
@@ -1761,7 +1770,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="8611922158252451755">リンクを知っているユーザーは誰でも、すべてのタブを編集できます。共有は慎重に行ってください。リンクは 48 時間で期限切れになります。</translation>
 <translation id="5784514951651328424">お使いの Brave アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
 <translation id="8617240290563765734">ダウンロード コンテンツに指定されている URL を開きますか？</translation>
-<translation id="5601608515527024348">Brave メニュー &gt; [設定] を開きます</translation>
+<translation id="5601608515527024348">Brave メニュー &gt; [設定] を開く</translation>
 <translation id="8634050254805484913">画面が狭い場合は非表示にします</translation>
 <translation id="8635399646025169806">タブグループを保持しますか？</translation>
 <translation id="8636825310635137004">他のデバイスと同じタブを使用するには、同期を有効にします。</translation>
@@ -1824,6 +1833,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="85151160756468368">パスワードを引き続き使用できるようにするには、今すぐパスワードをエクスポートして、お好みのパスワード マネージャーにインポートしてください。Google Play 開発者サービスを使用できないため、Brave パスワード マネージャーは動作を停止しています。</translation>
 <translation id="8963117664422609631">サイトの設定に移動</translation>
 <translation id="8965591936373831584">保留中</translation>
+<translation id="8969796057708736017">ファイルが組織のポリシーに準拠している場合はダウンロードされます</translation>
 <translation id="8970887620466824814">エラーが発生しました。</translation>
 <translation id="8972098258593396643">デフォルトのフォルダにダウンロードしますか？</translation>
 <translation id="2481553173340651149">データはパスフレーズで暗号化されます。Brave アカウントで Brave のデータを使用、保存するには、パスフレーズを入力してください。</translation>
@@ -1871,7 +1881,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="9143389653531441385"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> でログイン</translation>
 <translation id="9148126808321036104">もう一度ログインする</translation>
 <translation id="9148564897242852377">タブの選択を切り替える</translation>
-<translation id="9153056436992761257">表示する位置を選択します</translation>
+<translation id="9153056436992761257">表示する位置を選択</translation>
 <translation id="9157212632995922070"><ph name="SITE_ETLD_PLUS_ONE"/> で続行するアカウントを選択してください</translation>
 <translation id="9158770349521403363">コンテンツのみ共有</translation>
 <translation id="9161172953291434881">このサイトを信頼してデータの使用を許可しますか？</translation>
@@ -1974,6 +1984,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3797119261502402695"><ph name="TAB_TITLE"/>, 複数選択済みのプライベートタブ</translation>
 <translation id="8511632746183549739"><ph name="TAB_TITLE"/>, 複数選択済みのピン留めされたプライベートタブ</translation>
 <translation id="2280910239864711607">プライベートモードで新しいタブを開きます</translation>
+<translation id="4831439914611488655">プライベートモードで新しいウィンドウを開きます</translation>
 <translation id="7770295979628466744">ブックマークの表示/非表示</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/>個のプライベートタブ}

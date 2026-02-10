@@ -133,7 +133,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="780301667611848630">Ne, hvala</translation>
 <translation id="1162706247109707219">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na Windows 10 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
 <translation id="9164786361657554526">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na macOS 10.15 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
-<translation id="2770465223704140727">Odstrani s seznama</translation>
 <translation id="6020553119523541665">Ta zavihek je dejaven v drugem oknu</translation>
 <translation id="4987392683074136770">S klikom na ta zavihek boste njegovo vsebino prenesli na to okno</translation>
 <translation id="8355523213948477234">Gumb za razdeljen pogled menija</translation>
@@ -226,6 +225,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Uporabite protokol WireGuard v Brave VPN</translation>
 <translation id="8519170191215826548">Te nastavitve ni mogoče spremeniti, ko je Brave VPN povezan.</translation>
+<translation id="1177917174080821247">Prikaži ikono pladnja VPN</translation>
+<translation id="3747459938663420752">Ko je omogočeno, bo opravilna vrstica sistema Windows prikazala ikono v pladnju za Brave VPN.</translation>
 <translation id="4235920711083356755">Pokaži gumb VPN</translation>
 <translation id="4070612712151038707">V orodni vrstici prikaže gumb VPN</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -237,7 +238,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="8030169304546394654">Prekinjeno</translation>
 <translation id="1863950594388384201">Pokaži gumb VPN v orodni vrstici</translation>
 <translation id="5187139277471084437">Skrij gumb VPN v orodni vrstici</translation>
-<translation id="1177917174080821247">Prikaži ikono pladnja VPN</translation>
 <translation id="8041089156583427627">Pošlji povratne informacije</translation>
 <translation id="4049186905514157504">Upravljaj moj načrt</translation>
 <translation id="7570585565843385325">Pokaži gumb VPN v orodni vrstici</translation>
@@ -384,6 +384,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="4691131445504068802">Popolnoma skrij, ko je minimizirano</translation>
 <translation id="6763346436728173884">Vedno skrij gumb za zapiranje zavihka</translation>
+<translation id="8082625757059443808">Dovoli zapiranje zavihkov s klikom srednjega gumba</translation>
 <translation id="4909269867860362936">Samodejno razširi ob prehodu miške, ko je minimizirano</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
 <translation id="8925055964134259461">Navpične zavihke samodejno razširi ločeno za vsako okno</translation>
@@ -519,12 +520,12 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="413570371620795359">Odprite ploščo z nagradami in začnite</translation>
 <translation id="1051600834033686945">Odprite celotne nastavitve Brave Nagrade</translation>
 <translation id="8826461509529116322">Prikaži gumb Brave Rewards</translation>
-<translation id="3328713589982547433">Način samo za blokiranje oglasov</translation>
-<translation id="1574253307550419595">Uporabite način samo za blokiranje oglasov</translation>
-<translation id="738717058053657696">Način Samo blokiranje oglasov ohranja osnovna pravila za blokiranje oglasov v programu Brave Shields. Opozorilo: odstrani vse zaščite zasebnosti. Upoštevajte, da lahko za posamezna spletna mesta, ki jih Braveova zaščita zasebnosti krši, nastavite Shields na DOWN. To je poskusni način. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
+<translation id="4859866966646365361">Način Samo blokiranje oglasov</translation>
+<translation id="4146834954839563870">Uporabite način Samo blokiranje oglasov</translation>
+<translation id="420732343671200734">Način Samo blokiranje oglasov ohranja osnovna pravila za blokiranje oglasov v programu Brave Ščiti. Opozorilo: odstrani vse zaščite zasebnosti. Upoštevajte, da lahko za posamezna spletna mesta, ki jih Braveova zaščita zasebnosti krši, nastavite Ščiti na DOWN. To je poskusni način. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">Možnosti ščitov so trenutno onemogočene.</translation>
-<translation id="516439939408671102">Način Samo blokiranje oglasov ohrani osnovna pravila za blokiranje oglasov v programu Brave Shields in izklopi zaščito zasebnosti. Če želite omogočiti standardne ščite, onemogočite ta način.</translation>
-<translation id="177233004755519660">Izklopite način samo za blokiranje oglasov</translation>
+<translation id="2687830906359353344">Način Samo blokiranje oglasov ohrani osnovna pravila za blokiranje oglasov v programu Brave Ščiti in izklopi zaščito zasebnosti. Če želite omogočiti standardne Ščite, onemogočite ta način.</translation>
+<translation id="3809423899581611047">Izklopite način Samo blokiranje oglasov</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="7791141927430186653">Dovoli X (prej Twitter) vdelane tvite</translation>
@@ -668,8 +669,6 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="7029809446516969842">Gesla</translation>
 <translation id="6011308810877101166">Izboljšani predlogi za iskanje</translation>
 <translation id="2332576387809612040">Ko je funkcija vklopljena, Brave pošlje tisto, kar vnesete v naslovno vrstico ali iskalno polje, privzetemu iskalniku, da dobite boljše predloge. Ko je izklopljena, Brave prikazuje samo predloge, ustvarjene v vaši napravi. V zasebnih oknih je ta funkcija vedno izklopljena.</translation>
-<translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
-<translation id="5526883767168905185">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch</translation>
 <translation id="5522403133543437426">Spletni iskalnik, ki se uporablja v naslovni vrstici.</translation>
 <translation id="280472502078788655">Spletni iskalnik, ki se uporablja v naslovni vrstici zasebnih oken.</translation>
 <translation id="7232120595886556478">Običajno okno</translation>
@@ -874,6 +873,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="7311244614769792472">Ni zadetkov</translation>
 <translation id="1838374766361614909">Počisti iskanje</translation>
 <translation id="5126255551970171328">Išči spomin</translation>
+<translation id="7402116145895962069">Sinhronizirajte svoje lokalne modele Ollama</translation>
+<translation id="4835154437390745810">Upravlja Ollama</translation>
 <translation id="5985516785067818307">Sodelujoči v anketi</translation>
 <translation id="8347743943525229984">Omogočite ankete Brave</translation>
 <translation id="3204080538332044581">Brave lahko na strani z novim zavihkom prikaže povezave do zasebnih anket. Ankete nam pomagajo pri ustvarjanju boljših funkcij in merjenju učinkovitosti oglaševalskih kampanj v brskalniku. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>

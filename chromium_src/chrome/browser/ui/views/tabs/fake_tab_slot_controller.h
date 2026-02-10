@@ -37,8 +37,16 @@
   CanPaintThrobberToLayer() const override; \
   bool CanCloseTabViaMiddleButtonClick()
 
+// Add overrides for TabAccent related methods
+#define IsFrameCondensed()                                                 \
+  ShouldPaintTabAccent(const Tab* tab) const override;                     \
+  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
+  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \
+  bool IsFrameCondensed()
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef IsFrameCondensed
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

@@ -4,14 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -25,6 +28,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/views/test/views_test_utils.h"
 #include "url/gurl.h"
 
 namespace containers {
@@ -849,6 +853,49 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // Note: localStorage is origin-specific, so web_contents_2 (b.test) won't
   // have access to web_contents_1 (a.test) localStorage, even in the same
   // container
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ShouldShowTabAccent) {
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip =
+      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+  ASSERT_FALSE(tab_strip->ShouldPaintTabAccent(tab_strip->tab_at(0)));
+
+  const GURL url("https://a.test/simple.html");
+
+  // Create a container
+  auto container = containers::mojom::Container::New();
+  container->id = "shared-container";
+  container->name = "Shared Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  content::WebContents* contents_in_container =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(contents_in_container);
+  EXPECT_TRUE(content::WaitForLoadStop(contents_in_container));
+
+  // The tab should show accent background
+  auto* tab_in_container = static_cast<BraveTab*>(
+      tab_strip->tab_at(tab_strip_model->active_index()));
+  EXPECT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
+
+  // The standard tab should show large accent icon
+  EXPECT_TRUE(tab_in_container->ShouldShowLargeAccentIcon());
+
+  // A pinned tab should not show large accent icon
+  tab_strip_model->SetTabPinned(tab_strip_model->active_index(), true);
+  EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
+
+  // A small unpinned tab should not show large accent icon
+  tab_strip_model->SetTabPinned(tab_strip_model->active_index(), false);
+  RunScheduledLayouts();
+
+  tab_in_container->SetBounds(0, 0, 30, 30);
+  EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
 }
 
 }  // namespace containers

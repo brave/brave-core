@@ -42,9 +42,7 @@ const char* ConnectUpholdWallet::WalletType() const {
 std::string ConnectUpholdWallet::GetOAuthLoginURL() const {
   auto& config = engine_->Get<EnvironmentConfig>();
 
-  auto url = config.uphold_oauth_url().Resolve(
-      base::StrCat({"/authorize/", config.uphold_client_id()}));
-
+  auto url = config.uphold_oauth_url().Resolve("auth");
   url = AppendOrReplaceQueryParameters(
       url, {{"scope",
              "cards:read "

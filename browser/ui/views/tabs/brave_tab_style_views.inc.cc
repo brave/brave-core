@@ -9,14 +9,18 @@
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
 #include "base/logging.h"
+#include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;
 
 constexpr auto kPaddingForVerticalTabInTile = 4;
+constexpr int kPaddingForHorizontalTabInTile = 4;
 
 // Returns a value indicating if the browser frame view is "condensed", i.e.
 // that its frame border is somehow collapsed, as in fullscreen or when
@@ -45,6 +49,13 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
   BraveVerticalTabStyle(const BraveVerticalTabStyle&) = delete;
   BraveVerticalTabStyle& operator=(const BraveVerticalTabStyle&) = delete;
   ~BraveVerticalTabStyle() override = default;
+
+  // A method that returns a path considering |inset_tab_accent_area|.
+  // This is used to inset the bounds for Tab Accent icon area.
+  SkPath GetPath(TabStyle::PathType path_type,
+                 float scale,
+                 const TabPathFlags& flags,
+                 bool inset_tab_accent_area) const;
 
   // TabStyleViewsImpl:
   SkPath GetPath(TabStyle::PathType path_type,
@@ -75,6 +86,17 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
   std::optional<SkColor> GetTargetTabBackgroundColor(
       TabStyle::TabSelectionState selection_state,
       bool hovered) const;
+
+  // Paints the container accent (border, left stripe, and icon) for tabs in
+  // special mode, such as Containers.
+  void PaintTabAccentBackground(gfx::Canvas* canvas) const;
+  void PaintTabAccentBorder(gfx::Canvas* canvas) const;
+  void PaintTabAccentIcon(gfx::Canvas* canvas) const;
+
+  // This is called for the |bounds| returned by
+  // ScaleAndAlignBounds() to inset the bounds for Tab Accent icon area.
+  gfx::RectF InsetAlignedBoundsForTabAccent(const gfx::RectF& bounds,
+                                            float scale) const;
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
@@ -89,6 +111,13 @@ bool BraveVerticalTabStyle::IsHovering() const {
 SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
                                       float scale,
                                       const TabPathFlags& flags) const {
+  return GetPath(path_type, scale, flags, /*inset_tab_accent_area=*/true);
+}
+
+SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
+                                      float scale,
+                                      const TabPathFlags& flags,
+                                      bool inset_tab_accent_area) const {
   if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
     return TabStyleViewsImpl::GetPath(path_type, scale, flags);
   }
@@ -98,6 +127,10 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
       ScaleAndAlignBounds(tab()->bounds(), scale, stroke_thickness);
   if (tab()->bounds().IsEmpty() || aligned_bounds.IsEmpty()) {
     return {};
+  }
+
+  if (inset_tab_accent_area) {
+    aligned_bounds = InsetAlignedBoundsForTabAccent(aligned_bounds, scale);
   }
 
 #if DCHECK_IS_ON()
@@ -216,10 +249,9 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
       tab_top += scale * kAdditionalVerticalPadding;
       tab_bottom -= scale * kAdditionalVerticalPadding;
 
-      constexpr int kAdditionalHorizontalPadding = 4;
       IsStartSplitTab(tab())
-          ? tab_left += scale* kAdditionalHorizontalPadding
-          : tab_right -= scale * kAdditionalHorizontalPadding;
+          ? tab_left += scale* kPaddingForHorizontalTabInTile
+          : tab_right -= scale * kPaddingForHorizontalTabInTile;
     }
   }
 
@@ -242,9 +274,30 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
 
 gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
   const bool is_pinned = tab()->data().pinned;
-  auto insets = tab_style()->GetContentsInsets();
+  const bool is_vertical_tabs = ShouldShowVerticalTabs();
 
-  if (!is_pinned && ShouldShowVerticalTabs() && IsSplitTab(tab())) {
+  auto add_extra_left_padding = [](gfx::Insets& insets) {
+    // As close button has more padding, it seems favicon is too close to
+    // the left edge of the tab left border comppared with close button.
+    // Give additional left padding to make both visible with same space
+    // from tab border. See
+    // https://www.github.com/brave/brave-browser/issues/30469.
+    insets.set_left(insets.left() + BraveTab::kExtraLeftPadding);
+  };
+
+  auto add_left_padding_for_accent_icon = [&](gfx::Insets& insets) {
+    auto* brave_tab = static_cast<const BraveTab*>(tab());
+    if (brave_tab->ShouldPaintTabAccent() &&
+        brave_tab->ShouldShowLargeAccentIcon()) {
+      insets.set_left(BraveTab::kTabAccentIconAreaWidth + insets.left());
+    }
+  };
+
+  auto insets = tab_style()->GetContentsInsets();
+  add_left_padding_for_accent_icon(insets);
+  add_extra_left_padding(insets);
+
+  if (!is_pinned && is_vertical_tabs && IsSplitTab(tab())) {
     const bool is_first_tab = IsStartSplitTab(tab());
     return insets + gfx::Insets::TLBR(
                         is_first_tab ? kPaddingForVerticalTabInTile : 0, 0,
@@ -259,13 +312,16 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
     return insets +
            gfx::Insets::TLBR(
                0, 0,
-               ShouldShowVerticalTabs()
+               is_vertical_tabs
                    ? 0
                    : GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
                0);
   }
 
-  return TabStyleViewsImpl::GetContentsInsets();
+  auto result = TabStyleViewsImpl::GetContentsInsets();
+  add_left_padding_for_accent_icon(result);
+  add_extra_left_padding(result);
+  return result;
 }
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
@@ -361,6 +417,8 @@ int BraveVerticalTabStyle::GetStrokeThickness(
 }
 
 void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
+  const auto* brave_tab = static_cast<const BraveTab*>(tab());
+  CHECK(brave_tab);
   if (ShouldShowVerticalTabs()) {
     // For vertical tabs, bypass the upstream logic to paint theme backgrounds,
     // as this can cause crashes due to the vertical tabstrip living in a
@@ -371,7 +429,10 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     TabStyleViewsImpl::PaintTab(canvas);
   }
 
-  if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
+  const bool should_paint_tab_accent = brave_tab->ShouldPaintTabAccent();
+  if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs() &&
+      !should_paint_tab_accent) {
+    // No additional painting is needed.
     return;
   }
 
@@ -387,11 +448,12 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
       color_id = kColorBraveVerticalTabSeparator;
     }
 
-    SkPath stroke_path = GetPath(TabStyle::PathType::kBorder,
-                                 canvas->image_scale(), /*flags=*/{});
-
     gfx::ScopedCanvas scoped_canvas(canvas);
     float scale = canvas->UndoDeviceScaleFactor();
+
+    SkPath stroke_path =
+        GetPath(TabStyle::PathType::kBorder, scale, /*flags=*/{});
+
     cc::PaintFlags flags;
     flags.setAntiAlias(true);
     flags.setColor(widget->GetColorProvider()->GetColor(color_id));
@@ -399,6 +461,118 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     flags.setStrokeWidth(scale);
     canvas->DrawPath(stroke_path, flags);
   }
+
+  // Paint tab accent if needed.
+  if (should_paint_tab_accent) {
+    PaintTabAccentBackground(canvas);
+    PaintTabAccentBorder(canvas);
+    PaintTabAccentIcon(canvas);
+  }
+}
+
+void BraveVerticalTabStyle::PaintTabAccentBackground(
+    gfx::Canvas* canvas) const {
+  const auto* brave_tab = static_cast<const BraveTab*>(tab());
+  CHECK(brave_tab);
+
+  auto accent_color = brave_tab->GetTabAccentColor();
+  if (!accent_color.has_value()) {
+    return;
+  }
+
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  float scale = canvas->UndoDeviceScaleFactor();
+
+  // Clip to the full tab shape so we never paint outside the tab.
+  SkPath clip_path = GetPath(TabStyle::PathType::kFill, scale,
+                             /*flags=*/{}, /*inset_tab_accent_area=*/false);
+  canvas->ClipPath(clip_path, /*do_anti_alias=*/true);
+
+  // Paint accent only in the region outside the inset path (e.g. accent icon
+  // area). GetPath(..., true) returns the tab shape with left inset.
+  SkPath inset_path = GetPath(TabStyle::PathType::kFill, scale,
+                              /*flags=*/{}, /*inset_tab_accent_area=*/true);
+  SkPath inverse_path = inset_path.makeToggleInverseFillType();
+
+  cc::PaintFlags fill_flags;
+  fill_flags.setAntiAlias(true);
+  fill_flags.setColor(accent_color.value());
+  fill_flags.setStyle(cc::PaintFlags::kFill_Style);
+  canvas->DrawPath(inverse_path, fill_flags);
+}
+
+void BraveVerticalTabStyle::PaintTabAccentBorder(gfx::Canvas* canvas) const {
+  const auto* brave_tab = static_cast<const BraveTab*>(tab());
+  CHECK(brave_tab);
+
+  auto accent_color = brave_tab->GetTabAccentColor();
+  if (!accent_color.has_value()) {
+    return;
+  }
+
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  float scale = canvas->UndoDeviceScaleFactor();
+
+  SkPath border_path = GetPath(TabStyle::PathType::kBorder, scale,
+                               /*flags=*/{}, /*inset_tab_accent_area=*/false);
+
+  cc::PaintFlags border_flags;
+  border_flags.setAntiAlias(true);
+  border_flags.setColor(accent_color.value());
+  border_flags.setStyle(cc::PaintFlags::kStroke_Style);
+
+  canvas->DrawPath(border_path, border_flags);
+}
+
+void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
+  auto* brave_tab = static_cast<const BraveTab*>(tab());
+  auto accent_icon = brave_tab->GetTabAccentIcon();
+
+  // getBounds() call to find the actual border bounds.
+  auto bounds = GetPath(TabStyle::PathType::kBorder, 1, /*flags=*/{},
+                        /*inset_tab_accent_area=*/false)
+                    .getBounds();
+
+  if (!brave_tab->ShouldShowLargeAccentIcon()) {
+    // Small icon is painted on the left-bottom corner of the tab.
+    // We need 16x16 bounding circle and centered icon in it.
+    constexpr auto circle_size = 16;
+    int center_x = bounds.x() + circle_size / 2;
+    int center_y = bounds.bottom() - circle_size / 2;
+    if (auto background_color = brave_tab->GetTabAccentColor();
+        background_color.has_value()) {
+      cc::PaintFlags flags;
+      flags.setAntiAlias(true);
+      flags.setColor(background_color.value());
+      flags.setStyle(cc::PaintFlags::kFill_Style);
+      canvas->DrawCircle(gfx::PointF(center_x, center_y), 8, flags);
+    }
+
+    if (accent_icon.IsEmpty()) {
+      return;
+    }
+
+    constexpr int dest_image_size = 12;
+    auto image =
+        brave_tab->GetTabAccentIcon().Rasterize(tab()->GetColorProvider());
+    canvas->DrawImageInt(image, 0, 0, image.width(), image.height(),
+                         center_x - dest_image_size / 2,
+                         center_y - dest_image_size / 2, dest_image_size,
+                         dest_image_size, true);
+    return;
+  }
+
+  if (accent_icon.IsEmpty()) {
+    return;
+  }
+
+  // Large accent icon is painted in center of the the left area of the tab
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  const auto image_size = accent_icon.Size();
+  const int x =
+      bounds.x() + (BraveTab::kTabAccentIconAreaWidth - image_size.width()) / 2;
+  const int y = bounds.y() + (bounds.height() - image_size.height()) / 2;
+  canvas->DrawImageInt(accent_icon.Rasterize(tab()->GetColorProvider()), x, y);
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
@@ -447,6 +621,24 @@ SkColor BraveVerticalTabStyle::GetCurrentTabBackgroundColor(
       GetTargetTabBackgroundColor(selection_state, hovered);
   return color.value_or(TabStyleViewsImpl::GetCurrentTabBackgroundColor(
       selection_state, hovered));
+}
+
+gfx::RectF BraveVerticalTabStyle::InsetAlignedBoundsForTabAccent(
+    const gfx::RectF& bounds,
+    float scale) const {
+  auto processed_bounds = bounds;
+  const auto* brave_tab = static_cast<const BraveTab*>(tab());
+  CHECK(brave_tab);
+  if (brave_tab->ShouldPaintTabAccent() &&
+      brave_tab->ShouldShowLargeAccentIcon()) {
+    // Add left inset for tab accent icon area if tab should have accent icon.
+    // This will result in GetPath() returning a path with a left insetted by
+    // BraveTab::kTabAccentIconAreaWidth * scale.
+    processed_bounds.Inset(
+        gfx::InsetsF().set_left(BraveTab::kTabAccentIconAreaWidth * scale));
+  }
+
+  return processed_bounds;
 }
 
 std::optional<SkColor> BraveVerticalTabStyle::GetTargetTabBackgroundColor(

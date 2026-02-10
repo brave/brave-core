@@ -20,6 +20,9 @@ class BraveTab : public Tab {
   METADATA_HEADER(BraveTab, Tab)
 
  public:
+  static constexpr int kTabAccentIconAreaWidth = 22;
+  static constexpr int kExtraLeftPadding = 4;
+
   using Tab::Tab;
   BraveTab(const BraveTab&) = delete;
   BraveTab& operator=(const BraveTab&) = delete;
@@ -45,9 +48,26 @@ class BraveTab : public Tab {
   void Layout(PassKey) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
-  gfx::Insets GetInsets() const override;
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
+
+  // Returns whether this tab should have an accent painted.
+  bool ShouldPaintTabAccent() const;
+
+  // Returns whether this tab should show a large accent icon on the left side.
+  // Otherwise, it should show a small accent icon on the left-bottom cornder of
+  // the tab.
+  bool ShouldShowLargeAccentIcon() const;
+
+  // Returns the accent color for this tab if it should have an accent.
+  // Returns nullopt if the tab should not have an accent or color cannot be
+  // determined.
+  std::optional<SkColor> GetTabAccentColor() const;
+
+  // Returns the accent icon for this tab if it should have an accent.
+  // Returns an empty ImageModel if the tab should not have an accent or icon
+  // cannot be determined.
+  ui::ImageModel GetTabAccentIcon() const;
 
  private:
   friend class BraveTabTest;
@@ -58,8 +78,6 @@ class BraveTab : public Tab {
 
   // Reveals the close button which is in base class member.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }
-
-  static constexpr int kExtraLeftPadding = 4;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_

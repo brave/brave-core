@@ -20,6 +20,7 @@
 <translation id="1184145431117212167">Installasjonen mislyktes fordi du bruker en Windows-versjon som ikke støttes.</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="1203500561924088507">Installasjonen er fullført. Start nettleseren på nytt før du tar i bruk <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1232234696885483911">Når du åpner bildesøk, sendes sidetittel, nettadresse og innhold, inkludert PDF-filer, automatisk til tjeneren. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Når du er logget på, kan du bruke passord med mer fra Brave-kontoen din i Brave. Gå til «Kontoen din i Brave» for å endre dette.</translation>
 <translation id="8799570501820813406">Mens denne fanen var inaktiv, ble minnet frigjort for å holde Brave rask. Du kan velge å alltid ekskludere dette nettstedet fra å gjøres inaktivt.</translation>
 <translation id="8767381092474532098">Brave har blokkert denne nedlastingen fordi filen er farlig</translation>
@@ -42,6 +43,7 @@
 <translation id="1497802159252041924">Installasjonsfeil: <ph name="INSTALL_ERROR"/></translation>
 <translation id="1518627427551567882">Denne siden er beskyttet</translation>
 <translation id="5147525139567260139">Del en Brave-fane</translation>
+<translation id="721261350616678948">Logg på Brave</translation>
 <translation id="1547469039832541117">Avslutter den fremhevede oppgaven.</translation>
 <translation id="1530633922026945685">Brave trenger tilgang til kameraet for å lage et 3D-kart av omgivelsene</translation>
 <translation id="9125033103884432">{NUM_EXTENSIONS,plural, =1{Denne utvidelsen støttes ikke lenger. Brave anbefaler at du fjerner den.}other{Disse utvidelsene støttes ikke lenger. Brave anbefaler at du fjerner dem.}}</translation>
@@ -78,6 +80,7 @@
 <translation id="4035053306113201399">ChromeOS må startes på nytt for at oppdateringen skal tas i bruk.</translation>
 <translation id="9048754176089806686">Brave har blokkert denne nedlastingen fordi filtypen ikke lastes ned ofte, så den kan være farlig</translation>
 <translation id="1953553007165777902">Laster ned … <ph name="MINUTE"/> minutt(er) igjen</translation>
+<translation id="2470048290583727811">Brave-tips: Lagre passord</translation>
 <translation id="1775322105159056176">Brave kan ikke fastslå eller angi standardnettleseren</translation>
 <translation id="4372901050442507812">Finn ut hvorfor Brave blokkerer enkelte filer (åpnes i en ny fane)</translation>
 <translation id="2703425183860615504">Holder Brave-programvaren oppdatert. Hvis denne tjenesten deaktiveres eller stoppes, blir ikke Brave-programvaren din holdt oppdatert. Det betyr at eventuelle sikkerhetsproblemer som oppstår, ikke kan utbedres, og at noen funksjoner kanskje ikke fungerer. Denne tjenesten avinstallerer seg selv når det ikke finnes noen Brave-programvare som bruker den.</translation>
@@ -86,7 +89,6 @@
 <translation id="831418749472885028">For å sjekke om de andre passordene dine er trygge mot databrudd og andre sikkerhetsproblemer, <ph name="BEGIN_LINK"/>logg på Brave<ph name="END_LINK"/>.</translation>
 <translation id="2039417478970545937">Innstillinger.</translation>
 <translation id="5499149312981370855">Velg om Brave-loggen skal inkluderes for å gi opplevelser i Brave-tjenester mer personlig preg</translation>
-<translation id="5888420425384578947">For å få fremtidige Brave-oppdateringer må du ha macOS 12 eller nyere. Denne datamaskinen bruker macOS 11.</translation>
 <translation id="6959434860418352144">Klikk på Tilpass Brave-knappen på Ny fane-siden for å gi Brave et nytt utseende</translation>
 <translation id="2472891440303445472">Brave har blokkert denne nedlastingen fordi filen er villedende og kan gjøre uventede endringer på enheten din</translation>
 <translation id="2054358978145431867">Du ser en forespørsel om å prøve <ph name="FEATURE_NAME"/> neste gang du åpner Brave iOS.</translation>
@@ -210,12 +212,15 @@
 <translation id="518125528057094977">Brave advarer deg før all innlasting av nettsteder via usikre tilkoblinger</translation>
 <translation id="8652321858775514885">Du logges av de fleste nettsteder når du lukker alle Brave-vinduer, men du blir ikke logget av Brave-kontoen din hvis du er logget på Brave. For å la nettsteder huske deg, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3795277300264350702">Standardsøkemotoren din er endret utenfor Brave. For å beskytte deg har Brave tilbakestilt den.</translation>
+<translation id="5033074923607633232">Logg på Brave for å hente passordene og bokmerkene dine og mer på alle enheter</translation>
 <translation id="3352986031709923790">øverst til høyre i søkefeltet: høyre <ph name="RIGHT"/> %, øverst <ph name="TOP"/> %</translation>
 <translation id="7261356974224431851">Brave-data i kontoen din</translation>
 <translation id="3369405342922656244">Søk på denne siden med Bildesøk</translation>
+<translation id="6610330853796830621">Bruk passordene dine med Brave på telefonen</translation>
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Vil du bytte til den eksisterende Brave-profilen?</translation>
 <translation id="3412460710772753638">I Passordlagring på denne enheten</translation>
+<translation id="2491221873705777076">Utvid Safe Browsing med økt beskyttelse med Brave på telefonen</translation>
 <translation id="7304389940068374923">Gjør Brave til din …</translation>
 <translation id="9216183508558772570">Brave varsler deg når du logger på med passord som er utsatt for sikkerhetsbrudd</translation>
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
@@ -225,6 +230,7 @@
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/> er allerede logget på.  For å holde surfingen din atskilt, logg på Brave i din egen profil som <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="8981774130895723211">For å dele skjermen, tillat skjermopptak for Brave i Systeminnstillinger.</translation>
 <translation id="3597003331831379823">Kunne ikke kjøre konfigureringen med overordnede rettigheter. <ph name="METAINSTALLER_ERROR"/></translation>
+<translation id="4167284810587724062">Logg på Brave</translation>
 <translation id="3066805437003400520">Denne personens nettlesingsdata slettes fra denne enheten. For å gjenopprette dataene, logg på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="7029305463989165490">For å sende numre fra <ph name="ORIGIN"/> til Android-telefonen din, logg på Brave på begge enhetene.</translation>
 <translation id="3667616615096815454">Kan ikke installere programmet fordi det er ukjent for tjeneren.</translation>
@@ -239,6 +245,8 @@
 <translation id="8422094375343667686">Med Brave-profiler kan du holde ulike deler av livet ditt atskilt. Legg til en ny profil nå.</translation>
 <translation id="6324134303015966238">Brave forhåndslaster sider du sannsynligvis kommer til å besøke, slik at de lastes inn raskere når du faktisk besøker dem</translation>
 <translation id="3810973564298564668">Administrer</translation>
+<translation id="4815742196440583661">For å bruke de lagrede passordene dine, følg QR-koden, last ned Brave for iOS, og logg på Brave-kontoen din</translation>
+<translation id="6093965249696204223">Brave-tips: Safe Browsing med økt beskyttelse</translation>
 <translation id="3846683726093018685">**Sammendrag:** Beskriv hovedemnet og formålet med innholdet i skjermbildet i én setning på under 30 ord.
 
           **Foreslå spørsmål:** Generer en punktliste med tre til fem tankevekkende spørsmål en bruker kan stille for å forstå skjermbildet bedre. Disse spørsmålene må inneholde minst ett som handler spesifikt om et visuelt objekt, utformingen av det eller plasseringen av det.</translation>
@@ -257,6 +265,7 @@
 <translation id="1486377520191913768">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver, til organisasjonens søke-, AI- og agentverktøy for å få forslag.</translation>
 <translation id="1311808042904310985">Om &amp;Brave for testing</translation>
 <translation id="1152920704813762236">Om ChromeOS</translation>
+<translation id="8282895427217902177">Når du besøker nettsteder, sender Brave en obfuskert del av nettadressen til <ph name="BEGIN_LINK"/>Google Safe Browsing<ph name="END_LINK"/> via en personverntjener som skjuler IP-adressen din. Hvis nettsteder gjør noe mistenkelig, sendes også fullstendige nettadresser og deler av sideinnholdet.</translation>
 <translation id="3703994572283698466">ChromeOS er basert på <ph name="BEGIN_LINK_CROS_OSS"/>tilleggsprogramvare med åpen kildekode<ph name="END_LINK_CROS_OSS"/>, i likhet med <ph name="BEGIN_LINK_LINUX_OSS"/>Linux-utviklingsmiljøet<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="4022972681110646219">Oversett skjermen</translation>
 <translation id="4023601594785368013">Originalspråk: <ph name="LANGUAGE"/></translation>
@@ -270,6 +279,7 @@
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Organisasjonen din lukker Brave-nettleseren automatisk når den ikke har vært i bruk på ett minutt. Nettlesingsdata slettes. Dette kan omfatte loggen, autofyll og nedlastinger.}other{Organisasjonen din lukker Brave-nettleseren automatisk når den ikke har vært i bruk på # minutter. Nettlesingsdata slettes. Dette kan omfatte loggen, autofyll og nedlastinger.}}</translation>
 <translation id="5794951150713244901">Gå til Om Brave-siden</translation>
+<translation id="10925962326134232">Tilpass Brave for å gi nettleseren et nytt utseende</translation>
 <translation id="6596295505984504022">Tilpass Brave</translation>
 <translation id="4148957013307229264">Installerer ...</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – nettverkspålogging – Brave</translation>
@@ -310,8 +320,9 @@
 <translation id="1878185978731985193">Brave forhåndslaster sider, slik at det går raskere å surfe og søke. <ph name="BEGIN_LINK"/>Finn ut mer om forhåndslasting av sider<ph name="END_LINK"/></translation>
 <translation id="4567424176335768812">Du er logget på som <ph name="USER_EMAIL_ADDRESS"/>. Nå kan du bruke bokmerkene, loggen og andre innstillinger på alle enhetene du er logget på.</translation>
 <translation id="8669339108356170796">Brave har blokkert denne nedlastingen fordi du har slått av Safe Browsing, så filen kan ikke bekreftes</translation>
+<translation id="7583343841997441047">Prøv Google Lens med Brave på telefonen</translation>
 <translation id="4594305310729380060">I Passordlagring på denne enheten</translation>
-<translation id="300669147395456190">Brave-apper</translation>
+<translation id="3349475100979552835">Brave-apper</translation>
 <translation id="4598116752460667024">Søk etter en prosess på listen.</translation>
 <translation id="4970880042055371251">ChromeOS-versjon</translation>
 <translation id="2182657378556811785">Nå er oppdateringen snart ferdig! Start Brave på nytt for å fullføre oppdateringen.</translation>
@@ -340,6 +351,7 @@
 <translation id="7406627712452599344">Gjester kan bruke Brave uten å etterlate seg spor.</translation>
 <translation id="844471735881341044">Kontoen din i Brave</translation>
 <translation id="5952898964075639679">Legg til deg selv i Brave</translation>
+<translation id="7995865526174204486">Gemini i Brave bruker automatisk surfing for å jobbe i fanene dine og fullføre oppgaver du gir den. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 <translation id="1204184037023366446">Brave trenger tillatelse til å spore hendene dine</translation>
 <translation id="5406591571925937375">Du har ikke vært her i det siste. Brave har fjernet <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="PERMISSION_3"/>.</translation>
 <translation id="5167819546851111585">Hva tenker du på i dag?</translation>
@@ -352,6 +364,7 @@
 <translation id="5254739261293693943">Spør om denne videoen</translation>
 <translation id="8586264863973514035">For å bruke endringene dine må du starte Brave på nytt</translation>
 <translation id="5286907366254680517">Registrert</translation>
+<translation id="7264453786974905915">Skaff deg Brave-appen</translation>
 <translation id="6944930779012811739">Intern Brave-oppdateringstjeneste</translation>
 <translation id="5346389065299425353">Gjør søket mer omfattende ved å legge til flere faner, filer og verktøy</translation>
 <translation id="7573068992266397941">Brave har noen sikkerhetsanbefalinger til deg</translation>
@@ -381,7 +394,6 @@
 <translation id="5605834417512968703">Velg hva som helst for å søke med bildesøk, eller trykk på Esc for å avslutte bildesøk</translation>
 <translation id="5618818588972826921">Velg tekst eller bilder for å søke med bildesøk, eller trykk på Esc for å avslutte bildesøk</translation>
 <translation id="1026406809507858026">{0,plural, =0{En Brave-oppdatering er tilgjengelig}=1{En Brave-oppdatering er tilgjengelig}other{En Brave-oppdatering har vært tilgjengelig i # dager}}</translation>
-<translation id="366427040702630540">Bruk din <ph name="BEGIN_LINK"/>egen passordfrase<ph name="END_LINK"/> for å kryptere alle Brave-dataene i Brave-kontoen din. Adresser og data som er lagret i Brave Wallet, krypteres ikke med passordfrasen din. Nettleserloggen fra Brave synkroniseres ikke.</translation>
 <translation id="1023472437588692618">Slett alltid nettstedsdata fra enheten når du lukker Brave</translation>
 <translation id="5646769069113654257">Start Brave på nytt nå</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
@@ -508,6 +520,9 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="862687584320433626">Angi Brave som standardnettleser, og fest den til oppgavelinjen</translation>
 <translation id="1991562568473125499">&amp;Administrer Brave-profiler</translation>
 <translation id="6934579572334859869">Spør Bildesøk om dette bildet</translation>
+<translation id="5529781826378237601">Du har nådd Braves grense på <ph name="BOOKMARK_LIMIT"/> bokmerker, så noen av bokmerkene dine er ikke lagret i Brave-kontoen din ennå.
+
+Du kan ikke lagre nye bokmerker i kontoen din før du sletter noen. Hvis du logger av nå, slettes bokmerker som ikke er lagret.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6418340404893954563">Svake passord er enkle å gjette. La Brave <ph name="BEGIN_LINK"/>opprette og huske sterke passord for deg<ph name="END_LINK"/>.</translation>
 <translation id="3453763134178591239">Vilkår for ChromeOS</translation>
@@ -545,6 +560,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="1754899895078387289">Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordfrasen blir verken sendt til eller lagret av Brave. Hvis du glemmer passordfrasen eller vil endre denne innstillingen, må du <ph name="BEGIN_LINK"/>slette Brave-dataene i kontoen din<ph name="END_LINK"/>.</translation>
 <translation id="5380963249588143069">Systemadministratoren din har konfigurert Brave til å åpne <ph name="ALTERNATIVE_BROWSER_NAME"/> for å få tilgang til <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="7352651011704765696">Noe gikk galt</translation>
+<translation id="6085660187823915017">For å få fremtidige Brave-oppdateringer må du ha macOS 13 eller nyere. Denne datamaskinen bruker macOS 12.</translation>
 <translation id="2865744782251083875">Du har ikke vært her i det siste. Brave har fjernet <ph name="PERMISSION_1"/> og <ph name="PERMISSION_2"/>.</translation>
 <translation id="4631170166710903214">Denne utvidelsen støttes ikke lenger. Brave anbefaler at du fjerner den i stedet.</translation>
 <translation id="7951152294775418909">Fortsett der du avsluttet: Brave gjenoppretter fanene dine hver gang du starter på nytt. For å slå av dette, gå til</translation>
@@ -565,6 +581,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="2827121003398607864">Nå er Brave blitt enda bedre</translation>
 <translation id="3071313329776323836">Nå har du flere funksjoner tilgjengelig i Brave</translation>
 <translation id="7649070708921625228">Hjelp</translation>
+<translation id="4008841832817149051">La Brave surfe for deg</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="3343095737966473035">Brave er ikke standardnettleseren din</translation>
 <translation id="5477319665405831211">Synkroniser og gi Brave et personlig preg på alle enhetene dine</translation>
@@ -573,6 +590,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="77283119132245232">Leverer tjenester for systemsporing for <ph name="BROWSER_NAME"/>. Hvis denne tjenesten er deaktivert, inkluderer ikke ytelsessporingene som nettleseren oppretter, systemomfattende hendelser som kontekstbytte og hendelser for trådklarhet.</translation>
 <translation id="4784414698887946907">Dette sletter nettlesingsdataene dine fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Installasjonsprogrammet kunne ikke opprette en midlertidig katalog. Kontroller at du har nok ledig diskplass og tillatelse til å installere programvare.</translation>
+<translation id="8543787950557226450">Tilbakestill til standardversjonen av Brave</translation>
 <translation id="1978509466033734608">Gjør Brave raskere</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="2684504034454188774">Gjør det vanskeligere for folk med tilgang til internettrafikken din å se hvilke nettsteder du besøker. Brave bruker en sikker tilkobling for å finne IP-adressen til nettsteder i DNS (Domain Name System).</translation>
@@ -588,7 +606,6 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="5687542525349822727">Angi Brave som standard</translation>
 <translation id="6396151137840491551">Brave oppgraderer usikre tilkoblinger til HTTPS automatisk når det er mulig</translation>
 <translation id="2925193881330501265">Du ble logget på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Du må logge deg på igjen med samme konto.</translation>
-<translation id="3206789667839392126">Last ned Brave på telefonen for å legge til et ekstra beskyttelseslag når du er på farten</translation>
 <translation id="6915252145142862992">Dette er en sekundær installering av Brave. Den kan ikke brukes som standardnettleser.</translation>
 <translation id="8004582292198964060">Nettleser</translation>
 <translation id="8010081455002666927">Oppdag automatisk</translation>
@@ -614,6 +631,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="7792526144795244436">Vil du logge på Brave i en ny profil?</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave advarer deg<ph name="END_LINK"/> om utrygge nettsteder og nedlastinger</translation>
 <translation id="8060549744348950090">Du har ikke vært her i det siste. Brave har fjernet <ph name="PERMISSION"/></translation>
+<translation id="7402663241490331652">Handle, oversett og identifiser det du ser, med kameraet i Brave-iOS-appen</translation>
 <translation id="8313851650939857356">Oppstartsfeil: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Organisasjonen din lukker Brave når den ikke har vært i bruk på <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Lagre som bilde</translation>
@@ -658,6 +676,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8747073452963259673">nederst til venstre i søkefeltet: venstre <ph name="LEFT"/> %, nederst <ph name="BOTTOM"/> %</translation>
 <translation id="878572486461146056">Installasjonsfeil: Nettverksadministratoren din har aktivert en grupperegel som forhindrer installasjonen: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave trenger tilgang til kameraet ditt og mikrofonen din for dette nettstedet</translation>
+<translation id="8813277370772331957">Påminn meg senere</translation>
 <translation id="64216977793816291">Vil du logge på Brave?</translation>
 <translation id="7447364954121496869">Gjør Brave til standardnettleser, og fest den til oppgavelinjen</translation>
 <translation id="8826492472752484139">Klikk på «Passordlagring»</translation>
@@ -668,10 +687,11 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="6412037018950369131">I så fall bør du endre det lagrede passordet i Brave så det samsvarer med det nye passordet.</translation>
 <translation id="1150745254876977823">Organisasjonen din krever at du logger på Brave</translation>
 <translation id="8285294305439559616">Brave forsøker å vise passord. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
+<translation id="4684884244620579559">Brave er ikke lenger standardnettleseren din. Vil du gjøre Brave til standardnettleseren?</translation>
 <translation id="6389268239133412586">Kan ikke oppdatere Brave</translation>
 <translation id="7731184591599776500">Brave Enterprise-logo</translation>
+<translation id="6500340165622970282">Brave kunne ikke starte, fordi det oppsto en feil ved åpning av profilen din. Prøv å starte Brave på nytt.</translation>
 <translation id="3424657754843264466">Administrer Brave-profiler</translation>
-<translation id="82609232232243542">Logg på Brave</translation>
 <translation id="7055223246119657449">Brave har blokkert denne nedlastingen fordi arkivfilen inneholder andre filer som kan skjule skadelig programvare</translation>
 <translation id="9049928023195059068">Logg på Brave når du logger på andre Brave-tjenester</translation>
 <translation id="4561046754724442504">Brave ble lukket automatisk</translation>
@@ -685,6 +705,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="2792073155252170448">Fortsett der du avsluttet: Brave kan gjenopprette fanene dine hver gang du starter på nytt. For å slå på dette, gå til</translation>
 <translation id="2444257125841652328">Systemadministratoren din har konfigurert Brave til å åpne en annen nettleser når du går til <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="8208548103319284047">Brave-tips: Søk med Lens</translation>
 <translation id="7902365066753170041">Start på nytt for å oppdatere &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-Inn)</translation>
 <translation id="49909619875329637">Få mer når du er logget på Brave</translation>
@@ -700,6 +721,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="3146636448190445245">For å la Brave bruke posisjonen din må du gi tilgang i <ph name="BEGIN_LINK"/>systeminnstillingene<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
+<translation id="6283840329609797763">Installeringen mislyktes på grunn av en uspesifisert feil. Last ned Brave på nytt.</translation>
 <translation id="1743665722170667430">Utvidelser, apper og temaer fra ukjente kilder kan skade enheten. Brave anbefaler at du bare installerer dette fra <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>.</translation>
 <translation id="6184592406110188164">Denne utvidelsen er i strid med Web Store-retningslinjene. Fjern den fra Brave slik at den ikke lenger kan se og endre data på sider du besøker, inkludert personopplysninger om deg.</translation>
 <translation id="1299765473362724475">Advarsel: Brave kan ikke forhindre utvidelser fra å lagre søkehistorikken din. For å deaktivere disse utvidelsene i privat modus, opphev merking av dette valget.</translation>
@@ -715,5 +737,4 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="79269250264141507">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver inn, til søkemotoren du har som standard, for å få opp bedre forslag. Dette er deaktivert i Privat modus.</translation>
 <translation id="2589970573128789862">Brave Privat</translation>
 <translation id="5994282802285556682">Når du surfer i Privat modus, advarer Brave deg før det lastes opp sider via usikre tilkoblinger</translation>
-<translation id="6283840329609797763">Installeringen mislyktes på grunn av en uspesifisert feil. Last ned Brave på nytt.</translation>
 </translationbundle>

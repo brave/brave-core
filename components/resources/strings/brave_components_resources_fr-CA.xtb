@@ -491,6 +491,15 @@
 <translation id="4915997950539925115">Si vous procédez à la réinitialisation, votre profil Récompenses Brave actuel sera supprimé et les Récompenses Brave ne seront plus activées. Si vous réactivez les Récompenses Brave plus tard, vous recommencerez avec un tout nouveau profil. Lisez notre <ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/> pour en savoir plus.</translation>
 <translation id="4806029412510565611">Je comprends que mon profil Récompenses Brave actuel et mes données Récompenses Brave seront supprimés de mon appareil, et j'ai lu l'<ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/>.</translation>
 <translation id="8835777704176513489">Désactiver et réinitialiser les Récompenses</translation>
+<translation id="1570055891464728855">Réinitialiser maintenant</translation>
+<translation id="6431824580671230473">Ne vous inquiétez pas : tous les BAT déjà présents dans votre compte <ph name="PROVIDER"/> ne seront pas affectés par la réinitialisation.</translation>
+<translation id="2881473942058010900">Vous ne gagnerez pas de récompenses publicitaires tant que vous êtes connecté à <ph name="PROVIDER"/>. Réinitialisez le programme de récompenses Brave et connectez un autre compte de paiement pour continuer à gagner. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
+<translation id="5803444802570526678">Le compte <ph name="PROVIDER"/> n’est plus pris en charge.</translation>
+<translation id="3794463124070392793">Confirmez votre région</translation>
+<translation id="4620879582500359234">Toutes les BAT déjà présentes dans votre compte <ph name="PROVIDER"/> y resteront.</translation>
+<translation id="935303782545595866">Votre historique de 30 jours d'Ads et vos autres paramètres du programme de récompenses Brave seront réinitialisés.</translation>
+<translation id="6279637499952804615">Vous pouvez choisir un autre compte de paiement après cette étape.</translation>
+<translation id="5419770758409992826">Votre compte <ph name="PROVIDER"/> sera déconnecté, et votre profil du programme de récompenses Brave sera réinitialisé.</translation>
 <translation id="7717357606512850995">Vérifier l'état</translation>
 <translation id="6473937687348632190">Le paiement des récompenses gagnées en <ph name="MONTH"/> a été effectué.</translation>
 <translation id="1711367267038576241">Le traitement du paiement des récompenses gagnées en <ph name="MONTH"/> commencera d'ici le <ph name="DATE"/>.</translation>
@@ -515,16 +524,6 @@
     }</translation>
 <translation id="3264975266761862670">Prêt à commencer à gagner de l'argent ?</translation>
 <translation id="2784412028126205842">Connecter le compte de paiement</translation>
-<translation id="766126983336630294">{ADS_VIEWED, plural,
-      =0 {Vous avez vu <ph name="COUNT_BEGIN"/># publicités <ph name="COUNT_END"/> ce mois-ci}
-      =1 {Vous pouvez être rémunéré pour <ph name="COUNT_BEGIN"/># publicité<ph name="COUNT_END"/> que vous avez vue ce mois-ci.}
-      other {Vous pouvez être rémunéré pour <ph name="COUNT_BEGIN"/># publicités<ph name="COUNT_END"/> que vous avez vues ce mois-ci.}
-    }</translation>
-<translation id="8611388433418909120">{ADS_VIEWED, plural,
-      =0 {Vous avez vu <ph name="COUNT_BEGIN"/># annonces<ph name="COUNT_END"/> ce mois-ci}
-      =1 {Vous gagnez des récompenses pour avoir vu <ph name="COUNT_BEGIN"/># annonce<ph name="COUNT_END"/> ce mois-ci}
-      other {Vous gagnez des récompenses pour avoir vu <ph name="COUNT_BEGIN"/># annonces<ph name="COUNT_END"/> ce mois-ci}
-    }</translation>
 <translation id="6067959437127691361">L'utilisation de Récompenses Brave aide à soutenir des créateurs de contenu et vous permet de gagner des BAT.</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="3863981251715594911">Comment ça marche?</translation>
@@ -601,7 +600,7 @@
 <translation id="5802986777701714573">Nous avons ajouté une nouvelle façon pour vous de recevoir vos récompenses mensuelles BAT. Associez un compte de l'un de nos partenaires ou utilisez la nouvelle option de garde autonome pour commencer à gagner dès maintenant.</translation>
 <translation id="3251885322612056119">Conditions d'utilisation mises à jour</translation>
 <translation id="7454675823870922788">Nous avons mis à jour les conditions d'utilisation des Récompenses Brave. Nous avons effectué ces mises à jour pour clarifier nos conditions et garantir qu'elles prennent en compte les nouvelles fonctionnalités. Si vous continuez à utiliser les Récompenses Brave, vous acceptez les nouvelles conditions d'utilisation. Si vous ne les acceptez pas, vous pouvez <ph name="LINK_BEGIN"/>réinitialiser<ph name="LINK_END"/> les Récompenses Brave, ce qui entraînera la désactivation de la fonctionnalité.</translation>
-<translation id="56057964000416013">Nous avons mis à jour nos conditions de service. Pour continuer à le programme de récompenses Brave, veuillez lire et accepter les nouvelles conditions.</translation>
+<translation id="616595399243298960">Nous avons mis à jour nos conditions de service. Pour continuer à le programme de récompenses Brave, veuillez lire et accepter les nouvelles conditions.</translation>
 <translation id="5192526308598085294">Consultez les <ph name="LINK_BEGIN"/>conditions d'utilisation des Récompenses Brave<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">J'accepte</translation>
 <translation id="343114360276812078">Voir les conditions</translation>
@@ -649,6 +648,8 @@
 <translation id="6751803821780922506">Choisissez où vous souhaitez recevoir les BAT</translation>
 <translation id="3162035476318501831">En savoir plus sur les régions et l'assistance.</translation>
 <translation id="7329170127335794328">Cette fonction n'est pas encore disponible dans votre région</translation>
+<translation id="1947910788470806100">Nous n'avons pas encore d'options de paiement dans votre région. Vous pouvez revenir plus tard pour vérifier si elles sont disponibles.</translation>
+<translation id="271689813824682404">Options de paiement non disponibles</translation>
 <translation id="966956302643313970">Pour commencer à obtenir des jetons d'attention de base (BAT), connectez un compte. Les BAT que vous obtiendrez seront automatiquement transférés sur votre compte chaque mois.</translation>
 <translation id="4009439571146350519">Ou un autre portefeuille qui prend en charge Solana</translation>
 <translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Conditions d'utilisation<ph name="TOS_LINK_END"/> et <ph name="PP_LINK_BEGIN"/>Politique de confidentialité<ph name="PP_LINK_END"/>.</translation>
@@ -859,6 +860,7 @@
 <translation id="6264944956989873014">Confirmer le pont</translation>
 <translation id="7067917728851842589">Confirmer l’envoi</translation>
 <translation id="2351357639951873714">Confirmer la protection</translation>
+<translation id="7480044382160806610">Confirmer l'annulation de protection</translation>
 <translation id="8332923694292360653">Dépenser</translation>
 <translation id="3735740477244556633">Trier par</translation>
 <translation id="6484605214219822434">Vérifier le pont</translation>
@@ -880,6 +882,8 @@
 <translation id="7465227658364622464">Jupiter traitera l'adresse Solana et l'adresse IP pour effectuer une transaction (y compris pour obtenir des devis). Jupiter utilisera ces données UNIQUEMENT dans le but de traiter les transactions.</translation>
 <translation id="712738518060477110">Le devis comprend des frais Brave à hauteur de <ph name="SWAP_FEE_PERCENTAGE"/></translation>
 <translation id="8368540604723748428">Trop de décimales</translation>
+<translation id="4797709125717981664">Le minimum requis est de 1 ADA</translation>
+<translation id="3826737479910350533">Le montant envoyé est trop faible</translation>
 <translation id="6575120282593094155">Vous n'avez pas encore de compte <ph name="ACCOUNT_TYPE"/>. Voulez-vous en créer un?</translation>
 <translation id="1426410128494586442">Oui</translation>
 <translation id="4250680216510889253">Non</translation>
@@ -926,7 +930,7 @@
 <translation id="2274014756904854136">Appuyez deux fois sur l'écran pour continuer</translation>
 <translation id="7795718119973968770">Votre portefeuille est verrouillé pour votre sécurité. Déverrouillez votre portefeuille pour continuer.</translation>
 <translation id="9175546523521600401">Verrouiller le portefeuille</translation>
-<translation id="765834632354589737">Sauvegarder le portefeuille</translation>
+<translation id="7117128722034148989">Sauvegarder le portefeuille</translation>
 <translation id="1108298724135935307">Sites connectés</translation>
 <translation id="5716350339763180836">Soldes</translation>
 <translation id="5538251867290702601">Graphique</translation>
@@ -1028,6 +1032,7 @@
 <translation id="2416098547200943834">REMARQUE : une clé privée est fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">REMARQUE : une clé privée doit être fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">REMARQUE : Seules les clés étendues <ph name="FORMAT"/> sont prises en charge.</translation>
+<translation id="9133762451347918196">Comptes Testnet</translation>
 <translation id="42126664696688958">Exporter</translation>
 <translation id="1366855498335432549">Dépôt</translation>
 <translation id="790104325876206743">Paramètres du compte</translation>
@@ -1035,6 +1040,7 @@
 <translation id="836614343069504000">Déposez ou achetez des jetons pour commencer. Si vous ne voyez pas les jetons d'un compte importé, vérifiez les filtres et les paramètres d'affichage. Il se peut que des jetons inconnus doivent être ajoutés en tant qu'actifs personnalisés.</translation>
 <translation id="2902856457593699108">Afficher la clé</translation>
 <translation id="8033497299373164724">Masquer la clé</translation>
+<translation id="7514365320538308">Télécharger</translation>
 <translation id="2702143907607790516">Échec de la mise à jour du nom du compte, veuillez réessayer.</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -1055,9 +1061,6 @@
 <translation id="1506421160138798546">estimer</translation>
 <translation id="59223531494896848">Limite</translation>
 <translation id="8569380433211549748">Prix en</translation>
-<translation id="2490428413101944234">Tester le faucet</translation>
-<translation id="3352959425838279177">Obtenir de l'Ether d'un faucet pour <ph name="SELECTED_NETWORK"/></translation>
-<translation id="6449626816252815844">Sélectionner une méthode d'achat</translation>
 <translation id="8009571545960303544">Votre signature est demandée</translation>
 <translation id="5294062982587710720">Notez que Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos actifs cryptos au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et si vous faites confiance au site demandeur.</translation>
 <translation id="3474375934783434676">Signer à votre entière responsabilité</translation>
@@ -1065,6 +1068,7 @@
 <translation id="3586931643579894722">Masquer les détails</translation>
 <translation id="7702907602086592255">Domaine</translation>
 <translation id="3586752056660754651">Signer</translation>
+<translation id="4217653732094303705">Clé de chiffrement publique</translation>
 <translation id="3484981968509595506">Un DApp demande votre clé de chiffrement publique</translation>
 <translation id="2300240008330189182"><ph name="URL"/> demande la clé de chiffrement publique de votre portefeuille. Si vous acceptez de la lui donner, le site pourra composer des messages chiffrés pour vous.</translation>
 <translation id="3340247553212049934">Fournir</translation>
@@ -1301,9 +1305,7 @@
 <translation id="4312994183947987913">Acheter/déposer</translation>
 <translation id="5133421763709317473">Aucun actif correspondant à la recherche ou au filtre trouvé</translation>
 <translation id="6423985584914773314">Adresse FIL non valide</translation>
-<translation id="5522073372365069684">Acheter avec Ramp</translation>
 <translation id="6153197326949684688">Vendre avec <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="3301984548406568819">Les données financières et de transaction sont traitées par nos partenaires onramp. Brave ne collecte pas ces données et n'y a pas accès.</translation>
 <translation id="5795821518596541838">Partenaire de transactions</translation>
 <translation id="1916136859742693273">Le Portefeuille Brave utilise Meld.io pour aider à agréger et à afficher divers fournisseurs de crypto-monnaies pour votre région. Nous partagerons des informations avec Meld.io pour effectuer la transaction, notamment l'adresse de votre portefeuille et le code de votre pays. Pour en savoir plus, consultez les conditions d'utilisation de Meld.</translation>
 <translation id="245827814248186739">J'ai lu et j'accepte les <ph name="LINK_BEFORE"/>conditions générales d'utilisation de Meld<ph name="LINK_AFTER"/></translation>
@@ -1324,17 +1326,8 @@
 <translation id="4196022627437957774">Voulez-vous créer un compte <ph name="ACCOUNT_TYPE"/>?</translation>
 <translation id="5982914754413312620">Pour recevoir des <ph name="TOKEN_SYMBOL"/>, vous aurez besoin d'un compte <ph name="ACCOUNT_TYPE"/>.</translation>
 <translation id="3067168166931605141">Nom du compte</translation>
-<translation id="6534275647567011533">Acheter avec Transak</translation>
-<translation id="5973390321030037823">Acheter avec Link</translation>
-<translation id="1932640759496708012">Acheter avec Coinbase Pay</translation>
-<translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="503018546142690471">Transak</translation>
-<translation id="7295150312737713113">Link par Stripe</translation>
-<translation id="7191335763519723663">Coinbase Pay</translation>
-<translation id="7667423728712601865">Achetez des cryptos avec une carte Visa ou Mastercard.</translation>
-<translation id="3101839349578102016">Achat instantané avec votre compte bancaire. Frais réduits.</translation>
-<translation id="8280898387224328221">Payer par crédit, débit, compte bancaire</translation>
-<translation id="2218174283683424104">Achetez avec le nom le plus fiable en matière de cryptomonnaie.</translation>
+<translation id="1213870770696612739">Montant minimum : <ph name="AMOUNT"/></translation>
+<translation id="3041074161036535192">Montant maximum : <ph name="AMOUNT"/></translation>
 <translation id="8528916244724490964">Tous les réseaux</translation>
 <translation id="7721139939763655123">Du plus faible au plus élevé</translation>
 <translation id="5458608274117818139">Du plus élevé au plus faible</translation>
@@ -1380,7 +1373,9 @@
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> sur <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974">Une erreur s'est produite en tentant de <ph name="SWAP_OR_BRIDGE"/> sur <ph name="NETWORK"/></translation>
 <translation id="1778601041100951971">Protection de <ph name="AMOUNT"/></translation>
+<translation id="6439110433198887239">Annulation de protection de <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> a été protégé</translation>
+<translation id="3860973324426281816"><ph name="AMOUNT"/> a été retiré de la protection</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} autre transaction en attente.}
       other {{PENDING_TRANSACTIONS} autres transactions en attente.}
@@ -1575,8 +1570,6 @@
 <translation id="1422451606553326863">Acheter des cryptomonnaies</translation>
 <translation id="3887541341068007345">Vérification des extensions de portefeuilles…</translation>
 <translation id="8407091560429310499">Sélectionner un actif</translation>
-<translation id="756590380936155533">Pour terminer votre achat <ph name="ASSET_TICKER"/>, sélectionnez l'un de nos partenaires</translation>
-<translation id="7880860489474966219">Une fois l'opération terminée, vos fonds seront transférés sur votre portefeuille Brave</translation>
 <translation id="6182661078713714878">Déposer des cryptomonnaies</translation>
 <translation id="3683305208314702347">Déposez <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">Déposez des jetons Solana ou SPL</translation>
@@ -1815,10 +1808,14 @@
 <translation id="7747318989577709780">Le compte est en cours de synchronisation</translation>
 <translation id="9086302186042011942">Synchronisation</translation>
 <translation id="99991973626409495">Vérifier le bouclier</translation>
+<translation id="6779429520470417361">Vérifier l’annulation de protection</translation>
 <translation id="3114681061018999547">Bouclier</translation>
+<translation id="1564172583156967455">Annulation de protection</translation>
 <translation id="8897189056319316783">Bouclier ZEC</translation>
+<translation id="508249542337194541">Désactiver la protection de ZEC</translation>
 <translation id="3382275793825152362">Anonymiser les fonds</translation>
 <translation id="8631765320256788981">Vous envoyez des fonds de votre compte public vers votre compte anonymisé.</translation>
+<translation id="3860364671495430495">Vous envoyez des fonds de votre compte protégé vers votre compte transparent.</translation>
 <translation id="7144878232160441200">Réessayer</translation>
 <translation id="9094621390791852268">Échec de la prévisualisation de la transaction.</translation>
 <translation id="4982713341035600933">Changement estimé du solde</translation>
@@ -2095,6 +2092,8 @@
 <translation id="4292565651642921086">Mettre l'accent sur le groupe d'onglets suivant</translation>
 <translation id="874783686573493196">Mettre l'accent sur le groupe d'onglets précédent</translation>
 <translation id="9169594135889675189">Ajouter le nouvel onglet au groupe</translation>
+<translation id="1722567105086139392">Lien</translation>
+<translation id="4729794914864902904">Dissocier</translation>
 <translation id="1926106318101432555">Ouvrir un favori…</translation>
 <translation id="6118819645013156507">Passer à une autre fenêtre…</translation>
 <translation id="1623204575967809688">Fusionner la fenêtre actuelle avec…</translation>
@@ -2184,10 +2183,8 @@
 <translation id="8151638057146502721">Configurer</translation>
 <translation id="999273441077650169">Le modèle change dynamiquement pour utiliser le meilleur pour la tâche.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Llama 3.1 8B, un modèle développé par Meta, conçu pour vous assister dans diverses tâches. Le modèle Llama est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="7127671672828944579">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Qwen 14B, un modèle développé par Alibaba Cloud, conçu pour vous assister dans diverses tâches. Le modèle Qwen est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="2328524194917949829">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Gemma 3 12B, un modèle développé par Google DeepMind, conçu pour vous assister dans diverses tâches. Le modèle Gemma est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="634682910381645550">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur DeepSeek R1, un modèle développé par DeepSeek, conçu pour vous assister dans des tâches de raisonnement approfondi. Le modèle DeepSeek R1 est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="1021134081694325196">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur DeepSeek V3.1, un modèle développé par DeepSeek, conçu pour vous assister dans diverses tâches. Le modèle DeepSeek V3.1 est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="3852808100039989429">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Qwen VL 30B, un modèle développé par Alibaba Cloud, conçu pour vous assister dans diverses tâches. Qwen est hébergé par Brave sur une infrastructure interne et sécurisée.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
+<translation id="6406961656408495869">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur DeepSeek V3.1, un modèle développé par DeepSeek, conçu pour vous assister dans diverses tâches. DeepSeek V3.1 est hébergé par NEAR sur une infrastructure privée vérifiable et sécurisée.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Bonjour, je suis Leo. Je suis un assistant IA conçu par Brave. Je suis propulsé par Claude Instant, un modèle élaboré par Anthropic pour des tâches conversationnelles et de traitement de texte. Claude Instant est hébergé par Brave sur notre propre infrastructure sécurisée.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Haiku, un modèle développé par Anthropic. Le modèle Claude Haiku est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Sonnet, un modèle développé par Anthropic. Le modèle Claude Sonnet est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
@@ -2204,6 +2201,7 @@
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
 <translation id="830868413617744215">Beta</translation>
+<translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Modèles recommandés</translation>
 <translation id="6568044140836233369">Afficher tous les modèles</translation>
 <translation id="6187065185557150870">Clavardage</translation>
@@ -2292,7 +2290,8 @@
 <translation id="1243966363662220847">Commentaire sur la réponse</translation>
 <translation id="7417895556119762861">Le fait d'aimer ou de ne pas aimer une réponse enverra l'évaluation, la conversation, le modèle, la langue, la version et le statut premium à Brave afin d'améliorer Leo. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Envoyer un message à Leo</translation>
-<translation id="4084869091337186002">L'agent de contenu Leo AI est toujours activé pour ce profil</translation>
+<translation id="6222803935921999130">Ouvrir la fenêtre de profil de navigation IA</translation>
+<translation id="1530903352777607099">L'agent de contenu Leo AI est toujours activé pour ce profil</translation>
 <translation id="8650874793377330048">Arrêter de répondre</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="1093419424466417703">Cette page est trop longue pour Leo. Certaines données contextuelles risquent de ne pas avoir été prises en compte. Leo est parvenu à lire <ph name="PERCENTAGE"/> du contenu de la page.</translation>
@@ -2315,9 +2314,8 @@
 <translation id="1602382615168212961">Envoyez à Leo le contenu des onglets provenant de vos favoris pour enrichir les réponses.</translation>
 <translation id="4808122506413075135">Envoyez à Leo le contenu de votre historique de navigation pour enrichir les réponses.</translation>
 <translation id="220541218939267992">Le contenu de la page sera envoyé à Leo avec vos messages.</translation>
-<translation id="8164365899016970783">Ajoutez le contenu des onglets et des favoris pour fournir du contexte. Les contenus et vos messages seront envoyés à Leo.</translation>
+<translation id="2152389270152475874">Ajoutez le contenu des onglets, des favoris ou de l'historique pour fournir du contexte. Les contenus sélectionnés seront envoyés à Leo avec vos messages.</translation>
 <translation id="6237410387937453423">Aucune pièce jointe correspondante</translation>
-<translation id="8076492880354921740">Onglets</translation>
 <translation id="2315654674554095762">Leo conservera désormais vos conversations pour que vous puissiez les retrouver plus tard. Elles sont enregistrées de façon sécurisée sur votre appareil et vous pouvez les supprimer à tout moment.</translation>
 <translation id="7821251979960635244">Votre historique de conversation apparaîtra ici lorsque vous aurez démarré une discussion.</translation>
 <translation id="887511360213807449">L'historique est désactivé</translation>
@@ -2326,10 +2324,10 @@
 <translation id="3185367320601718531">Génération de conversations et de textes</translation>
 <translation id="2793458212460902934">Rapide • Recherche • Outils</translation>
 <translation id="8506027496671575183">Recherche • Vision • Outils</translation>
-<translation id="3213834013136637671">Recherche • Vision</translation>
-<translation id="7697693533305615127">Recherche • Réflexion</translation>
+<translation id="3184606955650139158">Rapide • Recherche • Vision</translation>
 <translation id="7465032796278724624">Privé vérifiable avec NEAR IA TEE</translation>
 <translation id="8782867266498869301">Le modèle change dynamiquement pour utiliser le meilleur pour la tâche</translation>
+<translation id="3213834013136637671">Recherche • Vision</translation>
 <translation id="3965507912994218570">Paramètres de Leo</translation>
 <translation id="3754337604877048671">Présentation de Leo IA</translation>
 <translation id="5295261408976371809">Votre assistant IA <ph name="TEXT_BEFORE"/>privé<ph name="TEXT_AFTER"/>, intégré directement dans le navigateur.</translation>
@@ -2407,20 +2405,28 @@
 <translation id="4798146464408730445">Aucune compétence trouvée. Cliquez sur le bouton « Nouvelle » pour en créer une.</translation>
 <translation id="271033894570825754">Nouvelle</translation>
 <translation id="8266605059880650542">Mémorisation d’information pour plus tard concernant la page</translation>
-<translation id="7049849063044248805">Le mode agent fonctionne avec les modèles compatibles avec les outils. Les modèles non compatibles sont masqués de cette liste.</translation>
+<translation id="5103625298494362646">Le mode agent fonctionne avec les modèles compatibles avec les outils. Les modèles non compatibles sont masqués de cette liste.</translation>
 <translation id="3397808797783614750">Permettre à l'IA de naviguer automatiquement pour vous peut entraîner des conséquences imprévues et potentiellement dangereuses pour votre vie privée, vos finances et vos communications en ligne. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Avertissement de sécurité</translation>
 <translation id="6077070599873946984">Brave IA a besoin de votre permission pour : <ph name="TOOL_LABEL"/></translation>
 <translation id="4163837693685963037">L’opération semble ne pas correspondre à votre demande :</translation>
 <translation id="3927932062596804919">Refuser</translation>
 <translation id="4569155249847375786">Vérifié</translation>
-<translation id="3240988198391588806">Mode agent</translation>
-<translation id="538066983058750776">À propos du profil Leo</translation>
-<translation id="1577570612997320961">Pour vous protéger, ce profil Brave isolé limite l'accès de l'IA à votre profil de navigation principal. Leo IA dispose de permissions supplémentaires ici pour visiter et interagir avec les sites, vous permettant ainsi de déléguer des tâches et naviguer ensemble pour accroître votre productivité.</translation>
+<translation id="8200772114523450471">Reprendre</translation>
+<translation id="7607002721634913082">Interrompu</translation>
+<translation id="4773299976671772492">Arrêté</translation>
+<translation id="6946722113367118030">Réflexion en cours</translation>
+<translation id="2113810663179257944">Exécution de code</translation>
+<translation id="4790888275629207278">Code exécuté dans le bac à sable</translation>
+<translation id="4379566111233326721">Code :</translation>
+<translation id="3542130965673205258">Sortie:</translation>
+<translation id="3428245742224818842">Navigation avec l’IA</translation>
+<translation id="2854657728271352435">À propos du profil de navigation avec l’IA</translation>
+<translation id="2301685062527585986">Pour protéger vos données, ce profil de navigation avec l’IA isolé empêche l’agent IA d’accéder à votre profil de navigation principal et lui donne uniquement les autorisations nécessaires pour visiter des sites et y effectuer des actions. Vous pouvez améliorer votre productivité en lui assignant des tâches et en le laissant naviguer pour vous.</translation>
 <translation id="648116453147783450">Vos données et vos sessions</translation>
-<translation id="3906161204878017619">Lorsque vous vous connectez à un site Web à l’aide de ce profil, Leo peut voir les informations de ce site si celui-ci est ouvert, que ce soit quand Leo visite le site directement ou lorsque vous lui demandez d’y effectuer une action.</translation>
+<translation id="4879348540868082026">Lorsque vous vous connectez à un site Web à l’aide de ce profil, l’agent de navigation avec l’IA de Brave peut voir les informations de ce site si celui-ci est ouvert, que ce soit lorsqu’il visite le site lui-même ou lorsque vous lui demandez d’y effectuer une action.</translation>
 <translation id="5583803492921648196">Retour au profil précédent</translation>
-<translation id="8068929004144221259">Vous pouvez revenir à votre profil habituel à tout moment à partir du menu principal ou en cliquant sur l'avatar Leo dans la barre d'outils. Le mode agent s’ouvrira toujours avec ce profil.</translation>
+<translation id="864117099189791993">Vous pouvez revenir à votre profil habituel à tout moment à partir du menu principal ou en utilisant le menu du profil dans la barre d’outils. La navigation avec l’IA s’ouvre toujours dans le profil de navigation avec l’IA.</translation>
 <translation id="3486480638399578250">Gardez votre adresse courriel privée</translation>
 <translation id="7765422154906712751">Créez des adresses uniques et aléatoires qui renvoient à votre courriel de compte Brave et peuvent être supprimées à tout moment. Évitez que votre adresse courriel réelle ne soit divulguée ou utilisée par les annonceurs.</translation>
 <translation id="5222676887888702881">Déconnexion</translation>
@@ -2520,13 +2526,13 @@
 <translation id="3620004479054499575">Avez-vous des difficultés avec ce site?</translation>
 <translation id="9176447766421988172">Nous expérimentons un mode visant à améliorer la compatibilité avec les sites Web où seul le blocage des Ads est activé. Avertissement : toutes les protections de la vie privée sont désactivées. Voulez-vous essayer? <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Pour les sites Web affectés par les protections de la vie privée de Brave, vous pouvez désactiver Shields.</translation>
-<translation id="1836572675775891780">Activer uniquement le mode de blocage des Ads</translation>
+<translation id="2850777974644218370">Activer le mode Blocage des publicités uniquement</translation>
 <translation id="6623668214089604469">Le site fonctionne-t-il correctement maintenant?</translation>
 <translation id="8978860854770042258">Merci d’envoyer un rapport si ce site est toujours en panne.</translation>
 <translation id="4677356505199464553">Semble fonctionner</translation>
 <translation id="1992750560347846445">Signaler le site</translation>
-<translation id="2887186586339544116">Mode de blocage des Ads activé</translation>
-<translation id="673665019618844072">Vous utilisez le mode « Blocage des Ads uniquement », qui ne propose qu’une protection contre les Ads. Pour revenir au mode complet de Shields, désactivez cette option dans les paramètres.</translation>
+<translation id="2863270180245144869">Mode Blocage des publicités uniquement activé</translation>
+<translation id="2302218429308447288">Vous êtes actuellement en mode Blocage des publicités uniquement ; seules les publicités sont désactivées. Pour revenir au mode standard, désactivez ce mode dans les paramètres.</translation>
 <translation id="4820891023903368625">Ads bloquées <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Traqueurs, annonces et autres contenus bloqués <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Non protégé par les boucliers Brave <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
@@ -2559,6 +2565,8 @@
 <translation id="6975864539539353406">Efface les témoins et autres données de site lorsque vous fermez un site</translation>
 <translation id="6486971767955110687">Enregistrer les informations de contact pour d'éventuels signalements futurs</translation>
 <translation id="4085787265464238844">Si vous fournissez vos informations de contact, celles-ci seront conservées pour d'éventuels futurs signalements.</translation>
+<translation id="7740929262043547697">Autoriser le blocage d’éléments dans les fenêtres de navigation privée</translation>
+<translation id="1260864846935682371">Active la fonction de Blocage d’éléments de boucliers dans les fenêtres de navigation privée. Remarque : les éléments bloqués dans les fenêtres de navigation privée le seront également dans les fenêtres normales.</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
 <translation id="5657156137487675418">Autoriser tous les cookies</translation>
 <translation id="8366221601425141146">Empreintes digitales bloquées</translation>
@@ -2611,7 +2619,7 @@
 <translation id="6764845498618413165">En savoir plus</translation>
 <translation id="7818938154803162778">Oui, je veux apporter mon aide</translation>
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
-<translation id="293854220404217065">Thème Minuit</translation>
+<translation id="4988030440045495002">Thème ultra sombre</translation>
 <translation id="2422927186524098759">Barre latérale</translation>
 <translation id="2361906291514218784">IA Leo</translation>
 <translation id="7705524343798198388">VPN</translation>

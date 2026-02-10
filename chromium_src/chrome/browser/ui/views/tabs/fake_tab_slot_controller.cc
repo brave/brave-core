@@ -16,3 +16,16 @@ bool FakeTabSlotController::CanCloseTabViaMiddleButtonClick() const {
 bool FakeTabSlotController::IsVerticalTabsFloating() const {
   return false;
 }
+
+bool FakeTabSlotController::ShouldPaintTabAccent(const Tab* tab) const {
+  return false;
+}
+
+std::optional<SkColor> FakeTabSlotController::GetTabAccentColor(
+    const Tab* tab) const {
+  return std::nullopt;
+}
+
+ui::ImageModel FakeTabSlotController::GetTabAccentIcon(const Tab* tab) const {
+  return ui::ImageModel();
+}

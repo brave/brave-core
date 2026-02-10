@@ -137,8 +137,11 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
              GURL(brave_domains::kGate3URL),
          }},
         {"uphold",
-         {GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
-          GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL))}},
+         {
+             GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
+             GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL)),
+             GURL(brave_domains::kGate3URL),
+         }},
         {"zebpay",
          {GURL(BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)),
           GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL))}}};
