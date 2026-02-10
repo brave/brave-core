@@ -283,7 +283,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bytes"
-version = "1.11.0"
+version = "1.11.1"
 
 [[package]]
 name = "cbc"
