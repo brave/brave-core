@@ -120,13 +120,18 @@ serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
 
   const base::FilePath initial_profile_dir =
       profile_manager->GetInitialProfileDir();
-  Profile* profile = profile_manager->GetProfileByPath(initial_profile_dir);
+  Profile* profile = profile_manager->GetProfileByPath(
+      profile_manager->user_data_dir().Append(initial_profile_dir));
   if (!profile) {
     profile = profile_manager->GetLastUsedProfileIfLoaded();
   }
-  // TODO(https://github.com/brave/brave-browser/issues/52492): Migrate SERP
-  // metrics to profile attributes and remove temporary invariant checks.
-  DUMP_WILL_BE_CHECK(profile);
+
+  if (!profile) {
+    // TODO(https://github.com/brave/brave-browser/issues/52492): Migrate SERP
+    // metrics to profile attributes and remove temporary invariant checks.
+    DUMP_WILL_BE_CHECK(profile);
+    return nullptr;
+  }
 
   misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
