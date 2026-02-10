@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/toolbar/app_menu_icon_controller.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -121,9 +122,12 @@ void BraveBrowserAppMenuButton::UpdateColorsAndInsets() {
   BrowserAppMenuButton::UpdateColorsAndInsets();
 
   if (ShowBrandedIcon() && !IsLabelPresentAndVisible()) {
-    // Draw a subtle border around the branded app menu button.
+    // Draw a subtle border around the branded app menu button. Use the same
+    // paint insets as the inkdrop so the border doesn't extend to the screen
+    // edge when the window is maximized.
+    const gfx::Insets paint_insets = GetToolbarInkDropInsets(this);
     auto border = views::CreateRoundedRectBorder(
-        kBrandedBorderThickness, GetRoundedCornerRadius(),
+        kBrandedBorderThickness, GetRoundedCornerRadius(), paint_insets,
         GetColorProvider()->GetColor(kColorToolbarButtonBorder));
     gfx::Insets extra_insets = GetTargetInsets() - border->GetInsets();
     SetBorder(views::CreatePaddedBorder(std::move(border), extra_insets));
