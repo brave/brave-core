@@ -8,7 +8,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 
-class Tab;
+class HoverCardAnchorTarget;
 
 class BraveTabHoverCardController : public TabHoverCardController {
  public:
