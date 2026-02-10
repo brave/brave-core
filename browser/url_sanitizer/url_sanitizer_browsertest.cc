@@ -219,6 +219,7 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
+  content::BrowserTestClipboardScope clipboard_scope_;
 };
 
 class EnabledURLSanitizerTest : public URLSanitizerTestBase {
