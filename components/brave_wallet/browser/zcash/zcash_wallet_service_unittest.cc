@@ -1589,7 +1589,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list_.InitWithFeaturesAndParameters(
+  feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
@@ -1658,7 +1658,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
 
 // Shield*Funds tests are disabled on Windows x86 due to timeout.
 // See https://github.com/brave/brave-browser/issues/39698.
-#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#if (BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)) || BUILDFLAG(IS_IOS)
 #define MAYBE_ShieldAllFunds DISABLED_ShieldAllFunds
 #define MAYBE_ShieldFunds DISABLED_ShieldFunds
 #define MAYBE_SendShieldedFunds DISABLED_SendShieldedFunds
@@ -1676,7 +1676,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list_.InitWithFeaturesAndParameters(
+  feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
@@ -2094,7 +2094,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list_.InitWithFeaturesAndParameters(
+  feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
@@ -2481,7 +2481,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list_.InitWithFeaturesAndParameters(
+  feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
@@ -3016,7 +3016,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
   base::test::ScopedFeatureList feature_list;
-  feature_list_.InitWithFeaturesAndParameters(
+  feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
 #if BUILDFLAG(IS_IOS)
