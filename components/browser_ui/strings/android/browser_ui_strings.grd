@@ -249,8 +249,14 @@
       <message name="IDS_SUBMIT" desc="Generic label for a button to submit data. Used in multiple contexts. [CHAR_LIMIT=20]">
         Submit
       </message>
+      <message name="IDS_APPLY" desc="Generic label for a button to apply a suggestion.">
+        Apply
+      </message>
       <message name="IDS_UNDO" desc="Generic label for a button to undo the previous action.">
         Undo
+      </message>
+      <message name="IDS_REDO" desc="Generic label for a button to redo the previous action.">
+        Redo
       </message>
       <message name="IDS_HELP" desc="Generic label for a button that displays help for the current screen.">
         Help
@@ -263,6 +269,9 @@
       </message>
       <message name="IDS_SELECT" desc="Prompt for user to select something. [CHAR_LIMIT=20]">
         Select
+      </message>
+      <message name="IDS_SELECTED" desc="Generic Lable saying something is selected." is_accessibility_with_no_ui="true">
+        Selected
       </message>
       <message name="IDS_ADD" desc="Prompt for the user to add something, like a new address. [CHAR_LIMIT=20]">
         Add
@@ -1021,14 +1030,20 @@
       <message name="IDS_FORCE_ENABLE_ZOOM_SUMMARY" desc="Summary of preference that allows the user to zoom in on any webpage, even if the page tries to disable zooming.">
         Override a website’s request to prevent zooming in
       </message>
-      <message name="IDS_READER_FOR_ACCESSIBILITY_TITLE" desc="Title of preference that allows the user to use simplified view on any articles, even if the page is mobile-friendly. Simplified view is the new user-facing name for Reader Mode, which extracts the content of an article and removes clutter from a web page and puts the result in a easier-to-read format.">
-        Simplified view for web pages
-      </message>
       <message name="IDS_ZOOM_INFO_PREFERENCE_TITLE" desc="Summary of preference that allows the user to view the set zoom levels for all websites.">
         Saved zoom for sites
       </message>
+      <message name="IDS_READER_FOR_ACCESSIBILITY_TITLE" desc="Title of preference that allows the user to use simplified view on any articles, even if the page is mobile-friendly. Simplified view is the new user-facing name for Reader Mode, which extracts the content of an article and removes clutter from a web page and puts the result in a easier-to-read format.">
+        Simplified view for web pages
+      </message>
       <message name="IDS_READER_FOR_ACCESSIBILITY_SUMMARY" desc="Summary of preference that allows the user to use simplified view on any supported articles, even if the page is mobile-friendly.">
         Get notified when an article can be shown in simplified view
+      </message>
+      <message name="IDS_READER_ENABLE_LINKS_TITLE" desc="Title of preference that allows the user to turn links on or off for Reading Mode.">
+        Show hyperlinks
+      </message>
+      <message name="IDS_READER_ENABLE_LINKS_SUMMARY" desc="Summary of preference that allows the user to turn links on or off for Reading Mode.">
+        Show links once Reading Mode is on
       </message>
       <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
         Captions
@@ -1051,6 +1066,12 @@
       </message>
       <message name="IDS_CARET_BROWSING_SUMMARY" desc="Summary of preference that allows the user to navigate pages with a text caret.">
         To turn caret browsing on or off, use the shortcut F7
+      </message>
+      <message name="IDS_READER_MODE_TOGGLE_LINKS_OFF_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to toggle links in reading mode. If pressed the button will turn links off.">
+        Turn Reading Mode links off
+      </message>
+      <message name="IDS_READER_MODE_TOGGLE_LINKS_ON_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to toggle links in reading mode. If pressed, the button will turn links on.">
+        Turn Reading Mode links on
       </message>
 
       <!-- Text Size Contrast -->
@@ -1234,6 +1255,9 @@
       <message name="IDS_EDUCATIONAL_TIP_MODULE_BUTTON" desc="Name of the clickable button in the educational tip module on NTP.">
         Show me how
       </message>
+      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE" desc="Text for a link to view all Educational tip items in two cell mode.">
+        See more
+      </message>
       <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_TITLE" desc="Title of the default browser section in the educational tip module on NTP.">
         Use Brave by default
       </message>
@@ -1312,12 +1336,65 @@
 
       <!-- Setup List strings -->
 
+      <!-- Setup list Sign in promo strings -->
+      <message name="IDS_EDUCATIONAL_TIP_SIGN_IN_PROMO_TITLE" desc="Title of the sign in promo that invites users to sign in to Brave in the educational tip module on NTP.">
+        Make Brave your own
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SIGN_IN_PROMO_DESCRIPTION" desc="Description of the sign in promo that invites users to sign in to Brave in the educational tip module on NTP.">
+        Sign in to easily continue on all your devices
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SIGN_IN_PROMO_BUTTON" desc="Text on the clickable button on the sign in promo that invites users to sign in to Brave in the educational tip module on NTP.">
+        Sign in to start
+      </message>
+
       <!-- Setup list Enhanced Safe Browsing promo strings -->
       <message name="IDS_EDUCATIONAL_TIP_ENHANCED_SAFE_BROWSING_TITLE" desc="Title of the enhanced safe browsing promo that invites users to turn on enhanced safe browsing in the educational tip module on NTP.">
         Enhance your security
       </message>
       <message name="IDS_EDUCATIONAL_TIP_ENHANCED_SAFE_BROWSING_DESCRIPTION" desc="Description of the enhanced safe browsing promo that invites users to turn on enhanced safe browsing in the educational tip module on NTP.">
         Get Brave’s strongest protection against online threats
+      </message>
+
+      <!-- Setup list Save Passwords promo strings -->
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_TITLE" desc="Title of the Save Passwords promo that invites users to turn on the save passwords feature in the educational tip module on NTP.">
+        Save passwords in Brave
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_DESCRIPTION" desc="Description of the Save Passwords promo that invites users to turn on the save passwords feature in the educational tip module on NTP.">
+        Sign in quickly and easily into sites and apps
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BUTTON" desc="Text on the clickable button on the Save Passwords promo in the educational tip module on NTP.">
+        Show me how
+      </message>
+
+      <!-- Save Passwords instructional bottom sheet strings -->
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_FIRST_STEP" desc="The first step in the bottom sheet of the save passwords section within the educational tip module on the NTP.">
+        Sign in to any website
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_SECOND_STEP" desc="The second step in the bottom sheet of the save passwords section within the educational tip module on the NTP.">
+        Brave will offer to save your password
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_THIRD_STEP" desc="The third step in the bottom sheet of the save passwords section within the educational tip module on the NTP.">
+        Tap Yes to easily use this password the next time you sign in
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_ACCESSIBILITY_CLOSED" desc="Accessibility string that describes that the save passwords bottom sheet has closed.">
+        Save passwords instructional bottom sheet has closed
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the save passwords bottom sheet.">
+        Instructional bottom sheet for saving passwords in Brave
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_ACCESSIBILITY_OPENED_FULL" desc="Accessibility string that describes that the save passwords bottom sheet has fully opened.">
+        Save passwords instructional bottom sheet has fully opened
+      </message>
+
+      <!-- Setup list Password Checkup promo strings -->
+      <message name="IDS_EDUCATIONAL_TIP_PASSWORD_CHECKUP_TITLE" desc="Title of the Password Checkup promo that invites users to check their saved passwords in the educational tip module on NTP.">
+        Check your saved passwords
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_PASSWORD_CHECKUP_DESCRIPTION" desc="Description of the Password Checkup promo that invites users to check their saved passwords in the educational tip module on NTP.">
+        Strengthen your security and keep your data safer by checking your passwords
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_PASSWORD_CHECKUP_BUTTON" desc="Text on the clickable button on the Password Checkup promo in the educational tip module on NTP.">
+        Check now
       </message>
 
       <!-- Setup list Address Bar Placement promo strings -->
@@ -1472,7 +1549,7 @@
         Theme Collections
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_COLLECTIONS_TITLE" desc="Open all available theme collections when click the theme collection section in the NTP appearance bottom sheet">
-        Theme
+        Theme collections
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_COLLECTIONS_BOTTOM_SHEET" desc="Accessibility string to announce the currently displaying bottom sheet is the new tab page appearance theme collections bottom sheet.">
         New tab page appearance theme collections bottom sheet
@@ -1495,6 +1572,9 @@
       <message name="IDS_NTP_CUSTOMIZATION_THEME_IMAGE_PREVIEW_PINCH_TO_RESIZE" desc="Text explaining the image could be resized by pinching it.">
         Pinch to resize
       </message>
+      <message name="IDS_ACCESSIBILITY_NTP_CUSTOMIZATION_THEME_IMAGE_PREVIEW_PINCH_TO_RESIZE" desc="Accessibility string to announce the image could be resized by pinching it.">
+        Pinch screen to resize photo
+      </message>
       <message name="IDS_NTP_CUSTOMIZATION_TYPE_BACKGROUND_COLOR_HEX_TITLE" desc="Title of the edit text box to input a color hex for the background color.">
         Background Color Hex
       </message>
@@ -1503,6 +1583,33 @@
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_HINT_TO_TYPE_COLOR_HEX" desc="Hint in the edit box to ask users to type a color hex.">
         Type hex here
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_BLUE_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Blue theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_AQUA_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Aqua theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_GREEN_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Green theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_VIRIDIAN_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Viridian theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_CITRON_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Citron theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_ORANGE_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Orange theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_ROSE_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Rose theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_FUCHSIA_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Fuchsia theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_VIOLET_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
+        Violet theme
       </message>
 
       <!-- Time Last Accessed strings -->
