@@ -12,10 +12,8 @@ const util = require('../lib/util')
 program
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
-    '--all [all_mode]',
-    'Run presubmit on all files. Possible values: '
-      + 'brave (default) to run some specific checks, '
-      + 'chromium to run all checks',
+    '--all [mode]',
+    'run presubmit on all files: brave (default, specific checks) or chromium (all checks)',
   )
   .option(
     '--files <file list>',
@@ -27,7 +25,7 @@ program
     (val) => (val === undefined ? 1 : parseInt(val, 10)),
   )
   .option('--fix', 'try to fix found issues automatically')
-  .option('--json <output>', 'An output file for a JSON report')
+  .option('--json <output>', 'an output file for a JSON report')
   .action(runPresubmit)
 
 function runPresubmit(options) {
