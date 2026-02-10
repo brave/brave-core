@@ -6,3 +6,8 @@
 declare_args() {
   is_brave_origin_branded = false
 }
+
+assert(!(is_brave_origin_branded && is_android),
+       "Brave Origin branding is not supported on Android")
+assert(!(is_brave_origin_branded && is_ios),
+       "Brave Origin branding is not supported on iOS")
