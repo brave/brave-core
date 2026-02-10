@@ -154,7 +154,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     if (mReferrerClient == null) {
                         Log.e(TAG, "Referrer client is null");
                         onReferrerReady();
-                        break;
+                        return;
                     }
                     ReferrerDetails response = mReferrerClient.getInstallReferrer();
                     String referrer = response.getInstallReferrer();
