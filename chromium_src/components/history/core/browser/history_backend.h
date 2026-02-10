@@ -10,8 +10,13 @@
   GetKnownToSyncCount(); \
   HistoryCountResult GetHistoryCount
 
+#define kExpireDaysThreshold      \
+  kExpireDaysThreshold = 365 * 5; \
+  static constexpr int kExpireDaysThreshold_Chromium
+
 #include <components/history/core/browser/history_backend.h>  // IWYU pragma: export
 
+#undef kExpireDaysThreshold
 #undef GetHistoryCount
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_HISTORY_BACKEND_H_
