@@ -83,11 +83,7 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
   }
 
-  void TearDown() override {
-#if BUILDFLAG(ENABLE_ORCHARD)
-    sync_state_.SynchronouslyResetForTest();
-#endif
-  }
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
 
@@ -105,9 +101,7 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
   ZCashWalletService& zcash_wallet_service() { return *zcash_wallet_service_; }
 
   ZCashActionContext CreateContext() {
-    return ZCashActionContext(zcash_rpc_,
-                              {}, sync_state_,
-                              account_id_);
+    return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id_);
   }
 
   base::PassKey<class ZCashResolveTransactionStatusTaskTest> CreatePassKey() {

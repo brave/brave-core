@@ -98,11 +98,7 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
                       ->account_id.Clone();
   }
 
-  void TearDown() override {
-#if BUILDFLAG(ENABLE_ORCHARD)
-    sync_state_.SynchronouslyResetForTest();
-#endif
-  }
+  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   MockZCashWalletService& zcash_wallet_service() {
     return *zcash_wallet_service_;
