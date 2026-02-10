@@ -344,9 +344,9 @@ class ChromiumSrcOverridesChecker:
                                      strip_comments(original_file.read())):
                         display_override_filepath = os.path.join(
                             'chromium_src', override_filepath)
-                        self.AddOverrideSymbolError(
-                            used_internally, target, display_override_filepath,
-                            original_filepath)
+                        self.AddOverrideSymbolError(used_internally, target,
+                                                    display_override_filepath,
+                                                    original_filepath)
         return len(matches)
 
     def AddOverrideSymbolError(self, is_used_internally, symbol,
@@ -355,15 +355,15 @@ class ChromiumSrcOverridesChecker:
             self.AddError(
                 f"  Symbol {symbol} appears to be used internally in\n" +
                 f"  {display_override_filepath}\n  Symbol is NOT found in\n" +
-                f"  {original_filepath}.\n  If this is correct, add the path " +
-                "and the symbol to the 'symbol_excludes' in " +
+                f"  {original_filepath}.\n  If this is correct, add the path "
+                + "and the symbol to the 'symbol_excludes' in " +
                 "//brave/chromium_src/check_chromium_src_config.json5.\n")
         else:
             self.AddError(
                 f"  Override {display_override_filepath}\n  defines symbol " +
                 f"{symbol} but the symbol could not be found in\n" +
-                f"  {original_filepath}\n  and is not used internally in the " +
-                "override.")
+                f"  {original_filepath}\n  and is not used internally in the "
+                + "override.")
 
     def do_check_overrides(self):
         """
