@@ -56,8 +56,7 @@ from scm import GIT
 def get_changed_files(base_branch: str, repo_path: Path) -> list[str]:
     """Get list of changed files using depot_tools scm module."""
     status = GIT.CaptureStatus(str(repo_path), base_branch)
-    # Filter out deleted files (status 'D'), return source-absolute paths
-    return [f"//brave/{f}" for s, f in status if s != 'D']
+    return [f"//brave/{f}" for _, f in status]
 
 
 def run_gn_analyze(build_dir: str, files: list[str], src_root: Path) -> dict:
