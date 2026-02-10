@@ -62,6 +62,11 @@ export function getToolLabel(toolName: string, toolInput: any) {
       return getLocale(S.CHAT_UI_TOOL_LABEL_WAIT)
     case Mojom.CODE_EXECUTION_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
+    case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
+    case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME:
+      // Tool use events for server search tools are not displayed here but
+      // through existing WebSourcesEvent and SearchQueriesEvent.
+      return null
     default:
       return toolName
   }
