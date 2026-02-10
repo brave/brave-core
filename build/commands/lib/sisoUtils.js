@@ -53,19 +53,12 @@ function writeSisoRc() {
     } else {
       // Enable local disk cache.
       ninjaFlags.push(`-local_cache_enable`)
-
-      // Set cache directory if not 'auto'.
-      if (sisoCacheDir.endsWith('auto')) {
-        // Let siso choose platform-specific default cache dir.
-        // See: https://source.chromium.org/chromium/build/+/main:siso/subcmd/ninja/config.go;l=488;drc=e71859a66335f38d1bf7e961c7989ca131bfe834
-      } else {
-        // Use custom cache directory.
-        ninjaFlags.push(`-cache_dir "${sisoCacheDir}"`)
-        try {
-          fs.mkdirSync(sisoCacheDir, { recursive: true })
-        } catch (e) {
-          // Ignore errors if the cache dir already exists.
-        }
+      // Set cache directory.
+      ninjaFlags.push(`-cache_dir "${sisoCacheDir}"`)
+      try {
+        fs.mkdirSync(sisoCacheDir, { recursive: true })
+      } catch (e) {
+        // Ignore errors if the cache dir already exists.
       }
     }
 
