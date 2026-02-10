@@ -58,6 +58,8 @@ class TimePeriodStorage {
   uint64_t GetHighestValueInPeriod() const;
   bool IsOnePeriodPassed() const;
 
+  void Clear();
+
  protected:
   std::unique_ptr<base::Clock> clock_;
 

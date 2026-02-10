@@ -11,11 +11,13 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
-#include "brave/components/serp_metrics/pref_names.h"
+#include "brave/components/serp_metrics/serp_metrics.h"
 #include "build/build_config.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -23,7 +25,6 @@
 #include "chrome/common/buildflags.h"
 #include "components/browsing_data/content/browsing_data_helper.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -194,11 +195,16 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   }
 
   if ((remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY)) {
-    // Clear SERP metrics time period storage because it indicates the user
-    // visited Brave, Google, or another search engine, even though it contains
-    // no queries or URLs.
-    profile_->GetPrefs()->ClearPref(
-        serp_metrics::prefs::kSerpMetricsTimePeriodStorage);
+    // Clear SERP metrics because it indicates the user visited Brave, Google,
+    // or another search engine, even though it contains no queries or URLs.
+    if (misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
+            misc_metrics::ProfileMiscMetricsServiceFactory::
+                GetServiceForContext(profile_)) {
+      if (serp_metrics::SerpMetrics* serp_metrics =
+              profile_misc_metrics_service->GetSerpMetrics()) {
+        serp_metrics->ClearHistory();
+      }
+    }
   }
 }
 
