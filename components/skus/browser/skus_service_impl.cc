@@ -11,6 +11,7 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
+#include "base/debug/leak_annotations.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -36,9 +37,11 @@ void SkusServiceImpl::Shutdown() {
 
   for (auto it = sdks_.begin(); it != sdks_.end();) {
     // CppSDK must be destroyed on the sdk task runner.
+    auto sdk = std::move(sdks_.extract(it++).mapped());
+    ANNOTATE_LEAKING_OBJECT_PTR(sdk.get());
     sdk_task_runner_->PostTask(
         FROM_HERE, base::BindOnce([](::rust::Box<skus::CppSDK> sdk) {},
-                                  std::move(sdks_.extract(it++).mapped())));
+                                  std::move(sdk)));
   }
 }
 
