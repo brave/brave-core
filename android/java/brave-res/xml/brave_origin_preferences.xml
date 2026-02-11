@@ -85,8 +85,7 @@
 
         <!-- Informational text about Brave Origin -->
         <org.chromium.chrome.browser.settings.BraveOriginDescriptionPreference
-            android:key="origin_description"
-            android:summary="@string/origin_description_text" />
+            android:key="origin_description" />
 
         <org.chromium.chrome.browser.settings.BraveOriginResetPreference
             android:key="reset_to_defaults"
@@ -95,24 +94,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="origin_subscription_section"
-        android:title="@string/subscription">
+        android:key="origin_purchase_section"
+        android:title="@string/origin_purchase_section_title">
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="subscription_status"
-            android:title="@string/status"/>
+            android:key="account_manage"
+            android:title="@string/origin_manage_account"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="subscription_expires"
-            android:title="@string/expires"/>
-
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="subscription_manage"
-            android:title="@string/manage_subscription"/>
-
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="link_subscription"
-            android:title="@string/link_subscription_title_origin" />
+            android:key="link_purchase"
+            android:title="@string/link_purchase_title_origin" />
 
     </PreferenceCategory>
 

@@ -3251,10 +3251,31 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ORIGIN_TOGGLE_ENABLED_DESCRIPTION" desc="Description shown when a toggle is enabled in Brave Origin settings">
       This feature is enabled because you opted into it
     </message>
-    <message name="IDS_ORIGIN_DESCRIPTION_TEXT" desc="Brave Origin description text explaining the subscription">
-      Brave Origin is a subscription-based way to disable the revenue-generating features that otherwise support Brave as a business. Brave Origin subscribers will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They'll also unlock the option to disable features like Brave Leo, News, Rewards, Wallet, VPN, Web3 domains, and more.&lt;br/&gt;&lt;br/&gt;Subscribers will see a new control panel in the browser settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Note: Brave Origin will not disable browser features that you currently use, and will not affect Brave Search features or Brave Search Ads.&lt;/b&gt;
+    <message name="IDS_ORIGIN_DESCRIPTION_TITLE" desc="Brave Origin description title">
+      Customize your browser while still supporting Brave
     </message>
-    <message name="IDS_LINK_SUBSCRIPTION_TITLE_ORIGIN" desc="Brave Origin link subscription settings title text">
+    <message name="IDS_ORIGIN_DESCRIPTION_BODY" desc="Brave Origin description body text">
+      Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.
+    </message>
+    <message name="IDS_ORIGIN_DESCRIPTION_NOTE" desc="Brave Origin description note about Search Premium">
+      Note that a Brave Origin purchase will also include access to Brave Search Premium, as Origin will remove ads from the Brave Search results page.
+    </message>
+    <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_TITLE" desc="Title for the snackbar shown when toggling a Brave Origin feature">
+      Changing Brave features
+    </message>
+    <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_MESSAGE" desc="Message for the snackbar shown when toggling a Brave Origin feature, explaining that a restart is needed">
+      Enabling or disabling a Brave feature requires the browser to restart to apply changes. Would you like to restart now?
+    </message>
+    <message name="IDS_ORIGIN_RESTART_NOW" desc="Action button text on the Brave Origin restart snackbar">
+      Restart now
+    </message>
+    <message name="IDS_ORIGIN_PURCHASE_SECTION_TITLE" desc="Brave Origin purchase section title">
+      Purchase
+    </message>
+    <message name="IDS_ORIGIN_MANAGE_ACCOUNT" desc="Brave Origin manage account settings text">
+      Manage account
+    </message>
+    <message name="IDS_LINK_PURCHASE_TITLE_ORIGIN" desc="Brave Origin link purchase settings title text">
       Link purchase to your Brave account
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
