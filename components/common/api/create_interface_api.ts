@@ -190,6 +190,9 @@ export function event<Args extends any[], Payload extends any[]>(
   }
 }
 
+// Basis for a unique key for each call to createInterfaceApi for the current scope
+let globalRootInstanceCount = 0
+
 export function createInterfaceApi<
   /**
    * ExposedActions is a record of simple actions that can be called directly from the UI.
@@ -210,11 +213,6 @@ export function createInterfaceApi<
   EventDefinitions extends Record<string, EventDef<any[], any>> = {},
 >(config: {
   /**
-   *  Unique identifier for this API, used in query keys
-   */
-  key?: string
-
-  /**
    * Simple actions that can be called directly from the UI. These
    * don't need any status helpers or data caching. If helper data for status,
    * e.g. "in progress", would be useful then consider using a mutation endpoint instead.
@@ -228,23 +226,12 @@ export function createInterfaceApi<
 
   /** An array of event names to broadcast */
   events?: EventDefinitions
-
-  /**
-   * Provide a queryClient to preserve the cache between multiple invocations
-   * of the same type of API. Ensure that you provide a key.
-   */
-  queryClient?: QueryClient
 }) {
-  // Validate - key is required to avoid cache collisions
-  if (!config.key && !config.queryClient) {
-    console.warn(
-      'createInterfaceApi called without a key. This may cause cache collisions with other APIs. Provide a unique key like "ai-chat" or "conversation-${id}".',
-    )
-  }
-
   // Use shared QueryClient by default for proper React context integration.
   // All APIs share the same client; keys differentiate the data.
-  const queryClient = config.queryClient ?? sharedQueryClient
+  const queryClient = sharedQueryClient
+
+  const rootKey = globalRootInstanceCount++
 
   type ValidKey = keyof RawEndpoints & string
 
@@ -438,9 +425,7 @@ export function createInterfaceApi<
   //
   ;(Object.keys(config.endpoints) as Array<ValidKey>).forEach((name) => {
     const endpointDef = config.endpoints[name]
-    const baseKey = config.key
-      ? ([config.key, name] as const)
-      : ([name] as const)
+    const baseKey = [rootKey, name]
 
     if ('query' in endpointDef) {
       const { query, prefetchWithArgs, ...queryOptions } =
@@ -702,11 +687,7 @@ export function createInterfaceApi<
     ) as KeyArgsOf<K>
 
     queryClient.setQueryData<PayloadOf<K>>(
-      [...([config.key || '', eventName] as const), ...keyArgs] as [
-        string,
-        K,
-        ...KeyArgsOf<K>,
-      ],
+      [rootKey, eventName, ...keyArgs] as [number, K, ...KeyArgsOf<K>],
       payload,
     )
   }
@@ -764,7 +745,7 @@ export function createInterfaceApi<
     const subscribeName = `subscribeTo${cap}`
     const handledName = `reset${cap}`
 
-    const keyBase = [config.key || '', eventName] as const
+    const keyBase = [rootKey, eventName]
 
     // register the emitter for the event
     // @ts-expect-error we need to fix the type of argsAndPayload
@@ -964,23 +945,16 @@ export function createInterfaceApi<
      */
     invalidateAll: () => {
       queryClient.invalidateQueries({
-        queryKey: [config.key],
+        queryKey: [rootKey],
         exact: false,
       })
     },
     close: () => {
-      if (config.key || config.queryClient) {
-        // Cancel all pending queries for this API key or queryClient
-        queryClient.cancelQueries({ queryKey: [config.key], exact: false })
-      }
-      if (config.queryClient) {
-        // Don't clear the shared query client
-        queryClient.clear()
-        queryClient.unmount()
-      }
+      // Cancel all pending queries for this API key
+      queryClient.cancelQueries({ queryKey: [rootKey], exact: false })
+      // Queries will be gc with no subscribers but we can remove them immediately
+      queryClient.removeQueries({ queryKey: [rootKey], exact: false })
     },
-    // Debug property to identify which API instance is being used
-    __debugKey: config.key,
   }
 
   return api
