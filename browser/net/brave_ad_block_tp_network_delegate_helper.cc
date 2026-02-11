@@ -51,15 +51,6 @@ const std::string& GetCanonicalName(
   return dns_aliases.size() >= 1 ? dns_aliases.front() : base::EmptyString();
 }
 
-}  // namespace
-
-network::HostResolver* g_testing_host_resolver = nullptr;
-
-void SetAdblockCnameHostResolverForTesting(
-    network::HostResolver* host_resolver) {
-  g_testing_host_resolver = host_resolver;
-}
-
 // Used to keep track of state between a primary adblock engine query and one
 // after CNAME uncloaking the request.
 struct EngineFlags {
@@ -89,6 +80,15 @@ struct ShouldBlockRequestResult {
   std::string mock_data_url;
   BlockedBy blocked_by = kNotBlocked;
 };
+
+}  // namespace
+
+network::HostResolver* g_testing_host_resolver = nullptr;
+
+void SetAdblockCnameHostResolverForTesting(
+    network::HostResolver* host_resolver) {
+  g_testing_host_resolver = host_resolver;
+}
 
 void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
@@ -287,7 +287,7 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
 // Runs on the UI thread after ShouldBlockRequestOnTaskRunner completes.
 // Applies the thread pool results back to BraveRequestInfo and continues
 // the callback chain.
-void OnAdBlockCheckComplete(
+void OnShouldBlockRequestResult(
     bool then_check_uncloaked,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     const ResponseCallback& next_callback,
@@ -336,7 +336,7 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                        previous_result,
                        std::make_optional<GURL>(canonical_url)),
-        base::BindOnce(&OnAdBlockCheckComplete, false, task_runner,
+        base::BindOnce(&OnShouldBlockRequestResult, false, task_runner,
                        next_callback, ctx));
   } else {
     next_callback.Run();
@@ -433,7 +433,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       FROM_HERE,
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                      EngineFlags(), std::nullopt),
-      base::BindOnce(&OnAdBlockCheckComplete, should_check_uncloaked,
+      base::BindOnce(&OnShouldBlockRequestResult, should_check_uncloaked,
                      task_runner, next_callback, ctx));
 }
 
