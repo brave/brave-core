@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { expect, jest, describe, it, beforeEach } from '@jest/globals'
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import {
   createInterfaceApi,
   state,
@@ -18,9 +18,44 @@ describe('createInterfaceApi', () => {
     clearAllDataForTesting()
   })
 
+  it('should use a different key for each call', async () => {
+    function createTestApi(apiVersion: string) {
+      return createInterfaceApi({
+        actions: {},
+        endpoints: {
+          getData: {
+            query: () => Promise.resolve({ apiVersion }),
+          },
+        },
+      })
+    }
+
+    const apiV1 = createTestApi('v1')
+
+    function useApiV1Data() {
+      return apiV1.useGetData().data
+    }
+
+    let hookResult: RenderHookResult<{ apiVersion: string } | undefined, void> =
+      await act(async () => renderHook(useApiV1Data))
+
+    await act(async () => hookResult.rerender())
+
+    expect(hookResult.result.current).toEqual({ apiVersion: 'v1' })
+
+    const apiV2 = createTestApi('v2')
+
+    expect(await apiV1.getData.fetch()).toEqual({ apiVersion: 'v1' })
+    expect(await apiV2.getData.fetch()).toEqual({ apiVersion: 'v2' })
+    expect(apiV1.getData.current()).toEqual({ apiVersion: 'v1' })
+    expect(apiV2.getData.current()).toEqual({ apiVersion: 'v2' })
+
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current).toEqual({ apiVersion: 'v1' })
+  })
+
   it('should return results keyed by parameters', async () => {
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -60,7 +95,6 @@ describe('createInterfaceApi', () => {
 
   it('reset should return to placeholder data', async () => {
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -91,7 +125,6 @@ describe('createInterfaceApi', () => {
       return Promise.resolve({ id })
     })
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -128,7 +161,6 @@ describe('createInterfaceApi', () => {
       return Promise.resolve({ id, fetchCount })
     })
     const api = createInterfaceApi({
-      key: 'test-invalidate',
       actions: {},
       endpoints: {
         getData: {
@@ -167,7 +199,6 @@ describe('createInterfaceApi', () => {
 
   it('supports state that is not queried', async () => {
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {
         myData: state({
@@ -186,7 +217,6 @@ describe('createInterfaceApi', () => {
       return Promise.resolve({ id })
     })
     const api = createInterfaceApi({
-      key: 'test-hook-data',
       actions: {},
       endpoints: {
         getData: {
@@ -217,7 +247,6 @@ describe('createInterfaceApi', () => {
 
   it('gets array data from a query', async () => {
     const api = createInterfaceApi({
-      key: 'test-array-data',
       actions: {},
       endpoints: {
         getData: {
@@ -248,7 +277,6 @@ describe('createInterfaceApi', () => {
 
   it('gets array data from a query with placeholder', async () => {
     const api = createInterfaceApi({
-      key: 'test-array-placeholder',
       actions: {},
       endpoints: {
         getData: {
@@ -292,7 +320,6 @@ describe('createInterfaceApi', () => {
 
     function createMyApi() {
       const api = createInterfaceApi({
-        key: 'test-mutations',
         endpoints: {
           doSomething: {
             mutation: (isThing: boolean): Promise<{ isThing: boolean }> =>
@@ -400,7 +427,6 @@ describe('createInterfaceApi', () => {
 
     function createMyApi() {
       const api = createInterfaceApi({
-        key: 'test',
         endpoints: {
           doSomething: {
             mutation: () => {
@@ -431,7 +457,6 @@ describe('createInterfaceApi', () => {
 
     function createMyApi() {
       const api = createInterfaceApi({
-        key: 'test',
         endpoints: {
           doSomething: {
             mutation: (hi: string) => {
@@ -460,7 +485,6 @@ describe('createInterfaceApi', () => {
     const doSomething = jest.fn((hi: string) => {})
     function createMyApi() {
       const api = createInterfaceApi({
-        key: 'test',
         endpoints: {},
         actions: {
           doSomething(hi: string) {
@@ -485,7 +509,6 @@ describe('createInterfaceApi', () => {
 
   it('updates the query cache when update is called', async () => {
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {
         getData: {
@@ -524,7 +547,6 @@ describe('createInterfaceApi', () => {
 
   it('creates state queries with placeholder data', async () => {
     const api = createInterfaceApi({
-      key: 'test-state-placeholder',
       actions: {},
       endpoints: {
         state: state({
@@ -563,7 +585,6 @@ describe('createInterfaceApi', () => {
 
   it('creates state queries with no placeholder data', async () => {
     const api = createInterfaceApi({
-      key: 'test-state-no-placeholder',
       actions: {},
       endpoints: {
         flag: state<boolean>(),
@@ -609,7 +630,6 @@ describe('createInterfaceApi', () => {
     // - Hook should reflect the updated data
     let fetchCount = 0
     const api = createInterfaceApi({
-      key: 'test-update-array',
       actions: {},
       endpoints: {
         getHistory: {
@@ -655,21 +675,27 @@ describe('createInterfaceApi', () => {
 
   it('hook should update when api changes (simulating conversation switch)', async () => {
     // This test replicates the scenario where:
-    // - API #1 is created with key 'conversation-1'
+    // - API #1 is created
     // - Hook subscribes to API #1
-    // - API #2 is created with key 'conversation-2'
+    // - API #2 is created
     // - Hook should now use API #2's data via different query keys
     //
     // With shared QueryClient, unique keys ensure data isolation but intact
     // subscription to the correct instance.
 
+    let canReturn: Function = () => {}
+
     function createTestApi(key: string) {
       return createInterfaceApi({
-        key: `conversation-${key}`,
         actions: {},
         endpoints: {
           getHistory: {
-            query: () => Promise.resolve([{ id: key }]),
+            query: () =>
+              new Promise<{ id: string }[]>((resolve) => {
+                // Allow the test to control when the query resolves to avoid
+                // flakey timing issues.
+                canReturn = () => resolve([{ id: key }])
+              }),
             placeholderData: [] as { id: string }[],
           },
         },
@@ -682,7 +708,6 @@ describe('createInterfaceApi', () => {
       const query = currentApi.useGetHistory()
       return {
         data: query.data,
-        key: (currentApi as any).__debugKey,
         status: query.status,
         fetchStatus: query.fetchStatus,
         isPlaceholderData: query.isPlaceholderData,
@@ -691,11 +716,14 @@ describe('createInterfaceApi', () => {
 
     // Use the shared APIQueryClientProvider wrapper
     // Render with API #1
-    let hookResult = await act(async () => renderHook(useHistoryData))
+    let hookResult: RenderHookResult<
+      ReturnType<typeof useHistoryData>,
+      void
+    > = await act(async () => renderHook(useHistoryData))
+    canReturn()
     await act(async () => hookResult.rerender())
 
     expect(hookResult.result.current.data).toEqual([{ id: '1' }])
-    expect(hookResult.result.current.key).toBe('conversation-1')
 
     // Switch to API #2 (simulating bindConversation)
     // This creates a new API with different key, so hooks use different query keys
@@ -703,11 +731,12 @@ describe('createInterfaceApi', () => {
 
     // Re-render - the hook now uses the new API's query key
     await act(async () => hookResult.rerender())
+    // First render will be placeholder data
+    expect(hookResult.result.current.data).toEqual([])
+    canReturn()
+    // Second render should be fetched data
     await act(async () => hookResult.rerender())
-    await act(async () => hookResult.rerender())
-
     // With shared QueryClient and unique keys, hooks use the correct data
-    expect(hookResult.result.current.key).toBe('conversation-2')
     expect(hookResult.result.current.data).toEqual([{ id: '2' }])
 
     // Now update API #2's data via update() (simulating Mojo event)
@@ -716,8 +745,6 @@ describe('createInterfaceApi', () => {
     })
 
     await act(async () => hookResult.rerender())
-    await act(async () => hookResult.rerender())
-    await act(async () => hookResult.rerender())
 
     expect(hookResult.result.current.data).toEqual([{ id: '2' }, { id: '3' }])
   })
@@ -725,7 +752,6 @@ describe('createInterfaceApi', () => {
   it('fires and handles events', () => {
     let emitter: (...args: [string, number]) => void = () => {}
     const api = createInterfaceApi({
-      key: 'test-events',
       actions: {},
       endpoints: {},
       events: {
