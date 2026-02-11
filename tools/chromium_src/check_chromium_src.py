@@ -23,6 +23,7 @@ import argparse
 import re
 import os
 import sys
+import textwrap
 import brave_chromium_utils
 # Look for potential problems in chromium_src overrides.
 
@@ -35,6 +36,9 @@ CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 # Capture group 2: opening parenthesis if the macro is function-like
 POUND_DEFINE_REGEXP = \
     r'^[ \t]*#define[ \t]+([a-zA-Z0-9_]+)[ \t]*(\()?(?:(?:.*\\\r?\n)*.*)'
+
+# Output indent
+INDENT = "  "
 
 
 def strip_comments(content):
@@ -153,15 +157,18 @@ class ChromiumSrcOverridesChecker:
 
     def AddInfo(self, message):
         self.messages['infos'].append("-------------------------\n" +
-                                      "[Info] chromium_src:\n" + message)
+                                      "[Info] chromium_src:\n" +
+                                      textwrap.indent(message, INDENT))
 
     def AddWarning(self, message):
         self.messages['warnings'].append("-------------------------\n" +
-                                         "[Warning] chromium_src:\n" + message)
+                                         "[Warning] chromium_src:\n" +
+                                         textwrap.indent(message, INDENT))
 
     def AddError(self, message):
         self.messages['errors'].append("-------------------------\n" +
-                                       "[Error] chromium_src:\n" + message)
+                                       "[Error] chromium_src:\n" +
+                                       textwrap.indent(message, INDENT))
 
     def do_check_includes(self, override_filepath, original_is_in_gen):
         """
@@ -196,20 +203,19 @@ class ChromiumSrcOverridesChecker:
                         2)
                     if original_is_in_gen:
                         self.AddError(
-                            f"  {display_override_filepath} overrides a " +
+                            f"{display_override_filepath} overrides a " +
                             "generated source file, but does not use a " +
-                            "../gen/-prefixed include.\n  A ../gen/-prefixed "
-                            + "include should be used instead.")
+                            "../gen/-prefixed include.\nA ../gen/-prefixed " +
+                            "include should be used instead.")
                     elif line_match_path != normalized_override_filepath:
                         # Check for v8 overrides, they can have includes
                         # starting with src.
                         if normalized_override_filepath.startswith("v8/src"):
                             continue
                         self.AddError(
-                            f"  {display_override_filepath} uses a " +
-                            "<> include that doesn't point " +
-                            "to the expected file:\n" + f"  Include: {line}" +
-                            "  Expected include target: " +
+                            f"{display_override_filepath} uses a <> include " +
+                            "that doesn't point to the expected file:\n" +
+                            f"Include: {line}Expected include target: " +
                             f"{normalized_override_filepath}")
                     continue
 
@@ -218,16 +224,16 @@ class ChromiumSrcOverridesChecker:
                 if line_match:
                     if not original_is_in_gen:
                         self.AddError(
-                            f"  {display_override_filepath} is not " +
-                            "overriding a generated source file, but uses a " +
-                            "../gen/-prefixed include.\n  A src/-prefixed " +
+                            f"{display_override_filepath} is not overriding " +
+                            "a generated source file, but uses a " +
+                            "../gen/-prefixed include.\nA src/-prefixed " +
                             "include should be used instead.")
                     elif line_match.group(1) != normalized_override_filepath:
                         self.AddError(
-                            f"  {display_override_filepath} uses a " +
+                            f"{display_override_filepath} uses a " +
                             "../gen/-prefixed include that doesn't point to " +
-                            "the expected file:\n" + f"  Include: {line}" +
-                            "  Expected include target: ../gen/" +
+                            f"the expected file:\nInclude: {line}" +
+                            "Expected include target: ../gen/" +
                             f"{normalized_override_filepath}")
                     continue
 
@@ -236,8 +242,8 @@ class ChromiumSrcOverridesChecker:
                 if not line_match:
                     continue
                 self.AddError(
-                    f" {display_override_filepath} uses a relative include:" +
-                    f"\n  {line}  Switch to using a " +
+                    f"{display_override_filepath} uses a relative include:\n" +
+                    f"{line}Switch to using a " +
                     f"{'../gen' if original_is_in_gen else 'src'}-prefixed " +
                     "include instead.")
 
@@ -277,10 +283,10 @@ class ChromiumSrcOverridesChecker:
                                                  override_filepath)
         if found['def_position'] == -1:
             self.AddError(
-                f"  SCRIPT ERROR. Expected to find #define {target} " +
-                f"in {display_override_filepath}.")
+                f"SCRIPT ERROR. Expected to find #define {target} in\n" +
+                f"{display_override_filepath}.")
         if not found['undef']:
-            message = (f"  Expected to find #undef {target} in " +
+            message = (f"Expected to find #undef {target} in " +
                        f"{display_override_filepath}.")
             if override_filepath.endswith('.h'):
                 message += (
@@ -306,7 +312,7 @@ class ChromiumSrcOverridesChecker:
                 match = DEFINE_REGEX.match(line)
                 if not match:
                     self.AddError(
-                        f"  In {display_override_filepath},\n  the " +
+                        f"In {display_override_filepath},\nthe " +
                         "// INTERNAL-USE comment is not followed by a " +
                         "#define line.")
                 else:
@@ -379,13 +385,13 @@ class ChromiumSrcOverridesChecker:
                     else:
                         if target in marked_as_internal_list:
                             self.AddError(
-                                f"  Symbol {target} was found in\n" +
-                                f"  {original_filepath},\n  but is marked as "
-                                + "INTERNAL-USE in the\n" +
-                                f"  {display_override_filepath}.\n  Either " +
-                                "remove the INTERNAL-USE mark, or change the " +
-                                "symbol name to avoid overriding the symbol" +
-                                " in the original file.")
+                                f"Symbol {target} was found in\n" +
+                                f"{original_filepath},\nbut is marked as " +
+                                "INTERNAL-USE in the\n" +
+                                f"{display_override_filepath}.\nEither " +
+                                "remove the INTERNAL-USE mark, or change " +
+                                "the symbol name to avoid overriding the" +
+                                "symbol in the original file.")
         return len(matches)
 
     def MaybeAddOverrideSymbolError(self, marked_as_internal_list,
@@ -396,16 +402,16 @@ class ChromiumSrcOverridesChecker:
             if symbol in marked_as_internal_list:
                 return
             self.AddError(
-                f"  Symbol {symbol} appears to be used internally in\n" +
-                f"  {display_override_filepath}\n  Symbol is NOT found in\n" +
-                f"  {original_filepath}.\n  If this is correct, place " +
+                f"Symbol {symbol} appears to be used internally in\n" +
+                f"{display_override_filepath}\nSymbol is NOT found in\n" +
+                f"{original_filepath}.\nIf this is correct, place " +
                 "'// INTERNAL-USE' comment on the line above the #define.")
         else:
             self.AddError(
-                f"  Override {display_override_filepath}\n  defines symbol " +
+                f"Override {display_override_filepath}\ndefines symbol " +
                 f"{symbol} but the symbol could not be found in\n" +
-                f"  {original_filepath}\n  and is not used internally in the "
-                + "override.")
+                f"{original_filepath}\nand is not used internally in the " +
+                "override.")
 
     def do_check_overrides(self):
         """
@@ -433,11 +439,11 @@ class ChromiumSrcOverridesChecker:
                     # consistent with overriding a generated file.
                     if is_gen_override(override_filepath):
                         self.AddWarning(
-                            f"  {display_override_filepath} overrides a " +
-                            "generated source file.\n  Existence of the " +
-                            "original source and redefined symbols cannot be " +
-                            f"verified.\n  Run {os.path.abspath(__file__)}\n" +
-                            "  script manually and pass output directory " +
+                            f"{display_override_filepath} overrides a " +
+                            "generated source file.\nExistence of the " +
+                            "original source and redefined symbols cannot be "
+                            + f"verified.\nRun {os.path.abspath(__file__)}\n" +
+                            "script manually and pass output directory " +
                             "(e.g. Debug) to verify this override.")
                         continue
                 else:
@@ -451,11 +457,11 @@ class ChromiumSrcOverridesChecker:
                 original_filepath_found = True
             if not original_filepath_found:
                 self.AddError(
-                    f"  No source for override {display_override_filepath}.\n" +
-                    "  If this is not a true override, then add the " +
-                    "path to the `path_excludes` in " +
+                    f"No source for override {display_override_filepath}.\n" +
+                    "If this is not a true override, then add the path to " +
+                    "the `path_excludes` in " +
                     "//brave/chromium_src/check_chromium_src_config.json5.\n" +
-                    "  Otherwise, the upstream file is gone and a fix " +
+                    "Otherwise, the upstream file is gone and a fix " +
                     "is required.")
                 continue
 
@@ -473,12 +479,11 @@ class ChromiumSrcOverridesChecker:
             pattern = rf'(\b{symbol}\b)'
             content = strip_comments(file.read())
             if re.search(pattern, content) is None:
-                self.AddError(f"  Symbol {symbol} listed in exclusions for " +
-                              f"override chromium_src/{path} cannot be " +
-                              "found.\n  If the symbol was removed then " +
-                              "also remove it from the exclusions list in " +
-                              "//brave/chromium_src/" +
-                              "check_chromium_src_config.json5.")
+                self.AddError(
+                    f"Symbol {symbol} listed in exclusions for the override" +
+                    f"\nchromium_src/{path}\ncould be found.\nIf the symbol " +
+                    "was removed then also remove it from the exclusions in" +
+                    "//brave/chromium_src/check_chromium_src_config.json5.")
                 return False
         return True
 
@@ -489,10 +494,10 @@ class ChromiumSrcOverridesChecker:
         override_path = os.path.join(BRAVE_CHROMIUM_SRC, path)
         if not os.path.isfile(override_path):
             self.AddError(
-                "  Path listed in //brave/chromium_src/" +
+                "Path listed in //brave/chromium_src/" +
                 "check_chromium_src_config.json5 " +
-                f"cannot be found:\n  chromium_src/{path}.\n  If the file " +
-                "was removed then also remove it from the list in " +
+                f"cannot be found:\nchromium_src/{path}.\nIf the file was " +
+                "removed then also remove it from the list in " +
                 "//brave/chromium_src/check_chromium_src_config.json5")
             return False
         return True
@@ -522,7 +527,7 @@ class ChromiumSrcOverridesChecker:
         config_path = os.path.join(BRAVE_CHROMIUM_SRC,
                                    'check_chromium_src_config.json5')
         if not os.path.isfile(config_path):
-            self.AddError(f"  Unable to load config file {config_path}.")
+            self.AddError(f"Unable to load config file {config_path}.")
             return False
 
         try:
@@ -540,7 +545,7 @@ class ChromiumSrcOverridesChecker:
         keys = ['re_excludes', 'path_excludes', 'symbol_excludes']
         for key in keys:
             if not key in self.config_data:
-                self.AddError(f"  Key '{key}' is missing from {config_path}.")
+                self.AddError(f"Key '{key}' is missing from {config_path}.")
                 return False
 
         return self.validate_exclusions()
