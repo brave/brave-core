@@ -6,7 +6,6 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
-import classnames from '$web-common/classnames'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
@@ -86,115 +85,72 @@ function AssistantEvent(
 ) {
   const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
   const context = useUntrustedConversationContext()
-  const contentRef = React.useRef<HTMLDivElement>(null)
-  const wrapperRef = React.useRef<HTMLDivElement>(null)
-  const [animationKey, setAnimationKey] = React.useState(0)
 
-  React.useEffect(() => {
-    if (!wrapperRef.current || !contentRef.current) return
+  if (event.completionEvent) {
+    const numberedLinks =
+      allowedLinks.length > 0
+        ? allowedLinks
+          .map((url: string, index: number) => `[${index + 1}]: ${url}`)
+          .join('\n') + '\n\n'
+        : ''
 
-    // Get the actual height of the content
-    const contentHeight = contentRef.current.scrollHeight
-
-    // Animate to the actual height
-    wrapperRef.current.style.maxHeight = `${contentHeight}px`
-  })
-
-  // Reset animation whenever content changes during streaming
-  React.useEffect(() => {
-    if (isEntryInProgress && event.completionEvent?.completion) {
-      setAnimationKey((prev) => prev + 1)
-    }
-  }, [isEntryInProgress, event.completionEvent?.completion])
-
-  const renderContent = () => {
-    if (event.completionEvent) {
-      const numberedLinks =
-        allowedLinks.length > 0
-          ? allowedLinks
-              .map((url: string, index: number) => `[${index + 1}]: ${url}`)
-              .join('\n') + '\n\n'
-          : ''
-
-      // Remove citations with missing links
-      const filteredOutCitationsWithMissingLinks =
-        removeCitationsWithMissingLinks(
-          event.completionEvent.completion,
-          allowedLinks,
-        )
-
-      const completion = normalizeCitationSpacing(
-        filteredOutCitationsWithMissingLinks,
+    // Remove citations with missing links
+    const filteredOutCitationsWithMissingLinks =
+      removeCitationsWithMissingLinks(
+        event.completionEvent.completion,
+        allowedLinks,
       )
 
-      const fullText = `${numberedLinks}${removeReasoning(completion)}`
+    const completion = normalizeCitationSpacing(
+      filteredOutCitationsWithMissingLinks,
+    )
 
-      return (
-        <MarkdownRenderer
-          shouldShowTextCursor={isEntryInProgress}
-          text={fullText}
-          allowedLinks={allowedLinks}
-          disableLinkRestrictions={!isLeoModel}
-        />
-      )
-    }
-    if (
-      props.event.searchStatusEvent
-      && props.isEntryInProgress
-      && !props.hasCompletionStarted
-    ) {
-      return (
-        <div className={styles.actionInProgress}>
-          <ProgressRing />
-          Improving answer with Brave Search…
-        </div>
-      )
-    }
-    if (props.event.toolUseEvent) {
-      if (
-        props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME
-      ) {
-        return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
-      }
-      return (
-        <ToolEvent
-          toolUseEvent={props.event.toolUseEvent}
-          isEntryActive={props.isEntryInteractivityAllowed}
-          isExecuting={context.isToolExecuting}
-        />
-      )
-    }
+    const fullText = `${numberedLinks}${removeReasoning(completion)}`
 
-    // TODO(petemill): Consider displaying in-progress queries if the API
-    // timing improves (or worsens for the completion events).
-    // if (event.searchQueriesEvent && props.isEntryInProgress) {
-    //   return (<>
-    //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-    //   </>)
-    // }
-
-    // Unknown events should be ignored
-    return null
+    return (
+      <MarkdownRenderer
+        shouldShowTextCursor={isEntryInProgress}
+        text={fullText}
+        allowedLinks={allowedLinks}
+        disableLinkRestrictions={!isLeoModel}
+      />
+    )
+  }
+  if (
+    props.event.searchStatusEvent
+    && props.isEntryInProgress
+    && !props.hasCompletionStarted
+  ) {
+    return (
+      <div className={styles.actionInProgress}>
+        <ProgressRing />
+        Improving answer with Brave Search…
+      </div>
+    )
+  }
+  if (props.event.toolUseEvent) {
+    if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
+      return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
+    }
+    return (
+      <ToolEvent
+        toolUseEvent={props.event.toolUseEvent}
+        isEntryActive={props.isEntryInteractivityAllowed}
+        isExecuting={context.isToolExecuting}
+      />
+    )
   }
 
-  const content = renderContent()
-  if (!content) return null
+  // TODO(petemill): Consider displaying in-progress queries if the API
+  // timing improves (or worsens for the completion events).
+  // if (event.searchQueriesEvent && props.isEntryInProgress) {
+  //   return (<>
+  //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
+  //   </>)
+  // }
 
-  const isSearching =
-    event.searchStatusEvent && isEntryInProgress && !props.hasCompletionStarted
-
-  return (
-    <div
-      ref={wrapperRef}
-      data-animation-key={animationKey}
-      className={classnames(styles.assistantEventWrapper, {
-        [styles.complete]: !isEntryInProgress,
-        [styles.searching]: isSearching,
-      })}
-    >
-      <div ref={contentRef}>{content}</div>
-    </div>
-  )
+  // Unknown events should be ignored
+  return null
 }
 
 export type AssistantResponseProps = BaseProps & {
