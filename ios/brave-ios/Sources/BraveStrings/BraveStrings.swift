@@ -9405,11 +9405,40 @@ extension Strings {
     )
     public static let loginListNeverSavedListHeaderTitle =
       NSLocalizedString(
-        "login.managePasswords.loginListNeverSavedListHeaderTitle",
+        "autofill.managePasswords.loginListNeverSavedListHeaderTitle",
         tableName: "BraveShared",
         bundle: .module,
         value: "Never Saved",
         comment: "The header title displayed over the never saved login list entry"
       )
+    public static let deleteLoginButtonTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteLoginButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Delete",
+      comment: "Label for the button used to delete the current login."
+    )
+    public static let deleteLoginAlertTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteLoginAlertTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Are you sure?",
+      comment: "Prompt title when deleting logins"
+    )
+    public static let deleteLoginAlertCancelActionTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteLoginAlertCancelActionTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Cancel",
+      comment: "Prompt option for cancelling out of deletion"
+    )
+    public static let deleteLoginAlertLocalMessage = NSLocalizedString(
+      "autofill.managePasswords.deleteLoginAlertLocalMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "This will remove the saved passwords for %@ from your sync chain and your device.",
+      comment:
+        "Alert message warning the user that deleting non-synced logins will permanently remove them"
+    )
   }
 }

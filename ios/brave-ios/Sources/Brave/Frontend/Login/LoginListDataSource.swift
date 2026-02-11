@@ -210,6 +210,15 @@ class LoginListViewModel {
     fetchLoginInfo()
   }
 
+  /// Removes all given credentials then refreshes the list once.
+  func removeCredentials(_ credentials: [PasswordForm]) {
+    guard !credentials.isEmpty else { return }
+    for credential in credentials {
+      passwordAPI.removeLogin(credential)
+    }
+    fetchLoginInfo()
+  }
+
   /// Credentials grouped by base domain for the saved logins section (one row per site).
   var groupedCredentialList: [(domain: String, credentials: [PasswordForm])] {
     Self.groupCredentialsByDomain(credentialList)

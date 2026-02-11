@@ -16,10 +16,16 @@ struct LoginListView: View {
   @State private var searchText: String = ""
   @State private var isSearchActive: Bool = false
   @State private var isEditMode: Bool = false
+  @State private var selectedDomainIds: Set<String> = []
+  @State private var showDeleteConfirmation: Bool = false
 
   private let passwordAPI: BravePasswordAPI
   private let windowProtection: WindowProtection?
   var settingsDelegate: SettingsDelegate?
+
+  private static func domainId(saved: Bool, domain: String) -> String {
+    saved ? "saved:\(domain)" : "blocked:\(domain)"
+  }
 
   init(
     passwordAPI: BravePasswordAPI,
@@ -33,10 +39,37 @@ struct LoginListView: View {
   }
 
   var body: some View {
+    mainContent
+      .toolbarBackground(.visible, for: .navigationBar)
+      .navigationTitle(Strings.Autofill.managePasswordstTitle)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar { toolbarContent }
+      .alert(Strings.Autofill.deleteLoginAlertTitle, isPresented: $showDeleteConfirmation) {
+        Button(Strings.Autofill.deleteLoginAlertCancelActionTitle, role: .cancel) {}
+        Button(Strings.Autofill.deleteLoginButtonTitle, role: .destructive) {
+          performDomainDeletion()
+        }
+      } message: {
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Autofill.deleteLoginAlertLocalMessage,
+            selectedDomainsString
+          )
+        )
+      }
+      .onAppear {
+        viewModel.fetchLoginInfo()
+      }
+      .onChange(of: searchText) {
+        viewModel.performSearch(query: searchText.lowercased())
+      }
+  }
+
+  @ViewBuilder
+  private var mainContent: some View {
     ZStack {
       Color(.braveGroupedBackground)
         .ignoresSafeArea()
-
       if viewModel.credentialList.isEmpty && viewModel.blockedList.isEmpty
         && !viewModel.isRefreshing && !isSearchActive
       {
@@ -45,30 +78,89 @@ struct LoginListView: View {
         populatedStateView
       }
     }
-    .toolbarBackground(.visible, for: .navigationBar)
-    .navigationTitle(Strings.Autofill.managePasswordstTitle)
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        Button {
-          // TODO: Handle Add New action
-        } label: {
-          Image(braveSystemName: "leo.plus.add")
-        }
-      }
+  }
 
-      ToolbarItemGroup(placement: .bottomBar) {
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarItem(placement: .navigationBarTrailing) {
+      Button {
+        // TODO: Handle Add New action
+      } label: {
+        Image(braveSystemName: "leo.plus.add")
+      }
+      .disabled(isEditMode)
+    }
+
+    ToolbarItemGroup(placement: .bottomBar) {
+      if isEditMode {
+        Button(Strings.Autofill.deleteLoginButtonTitle) {
+          showDeleteConfirmation = true
+        }
+        .foregroundColor(selectedDomainIds.isEmpty ? Color(.braveDisabled) : .red)
+        .disabled(selectedDomainIds.isEmpty)
         Spacer()
-        Button(isEditMode ? Strings.done : Strings.edit) {
-          isEditMode.toggle()
+        Button(Strings.done) {
+          withAnimation {
+            isEditMode = false
+          }
+          selectedDomainIds.removeAll()
+        }
+        .foregroundColor(Color(.braveBlurpleTint))
+      } else {
+        Spacer()
+        Button(Strings.edit) {
+          withAnimation {
+            isEditMode = true
+          }
         }
       }
     }
-    .onAppear {
-      viewModel.fetchLoginInfo()
+  }
+
+  private var selectedDomainsString: String {
+    selectedDomainIds.reduce(into: "") { result, domainId in
+      let savedDomainPrefix = "saved:"
+      let blockedDomainPrefix = "blocked:"
+      let domain: String
+
+      if domainId.hasPrefix(savedDomainPrefix) {
+        domain = String(domainId.dropFirst(savedDomainPrefix.count))
+      } else if domainId.hasPrefix(blockedDomainPrefix) {
+        domain = String(domainId.dropFirst(blockedDomainPrefix.count))
+      } else {
+        domain = domainId
+      }
+      if !result.isEmpty { result += ", " }
+      result += domain
     }
-    .onChange(of: searchText) {
-      viewModel.performSearch(query: searchText.lowercased())
+  }
+  private func toggleSelection(_ domainId: String) {
+    if selectedDomainIds.contains(domainId) {
+      selectedDomainIds.remove(domainId)
+    } else {
+      selectedDomainIds.insert(domainId)
+    }
+  }
+
+  private func performDomainDeletion() {
+    var credentialsToRemove: [PasswordForm] = []
+    for id in selectedDomainIds {
+      if id.hasPrefix("saved:") {
+        let domain = String(id.dropFirst(6))
+        if let group = viewModel.groupedCredentialList.first(where: { $0.domain == domain }) {
+          credentialsToRemove.append(contentsOf: group.credentials)
+        }
+      } else if id.hasPrefix("blocked:") {
+        let domain = String(id.dropFirst(8))
+        if let group = viewModel.groupedBlockedList.first(where: { $0.domain == domain }) {
+          credentialsToRemove.append(contentsOf: group.credentials)
+        }
+      }
+    }
+    viewModel.removeCredentials(credentialsToRemove)
+    selectedDomainIds.removeAll()
+    withAnimation {
+      isEditMode = false
     }
   }
 
@@ -111,10 +203,15 @@ struct LoginListView: View {
 
       Section {
         ForEach(Array(viewModel.groupedCredentialList), id: \.domain) { domain, credentials in
+          let id = LoginListView.domainId(saved: true, domain: domain)
           LoginListRow(
             domain: domain,
             credentials: credentials,
+            isSaved: true,
+            domainId: id,
             isEditMode: isEditMode,
+            isSelected: selectedDomainIds.contains(id),
+            onToggleSelection: { toggleSelection(id) },
             passwordAPI: passwordAPI,
             windowProtection: windowProtection,
             settingsDelegate: settingsDelegate
@@ -129,10 +226,15 @@ struct LoginListView: View {
       if !viewModel.blockedList.isEmpty {
         Section(header: Text(Strings.Autofill.loginListNeverSavedListHeaderTitle)) {
           ForEach(Array(viewModel.groupedBlockedList), id: \.domain) { domain, credentials in
+            let id = LoginListView.domainId(saved: false, domain: domain)
             LoginListRow(
               domain: domain,
               credentials: credentials,
+              isSaved: false,
+              domainId: id,
               isEditMode: isEditMode,
+              isSelected: selectedDomainIds.contains(id),
+              onToggleSelection: { toggleSelection(id) },
               passwordAPI: passwordAPI,
               windowProtection: windowProtection,
               settingsDelegate: settingsDelegate
@@ -153,12 +255,65 @@ struct LoginListView: View {
 private struct LoginListRow: View {
   let domain: String
   let credentials: [PasswordForm]
+  let isSaved: Bool
+  let domainId: String
   let isEditMode: Bool
+  let isSelected: Bool
+  let onToggleSelection: () -> Void
   let passwordAPI: BravePasswordAPI
   let windowProtection: WindowProtection?
-  let settingsDelegate: SettingsDelegate?
+  var settingsDelegate: SettingsDelegate?
 
+  private var rowLabel: some View {
+    Group {
+      if let realmURL = credentials.first.flatMap({ URL(string: $0.signOnRealm) }),
+        !domain.isEmpty
+      {
+        HStack(spacing: 12) {
+          FaviconImage(url: realmURL, isPrivateBrowsing: false)
+            .frame(width: 24, height: 24)
+            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+          VStack(alignment: .leading, spacing: 2) {
+            Text(domain)
+              .foregroundColor(Color(.braveLabel))
+            if credentials.count > 1 {
+              Text("\(credentials.count) accounts")
+                .font(.footnote)
+                .foregroundColor(Color(.secondaryBraveLabel))
+            }
+          }
+          Spacer()
+        }
+        .padding(.vertical, 4)
+      }
+    }
+  }
+
+  @ViewBuilder
   var body: some View {
+    if isEditMode {
+      editModeRow
+    } else {
+      navigationRow
+    }
+  }
+
+  private var editModeRow: some View {
+    Button {
+      onToggleSelection()
+    } label: {
+      HStack(spacing: 12) {
+        Image(braveSystemName: isSelected ? "leo.check.circle-filled" : "leo.radio.unchecked")
+          .font(.title2)
+          .foregroundColor(isSelected ? Color(.braveBlurpleTint) : Color(.secondaryBraveLabel))
+        rowLabel
+      }
+      .contentShape(Rectangle())
+    }
+    .buttonStyle(.plain)
+  }
+
+  private var navigationRow: some View {
     NavigationLink {
       LoginInfoListView(
         domain: domain,
@@ -168,22 +323,7 @@ private struct LoginListRow: View {
         settingsDelegate: settingsDelegate
       )
     } label: {
-      if let realmURL = credentials.first.flatMap({ URL(string: $0.signOnRealm) }),
-        !domain.isEmpty
-      {
-        HStack(spacing: 12) {
-          FaviconImage(url: realmURL, isPrivateBrowsing: false)
-            .frame(width: 24, height: 24)
-            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-          Text(domain)
-          Spacer()
-        }
-        .foregroundColor(Color(.braveLabel))
-        .padding(.vertical, 4)
-      } else {
-        EmptyView()
-      }
+      rowLabel
     }
-    .disabled(isEditMode)
   }
 }
