@@ -13,7 +13,8 @@ program
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
     '--all [mode]',
-    'run presubmit on all files: brave (default, specific checks) or chromium (all checks)',
+    'run presubmit on all files: brave (default, specific checks) '
+      + 'or chromium (all checks)',
   )
   .option(
     '--files <file list>',
