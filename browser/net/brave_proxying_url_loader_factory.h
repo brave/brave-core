@@ -22,6 +22,7 @@
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "brave/browser/net/resource_context_data.h"
@@ -223,7 +224,10 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
 
   void MaybeRemoveProxy();
 
-  const raw_ref<BraveRequestHandler> request_handler_;
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  const raw_ref<BraveRequestHandler> request_handler_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const content::GlobalRenderFrameHostToken render_frame_token_;
 

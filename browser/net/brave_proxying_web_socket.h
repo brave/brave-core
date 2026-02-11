@@ -16,6 +16,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/content_browser_client.h"
@@ -125,7 +126,10 @@ class BraveProxyingWebSocket
   void OnMojoConnectionError(uint32_t custom_reason,
                              const std::string& description);
 
-  const raw_ref<BraveRequestHandler> request_handler_;
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  const raw_ref<BraveRequestHandler> request_handler_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
   // TODO(iefremov): Init this only once.
   std::shared_ptr<brave::BraveRequestInfo> ctx_;

@@ -123,6 +123,7 @@ void BraveRequestHandler::SetupCallbacks() {
 
 bool BraveRequestHandler::IsRequestIdentifierValid(
     uint64_t request_identifier) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return callbacks_.contains(request_identifier);
 }
 
@@ -130,6 +131,7 @@ int BraveRequestHandler::OnBeforeURLRequest(
     std::shared_ptr<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     GURL* new_url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (before_url_request_callbacks_.empty() || IsInternalScheme(ctx)) {
     return net::OK;
   }
@@ -144,6 +146,7 @@ int BraveRequestHandler::OnBeforeStartTransaction(
     std::shared_ptr<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     net::HttpRequestHeaders* headers) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (before_start_transaction_callbacks_.empty() || IsInternalScheme(ctx)) {
     return net::OK;
   }
@@ -160,6 +163,7 @@ int BraveRequestHandler::OnHeadersReceived(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!ctx->tab_origin.is_empty()) {
     brave::RemoveTrackableSecurityHeadersForThirdParty(
         ctx->request_url, url::Origin::Create(ctx->tab_origin),
@@ -185,6 +189,7 @@ int BraveRequestHandler::OnHeadersReceived(
 
 void BraveRequestHandler::OnURLRequestDestroyed(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto it = callbacks_.find(ctx->request_identifier);
   if (it != callbacks_.end()) {
     callbacks_.erase(it);
@@ -194,6 +199,7 @@ void BraveRequestHandler::OnURLRequestDestroyed(
 void BraveRequestHandler::RunCallbackForRequestIdentifier(
     uint64_t request_identifier,
     int rv) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
       callbacks_.find(request_identifier);
   // We intentionally do the async call to maintain the proper flow
@@ -206,7 +212,7 @@ void BraveRequestHandler::RunCallbackForRequestIdentifier(
 // instead of many (issues/5574).
 void BraveRequestHandler::RunNextCallback(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!callbacks_.contains(ctx->request_identifier)) {
     return;

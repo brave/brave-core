@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/sequence_checker.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/completion_once_callback.h"
@@ -50,12 +51,17 @@ class BraveRequestHandler {
   void SetupCallbacks();
   void RunNextCallback(std::shared_ptr<brave::BraveRequestInfo> ctx);
 
-  std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
-  std::vector<brave::OnBeforeStartTransactionCallback>
-      before_start_transaction_callbacks_;
-  std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
+  SEQUENCE_CHECKER(sequence_checker_);
 
-  std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
+  std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::vector<brave::OnBeforeStartTransactionCallback>
+      before_start_transaction_callbacks_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+
+  std::map<uint64_t, net::CompletionOnceCallback> callbacks_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
 };

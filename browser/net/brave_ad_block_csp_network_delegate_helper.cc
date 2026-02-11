@@ -20,8 +20,6 @@
 
 namespace brave {
 
-// Takes individual fields instead of BraveRequestInfo to avoid accessing
-// BraveRequestInfo on the ad-block thread pool.
 std::optional<std::string> GetCspDirectivesOnTaskRunner(
     const GURL& initiator_url,
     const GURL& request_url,

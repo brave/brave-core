@@ -59,9 +59,6 @@ struct EngineFlags {
   bool did_match_important = false;
 };
 
-// Input data extracted from BraveRequestInfo on the UI thread for use by the
-// ad-block thread pool task. This avoids passing BraveRequestInfo across
-// threads.
 struct ShouldBlockRequestParams {
   GURL initiator_url;
   GURL request_url;
@@ -72,8 +69,6 @@ struct ShouldBlockRequestParams {
   std::optional<std::string> devtools_request_id;
 };
 
-// Result returned from the ad-block thread pool task, applied back to
-// BraveRequestInfo on the UI thread.
 struct ShouldBlockRequestResult {
   EngineFlags engine_flags;
   std::string new_url_spec;
@@ -198,9 +193,6 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 // If `canonical_url` is specified, this will only check if the CNAME-uncloaked
 // response should be blocked. Otherwise, it will run the check for the
 // original request URL.
-//
-// Takes ShouldBlockRequestParams (value types) instead of BraveRequestInfo to
-// avoid accessing BraveRequestInfo on the ad-block thread pool.
 ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
     ShouldBlockRequestParams input,
     EngineFlags previous_result,
@@ -284,9 +276,6 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
   return result;
 }
 
-// Runs on the UI thread after ShouldBlockRequestOnTaskRunner completes.
-// Applies the thread pool results back to BraveRequestInfo and continues
-// the callback chain.
 void OnShouldBlockRequestResult(
     bool then_check_uncloaked,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
@@ -295,7 +284,6 @@ void OnShouldBlockRequestResult(
     ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  // Apply results back to ctx on the UI thread.
   ctx->blocked_by = result.blocked_by;
   ctx->mock_data_url = std::move(result.mock_data_url);
   if (!result.new_url_spec.empty()) {
