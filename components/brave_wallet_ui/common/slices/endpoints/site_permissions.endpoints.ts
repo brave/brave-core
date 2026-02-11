@@ -5,7 +5,10 @@
 
 // types
 import { BraveWallet } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  ACCOUNT_TAG_IDS,
+  WalletApiEndpointBuilderParams,
+} from '../api-base.slice'
 
 // utils
 import {
@@ -80,17 +83,31 @@ export const sitePermissionEndpoints = ({
     >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api } = baseQuery(undefined)
-          const { panelHandler } = api
+          const { data: api, cache } = baseQuery(undefined)
+          const { panelHandler, keyringService } = api
 
           if (panelHandler) {
             panelHandler.connectToSite([arg.addressToConnect], arg.duration)
+          }
 
-            const hasPendingRequests = await getHasPendingRequests()
+          // Sync global selected dapp account to the one the user connected
+          // with, so the Connections panel shows it when they open it later.
+          const allAccounts = await cache.getAllAccounts()
+          const connectedAccount = allAccounts.accounts.find(
+            (account) =>
+              account.address.toLowerCase()
+                === arg.addressToConnect.toLowerCase()
+              || account.accountId.uniqueKey === arg.addressToConnect,
+          )
+          if (connectedAccount) {
+            await keyringService.setSelectedAccount(connectedAccount.accountId)
+            cache.clearSelectedAccount()
+          }
 
-            if (!hasPendingRequests) {
-              api.panelHandler?.closeUI()
-            }
+          const hasPendingRequests = await getHasPendingRequests()
+
+          if (!hasPendingRequests && api.panelHandler) {
+            api.panelHandler.closeUI()
           }
 
           return {
@@ -104,7 +121,10 @@ export const sitePermissionEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts'],
+      invalidatesTags: [
+        'ConnectedAccounts',
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+      ],
     }),
 
     cancelConnectToSite: mutation<true, void>({
@@ -141,12 +161,17 @@ export const sitePermissionEndpoints = ({
     requestSitePermission: mutation<true, BraveWallet.AccountId>({
       queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api } = baseQuery(undefined)
-          const { panelHandler } = api
+          const { data: api, cache } = baseQuery(undefined)
+          const { panelHandler, keyringService } = api
 
           if (panelHandler) {
             await panelHandler.requestPermission(accountId)
           }
+
+          // Sync global selected dapp account to the one the user connected
+          // with, so the Connections panel shows it when they open it later.
+          await keyringService.setSelectedAccount(accountId)
+          cache.clearSelectedAccount()
 
           return {
             data: true,
@@ -161,16 +186,24 @@ export const sitePermissionEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts'],
+      invalidatesTags: [
+        'ConnectedAccounts',
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+      ],
     }),
 
     removeSitePermission: mutation<true, BraveWallet.AccountId>({
       queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { braveWalletService } = api
 
           await braveWalletService.resetPermission(accountId)
+
+          // Backend updates the selected dapp account in prefs when
+          // disconnecting (e.g. to the remaining connected account). Clear
+          // our cache and invalidate so the UI re-fetches and shows it.
+          cache.clearSelectedAccount()
 
           return {
             data: true,
@@ -185,7 +218,10 @@ export const sitePermissionEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts'],
+      invalidatesTags: [
+        'ConnectedAccounts',
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+      ],
     }),
   }
 }
