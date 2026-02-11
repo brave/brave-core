@@ -503,7 +503,8 @@ INSTANTIATE_TEST_SUITE_P(
               std::vector<mojom::WebSourcePtr> sources;
               sources.push_back(mojom::WebSource::New(
                   "Example Title", GURL("https://example.com/page"),
-                  GURL("https://example.com/favicon.ico")));
+                  GURL("https://example.com/favicon.ico"), std::nullopt,
+                  std::nullopt));
               std::vector<std::string> rich_results;
               rich_results.push_back(
                   R"({"type":"knowledge_graph","title":"Test Title"})");
@@ -1907,7 +1908,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
   std::vector<mojom::WebSourcePtr> sources;
   sources.push_back(
       mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
-                            GURL("https://imgs.search.brave.com/weather.ico")));
+                            GURL("https://imgs.search.brave.com/weather.ico"),
+                            std::nullopt, std::nullopt));
   std::vector<mojom::ContentBlockPtr> output;
   output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
       mojom::WebSourcesContentBlock::New(std::move(sources), "weather today",

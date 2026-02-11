@@ -134,7 +134,8 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
         }
 
         sources.push_back(mojom::WebSource::New(*title, std::move(url),
-                                                std::move(favicon_url)));
+                                                std::move(favicon_url),
+                                                std::nullopt, std::nullopt));
       }
     }
 
