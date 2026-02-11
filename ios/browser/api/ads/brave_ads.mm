@@ -167,9 +167,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
         base::BindRepeating(
             [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
             profile),
-        /*use_oblivious_http_staging_server=*/
-        brave_rewards::RewardsFlags::ForCurrentProcess().environment !=
-            brave_rewards::RewardsFlags::Environment::kProduction);
+        /*use_ohttp_staging=*/
+        brave_ads::IsStagingEnvironment(*self.profilePrefService));
   }
   return self;
 }

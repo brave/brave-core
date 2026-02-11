@@ -22,8 +22,8 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -134,9 +134,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       *local_state,
       default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
       base::BindRepeating(&GetNetworkContextForProfile, context),
-      /*use_oblivious_http_staging_server=*/
-      brave_rewards::RewardsFlags::ForCurrentProcess().environment !=
-          brave_rewards::RewardsFlags::Environment::kProduction);
+      /*use_ohttp_staging=*/IsStagingEnvironment(*prefs));
 
   return std::make_unique<AdsServiceImpl>(
       std::move(delegate), prefs, local_state, std::move(http_client),
