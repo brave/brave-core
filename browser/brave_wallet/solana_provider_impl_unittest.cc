@@ -509,17 +509,29 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   auto added_account = AddAccount();
   SetSelectedAccount(added_account->account_id);
 
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Block the site via "Block sites from accessing the Solana provider API"
+  // setting (no permission prompt is shown).
+  scoped_refptr<HostContentSettingsMap> map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context());
+  ASSERT_TRUE(map);
+  map->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SOLANA, CONTENT_SETTING_BLOCK);
+
   mojom::SolanaProviderError error;
   std::string error_message;
-  // no permission, trigger
-  // permissions::BraveWalletPermissionContext::RequestPermissions failed
   std::string account = Connect(std::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   EXPECT_FALSE(IsConnected());
 
-  GURL url("https://brave.com");
-  Navigate(url);
+  // Clear the block so we can add permission and connect.
+  map->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SOLANA, CONTENT_SETTING_DEFAULT);
   AddSolanaPermission(added_account->account_id);
   account = Connect(std::nullopt, &error, &error_message);
   EXPECT_EQ(account, added_account->address);
@@ -563,9 +575,6 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   EXPECT_TRUE(IsConnected());
 
   // CONTENT_SETTING_BLOCK will rule out previous granted permission.
-  scoped_refptr<HostContentSettingsMap> map =
-      HostContentSettingsMapFactory::GetForProfile(browser_context());
-  ASSERT_TRUE(map);
   map->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_SOLANA, CONTENT_SETTING_BLOCK);
   account = Connect(std::nullopt, &error, &error_message);

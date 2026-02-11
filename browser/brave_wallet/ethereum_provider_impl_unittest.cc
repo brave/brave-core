@@ -50,7 +50,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
-#include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -1403,12 +1402,10 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  auto* manager =
-      permissions::PermissionRequestManager::FromWebContents(web_contents());
-  ASSERT_TRUE(manager);
-  permissions::MockPermissionPromptFactory prompt_factory(manager);
-  prompt_factory.set_response_type(
-      permissions::PermissionRequestManager::AutoResponseType::DENY_ALL);
+  // Block the site via "Block sites from accessing the Ethereum provider API"
+  // setting (no permission prompt is shown).
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
 
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
@@ -1420,8 +1417,9 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
             std::string error_message;
             GetErrorCodeMessage(std::move(response->formed_response), &error,
                                 &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(error_message.empty());
+            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+            EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
+                                         IDS_WALLET_USER_REJECTED_REQUEST));
             permission_callback_called = true;
           }),
       base::Value(), "", GetOrigin());
