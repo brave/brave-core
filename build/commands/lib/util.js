@@ -958,8 +958,10 @@ const util = {
   },
 
   writeFileIfModified: (filePath, content) => {
-    fs.ensureFileSync(filePath)
-    if (fs.readFileSync(filePath, { encoding: 'utf-8' }) !== content) {
+    if (
+      !fs.existsSync(filePath)
+      || fs.readFileSync(filePath, { encoding: 'utf-8' }) !== content
+    ) {
       // Write file atomically.
       const tmpFilePath = `${filePath}.tmp`
       fs.writeFileSync(tmpFilePath, content)
