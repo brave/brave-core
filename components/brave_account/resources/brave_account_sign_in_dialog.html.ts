@@ -6,6 +6,7 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
+import './brave_account_email_input.js'
 import './brave_account_password_icons.js'
 import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
 import { onToggleVisibility } from './brave_account_common.js'
@@ -18,15 +19,15 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input
-          placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-          type="email"
-          @input=${this.onEmailInput}
+        <brave-account-email-input
+          @email-input=${(
+            e: CustomEvent<{ email: string; isValid: boolean }>,
+          ) => {
+            this.email = e.detail.email
+            this.isEmailValid = e.detail.isValid
+          }}
         >
-          <div class="label ${this.shouldShowEmailError ? 'error' : ''}">
-            $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
-          </div>
-        </leo-input>
+        </brave-account-email-input>
         <leo-input
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           type="password"
