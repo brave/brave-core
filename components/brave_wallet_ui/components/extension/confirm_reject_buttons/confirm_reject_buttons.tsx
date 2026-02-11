@@ -6,6 +6,10 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
+// Hooks
+import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
+import { PanelSelectors } from '../../../panel/selectors'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -31,6 +35,11 @@ export const ConfirmRejectButtons = (props: Props) => {
     isUnshieldingFunds,
   } = props
 
+  // selectors
+  const submittingTransaction = useUnsafePanelSelector(
+    PanelSelectors.submittingTransaction,
+  )
+
   // State
   const [transactionConfirmed, setTranactionConfirmed] = React.useState(false)
 
@@ -42,6 +51,11 @@ export const ConfirmRejectButtons = (props: Props) => {
     await onConfirm()
   }, [onConfirm])
 
+  const isTransactionConfirmedOrSubmitting =
+    transactionConfirmed || !!submittingTransaction
+  const isConfirmButtonDisabledOrSubmitting =
+    isConfirmButtonDisabled || !!submittingTransaction
+
   return (
     <Row
       padding='16px'
@@ -51,8 +65,8 @@ export const ConfirmRejectButtons = (props: Props) => {
         kind='outline'
         size='medium'
         onClick={onReject}
-        disabled={transactionConfirmed}
-        isDisabled={transactionConfirmed}
+        disabled={isTransactionConfirmedOrSubmitting}
+        isDisabled={isTransactionConfirmedOrSubmitting}
       >
         {getLocale('braveWalletAllowSpendRejectButton')}
       </Button>
@@ -60,9 +74,9 @@ export const ConfirmRejectButtons = (props: Props) => {
         kind='filled'
         size='medium'
         onClick={onClickConfirmTransaction}
-        disabled={isConfirmButtonDisabled}
-        isDisabled={isConfirmButtonDisabled}
-        isLoading={transactionConfirmed}
+        disabled={isConfirmButtonDisabledOrSubmitting}
+        isDisabled={isConfirmButtonDisabledOrSubmitting}
+        isLoading={isTransactionConfirmedOrSubmitting}
       >
         {isAccountSyncing
           ? getLocale('braveWalletSyncing')

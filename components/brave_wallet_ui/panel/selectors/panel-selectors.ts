@@ -32,3 +32,7 @@ export const selectedTransactionId = createSelector(
   [selectPanelState],
   (panel) => panel.selectedTransactionId,
 )
+export const submittingTransaction = createSelector(
+  [selectPanelState],
+  (panel) => panel.submittingTransaction,
+)

@@ -221,6 +221,11 @@ export interface PanelState {
   connectingAccounts: string[]
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: TransactionInfoLookup
+  /**
+   * Set while a transaction is being submitted (e.g. ZCash); keeps panel on
+   * pending view until status is shown.
+   */
+  submittingTransaction?: SerializableTransactionInfo
 }
 
 export interface PageState {
