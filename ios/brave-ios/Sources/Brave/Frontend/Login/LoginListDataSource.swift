@@ -209,4 +209,28 @@ class LoginListViewModel {
     passwordAPI.removeLogin(credential)
     fetchLoginInfo()
   }
+
+  /// Credentials grouped by base domain for the saved logins section (one row per site).
+  var groupedCredentialList: [(domain: String, credentials: [PasswordForm])] {
+    Self.groupCredentialsByDomain(credentialList)
+  }
+
+  /// Blocked credentials grouped by base domain for the never-saved section.
+  var groupedBlockedList: [(domain: String, credentials: [PasswordForm])] {
+    Self.groupCredentialsByDomain(blockedList)
+  }
+
+  static func groupCredentialsByDomain(
+    _ credentials: [PasswordForm]
+  ) -> [(domain: String, credentials: [PasswordForm])] {
+    let grouped = Dictionary(
+      grouping: credentials,
+      by: { URL(string: $0.signOnRealm)?.baseDomain ?? "" }
+    )
+    return
+      grouped
+      .filter { !$0.key.isEmpty }
+      .map { (domain: $0.key, credentials: $0.value) }
+      .sorted { $0.domain.localizedCaseInsensitiveCompare($1.domain) == .orderedAscending }
+  }
 }

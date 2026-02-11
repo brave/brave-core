@@ -16,7 +16,6 @@ struct LoginListView: View {
   @State private var searchText: String = ""
   @State private var isSearchActive: Bool = false
   @State private var isEditMode: Bool = false
-  @State private var deleteConfirmation: PasswordForm?
 
   private let passwordAPI: BravePasswordAPI
   private let windowProtection: WindowProtection?
@@ -71,25 +70,6 @@ struct LoginListView: View {
     .onChange(of: searchText) {
       viewModel.performSearch(query: searchText.lowercased())
     }
-    .alert(
-      Strings.deleteLoginAlertTitle,
-      isPresented: Binding(
-        get: { deleteConfirmation != nil },
-        set: { if !$0 { deleteConfirmation = nil } }
-      )
-    ) {
-      Button(Strings.deleteLoginButtonTitle, role: .destructive) {
-        if let credential = deleteConfirmation {
-          viewModel.removeLogin(credential)
-          deleteConfirmation = nil
-        }
-      }
-      Button(Strings.cancelButtonTitle, role: .cancel) {
-        deleteConfirmation = nil
-      }
-    } message: {
-      Text(Strings.Login.loginEntryDeleteAlertMessage)
-    }
   }
 
   private var emptyStateView: some View {
@@ -130,24 +110,14 @@ struct LoginListView: View {
       }
 
       Section {
-        ForEach(
-          Array(viewModel.credentialList.enumerated()),
-          id: \.element.signOnRealm
-        ) { index, credential in
+        ForEach(Array(viewModel.groupedCredentialList), id: \.domain) { domain, credentials in
           LoginListRow(
-            credential: credential,
+            domain: domain,
+            credentials: credentials,
             isEditMode: isEditMode,
             passwordAPI: passwordAPI,
             windowProtection: windowProtection,
-            settingsDelegate: settingsDelegate,
-            onTap: {
-              if !isEditMode {
-                onCredentialSelected?(credential)
-              }
-            },
-            onDelete: {
-              deleteConfirmation = credential
-            }
+            settingsDelegate: settingsDelegate
           )
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
@@ -158,23 +128,14 @@ struct LoginListView: View {
 
       if !viewModel.blockedList.isEmpty {
         Section(header: Text(Strings.Autofill.loginListNeverSavedListHeaderTitle)) {
-          ForEach(Array(viewModel.blockedList.enumerated()), id: \.element.signOnRealm) {
-            index,
-            credential in
+          ForEach(Array(viewModel.groupedBlockedList), id: \.domain) { domain, credentials in
             LoginListRow(
-              credential: credential,
+              domain: domain,
+              credentials: credentials,
               isEditMode: isEditMode,
               passwordAPI: passwordAPI,
               windowProtection: windowProtection,
-              settingsDelegate: settingsDelegate,
-              onTap: {
-                if !isEditMode {
-                  onCredentialSelected?(credential)
-                }
-              },
-              onDelete: {
-                deleteConfirmation = credential
-              }
+              settingsDelegate: settingsDelegate
             )
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
@@ -190,32 +151,31 @@ struct LoginListView: View {
 }
 
 private struct LoginListRow: View {
-  let credential: PasswordForm
+  let domain: String
+  let credentials: [PasswordForm]
   let isEditMode: Bool
   let passwordAPI: BravePasswordAPI
   let windowProtection: WindowProtection?
   let settingsDelegate: SettingsDelegate?
-  let onTap: () -> Void
-  let onDelete: () -> Void
 
   var body: some View {
     NavigationLink {
-      LoginInfoViewControllerRepresentable(
+      LoginInfoListView(
+        domain: domain,
+        credentials: credentials,
         passwordAPI: passwordAPI,
-        credentials: credential,
         windowProtection: windowProtection,
         settingsDelegate: settingsDelegate
       )
     } label: {
-      if let realmURL = URL(string: credential.signOnRealm),
-        let baseDomain = realmURL.baseDomain,
-        !baseDomain.isEmpty
+      if let realmURL = credentials.first.flatMap({ URL(string: $0.signOnRealm) }),
+        !domain.isEmpty
       {
         HStack(spacing: 12) {
           FaviconImage(url: realmURL, isPrivateBrowsing: false)
             .frame(width: 24, height: 24)
             .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-          Text(baseDomain)
+          Text(domain)
           Spacer()
         }
         .foregroundColor(Color(.braveLabel))
@@ -225,26 +185,5 @@ private struct LoginListRow: View {
       }
     }
     .disabled(isEditMode)
-  }
-}
-
-// TODO: Remove LoginInfoViewControllerRepresentable after updting LoginInfoView to new design
-private struct LoginInfoViewControllerRepresentable: UIViewControllerRepresentable {
-  let passwordAPI: BravePasswordAPI
-  let credentials: PasswordForm
-  let windowProtection: WindowProtection?
-  let settingsDelegate: SettingsDelegate?
-
-  func makeUIViewController(context: Context) -> LoginInfoViewController {
-    let vc = LoginInfoViewController(
-      passwordAPI: passwordAPI,
-      credentials: credentials,
-      windowProtection: windowProtection
-    )
-    vc.settingsDelegate = settingsDelegate
-    return vc
-  }
-
-  func updateUIViewController(_ uiViewController: LoginInfoViewController, context: Context) {
   }
 }

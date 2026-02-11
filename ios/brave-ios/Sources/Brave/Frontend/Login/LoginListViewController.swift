@@ -26,8 +26,7 @@ class LoginListViewController: UIHostingController<LoginListView> {
     let loginView = LoginListView(
       passwordAPI: passwordAPI,
       windowProtection: windowProtection,
-      settingsDelegate: nil,
-      onCredentialSelected: nil
+      settingsDelegate: nil
     )
 
     super.init(rootView: loginView)
