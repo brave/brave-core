@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index d5fe1468676285540909ee078d5b88a9bd8e197c..0f1049854970d348f7e944426008035b8d6478a4 100644
+index 9ba8c0055a45eb0a27a6374c52966c83d8384f12..a1f649358b447368d18f213defdc2df38d336f36 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -839,6 +839,11 @@
@@ -14,7 +14,7 @@ index d5fe1468676285540909ee078d5b88a9bd8e197c..0f1049854970d348f7e944426008035b
      {
        name: "BrowserInitiatedAutomaticPictureInPicture",
        public: true,
-@@ -2523,6 +2528,7 @@
+@@ -2614,6 +2619,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -22,7 +22,7 @@ index d5fe1468676285540909ee078d5b88a9bd8e197c..0f1049854970d348f7e944426008035b
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -2537,6 +2543,7 @@
+@@ -2628,6 +2634,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
        status: {"default": "stable"},

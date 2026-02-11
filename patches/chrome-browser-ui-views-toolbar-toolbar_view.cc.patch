@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 4ad69dd085d4d0cb57604b00bc404b3026d55f20..a604450528fafc9cf5dd21f7d7e20278138fb86b 100644
+index 7e2880e8f281f35b4fdfda7b403ee3d2d65d34db..03ed856b3b88d3d240544c4eb774d75b4e8c9efa 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -433,6 +433,7 @@ void ToolbarView::Init() {
+@@ -573,6 +573,7 @@ void ToolbarView::Init() {
+     media_button_ = AddChildView(std::move(media_button));
    }
- #endif  // BUILDFLAG(ENABLE_GLIC)
  
 +  BRAVE_TOOLBAR_VIEW_INIT
    avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));

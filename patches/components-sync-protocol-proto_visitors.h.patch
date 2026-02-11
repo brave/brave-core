@@ -1,8 +1,8 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 738d2ac9e8526c14714e01224ed75c5937568424..304bee6094fcfcdff5db8fad7665219fb896d6df 100644
+index 92f1e4f81397b33b9b6ef8280c6c6112bd734504..7d81e6313ed30719e3af128ec8cc1cef1ec38083 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -640,6 +640,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -643,6 +643,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(signin_scoped_device_id);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -10,8 +10,8 @@ index 738d2ac9e8526c14714e01224ed75c5937568424..304bee6094fcfcdff5db8fad7665219f
    VISIT(sharing_fields);
    VISIT(model);
    VISIT(manufacturer);
-@@ -671,6 +672,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
-   VISIT(desktop_to_ios_promo_receiving_enabled);
+@@ -675,6 +676,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+   VISIT_REP(desktop_to_ios_promo_receiving_types);
  }
  
 +BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD

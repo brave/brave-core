@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-index cc972b9323b250a42d4243a5a185371f776e82f7..a5a7440cdd98f26373997d78d97a87ce00264287 100644
+index 42daa10da6c8633342802123cb37152cae7f6dc8..d6772c72ba8c2f3b5408072d7c26a0ab1983d6b6 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-@@ -120,6 +120,7 @@ export class ProfilePickerMainViewElement extends
-   private eventTracker_: EventTracker = new EventTracker();
+@@ -155,6 +155,7 @@ export class ProfilePickerMainViewElement extends
+   }
  
    override firstUpdated() {
 +    this.$.addProfile.style.borderRadius = '8px';

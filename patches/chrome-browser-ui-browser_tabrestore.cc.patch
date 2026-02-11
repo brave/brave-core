@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index 08fd54ac9aae3897df33d7f98b984a4a31efd7bd..e0a40be1eec53c72ae66c64ca8954bd696b67366 100644
+index dc253dfd33c5b63dfdbbc89bd3718a5244546cf6..8b59879728a69c31c4df5d8bb6f818f133a47a38 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
-@@ -42,6 +42,12 @@
- #include "chrome/browser/glic/glic_tab_restore_helper.h"
- #endif
+@@ -39,6 +39,12 @@
+ #include "ui/gfx/geometry/size.h"
+ #include "ui/gfx/range/range.h"
  
 +#include "brave/components/containers/buildflags/buildflags.h"
 +
@@ -15,7 +15,7 @@ index 08fd54ac9aae3897df33d7f98b984a4a31efd7bd..e0a40be1eec53c72ae66c64ca8954bd6
  using content::NavigationEntry;
  using content::RestoreType;
  using content::WebContents;
-@@ -75,7 +81,14 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+@@ -72,7 +78,14 @@ std::unique_ptr<WebContents> CreateRestoredTab(
            browser->profile(), session_storage_namespace);
    WebContents::CreateParams create_params(
        browser->profile(),
