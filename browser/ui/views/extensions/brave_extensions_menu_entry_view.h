@@ -17,6 +17,7 @@ class BraveExtensionsMenuEntryView : public ExtensionsMenuEntryView {
       Browser* browser,
       bool is_enterprise,
       ToolbarActionViewModel* view_model,
+      views::Button::PressedCallback action_button_callback,
       base::RepeatingCallback<void(bool)> site_access_toggle_callback,
       views::Button::PressedCallback site_permissions_button_callback);
   ~BraveExtensionsMenuEntryView() override;
