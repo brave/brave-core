@@ -100,6 +100,9 @@ function Container() {
   const selectedTransactionId = useUnsafePanelSelector(
     PanelSelectors.selectedTransactionId,
   )
+  const submittingTransaction = useUnsafePanelSelector(
+    PanelSelectors.submittingTransaction,
+  )
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin,
   )
@@ -313,7 +316,11 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
+  if (
+    selectedPanel === 'transactionStatus'
+    && selectedTransactionId
+    && !submittingTransaction
+  ) {
     return (
       <PanelWrapper
         width={390}
@@ -326,14 +333,17 @@ function Container() {
     )
   }
 
-  if (selectedPendingTransaction) {
+  const pendingOrConfirmingTransaction =
+    selectedPendingTransaction ?? submittingTransaction
+
+  if (pendingOrConfirmingTransaction) {
     return (
       <PanelWrapper
         width={390}
         height={650}
       >
         <PendingTransactionPanel
-          selectedPendingTransaction={selectedPendingTransaction}
+          selectedPendingTransaction={pendingOrConfirmingTransaction}
         />
       </PanelWrapper>
     )

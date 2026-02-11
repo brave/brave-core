@@ -5,6 +5,12 @@
 
 import * as React from 'react'
 
+// Hooks
+import {
+  useUnsafePanelSelector, //
+} from '../../../../common/hooks/use-safe-selector'
+import { PanelSelectors } from '../../../../panel/selectors'
+
 // Types
 import { BraveWallet } from '../../../../constants/types'
 import { ParsedTransaction } from '../../../../utils/tx-utils'
@@ -64,6 +70,11 @@ export function PendingTransactionActionsFooter({
   isShieldingFunds,
   isUnshieldingFunds,
 }: Props) {
+  // selectors
+  const submittingTransaction = useUnsafePanelSelector(
+    PanelSelectors.submittingTransaction,
+  )
+
   // state
   const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
   const [transactionConfirmed, setTranactionConfirmed] = React.useState(false)
@@ -120,15 +131,20 @@ export function PendingTransactionActionsFooter({
 
   const hasWarnings = Boolean(warnings.length)
 
+  const isTransactionConfirmedOrSubmitting =
+    transactionConfirmed || !!submittingTransaction
+  const isConfirmButtonDisabledOrSubmitting =
+    isConfirmButtonDisabled || !!submittingTransaction
+
   const { confirmButton, rejectButton } = React.useMemo(() => {
     return {
       confirmButton: (
         <LeoSquaredButton
           kind={hasWarnings ? 'outline' : 'filled'}
           onClick={onClickConfirmTransaction}
-          disabled={isConfirmButtonDisabled}
-          isDisabled={isConfirmButtonDisabled}
-          isLoading={transactionConfirmed}
+          disabled={isConfirmButtonDisabledOrSubmitting}
+          isDisabled={isConfirmButtonDisabledOrSubmitting}
+          isLoading={isTransactionConfirmedOrSubmitting}
         >
           {isAccountSyncing
             ? getLocale('braveWalletSyncing')
@@ -143,8 +159,8 @@ export function PendingTransactionActionsFooter({
         <LeoSquaredButton
           kind={hasWarnings ? 'filled' : 'outline'}
           onClick={onReject}
-          disabled={transactionConfirmed}
-          isDisabled={transactionConfirmed}
+          disabled={isTransactionConfirmedOrSubmitting}
+          isDisabled={isTransactionConfirmedOrSubmitting}
         >
           {getLocale('braveWalletAllowSpendRejectButton')}
         </LeoSquaredButton>
@@ -153,8 +169,8 @@ export function PendingTransactionActionsFooter({
   }, [
     hasWarnings,
     onClickConfirmTransaction,
-    isConfirmButtonDisabled,
-    transactionConfirmed,
+    isTransactionConfirmedOrSubmitting,
+    isConfirmButtonDisabledOrSubmitting,
     onReject,
     isAccountSyncing,
     isShieldingFunds,

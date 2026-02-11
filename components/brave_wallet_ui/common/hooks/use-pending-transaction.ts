@@ -508,6 +508,10 @@ export const usePendingTransactions = () => {
       return
     }
 
+    // Keep panel on pending transaction view until we navigate to
+    // transactionStatus (e.g. ZCash submission can take several seconds)
+    dispatch(PanelActions.setSubmittingTransaction(transactionInfo))
+
     try {
       const result = await approveTransaction({
         chainId: transactionInfo.chainId,
@@ -548,6 +552,7 @@ export const usePendingTransactions = () => {
         }),
       )
       dispatch(PanelActions.navigateTo('transactionStatus'))
+      dispatch(PanelActions.setSubmittingTransaction(undefined))
     }
   }, [approveTransaction, dispatch, transactionInfo])
 
