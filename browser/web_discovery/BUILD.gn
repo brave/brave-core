@@ -73,6 +73,8 @@ source_set("browser_tests") {
       "//components/prefs",
       "//content/public/browser",
       "//content/test:test_support",
+      "//net:test_support",
+      "//services/service_manager/public/cpp",
       "//testing/gmock",
       "//testing/gtest",
     ]
@@ -84,8 +86,6 @@ source_set("browser_tests") {
         "//brave/components/web_discovery/browser:internal",
         "//brave/components/web_discovery/common",
         "//brave/components/web_discovery/common:mojom",
-        "//net:test_support",
-        "//services/service_manager/public/cpp",
       ]
     }
   }
