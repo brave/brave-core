@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 324441f7f80d81af009d3c1ba2aae51d6b77001a..b9ad1ee9c816ba9356a122e1db54721f9ce88bbb 100644
+index da71d1b4b4a65c015b0b1dc4cd576e07db886d92..92c57dce4542530597cb557af7fab580a4245d25 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -432,6 +432,7 @@ void ToolbarView::Init() {
+@@ -523,6 +523,7 @@ void ToolbarView::Init() {
    }
  #endif  // BUILDFLAG(ENABLE_GLIC)
  
