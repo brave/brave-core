@@ -58,7 +58,7 @@ struct LoginListView: View {
       }
 
       ToolbarItemGroup(placement: .bottomBar) {
-        //ToolbarSpacer(.fixed, placement: .automatic)
+        Spacer()
         Button(isEditMode ? Strings.done : Strings.edit) {
           isEditMode.toggle()
         }

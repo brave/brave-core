@@ -36,4 +36,15 @@ class LoginListViewController: UIHostingController<LoginListView> {
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    // UINavigationController hides the toolbar by default
+    navigationController?.setToolbarHidden(false, animated: animated)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.setToolbarHidden(true, animated: animated)
+  }
 }
