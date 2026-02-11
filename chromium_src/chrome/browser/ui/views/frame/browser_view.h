@@ -47,9 +47,11 @@
 #define ReparentTopContainerForEndOfImmersive \
   virtual ReparentTopContainerForEndOfImmersive
 #define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
+#define GetFrameElementInfo virtual GetFrameElementInfo
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
+#undef GetFrameElementInfo
 #undef ReparentTopContainerForEndOfImmersive
 #undef ShouldDrawTabStrokes
 #undef HideSplitView

@@ -46,6 +46,21 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
 
 BraveBrowserFrameViewMac::~BraveBrowserFrameViewMac() = default;
 
+gfx::Rect BraveBrowserFrameViewMac::GetBoundsForClientView() const {
+  if (ShouldShowWindowTitleForVerticalTabs()) {
+    // Upstream implementation doesn't properly use
+    // GetBrowserLayoutParams().visual_client_area. They just use bounds() for
+    // client view bounds which results in make client area fills the entire
+    // frame bounds. So it doesn't help even if we override
+    // GetBrowserLayoutParams(). to inset the visual_client_area. So we need to
+    // manually inset the client view bounds here.
+    gfx::Rect client_bounds = bounds();
+    client_bounds.Inset(gfx::Insets::TLBR(GetTopInset(false), 0, 0, 0));
+    return client_bounds;
+  }
+  return BrowserFrameViewMac::GetBoundsForClientView();
+}
+
 void BraveBrowserFrameViewMac::OnPaint(gfx::Canvas* canvas) {
   BrowserFrameViewMac::OnPaint(canvas);
 

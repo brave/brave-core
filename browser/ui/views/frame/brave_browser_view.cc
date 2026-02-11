@@ -1195,6 +1195,15 @@ bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
   return false;
 }
 
+ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
+  ClientFrameElementInfo info = BrowserView::GetFrameElementInfo();
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    // In case of Brave vertical tabs, we don't want to show the tabstrip.
+    info.tabstrip_preferred_height = 0;
+  }
+  return info;
+}
+
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }
