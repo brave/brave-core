@@ -55,11 +55,7 @@ function writeSisoRc() {
       ninjaFlags.push(`-local_cache_enable`)
       // Set cache directory.
       ninjaFlags.push(`-cache_dir "${sisoCacheDir}"`)
-      try {
-        fs.mkdirSync(sisoCacheDir, { recursive: true })
-      } catch (e) {
-        // Ignore errors if the cache dir already exists.
-      }
+      fs.mkdirSync(sisoCacheDir, { recursive: true })
     }
 
     if (!config.isCI) {
