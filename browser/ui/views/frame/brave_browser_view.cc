@@ -1039,7 +1039,6 @@ void BraveBrowserView::OnThemeChanged() {
 
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners.
-  UpdateContentsSeparatorVisibility();
   UpdateContentsShadowVisibility();
   UpdateWebViewRoundedCorners();
   UpdateVerticalTabStripBorder();
@@ -1119,17 +1118,6 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     CHECK(tab_modal_dialog_manager);
     tab_modal_dialog_manager->OnTabActiveStateChanged();
   }
-}
-
-void BraveBrowserView::UpdateContentsSeparatorVisibility() {
-  // It's not shown with rounded corners mode always.
-  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
-    top_container_separator_->SetPreferredSize({});
-    return;
-  }
-
-  top_container_separator_->SetPreferredSize(
-      gfx::Size(views::Separator::kThickness, views::Separator::kThickness));
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {

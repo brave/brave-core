@@ -212,12 +212,35 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
 
 BrowserViewTabbedLayoutImpl::TopSeparatorType
 BraveBrowserViewTabbedLayoutImpl::GetTopSeparatorType() const {
+  // Get the upstream separator type as a starting point. The top separator is
+  // a visual line that divides the browser's top UI (toolbar, tabs) from the
+  // main content area below it.
   auto top_separator_type = BrowserViewTabbedLayoutImpl::GetTopSeparatorType();
-  if (top_separator_type == TopSeparatorType::kNone) {
-    // We always show top container separator.
-    return TopSeparatorType::kTopContainer;
+
+  // Handle the special case where Brave uses rounded corners for the web view.
+  // The upstream implementation may return kMultiContents which positions the
+  // separator at the contents container boundary, or kNone indicating no
+  // separator should be drawn.
+  if (top_separator_type == TopSeparatorType::kNone ||
+      top_separator_type == TopSeparatorType::kMultiContents) {
+    // When rounded corners are enabled, we add padding/margins around the
+    // MultiContentsView to create space for the rounded corners and shadow.
+    // The kMultiContents separator would only span the width of the contents
+    // container (excluding the padding), creating an awkward visual gap.
+    //
+    // With rounded corners: Return kNone - the separator is not needed since
+    //   the rounded corners and shadow provide sufficient visual separation.
+    //
+    // Without rounded corners: Return kTopContainer - draw the separator at
+    //   the top container boundary instead, ensuring it spans the full browser
+    //   window width for a clean visual divider.
+    return delegate().ShouldUseBraveWebViewRoundedCornersForContents()
+               ? TopSeparatorType::kNone
+               : TopSeparatorType::kTopContainer;
   }
 
+  // For all other separator types (e.g., kTopContainer, kBookmarkBar), use the
+  // upstream behavior as-is since they already work correctly with Brave's UI.
   return top_separator_type;
 }
 
