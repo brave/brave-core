@@ -292,6 +292,32 @@ class ChromiumSrcOverridesChecker:
 
         return found['other']
 
+    def find_internal_defines(self, content, display_override_filepath):
+        """
+        Finds #define preceeded by ^// INTERNAL-USE$ above it. Returns a list
+        of the #define names.
+        """
+        INTERNAL_USE_COMMENT_REGEX = re.compile(r'^//\sINTERNAL-USE$')
+        DEFINE_REGEX = re.compile(r'^\s*#\s*define\s+([A-Za-z_]+)\b')
+        internal_defines = set()
+        comment_found = False
+        for line in content.splitlines():
+            if comment_found:
+                match = DEFINE_REGEX.match(line)
+                if not match:
+                    self.AddError(
+                        f"  In {display_override_filepath},\n  the " +
+                        "// INTERNAL-USE comment is not followed by a " +
+                        "#define line.")
+                else:
+                    internal_defines.add(match.group(1))
+                comment_found = False
+            else:
+                match = INTERNAL_USE_COMMENT_REGEX.match(line)
+                if match:
+                    comment_found = True
+        return internal_defines
+
     def do_check_defines(self, override_filepath, original_filepath):
         """
         Finds `#define TARGET REPLACEMENT` statements in |override_filepath| and
@@ -300,7 +326,12 @@ class ChromiumSrcOverridesChecker:
         matches = []
         with open(override_filepath, mode='r', encoding='utf-8') as \
             override_file:
-            content = strip_comments(override_file.read())
+            content = override_file.read()
+            display_override_filepath = os.path.join('chromium_src',
+                                                     override_filepath)
+            marked_as_internal_list = self.find_internal_defines(
+                content, display_override_filepath)
+            content = strip_comments(content)
 
             # Search for all matches for #define. The regex covers:
             # single line, function-like definitions, and multiline defines
@@ -342,22 +373,33 @@ class ChromiumSrcOverridesChecker:
                     original_file:
                     if not re.search(rf"\b{re.escape(target)}\b",
                                      strip_comments(original_file.read())):
-                        display_override_filepath = os.path.join(
-                            'chromium_src', override_filepath)
-                        self.AddOverrideSymbolError(used_internally, target,
-                                                    display_override_filepath,
-                                                    original_filepath)
+                        self.MaybeAddOverrideSymbolError(
+                            marked_as_internal_list, used_internally, target,
+                            display_override_filepath, original_filepath)
+                    else:
+                        if target in marked_as_internal_list:
+                            self.AddError(
+                                f"  Symbol {target} was found in\n" +
+                                f"  {original_filepath},\n  but is marked as "
+                                + "INTERNAL-USE in the\n" +
+                                f"  {display_override_filepath}.\n  Either " +
+                                "remove the INTERNAL-USE mark, or change the " +
+                                "symbol name to avoid overriding the symbol" +
+                                " in the original file.")
         return len(matches)
 
-    def AddOverrideSymbolError(self, is_used_internally, symbol,
-                               display_override_filepath, original_filepath):
+    def MaybeAddOverrideSymbolError(self, marked_as_internal_list,
+                                    is_used_internally, symbol,
+                                    display_override_filepath,
+                                    original_filepath):
         if is_used_internally:
+            if symbol in marked_as_internal_list:
+                return
             self.AddError(
                 f"  Symbol {symbol} appears to be used internally in\n" +
                 f"  {display_override_filepath}\n  Symbol is NOT found in\n" +
-                f"  {original_filepath}.\n  If this is correct, add the path "
-                + "and the symbol to the 'symbol_excludes' in " +
-                "//brave/chromium_src/check_chromium_src_config.json5.\n")
+                f"  {original_filepath}.\n  If this is correct, place " +
+                "'// INTERNAL-USE' comment on the line above the #define.")
         else:
             self.AddError(
                 f"  Override {display_override_filepath}\n  defines symbol " +
