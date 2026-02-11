@@ -11,6 +11,8 @@
   {                                                                            \
     auto item = std::make_unique<BraveExtensionsMenuEntryView>(                \
         browser_, entry_state.is_enterprise, action_model,                     \
+        base::BindRepeating(&ExtensionsMenuHandler::OnActionButtonClicked,     \
+                            base::Unretained(menu_handler_), extension_id),    \
         base::BindRepeating(&ExtensionsMenuHandler::OnExtensionToggleSelected, \
                             base::Unretained(menu_handler_), extension_id),    \
         base::BindRepeating(&ExtensionsMenuHandler::OpenSitePermissionsPage,   \
