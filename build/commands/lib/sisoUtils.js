@@ -7,7 +7,8 @@
 
 const Log = require('./logging')
 const config = require('./config')
-const fs = require('fs')
+const fs = require('node:fs')
+const path = require('node:path')
 const util = require('./util')
 
 /**
@@ -66,7 +67,7 @@ function writeSisoRc() {
     }
   }
 
-  const sisoRcPath = `${config.srcDir}/build/config/siso/.sisorc`
+  const sisoRcPath = path.join(config.srcDir, 'build/config/siso/.sisorc')
   const sisoRcContent = ninjaFlags.length
     ? `ninja ${ninjaFlags.join(' ')}\n`
     : ''
