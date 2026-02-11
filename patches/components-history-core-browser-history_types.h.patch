@@ -1,10 +1,10 @@
 diff --git a/components/history/core/browser/history_types.h b/components/history/core/browser/history_types.h
-index bdc18b898dc90b9523d9614fa369101977b99f72..3e3c3edda0b1faf8eaec0bbb5aff04a2b8f972ce 100644
+index 1b5becf6063bb0afdc094303c84d9561f93e61e5..d8c888ea9914e70171f32538873811edb0e2201f 100644
 --- a/components/history/core/browser/history_types.h
 +++ b/components/history/core/browser/history_types.h
 @@ -55,6 +55,8 @@ enum VisitSource {
    SOURCE_SAFARI_IMPORTED = 5,
-   SOURCE_ACTOR = 6,
+   SOURCE_ACTOR = 6,  // Added by the GLIC actor.
    SOURCE_OS_MIGRATION_IMPORTED = 7,
 +  SOURCE_CHROME_IMPORTED = 8,
 +  SOURCE_BRAVE_IMPORTED = 9,

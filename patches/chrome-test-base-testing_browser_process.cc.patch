@@ -1,8 +1,8 @@
 diff --git a/chrome/test/base/testing_browser_process.cc b/chrome/test/base/testing_browser_process.cc
-index 379e386017a164bf8c6734b2c435d798971b1091..d05261677d7b7f732b555adadb15ebe0a7237231 100644
+index ec5e24c732f6be2378ae4821b476c14a9f121c01..5fa90035afacd90056d93726246ad6234e81da01 100644
 --- a/chrome/test/base/testing_browser_process.cc
 +++ b/chrome/test/base/testing_browser_process.cc
-@@ -151,10 +151,12 @@ void TestingBrowserProcess::CreateInstance() {
+@@ -151,15 +151,18 @@ void TestingBrowserProcess::CreateInstance() {
          std::move(fake_geolocation_system_permission_manager));
    }
  #endif  // BUILDFLAG(OS_LEVEL_GEOLOCATION_PERMISSION_SUPPORTED)
@@ -12,10 +12,8 @@ index 379e386017a164bf8c6734b2c435d798971b1091..d05261677d7b7f732b555adadb15ebe0
  // static
  void TestingBrowserProcess::DeleteInstance() {
 +  BRAVE_TESTING_BROWSER_PROCESS_DELETE_INSTANCE
-   // g_browser_process must be null during its own destruction.
-   BrowserProcess* browser_process = g_browser_process;
-   g_browser_process = nullptr;
-@@ -163,6 +165,7 @@ void TestingBrowserProcess::DeleteInstance() {
+   delete g_browser_process;
+ }
  
  // static
  void TestingBrowserProcess::TearDownAndDeleteInstance() {
