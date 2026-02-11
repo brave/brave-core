@@ -890,7 +890,8 @@ const util = {
       return dotGitPath
     }
     // Returns the actual .git dir in case a worktree is used.
-    gitDir = util.runGit(repoDir, ['rev-parse', '--git-common-dir'], false)
+    const gitDir = util.runGit(repoDir, ['rev-parse', '--git-common-dir'],
+                               false)
     if (!path.isAbsolute(gitDir)) {
       return path.join(repoDir, gitDir)
     }

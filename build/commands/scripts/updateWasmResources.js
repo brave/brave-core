@@ -7,7 +7,7 @@ const config = require('../lib/config')
 const path = require('path')
 const util = require('../lib/util')
 
-args = [
+const args = [
   path.join(
     config.srcDir,
     'brave',

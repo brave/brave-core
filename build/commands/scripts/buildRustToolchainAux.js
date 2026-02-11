@@ -35,7 +35,7 @@ program
         'src@refs/tags/' + options.tag,
       ])
     }
-    args = [
+    const args = [
       path.join(
         config.srcDir,
         'brave',

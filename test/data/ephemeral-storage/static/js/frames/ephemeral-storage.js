@@ -19,7 +19,7 @@
     // Last, see if we're remote by seeing if we trigger a SOP violation
     // by reading the location of the parent.
     try {
-      if (window.parent.location.href) {}
+      console.log(window.parent.location.href)
       return false
     } catch (_) {
       return true

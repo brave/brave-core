@@ -91,7 +91,9 @@ async function createDynamicGDR () {
   // remove previously generated file
   try {
     await fs.unlink(gdrPath)
-  } catch (e) {}
+  } catch (e) {
+    console.error(e)
+  }
   // build file list from target dir
   const filePaths = await getFileListDeep(targetDir)
   const contents = gdrPath.endsWith('.grdp')

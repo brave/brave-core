@@ -367,7 +367,10 @@ exports.update = () => {
         .split('\n')
       let untrackedChromiumPaths = []
       for (const untrackedChromiumFile of untrackedChromiumFiles) {
-        untrackedChromiumPath = path.join(suspectedDir, untrackedChromiumFile)
+        const untrackedChromiumPath = path.join(
+          suspectedDir,
+          untrackedChromiumFile,
+        )
 
         if (!fs.statSync(untrackedChromiumPath).isDirectory()) {
           untrackedChromiumPaths.push(untrackedChromiumPath)

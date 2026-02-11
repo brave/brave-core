@@ -1264,7 +1264,7 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     return path.join(baseDir, buildConfigDir)
   },
   set: function (outputDir) {
-    return (this.__outputDir = outputDir)
+    this.__outputDir = outputDir
   },
 })
 
