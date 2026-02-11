@@ -155,3 +155,62 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanAddSplitTabCollection) {
   // Verify that the SplitTabCollection was added correctly.
   EXPECT_EQ(0, tree_tab_node.GetIndexOfCollection(split_tab_collection_ptr));
 }
+
+// Tests for level and height calculation (root is level 0; leaf height is 0).
+TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_SingleRootNode) {
+  auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto* node_ptr = tree_tab_node.get();
+  tabs::UnpinnedTabCollection unpinned_collection;
+  unpinned_collection.AddCollection(std::move(tree_tab_node), 0);
+
+  EXPECT_EQ(0, node_ptr->node().level());
+  EXPECT_EQ(0, node_ptr->node().height());
+  EXPECT_EQ(0, node_ptr->node().GetTreeHeight());
+}
+
+TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_RootWithOneTreeChild) {
+  auto parent = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto child = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  tabs::TreeTabNodeTabCollection* child_ptr = child.get();
+
+  parent->AddCollection(std::move(child), 0);
+
+  EXPECT_EQ(0, parent->node().level());
+  EXPECT_EQ(1, parent->node().height());
+  EXPECT_EQ(1, child_ptr->node().level());
+  EXPECT_EQ(0, child_ptr->node().height());
+  EXPECT_EQ(1, parent->node().GetTreeHeight());
+  EXPECT_EQ(1, child_ptr->node().GetTreeHeight());
+}
+
+TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_ChainOfThree) {
+  auto root = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto child1 = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto child2 = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  tabs::TreeTabNodeTabCollection* child1_ptr = child1.get();
+  tabs::TreeTabNodeTabCollection* child2_ptr = child2.get();
+
+  root->AddCollection(std::move(child1), 0);
+  child1_ptr->AddCollection(std::move(child2), 0);
+
+  EXPECT_EQ(0, root->node().level());
+  EXPECT_EQ(2, root->node().height());
+  EXPECT_EQ(1, child1_ptr->node().level());
+  EXPECT_EQ(1, child1_ptr->node().height());
+  EXPECT_EQ(2, child2_ptr->node().level());
+  EXPECT_EQ(0, child2_ptr->node().height());
+  EXPECT_EQ(2, root->node().GetTreeHeight());
+  EXPECT_EQ(2, child2_ptr->node().GetTreeHeight());
+}
