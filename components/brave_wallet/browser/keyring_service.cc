@@ -1106,16 +1106,19 @@ void KeyringService::CreateWallet(const std::string& password,
     std::move(callback).Run(std::nullopt);
     return;
   }
-  if (CreateWalletInternal(*mnemonic, password, false, false)) {
-    WalletDataFilesInstaller::GetInstance()
-        .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-            [](const std::string& mnemonic, CreateWalletCallback callback) {
+
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          [](const std::string& mnemonic, const std::string& password,
+             KeyringService* keyring_service, CreateWalletCallback callback) {
+            if (keyring_service->CreateWalletInternal(mnemonic, password, false,
+                                                      false)) {
               std::move(callback).Run(mnemonic);
-            },
-            *mnemonic, std::move(callback)));
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
+            } else {
+              std::move(callback).Run(std::nullopt);
+            }
+          },
+          *mnemonic, password, base::Unretained(this), std::move(callback)));
 }
 
 bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
@@ -1492,18 +1495,23 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    const std::string& password,
                                    bool is_legacy_eth_seed_format,
                                    RestoreWalletCallback callback) {
-  bool is_valid_mnemonic =
-      RestoreWalletSync(mnemonic, password, is_legacy_eth_seed_format);
-  if (!is_valid_mnemonic) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  // Only register the component if restore is successful.
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-          [](RestoreWalletCallback callback) { std::move(callback).Run(true); },
-          std::move(callback)));
+          [](const std::string& mnemonic, const std::string& password,
+             bool is_legacy_eth_seed_format, RestoreWalletCallback callback,
+             KeyringService* keyring_service) {
+            bool is_valid_mnemonic = keyring_service->RestoreWalletSync(
+                mnemonic, password, is_legacy_eth_seed_format);
+
+            if (!is_valid_mnemonic) {
+              std::move(callback).Run(false);
+              return;
+            }
+
+            std::move(callback).Run(true);
+          },
+          mnemonic, password, is_legacy_eth_seed_format, std::move(callback),
+          base::Unretained(this)));
 }
 
 bool KeyringService::CanResumeWallet(const std::string& mnemonic,
