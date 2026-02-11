@@ -31,18 +31,6 @@ class LoginListViewController: UIHostingController<LoginListView> {
     )
 
     super.init(rootView: loginView)
-
-    // Set up the navigation handler after super.init
-    rootView.onCredentialSelected = { [weak self] credential in
-      guard let self = self else { return }
-      let loginDetailsViewController = LoginInfoViewController(
-        passwordAPI: self.passwordAPI,
-        credentials: credential,
-        windowProtection: self.windowProtection
-      )
-      loginDetailsViewController.settingsDelegate = self.settingsDelegate
-      self.navigationController?.pushViewController(loginDetailsViewController, animated: true)
-    }
   }
 
   @available(*, unavailable)

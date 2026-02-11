@@ -21,18 +21,15 @@ struct LoginListView: View {
   private let passwordAPI: BravePasswordAPI
   private let windowProtection: WindowProtection?
   var settingsDelegate: SettingsDelegate?
-  var onCredentialSelected: ((PasswordForm) -> Void)?
 
   init(
     passwordAPI: BravePasswordAPI,
     windowProtection: WindowProtection?,
     settingsDelegate: SettingsDelegate?,
-    onCredentialSelected: ((PasswordForm) -> Void)? = nil
   ) {
     self.passwordAPI = passwordAPI
     self.windowProtection = windowProtection
     self.settingsDelegate = settingsDelegate
-    self.onCredentialSelected = onCredentialSelected
     self._viewModel = State(initialValue: LoginListViewModel(passwordAPI: passwordAPI))
   }
 
