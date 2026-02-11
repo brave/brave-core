@@ -12,6 +12,8 @@
 #include "base/check_deref.h"
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
+#include "base/strings/strcat.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
@@ -284,6 +286,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean("isBraveOriginBrandedBuild",
                           BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
+  html_source->AddString(
+      "braveOriginBuyUrl",
+      base::StrCat(
+          {"https://",
+           brave_domains::GetServicesDomain(
+               "account", brave_domains::ServicesEnvironment::STAGING),
+           "/?intent=checkout&product=origin&mtm_campaign=browser-settings"}));
   html_source->AddBoolean("isTreeTabsFlagEnabled",
                           base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",
