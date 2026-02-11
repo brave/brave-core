@@ -16,7 +16,6 @@ import static org.chromium.chrome.browser.password_manager.PasswordMetricsUtil.P
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -61,7 +60,6 @@ import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.url.GURL;
 
 import java.util.Locale;
 import java.util.Map;
@@ -379,30 +377,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         rebuildPasswordLists();
     }
 
-    /**
-     * Fetches favicon for the given origin URL and sets it on the preference. Uses the same default
-     * globe icon as desktop if we can't get a favicon.
-     *
-     * @param preference The preference to set the icon on.
-     * @param originUrl The full origin URL with scheme from the credential entry.
-     */
-    private void loadAndSetFaviconForPreference(Preference preference, String originUrl) {
-        GURL url = new GURL(originUrl);
-
-        mFaviconHelper.getForeignFaviconImageForURL(
-                getProfile(),
-                url,
-                0,
-                (bitmap, iconUrl) -> {
-                    if (bitmap == null) {
-                        bitmap =
-                                mDefaultFaviconHelper.getDefaultFaviconBitmap(
-                                        getStyledContext(), iconUrl, true, false);
-                    }
-                    preference.setIcon(new BitmapDrawable(getResources(), bitmap));
-                });
-    }
-
     /** Empty screen message when no passwords or exceptions are stored. */
     private void displayEmptyScreenMessage() {
         TextMessagePreference emptyView = new TextMessagePreference(getStyledContext(), null);
@@ -574,7 +548,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             if (shouldBeFiltered(url, name)) {
                 continue; // The current password won't show with the active filter, try the next.
             }
-            Preference preference = new Preference(getStyledContext());
+            PasswordEntryPreference preference =
+                    new PasswordEntryPreference(
+                            getStyledContext(),
+                            saved.getOriginUrl(),
+                            assumeNonNull(mFaviconHelper),
+                            assumeNonNull(mDefaultFaviconHelper),
+                            getProfile());
             preference.setTitle(url);
             preference.setOnPreferenceClickListener(this);
             preference.setSummary(name);
@@ -583,8 +563,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             args.putString(PASSWORD_LIST_URL, url);
             args.putString(PASSWORD_LIST_PASSWORD, password);
             args.putInt(PASSWORD_LIST_ID, i);
-            // Load and set favicon using the full origin URL (with scheme)
-            loadAndSetFaviconForPreference(preference, saved.getOriginUrl());
             passwordParent.addPreference(preference);
         }
         mNoPasswords = passwordParent.getPreferenceCount() == 0;
