@@ -40,12 +40,8 @@ buildflag_header("buildflags") {
     "UPHOLD_SANDBOX_FEE_ADDRESS=\"$uphold_sandbox_fee_address\"",
     "UPHOLD_SANDBOX_OAUTH_URL=\"$uphold_sandbox_oauth_url\"",
     "ZEBPAY_PRODUCTION_API_URL=\"$zebpay_production_api_url\"",
-    "ZEBPAY_PRODUCTION_CLIENT_ID=\"$zebpay_production_client_id\"",
-    "ZEBPAY_PRODUCTION_CLIENT_SECRET=\"$zebpay_production_client_secret\"",
     "ZEBPAY_PRODUCTION_OAUTH_URL=\"$zebpay_production_oauth_url\"",
     "ZEBPAY_SANDBOX_API_URL=\"$zebpay_sandbox_api_url\"",
-    "ZEBPAY_SANDBOX_CLIENT_ID=\"$zebpay_sandbox_client_id\"",
-    "ZEBPAY_SANDBOX_CLIENT_SECRET=\"$zebpay_sandbox_client_secret\"",
     "ZEBPAY_SANDBOX_OAUTH_URL=\"$zebpay_sandbox_oauth_url\"",
   ]
 }

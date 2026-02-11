@@ -37,18 +37,17 @@ const char* ConnectZebPayWallet::WalletType() const {
 std::string ConnectZebPayWallet::GetOAuthLoginURL() const {
   auto& config = engine_->Get<EnvironmentConfig>();
 
+  // Domain is arbitrary; only the path is used via PathForRequest() below.
   auto return_url =
-      config.zebpay_oauth_url().Resolve("/connect/authorize/callback");
+      GURL("https://brave.com").Resolve("/connect/authorize/callback");
 
   return_url = AppendOrReplaceQueryParameters(
-      return_url, {{"client_id", config.zebpay_client_id()},
-                   {"grant_type", "authorization_code"},
-                   {"redirect_uri", "rewards://zebpay/authorization"},
+      return_url, {{"grant_type", "authorization_code"},
                    {"response_type", "code"},
                    {"scope", "openid profile"},
                    {"state", oauth_info_.one_time_string}});
 
-  auto url = config.zebpay_oauth_url().Resolve("/account/login");
+  auto url = config.zebpay_oauth_url().Resolve("auth");
 
   url = net::AppendOrReplaceQueryParameter(url, "returnUrl",
                                            return_url.PathForRequest());

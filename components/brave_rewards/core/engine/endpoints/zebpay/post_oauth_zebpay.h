@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/engine/endpoints/result_for.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 
-// POST /connect/token
+// POST https://gate3.wallet.brave.com/api/oauth/zebpay/{environment}/token
 //
 // Request body:
 // grant_type=authorization_code

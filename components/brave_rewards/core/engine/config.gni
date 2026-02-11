@@ -28,12 +28,8 @@ declare_args() {
   uphold_sandbox_fee_address = ""
   uphold_sandbox_oauth_url = ""
   zebpay_production_api_url = ""
-  zebpay_production_client_id = ""
-  zebpay_production_client_secret = ""
   zebpay_production_oauth_url = ""
   zebpay_sandbox_api_url = ""
-  zebpay_sandbox_client_id = ""
-  zebpay_sandbox_client_secret = ""
   zebpay_sandbox_oauth_url = ""
 }
 
@@ -50,8 +46,6 @@ if (is_official_build) {
     assert(uphold_production_fee_address != "")
     assert(uphold_production_oauth_url != "")
     assert(zebpay_production_api_url != "")
-    assert(zebpay_production_client_id != "")
-    assert(zebpay_production_client_secret != "")
     assert(zebpay_production_oauth_url != "")
   }
 

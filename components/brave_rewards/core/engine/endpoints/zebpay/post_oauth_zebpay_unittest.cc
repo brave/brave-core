@@ -40,8 +40,7 @@ TEST_P(RewardsPostOAuthZebPayTest, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
   auto request_url =
-      engine().Get<EnvironmentConfig>().zebpay_oauth_url().Resolve(
-          "/connect/token");
+      engine().Get<EnvironmentConfig>().zebpay_oauth_url().Resolve("token");
 
   auto response = mojom::UrlResponse::New();
   response->status_code = status_code;

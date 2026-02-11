@@ -19,18 +19,14 @@ TEST_F(RewardsConnectZebPayWalletTest, LoginURL) {
 
   auto actual = connect.GenerateLoginURL();
 
-  auto expected_url = config.zebpay_oauth_url().Resolve(base::StrCat(
-      {"/account/login?returnUrl="
-       "%2Fconnect%2Fauthorize%2Fcallback%3F"
-       "client_id%3D",
-       config.zebpay_client_id(),
-       "%26"
-       "grant_type%3Dauthorization_code%26"
-       "redirect_uri%3Drewards%253A%252F%252Fzebpay%252Fauthorization%26"
-       "response_type%3Dcode%26"
-       "scope%3Dopenid%2Bprofile%26"
-       "state%3D",
-       connect.GetOAuthStateForTesting().one_time_string}));
+  auto expected_url = config.zebpay_oauth_url().Resolve(
+      base::StrCat({"auth?returnUrl="
+                    "%2Fconnect%2Fauthorize%2Fcallback%3F"
+                    "grant_type%3Dauthorization_code%26"
+                    "response_type%3Dcode%26"
+                    "scope%3Dopenid%2Bprofile%26"
+                    "state%3D",
+                    connect.GetOAuthStateForTesting().one_time_string}));
 
   EXPECT_EQ(actual, expected_url.spec());
 }
