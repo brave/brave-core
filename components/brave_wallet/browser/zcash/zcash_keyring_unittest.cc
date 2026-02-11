@@ -205,9 +205,15 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
 
 TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   ZCashKeyring keyring(
       std::vector<uint8_t>({0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
@@ -230,9 +236,15 @@ TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
 
 TEST(ZCashKeyringUnitTest, GetShieldedAddress_Testnet) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   ZCashKeyring keyring(
       std::vector<uint8_t>(
@@ -253,9 +265,15 @@ TEST(ZCashKeyringUnitTest, GetShieldedAddress_Testnet) {
 
 TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   ZCashKeyring keyring(
       std::vector<uint8_t>({0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
@@ -334,9 +352,15 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
 
 TEST(ZCashKeyringUnitTest, GetUnifiedAddress_Testnet) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   ZCashKeyring keyring(
       std::vector<uint8_t>(

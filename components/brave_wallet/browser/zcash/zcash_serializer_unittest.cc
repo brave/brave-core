@@ -10,12 +10,14 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 
 namespace brave_wallet {
 
@@ -207,6 +209,10 @@ void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
 
 // https://blockexplorer.one/zcash/testnet/tx/496dfffff625ada462cbc8a733f305fdef1ca584ceb8e7efa5e28e38249b466e
 TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
+#if BUILDFLAG(IS_IOS)
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kBraveWalletWebUIFeature);
+#endif
   OrchardBundleManager::OverrideRandomSeedForTesting(6675565u);
 
   ZCashKeyring keyring(

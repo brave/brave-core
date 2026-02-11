@@ -4227,9 +4227,15 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+  feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+#if BUILDFLAG(IS_IOS)
+       {features::kBraveWalletWebUIFeature, {}}
+#endif
+      },
+      {}  // disabled features
+  );
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 

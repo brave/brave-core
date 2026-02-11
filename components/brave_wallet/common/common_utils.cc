@@ -52,7 +52,15 @@ bool IsZCashEnabled() {
 }
 
 bool IsZCashShieldedTransactionsEnabled() {
+#if BUILDFLAG(IS_IOS)
+  bool is_zcash_enabled = IsZCashEnabled();
+  bool is_shielded_tx_enabled =
+      features::kZCashShieldedTransactionsEnabled.Get();
+  bool is_wallet_webui_enabled = IsWalletWebUIEnabled();
+  return is_zcash_enabled && is_shielded_tx_enabled && is_wallet_webui_enabled;
+#else
   return IsZCashEnabled() && features::kZCashShieldedTransactionsEnabled.Get();
+#endif
 }
 
 bool IsPolkadotEnabled() {
