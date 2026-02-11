@@ -186,3 +186,8 @@
 -WebAppTagWebAppTest.WebAppTaskCreatedForTab
 -WebSocketBrowserTestWithAllowFileAccessFromFiles.CheckFileOrigin
 -WebUIBubbleManagerBrowserTest.*
+
+# This test fails because Brave enables screen farbling
+# (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
+# screen dimension values returned to web content.
+-ScreenDetailsTest.FullscreenSize

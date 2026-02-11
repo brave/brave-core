@@ -59,6 +59,18 @@
 # This test fails because we disable PermissionElement origin trial.
 -All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseEnabled_BlinkDisabled
 
+# These tests fail because Brave enables screen farbling
+# (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
+# screen dimension values returned to web content.
+-HeadlessModeProtocolBrowserTest_OzoneScreenSizeOverride.OzoneScreenSizeOverride
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginAllow
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginDeny
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedSameOriginAllow
+-WindowManagementTest.OnCurrentScreenChangeEvent
+-WindowManagementTest.OnScreensChangeEvent
+-WindowManagementTest.ScreenDetailedOnChange
+-WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
@@ -76,9 +88,6 @@
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
 -LocalNetworkAccessWithFeatureEnabledBrowserTest.SpecialSchemeChromeDistiller
--MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginAllow
--MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginDeny
--MultiscreenWindowPlacementPermissionContextTest.IsExtendedSameOriginAllow
 -NewTabUIBrowserTest.*
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*
