@@ -181,6 +181,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kImmersiveFullscreen,
 #endif
       &features::kWebIdentityDigitalCredentials,
+      &features::kWebIdentityDigitalCredentialsCreation,
       &features::kWebOTP,
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
