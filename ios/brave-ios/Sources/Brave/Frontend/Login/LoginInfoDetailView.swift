@@ -68,6 +68,7 @@ struct LoginInfoDetailView: View {
               value: currentCredential.signOnRealm,
               editable: false
             )
+            .contentShape(Rectangle())
             .contextMenu {
               Button {
                 UIPasteboard.general.string = currentCredential.signOnRealm
@@ -90,6 +91,7 @@ struct LoginInfoDetailView: View {
               textBinding: $editedUsername,
               keyboardType: .emailAddress
             )
+            .contentShape(Rectangle())
             .contextMenu {
               if !isEditing, let username = currentCredential.usernameValue {
                 Button {
@@ -114,6 +116,7 @@ struct LoginInfoDetailView: View {
               showRevealToggle: !isEditing,
               onRevealToggle: { togglePasswordReveal() }
             )
+            .contentShape(Rectangle())
             .contextMenu {
               if !isEditing {
                 Button {
@@ -252,6 +255,7 @@ struct LoginInfoDetailView: View {
         }
       }
     }
+    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
     .padding(16)
     .opacity(isEditing && !editable ? 0.5 : 1)
   }
