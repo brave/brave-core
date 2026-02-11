@@ -782,4 +782,62 @@ describe('createInterfaceApi', () => {
     emitter('5', 5)
     expect(observer).toHaveBeenCalledTimes(2)
   })
+
+  it('updates the event data hook when an event is emitted', async () => {
+    let emitter: (...args: [string, number]) => void = () => {}
+    const api = createInterfaceApi({
+      key: 'test',
+      actions: {},
+      endpoints: {},
+      events: {
+        myEvent: event<[], [string, number]>((emit) => {
+          emitter = emit
+        }),
+      },
+    })
+
+    // Render a hook that subscribes to the latest event data
+    function useMyEventData() {
+      return api.useCurrentMyEvent()
+    }
+    let hookResult: RenderHookResult<
+      ReturnType<typeof useMyEventData>,
+      void
+    > = await act(async () => renderHook(useMyEventData))
+
+    expect(hookResult.result.current.hasEmitted).toBe(false)
+    expect(hookResult.result.current.data).toBeUndefined()
+
+    // manually call the event
+    api.emitEvent('myEvent', ['4', 4])
+
+    // hook should be subscribed and get latest data
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current.hasEmitted).toBe(true)
+    expect(hookResult.result.current.data).toEqual(['4', 4])
+
+    // reset should be as-if the event hasn't emitted
+    api.resetMyEvent()
+    await act(async () => hookResult.rerender())
+    await act(async () => hookResult.rerender())
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current.hasEmitted).toBe(false)
+    expect(hookResult.result.current.data).toBeUndefined()
+
+    // call the event from some outside function
+    emitter('5', 5)
+
+    // emitter should also cause the hook to update
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current.hasEmitted).toBe(true)
+    expect(hookResult.result.current.data).toEqual(['5', 5])
+
+    // Another component mounting should also see the latest event data
+    let secondHookResult: RenderHookResult<
+      ReturnType<typeof useMyEventData>,
+      void
+    > = await act(async () => renderHook(useMyEventData))
+    expect(secondHookResult.result.current.data).toEqual(['5', 5])
+    expect(secondHookResult.result.current.hasEmitted).toBe(true)
+  })
 })

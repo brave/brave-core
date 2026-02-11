@@ -222,8 +222,8 @@ function MyReactComponent(props) {
 
 ...but note that this isn't the best example because our API definition already
 handles this and updates the data, which we can subscribe to and check for
-changes. A better example could be if we defined an event not reflected in the
-data, like `OnAuthenticationChanged(bool)`:
+changes via `api.useGetTodos()`. A better example could be if we defined an
+event not reflected in the data, such as `OnAuthenticationChanged(bool)`:
 
 ```tsx
 const api = {
@@ -240,13 +240,39 @@ function MyReactComponent(props) {
 }
 ```
 
+When you want to render or react to the latest data that's been emitted you can use `useCurrentMyEvent` hook. Instead of subscribing via
+`useMyEvent(() => ...`, and possibly having to have local React state to store
+the output for rendering, this hook will provide the latest data:
+
+```tsx
+function DoorBellStatus(props) {
+  const {
+    data: doorBellRangAt,
+    hasEmitted: doorBellHasRang,
+  } = api.useCurrentOnDoorBellRang()
+
+  if (!doorBellHasRang) {
+    return <div>No rings yet!</div>
+  }
+
+  return (
+    <div>Last door bell ring: {doorBellRangAt}</div>
+    <button onClick={api.resetOnDoorBellRang()}>Dismiss</button>
+  )
+}
+```
+
+Calling `api.resetMyEvent()` will cause the "current" event data to be cleared.
+It's a way of defining that the event has been "handled".
+
 ## Actions
 
-Sometimes we want to allow the UI to call actions exposed by mojo, that we don't
-need to be notified of when they are called, or share calls between different
-parts of the UI. Or we don't need to know when the action is in-progress.
-For example, perhaps the result is broadcast to observers and
-isn't a long-running or awaitable action.
+Sometimes we want to allow the UI to call actions exposed by mojo, that:
+- we don't need to be notified of when they are called,
+- or we don't need to share calls between different parts of the UI,
+- or we don't need to know when the action is in-progress
+For example, perhaps the result is broadcast to observers and isn't a
+long-running or awaitable action.
 For these scenarios, we can simply pass through the functions from our interfaces.
 We can simply pass the entire interface but restrict access via Typescript
 to the functions we allow.
@@ -434,7 +460,7 @@ import { useMyFeature } from '../state/my_feature_context.tsx'
 function MyFeatureComponent(props) {
   const myFeature = useMyFeature()
 
-  const { getTodosData } = api.useGetTodos()
+  const { getTodosData } = myFeature.api.useGetTodos()
 
   return (
     <button onClick={() => myFeature.setToolsMenuOpen(!myFeature.isToolsMenuOpen)}>
@@ -490,12 +516,6 @@ export function createMockService(
   })
 }
 ```
-
-**Why explicit method listing:**
-- **TypeScript enforces completeness** - When the interface changes, the build fails
-  until you add the new method with a default
-- **Forces devs to choose defaults** - Each method needs a sensible default value
-- **No prototype complexity** - Simple object spread, easy to understand
 
 ## Using Mocks in Tests
 
@@ -553,34 +573,13 @@ function useStoryMyApi(args: CustomArgs) {
 }
 ```
 
-### The `invalidateAll()` Function
+## The `invalidateAll()` Function
 
 Every API created with `createInterfaceApi` has an `invalidateAll()` method that
 invalidates all queries for that API instance. This is much simpler than tracking
 which specific queries need to be invalidated when different args change:
 
-```typescript
-// Instead of this (complex, error-prone):
-React.useEffect(() => {
-  myApi.api.getHistory.invalidate()
-}, [args.isHistoryEnabled])
-
-React.useEffect(() => {
-  myApi.api.getPremiumStatus.invalidate()
-}, [args.isPremiumUser])
-
-// Do this (simple, reliable):
-React.useEffect(() => {
-  myApi.api.invalidateAll()
-}, [args.isHistoryEnabled, args.isPremiumUser, /* any other args */])
-```
-
 ## When to Use `.update()` vs Function Overrides
-
-| Pattern | Use When |
-|---------|----------|
-| **Function overrides** (default) | All query endpoints. Mock returns data based on args. Most predictable. |
-| **`api.*.update()`** | State endpoints without query functions (e.g., `state<T>()` definitions), or data provided by events rather than fetched. |
 
 **Why function overrides are preferred for query endpoints:**
 - No race conditions with internal event handlers that might call `.update()`
@@ -607,46 +606,23 @@ React.useLayoutEffect(() => {
 }, [myApi.api, args.isStandalone])
 ```
 
-## Query Args and Cache Keys
+## React Context Provider Overrides for Internal Hook State
 
-TanStack Query keys include function arguments, so be aware:
-
-```typescript
-// These are DIFFERENT cache entries:
-api.getHistory.update('', null, data)     // Key: ['api-key', 'getHistory', '', null]
-api.getHistory.update('search', 10, data) // Key: ['api-key', 'getHistory', 'search', 10]
-```
-
-If a component calls `useGetHistory('search', 10)`, it won't find data you pushed
-with `update('', null, data)`. This is why **function overrides are preferred** -
-the mock function receives the actual args and can return appropriate data:
-
-```typescript
-const mockService = createMockService({
-  getHistory: (query, maxResults) => Promise.resolve({
-    // Mock can use actual args to filter/return appropriate data
-    history: query
-      ? SAMPLE_HISTORY.filter(h => h.title.includes(query))
-      : SAMPLE_HISTORY
-  }),
-})
-```
-
-## Provider Overrides for Internal Hook State
-
-Some context values come from internal React hooks (like `useState` in custom hooks)
+Some React Contexts created with `generateReactContextForAPI` might have non-API
+properties, e.g. that come from internal React hooks (like `useState`)
 rather than from API mocks. These can't be controlled via mock factories.
 
-For these values, use the `overrides` prop on generated Providers:
+To mock these values, use the `overrides` prop on the generated Context Provider:
 
 ```typescript
-// Values like isFeedbackFormVisible come from useSendFeedback() hook,
-// not from API mocks. Use overrides to control them in Storybook:
+// Values like isSidebarOpen come from useState<bool>() hook and a button click
+// inside the real UI, not from API mocks.
+// Use overrides to control them directly in Storybook:
 const conversationOverrides = React.useMemo(
   () => ({
-    isFeedbackFormVisible: storyArgs.isFeedbackFormVisible,
+    isSidebarOpen: storyArgs.isSidebarOpen,
   }),
-  [storyArgs.isFeedbackFormVisible],
+  [storyArgs],
 )
 
 return (
