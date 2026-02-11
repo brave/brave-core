@@ -16,6 +16,7 @@ import static org.chromium.chrome.browser.password_manager.PasswordMetricsUtil.P
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,6 +35,7 @@ import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -47,6 +49,7 @@ import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.components.browser_ui.settings.SearchViewProvider;
@@ -58,6 +61,7 @@ import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.url.GURL;
 
 import java.util.Locale;
 import java.util.Map;
@@ -116,6 +120,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private @Nullable Preference mLinkPref;
     private /*@Nullable*/ Menu mMenu;
     private @Nullable Preference mExportPasswordsPreference;
+    private @MonotonicNonNull FaviconHelper mFaviconHelper;
+    private @MonotonicNonNull FaviconHelper.DefaultFaviconHelper mDefaultFaviconHelper;
 
     private @ManagePasswordsReferrer int mManagePasswordsReferrer;
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -134,6 +140,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     @Override
+    @EnsuresNonNull({"mFaviconHelper", "mDefaultFaviconHelper"})
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         mExportFlow.onCreate(
                 savedInstanceState,
@@ -189,6 +196,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     }
                 });
         mPageTitle.set(getString(R.string.password_manager_settings_title));
+
+        mFaviconHelper = new FaviconHelper();
+        mDefaultFaviconHelper = new FaviconHelper.DefaultFaviconHelper();
 
         // Load preferences from XML instead of creating programmatically
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_password_settings_preferences);
@@ -367,6 +377,30 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                         ? MenuItem.SHOW_AS_ACTION_IF_ROOM
                         : MenuItem.SHOW_AS_ACTION_NEVER);
         rebuildPasswordLists();
+    }
+
+    /**
+     * Fetches favicon for the given origin URL and sets it on the preference. Uses the same default
+     * globe icon as desktop if we can't get a favicon.
+     *
+     * @param preference The preference to set the icon on.
+     * @param originUrl The full origin URL with scheme from the credential entry.
+     */
+    private void loadAndSetFaviconForPreference(Preference preference, String originUrl) {
+        GURL url = new GURL(originUrl);
+
+        mFaviconHelper.getForeignFaviconImageForURL(
+                getProfile(),
+                url,
+                0,
+                (bitmap, iconUrl) -> {
+                    if (bitmap == null) {
+                        bitmap =
+                                mDefaultFaviconHelper.getDefaultFaviconBitmap(
+                                        getStyledContext(), iconUrl, true, false);
+                    }
+                    preference.setIcon(new BitmapDrawable(getResources(), bitmap));
+                });
     }
 
     /** Empty screen message when no passwords or exceptions are stored. */
@@ -549,6 +583,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             args.putString(PASSWORD_LIST_URL, url);
             args.putString(PASSWORD_LIST_PASSWORD, password);
             args.putInt(PASSWORD_LIST_ID, i);
+            // Load and set favicon using the full origin URL (with scheme)
+            loadAndSetFaviconForPreference(preference, saved.getOriginUrl());
             passwordParent.addPreference(preference);
         }
         mNoPasswords = passwordParent.getPreferenceCount() == 0;
@@ -671,6 +707,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         // by the system.
         if (getActivity().isFinishing()) {
             PasswordManagerHandlerProvider.getForProfile(getProfile()).removeObserver(this);
+            assumeNonNull(mFaviconHelper).destroy();
         }
     }
 

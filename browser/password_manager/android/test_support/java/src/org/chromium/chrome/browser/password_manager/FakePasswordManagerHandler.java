@@ -88,7 +88,7 @@ public final class FakePasswordManagerHandler implements PasswordManagerHandler 
 
     @Override
     public void insertPasswordEntryForTesting(String origin, String username, String password) {
-        mSavedPasswords.add(new SavedPasswordEntry(origin, username, password));
+        mSavedPasswords.add(new SavedPasswordEntry(origin, origin, username, password));
     }
 
     // Pretends that the updated lists are |mSavedPasswords| for the saved passwords and an

@@ -29,9 +29,10 @@ public final class PasswordUiView implements PasswordManagerHandler {
     @CalledByNative
     private static SavedPasswordEntry createSavedPasswordEntry(
             @JniType("std::string") String url,
+            @JniType("std::string") String originUrl,
             @JniType("std::u16string") String name,
             @JniType("std::u16string") String password) {
-        return new SavedPasswordEntry(url, name, password);
+        return new SavedPasswordEntry(url, originUrl, name, password);
     }
 
     // Pointer to native implementation, set to 0 in destroy().
