@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 4ad69dd085d4d0cb57604b00bc404b3026d55f20..a604450528fafc9cf5dd21f7d7e20278138fb86b 100644
+index 6002ed505f4c4daaadc0facf87e4d64cc44b5ba0..1a86e986d94a9187f7db7fad79cda8214460c88d 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -433,6 +433,7 @@ void ToolbarView::Init() {
+@@ -552,6 +552,7 @@ void ToolbarView::Init() {
+     UpdateGlicButtonVisibility();
    }
- #endif  // BUILDFLAG(ENABLE_GLIC)
  
 +  BRAVE_TOOLBAR_VIEW_INIT
    avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));

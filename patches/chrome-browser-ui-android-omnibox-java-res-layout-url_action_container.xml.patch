@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-index 4ee0f59a9e23733351e19e354924f14534eaabce..8919708878ec23d0bed05a42135dc37fb539f92c 100644
+index cc6cadbfbdb44093896ae82798c19de29bc1a9d2..c86fe7510d2530f6eeae8365a76c3cd3cceead0d 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-@@ -57,6 +57,7 @@ found in the LICENSE file.
+@@ -60,6 +60,7 @@ found in the LICENSE file.
          app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
          app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
  
@@ -10,12 +10,12 @@ index 4ee0f59a9e23733351e19e354924f14534eaabce..8919708878ec23d0bed05a42135dc37f
      <!--
      Fusebox/Omnibox top-stacked elements on Active Omnibox with Empty content
      -->
-@@ -91,7 +92,7 @@ found in the LICENSE file.
+@@ -94,7 +95,7 @@ found in the LICENSE file.
          android:contentDescription="@string/accessibility_toolbar_btn_delete_url"
          android:tooltipText="@string/accessibility_toolbar_btn_delete_url"
          app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
 -        app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
 +        app:layout_constraintEnd_toStartOf="@id/qr_button"/>
  
-     <Space
-         android:id="@+id/margin_spacer"
+     <!-- LINT.ThenChange(/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarUtils.java:toolbar_tablet_components) -->
+ 

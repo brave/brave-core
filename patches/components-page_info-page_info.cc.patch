@@ -1,9 +1,9 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 783bf0ba119a3b1dd6cbc264c4392fd963d300b6..f159e7c340690a06e1db7c8b17813204e3791ddb 100644
+index 4a9ce1fc25663077e84d7e5ad8f9a779a9f49396..c803fa4bd43173d1d6911759bdb6acb01d4c263f 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1377,6 +1377,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
- // via `HasContentSettingChangedViaPageInfo(type)`.
+@@ -1383,6 +1383,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+ // second section, the default behavior used when no per-type exception applies.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {
 +  BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
