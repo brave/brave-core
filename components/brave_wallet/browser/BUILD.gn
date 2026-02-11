@@ -561,6 +561,8 @@ source_set("test_support") {
     "cardano/cardano_test_utils.h",
     "json_rpc_service_test_utils.cc",
     "json_rpc_service_test_utils.h",
+    "polkadot/polkadot_test_utils.cc",
+    "polkadot/polkadot_test_utils.h",
     "solana_test_utils.cc",
     "solana_test_utils.h",
     "test_utils.cc",

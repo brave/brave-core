@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -64,6 +65,8 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     polkadot_testnet_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
+    polkadot_mainnet_account_ =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotMainnet, 0);
     ASSERT_TRUE(polkadot_testnet_account_);
   }
 
@@ -93,6 +96,7 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 
   base::test::ScopedFeatureList feature_list_;
   mojom::AccountInfoPtr polkadot_testnet_account_;
+  mojom::AccountInfoPtr polkadot_mainnet_account_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
@@ -338,19 +342,6 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
   }
   task_environment_.RunUntilQuit();
 }
-
-namespace {
-
-base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
-  const auto* body_elems = req.request_body->elements();
-  CHECK(body_elems->size() == 1u);
-
-  const auto& element = body_elems->at(0);
-  auto sv = element.As<network::DataElementBytes>().AsStringView();
-  return base::test::ParseJsonDict(sv);
-}
-
-}  // namespace
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
   url_loader_factory_.ClearResponses();
@@ -1936,6 +1927,81 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
+  // Test the normal happy path where we create a signed extrinsic for the
+  // specified account and then author it on the block chain.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, shared_url_loader_factory_);
+
+  UnlockWallet();
+
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(polkadot_mainnet_account_->account_id)
+          .value();
+
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  base::test::TestFuture<base::expected<std::string, std::string>> future;
+
+  std::string chain_id = mojom::kPolkadotMainnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->SignAndSendTransaction(
+      chain_id, polkadot_mainnet_account_->account_id.Clone(), 4321,
+      recipient_pubkey, future.GetCallback());
+
+  auto tx_hash = future.Take();
+  ASSERT_TRUE(tx_hash.has_value());
+  EXPECT_EQ(
+      tx_hash.value(),
+      "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignAndSendTransaction_InvalidSubmitExtrinsic) {
+  // Test that we correctly see an error if the RPC nodes reject the extrinsic.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, shared_url_loader_factory_);
+
+  UnlockWallet();
+
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(polkadot_mainnet_account_->account_id)
+          .value();
+
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->RejectExtrinsicSubmission();
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  base::test::TestFuture<base::expected<std::string, std::string>> future;
+
+  std::string chain_id = mojom::kPolkadotMainnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->SignAndSendTransaction(
+      chain_id, polkadot_mainnet_account_->account_id.Clone(), 4321,
+      recipient_pubkey, future.GetCallback());
+
+  auto tx_hash = future.Take();
+  ASSERT_FALSE(tx_hash.has_value());
+  EXPECT_EQ(tx_hash.error(), WalletInternalErrorMessage());
 }
 
 }  // namespace brave_wallet

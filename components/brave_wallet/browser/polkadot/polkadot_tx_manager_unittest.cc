@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -61,6 +62,9 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
+    polkadot_mock_rpc_ = std::make_unique<PolkadotMockRpc>(
+        &url_loader_factory_, network_manager_.get());
+
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
         *keyring_service_, *network_manager_, shared_url_loader_factory_);
 
@@ -88,7 +92,10 @@ class PolkadotTxManagerUnitTest : public testing::Test {
         "testnet_account");
 
     UnlockWallet();
-    EXPECT_EQ(url_loader_factory_.NumPending(), 2);
+  }
+
+  PolkadotTxManager* GetPolkadotTxManager() {
+    return tx_service_->GetPolkadotTxManager();
   }
 
   void UnlockWallet() {
@@ -125,6 +132,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<PolkadotMockRpc> polkadot_mock_rpc_;
   std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
   std::unique_ptr<TxService> tx_service_;
   std::unique_ptr<AccountResolverDelegateImpl> account_resolver_delegate_;
@@ -170,30 +178,7 @@ inline constexpr const char kBobSS58[] =
 }  // namespace
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
-  std::string testnet_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
-          ->rpc_endpoints.front()
-          .spec();
-
-  std::string mainnet_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
-          ->rpc_endpoints.front()
-          .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
-
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  polkadot_mock_rpc_->FinalizeSetup();
 
   {
     // Normal happy path flow of well-formatted data into an accepted unapproved
@@ -393,31 +378,8 @@ TEST_F(PolkadotTxManagerUnitTest,
   // invalid chain data or we've failed the network request (we should be
   // storing a `base::unexpected` in both of these cases).
 
-  std::string testnet_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
-          ->rpc_endpoints.front()
-          .spec();
-
-  std::string mainnet_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
-          ->rpc_endpoints.front()
-          .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
-
-  // Note that these are error responses, can't be parsed.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "error": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "error": "Polkadot",
-      "id": 1 })");
+  polkadot_mock_rpc_->UseInvalidChainMetadata();
+  polkadot_mock_rpc_->FinalizeSetup();
 
   std::string chain_id = mojom::kPolkadotMainnet;
 
@@ -442,14 +404,184 @@ TEST_F(PolkadotTxManagerUnitTest,
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction) {
-  polkadot_tx_manager_->ApproveTransaction(
-      "test_tx_id",
-      base::BindOnce([](bool success, mojom::ProviderErrorUnionPtr error_union,
-                        const std::string& error_message) {
-        EXPECT_FALSE(success);
-        EXPECT_TRUE(error_union);
-        EXPECT_EQ(error_message, "Not implemented");
-      }));
+  // Prove that our ideal happy flow works for approving transactions.
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+      mojom::uint128::New(0, 1234), false, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_FALSE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, "");
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
+                                           approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  EXPECT_TRUE(success2);
+
+  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto* tx = txs.FindDict(tx_meta_id);
+  ASSERT_TRUE(tx);
+
+  auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+  ASSERT_TRUE(polkadot_tx);
+
+  EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
+  EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
+  EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{0});
+  EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
+}
+
+TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NoTransaction) {
+  // Test the endpoint when the tx_meta_id can't be found.
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+  std::string tx_meta_id = "random_stuff";
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
+                                           approved_future.GetCallback());
+
+  auto [success, error, str] = approved_future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error->get_polkadot_provider_error(),
+            mojom::PolkadotProviderError::kInternalError);
+}
+
+TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
+  // Prove that we can handle the case where the RPC nodes reject the exrinsic
+  // outright without returning a transaction hash.
+
+  polkadot_mock_rpc_->RejectExtrinsicSubmission();
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+      mojom::uint128::New(0, 1234), false, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_FALSE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, "");
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
+                                           approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  EXPECT_FALSE(success2);
+
+  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto* tx = txs.FindDict(tx_meta_id);
+  ASSERT_TRUE(tx);
+
+  auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+  ASSERT_TRUE(polkadot_tx);
+
+  EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Error);
+  EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
+  EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{0});
+  EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
+}
+
+TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
+  // Prove that we can handle the case where an intermitent network failure
+  // during extrinsic signing fails.
+
+  polkadot_mock_rpc_->RejectAccountInfoRequest();
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+      mojom::uint128::New(0, 1234), false, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_FALSE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, "");
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
+                                           approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  EXPECT_FALSE(success2);
+
+  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto* tx = txs.FindDict(tx_meta_id);
+  ASSERT_TRUE(tx);
+
+  auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+  ASSERT_TRUE(polkadot_tx);
+
+  EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Error);
+  EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
+  EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{0});
+  EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
 }
 
 TEST_F(PolkadotTxManagerUnitTest, SpeedupOrCancelTransaction) {
