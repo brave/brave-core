@@ -181,14 +181,17 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   ~ZCashWalletServiceUnitTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitWithFeatures(
-        {
-            brave_wallet::features::kBraveWalletZCashFeature,
 #if BUILDFLAG(IS_IOS)
-            brave_wallet::features::kBraveWalletWebUIFeature,
-#endif
-        },
+    feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletZCashFeature,
+          { {"zcash_shielded_transactions_enabled", "true"} }},
+         { features::kBraveWalletWebUIFeature,
+           {} }},
         {}  // disabled features
+#else
+    feature_list_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletZCashFeature);
+#endif
     );
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
