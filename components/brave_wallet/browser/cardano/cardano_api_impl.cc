@@ -472,7 +472,7 @@ void CardanoApiImpl::OnGetUtxosForSignTx(
                      weak_ptr_factory_.GetWeakPtr(), std::move(decoded_tx),
                      std::move(payment_key_ids), std::move(callback)));
 
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 mojom::SignCardanoTransactionRequestPtr
@@ -651,7 +651,7 @@ void CardanoApiImpl::SignData(const std::string& address,
                      weak_ptr_factory_.GetWeakPtr(), selected_account_.Clone(),
                      std::move(supported_signing_address->payment_key_id),
                      std::move(message), std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void CardanoApiImpl::OnSignMessageRequestProcessed(

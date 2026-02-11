@@ -57,8 +57,8 @@ bool BraveWalletProviderDelegateImpl::IsTabVisible() {
   return web_contents()->GetVisibility() == content::Visibility::VISIBLE;
 }
 
-void BraveWalletProviderDelegateImpl::ShowPanel() {
-  ::brave_wallet::ShowPanel(web_contents());
+void BraveWalletProviderDelegateImpl::ShowPanel(const url::Origin& origin) {
+  ::brave_wallet::ShowPanel(web_contents(), origin);
 }
 
 void BraveWalletProviderDelegateImpl::ShowWalletBackup() {
@@ -73,8 +73,9 @@ void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
   ::brave_wallet::WalletInteractionDetected(web_contents());
 }
 
-void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
-  ::brave_wallet::ShowWalletOnboarding(web_contents());
+void BraveWalletProviderDelegateImpl::ShowWalletOnboarding(
+    const url::Origin& origin) {
+  ::brave_wallet::ShowWalletOnboarding(web_contents(), origin);
 }
 
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(

@@ -20,16 +20,19 @@ bool BraveWalletProviderDelegateBridge::IsTabVisible() {
   return [bridge_ isTabVisible];
 }
 
-void BraveWalletProviderDelegateBridge::ShowPanel() {
-  [bridge_ showPanel];
+void BraveWalletProviderDelegateBridge::ShowPanel(const url::Origin& origin) {
+  URLOriginIOS* origin_ios = [[URLOriginIOS alloc] initWithOrigin:origin];
+  [bridge_ showPanelWithOrigin:origin_ios];
 }
 
 void BraveWalletProviderDelegateBridge::WalletInteractionDetected() {
   [bridge_ walletInteractionDetected];
 }
 
-void BraveWalletProviderDelegateBridge::ShowWalletOnboarding() {
-  [bridge_ showWalletOnboarding];
+void BraveWalletProviderDelegateBridge::ShowWalletOnboarding(
+    const url::Origin& origin) {
+  URLOriginIOS* origin_ios = [[URLOriginIOS alloc] initWithOrigin:origin];
+  [bridge_ showWalletOnboardingWithOrigin:origin_ios];
 }
 
 void BraveWalletProviderDelegateBridge::ShowWalletBackup() {

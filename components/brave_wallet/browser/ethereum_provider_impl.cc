@@ -276,7 +276,7 @@ void EthereumProviderImpl::AddEthereumChain(base::ListValue params,
 
   chain_callbacks_[chain_id_lower] = std::move(callback);
   chain_ids_[chain_id_lower] = std::move(id);
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void EthereumProviderImpl::SwitchEthereumChain(const std::string& chain_id,
@@ -285,7 +285,7 @@ void EthereumProviderImpl::SwitchEthereumChain(const std::string& chain_id,
   // Only show bubble when there is no immediate error
   if (json_rpc_service_->AddSwitchEthereumChainRequest(
           chain_id, origin_, std::move(callback), std::move(id))) {
-    delegate_->ShowPanel();
+    delegate_->ShowPanel(origin_);
   }
 }
 
@@ -376,7 +376,7 @@ void EthereumProviderImpl::OnAddUnapprovedTransaction(
   if (error == mojom::ProviderError::kSuccess) {
     add_tx_callbacks_[tx_meta_id] = std::move(callback);
     add_tx_ids_[tx_meta_id] = std::move(id);
-    delegate_->ShowPanel();
+    delegate_->ShowPanel(origin_);
   } else {
     base::Value formed_response =
         GetProviderErrorDictionary(error, error_message);
@@ -429,7 +429,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
                   {l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_CHAIN_ID), u": ",
                    base::ASCIIToUTF16(incorrect_chain_id)})),
           incorrect_chain_id));
-      delegate_->ShowPanel();
+      delegate_->ShowPanel(origin_);
       return RejectMismatchError(
           std::move(id),
           l10n_util::GetStringFUTF8(
@@ -447,7 +447,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
               l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_ACCOUNT),
               base::ASCIIToUTF16(siwe_message->address)),
           std::nullopt));
-      delegate_->ShowPanel();
+      delegate_->ShowPanel(origin_);
       return RejectMismatchError(
           std::move(id),
           l10n_util::GetStringFUTF8(
@@ -465,7 +465,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
               l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
               base::ASCIIToUTF16(err_domain)),
           std::nullopt));
-      delegate_->ShowPanel();
+      delegate_->ShowPanel(origin_);
       return RejectMismatchError(
           std::move(id),
           l10n_util::GetStringFUTF8(
@@ -619,7 +619,7 @@ void EthereumProviderImpl::GetEncryptionPublicKey(const std::string& address,
   // Only show bubble when there is no immediate error
   brave_wallet_service_->AddGetPublicKeyRequest(
       account_id, origin_, std::move(callback), std::move(id));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void EthereumProviderImpl::Decrypt(
@@ -683,7 +683,7 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
   brave_wallet_service_->AddDecryptRequest(account_id, origin,
                                            std::move(unsafe_message),
                                            std::move(callback), std::move(id));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin);
 }
 
 void EthereumProviderImpl::SignTypedMessage(
@@ -740,7 +740,7 @@ void EthereumProviderImpl::SignMessageInternal(
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      std::move(id), account_id.Clone(),
                      std::move(message_to_sign), is_eip712));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void EthereumProviderImpl::OnSignMessageRequestProcessed(
@@ -1231,7 +1231,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
 
   if (addresses.empty()) {
     if (!wallet_onboarding_shown_) {
-      delegate_->ShowWalletOnboarding();
+      delegate_->ShowWalletOnboarding(origin);
       wallet_onboarding_shown_ = true;
     }
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
@@ -1252,7 +1252,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     pending_request_ethereum_permissions_method_ = method;
     pending_request_ethereum_permissions_origin_ = origin;
     keyring_service_->RequestUnlock();
-    delegate_->ShowPanel();
+    delegate_->ShowPanel(origin_);
     return;
   }
 
@@ -1607,7 +1607,7 @@ void EthereumProviderImpl::AddSuggestToken(mojom::BlockchainTokenPtr token,
                                                     std::move(token));
   brave_wallet_service_->AddSuggestTokenRequest(
       std::move(request), std::move(callback), std::move(id));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void EthereumProviderImpl::OnSendRawTransaction(

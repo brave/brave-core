@@ -9,6 +9,7 @@
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "build/build_config.h"
+#include "url/origin.h"
 
 namespace content {
 class WebContents;
@@ -19,7 +20,7 @@ namespace brave_wallet {
 
 // Show wallet panel, which handles permission UI, sign message confirmation,
 // ...etc.
-void ShowPanel(content::WebContents* web_contents);
+void ShowPanel(content::WebContents* web_contents, const url::Origin& origin);
 
 // Show native Brave Wallet backup UI - Used only by Android.
 void ShowWalletBackup();
@@ -28,7 +29,8 @@ void ShowWalletBackup();
 void UnlockWallet();
 
 // Show wallet onboarding page.
-void ShowWalletOnboarding(content::WebContents* web_contents);
+void ShowWalletOnboarding(content::WebContents* web_contents,
+                          const url::Origin& origin);
 
 // Show account creation page for keyring id
 void ShowAccountCreation(content::WebContents* web_contents,

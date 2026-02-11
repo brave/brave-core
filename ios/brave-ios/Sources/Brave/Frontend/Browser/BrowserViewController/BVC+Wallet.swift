@@ -227,8 +227,8 @@ extension BrowserViewController: BraveWalletDelegate {
 }
 
 extension TabBrowserData: BraveWalletProviderDelegate {
-  func showPanel() {
-    guard let tab, let origin = tab.visibleURL?.origin else {
+  func showPanel(withOrigin origin: URLOrigin) {
+    guard let tab else {
       Logger.module.error("Failing to show Wallet panel due to unavailable tab url origin")
       return
     }
@@ -366,8 +366,8 @@ extension TabBrowserData: BraveWalletProviderDelegate {
     // No usage for iOS
   }
 
-  func showWalletOnboarding() {
-    showPanel()
+  func showWalletOnboarding(withOrigin origin: URLOrigin) {
+    showPanel(withOrigin: origin)
   }
 
   func isTabVisible() -> Bool {

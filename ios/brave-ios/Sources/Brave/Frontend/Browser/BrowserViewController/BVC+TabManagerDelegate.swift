@@ -220,7 +220,7 @@ extension BrowserViewController: TabManagerDelegate {
     updateScreenTimeUrl(tabManager.selectedTab?.visibleURL)
     updateInContentHomePanel(selected?.visibleURL as URL?)
 
-    notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
+    removeWalletNotificationAndClearOrigin()
     WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol])
     WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth, .sol])
     updateURLBarWalletButton()

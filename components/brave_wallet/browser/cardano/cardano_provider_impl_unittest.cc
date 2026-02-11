@@ -47,11 +47,11 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   ~MockBraveWalletProviderDelegate() override {}
 
   MOCK_METHOD0(IsTabVisible, bool());
-  MOCK_METHOD0(ShowPanel, void());
+  MOCK_METHOD1(ShowPanel, void(const url::Origin&));
   MOCK_METHOD0(ShowWalletBackup, void());
   MOCK_METHOD0(UnlockWallet, void());
   MOCK_METHOD0(WalletInteractionDetected, void());
-  MOCK_METHOD0(ShowWalletOnboarding, void());
+  MOCK_METHOD1(ShowWalletOnboarding, void(const url::Origin&));
   MOCK_METHOD2(ShowAccountCreation,
                void(mojom::CoinType type, const url::Origin& origin));
   MOCK_METHOD4(RequestPermissions,
@@ -370,7 +370,7 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 
 TEST_F(CardanoProviderImplUnitTest, OnBoarding) {
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
-  EXPECT_CALL(*delegate(), ShowWalletOnboarding()).Times(1);
+  EXPECT_CALL(*delegate(), ShowWalletOnboarding(testing::_)).Times(1);
 
   mojo::Remote<mojom::CardanoApi> api;
   base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;

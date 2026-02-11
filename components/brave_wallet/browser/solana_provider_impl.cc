@@ -95,7 +95,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
   auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     if (!keyring_service_->IsWalletCreatedSync()) {
-      delegate_->ShowWalletOnboarding();
+      delegate_->ShowWalletOnboarding(origin_);
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), "");
@@ -131,7 +131,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
     pending_connect_callback_ = std::move(callback);
     pending_connect_arg_ = std::move(arg);
     keyring_service_->RequestUnlock();
-    delegate_->ShowPanel();
+    delegate_->ShowPanel(origin_);
     return;
   }
 
@@ -302,7 +302,7 @@ void SolanaProviderImpl::ContinueSignTransaction(
       base::BindOnce(&SolanaProviderImpl::OnSignTransactionRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(tx), account.Clone(),
                      std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::OnSignTransactionRequestProcessed(
@@ -443,7 +443,7 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
       base::BindOnce(&SolanaProviderImpl::OnSignAllTransactionsRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(txs),
                      std::move(account), std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
@@ -564,7 +564,7 @@ void SolanaProviderImpl::OnAddUnapprovedTransaction(
   }
 
   sign_and_send_tx_callbacks_[tx_meta_id] = std::move(callback);
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::OnTransactionStatusChanged(
@@ -668,7 +668,7 @@ void SolanaProviderImpl::SignMessage(
       base::BindOnce(&SolanaProviderImpl::OnSignMessageRequestProcessed,
                      weak_factory_.GetWeakPtr(), blob_msg, std::move(account),
                      std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::Request(base::DictValue arg,

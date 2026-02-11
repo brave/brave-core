@@ -80,7 +80,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
 
     case PermissionCheckResult::kWalletNotCreated:
       if (!wallet_page_shown_) {
-        delegate_->ShowWalletOnboarding();
+        delegate_->ShowWalletOnboarding(origin_);
         wallet_page_shown_ = true;
       }
       std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
@@ -113,7 +113,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
       pending_request_cardano_permissions_origin_ = origin;
 
       brave_wallet_service_->keyring_service()->RequestUnlock();
-      delegate_->ShowPanel();
+      delegate_->ShowPanel(origin_);
       return;
 
     case PermissionCheckResult::kGetAllowedAccountsFailed:

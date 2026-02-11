@@ -20,9 +20,9 @@ typedef void (^RequestPermissionsCallback)(
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (bool)isTabVisible;
-- (void)showPanel;
+- (void)showPanelWithOrigin:(URLOriginIOS*)origin;
 - (void)walletInteractionDetected;
-- (void)showWalletOnboarding;
+- (void)showWalletOnboardingWithOrigin:(URLOriginIOS*)origin;
 - (void)showWalletBackup;
 - (void)unlockWallet;
 - (void)showAccountCreation:(BraveWalletCoinType)type
