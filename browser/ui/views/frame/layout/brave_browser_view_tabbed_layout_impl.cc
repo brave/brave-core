@@ -488,8 +488,7 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
 }
 
 void BraveBrowserViewTabbedLayoutImpl::UpdateMarginsForSideBar() {
-  if (!views().sidebar_container ||
-      !views().sidebar_container->IsSidebarVisible()) {
+  if (!views().sidebar_container) {
     return;
   }
 
