@@ -27,4 +27,5 @@ std::string_view FILE_PATH_LITERAL(std::string_view path) {
 #include <chrome/browser/updater/browser_updater_client_util_mac.mm>
 
 // Upstream's original definition:
+// NO-CHROMIUM-SRC-CHECK
 #define FILE_PATH_LITERAL(x) x

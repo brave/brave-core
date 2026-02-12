@@ -23,7 +23,10 @@ SANDBOX_INTERCEPT DWORD WINAPI TargetGetModuleFileNameW64(HMODULE hModule,
                                                           DWORD nSize);
 
 #if (PSAPI_VERSION > 1)
+// Intentinally not #undef'ed
+// NO-CHROMIUM-SRC-CHECK
 #define TargetGetModuleFileNameExA64 TargetK32GetModuleFileNameExA64
+// NO-CHROMIUM-SRC-CHECK
 #define TargetGetModuleFileNameExW64 TargetK32GetModuleFileNameExW64
 #endif
 

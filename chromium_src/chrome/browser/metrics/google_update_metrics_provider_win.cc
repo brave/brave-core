@@ -10,6 +10,7 @@
 
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/brave_stash_google_update_integration.h"
+// NO-CHROMIUM-SRC-CHECK
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (0)
 #endif
 
