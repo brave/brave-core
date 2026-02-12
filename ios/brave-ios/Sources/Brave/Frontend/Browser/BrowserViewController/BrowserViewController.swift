@@ -264,9 +264,6 @@ public class BrowserViewController: UIViewController {
   /// The currently open WalletStore
   weak var walletStore: WalletStore?
 
-  /// Origin for which the wallet notification is currently displayed. Cleared when notification is removed or when navigation commits to a different origin.
-  private var walletNotificationOrigin: URLOrigin?
-
   var processAddressBarTask: Task<(), Never>?
   var topToolbarDidPressReloadTask: Task<(), Never>?
 
@@ -2440,23 +2437,31 @@ extension BrowserViewController: TabMiscDelegate {
       origin: origin,
       isUsingBottomBar: isUsingBottomBar
     ) { [weak self] action in
+      // double check if tab lastCommittedURL's origin is the same as this notification's
+      guard let lastCommittedOrigin = tab.lastCommittedURL?.origin,
+        lastCommittedOrigin == origin
+      else {
+        return
+      }
       if action == .connectWallet {
         self?.presentWalletPanel(from: origin, with: tabDappStore)
       }
     }
-    walletNotificationOrigin = origin
     notificationsPresenter.display(notification: walletNotificaton, from: self)
   }
 
   /// Removes the wallet notification and clears the stored origin so it can be shown again for a different origin.
   func removeWalletNotificationAndClearOrigin() {
-    walletNotificationOrigin = nil
     notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
   }
 
   /// Dismisses the wallet notification if it was shown for a different origin than the committed one (e.g. after redirect).
   func dismissWalletNotificationIfOriginDiffers(from committedOrigin: URLOrigin) {
-    guard let storedOrigin = walletNotificationOrigin, storedOrigin != committedOrigin else {
+    guard
+      let visibleWalletNotification = notificationsPresenter.visibleNotification
+        as? WalletNotification,
+      visibleWalletNotification.origin != committedOrigin
+    else {
       return
     }
     removeWalletNotificationAndClearOrigin()
