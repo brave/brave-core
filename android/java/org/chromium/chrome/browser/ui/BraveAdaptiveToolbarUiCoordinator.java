@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ui;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
@@ -42,10 +43,10 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
     @Nullable private AdaptiveToolbarButtonController mAdaptiveToolbarButtonController;
 
     public BraveAdaptiveToolbarUiCoordinator(
-            Context context,
+            Activity activity,
             ActivityTabProvider activityTabProvider,
             Supplier<ModalDialogManager> modalDialogManagerSupplier) {
-        super(context, activityTabProvider, modalDialogManagerSupplier);
+        super(activity, activityTabProvider, modalDialogManagerSupplier);
     }
 
     /**

@@ -1502,6 +1502,7 @@ if (is_android) {
       "//components/browser_ui/bottomsheet/android:java",
       "//components/browser_ui/bottomsheet/android:manager_java",
       "//components/browser_ui/desktop_windowing/android:java",
+      "//components/browser_ui/device_lock/android:java",
       "//components/browser_ui/media/android:java",
       "//components/browser_ui/settings/android:java",
       "//components/browser_ui/site_settings/android:java",
