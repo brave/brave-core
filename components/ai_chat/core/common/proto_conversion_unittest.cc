@@ -582,6 +582,79 @@ TEST(ProtoConversionTest,
             "https://valid.com/favicon.ico");
 }
 
+TEST(ProtoConversionTest,
+     SerializeDeserializeToolUseEvent_WebSourcesWithPageContentAndSnippets) {
+  // Create mojom ToolUseEvent with WebSourcesContentBlock containing
+  // page_content and extra_snippets in various combinations
+  auto mojom_event = mojom::ToolUseEvent::New(
+      "brave_web_search", "tooluse_page_content",
+      R"({"query": "test page content"})",
+      std::vector<mojom::ContentBlockPtr>(), nullptr, false);
+
+  auto web_sources_block = mojom::WebSourcesContentBlock::New();
+  web_sources_block->query = "test page content";
+
+  // Source 1: both page_content and extra_snippets set
+  auto source1 = mojom::WebSource::New(
+      "Source One", GURL("https://source1.com"),
+      GURL("https://source1.com/favicon.ico"),
+      std::make_optional<std::string>("Full page text content..."),
+      std::make_optional<std::vector<std::string>>(
+          {"Relevant snippet 1", "Relevant snippet 2", "Relevant snippet 3"}));
+  web_sources_block->sources.push_back(std::move(source1));
+
+  // Source 2: only page_content set, extra_snippets nullopt
+  auto source2 = mojom::WebSource::New(
+      "Source Two", GURL("https://source2.com"),
+      GURL("https://source2.com/favicon.ico"),
+      std::make_optional<std::string>("Another page content"), std::nullopt);
+  web_sources_block->sources.push_back(std::move(source2));
+
+  // Source 3: page_content nullopt, only extra_snippets set
+  auto source3 = mojom::WebSource::New(
+      "Source Three", GURL("https://source3.com"),
+      GURL("https://source3.com/favicon.ico"), std::nullopt,
+      std::make_optional<std::vector<std::string>>({"Single snippet"}));
+  web_sources_block->sources.push_back(std::move(source3));
+
+  mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      std::move(web_sources_block)));
+
+  // Serialize to proto
+  store::ToolUseEventProto proto_event;
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_TRUE(success);
+  ASSERT_EQ(proto_event.output_size(), 1);
+  ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
+  const auto& proto_sources = proto_event.output(0).web_sources_content_block();
+  ASSERT_EQ(proto_sources.sources_size(), 3);
+
+  // Verify source 1: both fields set
+  EXPECT_TRUE(proto_sources.sources(0).has_page_content());
+  EXPECT_EQ(proto_sources.sources(0).page_content(),
+            "Full page text content...");
+  ASSERT_EQ(proto_sources.sources(0).extra_snippets_size(), 3);
+  EXPECT_EQ(proto_sources.sources(0).extra_snippets(0), "Relevant snippet 1");
+  EXPECT_EQ(proto_sources.sources(0).extra_snippets(1), "Relevant snippet 2");
+  EXPECT_EQ(proto_sources.sources(0).extra_snippets(2), "Relevant snippet 3");
+
+  // Verify source 2: only page_content
+  EXPECT_TRUE(proto_sources.sources(1).has_page_content());
+  EXPECT_EQ(proto_sources.sources(1).page_content(), "Another page content");
+  EXPECT_EQ(proto_sources.sources(1).extra_snippets_size(), 0);
+
+  // Verify source 3: only extra_snippets
+  EXPECT_FALSE(proto_sources.sources(2).has_page_content());
+  ASSERT_EQ(proto_sources.sources(2).extra_snippets_size(), 1);
+  EXPECT_EQ(proto_sources.sources(2).extra_snippets(0), "Single snippet");
+
+  // Deserialize back to mojom and verify round-trip
+  auto deserialized_event = DeserializeToolUseEvent(proto_event);
+
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
 TEST(ProtoConversionTest, SerializeDeserializeSkillEntry) {
   // Create mojom SkillEntry
   auto mojom_entry =

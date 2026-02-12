@@ -31,7 +31,23 @@ void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
     *os << "{title: " << ws.sources[i]->title
         << ", url: " << ws.sources[i]->url.possibly_invalid_spec()
         << ", favicon_url: "
-        << ws.sources[i]->favicon_url.possibly_invalid_spec() << "}";
+        << ws.sources[i]->favicon_url.possibly_invalid_spec()
+        << ", page_content: "
+        << ws.sources[i]->page_content.value_or("<nullopt>")
+        << ", extra_snippets: ";
+    if (ws.sources[i]->extra_snippets.has_value()) {
+      *os << "[";
+      for (size_t j = 0; j < ws.sources[i]->extra_snippets->size(); ++j) {
+        if (j > 0) {
+          *os << ", ";
+        }
+        *os << ws.sources[i]->extra_snippets.value()[j];
+      }
+      *os << "]";
+    } else {
+      *os << "<nullopt>";
+    }
+    *os << "}";
   }
   *os << "], rich_results: [";
   for (size_t i = 0; i < ws.rich_results.size(); ++i) {
