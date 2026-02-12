@@ -501,9 +501,16 @@ INSTANTIATE_TEST_SUITE_P(
         ContentBlockTestParam{
             "WebSources", base::BindRepeating([]() {
               std::vector<mojom::WebSourcePtr> sources;
+              std::vector<std::string> extra_snippets;
+              extra_snippets.push_back("snippet 1");
+              extra_snippets.push_back("snippet 2");
               sources.push_back(mojom::WebSource::New(
                   "Example Title", GURL("https://example.com/page"),
-                  GURL("https://example.com/favicon.ico"), std::nullopt,
+                  GURL("https://example.com/favicon.ico"), "page content",
+                  std::move(extra_snippets)));
+              sources.push_back(mojom::WebSource::New(
+                  "Another Title", GURL("https://another.com/page"),
+                  GURL("https://another.com/favicon.ico"), std::nullopt,
                   std::nullopt));
               std::vector<std::string> rich_results;
               rich_results.push_back(
@@ -520,7 +527,13 @@ INSTANTIATE_TEST_SUITE_P(
               "sources": [{
                 "title": "Example Title",
                 "url": "https://example.com/page",
-                "favicon": "https://example.com/favicon.ico"
+                "favicon": "https://example.com/favicon.ico",
+                "page_content": "page content",
+                "extra_snippets": ["snippet 1", "snippet 2"]
+              }, {
+                "title": "Another Title",
+                "url": "https://another.com/page",
+                "favicon": "https://another.com/favicon.ico"
               }],
               "query": "test query",
               "rich_results": [

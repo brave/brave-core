@@ -244,13 +244,23 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
           break;
 
         case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
-          const auto& web_sources = block->get_web_sources_content_block();
+          auto& web_sources = block->get_web_sources_content_block();
           base::ListValue sources_list;
-          for (const auto& source : web_sources->sources) {
+          for (auto& source : web_sources->sources) {
             base::DictValue source_dict;
             source_dict.Set("title", source->title);
             source_dict.Set("url", source->url.spec());
             source_dict.Set("favicon", source->favicon_url.spec());
+            if (source->page_content) {
+              source_dict.Set("page_content", std::move(*source->page_content));
+            }
+            if (source->extra_snippets) {
+              base::ListValue snippets_list;
+              for (auto& snippet : source->extra_snippets.value()) {
+                snippets_list.Append(std::move(snippet));
+              }
+              source_dict.Set("extra_snippets", std::move(snippets_list));
+            }
             sources_list.Append(std::move(source_dict));
           }
           content_block_dict.Set("sources", std::move(sources_list));
