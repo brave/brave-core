@@ -127,13 +127,17 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
             .Append(extensions::kLocalExtensionSettingsDirectoryName)
             .AppendASCII(id);
 
-    // Simulate pref data.
-    auto store_factory =
-        base::MakeRefCounted<value_store::TestValueStoreFactory>(
-            local_store_path);
-    auto source_store = store_factory->CreateValueStore(
-        base::FilePath(extensions::kLocalExtensionSettingsDirectoryName), id);
-    source_store->Set(value_store::ValueStore::DEFAULTS, "id", base::Value(id));
+    // Simulate pref data. Scope the store so it's destroyed before the polling
+    // loop below, preventing memory dump DCHECKs from the LeveldbValueStore.
+    {
+      auto store_factory =
+          base::MakeRefCounted<value_store::TestValueStoreFactory>(
+              local_store_path);
+      auto source_store = store_factory->CreateValueStore(
+          base::FilePath(extensions::kLocalExtensionSettingsDirectoryName), id);
+      source_store->Set(value_store::ValueStore::DEFAULTS, "id",
+                        base::Value(id));
+    }
 
     base::CreateDirectory(indexeddb_path);
     base::WriteFile(indexeddb_path.AppendASCII("test"), id);
