@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/time_period_storage/daily_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/browsing_data/core/counters/bookmark_counter.h"
@@ -23,6 +25,8 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_service.h"
 #include "components/security_interstitials/core/https_only_mode_metrics.h"
 #include "components/security_interstitials/core/metrics_helper.h"
 
@@ -35,6 +39,14 @@ constexpr int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
 constexpr int kFailedHTTPSUpgradeBuckets[] = {0, 25, 50, 100, 300, 700};
 constexpr int kBookmarkCountBuckets[] = {0, 5, 20, 100, 500, 1000, 5000, 10000};
 constexpr int kFirstPageLoadTimeBuckets[] = {5, 10, 60, 240, 1440};
+constexpr int kDailyQueriesBuckets[] = {0, 3, 7};
+
+constexpr auto kDailyQueriesHistogramMap =
+    base::MakeFixedFlatMap<SearchEngineType, std::string_view>({
+        {SEARCH_ENGINE_BRAVE, kSearchDailyQueriesBraveDefaultHistogramName},
+        {SEARCH_ENGINE_GOOGLE, kSearchDailyQueriesGoogleDefaultHistogramName},
+        {SEARCH_ENGINE_OTHER, kSearchDailyQueriesOtherDefaultHistogramName},
+    });
 
 constexpr const char* kAllPagesLoadedHistogramNames[] = {
     kPagesLoadedNonRewardsHistogramName,
@@ -60,17 +72,25 @@ PageMetrics::PageMetrics(PrefService* local_state,
                          history::HistoryService* history_service,
                          bookmarks::BookmarkModel* bookmark_model,
                          DefaultBrowserMonitor* default_browser_monitor,
+                         TemplateURLService* template_url_service,
                          FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       host_content_settings_map_(host_content_settings_map),
       history_service_(history_service),
       first_run_time_callback_(first_run_time_callback),
-      default_browser_monitor_(default_browser_monitor) {
+      default_browser_monitor_(default_browser_monitor),
+      template_url_service_(template_url_service) {
   DCHECK(local_state);
   DCHECK(history_service);
+  DCHECK(template_url_service);
 
   default_browser_observation_.Observe(default_browser_monitor_);
+
+  brave_search_daily_queries_storage_ = std::make_unique<DailyStorage>(
+      local_state_, kMiscMetricsBraveSearchDailyQueriesStorage);
+  template_url_service_observation_.Observe(template_url_service_);
+  UpdateSearchEngineType();
 
   init_timer_.Start(FROM_HERE, kInitReportDelay, this,
                     &PageMetrics::ReportAllMetrics);
@@ -152,6 +172,7 @@ void PageMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsInterstitialAllowDecisionCount);
   registry->RegisterListPref(kMiscMetricsFailedHTTPSUpgradeCount);
   registry->RegisterTimePref(kMiscMetricsFailedHTTPSUpgradeMetricAddedTime, {});
+  registry->RegisterListPref(kMiscMetricsBraveSearchDailyQueriesStorage);
 }
 
 void PageMetrics::IncrementPagesLoadedCount(bool is_reload) {
@@ -197,6 +218,7 @@ void PageMetrics::ReportAllMetrics() {
   ReportPagesLoaded();
   ReportFailedHTTPSUpgrades();
   ReportBookmarkCount();
+  ReportDailyQueries();
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&PageMetrics::ReportAllMetrics, base::Unretained(this)));
@@ -350,10 +372,6 @@ void PageMetrics::OnDomainDiversityResult(
 
 void PageMetrics::OnDefaultBrowserStatusChanged(bool is_default) {
   ReportDomainsLoadedWithStatus();
-
-  if (has_pending_brave_query_) {
-    ReportBraveQuery();
-  }
 }
 
 void PageMetrics::ReportDomainsLoadedWithStatus() {
@@ -406,14 +424,46 @@ void PageMetrics::ReportBookmarkCount() {
   bookmark_counter_->Restart();
 }
 
-void PageMetrics::ReportBraveQuery() {
-  auto is_default = default_browser_monitor_->GetCachedDefaultStatus();
-  if (!is_default) {
-    has_pending_brave_query_ = true;
+void PageMetrics::RecordBraveQuery() {
+  brave_search_daily_queries_storage_->RecordValueNow(1);
+  ReportDailyQueries();
+}
+
+void PageMetrics::ReportDailyQueries() {
+  uint64_t sum = brave_search_daily_queries_storage_->GetLast24HourSum();
+  if (sum == 0 || !default_search_engine_type_.has_value()) {
     return;
   }
-  base::UmaHistogramBoolean(kSearchBraveDailyHistogramName, *is_default);
-  has_pending_brave_query_ = false;
+  for (const auto& [type, name] : kDailyQueriesHistogramMap) {
+    if (type == default_search_engine_type_.value()) {
+      p3a_utils::RecordToHistogramBucket(name.data(), kDailyQueriesBuckets,
+                                         sum);
+    } else {
+      base::UmaHistogramExactLinear(name.data(), INT_MAX - 1, 4);
+    }
+  }
+}
+
+void PageMetrics::UpdateSearchEngineType() {
+  const TemplateURL* provider =
+      template_url_service_->GetDefaultSearchProvider();
+  if (!provider) {
+    default_search_engine_type_ = std::nullopt;
+    return;
+  }
+
+  SearchEngineType type =
+      provider->GetEngineType(template_url_service_->search_terms_data());
+  if (type == SEARCH_ENGINE_BRAVE || type == SEARCH_ENGINE_GOOGLE) {
+    default_search_engine_type_ = type;
+  } else {
+    default_search_engine_type_ = SEARCH_ENGINE_OTHER;
+  }
+}
+
+void PageMetrics::OnTemplateURLServiceChanged() {
+  UpdateSearchEngineType();
+  ReportDailyQueries();
 }
 
 }  // namespace misc_metrics

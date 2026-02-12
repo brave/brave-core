@@ -22,10 +22,14 @@
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/search_engines/search_engine_type.h"
+#include "components/search_engines/template_url_service_observer.h"
 
+class DailyStorage;
 class HostContentSettingsMap;
 class PrefRegistrySimple;
 class PrefService;
+class TemplateURLService;
 class WeeklyStorage;
 
 namespace browsing_data {
@@ -64,10 +68,17 @@ inline constexpr char kSearchBraveDailyHistogramName[] =
     "Brave.Search.BraveDaily.2";
 inline constexpr char kTorWindowUsedHistogramName[] =
     "Brave.Core.TorWindowUsed";
+inline constexpr char kSearchDailyQueriesBraveDefaultHistogramName[] =
+    "Brave.Search.DailyQueries.BraveDefault";
+inline constexpr char kSearchDailyQueriesGoogleDefaultHistogramName[] =
+    "Brave.Search.DailyQueries.GoogleDefault";
+inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
+    "Brave.Search.DailyQueries.OtherDefault";
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
-class PageMetrics : public DefaultBrowserMonitor::Observer {
+class PageMetrics : public DefaultBrowserMonitor::Observer,
+                    public TemplateURLServiceObserver {
  public:
   using FirstRunTimeCallback = base::RepeatingCallback<base::Time(void)>;
 
@@ -77,6 +88,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
               history::HistoryService* history_service,
               bookmarks::BookmarkModel* bookmark_model,
               DefaultBrowserMonitor* default_browser_monitor,
+              TemplateURLService* template_url_service,
               FirstRunTimeCallback first_run_time_callback);
   ~PageMetrics() override;
 
@@ -84,7 +96,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   void IncrementPagesLoadedCount(bool is_reload);
 
-  void ReportBraveQuery();
+  void RecordBraveQuery();
 
   // DefaultBrowserMonitor::Observer:
   void OnDefaultBrowserStatusChanged(bool is_default) override;
@@ -114,10 +126,17 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   void ReportDomainsLoadedWithStatus();
 
+  void ReportDailyQueries();
+  void UpdateSearchEngineType();
+
+  // TemplateURLServiceObserver:
+  void OnTemplateURLServiceChanged() override;
+
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
   std::unique_ptr<WeeklyStorage> interstitial_allow_decisions_storage_;
   std::unique_ptr<WeeklyStorage> failed_https_upgrades_storage_;
+  std::unique_ptr<DailyStorage> brave_search_daily_queries_storage_;
 
   base::CancelableTaskTracker history_service_task_tracker_;
 
@@ -140,12 +159,16 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
   base::Time first_run_time_;
 
   std::optional<int> current_domain_count_;
-  bool has_pending_brave_query_ = false;
 
   raw_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   base::ScopedObservation<DefaultBrowserMonitor,
                           DefaultBrowserMonitor::Observer>
       default_browser_observation_{this};
+
+  raw_ptr<TemplateURLService> template_url_service_;
+  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
+      template_url_service_observation_{this};
+  std::optional<SearchEngineType> default_search_engine_type_;
 
   PrefChangeRegistrar pref_change_registrar_;
 
