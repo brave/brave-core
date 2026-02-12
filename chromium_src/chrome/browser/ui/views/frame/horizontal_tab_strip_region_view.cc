@@ -5,8 +5,10 @@
 
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 // Currently, `NewTabButton::kButtonSize` is used to calculate tab strip button
 // borders. Since the size of buttons varies depending upon the tabs update
@@ -16,13 +18,9 @@
 
 #define BrowserTabStripController BraveBrowserTabStripController
 #define NewTabButton BraveNewTabButton
-
-#define BRAVE_TAB_STRIP_REGION_VIEW_CREATE_TAB_STRIP \
-  auto tab_strip =                                   \
-      std::make_unique<BraveTabStrip>(std::move(tabstrip_controller));
-
+#define TabHoverCardController BraveTabHoverCardController
 #include <chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc>
-#undef BRAVE_TAB_STRIP_REGION_VIEW_CREATE_TAB_STRIP
+#undef TabHoverCardController
 #undef NewTabButton
 #undef BrowserTabStripController
 #undef kButtonSize

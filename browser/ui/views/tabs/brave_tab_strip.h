@@ -23,7 +23,9 @@ class Tab;
 class BraveTabStrip : public TabStrip {
   METADATA_HEADER(BraveTabStrip, TabStrip)
  public:
-  explicit BraveTabStrip(std::unique_ptr<TabStripController> controller);
+  explicit BraveTabStrip(
+      std::unique_ptr<TabStripController> tab_strip_controller,
+      std::unique_ptr<BraveTabHoverCardController> hover_card_controller);
   ~BraveTabStrip() override;
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;

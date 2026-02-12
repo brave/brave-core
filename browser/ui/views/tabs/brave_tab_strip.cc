@@ -56,8 +56,11 @@
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)) {
+BraveTabStrip::BraveTabStrip(
+    std::unique_ptr<TabStripController> tab_strip_controller,
+    std::unique_ptr<BraveTabHoverCardController> hover_card_controller)
+    : TabStrip(std::move(tab_strip_controller),
+               std::move(hover_card_controller)) {
   always_hide_close_button_.Init(
       brave_tabs::kAlwaysHideTabCloseButton,
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),

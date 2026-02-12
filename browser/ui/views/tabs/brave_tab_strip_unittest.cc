@@ -3,11 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
+
+using ::testing::NiceMock;
 
 class BraveTabStripUnitTest : public ChromeViewsTestBase {
  public:
@@ -23,7 +27,9 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
     ChromeViewsTestBase::SetUp();
 
     controller_ = new FakeBaseTabStripController;
-    tab_strip_ = new TabStrip(std::unique_ptr<TabStripController>(controller_));
+    tab_strip_ =
+        new TabStrip(std::unique_ptr<TabStripController>(controller_),
+                     std::unique_ptr<NiceMock<BraveTabHoverCardController>>());
     tab_strip_->Initialize();
     controller_->set_tab_strip(tab_strip_);
     // Do this to force TabStrip to create the buttons.

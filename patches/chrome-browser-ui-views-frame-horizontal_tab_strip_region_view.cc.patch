@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index b07c03ccea4925a22299cbc8d72a8027457b0263..99feb14b3522bdcee99c6ba1d1519401b0c7518e 100644
+index 2706421080674da2cd4e02e32bdbcdcb7bdf4bd1..863c4800a1f9ca94feed00ebd59f91752c44a6db 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-@@ -120,7 +120,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(BrowserView* browser_view) {
-   auto tabstrip_controller = std::make_unique<BrowserTabStripController>(
-       browser_view->browser()->GetTabStripModel(), browser_view,
-       std::move(tab_menu_model_factory));
--  auto tab_strip = std::make_unique<TabStrip>(std::move(tabstrip_controller));
-+  BRAVE_TAB_STRIP_REGION_VIEW_CREATE_TAB_STRIP
+@@ -134,7 +134,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(
+   std::unique_ptr<TabHoverCardController> hover_card_controller(
+       std::make_unique<TabHoverCardController>(tab_strip_region_view,
+                                                browser_view->browser()));
+-  auto tab_strip = std::make_unique<TabStrip>(std::move(tabstrip_controller),
++  auto tab_strip = std::make_unique<BraveTabStrip>(std::move(tabstrip_controller),
+                                               std::move(hover_card_controller));
    return tab_strip;
  }
- 
