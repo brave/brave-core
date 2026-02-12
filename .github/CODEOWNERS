@@ -104,16 +104,6 @@ chromium_src/**/*.ts @brave/chromium-src-web-reviewers
 # Lit Mangling
 tools/chromium_src/lit_mangler/ @brave/chromium-src-web-reviewers
 
-# Brave theme
-browser/themes @simonhong
-
-# Widevine
-browser/widevine @simonhong
-
-# Wayback machine
-browser/ui/views/infobars/brave_wayback_machine_* @simonhong
-components/brave_wayback_machine @simonhong
-
 # Licensing of third-party components
 common/licenses/ @brave/license-reviewer
 script/brave_license_helper.py @brave/license-reviewer
@@ -132,9 +122,6 @@ components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/crypto-
 components/brave_wallet_ui/ @brave/crypto-wallets-front-end
 ios/browser/brave_wallet/ @brave/crypto-wallets-ios
 ios/browser/api/brave_wallet @brave/crypto-wallets-ios
-
-# Brave Referrals Service
-components/brave_referrals/browser/brave_referrals_service* @simonhong
 
 # Brave Sync
 browser/android/brave_sync_worker.* @brave/sync-reviewers
