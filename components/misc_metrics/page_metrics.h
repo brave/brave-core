@@ -18,14 +18,12 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/search_engines/search_engine_type.h"
-#include "components/search_engines/template_url_service_observer.h"
 
-class DailyStorage;
 class HostContentSettingsMap;
 class PrefRegistrySimple;
 class PrefService;
@@ -77,8 +75,7 @@ inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
-class PageMetrics : public DefaultBrowserMonitor::Observer,
-                    public TemplateURLServiceObserver {
+class PageMetrics : public DefaultBrowserMonitor::Observer {
  public:
   using FirstRunTimeCallback = base::RepeatingCallback<base::Time(void)>;
 
@@ -96,7 +93,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer,
 
   void IncrementPagesLoadedCount(bool is_reload);
 
-  void RecordBraveQuery();
+  BraveSearchMetrics* brave_search_metrics() { return &brave_search_metrics_; }
 
   // DefaultBrowserMonitor::Observer:
   void OnDefaultBrowserStatusChanged(bool is_default) override;
@@ -126,17 +123,10 @@ class PageMetrics : public DefaultBrowserMonitor::Observer,
 
   void ReportDomainsLoadedWithStatus();
 
-  void ReportDailyQueries();
-  void UpdateSearchEngineType();
-
-  // TemplateURLServiceObserver:
-  void OnTemplateURLServiceChanged() override;
-
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
   std::unique_ptr<WeeklyStorage> interstitial_allow_decisions_storage_;
   std::unique_ptr<WeeklyStorage> failed_https_upgrades_storage_;
-  std::unique_ptr<DailyStorage> brave_search_daily_queries_storage_;
 
   base::CancelableTaskTracker history_service_task_tracker_;
 
@@ -165,10 +155,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer,
                           DefaultBrowserMonitor::Observer>
       default_browser_observation_{this};
 
-  raw_ptr<TemplateURLService> template_url_service_;
-  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
-      template_url_service_observation_{this};
-  std::optional<SearchEngineType> default_search_engine_type_;
+  BraveSearchMetrics brave_search_metrics_;
 
   PrefChangeRegistrar pref_change_registrar_;
 

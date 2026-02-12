@@ -115,6 +115,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_search_metrics_unittest.cc",
     "doh_metrics_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",

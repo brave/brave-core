@@ -48,7 +48,7 @@ void PageMetricsTabHelper::DidFinishNavigation(
   }
   const auto& url = navigation_handle->GetURL();
   if (url.host() == kBraveSearchHost && url.path() == kBraveSearchPath) {
-    page_metrics_->RecordBraveQuery();
+    page_metrics_->brave_search_metrics()->RecordBraveQuery();
   }
   if (IsPrivateWindowEvent()) {
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);

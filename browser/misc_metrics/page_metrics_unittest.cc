@@ -13,10 +13,10 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
@@ -24,9 +24,6 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/search_engines/search_engines_test_environment.h"
-#include "components/search_engines/template_url.h"
-#include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -48,6 +45,9 @@ class PageMetricsUnitTest : public testing::Test {
                               HistoryServiceFactory::GetDefaultFactory());
     builder.AddTestingFactory(BookmarkModelFactory::GetInstance(),
                               BookmarkModelFactory::GetDefaultFactory());
+    builder.AddTestingFactory(
+        TemplateURLServiceFactory::GetInstance(),
+        base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
 
     profile_ = builder.Build();
 
@@ -59,10 +59,7 @@ class PageMetricsUnitTest : public testing::Test {
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
 
     TemplateURLService* template_url_service =
-        search_engines_test_environment_.template_url_service();
-    ASSERT_TRUE(template_url_service);
-    template_url_service->Load();
-    ASSERT_TRUE(template_url_service->loaded());
+        TemplateURLServiceFactory::GetForProfile(profile_.get());
 
     PageMetrics::RegisterPrefs(local_state_.registry());
     first_run_time_ = base::Time::Now();
@@ -90,20 +87,8 @@ class PageMetricsUnitTest : public testing::Test {
     default_browser_monitor_->OnDefaultBrowserStateReceived(is_default);
   }
 
-  void SetDefaultSearchEngine(
-      const TemplateURLPrepopulateData::PrepopulatedEngine& engine) {
-    TemplateURLService* template_url_service =
-        search_engines_test_environment_.template_url_service();
-    auto data = TemplateURLDataFromPrepopulatedEngine(engine);
-    auto* added =
-        template_url_service->Add(std::make_unique<TemplateURL>(*data));
-    ASSERT_TRUE(added);
-    template_url_service->SetUserSelectedDefaultSearchProvider(added);
-  }
-
  protected:
   content::BrowserTaskEnvironment task_environment_;
-  search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestingProfile> profile_;
@@ -339,102 +324,6 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeTooLate) {
 
   page_metrics_service_->IncrementPagesLoadedCount(false);
   histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
-}
-
-TEST_F(PageMetricsUnitTest, DailyQueriesBuckets) {
-  // Set Brave as default engine.
-  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
-
-  // Record 1 query -> bucket 1 (1-3 range)
-  page_metrics_service_->RecordBraveQuery();
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesBraveDefaultHistogramName, 1, 1);
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesGoogleDefaultHistogramName, INT_MAX - 1, 1);
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesOtherDefaultHistogramName, INT_MAX - 1, 1);
-
-  // Record 2 more (total 3) -> still bucket 1
-  page_metrics_service_->RecordBraveQuery();
-  page_metrics_service_->RecordBraveQuery();
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 1, 3);
-
-  // Record 1 more (total 4) -> bucket 2
-  page_metrics_service_->RecordBraveQuery();
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 2, 1);
-
-  // Record 3 more (total 7) -> still bucket 2
-  for (int i = 0; i < 3; i++) {
-    page_metrics_service_->RecordBraveQuery();
-  }
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 2, 4);
-
-  // Record 1 more (total 8) -> bucket 3
-  page_metrics_service_->RecordBraveQuery();
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 3, 1);
-
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 8);
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 8);
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesOtherDefaultHistogramName, 8);
-}
-
-TEST_F(PageMetricsUnitTest, DailyQueriesEngineSwitch) {
-  // Set Google as default engine
-  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_google);
-
-  page_metrics_service_->RecordBraveQuery();
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesBraveDefaultHistogramName, INT_MAX - 1, 1);
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesOtherDefaultHistogramName, INT_MAX - 1, 1);
-
-  // Record more queries under Google default
-  for (int i = 0; i < 3; i++) {
-    page_metrics_service_->RecordBraveQuery();
-  }
-  // Total is now 4 -> bucket 2
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 2, 1);
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesBraveDefaultHistogramName, INT_MAX - 1, 4);
-  histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesOtherDefaultHistogramName, INT_MAX - 1, 4);
-
-  // Switch to Bing (OtherDefault)
-  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_bing);
-
-  // After switch, OtherDefault should be active with current count (4 queries),
-  // Google should be invalidated.
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesOtherDefaultHistogramName, 2, 1);
-  histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesGoogleDefaultHistogramName, INT_MAX - 1, 1);
-
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 6);
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 6);
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesOtherDefaultHistogramName, 6);
-}
-
-TEST_F(PageMetricsUnitTest, DailyQueriesNoReportOnZero) {
-  // No queries recorded, nothing should be reported.
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 0);
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 0);
-  histogram_tester_.ExpectTotalCount(
-      kSearchDailyQueriesOtherDefaultHistogramName, 0);
 }
 
 }  // namespace misc_metrics
