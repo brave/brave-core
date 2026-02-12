@@ -14,6 +14,7 @@ const util = require('../lib/util')
 const Log = require('../lib/logging')
 const depotTools = require('../lib/depotTools')
 const syncUtil = require('../lib/syncUtils')
+const sisoUtils = require('../lib/sisoUtils')
 
 program
   .version(process.env.npm_package_version)
@@ -135,6 +136,8 @@ async function RunCommand() {
       util.runGclient(['runhooks'])
     })
   }
+
+  sisoUtils.writeSisoRc()
 }
 
 function commaSeparatedToList(value, defaultValue) {
