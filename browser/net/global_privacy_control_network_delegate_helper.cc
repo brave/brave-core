@@ -20,7 +20,7 @@ int OnBeforeStartTransaction_GlobalPrivacyControlWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   if (profile && global_privacy_control::IsGlobalPrivacyControlEnabled(
                      profile->GetPrefs())) {
     headers->SetHeader(kSecGpcHeader, "1");

@@ -24,20 +24,20 @@ std::optional<std::string> GetCspDirectivesOnTaskRunner(
     std::shared_ptr<BraveRequestInfo> ctx,
     std::optional<std::string> original_csp) {
   std::string source_host;
-  if (ctx->initiator_url.is_valid() && !ctx->initiator_url.host().empty()) {
-    source_host = ctx->initiator_url.host();
-  } else if (ctx->request_url.is_valid()) {
+  if (ctx->initiator_url().is_valid() && !ctx->initiator_url().host().empty()) {
+    source_host = ctx->initiator_url().host();
+  } else if (ctx->request_url().is_valid()) {
     // Top-level document requests do not have a valid initiator URL, and
     // requests from special schemes like file:// do not have host parts, so we
     // use the request URL as the initiator.
-    source_host = ctx->request_url.host();
+    source_host = ctx->request_url().host();
   } else {
     return std::nullopt;
   }
 
   std::optional<std::string> csp_directives =
       g_brave_browser_process->ad_block_service()->GetCspDirectives(
-          ctx->request_url, ctx->resource_type, source_host);
+          ctx->request_url(), ctx->resource_type(), source_host);
 
   brave_shields::MergeCspDirectiveInto(original_csp, &csp_directives);
   return csp_directives;
@@ -66,12 +66,12 @@ int OnHeadersReceived_AdBlockCspWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!response_headers || !ctx->allow_brave_shields || ctx->allow_ads) {
+  if (!response_headers || !ctx->allow_brave_shields() || ctx->allow_ads()) {
     return net::OK;
   }
 
-  if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
-      ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
+  if (ctx->resource_type() == blink::mojom::ResourceType::kMainFrame ||
+      ctx->resource_type() == blink::mojom::ResourceType::kSubFrame) {
     // If the override_response_headers have already been populated, we should
     // use those directly.  Otherwise, we populate them from the original
     // headers.

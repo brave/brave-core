@@ -27,21 +27,21 @@ namespace brave {
 namespace {
 
 bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
-  if (ctx->tab_origin.SchemeIs(kChromeExtensionScheme)) {
+  if (ctx->tab_origin().SchemeIs(kChromeExtensionScheme)) {
     return false;
   }
 
-  if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
-      ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
+  if (ctx->resource_type() == blink::mojom::ResourceType::kMainFrame ||
+      ctx->resource_type() == blink::mojom::ResourceType::kSubFrame) {
     // Frame navigations are handled in content::NavigationRequest.
     return false;
   }
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-          ctx->allow_referrers, ctx->allow_brave_shields, GURL(ctx->referrer),
-          ctx->request_url, &new_referrer)) {
-    ctx->new_referrer = new_referrer.url;
+          ctx->allow_referrers(), ctx->allow_brave_shields(),
+          GURL(ctx->referrer()), ctx->request_url(), &new_referrer)) {
+    ctx->set_new_referrer(new_referrer.url);
     return true;
   }
   return false;
@@ -49,11 +49,11 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 
 bool IsTrackingQueryParametersFilteringEnabled(
     std::shared_ptr<BraveRequestInfo> ctx) {
-  if (!ctx->browser_context) {
+  if (!ctx->browser_context()) {
     return true;
   }
 
-  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   CHECK(profile);
   // Default to enabled unless controlled by policy.
   if (!profile->GetPrefs()->IsManagedPreference(
@@ -72,14 +72,14 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
 
-  if (ctx->allow_brave_shields &&
+  if (ctx->allow_brave_shields() &&
       IsTrackingQueryParametersFilteringEnabled(ctx)) {
     auto filtered_url = query_filter::MaybeApplyQueryStringFilter(
-        ctx->initiator_url, ctx->redirect_source, ctx->request_url, ctx->method,
-        ctx->internal_redirect);
+        ctx->initiator_url(), ctx->redirect_source(), ctx->request_url(),
+        ctx->method(), ctx->internal_redirect());
 
     if (filtered_url.has_value()) {
-      ctx->new_url_spec = filtered_url.value().spec();
+      ctx->set_new_url_spec(filtered_url.value().spec());
     }
   }
   return net::OK;
@@ -96,13 +96,13 @@ int OnBeforeStartTransaction_SiteHacksWork(
   // Note that this code only affects "Referer" header sent via network - we
   // handle document.referer in content::NavigationRequest (see also
   // |BraveContentBrowserClient::MaybeHideReferrer|).
-  if (!ctx->allow_referrers && ctx->allow_brave_shields &&
-      ctx->redirect_source.is_valid() &&
-      ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
-      !brave_shields::IsSameOriginNavigation(ctx->redirect_source,
-                                             ctx->request_url)) {
+  if (!ctx->allow_referrers() && ctx->allow_brave_shields() &&
+      ctx->redirect_source().is_valid() &&
+      ctx->resource_type() == blink::mojom::ResourceType::kMainFrame &&
+      !brave_shields::IsSameOriginNavigation(ctx->redirect_source(),
+                                             ctx->request_url())) {
     // This is a hack that notifies the network layer.
-    ctx->removed_headers.insert("X-Brave-Cap-Referrer");
+    ctx->mutable_removed_headers().insert("X-Brave-Cap-Referrer");
   }
   return net::OK;
 }

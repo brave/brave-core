@@ -27,7 +27,7 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
 
   int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);
-  const GURL redirect = GURL(request_info->new_url_spec);
+  const GURL redirect = GURL(request_info->new_url_spec());
   EXPECT_EQ(redirect.host(), kBraveRedirectorProxy);
   EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
   EXPECT_EQ(redirect.path(), url.path());
@@ -41,7 +41,7 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
 
   int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);
-  const GURL redirect = GURL(request_info->new_url_spec);
+  const GURL redirect = GURL(request_info->new_url_spec());
   EXPECT_EQ(redirect.host(), kBraveClients4Proxy);
   EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
   EXPECT_EQ(redirect.path(), url.path());
@@ -60,7 +60,7 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
 
   int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);
-  const GURL redirect = GURL(request_info->new_url_spec);
+  const GURL redirect = GURL(request_info->new_url_spec());
   EXPECT_EQ(redirect.host(), "github.com");
   EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
   EXPECT_EQ(redirect.path(), "/brave/brave-browser/issues/new");
@@ -75,7 +75,7 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
   request_info = std::make_shared<brave::BraveRequestInfo>(url_fewer_keys);
   rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_TRUE(request_info->new_url_spec().empty());
   EXPECT_EQ(rc, net::OK);
 
   // Check when we should not redirect: wrong query keys
@@ -85,6 +85,6 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
   request_info = std::make_shared<brave::BraveRequestInfo>(url_wrong_keys);
   rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                    request_info);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_TRUE(request_info->new_url_spec().empty());
   EXPECT_EQ(rc, net::OK);
 }
