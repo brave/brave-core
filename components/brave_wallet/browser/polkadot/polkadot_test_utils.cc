@@ -306,9 +306,6 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
     url_loader_factory_->AddResponse(req.url.spec(), pos->second);
     return;
   }
-
-  LOG(INFO) << "unhandled request is:";
-  LOG(INFO) << req_body;
 }
 
 bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
