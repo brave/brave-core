@@ -188,11 +188,11 @@ class ZCashWalletServiceUnitTest : public testing::Test {
          { features::kBraveWalletWebUIFeature,
            {} }},
         {}  // disabled features
+    );
 #else
     feature_list_.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletZCashFeature);
 #endif
-    );
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     db_path_ = temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db"));
