@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
+#include "base/check_deref.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -346,8 +348,7 @@ void BraveAccountService::OnRegisterInitialize(
         response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status_code);
-  const auto status_code = *response.status_code;
+  const auto status_code = CHECK_DEREF(response.status_code);
 
   auto result =
       std::move(*response.body)
@@ -393,8 +394,7 @@ void BraveAccountService::OnRegisterFinalize(
         response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status_code);
-  const auto status_code = *response.status_code;
+  const auto status_code = CHECK_DEREF(response.status_code);
 
   auto result =
       std::move(*response.body)
@@ -427,8 +427,7 @@ void BraveAccountService::OnResendConfirmationEmail(
             response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status_code);
-  const auto status_code = *response.status_code;
+  const auto status_code = CHECK_DEREF(response.status_code);
 
   auto result =
       std::move(*response.body)
@@ -547,8 +546,7 @@ void BraveAccountService::OnLoginInitialize(LoginInitializeCallback callback,
         response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status_code);
-  const auto status_code = *response.status_code;
+  const auto status_code = CHECK_DEREF(response.status_code);
 
   auto result =
       std::move(*response.body)
@@ -592,8 +590,7 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
         response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status_code);
-  const auto status_code = *response.status_code;
+  const auto status_code = CHECK_DEREF(response.status_code);
 
   auto result =
       std::move(*response.body)
@@ -726,8 +723,7 @@ void BraveAccountService::OnGetServiceToken(
             response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status_code);
-  const auto status_code = *response.status_code;
+  const auto status_code = CHECK_DEREF(response.status_code);
 
   auto result =
       std::move(*response.body)
