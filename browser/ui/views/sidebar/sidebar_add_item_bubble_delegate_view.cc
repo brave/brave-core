@@ -18,6 +18,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -114,7 +115,6 @@ views::Widget* SidebarAddItemBubbleDelegateView::Create(
       ChromeLayoutProvider::Get()->GetShadowElevationMetric(
           views::Emphasis::kHigh));
   frame_view->SetDisplayVisibleArrow(true);
-  delegate->set_adjust_if_offscreen(true);
   delegate->SizeToContents();
   frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
 
@@ -124,9 +124,10 @@ views::Widget* SidebarAddItemBubbleDelegateView::Create(
 SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
     BraveBrowser* browser,
     views::View* anchor_view)
-    : BubbleDialogDelegateView(anchor_view,
-                               views::BubbleBorder::LEFT_TOP,
-                               views::BubbleBorder::STANDARD_SHADOW),
+    : BubbleDialogDelegateView(
+          anchor_view,
+          sidebar::GetBubbleArrowForSidebar(browser->profile()->GetPrefs()),
+          views::BubbleBorder::STANDARD_SHADOW),
       browser_(browser) {
   DCHECK(browser_);
 

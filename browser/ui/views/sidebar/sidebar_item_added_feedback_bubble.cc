@@ -10,8 +10,10 @@
 
 #include "base/functional/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -32,9 +34,10 @@ constexpr int kFadeoutDurationInMs = 500;
 // static
 views::Widget* SidebarItemAddedFeedbackBubble::Create(
     views::View* anchor_view,
-    views::View* items_contents_view) {
-  auto* delegate =
-      new SidebarItemAddedFeedbackBubble(anchor_view, items_contents_view);
+    views::View* items_contents_view,
+    PrefService* prefs) {
+  auto* delegate = new SidebarItemAddedFeedbackBubble(
+      anchor_view, items_contents_view, prefs);
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
   auto* frame_view = delegate->GetBubbleFrameView();
   frame_view->bubble_border()->set_md_shadow_elevation(
@@ -42,7 +45,6 @@ views::Widget* SidebarItemAddedFeedbackBubble::Create(
           views::Emphasis::kHigh));
   frame_view->SetContentMargins(gfx::Insets::VH(10, 18));
   frame_view->SetDisplayVisibleArrow(true);
-  delegate->set_adjust_if_offscreen(true);
   delegate->SizeToContents();
   frame_view->SetRoundedCorners(gfx::RoundedCornersF(6));
 
@@ -51,9 +53,10 @@ views::Widget* SidebarItemAddedFeedbackBubble::Create(
 
 SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
     views::View* anchor_view,
-    views::View* items_contents_view)
+    views::View* items_contents_view,
+    PrefService* prefs)
     : BubbleDialogDelegateView(anchor_view,
-                               views::BubbleBorder::LEFT_CENTER,
+                               sidebar::GetBubbleArrowForSidebar(prefs),
                                views::BubbleBorder::STANDARD_SHADOW),
       animation_(base::Milliseconds(kFadeoutDurationInMs), 60, this) {
   // This bubble uses same color for all themes.
