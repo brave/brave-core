@@ -35,46 +35,6 @@ export function clearAllDataForTesting() {
   sharedQueryClient = new QueryClient()
 }
 
-//
-// This file contains a factory function, createInterfaceApi, to create a
-// subscribable API with a shared cache based off a mojom interface which
-// exposes features of Tanstack Query in a similar fashion to
-// RTK Query's createApi.
-//
-// Whilst this sets up a store that could be (ab)used to store, update and subscribe
-// to any data, it encourages its use only for remote-fetched data,
-// and not reactive state needed for the UI.
-// The intention is for that kind of state to be handled by the
-// more featureful UI framework
-//
-// Things you can provide and what they do:
-//
-// ENDPOINTS:
-//
-// { endpoints: { myEndpoint: { query: (arg1, arg2) => Promise<Result> } } }
-// - Creates api.myEndpoint.fetch(arg1, arg2) to manually call and update the cache
-// - Creates api.useMyEndpoint(arg1, arg2) to create a React Query hook that fetches the data
-//
-// { endpoints: { myEndpoint: { mutation: (arg1, arg2) => Promise<Result> } } }
-// - Creates api.myEndpoint.mutate(arg1, arg2) to manually call and update the cache
-// - Creates api.useMyEndpoint() to create a React Query hook that runs the mutation
-//   only when .mutate() is called.
-//
-// ACTIONS:
-//
-// { actions: { myAction: (arg1, arg2) => void } }
-// - Creates api.myAction(arg1, arg2) to call the action directly. Does not cache.
-//
-// EVENTS:
-//
-// { events: { onMyEvent: event<[arg1, arg2], Payload>() } }
-// - Creates api.emitEvent('onMyEvent', arg1, arg2, payload) to emit an event
-// - Creates api.useOnMyEvent(arg1, arg2) to create a React Query hook that subscribes
-//   to the latest payload for that event
-// - Creates api.handledOnMyEvent(arg1, arg2) to reset the event data for that key
-//   so that subscribers will no longer receive the payload.
-//
-
 type ChangeReturnType<T extends (...args: any[]) => any, R> = T extends (
   ...args: infer P
 ) => any
@@ -193,6 +153,18 @@ export function event<Args extends any[], Payload extends any[]>(
 // Basis for a unique key for each call to createInterfaceApi for the current scope
 let globalRootInstanceCount = 0
 
+/**
+ * Factory function to create a subscribable API with a shared cache based off
+ * (usually a mojom) interface which exposes features of Tanstack Query in a
+ * similar fashion to RTK Query's createApi.
+ *
+ * Whilst this sets up a store that could be (ab)used to store, update and
+ * subscribe to any data, it encourages its use only for remote-fetched data,
+ * and not reactive state needed for the UI. The intention is for that kind of
+ * state to be handled by the more featureful UI framework.
+ *
+ * See readme.md for detailed usage instructions and examples.
+ */
 export function createInterfaceApi<
   /**
    * ExposedActions is a record of simple actions that can be called directly from the UI.
@@ -727,7 +699,8 @@ export function createInterfaceApi<
     ) => () => void
   } & {
     /**
-     * Clear event data
+     * Clear event data so that useCurrentMyEvent will return undefined until
+     * the next time the event is emitted.
      */
     [K in EvAll as `reset${Capitalize<string & K>}`]: (
       ...keyArgs: KeyArgsOf<K>
@@ -771,7 +744,7 @@ export function createInterfaceApi<
       )
 
       return {
-        hasEmitted: hookData.isPlaceholderData,
+        hasEmitted: hookData.isFetched,
         data: hookData.data,
       }
     }
@@ -832,15 +805,12 @@ export function createInterfaceApi<
       }, deps)
     }
 
-    // Now that we have the subscribe pattern, we don't really need to reset the data
+    // Remove any emitted data for this event
     ;(eventHooks as any)[handledName] = (...keyArgs: any[]) => {
-      return () => {
-        // Could consider using resetQueries here
-        queryClient.resetQueries({
-          queryKey: [...keyBase, ...keyArgs],
-          exact: true,
-        })
-      }
+      queryClient.resetQueries({
+        queryKey: [...keyBase, ...keyArgs],
+        exact: true,
+      })
     }
   })
 
