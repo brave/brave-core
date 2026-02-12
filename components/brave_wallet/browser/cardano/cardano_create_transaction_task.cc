@@ -15,6 +15,7 @@
 #include "base/check_op.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
+#include "base/numerics/checked_math.h"
 #include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -115,7 +116,11 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
   builder_params.send_to_address = address_to_;
   builder_params.change_address = *change_address_;
   builder_params.epoch_parameters = *latest_epoch_parameters_;
-  builder_params.invalid_after = latest_block_->slot + kTxValiditySeconds;
+  if (!base::CheckAdd<uint64_t>(latest_block_->slot, kTxValiditySeconds)
+           .AssignIfValid(&builder_params.invalid_after)) {
+    StopWithError(WalletInternalErrorMessage());
+    return;
+  }
 
   base::expected<CardanoTransaction, std::string> solved_transaction;
   if (builder_params.sending_max_amount) {

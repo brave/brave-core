@@ -104,19 +104,19 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
   uint32_t next_input_id_ = 30;
 };
 
-TEST_F(CardanoKnapsackSolverUnitTest, SetupOutputs) {
+TEST_F(CardanoKnapsackSolverUnitTest, SetupOutput) {
   auto builder_params = MakeTxBuilderParams(500'000);
 
   CardanoTransaction tx;
   tx.set_invalid_after(builder_params.invalid_after);
   // Send amount is less than min ada required for output
-  EXPECT_EQ(CardanoKnapsackSolver::SetupOutputs(tx, builder_params).error(),
+  EXPECT_EQ(CardanoKnapsackSolver::SetupOutput(tx, builder_params).error(),
             WalletAmountTooSmallErrorMessage());
 
   builder_params = MakeTxBuilderParams(send_amount());
   tx = {};
   EXPECT_TRUE(
-      CardanoKnapsackSolver::SetupOutputs(tx, builder_params).has_value());
+      CardanoKnapsackSolver::SetupOutput(tx, builder_params).has_value());
   EXPECT_EQ(tx.TargetOutput()->amount, send_amount());
   EXPECT_EQ(tx.TargetOutput()->tokens, cardano_rpc::Tokens());
   EXPECT_FALSE(tx.ChangeOutput());
@@ -126,7 +126,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, SetupOutputs) {
   tx.set_invalid_after(builder_params.invalid_after);
 
   EXPECT_TRUE(
-      CardanoKnapsackSolver::SetupOutputs(tx, builder_params).has_value());
+      CardanoKnapsackSolver::SetupOutput(tx, builder_params).has_value());
   EXPECT_EQ(tx.TargetOutput()->amount,
             1133530u);  // Min ada required for an output with a token.
   EXPECT_EQ(tx.TargetOutput()->tokens,

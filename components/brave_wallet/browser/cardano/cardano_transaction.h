@@ -143,7 +143,7 @@ class CardanoTransaction {
   void set_fee(uint64_t fee) { fee_ = fee; }
 
   uint64_t invalid_after() const { return invalid_after_; }
-  void set_invalid_after(uint32_t invalid_after) {
+  void set_invalid_after(uint64_t invalid_after) {
     invalid_after_ = invalid_after;
   }
 

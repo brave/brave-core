@@ -52,7 +52,7 @@ CardanoKnapsackSolver::CardanoKnapsackSolver(
 CardanoKnapsackSolver::~CardanoKnapsackSolver() = default;
 
 // static
-base::expected<void, std::string> CardanoKnapsackSolver::SetupOutputs(
+base::expected<void, std::string> CardanoKnapsackSolver::SetupOutput(
     CardanoTransaction& tx,
     const TxBuilderParms& builder_params) {
   tx.SetupTargetOutput(builder_params.send_to_address);
@@ -176,7 +176,7 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
 
   CardanoTransaction base_transaction;
   base_transaction.set_invalid_after(builder_params_.invalid_after);
-  if (auto err = SetupOutputs(base_transaction, builder_params_);
+  if (auto err = SetupOutput(base_transaction, builder_params_);
       !err.has_value()) {
     return base::unexpected(err.error());
   }
