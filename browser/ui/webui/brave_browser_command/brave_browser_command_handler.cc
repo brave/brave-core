@@ -9,9 +9,9 @@
 
 #include <algorithm>
 
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -23,6 +23,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -39,8 +43,12 @@ bool CanShowWalletOnboarding(Profile* profile) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 bool CanShowRewardsOnboarding(Profile* profile) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   return brave_rewards::RewardsServiceFactory::GetForProfile(profile) !=
          nullptr;
+#else
+  return false;
+#endif
 }
 
 bool CanShowVPNBubble(Profile* profile) {
@@ -120,8 +128,13 @@ void BraveBrowserCommandHandler::ExecuteCommand(
       break;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       delegate_->OpenRewardsPanel();
       break;
+#else
+      std::move(callback).Run(false);
+      return;
+#endif
     case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       delegate_->OpenVPNPanel();

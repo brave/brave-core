@@ -13,9 +13,13 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "components/keyed_service/core/keyed_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
-#include "components/keyed_service/core/keyed_service.h"
+#endif
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -28,14 +32,19 @@ namespace brave_adaptive_captcha {
 // This manages the adaptive captcha functionality. Adaptive captchas provide a
 // mechanism for the server to provide new types of captchas without requiring
 // client changes.
-class BraveAdaptiveCaptchaService
-    : public KeyedService,
-      public brave_rewards::RewardsServiceObserver {
+class BraveAdaptiveCaptchaService : public KeyedService
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+    ,
+                                    public brave_rewards::RewardsServiceObserver
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+{
  public:
   BraveAdaptiveCaptchaService(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       brave_rewards::RewardsService* rewards_service,
+#endif
       std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate);
   ~BraveAdaptiveCaptchaService() override;
 
@@ -69,12 +78,16 @@ class BraveAdaptiveCaptchaService
   void ClearScheduledCaptcha();
 
  private:
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // brave_rewards::RewardsServiceObserver:
   void OnCompleteReset(const bool success) override;
+#endif
 
   raw_ptr<PrefService> prefs_ = nullptr;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
       nullptr;  // NOT OWNED
+#endif
   std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> get_captcha_challenge_;

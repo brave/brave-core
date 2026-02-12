@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
@@ -15,12 +15,18 @@
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#endif
+
 namespace brave_rewards {
 
 std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path) {
   // Bitmap fetcher service needed for rewards service
   BitmapFetcherServiceFactory::GetInstance();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   RewardsServiceFactory::GetInstance();
+#endif
   sync_preferences::PrefServiceMockFactory factory;
   auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
   std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(

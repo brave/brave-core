@@ -57,22 +57,29 @@ net::NetworkTrafficAnnotationTag kAnnotationTag =
 BraveAdaptiveCaptchaService::BraveAdaptiveCaptchaService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RewardsService* rewards_service,
+#endif
     std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate)
     : prefs_(prefs),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       rewards_service_(rewards_service),
+#endif
       delegate_(std::move(delegate)),
       api_request_helper_(kAnnotationTag, url_loader_factory),
       get_captcha_challenge_(
           std::make_unique<GetAdaptiveCaptchaChallenge>(&api_request_helper_)) {
   DCHECK(prefs);
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   DCHECK(rewards_service);
-
   rewards_service_->AddObserver(this);
+#endif
 }
 
 BraveAdaptiveCaptchaService::~BraveAdaptiveCaptchaService() {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_service_->RemoveObserver(this);
+#endif
 }
 
 void BraveAdaptiveCaptchaService::GetScheduledCaptcha(
@@ -148,9 +155,11 @@ void BraveAdaptiveCaptchaService::ClearScheduledCaptcha() {
   prefs_->SetBoolean(prefs::kScheduledCaptchaPaused, false);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void BraveAdaptiveCaptchaService::OnCompleteReset(const bool success) {
   ClearScheduledCaptcha();
 }
+#endif
 
 // static
 void BraveAdaptiveCaptchaService::RegisterProfilePrefs(

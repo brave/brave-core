@@ -9,9 +9,9 @@
 #include "base/process/launch.h"
 #include "base/test/bind.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
@@ -40,6 +40,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/api/cookies/cookies_api.h"
@@ -196,8 +200,10 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
             nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_profile), nullptr);

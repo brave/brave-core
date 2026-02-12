@@ -47,8 +47,8 @@
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
-#include "brave/components/brave_rewards/content/rewards_service.h"
-#include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -65,6 +65,10 @@
 #include "net/base/network_change_notifier.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/content/rewards_service.h"
+#endif
 
 namespace brave_ads {
 
@@ -129,7 +133,9 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     ResourceComponent* resource_component,
     history::HistoryService* history_service,
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RewardsService* rewards_service,
+#endif
     HostContentSettingsMap* host_content_settings_map)
     : AdsService(std::move(delegate)),
       prefs_(prefs),
@@ -154,7 +160,6 @@ AdsServiceImpl::AdsServiceImpl(
       bat_ads_client_associated_receiver_(this) {
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
-  CHECK(rewards_service);
 
   if (!local_state_ || !history_service_) {
     CHECK_IS_TEST();
@@ -162,7 +167,10 @@ AdsServiceImpl::AdsServiceImpl(
 
   host_content_settings_map_observation_.Observe(host_content_settings_map);
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  CHECK(rewards_service);
   rewards_service_observation_.Observe(rewards_service);
+#endif
 
   if (CanStartBatAdsService()) {
     bat_ads_client_notifier_pending_receiver_ =
@@ -388,9 +396,13 @@ void AdsServiceImpl::Initialize(size_t current_start_number) {
 }
 
 void AdsServiceImpl::InitializeRewardsWallet(size_t current_start_number) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
                      weak_ptr_factory_.GetWeakPtr(), current_start_number));
+#else
+  InitializeRewardsWalletCallback(current_start_number, nullptr);
+#endif
 }
 
 void AdsServiceImpl::InitializeRewardsWalletCallback(
@@ -747,6 +759,7 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void AdsServiceImpl::GetRewardsWallet() {
   rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
@@ -761,6 +774,7 @@ void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
         base::Base64Encode(mojom_rewards_wallet->recovery_seed));
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 void AdsServiceImpl::RefetchNewTabPageAd() {
   ResetNewTabPageAd();
@@ -1668,8 +1682,10 @@ void AdsServiceImpl::Log(const std::string& file,
                          int32_t line,
                          int32_t verbose_level,
                          const std::string& message) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_service_observation_.GetSource()->WriteDiagnosticLog(
       file, line, verbose_level, message);
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   const int vlog_level =
       ::logging::GetVlogLevelHelper(file.c_str(), file.length());
@@ -1722,6 +1738,7 @@ void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void AdsServiceImpl::OnRewardsWalletCreated() {
   GetRewardsWallet();
 }
@@ -1741,6 +1758,7 @@ void AdsServiceImpl::OnCompleteReset(bool success) {
         weak_ptr_factory_.GetWeakPtr(), /*intentional*/ base::DoNothing()));
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 void AdsServiceImpl::OnContentSettingChanged(
     const ContentSettingsPattern& /*primary_pattern*/,

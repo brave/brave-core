@@ -9,7 +9,6 @@
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
@@ -33,6 +32,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -55,6 +55,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -127,7 +131,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_origin::BraveOriginServiceFactory::GetInstance();
   brave_perf_predictor::NamedThirdPartyRegistryFactory::GetInstance();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   brave_rewards::RewardsServiceFactory::GetInstance();
+#endif
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();

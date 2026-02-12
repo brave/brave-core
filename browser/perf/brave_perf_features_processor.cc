@@ -8,12 +8,11 @@
 #include "base/command_line.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/content/rewards_service.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -29,6 +28,11 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/content/rewards_service.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
@@ -38,7 +42,9 @@
 #endif
 
 namespace {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void FakeCallback(brave_rewards::mojom::CreateRewardsWalletResult) {}
+#endif
 
 void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
   if (!profile) {
@@ -108,10 +114,12 @@ void MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(
     return;
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // Rewards
   auto* rewards_service =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   rewards_service->CreateRewardsWallet("US", base::BindOnce(&FakeCallback));
+#endif
 
   // Adblock
   EnableAdblockCookieList(profile->GetWeakPtr());

@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
@@ -34,6 +34,10 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#endif
+
 class BraveProfileManagerTest : public PlatformBrowserTest {
 };
 
@@ -57,8 +61,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
   ASSERT_TRUE(guest_profile->IsGuestSession());
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
             nullptr);
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
             nullptr);
@@ -66,10 +73,12 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
   ASSERT_TRUE(otr_profile->IsOffTheRecord());
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile),
             nullptr);
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
             nullptr);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr);

@@ -6,7 +6,6 @@
 #include "base/check.h"
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
-#include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
@@ -14,6 +13,7 @@
 #include "brave/components/brave_adaptive_captcha/prefs_util.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -53,6 +53,10 @@
 #include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_prefs_util.h"
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -150,8 +154,10 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 07/2021
   profile_prefs->ClearPref(prefs::kNetworkPredictionOptions);
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // Added 01/2022
   brave_rewards::MigrateObsoleteProfilePrefs(profile_prefs);
+#endif
 
   // Added 05/2022
   translate::ClearMigrationBraveProfilePrefs(profile_prefs);

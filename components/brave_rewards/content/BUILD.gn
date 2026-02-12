@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/engine/config.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -89,8 +90,8 @@ source_set("testutil") {
     ":content",
     "//base",
     "//brave/browser",
-    "//brave/browser/brave_rewards",
     "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_rewards/core/engine:headers",
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/prefs",
@@ -98,6 +99,10 @@ source_set("testutil") {
     "//content/public/browser",
     "//testing/gtest",
   ]
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/browser/brave_rewards" ]
+  }
 
   sources = [
     "test_util.cc",

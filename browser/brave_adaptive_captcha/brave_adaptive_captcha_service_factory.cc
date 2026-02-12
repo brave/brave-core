@@ -11,7 +11,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -20,12 +19,15 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 
-#if !BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 namespace {
 
@@ -88,7 +90,9 @@ BraveAdaptiveCaptchaServiceFactory::BraveAdaptiveCaptchaServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveAdaptiveCaptchaService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
+#endif
 }
 
 BraveAdaptiveCaptchaServiceFactory::~BraveAdaptiveCaptchaServiceFactory() =
@@ -101,8 +105,10 @@ BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceForBrowserContext(
                                 ->GetURLLoaderFactoryForBrowserProcess();
   return std::make_unique<BraveAdaptiveCaptchaService>(
       user_prefs::UserPrefs::Get(context), std::move(url_loader_factory),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       brave_rewards::RewardsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(context)),
+#endif
       std::make_unique<CaptchaDelegate>(context));
 }
 
