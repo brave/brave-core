@@ -17,19 +17,18 @@ export class SettingsBraveContentContainersBackgroundChipElement extends CrLitEl
     return 'settings-brave-content-containers-background-chip'
   }
 
-  static override get properties() {
-    return {
-      selected: { type: Boolean },
-      backgroundColor: { type: String },
-    }
-  }
-
   static override get styles() {
     return getCss()
   }
 
   override render() {
     return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      selected: {type: Boolean}, backgroundColor: {type: String},
+    }
   }
 
   accessor selected: boolean = false
