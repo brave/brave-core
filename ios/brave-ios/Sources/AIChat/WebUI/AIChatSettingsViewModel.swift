@@ -14,7 +14,8 @@ import StoreKit
 /// This view model wraps a AIChatSettingsHelper and StoreKit/SkusService related classes
 @Observable
 public class AIChatSettingsViewModel: AIChatSettingsHelperDelegate {
-  private let helper: any AIChatSettingsHelper
+  let helper: any AIChatSettingsHelper
+
   private let storeSDK: BraveStoreSDK
   private let skusService: (any SkusSkusService)?
   private let calendar: Calendar
@@ -31,6 +32,7 @@ public class AIChatSettingsViewModel: AIChatSettingsHelperDelegate {
     self.calendar = calendar
     self.modelsWithSubtitles = helper.modelsWithSubtitles
     self._defaultModelWithSubtitle = helper.defaultModelWithSubtitle
+    self.customModels = helper.customModels
 
     helper.delegate = self
 
@@ -64,6 +66,10 @@ public class AIChatSettingsViewModel: AIChatSettingsHelperDelegate {
       }
     }
   }
+
+  // MARK: Custom Models
+
+  private(set) var customModels: [AiChat.Model]
 
   // MARK: Subscription Details
 
@@ -165,6 +171,7 @@ public class AIChatSettingsViewModel: AIChatSettingsHelperDelegate {
 
   public func modelListUpdated() {
     modelsWithSubtitles = helper.modelsWithSubtitles
+    customModels = helper.customModels
   }
 }
 
