@@ -18,7 +18,6 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "net/base/features.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 #define HTTPS_UPGRADE_EXCEPTIONS_TXT_FILE "https-upgrade-exceptions-list.txt"
@@ -76,10 +75,13 @@ bool HttpsUpgradeExceptionsService::CanUpgradeToHTTPS(const GURL& url) {
     return false;
   }
 
-  auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  // Allow upgrade only if the domain is not on the exceptions list.
-  return !exceptional_domains_.contains(domain.empty() ? url.host() : domain);
+  // The exceptions list is provided by the "Brave Local Data Files Updater"
+  // CRX. It contains a list of hosts that should be excluded from HTTPS
+  // upgrades. The matching logic checks only the host name, as a result, if a
+  // subdomain is not explicitly listed, it will still be upgraded to HTTPS.
+  // For example, if a.com is on the list, a.com will not be upgraded, but
+  // sub.a.com will be upgraded.
+  return !exceptional_domains_.contains(url.host());
 }
 
 // implementation of LocalDataFilesObserver

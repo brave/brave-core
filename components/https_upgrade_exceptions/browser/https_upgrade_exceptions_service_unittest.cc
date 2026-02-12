@@ -88,8 +88,6 @@ TEST_F(HttpsUpgradeExceptionsServiceFeatureEnabledTest, CanUpgradeToHTTPS) {
     bool can_upgrade;
   } kTestCases[] = {
       {"Do not upgrade as exception", GURL("http://a.com"), false},
-      {"Do not upgrade subdomain as exception", GURL("http://sub.a.com"),
-       false},
       {"Do not upgrade as wrong schema", GURL("chrome://a.com"), false},
       {"Simple Upgrade to HTTPS", GURL("http://b.com"), true}};
 
