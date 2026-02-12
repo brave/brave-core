@@ -421,7 +421,11 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
     EXPECT_EQ(histogram_name_from_callback_, kTestNebulaHistogramName);
   }
   EXPECT_GE(points_request_count, 1u);
-  EXPECT_LE(points_request_count, 25u);
+  // The expected rate is ~15% (kNebulaParticipationRate +
+  // (1-kNebulaParticipationRate)*kNebulaScramblingRate ≈ 0.14975).
+  // With 100 iterations, stddev ≈ 3.57, so use 35 (~5.6σ above mean)
+  // to avoid intermittent failures from statistical variance.
+  EXPECT_LE(points_request_count, 35u);
 }
 
 TEST_F(P3AConstellationHelperTest, ActivationDateAttributes) {
