@@ -20,6 +20,14 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return 'auto-tab-groups-page'
   }
 
+  static override get styles() {
+    return getCss()
+  }
+
+  override render() {
+    return getHtml.bind(this)()
+  }
+
   protected topics_: string[] = []
   protected topic = ''
   protected undoTopic_ = ''
@@ -53,10 +61,6 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   accessor isLoadingTopics: boolean = false
   accessor errorMessage: string = ''
   accessor needsPremium: boolean = false
-
-  static override get styles() {
-    return getCss()
-  }
 
   constructor() {
     super()
@@ -148,10 +152,6 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     if (this.topics_[index]) {
       this.getFocusTabs_(this.topics_[index])
     }
-  }
-
-  override render() {
-    return getHtml.bind(this)()
   }
 
   override connectedCallback() {
