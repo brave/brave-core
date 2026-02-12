@@ -260,6 +260,12 @@
 # Flakes on all platforms (6% upstream flake rate per LUCI Analysis).
 # https://github.com/brave/brave-browser/issues/52658
 -IsolatedWebAppRetryTest.RetryTriggeredWhenAllTasksDone
+# Upstream Chromium test: same IWA retry timing flake. Expected 1 install task
+# but got 2 due to retry firing earlier than expected.
+# Known upstream flake (8.1% flake rate per LUCI Analysis, 30-day lookback).
+# No Brave modifications in IWA policy area.
+# https://github.com/brave/brave-browser/issues/52780
+-IsolatedWebAppRetryTest.FirstInstallFailsRetrySucceeds
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
