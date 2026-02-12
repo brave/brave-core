@@ -246,6 +246,14 @@
 -IsolatedWebAppManagedAllowlistTest.AllowedAppInstalled
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
 
+# Upstream Chromium test: CHECK failure in UpdateKeyDistributionInfo due to
+# race condition in async component loading. LoadKeyDistributionData posts
+# thread pool tasks and the TestFuture can receive a stale notification.
+# No Brave modifications in isolated_web_apps or key_distribution areas.
+# 0.7% upstream flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/52733
+-IsolatedWebAppUpdateManagerUpdateTest.SkipsUpdateDiscoveryTaskForNotAllowlistedIwa
+
 # Upstream Chromium test: intermittent timing failure in IWA retry logic
 # using MOCK_TIME + BackoffEntry. Expected 2 install tasks but got 3 due to
 # retry firing earlier than expected. No Brave modifications in IWA policy area.
