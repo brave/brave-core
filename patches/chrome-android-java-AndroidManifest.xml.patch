@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 1aef3a4966f4069890ad1be6265f9e48743b61e3..61aa5c7c9a230e6663c3a49a7fcdba8eb22056f6 100644
+index 3e672c08e2e6389750c489889e51cb77a5694f2c..79d7a9e2481b1ec047f44e1bbbb7e9287044ea84 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -38,6 +38,7 @@ by a child template that "extends" this file.
@@ -20,8 +20,8 @@ index 1aef3a4966f4069890ad1be6265f9e48743b61e3..61aa5c7c9a230e6663c3a49a7fcdba8e
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
  
      <!--  Needed for allowing downloaded APKs to be installed. -->
-@@ -79,24 +82,32 @@ by a child template that "extends" this file.
-     {% endif %}
+@@ -76,24 +79,32 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
      {% set enable_screen_capture = enable_screen_capture|default(0) %}
      {% if enable_screen_capture == "true" %}
 +<!--
@@ -54,7 +54,7 @@ index 1aef3a4966f4069890ad1be6265f9e48743b61e3..61aa5c7c9a230e6663c3a49a7fcdba8e
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_AUDIO"/>
  
      <!-- Needed for handling media-viewing Intents from other apps for images and video on low end
-@@ -114,12 +125,14 @@ by a child template that "extends" this file.
+@@ -111,12 +122,14 @@ by a child template that "extends" this file.
        resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
@@ -104,16 +104,16 @@ index 1aef3a4966f4069890ad1be6265f9e48743b61e3..61aa5c7c9a230e6663c3a49a7fcdba8e
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1170,7 +1188,7 @@ by a child template that "extends" this file.
-             {% elif is_desktop_android == "true" %}
+@@ -1173,7 +1191,7 @@ by a child template that "extends" this file.
+ 
+         <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
+             {% if enable_screen_capture == "true" %}
+-            android:foregroundServiceType="camera|microphone|mediaProjection|mediaPlayback"
++            android:foregroundServiceType="camera|microphone|mediaPlayback"
+             {% else %}
              android:foregroundServiceType="camera|microphone"
-             {% elif enable_screen_capture == "true" %}
--            android:foregroundServiceType="mediaProjection|mediaPlayback"
-+            android:foregroundServiceType="mediaPlayback"
              {% endif %}
-             android:exported="false"/>
-         <service android:name="org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerServices$PlaybackListenerService"
-@@ -1265,6 +1283,7 @@ by a child template that "extends" this file.
+@@ -1270,6 +1288,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
