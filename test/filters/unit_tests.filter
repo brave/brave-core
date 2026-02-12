@@ -400,6 +400,13 @@
 # was not initialized in test.
 -RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
 
+# Flaky upstream Chromium test: observer list destruction order issue where
+# ManagedProfileCreator remains observing ProfileManager during teardown.
+# Already disabled on Mac upstream (crbug.com/385383226). 0.8% upstream flake
+# rate per LUCI Analysis. No Brave modifications in related code.
+# https://github.com/brave/brave-browser/issues/52742
+-ProfileTokenWebSigninInterceptorTest.InterceptionCreatesNewProfileIfAccepted
+
 # Flaky upstream tests
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_FpsEnabled_ReturnsEmptyUntilAllSetsReady/0
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_NumQueriesRecorded_AfterConfigReady/0
