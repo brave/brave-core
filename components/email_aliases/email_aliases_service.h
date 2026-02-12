@@ -21,6 +21,9 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
+class PrefRegistrySimple;
+class PrefService;
+
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
@@ -57,7 +60,7 @@ class EmailAliasesService : public KeyedService,
 
   // Creates or updates an alias identified by |alias_email| with optional note.
   void UpdateAlias(const std::string& alias_email,
-                   const std::optional<std::string>& note,
+                   mojom::AliasUpdateDataPtr update_data,
                    UpdateAliasCallback callback) override;
 
   // Deletes the alias identified by |alias_email|.
@@ -97,7 +100,7 @@ class EmailAliasesService : public KeyedService,
   void GenerateAliasWithToken(GenerateAliasCallback user_callback,
                               TokenResult token);
   void UpdateAliasWithToken(const std::string& alias_email,
-                            const std::optional<std::string>& note,
+                            mojom::AliasUpdateDataPtr update_data,
                             UpdateAliasCallback callback,
                             TokenResult token);
   void DeleteAliasWithToken(const std::string& alias_email,

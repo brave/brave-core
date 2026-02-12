@@ -4,6 +4,7 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+components/os_crypt/async",
   "+components/prefs",
+  "+components/pref_registry",
   "+services/network/public/cpp",
   "+services/network/test",
   "+services/preferences/public/cpp",

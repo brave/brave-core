@@ -366,7 +366,7 @@ describe('EmailAliasModal', () => {
     await waitFor(() => {
       expect(mockEmailAliasesService.updateAlias).toHaveBeenCalledWith(
         'existing@brave.com',
-        'Existing Alias',
+        { note: 'Existing Alias', active: undefined, domains: undefined },
       )
       expect(mockOnReturnToMain).toHaveBeenCalled()
     })
