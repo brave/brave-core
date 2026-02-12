@@ -110,6 +110,16 @@ void BraveTab::UpdateIconVisibility() {
         !ShouldRenderAsNormalTab()) {
       center_icon_ = true;
     }
+
+    // When floating, always show the icon and don't center it to prevent
+    // flickering during the expand/collapse animation. Without this check,
+    // icon visibility and positioning would be determined by other transient
+    // conditions (like width thresholds, active state, alert indicators),
+    // causing the icon to flicker as these conditions change during animation.
+    if (!is_at_min_width && controller()->IsVerticalTabsFloating()) {
+      showing_icon_ = true;
+      center_icon_ = false;
+    }
     return;
   }
 
@@ -125,6 +135,12 @@ void BraveTab::UpdateIconVisibility() {
     showing_close_button_ =
         !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
     showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
+  }
+
+  // See the above comments.
+  if (!is_at_min_width && controller()->IsVerticalTabsFloating()) {
+    showing_icon_ = true;
+    center_icon_ = false;
   }
 }
 

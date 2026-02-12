@@ -5,13 +5,18 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+#include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -28,6 +33,11 @@ class MockTabSlotController : public FakeTabSlotController {
 
   // FakeTabSlotController overrides:
   MOCK_METHOD(void, CloseTab, (Tab * tab, CloseTabSource source), (override));
+  MOCK_METHOD(bool, IsVerticalTabsFloating, (), (const, override));
+  MOCK_METHOD(BrowserWindowInterface*,
+              GetBrowserWindowInterface,
+              (),
+              (override));
 };
 
 class BraveTabTest : public ChromeViewsTestBase {
@@ -178,4 +188,89 @@ TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
       .Times(1);
   tab_ptr->OnMousePressed(press_event);
   tab_ptr->OnMouseReleased(release_event);
+}
+
+// Test that icon visibility is correctly set when vertical tabs are floating
+// across various tab widths. This prevents icon flickering when the floating
+// animation completes during the transition from max to min width.
+// See: UpdateIconVisibility() in brave_tab.cc
+TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsFloating) {
+  // Set up a profile with vertical tabs enabled
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+
+  // Set up mock browser window interface
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  // Mock both const and non-const overloads of GetProfile()
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  // Set up mock tab slot controller
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(true));
+
+  // Test various widths from max to min to simulate the animation transition
+  constexpr int kMaxWidth = 240;  // Typical max width for vertical tabs
+  constexpr int kMinWidth = tabs::kVerticalTabMinWidth;  // 32px
+  constexpr int kStep = 20;
+
+  // Test unpinned tab across width range
+  {
+    auto widget =
+        CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+    auto tab =
+        std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller);
+    tab_slot_controller.set_active_tab(tab.get());
+    widget->SetContentsView(std::move(tab));
+    auto* tab_ptr = static_cast<BraveTab*>(widget->GetContentsView());
+
+    for (int width = kMaxWidth; width > kMinWidth; width -= kStep) {
+      tab_ptr->SetBoundsRect({0, 0, width, 50});
+      tab_ptr->UpdateIconVisibility();
+
+      // When floating and width > min width:
+      // - Icon should be visible (prevents hiding during animation)
+      // - Icon should not be centered (prevent flickering during the animation)
+      EXPECT_TRUE(tab_ptr->showing_icon())
+          << "Icon should be visible when floating at width " << width;
+      EXPECT_FALSE(tab_ptr->center_icon_for_test())
+          << "Icon should not be centered when floating at width " << width;
+    }
+  }
+
+  // Test pinned tab across width range
+  {
+    auto widget =
+        CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+    auto pinned_tab =
+        std::make_unique<BraveTab>(tabs::TabHandle(2), &tab_slot_controller);
+    widget->SetContentsView(std::move(pinned_tab));
+    auto* pinned_tab_ptr = static_cast<BraveTab*>(widget->GetContentsView());
+
+    TabRendererData data;
+    data.pinned = true;
+    pinned_tab_ptr->SetData(std::move(data));
+
+    for (int width = kMaxWidth; width > kMinWidth; width -= kStep) {
+      pinned_tab_ptr->SetBoundsRect({0, 0, width, 50});
+      pinned_tab_ptr->UpdateIconVisibility();
+
+      // When floating and width > min width:
+      // - Icon should always be visible for pinned tabs
+      // - Icon should not be centered (uses normal positioning)
+      EXPECT_TRUE(pinned_tab_ptr->showing_icon())
+          << "Pinned tab icon should be visible when floating at width "
+          << width;
+      EXPECT_FALSE(pinned_tab_ptr->center_icon_for_test())
+          << "Pinned tab icon should not be centered when floating at width "
+          << width;
+    }
+  }
 }
