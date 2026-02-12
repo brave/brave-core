@@ -153,4 +153,27 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesNoReportOnZero) {
       kSearchDailyQueriesOtherDefaultHistogramName, 0);
 }
 
+TEST_F(BraveSearchMetricsUnitTest, NoReportAfter24Hours) {
+  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
+
+  brave_search_metrics_->RecordBraveQuery();
+  histogram_tester_.ExpectUniqueSample(
+      kSearchDailyQueriesBraveDefaultHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(
+      kSearchDailyQueriesGoogleDefaultHistogramName, INT_MAX - 1, 1);
+  histogram_tester_.ExpectUniqueSample(
+      kSearchDailyQueriesOtherDefaultHistogramName, INT_MAX - 1, 1);
+
+  task_environment_.FastForwardBy(base::Hours(24));
+
+  brave_search_metrics_->ReportDailyQueries();
+
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesBraveDefaultHistogramName, 1);
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesGoogleDefaultHistogramName, 1);
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesOtherDefaultHistogramName, 1);
+}
+
 }  // namespace misc_metrics
