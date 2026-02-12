@@ -91,7 +91,7 @@ std::optional<EthTransaction> EthTransaction::FromTxData(
 
 // static
 std::optional<EthTransaction> EthTransaction::FromValue(
-    const base::Value::Dict& value) {
+    const base::DictValue& value) {
   EthTransaction tx;
   const std::string* nonce = value.FindString("nonce");
   if (!nonce) {
@@ -324,7 +324,7 @@ std::vector<uint8_t> EthTransaction::GetToBytes() const {
   auto* eth_addr = std::get_if<EthAddress>(&to_);
   CHECK(contract_creation || eth_addr);
   if (contract_creation) {
-    return contract_creation->bytes();
+    return base::ToVector(contract_creation->bytes());
   } else {
     return base::ToVector(eth_addr->bytes());
   }

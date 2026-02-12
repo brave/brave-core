@@ -26,7 +26,7 @@ class EthContractCreationAddress {
 
   std::string ToHex() const { return "0x"; }
 
-  std::vector<uint8_t> bytes() const { return std::vector<uint8_t>(); }
+  base::span<const uint8_t> bytes() const { return base::span<uint8_t>(); }
 
   bool operator==(const EthContractCreationAddress&) const;
 };

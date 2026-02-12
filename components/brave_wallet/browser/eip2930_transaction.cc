@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/containers/extend.h"
-#include "base/containers/to_vector.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
