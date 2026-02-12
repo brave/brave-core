@@ -47,7 +47,8 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
-            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
+            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier,
+            TabReparentingDelegate tabReparentingDelegate) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,
@@ -55,7 +56,8 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                 activityLifecycleDispatcher,
                 modalDialogManagerSupplier,
                 menuOrKeyboardActionController,
-                desktopWindowStateManagerSupplier);
+                desktopWindowStateManagerSupplier,
+                tabReparentingDelegate);
     }
 
     @Override
