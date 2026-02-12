@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
@@ -294,6 +295,15 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
   }
 
   return ShowSidebarOption::kShowNever;
+}
+
+views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs) {
+  DCHECK(prefs);
+  const bool on_right = prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+  // When sidebar is on the right, bubble appears to the left with RIGHT arrow.
+  // When sidebar is on the left, bubble appears to the right with LEFT arrow.
+  return on_right ? views::BubbleBorder::RIGHT_TOP
+                  : views::BubbleBorder::LEFT_TOP;
 }
 
 }  // namespace sidebar

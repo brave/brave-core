@@ -13,6 +13,8 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view_observer.h"
 
+class PrefService;
+
 // Observes SidebarItemsContentsView's bounds to locate feedback bubble
 // properly. Passed |anchor_view| is newly added item and its bound is not
 // changed when it's moved. The reason is SidebarItemsScrollView moves up and
@@ -24,9 +26,9 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
   METADATA_HEADER(SidebarItemAddedFeedbackBubble,
                   views::BubbleDialogDelegateView)
  public:
-
   static views::Widget* Create(views::View* anchor_view,
-                               views::View* items_contents_view);
+                               views::View* items_contents_view,
+                               PrefService* prefs);
 
   ~SidebarItemAddedFeedbackBubble() override;
 
@@ -48,7 +50,8 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
 
  private:
   SidebarItemAddedFeedbackBubble(views::View* anchor_view,
-                                 views::View* items_contents_view);
+                                 views::View* items_contents_view,
+                                 PrefService* prefs);
 
   void AddChildViews();
 

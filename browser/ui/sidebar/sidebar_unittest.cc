@@ -20,6 +20,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -29,6 +30,7 @@
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/bubble/bubble_border.h"
 #include "url/gurl.h"
 
 using ::testing::Eq;
@@ -278,6 +280,23 @@ TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
   // Not converted for url that doesn't relavant builtin item.
   GURL brave_com("https://www.brave.com/");
   EXPECT_EQ(brave_com, ConvertURLToBuiltInItemURL(brave_com));
+}
+
+TEST(SidebarUtilTest, GetBubbleArrowForSidebarTest) {
+  content::BrowserTaskEnvironment task_environment;
+
+  // Create a test profile with prefs
+  TestingProfile profile;
+  PrefService* prefs = profile.GetPrefs();
+  ASSERT_TRUE(prefs);
+
+  // When sidebar is on left (pref is false), bubble should point LEFT
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  EXPECT_EQ(views::BubbleBorder::LEFT_TOP, GetBubbleArrowForSidebar(prefs));
+
+  // When sidebar is on right (pref is true), bubble should point RIGHT
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  EXPECT_EQ(views::BubbleBorder::RIGHT_TOP, GetBubbleArrowForSidebar(prefs));
 }
 
 }  // namespace sidebar

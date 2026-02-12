@@ -13,8 +13,10 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -51,7 +53,6 @@ views::Widget* SidebarEditItemBubbleDelegateView::Create(
       ChromeLayoutProvider::Get()->GetShadowElevationMetric(
           views::Emphasis::kHigh));
   frame_view->SetDisplayVisibleArrow(true);
-  delegate->set_adjust_if_offscreen(true);
   delegate->SizeToContents();
   frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
 
@@ -62,9 +63,10 @@ SidebarEditItemBubbleDelegateView::SidebarEditItemBubbleDelegateView(
     BraveBrowser* browser,
     const sidebar::SidebarItem& item,
     views::View* anchor_view)
-    : BubbleDialogDelegateView(anchor_view,
-                               views::BubbleBorder::LEFT_TOP,
-                               views::BubbleBorder::STANDARD_SHADOW),
+    : BubbleDialogDelegateView(
+          anchor_view,
+          sidebar::GetBubbleArrowForSidebar(browser->profile()->GetPrefs()),
+          views::BubbleBorder::STANDARD_SHADOW),
       target_item_(item),
       browser_(browser) {
   SetAcceptCallback(base::BindOnce(

@@ -11,6 +11,7 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "components/version_info/channel.h"
+#include "ui/views/bubble/bubble_border.h"
 
 class Browser;
 class GURL;
@@ -45,6 +46,11 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
 
 SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     version_info::Channel channel);
+
+// Get bubble arrow direction based on sidebar position.
+// Returns RIGHT_TOP if sidebar is on right.
+views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs);
+
 }  // namespace sidebar
 
 #endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
