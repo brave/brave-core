@@ -18,6 +18,7 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "net/base/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 #define HTTPS_UPGRADE_EXCEPTIONS_TXT_FILE "https-upgrade-exceptions-list.txt"
@@ -74,8 +75,11 @@ bool HttpsUpgradeExceptionsService::CanUpgradeToHTTPS(const GURL& url) {
     // don't upgrade any websites yet.
     return false;
   }
+
+  auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   // Allow upgrade only if the domain is not on the exceptions list.
-  return !exceptional_domains_.contains(url.host());
+  return !exceptional_domains_.contains(domain.empty() ? url.host() : domain);
 }
 
 // implementation of LocalDataFilesObserver
