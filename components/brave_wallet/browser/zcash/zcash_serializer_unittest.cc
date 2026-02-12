@@ -211,7 +211,12 @@ void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
 TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
 #if BUILDFLAG(IS_IOS)
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(features::kBraveWalletWebUIFeature);
+  feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}}},
+       {features::kBraveWalletWebUIFeature, {}}},
+      {}  // disabled features
+  );
 #endif
   OrchardBundleManager::OverrideRandomSeedForTesting(6675565u);
 

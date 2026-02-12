@@ -60,7 +60,13 @@ const base::FeatureParam<bool> kCardanoDAppSupport{
     &kBraveWalletCardanoFeature, "cardano_dapp_support", true};
 
 const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled{
-    &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled", true};
+    &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled",
+#if BUILDFLAG(IS_IOS)
+    false
+#else
+    true
+#endif
+};
 
 BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
              "BraveWalletAnkrBalances",
