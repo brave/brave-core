@@ -56,6 +56,7 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_security_policy.h"
+#include "content/public/browser/service_process_host.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -319,9 +320,22 @@ brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
         base::ThreadPool::CreateSequencedTaskRunner(
             {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
+    brave_shields::FilterParsingServiceFactory filter_list_parser_factory =
+        base::BindRepeating([]() {
+          mojo::PendingRemote<
+              adblock_filter_list_parser::mojom::AdblockFilterListParser>
+              remote;
+          content::ServiceProcessHost::Launch<
+              adblock_filter_list_parser::mojom::AdblockFilterListParser>(
+              remote.InitWithNewPipeAndPassReceiver(),
+              content::ServiceProcessHost::Options()
+                  .WithDisplayName("Adblock Filter Parsing")
+                  .Pass());
+          return remote;
+        });
     ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
         local_state(), GetApplicationLocale(), component_updater(), task_runner,
-        AdBlockSubscriptionDownloadManagerGetter(),
+        AdBlockSubscriptionDownloadManagerGetter(), filter_list_parser_factory,
         profile_manager()->user_data_dir().Append(
             profile_manager()->GetInitialProfileDir()));
   }

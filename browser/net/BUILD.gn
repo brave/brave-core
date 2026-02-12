@@ -96,6 +96,7 @@ source_set("unit_tests") {
     "//brave/components/geolocation",
     "//brave/components/l10n/common:test_support",
     "//brave/components/query_filter",
+    "//brave/components/services/brave_shields:filter_parsing_service",
     "//brave/components/static_redirect_helper",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",

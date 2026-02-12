@@ -5,11 +5,44 @@
 
 #include "brave/components/services/brave_shields/filter_parsing_service.h"
 
+#include <memory>
+#include <utility>
+
 #include "base/containers/to_vector.h"
 #include "base/logging.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
+#include "brave/components/services/brave_shields/filter_parsing_service.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace brave_shields {
+
+namespace {
+void BindInProcessFilterSetParser(
+    mojo::PendingReceiver<
+        adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_shields::FilterParsingService>(),
+      std::move(receiver));
+}
+}  // namespace
+
+// static
+mojo::PendingRemote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
+FilterParsingService::LaunchInProcessFilterParsingService() {
+  mojo::PendingRemote<
+      adblock_filter_list_parser::mojom::AdblockFilterListParser>
+      remote;
+  base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::WithBaseSyncPrimitives(),
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})
+      ->PostTask(FROM_HERE,
+                 base::BindOnce(&BindInProcessFilterSetParser,
+                                remote.InitWithNewPipeAndPassReceiver()));
+  return remote;
+}
+
+FilterParsingService::FilterParsingService() = default;
 
 FilterParsingService::FilterParsingService(
     mojo::PendingReceiver<

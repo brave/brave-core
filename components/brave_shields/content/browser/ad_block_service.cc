@@ -35,7 +35,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/service_process_host.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "services/network/public/cpp/features.h"
 #include "url/origin.h"
@@ -280,6 +279,7 @@ AdBlockService::AdBlockService(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         subscription_download_manager_getter,
+    FilterParsingServiceFactory filter_set_service_factory,
     const base::FilePath& profile_dir)
     : local_state_(local_state),
       locale_(locale),
@@ -327,14 +327,8 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
-  mojo::Remote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
-      list_parser_service = content::ServiceProcessHost::Launch<
-          adblock_filter_list_parser::mojom::AdblockFilterListParser>(
-          content::ServiceProcessHost::Options()
-              .WithDisplayName("Adblock Filter Parsing")
-              .Pass());
   filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>(
-      std::move(list_parser_service));
+      std::move(filter_set_service_factory));
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, filters_provider_manager_.get(), locale_,

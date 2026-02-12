@@ -16,6 +16,7 @@
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/services/brave_shields/filter_parsing_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -72,6 +73,9 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
         /*local_state*/ nullptr, /*locale*/ "en", /*component_updater*/ nullptr,
         task_runner,
         /*subscription_download_manager_getter*/ base::DoNothing(),
+        /*filter_set_service_factory*/
+        base::BindRepeating(&brave_shields::FilterParsingService::
+                                LaunchInProcessFilterParsingService),
         /*profile_dir*/ base::FilePath(FILE_PATH_LITERAL("")));
   }
   return ad_block_service_.get();

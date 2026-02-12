@@ -14,6 +14,7 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/services/brave_shields/filter_parsing_service.h"
 #include "brave/components/services/brave_shields/mojom/adblock_filter_list_parser.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -33,8 +34,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
   explicit AdBlockFiltersProviderManager(
-      mojo::Remote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
-          list_parser_service);
+      FilterParsingServiceFactory filter_set_service_factory);
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(

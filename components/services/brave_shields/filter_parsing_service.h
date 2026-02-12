@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SERVICES_BRAVE_SHIELDS_FILTER_PARSING_SERVICE_H_
 
 #include "brave/components/services/brave_shields/mojom/adblock_filter_list_parser.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 namespace brave_shields {
@@ -14,12 +15,19 @@ namespace brave_shields {
 class FilterParsingService
     : public adblock_filter_list_parser::mojom::AdblockFilterListParser {
  public:
+  // For binding to an externally owned Receiver, like with
+  // |mojo::MakeSelfOwnedReceiver()|.
+  FilterParsingService();
   explicit FilterParsingService(
       mojo::PendingReceiver<
           adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver);
   FilterParsingService(const FilterParsingService&) = delete;
   FilterParsingService& operator=(const FilterParsingService&) = delete;
   ~FilterParsingService() override;
+
+  static mojo::PendingRemote<
+      adblock_filter_list_parser::mojom::AdblockFilterListParser>
+  LaunchInProcessFilterParsingService();
 
  private:
   void ParseFilters(
@@ -28,8 +36,11 @@ class FilterParsingService
       ParseFiltersCallback callback) override;
 
   mojo::Receiver<adblock_filter_list_parser::mojom::AdblockFilterListParser>
-      receiver_;
+      receiver_{this};
 };
+
+using FilterParsingServiceFactory = base::RepeatingCallback<mojo::PendingRemote<
+    adblock_filter_list_parser::mojom::AdblockFilterListParser>()>;
 
 }  // namespace brave_shields
 

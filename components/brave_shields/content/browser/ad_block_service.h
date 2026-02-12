@@ -98,6 +98,7 @@ class AdBlockService {
       component_updater::ComponentUpdateService* cus,
       scoped_refptr<base::SequencedTaskRunner> task_runner,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
+      FilterParsingServiceFactory filter_set_service_factory,
       const base::FilePath& profile_dir);
   AdBlockService(const AdBlockService&) = delete;
   AdBlockService& operator=(const AdBlockService&) = delete;
