@@ -355,8 +355,7 @@ function ConversationEntries() {
                   {isAIAssistant
                     && conversationContext.isLeoModel
                     && !firstEntryEdit.selectedText
-                    && !showEditInput
-                    && !conversationContext.isGenerating && (
+                    && !showEditInput && (
                       <ContextActionsAssistant
                         turnUuid={firstEntryEdit.uuid}
                         turnModelKey={turnModelKey}
