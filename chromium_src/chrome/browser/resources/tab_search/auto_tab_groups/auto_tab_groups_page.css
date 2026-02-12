@@ -81,7 +81,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  padding: var(--leo-spacing-xl) var(--leo-spacing-xl) 0px var(--leo-spacing-xl);
+  padding: var(--leo-spacing-xl) var(--leo-spacing-xl) 0 var(--leo-spacing-xl);
   gap: var(--leo-spacing-m);
   box-sizing: border-box;
 }

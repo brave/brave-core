@@ -35,7 +35,7 @@
       flex: auto;
       flex-direction: column;
       min-width: 0;
-      padding: var(--leo-spacing-l) 0px;
+      padding: var(--leo-spacing-l) 0;
 
       .title {
         color: var(--leo-color-text-primary);
