@@ -8,10 +8,16 @@ package org.chromium.chrome.browser.settings;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -21,13 +27,14 @@ import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-/** Fragment for Brave Origin subscription preferences. */
+/** Fragment for Brave Origin purchase preferences. */
 @NullMarked
 public class BraveOriginPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -46,16 +53,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_WALLET_SWITCH = "wallet_switch";
     private static final String PREF_WEB_DISCOVERY_PROJECT_SWITCH = "web_discovery_project_switch";
     private static final String PREF_RESET_TO_DEFAULTS = "reset_to_defaults";
-    // TODO: Uncomment when subscription status is implemented
-    // private static final String PREF_SUBSCRIPTION_STATUS = "subscription_status";
-    // TODO: Uncomment when subscription expires is implemented
-    // private static final String PREF_SUBSCRIPTION_EXPIRES = "subscription_expires";
-    // TODO: Uncomment when subscription manage is implemented
-    private static final String PREF_SUBSCRIPTION_MANAGE = "subscription_manage";
-    private static final String PREF_LINK_SUBSCRIPTION = "link_subscription";
+    private static final String PREF_ACCOUNT_MANAGE = "account_manage";
+    private static final String PREF_LINK_PURCHASE = "link_purchase";
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
     @Nullable private BraveOriginSettingsHandler mBraveOriginSettingsHandler;
+    @Nullable private Snackbar mRestartSnackbar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -92,26 +95,23 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                     });
         }
 
-        Preference subscriptionManage = findPreference(PREF_SUBSCRIPTION_MANAGE);
-        if (subscriptionManage != null) {
-            subscriptionManage.setOnPreferenceClickListener(
+        Preference accountManage = findPreference(PREF_ACCOUNT_MANAGE);
+        if (accountManage != null) {
+            accountManage.setOnPreferenceClickListener(
                     preference -> {
-                        // TODO: Open subscription management
+                        // TODO: Open account management
                         return true;
                     });
         }
 
-        Preference linkSubscription = findPreference(PREF_LINK_SUBSCRIPTION);
-        if (linkSubscription != null) {
-            linkSubscription.setOnPreferenceClickListener(
+        Preference linkPurchase = findPreference(PREF_LINK_PURCHASE);
+        if (linkPurchase != null) {
+            linkPurchase.setOnPreferenceClickListener(
                     preference -> {
-                        // TODO: Open link subscription dialog
+                        // TODO: Open link purchase
                         return true;
                     });
         }
-
-        // Update subscription information
-        updateSubscriptionInfo();
 
         // Apply tinting to all preference icons for proper dark theme support
         applyIconTinting(getPreferenceScreen(), null);
@@ -137,6 +137,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 (success) -> {
                     if (!success) {
                         Log.e(TAG, "Failed to set policy value for " + policyKey);
+                    } else {
+                        showRestartSnackbar();
                     }
                 });
         return true;
@@ -147,8 +149,55 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         return mPageTitle;
     }
 
-    private void updateSubscriptionInfo() {
-        // TODO: Fetch actual subscription data and update the status and expires preferences
+    /**
+     * Shows a custom snackbar prompting the user to restart the browser after toggling a feature.
+     */
+    private void showRestartSnackbar() {
+        // Don't show another snackbar if one is already visible
+        if (mRestartSnackbar != null && mRestartSnackbar.isShown()) {
+            return;
+        }
+
+        View view = getView();
+        if (view == null) {
+            return;
+        }
+
+        mRestartSnackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
+        Snackbar.SnackbarLayout snackbarLayout =
+                (Snackbar.SnackbarLayout) mRestartSnackbar.getView();
+
+        // Remove default snackbar content, padding, and background so custom layout shows through
+        snackbarLayout.removeAllViews();
+        snackbarLayout.setPadding(0, 0, 0, 0);
+        snackbarLayout.setBackground(null);
+
+        // Inflate custom layout
+        View customView =
+                LayoutInflater.from(requireContext())
+                        .inflate(R.layout.origin_restart_snackbar, null);
+
+        // Set up restart action
+        TextView actionButton = customView.findViewById(R.id.snackbar_action);
+        actionButton.setOnClickListener(
+                v -> {
+                    dismissRestartSnackbar();
+                    BraveRelaunchUtils.restart();
+                });
+
+        // Set up close button
+        ImageButton closeButton = customView.findViewById(R.id.snackbar_close);
+        closeButton.setOnClickListener(v -> dismissRestartSnackbar());
+
+        snackbarLayout.addView(customView, 0);
+        mRestartSnackbar.show();
+    }
+
+    private void dismissRestartSnackbar() {
+        if (mRestartSnackbar != null && mRestartSnackbar.isShown()) {
+            mRestartSnackbar.dismiss();
+        }
+        mRestartSnackbar = null;
     }
 
     /**
@@ -294,6 +343,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
     @Override
     public void onDestroy() {
+        dismissRestartSnackbar();
         super.onDestroy();
         if (mBraveOriginSettingsHandler != null) {
             mBraveOriginSettingsHandler.close();

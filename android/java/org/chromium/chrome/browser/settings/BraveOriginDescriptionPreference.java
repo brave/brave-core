@@ -6,41 +6,28 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.components.browser_ui.settings.TextMessagePreference;
+import org.chromium.chrome.R;
 
-/** A preference that displays the Brave Origin description text. */
+/** A preference that displays the Brave Origin description with title, body, and note. */
 @NullMarked
-public class BraveOriginDescriptionPreference extends TextMessagePreference {
+public class BraveOriginDescriptionPreference extends Preference {
     public BraveOriginDescriptionPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        setLayoutResource(R.layout.brave_origin_description_preference);
+        setSelectable(false);
     }
 
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-
-        if (!(holder.findViewById(android.R.id.summary) instanceof TextView summaryView)) {
-            return;
-        }
-        // The text is too long, so we need to set the max lines to the maximum value
-        // otherwise it will be cut off
-        summaryView.setMaxLines(Integer.MAX_VALUE);
-
-        // Parse HTML to support bold text
-        CharSequence summary = getSummary();
-        if (summary == null) {
-            return;
-        }
-        Spanned styledText = Html.fromHtml(summary.toString(), Html.FROM_HTML_MODE_LEGACY);
-        summaryView.setText(styledText);
+        holder.setDividerAllowedAbove(false);
+        holder.setDividerAllowedBelow(false);
     }
 }
