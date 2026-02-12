@@ -364,6 +364,11 @@ TEST(ProtoConversionTest,
       GURL("https://accuweather.com/favicon.ico"));
   web_sources_block->sources.push_back(std::move(source2));
 
+  web_sources_block->rich_results.push_back(
+      R"({"type":"weather","temp":"72F"})");
+  web_sources_block->rich_results.push_back(
+      R"({"type":"forecast","days":["Mon","Tue"]})");
+
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
       std::move(web_sources_block)));
 
@@ -386,6 +391,11 @@ TEST(ProtoConversionTest,
   EXPECT_EQ(proto_sources.sources(0).favicon_url(),
             "https://weather.com/favicon.ico");
   EXPECT_EQ(proto_sources.sources(1).title(), "AccuWeather");
+  ASSERT_EQ(proto_sources.rich_results_size(), 2);
+  EXPECT_EQ(proto_sources.rich_results(0),
+            R"({"type":"weather","temp":"72F"})");
+  EXPECT_EQ(proto_sources.rich_results(1),
+            R"({"type":"forecast","days":["Mon","Tue"]})");
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeToolUseEvent(proto_event);

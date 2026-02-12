@@ -33,6 +33,13 @@ void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
         << ", favicon_url: "
         << ws.sources[i]->favicon_url.possibly_invalid_spec() << "}";
   }
+  *os << "], rich_results: [";
+  for (size_t i = 0; i < ws.rich_results.size(); ++i) {
+    if (i > 0) {
+      *os << ", ";
+    }
+    *os << ws.rich_results[i];
+  }
   *os << "])";
 }
 

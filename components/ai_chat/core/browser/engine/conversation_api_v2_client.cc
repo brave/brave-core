@@ -15,6 +15,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
@@ -255,6 +256,18 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
           content_block_dict.Set("sources", std::move(sources_list));
           if (web_sources->query.has_value()) {
             content_block_dict.Set("query", web_sources->query.value());
+          }
+          if (!web_sources->rich_results.empty()) {
+            base::ListValue rich_results_list;
+            for (const auto& rich_result : web_sources->rich_results) {
+              auto parsed =
+                  base::JSONReader::Read(rich_result, base::JSON_PARSE_RFC);
+              if (parsed.has_value()) {
+                rich_results_list.Append(std::move(*parsed));
+              }
+            }
+            content_block_dict.Set("rich_results",
+                                   std::move(rich_results_list));
           }
           break;
         }

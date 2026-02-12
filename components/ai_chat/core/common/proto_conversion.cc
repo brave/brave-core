@@ -129,6 +129,11 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
           if (proto_sources.has_query()) {
             mojom_sources->query = proto_sources.query();
           }
+          mojom_sources->rich_results.reserve(
+              proto_sources.rich_results_size());
+          for (const auto& rich_result : proto_sources.rich_results()) {
+            mojom_sources->rich_results.push_back(rich_result);
+          }
           mojom_event->output->push_back(
               mojom::ContentBlock::NewWebSourcesContentBlock(
                   std::move(mojom_sources)));
@@ -204,6 +209,9 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
           }
           if (mojom_sources->query.has_value()) {
             proto_sources->set_query(mojom_sources->query.value());
+          }
+          for (const auto& rich_result : mojom_sources->rich_results) {
+            proto_sources->add_rich_results(rich_result);
           }
           break;
         }

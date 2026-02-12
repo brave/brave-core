@@ -144,14 +144,27 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
       query = *query_str;
     }
 
+    std::vector<std::string> rich_results;
+    const base::ListValue* rich_results_list = dict.FindList("rich_results");
+    if (rich_results_list) {
+      for (const auto& item : *rich_results_list) {
+        if (!item.is_dict()) {
+          continue;
+        }
+        std::string json;
+        base::JSONWriter::Write(item, &json);
+        rich_results.push_back(std::move(json));
+      }
+    }
+
     // Return nullopt if nothing useful was parsed
     if (sources.empty() && !query.has_value()) {
       return std::nullopt;
     }
 
     return mojom::ContentBlock::NewWebSourcesContentBlock(
-        mojom::WebSourcesContentBlock::New(std::move(sources),
-                                           std::move(query)));
+        mojom::WebSourcesContentBlock::New(std::move(sources), std::move(query),
+                                           std::move(rich_results)));
   }
 
   return std::nullopt;

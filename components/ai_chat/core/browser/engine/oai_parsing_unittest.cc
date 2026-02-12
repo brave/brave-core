@@ -677,6 +677,98 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidUrl) {
   EXPECT_EQ(web_sources->sources[0]->title, "Valid");
 }
 
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesWithRichResults) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com",
+        "favicon": "https://imgs.search.brave.com/favicon.ico"
+      }
+    ],
+    "query": "test query",
+    "rich_results": [
+      {
+        "type": "knowledge_graph",
+        "title": "Knowledge Graph Title",
+        "description": "Some description"
+      },
+      {
+        "type": "video",
+        "url": "https://video.example.com",
+        "thumbnail": "https://imgs.search.brave.com/thumb.jpg"
+      }
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  EXPECT_EQ(web_sources->query, "test query");
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+
+  // Verify rich_results were parsed as JSON strings
+  ASSERT_EQ(web_sources->rich_results.size(), 2u);
+  EXPECT_THAT(web_sources->rich_results[0], base::test::IsJson(R"({
+    "type": "knowledge_graph",
+    "title": "Knowledge Graph Title",
+    "description": "Some description"
+  })"));
+  EXPECT_THAT(web_sources->rich_results[1], base::test::IsJson(R"({
+    "type": "video",
+    "url": "https://video.example.com",
+    "thumbnail": "https://imgs.search.brave.com/thumb.jpg"
+  })"));
+}
+
+TEST(OaiParsingTest,
+     ParseContentBlockFromDict_WebSourcesWithInvalidRichResultsItems) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {"title": "Example", "url": "https://example.com"}
+    ],
+    "rich_results": [
+      "invalid_string_item",
+      {"type": "valid_item", "data": "value"},
+      123
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+
+  // Only the valid dict item should be included
+  ASSERT_EQ(web_sources->rich_results.size(), 1u);
+  EXPECT_THAT(web_sources->rich_results[0],
+              base::test::IsJson(R"({"type": "valid_item", "data": "value"})"));
+}
+
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesWithEmptyRichResults) {
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {"title": "Example", "url": "https://example.com"}
+    ],
+    "rich_results": []
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  EXPECT_TRUE(web_sources->rich_results.empty());
+}
+
 TEST(OaiParsingTest, ParseContentBlockFromDict_MissingType) {
   constexpr char kBlockJson[] = R"({
     "text": "No type field"
