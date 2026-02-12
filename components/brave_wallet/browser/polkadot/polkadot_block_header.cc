@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
 
-#include "base/containers/extend.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
@@ -21,18 +20,8 @@ PolkadotBlockHeader& PolkadotBlockHeader::operator=(PolkadotBlockHeader&&) =
 
 std::array<uint8_t, 32> PolkadotBlockHeader::GetHash() const {
   auto enc_block_num = compact_scale_encode_u32(block_number);
-
-  std::vector<uint8_t> blob;
-  blob.reserve(parent_hash.size() + enc_block_num.size() + state_root.size() +
-               extrinsics_root.size() + encoded_logs.size());
-
-  base::Extend(blob, parent_hash);
-  base::Extend(blob, enc_block_num);
-  base::Extend(blob, state_root);
-  base::Extend(blob, extrinsics_root);
-  base::Extend(blob, encoded_logs);
-
-  return Blake2bHash<32>({blob});
+  return Blake2bHash<32>(
+      {parent_hash, enc_block_num, state_root, extrinsics_root, encoded_logs});
 }
 
 }  // namespace brave_wallet
