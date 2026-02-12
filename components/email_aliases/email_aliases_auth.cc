@@ -5,63 +5,35 @@
 
 #include "brave/components/email_aliases/email_aliases_auth.h"
 
-#include "base/auto_reset.h"
-#include "base/base64.h"
+#include "base/check_deref.h"
+#include "base/check_is_test.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_service.h"
 
-namespace {
-
-bool Encrypt(const os_crypt_async::Encryptor& encryptor,
-             const std::string& plain_text,
-             std::string& out) {
-  if (plain_text.empty()) {
-    return false;
-  }
-
-  auto encrypted = encryptor.EncryptString(plain_text);
-  if (!encrypted) {
-    return false;
-  }
-
-  out = base::Base64Encode(encrypted.value());
-  return true;
-}
-
-bool Decrypt(const os_crypt_async::Encryptor& encryptor,
-             const std::string& base64,
-             std::string& out) {
-  if (base64.empty()) {
-    return false;
-  }
-
-  auto encrypted = base::Base64Decode(base64);
-  if (!encrypted) {
-    return false;
-  }
-
-  auto decrypted = encryptor.DecryptData(encrypted.value());
-  if (!decrypted) {
-    return false;
-  }
-  out = std::string(decrypted->begin(), decrypted->end());
-  return true;
-}
-
-}  // namespace
-
 namespace email_aliases {
 
-EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
-                                   os_crypt_async::Encryptor encryptor,
-                                   OnChangedCallback on_changed)
+EmailAliasesAuth::EmailAliasesAuth(
+    PrefService* prefs_service,
+    mojo::PendingRemote<brave_account::mojom::Authentication>
+        brave_account_auth,
+    OnChangedCallback on_changed)
     : prefs_service_(prefs_service),
-      encryptor_(std::move(encryptor)),
+      brave_account_auth_(std::move(brave_account_auth)),
       on_changed_(std::move(on_changed)) {
   CHECK(prefs_service_);
+  CHECK(brave_account_auth_);
   CHECK(on_changed_);
 
+  brave_account_auth_.set_disconnect_handler(base::BindOnce(
+      &EmailAliasesAuth::OnDisconnect,
+      base::Unretained(
+          this)));  // Unretained is safe because we own the remote<>
+
   pref_change_registrar_.Init(prefs_service_);
+  pref_change_registrar_.Add(
+      brave_account::prefs::kBraveAccountServiceTokens,
+      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
+                          base::Unretained(this)));
   pref_change_registrar_.Add(
       brave_account::prefs::kBraveAccountAuthenticationToken,
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
@@ -75,41 +47,37 @@ EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return !GetAuthToken().empty() && !GetAuthEmail().empty();
+  return brave_account_auth_ && !GetAuthEmail().empty();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
+  if (auth_email_for_testing_) {
+    CHECK_IS_TEST();
+    return auth_email_for_testing_.value();
+  }
   return prefs_service_->GetString(
       brave_account::prefs::kBraveAccountEmailAddress);
 }
 
-std::string EmailAliasesAuth::GetAuthToken() const {
-  const auto encrypted_token = prefs_service_->GetString(
-      brave_account::prefs::kBraveAccountAuthenticationToken);
-  if (encrypted_token.empty()) {
-    return {};
+void EmailAliasesAuth::GetServiceToken(
+    brave_account::mojom::Authentication::GetServiceTokenCallback callback) {
+  if (brave_account_auth_) {
+    brave_account_auth_->GetServiceToken(
+        brave_account::mojom::Service::kEmailAliases, std::move(callback));
+  } else {
+    auto error = brave_account::mojom::GetServiceTokenError::New();
+    std::move(callback).Run(base::unexpected(std::move(error)));
   }
-
-  std::string token;
-  if (!Decrypt(encryptor_, encrypted_token, token)) {
-    // Failed to decrypt token -> reset.
-    prefs_service_->ClearPref(
-        brave_account::prefs::kBraveAccountAuthenticationToken);
-    return {};
-  }
-  return token;
 }
 
-void EmailAliasesAuth::SetAuthForTesting(const std::string& auth_token) {
-  std::string encrypted;
+void EmailAliasesAuth::SetAuthEmailForTesting(const std::string& email) {
+  auth_email_for_testing_ = email;
+  on_changed_.Run();
+}
 
-  if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
-    prefs_service_->ClearPref(
-        brave_account::prefs::kBraveAccountAuthenticationToken);
-  } else {
-    prefs_service_->SetString(
-        brave_account::prefs::kBraveAccountAuthenticationToken, encrypted);
-  }
+void EmailAliasesAuth::OnDisconnect() {
+  brave_account_auth_.reset();
+  on_changed_.Run();
 }
 
 void EmailAliasesAuth::OnPrefChanged(const std::string& pref_name) {

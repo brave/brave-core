@@ -46,7 +46,7 @@ class AuthStateObserver
       this};
 };
 
-os_crypt_async::Encryptor GetEncryptor(os_crypt_async::OSCryptAsync* os_crypt);
+GURL GetEmailAliasesServiceURL();
 
 }  // namespace email_aliases::test
 
