@@ -175,6 +175,7 @@ import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordin
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -1891,6 +1892,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,
+                        ActivityResultTracker.class,
                         OneshotSupplier.class,
                         ActivityLifecycleDispatcher.class,
                         MonotonicObservableSupplier.class,
@@ -2078,8 +2080,14 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
-                        Context.class,
-                        MonotonicObservableSupplier.class));
+                        Activity.class,
+                        WindowAndroid.class,
+                        ActivityResultTracker.class,
+                        DeviceLockActivityLauncher.class,
+                        MonotonicObservableSupplier.class,
+                        BottomSheetController.class,
+                        Supplier.class,
+                        SnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
@@ -2239,7 +2247,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
                         "org/chromium/chrome/browser/ui/BraveAdaptiveToolbarUiCoordinator",
-                        Context.class,
+                        Activity.class,
                         ActivityTabProvider.class,
                         Supplier.class));
         Assert.assertTrue(
