@@ -22,6 +22,8 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.util.function.Supplier;
+
 @NullMarked
 public class BraveFragmentDependencyProvider extends FragmentDependencyProvider {
     private final Profile mProfile;
@@ -32,14 +34,14 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
             OneshotSupplier<SnackbarManager> snackbarManagerSupplier,
             OneshotSupplier<BottomSheetController> bottomSheetControllerSupplier,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
-            @Nullable SettingsSearchCoordinator searchCoordinator) {
+            Supplier<@Nullable SettingsSearchCoordinator> searchCoordinatorSupplier) {
         super(
                 context,
                 profile,
                 snackbarManagerSupplier,
                 bottomSheetControllerSupplier,
                 modalDialogManagerSupplier,
-                searchCoordinator);
+                searchCoordinatorSupplier);
         mProfile = profile;
     }
 
