@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -20,7 +19,6 @@
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_functions.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -413,6 +411,10 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response completed\n";
 
+  // Drop any partial line that didn't end with a newline. Per the SSE spec,
+  // events are terminated with a blank line, so well-formed streams should
+  // always end on a line boundary.
+  sse_line_buffer_.clear();
   request_is_finished_ = true;
 
   // Delete now or when decoding operations are complete
@@ -421,6 +423,7 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
 
 void APIRequestHelper::URLLoaderHandler::OnRetry(
     base::OnceClosure start_retry) {
+  sse_line_buffer_.clear();
   std::move(start_retry).Run();
   // We assume that a consumer of APIRequestHelper doesn't
   // care about discarding partial responses received so far
@@ -518,56 +521,64 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
     std::string_view string_piece) {
   // New chunks should only be received before the request is completed
   DCHECK(!request_is_finished_);
-  // We split the string into multiple chunks because there are cases where
-  // multiple chunks are received in a single call.
-  std::vector<std::string_view> stream_data = base::SplitStringPiece(
-      string_piece, "\r\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  // Remove SSE events that don't look like JSON - could be string or [DONE]
+  // Scan the incoming chunk for line endings (\r or \n) and process each
+  // complete line. Bytes after the last line ending are kept in
+  // |sse_line_buffer_| until the next chunk completes the line, to handle
+  // lines split across chunks.
+  size_t pos;
+  while ((pos = string_piece.find_first_of("\r\n")) != std::string_view::npos) {
+    auto line = string_piece.substr(0, pos);
+    if (!sse_line_buffer_.empty()) {
+      sse_line_buffer_.append(line);
+      line = sse_line_buffer_;
+    }
+    ProcessSSELine(line);
+    sse_line_buffer_.clear();
+    string_piece.remove_prefix(pos + 1);
+  }
+  if (!string_piece.empty()) {
+    sse_line_buffer_.append(string_piece);
+  }
+}
+
+void APIRequestHelper::URLLoaderHandler::ProcessSSELine(std::string_view line) {
+  // Skip SSE events that don't look like JSON — could be a string or [DONE]
   // message.
   // TODO(@nullhook): Parse both JSON and string values. The below currently
   // only identifies JSON values.
-  static constexpr char kDataPrefix[] = "data: {";
-  std::erase_if(stream_data, [](std::string_view item) {
-    DVLOG(3) << "Received chunk: " << item;
-    if (!item.starts_with(kDataPrefix)) {
-      // This is useful to log in case an API starts
-      // coming back with unknown data type in some
-      // scenarios.
-      VLOG(1) << "Data did not start with SSE prefix";
-      return true;
-    }
-    return false;
-  });
-
-  // Keep track of number of in-progress data decoding operations
-  // so that we can know if any are still in-progress when the request
-  // completes.
-  current_decoding_operation_count_ += stream_data.size();
-
-  for (const auto& data : stream_data) {
-    auto json = data.substr(strlen(kDataPrefix) - 1);
-    auto on_json_parsed =
-        [](base::WeakPtr<APIRequestHelper::URLLoaderHandler> handler,
-           ValueOrError result) {
-          DVLOG(2) << "Chunk parsed";
-          if (!handler) {
-            return;
-          }
-          TRACE_EVENT0("brave", "APIRequestHelper_ParseSSECallback");
-          ScopedPerfTracker tracker("Brave.APIRequestHelper.ParseSSECallback");
-          handler->current_decoding_operation_count_--;
-          DCHECK(handler->data_received_callback_);
-          handler->data_received_callback_.Run(std::move(result));
-          // Parsing is potentially the last operation for |URLLoaderHandler|.
-          handler->MaybeSendResult();
-        };
-
-    DVLOG(2) << "Going to call ParseJsonImpl";
-    ParseJsonImpl(std::string(json),
-                  base::BindOnce(std::move(on_json_parsed),
-                                 weak_ptr_factory_.GetWeakPtr()));
+  if (line.empty()) {
+    return;
   }
+  static constexpr char kDataPrefix[] = "data: {";
+  DVLOG(3) << "Received chunk: " << line;
+  if (!line.starts_with(kDataPrefix)) {
+    VLOG(1) << "Data did not start with SSE prefix";
+    return;
+  }
+
+  auto json = line.substr(strlen(kDataPrefix) - 1);
+  current_decoding_operation_count_++;
+
+  auto on_json_parsed = [](base::WeakPtr<URLLoaderHandler> handler,
+                           ValueOrError result) {
+    DVLOG(2) << "Chunk parsed";
+    if (!handler) {
+      return;
+    }
+    TRACE_EVENT0("brave", "APIRequestHelper_ParseSSECallback");
+    ScopedPerfTracker tracker("Brave.APIRequestHelper.ParseSSECallback");
+    handler->current_decoding_operation_count_--;
+    DCHECK(handler->data_received_callback_);
+    handler->data_received_callback_.Run(std::move(result));
+    // Parsing is potentially the last operation for |URLLoaderHandler|.
+    handler->MaybeSendResult();
+  };
+
+  DVLOG(2) << "Going to call ParseJsonImpl";
+  ParseJsonImpl(std::string(json),
+                base::BindOnce(std::move(on_json_parsed),
+                               weak_ptr_factory_.GetWeakPtr()));
 }
 
 void APIRequestHelper::SetUrlLoaderFactoryForTesting(
