@@ -47,7 +47,6 @@ export default function createAIChatApi(
   // - which should be prefetched,
   // - which are mutable and should only be called explicitly
   const api = createInterfaceApi({
-    key: 'aichat-core',
     // endpoints are subscribable Queries or Mutations.
     // - Queries are fetched as soon as the hook is present.
     // - Mutations only when the mutate function of the hook is called.

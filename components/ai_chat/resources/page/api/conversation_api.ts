@@ -12,24 +12,12 @@ import {
 import * as Mojom from '../../common/mojom'
 import { updateConversationHistory } from '../../common/conversation_history_utils'
 
-let i = 0
-
 export default function createConversationApi(
   conversationHandler: Closable<Mojom.ConversationHandlerInterface>,
 ) {
   let conversationUIObserver: Mojom.ConversationUIInterface
-  const apiKey = `aichat-conversation-${++i}`
 
   const api = createInterfaceApi({
-    // Key is used as react hook dependency and to ensure we don't
-    // cross-contaminate data from createInterfaceApi's query cache.
-    // Should be unique for every conversation but
-    // since we don't know the conversation ID synchronously, for now we use a
-    // unique key every time we re-bind. Using the conversation ID would allow
-    // for useful caching when the same conversation is loaded before the
-    // cache expires.
-    key: apiKey,
-
     // Define the mojom actions we will expose to the UI.
     // These are functions that are simply passed through
     // with no status state, caching, or deduplicating.
