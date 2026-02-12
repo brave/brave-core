@@ -165,6 +165,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.ActiveEthAccounts", {}},
     {"Brave.Wallet.ActiveSolAccounts", {}},
     {"Brave.Wallet.ActiveZecAccounts", {}},
+    {"Brave.Wallet.ActiveAdaAccounts", {}},
     {"Brave.Wallet.BtcTransactionSent", {}},
     {"Brave.Wallet.EthTransactionSent", {}},
     {"Brave.Wallet.NFTCount", MetricConfig{.ephemeral = true}},
@@ -172,6 +173,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.OnboardingConversion.3", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.SolTransactionSent", {}},
     {"Brave.Wallet.ZecTransactionSent", {}},
+    {"Brave.Wallet.AdaTransactionSent", {}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 

@@ -20,7 +20,6 @@ class PrefService;
 
 namespace brave_wallet {
 
-// TODO(https://github.com/brave/brave-browser/issues/45278): Cardano P3A
 inline constexpr char kKeyringCreatedHistogramName[] =
     "Brave.Wallet.KeyringCreated";
 inline constexpr char kOnboardingConversionHistogramName[] =
@@ -41,6 +40,8 @@ inline constexpr char kBtcTransactionSentHistogramName[] =
     "Brave.Wallet.BtcTransactionSent";
 inline constexpr char kZecTransactionSentHistogramName[] =
     "Brave.Wallet.ZecTransactionSent";
+inline constexpr char kAdaTransactionSentHistogramName[] =
+    "Brave.Wallet.AdaTransactionSent";
 inline constexpr char kEthActiveAccountHistogramName[] =
     "Brave.Wallet.ActiveEthAccounts";
 inline constexpr char kSolActiveAccountHistogramName[] =
@@ -51,6 +52,8 @@ inline constexpr char kBtcActiveAccountHistogramName[] =
     "Brave.Wallet.ActiveBtcAccounts";
 inline constexpr char kZecActiveAccountHistogramName[] =
     "Brave.Wallet.ActiveZecAccounts";
+inline constexpr char kAdaActiveAccountHistogramName[] =
+    "Brave.Wallet.ActiveAdaAccounts";
 inline constexpr char kBraveWalletDailyHistogramName[] =
     "Brave.Wallet.UsageDaily";
 inline constexpr char kBraveWalletWeeklyHistogramName[] =
