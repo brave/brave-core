@@ -390,7 +390,7 @@ class ChromiumSrcOverridesChecker:
                                 "INTERNAL-USE in the\n" +
                                 f"{display_override_filepath}.\nEither " +
                                 "remove the INTERNAL-USE mark, or change " +
-                                "the symbol name to avoid overriding the" +
+                                "the symbol name to avoid overriding the " +
                                 "symbol in the original file.")
         return len(matches)
 
@@ -481,8 +481,9 @@ class ChromiumSrcOverridesChecker:
             if re.search(pattern, content) is None:
                 self.AddError(
                     f"Symbol {symbol} listed in exclusions for the override" +
-                    f"\nchromium_src/{path}\ncould be found.\nIf the symbol " +
-                    "was removed then also remove it from the exclusions in" +
+                    f"\nchromium_src/{path}\ncould not be found.\nIf the " +
+                    "symbol was removed then also remove it from the " +
+                    "exclusions in " +
                     "//brave/chromium_src/check_chromium_src_config.json5.")
                 return False
         return True
