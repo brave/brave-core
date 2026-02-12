@@ -33,7 +33,7 @@ void UnlockWallet() {
   Java_BraveWalletProviderDelegateImplHelper_unlockWallet(env);
 }
 
-void ShowWalletOnboarding(content::WebContents*) {
+void ShowWalletOnboarding(content::WebContents*, const url::Origin& origin) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
 }

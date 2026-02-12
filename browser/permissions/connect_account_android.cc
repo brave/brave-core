@@ -81,7 +81,7 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
   }
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      {account_address}, *permission, rfh, rfh->GetLastCommittedOrigin(),
+      {account_address}, *permission, rfh->GetLastCommittedOrigin(), rfh,
       base::BindOnce(
           [](JNIEnv* env,
              base::android::ScopedJavaGlobalRef<jobject> java_callback,
