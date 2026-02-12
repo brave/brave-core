@@ -100,18 +100,14 @@ struct LoginListView: View {
         .disabled(selectedDomainIds.isEmpty)
         Spacer()
         Button(Strings.done) {
-          withAnimation {
-            isEditMode = false
-          }
+          updateEditMode(false)
           selectedDomainIds.removeAll()
         }
         .foregroundColor(Color(.braveBlurpleTint))
       } else {
         Spacer()
         Button(Strings.edit) {
-          withAnimation {
-            isEditMode = true
-          }
+          updateEditMode(true)
         }
       }
     }
@@ -142,6 +138,12 @@ struct LoginListView: View {
     }
   }
 
+  private func updateEditMode(_ isEnabled: Bool) {
+    withAnimation(.easeIn(duration: 0.5)) {
+      self.isEditMode = isEnabled
+    }
+  }
+
   private func performDomainDeletion() {
     var credentialsToRemove: [PasswordForm] = []
     for id in selectedDomainIds {
@@ -159,9 +161,7 @@ struct LoginListView: View {
     }
     viewModel.removeCredentials(credentialsToRemove)
     selectedDomainIds.removeAll()
-    withAnimation {
-      isEditMode = false
-    }
+    updateEditMode(false)
   }
 
   private var emptyStateView: some View {

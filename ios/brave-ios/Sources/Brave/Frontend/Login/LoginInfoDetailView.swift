@@ -146,16 +146,6 @@ struct LoginInfoDetailView: View {
             .foregroundColor(Color(.secondaryBraveLabel))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 20)
-
-          // Delete button
-          Button {
-            showDeleteAlert = true
-          } label: {
-            Text(Strings.delete)
-              .font(.body)
-              .foregroundColor(Color(braveSystemName: .primary40))
-          }
-          .padding(.vertical, 12)
         }
         .padding()
       }

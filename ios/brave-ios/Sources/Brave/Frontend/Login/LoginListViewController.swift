@@ -42,9 +42,4 @@ class LoginListViewController: UIHostingController<LoginListView> {
     // UINavigationController hides the toolbar by default
     navigationController?.setToolbarHidden(false, animated: animated)
   }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.setToolbarHidden(true, animated: animated)
-  }
 }
