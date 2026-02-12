@@ -21,23 +21,25 @@
 namespace brave {
 
 std::optional<std::string> GetCspDirectivesOnTaskRunner(
-    std::shared_ptr<BraveRequestInfo> ctx,
+    const GURL& initiator_url,
+    const GURL& request_url,
+    blink::mojom::ResourceType resource_type,
     std::optional<std::string> original_csp) {
   std::string source_host;
-  if (ctx->initiator_url().is_valid() && !ctx->initiator_url().host().empty()) {
-    source_host = ctx->initiator_url().host();
-  } else if (ctx->request_url().is_valid()) {
+  if (initiator_url.is_valid() && !initiator_url.host().empty()) {
+    source_host = initiator_url.host();
+  } else if (request_url.is_valid()) {
     // Top-level document requests do not have a valid initiator URL, and
     // requests from special schemes like file:// do not have host parts, so we
     // use the request URL as the initiator.
-    source_host = ctx->request_url().host();
+    source_host = request_url.host();
   } else {
     return std::nullopt;
   }
 
   std::optional<std::string> csp_directives =
       g_brave_browser_process->ad_block_service()->GetCspDirectives(
-          ctx->request_url(), ctx->resource_type(), source_host);
+          request_url, resource_type, source_host);
 
   brave_shields::MergeCspDirectiveInto(original_csp, &csp_directives);
   return csp_directives;
@@ -45,7 +47,6 @@ std::optional<std::string> GetCspDirectivesOnTaskRunner(
 
 void OnReceiveCspDirectives(
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx,
     scoped_refptr<net::HttpResponseHeaders> override_response_headers,
     std::optional<std::string> csp_directives) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -90,8 +91,10 @@ int OnHeadersReceived_AdBlockCspWork(
         ->GetTaskRunner()
         ->PostTaskAndReplyWithResult(
             FROM_HERE,
-            base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx, original_csp),
-            base::BindOnce(&OnReceiveCspDirectives, next_callback, ctx,
+            base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx->initiator_url(),
+                           ctx->request_url(), ctx->resource_type(),
+                           original_csp),
+            base::BindOnce(&OnReceiveCspDirectives, next_callback,
                            *override_response_headers));
     return net::ERR_IO_PENDING;
   }
