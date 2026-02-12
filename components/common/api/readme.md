@@ -256,8 +256,9 @@ function DoorBellStatus(props) {
   }
 
   return (
-    <div>Last door bell ring: {doorBellRangAt}</div>
-    <button onClick={api.resetOnDoorBellRang()}>Dismiss</button>
+    <div>Last door bell ring: {doorBellRangAt}
+      <button onClick={api.resetOnDoorBellRang}>Dismiss</button>
+    </div>
   )
 }
 ```
