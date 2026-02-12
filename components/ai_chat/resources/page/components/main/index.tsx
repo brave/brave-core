@@ -305,6 +305,10 @@ function Main() {
         ref={headerElement}
         setIsConversationsListOpen={setIsConversationsListOpen}
       />
+      <AlertCenter
+        position='top-left'
+        className={styles.alertCenter}
+      />
       <div
         className={classnames({
           [styles.scroller]: true,
@@ -313,10 +317,6 @@ function Main() {
         ref={scrollElement}
         onScroll={handleScroll}
       >
-        <AlertCenter
-          position='top-left'
-          className={styles.alertCenter}
-        />
         <div
           className={classnames({
             [styles.conversationContent]: true,
