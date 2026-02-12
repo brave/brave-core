@@ -32,7 +32,7 @@ struct ResourceRequest;
 }
 
 namespace brave {
-struct BraveRequestInfo;
+class BraveRequestInfo;
 using ResponseCallback = base::RepeatingCallback<void()>;
 }  // namespace brave
 
@@ -54,7 +54,8 @@ enum BraveNetworkDelegateEventType {
 
 enum BlockedBy { kNotBlocked, kAdBlocked, kOtherBlocked };
 
-struct BraveRequestInfo {
+class BraveRequestInfo {
+ public:
   BraveRequestInfo();
   BraveRequestInfo(const BraveRequestInfo&) = delete;
   BraveRequestInfo& operator=(const BraveRequestInfo&) = delete;
@@ -63,60 +64,103 @@ struct BraveRequestInfo {
   explicit BraveRequestInfo(const GURL& url);
 
   ~BraveRequestInfo();
-  std::string method;
-  GURL request_url;
-  GURL tab_origin;
-  GURL tab_url;
-  GURL initiator_url;
 
-  bool internal_redirect = false;
-  GURL redirect_source;
+  // Accessors
+  const std::string& method() const;
+  void set_method(const std::string& value);
 
-  GURL referrer;
-  net::ReferrerPolicy referrer_policy =
-      net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
-  std::optional<GURL> new_referrer;
+  const GURL& request_url() const;
+  void set_request_url(const GURL& value);
 
-  std::optional<int> pending_error;
-  std::string new_url_spec;
-  // TODO(iefremov): rename to shields_up.
-  bool allow_brave_shields = true;
-  bool allow_ads = false;
-  // Whether or not Shields "aggressive" mode was enabled where the request was
-  // initiated.
-  bool aggressive_blocking = false;
-  bool allow_http_upgradable_resource = false;
-  bool allow_referrers = false;
-  // GlobalRenderFrameHostToken: Uniquely identifies a RenderFrameHost instance.
-  // FrameTreeNodeId: Identifies a persistent location in the frame tree
-  // (remains constant across navigations) and is the primary handle for frame
-  // tree manipulation.
-  content::GlobalRenderFrameHostToken render_frame_token;
-  uint64_t request_identifier = 0;
-  size_t next_url_request_index = 0;
+  const GURL& tab_origin() const;
+  void set_tab_origin(const GURL& value);
 
-  raw_ptr<content::BrowserContext, DanglingUntriaged> browser_context = nullptr;
-  raw_ptr<net::HttpRequestHeaders> headers = nullptr;
-  // The following two sets are populated by |OnBeforeStartTransactionCallback|.
-  // |set_headers| contains headers which values were added or modified.
-  std::set<std::string> set_headers;
-  std::set<std::string> removed_headers;
-  raw_ptr<const net::HttpResponseHeaders, DanglingUntriaged>
-      original_response_headers = nullptr;
-  raw_ptr<scoped_refptr<net::HttpResponseHeaders>, DanglingUntriaged>
-      override_response_headers = nullptr;
+  const GURL& tab_url() const;
+  void set_tab_url(const GURL& value);
 
-  raw_ptr<GURL, DanglingUntriaged> allowed_unsafe_redirect_url = nullptr;
-  BraveNetworkDelegateEventType event_type = kUnknownEventType;
-  BlockedBy blocked_by = kNotBlocked;
-  std::string mock_data_url;
+  const GURL& initiator_url() const;
+  void set_initiator_url(const GURL& value);
 
-  bool ShouldMockRequest() const {
-    return blocked_by == kAdBlocked && !mock_data_url.empty();
-  }
+  bool internal_redirect() const;
+  void set_internal_redirect(bool value);
 
-  net::NetworkAnonymizationKey network_anonymization_key =
-      net::NetworkAnonymizationKey();
+  const GURL& redirect_source() const;
+  void set_redirect_source(const GURL& value);
+
+  const GURL& referrer() const;
+  void set_referrer(const GURL& value);
+
+  net::ReferrerPolicy referrer_policy() const;
+  void set_referrer_policy(net::ReferrerPolicy value);
+
+  const std::optional<GURL>& new_referrer() const;
+  void set_new_referrer(const std::optional<GURL>& value);
+
+  const std::optional<int>& pending_error() const;
+  void set_pending_error(const std::optional<int>& value);
+
+  const std::string& new_url_spec() const;
+  void set_new_url_spec(const std::string& value);
+
+  bool allow_brave_shields() const;
+  void set_allow_brave_shields(bool value);
+
+  bool allow_ads() const;
+  void set_allow_ads(bool value);
+
+  bool aggressive_blocking() const;
+  void set_aggressive_blocking(bool value);
+
+  bool allow_http_upgradable_resource() const;
+  void set_allow_http_upgradable_resource(bool value);
+
+  bool allow_referrers() const;
+  void set_allow_referrers(bool value);
+
+  const content::GlobalRenderFrameHostToken& render_frame_token() const;
+  void set_render_frame_token(const content::GlobalRenderFrameHostToken& value);
+
+  uint64_t request_identifier() const;
+  void set_request_identifier(uint64_t value);
+
+  size_t next_url_request_index() const;
+  void set_next_url_request_index(size_t value);
+
+  content::BrowserContext* browser_context() const;
+  void set_browser_context(content::BrowserContext* value);
+
+  net::HttpRequestHeaders* headers() const;
+  void set_headers(net::HttpRequestHeaders* value);
+
+  const std::set<std::string>& modified_headers() const;
+  std::set<std::string>& mutable_modified_headers();
+
+  const std::set<std::string>& removed_headers() const;
+  std::set<std::string>& mutable_removed_headers();
+
+  const net::HttpResponseHeaders* original_response_headers() const;
+  void set_original_response_headers(const net::HttpResponseHeaders* value);
+
+  scoped_refptr<net::HttpResponseHeaders>* override_response_headers() const;
+  void set_override_response_headers(
+      scoped_refptr<net::HttpResponseHeaders>* value);
+
+  GURL* allowed_unsafe_redirect_url() const;
+  void set_allowed_unsafe_redirect_url(GURL* value);
+
+  BraveNetworkDelegateEventType event_type() const;
+  void set_event_type(BraveNetworkDelegateEventType value);
+
+  BlockedBy blocked_by() const;
+  void set_blocked_by(BlockedBy value);
+
+  const std::string& mock_data_url() const;
+  void set_mock_data_url(const std::string& value);
+
+  bool ShouldMockRequest() const;
+
+  const net::NetworkAnonymizationKey& network_anonymization_key() const;
+  void set_network_anonymization_key(const net::NetworkAnonymizationKey& value);
 
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
@@ -124,11 +168,15 @@ struct BraveRequestInfo {
   // distinguish WebSockets.
   static constexpr blink::mojom::ResourceType kInvalidResourceType =
       static_cast<blink::mojom::ResourceType>(-1);
-  blink::mojom::ResourceType resource_type = kInvalidResourceType;
 
-  std::string upload_data;
+  blink::mojom::ResourceType resource_type() const;
+  void set_resource_type(blink::mojom::ResourceType value);
 
-  std::optional<std::string> devtools_request_id;
+  const std::string& upload_data() const;
+  void set_upload_data(const std::string& value);
+
+  const std::optional<std::string>& devtools_request_id() const;
+  void set_devtools_request_id(const std::optional<std::string>& value);
 
   static std::shared_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
@@ -142,7 +190,68 @@ struct BraveRequestInfo {
   // We should also remove the one below.
   friend class ::BraveRequestHandler;
 
-  raw_ptr<GURL, DanglingUntriaged> new_url = nullptr;
+  GURL* new_url() const;
+  void set_new_url(GURL* value);
+
+  std::string method_;
+  GURL request_url_;
+  GURL tab_origin_;
+  GURL tab_url_;
+  GURL initiator_url_;
+
+  bool internal_redirect_ = false;
+  GURL redirect_source_;
+
+  GURL referrer_;
+  net::ReferrerPolicy referrer_policy_ =
+      net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
+  std::optional<GURL> new_referrer_;
+
+  std::optional<int> pending_error_;
+  std::string new_url_spec_;
+  // TODO(iefremov): rename to shields_up.
+  bool allow_brave_shields_ = true;
+  bool allow_ads_ = false;
+  // Whether or not Shields "aggressive" mode was enabled where the request was
+  // initiated.
+  bool aggressive_blocking_ = false;
+  bool allow_http_upgradable_resource_ = false;
+  bool allow_referrers_ = false;
+  // GlobalRenderFrameHostToken: Uniquely identifies a RenderFrameHost instance.
+  // FrameTreeNodeId: Identifies a persistent location in the frame tree
+  // (remains constant across navigations) and is the primary handle for frame
+  // tree manipulation.
+  content::GlobalRenderFrameHostToken render_frame_token_;
+  uint64_t request_identifier_ = 0;
+  size_t next_url_request_index_ = 0;
+
+  raw_ptr<content::BrowserContext, DanglingUntriaged> browser_context_ =
+      nullptr;
+  raw_ptr<net::HttpRequestHeaders> headers_ = nullptr;
+  // The following two sets are populated by |OnBeforeStartTransactionCallback|.
+  // |modified_headers| contains headers which values were added or modified.
+  std::set<std::string> modified_headers_;
+  std::set<std::string> removed_headers_;
+  raw_ptr<const net::HttpResponseHeaders, DanglingUntriaged>
+      original_response_headers_ = nullptr;
+  raw_ptr<scoped_refptr<net::HttpResponseHeaders>, DanglingUntriaged>
+      override_response_headers_ = nullptr;
+
+  raw_ptr<GURL, DanglingUntriaged> allowed_unsafe_redirect_url_ = nullptr;
+  BraveNetworkDelegateEventType event_type_ = kUnknownEventType;
+  BlockedBy blocked_by_ = kNotBlocked;
+  std::string mock_data_url_;
+
+  net::NetworkAnonymizationKey network_anonymization_key_ =
+      net::NetworkAnonymizationKey();
+
+  blink::mojom::ResourceType resource_type_ = kInvalidResourceType;
+
+  std::string upload_data_;
+
+  std::optional<std::string> devtools_request_id_;
+
+  raw_ptr<GURL, DanglingUntriaged> new_url_ = nullptr;
 };
 
 // ResponseListener

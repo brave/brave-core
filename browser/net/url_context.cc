@@ -13,7 +13,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "net/base/isolation_info.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -43,9 +42,304 @@ std::string GetUploadData(const network::ResourceRequest& request) {
 
 BraveRequestInfo::BraveRequestInfo() = default;
 
-BraveRequestInfo::BraveRequestInfo(const GURL& url) : request_url(url) {}
+BraveRequestInfo::BraveRequestInfo(const GURL& url) : request_url_(url) {}
 
 BraveRequestInfo::~BraveRequestInfo() = default;
+
+// Getters and setters
+const std::string& BraveRequestInfo::method() const {
+  return method_;
+}
+
+void BraveRequestInfo::set_method(const std::string& value) {
+  method_ = value;
+}
+
+const GURL& BraveRequestInfo::request_url() const {
+  return request_url_;
+}
+
+void BraveRequestInfo::set_request_url(const GURL& value) {
+  request_url_ = value;
+}
+
+const GURL& BraveRequestInfo::tab_origin() const {
+  return tab_origin_;
+}
+
+void BraveRequestInfo::set_tab_origin(const GURL& value) {
+  tab_origin_ = value;
+}
+
+const GURL& BraveRequestInfo::tab_url() const {
+  return tab_url_;
+}
+
+void BraveRequestInfo::set_tab_url(const GURL& value) {
+  tab_url_ = value;
+}
+
+const GURL& BraveRequestInfo::initiator_url() const {
+  return initiator_url_;
+}
+
+void BraveRequestInfo::set_initiator_url(const GURL& value) {
+  initiator_url_ = value;
+}
+
+bool BraveRequestInfo::internal_redirect() const {
+  return internal_redirect_;
+}
+
+void BraveRequestInfo::set_internal_redirect(bool value) {
+  internal_redirect_ = value;
+}
+
+const GURL& BraveRequestInfo::redirect_source() const {
+  return redirect_source_;
+}
+
+void BraveRequestInfo::set_redirect_source(const GURL& value) {
+  redirect_source_ = value;
+}
+
+const GURL& BraveRequestInfo::referrer() const {
+  return referrer_;
+}
+
+void BraveRequestInfo::set_referrer(const GURL& value) {
+  referrer_ = value;
+}
+
+net::ReferrerPolicy BraveRequestInfo::referrer_policy() const {
+  return referrer_policy_;
+}
+
+void BraveRequestInfo::set_referrer_policy(net::ReferrerPolicy value) {
+  referrer_policy_ = value;
+}
+
+const std::optional<GURL>& BraveRequestInfo::new_referrer() const {
+  return new_referrer_;
+}
+
+void BraveRequestInfo::set_new_referrer(const std::optional<GURL>& value) {
+  new_referrer_ = value;
+}
+
+const std::optional<int>& BraveRequestInfo::pending_error() const {
+  return pending_error_;
+}
+
+void BraveRequestInfo::set_pending_error(const std::optional<int>& value) {
+  pending_error_ = value;
+}
+
+const std::string& BraveRequestInfo::new_url_spec() const {
+  return new_url_spec_;
+}
+
+void BraveRequestInfo::set_new_url_spec(const std::string& value) {
+  new_url_spec_ = value;
+}
+
+bool BraveRequestInfo::allow_brave_shields() const {
+  return allow_brave_shields_;
+}
+
+void BraveRequestInfo::set_allow_brave_shields(bool value) {
+  allow_brave_shields_ = value;
+}
+
+bool BraveRequestInfo::allow_ads() const {
+  return allow_ads_;
+}
+
+void BraveRequestInfo::set_allow_ads(bool value) {
+  allow_ads_ = value;
+}
+
+bool BraveRequestInfo::aggressive_blocking() const {
+  return aggressive_blocking_;
+}
+
+void BraveRequestInfo::set_aggressive_blocking(bool value) {
+  aggressive_blocking_ = value;
+}
+
+bool BraveRequestInfo::allow_http_upgradable_resource() const {
+  return allow_http_upgradable_resource_;
+}
+
+void BraveRequestInfo::set_allow_http_upgradable_resource(bool value) {
+  allow_http_upgradable_resource_ = value;
+}
+
+bool BraveRequestInfo::allow_referrers() const {
+  return allow_referrers_;
+}
+
+void BraveRequestInfo::set_allow_referrers(bool value) {
+  allow_referrers_ = value;
+}
+
+const content::GlobalRenderFrameHostToken&
+BraveRequestInfo::render_frame_token() const {
+  return render_frame_token_;
+}
+
+void BraveRequestInfo::set_render_frame_token(
+    const content::GlobalRenderFrameHostToken& value) {
+  render_frame_token_ = value;
+}
+
+uint64_t BraveRequestInfo::request_identifier() const {
+  return request_identifier_;
+}
+
+void BraveRequestInfo::set_request_identifier(uint64_t value) {
+  request_identifier_ = value;
+}
+
+size_t BraveRequestInfo::next_url_request_index() const {
+  return next_url_request_index_;
+}
+
+void BraveRequestInfo::set_next_url_request_index(size_t value) {
+  next_url_request_index_ = value;
+}
+
+content::BrowserContext* BraveRequestInfo::browser_context() const {
+  return browser_context_;
+}
+
+void BraveRequestInfo::set_browser_context(content::BrowserContext* value) {
+  browser_context_ = value;
+}
+
+net::HttpRequestHeaders* BraveRequestInfo::headers() const {
+  return headers_;
+}
+
+void BraveRequestInfo::set_headers(net::HttpRequestHeaders* value) {
+  headers_ = value;
+}
+
+const std::set<std::string>& BraveRequestInfo::modified_headers() const {
+  return modified_headers_;
+}
+
+std::set<std::string>& BraveRequestInfo::mutable_modified_headers() {
+  return modified_headers_;
+}
+
+const std::set<std::string>& BraveRequestInfo::removed_headers() const {
+  return removed_headers_;
+}
+
+std::set<std::string>& BraveRequestInfo::mutable_removed_headers() {
+  return removed_headers_;
+}
+
+const net::HttpResponseHeaders* BraveRequestInfo::original_response_headers()
+    const {
+  return original_response_headers_;
+}
+
+void BraveRequestInfo::set_original_response_headers(
+    const net::HttpResponseHeaders* value) {
+  original_response_headers_ = value;
+}
+
+scoped_refptr<net::HttpResponseHeaders>*
+BraveRequestInfo::override_response_headers() const {
+  return override_response_headers_;
+}
+
+void BraveRequestInfo::set_override_response_headers(
+    scoped_refptr<net::HttpResponseHeaders>* value) {
+  override_response_headers_ = value;
+}
+
+GURL* BraveRequestInfo::allowed_unsafe_redirect_url() const {
+  return allowed_unsafe_redirect_url_;
+}
+
+void BraveRequestInfo::set_allowed_unsafe_redirect_url(GURL* value) {
+  allowed_unsafe_redirect_url_ = value;
+}
+
+BraveNetworkDelegateEventType BraveRequestInfo::event_type() const {
+  return event_type_;
+}
+
+void BraveRequestInfo::set_event_type(BraveNetworkDelegateEventType value) {
+  event_type_ = value;
+}
+
+BlockedBy BraveRequestInfo::blocked_by() const {
+  return blocked_by_;
+}
+
+void BraveRequestInfo::set_blocked_by(BlockedBy value) {
+  blocked_by_ = value;
+}
+
+const std::string& BraveRequestInfo::mock_data_url() const {
+  return mock_data_url_;
+}
+
+void BraveRequestInfo::set_mock_data_url(const std::string& value) {
+  mock_data_url_ = value;
+}
+
+bool BraveRequestInfo::ShouldMockRequest() const {
+  return blocked_by_ == kAdBlocked && !mock_data_url_.empty();
+}
+
+const net::NetworkAnonymizationKey&
+BraveRequestInfo::network_anonymization_key() const {
+  return network_anonymization_key_;
+}
+
+void BraveRequestInfo::set_network_anonymization_key(
+    const net::NetworkAnonymizationKey& value) {
+  network_anonymization_key_ = value;
+}
+
+blink::mojom::ResourceType BraveRequestInfo::resource_type() const {
+  return resource_type_;
+}
+
+void BraveRequestInfo::set_resource_type(blink::mojom::ResourceType value) {
+  resource_type_ = value;
+}
+
+const std::string& BraveRequestInfo::upload_data() const {
+  return upload_data_;
+}
+
+void BraveRequestInfo::set_upload_data(const std::string& value) {
+  upload_data_ = value;
+}
+
+const std::optional<std::string>& BraveRequestInfo::devtools_request_id()
+    const {
+  return devtools_request_id_;
+}
+
+void BraveRequestInfo::set_devtools_request_id(
+    const std::optional<std::string>& value) {
+  devtools_request_id_ = value;
+}
+
+GURL* BraveRequestInfo::new_url() const {
+  return new_url_;
+}
+
+void BraveRequestInfo::set_new_url(GURL* value) {
+  new_url_ = value;
+}
 
 // static
 std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
@@ -54,88 +348,88 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
     std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
   auto ctx = std::make_shared<brave::BraveRequestInfo>();
-  ctx->request_identifier = request_identifier;
-  ctx->method = request.method;
-  ctx->request_url = request.url;
+  ctx->set_request_identifier(request_identifier);
+  ctx->set_method(request.method);
+  ctx->set_request_url(request.url);
   // TODO(iefremov): Replace GURL with Origin
-  ctx->initiator_url =
-      request.request_initiator.value_or(url::Origin()).GetURL();
+  ctx->set_initiator_url(
+      request.request_initiator.value_or(url::Origin()).GetURL());
 
-  ctx->referrer = request.referrer;
-  ctx->referrer_policy = request.referrer_policy;
+  ctx->set_referrer(request.referrer);
+  ctx->set_referrer_policy(request.referrer_policy);
 
-  ctx->resource_type =
-      static_cast<blink::mojom::ResourceType>(request.resource_type);
+  ctx->set_resource_type(
+      static_cast<blink::mojom::ResourceType>(request.resource_type));
 
-  ctx->render_frame_token = render_frame_token;
+  ctx->set_render_frame_token(render_frame_token);
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
-  // ctx->tab_url = request.top_frame_origin;
+  // ctx->set_tab_url(request.top_frame_origin);
   if (request.trusted_params) {
     // TODO(iefremov): Turns out it provides us a not expected value for
     // cross-site top-level navigations. Fortunately for now it is not a problem
     // for shields functionality. We should reconsider this machinery, also
     // given that this is always empty for subresources.
-    ctx->network_anonymization_key =
-        request.trusted_params->isolation_info.network_anonymization_key();
-    ctx->tab_origin = request.trusted_params->isolation_info.top_frame_origin()
-                          .value_or(url::Origin())
-                          .GetURL();
+    ctx->set_network_anonymization_key(
+        request.trusted_params->isolation_info.network_anonymization_key());
+    ctx->set_tab_origin(
+        request.trusted_params->isolation_info.top_frame_origin()
+            .value_or(url::Origin())
+            .GetURL());
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).
-  if (ctx->tab_origin.is_empty()) {
+  if (ctx->tab_origin().is_empty()) {
     content::WebContents* contents = content::WebContents::FromRenderFrameHost(
-        content::RenderFrameHost::FromFrameToken(ctx->render_frame_token));
+        content::RenderFrameHost::FromFrameToken(ctx->render_frame_token()));
     if (contents) {
-      ctx->tab_origin =
-          url::Origin::Create(contents->GetLastCommittedURL()).GetURL();
+      ctx->set_tab_origin(
+          url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
     }
   }
 
   if (old_ctx) {
-    ctx->internal_redirect = old_ctx->internal_redirect;
-    ctx->redirect_source = old_ctx->redirect_source;
+    ctx->set_internal_redirect(old_ctx->internal_redirect());
+    ctx->set_redirect_source(old_ctx->redirect_source());
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-  ctx->allow_brave_shields =
-      map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin) : true;
-  ctx->allow_ads =
-      map && brave_shields::GetAdControlType(map, ctx->tab_origin) ==
-                 brave_shields::ControlType::ALLOW;
+  ctx->set_allow_brave_shields(
+      map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin())
+          : true);
+  ctx->set_allow_ads(map &&
+                     brave_shields::GetAdControlType(map, ctx->tab_origin()) ==
+                         brave_shields::ControlType::ALLOW);
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
-  ctx->aggressive_blocking =
+  ctx->set_aggressive_blocking(
       map && brave_shields::GetCosmeticFilteringControlType(
-                 map, ctx->tab_origin) == brave_shields::ControlType::BLOCK;
+                 map, ctx->tab_origin()) == brave_shields::ControlType::BLOCK);
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent
   // stages of navigation, |tab_origin| changes and so does |allow_referrers|
   // flag, which is not what we want for determining referrers.
-  ctx->allow_referrers =
-      map && brave_shields::AreReferrersAllowed(
-                 map, ctx->redirect_source.is_empty() ? ctx->tab_origin
-                                                      : ctx->redirect_source);
-  ctx->upload_data = GetUploadData(request);
+  ctx->set_allow_referrers(map && brave_shields::AreReferrersAllowed(
+                                      map, ctx->redirect_source().is_empty()
+                                               ? ctx->tab_origin()
+                                               : ctx->redirect_source()));
+  ctx->set_upload_data(GetUploadData(request));
 
-  ctx->browser_context = browser_context;
+  ctx->set_browser_context(browser_context);
 
   // TODO(fmarier): remove this once the hacky code in
   // brave_proxying_url_loader_factory.cc is refactored. See
   // BraveProxyingURLLoaderFactory::InProgressRequest::UpdateRequestInfo().
   if (old_ctx) {
-    ctx->internal_redirect = old_ctx->internal_redirect;
-    ctx->redirect_source = old_ctx->redirect_source;
+    ctx->set_internal_redirect(old_ctx->internal_redirect());
+    ctx->set_redirect_source(old_ctx->redirect_source());
   }
 
-  ctx->devtools_request_id = request.devtools_request_id;
+  ctx->set_devtools_request_id(request.devtools_request_id);
 
   return ctx;
 }

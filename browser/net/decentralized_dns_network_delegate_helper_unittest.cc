@@ -92,35 +92,35 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
        DecentralizedDnsPreRedirectWork) {
   GURL url("http://brave.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->browser_context = profile();
+  brave_request_info->set_browser_context(profile());
 
   // No redirect if resolve method is not set to Ethereum.
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
   int rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       base::DoNothing(), brave_request_info);
   EXPECT_EQ(rc, net::OK);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
 
   // No redirect for OTR context.
-  brave_request_info->browser_context =
-      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  brave_request_info->set_browser_context(
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);
   EXPECT_EQ(rc, net::OK);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  brave_request_info->browser_context = profile();
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+  brave_request_info->set_browser_context(profile());
 
   // TLD is not .crypto
-  brave_request_info->request_url = GURL("http://test.com");
+  brave_request_info->set_request_url(GURL("http://test.com"));
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);
   EXPECT_EQ(rc, net::OK);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  brave_request_info->request_url = url;
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+  brave_request_info->set_request_url(url);
 
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);
@@ -128,20 +128,20 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   // No redirect if ENS resolve method is not set to Ethereum.
   EXPECT_FALSE(IsENSResolveMethodEnabled(local_state()));
-  brave_request_info->request_url = GURL("http://brave.eth");
+  brave_request_info->set_request_url(GURL("http://brave.eth"));
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);
   EXPECT_EQ(rc, net::OK);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(IsENSResolveMethodEnabled(local_state()));
-  brave_request_info->request_url = GURL("http://brave.eth");
+  brave_request_info->set_request_url(GURL("http://brave.eth"));
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);
   EXPECT_EQ(rc, net::ERR_IO_PENDING);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
@@ -236,7 +236,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   for (const auto& test_case : test_cases) {
     auto brave_request_info =
         std::make_shared<brave::BraveRequestInfo>(GURL(test_case.url));
-    brave_request_info->browser_context = profile();
+    brave_request_info->set_browser_context(profile());
     EXPECT_EQ(test_case.is_valid ? net::ERR_IO_PENDING : net::OK,
               OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
                   base::DoNothing(), brave_request_info));
@@ -250,7 +250,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   GURL url("http://brave.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->browser_context = profile();
+  brave_request_info->set_browser_context(profile());
 
   auto polygon_spec = brave_wallet::NetworkManager::GetUnstoppableDomainsRpcUrl(
                           brave_wallet::mojom::kPolygonMainnetChainId)
@@ -282,7 +282,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
           {"", "", "", "", "", "https://brave.com"}),
       net::HTTP_REQUEST_TIMEOUT);
   task_environment_.RunUntilIdle();
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // Polygon result.
   EXPECT_EQ(net::ERR_IO_PENDING,
@@ -305,7 +305,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
            ""}),
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
-  EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/");
+  EXPECT_EQ(brave_request_info->new_url_spec(), "https://brave.com/");
 
   // Base result.
   EXPECT_EQ(net::ERR_IO_PENDING,
@@ -327,7 +327,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
            ""}),
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
-  EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/base");
+  EXPECT_EQ(brave_request_info->new_url_spec(), "https://brave.com/base");
 
   // Eth result.
   EXPECT_EQ(net::ERR_IO_PENDING,
@@ -349,7 +349,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
   EXPECT_EQ(
-      brave_request_info->new_url_spec,
+      brave_request_info->new_url_spec(),
       "https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
 }
 
@@ -361,12 +361,12 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   OnBeforeURLRequest_EnsRedirectWork(
       base::DoNothing(), brave_request_info, {}, false,
       brave_wallet::mojom::ProviderError::kInternalError, "todo");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   OnBeforeURLRequest_EnsRedirectWork(
       base::DoNothing(), brave_request_info, {}, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // No redirect for invalid content hash.
   std::string content_hash_encoded_string =
@@ -380,7 +380,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   OnBeforeURLRequest_EnsRedirectWork(
       base::DoNothing(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // Redirect for valid content hash.
   content_hash_encoded_string =
@@ -394,11 +394,11 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   OnBeforeURLRequest_EnsRedirectWork(
       base::DoNothing(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_EQ(brave_request_info->new_url_spec,
+  EXPECT_EQ(brave_request_info->new_url_spec(),
             "https://ipfs.io/ipfs/"
             "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
 
-  EXPECT_FALSE(brave_request_info->pending_error.has_value());
+  EXPECT_FALSE(brave_request_info->pending_error().has_value());
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
@@ -410,8 +410,8 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   OnBeforeURLRequest_EnsRedirectWork(
       base::DoNothing(), brave_request_info, {}, true,
       brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  EXPECT_EQ(brave_request_info->pending_error,
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+  EXPECT_EQ(brave_request_info->pending_error(),
             net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED);
 }
 
@@ -423,26 +423,26 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, SnsRedirectWork) {
   OnBeforeURLRequest_SnsRedirectWork(
       base::DoNothing(), brave_request_info, {},
       brave_wallet::mojom::SolanaProviderError::kInternalError, "todo");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   OnBeforeURLRequest_SnsRedirectWork(
       base::DoNothing(), brave_request_info, {},
       brave_wallet::mojom::SolanaProviderError::kSuccess, "");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // No redirect for invalid url.
   OnBeforeURLRequest_SnsRedirectWork(
       base::DoNothing(), brave_request_info, GURL("invalid"),
       brave_wallet::mojom::SolanaProviderError::kSuccess, "");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // Redirect for valid url.
   OnBeforeURLRequest_SnsRedirectWork(
       base::DoNothing(), brave_request_info, GURL("https://brave.com"),
       brave_wallet::mojom::SolanaProviderError::kSuccess, "");
-  EXPECT_EQ(brave_request_info->new_url_spec, GURL("https://brave.com"));
+  EXPECT_EQ(brave_request_info->new_url_spec(), GURL("https://brave.com"));
 
-  EXPECT_FALSE(brave_request_info->pending_error.has_value());
+  EXPECT_FALSE(brave_request_info->pending_error().has_value());
 }
 
 // Test that decentralized DNS is disabled when BraveWalletDisabled policy is
@@ -465,7 +465,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   // Create test request for an unstoppable domain
   GURL url("http://test.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->browser_context = browser_context();
+  brave_request_info->set_browser_context(browser_context());
 
   // Call the decentralized DNS helper
   int result = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
@@ -476,7 +476,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   // On desktop and Android platforms, policy is enforced, so wallet is disabled
   // Should return OK immediately (not pending) because wallet is disabled
   EXPECT_EQ(net::OK, result);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 #else
   // On other platforms, policy is not enforced, so wallet is always enabled
   // Should return ERR_IO_PENDING because it will try to resolve the domain
@@ -500,7 +500,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   // Create test request for an unstoppable domain
   GURL url("http://test.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->browser_context = browser_context();
+  brave_request_info->set_browser_context(browser_context());
 
   // Call the decentralized DNS helper
   int result = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(

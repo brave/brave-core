@@ -43,7 +43,7 @@ int OnBeforeStartTransaction_UserAgentWork(
     auto* exceptions =
         brave_user_agent::BraveUserAgentExceptions::GetInstance();
     if (exceptions) {
-      bool show_brave = exceptions->CanShowBrave(ctx->tab_origin);
+      bool show_brave = exceptions->CanShowBrave(ctx->tab_origin());
       if (!show_brave) {
         ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA);
         ReplaceBraveWithGoogleChromeInHeader(headers,

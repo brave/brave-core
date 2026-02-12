@@ -226,7 +226,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
   current_response_head_ = std::move(head);
   current_response_body_ = std::move(body);
   cached_metadata_ = std::move(cached_metadata);
-  ctx_->internal_redirect = false;
+  ctx_->set_internal_redirect(false);
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
                           weak_factory_.GetWeakPtr()));
@@ -237,7 +237,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
     network::mojom::URLResponseHeadPtr head) {
   current_response_head_ = std::move(head);
   DCHECK(ctx_);
-  ctx_->internal_redirect = false;
+  ctx_->set_internal_redirect(false);
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToBeforeRedirect,
                           weak_factory_.GetWeakPtr(), redirect_info));
@@ -317,7 +317,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   head->encoded_data_length = 0;
 
   current_response_head_ = std::move(head);
-  ctx_->internal_redirect = true;
+  ctx_->set_internal_redirect(true);
   ContinueToBeforeRedirect(redirect_info, net::OK);
 }
 
@@ -334,8 +334,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   DCHECK(ctx_);
-  if (ctx_->new_referrer.has_value()) {
-    request_.referrer = ctx_->new_referrer.value();
+  if (ctx_->new_referrer().has_value()) {
+    request_.referrer = ctx_->new_referrer().value();
   }
 
   if (proxied_client_receiver_.is_bound()) {
@@ -343,7 +343,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   // TODO(iefremov): Shorten
-  if (ctx_->blocked_by != brave::kNotBlocked) {
+  if (ctx_->blocked_by() != brave::kNotBlocked) {
     if (!ctx_->ShouldMockRequest()) {
       OnRequestError(
           network::URLLoaderCompletionStatus(net::ERR_BLOCKED_BY_CLIENT));
@@ -352,7 +352,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
     auto response = network::mojom::URLResponseHead::New();
     std::string response_data;
-    brave_shields::MakeStubResponse(ctx_->mock_data_url, request_, &response,
+    brave_shields::MakeStubResponse(ctx_->mock_data_url(), request_, &response,
                                     &response_data);
 
     // Create a data pipe for transmitting the response.
@@ -451,20 +451,20 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
   }
-  const std::set<std::string>& removed_headers = ctx_->removed_headers;
-  const std::set<std::string>& set_headers = ctx_->set_headers;
+  const std::set<std::string>& removed_headers = ctx_->removed_headers();
+  const std::set<std::string>& modified_headers = ctx_->modified_headers();
 
   if (pending_follow_redirect_params_) {
     pending_follow_redirect_params_->removed_headers.insert(
         pending_follow_redirect_params_->removed_headers.end(),
         removed_headers.begin(), removed_headers.end());
 
-    for (auto& set_header : set_headers) {
+    for (auto& modified_header : modified_headers) {
       std::optional<std::string> header_value =
-          request_.headers.GetHeader(set_header);
+          request_.headers.GetHeader(modified_header);
       CHECK(header_value);
       pending_follow_redirect_params_->modified_headers.SetHeader(
-          set_header, *header_value);
+          modified_header, *header_value);
     }
 
     if (target_loader_.is_bound()) {
@@ -521,7 +521,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     proxied_client_receiver_.reset();
     target_loader_.reset();
 
-    ctx_->internal_redirect = true;
+    ctx_->set_internal_redirect(true);
     ContinueToBeforeRedirect(redirect_info, net::OK);
     return;
   }
@@ -544,10 +544,10 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
     proxied_client_receiver_.Resume();
   }
 
-  if (ctx_->internal_redirect) {
-    ctx_->redirect_source = GURL();
+  if (ctx_->internal_redirect()) {
+    ctx_->set_redirect_source(GURL());
   } else {
-    ctx_->redirect_source = request_.url;
+    ctx_->set_redirect_source(request_.url);
   }
   target_client_->OnReceiveRedirect(redirect_info,
                                     std::move(current_response_head_));
@@ -616,7 +616,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
 
     if (base::FeatureList::IsEnabled(
             ::brave_shields::features::kBraveAdblockCollapseBlockedElements) &&
-        ctx_->blocked_by == brave::kAdBlocked) {
+        ctx_->blocked_by() == brave::kAdBlocked) {
       collapse_status.should_collapse_initiator = true;
     }
 

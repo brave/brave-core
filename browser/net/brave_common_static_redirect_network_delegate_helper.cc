@@ -50,10 +50,10 @@ int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL new_url;
-  int rc = OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(ctx->request_url,
-                                                              &new_url);
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
+      ctx->request_url(), &new_url);
   if (!new_url.is_empty()) {
-    ctx->new_url_spec = new_url.spec();
+    ctx->set_new_url_spec(new_url.spec());
   }
   return rc;
 }
