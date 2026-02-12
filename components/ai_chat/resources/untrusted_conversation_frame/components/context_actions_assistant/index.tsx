@@ -9,7 +9,10 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import classnames from '$web-common/classnames'
-import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
+import {
+  AUTOMATIC_MODEL_KEY,
+  BRAVE_SUMMARY_MODEL_KEY,
+} from '../../../common/constants'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import CopyButton from '../copy_button'
 import { RegenerateAnswerMenu } from '../regenerate_answer_menu'
@@ -21,6 +24,7 @@ type RatingStatus = (typeof statuses)[number]
 interface ContextActionsAssistantProps {
   turnUuid?: string
   turnModelKey?: string
+  allowSummaryModel?: boolean
   turnNEARVerified?: boolean
   onEditAnswerClicked?: () => void
   onCopyTextClicked?: () => void
@@ -79,9 +83,23 @@ export default function ContextActionsAssistant(
     [conversationContext, props.turnUuid],
   )
 
-  const leoModels = conversationContext.allModels.filter(
-    (model) =>
-      model.options.leoModelOptions && model.key !== AUTOMATIC_MODEL_KEY,
+  const includeSummaryModel = props.allowSummaryModel ?? false
+
+  const leoModels = React.useMemo(
+    () =>
+      conversationContext.allModels.filter((model) => {
+        if (!model.options.leoModelOptions) {
+          return false
+        }
+        if (model.key === AUTOMATIC_MODEL_KEY) {
+          return false
+        }
+        if (model.key === BRAVE_SUMMARY_MODEL_KEY && !includeSummaryModel) {
+          return false
+        }
+        return true
+      }),
+    [conversationContext.allModels, includeSummaryModel],
   )
 
   const handleOpenCloseRegenerateAnswerMenu = React.useCallback(

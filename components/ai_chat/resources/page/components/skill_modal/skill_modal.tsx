@@ -16,6 +16,7 @@ import styles from './skill_modal_style.module.scss'
 import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { isSelectableModel } from '../../model_utils'
 import { AUTOMATIC_MODEL_KEY, getModelIcon } from '../../../common/constants'
 import * as Mojom from '../../../common/mojom'
 
@@ -42,6 +43,11 @@ export default function SkillModal() {
   const selectedModelObject = React.useMemo(
     () => conversationContext.allModels?.find((m) => m.key === selectedModel),
     [conversationContext.allModels, selectedModel],
+  )
+
+  const selectableModels = React.useMemo(
+    () => conversationContext.allModels?.filter(isSelectableModel) ?? [],
+    [conversationContext.allModels],
   )
 
   // Memos
@@ -208,7 +214,7 @@ export default function SkillModal() {
                 (m) => m.key === selectedModel,
               )?.displayName ?? ''}
             </div>
-            {conversationContext.allModels?.map((model: Mojom.Model) => (
+            {selectableModels.map((model: Mojom.Model) => (
               <ModelOption
                 key={model.key}
                 model={model}

@@ -87,6 +87,18 @@ describe('ModelSelector', () => {
         },
       },
     },
+    {
+      key: 'chat-brave-summary',
+      displayName: 'Brave Summary',
+      isSuggestedModel: false,
+      isNearModel: false,
+      supportsTools: false,
+      options: {
+        leoModelOptions: {
+          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+        },
+      },
+    },
 
     {
       key: 'chat-custom',
@@ -218,6 +230,25 @@ describe('ModelSelector', () => {
     expect(labels[3]).toBeInTheDocument()
     expect(labels[3]).toBeVisible()
     expect(labels[3]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
+  })
+
+  it('hides internal models from the dropdown', async () => {
+    renderModelSelector()
+
+    const anchorButton = getAnchorButton()
+    await act(async () => {
+      anchorButton?.shadowRoot?.querySelector('button')?.click()
+    })
+
+    const menu = getMenu()
+    expect(menu).not.toHaveTextContent('Brave Ocelot')
+
+    const showAllModelsButton = getShowAllModelsButton()
+    await act(async () => {
+      showAllModelsButton?.click()
+    })
+
+    expect(menu).not.toHaveTextContent('Brave Ocelot')
   })
 
   it('should call setCurrentModel when a model is clicked', async () => {

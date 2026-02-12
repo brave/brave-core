@@ -90,6 +90,24 @@ function ConversationEntries() {
     [conversationContext.conversationHistory],
   )
 
+  const summaryResponseTurnUuids = React.useMemo(() => {
+    const uuids = new Set<string>()
+    const history = conversationContext.conversationHistory
+    for (let i = 1; i < history.length; i++) {
+      const prev = history[i - 1]
+      const curr = history[i]
+      if (
+        curr?.characterType === Mojom.CharacterType.ASSISTANT
+        && prev?.characterType === Mojom.CharacterType.HUMAN
+        && (prev.actionType === Mojom.ActionType.SUMMARIZE_PAGE
+          || prev.actionType === Mojom.ActionType.SUMMARIZE_VIDEO)
+      ) {
+        if (curr.uuid) uuids.add(curr.uuid)
+      }
+    }
+    return uuids
+  }, [conversationContext.conversationHistory])
+
   const handleEditSubmit = (index: number, text: string) => {
     const entryUuid = conversationContext.conversationHistory[index]?.uuid
     if (!entryUuid) return
@@ -355,10 +373,14 @@ function ConversationEntries() {
                   {isAIAssistant
                     && conversationContext.isLeoModel
                     && !firstEntryEdit.selectedText
-                    && !showEditInput && (
+                    && !showEditInput
+                    && !conversationContext.isGenerating && (
                       <ContextActionsAssistant
                         turnUuid={firstEntryEdit.uuid}
                         turnModelKey={turnModelKey}
+                        allowSummaryModel={summaryResponseTurnUuids.has(
+                          firstEntryEdit.uuid ?? '',
+                        )}
                         turnNEARVerified={
                           group.at(-1)?.nearVerificationStatus?.verified
                         }
