@@ -51,6 +51,7 @@ class MockPermissionPromptDelegate
   void Deny(const PromptOptions& prompt_options) override {}
   void Dismiss(const PromptOptions& prompt_options) override {}
   void Ignore(const PromptOptions& prompt_options) override {}
+  void SwitchToLoudPrompt() override {}
   GeolocationAccuracy GetInitialGeolocationAccuracySelection() const override {
     NOTREACHED();
   }
