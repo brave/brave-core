@@ -13,6 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/sequence_checker.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/http/http_request_headers.h"
@@ -252,6 +253,8 @@ class BraveRequestInfo {
   std::optional<std::string> devtools_request_id_;
 
   raw_ptr<GURL, DanglingUntriaged> new_url_ = nullptr;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 // ResponseListener

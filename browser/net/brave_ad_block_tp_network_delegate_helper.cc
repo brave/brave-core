@@ -41,6 +41,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/public/dns_query_type.h"
 #include "services/network/host_resolver.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 namespace brave {
 
@@ -51,6 +52,32 @@ const std::string& GetCanonicalName(
   return dns_aliases.size() >= 1 ? dns_aliases.front() : base::EmptyString();
 }
 
+// Used to keep track of state between a primary adblock engine query and one
+// after CNAME uncloaking the request.
+struct EngineFlags {
+  bool did_match_rule = false;
+  bool did_match_exception = false;
+  bool did_match_important = false;
+};
+
+struct ShouldBlockRequestParams {
+  GURL initiator_url;
+  GURL request_url;
+  blink::mojom::ResourceType resource_type =
+      BraveRequestInfo::kInvalidResourceType;
+  bool aggressive_blocking = false;
+  std::string method;
+  content::GlobalRenderFrameHostToken render_frame_token;
+  std::optional<std::string> devtools_request_id;
+};
+
+struct ShouldBlockRequestResult {
+  EngineFlags engine_flags;
+  std::string new_url_spec;
+  std::string mock_data_url;
+  BlockedBy blocked_by = kNotBlocked;
+};
+
 }  // namespace
 
 network::HostResolver* g_testing_host_resolver = nullptr;
@@ -59,14 +86,6 @@ void SetAdblockCnameHostResolverForTesting(
     network::HostResolver* host_resolver) {
   g_testing_host_resolver = host_resolver;
 }
-
-// Used to keep track of state between a primary adblock engine query and one
-// after CNAME uncloaking the request.
-struct EngineFlags {
-  bool did_match_rule = false;
-  bool did_match_exception = false;
-  bool did_match_important = false;
-};
 
 void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
@@ -176,32 +195,35 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 // If `canonical_url` is specified, this will only check if the CNAME-uncloaked
 // response should be blocked. Otherwise, it will run the check for the
 // original request URL.
-EngineFlags ShouldBlockRequestOnTaskRunner(
-    std::shared_ptr<BraveRequestInfo> ctx,
+ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
+    ShouldBlockRequestParams input,
     EngineFlags previous_result,
     std::optional<GURL> canonical_url) {
-  if (!ctx->initiator_url().is_valid()) {
-    return previous_result;
+  ShouldBlockRequestResult result;
+  result.engine_flags = previous_result;
+
+  if (!input.initiator_url.is_valid()) {
+    return result;
   }
-  const std::string source_host = std::string(ctx->initiator_url().host());
+  const std::string source_host = std::string(input.initiator_url.host());
 
   GURL url_to_check;
   if (canonical_url.has_value()) {
     url_to_check = *canonical_url;
   } else {
-    url_to_check = ctx->request_url();
+    url_to_check = input.request_url;
   }
 
   bool force_aggressive = SameDomainOrHost(
-      ctx->initiator_url(),
+      input.initiator_url,
       url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   auto adblock_result =
       g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          url_to_check, ctx->resource_type(), source_host,
-          ctx->aggressive_blocking() || force_aggressive,
+          url_to_check, input.resource_type, source_host,
+          input.aggressive_blocking || force_aggressive,
           previous_result.did_match_rule, previous_result.did_match_exception,
           previous_result.did_match_important);
 
@@ -210,49 +232,50 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
   // "user-facing" URL; never for the canonical one.
   if (!canonical_url && adblock_result.rewritten_url.has_value &&
       GURL(std::string(adblock_result.rewritten_url.value)).is_valid() &&
-      (ctx->method() == "GET" || ctx->method() == "HEAD" ||
-       ctx->method() == "OPTIONS")) {
-    ctx->set_new_url_spec(std::string(adblock_result.rewritten_url.value));
+      (input.method == "GET" || input.method == "HEAD" ||
+       input.method == "OPTIONS")) {
+    result.new_url_spec = std::string(adblock_result.rewritten_url.value);
     has_valid_rewritten_url = true;
   }
 
-  ctx->set_mock_data_url(std::string(adblock_result.redirect.value));
+  result.mock_data_url = std::string(adblock_result.redirect.value);
 
   previous_result.did_match_rule |= adblock_result.matched;
   previous_result.did_match_important |= adblock_result.important;
   previous_result.did_match_exception |= adblock_result.has_exception;
+  result.engine_flags = previous_result;
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&
        !previous_result.did_match_exception)) {
-    ctx->set_blocked_by(kAdBlocked);
+    result.blocked_by = kAdBlocked;
   }
 
   const bool should_report_to_devtools =
-      ctx->devtools_request_id() &&
-      (ctx->blocked_by() == kAdBlocked || previous_result.did_match_exception);
+      input.devtools_request_id &&
+      (result.blocked_by == kAdBlocked || previous_result.did_match_exception);
 
   if (should_report_to_devtools) {
     content::devtools_instrumentation::AdblockInfo info;
-    info.request_url = ctx->request_url();
+    info.request_url = input.request_url;
     info.checked_url = url_to_check;
     info.source_host = source_host;
-    info.resource_type = ctx->resource_type();
-    info.aggressive = ctx->aggressive_blocking() || force_aggressive;
-    info.blocked = ctx->blocked_by() == kAdBlocked;
+    info.resource_type = input.resource_type;
+    info.aggressive = input.aggressive_blocking || force_aggressive;
+    info.blocked = result.blocked_by == kAdBlocked;
     info.did_match_important_rule = previous_result.did_match_important;
     info.did_match_rule = previous_result.did_match_rule;
     info.did_match_exception = previous_result.did_match_exception;
-    info.has_mock_data = !ctx->mock_data_url().empty();
+    info.has_mock_data = !result.mock_data_url.empty();
     if (has_valid_rewritten_url) {
-      info.rewritten_url = ctx->new_url_spec();
+      info.rewritten_url = result.new_url_spec;
     }
 
     content::devtools_instrumentation::SendAdblockInfo(
-        ctx->render_frame_token(), ctx->devtools_request_id().value(), info);
+        input.render_frame_token, input.devtools_request_id.value(), info);
   }
 
-  return previous_result;
+  return result;
 }
 
 void OnShouldBlockRequestResult(
@@ -260,15 +283,21 @@ void OnShouldBlockRequestResult(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx,
-    EngineFlags result) {
+    ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  ctx->set_blocked_by(result.blocked_by);
+  ctx->set_mock_data_url(std::move(result.mock_data_url));
+  if (!result.new_url_spec.empty()) {
+    ctx->set_new_url_spec(std::move(result.new_url_spec));
+  }
+
   if (ctx->blocked_by() == kAdBlocked) {
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         ctx->request_url(), ctx->render_frame_token(), brave_shields::kAds);
   } else if (then_check_uncloaked) {
     // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
     new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
-                                      ctx, result);
+                                      ctx, result.engine_flags);
     return;
   }
   next_callback.Run();
@@ -288,9 +317,17 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
     const GURL canonical_url =
         ctx->request_url().ReplaceComponents(replacements);
 
+    ShouldBlockRequestParams input{ctx->initiator_url(),
+                                   ctx->request_url(),
+                                   ctx->resource_type(),
+                                   ctx->aggressive_blocking(),
+                                   ctx->method(),
+                                   ctx->render_frame_token(),
+                                   ctx->devtools_request_id()};
     task_runner->PostTaskAndReplyWithResult(
         FROM_HERE,
-        base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, previous_result,
+        base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
+                       previous_result,
                        std::make_optional<GURL>(canonical_url)),
         base::BindOnce(&OnShouldBlockRequestResult, false, task_runner,
                        next_callback, ctx));
@@ -381,10 +418,14 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
     should_check_uncloaked = false;
   }
 
+  ShouldBlockRequestParams input{
+      ctx->initiator_url(),       ctx->request_url(), ctx->resource_type(),
+      ctx->aggressive_blocking(), ctx->method(),      ctx->render_frame_token(),
+      ctx->devtools_request_id()};
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, EngineFlags(),
-                     std::nullopt),
+      base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
+                     EngineFlags(), std::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult, should_check_uncloaked,
                      task_runner, next_callback, ctx));
 }
