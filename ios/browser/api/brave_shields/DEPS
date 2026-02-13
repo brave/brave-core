@@ -2,6 +2,7 @@ include_rules = [
   "+brave/components/brave_shields/core/browser",
   "+brave/components/brave_component_updater/browser",
   "+brave/components/cosmetic_filters/resources",
+  "+brave/components/services/brave_shields/filter_parsing_service.h",
 ]
 
 specific_include_rules = {
