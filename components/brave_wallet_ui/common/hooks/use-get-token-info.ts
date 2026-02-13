@@ -19,6 +19,7 @@ import { useGetCombinedTokensListQuery } from '../slices/api.slice.extra'
 interface Arg {
   contractAddress: string
   tokenId?: string
+  isShielded?: boolean
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
 }
 
@@ -35,7 +36,8 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
         t.contractAddress.toLowerCase() === arg.contractAddress.toLowerCase()
         && t.chainId === arg.network.chainId
         && t.coin === arg.network.coin
-        && (!arg.tokenId || arg.tokenId === t.tokenId),
+        && (!arg.tokenId || arg.tokenId === t.tokenId)
+        && (arg.isShielded === undefined || t.isShielded === arg.isShielded),
     )
   }, [combinedTokensList, arg])
 

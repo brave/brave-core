@@ -384,7 +384,7 @@ export function useGate3(params: SwapParams) {
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
-            useShieldedPool: false,
+            useShieldedPool: fromToken.isShielded,
             memo: undefined,
             swapInfo: {
               sourceCoin: fromToken.coin,
@@ -401,6 +401,7 @@ export function useGate3(params: SwapParams) {
               routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
           })
+          return
         }
 
         throw new Error('Unsupported transaction params')
