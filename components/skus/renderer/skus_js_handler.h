@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/sequence_checker.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "content/public/renderer/render_frame.h"
@@ -51,9 +52,12 @@ class SkusJSHandler final : public gin::Wrappable<SkusJSHandler>,
 
   // content::RenderFrameObserver:
   void OnDestruct() override;
+  void WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                int32_t world_id) override;
 
  private:
   bool EnsureConnected();
+  void Shutdown();
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -98,12 +102,18 @@ class SkusJSHandler final : public gin::Wrappable<SkusJSHandler>,
 
   mojo::Remote<skus::mojom::SkusService> skus_service_;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
+  mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_
+      GUARDED_BY(sequence_checker_);
 #endif
 
   // Persistent self-reference to prevent GC from freeing this object while
   // it's still needed for JavaScript bindings. Cleared in OnDestruct().
-  cppgc::Persistent<SkusJSHandler> self_;
+  cppgc::Persistent<SkusJSHandler> self_ GUARDED_BY(sequence_checker_);
+
+  SEQUENCE_CHECKER(sequence_checker_);
+#if DCHECK_IS_ON()
+  bool shutdown_called_ = false;
+#endif
 };
 
 }  // namespace skus

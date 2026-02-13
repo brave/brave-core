@@ -14,6 +14,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
@@ -38,12 +39,18 @@ namespace skus {
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
     : content::RenderFrameObserver(render_frame) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   self_ = this;
 }
 
-SkusJSHandler::~SkusJSHandler() = default;
+SkusJSHandler::~SkusJSHandler() {
+#if DCHECK_IS_ON()
+  CHECK(shutdown_called_);
+#endif
+}
 
 bool SkusJSHandler::EnsureConnected() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!skus_service_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker().GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
@@ -60,6 +67,21 @@ bool SkusJSHandler::EnsureConnected() {
 #endif
 
   return result;
+}
+
+void SkusJSHandler::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+#if DCHECK_IS_ON()
+  shutdown_called_ = true;
+#endif
+
+  skus_service_.reset();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  vpn_service_.reset();
+#endif
+
+  self_.Clear();
 }
 
 void SkusJSHandler::Install(content::RenderFrame* render_frame) {
@@ -103,12 +125,23 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
 }
 
 void SkusJSHandler::OnDestruct() {
-  self_.Clear();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  Shutdown();
+}
+
+void SkusJSHandler::WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                             int32_t world_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
+    return;
+  }
+  Shutdown();
 }
 
 // window.chrome.braveSkus.refresh_order
 v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
                                                    std::string order_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto host = render_frame()->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   auto connected = EnsureConnected();
   if (!connected)
@@ -137,6 +170,8 @@ void SkusJSHandler::OnRefreshOrder(
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
     skus::mojom::SkusResultPtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -165,6 +200,7 @@ void SkusJSHandler::OnRefreshOrder(
 v8::Local<v8::Promise> SkusJSHandler::FetchOrderCredentials(
     v8::Isolate* isolate,
     std::string order_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -193,6 +229,7 @@ void SkusJSHandler::OnFetchOrderCredentials(
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
     skus::mojom::SkusResultPtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -216,6 +253,7 @@ v8::Local<v8::Promise> SkusJSHandler::PrepareCredentialsPresentation(
     v8::Isolate* isolate,
     std::string domain,
     std::string path) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -244,6 +282,7 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
     skus::mojom::SkusResultPtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -261,6 +300,7 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
 // window.chrome.braveSkus.credential_summary
 v8::Local<v8::Promise> SkusJSHandler::CredentialSummary(v8::Isolate* isolate,
                                                         std::string domain) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -290,6 +330,7 @@ void SkusJSHandler::OnCredentialSummary(
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
     skus::mojom::SkusResultPtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -321,6 +362,7 @@ void SkusJSHandler::OnCredentialSummary(
 
 gin::ObjectTemplateBuilder SkusJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return gin::Wrappable<SkusJSHandler>::GetObjectTemplateBuilder(isolate)
       .SetMethod("refresh_order", &SkusJSHandler::RefreshOrder)
       .SetMethod("fetch_order_credentials",
