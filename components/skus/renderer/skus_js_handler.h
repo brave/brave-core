@@ -100,10 +100,6 @@ class SkusJSHandler final : public gin::Wrappable<SkusJSHandler>,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
 #endif
-
-  // Persistent self-reference to prevent GC from freeing this object while
-  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
-  cppgc::Persistent<SkusJSHandler> self_;
 };
 
 }  // namespace skus
