@@ -7,7 +7,6 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { getCss } from './brave_account_forgot_password_dialog.css.js'
 import { getHtml } from './brave_account_forgot_password_dialog.html.js'
-import { isEmailValid } from './brave_account_common.js'
 
 export class BraveAccountForgotPasswordDialogElement extends CrLitElement {
   static get is() {
@@ -27,11 +26,6 @@ export class BraveAccountForgotPasswordDialogElement extends CrLitElement {
       email: { type: String },
       isEmailValid: { type: Boolean },
     }
-  }
-
-  protected onEmailInput(detail: { value: string }) {
-    this.email = detail.value
-    this.isEmailValid = isEmailValid(this.email)
   }
 
   protected accessor email: string = ''

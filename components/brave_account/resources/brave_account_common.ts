@@ -21,28 +21,3 @@ export function onToggleVisibility(e: CustomEvent) {
     e.detail.show ? 'text' : 'password',
   )
 }
-
-export function isEmailValid(input: string) {
-  if (!input) {
-    // input is falsy
-    return false
-  }
-
-  if (!/^[\x20-\x7F]+$/.test(input)) {
-    // input contains characters outside printable ASCII
-    return false
-  }
-
-  const index = input.lastIndexOf('@')
-  if (index === -1) {
-    // there's no @ sign in input
-    return false
-  }
-
-  if (index === 0 || index === input.length - 1) {
-    // there are no characters either before or after the last @ sign
-    return false
-  }
-
-  return true
-}

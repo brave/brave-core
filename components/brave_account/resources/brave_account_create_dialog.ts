@@ -13,11 +13,7 @@ import {
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
-import {
-  Error,
-  isEmailValid,
-  makeFocusHandler,
-} from './brave_account_common.js'
+import { Error, makeFocusHandler } from './brave_account_common.js'
 import {
   RegisterError,
   RegisterErrorCode,
@@ -143,7 +139,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     return {
       email: { type: String },
       isCapsLockOn: { type: Boolean },
-      isEmailBraveAlias: { type: Boolean },
       isEmailValid: { type: Boolean },
       isPasswordInputFocused: { type: Boolean },
       isPasswordConfirmationInputFocused: { type: Boolean },
@@ -151,12 +146,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       passwordConfirmation: { type: String },
       passwordStrength: { type: Number },
     }
-  }
-
-  protected onEmailInput(detail: { value: string }) {
-    this.email = detail.value.trim()
-    this.isEmailValid = isEmailValid(this.email)
-    this.isEmailBraveAlias = /@bravealias\.com$/i.test(this.email)
   }
 
   protected onPasswordInput(detail: { value: string }) {
@@ -240,7 +229,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   protected icon: string = 'warning-triangle-filled'
   protected accessor email: string = ''
   protected accessor isCapsLockOn: boolean = false
-  protected accessor isEmailBraveAlias: boolean = false
   protected accessor isEmailValid: boolean = false
   protected accessor isPasswordInputFocused: boolean = false
   protected accessor isPasswordConfirmationInputFocused: boolean = false

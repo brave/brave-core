@@ -1,4 +1,4 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -10,15 +10,9 @@
  * #include=brave-account-common
  * #css_wrapper_metadata_end */
 
-#password-dropdown {
-  --height: 18px;
-  display: flex;
-}
-
-#password-confirmation-dropdown {
-  --height: 18px;
+#brave-alias-dropdown {
+  --height: 36px;
   --leo-icon-size: var(--leo-icon-xs);
-  align-items: center;
   display: flex;
   font: var(--leo-font-small-regular);
   gap: var(--leo-spacing-s);
