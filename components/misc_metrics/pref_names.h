@@ -38,8 +38,10 @@ inline constexpr char kMiscMetricsSearchSwitchedAwayFromBrave[] =
     "brave.misc_metrics.search_switched_from_brave";
 inline constexpr char kMiscMetricsSearchBraveQueryCount[] =
     "brave.misc_metrics.search_brave_query_count";
-inline constexpr char kMiscMetricsBraveSearchDailyQueriesStorage[] =
-    "brave.misc_metrics.brave_search_daily_queries";
+inline constexpr char kMiscMetricsBraveSearchReportFrameStartTime[] =
+    "brave.misc_metrics.brave_search_report_frame_start_time";
+inline constexpr char kMiscMetricsBraveSearchQueryCounts[] =
+    "brave.misc_metrics.brave_search_query_counts";
 
 inline constexpr char kMiscMetricsTotalDnsRequestStorage[] =
     "brave.misc_metrics.total_dns_requests";

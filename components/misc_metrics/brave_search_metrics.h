@@ -6,16 +6,10 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 
-#include <memory>
-#include <optional>
-
 #include "base/memory/raw_ptr.h"
-#include "base/scoped_observation.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "components/search_engines/search_engine_type.h"
-#include "components/search_engines/template_url_service_observer.h"
+#include "base/time/time.h"
+#include "base/timer/wall_clock_timer.h"
 
-class DailyStorage;
 class PrefRegistrySimple;
 class PrefService;
 class TemplateURLService;
@@ -29,33 +23,23 @@ inline constexpr char kSearchDailyQueriesGoogleDefaultHistogramName[] =
 inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
     "Brave.Search.DailyQueries.OtherDefault";
 
-class BraveSearchMetrics : public TemplateURLServiceObserver {
+class BraveSearchMetrics {
  public:
   BraveSearchMetrics(PrefService* local_state,
                      TemplateURLService* template_url_service);
-  ~BraveSearchMetrics() override;
+  ~BraveSearchMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void RecordBraveQuery();
 
-  void ReportDailyQueries();
-
  private:
-  void UpdateSearchEngineType();
-
-  // TemplateURLServiceObserver:
-  void OnTemplateURLServiceChanged() override;
+  void ReportDailyQueries();
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
-  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
-      template_url_service_observation_{this};
 
-  std::unique_ptr<DailyStorage> brave_search_daily_queries_storage_;
-  std::optional<SearchEngineType> default_search_engine_type_;
-
-  base::WeakPtrFactory<BraveSearchMetrics> weak_ptr_factory_{this};
+  base::WallClockTimer report_check_timer_;
 };
 
 }  // namespace misc_metrics
