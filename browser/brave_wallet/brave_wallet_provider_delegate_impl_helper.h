@@ -20,7 +20,7 @@ namespace brave_wallet {
 
 // Show wallet panel, which handles permission UI, sign message confirmation,
 // ...etc.
-void ShowPanel(content::WebContents* web_contents, const url::Origin& origin);
+void ShowPanel(content::WebContents* web_contents);
 
 // Show native Brave Wallet backup UI - Used only by Android.
 void ShowWalletBackup();
@@ -29,8 +29,7 @@ void ShowWalletBackup();
 void UnlockWallet();
 
 // Show wallet onboarding page.
-void ShowWalletOnboarding(content::WebContents* web_contents,
-                          const url::Origin& origin);
+void ShowWalletOnboarding(content::WebContents* web_contents);
 
 // Show account creation page for keyring id
 void ShowAccountCreation(content::WebContents* web_contents,

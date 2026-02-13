@@ -39,8 +39,7 @@ constexpr auto kAccountCreationCoinName =
 
 namespace brave_wallet {
 
-void ShowPanel(content::WebContents* web_contents,
-               const url::Origin& /*origin*/) {
+void ShowPanel(content::WebContents* web_contents) {
   if (!web_contents) {
     return;
   }
@@ -60,8 +59,7 @@ void UnlockWallet() {
   NOTREACHED();
 }
 
-void ShowWalletOnboarding(content::WebContents* web_contents,
-                          const url::Origin& origin) {
+void ShowWalletOnboarding(content::WebContents* web_contents) {
   Browser* browser =
       web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;
 

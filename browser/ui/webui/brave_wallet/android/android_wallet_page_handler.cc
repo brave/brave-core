@@ -33,7 +33,7 @@ void AndroidWalletPageHandler::ShowApprovePanelUI() {
     return;
   }
 
-  ::brave_wallet::ShowPanel(wc, url::Origin::Create(wc->GetLastCommittedURL()));
+  ::brave_wallet::ShowPanel(wc);
 }
 
 void AndroidWalletPageHandler::ShowWalletBackupUI() {

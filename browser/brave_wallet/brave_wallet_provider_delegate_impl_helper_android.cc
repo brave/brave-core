@@ -18,7 +18,7 @@ using base::android::JavaRef;
 
 namespace brave_wallet {
 
-void ShowPanel(content::WebContents*, const url::Origin& /*origin*/) {
+void ShowPanel(content::WebContents*) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_showPanel(env);
 }
@@ -33,7 +33,7 @@ void UnlockWallet() {
   Java_BraveWalletProviderDelegateImplHelper_unlockWallet(env);
 }
 
-void ShowWalletOnboarding(content::WebContents*, const url::Origin& origin) {
+void ShowWalletOnboarding(content::WebContents*) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
 }
