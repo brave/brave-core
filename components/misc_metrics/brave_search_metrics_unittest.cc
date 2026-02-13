@@ -268,9 +268,9 @@ TEST_F(BraveSearchMetricsUnitTest, NTPSearchPercentage) {
     brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
   for (int i = 0; i < 25; i++) {
-    brave_search_metrics_->MaybeRecordNTPSearch(
-        static_cast<int64_t>(TemplateURLPrepopulateData::
-            BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_BRAVE));
+    brave_search_metrics_->MaybeRecordNTPSearch(static_cast<int64_t>(
+        TemplateURLPrepopulateData::BravePrepopulatedEngineID::
+            PREPOPULATED_ENGINE_ID_BRAVE));
   }
 
   task_environment_.FastForwardBy(base::Days(1));
@@ -287,15 +287,15 @@ TEST_F(BraveSearchMetricsUnitTest, NTPSearchNonBraveEngineIgnored) {
   }
   // Record NTP searches with Google (should be ignored)
   for (int i = 0; i < 50; i++) {
-    brave_search_metrics_->MaybeRecordNTPSearch(
-        static_cast<int64_t>(TemplateURLPrepopulateData::
-            BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_GOOGLE));
+    brave_search_metrics_->MaybeRecordNTPSearch(static_cast<int64_t>(
+        TemplateURLPrepopulateData::BravePrepopulatedEngineID::
+            PREPOPULATED_ENGINE_ID_GOOGLE));
   }
   // Record NTP searches with Brave (should be counted)
   for (int i = 0; i < 10; i++) {
-    brave_search_metrics_->MaybeRecordNTPSearch(
-        static_cast<int64_t>(TemplateURLPrepopulateData::
-            BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_BRAVE));
+    brave_search_metrics_->MaybeRecordNTPSearch(static_cast<int64_t>(
+        TemplateURLPrepopulateData::BravePrepopulatedEngineID::
+            PREPOPULATED_ENGINE_ID_BRAVE));
   }
 
   task_environment_.FastForwardBy(base::Days(1));

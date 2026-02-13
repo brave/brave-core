@@ -92,7 +92,13 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
     ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
     CHECK(ai_chat_metrics_);
 #endif
-    auto* page_metrics = profile_metrics->GetPageMetrics();
+  }
+
+  auto* original_profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile->GetOriginalProfile());
+  if (original_profile_metrics) {
+    auto* page_metrics = original_profile_metrics->GetPageMetrics();
     if (page_metrics) {
       brave_search_metrics_ = page_metrics->brave_search_metrics();
     }
