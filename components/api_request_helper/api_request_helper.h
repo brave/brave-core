@@ -136,6 +136,7 @@ class APIRequestHelper {
     // then call |APIRequestHelper::Cancel|.
     void MaybeSendResult();
     void ParseSSE(std::string_view string_piece);
+    void ProcessSSELine(std::string_view line);
 
     // network::SimpleURLLoaderStreamConsumer implementation:
     void OnDataReceived(std::string_view string_piece,
@@ -160,6 +161,9 @@ class APIRequestHelper {
     ResponseConversionCallback conversion_callback_;
 
     bool is_sse_ = false;
+
+    // Buffer for partial SSE lines across OnDataReceived calls.
+    std::string sse_line_buffer_;
 
     // Keep track of number of in-progress data decoding operations
     // so that we can know if any are still in-progress when the request
