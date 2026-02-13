@@ -10,11 +10,13 @@ import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBro
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -26,6 +28,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -93,6 +96,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private static final String DAY_ZERO_DEFAULT_VARIANT = "a";
     private static final String DAY_ZERO_VARIANT_B = "b";
 
+    private static final String KEY_SPLASH_ANIMATION_FINISHED =
+            "WelcomeOnboardingActivity.SplashAnimationFinished";
+    private static final String KEY_VARIANT_B_PAGE_INDEX =
+            "WelcomeOnboardingActivity.VariantBPageIndex";
+
     private static final float LEAF_SCALE_ANIMATION = 1.5f;
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
     private static final float BRAVE_SPLASH_SCALE_ANIMATION = 0.4f;
@@ -100,6 +108,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private boolean mIsTablet;
     private int mCurrentStep = -1;
+    private boolean mSplashAnimationFinished;
+    private int mRestoredVariantBPageIndex;
 
     private ConstraintLayout mDefaultConstraintLayout;
     private ConstraintLayout mVariantBConstraintLayout;
@@ -117,12 +127,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private Button mBtnNegative;
     private CheckBox mCheckboxCrash;
     private CheckBox mCheckboxP3a;
+    private FrameLayout mBraveSplashContainer;
 
     private Guideline mSplashGuideline;
     private ViewPager2 mVariantBPager;
     @Nullable private OnboardingStepAdapter mVariantBAdapter;
 
-    private String mDayZeroVariant = "";
+    private String mDayZeroVariant = "b";
     private SpannableString mWdpLearnMore;
     @Nullable private PageBounceAnimator mPageBounceAnimator;
     private boolean mIsP3aManaged;
@@ -489,6 +500,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
         mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
         mBraveSplash = findViewById(R.id.brave_splash);
+        mBraveSplashContainer = findViewById(R.id.brave_splash_container);
         mIvLeafTop = findViewById(R.id.iv_leaf_top);
         mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
         mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
@@ -600,13 +612,39 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                 mVariantBAdapter.setP3aManaged(true);
             }
             mVariantBConstraintLayout.setVisibility(View.VISIBLE);
-            final AnimatedVectorDrawable vectorDrawable = getAnimatedVectorDrawable();
-            vectorDrawable.start();
+            if (mSplashAnimationFinished) {
+                if (mVariantBPager != null) {
+                    mVariantBPager.setCurrentItem(mRestoredVariantBPageIndex, false);
+                    mVariantBPager.setVisibility(View.VISIBLE);
+                }
+            } else {
+                final AnimatedVectorDrawable vectorDrawable = getAnimatedVectorDrawable();
+                vectorDrawable.start();
+            }
 
         } else {
             mDefaultConstraintLayout.setVisibility(View.VISIBLE);
             nextOnboardingStepForDefaultVariant();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_SPLASH_ANIMATION_FINISHED, mSplashAnimationFinished);
+        if (mVariantBPager != null) {
+            outState.putInt(KEY_VARIANT_B_PAGE_INDEX, mVariantBPager.getCurrentItem());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@Nullable Bundle state) {
+        super.onRestoreInstanceState(state);
+        if (state == null) {
+            return;
+        }
+        mSplashAnimationFinished = state.getBoolean(KEY_SPLASH_ANIMATION_FINISHED, false);
+        mRestoredVariantBPageIndex = state.getInt(KEY_VARIANT_B_PAGE_INDEX, 0);
     }
 
     private boolean isDefaultVariant() {
@@ -630,7 +668,45 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
                     @Override
                     public void onAnimationEnd(Drawable drawable) {
-                        animateBraveSplash(result);
+                        if (mIsTablet) {
+                            Animator animator =
+                                    AnimatorInflater.loadAnimator(
+                                            WelcomeOnboardingActivity.this,
+                                            R.animator.ic_brave_splash_fade_out);
+                            animator.setTarget(mBraveSplashContainer);
+                            animator.addListener(new Animator.AnimatorListener() {
+                                                     @Override
+                                                     public void onAnimationCancel(@NonNull Animator animation) {
+
+                                                     }
+
+                                                     @Override
+                                                     public void onAnimationEnd(@NonNull Animator animation) {
+                                                         mBraveSplashContainer.setVisibility(View.GONE);
+
+                                                         if (mVariantBPager != null) {
+                                                             mVariantBPager.setCurrentItem(
+                                                                     isWDPSettingAvailable() ? 0 : 1, false);
+                                                             mVariantBPager.setVisibility(View.VISIBLE);
+                                                         }
+                                                         mSplashAnimationFinished = true;
+                                                         maybeRequestDefaultBrowser();
+                                                     }
+
+                                                     @Override
+                                                     public void onAnimationRepeat(@NonNull Animator animation) {
+
+                                                     }
+
+                                                     @Override
+                                                     public void onAnimationStart(@NonNull Animator animation) {
+
+                                                     }
+                                                 });
+                                    animator.start();
+                        } else {
+                            animateBraveSplash(result);
+                        }
                     }
                 });
         return result;
@@ -663,7 +739,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
         return isP3aEnabled;
     }
-
     private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
         vectorDrawable.clearAnimationCallbacks();
 
@@ -709,6 +784,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                             isWDPSettingAvailable() ? 0 : 1, false);
                                     mVariantBPager.setVisibility(View.VISIBLE);
                                 }
+                                mSplashAnimationFinished = true;
 
                                 maybeRequestDefaultBrowser();
                             }
