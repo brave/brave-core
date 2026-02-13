@@ -613,6 +613,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             }
             mVariantBConstraintLayout.setVisibility(View.VISIBLE);
             if (mSplashAnimationFinished) {
+                if (mBraveSplashContainer != null) {
+                    mBraveSplashContainer.setVisibility(View.GONE);
+                }
                 if (mVariantBPager != null) {
                     mVariantBPager.setCurrentItem(mRestoredVariantBPageIndex, false);
                     mVariantBPager.setVisibility(View.VISIBLE);
@@ -682,7 +685,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
                                         @Override
                                         public void onAnimationEnd(@NonNull Animator animation) {
-                                            mBraveSplashContainer.setVisibility(View.GONE);
+                                            if (mBraveSplashContainer != null) {
+                                                mBraveSplashContainer.setVisibility(View.GONE);
+                                            }
 
                                             if (mVariantBPager != null) {
                                                 mVariantBPager.setCurrentItem(
@@ -776,6 +781,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                                 mSplashGuideline.getLayoutParams();
                                 guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
                                 mSplashGuideline.setLayoutParams(guidelineLayoutParams);
+                                if (mBraveSplashContainer != null) {
+                                    mBraveSplashContainer.setVisibility(View.GONE);
+                                }
 
                                 if (mVariantBPager != null) {
                                     mVariantBPager.setCurrentItem(
