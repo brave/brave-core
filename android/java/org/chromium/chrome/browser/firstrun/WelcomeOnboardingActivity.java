@@ -674,36 +674,33 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                             WelcomeOnboardingActivity.this,
                                             R.animator.ic_brave_splash_fade_out);
                             animator.setTarget(mBraveSplashContainer);
-                            animator.addListener(new Animator.AnimatorListener() {
-                                                     @Override
-                                                     public void onAnimationCancel(@NonNull Animator animation) {
+                            animator.addListener(
+                                    new Animator.AnimatorListener() {
+                                        @Override
+                                        public void onAnimationCancel(
+                                                @NonNull Animator animation) {}
 
-                                                     }
+                                        @Override
+                                        public void onAnimationEnd(@NonNull Animator animation) {
+                                            mBraveSplashContainer.setVisibility(View.GONE);
 
-                                                     @Override
-                                                     public void onAnimationEnd(@NonNull Animator animation) {
-                                                         mBraveSplashContainer.setVisibility(View.GONE);
+                                            if (mVariantBPager != null) {
+                                                mVariantBPager.setCurrentItem(
+                                                        isWDPSettingAvailable() ? 0 : 1, false);
+                                                mVariantBPager.setVisibility(View.VISIBLE);
+                                            }
+                                            mSplashAnimationFinished = true;
+                                            maybeRequestDefaultBrowser();
+                                        }
 
-                                                         if (mVariantBPager != null) {
-                                                             mVariantBPager.setCurrentItem(
-                                                                     isWDPSettingAvailable() ? 0 : 1, false);
-                                                             mVariantBPager.setVisibility(View.VISIBLE);
-                                                         }
-                                                         mSplashAnimationFinished = true;
-                                                         maybeRequestDefaultBrowser();
-                                                     }
+                                        @Override
+                                        public void onAnimationRepeat(
+                                                @NonNull Animator animation) {}
 
-                                                     @Override
-                                                     public void onAnimationRepeat(@NonNull Animator animation) {
-
-                                                     }
-
-                                                     @Override
-                                                     public void onAnimationStart(@NonNull Animator animation) {
-
-                                                     }
-                                                 });
-                                    animator.start();
+                                        @Override
+                                        public void onAnimationStart(@NonNull Animator animation) {}
+                                    });
+                            animator.start();
                         } else {
                             animateBraveSplash(result);
                         }
@@ -739,6 +736,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
         return isP3aEnabled;
     }
+
     private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
         vectorDrawable.clearAnimationCallbacks();
 
