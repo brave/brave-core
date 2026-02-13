@@ -116,7 +116,7 @@ void BraveNewTabPageUI::BindInterface(
 
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-          profile->GetOriginalProfile());
+          profile);
   misc_metrics::BraveSearchMetrics* brave_search_metrics = nullptr;
   if (profile_metrics) {
     auto* page_metrics = profile_metrics->GetPageMetrics();
