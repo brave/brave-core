@@ -298,7 +298,7 @@ export default defineConfig([
     },
   },
   {
-    // Test data files; skips some non-import rules.
+    // Test data files; skips some non-important rules.
     files: ['test/data/**/*.js'],
     rules: {
       'licenses/header': 'off',
