@@ -203,13 +203,12 @@ class Client {
         base::JSONReader::Read(response_body.value_or(""), base::JSON_PARSE_RFC)
             .value_or(base::Value());
     if (is_2xx) {
-      if (auto success_body = Response::SuccessBody::FromValue(value)) {
-        response.body = std::move(*success_body);
-      }
+      response.body = Response::SuccessBody::FromValue(value);
     } else {
-      if (auto error_body = Response::ErrorBody::FromValue(value)) {
-        response.body = base::unexpected(std::move(*error_body));
-      }
+      response.body =
+          Response::ErrorBody::FromValue(value).transform([](auto error_body) {
+            return base::unexpected(std::move(error_body));
+          });
     }
 
     std::move(callback).Run(std::move(response));
