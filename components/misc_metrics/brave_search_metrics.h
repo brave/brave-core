@@ -33,6 +33,8 @@ inline constexpr char kSearchOmniboxTypedPercentHistogramName[] =
     "Brave.Search.OmniboxTypedPercent";
 inline constexpr char kSearchOmniboxSuggestionPercentHistogramName[] =
     "Brave.Search.OmniboxSuggestionPercent";
+inline constexpr char kSearchNTPSearchPercentHistogramName[] =
+    "Brave.Search.NTPSearchPercent";
 
 class BraveSearchMetrics {
  public:
@@ -46,6 +48,7 @@ class BraveSearchMetrics {
 
   void MaybeRecordBraveQuery(const GURL& previous_url, const GURL& current_url);
   void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
+  void MaybeRecordNTPSearch(int64_t engine_prepopulate_id);
 
   void ClearQueryCounts();
 
