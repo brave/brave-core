@@ -66,6 +66,7 @@
 
 # This test fails because we disable LensOverlay, which is one of the sidepanel
 # actions the test expects to find.
+-CustomizeToolbarHandlerTest.ActionsUpdatedOnVisibilityChange
 -CustomizeToolbarHandlerTest.ListActions
 
 # These tests fail because the message they check has Brave intead of Google (or
@@ -130,7 +131,10 @@
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
+-ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
+-ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -DigitalIdentityLowRiskOriginsTest.*
+-IndigoPageActionControllerTest.*
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
@@ -544,6 +548,7 @@
 -LcpCriticalPathPredictorPageLoadMetricsObserverTest.Prerender*
 -MediaEngagementContentsObserverPrerenderTest.EnsureDoNotCleanupAfterNavigation_AudioContextInPrerendering
 -ReauthTabHelperPrerenderTest.PrerenderDoesNotAffectLastCommittedErrorPage
+-RecordReplayDriverFactoryTest.GetActiveDrivers
 -TranslatePageLoadMetricsObserverTest.PrerenderAndActivation
 -TrustedVaultEncryptionKeysTabHelperPrerenderingTest.CreateEncryptionKeysInPrerendering
 -WebAppIconDownloaderPrerenderTest.PrerenderedPageNavigates
@@ -731,6 +736,8 @@
 # These tests fail because ContextualTasksContextService cannot be created
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SkipsLensInputs_InToolModes
 -ContextualSearchboxHandlerTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 -EntryPointEligibilityManagerTest.AreEntryPointsEligible_True
@@ -775,6 +782,9 @@
 # Upstream commit: https://chromium.googlesource.com/chromium/src/+/41015f71bcdd352f79f965e10a982b598d8e9557
 -ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
 -ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
+
+# These tests fail because we disable kAimEnabled.
+-AimEligibilityRefreshNavigationThrottleTest.FetchEligibilityOnAimSearchUrl
 
 # We added our own page action view but this made metrics code related to the
 # page action fails. In order to addressed that we scrubbed out metrics code and
@@ -865,6 +875,7 @@
 -PdfPrinterHandlerPosixTest.*
 -PeriodicBackgroundSyncPermissionContextWithPermissionTest.DefaultSearchEngine
 -PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
+-PermissionDashboardUnitTest.DisplayLHSIndicatorTooltip
 -PermissionsUpdaterTest.GrantAndRevokeOptionalPermissions
 -ProfileAttributesStorageTest.*
 -ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain

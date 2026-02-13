@@ -54,6 +54,7 @@
 # These tests fail because we stub out
 # optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
 # optimization_guide::features::IsModelDownloadingEnabled
+-All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/ConfigNotAvailableIfBackgroundDownloadEnabledAndAssetPending
 -All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/EligibilityReturnsPendingUsageIfModelInstalledForOtherFeature
 -All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/EligibleIfBackgroundDownloadEnabled
 -HintsManagerFetchingTest.*
@@ -102,6 +103,8 @@
 # These tests fail because we disable
 # switches::kSyncEnableBookmarksInTransportMode
 -InitialAccountBookmarkDeduplicatorTest.*
+-SyncPrefsTest.BookmarksEnabledWithExplicitBrowserPref
+-SyncPrefsTest.BookmarksEnabledWithoutExplicitSigninFlag
 
 # These tests fail because we patch ImageServiceConsentHelper::GetConsentStatus
 # to return false always
@@ -157,6 +160,14 @@
 # These tests fail because the text contains "Google" instead of "Brave" (the
 # string is hard-coded into the test)
 -BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
+
+# This test fails because we have a different set of regional search engines.
+-RegionalCapabilitiesUtilsTest.GetPrepopulatedEngines
+
+# This test fails because it uses raw
+# TemplateURLPrepopulateData::kCurrentDataVersion to compare with the version
+# that is overridden to add Brave's version bump.
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadataWithEngineMigration
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
