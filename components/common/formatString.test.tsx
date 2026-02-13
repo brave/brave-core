@@ -57,18 +57,24 @@ describe('formatString', () => {
     }), 'People in NZ say Kiora')
   })
 
-  it('should fail if a replacement does not exist', () => {
-    assert.throws(() => formatString('$1 in $2nz/$2 say $3', {
+  it('should log an error if a replacement does not exist', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+    formatString('$1 in $2nz/$2 say $3', {
       $1: 'People',
       $2: (content) => content.toUpperCase(),
       $3: 'Kiora',
       $4: 'MISSING!'
-    }))
+    })
+    expect(consoleSpy).toHaveBeenCalled()
+    consoleSpy.mockRestore()
   })
 
-  it('should fail if a replacement does not exist using an array of replacements', () => {
-    assert.throws(() => formatString('$1 in $2nz/$2 say $3',
-      ['People', 'NZ', 'Kiora', 'MISSING!']))
+  it('should log an error if a replacement does not exist using an array of replacements', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+    formatString('$1 in $2nz/$2 say $3',
+      ['People', 'NZ', 'Kiora', 'MISSING!'])
+    expect(consoleSpy).toHaveBeenCalled()
+    consoleSpy.mockRestore()
   })
 
   it('should not fail if a replacement does not exist if noErrorOnMissingReplacement is true', () => {
@@ -191,6 +197,13 @@ describe('formatString', () => {
       $1: 'me',
       $2: (content) => <span>{content}</span>
     }), <>Hello from <span>me</span>{" to "}{"me"}. <span>bob</span> says hi too</>)
+  })
+
+  it('should only support single-digit placeholders ($1-$9)', () => {
+    // $10 should be treated as $1 followed by literal "0"
+    assert.equal(formatString('Hello $10', {
+      $1: 'world'
+    }), 'Hello world0')
   })
 })
 

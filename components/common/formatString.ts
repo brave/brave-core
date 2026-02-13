@@ -91,7 +91,7 @@ export function formatString<T extends Replacement>(
   }
 
   const stack = [result]
-  const regex = /\/?\$(\d+)/gm
+  const regex = /\/?\$([1-9])/gm
 
   // Keep track of the keys we've seen, so we can throw an error if a key is
   // missing.
@@ -116,7 +116,7 @@ export function formatString<T extends Replacement>(
       if (stack.at(-1)!.key === key) {
         stack.pop()
       } else {
-        throw new Error(`Mismatched closing tag: ${tag} in message "${text}"`)
+        console.error(`Mismatched closing tag: ${tag} in message "${text}"`)
       }
       continue
     }
@@ -155,7 +155,7 @@ export function formatString<T extends Replacement>(
   // If we should throw an error for missing replacements check to see if they
   // were all present in our text.
   if (!options?.noErrorOnMissingReplacement && seen.size < Object.keys(replacements).length) {
-    throw new Error(`Missing replacements (${Object.keys(replacements).filter(key => !seen.has(key)).join(', ')} we not found in ${text})`)
+    console.error(`Missing replacements (${Object.keys(replacements).filter(key => !seen.has(key)).join(', ')} we not found in ${text})`)
   }
 
   const formatted = getReplacedContent(result)
