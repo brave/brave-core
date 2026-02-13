@@ -68,6 +68,7 @@ import {
   useGetSwapSupportedNetworksQuery,
   useGetTokenSpotPricesQuery,
   useGenerateSwapQuoteMutation,
+  useGetZCashAccountInfoQuery,
 } from '../../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 import { AccountInfoEntity } from '../../../../common/slices/entities/account-info.entity'
@@ -101,17 +102,20 @@ const getTokenFromParam = (
   contractOrSymbol: string,
   network: BraveWallet.NetworkInfo,
   tokenList: BraveWallet.BlockchainToken[],
+  isShielded: boolean,
 ) => {
   return tokenList.find(
     (token) =>
       (token.chainId === network.chainId
         && token.coin === network.coin
         && token.contractAddress.toLowerCase()
-          === contractOrSymbol.toLowerCase())
+          === contractOrSymbol.toLowerCase()
+        && token.isShielded === isShielded)
       || (token.chainId === network.chainId
         && token.coin === network.coin
         && token.contractAddress === ''
-        && token.symbol.toLowerCase() === contractOrSymbol.toLowerCase()),
+        && token.symbol.toLowerCase() === contractOrSymbol.toLowerCase()
+        && token.isShielded === isShielded),
   )
 }
 
@@ -161,7 +165,15 @@ export const useSwap = () => {
     receiveAddress: fromAccountAddress,
     isFetchingAddress: isFetchingFromAccountAddress,
   } = useReceiveAddressQuery(fromAccount?.accountId)
-  const needsAddressResolution = useMemo(() => {
+  const { data: fromZCashAccountInfo } = useGetZCashAccountInfoQuery(
+    fromAccount?.accountId.coin === BraveWallet.CoinType.ZEC
+      ? fromAccount.accountId
+      : skipToken,
+  )
+  const { data: toZCashAccountInfo } = useGetZCashAccountInfoQuery(
+    toAccountId?.coin === BraveWallet.CoinType.ZEC ? toAccountId : skipToken,
+  )
+  const needsBaseAddressResolution = useMemo(() => {
     const needsToAddressResolution =
       toAccountId
       && !toAccountId.address
@@ -257,12 +269,29 @@ export const useSwap = () => {
       return
     }
 
+    const fromIsShielded = query.get('fromIsShielded') === 'true'
     return getTokenFromParam(
       fromContractOrSymbolFromParams,
       fromNetwork,
       fullTokenList,
+      fromIsShielded,
     )
-  }, [fullTokenList, fromContractOrSymbolFromParams, fromNetwork])
+  }, [fullTokenList, fromContractOrSymbolFromParams, fromNetwork, query])
+
+  const effectiveFromAccountAddress = useMemo(() => {
+    if (fromToken?.isShielded && fromZCashAccountInfo?.orchardAddress) {
+      return fromZCashAccountInfo.orchardAddress
+    }
+    return fromAccountAddress
+  }, [fromToken?.isShielded, fromZCashAccountInfo, fromAccountAddress])
+
+  const needsShieldedFromAddressResolution = useMemo(() => {
+    return (
+      fromToken?.isShielded
+      && fromAccount?.accountId.coin === BraveWallet.CoinType.ZEC
+      && !fromZCashAccountInfo?.orchardAddress
+    )
+  }, [fromToken?.isShielded, fromAccount, fromZCashAccountInfo])
 
   const toToken = useMemo(() => {
     const contractOrSymbol = query.get('toToken')
@@ -270,8 +299,41 @@ export const useSwap = () => {
       return
     }
 
-    return getTokenFromParam(contractOrSymbol, toNetwork, fullTokenList)
+    const toIsShielded = query.get('toIsShielded') === 'true'
+    return getTokenFromParam(
+      contractOrSymbol,
+      toNetwork,
+      fullTokenList,
+      toIsShielded,
+    )
   }, [fullTokenList, query, toNetwork])
+
+  const effectiveToAccountAddress = useMemo(() => {
+    if (toToken?.isShielded && toZCashAccountInfo?.orchardAddress) {
+      return toZCashAccountInfo.orchardAddress
+    }
+    return toAccountAddress
+  }, [toToken?.isShielded, toZCashAccountInfo, toAccountAddress])
+
+  const needsShieldedToAddressResolution = useMemo(() => {
+    return (
+      toToken?.isShielded
+      && toAccountId?.coin === BraveWallet.CoinType.ZEC
+      && !toZCashAccountInfo?.orchardAddress
+    )
+  }, [toToken?.isShielded, toAccountId, toZCashAccountInfo])
+
+  const needsAddressResolution = useMemo(() => {
+    return (
+      needsBaseAddressResolution
+      || needsShieldedFromAddressResolution
+      || needsShieldedToAddressResolution
+    )
+  }, [
+    needsBaseAddressResolution,
+    needsShieldedFromAddressResolution,
+    needsShieldedToAddressResolution,
+  ])
 
   const nativeAsset = useMemo(
     () => makeNetworkAsset(fromNetwork),
@@ -284,9 +346,10 @@ export const useSwap = () => {
         ? {
             network: fromNetwork,
             accounts: [fromAccount],
-            tokens: isNativeAsset(fromToken)
-              ? [nativeAsset]
-              : [nativeAsset, fromToken],
+            tokens:
+              isNativeAsset(fromToken) && !fromToken.isShielded
+                ? [nativeAsset]
+                : [nativeAsset, fromToken],
           }
         : skipToken,
     )
@@ -379,8 +442,8 @@ export const useSwap = () => {
       toToken,
       toAmount: editingFromOrToAmount === 'to' ? toAmount : '',
       slippageTolerance,
-      fromAccountAddress,
-      toAccountAddress,
+      fromAccountAddress: effectiveFromAccountAddress,
+      toAccountAddress: effectiveToAccountAddress,
       needsAddressResolution,
     }
   }, [
@@ -393,8 +456,8 @@ export const useSwap = () => {
     toToken,
     toAmount,
     slippageTolerance,
-    fromAccountAddress,
-    toAccountAddress,
+    effectiveFromAccountAddress,
+    effectiveToAccountAddress,
     needsAddressResolution,
   ])
 
@@ -524,8 +587,13 @@ export const useSwap = () => {
         quoteResponse = await generateSwapQuote({
           fromAccountId: {
             ...fromAccount.accountId,
-            // Use fetched address for UTXO accounts where address field is empty
-            address: fromAccount.accountId.address || fromAccountAddress || '',
+            // Use fetched address for UTXO accounts where address field is empty.
+            // For shielded ZEC, this will be the orchard address for correct
+            // refund routing.
+            address:
+              fromAccount.accountId.address
+              || effectiveFromAccountAddress
+              || '',
           },
           fromChainId: params.fromToken.chainId,
           fromAmount:
@@ -538,7 +606,8 @@ export const useSwap = () => {
           toAccountId: params.toAccountId && {
             ...params.toAccountId,
             // Use fetched address for UTXO accounts where address field is empty
-            address: params.toAccountId.address || toAccountAddress || '',
+            address:
+              params.toAccountId.address || effectiveToAccountAddress || '',
           },
           toChainId: params.toToken.chainId,
           toAmount:
@@ -712,9 +781,9 @@ export const useSwap = () => {
     },
     [
       fromAccount,
-      fromAccountAddress,
+      effectiveFromAccountAddress,
       toAccountId,
-      toAccountAddress,
+      effectiveToAccountAddress,
       needsAddressResolution,
       fromNetwork,
       fromAmount,
