@@ -41,6 +41,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/public/dns_query_type.h"
 #include "services/network/host_resolver.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 namespace brave {
 
@@ -62,8 +63,9 @@ struct EngineFlags {
 struct ShouldBlockRequestParams {
   GURL initiator_url;
   GURL request_url;
-  blink::mojom::ResourceType resource_type;
-  bool aggressive_blocking;
+  blink::mojom::ResourceType resource_type =
+      BraveRequestInfo::kInvalidResourceType;
+  bool aggressive_blocking = false;
   std::string method;
   content::GlobalRenderFrameHostToken render_frame_token;
   std::optional<std::string> devtools_request_id;
