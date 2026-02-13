@@ -8,6 +8,8 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_email_input.css.js'
 import { getHtml } from './brave_account_email_input.html.js'
 
+export type EmailInputEventDetail = { email: string; isValid: boolean }
+
 export class BraveAccountEmailInputElement extends CrLitElement {
   static get is() {
     return 'brave-account-email-input'
@@ -41,12 +43,12 @@ export class BraveAccountEmailInputElement extends CrLitElement {
     this.fire('email-input', {
       email: this.email,
       isValid: this.isValid,
-    })
+    } satisfies EmailInputEventDetail)
   }
 
-  protected accessor blockBraveAlias: boolean = false
-  private accessor email: string = ''
-  private accessor isFormatValid: boolean = false
+  protected accessor blockBraveAlias = false
+  private accessor email = ''
+  private accessor isFormatValid = false
 
   protected get isBraveAlias(): boolean {
     return this.isFormatValid && /@bravealias\.com$/i.test(this.email)

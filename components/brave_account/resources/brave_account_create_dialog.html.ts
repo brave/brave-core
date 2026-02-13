@@ -8,6 +8,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import './brave_account_email_input.js'
 import './brave_account_password_icons.js'
 import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
+import type { EmailInputEventDetail } from './brave_account_email_input.js'
 import { onToggleVisibility } from './brave_account_common.js'
 
 export function getHtml(this: BraveAccountCreateDialogElement) {
@@ -20,9 +21,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
       <div slot="inputs">
         <brave-account-email-input
           block-brave-alias
-          @email-input=${(
-            e: CustomEvent<{ email: string; isValid: boolean }>,
-          ) => {
+          @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
             this.email = e.detail.email
             this.isEmailValid = e.detail.isValid
           }}
