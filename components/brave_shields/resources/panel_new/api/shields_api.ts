@@ -72,8 +72,6 @@ export function createShieldsApi(opts: {
   } = opts
 
   const api = createInterfaceApi({
-    key: 'shields',
-
     endpoints: {
       ...endpointsFor(dataHandler, {
         getSiteBlockInfo: {
