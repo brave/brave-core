@@ -561,6 +561,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/activity_vpn_server.xml",
     "java/brave-res/layout/activity_vpn_server_selection.xml",
     "java/brave-res/layout/activity_welcome_onboarding.xml",
+    "java/brave-res/layout/activity_welcome_onboarding_default.xml",
     "java/brave-res/layout/application_item_layout.xml",
     "java/brave-res/layout/approve_tx_bottom_sheet.xml",
     "java/brave-res/layout/auto_reconnect_vpn_tutorial_item_layout.xml",
