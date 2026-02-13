@@ -14,10 +14,6 @@ struct BraveRequestInfo;
 
 namespace brave {
 
-int OnBeforeURLRequest_StaticRedirectWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
-
 int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     const GURL& request_url,
     GURL* new_url);

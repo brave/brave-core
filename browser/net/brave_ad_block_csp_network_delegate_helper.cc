@@ -59,12 +59,13 @@ void OnReceiveCspDirectives(
   next_callback.Run();
 }
 
+template <template <typename> class T>
 int OnHeadersReceived_AdBlockCspWork(
     const net::HttpResponseHeaders* response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+    T<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!response_headers || !ctx->allow_brave_shields() || ctx->allow_ads()) {
@@ -101,5 +102,19 @@ int OnHeadersReceived_AdBlockCspWork(
 
   return net::OK;
 }
+
+template int OnHeadersReceived_AdBlockCspWork<std::shared_ptr>(
+    const net::HttpResponseHeaders*,
+    scoped_refptr<net::HttpResponseHeaders>*,
+    GURL*,
+    const brave::ResponseCallback&,
+    std::shared_ptr<brave::BraveRequestInfo>);
+
+template int OnHeadersReceived_AdBlockCspWork<base::WeakPtr>(
+    const net::HttpResponseHeaders*,
+    scoped_refptr<net::HttpResponseHeaders>*,
+    GURL*,
+    const brave::ResponseCallback&,
+    base::WeakPtr<brave::BraveRequestInfo>);
 
 }  // namespace brave

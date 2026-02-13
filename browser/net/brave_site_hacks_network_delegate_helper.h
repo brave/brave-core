@@ -16,14 +16,15 @@ class URLRequest;
 
 namespace brave {
 
-int OnBeforeURLRequest_SiteHacksWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+template <template <typename> class T>
+int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
+                                     T<BraveRequestInfo> ctx);
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_SiteHacksWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

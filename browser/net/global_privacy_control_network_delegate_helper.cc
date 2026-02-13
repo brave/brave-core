@@ -16,10 +16,11 @@
 
 namespace brave {
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_GlobalPrivacyControlWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   if (profile && global_privacy_control::IsGlobalPrivacyControlEnabled(
                      profile->GetPrefs())) {
@@ -27,5 +28,15 @@ int OnBeforeStartTransaction_GlobalPrivacyControlWork(
   }
   return net::OK;
 }
+
+template int OnBeforeStartTransaction_GlobalPrivacyControlWork<std::shared_ptr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeStartTransaction_GlobalPrivacyControlWork<base::WeakPtr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave

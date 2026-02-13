@@ -46,9 +46,10 @@ bool RewriteBugReportingURL(const GURL& request_url, GURL* new_url) {
 
 }  // namespace
 
+template <template <typename> class T>
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   GURL new_url;
   int rc = OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
       ctx->request_url(), &new_url);
@@ -94,5 +95,13 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
 
   return net::OK;
 }
+
+template int OnBeforeURLRequest_CommonStaticRedirectWork<std::shared_ptr>(
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeURLRequest_CommonStaticRedirectWork<base::WeakPtr>(
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave

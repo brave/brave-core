@@ -41,10 +41,11 @@ bool ShouldSetHeaderForProfile(Profile* profile) {
 
 namespace brave {
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_SearchAdsHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> request) {
+    T<BraveRequestInfo> request) {
   // The header should be set if (to disable search ads):
   // - any of the following are true:
   //   - Rewards is enabled and not connected, and opted out of search ads.
@@ -73,5 +74,15 @@ int OnBeforeStartTransaction_SearchAdsHeader(
 
   return net::OK;
 }
+
+template int OnBeforeStartTransaction_SearchAdsHeader<std::shared_ptr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> request);
+
+template int OnBeforeStartTransaction_SearchAdsHeader<base::WeakPtr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> request);
 
 }  // namespace brave

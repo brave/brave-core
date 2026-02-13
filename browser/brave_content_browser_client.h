@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "brave/browser/net/resource_context_data.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
@@ -33,6 +34,9 @@ class AssociatedInterfaceRegistry;
 namespace web_pref {
 struct WebPreferences;
 }  // namespace web_pref
+
+template <template <typename> class T>
+class BraveProxyingWebSocket;
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
@@ -193,6 +197,16 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
  private:
   void OnAllowGoogleAuthChanged();
+
+  template <template <typename> class T>
+  void CreateChromeWebSocket(
+      content::RenderFrameHost* frame,
+      const GURL& url,
+      const net::SiteForCookies& site_for_cookies,
+      const std::optional<std::string>& user_agent,
+      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+          handshake_client,
+      BraveProxyingWebSocket<T>* proxy);
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
