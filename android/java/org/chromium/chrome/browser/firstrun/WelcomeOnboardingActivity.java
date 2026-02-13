@@ -133,7 +133,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private ViewPager2 mVariantBPager;
     @Nullable private OnboardingStepAdapter mVariantBAdapter;
 
-    private String mDayZeroVariant = "b";
+    private String mDayZeroVariant = "";
     private SpannableString mWdpLearnMore;
     @Nullable private PageBounceAnimator mPageBounceAnimator;
     private boolean mIsP3aManaged;
