@@ -43,6 +43,9 @@ android_resources("java_resources") {
     "java/res/layout-sw600dp/block_interruptions.xml",
     "java/res/layout-sw600dp/help_brave_search.xml",
     "java/res/layout-sw600dp/make_brave_better.xml",
+    "java/res/layout-sw600dp-land/block_interruptions.xml",
+    "java/res/layout-sw600dp-land/help_brave_search.xml",
+    "java/res/layout-sw600dp-land/make_brave_better.xml",
     "java/res/raw-night/no_video_ads.json",
     "java/res/raw/no_video_ads.json",
   ]
