@@ -70,7 +70,6 @@ HDKey::ParsedExtendedKey::~ParsedExtendedKey() = default;
 std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   // 128 - 512 bits
   if (seed.size() < 16 || seed.size() > 64) {
-    LOG(ERROR) << __func__ << ": Seed size should be 16 to 64 bytes";
     return nullptr;
   }
 
@@ -78,15 +77,18 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   unsigned int out_len;
   if (!HMAC(EVP_sha512(), kMasterSecret, sizeof(kMasterSecret), seed.data(),
             seed.size(), hmac.data(), &out_len)) {
-    LOG(ERROR) << __func__ << ": HMAC_SHA512 failed";
     return nullptr;
   }
   DCHECK(out_len == kSHA512Length);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
-  auto hmac_span = base::span(hmac);
-  hdkey->SetPrivateKey(hmac_span.first<kSecp256k1PrivateKeySize>());
-  hdkey->SetChainCode(hmac_span.last<kSecp256k1ChainCodeSize>());
+  auto [private_key, chain_code] = base::span(hmac)
+                                       .to_fixed_extent<kSHA512Length>()
+                                       ->split_at<kSecp256k1PrivateKeySize>();
+  if (!hdkey->SetPrivateKey(private_key)) {
+    return nullptr;
+  }
+  hdkey->SetChainCode(chain_code);
   return hdkey;
 }
 
@@ -114,12 +116,13 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
   reader.ReadCopy(result->hdkey->parent_fingerprint_);
   reader.ReadU32BigEndian(result->hdkey->index_);
   reader.ReadCopy(result->hdkey->chain_code_);
-
   auto key_bytes = reader.Read<kSecp256k1PubkeySize>();
   CHECK(key_bytes);
   if (key_bytes->front() == 0x00) {
     // Skip first zero byte which is not part of private key.
-    result->hdkey->SetPrivateKey(key_bytes->subspan<1>());
+    if (!result->hdkey->SetPrivateKey(key_bytes->subspan<1>())) {
+      return nullptr;
+    }
   } else {
     result->hdkey->SetPublicKey(*key_bytes);
   }
@@ -132,14 +135,20 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
 std::unique_ptr<HDKey> HDKey::GenerateFromPrivateKey(
     base::span<const uint8_t, kSecp256k1PrivateKeySize> private_key) {
   std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
-  hd_key->SetPrivateKey(private_key);
+  if (!hd_key->SetPrivateKey(private_key)) {
+    return nullptr;
+  }
   return hd_key;
 }
 
-void HDKey::SetPrivateKey(
+bool HDKey::SetPrivateKey(
     base::span<const uint8_t, kSecp256k1PrivateKeySize> value) {
+  if (!secp256k1_ec_seckey_verify(GetSecp256k1Ctx(), value.data())) {
+    return false;
+  }
   private_key_.assign(value.begin(), value.end());
   GeneratePublicKey();
+  return true;
 }
 
 std::string HDKey::GetPrivateExtendedKey(ExtendedKeyVersion version) const {
@@ -295,8 +304,11 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(const DerivationIndex& index) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_seckey_tweak_add failed";
       return nullptr;
     }
-    hdkey->SetPrivateKey(
-        *base::span(private_key).to_fixed_extent<kSecp256k1PrivateKeySize>());
+    if (!hdkey->SetPrivateKey(
+            *base::span(private_key)
+                 .to_fixed_extent<kSecp256k1PrivateKeySize>())) {
+      return nullptr;
+    }
   } else {
     // Public parent key -> public child key (Normal only)
     DCHECK(!index.is_hardened());
