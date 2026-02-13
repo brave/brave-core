@@ -32,6 +32,7 @@
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
+-MultistepFilterServiceFactoryTest.*
 -TabOrganizationServiceTest.*
 -TabStripActionContainerTest.GlicButton*
 -TabStripActionContainerTest*.OrdersButtonsCorrectly*
@@ -66,6 +67,7 @@
 
 # This test fails because we disable LensOverlay, which is one of the sidepanel
 # actions the test expects to find.
+-CustomizeToolbarHandlerTest.ActionsUpdatedOnVisibilityChange
 -CustomizeToolbarHandlerTest.ListActions
 
 # These tests fail because the message they check has Brave intead of Google (or
@@ -115,6 +117,7 @@
 # These tests crash or fail because we have kOptimizationHints feature disabled,
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
+-ActorSitePolicyTest.*
 -AILanguageModelHackyPrototypeTest.Basic
 -AILanguageModelTest.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
@@ -130,7 +133,11 @@
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
+-ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
+-ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -DigitalIdentityLowRiskOriginsTest.*
+-HistoryEmbeddingsHandlerTest.*
+-IndigoPageActionControllerTest.*
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
@@ -297,11 +304,13 @@
 -All/SigninUiUtilTest.GetOrderedAccountsForDisplay/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
+-AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUser
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlDisabled
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlEnabled
+-ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -DeveloperPrivateApiAllowlistUnitTest.*
 -DeveloperPrivateApiUnitTest.RepairNonCWSExtension
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadAfterSignOut
@@ -360,12 +369,7 @@
 -ChromeEnterpriseRealTimeUrlLookupServiceTest.TestStartLookup_EnhancedProtectionRequestWithReferringAppInfo
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
--ChromeTailoredSecurityServiceTest.EpAlreadyEnabledDoesNotShowDialog
--ChromeTailoredSecurityServiceTest.EpAlreadyEnabledLeavesEpEnabled
--ChromeTailoredSecurityServiceTest.EpEnabledByTsAndTsNowDisabledDisablesEp
--ChromeTailoredSecurityServiceTest.EpEnabledByUserTsDisabledDoesNotChangeSb
--ChromeTailoredSecurityServiceTest.EpWasEnabledByTsAndTsNowDisabledShowsDialog
--ChromeTailoredSecurityServiceTest.TsEnabledEnablesEp
+-ChromeTailoredSecurityServiceTest.*
 -ClientSideDetectionHostCreditCardFormTest.*
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostScamDetectionTest.*
@@ -384,6 +388,7 @@
 -GeminiAntiscamProtectionServiceFactoryTest.*
 -GeminiAntiscamProtectionServiceTest.*
 -GeneratedSafeBrowsingPrefTest.ManagementState
+-GeneratedSafeBrowsingPrefTest.OnSettingsBundleChanged_PrefChangedExternally
 -GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
 -GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
@@ -392,8 +397,10 @@
 -NotificationMetricsLoggerTest.PersistentNotificationSize
 -NotificationTelemetryServiceTest.EmptyDbFoundOverTime/*
 -NotificationTelemetryServiceTest.NonEmptyTelemetryStoreAtConstruction/*
+-NotificationTelemetryServiceTest.OnPushEventFinished/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -NotificationTelemetryServiceTest.ServiceWorkerSubscriptionRecordsServiceWorkerBehavior/*
+-NotificationTelemetryServiceTest.ServiceWorkerSubscriptionSendsServiceWorkerBehavior/*
 -PhishyInteractionTrackerTest.CheckPhishyUserInteractionClientReport
 -SafeBrowsingPrefChangeHandlerTest.ToastSuppressedForTailoredSecurityChange
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
@@ -433,6 +440,7 @@
 # Already disabled on Mac upstream (crbug.com/385383226). 0.8% upstream flake
 # rate per LUCI Analysis. No Brave modifications in related code.
 # https://github.com/brave/brave-browser/issues/52742
+-ProfileTokenWebSigninInterceptorTest.InterceptionCreatesEphemeralProfileIfAcceptedWithNoId
 -ProfileTokenWebSigninInterceptorTest.InterceptionCreatesNewProfileIfAccepted
 
 # Flaky upstream tests
@@ -544,6 +552,7 @@
 -LcpCriticalPathPredictorPageLoadMetricsObserverTest.Prerender*
 -MediaEngagementContentsObserverPrerenderTest.EnsureDoNotCleanupAfterNavigation_AudioContextInPrerendering
 -ReauthTabHelperPrerenderTest.PrerenderDoesNotAffectLastCommittedErrorPage
+-RecordReplayDriverFactoryTest.GetActiveDrivers
 -TranslatePageLoadMetricsObserverTest.PrerenderAndActivation
 -TrustedVaultEncryptionKeysTabHelperPrerenderingTest.CreateEncryptionKeysInPrerendering
 -WebAppIconDownloaderPrerenderTest.PrerenderedPageNavigates
@@ -703,6 +712,7 @@
 # This test fails because CONTENT_SETTING_DEFAULT cannot be used as the default
 # setting any more. https://github.com/brave/brave-browser/issues/48374
 -HostContentSettingsMapTest.IncognitoChangesDoNotPersist
+-HostContentSettingsMapTest.RecordDefaultSensorsSetting
 -HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
 # These tests fail because we stub features::HasTabSearchToolbarButton() to
@@ -720,6 +730,10 @@
 -OmniboxEditModelTest.*
 
 # These tests fail because we disable uploading these event logs
+# See WebRtcLogUploader::UploadCompressedLog patch.
+-RTCDiagnosticLoggingTest.StartFinishAndUploadDiagnosticLogging
+-RTCDiagnosticLoggingTest.UploadDiagnosticLoggingWithoutStop
+-RTCDiagnosticLoggingTest.UploadSiteOriginLogging
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
 -UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
@@ -870,6 +884,7 @@
 -PdfPrinterHandlerPosixTest.*
 -PeriodicBackgroundSyncPermissionContextWithPermissionTest.DefaultSearchEngine
 -PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
+-PermissionDashboardUnitTest.DisplayLHSIndicatorTooltip
 -PermissionsUpdaterTest.GrantAndRevokeOptionalPermissions
 -ProfileAttributesStorageTest.*
 -ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain
