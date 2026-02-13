@@ -71,8 +71,7 @@ LocalAIServiceFactory::BuildServiceInstanceForBrowserContext(
          BackgroundWebContents::Delegate* delegate)
           -> std::unique_ptr<BackgroundWebContents> {
         return std::make_unique<BackgroundWebContentsImpl>(
-            browser_context, GURL(kUntrustedCandleEmbeddingGemmaWasmURL),
-            delegate,
+            browser_context, GURL(kUntrustedOnDeviceModelWorkerURL), delegate,
             base::BindOnce([](content::WebContents* web_contents) {
               task_manager::WebContentsTags::CreateForToolContents(
                   web_contents, IDS_LOCAL_AI_TASK_MANAGER_TITLE);

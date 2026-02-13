@@ -28,16 +28,16 @@ std::vector<double> TestEmbedding() {
   return {std::begin(kTestEmbeddingData), std::end(kTestEmbeddingData)};
 }
 
-// Fake EmbeddingGemma that returns a fixed embedding vector.
-class FakeEmbeddingGemma : public mojom::EmbeddingGemmaInterface {
+// Fake model worker that returns a fixed embedding vector.
+class FakeModelWorker : public mojom::OnDeviceModelWorker {
  public:
-  void Embed(const std::string& input, EmbedCallback callback) override {
+  void GenerateEmbeddings(const std::string& input,
+                          GenerateEmbeddingsCallback callback) override {
     embed_count_++;
     std::move(callback).Run(TestEmbedding());
   }
 
-  mojo::PendingRemote<mojom::EmbeddingGemmaInterface>
-  BindNewPipeAndPassRemote() {
+  mojo::PendingRemote<mojom::OnDeviceModelWorker> BindNewPipeAndPassRemote() {
     return receiver_.BindNewPipeAndPassRemote();
   }
 
@@ -47,7 +47,7 @@ class FakeEmbeddingGemma : public mojom::EmbeddingGemmaInterface {
 
  private:
   int embed_count_ = 0;
-  mojo::Receiver<mojom::EmbeddingGemmaInterface> receiver_{this};
+  mojo::Receiver<mojom::OnDeviceModelWorker> receiver_{this};
 };
 
 // Fake BackgroundWebContents that stores the delegate so tests can trigger
@@ -97,65 +97,65 @@ class LocalAIServiceTest : public testing::Test {
     return web_contents;
   }
 
-  void BindFakeEmbeddingGemma() {
-    service_->BindEmbeddingGemma(
-        fake_embedding_gemma_.BindNewPipeAndPassRemote());
+  void BindFakeModelWorker() {
+    service_->RegisterOnDeviceModelWorker(
+        fake_model_worker_.BindNewPipeAndPassRemote());
   }
 
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<LocalAIService> service_;
-  FakeEmbeddingGemma fake_embedding_gemma_;
+  FakeModelWorker fake_model_worker_;
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
 };
 
-TEST_F(LocalAIServiceTest, EmbedCreatesBackgroundContents) {
+TEST_F(LocalAIServiceTest, GenerateEmbeddingsCreatesBackgroundContents) {
   base::test::TestFuture<const std::vector<double>&> future;
-  service_->Embed("test", future.GetCallback());
+  service_->GenerateEmbeddings("test", future.GetCallback());
 
   EXPECT_TRUE(last_created_web_contents_);
   EXPECT_FALSE(future.IsReady());
 }
 
-TEST_F(LocalAIServiceTest, EmbedQueuesWhenNotReady) {
+TEST_F(LocalAIServiceTest, GenerateEmbeddingsQueuesWhenNotReady) {
   base::test::TestFuture<const std::vector<double>&> future1;
   base::test::TestFuture<const std::vector<double>&> future2;
 
-  service_->Embed("hello", future1.GetCallback());
-  service_->Embed("world", future2.GetCallback());
+  service_->GenerateEmbeddings("hello", future1.GetCallback());
+  service_->GenerateEmbeddings("world", future2.GetCallback());
 
   // Both should be queued, not resolved.
   EXPECT_FALSE(future1.IsReady());
   EXPECT_FALSE(future2.IsReady());
 }
 
-TEST_F(LocalAIServiceTest, BindEmbeddingGemmaProcessesPendingRequests) {
+TEST_F(LocalAIServiceTest, RegisterModelWorkerProcessesPendingRequests) {
   base::test::TestFuture<const std::vector<double>&> future1;
   base::test::TestFuture<const std::vector<double>&> future2;
 
-  service_->Embed("hello", future1.GetCallback());
-  service_->Embed("world", future2.GetCallback());
+  service_->GenerateEmbeddings("hello", future1.GetCallback());
+  service_->GenerateEmbeddings("world", future2.GetCallback());
 
-  BindFakeEmbeddingGemma();
+  BindFakeModelWorker();
 
   EXPECT_EQ(TestEmbedding(), future1.Get());
   EXPECT_EQ(TestEmbedding(), future2.Get());
-  EXPECT_EQ(2, fake_embedding_gemma_.embed_count());
+  EXPECT_EQ(2, fake_model_worker_.embed_count());
 }
 
-TEST_F(LocalAIServiceTest, EmbedForwardsDirectlyWhenReady) {
-  BindFakeEmbeddingGemma();
+TEST_F(LocalAIServiceTest, GenerateEmbeddingsForwardsDirectlyWhenReady) {
+  BindFakeModelWorker();
 
-  service_->Embed("test", base::DoNothing());
+  service_->GenerateEmbeddings("test", base::DoNothing());
 
   base::test::TestFuture<const std::vector<double>&> future;
-  service_->Embed("direct", future.GetCallback());
+  service_->GenerateEmbeddings("direct", future.GetCallback());
 
   EXPECT_EQ(TestEmbedding(), future.Get());
 }
 
 TEST_F(LocalAIServiceTest, ShutdownFailsPendingRequests) {
   base::test::TestFuture<const std::vector<double>&> future;
-  service_->Embed("pending", future.GetCallback());
+  service_->GenerateEmbeddings("pending", future.GetCallback());
 
   static_cast<KeyedService*>(service_.get())->Shutdown();
 
@@ -165,7 +165,7 @@ TEST_F(LocalAIServiceTest, ShutdownFailsPendingRequests) {
 
 TEST_F(LocalAIServiceTest, OnBackgroundContentsDestroyedFailsPending) {
   base::test::TestFuture<const std::vector<double>&> future;
-  service_->Embed("pending", future.GetCallback());
+  service_->GenerateEmbeddings("pending", future.GetCallback());
 
   ASSERT_TRUE(last_created_web_contents_);
   last_created_web_contents_->SimulateDestroyed();
@@ -176,23 +176,24 @@ TEST_F(LocalAIServiceTest, OnBackgroundContentsDestroyedFailsPending) {
 TEST_F(LocalAIServiceTest, ReinitializesAfterDestroyed) {
   // Trigger background contents creation and bind embedder.
   base::test::TestFuture<const std::vector<double>&> setup_future;
-  service_->Embed("setup", setup_future.GetCallback());
-  BindFakeEmbeddingGemma();
+  service_->GenerateEmbeddings("setup", setup_future.GetCallback());
+  BindFakeModelWorker();
   EXPECT_EQ(TestEmbedding(), setup_future.Get());
 
   ASSERT_TRUE(last_created_web_contents_);
   last_created_web_contents_->SimulateDestroyed();
 
-  // A new Embed() call should queue (not crash) since state was reset.
+  // A new GenerateEmbeddings() call should queue (not crash) since
+  // state was reset.
   base::test::TestFuture<const std::vector<double>&> future;
-  service_->Embed("after-crash", future.GetCallback());
+  service_->GenerateEmbeddings("after-crash", future.GetCallback());
 
   EXPECT_FALSE(future.IsReady());
 }
 
 TEST_F(LocalAIServiceTest, DoubleShutdownIsIdempotent) {
   base::test::TestFuture<const std::vector<double>&> future;
-  service_->Embed("pending", future.GetCallback());
+  service_->GenerateEmbeddings("pending", future.GetCallback());
 
   auto* keyed_service = static_cast<KeyedService*>(service_.get());
   keyed_service->Shutdown();

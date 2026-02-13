@@ -7,20 +7,21 @@ module local_ai.mojom;
 
 // Browser-side service that manages on-device ML model lifecycle and
 // dispatches inference requests. Implemented by LocalAIService in the
-// browser process; called by the WASM bridge page in the renderer.
+// browser process; called by the model worker page in the renderer.
 interface LocalAIService {
-  // Receives the renderer-side EmbeddingGemmaInterface implementation
-  // so the browser can forward inference requests to the WASM model.
-  BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
+  // Receives the renderer-side OnDeviceModelWorker implementation
+  // so the browser can forward inference requests to the model.
+  RegisterOnDeviceModelWorker(
+      pending_remote<OnDeviceModelWorker> worker);
 
   // Generates a dense embedding vector for the given text.
-  Embed(string text) => (array<double> embedding);
+  GenerateEmbeddings(string text) => (array<double> embedding);
 };
 
-// Renderer-side interface implemented by the WASM bridge page.
-// Performs actual model inference using the Candle ML framework
-// compiled to WebAssembly.
-interface EmbeddingGemmaInterface {
+// Renderer-side interface implemented by the model worker page.
+// Performs actual model inference using an ML framework compiled
+// to WebAssembly.
+interface OnDeviceModelWorker {
   // Produces a dense embedding vector for the given input text.
-  Embed(string input) => (array<double> output);
+  GenerateEmbeddings(string input) => (array<double> output);
 };
