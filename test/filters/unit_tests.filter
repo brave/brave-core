@@ -246,6 +246,14 @@
 -IsolatedWebAppManagedAllowlistTest.AllowedAppInstalled
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
 
+# Upstream Chromium test: CHECK failure in UpdateKeyDistributionInfo due to
+# race condition in async component loading. LoadKeyDistributionData posts
+# thread pool tasks and the TestFuture can receive a stale notification.
+# No Brave modifications in isolated_web_apps or key_distribution areas.
+# 0.7% upstream flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/52733
+-IsolatedWebAppUpdateManagerUpdateTest.SkipsUpdateDiscoveryTaskForNotAllowlistedIwa
+
 # Upstream Chromium test: intermittent timing failure in IWA retry logic
 # using MOCK_TIME + BackoffEntry. Expected 2 install tasks but got 3 due to
 # retry firing earlier than expected. No Brave modifications in IWA policy area.
@@ -391,6 +399,13 @@
 # This test crashes because AutocompleteClassifier called when TabStripModel
 # was not initialized in test.
 -RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
+
+# Flaky upstream Chromium test: observer list destruction order issue where
+# ManagedProfileCreator remains observing ProfileManager during teardown.
+# Already disabled on Mac upstream (crbug.com/385383226). 0.8% upstream flake
+# rate per LUCI Analysis. No Brave modifications in related code.
+# https://github.com/brave/brave-browser/issues/52742
+-ProfileTokenWebSigninInterceptorTest.InterceptionCreatesNewProfileIfAccepted
 
 # Flaky upstream tests
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_FpsEnabled_ReturnsEmptyUntilAllSetsReady/0
