@@ -18,11 +18,6 @@
 
 namespace misc_metrics {
 
-namespace {
-constexpr char kBraveSearchHost[] = "search.brave.com";
-constexpr char kBraveSearchPath[] = "/search";
-}  // namespace
-
 PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<PageMetricsTabHelper>(*web_contents),
@@ -46,10 +41,11 @@ void PageMetricsTabHelper::DidFinishNavigation(
   if (!IsRelevantNavigationEvent(navigation_handle)) {
     return;
   }
-  const auto& url = navigation_handle->GetURL();
-  if (url.host() == kBraveSearchHost && url.path() == kBraveSearchPath) {
-    page_metrics_->brave_search_metrics()->RecordBraveQuery();
-  }
+  const GURL& current_url = navigation_handle->GetURL();
+  const GURL& previous_url =
+      navigation_handle->GetPreviousPrimaryMainFrameURL();
+  page_metrics_->brave_search_metrics()->MaybeRecordBraveQuery(previous_url,
+                                                               current_url);
   if (IsPrivateWindowEvent()) {
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);
     return;

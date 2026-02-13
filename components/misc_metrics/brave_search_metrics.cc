@@ -21,10 +21,21 @@ namespace misc_metrics {
 
 namespace {
 
+constexpr char kBraveSearchHost[] = "search.brave.com";
+constexpr char kBraveSearchPath[] = "/search";
 constexpr int kDailyQueriesBuckets[] = {0, 3, 7};
+constexpr int kEntryPercentageBuckets[] = {0, 5, 20, 80, 95};
 constexpr char kQueriesCountKey[] = "queries";
+constexpr char kPrimaryQueriesCountKey[] = "primary";
+constexpr char kOmniboxTypedCountKey[] = "omnibox_typed";
+constexpr char kOmniboxSuggestionCountKey[] = "omnibox_suggestion";
 constexpr base::TimeDelta kReportInterval = base::Hours(24);
 constexpr base::TimeDelta kReportCheckInterval = base::Minutes(30);
+
+bool IsBraveSearchURL(const GURL& url) {
+  return url.host() == kBraveSearchHost && url.path() == kBraveSearchPath &&
+         url.has_query();
+}
 
 constexpr auto kDailyQueriesHistogramMap =
     base::MakeFixedFlatMap<SearchEngineType, const char*>({
@@ -57,10 +68,31 @@ void BraveSearchMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kMiscMetricsBraveSearchQueryCounts);
 }
 
-void BraveSearchMetrics::RecordBraveQuery() {
-  ScopedDictPrefUpdate update(local_state_, kMiscMetricsBraveSearchQueryCounts);
-  int current = update->FindInt(kQueriesCountKey).value_or(0);
-  update->Set(kQueriesCountKey, current + 1);
+void BraveSearchMetrics::MaybeRecordBraveQuery(const GURL& previous_url,
+                                               const GURL& current_url) {
+  if (!IsBraveSearchURL(current_url)) {
+    return;
+  }
+
+  IncrementDictCount(kQueriesCountKey);
+
+  // Determine if this is a primary query (previous page was NOT a Brave
+  // Search results page)
+  bool is_primary = !IsBraveSearchURL(previous_url);
+  if (is_primary) {
+    IncrementDictCount(kPrimaryQueriesCountKey);
+  }
+}
+
+void BraveSearchMetrics::MaybeRecordOmniboxQuery(const GURL& destination_url,
+                                                 bool is_suggestion) {
+  if (!IsBraveSearchURL(destination_url)) {
+    return;
+  }
+
+  auto* key =
+      is_suggestion ? kOmniboxSuggestionCountKey : kOmniboxTypedCountKey;
+  IncrementDictCount(key);
 }
 
 void BraveSearchMetrics::ClearQueryCounts() {
@@ -101,8 +133,40 @@ void BraveSearchMetrics::ReportDailyQueries() {
 
   p3a_utils::RecordToHistogramBucket(histogram_name, kDailyQueriesBuckets, sum);
 
+  // Report omnibox entry percentages
+  int primary_queries = counts.FindInt(kPrimaryQueriesCountKey).value_or(0);
+  if (primary_queries > 0) {
+    int omnibox_typed = counts.FindInt(kOmniboxTypedCountKey).value_or(0);
+    int omnibox_suggestion =
+        counts.FindInt(kOmniboxSuggestionCountKey).value_or(0);
+
+    if (omnibox_typed > 0) {
+      // Calculate percentage, ensuring we report at least 1% to avoid bucket 0
+      int typed_percentage =
+          std::max(1, (omnibox_typed * 100) / primary_queries);
+      p3a_utils::RecordToHistogramBucket(
+          kSearchOmniboxTypedPercentHistogramName, kEntryPercentageBuckets,
+          typed_percentage);
+    }
+
+    if (omnibox_suggestion > 0) {
+      // Calculate percentage, ensuring we report at least 1% to avoid bucket 0
+      int suggestion_percentage =
+          std::max(1, (omnibox_suggestion * 100) / primary_queries);
+      p3a_utils::RecordToHistogramBucket(
+          kSearchOmniboxSuggestionPercentHistogramName, kEntryPercentageBuckets,
+          suggestion_percentage);
+    }
+  }
+
   local_state_->SetTime(kMiscMetricsBraveSearchReportFrameStartTime, now);
   local_state_->SetDict(kMiscMetricsBraveSearchQueryCounts, {});
+}
+
+void BraveSearchMetrics::IncrementDictCount(std::string_view key) {
+  ScopedDictPrefUpdate update(local_state_, kMiscMetricsBraveSearchQueryCounts);
+  int current = update->FindInt(key).value_or(0);
+  update->Set(key, current + 1);
 }
 
 }  // namespace misc_metrics

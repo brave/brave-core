@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 
+#include <string_view>
+
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
+#include "url/gurl.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -26,6 +29,10 @@ inline constexpr char kSearchDailyQueriesYahooDefaultHistogramName[] =
     "Brave.Search.DailyQueries.YahooDefault";
 inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
     "Brave.Search.DailyQueries.OtherDefault";
+inline constexpr char kSearchOmniboxTypedPercentHistogramName[] =
+    "Brave.Search.OmniboxTypedPercent";
+inline constexpr char kSearchOmniboxSuggestionPercentHistogramName[] =
+    "Brave.Search.OmniboxSuggestionPercent";
 
 class BraveSearchMetrics {
  public:
@@ -36,10 +43,15 @@ class BraveSearchMetrics {
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void RecordBraveQuery();
+
+  void MaybeRecordBraveQuery(const GURL& previous_url, const GURL& current_url);
+  void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
+
   void ClearQueryCounts();
 
  private:
   void ReportDailyQueries();
+  void IncrementDictCount(std::string_view key);
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;

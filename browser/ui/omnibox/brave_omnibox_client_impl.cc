@@ -17,6 +17,8 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
+#include "brave/components/misc_metrics/brave_search_metrics.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -82,15 +84,19 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
   // Record initial search count p3a value.
   RecordSearchEventP3A();
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           profile);
   if (profile_metrics) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
     ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
     CHECK(ai_chat_metrics_);
-  }
 #endif
+    auto* page_metrics = profile_metrics->GetPageMetrics();
+    if (page_metrics) {
+      brave_search_metrics_ = page_metrics->brave_search_metrics();
+    }
+  }
 
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
@@ -150,6 +156,14 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
       ai_chat_metrics_->RecordOmniboxSearchQuery();
     }
 #endif
+
+    // Record omnibox entry type for Brave Search queries
+    if (brave_search_metrics_) {
+      bool is_suggestion =
+          match.type != AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED;
+      brave_search_metrics_->MaybeRecordOmniboxQuery(destination_url,
+                                                     is_suggestion);
+    }
   }
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,

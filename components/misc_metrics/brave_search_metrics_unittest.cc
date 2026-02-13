@@ -35,6 +35,8 @@ class BraveSearchMetricsUnitTest : public testing::Test {
 
     brave_search_metrics_ = std::make_unique<BraveSearchMetrics>(
         &local_state_, template_url_service);
+
+    SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
   }
 
   void SetDefaultSearchEngine(
@@ -54,22 +56,22 @@ class BraveSearchMetricsUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<BraveSearchMetrics> brave_search_metrics_;
+
+  const GURL brave_search_url_{"https://search.brave.com/search?q=test"};
+  const GURL empty_url_;
 };
 
 TEST_F(BraveSearchMetricsUnitTest, DailyQueriesBuckets) {
-  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
-
   // Record 3 queries within the 24-hour window.
   for (int i = 0; i < 3; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
   // Nothing reported yet since 24 hours haven't elapsed.
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesBraveDefaultHistogramName, 0);
-
-  // Advance past 24 hours. The hourly timer will trigger the report.
-  task_environment_.FastForwardBy(base::Hours(24));
+  // Advance 24 hours to trigger report.
+  task_environment_.FastForwardBy(base::Days(1));
 
   // Should report bucket 1 (3 queries -> 1-3 range).
   histogram_tester_.ExpectUniqueSample(
@@ -81,10 +83,10 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesBuckets) {
 
   // Record 7 queries in the new window.
   for (int i = 0; i < 7; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
-  task_environment_.FastForwardBy(base::Hours(24));
+  task_environment_.FastForwardBy(base::Days(1));
 
   // Should report bucket 2 (7 queries -> 4-7 range).
   histogram_tester_.ExpectBucketCount(
@@ -92,7 +94,7 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesBuckets) {
 
   // Record 8 queries in the new window.
   for (int i = 0; i < 8; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
   task_environment_.FastForwardBy(base::Hours(24));
@@ -115,7 +117,7 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
 
   // Record 3 queries under Google default.
   for (int i = 0; i < 3; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
   // Advance past 24 hours. The hourly timer will trigger the report.
@@ -138,7 +140,7 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
 
   // Record 5 queries under Bing default.
   for (int i = 0; i < 5; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
   // Advance past 24 hours.
@@ -161,7 +163,7 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
 
   // Record 8 queries under Brave default.
   for (int i = 0; i < 8; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
   // Advance past 24 hours.
@@ -181,19 +183,17 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
 }
 
 TEST_F(BraveSearchMetricsUnitTest, CountsClearedAfterReport) {
-  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
-
-  brave_search_metrics_->RecordBraveQuery();
+  brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
 
   // Advance past 24 hours. The hourly timer will trigger the report.
-  task_environment_.FastForwardBy(base::Hours(24));
+  task_environment_.FastForwardBy(base::Days(1));
 
   // Previous window reported 1 query -> bucket 1.
   histogram_tester_.ExpectBucketCount(
       kSearchDailyQueriesBraveDefaultHistogramName, 1, 1);
 
   // Record 1 query in the new window.
-  brave_search_metrics_->RecordBraveQuery();
+  brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
 
   // Advance another 24 hours.
   task_environment_.FastForwardBy(base::Hours(24));
@@ -225,11 +225,9 @@ TEST_F(BraveSearchMetricsUnitTest, ClearQueryCounts) {
 }
 
 TEST_F(BraveSearchMetricsUnitTest, NoReportBeforeFrameExpires) {
-  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
-
   // Record queries within the 24-hour window.
   for (int i = 0; i < 5; i++) {
-    brave_search_metrics_->RecordBraveQuery();
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
 
   // Advance only 12 hours - should not trigger a report.
@@ -239,4 +237,27 @@ TEST_F(BraveSearchMetricsUnitTest, NoReportBeforeFrameExpires) {
       kSearchDailyQueriesBraveDefaultHistogramName, 0);
 }
 
+TEST_F(BraveSearchMetricsUnitTest, OmniboxEntryPercentages) {
+  // Simulate 100 primary queries:
+  // - 90 from omnibox typed (90%)
+  // - 10 from omnibox suggestions (10%)
+  for (int i = 0; i < 100; i++) {
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
+  }
+  for (int i = 0; i < 90; i++) {
+    brave_search_metrics_->MaybeRecordOmniboxQuery(brave_search_url_, false);
+  }
+  for (int i = 0; i < 10; i++) {
+    brave_search_metrics_->MaybeRecordOmniboxQuery(brave_search_url_, true);
+  }
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  // 90% typed -> bucket 4 (81-95%)
+  histogram_tester_.ExpectUniqueSample(kSearchOmniboxTypedPercentHistogramName,
+                                       4, 1);
+  // 10% suggestion -> bucket 2 (6-20%)
+  histogram_tester_.ExpectUniqueSample(
+      kSearchOmniboxSuggestionPercentHistogramName, 2, 1);
+}
 }  // namespace misc_metrics
