@@ -527,13 +527,13 @@
 <translation id="2784412028126205842">Conecta unha conta de pagos</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
       =0 {Viches <ph name="COUNT_BEGIN"/> # anuncios<ph name="COUNT_END"/> este mes}
-      =1 {Poderías recibir cartos por <ph name="COUNT_BEGIN"/># anuncio<ph name="COUNT_END"/> que viches este mes.}
-      other {Poderías recibir cartos por <ph name="COUNT_BEGIN"/># anuncios<ph name="COUNT_END"/> que viches este mes.}
+      =1 {Poderías recibir cartos por <ph name="COUNT_BEGIN"/> $ anuncio<ph name="COUNT_END"/> que viches este mes.}
+      other {Poderías recibir cartos por <ph name="COUNT_BEGIN"/> $ anuncios<ph name="COUNT_END"/> que viches este mes.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
       =0 {Viches <ph name="COUNT_BEGIN"/> # anuncios<ph name="COUNT_END"/> este mes}
-      =1 {Estás a gañar por mirar <ph name="COUNT_BEGIN"/># anuncio<ph name="COUNT_END"/> este mes}
-      other {Estás a gañar por mirar <ph name="COUNT_BEGIN"/># anuncios<ph name="COUNT_END"/> este mes}
+      =1 {Estás a gañar por mirar <ph name="COUNT_BEGIN"/> $ anuncio<ph name="COUNT_END"/> este mes}
+      other {Estás a gañar por mirar <ph name="COUNT_BEGIN"/> $ anuncios<ph name="COUNT_END"/> este mes}
     }</translation>
 <translation id="6067959437127691361">Ao usar Recompensas de Brave apoias os creadores de contidos e podes gañar BAT.</translation>
 <translation id="2359808026110333948">Continuar</translation>

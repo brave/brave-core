@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">Handa ka na bang kumita?</translation>
 <translation id="2784412028126205842">Kumonekta ng payout account</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {Nakapanood ka ng <ph name="COUNT_BEGIN"/># (na) Ad<ph name="COUNT_END"/> ngayong buwan}
-      =1 {Puwede kang mabayaran para sa <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> na napanood mo ngayong buwan.}
-      other {Puwede kang mabayaran para sa <ph name="COUNT_BEGIN"/># (na) Ad<ph name="COUNT_END"/> na napanood mo ngayong buwan.}
+      =0 {Nakapanood ka ng <ph name="COUNT_BEGIN"/> $ (na) Ad<ph name="COUNT_END"/> ngayong buwan}
+      =1 {Puwede kang mabayaran para sa <ph name="COUNT_BEGIN"/> $ Ad<ph name="COUNT_END"/> na napanood mo ngayong buwan.}
+      other {Puwede kang mabayaran para sa <ph name="COUNT_BEGIN"/> $ (na) Ad<ph name="COUNT_END"/> na napanood mo ngayong buwan.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Nakakita ka ng <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> sa buwang ito}
-      =1 {Kumikita ka sa pagkakita ng <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> sa buwang ito}
-      other {Kumikita ka sa pagkakita ng <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> sa buwang ito}
+      =0 {Nakakita ka ng <ph name="COUNT_BEGIN"/> $ Ad<ph name="COUNT_END"/> sa buwang ito}
+      =1 {Kumikita ka sa pagkakita ng <ph name="COUNT_BEGIN"/> $ Ad<ph name="COUNT_END"/> sa buwang ito}
+      other {Kumikita ka sa pagkakita ng <ph name="COUNT_BEGIN"/> $ Ad<ph name="COUNT_END"/> sa buwang ito}
     }</translation>
 <translation id="6067959437127691361">Tumutulong ang paggamit ng Mga Reward ng Brave na suportahan ang mga creator ng content, at binibigyang-daan kang makaipon ng BAT.</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>

@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">Uko tayari kuanza kupokea mapato?</translation>
 <translation id="2784412028126205842">Unganisha akaunti ya malipo</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {Umeona matangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> mwezi huu}
-      =1 {Unaweza kulipwa kwa tangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> ambalo umeona mwezi huu.}
-      other {Unaweza kulipwa kwa matangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> ambayo umeona mwezi huu.}
+      =0 {Umeona matangazo <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/> mwezi huu}
+      =1 {Unaweza kulipwa kwa tangazo <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/> ambalo umeona mwezi huu.}
+      other {Unaweza kulipwa kwa matangazo <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/> ambayo umeona mwezi huu.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Umeona matangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> mwezi huu}
-      =1 {Unapata malipo kwa kutazama tangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> mwezi huu}
-      other {Unapata malipo kwa kutazama matangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> mwezi huu}
+      =0 {Umeona matangazo <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/> mwezi huu}
+      =1 {Unapata malipo kwa kutazama tangazo <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/> mwezi huu}
+      other {Unapata malipo kwa kutazama matangazo <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/> mwezi huu}
     }</translation>
 <translation id="6067959437127691361">Kutumia Zawadi za Brave huwezesha kuwasaidia waundaji maudhui na kukufanya kupata BAT.</translation>
 <translation id="2359808026110333948">Endelea</translation>

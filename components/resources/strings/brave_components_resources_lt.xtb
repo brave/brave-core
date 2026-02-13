@@ -526,14 +526,14 @@
 <translation id="3264975266761862670">Pasirengę pradėti uždirbti?</translation>
 <translation id="2784412028126205842">Prijungti išmokėjimo paskyrą</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {Šį mėnesį peržiūrėjote <ph name="COUNT_BEGIN"/># reklamas (-ų)<ph name="COUNT_END"/>}
-      =1 {Galite gauti atlyginimą už<ph name="COUNT_BEGIN"/># reklamas (-ų)<ph name="COUNT_END"/> kurias peržiūrėjote šį mėnesį}
-      other {Galite gauti atlyginimą už<ph name="COUNT_BEGIN"/># reklamas (-ų)<ph name="COUNT_END"/> kurias peržiūrėjote šį mėnesį}
+      =0 {Šį mėnesį peržiūrėjote <ph name="COUNT_BEGIN"/> $ reklamas (-ų)<ph name="COUNT_END"/>}
+      =1 {Galite gauti atlyginimą už<ph name="COUNT_BEGIN"/> $ reklamas (-ų)<ph name="COUNT_END"/> kurias peržiūrėjote šį mėnesį}
+      other {Galite gauti atlyginimą už<ph name="COUNT_BEGIN"/> $ reklamas (-ų)<ph name="COUNT_END"/> kurias peržiūrėjote šį mėnesį}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Peržiūrėjote <ph name="COUNT_BEGIN"/># reklamas<ph name="COUNT_END"/> šį mėnesį}
-      =1 {Galite gauti atlygį už peržiūrėtas <ph name="COUNT_BEGIN"/># reklamas<ph name="COUNT_END"/> šį mėnesį}
-      other {Galite gauti atlygį už peržiūrėtas <ph name="COUNT_BEGIN"/># reklamas<ph name="COUNT_END"/> šį mėnesį}
+      =0 {Peržiūrėjote <ph name="COUNT_BEGIN"/> $ reklamas<ph name="COUNT_END"/> šį mėnesį}
+      =1 {Galite gauti atlygį už peržiūrėtas <ph name="COUNT_BEGIN"/> $ reklamas<ph name="COUNT_END"/> šį mėnesį}
+      other {Galite gauti atlygį už peržiūrėtas <ph name="COUNT_BEGIN"/> $ reklamas<ph name="COUNT_END"/> šį mėnesį}
     }</translation>
 <translation id="6067959437127691361">Naudojimasis „Brave“ atlygiais padeda remti turinio kūrėjus ir suteikia galimybę uždirbti BAT.</translation>
 <translation id="2359808026110333948">Tęsti</translation>

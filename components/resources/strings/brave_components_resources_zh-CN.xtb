@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">准备开始赚钱了吗？</translation>
 <translation id="2784412028126205842">连接付款账户</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {您本月已查看<ph name="COUNT_BEGIN"/># 广告<ph name="COUNT_END"/>}
-      =1 {您可以从本月查看的 <ph name="COUNT_BEGIN"/># 广告<ph name="COUNT_END"/> 中获取收益。}
-      other {您可以从本月查看的<ph name="COUNT_BEGIN"/># 广告<ph name="COUNT_END"/>中获取收益。}
+      =0 {您本月已查看<ph name="COUNT_BEGIN"/> $ 广告<ph name="COUNT_END"/>}
+      =1 {您可以从本月查看的 <ph name="COUNT_BEGIN"/> $ 广告<ph name="COUNT_END"/> 中获取收益。}
+      other {您可以从本月查看的<ph name="COUNT_BEGIN"/> $ 广告<ph name="COUNT_END"/>中获取收益。}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {您本月已查看 <ph name="COUNT_BEGIN"/># 个广告<ph name="COUNT_END"/>}
-      =1 {您本月可以通过查看 <ph name="COUNT_BEGIN"/># 个广告<ph name="COUNT_END"/>获取收益。}
-      other {您本月可以通过查看 <ph name="COUNT_BEGIN"/># 个广告<ph name="COUNT_END"/>获取收益。}
+      =0 {您本月已查看 <ph name="COUNT_BEGIN"/> $ 个广告<ph name="COUNT_END"/>}
+      =1 {您本月可以通过查看 <ph name="COUNT_BEGIN"/> $ 个广告<ph name="COUNT_END"/>获取收益。}
+      other {您本月可以通过查看 <ph name="COUNT_BEGIN"/> $ 个广告<ph name="COUNT_END"/>获取收益。}
     }</translation>
 <translation id="6067959437127691361">使用 Brave 奖励有助于支持内容创作者，并帮您赚取 BAT。</translation>
 <translation id="2359808026110333948">继续</translation>

@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">Oletko valmis aloittamaan ansaitsemisen?</translation>
 <translation id="2784412028126205842">Yhdistä maksutili</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {Olet nähnyt <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> tässä kuussa}
-      =1 {Voit ansaita rahaa <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/>, jonka olet nähnyt tässä kuussa.}
-      other {Voit ansaita rahaa <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/>, jotka olet nähnyt tässä kuussa.}
+      =0 {Olet nähnyt <ph name="COUNT_BEGIN"/> $ Ads<ph name="COUNT_END"/> tässä kuussa}
+      =1 {Voit ansaita rahaa <ph name="COUNT_BEGIN"/> $ Ads<ph name="COUNT_END"/>, jonka olet nähnyt tässä kuussa.}
+      other {Voit ansaita rahaa <ph name="COUNT_BEGIN"/> $ Ads<ph name="COUNT_END"/>, jotka olet nähnyt tässä kuussa.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Olet nähnyt <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> tässä kuussa}
-      =1 {Ansaitset rahaa <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> tänä kuussa}
-      other {Ansaitset rahaa <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> tänä kuussa}
+      =0 {Olet nähnyt <ph name="COUNT_BEGIN"/> $ Ads<ph name="COUNT_END"/> tässä kuussa}
+      =1 {Ansaitset rahaa <ph name="COUNT_BEGIN"/> $ Ads<ph name="COUNT_END"/> tänä kuussa}
+      other {Ansaitset rahaa <ph name="COUNT_BEGIN"/> $ Ads<ph name="COUNT_END"/> tänä kuussa}
     }</translation>
 <translation id="6067959437127691361">Kun käytät Brave-palkintoja, tuet sisällönluojia ja voit ansaita BATeja.</translation>
 <translation id="2359808026110333948">Jatka</translation>

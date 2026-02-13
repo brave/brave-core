@@ -529,18 +529,18 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="3264975266761862670">Готовы начать зарабатывать?</translation>
 <translation id="2784412028126205842">Подключите аккаунт для выплат</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {В этом месяце просмотрено <ph name="COUNT_BEGIN"/># единиц Рекламы<ph name="COUNT_END"/>}
-      =1 {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/># просмотренное объявление<ph name="COUNT_END"/> в этом месяце.}
-      few {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/># объявления<ph name="COUNT_END"/> просмотренные в этом месяце.}
-      many {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/># объявлений<ph name="COUNT_END"/> просмотренных в этом месяце.}
-      other {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/># объявлений<ph name="COUNT_END"/> просмотренных в этом месяце.}
+      =0 {В этом месяце просмотрено <ph name="COUNT_BEGIN"/> $ единиц Рекламы<ph name="COUNT_END"/>}
+      =1 {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/> $ просмотренное объявление<ph name="COUNT_END"/> в этом месяце.}
+      few {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/> $ объявления<ph name="COUNT_END"/> просмотренные в этом месяце.}
+      many {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/> $ объявлений<ph name="COUNT_END"/> просмотренных в этом месяце.}
+      other {Вы могли бы получить оплату за <ph name="COUNT_BEGIN"/> $ объявлений<ph name="COUNT_END"/> просмотренных в этом месяце.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Вы просмотрели <ph name="COUNT_BEGIN"/># единиц Рекламы<ph name="COUNT_END"/> в этом месяце}
-      =1 {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/># объявления<ph name="COUNT_END"/> в этом месяце}
-      few {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/># объявлений<ph name="COUNT_END"/> в этом месяце}
-      many {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/># объявлений<ph name="COUNT_END"/> в этом месяце}
-      other {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/># объявлений<ph name="COUNT_END"/> в этом месяце}
+      =0 {Вы просмотрели <ph name="COUNT_BEGIN"/> $ единиц Рекламы<ph name="COUNT_END"/> в этом месяце}
+      =1 {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/> $ объявления<ph name="COUNT_END"/> в этом месяце}
+      few {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/> $ объявлений<ph name="COUNT_END"/> в этом месяце}
+      many {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/> $ объявлений<ph name="COUNT_END"/> в этом месяце}
+      other {Вы зарабатываете за просмотр <ph name="COUNT_BEGIN"/> $ объявлений<ph name="COUNT_END"/> в этом месяце}
     }</translation>
 <translation id="6067959437127691361">Используя Brave Награды, вы поддерживаете авторов и можете зарабатывать BAT.</translation>
 <translation id="2359808026110333948">Продолжить</translation>

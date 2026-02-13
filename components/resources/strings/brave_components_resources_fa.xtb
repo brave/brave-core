@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">برای شروع دریافت آماده‌اید؟</translation>
 <translation id="2784412028126205842">متصل کردن حساب پرداختی</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {این ماه <ph name="COUNT_BEGIN"/># تبلیغ<ph name="COUNT_END"/> دیده‌اید}
-      =1 {ممکن است بتوانید برای <ph name="COUNT_BEGIN"/># تبلیغ<ph name="COUNT_END"/> که این ماه دیده‌اید، هزینه دریافت کنید.}
-      other {ممکن است بتوانید برای <ph name="COUNT_BEGIN"/># تبلیغ<ph name="COUNT_END"/> که این ما دیده‌اید، هزینه دریافت کنید.}
+      =0 {این ماه <ph name="COUNT_BEGIN"/> $ تبلیغ<ph name="COUNT_END"/> دیده‌اید}
+      =1 {ممکن است بتوانید برای <ph name="COUNT_BEGIN"/> $ تبلیغ<ph name="COUNT_END"/> که این ماه دیده‌اید، هزینه دریافت کنید.}
+      other {ممکن است بتوانید برای <ph name="COUNT_BEGIN"/> $ تبلیغ<ph name="COUNT_END"/> که این ما دیده‌اید، هزینه دریافت کنید.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {شما <ph name="COUNT_BEGIN"/># تبلیغ<ph name="COUNT_END"/> در این ماه دیده‌اید}
-      =1 {بابت مشاهده این <ph name="COUNT_BEGIN"/># تبلیغ<ph name="COUNT_END"/> در این ماه درآمد داشته‌اید}
-      other {بابت مشاهده این <ph name="COUNT_BEGIN"/># تبلیغ<ph name="COUNT_END"/> در این ماه درآمد داشته‌اید}
+      =0 {شما <ph name="COUNT_BEGIN"/> $ تبلیغ<ph name="COUNT_END"/> در این ماه دیده‌اید}
+      =1 {بابت مشاهده این <ph name="COUNT_BEGIN"/> $ تبلیغ<ph name="COUNT_END"/> در این ماه درآمد داشته‌اید}
+      other {بابت مشاهده این <ph name="COUNT_BEGIN"/> $ تبلیغ<ph name="COUNT_END"/> در این ماه درآمد داشته‌اید}
     }</translation>
 <translation id="6067959437127691361">استفاده از پاداش‌های Brave، به حمایت از تولیدکنندگان محتوا کمک می‌کند و به شما اجازه دریافت توکن توجه اولیه را می‌دهد.</translation>
 <translation id="2359808026110333948">ادامه</translation>

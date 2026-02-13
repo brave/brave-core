@@ -528,12 +528,12 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
       =0 {Heu vist <ph name="COUNT_BEGIN"/> # anuncis<ph name="COUNT_END"/> aquest mes}
       =1 {Podríeu cobrar per <ph name="COUNT_BEGIN"/>l'anunci<ph name="COUNT_END"/> que heu vist aquest mes.}
-      other {Podríeu cobrar pels <ph name="COUNT_BEGIN"/># anuncis<ph name="COUNT_END"/> que heu vist aquest mes.}
+      other {Podríeu cobrar pels <ph name="COUNT_BEGIN"/> $ anuncis<ph name="COUNT_END"/> que heu vist aquest mes.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Has vist <ph name="COUNT_BEGIN"/># anuncis<ph name="COUNT_END"/> aquest mes}
-      =1 {Rebràs recompenses per veure <ph name="COUNT_BEGIN"/># anunci<ph name="COUNT_END"/> aquest mes}
-      other {Rebràs recompenses per veure <ph name="COUNT_BEGIN"/># anuncis<ph name="COUNT_END"/> aquest mes}
+      =0 {Has vist <ph name="COUNT_BEGIN"/> $ anuncis<ph name="COUNT_END"/> aquest mes}
+      =1 {Rebràs recompenses per veure <ph name="COUNT_BEGIN"/> $ anunci<ph name="COUNT_END"/> aquest mes}
+      other {Rebràs recompenses per veure <ph name="COUNT_BEGIN"/> $ anuncis<ph name="COUNT_END"/> aquest mes}
     }</translation>
 <translation id="6067959437127691361">L'ús de Recompenses de Brave ajuda a donar suport als creadors de contingut, i permet guanyar BAT.</translation>
 <translation id="2359808026110333948">Continua</translation>

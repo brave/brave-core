@@ -526,17 +526,17 @@
 <translation id="2784412028126205842">ربط حساب الدفع</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
       =0 {لقد شاهدت <ph name="COUNT_BEGIN"/> # ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
-      =1 {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلان<ph name="COUNT_END"/> الذي شاهدته هذا الشهر.}
-      few {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
-      many {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
-      other {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
+      =1 {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/> $ ميزة الإعلان<ph name="COUNT_END"/> الذي شاهدته هذا الشهر.}
+      few {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/> $ ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
+      many {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/> $ ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
+      other {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/> $ ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
       =0 {لقد شاهدت <ph name="COUNT_BEGIN"/> # ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
-      =1 {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/># ميزة الإعلان<ph name="COUNT_END"/> هذا الشهر}
-      few {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
-      many {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
-      other {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
+      =1 {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/> $ ميزة الإعلان<ph name="COUNT_END"/> هذا الشهر}
+      few {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/> $ ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
+      many {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/> $ ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
+      other {أنت تكسب مقابل مشاهدة <ph name="COUNT_BEGIN"/> $ ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
     }</translation>
 <translation id="6067959437127691361">يساعد استخدام Brave Rewards في دعم منشئي المحتوى ويتيح لك ربح BAT.</translation>
 <translation id="2359808026110333948">متابعة</translation>

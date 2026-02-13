@@ -529,18 +529,18 @@
 <translation id="3264975266761862670">מוכנ/ה להתחיל להרוויח?</translation>
 <translation id="2784412028126205842">יש לחבר חשבון לתשלום</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {צפית ב-<ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> החודש}
+      =0 {צפית ב-<ph name="COUNT_BEGIN"/> $ מודעות<ph name="COUNT_END"/> החודש}
       =1 {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/>מודעה #<ph name="COUNT_END"/> שצפית בה החודש.}
-      two {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> שצפית בהן החודש.}
-      many {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> שצפית בהן החודש.}
-      other {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/># המודעות<ph name="COUNT_END"/> שבהן צפית החודש.}
+      two {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/> $ מודעות<ph name="COUNT_END"/> שצפית בהן החודש.}
+      many {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/> $ מודעות<ph name="COUNT_END"/> שצפית בהן החודש.}
+      other {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/> $ המודעות<ph name="COUNT_END"/> שבהן צפית החודש.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {צפית ב-<ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> החודש}
+      =0 {צפית ב-<ph name="COUNT_BEGIN"/> $ מודעות<ph name="COUNT_END"/> החודש}
       =1 {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/>מודעה #<ph name="COUNT_END"/> שצפית בה החודש}
-      two {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> שצפית בהן החודש}
-      many {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> שצפית בהן החודש}
-      other {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/># המודעות<ph name="COUNT_END"/> שצפית בהן החודש}
+      two {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/> $ מודעות<ph name="COUNT_END"/> שצפית בהן החודש}
+      many {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/> $ מודעות<ph name="COUNT_END"/> שצפית בהן החודש}
+      other {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/> $ המודעות<ph name="COUNT_END"/> שצפית בהן החודש}
     }</translation>
 <translation id="6067959437127691361">השימוש ב-Brave Rewards עוזר לתמוך ביוצרי תוכן, ומאפשר לך להרוויח BAT.</translation>
 <translation id="2359808026110333948">המשך</translation>

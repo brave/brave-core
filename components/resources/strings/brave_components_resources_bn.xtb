@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">উপার্জন করা শুরু করতে প্রস্তুত?</translation>
 <translation id="2784412028126205842">একটি পে-আউট অ্যাকাউন্ট সংযুক্ত করুন</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {আপনি এই মাসে <ph name="COUNT_BEGIN"/>#টি বিজ্ঞাপন<ph name="COUNT_END"/> দেখেছেন}
-      =1 {এই মাসে আপনার দেখা <ph name="COUNT_BEGIN"/>#টি বিজ্ঞাপনের<ph name="COUNT_END"/> জন্য আপনাকে অর্থ প্রদান করা হতে পারে।}
-      other {এই মাসে আপনার দেখা <ph name="COUNT_BEGIN"/>#টি বিজ্ঞাপনের<ph name="COUNT_END"/> জন্য আপনাকে অর্থ প্রদান করা হতে পারে।}
+      =0 {আপনি এই মাসে <ph name="COUNT_BEGIN"/> $টি বিজ্ঞাপন<ph name="COUNT_END"/> দেখেছেন}
+      =1 {এই মাসে আপনার দেখা <ph name="COUNT_BEGIN"/> $টি বিজ্ঞাপনের<ph name="COUNT_END"/> জন্য আপনাকে অর্থ প্রদান করা হতে পারে।}
+      other {এই মাসে আপনার দেখা <ph name="COUNT_BEGIN"/> $টি বিজ্ঞাপনের<ph name="COUNT_END"/> জন্য আপনাকে অর্থ প্রদান করা হতে পারে।}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {আপনি এই মাসে <ph name="COUNT_BEGIN"/>#টি বিজ্ঞাপন<ph name="COUNT_END"/> দেখেছেন}
-      =1 {আপনি এই মাসে <ph name="COUNT_BEGIN"/>#টি বিজ্ঞাপন দেখার জন্য <ph name="COUNT_END"/> আয় করছেন}
-      other {আপনি এই মাসে <ph name="COUNT_BEGIN"/>#টি বিজ্ঞাপন দেখার জন্য<ph name="COUNT_END"/> আয় করছেন}
+      =0 {আপনি এই মাসে <ph name="COUNT_BEGIN"/> $টি বিজ্ঞাপন<ph name="COUNT_END"/> দেখেছেন}
+      =1 {আপনি এই মাসে <ph name="COUNT_BEGIN"/> $টি বিজ্ঞাপন দেখার জন্য <ph name="COUNT_END"/> আয় করছেন}
+      other {আপনি এই মাসে <ph name="COUNT_BEGIN"/> $টি বিজ্ঞাপন দেখার জন্য<ph name="COUNT_END"/> আয় করছেন}
     }</translation>
 <translation id="6067959437127691361">Brave পুরস্কার ব্যবহার করে কনটেন্ট ক্রিয়েটরদের সাহায্য করতে পারবেন এবং BAT উপার্জন করতে পারবেন।</translation>
 <translation id="2359808026110333948">চালিয়ে যান</translation>

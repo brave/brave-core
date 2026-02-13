@@ -531,10 +531,10 @@
       other {Puteți fi plătit(ă) pentru <ph name="COUNT_BEGIN"/> # reclame <ph name="COUNT_END"/> pe care le-ați vizualizat luna aceasta.}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {Ai văzut <ph name="COUNT_BEGIN"/># reclame<ph name="COUNT_END"/> luna aceasta}
-      =1 {Câștigi pentru că ai văzut <ph name="COUNT_BEGIN"/># reclamă<ph name="COUNT_END"/> luna aceasta}
-      few {Câștigi pentru că vezi <ph name="COUNT_BEGIN"/># reclame<ph name="COUNT_END"/> luna aceasta}
-      other {Câștigi pentru că vezi <ph name="COUNT_BEGIN"/># reclame<ph name="COUNT_END"/> luna aceasta}
+      =0 {Ai văzut <ph name="COUNT_BEGIN"/> $ reclame<ph name="COUNT_END"/> luna aceasta}
+      =1 {Câștigi pentru că ai văzut <ph name="COUNT_BEGIN"/> $ reclamă<ph name="COUNT_END"/> luna aceasta}
+      few {Câștigi pentru că vezi <ph name="COUNT_BEGIN"/> $ reclame<ph name="COUNT_END"/> luna aceasta}
+      other {Câștigi pentru că vezi <ph name="COUNT_BEGIN"/> $ reclame<ph name="COUNT_END"/> luna aceasta}
     }</translation>
 <translation id="6067959437127691361">Folosind Recompensele Brave, îi puteți susține pe creatorii de conținut și puteți câștiga BAT.</translation>
 <translation id="2359808026110333948">Continuă</translation>

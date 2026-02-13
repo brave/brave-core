@@ -525,15 +525,15 @@
 <translation id="3264975266761862670">Jeste li spremni da počnete da zarađujete?</translation>
 <translation id="2784412028126205842">Povežite nalog za isplatu</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-=0 {Videli ste <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_END"/> ovog meseca}
-=1 {Mogli biste biti plaćeni za <ph name="COUNT_BEGIN"/># oglas<ph name="COUNT_END"/> koji ste videli ovog meseca.}
-few {Mogli biste biti plaćeni za <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_END"/> koje ste videli ovog meseca.}
-other {Mogli biste biti plaćeni za <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_END"/> koje ste videli ovog meseca.}}</translation>
+=0 {Videli ste <ph name="COUNT_BEGIN"/> $ oglasa<ph name="COUNT_END"/> ovog meseca}
+=1 {Mogli biste biti plaćeni za <ph name="COUNT_BEGIN"/> $ oglas<ph name="COUNT_END"/> koji ste videli ovog meseca.}
+few {Mogli biste biti plaćeni za <ph name="COUNT_BEGIN"/> $ oglasa<ph name="COUNT_END"/> koje ste videli ovog meseca.}
+other {Mogli biste biti plaćeni za <ph name="COUNT_BEGIN"/> $ oglasa<ph name="COUNT_END"/> koje ste videli ovog meseca.}}</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-=0 {Odgledali ste <ph name="COUNT_BEGIN"/># oglas(a)<ph name="COUNT_END"/> ovog meseca}
-=1 {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglas<ph name="COUNT_END"/> ovog meseca}
-few {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_END"/> ovog meseca}
-other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_END"/> ovog meseca}}</translation>
+=0 {Odgledali ste <ph name="COUNT_BEGIN"/> $ oglas(a)<ph name="COUNT_END"/> ovog meseca}
+=1 {Zarađujete gledajući <ph name="COUNT_BEGIN"/> $ oglas<ph name="COUNT_END"/> ovog meseca}
+few {Zarađujete gledajući <ph name="COUNT_BEGIN"/> $ oglasa<ph name="COUNT_END"/> ovog meseca}
+other {Zarađujete gledajući <ph name="COUNT_BEGIN"/> $ oglasa<ph name="COUNT_END"/> ovog meseca}}</translation>
 <translation id="6067959437127691361">Korišćenje Brave nagrada doprinosi podršci autora sadržaja i omogućava vam da zaradite BAT.</translation>
 <translation id="2359808026110333948">Nastavi</translation>
 <translation id="3863981251715594911">Kako funkcioniše?</translation>

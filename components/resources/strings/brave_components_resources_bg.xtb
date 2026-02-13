@@ -525,14 +525,14 @@
 <translation id="3264975266761862670">Готови ли сте да започнете да печелите?</translation>
 <translation id="2784412028126205842">Свързване на сметка за изплащане</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-  =0 {Видели сте <ph name="COUNT_BEGIN"/># реклами<ph name="COUNT_END"/> този месец}
-  =1 {Може да ви бъде платено за <ph name="COUNT_BEGIN"/># реклама<ph name="COUNT_END"/>, която сте гледали този месец.}
-  other {Може да ви бъде платено за <ph name="COUNT_BEGIN"/># реклами<ph name="COUNT_END"/>, които сте гледали този месец.}
+  =0 {Видели сте <ph name="COUNT_BEGIN"/> $ реклами<ph name="COUNT_END"/> този месец}
+  =1 {Може да ви бъде платено за <ph name="COUNT_BEGIN"/> $ реклама<ph name="COUNT_END"/>, която сте гледали този месец.}
+  other {Може да ви бъде платено за <ph name="COUNT_BEGIN"/> $ реклами<ph name="COUNT_END"/>, които сте гледали този месец.}
 }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-  =0 {Видели сте <ph name="COUNT_BEGIN"/># реклами<ph name="COUNT_END"/> този месец}
-  =1 {Може да ви бъде платено за <ph name="COUNT_BEGIN"/># реклама<ph name="COUNT_END"/>, която сте гледали този месец}
-  other {Може да ви бъде платено за <ph name="COUNT_BEGIN"/># реклами<ph name="COUNT_END"/>, които сте гледали този месец}
+  =0 {Видели сте <ph name="COUNT_BEGIN"/> $ реклами<ph name="COUNT_END"/> този месец}
+  =1 {Може да ви бъде платено за <ph name="COUNT_BEGIN"/> $ реклама<ph name="COUNT_END"/>, която сте гледали този месец}
+  other {Може да ви бъде платено за <ph name="COUNT_BEGIN"/> $ реклами<ph name="COUNT_END"/>, които сте гледали този месец}
 }</translation>
 <translation id="6067959437127691361">Използването на Brave Награди помага да подкрепите създателите на съдържание и позволява да печелите BAT.</translation>
 <translation id="2359808026110333948">Напред</translation>

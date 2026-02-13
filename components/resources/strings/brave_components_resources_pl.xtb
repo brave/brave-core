@@ -527,18 +527,18 @@
 <translation id="3264975266761862670">Gotowy do zarabiania?</translation>
 <translation id="2784412028126205842">Podłącz konto do wypłat</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-  =0 {Liczba wyświetlonych reklam w tym miesiącu: <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/>}
-  =1 {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/># reklamę<ph name="COUNT_END"/>, która została wyświetlona w tym miesiącu.}
-  few {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/># reklamy<ph name="COUNT_END"/> wyświetlone w tym miesiącu.}
-  many {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> wyświetlonych w tym miesiącu.}
-  other {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> wyświetlonych w tym miesiącu.}
+  =0 {Liczba wyświetlonych reklam w tym miesiącu: <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/>}
+  =1 {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/> $ reklamę<ph name="COUNT_END"/>, która została wyświetlona w tym miesiącu.}
+  few {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/> $ reklamy<ph name="COUNT_END"/> wyświetlone w tym miesiącu.}
+  many {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/> $ reklam<ph name="COUNT_END"/> wyświetlonych w tym miesiącu.}
+  other {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/> $ reklam<ph name="COUNT_END"/> wyświetlonych w tym miesiącu.}
 }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-  =0 {Liczba wyświetlonych reklam w tym miesiącu: <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/>}
-  =1 {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklamy<ph name="COUNT_END"/> w tym miesiącu}
-  few {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> w tym miesiącu}
-  many {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> w tym miesiącu}
-  other {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> w tym miesiącu}
+  =0 {Liczba wyświetlonych reklam w tym miesiącu: <ph name="COUNT_BEGIN"/> $<ph name="COUNT_END"/>}
+  =1 {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/> $ reklamy<ph name="COUNT_END"/> w tym miesiącu}
+  few {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/> $ reklam<ph name="COUNT_END"/> w tym miesiącu}
+  many {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/> $ reklam<ph name="COUNT_END"/> w tym miesiącu}
+  other {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/> $ reklam<ph name="COUNT_END"/> w tym miesiącu}
 }</translation>
 <translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
 <translation id="2359808026110333948">Dalej</translation>

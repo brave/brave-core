@@ -528,14 +528,14 @@
 <translation id="3264975266761862670">報酬を受け取る準備はできましたか？</translation>
 <translation id="2784412028126205842">支払いアカウントに接続</translation>
 <translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {今月表示した広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
-      =1 {今月表示した中で支払い対象となる広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
-      other {今月表示した中で支払い対象となる広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
+      =0 {今月表示した広告数: <ph name="COUNT_BEGIN"/> $件<ph name="COUNT_END"/>}
+      =1 {今月表示した中で支払い対象となる広告数: <ph name="COUNT_BEGIN"/> $件<ph name="COUNT_END"/>}
+      other {今月表示した中で支払い対象となる広告数: <ph name="COUNT_BEGIN"/> $件<ph name="COUNT_END"/>}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
-      =0 {今月表示した広告数: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
-      =1 {今月の報酬: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
-      other {今月の報酬: <ph name="COUNT_BEGIN"/>#件<ph name="COUNT_END"/>}
+      =0 {今月表示した広告数: <ph name="COUNT_BEGIN"/> $件<ph name="COUNT_END"/>}
+      =1 {今月の報酬: <ph name="COUNT_BEGIN"/> $件<ph name="COUNT_END"/>}
+      other {今月の報酬: <ph name="COUNT_BEGIN"/> $件<ph name="COUNT_END"/>}
     }</translation>
 <translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
 <translation id="2359808026110333948">続ける</translation>
