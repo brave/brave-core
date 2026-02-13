@@ -21,6 +21,35 @@ namespace ai_chat {
 
 namespace {
 
+// Strips page_content and extra_snippets from web sources while keeping
+// other metadata (title, url, favicon_url, query, rich_results).
+std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
+    const std::vector<mojom::ContentBlockPtr>& output) {
+  std::vector<mojom::ContentBlockPtr> result;
+  for (const auto& item : output) {
+    if (item->is_web_sources_content_block()) {
+      const auto& ws = item->get_web_sources_content_block();
+      std::vector<mojom::WebSourcePtr> stripped_sources;
+      for (const auto& source : ws->sources) {
+        stripped_sources.push_back(mojom::WebSource::New(
+            source->title, source->url, source->favicon_url,
+            /*page_content=*/std::nullopt,
+            /*extra_snippets=*/std::nullopt));
+      }
+      result.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+          mojom::WebSourcesContentBlock::New(
+              std::move(stripped_sources), ws->query,
+              std::vector<std::string>(ws->rich_results))));
+    } else {
+      // Currently WebSourcesContentBlock is only used by server-side search
+      // tool results, the output content array will not have large data in
+      // other content block types, so just push the block as is.
+      result.push_back(item.Clone());
+    }
+  }
+  return result;
+}
+
 std::string SerializeTabsToJson(base::span<const Tab> tabs) {
   base::ListValue tab_value_list;
   for (const auto& tab : tabs) {
@@ -161,6 +190,9 @@ std::vector<OAIMessage> BuildOAIMessages(
   absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
   size_t large_tool_count = 0;
 
+  absl::flat_hash_set<std::pair<size_t, size_t>> web_sources_strip_set;
+  size_t web_sources_count = 0;
+
   for (size_t message_index = conversation_history.size(); message_index > 0;
        --message_index) {
     const auto& message = conversation_history[message_index - 1];
@@ -191,19 +223,27 @@ std::vector<OAIMessage> BuildOAIMessages(
           continue;
         }
 
-        // Check if this tool result is large
+        // Check if this tool result is large (text/image content)
         bool is_large = false;
         size_t content_size = 0;
+        // Check if this tool result has web sources
+        bool has_web_sources = false;
         for (const auto& content : tool_event->output.value()) {
           if (content->is_image_content_block()) {
             is_large = true;
-            break;
           } else if (content->is_text_content_block()) {
             content_size += content->get_text_content_block()->text.size();
             if (content_size >= features::kContentSizeLargeToolUseEvent.Get()) {
               is_large = true;
-              break;
             }
+          } else if (content->is_web_sources_content_block()) {
+            has_web_sources = true;
+          }
+          // Currently large data would either only have web sources blocks or
+          // only text/image content blocks, so we can early break if either
+          // condition is true here.
+          if (is_large || has_web_sources) {
+            break;
           }
         }
 
@@ -212,6 +252,12 @@ std::vector<OAIMessage> BuildOAIMessages(
           if (large_tool_count > features::kMaxCountLargeToolUseEvents.Get()) {
             large_tool_result_remove_set.insert(
                 {message_index - 1, event_index - 1});
+          }
+        } else if (has_web_sources) {
+          web_sources_count++;
+          if (web_sources_count >
+              features::kMaxFullWebSourcesToolOutputs.Get()) {
+            web_sources_strip_set.insert({message_index - 1, event_index - 1});
           }
         }
       }
@@ -377,21 +423,23 @@ std::vector<OAIMessage> BuildOAIMessages(
         tool_result_message.role = "tool";
         tool_result_message.tool_call_id = tool_event->id;
 
-        // Check if we should keep the full content for this large tool result
-        bool should_keep_full_content = !large_tool_result_remove_set.contains(
-            {message_index, event_index});
-
-        if (should_keep_full_content) {
-          for (const auto& item : tool_event->output.value()) {
-            tool_result_message.content.push_back(item.Clone());
-          }
-        } else {
-          // Add text block for truncated result
+        if (large_tool_result_remove_set.contains(
+                {message_index, event_index})) {
+          // Full placeholder replacement for large text/image tool results
           tool_result_message.content.push_back(
               mojom::ContentBlock::NewTextContentBlock(
                   mojom::TextContentBlock::New(
                       "[Large result removed to save space for "
                       "subsequent results]")));
+        } else if (web_sources_strip_set.contains(
+                       {message_index, event_index})) {
+          // Strip heavy fields from web sources but keep metadata.
+          tool_result_message.content =
+              GetStrippedWebSources(tool_event->output.value());
+        } else {
+          for (const auto& item : tool_event->output.value()) {
+            tool_result_message.content.push_back(item.Clone());
+          }
         }
 
         oai_messages.emplace_back(std::move(tool_result_message));

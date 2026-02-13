@@ -46,6 +46,11 @@ extern const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent;
 
+// How many most-recent web sources tool output to keep with full content
+// (page_content + extra_snippets). Older ones are stripped to metadata only.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxFullWebSourcesToolOutputs;
+
 // Whether automatic model should support tools. This affects model routing
 // when tools are sent. Since tools are always sent if any are available to the
 // conversation and if the model supports them, the server might need to be
