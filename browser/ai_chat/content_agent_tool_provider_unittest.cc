@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
 #include "chrome/browser/actor/actor_task.h"
+#include "chrome/browser/actor/actor_test_util.h"
 #include "chrome/browser/actor/ui/test_support/mock_actor_ui_state_manager.h"
 #include "chrome/common/actor/action_result.h"
 #include "chrome/common/chrome_features.h"
@@ -134,10 +135,14 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
 
   tool_provider_->StopAllTasks();
 
-  // Verify task is now in inactive tasks
+  // Tasks are deleted asynchronously.
+  EXPECT_TRUE(task);
+  EXPECT_EQ(task->GetState(), actor::ActorTask::State::kFinished);
+  actor::WaitForPostedTask();
+
+  // Verify task is now not in inactive tasks.
   EXPECT_EQ(actor_service_->GetActiveTasks().count(task_id), 0u);
-  // With kActorDoNotStoreCompletedTasks feature turned on by default upstream,
-  // completed tasks aren't stored in inactive tasks.
+  // Inactive tasks aren't stored.
   ASSERT_FALSE(task);
 }
 

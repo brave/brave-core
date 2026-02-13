@@ -305,6 +305,7 @@ source_set("unit_tests") {
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common:test_support",
       "//chrome/browser/actor",
+      "//chrome/browser/actor:test_support",
       "//chrome/browser/actor/ui:test_support",
       "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
