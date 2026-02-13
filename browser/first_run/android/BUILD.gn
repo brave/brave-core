@@ -27,7 +27,6 @@ android_library("java") {
 android_resources("java_resources") {
   sources = [
     "java/res/animator/ic_brave_splash_scale.xml",
-    "java/res/drawable-night/ic_brave_brand.xml",
     "java/res/drawable/ic_brave_brand.xml",
     "java/res/drawable/ic_brave_splash.xml",
     "java/res/drawable/ic_brave_splash_animated.xml",
@@ -48,6 +47,8 @@ android_resources("java_resources") {
     "java/res/layout/make_brave_better.xml",
     "java/res/raw-night/no_video_ads.json",
     "java/res/raw/no_video_ads.json",
+    "java/res/values-night/colors.xml",
+    "java/res/values/colors.xml",
   ]
 }
 
