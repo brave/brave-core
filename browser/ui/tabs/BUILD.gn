@@ -40,6 +40,9 @@ if (!is_android) {
     if (enable_ai_chat) {
       deps += [ "//brave/browser/ai_chat" ]
     }
+    if (enable_containers) {
+      deps += [ "//brave/browser/ui/views/page_action:page_action" ]
+    }
   }
 
   # This source set is counterpart to the upstream `tab_strip` source set.

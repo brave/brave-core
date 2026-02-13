@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/page_action/page_action_icon_type.cc b/chrome/browser/ui/page_action/page_action_icon_type.cc
+index f061a0f2e7f0f33a96231a54110c358153c6d581..910f090d7f9761e2089e26fa3bf1f966f5a34202 100644
+--- a/chrome/browser/ui/page_action/page_action_icon_type.cc
++++ b/chrome/browser/ui/page_action/page_action_icon_type.cc
+@@ -77,6 +77,11 @@ bool IsPageActionMigrated(PageActionIconType page_action) {
+     return false;
+   }
+ 
++  // Brave: Partitioned Storage (container) page action is migrated.
++  if (static_cast<int>(page_action) == -6) {
++    return true;
++  }
++
+   // Page actions on the new framework that don't have an implementation on the legacy path
+   // and don't have a feature param.
+   if (page_action == PageActionIconType::kContextualSidePanel ||

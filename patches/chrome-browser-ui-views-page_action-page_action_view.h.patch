@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_view.h b/chrome/browser/ui/views/page_action/page_action_view.h
+index 06021537328e660c9444eb82705b856f15293438..f8de02a9fe0d3d7d262f48ba5b73620ca9bd745e 100644
+--- a/chrome/browser/ui/views/page_action/page_action_view.h
++++ b/chrome/browser/ui/views/page_action/page_action_view.h
+@@ -75,6 +75,8 @@ class PageActionView : public IconLabelBubbleView,
+   void OnThemeChanged() override;
+   void OnTouchUiChanged() override;
+   void UpdateBorder() override;
++  bool ShouldShowLabel() const override;
++  bool ShouldAlwaysShowLabel() const override;
+   bool ShouldShowLabelAfterAnimation() const override;
+   bool ShouldShowSeparator() const override;
+   bool ShouldUpdateInkDropOnClickCanceled() const override;

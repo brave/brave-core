@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h b/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h
+index 9dae542927bd5c9e5924fdd6654d94c7d61f2394..531a66991cbcc74f2b3b71d6b770d0f1cd86d143 100644
+--- a/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h
++++ b/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h
+@@ -33,6 +33,7 @@ class MockPageActionController : public PageActionController {
+               (actions::ActionId, const std::u16string&),
+               (override));
+   MOCK_METHOD(void, ClearOverrideText, (actions::ActionId), (override));
++  MOCK_METHOD(void, SetAlwaysShowLabel, (actions::ActionId, bool), (override));
+   MOCK_METHOD(void,
+               OverrideAccessibleName,
+               (actions::ActionId, const std::u16string&),
+@@ -55,6 +56,13 @@ class MockPageActionController : public PageActionController {
+               (actions::ActionId, const std::u16string&),
+               (override));
+   MOCK_METHOD(void, ClearOverrideTooltip, (actions::ActionId), (override));
++  MOCK_METHOD(void,
++              OverrideChipColors,
++              (actions::ActionId,
++               const std::optional<SkColor>&,
++               const std::optional<SkColor>&),
++              (override));
++  MOCK_METHOD(void, ClearOverrideChipColors, (actions::ActionId), (override));
+   MOCK_METHOD(void,
+               AddObserver,
+               (actions::ActionId,

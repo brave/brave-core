@@ -1,0 +1,44 @@
+diff --git a/chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h b/chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h
+index e59f059285ada8f937cff73557976baa23379690..7f4b0f0a6f611c2e320cf829f3b2c44302bacf59 100644
+--- a/chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h
++++ b/chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h
+@@ -63,6 +63,10 @@ class MockPageActionModel : public PageActionModelInterface {
+               SetIsChipShowing,
+               (base::PassKey<PageActionController>, bool is_chip_showing),
+               (override));
++  MOCK_METHOD(void,
++              SetAlwaysShowLabel,
++              (base::PassKey<PageActionController>, bool),
++              (override));
+   MOCK_METHOD(void,
+               SetHasPinnedIcon,
+               (base::PassKey<PageActionController>, bool has_pinned_icon),
+@@ -92,6 +96,12 @@ class MockPageActionModel : public PageActionModelInterface {
+               (base::PassKey<PageActionController>,
+                const std::optional<std::u16string>& override_tooltip),
+               (override));
++  MOCK_METHOD(void,
++              SetOverrideChipColors,
++              (base::PassKey<PageActionController>,
++               const std::optional<SkColor>& override_background_color,
++               const std::optional<SkColor>& override_foreground_color),
++              (override));
+   MOCK_METHOD(void,
+               SetActionActive,
+               (base::PassKey<PageActionController>, bool is_active),
+@@ -104,6 +114,15 @@ class MockPageActionModel : public PageActionModelInterface {
+               SetExemptFromOmniboxSuppression,
+               (base::PassKey<PageActionController>, bool is_exempt),
+               (override));
++  MOCK_METHOD(std::optional<SkColor>,
++              GetOverrideBackgroundColor,
++              (),
++              (const, override));
++  MOCK_METHOD(std::optional<SkColor>,
++              GetOverrideForegroundColor,
++              (),
++              (const, override));
++  MOCK_METHOD(bool, GetAlwaysShowLabel, (), (const, override));
+   MOCK_METHOD(bool, IsEphemeral, (), (const, override));
+ };
+ 

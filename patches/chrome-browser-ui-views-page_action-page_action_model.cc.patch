@@ -1,0 +1,66 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_model.cc b/chrome/browser/ui/views/page_action/page_action_model.cc
+index da790df22207dce84b4b0ef8360b7979e84f2d17..a457ce17cdd52cce56898896821fac3ee73601dc 100644
+--- a/chrome/browser/ui/views/page_action/page_action_model.cc
++++ b/chrome/browser/ui/views/page_action/page_action_model.cc
+@@ -169,6 +169,14 @@ PageActionColorSource PageActionModel::GetColorSource() const {
+                                    : PageActionColorSource::kForeground;
+ }
+ 
++std::optional<SkColor> PageActionModel::GetOverrideBackgroundColor() const {
++  return override_background_color_;
++}
++
++std::optional<SkColor> PageActionModel::GetOverrideForegroundColor() const {
++  return override_foreground_color_;
++}
++
+ void PageActionModel::SetOverrideText(
+     base::PassKey<PageActionController>,
+     const std::optional<std::u16string>& override_text) {
+@@ -211,6 +219,19 @@ void PageActionModel::SetOverrideTooltip(
+   NotifyChange();
+ }
+ 
++void PageActionModel::SetOverrideChipColors(
++    base::PassKey<PageActionController>,
++    const std::optional<SkColor>& override_background_color,
++    const std::optional<SkColor>& override_foreground_color) {
++  if (override_background_color_ == override_background_color &&
++      override_foreground_color_ == override_foreground_color) {
++    return;
++  }
++  override_background_color_ = override_background_color;
++  override_foreground_color_ = override_foreground_color;
++  NotifyChange();
++}
++
+ void PageActionModel::SetIsSuppressedByOmnibox(
+     base::PassKey<PageActionController>,
+     bool is_suppressed) {
+@@ -242,6 +263,15 @@ void PageActionModel::SetIsChipShowing(base::PassKey<PageActionController>,
+   NotifyChange();
+ }
+ 
++void PageActionModel::SetAlwaysShowLabel(base::PassKey<PageActionController>,
++                                         bool always_show) {
++  if (always_show_label_ == always_show) {
++    return;
++  }
++  always_show_label_ = always_show;
++  NotifyChange();
++}
++
+ void PageActionModel::SetActionActive(base::PassKey<PageActionController>,
+                                       bool is_active) {
+   if (action_active_ == is_active) {
+@@ -268,6 +298,10 @@ void PageActionModel::NotifyChange() {
+                         *this);
+ }
+ 
++bool PageActionModel::GetAlwaysShowLabel() const {
++  return always_show_label_;
++}
++
+ bool PageActionModel::IsEphemeral() const {
+   return is_ephemeral_;
+ }

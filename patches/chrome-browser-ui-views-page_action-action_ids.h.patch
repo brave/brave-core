@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/page_action/action_ids.h b/chrome/browser/ui/views/page_action/action_ids.h
+index 5d4b2b5c732d3fef65dc9ddea6158580df74f2c6..4e5a520770086be81e822520ecd0ca34ec47b695 100644
+--- a/chrome/browser/ui/views/page_action/action_ids.h
++++ b/chrome/browser/ui/views/page_action/action_ids.h
+@@ -14,7 +14,7 @@ namespace page_actions {
+ // All ActionIds associated with a page action.
+ // For now, the order of the page actions will be based on their position in
+ // the array.
+-inline constexpr std::array<actions::ActionId, 25> kActionIds = {
++inline constexpr std::array<actions::ActionId, 26> kActionIds = {
+     kActionAiMode,
+     kActionSidePanelShowLensOverlayResults,
+     kActionLensOverlayHomework,
+@@ -35,6 +35,7 @@ inline constexpr std::array<actions::ActionId, 25> kActionIds = {
+     kActionFind,
+     kActionShowCookieControls,
+     kActionShowAddressesBubbleOrPage,
++    kActionShowPartitionedStorage,
+     kActionVirtualCardEnroll,
+     kActionFilledCardInformation,
+     kActionShowPaymentsBubbleOrPage,

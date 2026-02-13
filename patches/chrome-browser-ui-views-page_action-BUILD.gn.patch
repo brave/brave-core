@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/page_action/BUILD.gn b/chrome/browser/ui/views/page_action/BUILD.gn
+index 95e8e090c6e109b8649361b4165b11aee2bc1805..93f41748fa407eac194acbd1993dcde89591bbda 100644
+--- a/chrome/browser/ui/views/page_action/BUILD.gn
++++ b/chrome/browser/ui/views/page_action/BUILD.gn
+@@ -4,6 +4,8 @@
+ 
+ assert(!is_android, "Page actions are for desktop platforms only")
+ 
++import("//brave/components/containers/buildflags/buildflags.gni")
++
+ source_set("page_action") {
+   friend = [
+     ":impl",
+@@ -128,6 +130,10 @@ source_set("impl") {
+     "//ui/views",
+   ]
+ 
++  if (enable_containers) {
++    deps += [ "//brave/browser/ui/views/page_action:page_action" ]
++  }
++
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.
+   configs += [ "//build/config/compiler:no_exit_time_destructors" ]

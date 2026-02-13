@@ -672,6 +672,7 @@ source_set("ui") {
       "//brave/browser/ui/views:layout_provider",
       "//brave/browser/ui/views/frame",
       "//brave/browser/ui/views/location_bar",
+      "//brave/browser/ui/views/page_action",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",

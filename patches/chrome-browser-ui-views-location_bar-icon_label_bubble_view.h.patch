@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h
+index 1ab2f6ecfecc8f298bc2cc11cf4eaf8ccfe1c256..9565e707cdaf730f371ad1ff1e50c0b1ed8e9569 100644
+--- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h
++++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h
+@@ -110,6 +110,7 @@ class IconLabelBubbleView : public views::InkDropObserver,
+ 
+   // Returns true when the label should be visible.
+   virtual bool ShouldShowLabel() const;
++  virtual bool ShouldAlwaysShowLabel() const;
+ 
+   void SetBackgroundVisibility(BackgroundVisibility background_visibility);
+ 

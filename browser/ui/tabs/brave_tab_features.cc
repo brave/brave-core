@@ -18,6 +18,10 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
@@ -46,6 +50,15 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   // Expect upstream's Init to create the registry.
   CHECK(side_panel_registry());
   brave::RegisterContextualSidePanel(side_panel_registry(), tab.GetContents());
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (page_action_controller()) {
+    partitioned_storage_page_action_controller_ =
+        std::make_unique<page_actions::PartitionedStoragePageActionController>(
+            tab, *page_action_controller());
+    partitioned_storage_page_action_controller_->Init();
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {

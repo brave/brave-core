@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_properties_provider.cc b/chrome/browser/ui/views/page_action/page_action_properties_provider.cc
+index 3dfce9a2c3b183dc7f8d1c83033826e8349be6fb..e7a9b2582ebdc92b76eee7b94ce42360c33f0666 100644
+--- a/chrome/browser/ui/views/page_action/page_action_properties_provider.cc
++++ b/chrome/browser/ui/views/page_action/page_action_properties_provider.cc
+@@ -5,6 +5,7 @@
+ #include "chrome/browser/ui/views/page_action/page_action_properties_provider.h"
+ 
+ #include "base/containers/fixed_flat_map.h"
++#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+ #include "chrome/browser/ui/actions/chrome_action_id.h"
+ #include "chrome/browser/ui/browser_element_identifiers.h"
+ #include "chrome/browser/ui/page_action/page_action_icon_type.h"
+@@ -174,6 +175,15 @@ constexpr auto kPageActionProperties =
+                 .type = PageActionIconType::kAutofillAddress,
+             },
+         },
++        {
++            kActionShowPartitionedStorage,
++            {
++                .histogram_name = "PartitionedStorage",
++                .is_ephemeral = false,
++                .exempt_from_omnibox_suppression = false,
++                .type = brave::kPartitionedStorageActionIconType,
++            },
++        },
+         {
+             kActionVirtualCardEnroll,
+             {

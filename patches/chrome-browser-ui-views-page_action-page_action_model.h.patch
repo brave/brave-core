@@ -1,0 +1,95 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
+index d78b31798b488fdde784361dce940287253dbd3d..0bcd00601df703115ad15299d55f6df02e782d0c 100644
+--- a/chrome/browser/ui/views/page_action/page_action_model.h
++++ b/chrome/browser/ui/views/page_action/page_action_model.h
+@@ -13,6 +13,7 @@
+ #include "base/functional/callback_forward.h"
+ #include "base/observer_list.h"
+ #include "base/types/pass_key.h"
++#include "third_party/skia/include/core/SkColor.h"
+ #include "ui/base/models/image_model.h"
+ 
+ namespace actions {
+@@ -62,6 +63,10 @@ class PageActionModelInterface {
+   virtual void SetOverrideTooltip(
+       base::PassKey<PageActionController>,
+       const std::optional<std::u16string>& override_tooltip) = 0;
++  virtual void SetOverrideChipColors(
++      base::PassKey<PageActionController>,
++      const std::optional<SkColor>& override_background_color,
++      const std::optional<SkColor>& override_foreground_color) = 0;
+   virtual void SetActionActive(base::PassKey<PageActionController>,
+                                bool is_active) = 0;
+   virtual void SetIsSuppressedByOmnibox(base::PassKey<PageActionController>,
+@@ -71,6 +76,8 @@ class PageActionModelInterface {
+       bool is_exempt) = 0;
+   virtual void SetIsChipShowing(base::PassKey<PageActionController>,
+                                 bool is_chip_showing) = 0;
++  virtual void SetAlwaysShowLabel(base::PassKey<PageActionController>,
++                                  bool always_show) = 0;
+ 
+   virtual bool GetVisible() const = 0;
+   virtual bool IsChipShowing() const = 0;
+@@ -85,7 +92,9 @@ class PageActionModelInterface {
+   virtual bool GetActionItemIsShowingBubble() const = 0;
+   virtual bool GetActionActive() const = 0;
+   virtual PageActionColorSource GetColorSource() const = 0;
+-
++  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
++  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
++  virtual bool GetAlwaysShowLabel() const = 0;
+   virtual bool IsEphemeral() const = 0;
+ };
+ 
+@@ -130,7 +139,10 @@ class PageActionModel : public PageActionModelInterface {
+   void SetOverrideTooltip(
+       base::PassKey<PageActionController>,
+       const std::optional<std::u16string>& override_tooltip) override;
+-
++  void SetOverrideChipColors(
++      base::PassKey<PageActionController>,
++      const std::optional<SkColor>& override_background_color,
++      const std::optional<SkColor>& override_foreground_color) override;
+   void SetActionActive(base::PassKey<PageActionController>,
+                        bool is_active) override;
+ 
+@@ -142,6 +154,8 @@ class PageActionModel : public PageActionModelInterface {
+ 
+   void SetIsChipShowing(base::PassKey<PageActionController>,
+                         bool is_chip_showing) override;
++  void SetAlwaysShowLabel(base::PassKey<PageActionController>,
++                          bool always_show) override;
+ 
+   // The model distills all visibility properties into a single result.
+   bool GetVisible() const override;
+@@ -158,7 +172,9 @@ class PageActionModel : public PageActionModelInterface {
+   bool GetActionItemIsShowingBubble() const override;
+   bool GetActionActive() const override;
+   PageActionColorSource GetColorSource() const override;
+-
++  std::optional<SkColor> GetOverrideBackgroundColor() const override;
++  std::optional<SkColor> GetOverrideForegroundColor() const override;
++  bool GetAlwaysShowLabel() const override;
+   bool IsEphemeral() const override;
+ 
+  private:
+@@ -208,7 +224,8 @@ class PageActionModel : public PageActionModelInterface {
+   // When set, it will always take precedence over `action_item_image_`.
+   std::optional<ui::ImageModel> override_image_;
+   std::optional<PageActionColorSource> color_source_;
+-
++  std::optional<SkColor> override_background_color_;
++  std::optional<SkColor> override_foreground_color_;
+   // When set, it will always take precedence over `text_`.
+   std::optional<std::u16string> override_text_;
+ 
+@@ -227,6 +244,9 @@ class PageActionModel : public PageActionModelInterface {
+   // by `is_suppressed_by_omnibox_` variable (eg. AI mode page action).
+   bool is_exempt_from_omnibox_suppression_ = false;
+ 
++  // When true, the view should always show the label (e.g. container name).
++  bool always_show_label_ = false;
++
+   // Flag used to disallow reentrant behaviour.
+   bool is_notifying_observers_ = false;
+ 

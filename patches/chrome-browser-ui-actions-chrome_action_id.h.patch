@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index 0c2d565adb0ab25b237163961215535c748431fd..06f52abf21c808d8a7ca17ef87a431f044aedb3f 100644
+index 679e10b0e589a9d2a7d984fa5499efbe35983864..bfc91cc6e0ec2df4428e2e48edce0b6062ce7315 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
 @@ -553,6 +553,7 @@
@@ -10,3 +10,11 @@ index 0c2d565adb0ab25b237163961215535c748431fd..06f52abf21c808d8a7ca17ef87a431f0
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
    E(kActionSidePanelShowCustomizeChrome) \
+@@ -596,6 +597,7 @@
+   E(kActionCopyUrl, IDC_COPY_URL) \
+   E(kActionTabGroupsMenu, IDC_SAVED_TAB_GROUPS_MENU) \
+   E(kActionTabSearch, IDC_TAB_SEARCH) \
++  E(kActionShowPartitionedStorage) \
+   E(kActionSplitTab, IDC_SPLIT_TAB) \
+ 
+ #define CHROME_ACTION_IDS \
