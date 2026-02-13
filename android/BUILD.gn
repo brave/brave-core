@@ -137,7 +137,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable-night/ic_youtube_skip_ads.xml",
     "java/brave-res/drawable-night/incognito_history_placeholder_image.xml",
     "java/brave-res/drawable-night/new_wallet.xml",
-    "java/brave-res/drawable-night/onboarding_background.xml",
     "java/brave-res/drawable-night/phone_recent_tab_empty_state_illustration.xml",
     "java/brave-res/drawable-night/reading_list_empty_state_illustration.xml",
     "java/brave-res/drawable-night/restore_wallet.xml",
