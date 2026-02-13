@@ -95,7 +95,7 @@
     <color name="brave_sync_border_color">@color/baseline_neutral_20</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
 
-    <color name="container_background">#1c1c1d</color>
+    <color name="container_background">@color/primary_50</color>
     <color name="divider_interactive">#7686ec</color>
     <color name="systemfeedback_error_icon">#ff7f72</color>
     <color name="systemfeedback_error_background">#4d0103</color>

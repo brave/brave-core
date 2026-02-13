@@ -316,7 +316,7 @@
         <item name="shapeAppearance">@style/ShapeAppearanceRoundedCorners</item>
         <item name="shouldRemoveExpandedCorners">false</item>
         <item name="behavior_skipCollapsed">true</item>
-        <item name="backgroundTint">@color/container_background</item>
+        <item name="backgroundTint">@color/primary_50</item>
     </style>
 
     <style name="ShapeAppearanceRoundedCorners" parent="ShapeAppearance.MaterialComponents.LargeComponent">

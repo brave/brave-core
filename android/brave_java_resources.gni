@@ -87,6 +87,10 @@ brave_java_resources = [
   "java/res/values/brave_colors.xml",
   "java/res/values/brave_dimens.xml",
   "java/res/xml/secure_dns_settings.xml",
+  # "../../brave/node_modules/@brave/leo/tokens/android/values/colors.xml",
+  # "../../brave/node_modules/@brave/leo/tokens/android/values-night/colors.xml",
+  "$root_gen_dir/brave/android/nala/values/colors.xml",
+  "$root_gen_dir/brave/android/nala/values-night/colors.xml",
 ]
 
 brave_base_module_resources =
