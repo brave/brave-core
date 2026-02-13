@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 brave_browser_perf_sources = [
@@ -17,7 +18,6 @@ brave_browser_perf_deps = [
   "//base",
   "//brave/components/brave_ads/buildflags",
   "//brave/components/brave_news/common/buildflags",
-  "//brave/components/brave_rewards/content",
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_shields/core/browser",
   "//brave/components/brave_shields/core/common/",
@@ -26,6 +26,10 @@ brave_browser_perf_deps = [
 
 if (enable_brave_ads) {
   brave_browser_perf_deps += [ "//brave/components/brave_ads/core" ]
+}
+
+if (enable_brave_rewards) {
+  brave_browser_perf_deps += [ "//brave/components/brave_rewards/content" ]
 }
 
 if (enable_speedreader) {

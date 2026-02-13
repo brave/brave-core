@@ -12,6 +12,7 @@ include_rules += [
   "+brave/components/constants",
   "+brave/components/services/bat_rewards",
   "+brave/components/services/brave_wallet",
+  "+brave/components/brave_rewards/core/buildflags",
   "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/services/tor",
   "+brave/components/tor/buildflags",
