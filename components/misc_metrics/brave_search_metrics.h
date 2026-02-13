@@ -20,6 +20,10 @@ inline constexpr char kSearchDailyQueriesBraveDefaultHistogramName[] =
     "Brave.Search.DailyQueries.BraveDefault";
 inline constexpr char kSearchDailyQueriesGoogleDefaultHistogramName[] =
     "Brave.Search.DailyQueries.GoogleDefault";
+inline constexpr char kSearchDailyQueriesDDGDefaultHistogramName[] =
+    "Brave.Search.DailyQueries.DDGDefault";
+inline constexpr char kSearchDailyQueriesYahooDefaultHistogramName[] =
+    "Brave.Search.DailyQueries.YahooDefault";
 inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
     "Brave.Search.DailyQueries.OtherDefault";
 

@@ -126,6 +126,10 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
       kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesBraveDefaultHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kSearchDailyQueriesDDGDefaultHistogramName,
+                                     0);
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesYahooDefaultHistogramName, 0);
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesOtherDefaultHistogramName, 0);
 
@@ -147,6 +151,10 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
       kSearchDailyQueriesBraveDefaultHistogramName, 0);
   histogram_tester_.ExpectUniqueSample(
       kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
+  histogram_tester_.ExpectTotalCount(kSearchDailyQueriesDDGDefaultHistogramName,
+                                     0);
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesYahooDefaultHistogramName, 0);
 
   // Switch to Brave Search.
   SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
@@ -166,6 +174,10 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
       kSearchDailyQueriesOtherDefaultHistogramName, 2, 1);
   histogram_tester_.ExpectUniqueSample(
       kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
+  histogram_tester_.ExpectTotalCount(kSearchDailyQueriesDDGDefaultHistogramName,
+                                     0);
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesYahooDefaultHistogramName, 0);
 }
 
 TEST_F(BraveSearchMetricsUnitTest, CountsClearedAfterReport) {

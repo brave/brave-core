@@ -31,7 +31,8 @@ constexpr auto kDailyQueriesHistogramMap =
     base::MakeFixedFlatMap<SearchEngineType, const char*>({
         {SEARCH_ENGINE_BRAVE, kSearchDailyQueriesBraveDefaultHistogramName},
         {SEARCH_ENGINE_GOOGLE, kSearchDailyQueriesGoogleDefaultHistogramName},
-        {SEARCH_ENGINE_OTHER, kSearchDailyQueriesOtherDefaultHistogramName},
+        {SEARCH_ENGINE_DUCKDUCKGO, kSearchDailyQueriesDDGDefaultHistogramName},
+        {SEARCH_ENGINE_YAHOO, kSearchDailyQueriesYahooDefaultHistogramName},
     });
 
 }  // namespace
@@ -57,8 +58,7 @@ void BraveSearchMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void BraveSearchMetrics::RecordBraveQuery() {
-  ScopedDictPrefUpdate update(local_state_,
-                              kMiscMetricsBraveSearchQueryCounts);
+  ScopedDictPrefUpdate update(local_state_, kMiscMetricsBraveSearchQueryCounts);
   int current = update->FindInt(kQueriesCountKey).value_or(0);
   update->Set(kQueriesCountKey, current + 1);
 }
@@ -84,18 +84,18 @@ void BraveSearchMetrics::ReportDailyQueries() {
 
   SearchEngineType engine_type =
       provider->GetEngineType(template_url_service_->search_terms_data());
-  if (engine_type != SEARCH_ENGINE_BRAVE &&
-      engine_type != SEARCH_ENGINE_GOOGLE) {
-    engine_type = SEARCH_ENGINE_OTHER;
-  }
 
   const base::Value::Dict& counts =
       local_state_->GetDict(kMiscMetricsBraveSearchQueryCounts);
   int sum = counts.FindInt(kQueriesCountKey).value_or(0);
 
-  p3a_utils::RecordToHistogramBucket(
-      CHECK_DEREF(base::FindOrNull(kDailyQueriesHistogramMap, engine_type)),
-      kDailyQueriesBuckets, sum);
+  auto* histogram_name_ptr =
+      base::FindOrNull(kDailyQueriesHistogramMap, engine_type);
+  auto* histogram_name = histogram_name_ptr
+                             ? *histogram_name_ptr
+                             : kSearchDailyQueriesOtherDefaultHistogramName;
+
+  p3a_utils::RecordToHistogramBucket(histogram_name, kDailyQueriesBuckets, sum);
 
   local_state_->SetTime(kMiscMetricsBraveSearchReportFrameStartTime, now);
   local_state_->SetDict(kMiscMetricsBraveSearchQueryCounts, {});
