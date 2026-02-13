@@ -34,7 +34,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
   using ConsentCallback =
-      base::OnceCallback<void(const base::ListValue disabled_checks)>;
+      base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -45,6 +45,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
     // Show the consent dialog to the user with the provided data.
     virtual void Show(const url::Origin& origin,
                       PsstWebsiteSettings dialog_data,
+                      const std::string& site_name,
+                      base::ListValue tasks,
                       ConsentCallback apply_changes_callback) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
@@ -92,6 +94,13 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
+
+  void OnUserAcceptedPsstSettings(
+      int id,
+      const bool is_initial,
+      std::unique_ptr<MatchedRule> rule,
+      std::optional<base::DictValue> script_params,
+      const std::vector<std::string>& disabled_checks);
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;

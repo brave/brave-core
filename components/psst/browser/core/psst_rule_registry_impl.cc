@@ -70,7 +70,7 @@ void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path,
                                      OnLoadCallback cb) {
   CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
   component_path_ = path;
-
+LOG(INFO) << "[PSST] Loading rules from path: " << path;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
@@ -80,11 +80,16 @@ void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path,
 
 void PsstRuleRegistryImpl::OnLoadRules(OnLoadCallback cb,
                                        const std::string& contents) {
+LOG(INFO) << "[PSST] PsstRuleRegistryImpl::OnLoadRules with contents: " << contents;
   auto parsed_rules = PsstRule::ParseRules(contents);
   if (parsed_rules) {
     rules_ = std::move(parsed_rules.value());
   }
 
+  if(!cb) {
+    return;
+  }
+  
   std::move(cb).Run(contents, rules_);
 }
 

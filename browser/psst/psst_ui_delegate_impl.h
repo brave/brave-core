@@ -21,9 +21,12 @@ class WebContents;
 
 namespace psst {
 
+class PsstUiPresenter;
+
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
-  explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service);
+  explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
+                              std::unique_ptr<PsstUiPresenter> ui_presenter);
   ~PsstUiDelegateImpl() override;
 
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
@@ -31,6 +34,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   void Show(const url::Origin& origin,
             PsstWebsiteSettings dialog_data,
+            const std::string& site_name,
+            base::ListValue tasks,
             PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
       override;
 
@@ -46,11 +51,14 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  private:
   void OnUserAcceptedPsstSettings(const url::Origin& origin,
                                   base::ListValue urls_to_skip);
+  void OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
+  std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace psst
