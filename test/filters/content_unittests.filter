@@ -7,6 +7,8 @@
 
 # These tests fail because we disable prerender
 -All/PrerenderHostRegistryLimitGroupTest.*
+-PrerenderHandleImplTest.CallbackCalledOnFailure
+-PrerenderHandleImplTest.OnResponseHeadersReceived
 
 # This test fails because we disable attribution reporting by stubbing out
 # `BravePrivacySandboxSettings::IsAttributionReportingAllowed`
