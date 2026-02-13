@@ -336,4 +336,44 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingMixedLineEndings) {
   EXPECT_EQ(completions, std::vector<std::string>({"lf", "cr", "crlf"}));
 }
 
+TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingEscapedLineBreaks) {
+  // Verify that escaped line breaks (\\n, \\r\\n) inside JSON
+  // string values are preserved and don't interfere with SSE line
+  // splitting.
+  base::RunLoop run_loop;
+  SendMessageSSEJSON("data: {\"completion\": \"line1\\nline2\\r\\nline3\"}\n\n",
+                     base::BindRepeating(
+                         [](base::RunLoop* loop, ValueOrError result) {
+                           ASSERT_TRUE(result.has_value());
+                           ASSERT_TRUE(result->is_dict());
+                           const std::string* completion =
+                               result->GetDict().FindString("completion");
+                           ASSERT_TRUE(completion);
+                           EXPECT_EQ("line1\nline2\r\nline3", *completion);
+                           loop->Quit();
+                         },
+                         &run_loop));
+  run_loop.Run();
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingEscapedDoubleLineBreaks) {
+  // Verify that escaped double line breaks (\\n\\n) inside JSON
+  // string values are preserved — these look like SSE event
+  // separators but should not be treated as such.
+  base::RunLoop run_loop;
+  SendMessageSSEJSON("data: {\"completion\": \"para1\\n\\npara2\"}\n\n",
+                     base::BindRepeating(
+                         [](base::RunLoop* loop, ValueOrError result) {
+                           ASSERT_TRUE(result.has_value());
+                           ASSERT_TRUE(result->is_dict());
+                           const std::string* completion =
+                               result->GetDict().FindString("completion");
+                           ASSERT_TRUE(completion);
+                           EXPECT_EQ("para1\n\npara2", *completion);
+                           loop->Quit();
+                         },
+                         &run_loop));
+  run_loop.Run();
+}
+
 }  // namespace api_request_helper
