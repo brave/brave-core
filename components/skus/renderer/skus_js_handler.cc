@@ -72,6 +72,8 @@ bool SkusJSHandler::EnsureConnected() {
 void SkusJSHandler::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  RenderFrameObserver::Dispose();
+
 #if DCHECK_IS_ON()
   shutdown_called_ = true;
 #endif
