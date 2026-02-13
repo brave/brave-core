@@ -242,7 +242,8 @@ exports.update = () => {
     ),
   ])
 
-  let explicitSourceFiles = new Set()
+  // When the channel is set, we need to copy the channel-specific files.
+  let channelSpecificSourceFiles = new Set()
   for (const branding of ['brave', 'brave_origin']) {
     // Set proper branding file.
     const brandingSource = path.join(
@@ -252,7 +253,7 @@ exports.update = () => {
       'BRANDING' + (config.channel ? `.${config.channel}` : ''),
     )
     const brandingDest = path.join(chromeAppDir, 'theme', branding, 'BRANDING')
-    explicitSourceFiles[brandingDest] = brandingSource
+    channelSpecificSourceFiles[brandingDest] = brandingSource
 
     // Set proper mac app icon for channel to chrome/app/theme/mac/app.icns.
     // Each channel's app icons are stored in
@@ -273,7 +274,7 @@ exports.update = () => {
       'mac',
       'app.icns',
     )
-    explicitSourceFiles[iconDest] = iconSource
+    channelSpecificSourceFiles[iconDest] = iconSource
 
     // Set proper mac app asset catalog for channel to
     // chrome/app/theme/mac/Assets.car. Each channel's resource catalog is
@@ -294,7 +295,7 @@ exports.update = () => {
       'mac',
       'Assets.car',
     )
-    explicitSourceFiles[assetCatalogDest] = assetCatalogSource
+    channelSpecificSourceFiles[assetCatalogDest] = assetCatalogSource
   }
 
   for (const [source, output] of fileMap) {
@@ -322,7 +323,7 @@ exports.update = () => {
         output,
         path.relative(source, sourceFile),
       )
-      sourceFile = explicitSourceFiles[destinationFile] || sourceFile
+      sourceFile = channelSpecificSourceFiles[destinationFile] || sourceFile
       if (
         !fs.existsSync(destinationFile)
         || util.calculateFileChecksum(sourceFile)
