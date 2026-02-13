@@ -634,6 +634,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "when the conversation is created.",                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-conversation-api-v2",                                 \
+          "Brave AI Chat Conversation API V2",                                 \
+          "Enables Conversation API V2 for AI Chat",                           \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),     \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
