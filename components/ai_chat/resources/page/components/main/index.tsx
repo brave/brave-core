@@ -345,12 +345,15 @@ function Main() {
               {showSuggestions && (
                 <div className={styles.suggestionsContainer}>
                   <div className={styles.questionsList}>
-                    {conversationContext.suggestedQuestions.map((question) => (
-                      <SuggestedQuestion
-                        key={question}
-                        question={question}
-                      />
-                    ))}
+                    {conversationContext.suggestedQuestions.map(
+                      (question, i) => (
+                        <SuggestedQuestion
+                          key={question}
+                          question={question}
+                          index={i}
+                        />
+                      ),
+                    )}
                     {SUGGESTION_STATUS_SHOW_BUTTON.has(
                       conversationContext.suggestionStatus,
                     )
