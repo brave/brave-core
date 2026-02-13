@@ -11,7 +11,6 @@
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "content/public/browser/web_contents.h"
-#include "url/origin.h"
 
 AndroidWalletPageHandler::AndroidWalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,

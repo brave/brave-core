@@ -73,6 +73,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
                           origin:(URLOriginIOS*)origin
                isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  if (!origin) {
+    return nil;
+  }
   auto* profile = _profile.get();
   if (isPrivateBrowsing) {
     profile = profile->GetOffTheRecordProfile();
@@ -84,8 +87,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     return nil;
   }
 
-  url::Origin committed_origin =
-      origin ? url::Origin([origin underlyingOrigin]) : url::Origin();
+  url::Origin committed_origin([origin underlyingOrigin]);
 
   auto provider = std::make_unique<brave_wallet::EthereumProviderImpl>(
       ios::HostContentSettingsMapFactory::GetForProfile(profile),
@@ -102,6 +104,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
                         origin:(URLOriginIOS*)origin
              isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  if (!origin) {
+    return nil;
+  }
   auto* profile = _profile.get();
   if (isPrivateBrowsing) {
     profile = profile->GetOffTheRecordProfile();
@@ -119,8 +124,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     return nil;
   }
 
-  url::Origin committed_origin =
-      origin ? url::Origin([origin underlyingOrigin]) : url::Origin();
+  url::Origin committed_origin([origin underlyingOrigin]);
 
   auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
       *host_content_settings_map, brave_wallet_service,
