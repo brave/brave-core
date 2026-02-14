@@ -36,10 +36,7 @@ export class BraveAccountEmailInputElement extends CrLitElement {
     innerEvent: Event & { target: HTMLInputElement }
   }) {
     this.email = detail.value.trim()
-    // Remove the empty check once <leo-input> forwards attributes (e.g.
-    // required) to the internal <input> element inside the shadow DOM.
-    this.isFormatValid =
-      this.email.length > 0 && detail.innerEvent.target.validity.valid
+    this.isFormatValid = detail.innerEvent.target.validity.valid
     this.fire('email-input', {
       email: this.email,
       isValid: this.isValid,
