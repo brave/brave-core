@@ -17,7 +17,7 @@ const genGradle = (
   config.buildConfig = buildConfig
   config.update(options)
   Log.progressScope('Generating Gradle files', () => {
-    braveArgs = [
+    let braveArgs = [
       'build/android/gradle/generate_gradle.py',
       '--output-directory',
       config.outputDir,

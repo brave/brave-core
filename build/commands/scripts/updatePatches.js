@@ -49,7 +49,7 @@ function loadChromiumPathFilter(filePath) {
   }
 }
 
-chromiumPathFilter = loadChromiumPathFilter(
+const chromiumPathFilter = loadChromiumPathFilter(
   path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'),
 )
 

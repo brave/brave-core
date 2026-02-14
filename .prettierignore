@@ -35,7 +35,6 @@ components/ai_chat/core/browser/tools/tools.md
 chromium_presubmit_config.json5
 jest.config.js
 snapcraft.yaml
-.eslintrc.js
 
 # Needs to be refactored before being formatted
 /build/commands/lib/util.js

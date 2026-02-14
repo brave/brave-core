@@ -276,7 +276,8 @@ class TeamcityReporter {
 
       // https://www.jetbrains.com/help/teamcity/service-messages.html#Escaped+Values
       const escapedParamValue = strParamValue
-        // Remove ANSI escape sequences (colors, styles, etc.).
+        // Remove ANSI escape sequences (colors, styles, etc.)
+        // eslint-disable-next-line no-control-regex
         .replace(/\u001B\[\d+(;\d+)*m/g, '')
         // Replace Teamcity Service Messages special characters.
         .replace(/[\n\r'|[\]]/g, (match) => {

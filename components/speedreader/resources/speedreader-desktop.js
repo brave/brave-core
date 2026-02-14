@@ -68,7 +68,7 @@ class speedreaderUtils {
         const wpm = this.speedreaderData.averageWordsPerMinute
         const minutes = Math.ceil(words / wpm)
 
-        readTimeDiv.innerText = minutes + ' ' + speedreaderData.minutesText
+        readTimeDiv.innerText = minutes + ' ' + this.speedreaderData.minutesText
     }
 
     static getTextContent = (element) => {
@@ -126,7 +126,7 @@ class speedreaderUtils {
             button.classList.add('tts-circle')
             const playButton = document.createElement('span')
             playButton.classList.add('tts-paragraph-player-button', 'tts-play-icon')
-            playButton.title = speedreaderData.playButtonTitle
+            playButton.title = this.speedreaderData.playButtonTitle
             playButton.onclick = button.onclick = (ev) => {
                 window.speedreader.ttsPlayPause(parseInt(p.getAttribute('tts-paragraph-index')))
             }
@@ -157,6 +157,7 @@ class speedreaderUtils {
         let currentParent = null
         let paragraphs = []
         let currentNode = null;
+        // eslint-disable-next-line no-cond-assign
         while (currentNode = nodes.nextNode()) {
             if (currentNode === nodes.root ||
                 isChildOf(currentNode, currentParent) ||
@@ -219,6 +220,7 @@ class speedreaderUtils {
         let startNode = null
         let endNode = null
         let node = null
+        // eslint-disable-next-line no-cond-assign
         while (node = nodes.nextNode()) {
             if (!startNode) {
                 if (start < node.textContent.length) {

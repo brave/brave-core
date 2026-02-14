@@ -190,7 +190,7 @@ const runPrettier = async (files, dryRun) => {
   const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
-    throw new RuntimeError(`${ignorePath} file not found`)
+    throw new Error(`${ignorePath} file not found`)
   }
 
   const prettierIssues = []
