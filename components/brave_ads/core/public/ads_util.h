@@ -10,7 +10,11 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
+class PrefService;
+
 namespace brave_ads {
+
+bool IsStagingEnvironment(PrefService& prefs);
 
 // Determines whether ads are supported in the user's region, returning `true`
 // if so, otherwise `false`.
