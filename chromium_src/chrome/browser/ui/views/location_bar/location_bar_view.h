@@ -8,6 +8,7 @@
 
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/location_bar/content_setting_image_view.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 
 #define GetBackgroundColorForTesting                             \
