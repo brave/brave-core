@@ -822,6 +822,29 @@ void BraveRenderViewContextMenu::SetAIEngineForTesting(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+  // Move "Open link in split view" to the last item of the first section (right
+  // before the first separator) when present.
+  std::optional<size_t> split_index =
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
+  if (split_index.has_value()) {
+    std::optional<size_t> separator_index;
+    for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
+      if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+        separator_index = i;
+        break;
+      }
+    }
+    if (separator_index.has_value() &&
+        split_index.value() < separator_index.value()) {
+      menu_model_.InsertItemAt(separator_index.value(),
+                               IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW,
+                               menu_model_.GetLabelAt(split_index.value()));
+      menu_model_.SetIcon(separator_index.value(),
+                          menu_model_.GetIconAt(split_index.value()));
+      menu_model_.RemoveItemAt(split_index.value());
+    }
+  }
+
   std::optional<size_t> index = menu_model_.GetIndexOfCommandId(
       IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
   if (index.has_value()) {
