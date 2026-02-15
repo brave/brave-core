@@ -177,6 +177,7 @@ class CommonOptions:
                                     config)
     elif options.config == 'smoke':
       args.no_report = True
+      options.verbose = True
       options.config = os.path.join(path_util.GetBravePerfConfigDir(),
                                     'smoke.json5')
       args.working_directory = os.path.join(path_util.GetSrcDir(),
