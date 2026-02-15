@@ -7,8 +7,10 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 
 #include <memory>
+#include <utility>
+#include <vector>
 
-#include "base/functional/callback_helpers.h"
+#include "base/functional/bind.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
