@@ -7,10 +7,9 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { AutoTabGroupsPageElement } from './auto_tab_groups_page.js'
 
 export function getHtml(this:  AutoTabGroupsPageElement) {
-  if (this.showFRE_) {
-    return this.getEnableTabFocusHtml_()
-  }
-  return html`<!--_html_template_start_-->
+  return this.showFRE_ ?
+      this.getEnableTabFocusHtml_() :
+      html`<!--_html_template_start_-->
     <div id="brave-tab-focus" class="brave-tab-focus">
       <div
         id="header"
