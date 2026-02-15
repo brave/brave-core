@@ -19,12 +19,28 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_scaled_resources.h"
+#include "extensions/buildflags/buildflags.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/color_utils.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/extension_web_ui.h"
+#endif
+
 namespace {
+
+// Returns a value indicating whether the specified URL is a chrome URL that has
+// been overridden by an extension.
+bool IsChromeURLOverridden(const GURL& url, Profile* profile) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  GURL override_url(url);
+  return ExtensionWebUI::HandleChromeURLOverride(&override_url, profile);
+#else
+  return false;
+#endif
+}
 
 // Returns the appropriate favicon for the NTP based on the current theme.
 ui::ImageModel GetThemedNTPFavicon(content::WebContents* contents) {
@@ -67,8 +83,10 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
   // Override favicon theming for some WebUIs.
   if (url.SchemeIs(content::kChromeUIScheme)) {
     if (url.host() == chrome::kChromeUINewTabHost) {
-      data.favicon = GetThemedNTPFavicon(contents);
-      data.should_themify_favicon = false;
+      if (!IsChromeURLOverridden(url, model->profile())) {
+        data.favicon = GetThemedNTPFavicon(contents);
+        data.should_themify_favicon = false;
+      }
     } else if (url.host() == kWelcomeHost || url.host() == kRewardsPageHost) {
       data.should_themify_favicon = false;
     }
