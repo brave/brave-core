@@ -18,12 +18,16 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
   private observer?: EmailAliasesServiceObserverInterface
 
   addObserver(observer: EmailAliasesServiceObserverInterface) {
-    expect(this.observer).toBeUndefined()
+    if (this.observer !== undefined) {
+      throw new Error('Expected observer to be undefined')
+    }
     this.observer = observer
   }
 
   notifyObserverAliasesUpdated(aliases: Alias[]) {
-    expect(this.observer).toBeDefined()
+    if (this.observer === undefined) {
+      throw new Error('Expected observer to be defined')
+    }
     this.observer?.onAliasesUpdated(aliases)
   }
 
@@ -32,7 +36,9 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
     email: string,
     errorMessage?: string,
   ) {
-    expect(this.observer).toBeDefined()
+    if (this.observer === undefined) {
+      throw new Error('Expected observer to be defined')
+    }
     this.observer?.onAuthStateChanged({ status, email, errorMessage })
   }
 

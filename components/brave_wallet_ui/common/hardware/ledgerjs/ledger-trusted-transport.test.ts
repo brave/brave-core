@@ -16,7 +16,7 @@ const createWindow = (): Window => {
   let iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
   if (!iframe.contentWindow) {
-    fail('transport should be defined')
+    throw new Error('transport should be defined')
   }
   // Use Object.defineProperty in order to assign to
   // window.crypto because standard assignment results in

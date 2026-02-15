@@ -36,12 +36,6 @@ describe('newTabReducer', () => {
     describe('ON_ENABLED_MAIN', () => {
       // TODO
     })
-    describe('CREATE_WALLET', () => {
-      // TODO
-    })
-    describe('ON_ENABLED_MAIN', () => {
-      // TODO
-    })
     describe('ON_WALLET_INITIALIZED', () => {
       // TODO
     })
