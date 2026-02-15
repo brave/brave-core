@@ -37,6 +37,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -49,6 +50,8 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/webview/webview.h"
+#include "ui/views/widget/widget.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -141,6 +144,39 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
       return;                                                            \
   }
 
+namespace {
+
+bool IsInSidePanel(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return false;
+  }
+
+  // Get the Widget containing the WebContents
+  auto* widget = views::Widget::GetTopLevelWidgetForNativeView(
+      web_contents->GetNativeView());
+  if (!widget || !widget->GetRootView()) {
+    return false;
+  }
+
+  // Look for a view with the side panel ID
+  views::View* side_panel_view = widget->GetRootView()->GetViewByID(
+      SidePanelWebUIView::kSidePanelWebViewId);
+  if (!side_panel_view) {
+    return false;
+  }
+
+  // Verify it's a WebView containing our WebContents
+  if (auto* webview = views::AsViewClass<views::WebView>(side_panel_view)) {
+    return webview->GetWebContents() == web_contents;
+  }
+
+  return false;
+}
+
+}  // namespace
+
+#define BRAVE_IS_IN_SIDE_PANEL IsInSidePanel(source_web_contents_)
+
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #define RegisterMenuShownCallbackForTesting \
@@ -154,6 +190,7 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
 #undef BRAVE_APPEND_SEARCH_PROVIDER
+#undef BRAVE_IS_IN_SIDE_PANEL
 
 namespace {
 
