@@ -19,7 +19,6 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/cppgc/persistent.h"
 
 namespace brave_wallet {
 
@@ -188,10 +187,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   mojo::Receiver<mojom::SolanaEventsListener> receiver_{this};
-
-  // Persistent self-reference to prevent GC from freeing this object while
-  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
-  cppgc::Persistent<JSSolanaProvider> self_;
 };
 
 }  // namespace brave_wallet
