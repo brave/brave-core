@@ -15,7 +15,6 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/cppgc/persistent.h"
 #include "v8/include/v8.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
