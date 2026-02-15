@@ -37,9 +37,7 @@
 namespace skus {
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
-    : content::RenderFrameObserver(render_frame) {
-  self_ = this;
-}
+    : content::RenderFrameObserver(render_frame) {}
 
 SkusJSHandler::~SkusJSHandler() = default;
 
@@ -103,7 +101,6 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
 }
 
 void SkusJSHandler::OnDestruct() {
-  self_.Clear();
 }
 
 // window.chrome.braveSkus.refresh_order
