@@ -10,6 +10,8 @@
 #include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "build/build_config.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
@@ -27,6 +29,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
+#include "ui/base/models/menu_model.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -182,6 +185,28 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Split view item should be last in first section (right before first
+  // separator).
+  std::optional<size_t> split_view_index =
+      context_menu->menu_model().GetIndexOfCommandId(
+          IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
+  ASSERT_TRUE(split_view_index.has_value())
+      << "Open link in split view should be present for link menu on desktop";
+  std::optional<size_t> first_separator_index;
+  for (size_t i = 0; i < context_menu->menu_model().GetItemCount(); ++i) {
+    if (context_menu->menu_model().GetTypeAt(i) ==
+        ui::MenuModel::TYPE_SEPARATOR) {
+      first_separator_index = i;
+      break;
+    }
+  }
+  ASSERT_TRUE(first_separator_index.has_value())
+      << "Menu should have at least one separator";
+  EXPECT_EQ(*split_view_index, *first_separator_index - 1)
+      << "Open link in split view should be right before the first separator";
+#endif
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
