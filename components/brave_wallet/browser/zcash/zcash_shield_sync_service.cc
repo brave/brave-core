@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
@@ -14,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_scan_blocks_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_verify_chain_state_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -308,7 +306,7 @@ ZCashRpc& ZCashShieldSyncService::zcash_rpc() {
   return context_.zcash_rpc.get();
 }
 
-base::SequenceBound<OrchardSyncState>& ZCashShieldSyncService::sync_state() {
+OrchardSyncState::SequenceBound& ZCashShieldSyncService::sync_state() {
   return context_.sync_state.get();
 }
 

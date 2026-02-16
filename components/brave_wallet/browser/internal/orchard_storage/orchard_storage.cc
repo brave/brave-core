@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
+#include "base/sequence_checker.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/types/expected_macros.h"
 #include "sql/meta_table.h"
@@ -157,7 +158,10 @@ OrchardStorage::AccountMeta& OrchardStorage::AccountMeta::operator=(
 
 OrchardStorage::OrchardStorage(const base::FilePath& path_to_database)
     : db_file_path_(path_to_database),
-      database_(sql::Database::Tag("OrchardStorageDatabase")) {}
+      database_(sql::Database::Tag("OrchardStorageDatabase")) {
+  // Instantiated on default sequence. Operates on dedicated sequence.
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
 
 OrchardStorage::~OrchardStorage() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

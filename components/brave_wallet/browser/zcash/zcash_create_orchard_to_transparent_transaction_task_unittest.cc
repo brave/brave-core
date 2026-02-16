@@ -10,18 +10,15 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/task/thread_pool.h"
-#include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
@@ -34,25 +31,14 @@ namespace {
 
 constexpr char kTransparentAddress[] = "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT";
 
-class MockZCashWalletService : public ZCashWalletService {
+class MockZCashWalletService : public TestingZCashWalletService {
  public:
-  MockZCashWalletService(base::FilePath zcash_data_path,
-                         KeyringService& keyring_service,
-                         std::unique_ptr<ZCashRpc> zcash_rpc)
-      : ZCashWalletService(zcash_data_path,
-                           keyring_service,
-                           std::move(zcash_rpc)) {}
+  using TestingZCashWalletService::TestingZCashWalletService;
 
   MOCK_METHOD3(DiscoverNextUnusedAddress,
                void(const mojom::AccountIdPtr& account_id,
                     bool change,
                     DiscoverNextUnusedAddressCallback callback));
-};
-
-class MockZCashRPC : public ZCashRpc {
- public:
-  MockZCashRPC() : ZCashRpc(nullptr, nullptr) {}
-  ~MockZCashRPC() override = default;
 };
 
 class MockOrchardSyncState : public OrchardSyncState {
@@ -67,25 +53,6 @@ class MockOrchardSyncState : public OrchardSyncState {
                      OrchardStorage::Error>(
           const mojom::AccountIdPtr& account_id,
           const OrchardAddrRawPart& internal_addr));
-};
-
-class MockOrchardSyncStateProxy : public OrchardSyncState {
- public:
-  MockOrchardSyncStateProxy(const base::FilePath& file_path,
-                            OrchardSyncState* instance)
-      : OrchardSyncState(file_path), instance_(instance) {}
-
-  ~MockOrchardSyncStateProxy() override {}
-
-  base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
-                 OrchardStorage::Error>
-  GetSpendableNotes(const mojom::AccountIdPtr& account_id,
-                    const OrchardAddrRawPart& internal_addr) override {
-    return instance_->GetSpendableNotes(account_id, internal_addr);
-  }
-
- private:
-  raw_ptr<OrchardSyncState> instance_;
 };
 
 }  // namespace
@@ -104,8 +71,6 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
         {}  // disabled features
     );
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -116,23 +81,17 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
 
-    zcash_rpc_ = std::make_unique<MockZCashRPC>();
-
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
-        db_path, *keyring_service_,
+        *keyring_service_,
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
-
-    mock_orchard_sync_state_ = std::make_unique<MockOrchardSyncState>(db_path);
-    sync_state_ = base::SequenceBound<MockOrchardSyncStateProxy>(
-        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-        db_path, mock_orchard_sync_state_.get());
+    zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        std::make_unique<MockOrchardSyncState>(temp_dir_.GetPath()));
 
     account_id_ = AccountUtils(keyring_service_.get())
                       .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0)
                       ->account_id.Clone();
   }
-
-  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   MockZCashWalletService& zcash_wallet_service() {
     return *zcash_wallet_service_;
@@ -143,7 +102,8 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
   mojom::AccountIdPtr& account_id() { return account_id_; }
 
   MockOrchardSyncState& mock_orchard_sync_state() {
-    return *mock_orchard_sync_state_;
+    return static_cast<MockOrchardSyncState&>(
+        *zcash_wallet_service_->sync_state_ptr);
   }
 
   base::PassKey<class ZCashCreateOrchardToTransparentTransactionTaskTest>
@@ -153,16 +113,14 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
   }
 
   ZCashActionContext action_context() {
-    auto internal_addr = keyring_service().GetOrchardRawBytes(
-        account_id(), mojom::ZCashKeyId::New(0, 1, 0));
-    return ZCashActionContext(*zcash_rpc_, *internal_addr, sync_state_,
-                              account_id_);
+    return zcash_wallet_service_->CreateActionContext(account_id());
   }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
  private:
   base::test::ScopedFeatureList feature_list_;
+  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -170,13 +128,7 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
   mojom::AccountIdPtr account_id_;
 
   std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
-
-  std::unique_ptr<MockOrchardSyncState> mock_orchard_sync_state_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
-
-  base::test::TaskEnvironment task_environment_;
 };
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {

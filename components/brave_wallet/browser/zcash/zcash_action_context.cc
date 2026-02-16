@@ -12,7 +12,7 @@ namespace brave_wallet {
 ZCashActionContext::ZCashActionContext(
     ZCashRpc& zcash_rpc,
     const std::optional<OrchardAddrRawPart>& account_internal_addr,
-    base::SequenceBound<OrchardSyncState>& sync_state,
+    OrchardSyncState::SequenceBound& sync_state,
     const mojom::AccountIdPtr& account_id)
     : zcash_rpc(zcash_rpc),
       account_internal_addr(account_internal_addr),

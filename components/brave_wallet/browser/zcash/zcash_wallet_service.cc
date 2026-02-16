@@ -14,11 +14,15 @@
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
-#include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_balance_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
@@ -29,15 +33,7 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
-
 namespace brave_wallet {
-
-inline constexpr char kOrchardDatabaseName[] = "orchard.db";
 
 namespace {
 
@@ -54,37 +50,21 @@ void ZCashWalletService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-ZCashWalletService::ZCashWalletService(
-    base::FilePath zcash_data_path,
-    KeyringService& keyring_service,
-    NetworkManager* network_manager,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : zcash_data_path_(std::move(zcash_data_path)),
-      keyring_service_(keyring_service),
-      zcash_rpc_(
-          std::make_unique<ZCashRpc>(network_manager, url_loader_factory)) {
-  keyring_service_->AddObserver(
-      keyring_observer_receiver_.BindNewPipeAndPassRemote());
-  sync_state_.emplace(
-      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-      zcash_data_path_.AppendASCII(kOrchardDatabaseName));
-}
-
-ZCashWalletService::ZCashWalletService(base::FilePath zcash_data_path,
-                                       KeyringService& keyring_service,
+ZCashWalletService::ZCashWalletService(KeyringService& keyring_service,
                                        std::unique_ptr<ZCashRpc> zcash_rpc)
-    : zcash_data_path_(std::move(zcash_data_path)),
-      keyring_service_(keyring_service),
-      zcash_rpc_(std::move(zcash_rpc)) {
-  CHECK_IS_TEST();
+    : keyring_service_(keyring_service), zcash_rpc_(std::move(zcash_rpc)) {
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
-  sync_state_.emplace(
-      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-      zcash_data_path_.AppendASCII(kOrchardDatabaseName));
 }
 
 ZCashWalletService::~ZCashWalletService() = default;
+
+void ZCashWalletService::SetupSyncState(
+    scoped_refptr<base::SequencedTaskRunner> sequence,
+    std::unique_ptr<OrchardSyncState> sync_state) {
+  CHECK(!sync_state_);
+  sync_state_.emplace(std::move(sequence), std::move(sync_state));
+}
 
 void ZCashWalletService::GetBalance(mojom::AccountIdPtr account_id,
                                     GetBalanceCallback callback) {
@@ -395,11 +375,6 @@ void ZCashWalletService::SignAndPostTransaction(
       zcash_transaction, std::move(callback)));
 }
 
-void ZCashWalletService::SetZCashRpcForTesting(
-    std::unique_ptr<ZCashRpc> zcash_rpc) {
-  zcash_rpc_ = std::move(zcash_rpc);
-}
-
 void ZCashWalletService::AddObserver(
     mojo::PendingRemote<mojom::ZCashWalletServiceObserver> observer) {
   observers_.Add(std::move(observer));
@@ -625,7 +600,8 @@ void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
       std::move(callback).Run("Sync in progress");
       return;
     }
-    sync_state_.AsyncCall(&OrchardSyncState::ResetAccountSyncState)
+    sync_state()
+        .AsyncCall(&OrchardSyncState::ResetAccountSyncState)
         .WithArgs(account_id.Clone())
         .Then(base::BindOnce(&ZCashWalletService::OnResetSyncState,
                              weak_ptr_factory_.GetWeakPtr(),
@@ -961,13 +937,9 @@ void ZCashWalletService::OnSyncFinished(const mojom::AccountIdPtr& account_id) {
   shield_sync_services_.erase(account_id);
 }
 
-base::SequenceBound<OrchardSyncState>& ZCashWalletService::sync_state() {
+OrchardSyncState::SequenceBound& ZCashWalletService::sync_state() {
+  CHECK(sync_state_);
   return sync_state_;
-}
-
-void ZCashWalletService::OverrideSyncStateForTesting(
-    base::SequenceBound<OrchardSyncState> sync_state) {
-  sync_state_ = std::move(sync_state);
 }
 
 void ZCashWalletService::GetTransactionStatus(
@@ -1031,7 +1003,7 @@ void ZCashWalletService::Locked() {
 void ZCashWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
   shield_sync_services_.clear();
-  sync_state_.AsyncCall(&OrchardSyncState::ResetDatabase);
+  sync_state().AsyncCall(&OrchardSyncState::ResetDatabase);
 }
 
 ZCashActionContext ZCashWalletService::CreateActionContext(
@@ -1041,8 +1013,7 @@ ZCashActionContext ZCashWalletService::CreateActionContext(
     internal_addr = keyring_service_->GetOrchardRawBytes(
         account_id, mojom::ZCashKeyId::New(account_id->account_index, 1, 0));
   }
-  return ZCashActionContext(*zcash_rpc_,
-                            internal_addr, sync_state_,
+  return ZCashActionContext(*zcash_rpc_, internal_addr, sync_state(),
                             account_id.Clone());
 }
 

@@ -11,11 +11,10 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -26,14 +25,9 @@ using testing::_;
 
 namespace {
 
-class MockZCashWalletService : public ZCashWalletService {
+class MockZCashWalletService : public TestingZCashWalletService {
  public:
-  MockZCashWalletService(base::FilePath zcash_data_path,
-                         KeyringService& keyring_service,
-                         std::unique_ptr<ZCashRpc> zcash_rpc)
-      : ZCashWalletService(zcash_data_path,
-                           keyring_service,
-                           std::move(zcash_rpc)) {}
+  using TestingZCashWalletService::TestingZCashWalletService;
 
   MOCK_METHOD2(GetChainTipStatus,
                void(mojom::AccountIdPtr account_id,
@@ -54,27 +48,23 @@ class ZCashAutoSyncManagerTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(temp_directory_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_directory_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-    zcash_rpc_ = std::make_unique<ZCashRpc>(nullptr, nullptr);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     mock_zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
-        db_path, *keyring_service_,
-        std::make_unique<ZCashRpc>(nullptr, nullptr));
+        *keyring_service_, std::make_unique<ZCashRpc>(nullptr, nullptr));
+    mock_zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        OrchardSyncState::CreateSyncState(temp_directory_.GetPath()));
+
     account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                           mojom::KeyringId::kZCashMainnet,
                                           mojom::AccountKind::kDerived, 0);
     zcash_auto_sync_manager_ = std::make_unique<ZCashAutoSyncManager>(
         *mock_zcash_wallet_service_,
-        ZCashActionContext(*zcash_rpc_, OrchardAddrRawPart(),
-                           mock_zcash_wallet_service_->sync_state(),
-                           account_id_));
+        mock_zcash_wallet_service_->CreateActionContext(account_id_));
   }
-
-  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
@@ -87,16 +77,14 @@ class ZCashAutoSyncManagerTest : public testing::Test {
   }
 
  private:
+  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_directory_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   mojom::AccountIdPtr account_id_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
   std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<ZCashRpc> zcash_rpc_;
   std::unique_ptr<MockZCashWalletService> mock_zcash_wallet_service_;
   std::unique_ptr<ZCashAutoSyncManager> zcash_auto_sync_manager_;
-  base::test::TaskEnvironment task_environment_;
 };
 
 TEST_F(ZCashAutoSyncManagerTest, InitialSync) {

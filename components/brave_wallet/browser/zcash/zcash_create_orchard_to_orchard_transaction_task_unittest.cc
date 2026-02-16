@@ -10,17 +10,15 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/task/thread_pool.h"
-#include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "base/threading/sequence_bound.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
@@ -51,25 +49,6 @@ class MockOrchardSyncState : public OrchardSyncState {
           const OrchardAddrRawPart& internal_addr));
 };
 
-class MockOrchardSyncStateProxy : public OrchardSyncState {
- public:
-  MockOrchardSyncStateProxy(const base::FilePath& file_path,
-                            OrchardSyncState* instance)
-      : OrchardSyncState(file_path), instance_(instance) {}
-
-  ~MockOrchardSyncStateProxy() override {}
-
-  base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
-                 OrchardStorage::Error>
-  GetSpendableNotes(const mojom::AccountIdPtr& account_id,
-                    const OrchardAddrRawPart& internal_addr) override {
-    return instance_->GetSpendableNotes(account_id, internal_addr);
-  }
-
- private:
-  raw_ptr<OrchardSyncState> instance_;
-};
-
 }  // namespace
 
 class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
@@ -86,8 +65,6 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     );
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -98,26 +75,21 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
 
-    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        db_path, *keyring_service_,
+    zcash_wallet_service_ = std::make_unique<TestingZCashWalletService>(
+        *keyring_service_,
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
-
-    mock_orchard_sync_state_ = std::make_unique<MockOrchardSyncState>(db_path);
-    sync_state_ = base::SequenceBound<MockOrchardSyncStateProxy>(
-        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-        db_path, mock_orchard_sync_state_.get());
-
-    zcash_rpc_ = std::make_unique<ZCashRpc>(nullptr, nullptr);
+    zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        std::make_unique<MockOrchardSyncState>(temp_dir_.GetPath()));
 
     account_id_ = AccountUtils(keyring_service_.get())
                       .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0)
                       ->account_id.Clone();
   }
 
-  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
-
   MockOrchardSyncState& mock_orchard_sync_state() {
-    return *mock_orchard_sync_state_;
+    return static_cast<MockOrchardSyncState&>(
+        *zcash_wallet_service_->sync_state_ptr);
   }
 
   ZCashWalletService& zcash_wallet_service() { return *zcash_wallet_service_; }
@@ -133,22 +105,18 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
   }
 
   ZCashActionContext action_context() {
-    auto internal_addr = keyring_service().GetOrchardRawBytes(
-        account_id(), mojom::ZCashKeyId::New(0, 1, 0));
-    return ZCashActionContext(*zcash_rpc_, *internal_addr, sync_state_,
-                              account_id_);
+    return zcash_wallet_service_->CreateActionContext(account_id());
   }
 
   ZCashActionContext action_context(const mojom::AccountIdPtr& account_id) {
-    auto internal_addr = keyring_service().GetOrchardRawBytes(
-        account_id, mojom::ZCashKeyId::New(0, 1, 0));
-    return ZCashActionContext(*zcash_rpc_, *internal_addr, sync_state_,
-                              account_id);
+    return zcash_wallet_service_->CreateActionContext(account_id);
   }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
  private:
+  base::test::TaskEnvironment task_environment_;
+
   base::test::ScopedFeatureList feature_list_;
 
   base::ScopedTempDir temp_dir_;
@@ -158,13 +126,7 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
   mojom::AccountIdPtr account_id_;
 
   std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<ZCashRpc> zcash_rpc_;
-  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
-
-  std::unique_ptr<MockOrchardSyncState> mock_orchard_sync_state_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
-
-  base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<TestingZCashWalletService> zcash_wallet_service_;
 };
 
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {

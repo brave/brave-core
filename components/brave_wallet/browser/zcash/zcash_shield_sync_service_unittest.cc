@@ -36,14 +36,9 @@ namespace brave_wallet {
 
 namespace {
 
-class MockZCashWalletService : public ZCashWalletService {
+class MockZCashWalletService : public TestingZCashWalletService {
  public:
-  MockZCashWalletService(base::FilePath zcash_data_path,
-                         KeyringService& keyring_service,
-                         std::unique_ptr<ZCashRpc> zcash_rpc)
-      : ZCashWalletService(zcash_data_path,
-                           keyring_service,
-                           std::move(zcash_rpc)) {}
+  using TestingZCashWalletService::TestingZCashWalletService;
 
   MOCK_METHOD1(OnSyncFinished, void(const mojom::AccountIdPtr& account_id));
 };
@@ -114,27 +109,21 @@ class ZCashShieldSyncServiceTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    sync_state_.emplace(
-        base::SequencedTaskRunner::GetCurrentDefault(),
-        // base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-        db_path.AppendASCII("orchard.db"));
 
     observer_ = std::make_unique<MockZCashShieldSyncServiceObserver>();
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
-        db_path, *keyring_service_,
-        std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
+        *keyring_service_, std::make_unique<testing::NiceMock<MockZCashRPC>>());
+    zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        OrchardSyncState::CreateSyncState(temp_dir_.GetPath()));
 
     ResetSyncService();
   }
-
-  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   void ResetSyncService() {
     zcash_account_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -146,8 +135,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
         zcash_wallet_service(),
-        ZCashActionContext(zcash_rpc_, OrchardAddrRawPart(), sync_state_,
-                           zcash_account_),
+        zcash_wallet_service().CreateActionContext(zcash_account_),
         account_birthday, fvk, observer_->GetWeakPtr());
 
     // Ensure previous OrchardStorage is destroyed on background thread
@@ -156,7 +144,9 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
   ZCashShieldSyncService* sync_service() { return sync_service_.get(); }
 
-  testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
+  MockZCashRPC& zcash_rpc() {
+    return static_cast<MockZCashRPC&>(zcash_wallet_service().zcash_rpc());
+  }
 
   MockZCashShieldSyncServiceObserver* observer() { return observer_.get(); }
 
@@ -165,13 +155,6 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   MockZCashWalletService& zcash_wallet_service() {
     return *zcash_wallet_service_;
   }
-
-  void ApplyScanResults(OrchardBlockScanner::Result&& result) {
-    sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
-        .WithArgs(account().Clone(), std::move(result));
-    task_environment_.RunUntilIdle();
-  }
-
   std::unique_ptr<MockOrchardBlockScannerProxy>
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
@@ -225,6 +208,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   }
 
  protected:
+  base::test::TaskEnvironment task_environment_;
+
   mojom::AccountIdPtr zcash_account_;
   base::ScopedTempDir temp_dir_;
 
@@ -232,11 +217,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
-  testing::NiceMock<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashShieldSyncServiceObserver> observer_;
   std::unique_ptr<ZCashShieldSyncService> sync_service_;
-  base::test::TaskEnvironment task_environment_;
 };
 
 TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {

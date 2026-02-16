@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -389,7 +390,11 @@ ZCashRpc::ZCashRpc(
     NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : network_manager_(network_manager),
-      url_loader_factory_(url_loader_factory) {}
+      url_loader_factory_(url_loader_factory) {
+  if (!network_manager_ || !url_loader_factory_) {
+    CHECK_IS_TEST();
+  }
+}
 
 ZCashRpc::~ZCashRpc() = default;
 

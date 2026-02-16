@@ -60,9 +60,7 @@ void OrchardSyncStateTest::SetUp() {
                                         mojom::KeyringId::kZCashMainnet,
                                         mojom::AccountKind::kDerived, 0);
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-  base::FilePath db_path(
-      temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-  sync_state_ = std::make_unique<OrchardSyncState>(db_path);
+  sync_state_ = std::make_unique<OrchardSyncState>(temp_dir_.GetPath());
   sync_state_->OverrideShardTreeForTesting(
       account_id_, orchard::CreateShardTreeForTesting(
                        sync_state_->orchard_storage(), account_id_));

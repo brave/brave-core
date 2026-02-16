@@ -150,7 +150,7 @@ class ZCashShieldSyncService {
       base::expected<ScanRangeResult, ZCashShieldSyncService::Error> result);
 
   ZCashRpc& zcash_rpc();
-  base::SequenceBound<OrchardSyncState>& sync_state();
+  OrchardSyncState::SequenceBound& sync_state();
 
   std::optional<Error> error() { return error_; }
 
