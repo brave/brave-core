@@ -381,7 +381,8 @@ int BraveLocationBarView::GetBorderRadius() const {
       views::Emphasis::kMaximum, size());
 }
 
-void BraveLocationBarView::FocusLocation(bool is_user_initiated) {
+void BraveLocationBarView::FocusLocation(bool is_user_initiated,
+                                         bool clear_focus_if_failed) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser_->profile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
