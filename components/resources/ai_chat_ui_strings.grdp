@@ -132,11 +132,20 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEEPSEEK_V3_1" desc="AI Chat intro message for the Deepseek V3.1 model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.1, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.1 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEEPSEEK_V3_2" desc="AI Chat intro message for the Deepseek V3.2 model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.2, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.2 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN_3_CODER_480B" desc="AI Chat intro message for the Qwen 3 Coder 480B model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3 Coder 480B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3 Coder 480B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_OPUS" desc="AI Chat intro message for the Claude Opus model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Opus, a model created by Anthropic to power conversational and text processing tasks. Claude Opus is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GLM_4_7_FLASH" desc="AI Chat intro message for the GLM-4-7-Flash model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-4-7-Flash, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-4-7-Flash is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_KIMI_K2_5" desc="AI Chat intro message for the Kimi K2.5 model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Kimi K2.5, a model created by Moonshot AI to be performant and applicable to many use cases. Kimi K2.5 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model" formatter_data="webui=AiChat">
     Premium
@@ -579,8 +588,8 @@
   <message name="IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE" desc="A description for automatic model" formatter_data="webui=AiChat">
     Model changes dynamically to use the best one for the task
   </message>
-  <message name="IDS_CHAT_UI_CHAT_LLAMA_4_SCOUT_SUBTITLE" desc="A description for llama-4-scout model" formatter_data="webui=AiChat">
-    Search • Vision
+  <message name="IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE" desc="A description for glm-4-7-flash model" formatter_data="webui=AiChat">
+    Fast • Search • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE" desc="A description for llama-4-maverick model" formatter_data="webui=AiChat">
     Search • Vision
@@ -594,14 +603,14 @@
   <message name="IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE" desc="A description for mistral-large model" formatter_data="webui=AiChat">
     Search
   </message>
-  <message name="IDS_CHAT_UI_CHAT_PIXTRAL_LARGE_SUBTITLE" desc="A description for pixtral-large model" formatter_data="webui=AiChat">
-    Search • Vision
+  <message name="IDS_CHAT_UI_CHAT_KIMI_K2_5_SUBTITLE" desc="A description for kimi-k2-5 model" formatter_data="webui=AiChat">
+    Search • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE" desc="A description for qwen-3-235b model" formatter_data="webui=AiChat">
     Search • Vision
   </message>
-  <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_V3_1_SUBTITLE" desc="A description for deepseek-v3-1 model" formatter_data="webui=AiChat">
-    Search
+  <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_V3_2_SUBTITLE" desc="A description for deepseek-v3-2 model" formatter_data="webui=AiChat">
+    Search • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_3_CODER_480B_SUBTITLE" desc="A description for qwen-3-coder-480b model" formatter_data="webui=AiChat">
     Search
