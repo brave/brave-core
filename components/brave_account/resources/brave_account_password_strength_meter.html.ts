@@ -5,9 +5,9 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { BraveAccountPasswordStrengthMeter } from './brave_account_password_strength_meter.js'
+import { BraveAccountPasswordStrengthMeterElement } from './brave_account_password_strength_meter.js'
 
-export function getHtml(this: BraveAccountPasswordStrengthMeter) {
+export function getHtml(this: BraveAccountPasswordStrengthMeterElement) {
   return html`<!--_html_template_start_-->
     <div class="bar">
       <div
