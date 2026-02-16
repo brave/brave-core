@@ -352,7 +352,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(password.count >= 8)
   }
 
-  func checksumEthAddress(_ address: String, completion: @escaping (String) -> Void) {
+  func checksumEthAddress(_ address: String, completion: @escaping (String?) -> Void) {
     completion("")
   }
 

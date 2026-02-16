@@ -182,6 +182,26 @@ TEST(EthTransactionUnitTest, TransactionAndValue) {
   EXPECT_EQ(tx_from_value, tx);
 }
 
+TEST(EthTransactionUnitTest, TransactionAndValue_EmptyTo) {
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208", "", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, std::nullopt));
+  base::Value::Dict tx_value = tx.ToValue();
+  auto tx_from_value = EthTransaction::FromValue(tx_value);
+  ASSERT_NE(tx_from_value, std::nullopt);
+  EXPECT_EQ(tx_from_value, tx);
+}
+
+TEST(EthTransactionUnitTest, TransactionAndValue_0xTo) {
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208", "0x", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, std::nullopt));
+  base::Value::Dict tx_value = tx.ToValue();
+  auto tx_from_value = EthTransaction::FromValue(tx_value);
+  ASSERT_NE(tx_from_value, std::nullopt);
+  EXPECT_EQ(tx_from_value, tx);
+}
+
 TEST(EthTransactionUnitTest, GetBaseFee) {
   EthTransaction tx;
   EXPECT_EQ(tx.GetBaseFee(), uint256_t(53000));
@@ -220,8 +240,7 @@ TEST(EthTransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->nonce(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
   EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
-  EXPECT_EQ(tx->to(),
-            EthAddress::FromHex("0x3535353535353535353535353535353535353535"));
+  EXPECT_EQ(tx->GetToHex(), "0x3535353535353535353535353535353535353535");
   EXPECT_EQ(tx->value(), uint256_t(42));
   EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
 
@@ -271,6 +290,32 @@ TEST(EthTransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->nonce(), uint256_t(1));
   EXPECT_EQ(tx->value(), uint256_t(42));
   EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
+}
+
+TEST(EthTransactionUnitTest, FromTxData_EmptyTo) {
+  auto tx = EthTransaction::FromTxData(
+      mojom::TxData::New("0x01", "0x3E8", "0x989680", "", "0x2A",
+                         std::vector<uint8_t>{1}, false, std::nullopt));
+  ASSERT_TRUE(tx);
+  EXPECT_EQ(tx->nonce(), uint256_t(1));
+  EXPECT_EQ(tx->gas_price(), uint256_t(1000));
+  EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
+  EXPECT_EQ(tx->GetToHex(), "0x");
+  EXPECT_EQ(tx->value(), uint256_t(42));
+  EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
+}
+
+TEST(EthTransactionUnitTest, FromTxData_0xTo) {
+  auto tx = EthTransaction::FromTxData(
+      mojom::TxData::New("0x01", "0x3E8", "0x989680", "0x", "0x2A",
+                         std::vector<uint8_t>{1}, false, std::nullopt));
+  ASSERT_TRUE(tx);
+  EXPECT_EQ(tx->nonce(), uint256_t(1));
+  EXPECT_EQ(tx->gas_price(), uint256_t(1000));
+  EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
+  EXPECT_EQ(tx->GetToHex(), "0x");
+  EXPECT_EQ(tx->value(), uint256_t(42));
+  EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
 }
 
 TEST(EthTransactionUnitTest, ProcessVRS) {
