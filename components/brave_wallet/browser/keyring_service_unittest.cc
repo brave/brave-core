@@ -115,7 +115,7 @@ std::string GenerateBtcImportPayload(std::string_view private_key_hex) {
   span_writer.WriteU8BigEndian(0);
   span_writer.Write(test::HexToArray<32>(private_key_hex));
 
-  DCHECK_EQ(span_writer.remaining(), 0u);
+  CHECK_EQ(span_writer.remaining(), 0u);
   return Base58EncodeWithCheck(buf);
 }
 

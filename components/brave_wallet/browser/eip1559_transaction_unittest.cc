@@ -132,7 +132,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
         private_key));
 
     std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
-    EXPECT_TRUE(key);
+    ASSERT_TRUE(key);
     Eip1559Transaction tx =
         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
             mojom::TxData::New(entry.nonce, "0x00", entry.gas_limit,

@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/lib.rs.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

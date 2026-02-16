@@ -124,7 +124,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
       private_key));
 
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
-  EXPECT_TRUE(key);
+  ASSERT_TRUE(key);
   auto signature = *key->SignCompact(tx.GetHashedMessageToSign(0));
 
   ASSERT_FALSE(tx.IsSigned());

@@ -119,7 +119,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
       private_key));
 
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
-  EXPECT_TRUE(key);
+  ASSERT_TRUE(key);
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
