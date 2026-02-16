@@ -41,7 +41,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -49,6 +48,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -229,7 +229,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
 
     profile_.SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+        base::WrapUnique(static_cast<permissions::PermissionManager*>(
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(browser_context())
                 .release())));

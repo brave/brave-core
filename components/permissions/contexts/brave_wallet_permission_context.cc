@@ -8,9 +8,12 @@
 #include <optional>
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/strings/string_util.h"
+#include "base/types/zip.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -25,6 +28,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/permission_controller_delegate.h"
 #include "content/public/browser/permission_descriptor_util.h"
+#include "content/public/browser/permission_request_description.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
@@ -46,6 +50,28 @@ bool IsAccepted(PermissionRequest* request,
   return false;
 }
 
+std::optional<std::string> HandleWalletPermissionResult(
+    const std::string& address,
+    const std::vector<content::PermissionResult>& results) {
+  if (results.size() == 1 &&
+      results.front().status == blink::mojom::PermissionStatus::GRANTED) {
+    return address;
+  }
+  return std::nullopt;
+}
+
+void AggregatePermissionResults(
+    BraveWalletPermissionContext::RequestWalletPermissionsCallback callback,
+    std::vector<std::optional<std::string>> results) {
+  std::vector<std::string> allowed_accounts;
+  for (auto& result : results) {
+    if (result) {
+      allowed_accounts.push_back(std::move(*result));
+    }
+  }
+  std::move(callback).Run(std::move(allowed_accounts));
+}
+
 }  // namespace
 
 BraveWalletPermissionContext::BraveWalletPermissionContext(
@@ -63,67 +89,6 @@ bool BraveWalletPermissionContext::IsRestrictedToSecureOrigins() const {
   // to be shown for HTTP sites. Developers often use localhost for development
   // for example.
   return false;
-}
-
-void BraveWalletPermissionContext::RequestPermission(
-    std::unique_ptr<PermissionRequestData> request_data,
-    BrowserPermissionCallback callback) {
-  const std::string id_str = request_data->id.ToString();
-  url::Origin requesting_origin =
-      url::Origin::Create(request_data->requesting_origin);
-  url::Origin origin;
-  permissions::RequestType type =
-      ContentSettingsTypeToRequestType(content_settings_type());
-
-  // Parse address list from the requesting frame and save it to the map when
-  // it is the first time seeing this request ID.
-  auto addr_queue_it = request_address_queues_.find(id_str);
-  std::queue<std::string> address_queue;
-  bool is_new_id = addr_queue_it == request_address_queues_.end();
-  if (!brave_wallet::ParseRequestingOrigin(
-          type, requesting_origin, &origin,
-          is_new_id ? &address_queue : nullptr)) {
-    content::RenderFrameHost* rfh = content::RenderFrameHost::FromID(
-        request_data->id.global_render_frame_host_id());
-    content::WebContents* web_contents =
-        content::WebContents::FromRenderFrameHost(rfh);
-    GURL embedding_origin =
-        url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
-    NotifyPermissionSet(*request_data, std::move(callback),
-                        /*persist=*/false, PermissionDecision::kDeny,
-                        /*is_final_decision=*/true);
-    return;
-  }
-  if (is_new_id) {
-    addr_queue_it =
-        request_address_queues_.insert(std::make_pair(id_str, address_queue))
-            .first;
-  }
-
-  // Overwrite the requesting_frame URL for each sub-request with one address
-  // at a time from the map.
-  auto& addr_queue = addr_queue_it->second;
-  DCHECK(!addr_queue.empty());
-  auto sub_request_origin =
-      brave_wallet::GetSubRequestOrigin(type, origin, addr_queue.front());
-  if (!sub_request_origin) {
-    return;
-  }
-  addr_queue.pop();
-  if (addr_queue.empty()) {
-    request_address_queues_.erase(addr_queue_it);
-  }
-  std::unique_ptr<PermissionRequestData> data =
-      std::make_unique<PermissionRequestData>(
-          std::make_unique<ContentSettingPermissionResolver>(type),
-          request_data->id, request_data->user_gesture,
-          sub_request_origin->GetURL());
-  // This will prevent PermissionRequestManager from reprioritize the request
-  // queue.
-  data->embedded_permission_request_descriptor =
-      blink::mojom::EmbeddedPermissionRequestDescriptor::New();
-  ContentSettingPermissionContextBase::RequestPermission(std::move(data),
-                                                         std::move(callback));
 }
 
 // static
@@ -182,48 +147,64 @@ bool BraveWalletPermissionContext::HasRequestsInProgress(
 }
 
 // static
-void BraveWalletPermissionContext::RequestPermissions(
+void BraveWalletPermissionContext::RequestWalletPermissions(
+    const std::vector<std::string>& addresses,
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
-    const std::vector<std::string>& addresses,
-    base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
-        callback) {
+    RequestWalletPermissionsCallback callback) {
   if (!rfh) {
-    std::move(callback).Run(std::vector<content::PermissionResult>());
+    std::move(callback).Run({});
     return;
   }
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (!web_contents) {
-    std::move(callback).Run(std::vector<content::PermissionResult>());
+    std::move(callback).Run({});
     return;
   }
 
   content::PermissionControllerDelegate* delegate =
       web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
   if (!delegate) {
-    std::move(callback).Run(std::vector<content::PermissionResult>());
+    std::move(callback).Run({});
     return;
   }
 
-  // To support ethereum permission to be per Ethereum account per site, we map
-  // each account address to one ethereum permission request. And the requests
-  // will have different origins which includes the address information. Here
-  // we first get a concatenated origin to include information of all wallet
-  // addresses, then adjust the origin of each request later in the process
-  // because PermissionManager::RequestPermissions only accepts a single origin
-  // parameter to be passes in.
-  auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
-      rfh->GetLastCommittedOrigin(), addresses);
-  if (!origin) {
-    std::move(callback).Run(std::vector<content::PermissionResult>());
+  RequestType request_type = ContentSettingsTypeToRequestType(
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission));
+
+  std::vector<url::Origin> addresses_with_origin;
+  for (auto& address : addresses) {
+    if (auto origin_with_address = brave_wallet::GetSubRequestOrigin(
+            request_type, rfh->GetLastCommittedOrigin(), address)) {
+      addresses_with_origin.push_back(std::move(*origin_with_address));
+    }
+  }
+  if (addresses.size() != addresses_with_origin.size()) {
+    std::move(callback).Run({});
     return;
   }
 
-  std::vector<blink::PermissionType> types(addresses.size(), permission);
-  delegate->RequestPermissionsForOrigin(types, rfh, origin->GetURL(),
-                                        rfh->HasTransientUserActivation(),
-                                        std::move(callback));
+  auto barrier_callback = base::BarrierCallback<std::optional<std::string>>(
+      addresses_with_origin.size(),
+      base::BindOnce(&AggregatePermissionResults, std::move(callback)));
+
+  for (auto [address, origin_with_address] :
+       base::zip(addresses, addresses_with_origin)) {
+    content::PermissionRequestDescription desc(
+        content::PermissionDescriptorUtil::
+            CreatePermissionDescriptorForPermissionTypes({permission}),
+        rfh->HasTransientUserActivation(), origin_with_address.GetURL());
+
+    // This gives high priority to request and avoids reordering.
+    desc.embedded_permission_request_descriptor =
+        blink::mojom::EmbeddedPermissionRequestDescriptor::New();
+
+    delegate->RequestPermissionsFromCurrentDocument(
+        rfh, desc,
+        base::BindOnce(&HandleWalletPermissionResult, address)
+            .Then(barrier_callback));
+  }
 }
 
 // static
@@ -258,8 +239,16 @@ BraveWalletPermissionContext::GetAllowedAccounts(
         ContentSettingsTypeToRequestType(content_settings_type), origin,
         address);
     if (sub_request_origin) {
-      auto status = delegate->GetPermissionStatusForOrigin(
-          permission, rfh, sub_request_origin->GetURL());
+      // `GetPermissionResultForEmbeddedRequester` allows us to specify
+      // `requesting_origin` instead of obtaining it from `rfh`.
+      auto status =
+          delegate
+              ->GetPermissionResultForEmbeddedRequester(
+                  content::PermissionDescriptorUtil::
+                      CreatePermissionDescriptorForPermissionType(permission),
+                  rfh, *sub_request_origin)
+              .status;
+
       if (status == blink::mojom::PermissionStatus::GRANTED) {
         allowed_accounts.push_back(address);
       }

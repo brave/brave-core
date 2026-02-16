@@ -80,19 +80,19 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
     return;
   }
 
-  permissions::BraveWalletPermissionContext::RequestPermissions(
-      *permission, rfh, {account_address},
+  permissions::BraveWalletPermissionContext::RequestWalletPermissions(
+      {account_address}, *permission, rfh,
       base::BindOnce(
           [](JNIEnv* env,
              base::android::ScopedJavaGlobalRef<jobject> java_callback,
-             const std::vector<content::PermissionResult>& responses) {
-            if (responses.empty() || responses.size() != 1u) {
-              PlainCallConnectAccountCallback(env, java_callback, false);
-            } else {
-              PlainCallConnectAccountCallback(env, java_callback, true);
-            }
+             const std::string& account_address,
+             std::vector<std::string> allowed_addresses) {
+            PlainCallConnectAccountCallback(
+                env, java_callback,
+                allowed_addresses.size() == 1 &&
+                    allowed_addresses.front() == account_address);
           },
-          env, std::move(java_callback)));
+          env, std::move(java_callback), account_address));
 }
 
 DEFINE_JNI(ConnectAccountFragment)
