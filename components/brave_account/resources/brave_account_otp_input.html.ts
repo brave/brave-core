@@ -16,31 +16,5 @@ import { BraveAccountOtpInputElement } from './brave_account_otp_input.js'
 //   beforeinput: deleteContentBackward
 //   beforeinput: insertText            "…"
 export function getHtml(this: BraveAccountOtpInputElement) {
-  const indices = [...Array(this.length).keys()]
-
-  return html`<!--_html_template_start_-->
-    <div class="label">$i18n{BRAVE_ACCOUNT_OTP_INPUT_LABEL}</div>
-    <div
-      class="otp-inputs"
-      @paste=${this.onPaste}
-    >
-      ${indices.map(
-        (index) => html`
-          <leo-input
-            autofocus=${index === 0}
-<if expr="is_ios">
-            spellcheck="false"
-</if>
-            type="text"
-            @beforeinput=${(e: InputEvent) => this.onBeforeInput(e, index)}
-            @focus=${this.onFocus}
-            @input=${(detail: { value: string }) => this.onInput(detail, index)}
-            @keydown=${(detail: { innerEvent: KeyboardEvent }) =>
-              this.onKeyDown(detail, index)}
-          >
-          </leo-input>
-        `,
-      )}
-    </div>
-    <!--_html_template_end_-->`
+  return html` ${this.getElementHtml()} `
 }

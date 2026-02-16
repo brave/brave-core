@@ -40,6 +40,10 @@ export class BraveAccountPasswordIconsElement extends CrLitElement {
     }
   }
 
+  protected get showCapsLock(): boolean {
+    return this.isCapsLockOn && this.isInputFocused && !this.isPasswordVisible
+  }
+
   protected onEyeIconClicked(event: Event) {
     event.preventDefault()
     const target = event.target as Element
