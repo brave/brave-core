@@ -2533,19 +2533,6 @@
 -LanguageDetectionModelServiceBrowserTest.*
 -PreloadingModelKeyedServiceTest.Score
 
-# These tests fail because we disable blink::features::kPermissionElement
--All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDefault
--All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDisabled
--All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkEnabled
--All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseEnabled_BlinkDisabled
--All/PermissionElementOriginTrialBrowserTest.WithoutOriginTrialToken/BaseDefault_BlinkEnabled
--InstallElementBrowserTest.Install
--InstallElementBrowserTest.Install_DenyPermission
--InstallElementBrowserTest.InstallWithUrl
--InstallElementBrowserTest.InstallWithUrlAndId
--InstallElementBrowserTest.InstallWithUrl_DenyPermission
--InstallElementBrowserTest.InstallWithUrl_UserDenies
-
 # This test fails because they hardcode "Incognito" in the expected window
 # title (and we have "Private")
 -WebInstallCurrentDocumentBrowserTest.NotSupportedDialogInIncognito

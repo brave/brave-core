@@ -119,7 +119,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kFledgeEnforceKAnonymity,
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kParakeet,
-      &blink::features::kPermissionElement,
       &blink::features::kPrerender2,
       &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kPrivateAggregationApi,
