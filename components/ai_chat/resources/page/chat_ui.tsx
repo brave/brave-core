@@ -125,7 +125,6 @@ function ConversationEntries(props: ConversationEntriesProps) {
           additionalHeight + 'px',
         )
         iframeRef.current.style.height = height + additionalHeight + 'px'
-        props.onHeightChanged?.()
       }
     }
     const id =
@@ -136,7 +135,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
     return () => {
       api.conversationEntriesFrameObserver.removeListener(id)
     }
-  }, [props.onHeightChanged, props.onIsContentReady])
+  }, [props.onIsContentReady])
 
   React.useEffect(() => {
     // Set the iframe position to relative when the regenerate

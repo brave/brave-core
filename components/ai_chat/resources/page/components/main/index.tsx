@@ -52,6 +52,7 @@ import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
 import getAPI from '../../api'
+import { useScrollToBottom } from './useScrollToBottom'
 
 const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   [
@@ -134,76 +135,8 @@ function Main() {
   }
 
   const scrollElement = React.useRef<HTMLDivElement | null>(null)
-  const [hasScrollableContent, setHasScrollableContent] = React.useState(false)
-
-  // Check if there's scrollable content
-  React.useEffect(() => {
-    const element = scrollElement.current
-    if (!element) return
-
-    const checkScrollable = () => {
-      const isScrollable = element.scrollHeight > element.clientHeight
-      setHasScrollableContent(isScrollable)
-    }
-
-    checkScrollable()
-    const timeoutId = setTimeout(checkScrollable, 100)
-
-    const resizeObserver = new ResizeObserver(checkScrollable)
-    resizeObserver.observe(element)
-
-    if (conversationContentElement.current) {
-      resizeObserver.observe(conversationContentElement.current)
-    }
-
-    return () => {
-      clearTimeout(timeoutId)
-      resizeObserver.disconnect()
-    }
-  }, [
-    conversationContext.conversationHistory.length,
-    conversationContext.isGenerating,
-  ])
-
-  // As some elements are lazy loaded we continue to try and scroll down for a couple of seconds.
-  const scrollToBottomContinuously = React.useCallback(
-    async (animate: boolean = true) => {
-      if (!scrollElement.current) return
-
-      const element = scrollElement.current
-
-      const startTime = Date.now()
-      const duration = 2000
-      let isCancelled = false
-
-      const cancelScoll = () => {
-        isCancelled = true
-      }
-
-      element.addEventListener('touchstart', cancelScoll, {
-        once: true,
-        passive: true,
-      })
-
-      document.addEventListener('wheel', cancelScoll)
-      document.addEventListener('keydown', cancelScoll)
-
-      while (Date.now() - startTime < duration) {
-        if (isCancelled) break
-
-        element.scrollTo({
-          top: element.scrollHeight,
-          behavior: animate ? 'smooth' : 'instant',
-        })
-        await new Promise((resolve) => requestAnimationFrame(resolve))
-      }
-
-      element.removeEventListener('touchstart', cancelScoll)
-      document.removeEventListener('wheel', cancelScoll)
-      document.removeEventListener('keydown', cancelScoll)
-    },
-    [],
-  )
+  const { scrollToBottomContinuously, hasScrollableContent } =
+    useScrollToBottom(scrollElement, conversationContentElement)
 
   // Scroll to bottom when opening a conversation
   React.useEffect(() => {
@@ -211,9 +144,12 @@ function Main() {
       return
     }
 
-    // Small delay to let content start loading. Don't animate.
-    setTimeout(() => scrollToBottomContinuously(false), 100)
-  }, [conversationContext.conversationUuid, scrollToBottomContinuously])
+    scrollToBottomContinuously(/*animate=*/ false)
+  }, [
+    conversationContext.conversationUuid,
+    isContentReady,
+    scrollToBottomContinuously,
+  ])
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
