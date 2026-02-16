@@ -145,19 +145,19 @@ std::pair<std::optional<size_t>, Span> ExtractArrayInfo(Span data) {
   return {BytesToSize(*array_size_row), data.subspan(kRowLength)};
 }
 
-EthAddress ExtractAddress(Span address_encoded) {
+std::optional<EthAddress> ExtractAddress(Span address_encoded) {
   auto span32 = address_encoded.to_fixed_extent<kRowLength>();
   if (!span32) {
-    return EthAddress();
+    return std::nullopt;
   }
   return ExtractAddress(*span32);
 }
 
-EthAddress ExtractAddressFromTuple(Span data, size_t tuple_pos) {
+std::optional<EthAddress> ExtractAddressFromTuple(Span data, size_t tuple_pos) {
   // Address is placed in tuple head.
   auto address_head = ExtractHeadFromTuple(data, tuple_pos);
   if (!address_head) {
-    return EthAddress();
+    return std::nullopt;
   }
   return ExtractAddress(*address_head);
 }
@@ -461,7 +461,6 @@ TupleEncoder::Element::Element(Element&&) = default;
 TupleEncoder::Element& TupleEncoder::Element::operator=(Element&&) = default;
 
 TupleEncoder& TupleEncoder::AddAddress(const EthAddress& address) {
-  DCHECK(address.IsValid());
   auto& element = AppendElement();
   auto address_size = address.bytes().size();
   DCHECK_GE(element.head.size(), address_size);

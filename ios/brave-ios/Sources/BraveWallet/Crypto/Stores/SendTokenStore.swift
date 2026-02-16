@@ -522,7 +522,14 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         // 3. check if send address is a contract address
         addressError = .contractAddress
       } else {
-        let checksumAddress = await keyringService.checksumEthAddress(sendAddress)
+        // Guard nil value for checksumAddress
+        guard
+          let checksumAddress =
+            await keyringService.checksumEthAddress(sendAddress)
+        else {
+          addressError = .invalidChecksum
+          return
+        }
         if sendAddress == checksumAddress {
           // 4. check if send address is the same as the checksum address from the `KeyringService`
           addressError = nil

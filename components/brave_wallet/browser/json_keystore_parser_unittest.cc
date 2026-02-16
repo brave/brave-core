@@ -22,7 +22,8 @@ std::string GetHexAddr(const HDKey* key) {
   // trim the header byte 0x04
   const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
                                               public_key.end());
-  EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
+  auto addr = EthAddress::FromPublicKey(
+      base::span(pubkey_no_header).to_fixed_extent<64>().value());
   return addr.ToHex();
 }
 
