@@ -66,37 +66,29 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildNonRewardConfirmationWithInvalidTransaction) {
+       DoNotBuildNonRewardConfirmationWithInvalidTransaction) {
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(/*transaction=*/{}, /*user_data=*/{});
-  ASSERT_TRUE(confirmation);
-
-  // Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      { auto value = *confirmation; }, "Check failed: transaction.IsValid*");
+  // Act & Assert
+  EXPECT_DEATH_IF_SUPPORTED(BuildNonRewardConfirmation(/*transaction=*/{},
+                                                       /*user_data=*/{}),
+                            "Check failed: transaction.IsValid*");
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildNonRewardConfirmationForRewardsUser) {
+       DoNotBuildNonRewardConfirmationForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
-  ASSERT_TRUE(confirmation);
-
-  // Assert
+  // Act & Assert
   EXPECT_DEATH_IF_SUPPORTED(
-      { auto value = *confirmation; },
-      "Check failed: !UserHasJoinedBraveRewards*");
+      BuildNonRewardConfirmation(transaction,
+                                 /*user_data=*/{}),
+      "Check failed: !UserHasJoinedBraveRewardsAndConnectedWallet*");
 }
 
 }  // namespace brave_ads
