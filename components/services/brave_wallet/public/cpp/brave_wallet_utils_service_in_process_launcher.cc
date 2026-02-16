@@ -3,9 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_CONTENT_BRAVE_WALLET_UTILS_SERVICE_LAUNCHER_H_
-#define BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_CONTENT_BRAVE_WALLET_UTILS_SERVICE_LAUNCHER_H_
-
 #include "brave/components/services/brave_wallet/public/cpp/brave_wallet_utils_service_in_process_launcher.h"
 
 #include <memory>
@@ -25,5 +22,3 @@ void LaunchInProcessBraveWalletUtilsService(
 }
 
 }  // namespace brave_wallet
-
-#endif  // BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_CONTENT_BRAVE_WALLET_UTILS_SERVICE_LAUNCHER_H_
