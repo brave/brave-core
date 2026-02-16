@@ -156,7 +156,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     TestFuture<std::vector<std::string>> request_permissions_future;
     BraveWalletPermissionContext::RequestWalletPermissions(
-        addresses, test_case.permission, web_contents()->GetPrimaryMainFrame(),
+        addresses, test_case.permission, url::Origin::Create(url),
+        web_contents()->GetPrimaryMainFrame(),
         request_permissions_future.GetCallback());
 
     content::RunAllTasksUntilIdle();
@@ -195,7 +196,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     observer->Reset();
     BraveWalletPermissionContext::RequestWalletPermissions(
-        addresses, test_case.permission, web_contents()->GetPrimaryMainFrame(),
+        addresses, test_case.permission, url::Origin::Create(url),
+        web_contents()->GetPrimaryMainFrame(),
         request_permissions_future.GetCallback());
 
     content::RunAllTasksUntilIdle();
@@ -287,8 +289,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
         permission_request_manager);
 
     BraveWalletPermissionContext::RequestWalletPermissions(
-        addresses, test_case.permission, web_contents()->GetPrimaryMainFrame(),
-        base::DoNothing());
+        addresses, test_case.permission, url::Origin::Create(url),
+        web_contents()->GetPrimaryMainFrame(), base::DoNothing());
     content::RunAllTasksUntilIdle();
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
@@ -396,7 +398,8 @@ class PermissionManagerIncognitoBrowserTest : public InProcessBrowserTest {
     TestFuture<std::vector<std::string>> request_permissions_future;
 
     BraveWalletPermissionContext::RequestWalletPermissions(
-        {address}, permission, web_contents->GetPrimaryMainFrame(),
+        {address}, permission, active_origin,
+        web_contents->GetPrimaryMainFrame(),
         request_permissions_future.GetCallback());
 
     content::RunAllTasksUntilIdle();

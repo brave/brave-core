@@ -29,15 +29,16 @@ class BraveWalletProviderDelegate {
   virtual ~BraveWalletProviderDelegate() = default;
 
   virtual bool IsTabVisible() = 0;
-  virtual void ShowPanel() = 0;
+  virtual void ShowPanel(const url::Origin& origin) = 0;
   virtual void ShowWalletBackup() = 0;
   virtual void UnlockWallet() = 0;
   virtual void WalletInteractionDetected() = 0;
-  virtual void ShowWalletOnboarding() = 0;
-  virtual void ShowAccountCreation(mojom::CoinType type) = 0;
-  virtual url::Origin GetOrigin() const = 0;
+  virtual void ShowWalletOnboarding(const url::Origin& origin) = 0;
+  virtual void ShowAccountCreation(mojom::CoinType type,
+                                   const url::Origin& origin) = 0;
   virtual void RequestPermissions(mojom::CoinType type,
                                   const std::vector<std::string>& accounts,
+                                  const url::Origin& origin,
                                   RequestPermissionsCallback) = 0;
   virtual bool IsAccountAllowed(mojom::CoinType type,
                                 const std::string& account) = 0;

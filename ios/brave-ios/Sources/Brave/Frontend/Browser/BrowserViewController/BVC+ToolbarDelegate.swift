@@ -741,8 +741,8 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidTapWalletButton(_ urlBar: TopToolbarView) {
     guard let selectedTab = tabManager.selectedTab,
-      let origin = selectedTab.browserData?.getOrigin(),
-      let tabDappStore = selectedTab.tabDappStore
+      let tabDappStore = selectedTab.tabDappStore,
+      let origin = selectedTab.lastCommittedURL?.origin
     else {
       return
     }
