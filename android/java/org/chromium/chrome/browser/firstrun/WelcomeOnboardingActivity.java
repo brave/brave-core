@@ -671,6 +671,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
                     @Override
                     public void onAnimationEnd(Drawable drawable) {
+                        if (isActivityFinishingOrDestroyed()) {
+                            return;
+                        }
                         if (mIsTablet) {
                             Animator animator =
                                     AnimatorInflater.loadAnimator(
