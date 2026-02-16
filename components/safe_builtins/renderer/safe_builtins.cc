@@ -226,24 +226,23 @@ std::unique_ptr<v8::Extension> SafeBuiltins::CreateV8Extension() {
 }
 
 SafeBuiltins::SafeBuiltins(const v8::Local<v8::Context>& context)
-    : context_(v8::Isolate::GetCurrent(), context),
-      isolate_(v8::Isolate::GetCurrent()) {}
+    : context_(context) {}
 
-SafeBuiltins::~SafeBuiltins() = default;
+SafeBuiltins::~SafeBuiltins() {}
 
 v8::Local<v8::Object> SafeBuiltins::GetObjekt() const {
-  return Load("Object", v8::Local<v8::Context>::New(isolate_, context_));
+  return Load("Object", context_);
 }
 
 v8::Local<v8::Object> SafeBuiltins::GetFunction() const {
-  return Load("Function", v8::Local<v8::Context>::New(isolate_, context_));
+  return Load("Function", context_);
 }
 
 v8::Local<v8::Object> SafeBuiltins::GetFunctionOverride() const {
-  return Load("$", v8::Local<v8::Context>::New(isolate_, context_));
+  return Load("$", context_);
 }
 
 v8::Local<v8::Object> SafeBuiltins::GetArray() const {
-  return Load("Array", v8::Local<v8::Context>::New(isolate_, context_));
+  return Load("Array", context_);
 }
 }  //  namespace brave
