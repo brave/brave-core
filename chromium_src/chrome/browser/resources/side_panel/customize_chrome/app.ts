@@ -12,7 +12,7 @@ import { CustomizeColorSchemeModeBrowserProxy } from '//resources/cr_components/
 
 export * from './app-chromium.js'
 
-class ClosePanelButton extends CrLitElement {
+class ClosePanelButtonElement extends CrLitElement {
   static get is() {
     return 'close-panel-button'
   }
@@ -34,11 +34,11 @@ class ClosePanelButton extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'close-panel-button': ClosePanelButton
+    'close-panel-button': ClosePanelButtonElement
   }
 }
 
-customElements.define(ClosePanelButton.is, ClosePanelButton)
+customElements.define(ClosePanelButtonElement.is, ClosePanelButtonElement)
 
 // A component to toggle the "Darker theme" setting in the Customize Chrome side panel.
 class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {

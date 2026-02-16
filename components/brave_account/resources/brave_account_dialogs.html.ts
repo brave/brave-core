@@ -14,8 +14,6 @@ import { BraveAccountDialogsElement } from './brave_account_dialogs.js'
 
 export function getHtml(this: BraveAccountDialogsElement) {
   // clang-format off
-  return html`
-    ${this.getDialogHtml()}
-  `
+  return html` ${this.getDialogHtml()} `
   // clang-format on
 }
