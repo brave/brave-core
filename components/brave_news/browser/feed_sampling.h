@@ -7,8 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_SAMPLING_H_
 
 #include <cstddef>
+#include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -17,11 +19,48 @@
 #include "base/containers/span.h"
 #include "base/functional/function_ref.h"
 #include "base/rand_util.h"
+#include "base/types/id_type.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
+
+// An opaque ID used to represent an interned channel ID or publisher ID. These
+// IDs are used for efficient comparison during article selection in the feed
+// building process.
+using NameId = base::IdTypeU32<class NameIdClass>;
+
+// A table that stores interned channel ID or publisher ID strings, and allows
+// bidirectional mapping from string to ID and from ID to string.
+class NameTable {
+ public:
+  NameTable();
+  NameTable(NameTable&&);
+  NameTable& operator=(NameTable&&);
+
+  ~NameTable();
+
+  // Adds a string to the table.
+  NameId Add(std::string_view s);
+
+  // Returns the ID associated with the specified string. If a string is not
+  // found, a null `NameId` is returned.
+  NameId Find(std::string_view s) const;
+
+  // Returns a copy of the string associated with the specified ID. If there is
+  // no such string in the table, the std::nullopt is returned.
+  std::optional<std::string> GetString(NameId id) const;
+
+  size_t size() const { return strings_.size(); }
+
+ private:
+  std::vector<std::unique_ptr<std::string>> strings_;
+
+  // Note: map_ uses string_view keys pointing into strings_. This is safe
+  // because unique_ptr provides reference stability.
+  absl::flat_hash_map<std::string_view, NameId> map_;
+};
 
 struct ArticleMetadata {
   // The pop_recency of the article. This is used for discover cards, where we
@@ -45,8 +84,11 @@ struct ArticleMetadata {
   // content should not be used for discovery.
   bool discoverable = false;
 
-  // All the channels this Article belongs to.
-  absl::flat_hash_set<std::string> channels;
+  // Interned publisher ID.
+  NameId publisher_id;
+
+  // All the channels this Article belongs to (interned IDs).
+  absl::flat_hash_set<NameId> channels;
 
   ArticleMetadata();
   ArticleMetadata(const ArticleMetadata&) = delete;
@@ -66,7 +108,7 @@ using GetWeighting =
                              const ArticleMetadata& meta)>;
 
 using PublisherChannels =
-    absl::flat_hash_map<std::string, absl::flat_hash_set<std::string>>;
+    absl::flat_hash_map<NameId, absl::flat_hash_set<NameId>>;
 
 // PickArticles is a strategy used to pick articles (for example, taking the
 // first article). Different feeds use different strategies for picking
@@ -74,7 +116,7 @@ using PublisherChannels =
 // FunctionRef.
 using PickArticles =
     base::FunctionRef<std::optional<size_t>(const ArticleInfos& infos)>;
-using ContentGroup = std::pair<std::string, bool>;
+using ContentGroup = std::pair<NameId, bool>;
 
 template <typename T>
 T PickRandom(const base::span<T>& items) {
@@ -86,10 +128,6 @@ T PickRandom(const base::span<T>& items) {
 // Sample across subscribed channels (direct and native) and publishers.
 ContentGroup SampleContentGroup(
     base::span<const ContentGroup> eligible_content_groups);
-
-absl::flat_hash_set<std::string> GetChannelsForPublisher(
-    const std::string& locale,
-    const mojom::PublisherPtr& publisher);
 
 // Randomly true/false with equal probability.
 bool TossCoin();
@@ -112,7 +150,7 @@ std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
                                                 GetWeighting get_weighting);
 std::optional<size_t> PickRoulette(const ArticleInfos& articles);
 std::optional<size_t> PickChannelRoulette(const ArticleInfos& articles,
-                                          const std::string& channel);
+                                          NameId channel_id);
 std::optional<size_t> PickDiscoveryRoulette(const ArticleInfos& articles);
 std::optional<size_t> PickContentGroupRoulette(
     const ArticleInfos& articles,
