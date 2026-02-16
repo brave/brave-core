@@ -1,0 +1,194 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.searchWidget {
+  --leo-progressring-color: var(--leo-color-divider-strong);
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--leo-spacing-l);
+
+  width: 100%
+}
+
+.searchResults {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+  min-height: 102px;
+
+  overflow-x: auto;
+  gap: var(--leo-spacing-m);
+
+  scrollbar-width: none;
+
+  &>a {
+    flex-shrink: 0;
+    overflow: hidden;
+
+    border-radius: var(--leo-radius-xl);
+    background: var(--leo-color-page-background);
+
+    cursor: pointer;
+  }
+}
+
+.detailResult {
+  text-decoration: none;
+
+  width: 280px;
+  height: 102px;
+
+  padding: var(--leo-spacing-l);
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-l);
+
+  &[data-type="video_result"] .thumbnail {
+    width: 122px;
+  }
+
+  &[data-type="news_result"] .thumbnail {
+    width: 78px;
+  }
+
+  & .thumbnail {
+    width: 122px;
+    border-radius: var(--leo-radius-m);
+    overflow: hidden;
+    flex-shrink: 0;
+    object-fit: cover;
+    position: relative;
+  }
+
+  & .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-s);
+  }
+
+  & .time {
+    font: var(--leo-font-x-small-regular);
+    color: var(--leo-color-text-secondary);
+  }
+}
+
+.imageResult {
+  border-radius: var(--leo-radius-m);
+  width: 102px;
+  aspect-ratio: 1 / 1;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.searchResult {
+  text-decoration: none;
+
+  width: 280px;
+  height: 102px;
+
+  padding: var(--leo-spacing-l);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+
+  & .description {
+    margin-top: var(--leo-spacing-s);
+    margin-bottom: 0;
+
+    font: var(--leo-font-x-small-regular);
+    color: var(--leo-color-text-tertiary);
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    line-clamp: 2;
+  }
+}
+
+.meta {
+  font: var(--leo-font-x-small-regular);
+  color: var(--leo-color-text-tertiary);
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-s);
+  align-items: center;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  flex-shrink: 0;
+
+  & img {
+    height: 12px;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--leo-radius-s);
+  }
+}
+
+.title {
+  font: var(--leo-font-small-semibold);
+  color: var(--leo-color-text-primary);
+
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  font: var(--leo-font-x-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.strong {
+  font-weight: 400;
+}
+
+.footer {
+  margin-top: var(--leo-spacing-l);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: var(--leo-color-text-tertiary);
+
+  .query {
+    all: unset;
+    --leo-icon-size: 12px;
+
+    cursor: pointer;
+
+    font: var(--leo-font-small-regular);
+
+    display: flex;
+    gap: var(--leo-spacing-s);
+    align-items: center;
+
+    &:hover {
+      text-decoration: underline;
+      --leo-icon-color: var(--leo-color-icon-interactive);
+      color: var(--leo-color-text-interactive);
+    }
+  }
+
+  .types {
+    --leo-icon-size: 16px;
+    --leo-button-padding: 8px;
+    display: flex;
+    align-items: center;
+  }
+}
