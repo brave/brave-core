@@ -501,6 +501,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
         mBraveSplash = findViewById(R.id.brave_splash);
         mBraveSplashContainer = findViewById(R.id.brave_splash_container);
+        assert !mIsTablet || mBraveSplashContainer != null : "R.id.brave_splash_container must be declared on tablet layout.";
         mIvLeafTop = findViewById(R.id.iv_leaf_top);
         mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
         mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
@@ -675,40 +676,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                             return;
                         }
                         if (mIsTablet) {
-                            Animator animator =
-                                    AnimatorInflater.loadAnimator(
-                                            WelcomeOnboardingActivity.this,
-                                            R.animator.ic_brave_splash_fade_out);
-                            animator.setTarget(mBraveSplashContainer);
-                            animator.addListener(
-                                    new Animator.AnimatorListener() {
-                                        @Override
-                                        public void onAnimationCancel(
-                                                @NonNull Animator animation) {}
-
-                                        @Override
-                                        public void onAnimationEnd(@NonNull Animator animation) {
-                                            if (mBraveSplashContainer != null) {
-                                                mBraveSplashContainer.setVisibility(View.GONE);
-                                            }
-
-                                            if (mVariantBPager != null) {
-                                                mVariantBPager.setCurrentItem(
-                                                        isWDPSettingAvailable() ? 0 : 1, false);
-                                                mVariantBPager.setVisibility(View.VISIBLE);
-                                            }
-                                            mSplashAnimationFinished = true;
-                                            maybeRequestDefaultBrowser();
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(
-                                                @NonNull Animator animation) {}
-
-                                        @Override
-                                        public void onAnimationStart(@NonNull Animator animation) {}
-                                    });
-                            animator.start();
+                            fadeBraveSplashContainer();
                         } else {
                             animateBraveSplash(result);
                         }
@@ -743,6 +711,48 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             Log.e(TAG, "P3aOnboarding", e);
         }
         return isP3aEnabled;
+    }
+
+    private void showVariantBPagerAfterSplash() {
+        if (mVariantBPager != null) {
+            mVariantBPager.setCurrentItem(isWDPSettingAvailable() ? 0 : 1, false);
+            mVariantBPager.setVisibility(View.VISIBLE);
+        }
+        mSplashAnimationFinished = true;
+        maybeRequestDefaultBrowser();
+    }
+
+    private void fadeBraveSplashContainer() {
+        if (mBraveSplashContainer != null) {
+            Animator animator = AnimatorInflater.loadAnimator(
+                    WelcomeOnboardingActivity.this,
+                    R.animator.ic_brave_splash_fade_out);
+            animator.setTarget(mBraveSplashContainer);
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationCancel(
+                        @NonNull Animator animation) {
+                    /* No-op. */
+                }
+
+                @Override
+                public void onAnimationEnd(@NonNull Animator animation) {
+                    mBraveSplashContainer.setVisibility(View.GONE);
+                    showVariantBPagerAfterSplash();
+                }
+
+                @Override
+                public void onAnimationRepeat(@NonNull Animator animation) {
+                    /* No-op. */
+                }
+
+                @Override
+                public void onAnimationStart(@NonNull Animator animation) {
+                    /* No-op. */
+                }
+            });
+            animator.start();
+        }
     }
 
     private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
@@ -786,16 +796,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                 mSplashGuideline.setLayoutParams(guidelineLayoutParams);
                                 if (mBraveSplashContainer != null) {
                                     mBraveSplashContainer.setVisibility(View.GONE);
-                                }
 
-                                if (mVariantBPager != null) {
-                                    mVariantBPager.setCurrentItem(
-                                            isWDPSettingAvailable() ? 0 : 1, false);
-                                    mVariantBPager.setVisibility(View.VISIBLE);
                                 }
-                                mSplashAnimationFinished = true;
-
-                                maybeRequestDefaultBrowser();
+                                showVariantBPagerAfterSplash();
                             }
 
                             @Override
