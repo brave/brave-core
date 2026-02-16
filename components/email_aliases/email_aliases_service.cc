@@ -261,7 +261,7 @@ void EmailAliasesService::UpdateAliasWithToken(
     UpdateAliasCallback callback,
     TokenResult token) {
   if (token.has_value()) {
-    bool refresh_alises = true;
+    bool refresh_aliases = true;
 
     if (update_data->active.has_value()) {
       auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
@@ -269,7 +269,7 @@ void EmailAliasesService::UpdateAliasWithToken(
       request.alias = alias_email;
       request.status = *update_data->active ? "active" : "inactive";
 
-      refresh_alises = false;  // will be updated in response.
+      refresh_aliases = false;  // will be updated in response.
       brave_account::endpoint_client::Client<endpoints::UpdateAlias>::Send(
           url_loader_factory_, std::move(request),
           base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
@@ -282,8 +282,11 @@ void EmailAliasesService::UpdateAliasWithToken(
       notes.UpdateNote(alias_email, *update_data->note);
     }
 
-    if (refresh_alises) {
+    if (refresh_aliases) {
       RefreshAliases();
+    }
+    if (callback) {
+      std::move(callback).Run(std::monostate{});
     }
   } else {
     std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(

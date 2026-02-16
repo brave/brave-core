@@ -9,7 +9,7 @@
 namespace email_aliases::prefs {
 
 // Preference key for storing the aliases notes.
-inline constexpr char kEmailAliasesNotes[] = "brave.email_alises.notes";
+inline constexpr char kEmailAliasesNotes[] = "brave.email_aliases.notes";
 
 }  // namespace email_aliases::prefs
 

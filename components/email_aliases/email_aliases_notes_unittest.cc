@@ -6,6 +6,7 @@
 #include "brave/components/email_aliases/email_aliases_notes.h"
 
 #include "base/values.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

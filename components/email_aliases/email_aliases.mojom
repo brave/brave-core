@@ -35,7 +35,7 @@ struct AliasUpdateData {
   bool? active;
   // Change the alias's note
   string? note;
-  // Change domains list where aliase is used
+  // Change domains list where aliases is used
   array<string>? domains;
 };
 

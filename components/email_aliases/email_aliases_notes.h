@@ -12,7 +12,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
-#include "brave/components/email_aliases/pref_names.h"
 
 class PrefRegistrySimple;
 class PrefService;
