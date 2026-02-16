@@ -125,7 +125,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
           additionalHeight + 'px',
         )
         iframeRef.current.style.height = height + additionalHeight + 'px'
-        props.onHeightChanged()
+        props.onHeightChanged?.()
       }
     }
     const id =
