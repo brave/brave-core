@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -23,7 +24,8 @@ class CardanoApiImpl final : public mojom::CardanoApi {
  public:
   CardanoApiImpl(BraveWalletService& brave_wallet_service,
                  std::unique_ptr<BraveWalletProviderDelegate> delegate,
-                 mojom::AccountIdPtr selected_account);
+                 mojom::AccountIdPtr selected_account,
+                 const url::Origin& origin);
   ~CardanoApiImpl() override;
 
   void GetNetworkId(GetNetworkIdCallback callback) override;
@@ -104,6 +106,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
   raw_ref<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojom::AccountIdPtr selected_account_;
+  url::Origin origin_;
 
   base::WeakPtrFactory<CardanoApiImpl> weak_ptr_factory_{this};
 };

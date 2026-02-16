@@ -24,6 +24,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -44,7 +45,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
   SolanaProviderImpl(HostContentSettingsMap& host_content_settings_map,
                      BraveWalletService* brave_wallet_service,
-                     std::unique_ptr<BraveWalletProviderDelegate> delegate);
+                     std::unique_ptr<BraveWalletProviderDelegate> delegate,
+                     const url::Origin& origin);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -179,6 +181,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       host_content_settings_map_observation_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
+  const url::Origin origin_;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 

@@ -56,7 +56,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   EthereumProviderImpl(HostContentSettingsMap* host_content_settings_map,
                        BraveWalletService* brave_wallet_service,
                        std::unique_ptr<BraveWalletProviderDelegate> delegate,
-                       PrefService* prefs);
+                       PrefService* prefs,
+                       const url::Origin& origin);
   ~EthereumProviderImpl() override;
 
   void SendErrorOnRequest(const mojom::ProviderError& error,
@@ -333,6 +334,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   base::flat_map<std::string_view, MethodHandler> method_handlers_;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
+  const url::Origin origin_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

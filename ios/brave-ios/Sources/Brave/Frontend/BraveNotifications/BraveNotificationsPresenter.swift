@@ -42,8 +42,8 @@ private class BraveNotificationGesture: UIGestureRecognizer {
 class BraveNotificationsPresenter: UIViewController {
   private var notificationsQueue: [BraveNotification] = []
   private var widthAnchor: NSLayoutConstraint?
-  private var visibleNotification: BraveNotification?
   private weak var currentPresentingVC: UIViewController?
+  private(set) var visibleNotification: BraveNotification?
 
   override func loadView() {
     let view = PresenterView(frame: UIScreen.main.bounds)
