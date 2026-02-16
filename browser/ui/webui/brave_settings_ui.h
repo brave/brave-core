@@ -7,7 +7,10 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 
 #include <memory>
+#include <utility>
+#include <vector>
 
+#include "base/functional/bind.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
@@ -17,6 +20,7 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -92,8 +96,28 @@ class BraveSettingsUI : public settings::SettingsUI {
           pending_receiver);
 
  private:
+  // Makes a self-owned receiver and tracks it for cleanup. This guarantees the
+  // handler is destroyed before its dependencies, preventing dangling pointers
+  // during teardown.
+  template <typename Interface, typename Impl>
+  void MakeOwnedReceiver(std::unique_ptr<Impl> impl,
+                         mojo::PendingReceiver<Interface> receiver) {
+    auto ref =
+        mojo::MakeSelfOwnedReceiver(std::move(impl), std::move(receiver));
+
+    receiver_cleanup_runners_.emplace_back(base::BindOnce(
+        [](mojo::SelfOwnedReceiverRef<Interface> r) {
+          if (r) {
+            r->Close();
+          }
+        },
+        std::move(ref)));
+  }
+
   std::unique_ptr<brave_account::BraveAccountSettingsHandler>
       brave_account_settings_handler_;
+  // Ensure the mojo receivers are destroyed when the UI is destroyed.
+  std::vector<base::ScopedClosureRunner> receiver_cleanup_runners_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
