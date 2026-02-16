@@ -128,7 +128,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildRewardConfirmationWithInvalidTransaction) {
+       DoNotBuildRewardConfirmationWithInvalidTransaction) {
   // Act & Assert
   EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(/*transaction=*/{},
                                                     /*user_data=*/{}),
@@ -136,7 +136,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildRewardConfirmationForNonRewardsUser) {
+       DoNotBuildRewardConfirmationForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
