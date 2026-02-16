@@ -178,11 +178,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
     return result;
   }
 
-  PublisherChannels publisher_channels;
-  for (const auto& [publisher_id, publisher] : info.publishers()) {
-    publisher_channels[publisher_id] =
-        GetChannelsForPublisher(info.locale(), publisher);
-  }
+  const auto& publisher_channels = info.GetPublisherChannels();
 
   auto default_hero_picker = [&](const ArticleInfos& articles) {
     return PickContentGroupRoulette(articles,
@@ -208,13 +204,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 // This function is the same as GenerateBlock, except that the available
 // articles are filtered to only be from the specified channel.
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.kxe6xeqm2vfn
-std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
-    FeedGenerationInfo& info,
-    const std::string& channel) {
+std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(FeedGenerationInfo& info,
+                                                       NameId channel_id) {
   DVLOG(1) << __FUNCTION__;
 
-  auto channel_picker = [&channel](const ArticleInfos& articles) {
-    return PickChannelRoulette(articles, channel);
+  auto channel_picker = [channel_id](const ArticleInfos& articles) {
+    return PickChannelRoulette(articles, channel_id);
   };
   auto block = GenerateBlock(info, channel_picker, channel_picker, 0);
 
@@ -236,7 +231,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
 
   std::vector<mojom::FeedItemV2Ptr> result;
   result.push_back(mojom::FeedItemV2::NewCluster(mojom::Cluster::New(
-      mojom::ClusterType::CHANNEL, channel, std::move(article_elements))));
+      mojom::ClusterType::CHANNEL, info.name_table().GetString(channel_id),
+      std::move(article_elements))));
   return result;
 }
 
@@ -347,8 +343,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
       feed_generation_info.topics().empty();
 
   if (generate_channel) {
-    auto channel = PickRandom(base::span(channels));
-    DVLOG(1) << "Cluster Block (channel: " << channel << ")";
+    auto channel_id = PickRandom(base::span(channels));
+    DVLOG(1) << "Cluster Block (channel: "
+             << feed_generation_info.name_table().GetString(channel_id) << ")";
     return GenerateChannelBlock(feed_generation_info,
                                 PickRandom(base::span(channels)));
   } else {
@@ -501,7 +498,10 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   // the same thing, but with the Top News channel.
   auto top_news_block = GenerateTopTopicsBlock(info);
   if (top_news_block.empty()) {
-    top_news_block = GenerateChannelBlock(info, kTopNewsChannel);
+    NameId top_news_id = info.name_table().Find(kTopNewsChannel);
+    if (top_news_id) {
+      top_news_block = GenerateChannelBlock(info, top_news_id);
+    }
   }
   DVLOG(1) << "Step 3: Top News Block";
   add_items(top_news_block);
