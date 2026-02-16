@@ -71,9 +71,14 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   test::DisableBraveRewards();
 
   // Act & Assert
+#if CHECK_WILL_STREAM()
+  constexpr char kFailureLog[] = "Check failed: transaction.IsValid*";
+#else
+  constexpr char kFailureLog[] = ".*";
+#endif
   EXPECT_DEATH_IF_SUPPORTED(BuildNonRewardConfirmation(/*transaction=*/{},
                                                        /*user_data=*/{}),
-                            "Check failed: transaction.IsValid*");
+                            kFailureLog);
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
@@ -85,10 +90,15 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
       /*should_generate_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      BuildNonRewardConfirmation(transaction,
-                                 /*user_data=*/{}),
-      "Check failed: !UserHasJoinedBraveRewardsAndConnectedWallet*");
+#if CHECK_WILL_STREAM()
+  constexpr char kFailureLog[] =
+      "Check failed: !UserHasJoinedBraveRewardsAndConnectedWallet*";
+#else
+  constexpr char kFailureLog[] = ".*";
+#endif
+  EXPECT_DEATH_IF_SUPPORTED(BuildNonRewardConfirmation(transaction,
+                                                       /*user_data=*/{}),
+                            kFailureLog);
 }
 
 }  // namespace brave_ads
