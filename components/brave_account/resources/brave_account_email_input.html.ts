@@ -5,7 +5,10 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { BraveAccountEmailInputElement, MAX_EMAIL_LENGTH } from './brave_account_email_input.js'
+import {
+  BraveAccountEmailInputElement,
+  MAX_EMAIL_LENGTH,
+} from './brave_account_email_input.js'
 
 export function getHtml(this: BraveAccountEmailInputElement) {
   return html`<!--_html_template_start_-->
