@@ -147,7 +147,7 @@ void PolkadotMockRpc::AddGetParentBlockHeader() {
   // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/api-derive/src/tx/signingInfo.ts#L41-L71
   req_res_pairs_.emplace(
       base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["5834828E919DC0ECCCE83080104CC14F51F81330451BDF74BBC9BC1EDBA618F2"]})"),
+          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["5834828e919dc0eccce83080104cc14f51f81330451bdf74bbc9bc1edba618f2"]})"),
       R"(
             {
               "jsonrpc":"2.0",
@@ -181,7 +181,7 @@ void PolkadotMockRpc::AddGetFinalizedBlockHeader() {
   // Chained call, grab the block header using the hash of the finalized head.
   req_res_pairs_.emplace(
       base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["46E5AFE42B1FF0C40ECC18D7FF97974F3BDF5DFDA1E21D779644A7EA30A97D21"]})"),
+          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21"]})"),
       R"(
             {
               "jsonrpc":"2.0",
@@ -304,6 +304,7 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
   auto pos = req_res_pairs_.find(req_body);
   if (pos != req_res_pairs_.end()) {
     url_loader_factory_->AddResponse(req.url.spec(), pos->second);
+    return;
   }
 }
 
