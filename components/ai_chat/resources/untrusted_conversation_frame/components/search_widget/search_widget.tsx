@@ -152,6 +152,36 @@ export default function SearchWidget(props: { query: string, type: 'web' | 'imag
   const [type, setType] = React.useState(props.type)
   const { result, loading } = usePromise(() => fetchResults(type, props.query),
     [props.query, type])
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false)
+  const [canScrollRight, setCanScrollRight] = React.useState(false)
+
+  const checkScrollBounds = React.useCallback(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const { scrollLeft, scrollWidth, clientWidth } = container
+    setCanScrollLeft(scrollLeft > 1)
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1)
+  }, [])
+
+  React.useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    checkScrollBounds()
+    container.addEventListener('scroll', checkScrollBounds)
+    return () => container.removeEventListener('scroll', checkScrollBounds)
+  }, [checkScrollBounds])
+
+  const scrollBy = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return
+    const scrollAmount = scrollContainerRef.current?.querySelector('a')?.getBoundingClientRect().width ?? 0
+    scrollContainerRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    })
+  }
 
   const results = result
     ? 'results' in result
@@ -159,10 +189,16 @@ export default function SearchWidget(props: { query: string, type: 'web' | 'imag
       : result.web.results
     : [];
   return (<div className={styles.searchWidget}>
-    <div className={styles.searchResults}>
+    <div className={styles.searchResults} ref={scrollContainerRef}>
       {results && !loading
         ? results.map((result, i) => <Result key={i} result={result} />)
         : <ProgressRing />}
+      <Button className={styles.carouselButton} size='small' kind='outline' fab onClick={() => scrollBy('left')} isDisabled={!canScrollLeft}>
+        <Icon name='carat-left' />
+      </Button>
+      <Button className={styles.carouselButton} size='small' kind='outline' fab onClick={() => scrollBy('right')} isDisabled={!canScrollRight}>
+        <Icon name='carat-right' />
+      </Button>
     </div>
     <div className={styles.footer}>
       <a className={styles.query} href={`https://search.brave.com/search?q=${encodeURIComponent(props.query)}`} target='_blank'>

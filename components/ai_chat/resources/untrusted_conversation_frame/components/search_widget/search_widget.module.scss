@@ -5,20 +5,26 @@
 
 .searchWidget {
   --leo-progressring-color: var(--leo-color-divider-strong);
+  position: relative;
 
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: var(--leo-spacing-l);
 
-  width: 100%
+  width: 100%;
 }
 
 .searchResults {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
+
+  /* When just showing the loader, we center the content */
+  &:has(leo-progressring) {
+    justify-content: center;
+  }
 
   min-height: 102px;
 
@@ -26,6 +32,8 @@
   gap: var(--leo-spacing-m);
 
   scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 
   &>a {
     flex-shrink: 0;
@@ -35,6 +43,33 @@
     background: var(--leo-color-page-background);
 
     cursor: pointer;
+    scroll-snap-align: start;
+  }
+
+  & .carouselButton {
+    --leo-button-color: var(--leo-color-text-primary);
+    opacity: 0;
+    transition: opacity 0.12s ease-in-out;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+
+    background-color: var(--leo-color-page-background);
+    border-radius: 100%;
+
+    &:first-of-type {
+      left: 0;
+    }
+
+    &:last-of-type {
+      right: 0;
+    }
+  }
+
+  &:hover .carouselButton:not([isDisabled="true"]) {
+    opacity: 1;
   }
 }
 
