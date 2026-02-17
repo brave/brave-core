@@ -23,7 +23,7 @@ namespace ai_chat {
 
 class TabManagementTool : public Tool {
  public:
-  explicit TabManagementTool();
+  TabManagementTool();
   ~TabManagementTool() override;
 
   TabManagementTool(const TabManagementTool&) = delete;
