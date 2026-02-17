@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("force_paste") {
+  sources = [
+    "force_paste_javascript_feature.h",
+    "force_paste_javascript_feature.mm",
+  ]
+  deps = [
+    ":force_paste_js",
+    "//ios/web/public",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("force_paste_js") {
+  visibility = [ ":force_paste" ]
+
+  sources = [ "resources/force_paste.ts" ]
+
+  deps = [
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}

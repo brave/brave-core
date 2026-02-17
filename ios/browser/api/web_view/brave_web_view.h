@@ -137,6 +137,12 @@ CWV_EXPORT
     walletPageHandler;
 @end
 
+CWV_EXPORT
+@interface BraveWebView (ForcePaste)
+// Force pastes the contents into the active element in the web view
+- (void)forcePasteContents:(NSString*)contents;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_
