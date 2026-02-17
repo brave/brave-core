@@ -59,7 +59,10 @@ public class AppState {
           DataController.sharedInMemory.initializeOnce()
           Migration.migrateLostTabsActiveWindow()
 
-          let useChromiumWebViews = FeatureList.kUseChromiumWebViews.enabled
+          // The feature flag is now removed and this is always true, ensure that any users who may
+          // have been using the app with it disabled get their restoration data purged correctly.
+          // This can be removed in the future.
+          let useChromiumWebViews = true
           var purgeSessionData =
             useChromiumWebViews && !Preferences.Chromium.invalidatedRestorationOnUpgrade.value
           if let value = Preferences.Chromium.lastWebViewsFlagState.value,

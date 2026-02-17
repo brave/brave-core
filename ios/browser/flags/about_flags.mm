@@ -269,13 +269,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(brave_user_agent::features::kUseBraveUserAgent),  \
       },                                                                       \
       {                                                                        \
-          "brave-use-chromium-web-embedder",                                   \
-          "Use Chromium Web Embedder",                                         \
-          "Replace WKWebView usages with Chromium web views",                  \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViews),           \
-      },                                                                       \
-      {                                                                        \
           "brave-use-chromium-web-views-javascript",                           \
           "Use Chromium JavaScript Backend",                                   \
           "Replaces the system used to inject JavaScript features into the "   \

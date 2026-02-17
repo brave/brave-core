@@ -316,12 +316,8 @@ extension BrowserViewController: TopToolbarDelegate {
 
     if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
-      if FeatureList.kUseChromiumWebViews.enabled {
-        finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
-        return true
-      } else {
-        return handleChromiumWebUIURL(url)
-      }
+      finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+      return true
     }
 
     guard let fixupURL = URIFixup.getURL(text) else {
