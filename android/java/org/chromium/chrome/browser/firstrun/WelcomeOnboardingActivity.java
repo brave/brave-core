@@ -5,6 +5,7 @@
 package org.chromium.chrome.browser.firstrun;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+
 import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
