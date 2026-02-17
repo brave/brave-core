@@ -52,13 +52,7 @@ import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
 import getAPI from '../../api'
-
-// Amount of pixels user has to scroll up to break out of
-// automatic scroll to bottom when new response lines are generated.
-const SCROLL_BOTTOM_THRESHOLD = 20
-// Amount of pixels below the currently generated line to show
-// when automatically scrolling to bottom.
-const SCROLL_BOTTOM_PADDING = 18
+import { useScrollToBottom } from './useScrollToBottom'
 
 const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   [
@@ -140,45 +134,22 @@ function Main() {
     }
   }
 
-  // When the user has scrolled to the end of the conversation we anchor the scroll position to the end of the
-  // conversation.
-  // This means that:
-  // 1. Resizing the window will keep the conversation anchored to the bottom (if it was already at the bottom)
-  // 2. Loading a conversation will scroll to the end
-  // 3. Resizing the window will maintain scroll position, if you were not at the bottom before the resize.
-  const scrollIsAtBottom = React.useRef(true)
   const scrollElement = React.useRef<HTMLDivElement | null>(null)
-  const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
+  const { scrollToBottomContinuously, hasScrollableContent } =
+    useScrollToBottom(scrollElement, conversationContentElement)
 
-  const handleScroll = React.useCallback(
-    (e: React.UIEvent<HTMLDivElement>) => {
-      if (scrollAnchor.current && conversationContentElement.current) {
-        const el = e.currentTarget
-        const idealScrollFromBottom =
-          el.scrollHeight
-          - (scrollAnchor.current.offsetTop + scrollAnchor.current.offsetHeight)
-        const scrollBottom = el.scrollHeight - (el.clientHeight + el.scrollTop)
-        scrollIsAtBottom.current =
-          scrollBottom <= idealScrollFromBottom + SCROLL_BOTTOM_THRESHOLD
-      }
-    },
-    [conversationContext.isGenerating],
-  )
-
-  const handleConversationEntriesHeightChanged = () => {
-    if (
-      !scrollElement.current
-      || !scrollIsAtBottom.current
-      || !scrollAnchor.current
-    ) {
+  // Scroll to bottom when opening a conversation
+  React.useEffect(() => {
+    if (!conversationContext.conversationUuid) {
       return
     }
-    scrollElement.current.scrollTop =
-      scrollAnchor.current.offsetTop
-      + scrollAnchor.current?.offsetHeight
-      - scrollElement.current.clientHeight
-      + SCROLL_BOTTOM_PADDING
-  }
+
+    scrollToBottomContinuously(/*animate=*/ false)
+  }, [
+    conversationContext.conversationUuid,
+    isContentReady,
+    scrollToBottomContinuously,
+  ])
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
@@ -329,7 +300,6 @@ function Main() {
           [styles.centeredContent]: !aiChatContext.hasAcceptedAgreement,
         })}
         ref={scrollElement}
-        onScroll={handleScroll}
       >
         <div
           className={classnames({
@@ -354,12 +324,10 @@ function Main() {
                   [styles.aichatIframeContainer]: true,
                   [styles.dragActive]: isDragActive,
                 })}
-                ref={scrollAnchor}
               >
                 {!!conversationContext.conversationUuid && (
                   <aiChatContext.conversationEntriesComponent
                     onIsContentReady={setIsContentReady}
-                    onHeightChanged={handleConversationEntriesHeightChanged}
                   />
                 )}
               </div>
@@ -378,14 +346,12 @@ function Main() {
               {showSuggestions && (
                 <div className={styles.suggestionsContainer}>
                   <div className={styles.questionsList}>
-                    {conversationContext.suggestedQuestions.map(
-                      (question, i) => (
-                        <SuggestedQuestion
-                          key={question}
-                          question={question}
-                        />
-                      ),
-                    )}
+                    {conversationContext.suggestedQuestions.map((question) => (
+                      <SuggestedQuestion
+                        key={question}
+                        question={question}
+                      />
+                    ))}
                     {SUGGESTION_STATUS_SHOW_BUTTON.has(
                       conversationContext.suggestionStatus,
                     )
@@ -450,6 +416,20 @@ function Main() {
             && !conversationContext.conversationHistory.length && (
               <WelcomeGuide />
             )}
+        </div>
+        <div className={styles.scrollButtonContainer}>
+          <Button
+            kind='outline'
+            title={getLocale(S.CHAT_UI_SCROLL_TO_BOTTOM_BUTTON_TITLE)}
+            fab
+            className={classnames({
+              [styles.scrollToBottomButton]: true,
+              [styles.hasScrollableContent]: hasScrollableContent,
+            })}
+            onClick={() => scrollToBottomContinuously()}
+          >
+            <Icon name='arrow-down' />
+          </Button>
         </div>
       </div>
       {showAttachments && (
