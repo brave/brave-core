@@ -65,7 +65,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -307,7 +306,7 @@ void BraveSettingsUI::BindInterface(
         pending_receiver) {
   auto helper = std::make_unique<ai_chat::AIChatSettingsHelper>(
       web_ui()->GetWebContents()->GetBrowserContext());
-  mojo::MakeSelfOwnedReceiver(std::move(helper), std::move(pending_receiver));
+  MakeOwnedReceiver(std::move(helper), std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(
@@ -316,7 +315,7 @@ void BraveSettingsUI::BindInterface(
   auto handler = std::make_unique<ai_chat::CustomizationSettingsHandler>(
       user_prefs::UserPrefs::Get(
           web_ui()->GetWebContents()->GetBrowserContext()));
-  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(
@@ -356,7 +355,7 @@ void BraveSettingsUI::BindInterface(
   auto handler = std::make_unique<containers::ContainersSettingsHandler>(
       user_prefs::UserPrefs::Get(
           web_ui()->GetWebContents()->GetBrowserContext()));
-  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -378,6 +377,6 @@ void BraveSettingsUI::BindInterface(
     auto handler =
         std::make_unique<brave_origin::BraveOriginSettingsHandlerImpl>(
             brave_origin_service);
-    mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(receiver));
+    MakeOwnedReceiver(std::move(handler), std::move(receiver));
   }
 }
