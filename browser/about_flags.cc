@@ -598,6 +598,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),        \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-tab-management-tool",                                 \
+          "Brave AI Chat Tab Management Tool",                                 \
+          "AI can offer to sort, group, or close tabs to solve a user task "   \
+          "during a conversation.",                                            \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool),           \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-agent-profile",                                       \
           "Brave's AI browsing",                                               \
           "Enables Ai browsing features and only in a separate built-in "      \

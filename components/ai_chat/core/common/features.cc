@@ -129,6 +129,10 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+BASE_FEATURE(kTabManagementTool,
+             "BraveTabManagementTool",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kNEARModels,
              "AIChatNEARModels",
              base::FEATURE_DISABLED_BY_DEFAULT);
