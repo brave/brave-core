@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 2dabd636233471e1df67c3b0a77da789c914b3bd..3d4581978d35549db920e14c5427ee6828466ef2 100644
+index 2dabd636233471e1df67c3b0a77da789c914b3bd..6fb3de57c2c358fd7eb40c9490afd2f2e9447d1b 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 @@ -2483,6 +2483,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
@@ -10,12 +10,3 @@ index 2dabd636233471e1df67c3b0a77da789c914b3bd..3d4581978d35549db920e14c5427ee68
  
    std::u16string printable_selection_text = PrintableSelectionText();
    EscapeAmpersands(&printable_selection_text);
-@@ -3311,7 +3312,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
-       WindowOpenDisposition new_tab_disposition =
-           WindowOpenDisposition::NEW_BACKGROUND_TAB;
-       BrowserWindowInterface* browser = nullptr;
--      if (IsInProgressiveWebApp()) {
-+      if (IsInProgressiveWebApp() || BRAVE_IS_IN_SIDE_PANEL) {
-         browser = FindNormalBrowser(GetProfile());
-         new_tab_disposition = browser
-                                   ? WindowOpenDisposition::NEW_FOREGROUND_TAB
