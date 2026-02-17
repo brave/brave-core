@@ -191,13 +191,13 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      </history-synced-device-card>
    \`)}
  </div>
--<div id=\\"no-synced-tabs\\" class=\\"centered-message\\"
+-<div id=\\"noSyncedTabs\\" class=\\"centered-message\\"
 -    ?hidden=\\"\${!this.showNoSyncedMessage_()}\\">
-+<div id=\\"no-synced-tabs\\" class=\\"centered-message\\" ?hidden=\\"\${!this.showNoSyncedMessage_()}\\">
++<div id=\\"noSyncedTabs\\" class=\\"centered-message\\" ?hidden=\\"\${!this.showNoSyncedMessage_()}\\">
    \${this.noSyncedTabsMessage_()}
  </div>
  
--<div id=\\"sign-in-guide\\"
+-<div id=\\"signInGuide\\"
 -    ?hidden=\\"\${!this.showSignInGuide_()
 -      || this.replaceSyncPromosWithSignInPromos_}\\">
 -  <div id=\\"sync-promo-illustration\\"></div>
@@ -266,9 +266,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +        <h2 slot=\\"heading\\"><leo-icon name=\\"themes\\"></leo-icon>$i18n{appearanceHeader}</h2>
        </sp-heading>
 -      <customize-chrome-appearance @edit-theme-click=\\"\${this.onEditThemeClick_}\\"
--          @wallpaper-search-click=\\"\${this.onWallpaperSearchSelect_}\\"
+-          @wallpaper-search-click=\\"\${this.onWallpaperSearchClick_}\\"
 -          id=\\"appearanceElement\\">
-+      <customize-chrome-appearance @edit-theme-click=\\"\${this.onEditThemeClick_}\\" @wallpaper-search-click=\\"\${this.onWallpaperSearchSelect_}\\" id=\\"appearanceElement\\">
++      <customize-chrome-appearance @edit-theme-click=\\"\${this.onEditThemeClick_}\\" @wallpaper-search-click=\\"\${this.onWallpaperSearchClick_}\\" id=\\"appearanceElement\\">
        </customize-chrome-appearance>
 -    </div>
 +    
@@ -316,7 +316,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    // clang-format off
    return html\`<!--_html_template_start_-->
 -<customize-chrome-theme-snapshot id=\\"themeSnapshot\\"
--    @edit-theme-click=\\"\${this.onEditThemeClicked_}\\"
+-    @edit-theme-click=\\"\${this.onEditThemeClick_}\\"
 -    ?hidden=\\"\${!this.showThemeSnapshot_}\\">
 -</customize-chrome-theme-snapshot>
 -<customize-chrome-hover-button id=\\"thirdPartyThemeLinkButton\\"
@@ -347,14 +347,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      aria-button-label=\\"\${this.i18n('newTabPageManagedByA11yLabel',
 -                           this.managedByName_)}\\"
 -      class=\\"link-out-button theme-button\\"
--      @click=\\"\${this.onNewTabPageManageByButtonClicked_}\\"
+-      @click=\\"\${this.onNewTabPageManageByButtonClick_}\\"
 -      label=\\"\${this.managedByName_}\\"
 -      label-description=\\"\${this.managedByDesc_}\\">
 -  </customize-chrome-hover-button>
 +  
    \`: ''}
 -<div id=\\"editButtonsContainer\\" ?hidden=\\"\${!this.showEditTheme_}\\">
--  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClicked_}\\"
+-  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClick_}\\"
 -      class=\\"floating-button\\">
 -    <div id=\\"editThemeIcon\\" class=\\"cr-icon edit-theme-icon\\" slot=\\"prefix-icon\\"
 -        ?hidden=\\"\${this.wallpaperSearchButtonEnabled_}\\"></div>
@@ -362,7 +362,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -  </cr-button>
 -  \${this.wallpaperSearchButtonEnabled_ ? html\`
 -    <cr-button id=\\"wallpaperSearchButton\\"
--        @click=\\"\${this.onWallpaperSearchClicked_}\\" class=\\"floating-button\\">
+-        @click=\\"\${this.onWallpaperSearchClick_}\\" class=\\"floating-button\\">
 -      <div id=\\"wallpaperSearchIcon\\" class=\\"cr-icon edit-theme-icon\\"
 -          slot=\\"prefix-icon\\"></div>
 -      $i18n{wallpaperSearchTileLabel}
@@ -388,24 +388,24 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<customize-chrome-hover-button id=\\"setClassicChromeButton\\"
 -    ?hidden=\\"\${!this.showClassicChromeButton_}\\"
 -    label=\\"$i18n{resetToClassicChrome}\\"
--    @click=\\"\${this.onSetClassicChromeClicked_}\\">
-+<customize-chrome-hover-button id=\\"setClassicChromeButton\\" ?hidden=\\"\${!this.showClassicChromeButton_}\\" label=\\"$i18n{resetToClassicChrome}\\" @click=\\"\${this.onSetClassicChromeClicked_}\\">
+-    @click=\\"\${this.onSetClassicChromeClick_}\\">
++<customize-chrome-hover-button id=\\"setClassicChromeButton\\" ?hidden=\\"\${!this.showClassicChromeButton_}\\" label=\\"$i18n{resetToClassicChrome}\\" @click=\\"\${this.onSetClassicChromeClick_}\\">
  </customize-chrome-hover-button>
  \${this.showManagedDialog_ ? html\`
-   <managed-dialog @close=\\"\${this.onManagedDialogClosed_}\\"
+   <managed-dialog @close=\\"\${this.onManagedDialogClose_}\\"
        title=\\"$i18n{managedColorsTitle}\\"
        body=\\"$i18n{managedColorsBody}\\">
    </managed-dialog>
  \` : ''}
 -<!--_html_template_end_-->\`;
 +<!--_html_template_end_--><div id=\\"editButtonsContainer\\" ?hidden=\\"\${!this.showEditTheme_}\\">
-+  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClicked_}\\" class=\\"floating-button\\">
++  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClick_}\\" class=\\"floating-button\\">
 +    <div id=\\"editThemeIcon\\" class=\\"cr-icon edit-theme-icon\\" slot=\\"prefix-icon\\" ?hidden=\\"\${this.wallpaperSearchButtonEnabled_}\\"></div>
 +    \${this.editThemeButtonText_}
 +  </cr-button>
 +  \${this.wallpaperSearchButtonEnabled_ ? html\`
 +    <cr-button id=\\"wallpaperSearchButton\\"
-+        @click=\\"\${this.onWallpaperSearchClicked_}\\" class=\\"floating-button\\">
++        @click=\\"\${this.onWallpaperSearchClick_}\\" class=\\"floating-button\\">
 +      <div id=\\"wallpaperSearchIcon\\" class=\\"cr-icon edit-theme-icon\\"
 +          slot=\\"prefix-icon\\"></div>
 +      $i18n{wallpaperSearchTileLabel}
@@ -426,11 +426,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  export function getHtml(this: ToolbarElement) {
    return html\`<!--_html_template_start_-->
  <div class=\\"sp-card\\">
--  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\"
+-  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackButtonClick_}\\"
 -      back-button-aria-label=\\"$i18n{backButton}\\"
 -      back-button-title=\\"$i18n{backButton}\\">
 -    <h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2>
-+  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\" hide-back-button=\\"true\\">
++  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackButtonClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\" hide-back-button=\\"true\\">
 +        <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
 +    <h2 slot=\\"heading\\"><leo-icon name=\\"window-edit\\"></leo-icon>$i18n{toolbarHeader}</h2>
    </sp-heading>
@@ -441,7 +441,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -  </div>
 -  <div class=\\"intro-text\\">$i18n{chooseToolbarIconsLabel}</div>
 -  <cr-button id=\\"resetToDefaultButton\\" class=\\"floating-button\\"
--      @click=\\"\${this.onResetToDefaultClicked_}\\"
+-      @click=\\"\${this.onResetToDefaultClick_}\\"
 -      ?disabled=\\"\${this.resetToDefaultDisabled_}\\">
 -    <div id=\\"resetToDefaultIcon\\" class=\\"cr-icon\\" slot=\\"prefix-icon\\"></div>
 -    $i18n{resetToDefaultButtonLabel}
@@ -466,7 +466,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                    ''}
    \`)}
 -</div>
-+</div><cr-button id=\\"resetToDefaultButton\\" class=\\"floating-button\\" @click=\\"\${this.onResetToDefaultClicked_}\\" ?disabled=\\"\${this.resetToDefaultDisabled_}\\">
++</div><cr-button id=\\"resetToDefaultButton\\" class=\\"floating-button\\" @click=\\"\${this.onResetToDefaultClick_}\\" ?disabled=\\"\${this.resetToDefaultDisabled_}\\">
 +    <div id=\\"resetToDefaultIcon\\" class=\\"cr-icon\\" slot=\\"prefix-icon\\"></div>
 +    $i18n{resetToDefaultButtonLabel}
 +  </cr-button>
@@ -520,15 +520,15 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -    <cr-input class=\\"profile-card-info prominent-text\\" id=\\"nameInput\\"
 -        aria-label=\\"$i18n{profileCardInputLabel}\\"
 -        .value=\\"\${this.profileState.localProfileName}\\"
--        @change=\\"\${this.onProfileNameChanged_}\\"
+-        @change=\\"\${this.onProfileNameChange_}\\"
 -        @keydown=\\"\${this.onProfileNameKeydown_}\\"
 -        @blur=\\"\${this.onProfileNameInputBlur_}\\" pattern=\\"\${this.pattern_}\\"
 -        auto-validate spellcheck=\\"false\\"
--        @pointerenter=\\"\${this.onNameInputPointerEnter_}\\"
--        @pointerleave=\\"\${this.onNameInputPointerLeave_}\\"
+-        @pointerenter=\\"\${this.onNameInputPointerenter_}\\"
+-        @pointerleave=\\"\${this.onNameInputPointerleave_}\\"
 -        ?disabled=\\"\${
 -      isGlicVersion() || this.profileState.hasEnterpriseLabel}\\" required>
-+    <cr-input class=\\"profile-card-info prominent-text\\" id=\\"nameInput\\" aria-label=\\"$i18n{profileCardInputLabel}\\" .value=\\"\${this.profileState.localProfileName}\\" @change=\\"\${this.onProfileNameChanged_}\\" @keydown=\\"\${this.onProfileNameKeydown_}\\" @blur=\\"\${this.onProfileNameInputBlur_}\\" pattern=\\"\${this.pattern_}\\" auto-validate=\\"\\" spellcheck=\\"false\\" @pointerenter=\\"\${this.onNameInputPointerEnter_}\\" @pointerleave=\\"\${this.onNameInputPointerLeave_}\\" ?disabled=\\"\${
++    <cr-input class=\\"profile-card-info prominent-text\\" id=\\"nameInput\\" aria-label=\\"$i18n{profileCardInputLabel}\\" .value=\\"\${this.profileState.localProfileName}\\" @change=\\"\${this.onProfileNameChange_}\\" @keydown=\\"\${this.onProfileNameKeydown_}\\" @blur=\\"\${this.onProfileNameInputBlur_}\\" pattern=\\"\${this.pattern_}\\" auto-validate=\\"\\" spellcheck=\\"false\\" @pointerenter=\\"\${this.onNameInputPointerenter_}\\" @pointerleave=\\"\${this.onNameInputPointerleave_}\\" ?disabled=\\"\${
 +      isGlicVersion() || this.profileState.hasEnterpriseLabel}\\" required=\\"\\">
      </cr-input>
      <div id=\\"hoverUnderline\\" ?hidden=\\"\${
@@ -558,21 +558,21 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_picker_main_view.html.ts
-@@ -14,10 +14,9 @@
-     }
-   }()}
+@@ -10,10 +10,9 @@
+   <link href=\\"glic_profile_branding.css\\" rel=\\"stylesheet\\" />
+ \` : ''}
  <div class=\\"flex-container\\">
    <div class=\\"title-container\\">
--    <img id=\\"picker-logo\\" @click=\\"\${this.onProductLogoClick_}\\"
+-    <img id=\\"pickerLogo\\" @click=\\"\${this.onProductLogoClick_}\\"
 -        src=\\"picker_logo.svg\\" role=\\"presentation\\">
-+    <img id=\\"picker-logo\\" @click=\\"\${this.onProductLogoClick_}\\" src=\\"picker_logo.svg\\" role=\\"presentation\\">
++    <img id=\\"pickerLogo\\" @click=\\"\${this.onProductLogoClick_}\\" src=\\"picker_logo.svg\\" role=\\"presentation\\">
      <h1 class=\\"title\\" .innerHTML=\\"\${this.getTitle_()}\\"></h1>
      <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
    </div>
    <div id=\\"profilesWrapper\\" ?hidden=\\"\${(this.shouldHideProfilesWrapper_())}\\">
-@@ -28,48 +27,33 @@
-             @toggle-drag=\\"\${this.toggleDrag_}\\"
-             @disable-all-picker-buttons=\\"\${this.disableAllPickerButtons_}\\">
+@@ -24,40 +23,27 @@
+             @toggle-drag=\\"\${this.onToggleDrag_}\\"
+             @disable-all-picker-buttons=\\"\${this.onDisableAllPickerButtons_}\\">
          </profile-card>
        \`)}
 -      <cr-button id=\\"addProfile\\" class=\\"profile-item\\"
@@ -590,15 +590,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
      </div>
    </div>
--<if expr=\\"enable_glic\\">
 -  <div id=\\"footer-text\\" class=\\"subtitle\\"
 -      ?hidden=\\"\${this.shouldHideFooterText_()}\\">
-+
 +  <div id=\\"footer-text\\" class=\\"subtitle\\" ?hidden=\\"\${this.shouldHideFooterText_()}\\">
      $i18nRaw{glicAddProfileHelper}
    </div>
--</if>
-+
  </div>
  <div class=\\"footer\\">
    <div class=\\"footer-buttons-container\\">
@@ -619,13 +615,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        $i18n{openAllProfilesButtonText}
      </cr-button>
    </div>
--  <cr-checkbox id=\\"askOnStartup\\" ?checked=\\"\${this.askOnStartup_}\\"
--      @checked-changed=\\"\${this.onAskOnStartupChangedByUser_}\\"
--      ?hidden=\\"\${this.hideAskOnStartup_}\\">
-+  <cr-checkbox id=\\"askOnStartup\\" ?checked=\\"\${this.askOnStartup_}\\" @checked-changed=\\"\${this.onAskOnStartupChangedByUser_}\\" ?hidden=\\"\${this.hideAskOnStartup_}\\">
-     $i18n{askOnStartupCheckboxText}
-   </cr-checkbox>
- </div>
  
 "
 `;
