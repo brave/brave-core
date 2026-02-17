@@ -48,10 +48,11 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           <div
             slot="errors"
             class="dropdown ${this.passwordStrength !== 0 ? 'visible' : ''}"
-            id="password-dropdown"
           >
-            <password-strength-meter strength=${this.passwordStrength}>
-            </password-strength-meter>
+            <div class="dropdown-content">
+              <password-strength-meter strength=${this.passwordStrength}>
+              </password-strength-meter>
+            </div>
           </div>
         </leo-input>
         <leo-input
@@ -81,14 +82,18 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
             class="dropdown ${this.passwordConfirmation.length !== 0
               ? 'visible'
               : ''}"
-            id="password-confirmation-dropdown"
             slot="errors"
           >
-            <leo-icon name=${this.getIconName()}></leo-icon>
-            <div>
-              ${this.icon === 'check-circle-filled'
-                ? html`$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE}`
-                : html`$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE}`}
+            <div
+              class="dropdown-content"
+              id="password-confirmation-dropdown"
+            >
+              <leo-icon name=${this.getIconName()}></leo-icon>
+              <div>
+                ${this.icon === 'check-circle-filled'
+                  ? html`$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE}`
+                  : html`$i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE}`}
+              </div>
             </div>
           </div>
         </leo-input>
