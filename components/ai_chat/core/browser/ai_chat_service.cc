@@ -449,7 +449,7 @@ void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
   ai_chat_db_ = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
       base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::WithBaseSyncPrimitives(),
-           base::TaskPriority::BEST_EFFORT,
+           base::TaskPriority::USER_BLOCKING,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
       std::make_unique<AIChatDatabase>(profile_path_.Append(kDBFileName),
                                        std::move(encryptor)));
