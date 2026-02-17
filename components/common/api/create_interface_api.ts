@@ -178,8 +178,7 @@ export function createInterfaceApi<
    */
   const ExposedActions extends Record<
     string,
-    | Function
-    | Record<string, Function>
+    Function | Record<string, Function>
   >,
   const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
   EventDefinitions extends Record<string, EventDef<any[], any>> = {},
@@ -648,6 +647,8 @@ export function createInterfaceApi<
   type PayloadOf<K extends EvAll> =
     EvDefs[K] extends EventDef<any, infer P extends any[]> ? P : never
 
+  type EventInternalData<T> = { payload: T; eventCount: number }
+
   function emitEvent<K extends EvAll>(
     eventName: K,
     ...argsAndPayload: [...KeyArgsOf<K>, PayloadOf<K>]
@@ -657,10 +658,9 @@ export function createInterfaceApi<
       0,
       argsAndPayload.length - 1,
     ) as KeyArgsOf<K>
-
-    queryClient.setQueryData<PayloadOf<K>>(
-      [rootKey, eventName, ...keyArgs] as [number, K, ...KeyArgsOf<K>],
-      payload,
+    queryClient.setQueryData<EventInternalData<PayloadOf<K>>>(
+      [rootKey, eventName, ...keyArgs],
+      (old) => ({ payload, eventCount: (old?.eventCount ?? 0) + 1 }),
     )
   }
 
@@ -729,7 +729,7 @@ export function createInterfaceApi<
 
     // useCurrentMyEvent
     ;(eventHooks as any)[hookNameUseCurrent] = (...keyArgs: any[]) => {
-      const hookData = useQuery<PayloadOf<typeof eventName>>(
+      const hookData = useQuery<EventInternalData<PayloadOf<typeof eventName>>>(
         {
           queryKey: [...keyBase, ...keyArgs],
           enabled: false,
@@ -745,7 +745,7 @@ export function createInterfaceApi<
 
       return {
         hasEmitted: hookData.isFetched,
-        data: hookData.data,
+        data: hookData.data?.payload,
       }
     }
 
@@ -754,23 +754,22 @@ export function createInterfaceApi<
       handler: (...result: PayloadOf<typeof eventName>) => {},
       ...keyArgs: any[]
     ) => {
-      const observer = new QueryObserver<PayloadOf<typeof eventName>>(
-        queryClient,
-        {
-          queryKey: [...keyBase, ...keyArgs],
-          enabled: false,
-          queryFn: () =>
-            Promise.reject(
-              new Error(
-                `${eventName as string} is an event, not a query and should not try to fetch data`,
-              ),
+      const observer = new QueryObserver<
+        EventInternalData<PayloadOf<typeof eventName>>
+      >(queryClient, {
+        queryKey: [...keyBase, ...keyArgs],
+        enabled: false,
+        queryFn: () =>
+          Promise.reject(
+            new Error(
+              `${eventName as string} is an event, not a query and should not try to fetch data`,
             ),
-        },
-      )
+          ),
+      })
 
       const unsubscribe = observer.subscribe((result) => {
         if (result.data !== undefined) {
-          handler(...result.data)
+          handler(...result.data.payload)
         } else {
           // We would only get here if there is never any payload type for
           // this event.

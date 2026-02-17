@@ -783,10 +783,42 @@ describe('createInterfaceApi', () => {
     expect(observer).toHaveBeenCalledTimes(2)
   })
 
+  it('fires and handles same-argument events', () => {
+    let emitter: (...args: []) => void = () => {}
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {},
+      events: {
+        myVoidEvent: event<[], []>((emit) => {
+          emitter = emit
+        }),
+      },
+    })
+
+    const observer = jest.fn()
+    const unsubscribe = api.subscribeToMyVoidEvent(observer)
+
+    // manually call the event
+    api.emitEvent('myVoidEvent', [])
+    api.emitEvent('myVoidEvent', [])
+    api.emitEvent('myVoidEvent', [])
+
+    expect(observer).toHaveBeenCalled()
+
+    // call the event from some outside function
+    expect(observer).toHaveBeenCalledTimes(3)
+
+    // verify unsubscribe no longer gets notifications
+    unsubscribe()
+    api.emitEvent('myVoidEvent', [])
+    expect(observer).toHaveBeenCalledTimes(3)
+    emitter()
+    expect(observer).toHaveBeenCalledTimes(3)
+  })
+
   it('updates the event data hook when an event is emitted', async () => {
     let emitter: (...args: [string, number]) => void = () => {}
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {},
       events: {
