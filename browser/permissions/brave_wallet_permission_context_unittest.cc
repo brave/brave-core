@@ -11,12 +11,11 @@
 #include "base/memory/ptr_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/permissions/brave_permission_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_util.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -32,7 +31,7 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
   void SetUp() override {
     map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
     profile_.SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<BravePermissionManager*>(
+        base::WrapUnique(static_cast<PermissionManager*>(
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(browser_context())
                 .release())));

@@ -23,7 +23,7 @@
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
-#include "brave/components/permissions/brave_permission_manager.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
@@ -150,9 +150,8 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
         browser()->tab_strip_model()->GetActiveWebContents());
   }
 
-  BravePermissionManager* permission_manager() {
-    return static_cast<permissions::BravePermissionManager*>(
-        PermissionManagerFactory::GetForProfile(browser()->profile()));
+  PermissionManager* permission_manager() {
+    return PermissionManagerFactory::GetForProfile(browser()->profile());
   }
 
   HostContentSettingsMap* host_content_settings_map() {
@@ -214,12 +213,10 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
     if (entry.address && entry.permission) {
       auto last_committed_origin =
           url::Origin::Create(active_web_contents()->GetLastCommittedURL());
-      auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
-          last_committed_origin, {std::string(entry.address)});
-      EXPECT_TRUE(origin);
-      permission_manager()->RequestPermissionsForOrigin(
-          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
-          origin->GetURL(), true, base::DoNothing());
+
+      BraveWalletPermissionContext::RequestWalletPermissions(
+          {entry.address}, *entry.permission,
+          active_web_contents()->GetPrimaryMainFrame(), base::DoNothing());
 
       auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
           ContentSettingsTypeToRequestType(entry.type), last_committed_origin,

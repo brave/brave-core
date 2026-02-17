@@ -206,6 +206,7 @@ source_set("unit_tests") {
       "//brave/components/brave_wallet/common:common_constants",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/ui/hid",
+      "//ui/display:test_support",
     ]
     if (enable_extensions) {
       sources += [ "external_wallets_importer_unittest.cc" ]

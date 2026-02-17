@@ -8,11 +8,11 @@
 #include "brave/browser/geolocation/brave_geolocation_permission_context_delegate.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_google_sign_in_permission_context.h"
 #include "brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/features.h"
+#include "components/permissions/permission_manager.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -61,6 +61,6 @@ PermissionManagerFactory::BuildServiceInstanceForBrowserContext(
     }
   }
 
-  return std::make_unique<permissions::BravePermissionManager>(
+  return std::make_unique<permissions::PermissionManager>(
       profile, std::move(permission_contexts));
 }
