@@ -32,7 +32,6 @@ extension BrowserViewController: TabObserver {
       BraveGetUA(),
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
-      DownloadContentScriptHandler(browserController: self),
       AdsMediaReportingScriptHandler(rewards: rewards),
       ReadyStateScriptHandler(),
       DeAmpScriptHandler(),
