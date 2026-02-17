@@ -142,13 +142,25 @@ class ScriptFactory {
       let encoder = JSONEncoder()
       let data = try encoder.encode(setup)
       let args = String(data: data, encoding: .utf8)!
-      let proceduralActionFilters =
-        proceduralActions.isEmpty ? "undefined" : "[ \(proceduralActions.joined(separator: ","))]"
+
+      // Parse and validate each procedural action JSON string
+      var validatedActions: [[String: Any]] = []
+      for actionString in proceduralActions {
+        if let data = actionString.data(using: .utf8),
+          let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        {
+          validatedActions.append(json)
+        }
+      }
+      // re-encode as JSON array
+      let proceduralData = try JSONSerialization.data(withJSONObject: validatedActions)
+      let proceduralActionsJSON = String(data: proceduralData, encoding: .utf8) ?? "undefined"
+
       let cosmeticFiltersScript = AdblockService.cosmeticFiltersScript()
       let source = """
         window.__firefox__.execute(function($) {
           const args = \(args);
-          const proceduralFilters = \(proceduralActionFilters);
+          const proceduralFilters = \(proceduralActionsJSON);
           const messageHandler = '$<message_handler>';
           const partinessMessageHandler = '$<partiness_message_handler>';
           
