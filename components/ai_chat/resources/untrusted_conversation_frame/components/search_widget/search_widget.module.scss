@@ -35,7 +35,7 @@
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 
-  &>a {
+  & > a {
     flex-shrink: 0;
     overflow: hidden;
 
@@ -68,7 +68,7 @@
     }
   }
 
-  &:hover .carouselButton:not([isDisabled="true"]) {
+  &:hover .carouselButton:not([isDisabled='true']) {
     opacity: 1;
   }
 }
@@ -85,11 +85,11 @@
   flex-direction: row;
   gap: var(--leo-spacing-l);
 
-  &[data-type="video_result"] .thumbnail {
+  &[data-type='video_result'] .thumbnail {
     width: 122px;
   }
 
-  &[data-type="news_result"] .thumbnail {
+  &[data-type='news_result'] .thumbnail {
     width: 78px;
   }
 

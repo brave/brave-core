@@ -161,7 +161,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render loading state initially', async () => {
-    const { container } = render(<SearchWidget query="test query" type="web" />)
+    const { container } = render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
     // Check for the leo-progressring custom element
     const progressRing = container.querySelector('leo-progressring')
     expect(progressRing).toBeInTheDocument()
@@ -173,7 +178,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render web search results', async () => {
-    render(<SearchWidget query="test query" type="web" />)
+    render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Test Result 1')).toBeInTheDocument()
@@ -185,7 +195,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render image results', async () => {
-    render(<SearchWidget query="test query" type="images" />)
+    render(
+      <SearchWidget
+        query='test query'
+        type='images'
+      />,
+    )
 
     // Wait for results to load
     await waitFor(() => {
@@ -202,7 +217,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render video results with age', async () => {
-    render(<SearchWidget query="test query" type="videos" />)
+    render(
+      <SearchWidget
+        query='test query'
+        type='videos'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Test Video 1')).toBeInTheDocument()
@@ -212,7 +232,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render news results with age', async () => {
-    render(<SearchWidget query="test query" type="news" />)
+    render(
+      <SearchWidget
+        query='test query'
+        type='news'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Test News 1')).toBeInTheDocument()
@@ -222,7 +247,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render type selector buttons', async () => {
-    const { container } = render(<SearchWidget query="test query" type="web" />)
+    const { container } = render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     // Wait for initial web results
     await waitFor(() => {
@@ -238,7 +268,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render description with strong tags', async () => {
-    const { container } = render(<SearchWidget query="test query" type="web" />)
+    const { container } = render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Test Result 1')).toBeInTheDocument()
@@ -251,7 +286,12 @@ describe('SearchWidget', () => {
   })
 
   test('should have carousel buttons', async () => {
-    const { container } = render(<SearchWidget query="test query" type="web" />)
+    const { container } = render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Test Result 1')).toBeInTheDocument()
@@ -262,7 +302,12 @@ describe('SearchWidget', () => {
   })
 
   test('should disable left carousel button at start', async () => {
-    const { container } = render(<SearchWidget query="test query" type="web" />)
+    const { container } = render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Test Result 1')).toBeInTheDocument()
@@ -276,7 +321,12 @@ describe('SearchWidget', () => {
   })
 
   test('should render search query link', async () => {
-    render(<SearchWidget query="test query" type="web" />)
+    render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
       expect(screen.getByText('test query')).toBeInTheDocument()
@@ -290,7 +340,12 @@ describe('SearchWidget', () => {
   })
 
   test('should encode query parameter in API call', async () => {
-    render(<SearchWidget query="test & query" type="web" />)
+    render(
+      <SearchWidget
+        query='test & query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith(
@@ -311,10 +366,17 @@ describe('SearchWidget', () => {
       } as Response),
     )
 
-    const { container } = render(<SearchWidget query="test query" type="web" />)
+    const { container } = render(
+      <SearchWidget
+        query='test query'
+        type='web'
+      />,
+    )
 
     await waitFor(() => {
-      expect(container.querySelector('leo-progressring')).not.toBeInTheDocument()
+      expect(
+        container.querySelector('leo-progressring'),
+      ).not.toBeInTheDocument()
     })
 
     // Should not crash with empty results

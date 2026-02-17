@@ -21,7 +21,36 @@ type Story = StoryObj<typeof SearchWidget>
 
 export const Default: Story = {
   args: {
-    query: 'Brave',
+    query: 'Approach shoes',
     type: 'web',
+    fetchResults: (type) => {
+      let promise: Promise<any>
+      switch (type) {
+        case 'web':
+          promise = import('./storybook-data/web.json', {
+            assert: { type: 'json' },
+          })
+          break
+        case 'images':
+          promise = import('./storybook-data/images.json', {
+            assert: { type: 'json' },
+          })
+          break
+        case 'videos':
+          promise = import('./storybook-data/videos.json', {
+            assert: { type: 'json' },
+          })
+          break
+        case 'news':
+          promise = import('./storybook-data/news.json', {
+            assert: { type: 'json' },
+          })
+          break
+        default:
+          throw new Error(`Unknown type: ${type}`)
+      }
+
+      return promise.then((r: any) => r.default)
+    },
   },
 }
