@@ -210,7 +210,7 @@ extension BrowserViewController {
       }
 
       // Create PDF Activity
-      if let tab, tab.temporaryDocument == nil {
+      if let tab, tab.temporaryDocument == nil, tab.lastCommittedURL?.isWebPage() == true {
         activities.append(
           BasicMenuActivity(
             activityType: .createPDF,
