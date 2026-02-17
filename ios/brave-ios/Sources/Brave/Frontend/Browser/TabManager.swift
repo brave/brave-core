@@ -460,8 +460,8 @@ class TabManager: NSObject {
   ) -> any TabState {
     let popup = TabStateFactory.create(
       with: .init(
-        initialConfiguration: parentTab.configuration,
-        braveCore: braveCore
+        profile: parentTab.isPrivate ? braveCore?.profile.offTheRecordProfile : braveCore?.profile,
+        initialConfiguration: parentTab.configuration
       )
     )
     configureTab(
@@ -541,9 +541,9 @@ class TabManager: NSObject {
     let tab = TabStateFactory.create(
       with: .init(
         id: tabId,
+        profile: isPrivate ? braveCore?.profile.offTheRecordProfile : braveCore?.profile,
         initialConfiguration: initialConfiguration,
-        lastActiveTime: lastActiveTime,
-        braveCore: braveCore
+        lastActiveTime: lastActiveTime
       )
     )
     configureTab(
