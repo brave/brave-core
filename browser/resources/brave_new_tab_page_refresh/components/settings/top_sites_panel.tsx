@@ -7,7 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { TopSitesListKind } from '../../state/top_sites_state'
+import { TopSitesListKind } from '../../state/top_sites_store'
 import {
   useTopSitesState,
   useTopSitesActions,

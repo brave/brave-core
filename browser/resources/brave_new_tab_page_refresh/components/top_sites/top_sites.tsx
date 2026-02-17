@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { TopSite, TopSitesListKind } from '../../state/top_sites_state'
+import { TopSite, TopSitesListKind } from '../../state/top_sites_store'
 import {
   useTopSitesState,
   useTopSitesActions,

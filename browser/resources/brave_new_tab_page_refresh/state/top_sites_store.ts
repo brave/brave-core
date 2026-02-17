@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
+
 import {
   TopSite,
   TopSitesListKind,
@@ -16,16 +18,28 @@ export interface TopSitesState {
   showTopSites: boolean
   topSitesListKind: TopSitesListKind
   topSites: TopSite[]
+  actions: TopSitesActions
 }
 
-export function defaultTopSitesState(): TopSitesState {
-  return {
+export type TopSitesStore = StateStore<TopSitesState>
+
+export function defaultTopSitesStore(): TopSitesStore {
+  return createStateStore<TopSitesState>({
     initialized: false,
     maxCustomTopSites: 48,
     showTopSites: true,
     topSitesListKind: TopSitesListKind.kMostVisited,
     topSites: [],
-  }
+    actions: {
+      setShowTopSites(showTopSites) {},
+      setTopSitesListKind(listKind) {},
+      addTopSite(url, title) {},
+      updateTopSite(currentURL, newURL, title) {},
+      removeTopSite(url) {},
+      undoRemoveTopSite() {},
+      setTopSitePosition(url, pos) {},
+    },
+  })
 }
 
 export interface TopSitesActions {
@@ -36,16 +50,4 @@ export interface TopSitesActions {
   removeTopSite: (url: string) => void
   undoRemoveTopSite: () => void
   setTopSitePosition: (url: string, pos: number) => void
-}
-
-export function defaultTopSitesActions(): TopSitesActions {
-  return {
-    setShowTopSites(showTopSites) {},
-    setTopSitesListKind(listKind) {},
-    addTopSite(url, title) {},
-    updateTopSite(currentURL, newURL, title) {},
-    removeTopSite(url) {},
-    undoRemoveTopSite() {},
-    setTopSitePosition(url, pos) {},
-  }
 }

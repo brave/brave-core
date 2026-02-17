@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
+
 import {
   NewTabPageAdEventType,
   NewTabPageAdMetricType,
@@ -43,6 +45,7 @@ export interface BackgroundState {
   backgroundRandomValue: number
   sponsoredImageBackground: SponsoredImageBackground | null
   sponsoredRichMediaBaseUrl: string
+  actions: BackgroundActions
 }
 
 export const solidBackgrounds = [
@@ -87,8 +90,10 @@ export const gradientBackgrounds = [
 
 export const gradientPreviewBackground = gradientBackgrounds[0]
 
-export function defaultBackgroundState(): BackgroundState {
-  return {
+export type BackgroundStore = StateStore<BackgroundState>
+
+export function defaultBackgroundStore(): BackgroundStore {
+  return createStateStore<BackgroundState>({
     initialized: false,
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
@@ -103,7 +108,19 @@ export function defaultBackgroundState(): BackgroundState {
     backgroundRandomValue: 0,
     sponsoredImageBackground: null,
     sponsoredRichMediaBaseUrl: '',
-  }
+    actions: {
+      setBackgroundsEnabled(enabled) {},
+      setSponsoredImagesEnabled(enabled) {},
+      selectBackground(type, value) {},
+      async showCustomBackgroundChooser() {
+        return false
+      },
+      async removeCustomBackground(background) {},
+      notifySponsoredImageLoadError() {},
+      notifySponsoredImageLogoClicked() {},
+      notifySponsoredRichMediaEvent(type) {},
+    },
+  })
 }
 
 export interface BackgroundActions {

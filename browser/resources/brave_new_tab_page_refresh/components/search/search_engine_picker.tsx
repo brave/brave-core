@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 
 import { getString } from '../../lib/strings'
-import { SearchEngineInfo } from '../../state/search_state'
+import { SearchEngineInfo } from '../../state/search_store'
 import { EngineIcon } from './engine_icon'
 
 import { style } from './search_engine_picker.style'

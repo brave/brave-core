@@ -16,7 +16,7 @@ import {
   backgroundCSSValue,
   solidBackgrounds,
   gradientBackgrounds,
-} from '../../state/background_state'
+} from '../../state/background_store'
 
 import {
   useBackgroundState,
