@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { braveSearchHost } from '../../state/search_state'
+import { braveSearchHost } from '../../state/search_store'
 
 import { useSearchState } from '../../context/search_context'
 import { useSearchInputState } from './search_input_state'

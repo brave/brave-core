@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { defaultTopSitesState } from '../state/top_sites_state'
-import { createTopSitesHandler } from '../state/top_sites_handler'
-import { createStateProvider } from '../lib/state_provider'
+import * as React from 'react'
 
-export const TopSitesProvider = createStateProvider(
-  defaultTopSitesState(),
-  createTopSitesHandler,
-)
+import { defaultTopSitesStore } from '../state/top_sites_store'
+import { createUseStateHook } from '$web-common/state_store_hooks'
 
-export const useTopSitesState = TopSitesProvider.useState
-export const useTopSitesActions = TopSitesProvider.useActions
+export const TopSitesContext = React.createContext(defaultTopSitesStore())
+
+export const useTopSitesState = createUseStateHook(TopSitesContext)
+
+export function useTopSitesActions() {
+  return useTopSitesState((s) => s.actions)
+}

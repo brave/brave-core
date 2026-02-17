@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { SearchEngineInfo } from '../../state/search_state'
+import { SearchEngineInfo } from '../../state/search_store'
 import { SafeImage } from '../common/safe_image'
 
 interface Props {

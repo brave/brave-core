@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { AutocompleteMatch, ClickEvent } from '../../state/search_state'
+import { AutocompleteMatch, ClickEvent } from '../../state/search_store'
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
 import { faviconURL } from '../../lib/favicon_url'

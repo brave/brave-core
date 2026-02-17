@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
+
 import {
   ShieldsStats,
   ClockFormat,
@@ -19,10 +21,13 @@ export interface NewTabState {
   showTalkWidget: boolean
   talkFeatureEnabled: boolean
   newsFeatureEnabled: boolean
+  actions: NewTabActions
 }
 
-export function defaultNewTabState(): NewTabState {
-  return {
+export type NewTabStore = StateStore<NewTabState>
+
+export function defaultNewTabStore(): NewTabStore {
+  return createStateStore<NewTabState>({
     initialized: false,
     showClock: false,
     clockFormat: ClockFormat.kAuto,
@@ -31,7 +36,13 @@ export function defaultNewTabState(): NewTabState {
     showTalkWidget: false,
     talkFeatureEnabled: false,
     newsFeatureEnabled: false,
-  }
+    actions: {
+      setShowClock(showClock) {},
+      setClockFormat(format) {},
+      setShowShieldsStats(showShieldsStats) {},
+      setShowTalkWidget(showTalkWidget) {},
+    },
+  })
 }
 
 export interface NewTabActions {
@@ -39,13 +50,4 @@ export interface NewTabActions {
   setClockFormat: (format: ClockFormat) => void
   setShowShieldsStats: (showShieldsStats: boolean) => void
   setShowTalkWidget: (showTalkWidget: boolean) => void
-}
-
-export function defaultNewTabActions(): NewTabActions {
-  return {
-    setShowClock(showClock) {},
-    setClockFormat(format) {},
-    setShowShieldsStats(showShieldsStats) {},
-    setShowTalkWidget(showTalkWidget) {},
-  }
 }

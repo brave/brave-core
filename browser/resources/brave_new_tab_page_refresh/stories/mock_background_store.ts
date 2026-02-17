@@ -3,16 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore } from '$web-common/state_store'
-
 import {
-  BackgroundState,
+  BackgroundStore,
   BackgroundActions,
   NewTabPageAdMetricType,
   SelectedBackgroundType,
-} from '../state/background_state'
-
-import { StorybookArgs } from './storybook_args'
+  defaultBackgroundStore,
+} from '../state/background_store'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -55,10 +52,9 @@ const sponsoredBackgrounds = {
   none: null,
 }
 
-export function createBackgroundHandler(
-  store: StateStore<BackgroundState>,
-  args: StorybookArgs,
-): BackgroundActions {
+export function createBackgroundStore() {
+  const store = defaultBackgroundStore()
+
   store.update({
     initialized: true,
     braveBackgrounds: [
@@ -69,19 +65,16 @@ export function createBackgroundHandler(
       },
     ],
     backgroundRandomValue: Math.random(),
-    sponsoredImageBackground:
-      args.sponsoredBackgroundType === 'rich'
-        ? sponsoredBackgrounds.richMedia
-        : args.sponsoredBackgroundType === 'image'
-          ? sponsoredBackgrounds.image
-          : sponsoredBackgrounds.none,
+    sponsoredImageBackground: sponsoredBackgrounds.none,
   })
 
   store.update({
     sponsoredRichMediaBaseUrl: location.origin,
   })
 
-  return {
+  const actions: BackgroundActions = {
+    ...store.getState().actions,
+
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
     },
@@ -127,4 +120,22 @@ export function createBackgroundHandler(
       console.log('richMediaEvent', type)
     },
   }
+
+  store.update({ actions })
+
+  return store
+}
+
+export function updateSponsoredBackground(
+  store: BackgroundStore,
+  type: 'none' | 'image' | 'rich',
+) {
+  store.update({
+    sponsoredImageBackground:
+      type === 'rich'
+        ? sponsoredBackgrounds.richMedia
+        : type === 'image'
+          ? sponsoredBackgrounds.image
+          : sponsoredBackgrounds.none,
+  })
 }

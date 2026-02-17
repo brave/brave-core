@@ -3,17 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore } from '$web-common/state_store'
+import { NewTabActions, defaultNewTabStore } from '../state/new_tab_store'
 
-import {
-  NewTabState,
-  NewTabActions,
-  defaultNewTabActions,
-} from '../state/new_tab_state'
-
-export function createNewTabHandler(
-  store: StateStore<NewTabState>,
-): NewTabActions {
+export function createNewTabStore() {
+  const store = defaultNewTabStore()
   store.update({
     initialized: true,
     showClock: true,
@@ -27,8 +20,8 @@ export function createNewTabHandler(
     newsFeatureEnabled: false,
   })
 
-  return {
-    ...defaultNewTabActions(),
+  const actions: NewTabActions = {
+    ...store.getState().actions,
 
     setClockFormat(format) {
       store.update({ clockFormat: format })
@@ -46,4 +39,8 @@ export function createNewTabHandler(
       store.update({ showTalkWidget })
     },
   }
+
+  store.update({ actions })
+
+  return store
 }

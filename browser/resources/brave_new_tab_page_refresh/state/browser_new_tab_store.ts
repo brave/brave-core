@@ -5,13 +5,11 @@
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
-import { NewTabState, NewTabActions } from './new_tab_state'
+import { NewTabActions, defaultNewTabStore } from './new_tab_store'
 
-export function createNewTabHandler(
-  store: StateStore<NewTabState>,
-): NewTabActions {
+export function createNewTabStore() {
+  const store = defaultNewTabStore()
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   const talkFeatureEnabled = loadTimeData.getBoolean('talkFeatureEnabled')
@@ -76,7 +74,7 @@ export function createNewTabHandler(
 
   loadData()
 
-  return {
+  const actions: NewTabActions = {
     setShowClock(showClock) {
       handler.setShowClock(showClock)
     },
@@ -97,4 +95,8 @@ export function createNewTabHandler(
       }
     },
   }
+
+  store.update({ actions })
+
+  return store
 }

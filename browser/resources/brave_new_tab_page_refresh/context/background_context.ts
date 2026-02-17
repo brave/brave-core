@@ -6,19 +6,18 @@
 import * as React from 'react'
 
 import {
-  defaultBackgroundState,
+  defaultBackgroundStore,
   getCurrentBackground,
-} from '../state/background_state'
-import { createBackgroundHandler } from '../state/background_handler'
-import { createStateProvider } from '../lib/state_provider'
+} from '../state/background_store'
+import { createUseStateHook } from '$web-common/state_store_hooks'
 
-export const BackgroundProvider = createStateProvider(
-  defaultBackgroundState(),
-  createBackgroundHandler,
-)
+export const BackgroundContext = React.createContext(defaultBackgroundStore())
 
-export const useBackgroundState = BackgroundProvider.useState
-export const useBackgroundActions = BackgroundProvider.useActions
+export const useBackgroundState = createUseStateHook(BackgroundContext)
+
+export function useBackgroundActions() {
+  return useBackgroundState((s) => s.actions)
+}
 
 export function useCurrentBackground() {
   const state = useBackgroundState((s) => ({ ...s }))

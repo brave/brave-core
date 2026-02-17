@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { StateStore, createStateStore } from '$web-common/state_store'
+
 import * as mojom from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
 
 export const braveSearchHost = 'search.brave.com'
@@ -40,10 +42,13 @@ export interface SearchState {
   searchSuggestionsPromptDismissed: boolean
   activeSearchInputKey: string
   searchMatches: AutocompleteMatch[]
+  actions: SearchActions
 }
 
-export function defaultSearchState(): SearchState {
-  return {
+export type SearchStore = StateStore<SearchState>
+
+export function defaultSearchStore(): SearchStore {
+  return createStateStore<SearchState>({
     initialized: false,
     defaultSearchEngine: braveSearchHost,
     searchFeatureEnabled: false,
@@ -55,7 +60,23 @@ export function defaultSearchState(): SearchState {
     searchSuggestionsPromptDismissed: false,
     activeSearchInputKey: '',
     searchMatches: [],
-  }
+    actions: {
+      setShowSearchBox(showSearchBox) {},
+      setSearchSuggestionsEnabled(enabled) {},
+      setSearchSuggestionsPromptDismissed(dismissed) {},
+      setSearchEngineEnabled(engine, enabled) {},
+      setLastUsedSearchEngine(engine) {},
+      setActiveSearchInputKey(key) {},
+      queryAutocomplete(query, engine) {},
+      openAutocompleteMatch(index, event) {},
+      stopAutocomplete() {},
+      openSearch(query, engine, event) {},
+      openUrlFromSearch(url, event) {},
+      reportSearchBoxHidden() {},
+      reportSearchEngineUsage(engine) {},
+      reportSearchResultUsage(engine) {},
+    },
+  })
 }
 
 export interface ClickEvent {
@@ -81,23 +102,4 @@ export interface SearchActions {
   reportSearchBoxHidden: () => void
   reportSearchEngineUsage: (engine: string) => void
   reportSearchResultUsage: (engine: string) => void
-}
-
-export function defaultSearchActions(): SearchActions {
-  return {
-    setShowSearchBox(showSearchBox) {},
-    setSearchSuggestionsEnabled(enabled) {},
-    setSearchSuggestionsPromptDismissed(dismissed) {},
-    setSearchEngineEnabled(engine, enabled) {},
-    setLastUsedSearchEngine(engine) {},
-    setActiveSearchInputKey(key) {},
-    queryAutocomplete(query, engine) {},
-    openAutocompleteMatch(index, event) {},
-    stopAutocomplete() {},
-    openSearch(query, engine, event) {},
-    openUrlFromSearch(url, event) {},
-    reportSearchBoxHidden() {},
-    reportSearchEngineUsage(engine) {},
-    reportSearchResultUsage(engine) {},
-  }
 }
