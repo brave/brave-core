@@ -276,6 +276,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViews),           \
       },                                                                       \
       {                                                                        \
+          "brave-use-chromium-web-views-javascript",                           \
+          "Use Chromium JavaScript Backend",                                   \
+          "Replaces the system used to inject JavaScript features into the "   \
+          "page",                                                              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViewsJavaScript), \
+      },                                                                       \
+      {                                                                        \
           "brave-debounce",                                                    \
           "Enable debouncing",                                                 \
           "Enable support for skipping top-level redirect "                    \

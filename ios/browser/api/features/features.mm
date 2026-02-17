@@ -358,6 +358,11 @@
       [[Feature alloc] initWithFeature:&brave::features::kUseChromiumWebViews];
 }
 
++ (Feature*)kUseChromiumWebViewsJavaScript {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kUseChromiumWebViewsJavaScript];
+}
+
 + (Feature*)kBraveAllowExternalPurchaseLinks {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveAllowExternalPurchaseLinks];

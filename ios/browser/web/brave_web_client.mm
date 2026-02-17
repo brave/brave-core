@@ -94,6 +94,11 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(
         autofill::SuggestionControllerJavaScriptFeature::GetInstance());
   }
+  if (base::FeatureList::IsEnabled(
+          brave::features::kUseChromiumWebViewsJavaScript)) {
+    // Add Brave iOS ported JavaScriptFeatures based on their original
+    // counterpart in //brave-ios
+  }
   return features;
 }
 
