@@ -31,7 +31,7 @@
 #include "chrome/install_static/buildflags.h"
 #include "chrome/install_static/install_constants.h"
 #include "chrome/install_static/brave_stash_google_update_integration.h"
-// NO-CHROMIUM-SRC-CHECK
+// CHROMIUM_SRC_NOLINT
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
 // NOLINTEND(sort-order)
 // clang-format on

@@ -18,7 +18,7 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #include "chrome/install_static/brave_stash_google_update_integration.h"
-// NO-CHROMIUM-SRC-CHECK
+// CHROMIUM_SRC_NOLINT
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
 #endif
 

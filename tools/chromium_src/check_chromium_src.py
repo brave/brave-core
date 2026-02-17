@@ -293,7 +293,7 @@ class ChromiumSrcOverridesChecker:
             if override_filepath.endswith('.h'):
                 message += (
                     " If this symbol is intended to propagate beyond this " +
-                    "header then place `// NO-CHROMIUM-SRC-CHECK` comment " +
+                    "header then place `// CHROMIUM_SRC_NOLINT` comment " +
                     "on the line above the #define.")
             self.add_error(message)
 
@@ -302,13 +302,12 @@ class ChromiumSrcOverridesChecker:
     def find_marked_defines(self, content, display_override_filepath):
         """
         Finds #define preceeded by ^// CHROMIUM_SRC_INTERNAL_USE$ or
-        ^//NO-CHROMIUM-SRC-CHECK$ above it. Returns a dict of sets of the
+        ^//CHROMIUM_SRC_NOLINT$ above it. Returns a dict of sets of the
         #define names for each comment type.
         """
         INTERNAL_USE_COMMENT_REGEX = re.compile(
             r'^//\sCHROMIUM_SRC_INTERNAL_USE$')
-        NO_CHROMIUM_SRC_CHECK_REGEX = re.compile(
-            r'^//\sNO-CHROMIUM-SRC-CHECK$')
+        NO_CHROMIUM_SRC_CHECK_REGEX = re.compile(r'^//\sCHROMIUM_SRC_NOLINT$')
         DEFINE_REGEX = re.compile(r'^\s*#\s*define\s+([A-Za-z_0-9]+)\b')
         marked_defines = {"internal": set(), "nocheck": set()}
         internal_comment_found = False
@@ -319,7 +318,7 @@ class ChromiumSrcOverridesChecker:
                 if not match:
                     comment = '// CHROMIUM_SRC_INTERNAL_USE' \
                         if internal_comment_found \
-                        else '// NO-CHROMIUM-SRC-CHECK'
+                        else '// CHROMIUM_SRC_NOLINT'
                     self.add_error(
                         f"In {display_override_filepath}:{count}, the " +
                         f"`{comment}` comment is not followed by a #define " +
@@ -430,7 +429,7 @@ class ChromiumSrcOverridesChecker:
                 f"symbol {symbol} but the symbol could not be found in " +
                 f"{original_filepath} and is not used internally in the " +
                 "override. If this is intentional then place " +
-                "`// NO-CHROMIUM-SRC-CHECK` comment on the line above the " +
+                "`// CHROMIUM_SRC_NOLINT` comment on the line above the " +
                 "#define.")
 
     def do_check_overrides(self):

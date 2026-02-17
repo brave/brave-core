@@ -11,7 +11,7 @@
 #include "ui/gfx/image/image_skia.h"
 
 // Prevents inclusion of upstream header.
-// NO-CHROMIUM-SRC-CHECK
+// CHROMIUM_SRC_NOLINT
 #define UI_GFX_PAINT_VECTOR_ICON_H_
 
 namespace gfx {

@@ -22,7 +22,7 @@
 #include "components/user_data_importer/content/content_bookmark_parser.h"
 #include "components/user_data_importer/utility/bookmark_parser.h"
 
-// NO-CHROMIUM-SRC-CHECK
+// CHROMIUM_SRC_NOLINT
 #define BraveBookmarkBridge BookmarkBridge
 #include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
 #undef BraveBookmarkBridge

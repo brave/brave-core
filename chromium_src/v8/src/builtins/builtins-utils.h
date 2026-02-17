@@ -36,7 +36,7 @@ static_assert(false, "BUILTIN macro is expected to be defined");
 #endif
 #undef BUILTIN
 // Intentionally not #undef'ed.
-// NO-CHROMIUM-SRC-CHECK
+// CHROMIUM_SRC_NOLINT
 #define BUILTIN(name)                                                      \
   V8_WARN_UNUSED_RESULT static Tagged<Object> Builtin_Impl_##name(         \
       BuiltinArguments args, Isolate* isolate);                            \
