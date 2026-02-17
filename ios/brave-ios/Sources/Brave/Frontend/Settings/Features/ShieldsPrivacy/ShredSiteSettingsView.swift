@@ -86,7 +86,7 @@ struct ShredSiteSettingsView: View {
   ShredSiteSettingsView(
     url: URL(string: "https://brave.com")!,
     isPersistent: false,
-    tab: TabStateFactory.create(with: .init())
+    tab: TabStateFactory.create(with: .init(profile: nil))
   ) {
     // Do nothing
   }
