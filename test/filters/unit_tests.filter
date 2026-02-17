@@ -244,6 +244,7 @@
 
 # These tests fail because we disable Isolated Web Apps
 -IsolatedWebAppManagedAllowlistTest.AllowedAppInstalled
+-IsolatedWebAppManagedAllowlistTest.NotAllowedAppInstallationRefused
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
 
 # Upstream Chromium test: intermittent timing failure in IWA retry logic
