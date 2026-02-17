@@ -45,7 +45,10 @@
       .description {
         color: var(--leo-color-text-secondary);
         font: var(--leo-font-small-regular);
-        overflow-wrap: break-word;
+
+        #email {
+          text-wrap-mode: nowrap;
+        }
       }
     }
   }
