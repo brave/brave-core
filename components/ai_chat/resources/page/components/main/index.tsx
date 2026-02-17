@@ -420,6 +420,7 @@ function Main() {
         <div className={styles.scrollButtonContainer}>
           <Button
             kind='outline'
+            title={getLocale(S.CHAT_UI_SCROLL_TO_BOTTOM_BUTTON_TITLE)}
             fab
             className={classnames({
               [styles.scrollToBottomButton]: true,

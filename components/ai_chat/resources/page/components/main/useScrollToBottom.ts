@@ -5,6 +5,10 @@
 
 import * as React from 'react'
 
+/**
+ * @param scrollElement The element which scrolls
+ * @param scrollContent The content of the scroller
+ */
 export function useScrollToBottom(
   scrollElement: React.RefObject<HTMLDivElement>,
   scrollContent: React.RefObject<HTMLDivElement>,
@@ -53,19 +57,19 @@ export function useScrollToBottom(
       const duration = 1000
       let isCancelled = false
 
-      const cancelScoll = () => {
+      const cancelScroll = () => {
         isCancelled = true
       }
 
       // We cancel the scroll if the user starts interacting with the page. We need to do
       // this as we try to continuously scroll to ensure we finish scrolling after
       // elements are lazy loaded.
-      element.addEventListener('touchstart', cancelScoll, {
+      element.addEventListener('touchstart', cancelScroll, {
         once: true,
         passive: true,
       })
-      document.addEventListener('wheel', cancelScoll)
-      document.addEventListener('keydown', cancelScoll)
+      document.addEventListener('wheel', cancelScroll)
+      document.addEventListener('keydown', cancelScroll)
 
       // Scroll until we cancel, or the duration has expired.
       while (Date.now() - startTime < duration) {
@@ -79,9 +83,9 @@ export function useScrollToBottom(
       }
 
       // Remove the event listeners.
-      element.removeEventListener('touchstart', cancelScoll)
-      document.removeEventListener('wheel', cancelScoll)
-      document.removeEventListener('keydown', cancelScoll)
+      element.removeEventListener('touchstart', cancelScroll)
+      document.removeEventListener('wheel', cancelScroll)
+      document.removeEventListener('keydown', cancelScroll)
     },
     [],
   )
