@@ -45,10 +45,7 @@ namespace brave_wallet {
 class BraveWalletP3AUnitTest : public testing::Test {
  public:
   BraveWalletP3AUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
@@ -61,10 +58,10 @@ class BraveWalletP3AUnitTest : public testing::Test {
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
-        &prefs_, &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
     brave_wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
     brave_wallet_service_->GetBitcoinWalletService()
         ->SetUrlLoaderFactoryForTesting(
             bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -295,12 +292,11 @@ class BraveWalletP3AUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
+  network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
-  std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
