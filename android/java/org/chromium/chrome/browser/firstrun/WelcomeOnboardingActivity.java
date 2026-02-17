@@ -724,36 +724,37 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     private void fadeBraveSplashContainer() {
-        if (mBraveSplashContainer != null) {
-            Animator animator =
-                    AnimatorInflater.loadAnimator(
-                            WelcomeOnboardingActivity.this, R.animator.ic_brave_splash_fade_out);
-            animator.setTarget(mBraveSplashContainer);
-            animator.addListener(
-                    new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationCancel(@NonNull Animator animation) {
-                            /* No-op. */
-                        }
-
-                        @Override
-                        public void onAnimationEnd(@NonNull Animator animation) {
-                            mBraveSplashContainer.setVisibility(View.GONE);
-                            showVariantBPagerAfterSplash();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(@NonNull Animator animation) {
-                            /* No-op. */
-                        }
-
-                        @Override
-                        public void onAnimationStart(@NonNull Animator animation) {
-                            /* No-op. */
-                        }
-                    });
-            animator.start();
+        if (mBraveSplashContainer == null) {
+            return;
         }
+        Animator animator =
+                AnimatorInflater.loadAnimator(
+                        WelcomeOnboardingActivity.this, R.animator.ic_brave_splash_fade_out);
+        animator.setTarget(mBraveSplashContainer);
+        animator.addListener(
+                new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationCancel(@NonNull Animator animation) {
+                        /* No-op. */
+                    }
+
+                    @Override
+                    public void onAnimationEnd(@NonNull Animator animation) {
+                        mBraveSplashContainer.setVisibility(View.GONE);
+                        showVariantBPagerAfterSplash();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(@NonNull Animator animation) {
+                        /* No-op. */
+                    }
+
+                    @Override
+                    public void onAnimationStart(@NonNull Animator animation) {
+                        /* No-op. */
+                    }
+                });
+        animator.start();
     }
 
     private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
