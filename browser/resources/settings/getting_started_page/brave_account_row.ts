@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement, PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 // @ts-expect-error
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
-import { AccountState } from '../brave_account_row.mojom-webui.js'
+import { AccountState, AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
@@ -46,6 +46,8 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
+  private measure?: (text: string) => number
+  private resizeObserver?: ResizeObserver
 
   override connectedCallback() {
     super.connectedCallback()
@@ -53,6 +55,20 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     this.loadInitialState()
     this.browserProxy.rowClientCallbackRouter.updateState.addListener(
       (state: AccountState) => { this.state = state; });
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    this.cleanUpEmailTruncation()
+  }
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties)
+
+    if ((changedProperties as Map<PropertyKey, unknown>).has('state')) {
+      this.updateEmailTruncation()
+    }
   }
 
   protected onLogOutButtonClicked() {
@@ -146,6 +162,75 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
           : '',
       )
     )
+  }
+
+  private updateEmailTruncation() {
+    if (whichAccountState(this.state!) === AccountStateFieldTags.LOGGED_IN) {
+      if (!this.resizeObserver) {
+        const emailEl =
+            this.shadowRoot?.querySelector<HTMLElement>('#email')
+        if (!emailEl) return
+
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        ctx.font = getComputedStyle(emailEl).font
+        this.measure = (text: string) => ctx.measureText(text).width
+
+        this.resizeObserver = new ResizeObserver(() => {
+          this.truncateEmail(emailEl)
+        })
+        this.resizeObserver.observe(emailEl)
+        this.truncateEmail(emailEl)
+      }
+    } else {
+      this.cleanUpEmailTruncation()
+    }
+  }
+
+  private truncateEmail(emailEl: HTMLElement) {
+    if (!this.measure) return
+
+    const email = this.state?.loggedIn?.email
+    if (!email) return
+
+    const availableWidth = emailEl.clientWidth
+    if (!availableWidth) return
+
+    if (this.measure(email) <= availableWidth) {
+      emailEl.textContent = email
+      return
+    }
+
+    // Use binary search (O(log n)) to find the maximum number of characters
+    // that fit within available width. Characters are split evenly between
+    // the start and end of the email with '…' in the middle.
+    const chars = Array.from(email)
+    const makeCandidate = (kept: number): string => {
+      const prefixLen = Math.ceil(kept / 2)
+      const suffixLen = Math.floor(kept / 2)
+      return chars.slice(0, prefixLen).join('') + '…' +
+             chars.slice(-suffixLen).join('')
+    }
+
+    let truncatedEmail = ''
+    for (let low = 0, high = chars.length; low < high; ) {
+      const middle = Math.ceil((low + high) / 2)
+      const candidate = makeCandidate(middle)
+      if (this.measure(candidate) <= availableWidth) {
+        truncatedEmail = candidate
+        low = middle
+      } else {
+        high = middle - 1
+      }
+    }
+
+    emailEl.textContent = truncatedEmail
+  }
+
+  private cleanUpEmailTruncation() {
+    this.measure = undefined
+    this.resizeObserver?.disconnect()
+    this.resizeObserver = undefined
   }
 }
 
