@@ -1565,6 +1565,28 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   return account;
 }
 
+std::vector<mojom::AccountInfoPtr> KeyringService::CreateDefaultAccounts(
+    std::vector<mojom::AddAccountArgsPtr> account_args) {
+  std::vector<mojom::AccountInfoPtr> account_infos;
+
+  for (auto& account_arg : account_args) {
+    auto& [coin, keyring_id, account_name] = *account_arg;
+    auto account = AddHDAccountForKeyring(std::move(keyring_id), account_name);
+    if (!account) {
+      return {};
+    }
+  }
+
+  CHECK(!account_infos.empty());
+
+  NotifyAccountsChanged();
+
+  SetSelectedAccountInternal(*account_infos.front());
+  NotifyAccountsAdded(account_infos);
+
+  return account_infos;
+}
+
 void KeyringService::EncodePrivateKeyForExport(
     mojom::AccountIdPtr account_id,
     const std::string& password,

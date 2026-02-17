@@ -1273,6 +1273,12 @@ struct AllowanceInfo {
   string amount;
 };
 
+struct AddAccountArgs {
+  CoinType coin;
+  KeyringId keyring_id;
+  string account_name;
+};
+
 interface KeyringServiceObserver {
   // Fired when wallet is created
   WalletCreated();
@@ -3127,6 +3133,10 @@ interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
   AddTokenObserver(pending_remote<BraveWalletServiceTokenObserver> observer);
+
+  // Adds accounts to the keyring in bulk.
+  CreateDefaultAccounts(array<AddAccountArgs> account_args)
+      => (array<AccountInfo>? account_infos);
 
   // Obtains all the user assets.
   GetAllUserAssets() => (array<BlockchainToken> tokens);

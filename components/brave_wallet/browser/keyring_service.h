@@ -101,6 +101,10 @@ class KeyringService : public mojom::KeyringService {
   mojom::AccountInfoPtr AddAccountSync(mojom::CoinType coin,
                                        mojom::KeyringId keyring_id,
                                        const std::string& account_name);
+
+  std::vector<mojom::AccountInfoPtr> CreateDefaultAccounts(
+      std::vector<mojom::AddAccountArgsPtr> account_args);
+
   void EncodePrivateKeyForExport(
       mojom::AccountIdPtr account_id,
       const std::string& password,

@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mapLimit } from 'async'
 import { EntityId } from '@reduxjs/toolkit'
 
 // types
@@ -24,7 +23,7 @@ import { getLocale } from '../../../../common/locale'
 import { keyringIdForNewAccount } from '../../../utils/account-utils'
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
-import { networkEntityAdapter } from '../entities/network.entity'
+import { AddAccountArgs } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -149,7 +148,7 @@ export const walletEndpoints = ({
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
-          const { keyringService } = api
+          const { keyringService, braveWalletService } = api
 
           const result = await keyringService.createWallet(arg.password)
           if (!result.mnemonic) {
@@ -164,11 +163,15 @@ export const walletEndpoints = ({
             getState() as { wallet: WalletState }
           ).wallet
 
-          await createDefaultAccounts({
+          const accounts = await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
-            keyringService,
+            braveWalletService,
             cache,
           })
+
+          if (!accounts) {
+            throw new Error('Unable to create wallet')
+          }
 
           return {
             data: true,
@@ -196,7 +199,7 @@ export const walletEndpoints = ({
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
-          const { keyringService } = api
+          const { keyringService, braveWalletService } = api
 
           const result = await keyringService.restoreWallet(
             arg.mnemonic,
@@ -226,11 +229,15 @@ export const walletEndpoints = ({
             getState() as { wallet: WalletState }
           ).wallet
 
-          await createDefaultAccounts({
+          const accounts = await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
-            keyringService,
+            braveWalletService,
             cache,
           })
+
+          if (!accounts) {
+            throw new Error('Unable to restore wallet from seed phrase')
+          }
 
           return {
             data: {
@@ -392,11 +399,15 @@ export const walletEndpoints = ({
             getState() as { wallet: WalletState }
           ).wallet
 
-          await createDefaultAccounts({
+          const accounts = await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
-            keyringService,
+            braveWalletService,
             cache,
           })
+
+          if (!accounts) {
+            throw new Error('Unable to restore wallet from MetaMask extension')
+          }
 
           cache.clearWalletInfo()
 
@@ -559,11 +570,11 @@ async function importFromExternalWallet(
 
 async function createDefaultAccounts({
   allowedNewWalletAccountTypeNetworkIds,
-  keyringService,
+  braveWalletService,
   cache,
 }: {
   cache: BaseQueryCache
-  keyringService: BraveWallet.KeyringServiceRemote
+  braveWalletService: BraveWallet.BraveWalletServiceRemote
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
 }) {
   const networksRegistry = await cache.getNetworksRegistry()
@@ -586,27 +597,21 @@ async function createDefaultAccounts({
   }
 
   const accounts = getEntitiesListFromEntityState(accountsRegistry)
+  accounts
 
-  // create accounts for visible network coin types if needed
-  await mapLimit(
-    networksWithUniqueKeyrings,
-    3,
-    async function (net: BraveWallet.NetworkInfo) {
-      // TODO: remove these checks when we can hide "default" networks
-      if (
-        !allowedNewWalletAccountTypeNetworkIds.includes(
-          networkEntityAdapter.selectId(net),
-        )
-        || net.coin === BraveWallet.CoinType.ETH
-        || net.coin === BraveWallet.CoinType.SOL
-      ) {
-        return
-      }
-      await keyringService.addAccount(
-        net.coin,
-        keyringIdForNewAccount(net.coin, net.chainId),
-        suggestNewAccountName(accounts, net),
-      )
-    },
-  )
+  const addAccountArgs = networksWithUniqueKeyrings
+    .filter(
+      (net) =>
+        net.coin !== BraveWallet.CoinType.ETH
+        && net.coin !== BraveWallet.CoinType.SOL,
+    )
+    .map((net: BraveWallet.NetworkInfo) => {
+      let accountArgs = new AddAccountArgs()
+      accountArgs.coin = net.coin
+      accountArgs.keyringId = keyringIdForNewAccount(net.coin, net.chainId)
+      accountArgs.accountName = suggestNewAccountName(accounts, net)
+      return accountArgs
+    })
+
+  return await braveWalletService.createDefaultAccounts(addAccountArgs)
 }
