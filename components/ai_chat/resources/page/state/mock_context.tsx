@@ -102,7 +102,6 @@ export function MockContext(props: MockContextProps) {
     bookmarksService,
     historyService,
     metrics,
-    conversationHandler,
     initialState = {},
     aiChatOverrides,
     deps = [],

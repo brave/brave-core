@@ -1403,15 +1403,15 @@ function StoryContext(
       initialState={React.useMemo(
         () => ({
           tabs: SAMPLE_TABS,
-          isStandalone: argsRef.current.isStandalone,
+          isStandalone: args.isStandalone,
           serviceState: {
-            hasAcceptedAgreement: argsRef.current.hasAcceptedAgreement,
-            isStoragePrefEnabled: argsRef.current.isStoragePrefEnabled,
-            isStorageNoticeDismissed: argsRef.current.isStorageNoticeDismissed,
-            canShowPremiumPrompt: argsRef.current.canShowPremiumPrompt,
+            hasAcceptedAgreement: args.hasAcceptedAgreement,
+            isStoragePrefEnabled: args.isStoragePrefEnabled,
+            isStorageNoticeDismissed: args.isStorageNoticeDismissed,
+            canShowPremiumPrompt: args.canShowPremiumPrompt,
           },
         }),
-        [argsRef.current],
+        [args],
       )}
       // Overrides for values that come from internal hooks (useState, etc.)
       // and can't be controlled via API mocks
