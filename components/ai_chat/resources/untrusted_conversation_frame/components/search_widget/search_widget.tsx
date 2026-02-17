@@ -1,10 +1,10 @@
-import * as React from 'react'
-import styles from './search_widget.module.scss'
-import usePromise from '$web-common/usePromise'
 import { loadTimeData } from '$web-common/loadTimeData'
-import ProgressRing from '@brave/leo/react/progressRing'
+import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
+import styles from './search_widget.module.scss'
+import usePromise from '$web-common/usePromise'
 
 interface Thumbnail {
   src: string,
