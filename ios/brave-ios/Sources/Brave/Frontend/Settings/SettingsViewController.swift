@@ -1583,7 +1583,7 @@ class SettingsViewController: TableViewController {
           cellClass: ButtonCell.self
         ),
         Row(
-          text: "Create 1000 History Entries",
+          text: "Create 10000 History Entries for past 10 days",
           selection: { [unowned self] in
             self.settingsDelegate?.settingsCreateFakeHistory()
             self.dismiss(animated: true)
