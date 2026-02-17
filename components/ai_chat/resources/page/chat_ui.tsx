@@ -91,21 +91,33 @@ function App() {
       api={aiChat.api}
       conversationEntriesComponent={ConversationEntries}
     >
-      <ActiveChatProviderFromUrl>
-        <ConversationContextProvider>
-          <Content />
-        </ConversationContextProvider>
-      </ActiveChatProviderFromUrl>
+      <ContentWithConversationContext />
     </AIChatProvider>
+  )
+}
+
+function ContentWithConversationContext() {
+  const aiChatContext = useAIChat()
+
+  if (!aiChatContext.initialized || aiChatContext.isStandalone === undefined) {
+    // Don't load the ActiveChatProvider until the database is initialized.
+    // Otherwise it will always create a new conversation instead of loading one
+    // which will cause a new conversation to be created and 'initialized' set
+    // to true prematurely.
+    return <Loading />
+  }
+
+  return (
+    <ActiveChatProviderFromUrl>
+      <ConversationContextProvider>
+        <Content />
+      </ConversationContextProvider>
+    </ActiveChatProviderFromUrl>
   )
 }
 
 function Content() {
   const aiChatContext = useAIChat()
-
-  if (!aiChatContext.initialized || aiChatContext.isStandalone === undefined) {
-    return <Loading />
-  }
 
   if (!aiChatContext.isStandalone) {
     return <Main />

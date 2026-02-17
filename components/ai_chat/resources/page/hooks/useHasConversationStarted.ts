@@ -13,6 +13,8 @@ export default function useHasConversationStarted(conversationId?: string) {
     if (!conversationId || !getConversationsData) {
       return false
     }
-    return getConversationsData.some((c) => c.uuid === conversationId)
+    return getConversationsData.some(
+      (c) => c.uuid === conversationId && c.hasContent,
+    )
   }, [conversationId, getConversationsData])
 }
