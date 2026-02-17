@@ -89,6 +89,7 @@ test("brave_components_unittests") {
   }
 
   if (is_ios) {
+    deps += [ "//brave/ios/web:chromium_src_deps" ]
     bundle_deps = [
       ":components_tests_pak_bundle_data",
       "//components:components_tests_pak_bundle_data",
@@ -137,7 +138,7 @@ test("brave_components_unittests") {
   if (is_ios) {
     assert_no_deps += ios_assert_no_deps
     assert_no_deps += [ "//ios/chrome/*" ]
-    assert_no_deps += [ "//brave/ios/*" ]
+    assert_no_deps += [ "//brave/ios/browser/*" ]
     assert_no_deps += [
       "//extensions/common",
       "//extensions/common:mojom",

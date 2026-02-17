@@ -5,11 +5,17 @@
 
 import("//testing/test.gni")
 
+# Lists deps that must be added when compiling //ios/web without //brave/ios/web
+group("chromium_src_deps") {
+  deps = [ "//brave/ios/web/web_state/ui:wk_web_view_configuration_provider" ]
+}
+
 test("ios_brave_web_unittests") {
   testonly = true
   deps = [
     "//brave/ios/web/test:packed_resources",
     "//brave/ios/web/test:resources",
+    "//brave/ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//ios/web:run_all_unittests",
 
     # Add individual test source_set targets here.
@@ -22,6 +28,7 @@ test("ios_brave_web_inttests") {
   deps = [
     "//brave/ios/web/test:packed_resources",
     "//brave/ios/web/test:resources",
+    "//brave/ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//ios/web:run_all_unittests",
 
     # Add individual test source_set targets here.

@@ -222,6 +222,7 @@ ios_framework_bundle("brave_core_ios_framework") {
     "//brave/ios/app",
     "//brave/ios/browser/ui",
     "//brave/ios/components/constants",
+    "//brave/ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//brave/ios/web_view",
     "//ui/base",
   ]
