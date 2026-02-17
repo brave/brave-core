@@ -22,7 +22,7 @@
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
 #if BUILDFLAG(IS_ANDROID)
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -30,7 +30,7 @@
   case RequestType::kWidevine:      \
     NOTREACHED();
 #else
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -41,7 +41,7 @@
 
 // For permission strings that we also need on Android, we need to use
 // a string that has a placeholder ($1) in it.
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP              \
   BRAVE_ENUM_ITEMS_FOR_SWITCH                            \
   case RequestType::kBraveGoogleSignInPermission:        \
@@ -51,7 +51,7 @@
     message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;   \
     break;
 
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID       \
   BRAVE_ENUM_ITEMS_FOR_SWITCH                     \
   case RequestType::kBraveGoogleSignInPermission: \

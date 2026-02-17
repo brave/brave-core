@@ -301,11 +301,12 @@ class ChromiumSrcOverridesChecker:
 
     def find_marked_defines(self, content, display_override_filepath):
         """
-        Finds #define preceeded by ^// INTERNAL-USE$ or
+        Finds #define preceeded by ^// CHROMIUM_SRC_INTERNAL_USE$ or
         ^//NO-CHROMIUM-SRC-CHECK$ above it. Returns a dict of sets of the
         #define names for each comment type.
         """
-        INTERNAL_USE_COMMENT_REGEX = re.compile(r'^//\sINTERNAL-USE$')
+        INTERNAL_USE_COMMENT_REGEX = re.compile(
+            r'^//\sCHROMIUM_SRC_INTERNAL_USE$')
         NO_CHROMIUM_SRC_CHECK_REGEX = re.compile(
             r'^//\sNO-CHROMIUM-SRC-CHECK$')
         DEFINE_REGEX = re.compile(r'^\s*#\s*define\s+([A-Za-z_0-9]+)\b')
@@ -316,7 +317,8 @@ class ChromiumSrcOverridesChecker:
             if internal_comment_found or nocheck_comment_found:
                 match = DEFINE_REGEX.match(line)
                 if not match:
-                    comment = '// INTERNAL-USE' if internal_comment_found \
+                    comment = '// CHROMIUM_SRC_INTERNAL_USE' \
+                        if internal_comment_found \
                         else '// NO-CHROMIUM-SRC-CHECK'
                     self.add_error(
                         f"In {display_override_filepath}:{count}, the " +
@@ -401,11 +403,12 @@ class ChromiumSrcOverridesChecker:
                             self.add_error(
                                 f"Symbol {target} was found in " +
                                 f"{original_filepath} but is marked as " +
-                                "`// INTERNAL-USE` in the " +
+                                "`// CHROMIUM_SRC_INTERNAL_USE` in the " +
                                 f"{display_override_filepath}. Either " +
-                                "remove the `// INTERNAL-USE` comment, or " +
-                                "change the symbol name to avoid overriding " +
-                                "the symbol in the original file.")
+                                "remove the `// CHROMIUM_SRC_INTERNAL_USE` " +
+                                "comment, or change the symbol name to " +
+                                "avoid overriding the symbol in the original" +
+                                "file.")
         return len(matches)
 
     def maybe_add_override_symbol_error(self, marked_as_internal_list,
@@ -419,7 +422,8 @@ class ChromiumSrcOverridesChecker:
                 f"(INTERNAL USE) Symbol {symbol} appears to be used " +
                 f"internally in {display_override_filepath}. Symbol is NOT " +
                 f"found in {original_filepath}. If this is correct, place " +
-                "`// INTERNAL-USE` comment on the line above the #define.")
+                "`// CHROMIUM_SRC_INTERNAL_USE` comment on the line above " +
+                "the #define.")
         else:
             self.add_error(
                 f"(UNUSED) Override {display_override_filepath} defines " +

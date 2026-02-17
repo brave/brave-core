@@ -11,7 +11,7 @@
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
 
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_UMA_CASES      \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -35,7 +35,7 @@
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_TYPE_CASES      \
   case PermissionType::BRAVE_ETHEREUM:          \
     return ContentSettingsType::BRAVE_ETHEREUM; \
@@ -44,7 +44,7 @@
   case PermissionType::BRAVE_CARDANO:           \
     return ContentSettingsType::BRAVE_CARDANO;
 #else
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_TYPE_CASES \
   case PermissionType::BRAVE_ETHEREUM:     \
   case PermissionType::BRAVE_SOLANA:       \

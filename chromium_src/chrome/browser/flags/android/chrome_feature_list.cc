@@ -39,41 +39,41 @@
 #include "brave/components/brave_wallet/common/features.h"
 #endif
 
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_AI_CHAT_FLAGS \
   &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory,
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_NEW_TAB_PAGE_AD_FLAG &brave_ads::kNewTabPageAdFeature,
 #else
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_NEW_TAB_PAGE_AD_FLAG
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/components/web_discovery/common/features.h"
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WEB_DISCOVERY_FLAG \
   &web_discovery::features::kBraveWebDiscoveryNative,
 #else
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WEB_DISCOVERY_FLAG
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_VPN_FLAG &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,
 #else
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_VPN_FLAG
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_FLAG &brave_wallet::features::kNativeBraveWalletFeature,
 #else
-// INTERNAL-USE
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_FLAG
 #endif
 
