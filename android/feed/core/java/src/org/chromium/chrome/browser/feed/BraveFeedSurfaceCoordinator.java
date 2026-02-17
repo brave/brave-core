@@ -19,6 +19,7 @@ import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -63,7 +64,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable ViewGroup viewportView,
             FeedActionDelegate actionDelegate,
             NonNullObservableSupplier<Integer> tabStripHeightSupplier,
-            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            @Nullable ModuleRegistry moduleRegistry) {
         super(
                 activity,
                 snackbarManager,
@@ -86,7 +88,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 viewportView,
                 actionDelegate,
                 tabStripHeightSupplier,
-                edgeToEdgeControllerSupplier);
+                edgeToEdgeControllerSupplier,
+                moduleRegistry);
     }
 
     public void createFrameLayoutForPolicy() {
