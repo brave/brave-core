@@ -54,12 +54,10 @@ The nature of the RPC calls looks roughly akin to this:
       │                     ┌────▼──────────────┐                         │                  │
       │                     │UpdateSigningHeader│                         │                  │
       │                     └────┬──────────────┘                         │                  │
-      │                 ┌────────┴───────────────┐                        │                  │
-      │            ┌────▼────────────────┐ ┌─────▼─────────────┐          │                  │
-      │            │OnGetSigningBlockHash│ │OnGetRuntimeVersion│          │                  │
-      │            └────┬────────────────┘ └─────┬─────────────┘          │                  │
-      │                 │                        │                        │                  │
-      │                 └─────────┬──────────────┘                        │                  │
+      │                          │                                        │                  │
+      │                     ┌────▼────────────────┐                       │                  │
+      │                     │ OnGetRuntimeVersion │                       │                  │
+      │                     └─────┬───────────────┘                       │                  │
       │                           │                                       │                  │
       │                  ┌────────▼───────────────────┐                   │                  │
       └──────────────────│MaybeFinalizeSignTransaction│───────────────────┴──────────────────┘
@@ -149,12 +147,6 @@ struct PolkadotSignedTransferTask {
   // Internal helper used to associate the chain's genesis hash with the
   // current in-flight transaction.
   void OnGetGenesisHash(
-      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
-      std::optional<std::string>);
-
-  // Internal helper used to associate the block hash of the block that marks
-  // the start of the mortality period (either the latest head or finalized).
-  void OnGetSigningBlockHash(
       std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
       std::optional<std::string>);
 
