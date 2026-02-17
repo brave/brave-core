@@ -45,6 +45,8 @@ source_set("web_view") {
   ]
   deps = [
     "//base",
+    "//components/autofill/core/browser",
+    "//components/password_manager/core/browser",
     "//components/ssl_errors",
     "//ios/web/js_messaging",
     "//ios/web/js_messaging:java_script_feature_manager_header",
