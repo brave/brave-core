@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginVertical="82dp"
+    android:layout_marginHorizontal="96dp"
+    android:elevation="4dp"
+    android:background="@drawable/onboarding_card_background">
+
+    <ImageView
+        android:id="@+id/brave_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_brave_brand"
+        android:contentDescription="@null"
+        android:paddingHorizontal="40dp"
+        android:paddingTop="50dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_start_guide"
+        app:layout_constraintBottom_toTopOf="@+id/brave_onboarding_title" />
+
+    <TextView
+        android:id="@+id/brave_onboarding_title"
+        style="@style/HeadingH2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/p3a_title"
+        android:textColor="@color/text_primary"
+        android:gravity="start|center_horizontal"
+        android:paddingHorizontal="40dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/brave_brand"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_start_guide"
+        app:layout_constraintBottom_toTopOf="@+id/brave_onboarding_subtitle"/>
+
+    <TextView
+        android:id="@+id/brave_onboarding_subtitle"
+        style="@style/LargeRegular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/p3a_subtitle"
+        android:textColor="@color/text_secondary"
+        android:gravity="start|center_horizontal"
+        android:paddingHorizontal="40dp"
+        android:layout_marginTop="@dimen/onboarding_subtitle_margin_top"
+        app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_start_guide" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/image_start_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/onboarding_illustration"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/onboarding_p3a_illustration"
+        android:background="@color/schemes_surface_container"
+        android:padding="@dimen/onboarding_illustration_padding"
+        android:contentDescription="@string/brave_onboarding_make_brave_better_illustration_description"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/send_crash_reports_title"
+        app:layout_constraintStart_toStartOf="@+id/image_start_guide"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        style="@style/LargeSemibold"
+        android:id="@+id/send_crash_reports_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/send_reports_title"
+        android:textColor="@color/text_primary"
+        android:gravity="start"
+        android:background="@color/schemes_surface_container"
+        android:paddingTop="50dp"
+        android:paddingHorizontal="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
+        app:layout_constraintBottom_toTopOf="@+id/send_crash_reports_container"
+        app:layout_constraintStart_toStartOf="@+id/image_start_guide"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/send_crash_reports_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/schemes_surface_container"
+        android:paddingBottom="8dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/send_crash_reports_title"
+        app:layout_constraintBottom_toTopOf="@+id/send_p3a_reports_title"
+        app:layout_constraintStart_toStartOf="@+id/image_start_guide"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/send_crash_reports"
+            style="@style/BraveCheckBox"
+            android:layoutDirection="rtl"
+            android:textColor="@color/text_secondary"
+            android:paddingHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/send_reports"
+            android:gravity="top|start" />
+    </FrameLayout>
+
+    <TextView
+        style="@style/LargeSemibold"
+        android:id="@+id/send_p3a_reports_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/send_p3a_title"
+        android:textColor="@color/text_primary"
+        android:gravity="start"
+        android:background="@color/schemes_surface_container"
+        android:paddingTop="12dp"
+        android:paddingHorizontal="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/send_crash_reports_container"
+        app:layout_constraintBottom_toTopOf="@+id/send_p3a_reports_container"
+        app:layout_constraintStart_toStartOf="@+id/image_start_guide"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/send_p3a_reports_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/schemes_surface_container"
+        android:paddingBottom="8dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/send_p3a_reports_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/image_start_guide"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/send_p3a_reports"
+            style="@style/BraveCheckBox"
+            android:layoutDirection="rtl"
+            android:textColor="@color/text_secondary"
+            android:layout_marginVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/send_p3a"
+            android:gravity="top|start" />
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/onboarding_start_browsing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="40dp"
+        android:text="@string/start_browsing"
+        style="@style/LargeFilledButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_start_guide" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -81,6 +81,8 @@
     <color name="text_color_30">#b7c6ff</color>
 
     <!-- Onboarding colors -->
+    <color name="onboarding_background_gradient_start">#FFEEF2FF</color>
+    <color name="onboarding_background_gradient_end">#FFDFE4F6</color>
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
     <color name="onboarding_black">#1e2029</color>
