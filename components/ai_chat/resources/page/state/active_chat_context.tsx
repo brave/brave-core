@@ -99,9 +99,6 @@ function ActiveChatProvider({
     }
 
     // Select a specific conversation
-    // TODO: Avoid this being called immediately after the above newConversation
-    // due to newConversation causing selectedConversationId to be defined and
-    // this hook re-running.
     setConversationAPI(
       BindConversation.bindConversation(
         aiChat.api,
