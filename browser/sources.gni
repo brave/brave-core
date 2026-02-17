@@ -811,6 +811,13 @@ if (enable_brave_ads) {
   ]
 }
 
+if (enable_tab_management_tool) {
+  brave_chrome_browser_deps +=
+      [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
+}
+
 # `rewards_service_factory.cc` includes `chrome/browser/policy/
 # profile_policy_connector.h`, which lives in the `//chrome/browser:browser`
 # monolith. Since `:browser` already depends on `:brave_rewards_impl` (added

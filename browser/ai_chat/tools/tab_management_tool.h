@@ -16,7 +16,7 @@ namespace ai_chat {
 
 class TabManagementTool : public Tool {
  public:
-  TabManagementTool();
+  explicit TabManagementTool(Profile* profile);
   ~TabManagementTool() override;
 
   TabManagementTool(const TabManagementTool&) = delete;
@@ -36,6 +36,14 @@ class TabManagementTool : public Tool {
                UseToolCallback callback) override;
 
  private:
+  // Action handlers
+  void HandleListTabs(UseToolCallback callback);
+
+  // Helper to generate tab list that can be reused by all handlers
+  base::Value::Dict GenerateTabList() const;
+  // Profile with which to restrict all window and tab operations
+  raw_ptr<Profile> profile_ = nullptr;
+
   // Conversation-level permission state
   bool user_has_granted_permission_ = false;
 };
