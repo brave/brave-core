@@ -8,20 +8,24 @@
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 
+@NullMarked
 public class SearchWidgetPromoPanel implements View.OnClickListener {
     private final PopupWindow mPopupWindow;
     private final Context mContext;
 
-    public SearchWidgetPromoPanel(@NonNull Context context) {
+    public SearchWidgetPromoPanel(Context context) {
         mContext = context;
         View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
         view.findViewById(R.id.btAddWidget).setOnClickListener(this);
@@ -32,7 +36,7 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(@NonNull View view) {
+    public void onClick(View view) {
         if (view.getId() == R.id.btAddWidget) {
             BraveSearchWidgetUtils.requestPinAppWidget();
         } else if (view.getId() == R.id.tvNotNow) {
@@ -41,9 +45,15 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
         mPopupWindow.dismiss();
     }
 
-    public void showIfNeeded(@NonNull View anchorView) {
+    public void showIfNeeded(final View parentView) {
         if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext)) {
-            mPopupWindow.showAsDropDown(anchorView);
+            WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(parentView);
+            int bottomInset = 0;
+            if (insets != null) {
+                bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+            }
+            mPopupWindow.showAtLocation(
+                    parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, bottomInset);
         }
     }
 }

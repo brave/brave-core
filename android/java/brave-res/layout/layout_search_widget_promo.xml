@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         app:cardBackgroundColor="@color/schemes_surface_container_lowest"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp">

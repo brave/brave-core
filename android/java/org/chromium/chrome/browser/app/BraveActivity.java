@@ -1474,8 +1474,9 @@ public abstract class BraveActivity extends ChromeActivity
                     });
             if (ChromeSharedPreferences.getInstance()
                     .readBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false)) {
-                mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(BraveActivity.this);
-                mSearchWidgetPromoPanel.showIfNeeded(urlBar);
+                mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(this);
+                View rootView = requireViewById(android.R.id.content);
+                mSearchWidgetPromoPanel.showIfNeeded(rootView);
                 ChromeSharedPreferences.getInstance()
                         .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
             }
