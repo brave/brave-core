@@ -3329,6 +3329,7 @@
 -SiteEngagementHelperBrowserTest.*
 -SitePerProcessWebViewTest.*
 -SmartSessionRestoreTest.CorrectLoadingOrder
+-SocketApiTest.SocketTCPExtension
 -SoundContentSettingObserverBrowserTest.*
 -SpeculationNoStatePrefetchBrowserTest.*
 -SpellcheckServiceBrowserTest.*
