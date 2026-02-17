@@ -110,7 +110,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
 #endif
 
   tool_provider_factories.push_back(
-      std::make_unique<BrowserToolProviderFactory>(context));
+      std::make_unique<BrowserToolProviderFactory>(
+          Profile::FromBrowserContext(context)));
 
   auto service = std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
