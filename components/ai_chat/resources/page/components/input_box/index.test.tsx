@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable jest/no-conditional-expect */
+
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import InputBox, { InputBoxProps } from '.'

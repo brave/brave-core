@@ -92,14 +92,12 @@ describe('Account Utils', () => {
     )
   })
   describe('findAccountFromRegistry', () => {
-    it.each(mockAccounts)(
-      'should return true if accounts have deviceId and address matches',
+    it.each(mockAccounts.filter((account) => account.address))(
+      'should return account when address matches',
       (account) => {
-        if (account.address) {
-          expect(
-            findAccountByAddress(account.address, mockAccountsRegistry),
-          ).toBe(account)
-        }
+        expect(
+          findAccountByAddress(account.address, mockAccountsRegistry),
+        ).toBe(account)
       },
     )
   })

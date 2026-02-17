@@ -66,7 +66,7 @@ const fetchTokensAndSetupStore = async () => {
 }
 
 describe('token endpoints', () => {
-  it('it should fetch tokens', async () => {
+  it('should fetch tokens', async () => {
     const { hook } = await fetchTokensAndSetupStore()
 
     expect(hook.result.current.visibleTokens).toHaveLength(
@@ -74,7 +74,7 @@ describe('token endpoints', () => {
     )
   })
 
-  it('it should delete tokens', async () => {
+  it('should delete tokens', async () => {
     const { hook, store } = await fetchTokensAndSetupStore()
 
     const { visibleTokens } = hook.result.current

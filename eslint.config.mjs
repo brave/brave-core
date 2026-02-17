@@ -278,16 +278,6 @@ export default defineConfig([
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/static-components': 'off',
       'react-hooks/use-memo': 'off',
-
-      'jest/no-alias-methods': 'off',
-      'jest/no-conditional-expect': 'off',
-      'jest/no-export': 'off',
-      'jest/no-identical-title': 'off',
-      'jest/no-jasmine-globals': 'off',
-      'jest/no-mocks-import': 'off',
-      'jest/no-standalone-expect': 'off',
-      'jest/valid-expect': 'off',
-      'jest/valid-title': 'off',
     },
   },
   {
