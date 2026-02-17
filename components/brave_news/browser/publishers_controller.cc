@@ -71,11 +71,9 @@ void ApplySubscriptions(Publishers& publishers,
                         const SubscriptionsSnapshot& subscriptions) {
   DVLOG(1) << __FUNCTION__;
   // Remove all direct feeds - they'll get re-added.
-  absl::erase_if(
-      publishers,
-      [](const auto& publisher) {
-        return publisher.second->type == mojom::PublisherType::DIRECT_SOURCE;
-      });
+  absl::erase_if(publishers, [](const auto& publisher) {
+    return publisher.second->type == mojom::PublisherType::DIRECT_SOURCE;
+  });
 
   // Update the user subscription status.
   for (auto& [id, publisher] : publishers) {
