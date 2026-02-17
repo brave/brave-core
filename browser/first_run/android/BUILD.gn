@@ -27,18 +27,28 @@ android_library("java") {
 android_resources("java_resources") {
   sources = [
     "java/res/animator/ic_brave_splash_scale.xml",
+    "java/res/drawable/ic_brave_brand.xml",
     "java/res/drawable/ic_brave_splash.xml",
     "java/res/drawable/ic_brave_splash_animated.xml",
     "java/res/drawable/onboarding_bottom_rounded_corners.xml",
+    "java/res/drawable/onboarding_card_background.xml",
     "java/res/drawable/onboarding_illustration.xml",
     "java/res/drawable/onboarding_p3a_illustration.xml",
     "java/res/drawable/onboarding_rounded_corners.xml",
     "java/res/drawable/onboarding_top_rounded_corners.xml",
+    "java/res/layout-sw600dp-land/block_interruptions.xml",
+    "java/res/layout-sw600dp-land/help_brave_search.xml",
+    "java/res/layout-sw600dp-land/make_brave_better.xml",
+    "java/res/layout-sw600dp/block_interruptions.xml",
+    "java/res/layout-sw600dp/help_brave_search.xml",
+    "java/res/layout-sw600dp/make_brave_better.xml",
     "java/res/layout/block_interruptions.xml",
     "java/res/layout/help_brave_search.xml",
     "java/res/layout/make_brave_better.xml",
     "java/res/raw-night/no_video_ads.json",
     "java/res/raw/no_video_ads.json",
+    "java/res/values-night/colors.xml",
+    "java/res/values/colors.xml",
   ]
 }
 
