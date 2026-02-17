@@ -44,13 +44,13 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "build/build_config.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
@@ -363,7 +363,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_->AddObserver(observer_->GetReceiver());
 
     profile_->SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+        base::WrapUnique(static_cast<permissions::PermissionManager*>(
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(profile_.get())
                 .release())));

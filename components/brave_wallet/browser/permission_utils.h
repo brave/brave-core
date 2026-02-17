@@ -35,16 +35,6 @@ enum class CoinType : int32_t;
 }
 
 /**
- * Add wallet addresses to the origin of the website asking wallet
- * permission in a format as https://old_origin{addr=address1&addr=address2}
- * and return it. Return origin if successful; return nullopt if caller passes
- * invalid old_origin or empty addresses.
- */
-std::optional<url::Origin> GetConcatOriginFromWalletAddresses(
-    const url::Origin& old_origin,
-    const std::vector<std::string>& addresses);
-
-/**
  * Parse the overwritten requesting origins from wallet permission
  * sub-requests, validate its format and extract original requesting_origin
  * and account address of one sub-request.
@@ -56,19 +46,6 @@ bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
                                          const url::Origin& origin,
                                          url::Origin* requesting_origin,
                                          std::string* account);
-
-/**
- * Parse the overwritten requesting origins of wallet permission requests,
- * validate its format and extract original requesting_origin and addresses
- * included in the overwritten requesting origin.
- * Ex: Given input origin as https://origin{addr=0x123...&addr=0x456...}, it
- * will return https://origin as the original requesting_origin and
- * {0x123, 0x456} as the address_queue.
- */
-bool ParseRequestingOrigin(permissions::RequestType type,
-                           const url::Origin& origin,
-                           url::Origin* requesting_origin,
-                           std::queue<std::string>* address_queue);
 
 /**
  * Given old_origin, adding account info to its host part and return as

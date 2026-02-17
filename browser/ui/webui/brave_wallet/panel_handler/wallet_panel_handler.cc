@@ -102,17 +102,15 @@ void WalletPanelHandler::RequestPermission(
     return;
   }
 
-  permissions::BraveWalletPermissionContext::RequestPermissions(
-      *permission, rfh,
-      {brave_wallet::GetAccountPermissionIdentifier(account_id)},
+  auto address = brave_wallet::GetAccountPermissionIdentifier(account_id);
+
+  permissions::BraveWalletPermissionContext::RequestWalletPermissions(
+      {address}, *permission, rfh,
       base::BindOnce(
-          [](RequestPermissionCallback cb,
-             const std::vector<content::PermissionResult>& responses) {
-            if (responses.empty() || responses.size() != 1u) {
-              std::move(cb).Run(false);
-            } else {
-              std::move(cb).Run(true);
-            }
+          [](RequestPermissionCallback cb, std::string address,
+             std::vector<std::string> allowed_addresses) {
+            std::move(cb).Run(allowed_addresses.size() == 1 &&
+                              allowed_addresses.front() == address);
           },
-          std::move(callback)));
+          std::move(callback), address));
 }
