@@ -21,6 +21,7 @@
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/brave_account/endpoints/auth_logout.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/pref_names.h"
@@ -38,6 +39,7 @@ using endpoint_client::RequestCancelability;
 using endpoint_client::RequestHandle;
 using endpoint_client::SetBearerToken;
 using endpoint_client::WithHeaders;
+using endpoints::AuthLogout;
 using endpoints::AuthValidate;
 using endpoints::ErrorBody;
 using endpoints::LoginFinalize;
@@ -231,17 +233,13 @@ void BraveAccountService::CancelRegistration() {
 
   pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
 
-  if (encrypted_verification_token.empty()) {
-    return;
-  }
-
   const auto verification_token = Decrypt(encrypted_verification_token);
   if (verification_token.empty()) {
     return;
   }
 
-  // Best-effort notification to the server, since the token will be cleaned up
-  // automatically after 30 minutes anyway.
+  // Best-effort notification to the server, since server side will clean up
+  // verification tokens automatically (currently after 30 minutes).
   auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
   SetBearerToken(request, verification_token);
   Client<VerifyDelete>::Send(url_loader_factory_, std::move(request),
@@ -289,8 +287,22 @@ void BraveAccountService::LoginFinalize(
 }
 
 void BraveAccountService::LogOut() {
-  // TODO(https://github.com/brave/brave-browser/issues/50651)
+  const auto encrypted_authentication_token =
+      pref_service_->GetString(prefs::kBraveAccountAuthenticationToken);
+
   pref_service_->ClearPref(prefs::kBraveAccountAuthenticationToken);
+
+  const auto authentication_token = Decrypt(encrypted_authentication_token);
+  if (authentication_token.empty()) {
+    return;
+  }
+
+  // Best-effort notification to the server, since server side will clean up
+  // authentication tokens automatically (currently in 6 months of inactivity).
+  auto request = MakeRequest<WithHeaders<AuthLogout::Request>>();
+  SetBearerToken(request, authentication_token);
+  Client<AuthLogout>::Send(url_loader_factory_, std::move(request),
+                           base::BindOnce([](AuthLogout::Response) {}));
 }
 
 void BraveAccountService::GetServiceToken(mojom::Service service,
