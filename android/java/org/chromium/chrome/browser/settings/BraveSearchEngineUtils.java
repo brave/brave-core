@@ -25,7 +25,7 @@ public class BraveSearchEngineUtils {
     public static void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
         tabModelSelector
                 .getCurrentTabModelSupplier()
-                .addObserver(
+                .addSyncObserverAndPostIfNonNull(
                         (@Nullable TabModel newModel) -> {
                             if (newModel == null) {
                                 return;
