@@ -85,7 +85,8 @@ if (is_android) {
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser") {
-    sources = [ "src/org/chromium/chrome/browser/BraveIntentHandlerUnitTest.java" ]
+    sources =
+        [ "src/org/chromium/chrome/browser/BraveIntentHandlerUnitTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }

@@ -71,8 +71,8 @@ public class BraveIntentHandler {
     }
 
     private static String maybeReplaceWidgetSearchSource(Intent intent, String url) {
-        if (!IntentUtils.safeGetBooleanExtra(intent, SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET,
-                    false)) {
+        if (!IntentUtils.safeGetBooleanExtra(
+                intent, SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, false)) {
             return url;
         }
 
@@ -87,9 +87,8 @@ public class BraveIntentHandler {
         for (String name : parsedUrl.getQueryParameterNames()) {
             for (String value : parsedUrl.getQueryParameters(name)) {
                 builder.appendQueryParameter(
-                        name, SOURCE.equals(name) && ANDROID.equals(value)
-                                ? ANDROID_WIDGET
-                                : value);
+                        name,
+                        SOURCE.equals(name) && ANDROID.equals(value) ? ANDROID_WIDGET : value);
             }
         }
         return builder.build().toString();

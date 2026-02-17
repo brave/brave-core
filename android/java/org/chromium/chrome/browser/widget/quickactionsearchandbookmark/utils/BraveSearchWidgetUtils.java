@@ -12,7 +12,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider;
@@ -97,7 +96,10 @@ public class BraveSearchWidgetUtils {
                     new Intent(context, QuickActionSearchAndBookmarkWidgetProvider.class);
             pinnedWidgetCallbackIntent.putExtras(bundle);
             PendingIntent successCallback =
-                    PendingIntent.getBroadcast(context, 0, pinnedWidgetCallbackIntent,
+                    PendingIntent.getBroadcast(
+                            context,
+                            0,
+                            pinnedWidgetCallbackIntent,
                             PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             appWidgetManager.requestPinAppWidget(appWidgetProvider, null, successCallback);
