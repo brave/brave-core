@@ -134,12 +134,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
-
     brave_wallet_service()->json_rpc_service()->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
 
     AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
         ->EnableDummyPricesForTesting();
@@ -247,7 +243,6 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   int wallet_index_ = 0;
   int settings_index_ = 0;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {

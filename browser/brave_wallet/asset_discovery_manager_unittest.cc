@@ -97,10 +97,7 @@ class TestBraveWalletServiceObserverForAssetDiscoveryManager
 class AssetDiscoveryManagerUnitTest : public testing::Test {
  public:
   AssetDiscoveryManagerUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~AssetDiscoveryManagerUnitTest() override = default;
 
  protected:
@@ -117,25 +114,27 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
         GetLocalState());
     network_manager_ = wallet_service_->network_manager();
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
     tx_service_ = wallet_service_->tx_service();
-    simple_hash_client_ =
-        std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
+    simple_hash_client_ = std::make_unique<SimpleHashClient>(
+        url_loader_factory_.GetSafeWeakWrapper());
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
-        shared_url_loader_factory_, *wallet_service_, *json_rpc_service_,
-        *keyring_service_, *simple_hash_client_, GetPrefs());
+        url_loader_factory_.GetSafeWeakWrapper(), *wallet_service_,
+        *json_rpc_service_, *keyring_service_, *simple_hash_client_,
+        GetPrefs());
     wallet_service_observer_ = std::make_unique<
         TestBraveWalletServiceObserverForAssetDiscoveryManager>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
-            TRAFFIC_ANNOTATION_FOR_TESTS, shared_url_loader_factory_);
+            TRAFFIC_ANNOTATION_FOR_TESTS,
+            url_loader_factory_.GetSafeWeakWrapper());
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
@@ -144,7 +143,6 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     return network_manager_->GetNetworkURL(chain_id, coin);
   }
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryManager>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;

@@ -88,10 +88,7 @@ class MockBraveWalletServiceDelegateImpl
 class WalletDataFilesInstallerUnitTest : public testing::Test {
  public:
   WalletDataFilesInstallerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~WalletDataFilesInstallerUnitTest() override = default;
 
@@ -106,7 +103,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
     RegisterLocalStatePrefsForMigration(local_state_.registry());
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         std::make_unique<MockBraveWalletServiceDelegateImpl>(), &prefs_,
         &local_state_);
 
@@ -230,7 +227,6 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;

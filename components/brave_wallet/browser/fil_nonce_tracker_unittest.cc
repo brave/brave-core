@@ -32,11 +32,7 @@ namespace brave_wallet {
 class FilNonceTrackerUnitTest : public testing::Test {
  public:
   FilNonceTrackerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
-  }
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
@@ -44,15 +40,11 @@ class FilNonceTrackerUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(GetPrefs());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory(), network_manager_.get(), GetPrefs(),
-        nullptr);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        GetPrefs(), nullptr);
   }
 
   PrefService* GetPrefs() { return &prefs_; }
-
-  network::SharedURLLoaderFactory* shared_url_loader_factory() {
-    return url_loader_factory_.GetSafeWeakWrapper().get();
-  }
 
   void SetTransactionCount(uint64_t count) {
     transaction_count_ = count;
@@ -99,7 +91,6 @@ class FilNonceTrackerUnitTest : public testing::Test {
   uint64_t transaction_count_ = 0;
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
