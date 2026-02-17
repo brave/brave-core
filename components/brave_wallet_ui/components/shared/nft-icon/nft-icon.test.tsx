@@ -27,7 +27,7 @@ describe('NFT Icon', () => {
       )
     })
 
-    expect(dispatchSpy).toBeCalledTimes(3)
+    expect(dispatchSpy).toHaveBeenCalledTimes(3)
   })
 
   it('Should NOT attempt IPFS gateway lookup when given an IPFS token image URL', async () => {
@@ -42,6 +42,6 @@ describe('NFT Icon', () => {
     })
 
     // should not call the gateway lookup action
-    expect(dispatchSpy).toBeCalledTimes(0)
+    expect(dispatchSpy).toHaveBeenCalledTimes(0)
   })
 })

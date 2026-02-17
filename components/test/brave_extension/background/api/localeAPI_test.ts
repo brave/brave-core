@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2017 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as localeAPI from '../../../../brave_extension/extension/brave_extension/background/api/localeAPI'
 
@@ -16,7 +17,7 @@ describe('locale API', () => {
     })
     it('calls chrome.i18n.getMessage with the message', () => {
       localeAPI.getLocale(message)
-      expect(spy).toBeCalledTimes(1)
+      expect(spy).toHaveBeenCalledTimes(1)
       expect(spy.mock.calls[0][0]).toBe(message)
     })
   })

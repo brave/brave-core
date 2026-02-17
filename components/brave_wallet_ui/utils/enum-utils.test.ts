@@ -8,7 +8,7 @@ import { getGetCleanedMojoEnumKeys } from './enum-utils'
 /**
  * @enum {number}
  */
-export const MockedJsonRpcErrorEnum = {
+const MockedJsonRpcErrorEnum = {
   kParsingError: -32700,
   kInvalidRequest: -32600,
   kMethodNotFound: -32601,
