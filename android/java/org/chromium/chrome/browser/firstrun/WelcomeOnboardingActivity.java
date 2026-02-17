@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.firstrun;
 
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.SpannableString;
@@ -469,6 +471,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     protected void performPreInflationStartup() {
         super.performPreInflationStartup();
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
+        if (mIsTablet && Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            setRequestedOrientation(SCREEN_ORIENTATION_UNSPECIFIED);
+        }
     }
 
     @Override
