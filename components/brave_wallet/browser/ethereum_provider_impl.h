@@ -99,7 +99,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                               base::Value id);
   void Decrypt(const std::string& untrusted_encrypted_data_json,
                const std::string& address,
-               const url::Origin& origin,
                RequestCallback callback,
                base::Value id);
   // Used for eth_signTypedData
@@ -266,7 +265,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       RequestCallback callback,
       base::Value id,
       const mojom::AccountIdPtr& account_id,
-      const url::Origin& origin,
       base::expected<base::Value, std::string> result);
   void SendOrSignTransactionInternal(RequestCallback callback,
                                      base::Value id,
@@ -299,13 +297,11 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
 
   void RequestEthereumPermissions(RequestCallback callback,
                                   base::Value id,
-                                  const std::string& method,
-                                  const url::Origin& origin);
+                                  const std::string& method);
   void OnRequestEthereumPermissions(
       RequestCallback callback,
       base::Value id,
       const std::string& method,
-      const url::Origin& origin,
       RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
   void OnSendRawTransaction(RequestCallback callback,
@@ -346,7 +342,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   base::flat_map<std::string, base::Value> add_tx_ids_;
   RequestCallback pending_request_ethereum_permissions_callback_;
   base::Value pending_request_ethereum_permissions_id_;
-  url::Origin pending_request_ethereum_permissions_origin_;
   std::string pending_request_ethereum_permissions_method_;
   mojo::Receiver<mojom::JsonRpcServiceObserver> rpc_observer_receiver_{this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
