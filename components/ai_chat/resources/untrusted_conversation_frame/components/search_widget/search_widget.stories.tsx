@@ -12,7 +12,7 @@ provideStrings({
 })
 
 const meta: Meta<typeof SearchWidget> = {
-  title: 'SearchWidget',
+  title: 'Chat/SearchWidget',
   component: SearchWidget,
 }
 
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof SearchWidget>
 
 export const Default: Story = {
   args: {
-    query: 'brave',
+    query: 'Brave',
     type: 'web',
   },
 }

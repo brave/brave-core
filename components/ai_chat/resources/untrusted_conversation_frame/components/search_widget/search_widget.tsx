@@ -5,7 +5,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-console.log(styles)
+
 interface Thumbnail {
   src: string,
   original?: string,
@@ -99,7 +99,7 @@ function SearchCard(props: { result: SearchResult<"search_result"> }) {
 }
 
 function DetailCard(props: { result: SearchResult<"video_result" | "news_result"> }) {
-  return <a className={styles.detailResult} href={props.result.url} target='_blank'>
+  return <a className={styles.detailResult} href={props.result.url} target='_blank' data-type={props.result.type}>
     <ChromeImage className={styles.thumbnail} src={props.result.thumbnail.src} alt={props.result.title} />
     <div className={styles.content}>
       <MetaRow favicon={props.result.meta_url.favicon}>
@@ -172,7 +172,7 @@ export default function SearchWidget(props: { query: string, type: 'web' | 'imag
     checkScrollBounds()
     container.addEventListener('scroll', checkScrollBounds)
     return () => container.removeEventListener('scroll', checkScrollBounds)
-  }, [checkScrollBounds])
+  }, [checkScrollBounds, result])
 
   const scrollBy = (direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return
