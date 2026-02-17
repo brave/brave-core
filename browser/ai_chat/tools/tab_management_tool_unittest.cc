@@ -12,6 +12,8 @@
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "chrome/test/base/testing_profile.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -50,8 +52,14 @@ mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& json) {
 
 }  // namespace
 
-TEST(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
-  TabManagementTool tool;
+class TabManagementToolUnitTest : public testing::Test {
+ protected:
+  content::BrowserTaskEnvironment task_environment_;  // For DataDecoder tasks
+  TestingProfile profile_;
+};
+
+TEST_F(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
+  TabManagementTool tool(&profile_);
 
   auto valid_tool_event = CreateToolUseEvent(kValidInputListWithPlan);
 
@@ -82,8 +90,8 @@ TEST(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
   EXPECT_FALSE((std::get<bool>(result)));
 }
 
-TEST(TabManagementToolUnitTest, UseTool_Permissions) {
-  TabManagementTool tool;
+TEST_F(TabManagementToolUnitTest, UseTool_Permissions) {
+  TabManagementTool tool(&profile_);
 
   // Not providing a plan should provide the reason during UseTool so that
   // the error is reported to the AI who is given another chance to provide a
@@ -112,8 +120,8 @@ TEST(TabManagementToolUnitTest, UseTool_Permissions) {
               testing::HasSubstr("Missing required 'action' field"));
 }
 
-TEST(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
-  TabManagementTool tool;
+TEST_F(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
+  TabManagementTool tool(&profile_);
 
   // Grant permission once.
   tool.UserPermissionGranted("");
@@ -128,6 +136,10 @@ TEST(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
   // Missing action
   EXPECT_THAT(RunTool(&tool, "{}"),
               testing::HasSubstr("Missing required 'action' field"));
+
+  // Invalid action
+  EXPECT_THAT(RunTool(&tool, R"({"action":"bogus"})"),
+              testing::HasSubstr("Invalid action. Must be one of"));
 }
 
 }  // namespace ai_chat
