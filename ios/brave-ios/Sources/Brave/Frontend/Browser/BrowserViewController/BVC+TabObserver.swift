@@ -27,7 +27,6 @@ extension BrowserViewController: TabObserver {
       HTTPBlockedScriptHandler(tabManager: tabManager),
       PrintScriptHandler(browserController: self),
       DarkReaderScriptHandler(),
-      FocusScriptHandler(),
       BraveGetUA(),
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
