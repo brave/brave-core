@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.logo;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import org.chromium.base.Callback;
@@ -21,20 +20,16 @@ public class BraveLogoMediator extends LogoMediator {
     private boolean mShouldShowLogo;
 
     public BraveLogoMediator(
-            Context context,
             Callback<LoadUrlParams> logoClickedCallback,
             PropertyModel logoModel,
             Callback<Logo> onLogoAvailableCallback,
             @Nullable VisibilityObserver visibilityObserver,
-            CachedTintedBitmap defaultGoogleLogo,
             @Nullable Drawable defaultGoogleLogoDrawable) {
         super(
-                context,
                 logoClickedCallback,
                 logoModel,
                 onLogoAvailableCallback,
                 visibilityObserver,
-                defaultGoogleLogo,
                 defaultGoogleLogoDrawable);
     }
 

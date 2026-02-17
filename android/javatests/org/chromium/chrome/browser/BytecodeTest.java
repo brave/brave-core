@@ -88,7 +88,6 @@ import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.infobar.InfoBarContainerView;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
-import org.chromium.chrome.browser.logo.CachedTintedBitmap;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
@@ -1866,12 +1865,10 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/logo/LogoMediator",
                         "org/chromium/chrome/browser/logo/BraveLogoMediator",
-                        Context.class,
                         Callback.class,
                         PropertyModel.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
-                        CachedTintedBitmap.class,
                         Drawable.class));
         Assert.assertTrue(
                 constructorsMatch(
