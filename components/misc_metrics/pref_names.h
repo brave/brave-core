@@ -85,6 +85,10 @@ inline constexpr char kMiscMetricsMediaSessionActiveProcessTime[] =
     "brave.misc_metrics.media_session_active_process_time";
 inline constexpr char kMiscMetricsMediaSessionFrameStartTime[] =
     "brave.misc_metrics.media_session_frame_start_time";
+inline constexpr char kMiscMetricsNavSourceReportFrameStartTime[] =
+    "brave.misc_metrics.nav_source_report_frame_start_time";
+inline constexpr char kMiscMetricsNavSourceCounts[] =
+    "brave.misc_metrics.nav_source_counts";
 
 inline constexpr char kMiscMetricsQuickSearchActionStorage[] =
     "brave.misc_metrics.quick_search_actions";

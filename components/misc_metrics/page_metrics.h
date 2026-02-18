@@ -20,6 +20,7 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
+#include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -85,9 +86,12 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void IncrementPagesLoadedCount(bool is_reload);
+  void IncrementPagesLoadedCount(bool is_reload, bool is_otr);
 
   BraveSearchMetrics& brave_search_metrics() { return brave_search_metrics_; }
+  NavigationSourceMetrics* navigation_source_metrics() {
+    return &navigation_source_metrics_;
+  }
 
   // DefaultBrowserMonitor::Observer:
   void OnDefaultBrowserStatusChanged(bool is_default) override;
@@ -150,6 +154,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
       default_browser_observation_{this};
 
   BraveSearchMetrics brave_search_metrics_;
+  NavigationSourceMetrics navigation_source_metrics_;
 
   PrefChangeRegistrar pref_change_registrar_;
 

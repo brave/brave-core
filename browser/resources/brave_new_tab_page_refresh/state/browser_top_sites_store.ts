@@ -114,6 +114,10 @@ export function createTopSitesStore() {
         return { topSites: [...topSites] }
       })
     },
+
+    recordTopSiteClick() {
+      handler.recordTopSiteClick()
+    },
   }
 
   store.update({ actions })

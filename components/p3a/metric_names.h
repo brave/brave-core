@@ -78,6 +78,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.PagesLoaded.RewardsWallet", {}},
     {"Brave.Core.PagesReloaded", {}},
     {"Brave.Core.TabCount", {}},
+
     {"Brave.Core.WeeklyUsage", {}},
     {"Brave.Core.WeeklyUsage.Nebula", MetricConfig{.nebula = true}},
     {"Brave.Core.WindowCount.2", {}},
@@ -220,6 +221,26 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.Core.IsDefaultDaily.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kGeneralPlatform, MetricAttribute::kSubregion, MetricAttribute::kVersion},
       .record_activation_date = true,
+    }},
+    {"Brave.Core.BookmarksSourcePercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
+    {"Brave.Core.CustomTopSitesSourcePercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
+    {"Brave.Core.DirectURLSourcePercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
+    {"Brave.Core.FrequentTopSitesSourcePercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
+    {"Brave.Core.HistorySourcePercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
     {"Brave.Core.PrivateWindowUsed", MetricConfig{.ephemeral = true}},
     {"Brave.Core.TorWindowUsed", MetricConfig{.ephemeral = true}},

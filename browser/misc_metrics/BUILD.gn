@@ -122,6 +122,7 @@ source_set("unit_tests") {
   sources = [
     "doh_metrics_unittest.cc",
     "media_session_metrics_unittest.cc",
+    "navigation_source_metrics_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
   ]

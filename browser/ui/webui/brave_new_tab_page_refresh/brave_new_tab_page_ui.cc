@@ -117,13 +117,8 @@ void BraveNewTabPageUI::BindInterface(
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           profile);
-  misc_metrics::BraveSearchMetrics* brave_search_metrics = nullptr;
-  if (profile_metrics) {
-    auto* page_metrics = profile_metrics->GetPageMetrics();
-    if (page_metrics) {
-      brave_search_metrics = &page_metrics->brave_search_metrics();
-    }
-  }
+  misc_metrics::PageMetrics* page_metrics =
+      profile_metrics ? profile_metrics->GetPageMetrics() : nullptr;
 
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
@@ -131,7 +126,7 @@ void BraveNewTabPageUI::BindInterface(
       std::move(vpn_facade), *web_contents, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics(),
-      brave_search_metrics, was_restored_);
+      page_metrics, was_restored_);
 
   // Reset `was_restored_` flag so with the next reload the current tab won't be
   // treated as a restored tab.
