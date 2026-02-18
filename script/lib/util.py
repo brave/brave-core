@@ -52,41 +52,6 @@ def scoped_env(key, value):
         os.environ[key] = origin
 
 
-def download(text, url, path):
-    safe_mkdir(os.path.dirname(path))
-    with open(path, 'wb') as local_file:
-        if hasattr(ssl, '_create_unverified_context'):
-            # pylint: disable=protected-access
-            ssl._create_default_https_context = ssl._create_unverified_context
-
-        web_file = urlopen(url)
-        file_size = int(web_file.info().getheaders("Content-Length")[0])
-        downloaded_size = 0
-        block_size = 128
-
-        ci = os.environ.get('CI') == '1'
-
-        while True:
-            buf = web_file.read(block_size)
-            if not buf:
-                break
-
-            downloaded_size += len(buf)
-            local_file.write(buf)
-
-            if not ci:
-                percent = downloaded_size * 100. / file_size
-                status = "\r%s    %10d    [%3.1f%%]" % (
-                    text, downloaded_size, percent)
-                print(status)
-
-        if ci:
-            print("%s done." % (text))
-        else:
-            print()
-    return path
-
-
 def extract_tarball(tarball_path, member, destination):
     with tarfile.open(tarball_path) as tarball:
         tarball.extract(member, destination)
