@@ -43,7 +43,7 @@ class BraveSearchMetrics : public PagePercentageMetrics {
 
   void MaybeRecordBraveQuery(const GURL& previous_url, const GURL& current_url);
   void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
-  void MaybeRecordNTPSearch(int64_t engine_preprepare_id);
+  void MaybeRecordNTPSearch(int64_t engine_prepopulate_id);
 
   void ClearQueryCounts();
 

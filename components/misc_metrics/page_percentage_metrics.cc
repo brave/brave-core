@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace misc_metrics {
