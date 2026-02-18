@@ -16,6 +16,10 @@ namespace brave {
 
 int NonClientHitTest(BrowserView* browser_view,
                      const gfx::Point& point_in_widget) {
+  if (!browser_view) {
+    return HTNOWHERE;
+  }
+
   if (!browser_view->toolbar() || !browser_view->toolbar()->GetVisible()) {
     return HTNOWHERE;
   }
@@ -42,9 +46,6 @@ int NonClientHitTest(BrowserView* browser_view,
   }
 
   constexpr int kResizableArea = 8;
-  if (!browser_view->GetWidget()) {
-    return HTNOWHERE;
-  }
   const auto widget_bounds =
       browser_view->GetWidget()->GetRootView()->GetLocalBounds();
   auto non_resizable_area = widget_bounds;
