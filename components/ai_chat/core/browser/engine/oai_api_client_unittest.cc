@@ -321,6 +321,165 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
   run_loop.Run();
 }
 
+TEST_F(OAIAPIUnitTest, PerformRequestWithTools_SendsToolsAndPreferredChoice) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  auto oai_tool_definitions = base::test::ParseJsonList(R"([
+    {
+      "type": "function",
+      "function": {
+        "name": "web_page_navigator",
+        "description": "Navigate to a URL"
+      }
+    }
+  ])");
+  std::optional<std::string> preferred_tool_name = "web_page_navigator";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        auto dict = base::test::ParseJsonDict(body);
+        const base::ListValue* tools = dict.FindList("tools");
+        EXPECT_TRUE(tools);
+        if (!tools) {
+          run_loop.Quit();
+          return Ticket();
+        }
+        EXPECT_EQ(tools->size(), 1u);
+
+        const base::DictValue* tool_choice = dict.FindDict("tool_choice");
+        EXPECT_TRUE(tool_choice);
+        if (!tool_choice) {
+          run_loop.Quit();
+          return Ticket();
+        }
+        const std::string* tool_choice_type = tool_choice->FindString("type");
+        EXPECT_TRUE(tool_choice_type);
+        if (tool_choice_type) {
+          EXPECT_EQ(*tool_choice_type, "function");
+        }
+        const base::DictValue* function = tool_choice->FindDict("function");
+        EXPECT_TRUE(function);
+        if (!function) {
+          run_loop.Quit();
+          return Ticket();
+        }
+        const std::string* function_name = function->FindString("name");
+        EXPECT_TRUE(function_name);
+        if (function_name) {
+          EXPECT_EQ(*function_name, "web_page_navigator");
+        }
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
+
+  auto messages = base::test::ParseJsonList(R"([
+    {"role": "user", "content": "Open example.com"}
+  ])");
+  client_->PerformRequestWithTools(
+      *model_options, std::move(messages), std::move(oai_tool_definitions),
+      preferred_tool_name,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
+TEST_F(OAIAPIUnitTest, PerformRequest_ParsesToolCallsFromStreamChunk) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  std::string server_chunk = R"({
+    "id": "chatcmpl-123",
+    "object": "chat.completion.chunk",
+    "choices": [{
+      "index": 0,
+      "delta": {
+        "tool_calls": [{
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "web_page_navigator",
+            "arguments": "{\"url\":\"https://example.com\"}"
+          }
+        }]
+      }
+    }]
+  })";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        data_received_callback.Run(base::ok(base::test::ParseJson(server_chunk)));
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .WillOnce([](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        const auto& tool_event = result.event->get_tool_use_event();
+        EXPECT_EQ(tool_event->id, "call_123");
+        EXPECT_EQ(tool_event->tool_name, "web_page_navigator");
+        EXPECT_EQ(tool_event->arguments_json, "{\"url\":\"https://example.com\"}");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([](GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+      });
+
+  auto messages = base::test::ParseJsonList(R"([
+    {"role": "user", "content": "Open example.com"}
+  ])");
+
+  client_->PerformRequest(
+      *model_options, std::move(messages),
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
 TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
   // A general test which covers the serialization of multiple messages with
   // multiple content blocks, but does not cover all possible types of content

@@ -68,7 +68,9 @@ std::string CreateJSONRequestBody(
     base::ListValue messages,
     const bool is_sse_enabled,
     const mojom::CustomModelOptions& model_options,
-    const std::optional<std::vector<std::string>>& stop_sequences) {
+    const std::optional<std::vector<std::string>>& stop_sequences,
+    std::optional<base::ListValue> oai_tool_definitions,
+    const std::optional<std::string>& preferred_tool_name) {
   base::DictValue dict;
 
   dict.Set("messages", std::move(messages));
@@ -82,6 +84,18 @@ std::string CreateJSONRequestBody(
       stop_list.Append(sequence);
     }
     dict.Set("stop", std::move(stop_list));
+  }
+
+  if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
+    dict.Set("tools", std::move(oai_tool_definitions.value()));
+
+    if (preferred_tool_name.has_value() && !preferred_tool_name->empty()) {
+      base::DictValue tool_choice;
+      tool_choice.Set("type", "function");
+      tool_choice.Set("function", base::DictValue().Set("name",
+                                                        *preferred_tool_name));
+      dict.Set("tool_choice", std::move(tool_choice));
+    }
   }
 
   std::string json;
@@ -246,10 +260,18 @@ void OAIAPIClient::PerformRequest(
     return;
   }
 
+  std::optional<base::ListValue> oai_tool_definitions =
+      std::move(pending_oai_tool_definitions_);
+  pending_oai_tool_definitions_.reset();
+  std::optional<std::string> preferred_tool_name =
+      std::move(pending_preferred_tool_name_);
+  pending_preferred_tool_name_.reset();
+
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(messages), is_sse_enabled, model_options, stop_sequences);
+      std::move(messages), is_sse_enabled, model_options, stop_sequences,
+      std::move(oai_tool_definitions), preferred_tool_name);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",
@@ -278,6 +300,21 @@ void OAIAPIClient::PerformRequest(
   }
 }
 
+void OAIAPIClient::PerformRequestWithTools(
+    const mojom::CustomModelOptions& model_options,
+    base::ListValue messages,
+    std::optional<base::ListValue> oai_tool_definitions,
+    const std::optional<std::string>& preferred_tool_name,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback,
+    const std::optional<std::vector<std::string>>& stop_sequences) {
+  pending_oai_tool_definitions_ = std::move(oai_tool_definitions);
+  pending_preferred_tool_name_ = preferred_tool_name;
+  PerformRequest(model_options, std::move(messages),
+                 std::move(data_received_callback),
+                 std::move(completed_callback), stop_sequences);
+}
+
 // When called as part of a SSE request, this method will not contain the body.
 // Instead, the body is evaluated in chunks via the OnQueryDataReceived method.
 // OnQueryCompleted will instead receive superficial data such as the response
@@ -293,10 +330,39 @@ void OAIAPIClient::OnQueryCompleted(
   if (success) {
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
-      if (auto result_data = ParseOAICompletionResponse(
-              result.value_body().GetDict(), std::nullopt /* model_key */)) {
+      const auto& response_dict = result.value_body().GetDict();
+      if (auto result_data =
+              ParseOAICompletionResponse(response_dict,
+                                         std::nullopt /* model_key */)) {
         std::move(callback).Run(base::ok(std::move(*result_data)));
         return;
+      }
+
+      // In non-streaming mode, if there is no completion but there are
+      // tool calls, return the first valid tool event so the tool loop
+      // can start.
+      const base::DictValue* content_container =
+          GetOAIContentContainer(response_dict);
+      if (content_container) {
+        if (const base::ListValue* tool_calls =
+                content_container->FindList("tool_calls")) {
+          for (const auto& tool_call_value : *tool_calls) {
+            if (!tool_call_value.is_dict()) {
+              continue;
+            }
+            const auto& tool_call_dict = tool_call_value.GetDict();
+            std::optional<mojom::ToolUseEventPtr> tool_use_event;
+            if ((tool_use_event = ParseToolCallRequest(tool_call_dict)) ||
+                (tool_use_event = ParseToolCallResult(tool_call_dict))) {
+              auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+                  std::move(*tool_use_event));
+              std::move(callback).Run(base::ok(
+                  EngineConsumer::GenerationResultData(std::move(tool_event),
+                                                       std::nullopt)));
+              return;
+            }
+          }
+        }
       }
     }
 
@@ -339,9 +405,38 @@ void OAIAPIClient::OnQueryDataReceived(
     return;
   }
 
-  if (auto result_data = ParseOAICompletionResponse(
-          result->GetDict(), std::nullopt /* model_key */)) {
+  const auto& result_dict = result->GetDict();
+  if (auto result_data =
+          ParseOAICompletionResponse(result_dict,
+                                     std::nullopt /* model_key */)) {
     callback.Run(std::move(*result_data));
+  }
+
+  // Tool calls in OpenAI format are inside choices[0].delta.tool_calls
+  // or choices[0].message.tool_calls.
+  const base::DictValue* content_container = GetOAIContentContainer(result_dict);
+  if (!content_container) {
+    return;
+  }
+
+  const base::ListValue* tool_calls = content_container->FindList("tool_calls");
+  if (!tool_calls) {
+    return;
+  }
+
+  for (const auto& tool_call_value : *tool_calls) {
+    if (!tool_call_value.is_dict()) {
+      continue;
+    }
+    const auto& tool_call_dict = tool_call_value.GetDict();
+    std::optional<mojom::ToolUseEventPtr> tool_use_event;
+    if ((tool_use_event = ParseToolCallRequest(tool_call_dict)) ||
+        (tool_use_event = ParseToolCallResult(tool_call_dict))) {
+      auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(*tool_use_event));
+      callback.Run(EngineConsumer::GenerationResultData(std::move(tool_event),
+                                                        std::nullopt));
+    }
   }
 }
 

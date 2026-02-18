@@ -29,6 +29,8 @@
 #include "chrome/browser/actor/actor_task_metadata.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -146,18 +148,29 @@ actor::TaskId ContentAgentToolProvider::GetTaskId() {
 void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     base::OnceCallback<void(tabs::TabHandle)> callback) {
   if (!task_tab_handle_.Get()) {
-    // Create a new tab because we are only allowed to act on
-    // certain URLs, e.g. NTP. Safer to start on a blank page
-    // whilst this feature is focused on AI-initiated tasks instead
-    // of acting on existing tabs.
-    NavigateParams params(profile_, GURL(url::kAboutBlankURL),
-                          ui::PAGE_TRANSITION_FROM_API);
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-    Navigate(&params);
-    content::WebContents* new_contents = params.navigated_or_inserted_contents;
+    // Prefer reusing the currently active web tab when possible so tools can
+    // act on what the user is looking at in AI browsing mode.
+    if (Browser* browser = chrome::FindLastActiveWithProfile(profile_)) {
+      if (tabs::TabInterface* active_tab = browser->GetActiveTabInterface()) {
+        if (content::WebContents* active_contents = active_tab->GetContents();
+            active_contents &&
+            active_contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS()) {
+          task_tab_handle_ = active_tab->GetHandle();
+        }
+      }
+    }
 
-    task_tab_handle_ =
-        tabs::TabInterface::GetFromContents(new_contents)->GetHandle();
+    // Fallback to a new blank tab if there is no suitable active web tab.
+    if (!task_tab_handle_.Get()) {
+      NavigateParams params(profile_, GURL(url::kAboutBlankURL),
+                            ui::PAGE_TRANSITION_FROM_API);
+      params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+      Navigate(&params);
+      content::WebContents* new_contents =
+          params.navigated_or_inserted_contents;
+      task_tab_handle_ =
+          tabs::TabInterface::GetFromContents(new_contents)->GetHandle();
+    }
 
     for (auto& observer : observers_) {
       observer.OnContentTaskStarted(task_tab_handle_.raw_value());

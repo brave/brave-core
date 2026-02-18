@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -227,9 +228,16 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
       model_options_, page_contents, BuildUserMemoryMessage(is_temporary_chat),
       selected_text, conversation_history);
 
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(data_received_callback),
-                       std::move(completed_callback));
+  std::optional<std::string> preferred_tool_name_str = std::nullopt;
+  if (preferred_tool_name.has_value()) {
+    preferred_tool_name_str = std::string(preferred_tool_name.value());
+  }
+
+  api_->PerformRequestWithTools(model_options_, std::move(messages),
+                                ToolApiDefinitionsFromTools(tools),
+                                preferred_tool_name_str,
+                                std::move(data_received_callback),
+                                std::move(completed_callback));
 }
 
 void EngineConsumerOAIRemote::SanitizeInput(std::string& input) {}

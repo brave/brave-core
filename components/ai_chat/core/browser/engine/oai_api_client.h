@@ -58,6 +58,19 @@ class OAIAPIClient {
                               const std::optional<std::vector<std::string>>&
                                   stop_sequences = std::nullopt);
 
+  // Sends a request with optional OpenAI-compatible tool definitions.
+  // In tests with a mocked PerformRequest override, this delegates to
+  // PerformRequest so existing expectations remain valid.
+  void PerformRequestWithTools(
+      const mojom::CustomModelOptions& model_options,
+      base::ListValue messages,
+      std::optional<base::ListValue> oai_tool_definitions,
+      const std::optional<std::string>& preferred_tool_name,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback,
+      const std::optional<std::vector<std::string>>& stop_sequences =
+          std::nullopt);
+
   virtual void PerformRequestWithOAIMessages(
       const mojom::CustomModelOptions& model_options,
       std::vector<OAIMessage> messages,
@@ -84,6 +97,10 @@ class OAIAPIClient {
                         api_request_helper::APIRequestResult result);
   void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
+
+  // Optional one-shot tool settings consumed by PerformRequest.
+  std::optional<base::ListValue> pending_oai_tool_definitions_;
+  std::optional<std::string> pending_preferred_tool_name_;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
