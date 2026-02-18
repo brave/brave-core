@@ -189,7 +189,7 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                     // Check indexes of Brave buttons and MAX_VALUE
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.BOOKMARKS,
-                            AdaptiveToolbarButtonVariant.TAB_GROUPING + 1);
+                            AdaptiveToolbarButtonVariant.GLIC + 1);
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.HISTORY,
                             AdaptiveToolbarButtonVariant.BOOKMARKS + 1);
