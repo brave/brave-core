@@ -176,17 +176,27 @@ std::vector<OAIMessage> BuildOAIMessages(
   // build a list of messages for the remote API.
   // We largely want to send the full conversation with all messages and content
   // blocks back to the model in order to preserve the context of the
-  // conversation. However, some tool results are extremely large (especially
-  // for images), and repetitive. We need a way to remove the noise in order to
-  // 1) not overwhelm the model and 2) not surpass the max token limit. For now,
-  // this is a rudimentary approach that only keeps the most recent large tool
-  // results. Use a two-pass approach: first identify which large tool results
-  // to keep, then build the conversation in chronological order.
+  // conversation. However, some tool results are extremely large and
+  // repetitive. We need a way to reduce token usage in order to 1) not
+  // overwhelm the model and 2) not surpass the max token limit.
+  //
+  // Two categories of tool outputs are handled separately:
+  //   - Large text/image tool results: only the N most recent are kept; older
+  //     ones are replaced entirely with a placeholder message.
+  //   - Web sources (search tool results): only the N most recent are kept
+  //     with full content (page_content, extra_snippets, rich_results); older
+  //     ones are stripped down to lightweight metadata (title, url,
+  //     favicon_url, query) so the model still knows which sources were
+  //     referenced.
+  //
+  // Use a two-pass approach: first scan backwards to identify which tool
+  // results to drop/strip, then build the conversation in chronological order.
 
   // Step 1:
   //   - identify large tool results and remember which ones to remove.
+  //   - identify web sources tool outputs and remember which ones to strip.
   //   - generate content blocks for the page contents which we're going to
-  //   keep.
+  //     keep.
   absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
   size_t large_tool_count = 0;
 
