@@ -695,7 +695,7 @@ extension BrowserViewController {
         desktop = UserAgent.safariDesktopBraveSuffix
       case .suffixComment:
         mobile = UserAgent.safariMobileBraveSuffixComment
-        desktop = UserAgent.safariMobileBraveSuffixComment
+        desktop = UserAgent.safariDesktopBraveSuffixComment
       @unknown default:
         mobile = UserAgent.mobile
         desktop = UserAgent.desktop
