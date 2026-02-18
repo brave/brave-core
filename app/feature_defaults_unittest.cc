@@ -192,9 +192,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
-#if !BUILDFLAG(IS_ANDROID)
-      &legion::kLegion,
-#endif  // !BUILDFLAG(IS_ANDROID)
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
@@ -233,6 +230,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
+#if !BUILDFLAG(IS_ANDROID)
+      &private_ai::kLegion,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &safe_browsing::kNotificationTelemetry,
