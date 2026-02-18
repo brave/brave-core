@@ -576,6 +576,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),               \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-global-side-panel",                                   \
+          "Brave AI Chat Global Side Panel",                                   \
+          "Keeps the same conversation when navigating sites or changing "     \
+          "active tab",                                                        \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatGlobalSidePanelEverywhere),            \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-rich-search-widgets",                                 \
           "Brave AI Chat Rich Search Widgets",                                 \
           "Enables AI Chat Rich Search Widgets",                               \
