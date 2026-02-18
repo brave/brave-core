@@ -9,11 +9,14 @@
 #include <optional>
 #include <string>
 
-#include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings_enums.mojom.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace content_settings {
 

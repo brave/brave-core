@@ -9,8 +9,11 @@
 #include <optional>
 #include <string>
 
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 

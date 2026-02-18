@@ -7,7 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_STORAGE_DELEGATE_H_
 
 #include "base/observer_list_types.h"
-#include "base/values.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_wallet {
 

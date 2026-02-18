@@ -10,13 +10,16 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 // TODO(apaymyshev): refactor utility methods to return std::optional instead
 // of bool + out-parameter.
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_wallet {
 

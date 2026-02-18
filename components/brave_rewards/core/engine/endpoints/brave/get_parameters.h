@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/values.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/result_for.h"
@@ -57,6 +56,10 @@
 //   "vbatExpired": false
 // }
 // clang-format on
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_rewards::internal {
 class RewardsEngine;

@@ -16,10 +16,13 @@
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/nix/xdg_util.h"
-#include "base/values.h"
 #include "build/build_config.h"
 #include "chrome/utility/importer/importer.h"
 #include "components/favicon_base/favicon_usage_data.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace user_data_importer {
 struct ImportedBookmarkEntry;

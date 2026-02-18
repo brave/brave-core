@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
 #include "brave/common/importer/scoped_copy_file.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"

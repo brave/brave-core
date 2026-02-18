@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"

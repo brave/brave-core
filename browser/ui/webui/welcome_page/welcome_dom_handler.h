@@ -11,13 +11,16 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
 #include "chrome/browser/shell_integration.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
 class Profile;
 class Browser;
+
+namespace base {
+class ListValue;
+}  // namespace base
 
 // The handler for Javascript messages for the chrome://welcome page
 class WelcomeDOMHandler : public content::WebUIMessageHandler {

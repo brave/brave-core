@@ -12,7 +12,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/values.h"
 
 // GET /v3/captcha/challenge/{payment_id}
 //
@@ -27,6 +26,10 @@
 // {
 //   "captchaID": "ae07288c-d078-11eb-b8bc-0242ac130003"
 // }
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace api_request_helper {
 class APIRequestHelper;

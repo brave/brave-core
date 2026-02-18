@@ -7,7 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SCOPED_TXS_UPDATE_H_
 
 #include "base/memory/raw_ref.h"
-#include "base/values.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_wallet {
 

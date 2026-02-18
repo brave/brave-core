@@ -13,6 +13,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/brave_education/education_urls.h"
