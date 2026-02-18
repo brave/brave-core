@@ -133,7 +133,7 @@ public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     // Close the dialog fragment
-                                    dismiss();
+                                    dismissAllowingStateLoss();
                                 }
 
                                 @Override
