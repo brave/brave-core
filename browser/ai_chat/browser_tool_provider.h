@@ -13,7 +13,6 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "chrome/browser/profiles/profile.h"
 
 namespace content {
 class BrowserContext;

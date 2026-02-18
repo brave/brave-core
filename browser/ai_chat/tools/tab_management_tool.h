@@ -1,4 +1,4 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -9,15 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "components/tabs/public/tab_group.h"
-#include "components/tabs/public/tab_interface.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
-
-class BrowserWindowInterface;
-class Profile;
 
 namespace ai_chat {
 

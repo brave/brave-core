@@ -36,7 +36,7 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   }
 
 #if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
-  if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {
+  if (tab_management_tool_) {
     tool_ptrs.push_back(tab_management_tool_->GetWeakPtr());
   }
 #endif
@@ -50,7 +50,9 @@ void BrowserToolProvider::CreateTools(
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
   }
 #if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
-  tab_management_tool_ = std::make_unique<TabManagementTool>();
+  if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {
+    tab_management_tool_ = std::make_unique<TabManagementTool>();
+  }
 #endif
 }
 
