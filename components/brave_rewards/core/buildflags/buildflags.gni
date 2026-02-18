@@ -45,7 +45,7 @@ declare_args() {
 # Note: This block is NOT executed during PR builder CI runs. When making
 # changes to this block, ensure that "release-test" passes in CI before merging.
 if (is_official_build) {
-  if (enable_brave_rewards && !is_ios) {
+  if (enable_brave_rewards && target_os != "ios") {
     assert(bitflyer_production_client_id != "")
     assert(bitflyer_production_client_secret != "")
     assert(bitflyer_production_fee_address != "")
