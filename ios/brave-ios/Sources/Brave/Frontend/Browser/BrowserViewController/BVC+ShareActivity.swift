@@ -312,7 +312,6 @@ extension BrowserViewController {
     // Display Certificate Activity
     if let tabURL = tabManager.selectedTab?.visibleURL,
       tabManager.selectedTab?.serverTrust != nil
-        || ErrorPageHelper.hasCertificates(for: tabURL)
     {
       activities.append(
         BasicMenuActivity(

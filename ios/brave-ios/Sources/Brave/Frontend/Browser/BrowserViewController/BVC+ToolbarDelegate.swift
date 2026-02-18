@@ -950,9 +950,6 @@ extension BrowserViewController: TopToolbarDelegate {
       guard let url = tabManager.selectedTab?.visibleURL else { return nil }
 
       if let internalURL = InternalURL(url) {
-        if internalURL.isErrorPage {
-          return internalURL.originalURLFromErrorPage
-        }
         if internalURL.isReaderModePage {
           return internalURL.extractedUrlParam
         }
@@ -1039,8 +1036,7 @@ extension BrowserViewController: ToolbarDelegate {
   func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView) {
     guard let tab = tabManager.selectedTab, let url = tab.visibleURL
     else { return }
-    let hasCertificate =
-      (tab.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
+    let hasCertificate = tab.serverTrust != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
       secureState: tab.visibleSecureContentState,

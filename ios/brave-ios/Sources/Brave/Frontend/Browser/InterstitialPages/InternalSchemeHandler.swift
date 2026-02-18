@@ -52,20 +52,8 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       // interstitial
       "/interstitial-style/InterstitialStyles.css": "text/css",
       "/interstitial-style/BlockedDomain.css": "text/css",
-      "/interstitial-style/NetworkError.css": "text/css",
-      "/interstitial-style/CertificateError.css": "text/css",
       "/interstitial-style/Web3Domain.css": "text/css",
-      "/interstitial-style/IPFSPreference.css": "text/css",
-      "/interstitial-icon/Generic.svg": "image/svg+xml",
-      "/interstitial-icon/Cloud.svg": "image/svg+xml",
-      "/interstitial-icon/Clock.svg": "image/svg+xml",
-      "/interstitial-icon/Globe.svg": "image/svg+xml",
       "/interstitial-icon/Info.svg": "image/svg+xml",
-      "/interstitial-icon/Warning.svg": "image/svg+xml",
-      "/interstitial-icon/DarkWarning.svg": "image/svg+xml",
-      "/interstitial-icon/Carret.png": "image/png",
-      "/interstitial-icon/BraveIPFS.svg": "image/svg+xml",
-      "/interstitial-icon/IPFSBackground.svg": "image/svg+xml",
       "/interstitial-icon/warning-triangle-outline.svg": "image/svg+xml",
 
       // readermode

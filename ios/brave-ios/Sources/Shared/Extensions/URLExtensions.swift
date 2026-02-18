@@ -350,7 +350,6 @@ public struct InternalURL {
   public static let baseUrl = "\(scheme)://\(host)"
 
   public enum Path: String {
-    case errorpage
     case readermode = "reader-mode"
     case blocked
     case httpBlocked = "http-blocked"
@@ -406,10 +405,6 @@ public struct InternalURL {
       .replacingQueryParameter(key: Param.uuidkey.rawValue, value: InternalURL.uuid)
   }
 
-  public var isErrorPage: Bool {
-    return InternalURL.Path.errorpage.matches(url.path)
-  }
-
   public var isBlockedPage: Bool {
     return InternalURL.Path.blocked.matches(url.path)
   }
@@ -424,17 +419,6 @@ public struct InternalURL {
 
   public var isBasicAuthURL: Bool {
     return InternalURL.Path.basicAuth.matches(url.path)
-  }
-
-  public var originalURLFromErrorPage: URL? {
-    if isErrorPage {
-      return extractedUrlParam
-    }
-
-    if let urlParam = extractedUrlParam, let nested = InternalURL(urlParam), nested.isErrorPage {
-      return nested.extractedUrlParam
-    }
-    return nil
   }
 
   public var extractedUrlParam: URL? {
@@ -462,9 +446,7 @@ public struct InternalURL {
   }
 
   public var displayURL: URL? {
-    if isErrorPage {
-      return originalURLFromErrorPage
-    } else if isReaderModePage {
+    if isReaderModePage {
       return extractedUrlParam
     }
     return nil

@@ -411,7 +411,6 @@ extension BrowserViewController {
   fileprivate func installContentScriptHandlers(in tab: some TabState) {
     var injectedScripts: [TabContentScript] = [
       ReaderModeScriptHandler(),
-      ErrorPageHelper(certStore: profile.certStore),
       BlockedDomainScriptHandler(),
       HTTPBlockedScriptHandler(tabManager: tabManager),
       PrintScriptHandler(browserController: self),
