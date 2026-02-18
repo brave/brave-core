@@ -17,14 +17,13 @@
 namespace psst {
 // static
 void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
-                                      AcceptCallback on_accept_callback) {
+                                 AcceptCallback on_accept_callback) {
   infobar_manager->AddInfoBar(
       CreateConfirmInfoBar(base::WrapUnique<PsstInfoBarDelegate>(
           new PsstInfoBarDelegate(std::move(on_accept_callback)))));
 }
 
-PsstInfoBarDelegate::PsstInfoBarDelegate(
-    AcceptCallback on_accept_callback)
+PsstInfoBarDelegate::PsstInfoBarDelegate(AcceptCallback on_accept_callback)
     : on_accept_callback_(std::move(on_accept_callback)) {}
 
 PsstInfoBarDelegate::~PsstInfoBarDelegate() = default;
@@ -42,8 +41,7 @@ int PsstInfoBarDelegate::GetButtons() const {
   return BUTTON_OK;
 }
 
-std::u16string PsstInfoBarDelegate::GetButtonLabel(
-    InfoBarButton button) const {
+std::u16string PsstInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS);
 }
 

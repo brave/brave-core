@@ -13,6 +13,10 @@ namespace psst {
 
 namespace {
 
+inline constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";
+inline constexpr char kUserScriptResultTaskItemDescPropName[] =
+"description";
+
 std::vector<std::string> ListValueToStringVector(
     const base::ListValue& list_value) {
   std::vector<std::string> result;
@@ -25,6 +29,16 @@ std::vector<std::string> ListValueToStringVector(
 }
 
 }  // namespace
+
+void PsstUiDelegateImpl::AddObserver(Observer* obs) {
+  observer_list_.AddObserver(obs);
+}
+void PsstUiDelegateImpl::RemoveObserver(Observer* obs) {
+  observer_list_.RemoveObserver(obs);
+}
+bool PsstUiDelegateImpl::HasObserver(Observer* observer) {
+  return observer_list_.HasObserver(observer);
+}
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
@@ -52,13 +66,15 @@ void PsstUiDelegateImpl::Show(
 
   apply_changes_callback_ = std::move(apply_changes_callback);
   dialog_data_ = std::move(dialog_data);
+  origin_ = origin;
+  tasks_ = std::move(tasks);
 
   // Implementation for showing the consent dialog to the user.
   ui_presenter_->ShowIcon();
 
-  ui_presenter_->ShowInfoBar(base::BindOnce(
-      &PsstUiDelegateImpl::OnUserAcceptedInfobar, weak_ptr_factory_.GetWeakPtr(),
-      origin));
+  ui_presenter_->ShowInfoBar(
+      base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
+                     weak_ptr_factory_.GetWeakPtr(), origin));
 }
 
 void PsstUiDelegateImpl::UpdateTasks(
@@ -77,6 +93,8 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     const url::Origin& origin,
     base::ListValue urls_to_skip) {
+  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings called for origin: " << origin.GetURL() << " urls: " << urls_to_skip 
+    << " dialog_data_: " << (dialog_data_ ? dialog_data_->ToValue() : base::DictValue());
   // Save the PSST settings when user accepts the dialog
   psst_settings_service_->SetPsstWebsiteSettings(
       origin, ConsentStatus::kAllow, dialog_data_->script_version,
@@ -88,13 +106,45 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
   }
 }
 
-void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted) {
+void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
+                                               const bool is_accepted) {
   // Handle the user's response to the infobar
   if (is_accepted) {
-    // User accepted the infobar, save info in preferences that infobar is accepted
+    // User accepted the infobar, save info in preferences that infobar is
+    // accepted
   } else {
     // User declined the infobar
   }
+}
+
+psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
+  if(!origin_ || !tasks_) {
+    return nullptr;
+  }
+
+  std::vector<mojom::SettingCardDataItemPtr> items;
+  for (auto& task_item : tasks_.value()) {
+    if (!task_item.is_dict()) {
+      continue;
+    }
+
+    const auto& item_dict = task_item.GetDict();
+    const auto* description =
+        item_dict.FindString(kUserScriptResultTaskItemDescPropName);
+    const auto* url =
+        item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
+
+    if (description && url) {
+      items.push_back(psst::mojom::SettingCardDataItem::New(
+          *description, *url));
+    }
+  }
+
+  return psst::mojom::SettingCardData::New(origin_->GetURL().spec(), std::move(items));
+}
+
+base::WeakPtr<PsstUiDelegateImpl> PsstUiDelegateImpl::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 }  // namespace psst

@@ -25,6 +25,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -96,17 +97,17 @@ void PrepareParametersForPolicyExecution(
     std::optional<base::DictValue>& params,
     const std::vector<std::string>& disabled_checks,
     const bool is_initial) {
-  if (!params || disabled_checks.empty()) {
+  if (!params) {
     return;
   }
 
-  if (auto* tasks =
-          params->FindList(kUserScriptResultTasksPropName)) {
+  if (auto* tasks = params->FindList(kUserScriptResultTasksPropName)) {
     tasks->EraseIf([&](const base::Value& v) {
       const auto& item_dict = v.GetDict();
       const auto* url =
           item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
-      return url && std::find(disabled_checks.begin(), disabled_checks.end(), *url) != disabled_checks.end();
+      return url && std::find(disabled_checks.begin(), disabled_checks.end(),
+                              *url) != disabled_checks.end();
     });
   }
 
@@ -164,25 +165,54 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
-void PsstTabWebContentsObserver::DidFinishNavigation(
-    content::NavigationHandle* handle) {
-  if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
-      !handle->GetURL().SchemeIsHTTPOrHTTPS()) {
-    return;
-  }
+PsstTabWebContentsObserver::PsstUiDelegate*
+PsstTabWebContentsObserver::GetPsstUiDelegate() const {
+  return ui_delegate_.get();
+}
 
-  if (handle->IsSameDocument() ||
-      handle->GetRestoreType() == content::RestoreType::kRestored ||
-      !prefs_->GetBoolean(prefs::kPsstEnabled)) {
+base::WeakPtr<PsstTabWebContentsObserver> PsstTabWebContentsObserver::AsWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
+// void PsstTabWebContentsObserver::DidFinishNavigation(
+//     content::NavigationHandle* handle) {
+// LOG(INFO) << "[PSST] DidFinishNavigation called for URL: " << handle->GetURL();
+//   if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
+//       !handle->GetURL().SchemeIsHTTPOrHTTPS()) {
+// LOG(INFO) << "[PSST] DidFinishNavigation #100 URL: " << handle->GetURL();
+//     return;
+//   }
+
+//   if (handle->IsSameDocument() ||
+//       handle->GetRestoreType() == content::RestoreType::kRestored ||
+//       !prefs_->GetBoolean(prefs::kPsstEnabled)) {
+// LOG(INFO) << "[PSST] DidFinishNavigation #200 URL: " << handle->GetURL();
+//     return;
+//   } else {
+// LOG(INFO) << "[PSST] DidFinishNavigation #300 URL: " << handle->GetURL();
+
+//     handle->SetUserData(kShouldProcessKey,std::make_unique<base::SupportsUserData::Data>())
+//   }
+// }
+
+void PsstTabWebContentsObserver::NavigationEntryCommitted(
+    const content::LoadCommittedDetails& load_details) {
+  LOG(INFO) << "[PSST] NavigationEntryCommitted called";
+  CHECK(load_details.entry);
+  if (!load_details.is_navigation_to_different_page() ||
+      !load_details.entry->GetURL().SchemeIsHTTPOrHTTPS() ||
+      load_details.entry->IsRestored()) {
     return;
-  } else {
-    auto* entry = handle->GetNavigationEntry();
-    entry->SetUserData(kShouldProcessKey, std::make_unique<PsstNavigationData>(
-                                              entry->GetUniqueID()));
   }
+  LOG(INFO) << "[PSST] NavigationEntryCommitted called for URL: " << load_details.entry->GetURL();
+
+  load_details.entry->SetUserData(
+      kShouldProcessKey,
+      std::make_unique<PsstNavigationData>(load_details.entry->GetUniqueID()));
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
+  LOG(INFO) << "[PSST] DocumentOnLoadCompletedInPrimaryMainFrame called";
   int id =
       web_contents()->GetController().GetLastCommittedEntry()->GetUniqueID();
   if (!ShouldInsertScriptForPage(id)) {
@@ -207,9 +237,6 @@ void PsstTabWebContentsObserver::InsertUserScript(
   if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
-  LOG(INFO) << "[PSST] Inserting user script for URL: "
-            << web_contents()->GetLastCommittedURL()
-            << " with rule: " << rule->name() << " v" << rule->version();
   const std::string user_script = rule->user_script();
   RunWithTimeout(
       id, user_script,
@@ -227,87 +254,87 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   timeout_timer_.Stop();
 
+  LOG(INFO) << "[PSST] OnUserScriptResult called for id: " << id << " user_script_result:" << user_script_result.DebugString();
+
   // We should break the flow in case of policy script is not available or user
   // script result is not a dictionary
   if (!rule || rule->policy_script().empty() || !user_script_result.is_dict()) {
+    LOG(INFO) << "[PSST] OnUserScriptResult #100 for id: " << id 
+      << " user_script_result:" << user_script_result.DebugString()
+      << " rule:" << (rule ? rule->policy_script().empty() : false)
+      ;
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
-LOG(INFO) << "[PSST] User script result for URL: "
-            << web_contents()->GetLastCommittedURL()
-            << " with rule: " << rule->name() << " v" << rule->version()
-            << " is: " << user_script_result.DebugString();
   const auto& params = user_script_result.GetDict();
   const auto* user_id = params.FindString(kSignedUserId);
   // We should break the flow in case of signed-in user ID is not available
   if (!user_id || user_id->empty()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    LOG(INFO) << "[PSST] OnUserScriptResult #101 for id: " << id 
+      << " user_id:" << (user_id ? *user_id : "null");
     return;
   }
 
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
       url::Origin::Create(web_contents()->GetLastCommittedURL()), *user_id);
-  if (psst_settings &&
-      psst_settings->consent_status == ConsentStatus::kBlock) {
-    LOG(INFO) << "[PSST] User has blocked PSST for URL: "
-              << web_contents()->GetLastCommittedURL()
-              << " with rule: " << rule->name() << " v" << rule->version();
+  LOG_IF(INFO, !psst_settings) << "[PSST] OnUserScriptResult #101 for id: " << id
+      << " origin:" << url::Origin::Create(web_contents()->GetLastCommittedURL())
+      << " user_id:" << *user_id;
+  if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
+    LOG(INFO) << "[PSST] OnUserScriptResult #102 for id: " << id 
+      << " user_id:" << *user_id
+      << " consent_status: kBlock";
     return;
   }
 
   const auto* tasks = params.FindList(kUserScriptResultTasksPropName);
   if (!tasks || tasks->empty()) {
-    LOG(INFO) << "[PSST] No tasks to apply for URL: "
-              << web_contents()->GetLastCommittedURL()
-              << " with rule: " << rule->name() << " v" << rule->version();
+    LOG(INFO) << "[PSST] OnUserScriptResult #103 for id: " << id 
+      << " user_id:" << *user_id
+      << " tasks: empty";
     return;
   }
 
   const auto* site_name = params.FindString(kUserScriptResultSiteNamePropName);
   if (!site_name) {
-    LOG(INFO) << "[PSST] Site name is not provided in user script result for URL: "
-              << web_contents()->GetLastCommittedURL()
-              << " with rule: " << rule->name() << " v" << rule->version();
+    LOG(INFO) << "[PSST] OnUserScriptResult #104 for id: " << id 
+      << " user_id:" << *user_id
+      << " site_name: null";
     return;
   }
 
   const auto is_initial = params.FindBool(kUserScriptIsInitialPropName);
-  // if (!is_initial.has_value()) {
-  //   LOG(INFO) << "[PSST] is_initial parameter is not provided in user script result for URL: "
-  //             << web_contents()->GetLastCommittedURL()
-  //             << " with rule: " << rule->name() << " v" << rule->version();
-  //   return;
-  // }
-
-  if ((is_initial.has_value() && !is_initial.value()) && psst_settings &&
+  LOG(INFO) << "[PSST] test val:" << ((!is_initial || !is_initial.value()) && psst_settings &&
+      psst_settings->consent_status == ConsentStatus::kAllow)
+      << " is_initial:" << (is_initial.has_value() ? (is_initial.value() ? "true" : "false") : "null")
+      << " psst_settings:" << (psst_settings ? psst_settings->ToValue() : base::DictValue())
+      ;
+  if ((!is_initial || !is_initial.value()) && psst_settings &&
       psst_settings->consent_status == ConsentStatus::kAllow) {
     // If permission is granted and it is not the initial iteration (i.e. it is
     // not the first applied PSST setting), call we don't need to show the
     // dialog again.
-    LOG(INFO) << "[PSST] Applying PSST settings without showing dialog for URL: "
-              << web_contents()->GetLastCommittedURL()
-              << " with rule: " << rule->name() << " v" << rule->version();
-    OnUserAcceptedPsstSettings(id, false, std::move(rule),
-                               params.Clone(),
+    LOG(INFO) << "[PSST] OnUserScriptResult #105 for id: " << id 
+      << " user_id:" << *user_id
+      << " is_initial: false"
+      << " consent_status: kAllow";
+    OnUserAcceptedPsstSettings(id, false, std::move(rule), params.Clone(),
                                psst_settings->urls_to_skip);
     return;
   }
 
+  LOG(INFO) << "[PSST] OnUserScriptResult show UI for id: " << id 
+    << " user_id:" << *user_id
+    << " is_initial:" << (is_initial.has_value() ? is_initial.value() : false)
+    << " psst_settings:" << (psst_settings ? psst_settings->ToValue() : base::DictValue())
+    ;
   // If PSST websettings doesn't exist, means initial call
-  if(!psst_settings) {
-    LOG(INFO) << "[PSST] No existing PSST settings found, creating default settings for URL: "
-              << web_contents()->GetLastCommittedURL()
-              << " with rule: " << rule->name() << " v" << rule->version();
+  if (!psst_settings) {
     psst_settings = CreatePsstWebsiteSettings(*user_id, ConsentStatus::kAsk,
-                                rule->version());
+                                              rule->version());
   }
 
-  LOG(INFO) << "[PSST] Showing consent dialog for URL: "
-            << web_contents()->GetLastCommittedURL()
-            << " with rule: " << rule->name() << " v" << rule->version()
-            << " ui_delegate_:" << (nullptr != ui_delegate_)
-            << " psst_settings:" << (psst_settings ? psst_settings->ToValue().DebugString() : "null");
-            ;
   auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());
   ui_delegate_->Show(
       origin, std::move(*psst_settings), *site_name, tasks->Clone(),
@@ -317,23 +344,31 @@ LOG(INFO) << "[PSST] User script result for URL: "
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
-      int id,
-      const bool is_initial,
-      std::unique_ptr<MatchedRule> rule,
-      std::optional<base::DictValue> script_params,
-      const std::vector<std::string>& disabled_checks) {
- if (!rule || !ShouldInsertScriptForPage(id)) {
+    int id,
+    const bool is_initial,
+    std::unique_ptr<MatchedRule> rule,
+    std::optional<base::DictValue> script_params,
+    const std::vector<std::string>& disabled_checks) {
+  if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
+
+  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings called for id: " << id 
+    << " is_initial:" << is_initial
+    << " script_params: " << (script_params ? script_params->DebugString() : "null") 
+    << " disabled_checks: " << (disabled_checks.empty() ? "none" : base::JoinString(disabled_checks, ","))
+    ;
 
   PrepareParametersForPolicyExecution(script_params, disabled_checks,
                                       is_initial);
 
+LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings preparing to run policy script for id: " << id
+    << " script_params: " << (script_params ? script_params->DebugString() : "null")
+;
+
   const auto policy_script = rule->policy_script();
   RunWithTimeout(
-      id,
-      MaybeAddParamsToScript(std::move(rule),
-                             std::move(*script_params)),
+      id, MaybeAddParamsToScript(std::move(rule), std::move(*script_params)),
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
                      weak_factory_.GetWeakPtr(), id));
 }
@@ -347,13 +382,31 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
 
   timeout_timer_.Stop();
 
+  if(!script_result.is_dict()) {
+    return;
+  }
+
+  const auto& script_result_dict = script_result.GetDict();
+
+  const auto* psst = script_result_dict.FindDict("psst");// TODO add constant string
+  if(!psst) {
+    return;
+  }
+
+
+  LOG(INFO) << "[PSST] OnPolicyScriptResult called for id: " << id
+    << " \nscript_result: " << script_result.DebugString()
+    << " \npsst: " << psst->DebugString()
+    ;
   const auto script_result_parsed =
-      PolicyScriptResult::FromValue(script_result);
+      PolicyScriptResult::FromValue(*psst);
   if (!script_result_parsed) {
+    LOG(INFO) << "[PSST] OnPolicyScriptResult failed for id: " << id;
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
+  LOG(INFO) << "[PSST] OnPolicyScriptResult succeeded for id: " << id;
   ui_delegate_->UpdateTasks(
       script_result_parsed->progress, script_result_parsed->applied_tasks,
       script_result_parsed->progress == 100 ? mojom::PsstStatus::kCompleted

@@ -90,6 +90,7 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -322,6 +323,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -1009,6 +1015,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindIAPSubscription));
   }
 #endif
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  content::RegisterWebUIControllerInterfaceBinder<
+      psst::mojom::PsstConsentFactory, psst::BravePsstDialogUI>(map);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)

@@ -20,6 +20,7 @@ import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -133,6 +134,21 @@ source_set("ui") {
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/decentralized_dns/core",
+    ]
+  }
+
+  if (enable_psst) {
+    sources += [
+      "webui/psst/brave_psst_dialog_handler.cc",
+      "webui/psst/brave_psst_dialog_handler.h",
+      "webui/psst/brave_psst_dialog_ui.cc",
+      "webui/psst/brave_psst_dialog_ui.h",
+    ]
+    deps += [
+      "//brave/browser/psst",
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/components/psst/browser/content",
+      "//brave/components/psst/common:mojom",
     ]
   }
 
@@ -930,6 +946,16 @@ source_set("ui") {
     "//ui/webui",
     "//url",
   ]
+
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/browser/core",
+      "//brave/components/psst/buildflags",
+      "//brave/components/psst/common",
+      "//brave/components/psst/resources",
+      "//brave/components/psst/resources:psst_dialog_generated_resources",
+    ]
+  }
 
   if (enable_brave_vpn) {
     deps += [

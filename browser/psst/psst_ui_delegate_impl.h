@@ -13,7 +13,9 @@
 #include "brave/components/psst/browser/core/psst_settings_service.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "brave/components/psst/common/psst_ui_common.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "url/origin.h"
 
 namespace content {
 class WebContents;
@@ -25,6 +27,24 @@ class PsstUiPresenter;
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnSetRequestDone(const std::string& url,
+                                  const std::optional<std::string>& error) {}
+    virtual void OnSetCompleted(
+        const std::optional<std::vector<std::string>>& applied_checks,
+        const std::optional<std::vector<std::string>>& errors) {}
+  };
+
+  void AddObserver(Observer* obs);
+  void RemoveObserver(Observer* obs);
+  bool HasObserver(Observer* observer);
+
+  base::WeakPtr<PsstUiDelegateImpl> AsWeakPtr();
+  
+  using ConsentCallback =
+      base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
+
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
                               std::unique_ptr<PsstUiPresenter> ui_presenter);
   ~PsstUiDelegateImpl() override;
@@ -32,6 +52,11 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
   PsstUiDelegateImpl& operator=(const PsstUiDelegateImpl&) = delete;
 
+  psst::mojom::SettingCardDataPtr GetShowDialogData();
+  void OnUserAcceptedPsstSettings(const url::Origin& origin,
+                                  base::ListValue urls_to_skip);
+
+  // PsstUiDelegate overrides
   void Show(const url::Origin& origin,
             PsstWebsiteSettings dialog_data,
             const std::string& site_name,
@@ -39,7 +64,6 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
             PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
       override;
 
-  // PsstUiDelegate overrides
   void UpdateTasks(long progress,
                    const std::vector<PolicyTask>& applied_tasks,
                    const mojom::PsstStatus status) override;
@@ -49,15 +73,16 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
       const std::string& user_id) override;
 
  private:
-  void OnUserAcceptedPsstSettings(const url::Origin& origin,
-                                  base::ListValue urls_to_skip);
   void OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
+  std::optional<url::Origin> origin_;
+  std::optional<base::ListValue> tasks_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  base::ObserverList<Observer> observer_list_;
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 

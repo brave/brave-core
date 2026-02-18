@@ -35,9 +35,8 @@ class UiDesktopPresenter : public PsstUiPresenter {
   void ShowIcon() override;
 
  private:
-  void OnInfobarAccepted(
-      PsstInfoBarDelegate::AcceptCallback on_accept_callback,
-      const bool is_accepted);
+  void OnInfobarAccepted(PsstInfoBarDelegate::AcceptCallback on_accept_callback,
+                         const bool is_accepted);
 
   raw_ptr<content::WebContents> web_contents_;
   base::WeakPtrFactory<UiDesktopPresenter> weak_ptr_factory_{this};

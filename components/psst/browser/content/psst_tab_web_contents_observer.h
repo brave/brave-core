@@ -70,6 +70,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
+  PsstUiDelegate* GetPsstUiDelegate() const;
+
+  base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
@@ -93,7 +96,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
-  void DidFinishNavigation(content::NavigationHandle* handle) override;
+//   void DidFinishNavigation(content::NavigationHandle* handle) override;
+  void NavigationEntryCommitted(
+      const content::LoadCommittedDetails& load_details) override;
 
   void OnUserAcceptedPsstSettings(
       int id,

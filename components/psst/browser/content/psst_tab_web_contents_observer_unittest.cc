@@ -127,18 +127,17 @@ ACTION_P(InsertScriptInPageDelayedCallback,
   task_environment->FastForwardBy(base::Seconds(delay_in_secs));
 }
 
-class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
+class MockUiDelegate : public PsstUiDelegate {
  public:
   MockUiDelegate() = default;
   ~MockUiDelegate() override = default;
 
-  MOCK_METHOD(
-      void,
-      Show,
-      (const url::Origin& origin,
-       PsstWebsiteSettings dialog_data,
-       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
-      (override));
+  MOCK_METHOD(void,
+              Show,
+              (const url::Origin& origin,
+               PsstWebsiteSettings dialog_data,
+               PsstUiDelegate::ConsentCallback apply_changes_callback),
+              (override));
 
   MOCK_METHOD(void,
               UpdateTasks,

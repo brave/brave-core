@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_PSST_BRAVE_PSST_INFOBAR_DELEGATE_H_
-#define BRAVE_BROWSER_PSST_BRAVE_PSST_INFOBAR_DELEGATE_H_
+#ifndef BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
+#define BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -40,4 +40,4 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
 
 }  // namespace psst
 
-#endif  // BRAVE_BROWSER_PSST_BRAVE_PSST_INFOBAR_DELEGATE_H_
+#endif  // BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
