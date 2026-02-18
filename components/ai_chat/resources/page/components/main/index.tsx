@@ -51,7 +51,6 @@ import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
-import getAPI from '../../api'
 import { useScrollToBottom } from './useScrollToBottom'
 
 const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
@@ -181,7 +180,7 @@ function Main() {
       && !conversationContext.isGenerating
       && conversationContext.conversationHistory.length === 0
     ) {
-      aiChatContext.uiHandler?.showSoftKeyboard()
+      aiChatContext.api.uiHandler.showSoftKeyboard()
       return true
     }
     return false
@@ -226,7 +225,7 @@ function Main() {
   const handleToolsMenuClick = React.useCallback(
     (value: ExtendedActionEntry) => {
       if (getIsSkill(value)) {
-        getAPI().metrics.recordSkillClick(value.shortcut)
+        aiChatContext.api.metrics.recordSkillClick(value.shortcut)
       }
       handleToolsMenuSelect(value)
     },

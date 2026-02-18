@@ -51,8 +51,8 @@ function WelcomeGuide() {
     const mojomUrl = new Url()
     mojomUrl.url = 'https://brave.com/leo/'
 
-    aiChatContext.uiHandler?.openURL(mojomUrl)
-  }, [aiChatContext.uiHandler])
+    aiChatContext.api.uiHandler?.openURL(mojomUrl)
+  }, [aiChatContext.api.uiHandler])
 
   // Effects
   React.useEffect(() => {
