@@ -9,6 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import styles from './search_widget.module.scss'
 import usePromise from '$web-common/usePromise'
+import SecureLink from '$web-common/SecureLink'
 
 interface Thumbnail {
   src: string
@@ -110,7 +111,7 @@ function MetaRow(props: { favicon: string; children: React.ReactNode }) {
 
 function SearchCard(props: { result: SearchResult<'search_result'> }) {
   return (
-    <a
+    <SecureLink
       className={styles.searchResult}
       href={props.result.url}
       target='_blank'
@@ -124,7 +125,7 @@ function SearchCard(props: { result: SearchResult<'search_result'> }) {
         <span className={styles.title}>{props.result.title}</span>
         <SearchDescription description={props.result.description} />
       </div>
-    </a>
+    </SecureLink>
   )
 }
 
@@ -132,7 +133,7 @@ function DetailCard(props: {
   result: SearchResult<'video_result' | 'news_result'>
 }) {
   return (
-    <a
+    <SecureLink
       className={styles.detailResult}
       href={props.result.url}
       target='_blank'
@@ -152,23 +153,23 @@ function DetailCard(props: {
           <span className={styles.subtitle}>{props.result.age}</span>
         )}
       </div>
-    </a>
+    </SecureLink>
   )
 }
 
 function ImageCard(props: { result: SearchResult<'image_result'> }) {
   return (
-    <a
+    <SecureLink
       className={styles.imageResult}
       href={props.result.url}
       target='_blank'
     >
       <ChromeImage
         className={styles.thumbnail}
-        src={props.result.thumbnail?.original ?? props.result.thumbnail?.src}
+        src={props.result.thumbnail?.src}
         alt={props.result.title}
       />
-    </a>
+    </SecureLink>
   )
 }
 
@@ -309,7 +310,7 @@ export default function SearchWidget(props: {
         </Button>
       </div>
       <div className={styles.footer}>
-        <a
+        <SecureLink
           className={styles.query}
           href={`https://search.brave.com/search?q=${encodeURIComponent(props.query)}`}
           target='_blank'
@@ -319,7 +320,7 @@ export default function SearchWidget(props: {
             name='search'
           />
           <span>{props.query}</span>
-        </a>
+        </SecureLink>
         <div className={styles.types}>
           <Button
             size='small'

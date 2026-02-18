@@ -5,11 +5,6 @@
 
 import type { Meta, StoryObj } from '@storybook/react'
 import SearchWidget from './search_widget'
-import { provideStrings } from '../../../../../../.storybook/locale'
-
-provideStrings({
-  apiHost: 'http://localhost:8000',
-})
 
 const meta: Meta<typeof SearchWidget> = {
   title: 'Chat/SearchWidget',
