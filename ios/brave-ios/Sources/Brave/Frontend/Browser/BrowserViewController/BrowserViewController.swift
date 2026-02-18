@@ -2305,12 +2305,15 @@ extension BrowserViewController: SettingsDelegate {
   }
 
   func settingsCreateFakeHistory() {
-    let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
+    let urls = (0..<10000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
     for (index, url) in urls.enumerated() {
+      let factor = index / 1000
+      let dateAdded =
+        factor == 0 ? Date() : Calendar.current.date(byAdding: .day, value: -factor, to: Date())!
       profileController.historyAPI.add(
         url: url,
         title: "QA-History - BraveSearch - \(index)",
-        dateAdded: Date()
+        dateAdded: dateAdded
       )
     }
   }
