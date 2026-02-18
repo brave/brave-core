@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_CSP_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_CSP_NETWORK_DELEGATE_HELPER_H_
 
-#include <memory>
-
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/url_context.h"
 
