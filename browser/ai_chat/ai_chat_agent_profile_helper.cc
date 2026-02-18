@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 
 #include "base/path_service.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -13,6 +14,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/chrome_paths.h"
+#include "components/prefs/pref_service.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/functional/callback_helpers.h"
@@ -28,14 +30,28 @@ namespace ai_chat {
 
 namespace {
 
+// Keep AI Chat model choices in sync between the regular profile and
+// ai_chat_agent_profile, as the latter uses a separate PrefService.
+constexpr char kCustomModelsListPref[] = "brave.ai_chat.custom_models";
+constexpr char kDefaultModelKeyPref[] = "brave.ai_chat.default_model_key";
+
 #if !BUILDFLAG(IS_ANDROID)
 void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
+                                   base::ListValue custom_models,
+                                   std::string default_model_key,
                                    Profile* profile) {
   if (!profile) {
     DLOG(ERROR) << "Could not create profile";
     std::move(callback).Run(nullptr);
     return;
   }
+
+  // Sync custom models so tool-capable BYOM options are available in
+  // AI browsing mode's separate profile.
+  PrefService* agent_prefs = profile->GetPrefs();
+  CHECK(agent_prefs);
+  agent_prefs->SetList(kCustomModelsListPref, std::move(custom_models));
+  agent_prefs->SetString(kDefaultModelKeyPref, default_model_key);
 
   // Open browser window
   profiles::OpenBrowserWindowForProfile(
@@ -83,9 +99,15 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
       base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   profile_path = profile_path.Append(brave::kAIChatAgentProfileDir);
 
+  const base::ListValue custom_models =
+      from_profile.GetPrefs()->GetList(kCustomModelsListPref).Clone();
+  const std::string default_model_key =
+      from_profile.GetPrefs()->GetString(kDefaultModelKeyPref);
+
   g_browser_process->profile_manager()->CreateProfileAsync(
       profile_path,
-      base::BindOnce(&OpenBrowserWindowAndSidePanel, std::move(callback)));
+      base::BindOnce(&OpenBrowserWindowAndSidePanel, std::move(callback),
+                     custom_models.Clone(), default_model_key));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace

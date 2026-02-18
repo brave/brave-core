@@ -164,7 +164,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       profile_(profile),
       receiver_(this, std::move(receiver)),
       conversations_are_content_associated_(
-          !profile_->IsAIChatAgent() &&
+          profile_->IsAIChatAgent() ||
           !features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
