@@ -29,6 +29,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -1007,6 +1008,9 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
               return;
             }
 
+            TRACE_EVENT_BEGIN("brave.news", "GenerateFeed", "feed_item_count",
+                              builder->raw_feed_items_.size());
+
             const auto& publishers =
                 builder->publishers_controller_->last_publishers();
             const auto& locale =
@@ -1047,6 +1051,8 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
                 feed->error = mojom::FeedV2Error::NoArticles;
               }
             }
+
+            TRACE_EVENT_END("brave.news");
 
             std::move(callback).Run(std::move(feed));
           },
