@@ -9,6 +9,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/serp_metrics/serp_classifier_utils.h"
+#include "components/regional_capabilities/regional_capabilities_utils.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
@@ -63,7 +64,7 @@ TEST(SerpClassifierTest, IsNotSameSearchQueryWithInvalidUrl) {
 
 TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {
   for (const auto* prepopulated_engine :
-       TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
+       regional_capabilities::GetAllPrepopulatedEngines()) {
     VerifySerpClassifierExpectation(*prepopulated_engine);
   }
 
