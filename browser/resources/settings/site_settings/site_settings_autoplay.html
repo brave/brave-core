@@ -5,11 +5,18 @@
 
 <settings-subpage
   page-title="$i18n{siteSettingsAutoplay}">
-  <settings-category-default-radio-group id="autoplayDefault" category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-    block-option-label="$i18n{siteSettingsAutoplayBlock}" allow-option-label="$i18n{siteSettingsAutoplayAllow}" allow-option-icon="autoplay-on"
+  <settings-category-default-radio-group
+    id="autoplayDefault"
+    category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+    allow-option-label="$i18n{siteSettingsAutoplayAllow}"
+    allow-option-icon="autoplay-on"
+    block-option-label="$i18n{siteSettingsAutoplayBlock}" 
     block-option-icon="autoplay-off">
   </settings-category-default-radio-group>
-  <category-setting-exceptions id="autoplayExceptions" category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-    block-header="$i18n{siteSettingsBlock}" allow-header="$i18n{siteSettingsAllow}">
+  <category-setting-exceptions
+    id="autoplayExceptions"
+    category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+    allow-header="$i18n{siteSettingsAllow}"
+    block-header="$i18n{siteSettingsBlock}">
   </category-setting-exceptions>
 </settings-subpage>
