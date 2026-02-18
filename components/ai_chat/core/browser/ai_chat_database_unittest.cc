@@ -547,6 +547,64 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent_Invalid) {
                                   history);
 }
 
+TEST_P(AIChatDatabaseTest, InlineSearchEvent) {
+  const std::string uuid = "first";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  // Test 2 entries to verify they are recorded against different entries
+  auto history = CreateSampleChatHistory(2u);
+  {
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New(
+                "brave search",
+                R"([{"title":"Result 1","url":"https://example.com"}])")));
+    history[3]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New(
+                "second search",
+                R"([{"title":"Result 2","url":"https://example2.com"}])")));
+  }
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
+TEST_P(AIChatDatabaseTest, InlineSearchEvent_Invalid) {
+  const std::string uuid = "first";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  auto history = CreateSampleChatHistory(1u);
+  {
+    // Invalid: empty query should not be persisted
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New(
+                "", R"([{"title":"Result 1","url":"https://example.com"}])")));
+  }
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+  // Remove the invalid event from expected history
+  history[1]->events->pop_back();
+
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
 TEST_P(AIChatDatabaseTest, MixedEvents) {
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");
