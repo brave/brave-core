@@ -24,6 +24,7 @@ import { keyringIdForNewAccount } from '../../../utils/account-utils'
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { AddAccountArgs } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import { networkEntityAdapter } from '../entities/network.entity'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -597,16 +598,17 @@ async function createDefaultAccounts({
   }
 
   const accounts = getEntitiesListFromEntityState(accountsRegistry)
-  accounts
-
   const addAccountArgs = networksWithUniqueKeyrings
     .filter(
       (net) =>
-        net.coin !== BraveWallet.CoinType.ETH
+        allowedNewWalletAccountTypeNetworkIds.includes(
+          networkEntityAdapter.selectId(net),
+        )
+        && net.coin !== BraveWallet.CoinType.ETH
         && net.coin !== BraveWallet.CoinType.SOL,
     )
     .map((net: BraveWallet.NetworkInfo) => {
-      let accountArgs = new AddAccountArgs()
+      const accountArgs = new AddAccountArgs()
       accountArgs.coin = net.coin
       accountArgs.keyringId = keyringIdForNewAccount(net.coin, net.chainId)
       accountArgs.accountName = suggestNewAccountName(accounts, net)
