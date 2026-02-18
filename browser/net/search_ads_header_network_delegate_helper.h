@@ -19,10 +19,11 @@ namespace brave {
 inline constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
 inline constexpr char kSearchAdsDisabledValue[] = "?0";
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_SearchAdsHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 }  // namespace brave
 
