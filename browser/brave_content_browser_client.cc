@@ -1176,7 +1176,10 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
         browser_context, frame, factory_builder,
         navigation_response_task_runner);
   } else {
-    BraveProxyingURLLoaderFactory<std::shared_ptr>::MaybeProxyRequest(
+    // Ignore shared_ptr presubmit error, this is old code we are trying to
+    // convert to unique_ptr/WeakPtr
+    BraveProxyingURLLoaderFactory<
+        std::shared_ptr>::MaybeProxyRequest(  // nocheck
         browser_context, frame, factory_builder,
         navigation_response_task_runner);
   }
@@ -1225,9 +1228,13 @@ void BraveContentBrowserClient::CreateWebSocket(
                                          user_agent,
                                          std::move(handshake_client), proxy);
   } else {
-    auto* proxy = BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(
+    // Ignore shared_ptr presubmit error, this is old code we are trying to
+    // convert to unique_ptr/WeakPtr
+    auto* proxy = BraveProxyingWebSocket <
+                  std::shared_ptr>::ProxyWebSocket(  // nocheck
         frame, std::move(factory), url, site_for_cookies, user_agent);
-    CreateChromeWebSocket<std::shared_ptr>(frame, url, site_for_cookies,
+    CreateChromeWebSocket <
+        std::shared_ptr>(frame, url, site_for_cookies,  // nocheck
                                            user_agent,
                                            std::move(handshake_client), proxy);
   }
