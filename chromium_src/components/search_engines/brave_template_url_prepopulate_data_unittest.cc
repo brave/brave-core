@@ -18,6 +18,7 @@
 #include "components/google/core/common/google_switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_test_utils.h"
+#include "components/regional_capabilities/regional_capabilities_utils.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_engines_test_environment.h"
@@ -59,8 +60,7 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
         prefs::kBraveDefaultSearchVersion,
         TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
-    const auto engines =
-        TemplateURLPrepopulateData::GetAllPrepopulatedEngines();
+    const auto engines = regional_capabilities::GetAllPrepopulatedEngines();
     brave_prepopulated_engines_.insert(brave_prepopulated_engines_.end(),
                                        engines.begin(), engines.end());
     for (auto* engine : kBraveAddedEngines) {
