@@ -62,22 +62,16 @@ template <typename PtrStrategy>
 class SearchAdsHeaderDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitWithFeatures(
-        {
-#if BUILDFLAG(IS_ANDROID)
-            brave_rewards::features::kBraveRewards
-#endif  // BUILDFLAG(IS_ANDROID)
-        },
-        {});
-
     // Enable feature flag if using WeakPtrStrategy, disable if
     // SharedPtrStrategy
     bool enable_flag =
         std::is_same_v<typename PtrStrategy::template Ptr<BraveRequestInfo>,
                        base::WeakPtr<BraveRequestInfo>>;
-    request_info_feature_list_.InitWithFeatureState(
-        features::kBraveRequestInfoUseWeakPtr, enable_flag);
-
+    scoped_feature_list_.InitWithFeatureStates({
+#if BUILDFLAG(IS_ANDROID)
+        {brave_rewards::features::kBraveRewards, true},
+#endif  // BUILDFLAG(IS_ANDROID)
+        {features::kBraveRequestInfoUseWeakPtr, enable_flag}});
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
@@ -151,7 +145,6 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
   brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList scoped_feature_list_;
-  base::test::ScopedFeatureList request_info_feature_list_;
   std::unique_ptr<TestingProfile> profile_;
   // For WeakPtr tests, store ownership of the request object
   std::unique_ptr<BraveRequestInfo> owned_request_;
