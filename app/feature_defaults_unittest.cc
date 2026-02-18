@@ -28,7 +28,7 @@
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/legion/features.h"
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
