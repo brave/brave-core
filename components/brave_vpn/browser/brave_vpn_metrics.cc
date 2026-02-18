@@ -162,4 +162,10 @@ void BraveVpnMetrics::ReportVPNConnectedDuration() {
   }
 }
 
+void BraveVpnMetrics::RecordSystemServiceInstallationResult(bool success) {
+#if BUILDFLAG(IS_WIN)
+  UMA_HISTOGRAM_BOOLEAN(kSystemServiceInstallationResultHistogramName, success);
+#endif
+}
+
 }  // namespace brave_vpn

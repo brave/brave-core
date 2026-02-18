@@ -210,6 +210,12 @@ void BraveVpnService::OnSelectedRegionChanged(const std::string& region_name) {
   }
 }
 
+void BraveVpnService::OnInstallSystemServicesCompleted(bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__ << " success - " << success;
+  brave_vpn_metrics_.RecordSystemServiceInstallationResult(success);
+}
+
 mojom::ConnectionState BraveVpnService::GetConnectionState() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return connection_manager_->GetConnectionState();
