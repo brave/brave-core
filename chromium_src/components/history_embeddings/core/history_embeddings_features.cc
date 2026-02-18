@@ -5,7 +5,7 @@
 
 #include "base/feature_override.h"
 
-#include <components/history_embeddings/history_embeddings_features.cc>
+#include <components/history_embeddings/core/history_embeddings_features.cc>
 
 namespace history_embeddings {
 
