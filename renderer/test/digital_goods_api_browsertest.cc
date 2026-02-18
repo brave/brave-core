@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
@@ -12,22 +13,26 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 
 class DigitalGoodsAPIBrowserTest : public InProcessBrowserTest,
                                    public ::testing::WithParamInterface<bool> {
  public:
-  DigitalGoodsAPIBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
+  DigitalGoodsAPIBrowserTest() {
+    if (GetParam()) {
+      // Enable the DigitalGoodsApi base feature. This is needed because
+      // Brave overrides kDigitalGoodsApi to FEATURE_DISABLED_BY_DEFAULT,
+      // and this override causes the kSetOnlyIfOverridden logic in
+      // SetRuntimeFeaturesFromChromiumFeatures() to disable the Blink
+      // runtime feature even when --enable-blink-features=DigitalGoods
+      // or --enable-blink-test-features is used.
+      scoped_feature_list_.InitAndEnableFeature(features::kDigitalGoodsApi);
+    }
   }
 
   ~DigitalGoodsAPIBrowserTest() override = default;
@@ -41,7 +46,8 @@ class DigitalGoodsAPIBrowserTest : public InProcessBrowserTest,
       command_line->AppendSwitch(
           switches::kEnableExperimentalWebPlatformFeatures);
 #else
-      command_line->AppendSwitch(switches::kEnableBlinkTestFeatures);
+      command_line->AppendSwitchASCII(switches::kEnableBlinkFeatures,
+                                      "DigitalGoods");
 #endif
     }
   }
@@ -49,9 +55,13 @@ class DigitalGoodsAPIBrowserTest : public InProcessBrowserTest,
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    EXPECT_TRUE(https_server_.Start());
-    // Map all hosts to localhost.
-    host_resolver()->AddRule("*", "127.0.0.1");
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    // Use the default HTTP embedded test server. Navigating to 127.0.0.1
+    // is considered a secure context (potentially trustworthy origin) per
+    // the W3C Secure Contexts spec, so [SecureContext] APIs are available.
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(embedded_test_server()->Start());
   }
 
   content::WebContents* web_contents() {
@@ -63,13 +73,11 @@ class DigitalGoodsAPIBrowserTest : public InProcessBrowserTest,
   }
 
  protected:
-  net::EmbeddedTestServer https_server_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-// The API is unavailable in /1 variation even though it should be available.
-// Disabling for now. TODO(https://github.com/brave/brave-browser/issues/37883)
-IN_PROC_BROWSER_TEST_P(DigitalGoodsAPIBrowserTest, DISABLED_DigitalGoods) {
-  const GURL url = https_server_.GetURL("/simple.html");
+IN_PROC_BROWSER_TEST_P(DigitalGoodsAPIBrowserTest, DigitalGoods) {
+  const GURL url = embedded_test_server()->GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto result =
@@ -77,8 +85,7 @@ IN_PROC_BROWSER_TEST_P(DigitalGoodsAPIBrowserTest, DISABLED_DigitalGoods) {
   if (IsDigitalGoodsAPIEnabled()) {
     EXPECT_THAT(result,
                 content::EvalJsResult::ErrorIs(testing::HasSubstr(
-                    "Failed to execute 'getDigitalGoodsService' on "
-                    "'Window': 1 argument required, but only 0 present.")));
+                    "1 argument required, but only 0 present.")));
   } else {
     EXPECT_THAT(result,
                 content::EvalJsResult::ErrorIs(testing::HasSubstr(

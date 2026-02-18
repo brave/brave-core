@@ -32,6 +32,7 @@
 #include "chrome/renderer/process_state.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 #include "components/feed/content/renderer/rss_link_reader.h"
+#include "content/public/common/content_features.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
@@ -114,7 +115,9 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
+  if (!base::FeatureList::IsEnabled(features::kDigitalGoodsApi)) {
+    blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
+  }
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
                                                        false);
