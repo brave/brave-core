@@ -28,9 +28,10 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 namespace decentralized_dns {
 
+template <template <typename> class T>
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+    T<brave::BraveRequestInfo> ctx) {
   DCHECK(!next_callback.is_null());
 
   if (!ctx->browser_context() || ctx->browser_context()->IsOffTheRecord() ||
@@ -60,7 +61,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
           g_browser_process->local_state())) {
     json_rpc_service->UnstoppableDomainsResolveDns(
         std::string(ctx->request_url().host()),
-        base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
+        base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork<T>,
                        next_callback, ctx));
 
     return net::ERR_IO_PENDING;
@@ -70,7 +71,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       IsENSResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->EnsGetContentHash(
         std::string(ctx->request_url().host()),
-        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
+        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork<T>, next_callback,
                        ctx));
 
     return net::ERR_IO_PENDING;
@@ -80,7 +81,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       IsSnsResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->SnsResolveHost(
         std::string(ctx->request_url().host()),
-        base::BindOnce(&OnBeforeURLRequest_SnsRedirectWork, next_callback,
+        base::BindOnce(&OnBeforeURLRequest_SnsRedirectWork<T>, next_callback,
                        ctx));
 
     return net::ERR_IO_PENDING;
@@ -89,9 +90,10 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   return net::OK;
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::vector<uint8_t>& content_hash,
     bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
@@ -119,9 +121,10 @@ void OnBeforeURLRequest_EnsRedirectWork(
   next_callback.Run();
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequest_SnsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url,
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message) {
@@ -135,9 +138,10 @@ void OnBeforeURLRequest_SnsRedirectWork(
   }
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
@@ -151,4 +155,7 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
   }
 }
 
+template int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork<
+    std::shared_ptr>(const brave::ResponseCallback& next_callback,
+                     std::shared_ptr<brave::BraveRequestInfo> ctx);
 }  // namespace decentralized_dns

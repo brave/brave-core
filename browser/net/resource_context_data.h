@@ -23,8 +23,11 @@
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 
+template <template <typename> class T>
 class BraveProxyingURLLoaderFactory;
+template <template <typename> class T>
 class BraveProxyingWebSocket;
+template <template <typename> class T>
 class BraveRequestHandler;
 
 namespace content {
@@ -55,6 +58,7 @@ class RequestIDGenerator
 
 // Owns proxying factories for URLLoaders and websocket proxies. There is
 // one |ResourceContextData| per profile.
+template <template <typename> class T>
 class ResourceContextData : public base::SupportsUserData::Data {
  public:
   ResourceContextData(const ResourceContextData&) = delete;
@@ -67,7 +71,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
-  static BraveProxyingWebSocket* CreateProxyingWebSocket(
+  static BraveProxyingWebSocket<T>* CreateProxyingWebSocket(
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
@@ -76,20 +80,21 @@ class ResourceContextData : public base::SupportsUserData::Data {
       content::GlobalRenderFrameHostToken render_frame_token,
       const url::Origin& origin);
 
-  void RemoveProxy(BraveProxyingURLLoaderFactory* proxy);
-  void RemoveProxyWebSocket(BraveProxyingWebSocket* proxy);
+  void RemoveProxy(BraveProxyingURLLoaderFactory<T>* proxy);
+  void RemoveProxyWebSocket(BraveProxyingWebSocket<T>* proxy);
 
  private:
   ResourceContextData();
 
-  std::unique_ptr<BraveRequestHandler> request_handler_;
+  std::unique_ptr<BraveRequestHandler<T>> request_handler_;
   scoped_refptr<RequestIDGenerator> request_id_generator_;
 
-  std::set<std::unique_ptr<BraveProxyingURLLoaderFactory>,
+  std::set<std::unique_ptr<BraveProxyingURLLoaderFactory<T>>,
            base::UniquePtrComparator>
       proxies_;
 
-  std::set<std::unique_ptr<BraveProxyingWebSocket>, base::UniquePtrComparator>
+  std::set<std::unique_ptr<BraveProxyingWebSocket<T>>,
+           base::UniquePtrComparator>
       websocket_proxies_;
 
   base::WeakPtrFactory<ResourceContextData> weak_factory_;

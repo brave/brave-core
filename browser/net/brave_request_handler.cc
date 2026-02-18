@@ -43,7 +43,8 @@
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #endif
 
-static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
+template <template <typename> class T>
+static bool IsInternalScheme(T<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (ctx->request_url().SchemeIs(extensions::kExtensionScheme)) {
@@ -53,81 +54,86 @@ static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   return ctx->request_url().SchemeIs(content::kChromeUIScheme);
 }
 
-BraveRequestHandler::BraveRequestHandler() {
+template <template <typename> class T>
+BraveRequestHandler<T>::BraveRequestHandler() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   SetupCallbacks();
 }
 
-BraveRequestHandler::~BraveRequestHandler() = default;
+template <template <typename> class T>
+BraveRequestHandler<T>::~BraveRequestHandler() = default;
 
-void BraveRequestHandler::SetupCallbacks() {
+template <template <typename> class T>
+void BraveRequestHandler<T>::SetupCallbacks() {
   brave::OnBeforeURLRequestCallback callback =
-      base::BindRepeating(brave::OnBeforeURLRequest_SiteHacksWork);
+      base::BindRepeating(brave::OnBeforeURLRequest_SiteHacksWork<T>);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::BindRepeating(brave::OnBeforeURLRequest_AdBlockTPPreWork);
+  callback = base::BindRepeating(brave::OnBeforeURLRequest_AdBlockTPPreWork<T>);
   before_url_request_callbacks_.push_back(callback);
 
-  callback =
-      base::BindRepeating(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
+  callback = base::BindRepeating(
+      brave::OnBeforeURLRequest_CommonStaticRedirectWork<T>);
   before_url_request_callbacks_.push_back(callback);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   callback = base::BindRepeating(
-      decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
+      decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork<T>);
   before_url_request_callbacks_.push_back(callback);
 #endif
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
-      base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
+      base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork<T>);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
   if (base::FeatureList::IsEnabled(
           brave_user_agent::features::kUseBraveUserAgent)) {
     start_transaction_callback =
-        base::BindRepeating(brave::OnBeforeStartTransaction_UserAgentWork);
+        base::BindRepeating(brave::OnBeforeStartTransaction_UserAgentWork<T>);
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
 
   if (base::FeatureList::IsEnabled(
           blink::features::kBraveGlobalPrivacyControl)) {
     start_transaction_callback = base::BindRepeating(
-        brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
+        brave::OnBeforeStartTransaction_GlobalPrivacyControlWork<T>);
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
 
   start_transaction_callback =
-      base::BindRepeating(brave::OnBeforeStartTransaction_BraveServiceKey);
+      base::BindRepeating(brave::OnBeforeStartTransaction_BraveServiceKey<T>);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveReduceLanguage)) {
-    start_transaction_callback =
-        base::BindRepeating(brave::OnBeforeStartTransaction_ReduceLanguageWork);
+    start_transaction_callback = base::BindRepeating(
+        brave::OnBeforeStartTransaction_ReduceLanguageWork<T>);
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   start_transaction_callback =
-      base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader);
+      base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader<T>);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveAdblockCspRules)) {
     brave::OnHeadersReceivedCallback headers_received_callback2 =
-        base::BindRepeating(brave::OnHeadersReceived_AdBlockCspWork);
+        base::BindRepeating(brave::OnHeadersReceived_AdBlockCspWork<T>);
     headers_received_callbacks_.push_back(headers_received_callback2);
   }
 }
 
-bool BraveRequestHandler::IsRequestIdentifierValid(
+template <template <typename> class T>
+bool BraveRequestHandler<T>::IsRequestIdentifierValid(
     uint64_t request_identifier) {
   return callbacks_.contains(request_identifier);
 }
 
-int BraveRequestHandler::OnBeforeURLRequest(
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+template <template <typename> class T>
+int BraveRequestHandler<T>::OnBeforeURLRequest(
+    T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     GURL* new_url) {
   if (before_url_request_callbacks_.empty() || IsInternalScheme(ctx)) {
@@ -140,8 +146,9 @@ int BraveRequestHandler::OnBeforeURLRequest(
   return net::ERR_IO_PENDING;
 }
 
-int BraveRequestHandler::OnBeforeStartTransaction(
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+template <template <typename> class T>
+int BraveRequestHandler<T>::OnBeforeStartTransaction(
+    T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     net::HttpRequestHeaders* headers) {
   if (before_start_transaction_callbacks_.empty() || IsInternalScheme(ctx)) {
@@ -154,8 +161,9 @@ int BraveRequestHandler::OnBeforeStartTransaction(
   return net::ERR_IO_PENDING;
 }
 
-int BraveRequestHandler::OnHeadersReceived(
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+template <template <typename> class T>
+int BraveRequestHandler<T>::OnHeadersReceived(
+    T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
@@ -183,15 +191,17 @@ int BraveRequestHandler::OnHeadersReceived(
   return net::ERR_IO_PENDING;
 }
 
-void BraveRequestHandler::OnURLRequestDestroyed(
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+template <template <typename> class T>
+void BraveRequestHandler<T>::OnURLRequestDestroyed(
+    T<brave::BraveRequestInfo> ctx) {
   auto it = callbacks_.find(ctx->request_identifier());
   if (it != callbacks_.end()) {
     callbacks_.erase(it);
   }
 }
 
-void BraveRequestHandler::RunCallbackForRequestIdentifier(
+template <template <typename> class T>
+void BraveRequestHandler<T>::RunCallbackForRequestIdentifier(
     uint64_t request_identifier,
     int rv) {
   std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
@@ -204,8 +214,8 @@ void BraveRequestHandler::RunCallbackForRequestIdentifier(
 
 // TODO(iefremov): Merge all callback containers into one and run only one loop
 // instead of many (issues/5574).
-void BraveRequestHandler::RunNextCallback(
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+template <template <typename> class T>
+void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!callbacks_.contains(ctx->request_identifier())) {
@@ -301,3 +311,5 @@ void BraveRequestHandler::RunNextCallback(
   }
   RunCallbackForRequestIdentifier(ctx->request_identifier(), rv);
 }
+
+template class BraveRequestHandler<std::shared_ptr>;

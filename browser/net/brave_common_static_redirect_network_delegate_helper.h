@@ -14,9 +14,10 @@ class GURL;
 
 namespace brave {
 
+template <template <typename> class T>
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
     const GURL& url,

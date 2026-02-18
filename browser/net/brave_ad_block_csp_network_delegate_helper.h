@@ -19,12 +19,13 @@ class GURL;
 
 namespace brave {
 
+template <template <typename> class T>
 int OnHeadersReceived_AdBlockCspWork(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+    T<brave::BraveRequestInfo> ctx);
 
 }  // namespace brave
 

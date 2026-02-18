@@ -20,6 +20,7 @@ class PrefChangeRegistrar;
 
 // Contains different network stack hooks (similar to capabilities of WebRequest
 // API).
+template <template <typename> class T>
 class BraveRequestHandler {
  public:
   BraveRequestHandler();
@@ -29,31 +30,32 @@ class BraveRequestHandler {
 
   bool IsRequestIdentifierValid(uint64_t request_identifier);
 
-  int OnBeforeURLRequest(std::shared_ptr<brave::BraveRequestInfo> ctx,
+  int OnBeforeURLRequest(T<brave::BraveRequestInfo> ctx,
                          net::CompletionOnceCallback callback,
                          GURL* new_url);
 
-  int OnBeforeStartTransaction(std::shared_ptr<brave::BraveRequestInfo> ctx,
+  int OnBeforeStartTransaction(T<brave::BraveRequestInfo> ctx,
                                net::CompletionOnceCallback callback,
                                net::HttpRequestHeaders* headers);
   int OnHeadersReceived(
-      std::shared_ptr<brave::BraveRequestInfo> ctx,
+      T<brave::BraveRequestInfo> ctx,
       net::CompletionOnceCallback callback,
       const net::HttpResponseHeaders* original_response_headers,
       scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
       GURL* allowed_unsafe_redirect_url);
 
-  void OnURLRequestDestroyed(std::shared_ptr<brave::BraveRequestInfo> ctx);
+  void OnURLRequestDestroyed(T<brave::BraveRequestInfo> ctx);
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  private:
   void SetupCallbacks();
-  void RunNextCallback(std::shared_ptr<brave::BraveRequestInfo> ctx);
+  void RunNextCallback(T<brave::BraveRequestInfo> ctx);
 
-  std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
-  std::vector<brave::OnBeforeStartTransactionCallback>
+  std::vector<brave::OnBeforeURLRequestCallback<T>>
+      before_url_request_callbacks_;
+  std::vector<brave::OnBeforeStartTransactionCallback<T>>
       before_start_transaction_callbacks_;
-  std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
+  std::vector<brave::OnHeadersReceivedCallback<T>> headers_received_callbacks_;
 
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
 

@@ -12,10 +12,11 @@
 
 namespace brave {
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

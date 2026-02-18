@@ -16,9 +16,9 @@ class HostResolver;
 
 namespace brave {
 
-int OnBeforeURLRequest_AdBlockTPPreWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+template <template <typename> class T>
+int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
+                                        T<BraveRequestInfo> ctx);
 
 // Be sure to reset this to `nullptr` when done testing to prevent future tests
 // from being affected.
