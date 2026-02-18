@@ -184,11 +184,6 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitWithFeatures(
-        {features::kNativeBraveWalletFeature,
-         features::kBraveWalletAnkrBalancesFeature},
-        {});
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     TestingProfile::Builder builder;
@@ -465,7 +460,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
-  base::test::ScopedFeatureList scoped_feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_{
+      {features::kBraveWalletAnkrBalancesFeature}};
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

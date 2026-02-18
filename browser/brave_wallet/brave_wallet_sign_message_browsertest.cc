@@ -6,14 +6,12 @@
 #include <optional>
 
 #include "base/command_line.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
@@ -53,11 +51,7 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
 
 class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
  public:
-  BraveWalletSignMessageBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
+  BraveWalletSignMessageBrowserTest() = default;
 
   ~BraveWalletSignMessageBrowserTest() override = default;
 
@@ -143,8 +137,8 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  base::test::ScopedFeatureList scoped_feature_list_;
-  net::test_server::EmbeddedTestServer https_server_;
+  net::test_server::EmbeddedTestServer https_server_{
+      net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {

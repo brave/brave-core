@@ -7,7 +7,6 @@
 #include <optional>
 
 #include "base/notreached.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -15,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -153,10 +151,7 @@ class TestJsonRpcServiceObserver
 
 class BraveWalletEthereumChainTest : public InProcessBrowserTest {
  public:
-  BraveWalletEthereumChainTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
+  BraveWalletEthereumChainTest() = default;
 
   void SetUpInProcessBrowserTestFixture() override {
     InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
@@ -271,7 +266,6 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {

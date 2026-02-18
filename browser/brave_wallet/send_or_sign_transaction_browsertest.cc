@@ -142,13 +142,7 @@ class TestJsonRpcServiceObserver : public mojom::JsonRpcServiceObserver {
 
 class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
  public:
-  SendOrSignTransactionBrowserTest()
-      : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
-        https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
-
+  SendOrSignTransactionBrowserTest() = default;
   ~SendOrSignTransactionBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -589,9 +583,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   TestTxServiceObserver observer_;
-  base::test::ScopedFeatureList scoped_feature_list_;
-  net::test_server::EmbeddedTestServer https_server_for_files_;
-  net::test_server::EmbeddedTestServer https_server_for_rpc_;
+  net::test_server::EmbeddedTestServer https_server_for_files_{
+      net::EmbeddedTestServer::TYPE_HTTPS};
+  net::test_server::EmbeddedTestServer https_server_for_rpc_{
+      net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
