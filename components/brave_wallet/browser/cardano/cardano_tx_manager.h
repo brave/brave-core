@@ -51,6 +51,8 @@ class CardanoTxManager : public TxManager,
   FRIEND_TEST_ALL_PREFIXES(CardanoTxManagerUnitTest, SubmitTransaction);
   FRIEND_TEST_ALL_PREFIXES(CardanoTxManagerUnitTest, SubmitTransactionError);
   FRIEND_TEST_ALL_PREFIXES(CardanoTxManagerUnitTest, SubmitTransactionError);
+  FRIEND_TEST_ALL_PREFIXES(CardanoTxManagerUnitTest,
+                           SubmitTransaction_SendToken);
 
   CardanoTxStateManager& GetCardanoTxStateManager();
   CardanoBlockTracker& GetCardanoBlockTracker();

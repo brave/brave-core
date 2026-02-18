@@ -37,16 +37,19 @@ class CardanoMaxTokenSendSolver {
   static bool SetupOutputs(CardanoTransaction& tx,
                            const TxBuilderParms& builder_params);
 
-  // Extract all inputs having given token. All of these inputs will be added to
-  // the transaction. Remaining inputs will be used if transaction needs more
-  // lovelaces to cover fee.
-  static std::vector<CardanoTransaction::TxInput> ExtractTokenInputs(
-      const cardano_rpc::TokenId& token_id,
-      std::vector<CardanoTransaction::TxInput>& inputs);
+  // Split inputs into two collections. First one with inputs having given
+  // token. All of these inputs will be added to the transaction. Second
+  // ones gets everything else. Will be used if transaction needs
+  // more lovelaces to cover fee.
+  static std::pair<std::vector<CardanoTransaction::TxInput>,
+                   std::vector<CardanoTransaction::TxInput>>
+  SplitInputsByToken(const cardano_rpc::TokenId& token_id,
+                     std::vector<CardanoTransaction::TxInput> inputs);
 
   // Sort inputs so it is preferred to pick inputs with less tokens with higher
   // lovelace amount.
-  static void SortInputs(std::vector<CardanoTransaction::TxInput>& inputs);
+  static void SortInputsBySelectionPriority(
+      std::vector<CardanoTransaction::TxInput>& inputs);
 
   // Various params required to create transaction.
   TxBuilderParms builder_params_;

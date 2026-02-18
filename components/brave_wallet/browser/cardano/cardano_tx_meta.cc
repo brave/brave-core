@@ -48,7 +48,7 @@ mojom::CardanoTxDataPtr ToCardanoTxData(const CardanoTransaction& tx) {
   if (tx.TargetOutput()) {
     sending_lovelace = tx.TargetOutput()->amount;
     if (!tx.TargetOutput()->tokens.empty()) {
-      DCHECK_EQ(tx.TargetOutput()->tokens.size(), 1u);
+      CHECK_EQ(tx.TargetOutput()->tokens.size(), 1u);
       const auto& token = tx.TargetOutput()->tokens.begin();
       sending_token = mojom::CardanoTxTokenValue::New(
           base::HexEncodeLower(token->first), token->second);

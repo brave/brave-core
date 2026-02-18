@@ -57,10 +57,11 @@ bool CardanoMaxTokenSendSolver::SetupOutputs(
 }
 
 // static
-std::vector<CardanoTransaction::TxInput>
-CardanoMaxTokenSendSolver::ExtractTokenInputs(
+std::pair<std::vector<CardanoTransaction::TxInput>,
+          std::vector<CardanoTransaction::TxInput>>
+CardanoMaxTokenSendSolver::SplitInputsByToken(
     const cardano_rpc::TokenId& token_id,
-    std::vector<CardanoTransaction::TxInput>& inputs) {
+    std::vector<CardanoTransaction::TxInput> inputs) {
   std::vector<CardanoTransaction::TxInput> token_inputs;
   std::vector<CardanoTransaction::TxInput> other_inputs;
   for (auto& input : inputs) {
@@ -70,13 +71,12 @@ CardanoMaxTokenSendSolver::ExtractTokenInputs(
       other_inputs.push_back(std::move(input));
     }
   }
-  inputs = std::move(other_inputs);
 
-  return token_inputs;
+  return {std::move(token_inputs), std::move(other_inputs)};
 }
 
 // static
-void CardanoMaxTokenSendSolver::SortInputs(
+void CardanoMaxTokenSendSolver::SortInputsBySelectionPriority(
     std::vector<CardanoTransaction::TxInput>& inputs) {
   std::sort(
       inputs.begin(), inputs.end(),
@@ -100,15 +100,15 @@ CardanoMaxTokenSendSolver::Solve() {
   CHECK_EQ(builder_params_.amount, 0u);
   CHECK(builder_params_.token_to_send);
 
-  auto token_inputs =
-      ExtractTokenInputs(*builder_params_.token_to_send, inputs_);
+  auto [token_inputs, other_inputs] =
+      SplitInputsByToken(*builder_params_.token_to_send, std::move(inputs_));
 
   if (token_inputs.empty()) {
     return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
-  SortInputs(inputs_);
-  auto other_inputs_span = base::span(inputs_);
+  SortInputsBySelectionPriority(other_inputs);
+  auto other_inputs_span = base::span(other_inputs);
 
   std::vector<CardanoTransaction::TxInput> cur_inputs;
 

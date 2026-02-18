@@ -175,12 +175,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ExtractTokenInputs) {
   inputs.push_back(MakeMockTxInput(3'000'000u, {{GetMockTokenId("brave"), 4},
                                                 {GetMockTokenId("bar"), 777}}));
 
-  auto original = inputs;
-  auto token_inputs = CardanoMaxTokenSendSolver::ExtractTokenInputs(
-      GetMockTokenId("brave"), inputs);
+  auto [token_inputs, other_inputs] =
+      CardanoMaxTokenSendSolver::SplitInputsByToken(GetMockTokenId("brave"),
+                                                    inputs);
 
-  EXPECT_THAT(token_inputs, ElementsAre(original[0], original[1], original[3]));
-  EXPECT_THAT(inputs, ElementsAre(original[2]));
+  EXPECT_THAT(token_inputs, ElementsAre(inputs[0], inputs[1], inputs[3]));
+  EXPECT_THAT(other_inputs, ElementsAre(inputs[2]));
 }
 
 TEST_F(CardanoMaxTokenSendSolverUnitTest, SortInputs) {
@@ -195,7 +195,7 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, SortInputs) {
   inputs.push_back(MakeMockTxInput(10'000'000u, {}));
 
   auto original = inputs;
-  CardanoMaxTokenSendSolver::SortInputs(inputs);
+  CardanoMaxTokenSendSolver::SortInputsBySelectionPriority(inputs);
 
   EXPECT_THAT(inputs, ElementsAre(original[5], original[4], original[2],
                                   original[0], original[3], original[1]));

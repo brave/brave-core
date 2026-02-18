@@ -185,6 +185,8 @@ void CardanoWalletService::CreateCardanoTransaction(
   CHECK(IsCardanoAccount(account_id));
   if (sending_max_amount) {
     CHECK_EQ(amount, 0u);
+  } else {
+    CHECK_GT(amount, 0u);
   }
 
   auto [task_it, inserted] = create_transaction_tasks_.insert(

@@ -80,7 +80,13 @@ function CardanoTransactionDetails({
         <div key={'input' + index}>
           <CodeDetailLine>{`Input: ${index}`}</CodeDetailLine>
           <CodeDetailLine>{`Value: ${input.value}`}</CodeDetailLine>
-          <div> tokens </div>
+          {input.tokens.map((token) => {
+            return (
+              <CodeDetailLine
+                key={token.tokenIdHex}
+              >{`Token: ${token.tokenIdHex}, Value: ${token.value}`}</CodeDetailLine>
+            )
+          })}
           <CodeDetailLine>{`Address: ${input.address}`}</CodeDetailLine>
         </div>
       ))}
@@ -88,7 +94,13 @@ function CardanoTransactionDetails({
         <div key={'output' + index}>
           <CodeDetailLine>{`Output: ${index}`}</CodeDetailLine>
           <CodeDetailLine>{`Value: ${output.value}`}</CodeDetailLine>
-          <div> tokens </div>
+          {output.tokens.map((token) => {
+            return (
+              <CodeDetailLine
+                key={token.tokenIdHex}
+              >{`Token: ${token.tokenIdHex}, Value: ${token.value}`}</CodeDetailLine>
+            )
+          })}
           <CodeDetailLine>{`Address: ${output.address}`}</CodeDetailLine>
         </div>
       ))}

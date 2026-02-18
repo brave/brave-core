@@ -27,7 +27,7 @@ class CardanoMaxLovelaceSendSolver {
   FRIEND_TEST_ALL_PREFIXES(CardanoMaxLovelaceSendSolverUnitTest, SetupOutputs);
 
   // If any of inputs have tokens attached to corresponding utxos make sure
-  // there is a valid change output having these tokens set to it. static
+  // there is a valid change output having these tokens set to it.
   static bool SetupOutputs(CardanoTransaction& tx,
                            const TxBuilderParms& builder_params);
 

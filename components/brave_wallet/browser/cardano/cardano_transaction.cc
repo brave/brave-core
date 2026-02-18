@@ -686,14 +686,14 @@ bool CardanoTransaction::EnsureTokensInChangeOutput() {
 
   // We already assigned some input tokens to target output, should not move
   // them to change.
-  if (TargetOutput()) {
-    if (!SubtractTokens(*input_tokens, TargetOutput()->tokens)) {
-      return false;
-    }
+  CHECK(TargetOutput());
+  if (!SubtractTokens(*input_tokens, TargetOutput()->tokens)) {
+    return false;
   }
 
   // OK if there is no tokens which must be assigned to change.
   if (input_tokens->empty()) {
+    DCHECK(GetTotalInputTokensAmount() == GetTotalOutputTokensAmount());
     return true;
   }
 

@@ -414,6 +414,7 @@ TEST(CardanoTransaction, EnsureTokensInChangeOutput) {
   auto baz_token = GetMockTokenId("baz");
 
   CardanoTransaction tx;
+  tx.SetupTargetOutput(*CardanoAddress::FromString(kAddress2));
 
   // No tokens.
   EXPECT_TRUE(tx.EnsureTokensInChangeOutput());
