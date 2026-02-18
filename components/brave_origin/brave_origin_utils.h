@@ -12,8 +12,7 @@
 namespace brave_origin {
 
 // Returns whether BraveOrigin is enabled for the current user.
-// This checks the feature flag and will be updated to check actual
-// purchase state from SKU service in the future.
+// This checks the feature flag and the SKU purchase state.
 bool IsBraveOriginEnabled();
 
 // Gets the correct brave_origin_pref_key

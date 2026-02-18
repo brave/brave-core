@@ -7,7 +7,11 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/features.h"
+#include "brave/components/brave_origin/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_origin {
@@ -21,8 +25,16 @@ class BraveOriginUtilsTest : public testing::Test {
   BraveOriginUtilsTest() = default;
   ~BraveOriginUtilsTest() override = default;
 
+  void TearDown() override {
+    auto* manager = BraveOriginPolicyManager::GetInstance();
+    if (manager->IsInitialized()) {
+      manager->Shutdown();
+    }
+  }
+
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
+  TestingPrefServiceSimple pref_service_;
 };
 
 TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureDisabled) {
@@ -31,9 +43,26 @@ TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureDisabled) {
   EXPECT_FALSE(IsBraveOriginEnabled());
 }
 
-TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureEnabled) {
+TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureEnabled_NotPurchased) {
   scoped_feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
+  pref_service_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->Init(BraveOriginPolicyMap(), BraveOriginPolicyMap(), &pref_service_);
+
+  // Feature enabled but not purchased should return false
+  EXPECT_FALSE(IsBraveOriginEnabled());
+}
+
+TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureEnabled_Purchased) {
+  scoped_feature_list_.InitAndEnableFeature(features::kBraveOrigin);
+
+  pref_service_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->Init(BraveOriginPolicyMap(), BraveOriginPolicyMap(), &pref_service_);
+  manager->SetPurchased(true);
+
+  // Feature enabled and purchased should return true
   EXPECT_TRUE(IsBraveOriginEnabled());
 }
 

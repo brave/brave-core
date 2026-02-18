@@ -167,8 +167,23 @@ bool BraveOriginPolicyManager::IsInitialized() const {
   return initialized_;
 }
 
+void BraveOriginPolicyManager::SetPurchased(bool purchased) {
+  if (is_purchased_ == purchased) {
+    return;
+  }
+  is_purchased_ = purchased;
+  if (initialized_) {
+    observers_.Notify(&brave_policy::BravePolicyObserver::OnBravePoliciesReady);
+  }
+}
+
+bool BraveOriginPolicyManager::IsPurchased() const {
+  return is_purchased_;
+}
+
 void BraveOriginPolicyManager::Shutdown() {
   initialized_ = false;
+  is_purchased_ = false;
   browser_policy_definitions_.clear();
   profile_policy_definitions_.clear();
   local_state_ = nullptr;

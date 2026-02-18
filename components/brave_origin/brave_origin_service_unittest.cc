@@ -77,6 +77,9 @@ class BraveOriginServiceTest : public testing::Test {
     auto* manager = BraveOriginPolicyManager::GetInstance();
     manager->Init(std::move(browser_policies), std::move(profile_policies),
                   &local_state_);
+    // Set purchased state so IsBraveOriginEnabled() returns true when the
+    // feature flag is enabled.
+    manager->SetPurchased(true);
 
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
