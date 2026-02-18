@@ -11,7 +11,6 @@
  * #css_wrapper_metadata_end */
 
 #brave-alias-dropdown {
-  --height: 36px;
   --leo-icon-size: var(--leo-icon-xs);
   display: flex;
   font: var(--leo-font-small-regular);

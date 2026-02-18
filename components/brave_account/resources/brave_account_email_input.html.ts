@@ -33,11 +33,15 @@ export function getHtml(this: BraveAccountEmailInputElement) {
         class="dropdown ${this.blockBraveAlias && this.isBraveAlias
           ? 'visible'
           : ''}"
-        id="brave-alias-dropdown"
         slot="errors"
       >
-        <leo-icon name="warning-triangle-filled"></leo-icon>
-        <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
+        <div
+          class="dropdown-content"
+          id="brave-alias-dropdown"
+        >
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
+        </div>
       </div>
     </leo-input>
     <!--_html_template_end_-->`
