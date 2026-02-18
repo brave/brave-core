@@ -96,8 +96,8 @@ std::optional<std::string> EthereumKeyring::RecoverAddress(
     return std::nullopt;
   }
 
-  EthAddress addr =
-      EthAddress::FromPublicKey(base::span(*public_key).last(64u));
+  EthAddress addr = EthAddress::FromPublicKey(
+      base::span(*public_key).last<kEthPublicKeyLength>());
   return addr.ToChecksumAddress();
 }
 
@@ -157,7 +157,10 @@ std::string EthereumKeyring::GetAddressInternal(const HDKey& hd_key) const {
   // trim the header byte 0x04
   const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
                                               public_key.end());
-  EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
+  auto pubkey =
+      base::span(pubkey_no_header).to_fixed_extent<kEthPublicKeyLength>();
+  CHECK(pubkey);
+  auto addr = EthAddress::FromPublicKey(*pubkey);
 
   // TODO(darkdh): chain id op code
   return addr.ToChecksumAddress();

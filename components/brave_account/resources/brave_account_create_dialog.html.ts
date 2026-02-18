@@ -5,8 +5,10 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
+import './brave_account_email_input.js'
 import './brave_account_password_icons.js'
 import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
+import type { EmailInputEventDetail } from './brave_account_email_input.js'
 import { onToggleVisibility } from './brave_account_common.js'
 
 export function getHtml(this: BraveAccountCreateDialogElement) {
@@ -17,31 +19,14 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input
-          placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-          showErrors
-          type="email"
-          @input=${this.onEmailInput}
+        <brave-account-email-input
+          block-brave-alias
+          @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
+            this.email = e.detail.email
+            this.isEmailValid = e.detail.isValid
+          }}
         >
-          <div
-            class="label ${(this.email.length !== 0 && !this.isEmailValid)
-            || (this.isEmailValid && this.isEmailBraveAlias)
-              ? 'error'
-              : ''}"
-          >
-            $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
-          </div>
-          <div
-            class="dropdown ${this.isEmailValid && this.isEmailBraveAlias
-              ? 'visible'
-              : ''}"
-            id="brave-alias-dropdown"
-            slot="errors"
-          >
-            <leo-icon name="warning-triangle-filled"></leo-icon>
-            <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
-          </div>
-        </leo-input>
+        </brave-account-email-input>
         <leo-input
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           showErrors
@@ -111,7 +96,6 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
       <leo-button
         slot="buttons"
         ?isDisabled=${!this.isEmailValid
-        || (this.isEmailValid && this.isEmailBraveAlias)
         || this.passwordStrength !== 100
         || this.passwordConfirmation !== this.password}
         @click=${this.onCreateAccountButtonClicked}

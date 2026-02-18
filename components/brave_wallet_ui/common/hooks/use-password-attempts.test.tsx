@@ -11,13 +11,16 @@ import { usePasswordAttempts } from './use-password-attempts'
 // actions
 import { WalletActions } from '../actions'
 
-// mocks
-import type { MockedWalletApiProxy } from '../async/__mocks__/bridge'
 import getAPIProxy from '../async/bridge'
 import {
   makeMockedStoreWithSpy,
   renderHookOptionsWithMockStore,
 } from '../../utils/test-utils'
+
+type MockedWalletApiProxy = {
+  setMockedStore: (store: unknown) => void
+  store: unknown
+}
 
 describe('usePasswordAttempts hook', () => {
   it('should increment attempts on bad password & lock wallet after 3 failed attempts', async () => {

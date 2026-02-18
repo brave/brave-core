@@ -71,7 +71,7 @@ TEST(EthAbiUtilsTest, OffchainLookup) {
 
   EXPECT_EQ("0x556f1830", ToHex(selector));
 
-  EXPECT_EQ(ExtractAddressFromTuple(args, 0).ToHex(),
+  EXPECT_EQ(ExtractAddressFromTuple(args, 0)->ToHex(),
             "0xc1735677a60884abbcf72295e88d47764beda282");
 
   EXPECT_THAT(
@@ -159,7 +159,7 @@ TEST(EthAbiUtilsTest, ExtractAddress) {
   {
     auto bytes = ToBytes(
         "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282");
-    EXPECT_EQ(ExtractAddress(bytes).ToHex(),
+    EXPECT_EQ(ExtractAddress(bytes)->ToHex(),
               "0xc1735677a60884abbcf72295e88d47764beda282");
   }
 
@@ -167,27 +167,27 @@ TEST(EthAbiUtilsTest, ExtractAddress) {
     // Missing byte.
     auto bytes = ToBytes(
         "0000000000000000000000c1735677a60884abbcf72295e88d47764beda282");
-    EXPECT_TRUE(ExtractAddress(bytes).IsEmpty());
+    EXPECT_FALSE(ExtractAddress(bytes));
   }
 
   {
     // Extra byte.
     auto bytes = ToBytes(
         "000000000000000000000000c1735677a60884abbcf72295e88d47764beda28200");
-    EXPECT_TRUE(ExtractAddress(bytes).IsEmpty());
+    EXPECT_FALSE(ExtractAddress(bytes));
   }
 
   {
     // Zero address.
     auto bytes = ToBytes(
         "0000000000000000000000000000000000000000000000000000000000000000");
-    EXPECT_EQ(ExtractAddress(bytes).ToHex(),
+    EXPECT_EQ(ExtractAddress(bytes)->ToHex(),
               "0x0000000000000000000000000000000000000000");
   }
 
   {  // Empty.
     auto bytes = std::vector<uint8_t>{};
-    EXPECT_TRUE(ExtractAddress(bytes).IsEmpty());
+    EXPECT_FALSE(ExtractAddress(bytes));
   }
 }
 
@@ -195,22 +195,22 @@ TEST(EthAbiUtilsTest, ExtractAddressFromTuple) {
   auto bytes = ToBytes(
       "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282"
       "00000000000000000000000000000000000000000000000000000000000000a0");
-  EXPECT_EQ(ExtractAddressFromTuple(bytes, 0).ToHex(),
+  EXPECT_EQ(ExtractAddressFromTuple(bytes, 0)->ToHex(),
             "0xc1735677a60884abbcf72295e88d47764beda282");
-  EXPECT_EQ(ExtractAddressFromTuple(bytes, 1).ToHex(),
+  EXPECT_EQ(ExtractAddressFromTuple(bytes, 1)->ToHex(),
             "0x00000000000000000000000000000000000000a0");
-  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 2).IsEmpty());
+  EXPECT_FALSE(ExtractAddressFromTuple(bytes, 2));
 
   // Bad alignment.
   bytes.push_back(0);
-  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 0).IsEmpty());
-  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 1).IsEmpty());
-  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 2).IsEmpty());
+  EXPECT_FALSE(ExtractAddressFromTuple(bytes, 0));
+  EXPECT_FALSE(ExtractAddressFromTuple(bytes, 1));
+  EXPECT_FALSE(ExtractAddressFromTuple(bytes, 2));
 
   // Empty.
-  EXPECT_TRUE(ExtractAddressFromTuple({}, 0).IsEmpty());
-  EXPECT_TRUE(ExtractAddressFromTuple({}, 1).IsEmpty());
-  EXPECT_TRUE(ExtractAddressFromTuple({}, 2).IsEmpty());
+  EXPECT_FALSE(ExtractAddressFromTuple({}, 0));
+  EXPECT_FALSE(ExtractAddressFromTuple({}, 1));
+  EXPECT_FALSE(ExtractAddressFromTuple({}, 2));
 }
 
 TEST(EthAbiUtilsTest, ExtractBytes) {

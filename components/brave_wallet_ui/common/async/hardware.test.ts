@@ -358,7 +358,7 @@ const signTransactionWithTrezor = (args: {
   )
 }
 
-test('Test sign Ledger transaction, approved, no message to sign', () => {
+test('sign Ledger transaction, approved, no message to sign', () => {
   const txInfo = getMockedTransactionInfo()
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
@@ -376,13 +376,13 @@ test('Test sign Ledger transaction, approved, no message to sign', () => {
   )
 })
 
-test('Test sign Ledger transaction, approved, device error', () => {
+test('sign Ledger transaction, approved, device error', () => {
   return expect(signEthTransactionWithLedger()).resolves.toStrictEqual(
     hardwareTransactionErrorResponseWithCode('braveWalletSignOnDeviceError'),
   )
 })
 
-test('Test sign Ledger transaction, approved, processing error', () => {
+test('sign Ledger transaction, approved, processing error', () => {
   return expect(
     signEthTransactionWithLedger({
       mockSignature: mockEthereumSignatureVRS,
@@ -392,7 +392,7 @@ test('Test sign Ledger transaction, approved, processing error', () => {
   )
 })
 
-test('Test sign Ledger transaction, approved, processed', () => {
+test('sign Ledger transaction, approved, processed', () => {
   return expect(
     signEthTransactionWithLedger({
       mockSignature: mockEthereumSignatureVRS,
@@ -401,7 +401,7 @@ test('Test sign Ledger transaction, approved, processed', () => {
   ).resolves.toStrictEqual({ success: true })
 })
 
-test('Test sign Trezor transaction, approve failed', () => {
+test('sign Trezor transaction, approve failed', () => {
   const txInfo = getMockedTransactionInfo()
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
@@ -419,7 +419,7 @@ test('Test sign Trezor transaction, approve failed', () => {
   )
 })
 
-test('Test sign Trezor transaction, approved, device error', () => {
+test('sign Trezor transaction, approved, device error', () => {
   return expect(
     signTransactionWithTrezor({
       mockHardwareOperationError: {
@@ -435,7 +435,7 @@ test('Test sign Trezor transaction, approved, device error', () => {
   })
 })
 
-test('Test sign Trezor transaction, approved, generic device error', () => {
+test('sign Trezor transaction, approved, generic device error', () => {
   return expect(
     signTransactionWithTrezor({
       mockHardwareOperationError: {
@@ -449,7 +449,7 @@ test('Test sign Trezor transaction, approved, generic device error', () => {
   )
 })
 
-test('Test sign Trezor transaction, approved, processing error', () => {
+test('sign Trezor transaction, approved, processing error', () => {
   return expect(
     signTransactionWithTrezor({
       mockSignature: mockEthereumSignatureVRS,
@@ -460,7 +460,7 @@ test('Test sign Trezor transaction, approved, processing error', () => {
   )
 })
 
-test('Test sign Trezor transaction, approved, processed', () => {
+test('sign Trezor transaction, approved, processed', () => {
   return expect(
     signTransactionWithTrezor({
       mockSignature: mockEthereumSignatureVRS,
@@ -469,7 +469,7 @@ test('Test sign Trezor transaction, approved, processed', () => {
   ).resolves.toStrictEqual({ success: true })
 })
 
-test('Test sign Ledger FIL transaction, signed', () => {
+test('sign Ledger FIL transaction, signed', () => {
   const message = {
     'From': 't1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q',
     'GasFeeCap': '3',
@@ -499,7 +499,7 @@ test('Test sign Ledger FIL transaction, signed', () => {
   ).resolves.toStrictEqual({ success: true })
 })
 
-test('Test sign Ledger SOL transaction, signed', () => {
+test('sign Ledger SOL transaction, signed', () => {
   const expectedSignature = Buffer.from('signature')
   return expect(
     signSolTransactionWithLedger({

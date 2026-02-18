@@ -150,6 +150,7 @@ bool BraveWalletPermissionContext::HasRequestsInProgress(
 void BraveWalletPermissionContext::RequestWalletPermissions(
     const std::vector<std::string>& addresses,
     blink::PermissionType permission,
+    const url::Origin& requesting_origin,
     content::RenderFrameHost* rfh,
     RequestWalletPermissionsCallback callback) {
   if (!rfh) {
@@ -159,6 +160,11 @@ void BraveWalletPermissionContext::RequestWalletPermissions(
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (!web_contents) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  if (requesting_origin != rfh->GetLastCommittedOrigin()) {
     std::move(callback).Run({});
     return;
   }
@@ -176,7 +182,7 @@ void BraveWalletPermissionContext::RequestWalletPermissions(
   std::vector<url::Origin> addresses_with_origin;
   for (auto& address : addresses) {
     if (auto origin_with_address = brave_wallet::GetSubRequestOrigin(
-            request_type, rfh->GetLastCommittedOrigin(), address)) {
+            request_type, requesting_origin, address)) {
       addresses_with_origin.push_back(std::move(*origin_with_address));
     }
   }

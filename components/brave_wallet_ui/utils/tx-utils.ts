@@ -231,6 +231,12 @@ export function isZCashTransaction(tx?: Pick<TransactionInfo, 'txDataUnion'>) {
   return tx.txDataUnion.zecTxData !== undefined
 }
 
+export function transactionUsesShieldedPool(
+  tx?: Pick<TransactionInfo, 'txDataUnion'>,
+): boolean {
+  return tx?.txDataUnion.zecTxData?.useShieldedPool ?? false
+}
+
 export function isCardanoTransaction(
   tx?: Pick<TransactionInfo, 'txDataUnion'>,
 ) {
@@ -488,8 +494,7 @@ export const findTransactionToken = <
         t.contractAddress === ''
         && t.chainId === tx.chainId
         && t.coin === tx.fromAccountId.coin
-        && t.isShielded
-          === (tx.txDataUnion.zecTxData?.useShieldedPool ?? false),
+        && t.isShielded === transactionUsesShieldedPool(tx),
     )
   }
 

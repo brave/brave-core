@@ -6,7 +6,9 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
+import './brave_account_email_input.js'
 import { BraveAccountForgotPasswordDialogElement } from './brave_account_forgot_password_dialog.js'
+import type { EmailInputEventDetail } from './brave_account_email_input.js'
 
 export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
   return html`<!--_html_template_start_-->
@@ -17,19 +19,13 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input
-          placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-          type="email"
-          @input=${this.onEmailInput}
+        <brave-account-email-input
+          @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
+            this.email = e.detail.email
+            this.isEmailValid = e.detail.isValid
+          }}
         >
-          <div
-            class="label ${this.email.length !== 0 && !this.isEmailValid
-              ? 'error'
-              : ''}"
-          >
-            $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
-          </div>
-        </leo-input>
+        </brave-account-email-input>
       </div>
       <leo-button
         slot="buttons"

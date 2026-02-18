@@ -42,6 +42,12 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
       bool user_gesture,
       bool* was_blocked) override;
 
+  content::WebContents* OpenURLFromTab(
+      content::WebContents* source,
+      const content::OpenURLParams& params,
+      base::OnceCallback<void(content::NavigationHandle&)>
+          navigation_handle_callback) override;
+
  private:
   // This callback is invoked multiple times, so we need to ensure that
   // focus is set only once with `should_focus_`.

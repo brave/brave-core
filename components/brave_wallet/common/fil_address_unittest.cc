@@ -367,20 +367,17 @@ TEST(FilAddressUnitTest, FromBytes) {
 TEST(FilAddressUnitTest, ConvertFEVMtoFVM) {
   EXPECT_EQ("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
             FilAddress::FromFEVMAddress(
-                true, EthAddress::FromHex(
-                          "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51"))
+                true, EthAddress::From0xHex(
+                          "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                          .value())
                 .EncodeAsString());
 
   EXPECT_EQ("t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
             FilAddress::FromFEVMAddress(
-                false, EthAddress::FromHex(
-                           "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51"))
+                false, EthAddress::From0xHex(
+                           "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                           .value())
                 .EncodeAsString());
-
-  EXPECT_TRUE(FilAddress::FromFEVMAddress(
-                  false, EthAddress::FromHex(
-                             "8C60a3A9530dDD22F44C0B9c219E55E693335b51"))
-                  .IsEmpty());
 }
 
 TEST(FilAddressUnitTest, GetProtocolFromAddress) {

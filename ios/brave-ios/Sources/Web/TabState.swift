@@ -28,31 +28,28 @@ public enum SecureContentState {
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
+    public var profile: (any Profile)?
     public var initialConfiguration: WKWebViewConfiguration?
     public var lastActiveTime: Date?
-    public var braveCore: BraveProfileController?
 
     public init(
       id: UUID = .init(),
+      profile: (any Profile)?,
       initialConfiguration: WKWebViewConfiguration? = nil,
-      lastActiveTime: Date? = nil,
-      braveCore: BraveProfileController? = nil
+      lastActiveTime: Date? = nil
     ) {
       self.id = id
+      self.profile = profile
       self.initialConfiguration = initialConfiguration
       self.lastActiveTime = lastActiveTime
-      self.braveCore = braveCore
     }
   }
 
   public static func create(with params: CreateTabParams) -> any TabState {
     let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
-    if let braveCore = params.braveCore, FeatureList.kUseChromiumWebViews.enabled {
-      let cwvConfiuration =
-        wkConfiguration.websiteDataStore.isPersistent
-        ? braveCore.defaultWebViewConfiguration
-        : braveCore.nonPersistentWebViewConfiguration
+    if let profile = params.profile, FeatureList.kUseChromiumWebViews.enabled {
+      let cwvConfiuration = BraveWebViewConfiguration(profile: profile)
       return ChromiumTabState(
         id: params.id,
         configuration: cwvConfiuration,

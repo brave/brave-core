@@ -136,7 +136,7 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   // thread before completion, or true if it completed instantly.
   bool CheckRequest(std::shared_ptr<brave::BraveRequestInfo> request_info) {
     // `request_identifier` must be nonzero, or else nothing will be tested.
-    request_info->request_identifier = 1;
+    request_info->set_request_identifier(1);
 
     int rc =
         OnBeforeURLRequest_AdBlockTPPreWork(base::DoNothing(), request_info);
@@ -164,33 +164,33 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
   const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->resource_type = blink::mojom::ResourceType::kScript;
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
   EXPECT_FALSE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
-  request_info->initiator_url = GURL("https://example.com");
-  request_info->resource_type = blink::mojom::ResourceType::kScript;
+  request_info->set_initiator_url(GURL("https://example.com"));
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
   EXPECT_FALSE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   const GURL url("devtools://devtools/");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->initiator_url =
-      GURL("devtools://devtools/bundled/root/root.js");
-  request_info->resource_type = blink::mojom::ResourceType::kScript;
+  request_info->set_initiator_url(
+      GURL("devtools://devtools/bundled/root/root.js"));
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
   EXPECT_FALSE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
@@ -198,12 +198,12 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
       "data:image/gif;base64,R0lGODlhAQABAIAAAP///"
       "wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->initiator_url = GURL("https://example.com");
-  request_info->resource_type = blink::mojom::ResourceType::kImage;
+  request_info->set_initiator_url(GURL("https://example.com"));
+  request_info->set_resource_type(blink::mojom::ResourceType::kImage);
 
   EXPECT_FALSE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
@@ -211,13 +211,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->request_identifier = 1;
-  request_info->resource_type = blink::mojom::ResourceType::kScript;
-  request_info->initiator_url = GURL("https://bravesoftware.com");
+  request_info->set_request_identifier(1);
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+  request_info->set_initiator_url(GURL("https://bravesoftware.com"));
 
   EXPECT_TRUE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
   // It's unclear whether or not this is a Tor request, so no DNS queries are
   // made (`browser_context` is `nullptr`).
   EXPECT_EQ(0ULL, host_resolver_->num_resolve());
@@ -228,13 +228,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->request_identifier = 1;
-  request_info->resource_type = blink::mojom::ResourceType::kScript;
-  request_info->initiator_url = GURL("https://brave.com");
+  request_info->set_request_identifier(1);
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+  request_info->set_initiator_url(GURL("https://brave.com"));
 
   EXPECT_TRUE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
   EXPECT_EQ(0ULL, host_resolver_->num_resolve());
 }
 
@@ -243,14 +243,14 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, AggressiveNo1pException) {
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->request_identifier = 1;
-  request_info->resource_type = blink::mojom::ResourceType::kScript;
-  request_info->initiator_url = GURL("https://brave.com");
-  request_info->aggressive_blocking = true;
+  request_info->set_request_identifier(1);
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+  request_info->set_initiator_url(GURL("https://brave.com"));
+  request_info->set_aggressive_blocking(true);
 
   EXPECT_TRUE(CheckRequest(request_info));
-  EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
+  EXPECT_TRUE(request_info->new_url_spec().empty());
   // It's unclear whether or not this is a Tor request, so no DNS queries are
   // made (`browser_context` is `nullptr`).
   EXPECT_EQ(0ULL, host_resolver_->num_resolve());

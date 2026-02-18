@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 function getConfig(expectedSuccess, expectedConfig) {
   chrome.ipfs.getConfig((success, config) => {
@@ -80,7 +81,7 @@ function compareObjects(o1, o2) {
       }
     }
   }
-  for(var p in o2) {
+  for(p in o2) {
     if (o2.hasOwnProperty(p)) {
       if (o1[p] !== o2[p]) {
         return false;

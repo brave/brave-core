@@ -26,13 +26,10 @@ extension BrowserViewController: TabObserver {
       BlockedDomainScriptHandler(),
       HTTPBlockedScriptHandler(tabManager: tabManager),
       PrintScriptHandler(browserController: self),
-      CustomSearchScriptHandler(),
       DarkReaderScriptHandler(),
-      FocusScriptHandler(),
       BraveGetUA(),
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
-      DownloadContentScriptHandler(browserController: self),
       AdsMediaReportingScriptHandler(rewards: rewards),
       ReadyStateScriptHandler(),
       DeAmpScriptHandler(),
@@ -161,6 +158,8 @@ extension BrowserViewController: TabObserver {
         {
           self.dismiss(animated: true)
         }
+        // dismiss wallet notification (e.g. after redirect to different origin)
+        removeWalletNotificationAndClearOrigin()
       } else if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
         let selectedTabVisibleURL = selectedTab.visibleURL,
         selectedTabVisibleURL.isWalletWebUIURL
@@ -203,8 +202,10 @@ extension BrowserViewController: TabObserver {
       tab.browserData?.clearSolanaConnectedAccounts()
 
       if let browserData = tab.browserData {
+        let committedOrigin = tab.lastCommittedURL?.origin
         if let provider = profileController.braveWalletAPI.ethereumProvider(
           with: browserData,
+          origin: committedOrigin,
           isPrivateBrowsing: tab.isPrivate
         ) {
           // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
@@ -215,6 +216,7 @@ extension BrowserViewController: TabObserver {
         }
         if let provider = profileController.braveWalletAPI.solanaProvider(
           with: browserData,
+          origin: committedOrigin,
           isPrivateBrowsing: tab.isPrivate
         ) {
           tab.walletSolProvider = provider
@@ -237,6 +239,20 @@ extension BrowserViewController: TabObserver {
     // previews and etc will effect the status
     guard tabManager.selectedTab === tab else {
       return
+    }
+
+    // Dismiss wallet panel and notification if the tab's committed URL origin no longer matches
+    let committedOrigin = tab.lastCommittedURL?.origin
+    if let popoverController = self.presentedViewController as? PopoverController,
+      let walletPanel = popoverController.contentController as? WalletPanelHostingController,
+      let committedOrigin,
+      walletPanel.origin != committedOrigin
+    {
+      self.dismiss(animated: true)
+      removeWalletNotificationAndClearOrigin()
+    } else if let committedOrigin {
+      // Tab navigated to a different origin (e.g. redirect); dismiss wallet notification if it was for another origin
+      dismissWalletNotificationIfOriginDiffers(from: committedOrigin)
     }
 
     updateUIForReaderHomeStateForTab(tab)

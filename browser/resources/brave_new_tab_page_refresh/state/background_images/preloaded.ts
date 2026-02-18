@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveBackground } from '../background_state'
+import { BraveBackground } from '../background_store'
 import * as preloadedData from './preloaded.json'
 
 // Pre-loaded background image resources that can be used if a new profile opens

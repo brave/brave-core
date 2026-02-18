@@ -33,21 +33,21 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(!next_callback.is_null());
 
-  if (!ctx->browser_context || ctx->browser_context->IsOffTheRecord() ||
+  if (!ctx->browser_context() || ctx->browser_context()->IsOffTheRecord() ||
       !g_browser_process) {
     return net::OK;
   }
 
   // Check if Brave Wallet is disabled by policy - if so, disable decentralized
   // DNS
-  auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
+  auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context());
   if (!brave_wallet::IsAllowed(prefs)) {
     return net::OK;
   }
 
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-          ctx->browser_context);
+          ctx->browser_context());
   if (!brave_wallet_service) {
     return net::OK;
   }
@@ -55,31 +55,31 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   auto* json_rpc_service = brave_wallet_service->json_rpc_service();
   CHECK(json_rpc_service);
 
-  if (IsUnstoppableDomainsTLD(ctx->request_url.host()) &&
+  if (IsUnstoppableDomainsTLD(ctx->request_url().host()) &&
       IsUnstoppableDomainsResolveMethodEnabled(
           g_browser_process->local_state())) {
     json_rpc_service->UnstoppableDomainsResolveDns(
-        std::string(ctx->request_url.host()),
+        std::string(ctx->request_url().host()),
         base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
                        next_callback, ctx));
 
     return net::ERR_IO_PENDING;
   }
 
-  if (IsENSTLD(ctx->request_url.host()) &&
+  if (IsENSTLD(ctx->request_url().host()) &&
       IsENSResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->EnsGetContentHash(
-        std::string(ctx->request_url.host()),
+        std::string(ctx->request_url().host()),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));
 
     return net::ERR_IO_PENDING;
   }
 
-  if (IsSnsTLD(ctx->request_url.host()) &&
+  if (IsSnsTLD(ctx->request_url().host()) &&
       IsSnsResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->SnsResolveHost(
-        std::string(ctx->request_url.host()),
+        std::string(ctx->request_url().host()),
         base::BindOnce(&OnBeforeURLRequest_SnsRedirectWork, next_callback,
                        ctx));
 
@@ -104,7 +104,7 @@ void OnBeforeURLRequest_EnsRedirectWork(
   }
 
   if (require_offchain_consent) {
-    ctx->pending_error = net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED;
+    ctx->set_pending_error(net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED);
     next_callback.Run();
     return;
   }
@@ -113,7 +113,7 @@ void OnBeforeURLRequest_EnsRedirectWork(
   GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(content_hash);
   if (ipfs_uri.is_valid() &&
       ipfs::TranslateIPFSURI(ipfs_uri, &resolved_ipfs_uri, false)) {
-    ctx->new_url_spec = resolved_ipfs_uri.spec();
+    ctx->set_new_url_spec(resolved_ipfs_uri.spec());
   }
 
   next_callback.Run();
@@ -127,7 +127,7 @@ void OnBeforeURLRequest_SnsRedirectWork(
     const std::string& error_message) {
   if (error == brave_wallet::mojom::SolanaProviderError::kSuccess && url &&
       url->is_valid()) {
-    ctx->new_url_spec = url->spec();
+    ctx->set_new_url_spec(url->spec());
   }
 
   if (!next_callback.is_null()) {
@@ -143,7 +143,7 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const std::string& error_message) {
   if (error == brave_wallet::mojom::ProviderError::kSuccess && url &&
       url->is_valid()) {
-    ctx->new_url_spec = url->spec();
+    ctx->set_new_url_spec(url->spec());
   }
 
   if (!next_callback.is_null()) {

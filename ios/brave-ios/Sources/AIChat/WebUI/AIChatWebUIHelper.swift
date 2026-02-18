@@ -112,7 +112,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
       wkConfiguration.websiteDataStore = .nonPersistent()
     }
     let tab = TabStateFactory.create(
-      with: .init(initialConfiguration: wkConfiguration, braveCore: profileController)
+      with: .init(profile: profile, initialConfiguration: wkConfiguration)
     )
     tab.createWebView()
     attachPrivacySensitiveTabHelpers?(tab, profile)

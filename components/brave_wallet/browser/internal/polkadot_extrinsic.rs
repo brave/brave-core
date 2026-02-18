@@ -66,6 +66,8 @@ mod ffi {
         type CxxPolkadotChainMetadata;
         type CxxPolkadotChainMetadataResult;
 
+        fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
+
         fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16;
         fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata>;
 
@@ -504,4 +506,8 @@ fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
     fee_bytes.copy_from_slice(fee_le_bytes);
 
     true
+}
+
+fn compact_scale_encode_u32(x: u32) -> Vec<u8> {
+    Compact(x).encode()
 }

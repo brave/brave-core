@@ -32,7 +32,6 @@ constexpr char kBrave[] = "brave";
 
 // content::RenderFrameObserver
 void JSCardanoProvider::OnDestruct() {
-  self_.Clear();
 }
 
 std::vector<std::string> JSCardanoProvider::GetSupportedExtensions() {
@@ -70,7 +69,6 @@ JSCardanoProvider::~JSCardanoProvider() = default;
 JSCardanoProvider::JSCardanoProvider(content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame) {
   EnsureConnected();
-  self_ = this;
 }
 
 bool JSCardanoProvider::EnsureConnected() {

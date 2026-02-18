@@ -44,12 +44,20 @@ namespace polkadot_substrate_rpc_responses {
   // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#192-chain_getheader
   // TODO(https://github.com/brave/brave-browser/issues/52318): this method needs to be updated to use `DOMString? parentHash;`
 
+  dictionary ChainHeaderDigest {
+    DOMString[] logs;
+  };
+
   dictionary ChainHeader {
     // The hex-encoded hash of the parent block's header.
     DOMString parentHash;
 
     // The number of the block in the current chain.
     DOMString number;
+
+    DOMString stateRoot;
+    DOMString extrinsicsRoot;
+    ChainHeaderDigest digest;
   };
 
   dictionary PolkadotChainHeader {

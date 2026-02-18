@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { defaultNewTabState } from '../state/new_tab_state'
-import { createNewTabHandler } from '../state/new_tab_handler'
-import { createStateProvider } from '../lib/state_provider'
+import * as React from 'react'
 
-export const NewTabProvider = createStateProvider(
-  defaultNewTabState(),
-  createNewTabHandler,
-)
+import { defaultNewTabStore } from '../state/new_tab_store'
+import { createUseStateHook } from '$web-common/state_store_hooks'
 
-export const useNewTabState = NewTabProvider.useState
-export const useNewTabActions = NewTabProvider.useActions
+export const NewTabContext = React.createContext(defaultNewTabStore())
+
+export const useNewTabState = createUseStateHook(NewTabContext)
+
+export function useNewTabActions() {
+  return useNewTabState((s) => s.actions)
+}

@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-// import { skipToken } from '@reduxjs/toolkit/query/react'
 import Button from '@brave/leo/react/button'
 
 // Types
@@ -73,6 +72,14 @@ export const ConnectionSection = (props: Props) => {
   const [selectedNetworkState, setSelectedNetworkState] = React.useState<
     BraveWallet.NetworkInfo | undefined
   >()
+  // Local selection in the account picker. We only update the global selected
+  // account when the user picks an account that already has connection
+  // permission, or when they click Connect (requestSitePermission does that).
+  const [localSelectedAccountId, setLocalSelectedAccountId] = React.useState<
+    BraveWallet.AccountId | undefined
+  >(undefined)
+
+  const effectiveSelectedAccountId = localSelectedAccountId ?? selectedAccountId
 
   // Mutations
   const [requestSitePermission] = useRequestSitePermissionMutation()
@@ -84,11 +91,13 @@ export const ConnectionSection = (props: Props) => {
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
-  const { account: selectedAccount } = useAccountQuery(selectedAccountId)
+  const { account: selectedAccount } = useAccountQuery(
+    effectiveSelectedAccountId,
+  )
 
   const { data: networkForAccount } =
     useGetNetworkForAccountOnActiveOriginQuery({
-      accountId: selectedAccountId,
+      accountId: effectiveSelectedAccountId,
     })
   const { data: networks = [] } = useGetNetworksQuery()
   const firstNetworkByCoin = networks.filter(
@@ -106,18 +115,19 @@ export const ConnectionSection = (props: Props) => {
 
   // Memos
   const isConnected = React.useMemo((): boolean => {
-    if (!selectedAccountId || isPermissionDenied) {
+    if (!effectiveSelectedAccountId || isPermissionDenied) {
       return false
     }
     if (coin === BraveWallet.CoinType.SOL) {
       return isSolanaConnected
     }
     return connectedAccounts.some(
-      (accountId) => accountId.uniqueKey === selectedAccountId.uniqueKey,
+      (accountId) =>
+        accountId.uniqueKey === effectiveSelectedAccountId.uniqueKey,
     )
   }, [
     connectedAccounts,
-    selectedAccountId,
+    effectiveSelectedAccountId,
     coin,
     isSolanaConnected,
     isPermissionDenied,
@@ -134,16 +144,16 @@ export const ConnectionSection = (props: Props) => {
 
   // Methods
   const onClickConnect = React.useCallback(() => {
-    if (selectedAccountId) {
-      requestSitePermission(selectedAccountId)
+    if (effectiveSelectedAccountId) {
+      requestSitePermission(effectiveSelectedAccountId)
     }
-  }, [selectedAccountId, requestSitePermission])
+  }, [effectiveSelectedAccountId, requestSitePermission])
 
   const onClickDisconnect = React.useCallback(async () => {
-    if (selectedAccountId) {
-      await removeSitePermission(selectedAccountId)
+    if (effectiveSelectedAccountId) {
+      await removeSitePermission(effectiveSelectedAccountId)
     }
-  }, [selectedAccountId, removeSitePermission])
+  }, [effectiveSelectedAccountId, removeSitePermission])
 
   const onClickUnblock = React.useCallback(() => {
     chrome.tabs.create(
@@ -162,24 +172,33 @@ export const ConnectionSection = (props: Props) => {
 
   const onChangeNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
-      if (selectedAccountId) {
+      if (effectiveSelectedAccountId) {
         await setNetworkForAccountOnActiveOrigin({
-          accountId: selectedAccountId,
+          accountId: effectiveSelectedAccountId,
           chainId: network.chainId,
         })
         setSelectedNetworkState(network)
         setShowNetworks(false)
       }
     },
-    [selectedAccountId, setNetworkForAccountOnActiveOrigin],
+    [effectiveSelectedAccountId, setNetworkForAccountOnActiveOrigin],
   )
 
   const onChangeAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
-      setSelectedAccount(account.accountId)
+      // Only update global selected account when switching to an account that
+      // is already connected to this origin; otherwise we update on Connect.
+      if (
+        connectedAccounts.some(
+          (id) => id.uniqueKey === account.accountId.uniqueKey,
+        )
+      ) {
+        setSelectedAccount(account.accountId)
+      }
+      setLocalSelectedAccountId(account.accountId)
       setShowAccounts(false)
     },
-    [setSelectedAccount],
+    [connectedAccounts, setSelectedAccount],
   )
 
   const canChangeNetwork = props.coin !== BraveWallet.CoinType.ADA
@@ -189,7 +208,12 @@ export const ConnectionSection = (props: Props) => {
     }
   }, [canChangeNetwork])
 
-  // Effects
+  // Sync local selection when the parent's selectedAccountId changes (e.g.
+  // after connecting or when opening the panel), so we show the backend value.
+  React.useEffect(() => {
+    setLocalSelectedAccountId(undefined)
+  }, [selectedAccountId])
+
   React.useEffect(() => {
     let subscribed = true
 
@@ -360,7 +384,7 @@ export const ConnectionSection = (props: Props) => {
         title={getLocale('braveWalletChangeNetwork')}
       >
         <DAppConnectionNetworks
-          accountId={selectedAccountId}
+          accountId={effectiveSelectedAccountId}
           onChangeNetwork={onChangeNetwork}
           selectedNetwork={selectedNetwork}
         />

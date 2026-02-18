@@ -34,7 +34,7 @@ class ReadabilityOperation: Operation {
     // and WebKit are not safe from other threads.
 
     DispatchQueue.main.async {
-      let tab = TabStateFactory.create(with: .init(braveCore: nil))
+      let tab = TabStateFactory.create(with: .init(profile: nil))
       tab.browserData = .init(tab: tab, tabGeneratorAPI: nil)
       tab.createWebView()
       tab.addObserver(self)

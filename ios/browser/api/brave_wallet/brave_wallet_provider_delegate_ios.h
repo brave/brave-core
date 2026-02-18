@@ -20,15 +20,16 @@ typedef void (^RequestPermissionsCallback)(
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (bool)isTabVisible;
-- (void)showPanel;
-- (URLOriginIOS*)getOrigin;
+- (void)showPanelWithOrigin:(URLOriginIOS*)origin;
 - (void)walletInteractionDetected;
-- (void)showWalletOnboarding;
+- (void)showWalletOnboardingWithOrigin:(URLOriginIOS*)origin;
 - (void)showWalletBackup;
 - (void)unlockWallet;
-- (void)showAccountCreation:(BraveWalletCoinType)type;
+- (void)showAccountCreation:(BraveWalletCoinType)type
+                     origin:(URLOriginIOS*)origin;
 - (void)requestPermissions:(BraveWalletCoinType)type
                   accounts:(NSArray<NSString*>*)accounts
+                    origin:(URLOriginIOS*)origin
                 completion:(RequestPermissionsCallback)completion;
 - (bool)isAccountAllowed:(BraveWalletCoinType)type account:(NSString*)account;
 - (nullable NSArray<NSString*>*)getAllowedAccounts:(BraveWalletCoinType)type

@@ -34,9 +34,11 @@ constexpr int kAPIErrorRefused = -3;
 
 CardanoProviderImpl::CardanoProviderImpl(
     BraveWalletService& brave_wallet_service,
-    BraveWalletProviderDelegateFactory delegate_factory)
+    BraveWalletProviderDelegateFactory delegate_factory,
+    const url::Origin& origin)
     : brave_wallet_service_(brave_wallet_service),
-      delegate_factory_(std::move(delegate_factory)) {
+      delegate_factory_(std::move(delegate_factory)),
+      origin_(origin) {
   brave_wallet_service_->keyring_service()->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
   delegate_ = delegate_factory_.Run();
@@ -56,7 +58,7 @@ void CardanoProviderImpl::Enable(
     mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
     EnableCallback callback) {
   RequestCardanoPermissions(std::move(cardano_api), std::move(callback),
-                            delegate_->GetOrigin());
+                            origin_);
 }
 
 void CardanoProviderImpl::RequestCardanoPermissions(
@@ -78,7 +80,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
 
     case PermissionCheckResult::kWalletNotCreated:
       if (!wallet_page_shown_) {
-        delegate_->ShowWalletOnboarding();
+        delegate_->ShowWalletOnboarding(origin_);
         wallet_page_shown_ = true;
       }
       std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
@@ -88,7 +90,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
 
     case PermissionCheckResult::kNoAccounts:
       if (!wallet_page_shown_) {
-        delegate_->ShowAccountCreation(mojom::CoinType::ADA);
+        delegate_->ShowAccountCreation(mojom::CoinType::ADA, origin_);
         wallet_page_shown_ = true;
       }
       std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
@@ -111,7 +113,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
       pending_request_cardano_permissions_origin_ = origin;
 
       brave_wallet_service_->keyring_service()->RequestUnlock();
-      delegate_->ShowPanel();
+      delegate_->ShowPanel(origin_);
       return;
 
     case PermissionCheckResult::kGetAllowedAccountsFailed:
@@ -128,7 +130,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
       auto cardano_account_ids = GetCardanoAccountPermissionIdentifiers(
           brave_wallet_service_->keyring_service());
       return delegate_->RequestPermissions(
-          mojom::CoinType::ADA, cardano_account_ids,
+          mojom::CoinType::ADA, cardano_account_ids, origin,
           base::BindOnce(&CardanoProviderImpl::OnRequestCardanoPermissions,
                          weak_ptr_factory_.GetWeakPtr(), std::move(cardano_api),
                          std::move(callback), origin));
@@ -216,10 +218,11 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     return;
   }
 
-  cardano_api_receivers_.Add(std::make_unique<CardanoApiImpl>(
-                                 brave_wallet_service_.get(),
-                                 delegate_factory_.Run(), account_id.Clone()),
-                             std::move(cardano_api));
+  cardano_api_receivers_.Add(
+      std::make_unique<CardanoApiImpl>(brave_wallet_service_.get(),
+                                       delegate_factory_.Run(),
+                                       account_id.Clone(), origin_),
+      std::move(cardano_api));
 
   std::move(callback).Run(nullptr);
 }

@@ -5,26 +5,23 @@
 
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
-import { render, act, within } from '@testing-library/react'
+import { render, act, within, waitFor } from '@testing-library/react'
 import { ModelSelector } from '.'
 import '@testing-library/jest-dom'
-import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-
-// Mock the contexts
-jest.mock('../../state/ai_chat_context', () => ({
-  useAIChat: jest.fn(),
-}))
-
 jest.mock('../../state/conversation_context', () => ({
   useConversation: jest.fn(),
 }))
+import { MockContext } from '../../state/mock_context'
+import { clearAllDataForTesting } from '$web-common/api'
 
 describe('ModelSelector', () => {
-  const mockUseAIChat = useAIChat as jest.MockedFunction<typeof useAIChat>
   const mockUseConversation = useConversation as jest.MockedFunction<
     typeof useConversation
   >
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
 
   const mockModels = [
     {
@@ -115,10 +112,6 @@ describe('ModelSelector', () => {
     },
   ]
 
-  const defaultAIChatContext = {
-    isPremiumUser: false,
-  }
-
   const defaultConversationContext = {
     allModels: mockModels,
     currentModel: mockModels[1],
@@ -127,7 +120,6 @@ describe('ModelSelector', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockUseAIChat.mockReturnValue(defaultAIChatContext as any)
     mockUseConversation.mockReturnValue(defaultConversationContext as any)
   })
 
@@ -154,8 +146,27 @@ describe('ModelSelector', () => {
     return showAllModelsButton
   }
 
+  const renderModelSelector = (
+    props?: Partial<React.ComponentProps<typeof MockContext>>,
+  ) => {
+    return render(
+      <MockContext
+        initialState={{
+          ...props?.initialState,
+        }}
+        aiChatOverrides={{
+          isAIChatAgentProfile: false,
+          isAIChatAgentProfileFeatureEnabled: false,
+          ...props?.aiChatOverrides,
+        }}
+      >
+        <ModelSelector />
+      </MockContext>,
+    )
+  }
+
   it('renders the component with the current model', async () => {
-    render(<ModelSelector />)
+    renderModelSelector()
 
     // Make sure the anchor button is visible
     const anchorButton = getAnchorButton()
@@ -178,7 +189,7 @@ describe('ModelSelector', () => {
   })
 
   it('shows all models if Show all models button is clicked', async () => {
-    render(<ModelSelector />)
+    renderModelSelector()
 
     // Click the anchor button to show menu
     const anchorButton = getAnchorButton()
@@ -202,9 +213,13 @@ describe('ModelSelector', () => {
       'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
     )
 
-    // Check that all model items are visible
+    // Check that all model items are visible (wait for re-render)
+    await waitFor(() => {
+      const allMenuItems =
+        document.querySelectorAll<HTMLElement>('leo-menu-item')
+      expect(allMenuItems).toHaveLength(7)
+    })
     const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(allMenuItems).toHaveLength(7)
     expect(allMenuItems[0]).toHaveTextContent('Automatic')
     expect(allMenuItems[1]).toHaveTextContent('Basic Model')
     expect(allMenuItems[2]).toHaveTextContent('Another Basic Model')
@@ -258,7 +273,7 @@ describe('ModelSelector', () => {
       setCurrentModel: mockSetCurrentModel,
     } as any)
 
-    render(<ModelSelector />)
+    renderModelSelector()
 
     // Click the anchor button to show menu
     const anchorButton = getAnchorButton()
@@ -277,14 +292,17 @@ describe('ModelSelector', () => {
       showAllModelsButton?.click()
     })
 
-    // Select another model
+    // Wait for re-render and select another model
+    await waitFor(() => {
+      const items = document.querySelectorAll<HTMLElement>('leo-menu-item')
+      expect(items).toHaveLength(7)
+    })
     const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(allMenuItems).toHaveLength(7)
     await act(async () => {
       allMenuItems[1].click()
     })
 
-    // Verify setCurrentModel was called with the premium model
+    // Verify setCurrentModel was called with the model key
     expect(mockSetCurrentModel).toHaveBeenCalledWith(mockModels[1])
     expect(menu).toHaveAttribute('isOpen', 'false')
   })
@@ -293,12 +311,6 @@ describe('ModelSelector', () => {
     'should only show compatible models in the model selector if in'
       + 'agent mode',
     async () => {
-      mockUseAIChat.mockReturnValue({
-        ...defaultAIChatContext,
-        isAIChatAgentProfileFeatureEnabled: true,
-        isAIChatAgentProfile: true,
-      } as any)
-
       // Simulate the real context behavior: in agent mode,
       // filter models by supportsTools. This mimics the logic
       // in Conversation Context.
@@ -310,7 +322,12 @@ describe('ModelSelector', () => {
         allModels: filteredModels,
       } as any)
 
-      render(<ModelSelector />)
+      renderModelSelector({
+        aiChatOverrides: {
+          isAIChatAgentProfileFeatureEnabled: true,
+          isAIChatAgentProfile: true,
+        },
+      })
 
       // Click the anchor button to show menu
       const anchorButton = getAnchorButton()
@@ -345,7 +362,7 @@ describe('ModelSelector', () => {
     },
   )
   it('should display near icon and beta label for near models', async () => {
-    render(<ModelSelector />)
+    renderModelSelector()
 
     // Make sure the anchor button is visible
     const anchorButton = getAnchorButton()

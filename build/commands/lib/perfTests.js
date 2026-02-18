@@ -14,7 +14,7 @@ const runPerfTests = (
   targetBuildConfig,
   options,
 ) => {
-  args = [
+  const args = [
     path.join(config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
     perfConfig,
   ]
@@ -32,7 +32,7 @@ const runPerfTests = (
     config.buildConfig = targetBuildConfig
     config.update(options)
 
-    binaryPath = path.join(config.outputDir, 'brave')
+    let binaryPath = path.join(config.outputDir, 'brave')
     if (process.platform === 'win32') {
       binaryPath += '.exe'
     } else if (process.platform === 'darwin') {

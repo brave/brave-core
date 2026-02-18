@@ -24,7 +24,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_TRUE(request_info->new_url_spec().empty());
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -36,7 +36,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -51,7 +51,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -67,7 +67,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -84,7 +84,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -99,7 +99,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1_http) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -115,7 +115,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2_http) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -131,7 +131,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3_http) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -150,7 +150,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5_http) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -166,7 +166,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -182,7 +182,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -197,7 +197,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGvt1) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -212,7 +212,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGoogleDl) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -225,7 +225,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, DontModifyGvt1ForWidevine) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, "");
+  EXPECT_EQ(request_info->new_url_spec(), "");
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -238,7 +238,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, DontModifyGvt1ForWidevine2) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, "");
+  EXPECT_EQ(request_info->new_url_spec(), "");
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -252,7 +252,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, "");
+  EXPECT_EQ(request_info->new_url_spec(), "");
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -266,7 +266,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, "");
+  EXPECT_EQ(request_info->new_url_spec(), "");
   EXPECT_EQ(rc, net::OK);
 }
 
@@ -283,6 +283,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(request_info->new_url_spec(), expected_url);
   EXPECT_EQ(rc, net::OK);
 }

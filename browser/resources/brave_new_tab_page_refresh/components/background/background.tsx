@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { SponsoredImageBackground } from '../../state/background_state'
+import { SponsoredImageBackground } from '../../state/background_store'
 import { loadImage } from '../../lib/image_loader'
 import { IframeBackground, IframeBackgroundHandle } from './iframe_background'
 import {

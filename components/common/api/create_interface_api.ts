@@ -35,46 +35,6 @@ export function clearAllDataForTesting() {
   sharedQueryClient = new QueryClient()
 }
 
-//
-// This file contains a factory function, createInterfaceApi, to create a
-// subscribable API with a shared cache based off a mojom interface which
-// exposes features of Tanstack Query in a similar fashion to
-// RTK Query's createApi.
-//
-// Whilst this sets up a store that could be (ab)used to store, update and subscribe
-// to any data, it encourages its use only for remote-fetched data,
-// and not reactive state needed for the UI.
-// The intention is for that kind of state to be handled by the
-// more featureful UI framework
-//
-// Things you can provide and what they do:
-//
-// ENDPOINTS:
-//
-// { endpoints: { myEndpoint: { query: (arg1, arg2) => Promise<Result> } } }
-// - Creates api.myEndpoint.fetch(arg1, arg2) to manually call and update the cache
-// - Creates api.useMyEndpoint(arg1, arg2) to create a React Query hook that fetches the data
-//
-// { endpoints: { myEndpoint: { mutation: (arg1, arg2) => Promise<Result> } } }
-// - Creates api.myEndpoint.mutate(arg1, arg2) to manually call and update the cache
-// - Creates api.useMyEndpoint() to create a React Query hook that runs the mutation
-//   only when .mutate() is called.
-//
-// ACTIONS:
-//
-// { actions: { myAction: (arg1, arg2) => void } }
-// - Creates api.myAction(arg1, arg2) to call the action directly. Does not cache.
-//
-// EVENTS:
-//
-// { events: { onMyEvent: event<[arg1, arg2], Payload>() } }
-// - Creates api.emitEvent('onMyEvent', arg1, arg2, payload) to emit an event
-// - Creates api.useOnMyEvent(arg1, arg2) to create a React Query hook that subscribes
-//   to the latest payload for that event
-// - Creates api.handledOnMyEvent(arg1, arg2) to reset the event data for that key
-//   so that subscribers will no longer receive the payload.
-//
-
 type ChangeReturnType<T extends (...args: any[]) => any, R> = T extends (
   ...args: infer P
 ) => any
@@ -193,6 +153,18 @@ export function event<Args extends any[], Payload extends any[]>(
 // Basis for a unique key for each call to createInterfaceApi for the current scope
 let globalRootInstanceCount = 0
 
+/**
+ * Factory function to create a subscribable API with a shared cache based off
+ * (usually a mojom) interface which exposes features of Tanstack Query in a
+ * similar fashion to RTK Query's createApi.
+ *
+ * Whilst this sets up a store that could be (ab)used to store, update and
+ * subscribe to any data, it encourages its use only for remote-fetched data,
+ * and not reactive state needed for the UI. The intention is for that kind of
+ * state to be handled by the more featureful UI framework.
+ *
+ * See readme.md for detailed usage instructions and examples.
+ */
 export function createInterfaceApi<
   /**
    * ExposedActions is a record of simple actions that can be called directly from the UI.
@@ -206,8 +178,7 @@ export function createInterfaceApi<
    */
   const ExposedActions extends Record<
     string,
-    | ((...args: readonly any[]) => any)
-    | Record<string, (...args: readonly any[]) => any>
+    Function | Record<string, Function>
   >,
   const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
   EventDefinitions extends Record<string, EventDef<any[], any>> = {},
@@ -676,6 +647,8 @@ export function createInterfaceApi<
   type PayloadOf<K extends EvAll> =
     EvDefs[K] extends EventDef<any, infer P extends any[]> ? P : never
 
+  type EventInternalData<T> = { payload: T; eventCount: number }
+
   function emitEvent<K extends EvAll>(
     eventName: K,
     ...argsAndPayload: [...KeyArgsOf<K>, PayloadOf<K>]
@@ -685,10 +658,9 @@ export function createInterfaceApi<
       0,
       argsAndPayload.length - 1,
     ) as KeyArgsOf<K>
-
-    queryClient.setQueryData<PayloadOf<K>>(
-      [rootKey, eventName, ...keyArgs] as [number, K, ...KeyArgsOf<K>],
-      payload,
+    queryClient.setQueryData<EventInternalData<PayloadOf<K>>>(
+      [rootKey, eventName, ...keyArgs],
+      (old) => ({ payload, eventCount: (old?.eventCount ?? 0) + 1 }),
     )
   }
 
@@ -727,7 +699,8 @@ export function createInterfaceApi<
     ) => () => void
   } & {
     /**
-     * Clear event data
+     * Clear event data so that useCurrentMyEvent will return undefined until
+     * the next time the event is emitted.
      */
     [K in EvAll as `reset${Capitalize<string & K>}`]: (
       ...keyArgs: KeyArgsOf<K>
@@ -756,7 +729,7 @@ export function createInterfaceApi<
 
     // useCurrentMyEvent
     ;(eventHooks as any)[hookNameUseCurrent] = (...keyArgs: any[]) => {
-      const hookData = useQuery<PayloadOf<typeof eventName>>(
+      const hookData = useQuery<EventInternalData<PayloadOf<typeof eventName>>>(
         {
           queryKey: [...keyBase, ...keyArgs],
           enabled: false,
@@ -771,8 +744,8 @@ export function createInterfaceApi<
       )
 
       return {
-        hasEmitted: hookData.isPlaceholderData,
-        data: hookData.data,
+        hasEmitted: hookData.isFetched,
+        data: hookData.data?.payload,
       }
     }
 
@@ -781,23 +754,22 @@ export function createInterfaceApi<
       handler: (...result: PayloadOf<typeof eventName>) => {},
       ...keyArgs: any[]
     ) => {
-      const observer = new QueryObserver<PayloadOf<typeof eventName>>(
-        queryClient,
-        {
-          queryKey: [...keyBase, ...keyArgs],
-          enabled: false,
-          queryFn: () =>
-            Promise.reject(
-              new Error(
-                `${eventName as string} is an event, not a query and should not try to fetch data`,
-              ),
+      const observer = new QueryObserver<
+        EventInternalData<PayloadOf<typeof eventName>>
+      >(queryClient, {
+        queryKey: [...keyBase, ...keyArgs],
+        enabled: false,
+        queryFn: () =>
+          Promise.reject(
+            new Error(
+              `${eventName as string} is an event, not a query and should not try to fetch data`,
             ),
-        },
-      )
+          ),
+      })
 
       const unsubscribe = observer.subscribe((result) => {
         if (result.data !== undefined) {
-          handler(...result.data)
+          handler(...result.data.payload)
         } else {
           // We would only get here if there is never any payload type for
           // this event.
@@ -832,15 +804,12 @@ export function createInterfaceApi<
       }, deps)
     }
 
-    // Now that we have the subscribe pattern, we don't really need to reset the data
+    // Remove any emitted data for this event
     ;(eventHooks as any)[handledName] = (...keyArgs: any[]) => {
-      return () => {
-        // Could consider using resetQueries here
-        queryClient.resetQueries({
-          queryKey: [...keyBase, ...keyArgs],
-          exact: true,
-        })
-      }
+      queryClient.resetQueries({
+        queryKey: [...keyBase, ...keyArgs],
+        exact: true,
+      })
     }
   })
 

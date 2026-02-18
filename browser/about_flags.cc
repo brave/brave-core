@@ -576,6 +576,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),               \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-global-side-panel",                                   \
+          "Brave AI Chat Global Side Panel",                                   \
+          "Keeps the same conversation when navigating sites or changing "     \
+          "active tab",                                                        \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatGlobalSidePanelEverywhere),            \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-rich-search-widgets",                                 \
           "Brave AI Chat Rich Search Widgets",                                 \
           "Enables AI Chat Rich Search Widgets",                               \
@@ -634,6 +643,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "when the conversation is created.",                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-conversation-api-v2",                                 \
+          "Brave AI Chat Conversation API V2",                                 \
+          "Enables Conversation API V2 for AI Chat",                           \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),     \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES

@@ -3,11 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable jest/no-conditional-expect */
+
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
-import InputBox, { InputBoxProps } from '.'
+import { clearAllDataForTesting } from '$web-common/api'
 import { ContentType, UploadedFileType } from '../../../common/mojom'
 import { defaultContext } from '../../state/conversation_context'
+import { MockContext } from '../../state/mock_context'
+import InputBox, { InputBoxProps } from '.'
 
 // Mock the convertFileToUploadedFile function
 jest.mock('../../utils/file_utils', () => ({
@@ -52,25 +56,32 @@ async function renderInputBox(
 }
 
 describe('input box', () => {
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
   it('associated content is rendered in input box when not associated with a turn', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          associatedContentInfo: [
-            {
-              contentId: 1,
-              contentType: ContentType.PageContent,
-              contentUsedPercentage: 0.5,
-              title: 'Associated Content',
-              url: { url: 'https://example.com' },
-              uuid: '1234',
-              conversationTurnUuid: undefined,
-            },
-          ],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            associatedContentInfo: [
+              {
+                contentId: 1,
+                contentType: ContentType.PageContent,
+                contentUsedPercentage: 0.5,
+                title: 'Associated Content',
+                url: { url: 'https://example.com' },
+                uuid: '1234',
+                conversationTurnUuid: undefined,
+              },
+            ],
+          }}
+          conversationStarted={false}
+        />
+        ,
+      </MockContext>,
     )
 
     expect(
@@ -83,13 +94,15 @@ describe('input box', () => {
 
   it('associated content is not rendered in input box when there is no associated content', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          associatedContentInfo: [],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            associatedContentInfo: [],
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
@@ -100,23 +113,25 @@ describe('input box', () => {
 
   it('associated content is not rendered in input box after being associated with a turn', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          associatedContentInfo: [
-            {
-              contentId: 1,
-              contentType: ContentType.PageContent,
-              contentUsedPercentage: 0.5,
-              title: 'Associated Content',
-              url: { url: 'https://example.com' },
-              uuid: '1234',
-              conversationTurnUuid: 'turn-1',
-            },
-          ],
-        }}
-        conversationStarted
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            associatedContentInfo: [
+              {
+                contentId: 1,
+                contentType: ContentType.PageContent,
+                contentUsedPercentage: 0.5,
+                title: 'Associated Content',
+                url: { url: 'https://example.com' },
+                uuid: '1234',
+                conversationTurnUuid: 'turn-1',
+              },
+            ],
+          }}
+          conversationStarted
+        />
+      </MockContext>,
     )
 
     expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
@@ -127,13 +142,15 @@ describe('input box', () => {
 
   it('send button is disabled when the input text is empty', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          inputText: [''],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            inputText: [''],
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     const sendButton = container.querySelector('.sendButtonDisabled')
@@ -143,13 +160,15 @@ describe('input box', () => {
 
   it('send button is enabled when the input text is not empty', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          inputText: ['test'],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            inputText: ['test'],
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     const sendButton = container.querySelector('.button')
@@ -159,10 +178,12 @@ describe('input box', () => {
 
   it('streaming button is shown while generating', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{ ...testContext, isGenerating: true }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{ ...testContext, isGenerating: true }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     const streamingButton = container.querySelector('.streamingButton')
@@ -223,15 +244,17 @@ describe('input box', () => {
     'Content Agent button is shown only if the feature is enabled',
     async (params: ContentAgentParams) => {
       await renderInputBox(
-        <InputBox
-          context={{
-            ...testContext,
-            isAIChatAgentProfileFeatureEnabled:
-              params.isAgentProfileFeatureEnabled,
-            isAIChatAgentProfile: params.isAgentProfile,
-          }}
-          conversationStarted={params.isConversationStarted}
-        />,
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+              isAIChatAgentProfileFeatureEnabled:
+                params.isAgentProfileFeatureEnabled,
+              isAIChatAgentProfile: params.isAgentProfile,
+            }}
+            conversationStarted={params.isConversationStarted}
+          />
+        </MockContext>,
       )
 
       const contentAgentLaunchButton = screen.queryByTitle(
@@ -257,20 +280,22 @@ describe('input box', () => {
 
   it('documents show up in attachment wrapper', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          pendingMessageFiles: [
-            {
-              filename: 'test.pdf',
-              data: new ArrayBuffer(0),
-              type: UploadedFileType.kPdf,
-              filesize: BigInt(1024),
-            },
-          ],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            pendingMessageFiles: [
+              {
+                filename: 'test.pdf',
+                data: new ArrayBuffer(0),
+                type: UploadedFileType.kPdf,
+                filesize: BigInt(1024),
+              },
+            ],
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     expect(screen.getByText('test.pdf')).toBeInTheDocument()
@@ -280,26 +305,28 @@ describe('input box', () => {
 
   it('attachments are shown if only documents are available', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          pendingMessageFiles: [
-            {
-              filename: 'document1.pdf',
-              data: new ArrayBuffer(0),
-              type: UploadedFileType.kPdf,
-              filesize: BigInt(2048),
-            },
-            {
-              filename: 'document2.pdf',
-              data: new ArrayBuffer(0),
-              type: UploadedFileType.kPdf,
-              filesize: BigInt(1536),
-            },
-          ],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            pendingMessageFiles: [
+              {
+                filename: 'document1.pdf',
+                data: new ArrayBuffer(0),
+                type: UploadedFileType.kPdf,
+                filesize: BigInt(2048),
+              },
+              {
+                filename: 'document2.pdf',
+                data: new ArrayBuffer(0),
+                type: UploadedFileType.kPdf,
+                filesize: BigInt(1536),
+              },
+            ],
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     const attachmentWrapper = container.querySelector('.attachmentWrapper')
@@ -313,36 +340,38 @@ describe('input box', () => {
 
   it('combinations of associated content, images and documents show up', async () => {
     const { container } = await renderInputBox(
-      <InputBox
-        context={{
-          ...testContext,
-          associatedContentInfo: [
-            {
-              contentId: 1,
-              contentType: ContentType.PageContent,
-              contentUsedPercentage: 0.5,
-              title: 'Page Content',
-              url: { url: 'https://example.com' },
-              uuid: '1234',
-            },
-          ],
-          pendingMessageFiles: [
-            {
-              filename: 'image.jpg',
-              data: new ArrayBuffer(0),
-              type: UploadedFileType.kImage,
-              filesize: BigInt(1024),
-            },
-            {
-              filename: 'document.pdf',
-              data: new ArrayBuffer(0),
-              type: UploadedFileType.kPdf,
-              filesize: BigInt(2048),
-            },
-          ],
-        }}
-        conversationStarted={false}
-      />,
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            associatedContentInfo: [
+              {
+                contentId: 1,
+                contentType: ContentType.PageContent,
+                contentUsedPercentage: 0.5,
+                title: 'Page Content',
+                url: { url: 'https://example.com' },
+                uuid: '1234',
+              },
+            ],
+            pendingMessageFiles: [
+              {
+                filename: 'image.jpg',
+                data: new ArrayBuffer(0),
+                type: UploadedFileType.kImage,
+                filesize: BigInt(1024),
+              },
+              {
+                filename: 'document.pdf',
+                data: new ArrayBuffer(0),
+                type: UploadedFileType.kPdf,
+                filesize: BigInt(2048),
+              },
+            ],
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
     )
 
     const attachmentWrapper = container.querySelector('.attachmentWrapper')
@@ -389,13 +418,15 @@ describe('input box', () => {
     it('filters image files and calls attachImages on paste', async () => {
       const mockAttachImages = jest.fn()
       const { container } = await renderInputBox(
-        <InputBox
-          context={{
-            ...testContext,
-            attachImages: mockAttachImages,
-          }}
-          conversationStarted={false}
-        />,
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+              attachImages: mockAttachImages,
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
       )
 
       const textarea = container.querySelector('[data-editor]')!
@@ -437,14 +468,16 @@ describe('input box', () => {
       + ' and isAIChatAgentProfile is true',
     async () => {
       const { container } = await renderInputBox(
-        <InputBox
-          context={{
-            ...testContext,
-            isAIChatAgentProfileFeatureEnabled: true,
-            isAIChatAgentProfile: true,
-          }}
-          conversationStarted={false}
-        />,
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+              isAIChatAgentProfileFeatureEnabled: true,
+              isAIChatAgentProfile: true,
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
       )
       expect(
         container.querySelector('.contentAgentWarning'),
@@ -457,14 +490,16 @@ describe('input box', () => {
       + ' and isAIChatAgentProfile is true',
     async () => {
       const { container } = await renderInputBox(
-        <InputBox
-          context={{
-            ...testContext,
-            isAIChatAgentProfileFeatureEnabled: true,
-            isAIChatAgentProfile: true,
-          }}
-          conversationStarted={true}
-        />,
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+              isAIChatAgentProfileFeatureEnabled: true,
+              isAIChatAgentProfile: true,
+            }}
+            conversationStarted={true}
+          />
+        </MockContext>,
       )
       expect(
         container.querySelector('.contentAgentWarning'),
@@ -477,12 +512,14 @@ describe('input box', () => {
       + 'is not true',
     async () => {
       const { container } = await renderInputBox(
-        <InputBox
-          context={{
-            ...testContext,
-          }}
-          conversationStarted={true}
-        />,
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+            }}
+            conversationStarted={true}
+          />
+        </MockContext>,
       )
       expect(
         container.querySelector('.contentAgentWarning'),

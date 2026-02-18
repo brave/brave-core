@@ -81,6 +81,8 @@
     <color name="text_color_30">#b7c6ff</color>
 
     <!-- Onboarding colors -->
+    <color name="onboarding_background_gradient_start">#FFEEF2FF</color>
+    <color name="onboarding_background_gradient_end">#FFDFE4F6</color>
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
     <color name="onboarding_black">#1e2029</color>
@@ -342,10 +344,10 @@
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
     <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 
-    <color name="primitive_blurple_10">#110c50</color>
+    <color name="primitive_blurple_10">#15192D</color>
     <color name="primitive_blurple_15">#181266</color>
     <color name="primitive_blurple_20">#20197f</color>
-    <color name="primitive_blurple_25">#271e93</color>
+    <color name="primitive_blurple_25">#272F55</color>
     <color name="primitive_blurple_35">#3a2ecd</color>
     <color name="primitive_blurple_40">#434fcf</color>
     <color name="primitive_blurple_50">#5b67e8</color>
@@ -353,9 +355,8 @@
     <color name="primitive_blurple_90">#dfe4f6</color>
     <color name="primitive_blurple_95">#f0f2fa</color>
     <color name="primitive_blurple_98">#f9fafd</color>
-    <color name="semantic_text_interactive">#BDC2FF</color>
-    <color name="semantic_divider_interactive">#7985FF</color>
-    <color name="semantic_button_background">#BDC2FF</color>
+    <color name="semantic_text_interactive">#BCC6F3</color>
+    <color name="semantic_divider_interactive">#7686EC</color>
 
     <color name="schemes_on_surface">#1c1c1d</color>
     <color name="schemes_on_surface_variant">#464649</color>

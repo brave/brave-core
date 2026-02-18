@@ -39,7 +39,8 @@ const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      std::size(kZCashShieldedTransactionsDisabled), nullptr},
-    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
+    {"- Shielded support enabled (WebUI Only)",
+     kZCashShieldedTransactionsEnabled,
      std::size(kZCashShieldedTransactionsEnabled), nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
@@ -57,8 +58,8 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
           "brave-wallet-zcash",                                               \
-          "Enable BraveWallet ZCash support",                                 \
-          "Zcash support for native Brave Wallet",                            \
+          "Enable BraveWallet ZCash support by option",                       \
+          "Zcash support for Brave Wallet",                                   \
           flags_ui::kOsIos,                                                   \
           FEATURE_WITH_PARAMS_VALUE_TYPE(                                     \
               brave_wallet::features::kBraveWalletZCashFeature,               \
@@ -273,6 +274,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "Replace WKWebView usages with Chromium web views",                  \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViews),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-use-chromium-web-views-javascript",                           \
+          "Use Chromium JavaScript Backend",                                   \
+          "Replaces the system used to inject JavaScript features into the "   \
+          "page",                                                              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViewsJavaScript), \
       },                                                                       \
       {                                                                        \
           "brave-debounce",                                                    \

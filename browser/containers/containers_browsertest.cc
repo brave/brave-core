@@ -884,6 +884,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ShouldShowTabAccent) {
   EXPECT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
 
   // The standard tab should show large accent icon
+  RunScheduledLayouts();
   EXPECT_TRUE(tab_in_container->ShouldShowLargeAccentIcon());
 
   // A pinned tab should not show large accent icon

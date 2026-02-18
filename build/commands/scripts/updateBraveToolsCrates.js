@@ -7,5 +7,5 @@ const config = require('../lib/config')
 const path = require('path')
 const util = require('../lib/util')
 
-args = [path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py')]
+const args = [path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py')]
 util.run('vpython3', args, config.defaultOptions)

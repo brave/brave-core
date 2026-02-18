@@ -62,13 +62,13 @@ int OnBeforeStartTransaction_SearchAdsHeader(
   // - `request_url` host is disallowed.
   // - `tab_origin` and `initiator_url` hosts are disallowed.
 
-  Profile* profile = Profile::FromBrowserContext(request->browser_context);
+  Profile* profile = Profile::FromBrowserContext(request->browser_context());
   if (ShouldSetHeaderForProfile(profile) &&
-      brave_search::IsAllowedHost(request->request_url) &&
-      (brave_search::IsAllowedHost(request->tab_origin) ||
-       brave_search::IsAllowedHost(request->initiator_url))) {
+      brave_search::IsAllowedHost(request->request_url()) &&
+      (brave_search::IsAllowedHost(request->tab_origin()) ||
+       brave_search::IsAllowedHost(request->initiator_url()))) {
     headers->SetHeader(kSearchAdsHeader, kSearchAdsDisabledValue);
-    request->set_headers.insert(kSearchAdsHeader);
+    request->mutable_modified_headers().insert(kSearchAdsHeader);
   }
 
   return net::OK;

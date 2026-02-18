@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { getString } from '../../lib/strings'
-import { ConnectionState } from '../../state/vpn_state'
+import { ConnectionState } from '../../state/vpn_store'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
 import { WidgetMenu } from './widget_menu'
 import classNames from '$web-common/classnames'

@@ -165,8 +165,6 @@ class TabBrowserData: NSObject, TabObserver {
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
   @MainActor var currentPageData: PageData?
 
-  var isEditing = false
-
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
   var translationState: TranslateURLBarButton.TranslateState = .unavailable

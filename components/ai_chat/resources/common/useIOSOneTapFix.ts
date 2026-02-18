@@ -70,7 +70,16 @@ export function useIOSOneTapFix(): void {
       const path = e.composedPath()
       for (const node of path) {
         if (node instanceof Element) {
-          const tag = node.tagName?.toLowerCase() ?? ''
+          const el = node as HTMLElement
+          const tag = el.tagName?.toLowerCase() ?? ''
+
+          // Contenteditable (e.g. chat input): focus on first tap so iOS
+          // doesn't require double-tap to focus.
+          if (el.isContentEditable) {
+            el.focus()
+            e.preventDefault()
+            return
+          }
 
           // Dropdown: tap may land on host or content; open via inner button
           if (tag === 'leo-dropdown' && clickLeoDropdownTrigger(node)) {
@@ -79,7 +88,7 @@ export function useIOSOneTapFix(): void {
           }
           if (INTERACTIVE_TAGS.has(tag)) {
             e.preventDefault()
-            ;(node as HTMLElement).click()
+            el.click()
             return
           }
         }

@@ -33,7 +33,7 @@ describe('bigIntToUint128', () => {
 
   it('should throw when numeric limits are exceeded', () => {
     const f = () => bigIntToUint128(U128_MAX + BigInt(1))
-    expect(f).toThrowError('numeric limits exceeded for amount u128')
+    expect(f).toThrow('numeric limits exceeded for amount u128')
   })
 })
 

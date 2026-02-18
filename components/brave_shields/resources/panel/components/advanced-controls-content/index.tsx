@@ -186,9 +186,6 @@ function AdvancedControlsContent() {
               onChange={handleAdBlockModeChange}
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
-              <span slot="label">
-                {getLocale('braveShieldsTrackersAndAds')}
-              </span>
               {adBlockModeOptions.map(entry => {
                 return (
                   <leo-option key={entry.value} value={entry.value?.toString()}>
@@ -214,9 +211,6 @@ function AdvancedControlsContent() {
               value={siteSettings?.httpsUpgradeMode?.toString()}
               onChange={handleHttpsUpgradeModeChange}
             >
-              <span slot="label">
-                {getLocale('braveShieldsHttpsUpgradeModeStandard')}
-              </span>
               {httpsUpgradeModeOptions.map(entry => {
                 return (
                   <leo-option key={entry.value} value={entry.value?.toString()}>{entry.text}</leo-option>
@@ -261,9 +255,6 @@ function AdvancedControlsContent() {
               onChange={handleFingerprintModeSelectionChange}
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
-              <span slot="label">
-                {getLocale('braveShieldsFingerprintingBlocked')}
-              </span>
               {fingerprintModeOptions.map(entry => {
                 return (
                   <leo-option key={entry.value} value={entry.value?.toString()}>{entry.text}</leo-option>
@@ -299,9 +290,6 @@ function AdvancedControlsContent() {
               onChange={handleCookieBlockModeChange}
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
-              <span slot="label">
-                {getLocale('braveShieldsCookiesBlockAll')}
-              </span>
               {cookieBlockModeOptions.map(entry => {
                 return (
                   <leo-option key={entry.value} value={entry.value.toString()}>{entry.text}</leo-option>

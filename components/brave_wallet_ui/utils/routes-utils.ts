@@ -311,7 +311,15 @@ export const makeSwapOrBridgeRoute = ({
       }
     : toAccountIdParams
 
-  const params = new URLSearchParams(toTokenParams)
+  const fromShieldedParams = fromToken.isShielded
+    ? { ...toTokenParams, fromIsShielded: 'true' }
+    : toTokenParams
+
+  const allParams = toToken?.isShielded
+    ? { ...fromShieldedParams, toIsShielded: 'true' }
+    : fromShieldedParams
+
+  const params = new URLSearchParams(allParams)
 
   const route = routeType === 'bridge' ? WalletRoutes.Bridge : WalletRoutes.Swap
 

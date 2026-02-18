@@ -192,9 +192,10 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
   EXPECT_EQ(tx.GetBaseFee(), fee);
 
   Eip2930Transaction tx2 = *Eip2930Transaction::FromTxData(
-      mojom::TxData::New("0x0", "0x0", "0x0", "", "0x0", data, false,
+      mojom::TxData::New("0x0", "0x0", "0x0", "0x", "0x0", data, false,
                          std::nullopt),
       0x15BE);
+
   *tx2.access_list() = *tx.access_list();
   // Plus contract creation
   const uint256_t fee2 = fee + uint256_t(32000);
@@ -227,8 +228,7 @@ TEST(Eip2930TransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->nonce(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
   EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
-  EXPECT_EQ(tx->to(),
-            EthAddress::FromHex("0x3535353535353535353535353535353535353535"));
+  EXPECT_EQ(tx->GetToHex(), "0x3535353535353535353535353535353535353535");
   EXPECT_EQ(tx->value(), uint256_t(42));
   EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
   EXPECT_EQ(tx->chain_id(), uint256_t(1));

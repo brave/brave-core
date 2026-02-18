@@ -85,11 +85,11 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
   std::shared_ptr<BraveRequestInfo> MakeRequest(std::string_view url,
                                                 TestingProfile* profile) {
     auto request = std::make_shared<BraveRequestInfo>(GURL(url));
-    request->request_url = GURL(kBraveSearchTabUrl);
-    request->tab_origin = GURL(kBraveSearchTabUrl);
-    request->initiator_url = GURL(kBraveSearchTabUrl);
-    request->resource_type = blink::mojom::ResourceType::kMainFrame;
-    request->browser_context = profile;
+    request->set_request_url(GURL(kBraveSearchTabUrl));
+    request->set_tab_origin(GURL(kBraveSearchTabUrl));
+    request->set_initiator_url(GURL(kBraveSearchTabUrl));
+    request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    request->set_browser_context(profile);
     return request;
   }
 
@@ -125,7 +125,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest,
   OptOutOfSearchResultAds();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->resource_type = blink::mojom::ResourceType::kMainFrame;
+  request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
   VerifyHeaderExistsExpectation(request);
 }
 
@@ -134,7 +134,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest, HeaderShouldExistForXhrResource) {
   OptOutOfSearchResultAds();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->resource_type = blink::mojom::ResourceType::kXhr;
+  request->set_resource_type(blink::mojom::ResourceType::kXhr);
   VerifyHeaderExistsExpectation(request);
 }
 
@@ -143,7 +143,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest, HeaderShouldExistForImageResource) {
   OptOutOfSearchResultAds();
 
   auto request = MakeRequest(kBraveSearchImageRequestUrl, profile_.get());
-  request->resource_type = blink::mojom::ResourceType::kImage;
+  request->set_resource_type(blink::mojom::ResourceType::kImage);
   VerifyHeaderExistsExpectation(request);
 }
 
@@ -152,7 +152,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest,
   EnableBraveRewards();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->tab_origin = GURL();
+  request->set_tab_origin(GURL());
   VerifyMissingHeaderExpectation(request);
 }
 
@@ -161,7 +161,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest,
   EnableBraveRewards();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->initiator_url = GURL();
+  request->set_initiator_url(GURL());
   VerifyMissingHeaderExpectation(request);
 }
 
@@ -171,8 +171,8 @@ TEST_F(
   EnableBraveRewards();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->tab_origin = GURL();
-  request->initiator_url = GURL();
+  request->set_tab_origin(GURL());
+  request->set_initiator_url(GURL());
   VerifyMissingHeaderExpectation(request);
 }
 
@@ -181,7 +181,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest,
   EnableBraveRewards();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->tab_origin = GURL(kNonBraveSearchTabUrl);
+  request->set_tab_origin(GURL(kNonBraveSearchTabUrl));
   VerifyMissingHeaderExpectation(request);
 }
 
@@ -190,7 +190,7 @@ TEST_F(SearchAdsHeaderDelegateHelperTest,
   EnableBraveRewards();
 
   auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->initiator_url = GURL(kNonBraveSearchTabUrl);
+  request->set_initiator_url(GURL(kNonBraveSearchTabUrl));
   VerifyMissingHeaderExpectation(request);
 }
 

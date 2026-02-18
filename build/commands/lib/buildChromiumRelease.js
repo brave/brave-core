@@ -35,8 +35,8 @@ const chromiumConfigs = {
     buildTargets: ['mini_installer'],
     processArtifacts: () => {
       // Repack it to reduce the size and use .zip instead of .7z.
-      input = path.join(config.outputDir, 'chrome.7z')
-      output = path.join(config.outputDir, `${getOutputFilename()}.zip`)
+      const input = path.join(config.outputDir, 'chrome.7z')
+      const output = path.join(config.outputDir, `${getOutputFilename()}.zip`)
       util.run(
         'python3',
         [

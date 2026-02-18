@@ -620,8 +620,8 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
     return nullptr;
   }
 
-  const auto eth_addr = EthAddress::FromHex(*address);
-  if (eth_addr.IsEmpty()) {
+  const auto eth_addr = EthAddress::From0xHex(*address);
+  if (!eth_addr) {
     error_message = absl::StrFormat("Invalid address '%s'", *address);
     return nullptr;
   }
@@ -680,7 +680,7 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   }
 
   return mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), *symbol /* name */, logo,
+      eth_addr->ToChecksumAddress(), *symbol /* name */, logo,
       false /* is_compressed */, true /* is_erc20 */, false /* is_erc721 */,
       false /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
       false /* is_nft */, false /* is_spam */, *symbol, decimals, true, "", "",

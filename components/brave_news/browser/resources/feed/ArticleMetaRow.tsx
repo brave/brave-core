@@ -54,7 +54,7 @@ export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boole
 }
 
 export default function ArticleMetaRow(props: { article: FeedItemMetadata, hideChannel?: boolean }) {
-  return <Flex direction="row" justify="space-between" align="center">
+  return <Flex direction="row" justify="space-between" align="center" onClick={(e) => { e.stopPropagation() }}>
     <MetaInfo {...props} />
 
     <ButtonMenu>

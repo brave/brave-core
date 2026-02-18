@@ -393,14 +393,17 @@ class SettingsViewController: TableViewController {
               forPath: BraveAccountEmailAddressPref
             ),
             image: UIImage(sharedNamed: "brave.logo"),
-            cellClass: BraveAccountIconCell.self
+            cellClass: BraveAccountIconCell.self,
+            context: [
+              BraveAccountIconCell.detailTextTruncateMiddle: true
+            ]
           ),
           Row(
             text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL),
             selection: { [unowned self] in braveAccountAuthentication.logOut() },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: view.tintColor
+              BraveAccountIconCell.textColor: view.tintColor
             ]
           ),
         ]
@@ -456,7 +459,7 @@ class SettingsViewController: TableViewController {
             },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: view.tintColor
+              BraveAccountIconCell.textColor: view.tintColor
             ],
             uuid: braveAccountResendConfirmationEmailRowUUID.uuidString
           ),
@@ -467,7 +470,7 @@ class SettingsViewController: TableViewController {
             selection: { [unowned self] in braveAccountAuthentication.cancelRegistration() },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .systemfeedbackErrorText)
+              BraveAccountIconCell.textColor: UIColor(braveSystemName: .systemfeedbackErrorText)
             ]
           ),
         ],
@@ -1804,7 +1807,8 @@ class SettingsViewController: TableViewController {
 }
 
 private final class BraveAccountIconCell: UITableViewCell, Cell {
-  static let titleColorKey = "titleColor"
+  static let textColor = "textColor"
+  static let detailTextTruncateMiddle = "detailTextTruncateMiddle"
 
   func configure(row: Row) {
     var content = defaultContentConfiguration()
@@ -1816,12 +1820,17 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
 
     content.text = row.text
     content.textProperties.numberOfLines = 0
-    if let titleColor = row.context?[Self.titleColorKey] as? UIColor {
-      content.textProperties.color = titleColor
+    if let color = row.context?[Self.textColor] as? UIColor {
+      content.textProperties.color = color
     }
 
     content.secondaryText = row.detailText
-    content.secondaryTextProperties.numberOfLines = 0
+    if let truncateMiddle = row.context?[Self.detailTextTruncateMiddle] as? Bool, truncateMiddle {
+      content.secondaryTextProperties.numberOfLines = 1
+      content.secondaryTextProperties.lineBreakMode = .byTruncatingMiddle
+    } else {
+      content.secondaryTextProperties.numberOfLines = 0
+    }
     content.secondaryTextProperties.color = .secondaryBraveLabel
 
     contentConfiguration = content

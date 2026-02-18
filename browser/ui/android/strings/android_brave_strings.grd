@@ -3681,32 +3681,26 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_ORIGIN_PREMIUM" desc="Title for Origin Premium">
       Origin
     </message>
-    <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT_ORIGIN" desc="Brave Origin plan text">
-      <ph name="YEARLY_AMOUNT">%1$s</ph> /year
-    </message>
-    <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT_ORIGIN" desc="Brave Origin plan text">
-      <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
-    </message>
-    <message name="IDS_ORIGIN_SUBSCRIPTION_TRY_FREE_TRIAL" desc="Try free trial now button for Brave Origin subscription">
-      Try 7 days free
+    <message name="IDS_ORIGIN_BUY_NOW" desc="Buy now button for Brave Origin one-time purchase">
+      Buy now
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_1" desc="Brave Origin paywall text">
       Support our mission &amp; open-source work
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_2" desc="Brave Origin paywall text">
-      Minimal browser UI centered on Shields
+      Minimalist browser UI centered on Brave Shields
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_3" desc="Brave Origin paywall text">
       Maintain core adblock, privacy, &amp; speed
     </message>
-    <message name="IDS_YEARLY_SUBSCRIPTION_BEST_VALUE" desc="Brave Origin yearly plan best value text">
-      best value
+    <message name="IDS_ORIGIN_PAYWALL_TEXT_4" desc="Brave Origin paywall text">
+      One-time purchase, no additional subscription cost
     </message>
-    <message name="IDS_MONTHLY_SUBSCRIPTION_ORIGIN" desc="Brave Origin monthly subscription text">
-      Monthly subscription
+    <message name="IDS_ORIGIN_ONE_TIME_PURCHASE" desc="Brave Origin one-time purchase plan label">
+      One Time Purchase
     </message>
-    <message name="IDS_LEARN_MORE_ABOUT_ORIGIN" desc="Brave Origin learn more about text">
-      Learn more about Origin
+    <message name="IDS_ORIGIN_GET_LOGIN_CODE" desc="Brave Origin get login code button text">
+      Get a login code
     </message>
     <!-- Password Manager backport -->
     <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR_LIMIT=32]">

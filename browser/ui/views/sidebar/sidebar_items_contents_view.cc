@@ -382,7 +382,8 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
     return;
   }
 
-  auto* bubble = SidebarItemAddedFeedbackBubble::Create(anchor_view, this);
+  auto* bubble = SidebarItemAddedFeedbackBubble::Create(
+      anchor_view, this, browser_->profile()->GetPrefs());
   observation_.Observe(bubble);
   bubble->Show();
 }
