@@ -25,6 +25,7 @@ static_library("serp_metrics") {
     ":features",
     "//brave/components/constants",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/search_engines",
   ]
 }
@@ -54,6 +55,7 @@ source_set("unit_tests") {
     "//brave/components/search_engines",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//components/regional_capabilities",
     "//components/search_engines",
     "//components/search_engines:test_support",
     "//testing/gtest",
