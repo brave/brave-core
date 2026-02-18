@@ -364,7 +364,6 @@ class TabManager: NSObject {
 
     if let t = selectedTab, !t.isWebViewCreated, t.opener == nil {
       selectedTab?.createWebView()
-      restoreTab(t)
     }
 
     guard tab === selectedTab else {
@@ -379,16 +378,13 @@ class TabManager: NSObject {
     }
 
     UIImpactFeedbackGenerator(style: .light).vibrate()
-    if tab?.opener == nil {
-      selectedTab?.createWebView()
-    }
 
     if let selectedTab = selectedTab,
-      selectedTab.visibleURL == nil
+      selectedTab.lastCommittedURL == nil,
+      !selectedTab.isLoading
     {
-      selectedTab.setVirtualURL(selectedTab.visibleURL ?? TabManager.ntpInteralURL)
+      // Realize a zombie tab with restoration data
       restoreTab(selectedTab)
-      Logger.module.error("Force Restored a Zombie (any TabState)?!")
     }
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
@@ -700,14 +696,19 @@ class TabManager: NSObject {
 
     if !zombie {
       tab.createWebView()
-    }
 
-    if let request = request {
-      tab.loadRequest(request)
-      tab.setVirtualURL(request.url)
-    } else if !isPopup {
-      tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
-      tab.setVirtualURL(TabManager.ntpInteralURL)
+      if let request = request {
+        tab.loadRequest(request)
+      } else if !isPopup {
+        tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
+      }
+    } else {
+      // Set virtual urls for unrealized/zombie tabs
+      if let request = request {
+        tab.setVirtualURL(request.url)
+      } else if !isPopup {
+        tab.setVirtualURL(TabManager.ntpInteralURL)
+      }
     }
 
     // Ignore on restore.
