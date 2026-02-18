@@ -17,6 +17,7 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_switches.h"
 #include "components/regional_capabilities/regional_capabilities_test_utils.h"
 #include "components/regional_capabilities/regional_capabilities_utils.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
@@ -103,10 +104,35 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
   const base::span<const PrepopulatedEngine* const> all_engines =
       GetAllPrepopulatedEngines();
   std::set<std::u16string_view> unique_keywords;
+  std::map<std::u16string_view, std::pair<int, int>> keyword_ids_map;
   for (const PrepopulatedEngine* engine : all_engines) {
-    ASSERT_TRUE(unique_keywords.find(engine->keyword) == unique_keywords.end());
+    if (unique_keywords.find(engine->keyword) != unique_keywords.end()) {
+      // Check if this engine or the engine already encountered with the same
+      // keyword are planned for migration.
+      auto ids = keyword_ids_map[engine->keyword];
+      ASSERT_TRUE(ids.second == engine->id ||
+                  engine->migrate_to_id == ids.first)
+          << "Keyword " << engine->keyword
+          << " has already been encountered and neither instance of the "
+             "engine has a matching migrate_to_id value.";
+    }
     unique_keywords.insert(engine->keyword);
+    keyword_ids_map[engine->keyword] = {engine->id, engine->migrate_to_id};
   }
+}
+
+// Verifies that kPrepopulatedEnginesMigration is not enabled. When the flag
+// becomes enabled we will need to update our engines to reflect the migrations
+// (Yahoo JP, for example).
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       PrepopulatedEnginesMigrationIsDisabled) {
+  EXPECT_FALSE(
+      base::FeatureList::IsEnabled(switches::kPrepopulatedEnginesMigration))
+      << "Upstream enabled switches::kPrepopulatedEnginesMigration. This means "
+         "we need to check upstream's prepopulated engines' migrate_to_id "
+         "values and see if any of search engines we override in "
+         "brave/components/search_engines/brave_prepopulated_engines.h/cc need "
+         "to be migrated to new IDs as well.";
 }
 
 // Verifies that engines we override are used and not the original engines.
