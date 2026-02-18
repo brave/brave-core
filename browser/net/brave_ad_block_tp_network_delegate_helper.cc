@@ -288,6 +288,9 @@ void OnShouldBlockRequestResult(
     T<BraveRequestInfo> ctx,
     ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!ctx) {
+    return;
+  }
   ctx->set_blocked_by(result.blocked_by);
   ctx->set_mock_data_url(std::move(result.mock_data_url));
   if (!result.new_url_spec.empty()) {
@@ -313,6 +316,10 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     EngineFlags previous_result,
                     std::optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!ctx) {
+    return;
+  }
 
   if (cname.has_value() && ctx->request_url().host() != *cname &&
       !cname->empty()) {

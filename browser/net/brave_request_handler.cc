@@ -219,6 +219,9 @@ void BraveRequestHandler<T>::RunCallbackForRequestIdentifier(
 template <template <typename> class T>
 void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!ctx) {
+    return;
+  }
 
   if (!callbacks_.contains(ctx->request_identifier())) {
     return;
