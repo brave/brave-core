@@ -7,7 +7,7 @@
 
 #include <components/legion/features.cc>
 
-namespace legion {
+namespace private_ai {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if !BUILDFLAG(IS_ANDROID)
@@ -15,4 +15,4 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #endif  // !BUILDFLAG(IS_ANDROID)
 }});
 
-}  // namespace legion
+}  // namespace private_ai
