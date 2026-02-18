@@ -117,13 +117,11 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame) {
   uuid_ = base::Uuid::GenerateRandomV4().AsLowercaseString();
   EnsureConnected();
-  self_ = this;
 }
 
 JSEthereumProvider::~JSEthereumProvider() = default;
 
 void JSEthereumProvider::OnDestruct() {
-  self_.Clear();
 }
 
 void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
