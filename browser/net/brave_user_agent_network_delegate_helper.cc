@@ -39,7 +39,7 @@ template <template <typename> class T>
 int OnBeforeStartTransaction_UserAgentWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   if (ctx) {
     auto* exceptions =
         brave_user_agent::BraveUserAgentExceptions::GetInstance();
