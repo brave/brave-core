@@ -72,9 +72,14 @@ void PageMetricsTabHelper::DidFinishNavigation(
   }
 
   ui::PageTransition transition = navigation_handle->GetPageTransition();
-  if (!is_reload && ui::PageTransitionCoreTypeIs(
-                        transition, ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
-    page_metrics_->navigation_source_metrics()->RecordBookmarkNavigation();
+  if (!is_reload) {
+    if (ui::PageTransitionCoreTypeIs(transition,
+                                     ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
+      page_metrics_->navigation_source_metrics()->RecordBookmarkNavigation();
+    } else if (ui::PageTransitionCoreTypeIs(
+                   transition, ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
+      page_metrics_->navigation_source_metrics()->RecordExternalNavigation();
+    }
   }
 
   page_metrics_->IncrementPagesLoadedCount(is_reload, is_otr);

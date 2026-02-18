@@ -23,9 +23,13 @@ inline constexpr char kNavSourceDirectURLSourcePercentHistogramName[] =
     "Brave.Core.DirectURLSourcePercent";
 inline constexpr char kNavSourceHistorySourcePercentHistogramName[] =
     "Brave.Core.HistorySourcePercent";
+inline constexpr char kNavSourceExternalSourcePercentHistogramName[] =
+    "Brave.Core.ExternalNavigationSourcePercent";
+inline constexpr char kNavSourceNavigatedHistogramName[] =
+    "Brave.Core.Navigated";
 
 // Tracks the daily percentage of navigations from each source (top sites,
-// bookmarks, direct URL, history).
+// bookmarks, direct URL, history, external).
 class NavigationSourceMetrics : public PagePercentageMetrics {
  public:
   explicit NavigationSourceMetrics(PrefService* local_state);
@@ -41,6 +45,8 @@ class NavigationSourceMetrics : public PagePercentageMetrics {
   void RecordBookmarkNavigation();
   // Records a top site tile click. |is_custom| = pinned tile, else frequented.
   void RecordTopSiteNavigation(bool is_custom);
+  // Records a navigation opened externally via PAGE_TRANSITION_AUTO_TOPLEVEL.
+  void RecordExternalNavigation();
   // Increments the total navigation count.
   void IncrementPagesLoadedCount();
   // Reports daily source percentages via P3A.

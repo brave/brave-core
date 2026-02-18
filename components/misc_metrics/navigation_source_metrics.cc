@@ -5,6 +5,7 @@
 
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 
+#include "base/metrics/histogram_macros.h"
 #include "brave/components/misc_metrics/page_percentage_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -20,6 +21,7 @@ constexpr char kTopSitesFrequentedCountKey[] = "top_sites_frequented";
 constexpr char kBookmarksCountKey[] = "bookmarks";
 constexpr char kDirectURLCountKey[] = "direct_url";
 constexpr char kHistoryCountKey[] = "history";
+constexpr char kExternalCountKey[] = "external";
 
 }  // namespace
 
@@ -58,6 +60,10 @@ void NavigationSourceMetrics::RecordTopSiteNavigation(bool is_custom) {
   }
 }
 
+void NavigationSourceMetrics::RecordExternalNavigation() {
+  IncrementDictCount(kExternalCountKey);
+}
+
 void NavigationSourceMetrics::IncrementPagesLoadedCount() {
   IncrementDictCount(kTotalCountKey);
 }
@@ -84,6 +90,9 @@ void NavigationSourceMetrics::ReportNavigationSources() {
                               kNavSourceDirectURLSourcePercentHistogramName);
     RecordPercentageHistogram(counts, total, kHistoryCountKey,
                               kNavSourceHistorySourcePercentHistogramName);
+    RecordPercentageHistogram(counts, total, kExternalCountKey,
+                              kNavSourceExternalSourcePercentHistogramName);
+    UMA_HISTOGRAM_BOOLEAN(kNavSourceNavigatedHistogramName, true);
   }
 
   ResetCounts();
