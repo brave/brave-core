@@ -213,6 +213,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
   {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = kDisplayName;
+    model->vision_support = true;
+    model->supports_tools = true;
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         mojom::CustomModelOptions::New(kRequestName, 0, 0, 0,
                                        kModelSystemPrompt, endpoint, kAPIKey));
@@ -233,6 +235,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
             endpoint.spec());
   EXPECT_EQ(models.back()->options->get_custom_model_options()->api_key,
             kAPIKey);
+  EXPECT_TRUE(models.back()->vision_support);
+  EXPECT_TRUE(models.back()->supports_tools);
 }
 
 TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {

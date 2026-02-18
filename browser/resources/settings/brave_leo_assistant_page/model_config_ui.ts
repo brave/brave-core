@@ -88,8 +88,13 @@ export class ModelConfigUI extends ModelConfigUIBase {
         type: String,
         computed: 'computeButtonLabel_(isEditing_)'
       },
-      hasVisionSupport : {
-        type: Boolean
+      hasVisionSupport: {
+        type: Boolean,
+        value: false
+      },
+      hasToolSupport: {
+        type: Boolean,
+        value: false
       }
     }
   }
@@ -111,6 +116,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   declare shouldShowUnsafeEndpointModal: boolean
   declare invalidUrlErrorMessage: string
   declare hasVisionSupport: boolean
+  declare hasToolSupport: boolean
 
   override ready() {
     super.ready()
@@ -161,7 +167,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       key: modelKey,
       displayName: this.label,
       visionSupport: this.hasVisionSupport,
-      supportsTools: false,
+      supportsTools: this.hasToolSupport,
       isSuggestedModel: false,
       isNearModel: false,
     }
@@ -221,6 +227,10 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.hasVisionSupport = e.checked
   }
 
+  onToolSupportChanged_(e: any) {
+    this.hasToolSupport = e.checked
+  }
+
   private saveEnabled_() {
     // Make sure all required fields are filled
     return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
@@ -253,6 +263,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       this.modelSystemPrompt =
         newValue.options.customModelOptions.modelSystemPrompt
       this.hasVisionSupport = newValue.visionSupport
+      this.hasToolSupport = newValue.supportsTools
     }
     this.constructTokenEstimateString_()
   }
