@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -29,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -289,6 +291,8 @@ class BraveWalletP3AUnitTest : public testing::Test {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_cardano_feature_{
+      features::kBraveWalletCardanoFeature};
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
