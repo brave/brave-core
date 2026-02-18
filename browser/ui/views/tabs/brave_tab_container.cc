@@ -496,10 +496,6 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
   UpdateClipPathForSlotViews();
   SetTabSlotVisibility();
   UpdatePinnedUnpinnedSeparator();
-
-  // Should force tabs to layout as they might not change bounds, which makes
-  // insets not updated.
-  std::ranges::for_each(children(), &views::View::DeprecatedLayoutImmediately);
 }
 
 void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
