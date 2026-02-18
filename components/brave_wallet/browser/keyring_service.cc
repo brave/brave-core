@@ -1575,6 +1575,8 @@ std::vector<mojom::AccountInfoPtr> KeyringService::CreateDefaultAccounts(
     if (!account) {
       return {};
     }
+
+    account_infos.push_back(std::move(account));
   }
 
   CHECK(!account_infos.empty());
