@@ -77,14 +77,15 @@ void BraveProxyingWebSocket<std::shared_ptr>::CreateBraveRequestInfo() {
   CHECK(!ctx_owned_);
   ctx_.reset(brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                               request_id_, browser_context_,
-                                              ctx_.get()).release());
+                                              ctx_.get())
+                 .release());
 }
 
 template <>
 void BraveProxyingWebSocket<base::WeakPtr>::CreateBraveRequestInfo() {
-  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_,
-      ctx_owned_.get());
+  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
+                                                request_id_, browser_context_,
+                                                ctx_owned_.get());
   ctx_ = ctx_owned_->AsWeakPtr();
 }
 

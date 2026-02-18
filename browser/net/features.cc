@@ -5,6 +5,8 @@
 
 #include "brave/browser/net/features.h"
 
+#include "base/feature_list.h"
+
 namespace brave::features {
 
 // Use base::WeakPtr instead of std::shared_ptr for BraveRequestInfo.
@@ -12,8 +14,6 @@ namespace brave::features {
 // and non-owning references use base::WeakPtr for automatic null checking.
 // When disabled (default), std::shared_ptr is used for both ownership
 // and non-owning references (simpler but higher overhead).
-BASE_FEATURE(kBraveRequestInfoUseWeakPtr,
-             "BraveRequestInfoUseWeakPtr",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveRequestInfoUseWeakPtr, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave::features
