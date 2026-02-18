@@ -21,6 +21,14 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
                               store::WebSourcesEventProto* proto_event);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
+mojom::InlineSearchEventPtr DeserializeInlineSearchEvent(
+    const store::InlineSearchEventProto& proto_event);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void SerializeInlineSearchEvent(const mojom::InlineSearchEventPtr& mojom_event,
+                                store::InlineSearchEventProto* proto_event);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 mojom::ToolUseEventPtr DeserializeToolUseEvent(
     const store::ToolUseEventProto& proto_event);
 

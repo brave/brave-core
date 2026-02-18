@@ -74,6 +74,21 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
   }
 }
 
+mojom::InlineSearchEventPtr DeserializeInlineSearchEvent(
+    const store::InlineSearchEventProto& proto_event) {
+  return mojom::InlineSearchEvent::New(proto_event.query(),
+                                       proto_event.results_json());
+}
+
+void SerializeInlineSearchEvent(const mojom::InlineSearchEventPtr& mojom_event,
+                                store::InlineSearchEventProto* proto_event) {
+  CHECK(mojom_event);
+  CHECK(proto_event);
+
+  proto_event->set_query(mojom_event->query);
+  proto_event->set_results_json(mojom_event->results_json);
+}
+
 mojom::ToolUseEventPtr DeserializeToolUseEvent(
     const store::ToolUseEventProto& proto_event) {
   auto mojom_event = mojom::ToolUseEvent::New(

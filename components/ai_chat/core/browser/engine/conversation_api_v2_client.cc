@@ -544,6 +544,18 @@ void ConversationAPIV2Client::OnQueryDataReceived(
           mojom::SearchStatusEvent::New(true));
       callback.Run(GenerationResultData(std::move(event), std::nullopt));
     }
+  } else if (*object_type == "brave-chat.inlineSearch") {
+    // Note: I'd like to send nothing to the server for this content block:
+    // potentially I can skip this completely?
+    auto* query = result_params.FindString("query");
+    auto* results = result_params.FindList("results");
+    if (query && results) {
+      std::string results_json;
+      base::JSONWriter::Write(*results, &results_json);
+      auto event = mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(*query, std::move(results_json)));
+      callback.Run(GenerationResultData(std::move(event), model_key));
+    }
   }
 
   // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
