@@ -27,7 +27,7 @@ class NavigationSourceMetricsUnitTest : public testing::Test {
  protected:
   void FastForwardAndReport(base::TimeDelta delta) {
     task_environment_.FastForwardBy(delta);
-    metrics_->ReportNavigationSources();
+    metrics_->ReportAllMetrics();
   }
 
   content::BrowserTaskEnvironment task_environment_;

@@ -166,6 +166,7 @@ void PageMetrics::IncrementPagesLoadedCount(bool is_reload, bool is_otr) {
   if (!is_reload) {
     navigation_source_metrics_.IncrementPagesLoadedCount();
   }
+  // Navigation source metrics count OTR pages, but page load storage does not.
   if (is_otr) {
     return;
   }
@@ -210,7 +211,7 @@ void PageMetrics::ReportAllMetrics() {
   ReportFailedHTTPSUpgrades();
   ReportBookmarkCount();
   brave_search_metrics_.ReportAllMetrics();
-  navigation_source_metrics_.ReportNavigationSources();
+  navigation_source_metrics_.ReportAllMetrics();
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&PageMetrics::ReportAllMetrics, base::Unretained(this)));

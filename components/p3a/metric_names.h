@@ -78,7 +78,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.PagesLoaded.RewardsWallet", {}},
     {"Brave.Core.PagesReloaded", {}},
     {"Brave.Core.TabCount", {}},
-
     {"Brave.Core.WeeklyUsage", {}},
     {"Brave.Core.WeeklyUsage.Nebula", MetricConfig{.nebula = true}},
     {"Brave.Core.WindowCount.2", {}},

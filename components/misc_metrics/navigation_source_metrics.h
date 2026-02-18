@@ -50,7 +50,7 @@ class NavigationSourceMetrics : public PagePercentageMetrics {
   // Increments the total navigation count.
   void IncrementPagesLoadedCount();
   // Reports daily source percentages via P3A.
-  void ReportNavigationSources();
+  void ReportAllMetrics();
 };
 
 }  // namespace misc_metrics

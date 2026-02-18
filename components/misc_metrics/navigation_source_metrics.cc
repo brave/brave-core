@@ -29,7 +29,7 @@ NavigationSourceMetrics::NavigationSourceMetrics(PrefService* local_state)
     : PagePercentageMetrics(local_state,
                             kMiscMetricsNavSourceCounts,
                             kMiscMetricsNavSourceReportFrameStartTime) {
-  ReportNavigationSources();
+  ReportAllMetrics();
 }
 
 NavigationSourceMetrics::~NavigationSourceMetrics() = default;
@@ -68,7 +68,7 @@ void NavigationSourceMetrics::IncrementPagesLoadedCount() {
   IncrementDictCount(kTotalCountKey);
 }
 
-void NavigationSourceMetrics::ReportNavigationSources() {
+void NavigationSourceMetrics::ReportAllMetrics() {
   if (!HasReportIntervalElapsed()) {
     return;
   }
