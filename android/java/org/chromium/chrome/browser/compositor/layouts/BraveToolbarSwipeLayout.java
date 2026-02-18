@@ -30,7 +30,8 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
             LayoutManager layoutManager,
             TopUiThemeColorProvider topUiColorProvider,
             NonNullObservableSupplier<Integer> bottomControlsOffsetSupplier,
-            ViewGroup contentContainer) {
+            ViewGroup contentContainer,
+            Runnable forceLayoutUpdateAndCaptureRunnable) {
         super(
                 context,
                 updateHost,
@@ -39,7 +40,8 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
                 layoutManager,
                 topUiColorProvider,
                 bottomControlsOffsetSupplier,
-                contentContainer);
+                contentContainer,
+                forceLayoutUpdateAndCaptureRunnable);
 
         // To postpone toolbar transition animation to the end of the swipe.
         mMoveToolbar = false;

@@ -2111,7 +2111,8 @@ public class BytecodeTest {
                         LayoutManager.class,
                         TopUiThemeColorProvider.class,
                         NonNullObservableSupplier.class,
-                        ViewGroup.class));
+                        ViewGroup.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/embedder_support/view/ContentView",
