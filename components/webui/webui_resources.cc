@@ -20,10 +20,6 @@
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#endif
-
 namespace brave {
 
 base::span<const webui::ResourcePath> GetWebUIResources(
@@ -46,10 +42,6 @@ base::span<const webui::ResourcePath> GetWebUIResources(
              IDR_BRAVE_PRIVATE_TAB_TOR_IMG},
             {"dbdc336ccc651b8a7c925b3482d6e65a.svg",
              IDR_BRAVE_PRIVATE_TAB_IMG}}},
-          {"rewards",
-           {
-               {"favicon.ico", IDR_BRAVE_REWARDS_FAVICON},
-           }},
           {"welcome", {{"favicon.ico", IDR_BRAVE_WELCOME_PAGE_FAVICON}}},
 #endif
           {"adblock", {}},

@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/engine/buildflags.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
