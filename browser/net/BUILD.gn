@@ -84,6 +84,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":features",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",
