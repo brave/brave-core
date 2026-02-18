@@ -18,3 +18,16 @@ static_library("content") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "background_web_contents_unittest.cc" ]
+
+  deps = [
+    ":content",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}
