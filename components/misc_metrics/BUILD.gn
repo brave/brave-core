@@ -29,6 +29,8 @@ static_library("misc_metrics") {
     "new_tab_metrics.h",
     "page_metrics.cc",
     "page_metrics.h",
+    "page_percentage_metrics.cc",
+    "page_percentage_metrics.h",
     "pref_names.h",
     "privacy_hub_metrics.cc",
     "privacy_hub_metrics.h",
