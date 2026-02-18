@@ -214,3 +214,116 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_ChainOfThree) {
   EXPECT_EQ(2, root->node().GetTreeHeight());
   EXPECT_EQ(2, child2_ptr->node().GetTreeHeight());
 }
+
+// Reparenting: moving a node from parent1 to parent2 should recalculate level,
+// height, and tree height correctly for the moved node, parent1, and parent2.
+TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_Reparenting) {
+  tabs::UnpinnedTabCollection unpinned;
+  auto parent1 = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto parent2 = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto node = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+
+  tabs::TreeTabNodeTabCollection* parent1_ptr = parent1.get();
+  tabs::TreeTabNodeTabCollection* parent2_ptr = parent2.get();
+  tabs::TreeTabNodeTabCollection* node_ptr = node.get();
+
+  unpinned.AddCollection(std::move(parent1), 0);
+  unpinned.AddCollection(std::move(parent2), 1);
+  parent1_ptr->AddCollection(std::move(node), 0);
+
+  // Initial state: parent1 has node as child.
+  EXPECT_EQ(0, parent1_ptr->node().level());
+  EXPECT_EQ(1, parent1_ptr->node().height());
+  EXPECT_EQ(0, parent2_ptr->node().level());
+  EXPECT_EQ(0, parent2_ptr->node().height());
+  EXPECT_EQ(1, node_ptr->node().level());
+  EXPECT_EQ(0, node_ptr->node().height());
+  EXPECT_EQ(1, parent1_ptr->node().GetTreeHeight());
+  EXPECT_EQ(0, parent2_ptr->node().GetTreeHeight());
+  EXPECT_EQ(1, node_ptr->node().GetTreeHeight());
+
+  // Reparent: move node from parent1 to parent2.
+  auto removed = parent1_ptr->MaybeRemoveCollection(node_ptr);
+  ASSERT_NE(removed.get(), nullptr);
+  parent2_ptr->AddCollection(std::move(removed), 0);
+
+  // After reparenting: level, height, and tree height must be recalculated.
+  EXPECT_EQ(0, parent1_ptr->node().level());
+  EXPECT_EQ(0, parent1_ptr->node().height());
+  EXPECT_EQ(0, parent1_ptr->node().GetTreeHeight());
+
+  EXPECT_EQ(0, parent2_ptr->node().level());
+  EXPECT_EQ(1, parent2_ptr->node().height());
+  EXPECT_EQ(1, parent2_ptr->node().GetTreeHeight());
+
+  EXPECT_EQ(1, node_ptr->node().level());
+  EXPECT_EQ(0, node_ptr->node().height());
+  EXPECT_EQ(1, node_ptr->node().GetTreeHeight());
+}
+
+// Reparenting a subtree (node with children): level and height of the whole
+// subtree should be recalculated under the new parent.
+TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_ReparentingSubtree) {
+  tabs::UnpinnedTabCollection unpinned;
+  auto parent1 = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto parent2 = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto middle = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+  auto leaf = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing());
+
+  tabs::TreeTabNodeTabCollection* parent1_ptr = parent1.get();
+  tabs::TreeTabNodeTabCollection* parent2_ptr = parent2.get();
+  tabs::TreeTabNodeTabCollection* middle_ptr = middle.get();
+  tabs::TreeTabNodeTabCollection* leaf_ptr = leaf.get();
+
+  unpinned.AddCollection(std::move(parent1), 0);
+  unpinned.AddCollection(std::move(parent2), 1);
+  parent1_ptr->AddCollection(std::move(middle), 0);
+  middle_ptr->AddCollection(std::move(leaf), 0);
+
+  // Initial: parent1 (0, height 2) -> middle (1, height 1) -> leaf (2, height
+  // 0).
+  EXPECT_EQ(0, parent1_ptr->node().level());
+  EXPECT_EQ(2, parent1_ptr->node().height());
+  EXPECT_EQ(1, middle_ptr->node().level());
+  EXPECT_EQ(1, middle_ptr->node().height());
+  EXPECT_EQ(2, leaf_ptr->node().level());
+  EXPECT_EQ(0, leaf_ptr->node().height());
+  EXPECT_EQ(2, parent1_ptr->node().GetTreeHeight());
+  EXPECT_EQ(2, leaf_ptr->node().GetTreeHeight());
+
+  // Reparent middle (and its subtree) from parent1 to parent2.
+  auto removed = parent1_ptr->MaybeRemoveCollection(middle_ptr);
+  ASSERT_NE(removed.get(), nullptr);
+  parent2_ptr->AddCollection(std::move(removed), 0);
+
+  // After reparenting: parent1 is now a leaf; parent2 has middle->leaf.
+  EXPECT_EQ(0, parent1_ptr->node().level());
+  EXPECT_EQ(0, parent1_ptr->node().height());
+  EXPECT_EQ(0, parent1_ptr->node().GetTreeHeight());
+
+  EXPECT_EQ(0, parent2_ptr->node().level());
+  EXPECT_EQ(2, parent2_ptr->node().height());
+  EXPECT_EQ(2, parent2_ptr->node().GetTreeHeight());
+
+  EXPECT_EQ(1, middle_ptr->node().level());
+  EXPECT_EQ(1, middle_ptr->node().height());
+  EXPECT_EQ(2, middle_ptr->node().GetTreeHeight());
+
+  EXPECT_EQ(2, leaf_ptr->node().level());
+  EXPECT_EQ(0, leaf_ptr->node().height());
+  EXPECT_EQ(2, leaf_ptr->node().GetTreeHeight());
+}
