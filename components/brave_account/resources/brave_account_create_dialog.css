@@ -10,13 +10,7 @@
  * #include=brave-account-common
  * #css_wrapper_metadata_end */
 
-#password-dropdown {
-  --height: 18px;
-  display: flex;
-}
-
 #password-confirmation-dropdown {
-  --height: 18px;
   --leo-icon-size: var(--leo-icon-xs);
   align-items: center;
   display: flex;
