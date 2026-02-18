@@ -7,7 +7,6 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
-#include "base/functional/bind.h"
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -32,7 +31,6 @@ constexpr char kOmniboxTypedCountKey[] = "omnibox_typed";
 constexpr char kOmniboxSuggestionCountKey[] = "omnibox_suggestion";
 constexpr char kNTPSearchCountKey[] = "ntp_search";
 constexpr base::TimeDelta kReportInterval = base::Hours(24);
-constexpr base::TimeDelta kReportCheckInterval = base::Minutes(30);
 
 bool IsBraveSearchURL(const GURL& url) {
   return url.host() == kBraveSearchHost && url.path() == kBraveSearchPath &&
@@ -73,7 +71,7 @@ BraveSearchMetrics::BraveSearchMetrics(PrefService* local_state,
                           base::Time::Now());
   }
 
-  ReportDailyQueries();
+  ReportAllMetrics();
 }
 
 BraveSearchMetrics::~BraveSearchMetrics() = default;
@@ -125,12 +123,7 @@ void BraveSearchMetrics::MaybeRecordNTPSearch(int64_t engine_prepopulate_id) {
   IncrementDictCount(kNTPSearchCountKey);
 }
 
-void BraveSearchMetrics::ReportDailyQueries() {
-  report_check_timer_.Start(
-      FROM_HERE, base::Time::Now() + kReportCheckInterval,
-      base::BindOnce(&BraveSearchMetrics::ReportDailyQueries,
-                     base::Unretained(this)));
-
+void BraveSearchMetrics::ReportAllMetrics() {
   base::Time frame_start =
       local_state_->GetTime(kMiscMetricsBraveSearchReportFrameStartTime);
   base::Time now = base::Time::Now();

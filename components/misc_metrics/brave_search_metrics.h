@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
-#include "base/timer/wall_clock_timer.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -52,14 +51,13 @@ class BraveSearchMetrics {
 
   void ClearQueryCounts();
 
+  void ReportAllMetrics();
+
  private:
-  void ReportDailyQueries();
   void IncrementDictCount(std::string_view key);
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
-
-  base::WallClockTimer report_check_timer_;
 };
 
 }  // namespace misc_metrics
