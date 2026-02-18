@@ -83,9 +83,8 @@ IN_PROC_BROWSER_TEST_P(DigitalGoodsAPIBrowserTest, DigitalGoods) {
   auto result =
       content::EvalJs(primary_main_frame(), "window.getDigitalGoodsService()");
   if (IsDigitalGoodsAPIEnabled()) {
-    EXPECT_THAT(result,
-                content::EvalJsResult::ErrorIs(testing::HasSubstr(
-                    "1 argument required, but only 0 present.")));
+    EXPECT_THAT(result, content::EvalJsResult::ErrorIs(testing::HasSubstr(
+                            "1 argument required, but only 0 present.")));
   } else {
     EXPECT_THAT(result,
                 content::EvalJsResult::ErrorIs(testing::HasSubstr(
