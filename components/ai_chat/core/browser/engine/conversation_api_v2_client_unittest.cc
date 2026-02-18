@@ -1846,6 +1846,104 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
   }
 }
 
+TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
+  // Test inline search event parsing in OnQueryDataReceived
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+
+  // Case 1: Both query and results present - should emit InlineSearchEvent
+  {
+    SCOPED_TRACE("Both query and results present");
+    auto inline_search = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.inlineSearch",
+      "model": "llama-3-8b-instruct",
+      "query": "weather today",
+      "results": [
+        {"title": "Weather.com", "url": "https://weather.com"},
+        {"title": "AccuWeather", "url": "https://accuweather.com"}
+      ]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_inline_search_event());
+          const auto* event = result.event->get_inline_search_event().get();
+          EXPECT_EQ(event->query, "weather today");
+          EXPECT_FALSE(event->results_json.empty());
+          EXPECT_EQ(result.model_key, "chat-basic");
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(inline_search))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 2: Missing query - no event should be emitted
+  {
+    SCOPED_TRACE("Missing query should not emit event");
+    auto inline_search = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.inlineSearch",
+      "results": [{"title": "Weather.com", "url": "https://weather.com"}]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(inline_search))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 3: Missing results - no event should be emitted
+  {
+    SCOPED_TRACE("Missing results should not emit event");
+    auto inline_search = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.inlineSearch",
+      "query": "weather today"
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(inline_search))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+
+  // Case 4: Empty results list - event should still be emitted
+  {
+    SCOPED_TRACE("Empty results list still emits event");
+    auto inline_search = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.inlineSearch",
+      "query": "nothing found",
+      "results": []
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+        .WillOnce([&](EngineConsumer::GenerationResultData result) {
+          ASSERT_TRUE(result.event);
+          ASSERT_TRUE(result.event->is_inline_search_event());
+          const auto* event = result.event->get_inline_search_event().get();
+          EXPECT_EQ(event->query, "nothing found");
+          EXPECT_FALSE(result.model_key.has_value());
+        });
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(inline_search))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+}
+
 TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallRequest) {
   // Test tool call request parsing (function dict present)
   testing::StrictMock<MockCallbacks> mock_callbacks;

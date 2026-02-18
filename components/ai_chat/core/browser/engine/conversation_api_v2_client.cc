@@ -545,8 +545,6 @@ void ConversationAPIV2Client::OnQueryDataReceived(
       callback.Run(GenerationResultData(std::move(event), std::nullopt));
     }
   } else if (*object_type == "brave-chat.inlineSearch") {
-    // Note: I'd like to send nothing to the server for this content block:
-    // potentially I can skip this completely?
     auto* query = result_params.FindString("query");
     auto* results = result_params.FindList("results");
     if (query && results) {
