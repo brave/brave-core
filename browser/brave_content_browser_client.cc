@@ -1212,6 +1212,7 @@ void BraveContentBrowserClient::CreateWebSocket(
     auto* proxy = BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(
         frame, std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(frame, url, site_for_cookies, user_agent, std::move(handshake_client), proxy);
+}
 
 void BraveContentBrowserClient::MaybeHideReferrer(
     content::BrowserContext* browser_context,
