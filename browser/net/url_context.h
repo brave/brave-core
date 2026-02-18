@@ -182,7 +182,7 @@ class BraveRequestInfo {
   const std::optional<std::string>& devtools_request_id() const;
   void set_devtools_request_id(const std::optional<std::string>& value);
 
-  static brave::BraveRequestInfo* MakeCTX(
+  static std::unique_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
       content::GlobalRenderFrameHostToken render_frame_token,
       uint64_t request_identifier,
