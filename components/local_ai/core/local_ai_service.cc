@@ -16,7 +16,7 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 
 namespace local_ai {

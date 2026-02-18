@@ -12,7 +12,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/webui_config_map.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
