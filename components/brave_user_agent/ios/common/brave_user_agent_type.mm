@@ -17,11 +17,10 @@ BraveIOSUserAgentType GetDefaultBraveIOSUserAgentType() {
   }
   // Feature is enabled, get the feature param value to determine which user
   // agent type to use
-  int rawValue = brave_user_agent::features::kBraveIOSUserAgentDefault.Get();
-  if (rawValue >= BraveIOSUserAgentTypeMasked &&
-      rawValue <= BraveIOSUserAgentTypeSuffixComment) {
-    return (BraveIOSUserAgentType)
-        brave_user_agent::features::kBraveIOSUserAgentDefault.Get();
+  int raw_value = brave_user_agent::features::kBraveIOSUserAgentDefault.Get();
+  if (raw_value >= BraveIOSUserAgentTypeMasked &&
+      raw_value <= BraveIOSUserAgentTypeSuffixComment) {
+    return static_cast<BraveIOSUserAgentType>(raw_value);
   }
   // if unable to determine value, but feature is enabled, default to Suffix.
   return BraveIOSUserAgentTypeSuffix;
