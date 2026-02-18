@@ -8,6 +8,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 
+// CHROMIUM_SRC_INTERNAL_USE
 #define IDS_CONTROLLED_SETTING_POLICY_SAVE IDS_CONTROLLED_SETTING_POLICY
 #undef IDS_CONTROLLED_SETTING_POLICY
 #define IDS_CONTROLLED_SETTING_POLICY IDS_BRAVE_CONTROLLED_SETTING_POLICY

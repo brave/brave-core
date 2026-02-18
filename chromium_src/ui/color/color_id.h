@@ -12,6 +12,7 @@
 // colors.
 // This isn't undefined because other files use the |COLOR_ID| macro which
 // depends on this being defined.
+// CHROMIUM_SRC_NOLINT
 #define BRAVE_MATERIAL_MISSING_COLOR_IDS \
   E_CPONLY(kColorRefNeutral5)            \
   E_CPONLY(kColorRefNeutral35)           \

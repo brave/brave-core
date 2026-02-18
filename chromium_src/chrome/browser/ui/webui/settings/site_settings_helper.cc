@@ -24,11 +24,13 @@
 // Define wallet content settings types first before using them
 // Note: These enum values always exist, but only have UI when wallet is enabled
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_CONTENT_SETTINGS_TYPES          \
   {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"}, \
       {ContentSettingsType::BRAVE_SOLANA, "solana"}, \
       {ContentSettingsType::BRAVE_CARDANO, "cardano"},
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_CONTENT_SETTINGS_TYPES         \
   {ContentSettingsType::BRAVE_ETHEREUM, nullptr},   \
       {ContentSettingsType::BRAVE_SOLANA, nullptr}, \

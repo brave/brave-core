@@ -25,14 +25,16 @@ enum InstallConstantIndex {
   BETA_INDEX,
   DEV_INDEX,
   NIGHTLY_INDEX,
- #else
+#else
   DEVELOPER_INDEX,
- #endif
+#endif
   NUM_INSTALL_MODES,
 };
 
 #if defined(OFFICIAL_BUILD)
 
+// This is overriding the upstream value and shouldn't be undef'ed
+// CHROMIUM_SRC_NOLINT
 #define CHROMIUM_INDEX STABLE_INDEX
 
 // Regarding the install switch, use the same values that are in
@@ -437,6 +439,7 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 #else
 
+// CHROMIUM_SRC_NOLINT
 #define CHROMIUM_INDEX DEVELOPER_INDEX
 
 inline constexpr auto kInstallModes = std::to_array<InstallConstants>({

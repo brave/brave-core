@@ -9,6 +9,7 @@
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING \
   case PermissionType::BRAVE_ETHEREUM:                     \
     return "BraveEthereum";                                \
@@ -17,6 +18,7 @@
   case PermissionType::BRAVE_CARDANO:                      \
     return "BraveCardano";
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING \
   case PermissionType::BRAVE_ETHEREUM:                     \
   case PermissionType::BRAVE_SOLANA:                       \
@@ -48,6 +50,7 @@
     BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_K_DISPLAY_CAPTURE                          \
   case PermissionType::BRAVE_ETHEREUM:                          \
     return network::mojom::PermissionsPolicyFeature::kEthereum; \
@@ -56,6 +59,7 @@
   case PermissionType::BRAVE_CARDANO:                           \
     return network::mojom::PermissionsPolicyFeature::kCardano;
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_K_DISPLAY_CAPTURE \
   case PermissionType::BRAVE_ETHEREUM: \
   case PermissionType::BRAVE_SOLANA:   \
@@ -79,6 +83,7 @@
     return std::nullopt
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
   case PermissionName::BRAVE_ETHEREUM:                             \
     return PermissionType::BRAVE_ETHEREUM;                         \
@@ -87,6 +92,7 @@
   case PermissionName::BRAVE_CARDANO:                              \
     return PermissionType::BRAVE_CARDANO;
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
   case PermissionName::BRAVE_ETHEREUM:                             \
   case PermissionName::BRAVE_SOLANA:                               \

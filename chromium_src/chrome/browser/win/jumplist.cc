@@ -6,6 +6,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 
+// CHROMIUM_SRC_INTERNAL_USE
 #define IDS_NEW_INCOGNITO_WINDOW_OLD IDS_NEW_INCOGNITO_WINDOW
 #undef IDS_NEW_INCOGNITO_WINDOW
 #define IDS_NEW_INCOGNITO_WINDOW IDS_BRAVE_NEW_INCOGNITO_WINDOW

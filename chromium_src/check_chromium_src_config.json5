@@ -1,131 +1,53 @@
 {
-    // Files matching these regular expressions will be excluded.
-    // Please, keep in alphabetical order.
-    "re_excludes": [
-        ".*\\.cfg",
-        ".*\\.clangd",
-        ".*\\.gn",
-        ".*\\.gni",
-        ".*\\.in",
-        ".*\\.info",
-        ".*\\.pyc",
-        ".*\\.xml",
-        "(.*/)?DEPS",
-        "chrome/installer/setup/resources/setup_resources_.*\\.xtb"
-    ],
+  // Files matching these regular expressions will be excluded.
+  // Please, keep in alphabetical order.
+  're_excludes': [
+    '.*\\.cfg',
+    '.*\\.clangd',
+    '.*\\.gn',
+    '.*\\.gni',
+    '.*\\.in',
+    '.*\\.info',
+    '.*\\.pyc',
+    '.*\\.xml',
+    '(.*/)?DEPS',
+    'chrome/installer/setup/resources/setup_resources_.*\\.xtb',
+  ],
 
-    // Files matching these exact paths will be excluded.
-    // Please, keep in alphabetical order.
-    "path_excludes": [
-        "base/feature_override.h",
-        "check_chromium_src_config.json5",
-        "chrome/browser/devtools/url_constants_unittest.cc",
-        "chrome/browser/history/history_utils_unittest.cc",
-        "chrome/browser/notifications/notification_handler_impl.h",
-        "chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
-        "chrome/browser/shell_integration_unittest_mac.cc",
-        "chrome/browser/signin/account_consistency_disabled_unittest.cc",
-        "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
-        "chrome/browser/ui/webui/help/version_updater_mac.h",
-        "chrome/common/chrome_constants_unittest_mac.cc",
-        "chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
-        "chrome/installer/setup/brave_behaviors.cc",
-        "chrome/installer/setup/brave_origin_behaviors.cc",
-        "chrome/installer/setup/resources/setup_resources.grd",
-        "chrome/installer/setup/test/install_worker_vpn_unittest.cc",
-        "chrome/install_static/brave_install_details_unittest.cc",
-        "chrome/install_static/brave_install_modes_unittest.cc",
-        "chrome/install_static/brave_install_util_unittest.cc",
-        "chrome/install_static/brave_product_install_details_unittest.cc",
-        "chrome/install_static/brave_restore_google_update_integration.h",
-        "chrome/install_static/brave_stash_google_update_integration.h",
-        "chrome/install_static/brave_user_data_dir_win_unittest.cc",
-        "components/privacy_sandbox/privacy_sandbox_settings_unittest.cc",
-        "components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
-        "components/search_engines/brave_template_url_service_util_unittest.cc",
-        "components/variations/service/field_trial_unittest.cc",
-        "net/base/brave_proxy_string_util_unittest.cc",
-        "net/cookies/brave_canonical_cookie_unittest.cc",
-        "third_party/blink/common/features_generated.cc",
-        "third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs",
-        "v8/include/DO NOT PUT FILES HERE",
-    ],
-
-    // These symbols found in associated paths will be ignored.
-    // Please, keep paths and symbols in alphabetical order.
-    "symbol_excludes": {
-        "base/debug/alias.h": [
-            "DEBUG_ALIAS_FOR_OBJECT",
-        ],
-        "base/trace_event/builtin_categories.h": [
-            "BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES",
-        ],
-        "build/buildflag.h": [
-            "IF_BUILDFLAG",
-            "IF_BUILDFLAG_IMPL",
-            "IF_BUILDFLAG_IMPL_0",
-            "IF_BUILDFLAG_IMPL_1",
-            "IF_BUILDFLAG_IMPL_CAT",
-        ],
-        "chrome/browser/bookmarks/android/bookmark_bridge.cc": [
-            "BraveBookmarkBridge",
-        ],
-        "chrome/browser/chrome_content_browser_client.cc": [
-            "CHROME_BROWSER_WEB_APPLICATIONS_POLICY_WEB_APP_POLICY_MANAGER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_REGISTRAR_H_",
-        ],
-        "chrome/browser/metrics/google_update_metrics_provider_win.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
-        "chrome/browser/prefs/browser_prefs.cc": [
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-        ],
-        "chrome/browser/sync/chrome_sync_client.cc": [
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_SYNC_BRIDGE_H_",
-        ],
-        "chrome/browser/updater/browser_updater_client_util_mac.mm": [
-            "FILE_PATH_LITERAL",
-        ],
-        "chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc": [
-            "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-        ],
-        "chrome/grit/generated_resources.h": [
-          "IDS_PERMISSIONS_BUBBLE_PROMPT",
-        ],
-        "chrome/install_static/chromium_install_modes.h": [
-            "CHROMIUM_INDEX",
-        ],
-        "chrome/install_static/install_constants.h": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
-        "chrome/install_static/install_util.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
-        "chrome/installer/setup/install_worker.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
-        "components/password_manager/core/browser/password_manager_constants.cc": [
-            "IS_ANDROID_FORCED_TO_FALSE",
-        ],
-        "components/permissions/permission_request_data.h": [
-            "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
-        ],
-        "components/qr_code_generator/bitmap_generator.cc": [
-            "UI_GFX_PAINT_VECTOR_ICON_H_",
-        ],
-        "sandbox/win/src/interceptors_64.h": [
-            "TargetGetModuleFileNameExA64",
-            "TargetGetModuleFileNameExW64",
-        ],
-        "ui/color/color_id.h": [
-            "BRAVE_MATERIAL_MISSING_COLOR_IDS"
-        ],
-        "v8/src/builtins/builtins-utils.h": [
-            "BUILTIN",
-        ],
-    }
+  // Files matching these exact paths will be excluded.
+  // Please, keep in alphabetical order.
+  'path_excludes': [
+    'base/feature_override.h',
+    'check_chromium_src_config.json5',
+    'chrome/browser/devtools/url_constants_unittest.cc',
+    'chrome/browser/history/history_utils_unittest.cc',
+    'chrome/browser/notifications/notification_handler_impl.h',
+    'chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc',
+    'chrome/browser/shell_integration_unittest_mac.cc',
+    'chrome/browser/signin/account_consistency_disabled_unittest.cc',
+    'chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc',
+    'chrome/browser/ui/webui/help/version_updater_mac.h',
+    'chrome/common/chrome_constants_unittest_mac.cc',
+    'chrome/installer/mini_installer/brave_mini_installer_unittest.cc',
+    'chrome/installer/setup/brave_behaviors.cc',
+    'chrome/installer/setup/brave_origin_behaviors.cc',
+    'chrome/installer/setup/resources/setup_resources.grd',
+    'chrome/installer/setup/test/install_worker_vpn_unittest.cc',
+    'chrome/install_static/brave_install_details_unittest.cc',
+    'chrome/install_static/brave_install_modes_unittest.cc',
+    'chrome/install_static/brave_install_util_unittest.cc',
+    'chrome/install_static/brave_product_install_details_unittest.cc',
+    'chrome/install_static/brave_restore_google_update_integration.h',
+    'chrome/install_static/brave_stash_google_update_integration.h',
+    'chrome/install_static/brave_user_data_dir_win_unittest.cc',
+    'components/privacy_sandbox/privacy_sandbox_settings_unittest.cc',
+    'components/search_engines/brave_template_url_prepopulate_data_unittest.cc',
+    'components/search_engines/brave_template_url_service_util_unittest.cc',
+    'components/variations/service/field_trial_unittest.cc',
+    'net/base/brave_proxy_string_util_unittest.cc',
+    'net/cookies/brave_canonical_cookie_unittest.cc',
+    'third_party/blink/common/features_generated.cc',
+    'third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs',
+    'v8/include/DO NOT PUT FILES HERE',
+  ],
 }

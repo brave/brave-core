@@ -10,11 +10,13 @@
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_TYPES  \
   case PermissionType::BRAVE_ETHEREUM: \
   case PermissionType::BRAVE_SOLANA:   \
   case PermissionType::BRAVE_CARDANO:
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_TYPES
 #endif
 

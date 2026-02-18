@@ -9,6 +9,7 @@
 // For FirstRunServicePolicyBrowserTest.OpenFirstRunIfNeeded/BrowserSignin_0:
 // Change test expectation: we don't allow FRE to change profile name to "Work",
 // so adjust the expected string to be the default profile name
+// CHROMIUM_SRC_INTERNAL_USE
 #define IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME_SAVE \
   IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME
 #undef IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME

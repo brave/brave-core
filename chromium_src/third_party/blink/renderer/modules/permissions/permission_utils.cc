@@ -9,6 +9,7 @@
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_WEB_PRINTING_CASES \
   case PermissionName::BRAVE_ETHEREUM:  \
     return "brave_ethereum";            \
@@ -17,6 +18,7 @@
   case PermissionName::BRAVE_CARDANO:   \
     return "brave_cardano";
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_WEB_PRINTING_CASES \
   case PermissionName::BRAVE_ETHEREUM:  \
   case PermissionName::BRAVE_SOLANA:    \
