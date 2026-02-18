@@ -73,7 +73,7 @@ class LinkPreviewViewController: UIViewController {
         shieldLevel: shieldLevel
       )
       for ruleList in ruleLists {
-        currentTab.configuration.userContentController.add(ruleList)
+        currentTab.configuration?.userContentController.add(ruleList)
       }
     }
 

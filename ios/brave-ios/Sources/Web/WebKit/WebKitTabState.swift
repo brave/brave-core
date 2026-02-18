@@ -551,7 +551,7 @@ class WebKitTabState: TabState, TabStateImpl {
     )
   }
 
-  var configuration: WKWebViewConfiguration {
+  var configuration: WKWebViewConfiguration? {
     if let webView {
       return webView.configuration
     }
