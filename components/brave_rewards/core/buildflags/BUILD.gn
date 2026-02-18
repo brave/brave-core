@@ -11,5 +11,37 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_BRAVE_REWARDS=$enable_brave_rewards",
     "ENABLE_GEMINI_WALLET=$enable_gemini_wallet",
+
+    "BITFLYER_PRODUCTION_CLIENT_ID=\"$bitflyer_production_client_id\"",
+    "BITFLYER_PRODUCTION_CLIENT_SECRET=\"$bitflyer_production_client_secret\"",
+    "BITFLYER_PRODUCTION_FEE_ADDRESS=\"$bitflyer_production_fee_address\"",
+    "BITFLYER_PRODUCTION_URL=\"$bitflyer_production_url\"",
+    "BITFLYER_SANDBOX_CLIENT_ID=\"$bitflyer_sandbox_client_id\"",
+    "BITFLYER_SANDBOX_CLIENT_SECRET=\"$bitflyer_sandbox_client_secret\"",
+    "BITFLYER_SANDBOX_FEE_ADDRESS=\"$bitflyer_sandbox_fee_address\"",
+    "BITFLYER_SANDBOX_URL=\"$bitflyer_sandbox_url\"",
+
+    "GEMINI_PRODUCTION_API_URL=\"$gemini_production_api_url\"",
+    "GEMINI_PRODUCTION_FEE_ADDRESS=\"$gemini_production_fee_address\"",
+    "GEMINI_PRODUCTION_OAUTH_URL=\"$gemini_production_oauth_url\"",
+    "GEMINI_SANDBOX_API_URL=\"$gemini_sandbox_api_url\"",
+    "GEMINI_SANDBOX_FEE_ADDRESS=\"$gemini_sandbox_fee_address\"",
+    "GEMINI_SANDBOX_OAUTH_URL=\"$gemini_sandbox_oauth_url\"",
+
+    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
+    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
+    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
+
+    "UPHOLD_PRODUCTION_API_URL=\"$uphold_production_api_url\"",
+    "UPHOLD_PRODUCTION_FEE_ADDRESS=\"$uphold_production_fee_address\"",
+    "UPHOLD_PRODUCTION_OAUTH_URL=\"$uphold_production_oauth_url\"",
+    "UPHOLD_SANDBOX_API_URL=\"$uphold_sandbox_api_url\"",
+    "UPHOLD_SANDBOX_FEE_ADDRESS=\"$uphold_sandbox_fee_address\"",
+    "UPHOLD_SANDBOX_OAUTH_URL=\"$uphold_sandbox_oauth_url\"",
+
+    "ZEBPAY_PRODUCTION_API_URL=\"$zebpay_production_api_url\"",
+    "ZEBPAY_PRODUCTION_OAUTH_URL=\"$zebpay_production_oauth_url\"",
+    "ZEBPAY_SANDBOX_API_URL=\"$zebpay_sandbox_api_url\"",
+    "ZEBPAY_SANDBOX_OAUTH_URL=\"$zebpay_sandbox_oauth_url\"",
   ]
 }

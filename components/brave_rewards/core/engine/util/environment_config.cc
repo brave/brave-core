@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/constants.h"
-#include "brave/components/brave_rewards/core/engine/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 
