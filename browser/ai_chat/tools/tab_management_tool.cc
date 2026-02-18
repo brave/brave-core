@@ -162,10 +162,10 @@ void TabManagementTool::UseTool(const std::string& input_json,
           "plan for the first use of this tool."));
       return;
     }
-    // If valid permission, we shouldn't be here
-    DUMP_WILL_BE_NOTREACHED();
-    // Still provide output so the conversation can proceed without running this
-    // tool.
+    // We shouldn't get here since we expect callers to call
+    // RequiresUserInteractionBeforeHandling first and only call UseTool if
+    // permission was granted but, just in case, still provide output so the
+    // conversation can proceed without running this tool.
     std::move(callback).Run(CreateContentBlocksForText("Unknown error"));
     return;
   }

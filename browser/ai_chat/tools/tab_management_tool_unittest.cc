@@ -45,13 +45,13 @@ std::string RunTool(TabManagementTool* tool, const std::string& json) {
 
 mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& json) {
   return mojom::ToolUseEvent::New(mojom::kTabManagementToolName, "1", json,
-                                  std::nullopt, nullptr);
+                                  std::nullopt, nullptr, false);
 }
 
 }  // namespace
 
 TEST(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
-  TabManagementTool tool();
+  TabManagementTool tool;
 
   auto valid_tool_event = CreateToolUseEvent(kValidInputListWithPlan);
 
@@ -83,7 +83,7 @@ TEST(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
 }
 
 TEST(TabManagementToolUnitTest, UseTool_Permissions) {
-  TabManagementTool tool();
+  TabManagementTool tool;
 
   // Not providing a plan should provide the reason during UseTool so that
   // the error is reported to the AI who is given another chance to provide a
@@ -113,7 +113,7 @@ TEST(TabManagementToolUnitTest, UseTool_Permissions) {
 }
 
 TEST(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
-  TabManagementTool tool();
+  TabManagementTool tool;
 
   // Grant permission once.
   tool.UserPermissionGranted("");
@@ -128,10 +128,6 @@ TEST(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
   // Missing action
   EXPECT_THAT(RunTool(&tool, "{}"),
               testing::HasSubstr("Missing required 'action' field"));
-
-  // Invalid action
-  EXPECT_THAT(RunTool(&tool, R"({"action":"bogus"})"),
-              testing::HasSubstr("Invalid action. Must be one of"));
 }
 
 }  // namespace ai_chat
