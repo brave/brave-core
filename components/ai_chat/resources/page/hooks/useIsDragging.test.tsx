@@ -3,23 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as React from 'react'
 import { renderHook, act } from '@testing-library/react'
+import { clearAllDataForTesting } from '$web-common/api'
+import { MockContext } from '../state/mock_context'
+import { useAIChat } from '../state/ai_chat_context'
 import { useIsDragging } from './useIsDragging'
-
-// Mock the API module
-const mockAPI = {
-  conversationEntriesFrameObserver: {
-    dragStart: {
-      addListener: jest.fn(() => 'mock-listener-id'),
-    },
-    removeListener: jest.fn(),
-  },
-}
-
-jest.mock('../api', () => ({
-  __esModule: true,
-  default: () => mockAPI,
-}))
 
 describe('useIsDragging', () => {
   const mockSetDragActive = jest.fn()
@@ -27,29 +16,34 @@ describe('useIsDragging', () => {
   const mockClearDragState = jest.fn()
 
   beforeEach(() => {
+    clearAllDataForTesting()
     jest.clearAllMocks()
     // Reset DOM event listeners
     document.removeEventListener = jest.fn()
     document.addEventListener = jest.fn()
     window.removeEventListener = jest.fn()
     window.addEventListener = jest.fn()
-    // Reset API mock calls
-    mockAPI.conversationEntriesFrameObserver.dragStart.addListener.mockClear()
-    mockAPI.conversationEntriesFrameObserver.removeListener.mockClear()
-    jest.useFakeTimers()
   })
 
-  afterEach(() => {
-    jest.useRealTimers()
-  })
+  // Create a wrapper that provides access to the API for emitting events
+  const createWrapper = () => {
+    return ({ children }: { children: React.ReactNode }) => (
+      <MockContext>{children}</MockContext>
+    )
+  }
 
   const renderUseIsDragging = () => {
-    return renderHook(() =>
-      useIsDragging({
-        setDragActive: mockSetDragActive,
-        setDragOver: mockSetDragOver,
-        clearDragState: mockClearDragState,
+    const wrapper = createWrapper()
+    return renderHook(
+      () => ({
+        useIsDragging: useIsDragging({
+          setDragActive: mockSetDragActive,
+          setDragOver: mockSetDragOver,
+          clearDragState: mockClearDragState,
+        }),
+        useAIChat: useAIChat(),
       }),
+      { wrapper },
     )
   }
 
@@ -292,6 +286,7 @@ describe('useIsDragging', () => {
 
   describe('timeout behavior', () => {
     it('sets timeout to clear drag state after 1 second of inactivity', () => {
+      jest.useFakeTimers({ legacyFakeTimers: true })
       renderUseIsDragging()
 
       const dragEnterHandler = (
@@ -316,9 +311,11 @@ describe('useIsDragging', () => {
       })
 
       expect(mockClearDragState).toHaveBeenCalled()
+      jest.useRealTimers()
     })
 
     it('resets timeout on dragover activity', () => {
+      jest.useFakeTimers({ legacyFakeTimers: true })
       renderUseIsDragging()
 
       const dragEnterHandler = (
@@ -363,6 +360,7 @@ describe('useIsDragging', () => {
 
       // Now should clear
       expect(mockClearDragState).toHaveBeenCalled()
+      jest.useRealTimers()
     })
   })
 
@@ -399,6 +397,9 @@ describe('useIsDragging', () => {
     })
 
     it('clears timeout on unmount when timeout exists', () => {
+      jest.useFakeTimers({ legacyFakeTimers: true })
+      const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout')
+
       const { unmount } = renderUseIsDragging()
 
       const dragEnterHandler = (
@@ -410,8 +411,6 @@ describe('useIsDragging', () => {
         dataTransfer: { types: ['Files'] },
       } as any
 
-      const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout')
-
       // Create a timeout by triggering dragenter
       act(() => {
         dragEnterHandler(mockEvent)
@@ -420,49 +419,22 @@ describe('useIsDragging', () => {
       unmount()
 
       expect(clearTimeoutSpy).toHaveBeenCalled()
+      jest.useRealTimers()
     })
   })
 
   describe('iframe drag handling', () => {
-    it('sets up iframe drag listener on mount', () => {
-      renderUseIsDragging()
+    it('activates drag state when iframe drag starts', async () => {
+      const renderResult = renderUseIsDragging()
 
-      expect(
-        mockAPI.conversationEntriesFrameObserver.dragStart.addListener,
-      ).toHaveBeenCalled()
-    })
-
-    it('activates drag state when iframe drag starts', () => {
-      let dragStartCallback: () => void
-
-      mockAPI.conversationEntriesFrameObserver.dragStart.addListener.mockImplementation(
-        (callback: () => void) => {
-          dragStartCallback = callback
-          return 'mock-listener-id'
-        },
+      // Simulate iframe drag start by calling the observer method directly
+      // This is what happens when the child iframe sends a drag event to the parent
+      await act(() =>
+        renderResult.result.current.useAIChat.api.emitEvent('dragStart', []),
       )
-
-      renderUseIsDragging()
-
-      act(() => {
-        dragStartCallback()
-      })
 
       expect(mockSetDragActive).toHaveBeenCalledWith(true)
       expect(mockSetDragOver).toHaveBeenCalledWith(true)
-    })
-
-    it('removes iframe drag listener on unmount', () => {
-      // Ensure the addListener mock returns the expected ID
-      mockAPI.conversationEntriesFrameObserver.dragStart.addListener.mockReturnValue(
-        'mock-listener-id',
-      )
-
-      const { unmount } = renderUseIsDragging()
-      unmount()
-      expect(
-        mockAPI.conversationEntriesFrameObserver.removeListener,
-      ).toHaveBeenCalledWith('mock-listener-id')
     })
   })
 })

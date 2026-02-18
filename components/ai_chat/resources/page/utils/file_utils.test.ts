@@ -10,72 +10,20 @@ import {
   UnsupportedFileTypeError,
 } from './file_utils'
 import * as Mojom from '../../common/mojom'
-import getAPI from '../api'
-
-// Mock the API module
-jest.mock('../api', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-// Mock loadTimeData (required by API initialization)
-jest.mock('$web-common/loadTimeData', () => ({
-  loadTimeData: {
-    getBoolean: jest.fn().mockReturnValue(false),
-  },
-}))
+import type { AIChatContext } from '../state/ai_chat_context'
 
 describe('convertFileToUploadedFile', () => {
-  let mockHandler: any
-  let mockService: any
-  let mockAPI: any
+  let mockProcessImageFile: jest.Mock<
+    ReturnType<AIChatContext['processImageFile']>,
+    Parameters<AIChatContext['processImageFile']>
+  >
   let mockFileReader: any
   let originalFileReader: any
 
   beforeEach(() => {
-    setupMojomServiceMocks()
-    setupAPIMock()
-    setupFileReaderMock()
-  })
+    // Mock processImageFile function (now passed as parameter)
+    mockProcessImageFile = jest.fn()
 
-  afterEach(() => {
-    global.FileReader = originalFileReader
-    jest.clearAllMocks()
-  })
-
-  function setupMojomServiceMocks() {
-    // Mock the UI handler that processes images
-    mockHandler = {
-      processImageFile: jest.fn(),
-    }
-
-    // Mock the main service for PageAPI initialization
-    mockService = {
-      bindObserver: jest.fn().mockResolvedValue({ state: {} }),
-      getConversations: jest.fn().mockResolvedValue({ conversations: [] }),
-      getActionMenuList: jest.fn().mockResolvedValue({ actionList: [] }),
-      getPremiumStatus: jest.fn().mockResolvedValue({ status: undefined }),
-      bindMetrics: jest.fn(),
-    }
-
-    // Mock the getRemote functions
-    jest.spyOn(Mojom.Service, 'getRemote').mockReturnValue(mockService)
-    jest.spyOn(Mojom.AIChatUIHandler, 'getRemote').mockReturnValue(mockHandler)
-  }
-
-  function setupAPIMock() {
-    // Mock the complete API instance that getAPI() returns
-    mockAPI = {
-      uiHandler: mockHandler,
-      service: mockService,
-      setPartialState: jest.fn(),
-      initialize: jest.fn(),
-      updateCurrentPremiumStatus: jest.fn(),
-    }
-    ;(getAPI as jest.Mock).mockReturnValue(mockAPI)
-  }
-
-  function setupFileReaderMock() {
     // Mock FileReader for simulating file reading
     originalFileReader = global.FileReader
     mockFileReader = {
@@ -89,7 +37,12 @@ describe('convertFileToUploadedFile', () => {
     global.FileReader = jest
       .fn()
       .mockImplementation(() => mockFileReader) as any
-  }
+  })
+
+  afterEach(() => {
+    global.FileReader = originalFileReader
+    jest.clearAllMocks()
+  })
 
   // Test helpers
   const createMockFile = (
@@ -112,9 +65,7 @@ describe('convertFileToUploadedFile', () => {
         type: Mojom.UploadedFileType.kImage,
       }
 
-      mockHandler.processImageFile.mockResolvedValue({
-        processedFile: mockProcessedFile,
-      })
+      mockProcessImageFile.mockResolvedValue(mockProcessedFile)
 
       // Override readAsArrayBuffer to trigger success
       mockFileReader.readAsArrayBuffer.mockImplementation(() => {
@@ -125,13 +76,13 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      const result = await convertFileToUploadedFile(file)
+      const result = await convertFileToUploadedFile(file, mockProcessImageFile)
 
       expect(mockFileReader.readAsArrayBuffer).toHaveBeenCalledWith(file)
-      expect(mockHandler.processImageFile).toHaveBeenCalledWith(
+      expect(mockProcessImageFile).toHaveBeenCalledWith([
         expectedData,
         'test.png',
-      )
+      ])
       expect(result).toEqual(mockProcessedFile)
     })
 
@@ -145,9 +96,7 @@ describe('convertFileToUploadedFile', () => {
         type: Mojom.UploadedFileType.kScreenshot,
       }
 
-      mockHandler.processImageFile.mockResolvedValue({
-        processedFile: mockProcessedFile,
-      })
+      mockProcessImageFile.mockResolvedValue(mockProcessedFile)
 
       // Override readAsArrayBuffer to trigger success
       mockFileReader.readAsArrayBuffer.mockImplementation(() => {
@@ -158,7 +107,7 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      const result = await convertFileToUploadedFile(file)
+      const result = await convertFileToUploadedFile(file, mockProcessImageFile)
 
       expect(result).toEqual(mockProcessedFile)
     })
@@ -177,10 +126,10 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      const result = await convertFileToUploadedFile(file)
+      const result = await convertFileToUploadedFile(file, mockProcessImageFile)
 
       expect(mockFileReader.readAsArrayBuffer).toHaveBeenCalledWith(file)
-      expect(mockHandler.processImageFile).not.toHaveBeenCalled()
+      expect(mockProcessImageFile).not.toHaveBeenCalled()
       expect(result).toEqual({
         filename: 'test.pdf',
         filesize: file.size, // Use actual file size
@@ -194,9 +143,9 @@ describe('convertFileToUploadedFile', () => {
       const mockArrayBuffer = new ArrayBuffer(0)
 
       // Mock processImageFile to return null for empty files (real behavior)
-      mockHandler.processImageFile.mockResolvedValue({
-        processedFile: null,
-      })
+      mockProcessImageFile.mockResolvedValue(
+        null as unknown as Mojom.UploadedFile,
+      )
 
       // Override readAsArrayBuffer to trigger success
       mockFileReader.readAsArrayBuffer.mockImplementation(() => {
@@ -207,13 +156,15 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        ImageProcessingError,
-      )
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(ImageProcessingError)
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(
         'Failed to process image file: Backend returned no result',
       )
-      expect(mockHandler.processImageFile).toHaveBeenCalledWith([], 'empty.png')
+      expect(mockProcessImageFile).toHaveBeenCalledWith([[], 'empty.png'])
     })
   })
 
@@ -230,13 +181,13 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        FileReadError,
-      )
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        'Failed to read file: test.png',
-      )
-      expect(mockHandler.processImageFile).not.toHaveBeenCalled()
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(FileReadError)
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow('Failed to read file: test.png')
+      expect(mockProcessImageFile).not.toHaveBeenCalled()
     })
 
     it('throws FileReadError when FileReader result is null', async () => {
@@ -251,22 +202,22 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        FileReadError,
-      )
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        'Failed to read file: No data received',
-      )
-      expect(mockHandler.processImageFile).not.toHaveBeenCalled()
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(FileReadError)
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow('Failed to read file: No data received')
+      expect(mockProcessImageFile).not.toHaveBeenCalled()
     })
 
     it('throws ImageProcessingError when processImageFile returns null', async () => {
       const file = createMockFile('test.png', 'image/png')
       const mockArrayBuffer = new ArrayBuffer(8)
 
-      mockHandler.processImageFile.mockResolvedValue({
-        processedFile: null,
-      })
+      mockProcessImageFile.mockResolvedValue(
+        null as unknown as Mojom.UploadedFile,
+      )
 
       // Override readAsArrayBuffer to trigger success
       mockFileReader.readAsArrayBuffer.mockImplementation(() => {
@@ -277,10 +228,12 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        ImageProcessingError,
-      )
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(ImageProcessingError)
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(
         'Failed to process image file: Backend returned no result',
       )
     })
@@ -299,14 +252,16 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
-        UnsupportedFileTypeError,
-      )
-      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(UnsupportedFileTypeError)
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(
         'Unsupported file type: text/plain. Only images and PDF files are '
           + 'supported.',
       )
-      expect(mockHandler.processImageFile).not.toHaveBeenCalled()
+      expect(mockProcessImageFile).not.toHaveBeenCalled()
     })
   })
 
@@ -322,13 +277,11 @@ describe('convertFileToUploadedFile', () => {
       view[3] = 32
       const expectedData = [255, 128, 64, 32]
 
-      mockHandler.processImageFile.mockResolvedValue({
-        processedFile: {
-          filename: 'data.png',
-          filesize: 1000,
-          data: expectedData,
-          type: Mojom.UploadedFileType.kImage,
-        },
+      mockProcessImageFile.mockResolvedValue({
+        filename: 'data.png',
+        filesize: 1000,
+        data: expectedData,
+        type: Mojom.UploadedFileType.kImage,
       })
 
       // Override readAsArrayBuffer to trigger success
@@ -340,12 +293,12 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await convertFileToUploadedFile(file)
+      await convertFileToUploadedFile(file, mockProcessImageFile)
 
-      expect(mockHandler.processImageFile).toHaveBeenCalledWith(
+      expect(mockProcessImageFile).toHaveBeenCalledWith([
         expectedData,
         'data.png',
-      )
+      ])
     })
 
     it('preserves original filename', async () => {
@@ -353,13 +306,11 @@ describe('convertFileToUploadedFile', () => {
       const file = createMockFile(filename, 'image/png')
       const mockArrayBuffer = new ArrayBuffer(8)
 
-      mockHandler.processImageFile.mockResolvedValue({
-        processedFile: {
-          filename: filename,
-          filesize: 1000,
-          data: [1, 2, 3],
-          type: Mojom.UploadedFileType.kImage,
-        },
+      mockProcessImageFile.mockResolvedValue({
+        filename: filename,
+        filesize: 1000,
+        data: [1, 2, 3],
+        type: Mojom.UploadedFileType.kImage,
       })
 
       // Override readAsArrayBuffer to trigger success
@@ -371,12 +322,12 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      await convertFileToUploadedFile(file)
+      await convertFileToUploadedFile(file, mockProcessImageFile)
 
-      expect(mockHandler.processImageFile).toHaveBeenCalledWith(
+      expect(mockProcessImageFile).toHaveBeenCalledWith([
         expect.any(Array),
         filename,
-      )
+      ])
     })
   })
 })

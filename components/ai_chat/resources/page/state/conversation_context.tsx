@@ -14,7 +14,6 @@ import useSendFeedback, {
 import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
-import getAPI from '../api'
 import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
   updateConversationHistory,
@@ -93,7 +92,7 @@ export type ConversationContext = SendFeedbackState
     setAttachmentsDialog: (
       show: 'tabs' | 'bookmarks' | 'history' | null,
     ) => void
-    uploadFile: (useMediaCapture: boolean) => void
+    uploadFile: (args: [useMediaCapture: boolean]) => void
     getScreenshots: () => void
     removeFile: (index: number) => void
     setGeneratedUrlToBeOpened: (url?: Url) => void
@@ -156,7 +155,7 @@ export const defaultContext: ConversationContext = {
   disassociateContent: () => {},
   attachmentsDialog: null,
   setAttachmentsDialog: () => {},
-  uploadFile: (useMediaCapture: boolean) => {},
+  uploadFile: () => {},
   getScreenshots: () => {},
   removeFile: () => {},
   setGeneratedUrlToBeOpened: () => {},
@@ -205,10 +204,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     selectedConversationId,
     updateSelectedConversationId,
   } = useActiveChat()
-  const sendFeedbackState = useSendFeedback(
-    conversationHandler,
-    getAPI().conversationEntriesFrameObserver,
-  )
+  const sendFeedbackState = useSendFeedback(conversationHandler)
   const unassociatedTabs = React.useMemo(() => {
     return aiChatContext.tabs.filter(
       (t) =>
@@ -489,7 +485,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   React.useEffect(() => {
     try {
-      getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
+      aiChatContext.api.metrics.onQuickActionStatusChange(
+        !!context.selectedActionType,
+      )
     } catch (e) {}
   }, [context.selectedActionType])
 
@@ -553,7 +551,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     if (aiChatContext.isStandalone) {
-      getAPI().metrics.onSendingPromptWithFullPage()
+      aiChatContext.api.metrics.onSendingPromptWithFullPage()
     }
 
     if (context.selectedSkill) {
@@ -582,7 +580,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const disassociateContent = (content: Mojom.AssociatedContent) => {
-    aiChatContext.uiHandler?.disassociateContent(
+    aiChatContext.api.uiHandler?.disassociateContent(
       content,
       context.conversationUuid!,
     )
@@ -598,12 +596,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     return aiChatContext.defaultTabContentId && !existingAttachedContent && tab
       ? () => {
-          aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
+          aiChatContext.api.uiHandler?.associateTab(
+            tab,
+            context.conversationUuid!,
+          )
         }
       : undefined
   }, [
     aiChatContext.defaultTabContentId,
-    aiChatContext.uiHandler,
+    aiChatContext.api.uiHandler,
     aiChatContext.tabs,
     context.associatedContentInfo,
     context.conversationUuid,
@@ -651,7 +652,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       console.error('No conversationUuid found')
       return
     }
-    aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
+    aiChatContext.api.uiHandler?.handleVoiceRecognition(
+      context.conversationUuid,
+    )
   }
 
   const processUploadedFiles = (files: Mojom.UploadedFile[]) => {
@@ -683,14 +686,19 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
-  const uploadFile = (useMediaCapture: boolean) => {
-    aiChatContext.uiHandler
-      ?.uploadFile(useMediaCapture)
-      .then(({ uploadedFiles }) => {
+  const { uploadFile: uploadFileMutation, isPending: isUploadingFiles } =
+    aiChatContext.api.useUploadFile()
+
+  const uploadFile = (args: Parameters<typeof uploadFileMutation>[0]) => {
+    uploadFileMutation(args, {
+      onSuccess: async (uploadedFiles, [useMediaCapture]) => {
+        // Reset event state, avoid us having to make a useState<bool> for this
+        aiChatContext.api.resetOnUploadFilesSelected()
         if (uploadedFiles) {
           processUploadedFiles(uploadedFiles)
         }
-      })
+      },
+    })
   }
 
   const removeFile = (index: number) => {
@@ -714,22 +722,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   // Listen for user uploading files to display the uploading indicator.
-  React.useEffect(() => {
-    async function handleSetIsUploading() {
-      setPartialContext({
-        isUploadingFiles: true,
-      })
-    }
-
-    const listenerId =
-      getAPI().uiObserver.onUploadFilesSelected.addListener(
-        handleSetIsUploading,
-      )
-
-    return () => {
-      getAPI().uiObserver.removeListener(listenerId)
-    }
-  }, [])
+  const isAttachedFilesProcessing =
+    aiChatContext.api.useCurrentOnUploadFilesSelected().hasEmitted
 
   React.useEffect(() => {
     if (!context.selectedSkill) return
@@ -782,71 +776,42 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }, [])
 
   // Listen for userRequestedOpenGeneratedUrl requests from the child frame
-  React.useEffect(() => {
-    async function handleSetOpeningExternalLinkURL(url: Url) {
-      // If the user has ignored the warning, open the link immediately.
-      if (ignoreExternalLinkWarning.current) {
-        getAPI().uiHandler.openURL(url)
-        return
-      }
-      // Otherwise, set the URL to be opened in the modal.
-      setPartialContext({
-        generatedUrlToBeOpened: url,
-      })
+  aiChatContext.api.useUserRequestedOpenGeneratedUrl((url) => {
+    // If the user has ignored the warning, open the link immediately.
+    if (ignoreExternalLinkWarning.current) {
+      aiChatContext.api.uiHandler.openURL(url)
+      return
     }
-
-    const listenerId =
-      getAPI().conversationEntriesFrameObserver.userRequestedOpenGeneratedUrl.addListener(
-        handleSetOpeningExternalLinkURL,
-      )
-
-    return () => {
-      getAPI().conversationEntriesFrameObserver.removeListener(listenerId)
-    }
+    // Otherwise, set the URL to be opened in the modal.
+    setPartialContext({
+      generatedUrlToBeOpened: url,
+    })
   }, [])
 
   // Listen for showPremiumSuggestionForRegenerate requests from the child frame
-  React.useEffect(() => {
-    const listener = (isVisible: boolean) => {
-      setPartialContext({
-        showPremiumSuggestionForRegenerate: isVisible,
-      })
-    }
-    const listenerId =
-      getAPI().conversationEntriesFrameObserver.showPremiumSuggestionForRegenerate.addListener(
-        listener,
-      )
-
-    return () => {
-      getAPI().conversationEntriesFrameObserver.removeListener(listenerId)
-    }
-  }, [])
+  aiChatContext.api.useShowPremiumSuggestionForRegenerate((isVisible) => {
+    setPartialContext({
+      showPremiumSuggestionForRegenerate: isVisible,
+    })
+  })
 
   // Listen for showSkillDialog requests from the child frame
-  React.useEffect(() => {
-    const listener = (prompt: string) => {
-      aiChatContext.setSkillDialog({
-        id: '',
-        shortcut: '',
-        prompt: prompt,
-        model: '',
-        createdTime: { internalValue: BigInt(0) },
-        lastUsed: { internalValue: BigInt(0) },
-      })
-    }
-    const listenerId =
-      getAPI().conversationEntriesFrameObserver.showSkillDialog.addListener(
-        listener,
-      )
-
-    return () => {
-      getAPI().conversationEntriesFrameObserver.removeListener(listenerId)
-    }
-  }, [])
+  aiChatContext.api.useShowSkillDialog((prompt) => {
+    aiChatContext.setSkillDialog({
+      id: '',
+      shortcut: '',
+      prompt: prompt,
+      model: '',
+      createdTime: { internalValue: BigInt(0) },
+      lastUsed: { internalValue: BigInt(0) },
+    })
+  })
 
   const store: ConversationContext = {
     ...context,
     ...sendFeedbackState,
+    isUploadingFiles:
+      context.isUploadingFiles || isUploadingFiles || isAttachedFilesProcessing,
     apiHasError,
     shouldDisableUserInput,
     isCharLimitApproaching,

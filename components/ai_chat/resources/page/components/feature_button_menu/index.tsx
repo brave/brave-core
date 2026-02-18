@@ -28,7 +28,7 @@ export default function FeatureMenu(props: Props) {
   const conversationContext = useConversation()
 
   const handleSettingsClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
+    aiChatContext.api.uiHandler.openAIChatSettings()
   }
 
   // If conversation has been started, then it has been committed
@@ -178,7 +178,7 @@ export default function FeatureMenu(props: Props) {
       )}
       {!aiChatContext.isMobile && (
         <leo-menu-item
-          onClick={() => aiChatContext.uiHandler?.openMemorySettings()}
+          onClick={() => aiChatContext.api.uiHandler.openMemorySettings()}
         >
           <div
             className={classnames(
