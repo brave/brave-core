@@ -7,7 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace brave::features {
+namespace features {
 
 // Use base::WeakPtr instead of std::shared_ptr for BraveRequestInfo.
 // When enabled, BraveRequestInfo objects are owned by std::unique_ptr
@@ -16,4 +16,4 @@ namespace brave::features {
 // and non-owning references (simpler but higher overhead).
 BASE_FEATURE(kBraveRequestInfoUseWeakPtr, base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace brave::features
+}  // namespace features

@@ -137,7 +137,7 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
         base::WeakPtr<brave::BraveRequestInfo>>;
     scoped_feature_list_.InitWithFeatureState(
-        brave::features::kBraveRequestInfoUseWeakPtr, enable_flag);
+        features::kBraveRequestInfoUseWeakPtr, enable_flag);
   }
 
   void TearDown() override {

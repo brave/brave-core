@@ -1171,15 +1171,12 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   // TODO(iefremov): Skip proxying for certain requests?
-  if (base::FeatureList::IsEnabled(
-          brave::features::kBraveRequestInfoUseWeakPtr)) {
+  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUseWeakPtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
-        browser_context, frame, factory_builder,
-        navigation_response_task_runner);
+        browser_context, frame, factory_builder, navigation_response_task_runner);
   } else {
     BraveProxyingURLLoaderFactory<std::shared_ptr>::MaybeProxyRequest(
-        browser_context, frame, factory_builder,
-        navigation_response_task_runner);
+        browser_context, frame, factory_builder, navigation_response_task_runner);
   }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
@@ -1194,7 +1191,7 @@ bool BraveContentBrowserClient::WillInterceptWebSocket(
   return (frame != nullptr);
 }
 
-template <template <typename> class T>
+template <template<typename> class T>
 void BraveContentBrowserClient::CreateChromeWebSocket(
     content::RenderFrameHost* frame,
     const GURL& url,
@@ -1204,11 +1201,11 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
         handshake_client,
     BraveProxyingWebSocket<T>* proxy) {
   if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
-    ChromeContentBrowserClient::CreateWebSocket(
-        frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client));
+      ChromeContentBrowserClient::CreateWebSocket(
+          frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
+          user_agent, std::move(handshake_client));
   } else {
-    proxy->Start(std::move(handshake_client));
+      proxy->Start(std::move(handshake_client));
   }
 }
 void BraveContentBrowserClient::CreateWebSocket(
@@ -1219,19 +1216,14 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
-  if (base::FeatureList::IsEnabled(
-          brave::features::kBraveRequestInfoUseWeakPtr)) {
+  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUseWeakPtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
         frame, std::move(factory), url, site_for_cookies, user_agent);
-    CreateChromeWebSocket<base::WeakPtr>(frame, url, site_for_cookies,
-                                         user_agent,
-                                         std::move(handshake_client), proxy);
+    CreateChromeWebSocket<base::WeakPtr>(frame, url, site_for_cookies, user_agent, std::move(handshake_client), proxy);
   } else {
     auto* proxy = BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(
         frame, std::move(factory), url, site_for_cookies, user_agent);
-    CreateChromeWebSocket<std::shared_ptr>(frame, url, site_for_cookies,
-                                           user_agent,
-                                           std::move(handshake_client), proxy);
+    CreateChromeWebSocket<std::shared_ptr>(frame, url, site_for_cookies, user_agent, std::move(handshake_client), proxy);
   }
 }
 

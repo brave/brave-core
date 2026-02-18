@@ -76,7 +76,7 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
         std::is_same_v<typename PtrStrategy::template Ptr<BraveRequestInfo>,
                        base::WeakPtr<BraveRequestInfo>>;
     request_info_feature_list_.InitWithFeatureState(
-        brave::features::kBraveRequestInfoUseWeakPtr, enable_flag);
+        features::kBraveRequestInfoUseWeakPtr, enable_flag);
 
     TestingProfile::Builder builder;
     auto prefs =
