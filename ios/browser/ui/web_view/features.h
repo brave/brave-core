@@ -10,7 +10,6 @@
 
 namespace brave::features {
 
-BASE_DECLARE_FEATURE(kUseChromiumWebViews);
 BASE_DECLARE_FEATURE(kUseChromiumWebViewsAutofill);
 BASE_DECLARE_FEATURE(kUseChromiumWebViewsJavaScript);
 
