@@ -46,8 +46,9 @@ extern const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent;
 
-// How many most-recent web sources tool output to keep with full content
-// (page_content + extra_snippets). Older ones are stripped to metadata only.
+// How many most-recent web sources tool outputs to keep with full content
+// (page_content, extra_snippets, rich_results). Older ones are stripped to
+// metadata only.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kMaxFullWebSourcesToolOutputs;
 

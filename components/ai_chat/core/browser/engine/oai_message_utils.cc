@@ -21,8 +21,8 @@ namespace ai_chat {
 
 namespace {
 
-// Strips page_content and extra_snippets from web sources while keeping
-// other metadata (title, url, favicon_url, query, rich_results).
+// Strips page_content, extra_snippets, and rich_results from web sources
+// while keeping other metadata (title, url, favicon_url) and query.
 std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
     const std::vector<mojom::ContentBlockPtr>& output) {
   std::vector<mojom::ContentBlockPtr> result;
@@ -37,9 +37,9 @@ std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
             /*extra_snippets=*/std::nullopt));
       }
       result.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
-          mojom::WebSourcesContentBlock::New(
-              std::move(stripped_sources), ws->query,
-              std::vector<std::string>(ws->rich_results))));
+          mojom::WebSourcesContentBlock::New(std::move(stripped_sources),
+                                             ws->query,
+                                             std::vector<std::string>())));
     } else {
       // Currently WebSourcesContentBlock is only used by server-side search
       // tool results, the output content array will not have large data in
