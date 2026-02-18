@@ -289,6 +289,7 @@ void OnShouldBlockRequestResult(
     ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!ctx) {
+    next_callback.Run();
     return;
   }
   ctx->set_blocked_by(result.blocked_by);
@@ -318,6 +319,7 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!ctx) {
+    next_callback.Run();
     return;
   }
 
