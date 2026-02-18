@@ -353,11 +353,6 @@
       initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
 }
 
-+ (Feature*)kUseChromiumWebViews {
-  return
-      [[Feature alloc] initWithFeature:&brave::features::kUseChromiumWebViews];
-}
-
 + (Feature*)kUseChromiumWebViewsJavaScript {
   return [[Feature alloc]
       initWithFeature:&brave::features::kUseChromiumWebViewsJavaScript];

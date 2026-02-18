@@ -3294,7 +3294,7 @@ extension BrowserViewController {
       return
     }
 
-    if FeatureList.kAIChatWebUIEnabled.enabled, FeatureList.kUseChromiumWebViews.enabled {
+    if FeatureList.kAIChatWebUIEnabled.enabled {
       if let query,
         let conversationURL = AIChatUtils.openLeoURL(
           withQuerySubmitted: query,

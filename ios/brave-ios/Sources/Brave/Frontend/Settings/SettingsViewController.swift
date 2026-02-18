@@ -1354,21 +1354,8 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.settingsLicenses,
           selection: { [unowned self] in
-            if FeatureList.kUseChromiumWebViews.enabled {
-              if let url = URL(string: "brave://credits") {
-                settingsDelegate?.settingsOpenURLInNewTab(url)
-              }
-            } else {
-              let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
-              let container = UINavigationController(rootViewController: controller)
-              controller.webView.load(URLRequest(url: URL(string: "brave://credits")!))
-              controller.navigationItem.leftBarButtonItem = .init(
-                systemItem: .done,
-                primaryAction: .init { [unowned container] _ in
-                  container.dismiss(animated: true)
-                }
-              )
-              present(container, animated: true)
+            if let url = URL(string: "brave://credits") {
+              settingsDelegate?.settingsOpenURLInNewTab(url)
             }
           },
           accessory: .disclosureIndicator
