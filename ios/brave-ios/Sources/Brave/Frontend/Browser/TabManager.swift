@@ -1186,8 +1186,12 @@ class TabManager: NSObject {
     _ tab: some TabState,
     completionHandler: @escaping () -> Void = {}
   ) {
+    guard let configuration = tab.configuration else {
+      completionHandler()
+      return
+    }
     let dataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
-    tab.configuration?.websiteDataStore.removeData(
+    configuration.websiteDataStore.removeData(
       ofTypes: dataTypes,
       modifiedSince: Date.distantPast,
       completionHandler: completionHandler
