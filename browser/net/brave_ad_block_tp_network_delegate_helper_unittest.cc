@@ -173,20 +173,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     // `request_identifier` must be nonzero, or else nothing will be tested.
     request_info->set_request_identifier(1);
 
-    // Convert to shared_ptr for the function call
-    std::shared_ptr<brave::BraveRequestInfo> shared_request;
-    if constexpr (std::is_same_v<typename PtrStrategy::template Ptr<
-                                     brave::BraveRequestInfo>,
-                                 std::shared_ptr<brave::BraveRequestInfo>>) {
-      shared_request = request_info;
-    } else {
-      // For WeakPtr, get the owned request
-      shared_request = std::shared_ptr<brave::BraveRequestInfo>(
-          owned_request_.get(), [](auto*) {});
-    }
-
     int rc =
-        OnBeforeURLRequest_AdBlockTPPreWork(base::DoNothing(), shared_request);
+        OnBeforeURLRequest_AdBlockTPPreWork(base::DoNothing(), request_info);
     EXPECT_TRUE(rc == net::OK || rc == net::ERR_IO_PENDING);
     task_environment_.RunUntilIdle();
 
