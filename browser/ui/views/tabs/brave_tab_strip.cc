@@ -103,6 +103,35 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
               BraveVerticalTabStripRegionView::State::kCollapsed);
 }
 
+bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
+  if (!ShouldShowVerticalTabs()) {
+    // Can happen when switching the orientation
+    return false;
+  }
+
+  auto* browser = GetBrowserWindowInterface();
+  DCHECK(browser);
+  auto* browser_view = static_cast<BraveBrowserView*>(
+      BrowserView::GetBrowserViewForBrowser(browser));
+  if (!browser_view) {
+    // Could be null during the start-up.
+    return false;
+  }
+
+  auto* vertical_region_view =
+      browser_view->vertical_tab_strip_widget_delegate_view()
+          ->vertical_tab_strip_region_view();
+
+  if (!vertical_region_view) {
+    // Could be null while closing a window.
+    return false;
+  }
+
+  return (vertical_region_view->width_animation().is_animating() &&
+          vertical_region_view->width_animation().GetCurrentValue() != 0 &&
+          vertical_region_view->width_animation().GetCurrentValue() != 1);
+}
+
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
   if (!ShouldShowVerticalTabs()) {
     return TabStrip::CanPaintThrobberToLayer();

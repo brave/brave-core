@@ -27,10 +27,12 @@
   }                                                              \
   bool ShouldAlwaysHideCloseButton()
 
-// Add override for IsVerticalTabsFloating()
-#define EndDrag(...)             \
-  EndDrag(__VA_ARGS__) override; \
-  bool IsVerticalTabsFloating() const
+// Add override for IsVerticalTabsFloating() and
+// IsVerticalTabsAnimatingButNotFinalState()
+#define EndDrag(...)                            \
+  EndDrag(__VA_ARGS__) override;                \
+  bool IsVerticalTabsFloating() const override; \
+  bool IsVerticalTabsAnimatingButNotFinalState() const
 
 // Add override for CanCloseTabViaMiddleButtonClick()
 #define CanPaintThrobberToLayer()           \

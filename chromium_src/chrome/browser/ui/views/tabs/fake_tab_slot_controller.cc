@@ -17,6 +17,10 @@ bool FakeTabSlotController::IsVerticalTabsFloating() const {
   return false;
 }
 
+bool FakeTabSlotController::IsVerticalTabsAnimatingButNotFinalState() const {
+  return false;
+}
+
 bool FakeTabSlotController::ShouldPaintTabAccent(const Tab* tab) const {
   return false;
 }

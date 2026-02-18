@@ -34,6 +34,10 @@ class MockTabSlotController : public FakeTabSlotController {
   // FakeTabSlotController overrides:
   MOCK_METHOD(void, CloseTab, (Tab * tab, CloseTabSource source), (override));
   MOCK_METHOD(bool, IsVerticalTabsFloating, (), (const, override));
+  MOCK_METHOD(bool,
+              IsVerticalTabsAnimatingButNotFinalState,
+              (),
+              (const, override));
   MOCK_METHOD(BrowserWindowInterface*,
               GetBrowserWindowInterface,
               (),
@@ -190,11 +194,12 @@ TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
   tab_ptr->OnMouseReleased(release_event);
 }
 
-// Test that icon visibility is correctly set when vertical tabs are floating
-// across various tab widths. This prevents icon flickering when the floating
-// animation completes during the transition from max to min width.
+// Test that icon visibility is correctly set when vertical tabs are animating
+// to collapsed state across various tab widths. This prevents icon flickering
+// when the collapse animation occurs during the transition from max to min
+// width.
 // See: UpdateIconVisibility() in brave_tab.cc
-TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsFloating) {
+TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsAnimating) {
   // Set up a profile with vertical tabs enabled
   TestingProfile profile;
   profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
@@ -213,7 +218,7 @@ TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsFloating) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
       .WillRepeatedly(testing::Return(&mock_browser_window));
-  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsAnimatingButNotFinalState())
       .WillRepeatedly(testing::Return(true));
 
   // Test various widths from max to min to simulate the animation transition
@@ -235,17 +240,20 @@ TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsFloating) {
       tab_ptr->SetBoundsRect({0, 0, width, 50});
       tab_ptr->UpdateIconVisibility();
 
-      // When floating and width > min width:
+      // When animating and width > min width:
       // - Icon should be visible (prevents hiding during animation)
       // - Icon should not be centered (prevent flickering during the animation)
       EXPECT_TRUE(tab_ptr->showing_icon())
-          << "Icon should be visible when floating at width " << width;
+          << "Icon should be visible when animating at width " << width;
       EXPECT_FALSE(tab_ptr->center_icon_for_test())
-          << "Icon should not be centered when floating at width " << width;
+          << "Icon should not be centered when animating at width " << width;
     }
   }
 
-  // Test pinned tab across width range
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(true));
+
+  // Test pinned tab across width range during the floating animation.
   {
     auto widget =
         CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
@@ -262,14 +270,46 @@ TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsFloating) {
       pinned_tab_ptr->SetBoundsRect({0, 0, width, 50});
       pinned_tab_ptr->UpdateIconVisibility();
 
-      // When floating and width > min width:
+      // When animating and width > min width:
       // - Icon should always be visible for pinned tabs
       // - Icon should not be centered (uses normal positioning)
       EXPECT_TRUE(pinned_tab_ptr->showing_icon())
-          << "Pinned tab icon should be visible when floating at width "
+          << "Pinned tab icon should be visible when animating at width "
           << width;
       EXPECT_FALSE(pinned_tab_ptr->center_icon_for_test())
-          << "Pinned tab icon should not be centered when floating at width "
+          << "Pinned tab icon should not be centered when animating at width "
+          << width;
+    }
+  }
+
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(false));
+
+  // Test pinned tab across width range during non-floating animation.
+  {
+    auto widget =
+        CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+    auto pinned_tab =
+        std::make_unique<BraveTab>(tabs::TabHandle(2), &tab_slot_controller);
+    widget->SetContentsView(std::move(pinned_tab));
+    auto* pinned_tab_ptr = static_cast<BraveTab*>(widget->GetContentsView());
+
+    TabRendererData data;
+    data.pinned = true;
+    pinned_tab_ptr->SetData(std::move(data));
+
+    for (int width = kMaxWidth; width > kMinWidth; width -= kStep) {
+      pinned_tab_ptr->SetBoundsRect({0, 0, width, 50});
+      pinned_tab_ptr->UpdateIconVisibility();
+
+      // When animating and width > min width:
+      // - Icon should always be visible for pinned tabs
+      // - Icon should not be centered (uses normal positioning)
+      EXPECT_TRUE(pinned_tab_ptr->showing_icon())
+          << "Pinned tab icon should be visible when animating at width "
+          << width;
+      EXPECT_TRUE(pinned_tab_ptr->center_icon_for_test())
+          << "Pinned tab icon should be centered when animating at width "
           << width;
     }
   }

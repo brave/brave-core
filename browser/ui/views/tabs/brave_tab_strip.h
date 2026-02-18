@@ -41,6 +41,7 @@ class BraveTabStrip : public TabStrip {
       BrowserFrameActiveState active_state) const override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
+  bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
 

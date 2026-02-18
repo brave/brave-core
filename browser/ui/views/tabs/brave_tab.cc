@@ -95,6 +95,7 @@ void BraveTab::UpdateIconVisibility() {
   }
 
   const auto is_at_min_width = IsAtMinWidthForVerticalTabStrip();
+  // const bool is_at_max_width = (width() == 171);
 
   if (data().pinned) {
     if (is_at_min_width) {
@@ -102,6 +103,29 @@ void BraveTab::UpdateIconVisibility() {
       center_icon_ = true;
       showing_icon_ = !showing_alert_indicator_;
       showing_close_button_ = false;
+      return;
+    }
+
+    // To prevent flickering during the floating animation,
+    // disable centering the icon.
+    if (controller()->IsVerticalTabsFloating()) {
+      if (!showing_alert_indicator_) {
+        showing_icon_ = true;
+      }
+      center_icon_ = false;
+      showing_close_button_ = false;
+      return;
+    }
+
+    // To prevent flickering during the collaps/expand animation,
+    // put icon at center always.
+    if (controller()->IsVerticalTabsAnimatingButNotFinalState()) {
+      if (!showing_alert_indicator_) {
+        showing_icon_ = true;
+      }
+      center_icon_ = true;
+      showing_close_button_ = false;
+      return;
     }
 
     // When we show only icon for pinned vertical tab, we want to keep it
@@ -109,17 +133,18 @@ void BraveTab::UpdateIconVisibility() {
     if ((showing_icon_ || showing_alert_indicator_) &&
         !ShouldRenderAsNormalTab()) {
       center_icon_ = true;
+      return;
     }
+  }
 
-    // When floating, always show the icon and don't center it to prevent
-    // flickering during the expand/collapse animation. Without this check,
-    // icon visibility and positioning would be determined by other transient
-    // conditions (like width thresholds, active state, alert indicators),
-    // causing the icon to flicker as these conditions change during animation.
-    if (!is_at_min_width && controller()->IsVerticalTabsFloating()) {
+  // To prevent flickering duing the toggle animation,
+  // disable centering the icon.
+  if (controller()->IsVerticalTabsAnimatingButNotFinalState()) {
+    if (!showing_alert_indicator_) {
       showing_icon_ = true;
-      center_icon_ = false;
     }
+    center_icon_ = false;
+    showing_close_button_ = false;
     return;
   }
 
@@ -135,12 +160,6 @@ void BraveTab::UpdateIconVisibility() {
     showing_close_button_ =
         !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
     showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
-  }
-
-  // See the above comments.
-  if (!is_at_min_width && controller()->IsVerticalTabsFloating()) {
-    showing_icon_ = true;
-    center_icon_ = false;
   }
 }
 

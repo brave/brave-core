@@ -74,7 +74,7 @@ class BraveTab : public Tab {
 
   FRIEND_TEST_ALL_PREFIXES(BraveTabTest, ShouldAlwaysHideTabCloseButton);
   FRIEND_TEST_ALL_PREFIXES(BraveTabTest,
-                           IconVisibilityWhenVerticalTabsFloating);
+                           IconVisibilityWhenVerticalTabsAnimating);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
 
