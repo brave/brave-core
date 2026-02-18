@@ -1299,7 +1299,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "BraveRequestInfo",                                                  \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUseWeakPtr),           \
-      })                                                                   \
+      })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
   BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
