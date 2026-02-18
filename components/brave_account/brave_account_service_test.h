@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -71,25 +70,24 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (requires { typename TestCase::Endpoint; }) {
       if (test_case.endpoint_response) {
-        const auto& endpoint_response_status_code =
-            test_case.endpoint_response->status_code;
-        auto head = endpoint_response_status_code
-                        ? network::CreateURLResponseHead(
-                              static_cast<net::HttpStatusCode>(
-                                  *endpoint_response_status_code))
-                        : nullptr;
+        auto head = test_case.endpoint_response->status_code
+                        .transform([](auto status_code) {
+                          return network::CreateURLResponseHead(
+                              static_cast<net::HttpStatusCode>(status_code));
+                        })
+                        .value_or(nullptr);
 
-        const auto& endpoint_response_body = test_case.endpoint_response->body;
-        base::Value value(endpoint_response_body
-                              ? endpoint_response_body->has_value()
-                                    ? endpoint_response_body->value().ToValue()
-                                    : endpoint_response_body->error().ToValue()
-                              : base::DictValue());
-        const auto body = base::WriteJson(value);
-        CHECK(body);
+        const auto body =
+            base::WriteJson(test_case.endpoint_response->body
+                                .transform([](const auto& body) {
+                                  return body.has_value()
+                                             ? body.value().ToValue()
+                                             : body.error().ToValue();
+                                })
+                                .value_or(base::DictValue()));
 
         test_url_loader_factory_.AddResponse(
-            TestCase::Endpoint::URL(), std::move(head), *body,
+            TestCase::Endpoint::URL(), std::move(head), CHECK_DEREF(body),
             network::URLLoaderCompletionStatus(
                 test_case.endpoint_response->net_error));
       }
