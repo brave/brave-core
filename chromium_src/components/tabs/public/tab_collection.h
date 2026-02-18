@@ -31,20 +31,11 @@
  public:                                                   \
   void OnTabRemovedFromTree()
 
-// Add OnReparentedImpl() method that can be overriden from TreeTabNode.
-// This will be called from OnReparented().
-#define OnCollectionAddedToTree(...)                          \
-  OnCollectionAddedToTree_Unused();                           \
-  virtual void OnReparentedImpl(TabCollection* old_parent,    \
-                                TabCollection* new_parent) {} \
-  virtual void OnCollectionAddedToTree(__VA_ARGS__)
-
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #include <components/tabs/public/tab_collection.h>  // IWYU pragma: export
 
 #if !BUILDFLAG(IS_ANDROID)
-#undef OnCollectionAddedToTree
 #undef OnTabRemovedFromTree
 #undef UNPINNED
 #endif  // !BUILDFLAG(IS_ANDROID)
