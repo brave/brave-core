@@ -70,10 +70,11 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 
 BraveTabStrip::~BraveTabStrip() = default;
 
-bool BraveTabStrip::IsVerticalTabsFloating() const {
+BraveVerticalTabStripRegionView* BraveTabStrip::GetVerticalTabStripRegionView()
+    const {
   if (!ShouldShowVerticalTabs()) {
     // Can happen when switching the orientation
-    return false;
+    return nullptr;
   }
 
   auto* browser = GetBrowserWindowInterface();
@@ -82,7 +83,7 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
       BrowserView::GetBrowserViewForBrowser(browser));
   if (!browser_view) {
     // Could be null during the start-up.
-    return false;
+    return nullptr;
   }
 
   auto* vertical_region_view =
@@ -91,6 +92,15 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
 
   if (!vertical_region_view) {
     // Could be null while closing a window.
+    return nullptr;
+  }
+
+  return vertical_region_view;
+}
+
+bool BraveTabStrip::IsVerticalTabsFloating() const {
+  auto* vertical_region_view = GetVerticalTabStripRegionView();
+  if (!vertical_region_view) {
     return false;
   }
 
@@ -104,26 +114,8 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
 }
 
 bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
-  if (!ShouldShowVerticalTabs()) {
-    // Can happen when switching the orientation
-    return false;
-  }
-
-  auto* browser = GetBrowserWindowInterface();
-  DCHECK(browser);
-  auto* browser_view = static_cast<BraveBrowserView*>(
-      BrowserView::GetBrowserViewForBrowser(browser));
-  if (!browser_view) {
-    // Could be null during the start-up.
-    return false;
-  }
-
-  auto* vertical_region_view =
-      browser_view->vertical_tab_strip_widget_delegate_view()
-          ->vertical_tab_strip_region_view();
-
+  auto* vertical_region_view = GetVerticalTabStripRegionView();
   if (!vertical_region_view) {
-    // Could be null while closing a window.
     return false;
   }
 
