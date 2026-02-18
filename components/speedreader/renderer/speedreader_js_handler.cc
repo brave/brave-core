@@ -26,14 +26,11 @@ constexpr const char kSpeedreader[] = "speedreader";
 namespace speedreader {
 
 SpeedreaderJSHandler::SpeedreaderJSHandler(content::RenderFrame* render_frame)
-    : RenderFrameObserver(render_frame) {
-  self_ = this;
-}
+    : RenderFrameObserver(render_frame) {}
 
 SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 
 void SpeedreaderJSHandler::OnDestruct() {
-  self_.Clear();
 }
 
 // static

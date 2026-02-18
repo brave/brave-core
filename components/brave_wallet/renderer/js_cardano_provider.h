@@ -17,7 +17,6 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/cppgc/persistent.h"
 
 namespace brave_wallet {
 
@@ -63,10 +62,6 @@ class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
   void OnDestruct() override;
 
   mojo::Remote<mojom::CardanoProvider> cardano_provider_;
-
-  // Persistent self-reference to prevent GC from freeing this object while
-  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
-  cppgc::Persistent<JSCardanoProvider> self_;
 
   base::WeakPtrFactory<JSCardanoProvider> weak_ptr_factory_{this};
 };
