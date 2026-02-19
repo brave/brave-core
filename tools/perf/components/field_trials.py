@@ -67,7 +67,7 @@ def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
                    cwd=variations_repo_dir,
                    check=True)
 
-  args = [pnpm, 'run', 'seed_tools', 'create'] + [
+  args = [pnpm, 'seed_tools', 'create'] + [
       'studies', seed_path, '--perf_mode'
   ] + ['--revision', sha1] + ['--version', f'perf@{sha1}']
 
