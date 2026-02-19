@@ -64,7 +64,7 @@ struct ManagedPasswordListView: View {
           .tint(Color(braveSystemName: .schemesSurfaceTint))
       }
 
-      Section {
+      Section(header: Text(Strings.Autofill.managePasswordsListHeaderTitle)) {
         ForEach(Array(viewModel.groupedCredentialList), id: \.domain) { domain, credentials in
           let id = ManagedPasswordListView.domainId(saved: true, domain: domain)
           ManagedPasswordListRow(
@@ -90,9 +90,6 @@ struct ManagedPasswordListView: View {
             }
           }
         }
-      } header: {
-        Text(Strings.Autofill.managePasswordsListHeaderTitle)
-          .font(.subheadline)
       }
 
       if !viewModel.blockedList.isEmpty {
