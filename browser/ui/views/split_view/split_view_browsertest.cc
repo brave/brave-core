@@ -150,10 +150,10 @@ constexpr char kTestPageWithLink[] = R"(
 </html>
 )";
 
-// Helper for waiting until next same-document navigation commits in
-// |web_contents|. Unlike base::test::RunUntil() polling, this observer
-// properly waits for the DidFinishNavigation callback which is more reliable
-// for hash/fragment navigations.
+// Observer for same-document navigations. Uses DidFinishNavigation to detect
+// same-document commits (event-driven), and RunUntil for the wait mechanism
+// (provides timeout safety instead of RunLoop::Run() which can hang
+// indefinitely).
 class SameDocumentCommitObserver : public content::WebContentsObserver {
  public:
   explicit SameDocumentCommitObserver(content::WebContents* web_contents)
@@ -165,22 +165,26 @@ class SameDocumentCommitObserver : public content::WebContentsObserver {
   SameDocumentCommitObserver& operator=(const SameDocumentCommitObserver&) =
       delete;
 
-  void Wait() { run_loop_.Run(); }
+  // Returns true if a same-document navigation was observed, false on timeout.
+  bool Wait() {
+    return did_navigate_ ||
+           base::test::RunUntil([this]() { return did_navigate_; });
+  }
 
-  const GURL& last_committed_url() { return last_committed_url_; }
+  const GURL& last_committed_url() const { return last_committed_url_; }
 
  private:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override {
     if (navigation_handle->IsSameDocument() &&
         navigation_handle->HasCommitted()) {
+      did_navigate_ = true;
       last_committed_url_ = navigation_handle->GetURL();
-      run_loop_.Quit();
     }
   }
 
+  bool did_navigate_ = false;
   GURL last_committed_url_;
-  base::RunLoop run_loop_;
 };
 
 }  // namespace
@@ -1359,21 +1363,26 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
   content::WaitForLoadStop(left_pane);
 
+  // Record right pane URL before clicking to verify no redirect occurs.
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
   // Set up observer for same-document navigation BEFORE triggering the click.
-  // Using SameDocumentCommitObserver is more reliable than base::test::RunUntil
-  // polling, as it properly waits for the DidFinishNavigation callback.
   SameDocumentCommitObserver same_doc_observer(left_pane);
 
   // Click the hash link (same-document navigation)
   ASSERT_TRUE(content::ExecJs(left_pane, "clickHashLink();"));
 
-  // Wait for the same-document navigation to complete
-  same_doc_observer.Wait();
+  // Wait for the same-document navigation to complete. The observer uses
+  // RunUntil internally for timeout safety (prevents indefinite hang).
+  ASSERT_TRUE(same_doc_observer.Wait());
 
   // Same-document navigation should not redirect to right pane
   EXPECT_TRUE(same_doc_observer.last_committed_url().has_ref());
   EXPECT_EQ(GetLinkTestPageURL().spec() + "#section",
             same_doc_observer.last_committed_url().spec());
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, RightPaneNavigationDoesNotRedirect) {
