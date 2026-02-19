@@ -547,7 +547,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   } else if (*object_type == "brave-chat.inlineSearch") {
     auto* query = result_params.FindString("query");
     auto* results = result_params.FindList("results");
-    if (query && results) {
+    if (query && !query->empty() && results) {
       std::string results_json;
       base::JSONWriter::Write(*results, &results_json);
       auto event = mojom::ConversationEntryEvent::NewInlineSearchEvent(

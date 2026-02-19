@@ -315,8 +315,8 @@ struct InlineSearchEvent {
   // The query that was used for the results.
   string query;
 
-  // The results of the search - stored as a JSON string so we can pass them around
-  // transparently.
+  // The results of the search - stored as a JSON string so we can pass
+  // them around transparently.
   string results_json;
 };
 

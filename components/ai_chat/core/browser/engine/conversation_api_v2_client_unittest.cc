@@ -1942,6 +1942,25 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
 
     testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
   }
+
+  // Case 5: Empty query - no event should be emitted
+  {
+    SCOPED_TRACE("Missing query should not emit event");
+    auto inline_search = base::test::ParseJsonDict(R"({
+      "object": "brave-chat.inlineSearch",
+      "query": "",
+      "results": [{"title": "Weather.com", "url": "https://weather.com"}]
+    })");
+
+    EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(inline_search))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
 }
 
 TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallRequest) {
