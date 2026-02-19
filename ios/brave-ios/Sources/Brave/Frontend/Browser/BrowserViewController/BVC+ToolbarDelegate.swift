@@ -221,9 +221,6 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
     // use the initial value for the URL so we can do proper pattern matching with search URLs
     var searchURL = self.tabManager.selectedTab?.currentInitialURL
-    if let url = searchURL, InternalURL.isValid(url: url) {
-      searchURL = url
-    }
     if let query = profile.searchEngines.queryForSearchURL(
       searchURL as URL?,
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
@@ -959,6 +956,9 @@ extension BrowserViewController: TopToolbarDelegate {
         if internalURL.isReaderModePage {
           return internalURL.extractedUrlParam
         }
+        return nil
+      }
+      if url.isNewTabURL {
         return nil
       }
       return url

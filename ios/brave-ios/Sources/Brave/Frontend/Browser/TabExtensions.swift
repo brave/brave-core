@@ -13,7 +13,7 @@ import Web
 
 extension TabState {
   var displayTitle: String {
-    if let url = self.visibleURL, InternalURL(url)?.isAboutHomeURL ?? false {
+    if let url = self.visibleURL, url.isNewTabURL {
       return Strings.Hotkey.newTabTitle
     }
 
@@ -45,7 +45,7 @@ extension TabState {
   }
 
   var displayFavicon: Favicon? {
-    if let url = visibleURL, InternalURL(url)?.isAboutHomeURL == true {
+    if let url = visibleURL, url.isNewTabURL {
       return Favicon(
         image: UIImage(sharedNamed: "brave.logo"),
         isMonogramImage: false,
@@ -125,8 +125,7 @@ extension TabState {
 
   var containsWebPage: Bool {
     if let url = visibleURL {
-      let isHomeURL = InternalURL(url)?.isAboutHomeURL
-      return url.isWebPage() && isHomeURL != true
+      return url.isWebPage()
     }
 
     return false

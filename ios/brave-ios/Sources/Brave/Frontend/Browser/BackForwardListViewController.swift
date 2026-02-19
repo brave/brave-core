@@ -109,18 +109,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     let items =
       bfList.forwardList.reversed() + [bfList.currentItem].compactMap({ $0 })
       + bfList.backList.reversed()
-
-    // error url's are OK as they are used to populate history on session restore.
-    backForwardListData = items.filter {
-      guard let internalUrl = InternalURL($0.url) else { return true }
-      if internalUrl.isAboutHomeURL {
-        return true
-      }
-      if let url = internalUrl.originalURLFromErrorPage, InternalURL.isValid(url: url) {
-        return false
-      }
-      return true
-    }
+    backForwardListData = items
   }
 
   func loadSites(_ bfList: BackForwardListProxy) {
@@ -261,8 +250,8 @@ extension BackForwardListViewController: UITableViewDataSource {
     cell.connectingBackwards = indexPath.item != backForwardListData.count - 1
     cell.connectingForwards = indexPath.item != 0
 
-    let isAboutHomeURL = InternalURL(item.url)?.isAboutHomeURL ?? false
-    guard !isAboutHomeURL else {
+    let isNewTabURL = item.url.isNewTabURL
+    guard !isNewTabURL else {
       cell.site = Site(url: item.url.absoluteString, title: Strings.home)
       return cell
     }

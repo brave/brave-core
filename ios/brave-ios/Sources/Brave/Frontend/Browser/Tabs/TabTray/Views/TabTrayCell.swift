@@ -67,11 +67,7 @@ class TabCell: UICollectionViewCell {
     if !tab.displayTitle.isEmpty {
       accessibilityLabel = tab.displayTitle
     } else {
-      if let url = tab.url {
-        accessibilityLabel = InternalURL(url)?.aboutComponent ?? ""
-      } else {
-        accessibilityLabel = ""
-      }
+      accessibilityLabel = ""
     }
     isAccessibilityElement = true
     accessibilityHint = Strings.tabTrayCellCloseAccessibilityHint

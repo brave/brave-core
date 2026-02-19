@@ -56,7 +56,7 @@ class TabManager: NSObject {
   weak var stateDelegate: TabManagerStateDelegate?
 
   /// Internal url to access the new tab page.
-  static let ntpInteralURL = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)#panel=0")!
+  static let ntpInteralURL = URL(string: "about://newtab")!
 
   /// When a URL is invalid and can't be restored or loaded, we display about:blank#blocked (same as on Desktop)
   static let aboutBlankBlockedURL = URL(string: "about:blank")!
@@ -105,7 +105,7 @@ class TabManager: NSObject {
   var isBrowserEmptyForCurrentMode: Bool {
     guard tabsForCurrentMode.count == 1,
       let tabURL = tabsForCurrentMode.first?.visibleURL,
-      InternalURL(tabURL)?.isAboutHomeURL == true
+      tabURL.isNewTabURL
     else {
       return false
     }
@@ -198,7 +198,7 @@ class TabManager: NSObject {
   var openedWebsitesCount: Int {
     tabsForCurrentMode.filter {
       if let url = $0.visibleURL {
-        return url.isWebPage() && !(InternalURL(url)?.isAboutHomeURL ?? false)
+        return url.isWebPage()
       }
       return false
     }.count
@@ -1591,7 +1591,7 @@ class TabManager: NSObject {
     // The NTP shold be removed if last recently close opened using empty tab
     if let currentTab = selectedTab,
       let currentTabURL = currentTab.visibleURL,
-      InternalURL(currentTabURL)?.isAboutHomeURL == true
+      currentTabURL.isNewTabURL
     {
       removeTab(currentTab)
     }
@@ -1624,16 +1624,13 @@ class TabManager: NSObject {
       return nil
     }
 
-    guard var recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url else {
+    guard var recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url,
+      !recentlyClosedURL.isNewTabURL
+    else {
       return nil
     }
 
     if let internalURL = InternalURL(recentlyClosedURL) {
-      // NTP should not be passed as a Recently Closed item
-      if internalURL.isAboutHomeURL {
-        return nil
-      }
-
       // Convert any internal URLs to their real URL for the Recently Closed item
       if let actualURL = internalURL.extractedUrlParam ?? internalURL.originalURLFromErrorPage {
         recentlyClosedURL = actualURL
