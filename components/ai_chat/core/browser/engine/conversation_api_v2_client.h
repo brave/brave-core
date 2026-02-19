@@ -94,6 +94,8 @@ class ConversationAPIV2Client {
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
                            OnQueryDataReceived_ToolStart);
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+                           OnQueryDataReceived_InlineSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
                            OnQueryDataReceived_ToolCallRequest);
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
                            OnQueryDataReceived_ToolCallResult);

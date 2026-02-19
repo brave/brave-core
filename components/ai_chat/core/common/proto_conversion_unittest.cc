@@ -655,6 +655,37 @@ TEST(ProtoConversionTest,
   EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
+// Tests for InlineSearchEvent conversion functions
+
+TEST(ProtoConversionTest, SerializeDeserializeInlineSearchEvent_ValidData) {
+  auto mojom_event = mojom::InlineSearchEvent::New(
+      "brave search", R"([{"title":"Result 1","url":"https://example.com"}])");
+
+  store::InlineSearchEventProto proto_event;
+  SerializeInlineSearchEvent(mojom_event, &proto_event);
+
+  EXPECT_EQ(proto_event.query(), "brave search");
+  EXPECT_EQ(proto_event.results_json(),
+            R"([{"title":"Result 1","url":"https://example.com"}])");
+
+  auto deserialized_event = DeserializeInlineSearchEvent(proto_event);
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
+TEST(ProtoConversionTest,
+     SerializeDeserializeInlineSearchEvent_EmptyResultsJson) {
+  auto mojom_event = mojom::InlineSearchEvent::New("test query", "");
+
+  store::InlineSearchEventProto proto_event;
+  SerializeInlineSearchEvent(mojom_event, &proto_event);
+
+  EXPECT_EQ(proto_event.query(), "test query");
+  EXPECT_EQ(proto_event.results_json(), "");
+
+  auto deserialized_event = DeserializeInlineSearchEvent(proto_event);
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
 TEST(ProtoConversionTest, SerializeDeserializeSkillEntry) {
   // Create mojom SkillEntry
   auto mojom_entry =

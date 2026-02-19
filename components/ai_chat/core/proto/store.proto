@@ -62,6 +62,11 @@ message WebSourcesEventProto {
   repeated string rich_results = 2;
 }
 
+message InlineSearchEventProto {
+  string query = 1;
+  string results_json = 2;
+}
+
 message SkillEntryProto {
   string shortcut = 1;
   string prompt = 2;

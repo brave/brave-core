@@ -544,6 +544,16 @@ void ConversationAPIV2Client::OnQueryDataReceived(
           mojom::SearchStatusEvent::New(true));
       callback.Run(GenerationResultData(std::move(event), std::nullopt));
     }
+  } else if (*object_type == "brave-chat.inlineSearch") {
+    auto* query = result_params.FindString("query");
+    auto* results = result_params.FindList("results");
+    if (query && !query->empty() && results) {
+      std::string results_json;
+      base::JSONWriter::Write(*results, &results_json);
+      auto event = mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(*query, std::move(results_json)));
+      callback.Run(GenerationResultData(std::move(event), model_key));
+    }
   }
 
   // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls

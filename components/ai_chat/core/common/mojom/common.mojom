@@ -310,6 +310,16 @@ struct WebSourcesEvent {
   array<string> rich_results;
 };
 
+// Inline search results which can be displayed as part of the response
+struct InlineSearchEvent {
+  // The query that was used for the results.
+  string query;
+
+  // The results of the search - stored as a JSON string so we can pass
+  // them around transparently.
+  string results_json;
+};
+
 struct CompletionEvent {
   // TODO(petemill): Use ContentBlock or even array<ContentBlock>
   // and rely less on multiple events.
@@ -332,6 +342,7 @@ union ConversationEntryEvent {
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
   ToolUseEvent tool_use_event;
+  InlineSearchEvent inline_search_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
