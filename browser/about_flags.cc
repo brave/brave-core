@@ -1295,10 +1295,11 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       {                                                                        \
           "brave-request-info-unique-ptr",                                     \
           "BraveRequestInfo unique_ptr",                                       \
-          "Enable experimental use of unique_ptr/WeakPtr instead of shared_ptr"\
-          "for BraveRequestInfo",                                                  \
+          "Enable experimental use of unique_ptr/WeakPtr instead of "          \
+          "shared_ptr"                                                         \
+          "for BraveRequestInfo",                                              \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
-          FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),           \
+          FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \

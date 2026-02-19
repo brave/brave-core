@@ -131,8 +131,8 @@ void OnBeforeURLRequest_SnsRedirectWork(
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (ctx && error == brave_wallet::mojom::SolanaProviderError::kSuccess && url &&
-      url->is_valid()) {
+  if (ctx && error == brave_wallet::mojom::SolanaProviderError::kSuccess &&
+      url && url->is_valid()) {
     ctx->set_new_url_spec(url->spec());
   }
 

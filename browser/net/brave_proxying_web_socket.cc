@@ -75,9 +75,8 @@ BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
 template <>
 void BraveProxyingWebSocket<std::shared_ptr>::CreateBraveRequestInfo() {
   CHECK(!ctx_owned_);
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
-                                              request_id_, browser_context_,
-                                              ctx_.get());
+  ctx_ = brave::BraveRequestInfo::MakeCTX(
+      request_, render_frame_token_, request_id_, browser_context_, ctx_.get());
 }
 
 template <>
