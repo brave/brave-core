@@ -7,11 +7,10 @@
 
 #include <utility>
 
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
@@ -494,15 +493,9 @@ TEST_F(BraveOriginServiceTest,
        CheckPurchaseState_NoSkusGetter_ReturnsCachedFalse) {
   // Service was created with an empty SkusServiceGetter, so
   // CheckPurchaseState should return the cached value (false).
-  base::RunLoop run_loop;
-  bool result = true;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
@@ -594,15 +587,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 5, "expires_at": ""})");
 
-  base::RunLoop run_loop;
-  bool result = false;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
   EXPECT_TRUE(service_->IsPurchased());
 }
 
@@ -612,15 +599,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
       R"({"remaining_credential_count": 0,)"
       R"( "expires_at": "2099-12-31T23:59:59"})");
 
-  base::RunLoop run_loop;
-  bool result = false;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
   EXPECT_TRUE(service_->IsPurchased());
 }
 
@@ -629,15 +610,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
-  base::RunLoop run_loop;
-  bool result = true;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
@@ -645,15 +620,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
        CheckPurchaseState_EmptyResponse_ReturnsFalse) {
   fake_skus_service_->SetCredentialSummaryResponse("");
 
-  base::RunLoop run_loop;
-  bool result = true;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
@@ -661,15 +630,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
        CheckPurchaseState_EmptyJsonObject_ReturnsFalse) {
   fake_skus_service_->SetCredentialSummaryResponse("{}");
 
-  base::RunLoop run_loop;
-  bool result = true;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
@@ -677,15 +640,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
        CheckPurchaseState_InvalidJson_ReturnsFalse) {
   fake_skus_service_->SetCredentialSummaryResponse("not valid json");
 
-  base::RunLoop run_loop;
-  bool result = true;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
@@ -693,15 +650,9 @@ TEST_F(BraveOriginServiceWithSkusTest,
        CheckPurchaseState_WhitespaceOnlyResponse_ReturnsFalse) {
   fake_skus_service_->SetCredentialSummaryResponse("   ");
 
-  base::RunLoop run_loop;
-  bool result = true;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        result = is_purchased;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
@@ -711,26 +662,18 @@ TEST_F(BraveOriginServiceWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 3})");
 
-  base::RunLoop run_loop1;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        EXPECT_TRUE(is_purchased);
-        run_loop1.Quit();
-      }));
-  run_loop1.Run();
+  base::test::TestFuture<bool> result1;
+  service_->CheckPurchaseState(result1.GetCallback());
+  EXPECT_TRUE(result1.Get());
   EXPECT_TRUE(service_->IsPurchased());
 
   // Second check returns not purchased - cached value should update.
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
-  base::RunLoop run_loop2;
-  service_->CheckPurchaseState(
-      base::BindLambdaForTesting([&](bool is_purchased) {
-        EXPECT_FALSE(is_purchased);
-        run_loop2.Quit();
-      }));
-  run_loop2.Run();
+  base::test::TestFuture<bool> result2;
+  service_->CheckPurchaseState(result2.GetCallback());
+  EXPECT_FALSE(result2.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
 
