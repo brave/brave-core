@@ -124,6 +124,14 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
                   << proto_source.favicon_url();
               continue;
             }
+            if (proto_source.has_page_content()) {
+              mojom_source->page_content = proto_source.page_content();
+            }
+            if (proto_source.extra_snippets_size() > 0) {
+              mojom_source->extra_snippets.emplace(
+                  proto_source.extra_snippets().begin(),
+                  proto_source.extra_snippets().end());
+            }
             mojom_sources->sources.push_back(std::move(mojom_source));
           }
           if (proto_sources.has_query()) {
@@ -206,6 +214,15 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
             proto_source->set_title(mojom_source->title);
             proto_source->set_url(mojom_source->url.spec());
             proto_source->set_favicon_url(mojom_source->favicon_url.spec());
+            if (mojom_source->page_content.has_value()) {
+              proto_source->set_page_content(
+                  mojom_source->page_content.value());
+            }
+            if (mojom_source->extra_snippets.has_value()) {
+              proto_source->mutable_extra_snippets()->Assign(
+                  mojom_source->extra_snippets->begin(),
+                  mojom_source->extra_snippets->end());
+            }
           }
           if (mojom_sources->query.has_value()) {
             proto_sources->set_query(mojom_sources->query.value());

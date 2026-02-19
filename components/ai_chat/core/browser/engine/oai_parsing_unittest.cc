@@ -503,11 +503,24 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
       {
         "title": "Site 1",
         "url": "https://site1.com",
-        "favicon": "https://imgs.search.brave.com/favicon1.png"
+        "favicon": "https://imgs.search.brave.com/favicon1.png",
+        "page_content": "page content",
+        "extra_snippets": ["snippet 1", "snippet 2"]
       },
       {
         "title": "Site 2",
-        "url": "https://site2.com"
+        "url": "https://site2.com",
+      },
+      {
+        "title": "Site 3",
+        "url": "https://site3.com",
+        "page_content": 1,
+        "extra_snippets": 2
+      },
+      {
+        "title": "Site 4",
+        "url": "https://site4.com",
+        "extra_snippets": [1, 2]
       }
     ],
     "query": "search query"
@@ -521,14 +534,31 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
 
   const auto& web_sources = (*result)->get_web_sources_content_block();
   EXPECT_EQ(web_sources->query, "search query");
-  ASSERT_EQ(web_sources->sources.size(), 2u);
+  ASSERT_EQ(web_sources->sources.size(), 4u);
   EXPECT_EQ(web_sources->sources[0]->title, "Site 1");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://site1.com/");
   EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
             "https://imgs.search.brave.com/favicon1.png");
+  EXPECT_EQ(web_sources->sources[0]->page_content, "page content");
+  ASSERT_TRUE(web_sources->sources[0]->extra_snippets.has_value());
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets->size(), 2u);
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets.value()[0], "snippet 1");
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets.value()[1], "snippet 2");
+  // Site 2:
+  //   - default favicon URL should be used when not passed
+  //   - page_content and extra_snippets should be null when not passed
   EXPECT_EQ(web_sources->sources[1]->title, "Site 2");
-  // Second source should have default favicon
   EXPECT_EQ(web_sources->sources[1]->favicon_url.spec(), kDefaultFaviconUrl);
+  EXPECT_FALSE(web_sources->sources[1]->page_content.has_value());
+  EXPECT_FALSE(web_sources->sources[1]->extra_snippets.has_value());
+  // Site 3: wrong types for page_content and extra_snippets (int instead of
+  // string) → nullopt for both
+  EXPECT_EQ(web_sources->sources[2]->title, "Site 3");
+  EXPECT_FALSE(web_sources->sources[2]->page_content.has_value());
+  EXPECT_FALSE(web_sources->sources[2]->extra_snippets.has_value());
+  // Site 4: wrong element types for extra_snippets array
+  EXPECT_EQ(web_sources->sources[3]->title, "Site 4");
+  EXPECT_FALSE(web_sources->sources[3]->extra_snippets.has_value());
 }
 
 TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidFavicon) {

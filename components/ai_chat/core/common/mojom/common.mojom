@@ -181,6 +181,13 @@ struct WebSource {
   string title;
   url.mojom.Url url;
   url.mojom.Url favicon_url;
+
+  // Extra context to be optionally provided by server-side search tools.
+  // Currently these are only used in WebSourcesContentBlock and would not be
+  // populated in WebSourcesEvent, which we plan to retire and just utilize
+  // WebSourcesContentBlock from tool outputs directly in frontend.
+  string? page_content;
+  array<string>? extra_snippets;
 };
 
 // Content block for parsed web sources from search tool results.
