@@ -9,7 +9,6 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
-#include "v8/include/cppgc/persistent.h"
 
 namespace speedreader {
 
@@ -41,10 +40,6 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler>,
   void ShowOriginalPage(v8::Isolate* isolate);
 
   void TtsPlayPause(v8::Isolate* isolate, int index);
-
-  // Persistent self-reference to prevent GC from freeing this object while
-  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
-  cppgc::Persistent<SpeedreaderJSHandler> self_;
 };
 
 }  // namespace speedreader
