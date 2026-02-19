@@ -18,6 +18,7 @@
 #include "brave/browser/ui/containers/container_model.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+class BraveVerticalTabStripRegionView;
 class Tab;
 class BraveTabStrip : public TabStrip {
   METADATA_HEADER(BraveTabStrip, TabStrip)
@@ -41,6 +42,7 @@ class BraveTabStrip : public TabStrip {
       BrowserFrameActiveState active_state) const override;
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
+  bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
 
@@ -81,6 +83,11 @@ class BraveTabStrip : public TabStrip {
                            RichAnimationIsDisabled);
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
+
+  // Helper method to get the vertical tab strip region view if available.
+  // Returns nullptr if vertical tabs are not shown or the view is not
+  // available (e.g., during startup or window closing).
+  BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
 

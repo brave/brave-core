@@ -74,6 +74,10 @@ bool TabStrip::IsVerticalTabsFloating() const {
   return false;
 }
 
+bool TabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
+  return false;
+}
+
 bool TabStrip::ShouldPaintTabAccent(const Tab* tab) const {
   return false;
 }

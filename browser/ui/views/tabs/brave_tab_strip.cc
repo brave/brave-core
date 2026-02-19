@@ -70,10 +70,11 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 
 BraveTabStrip::~BraveTabStrip() = default;
 
-bool BraveTabStrip::IsVerticalTabsFloating() const {
+BraveVerticalTabStripRegionView* BraveTabStrip::GetVerticalTabStripRegionView()
+    const {
   if (!ShouldShowVerticalTabs()) {
     // Can happen when switching the orientation
-    return false;
+    return nullptr;
   }
 
   auto* browser = GetBrowserWindowInterface();
@@ -82,7 +83,7 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
       BrowserView::GetBrowserViewForBrowser(browser));
   if (!browser_view) {
     // Could be null during the start-up.
-    return false;
+    return nullptr;
   }
 
   auto* vertical_region_view =
@@ -91,6 +92,15 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
 
   if (!vertical_region_view) {
     // Could be null while closing a window.
+    return nullptr;
+  }
+
+  return vertical_region_view;
+}
+
+bool BraveTabStrip::IsVerticalTabsFloating() const {
+  auto* vertical_region_view = GetVerticalTabStripRegionView();
+  if (!vertical_region_view) {
     return false;
   }
 
@@ -101,6 +111,17 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
               BraveVerticalTabStripRegionView::State::kFloating &&
           vertical_region_view->state() ==
               BraveVerticalTabStripRegionView::State::kCollapsed);
+}
+
+bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
+  auto* vertical_region_view = GetVerticalTabStripRegionView();
+  if (!vertical_region_view) {
+    return false;
+  }
+
+  return (vertical_region_view->width_animation().is_animating() &&
+          vertical_region_view->width_animation().GetCurrentValue() != 0 &&
+          vertical_region_view->width_animation().GetCurrentValue() != 1);
 }
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {

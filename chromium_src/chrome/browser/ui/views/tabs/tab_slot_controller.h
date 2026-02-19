@@ -16,9 +16,10 @@
 
 // Add a method to TabSlotController to check if vertical tabs are in floating
 // mode.
-#define EndDrag(...)        \
-  EndDrag(__VA_ARGS__) = 0; \
-  virtual bool IsVerticalTabsFloating() const
+#define EndDrag(...)                               \
+  EndDrag(__VA_ARGS__) = 0;                        \
+  virtual bool IsVerticalTabsFloating() const = 0; \
+  virtual bool IsVerticalTabsAnimatingButNotFinalState() const
 
 // Add a method to TabSlotController to determine whether tabs can be closed via
 // middle mouse button click.
