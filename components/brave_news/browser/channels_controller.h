@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 
@@ -35,7 +36,7 @@ inline constexpr char kTopNewsChannel[] = "Top News";
 inline constexpr std::array<const char*, 1> kSensitiveChannels = {"Politics"};
 
 // Get all the channels for a publisher in a specific locale.
-std::vector<std::string> GetChannelsForPublisher(
+absl::flat_hash_set<std::string> GetChannelsForPublisher(
     const std::string& locale,
     const mojom::PublisherPtr& publisher);
 
