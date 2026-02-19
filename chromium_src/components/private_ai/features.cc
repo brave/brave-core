@@ -5,7 +5,7 @@
 
 #include "base/feature_override.h"
 
-#include <components/legion/features.cc>
+#include <components/private_ai/features.cc>
 
 namespace private_ai {
 
