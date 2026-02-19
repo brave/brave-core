@@ -28,6 +28,12 @@ class WebContents;
 
 }  // namespace content
 
+#if !BUILDFLAG(IS_ANDROID)
+namespace views {
+class Widget;
+}  // namespace views
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 namespace brave_wallet {
 
 class WalletBubbleManagerDelegate;
@@ -72,6 +78,7 @@ class BraveWalletTabHelper
   void SetSkipDelegateForTesting(bool skip) {
     skip_delegate_for_testing_ = skip;
   }
+  views::Widget* GetBubbleWidgetForTesting();
 #endif
 
  private:

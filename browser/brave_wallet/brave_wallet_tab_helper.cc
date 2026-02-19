@@ -298,6 +298,11 @@ content::WebContents* BraveWalletTabHelper::GetBubbleWebContentsForTesting() {
   return wallet_bubble_manager_delegate_->GetWebContentsForTesting();
 }
 
+views::Widget* BraveWalletTabHelper::GetBubbleWidgetForTesting() {
+  return wallet_bubble_manager_delegate_
+      ->GetBubbleWidgetForTesting();  // IN-TEST
+}
+
 const std::vector<int32_t>& BraveWalletTabHelper::GetPopupIdsForTesting() {
   return wallet_bubble_manager_delegate_->GetPopupIdsForTesting();
 }
