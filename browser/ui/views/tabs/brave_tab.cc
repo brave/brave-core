@@ -95,8 +95,6 @@ void BraveTab::UpdateIconVisibility() {
   }
 
   const auto is_at_min_width = IsAtMinWidthForVerticalTabStrip();
-  // const bool is_at_max_width = (width() == 171);
-
   if (data().pinned) {
     if (is_at_min_width) {
       // When pinned vertical tab is at min width, we show only icon.
