@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
@@ -67,6 +68,7 @@ int OnHeadersReceived_AdBlockCspWork(
     const brave::ResponseCallback& next_callback,
     T<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(ctx);
 
   if (!response_headers || !ctx->allow_brave_shields() || ctx->allow_ads()) {
     return net::OK;

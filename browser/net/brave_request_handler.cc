@@ -22,6 +22,7 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/brave_user_agent_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
+#include "brave/browser/net/url_context.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
@@ -138,7 +139,8 @@ int BraveRequestHandler<T>::OnBeforeURLRequest(
     T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     GURL* new_url) {
-  if (before_url_request_callbacks_.empty() || IsInternalScheme(ctx)) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!ctx || before_url_request_callbacks_.empty() || IsInternalScheme(ctx)) {
     return net::OK;
   }
   ctx->set_new_url(new_url);
@@ -153,7 +155,8 @@ int BraveRequestHandler<T>::OnBeforeStartTransaction(
     T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     net::HttpRequestHeaders* headers) {
-  if (before_start_transaction_callbacks_.empty() || IsInternalScheme(ctx)) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!ctx || before_start_transaction_callbacks_.empty() || IsInternalScheme(ctx)) {
     return net::OK;
   }
   ctx->set_event_type(brave::kOnBeforeStartTransaction);
@@ -170,6 +173,10 @@ int BraveRequestHandler<T>::OnHeadersReceived(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!ctx) {
+    return net::OK;
+  }
   if (!ctx->tab_origin().is_empty()) {
     brave::RemoveTrackableSecurityHeadersForThirdParty(
         ctx->request_url(), url::Origin::Create(ctx->tab_origin()),
@@ -196,6 +203,8 @@ int BraveRequestHandler<T>::OnHeadersReceived(
 template <template <typename> class T>
 void BraveRequestHandler<T>::OnURLRequestDestroyed(
     T<brave::BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(ctx);
   auto it = callbacks_.find(ctx->request_identifier());
   if (it != callbacks_.end()) {
     callbacks_.erase(it);

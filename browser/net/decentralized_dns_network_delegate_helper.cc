@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -33,6 +34,8 @@ template <template <typename> class T>
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
     T<brave::BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(ctx);
   DCHECK(!next_callback.is_null());
 
   if (!ctx->browser_context() || ctx->browser_context()->IsOffTheRecord() ||

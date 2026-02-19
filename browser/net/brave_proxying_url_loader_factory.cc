@@ -157,15 +157,17 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::UpdateRequestInfo() {
 template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
-  ctx_.reset(brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                               request_id_, browser_context_,
-                                              ctx_.get())
-                 .release());
+                                              ctx_.get());
 }
 
 template <>
 void BraveProxyingURLLoaderFactory<
     base::WeakPtr>::InProgressRequest::CreateBraveRequestInfo() {
+  if (ctx_) {
+    factory_->request_handler_->OnURLRequestDestroyed(ctx_);
+  }
   ctx_owned_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                                 request_id_, browser_context_,
                                                 ctx_owned_.get());

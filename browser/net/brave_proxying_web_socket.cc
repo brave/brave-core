@@ -81,6 +81,9 @@ void BraveProxyingWebSocket<std::shared_ptr>::CreateBraveRequestInfo() {
 
 template <>
 void BraveProxyingWebSocket<base::WeakPtr>::CreateBraveRequestInfo() {
+  if (ctx_) {
+    request_handler_->OnURLRequestDestroyed(ctx_);
+  }
   ctx_owned_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
                                                 request_id_, browser_context_,
                                                 ctx_owned_.get());
