@@ -9,6 +9,7 @@ namespace brave::features {
 
 BASE_FEATURE(kUseChromiumWebViewsAutofill, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kUseChromiumWebViewsJavaScript, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kUseProfileWebViewConfiguration,
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave::features

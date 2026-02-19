@@ -286,12 +286,14 @@ const flags_ui::FeatureEntry::FeatureVariation
               kBraveIOSUserAgentFeatureVariations, "BraveIOSUserAgent"),       \
       },                                                                       \
       {                                                                        \
-          "brave-use-chromium-web-views-javascript",                           \
-          "Use Chromium JavaScript Backend",                                   \
-          "Replaces the system used to inject JavaScript features into the "   \
-          "page",                                                              \
+          "brave-use-profile-web-views-configuration",                         \
+          "Use a single web view configuraton per profile",                    \
+          "Replaces per-tab web view configurations with per-profile "         \
+          "configurations to match Chromium. Enabling this changes how Brave " \
+          "injects JavaScript into pages.",                                    \
           flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViewsJavaScript), \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave::features::kUseProfileWebViewConfiguration),               \
       },                                                                       \
       {                                                                        \
           "brave-debounce",                                                    \
