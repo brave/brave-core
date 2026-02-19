@@ -118,8 +118,8 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
       "4646464646464646464646464646464646464646464646464646464646464646",
       private_key));
 
-  HDKey key;
-  key.SetPrivateKey(private_key);
+  std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
+  ASSERT_TRUE(key);
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
@@ -129,7 +129,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   EXPECT_EQ(base::HexEncodeLower(message),
             "daf5a779ae972f972197303d7b574746c7ef83eadac0f2791ad23db92e4c8e53");
 
-  auto signature = *key.SignCompact(message);
+  auto signature = *key->SignCompact(message);
   tx.ProcessSignature(signature, 1);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86c098504a817c8008252089435353535353535353535353535353535353535"
@@ -153,7 +153,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   auto message1337 = tx.GetHashedMessageToSign(1337);
   EXPECT_EQ(base::HexEncodeLower(message1337),
             "9df81edc908cd622cbbab86525a4588fdcbaf6c88757f39b42b1f8f58fd617c2");
-  auto signature1337 = *key.SignCompact(message1337);
+  auto signature1337 = *key->SignCompact(message1337);
   tx.ProcessSignature(signature1337, 1337);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86e098504a817c8008252089435353535353535353535353535353535353535"
