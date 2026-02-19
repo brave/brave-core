@@ -109,6 +109,7 @@ class UserScriptManager {
   private var walletSolProviderScript: WKUserScript?
   private var walletSolanaWeb3Script: WKUserScript?
   private var walletSolanaWalletStandardScript: WKUserScript?
+  private var walletCardanoProviderScript: WKUserScript?
 
   enum ScriptType: String, CaseIterable {
     case faviconFetcher
@@ -124,6 +125,7 @@ class UserScriptManager {
     case readyStateHelper
     case ethereumProvider
     case solanaProvider
+    case cardanoProvider
     case searchResultAd
     case youtubeQuality
     case braveLeoAIChat
@@ -154,6 +156,9 @@ class UserScriptManager {
       case .solanaProvider:
         return Preferences.UserScript.solanaProvider.value
           ? SolanaProviderScriptHandler.userScript : nil
+      case .cardanoProvider:
+        return Preferences.UserScript.cardanoProvider.value
+          ? CardanoProviderScriptHandler.userScript : nil
       case .searchResultAd: return BraveSearchResultAdScriptHandler.userScript
 
       // Always enabled scripts
@@ -278,6 +283,10 @@ class UserScriptManager {
         in: SolanaProviderScriptHandler.scriptSandbox
       )
     }
+
+//    // Load Cardano provider script
+//    not sure if we have dynamic script for cardona provider
+//    self.walletCardanoProviderScript = CardanoProviderScriptHandler.userScript
   }
 
   public func loadScripts(
@@ -408,6 +417,20 @@ class UserScriptManager {
           ? self.walletSolanaWalletStandardScript : nil
       {
         scriptController.addUserScript(walletStandardScript)
+      }
+
+      // Inject Cardano provider script
+      if !tab.isPrivate,
+         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultCardonaWallet.value)
+           == .brave,
+         let script = self.dynamicScripts[.cardanoProvider]
+      {
+        // Inject cardano provider
+        scriptController.addUserScript(script)
+
+        if let walletCardanoProviderScript = walletCardanoProviderScript {
+          scriptController.addUserScript(walletCardanoProviderScript)
+        }
       }
 
       // TODO: Refactor this and get rid of the `UserScriptType`

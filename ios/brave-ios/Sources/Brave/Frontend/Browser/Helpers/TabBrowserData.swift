@@ -85,6 +85,8 @@ class TabBrowserData: NSObject, TabObserver {
       _syncTab,
       _walletEthProvider,
       _walletSolProvider,
+      _walletCardanoProvider,
+      _walletCardanoApi,
       _walletKeyringService,
     ]
 
@@ -116,6 +118,8 @@ class TabBrowserData: NSObject, TabObserver {
   private var _faviconDriver: FaviconDriver?
   private var _walletEthProvider: BraveWalletEthereumProvider?
   private var _walletSolProvider: BraveWalletSolanaProvider?
+  private var _walletCardanoProvider: BraveWalletCardanoProvider?
+  private var _walletCardanoApi: BraveWalletCardanoApi?
   private var _walletKeyringService: BraveWalletKeyringService? {
     didSet {
       _walletKeyringService?.addObserver(self)
@@ -138,6 +142,16 @@ class TabBrowserData: NSObject, TabObserver {
   weak var walletSolProvider: BraveWalletSolanaProvider? {
     get { _walletSolProvider }
     set { _walletSolProvider = newValue }
+  }
+
+  weak var walletCardanoProvider: BraveWalletCardanoProvider? {
+    get { _walletCardanoProvider }
+    set { _walletCardanoProvider = newValue }
+  }
+
+  weak var walletCardanoApi: BraveWalletCardanoApi? {
+    get { _walletCardanoApi }
+    set { _walletCardanoApi = newValue }
   }
 
   weak var walletKeyringService: BraveWalletKeyringService? {

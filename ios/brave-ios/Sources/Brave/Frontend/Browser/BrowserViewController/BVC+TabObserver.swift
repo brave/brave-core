@@ -79,6 +79,7 @@ extension BrowserViewController: TabObserver {
         injectedScripts += [
           EthereumProviderScriptHandler(),
           SolanaProviderScriptHandler(),
+//          CardanoProviderScriptHandler(),
         ]
       }
     }
@@ -101,6 +102,12 @@ extension BrowserViewController: TabObserver {
         contentWorld: type(of: $0).scriptSandbox
       )
     }
+    
+    let cardonaProviderHandler = CardanoProviderScriptHandler()
+    tab.browserData?.addContentScript(
+      cardonaProviderHandler,
+      name: type(of: cardonaProviderHandler).scriptName,
+      contentWorld: type(of: cardonaProviderHandler).scriptSandbox)
 
     (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
       as? ReaderModeScriptHandler)?
@@ -221,6 +228,13 @@ extension BrowserViewController: TabObserver {
         ) {
           tab.walletSolProvider = provider
           tab.walletSolProvider?.initialize(eventsListener: browserData)
+        }
+        if let provider = profileController.braveWalletAPI.cardanoProvider(
+          with: browserData,
+          origin: committedOrigin,
+          isPrivateBrowsing: tab.isPrivate
+        ) {
+          tab.walletCardanoProvider = provider
         }
       }
     }

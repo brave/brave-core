@@ -13,6 +13,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_api_impl.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
@@ -135,6 +137,42 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
       initWithSolanaProviderImpl:std::move(provider)];
 }
 
+- (nullable id<BraveWalletCardanoProvider>)
+    cardanoProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+                         origin:(URLOriginIOS*)origin
+              isPrivateBrowsing:(bool)isPrivateBrowsing {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  if (!origin) {
+    return nil;
+  }
+  auto* profile = _profile.get();
+  if (isPrivateBrowsing) {
+    profile = profile->GetOffTheRecordProfile();
+  }
+
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
+  if (!brave_wallet_service) {
+    return nil;
+  }
+
+  url::Origin committed_origin([origin underlyingOrigin]);
+
+  auto provider = std::make_unique<brave_wallet::CardanoProviderImpl>(
+      *brave_wallet_service,
+      base::BindRepeating(
+        [](id<BraveWalletProviderDelegate> delegate)
+            -> std::unique_ptr<brave_wallet::BraveWalletProviderDelegate> {
+          return std::make_unique<
+              brave_wallet::BraveWalletProviderDelegateBridge>(delegate);
+        },
+        delegate),
+        committed_origin);
+
+  return [[BraveWalletCardanoProviderMojoImpl alloc]
+      initWithCardanoProviderImpl:std::move(provider)];
+}
+
 - (NSString*)resourceForID:(int)resource_id {
   // The resource bundle is not available until after WebMainParts is setup
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
@@ -180,8 +218,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
         // Currently not supported
         return {std::make_pair(@"", 0)};
       case BraveWalletCoinTypeAda:
-        // Currently not supported
-        return {std::make_pair(@"", 0)};
+        return {std::make_pair(
+            BraveWalletProviderScriptKeyEthereum,
+            IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS)};
       case BraveWalletCoinTypeDot:
         // Currently not supported
         return {std::make_pair(@"", 0)};

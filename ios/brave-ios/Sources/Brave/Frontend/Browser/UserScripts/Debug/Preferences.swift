@@ -73,6 +73,12 @@ extension Preferences {
         key: "userscript.preferences.\(UserScriptManager.ScriptType.solanaProvider.rawValue)",
         default: true
       )
+    
+    public static let cardanoProvider =
+      Option<Bool>(
+        key: "userscript.preferences.\(UserScriptManager.ScriptType.cardanoProvider.rawValue)",
+        default: true
+      )
 
     public static let youtubeQuality =
       Option<Bool>(
