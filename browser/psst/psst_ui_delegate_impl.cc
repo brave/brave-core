@@ -5,6 +5,9 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include <ranges>
+#include <string>
+
 #include "base/functional/bind.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
@@ -82,6 +85,27 @@ void PsstUiDelegateImpl::UpdateTasks(
     const std::vector<PolicyTask>& applied_tasks,
     const mojom::PsstStatus status) {
   // Implementation for setting the current progress.
+  for (Observer& obs : observer_list_) {
+    std::ranges::for_each(applied_tasks, [&obs](const PolicyTask& task) {
+      obs.OnSetRequestDone(task.url, task.error_description);
+    });
+  }
+
+  if(status != mojom::PsstStatus::kCompleted) {
+    return;
+  }
+
+  std::vector<std::string> applied_list;
+  std::vector<std::string> failed_list;
+  std::ranges::for_each(
+      applied_tasks, [&applied_list, &failed_list](const PolicyTask& task) {
+        (!task.error_description.has_value() || task.error_description->empty())
+            ? applied_list.emplace_back(task.url)
+            : failed_list.emplace_back(task.url);
+      });
+  for (Observer& obs : observer_list_) {
+    obs.OnSetCompleted(applied_list, failed_list);
+  }
 }
 
 std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
@@ -94,7 +118,9 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     const url::Origin& origin,
     base::ListValue urls_to_skip) {
   LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings called for origin: " << origin.GetURL() << " urls: " << urls_to_skip 
-    << " dialog_data_: " << (dialog_data_ ? dialog_data_->ToValue() : base::DictValue());
+    << " dialog_data_: " << (dialog_data_ ? dialog_data_->ToValue() : base::DictValue())
+    << " apply_changes_callback_:" << !apply_changes_callback_.is_null()
+    ;
   // Save the PSST settings when user accepts the dialog
   psst_settings_service_->SetPsstWebsiteSettings(
       origin, ConsentStatus::kAllow, dialog_data_->script_version,

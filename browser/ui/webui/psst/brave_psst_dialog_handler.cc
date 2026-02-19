@@ -128,8 +128,10 @@ void BravePsstDialogHandler::OnSetRequestDone(
     const std::string& url,
     const std::optional<std::string>& error) {
   if (!client_page_) {
+LOG(INFO) << "[PSST] OnSetRequestDone FAILED for URL: " << url << " with error: " << (error ? *error : "none");
     return;
   }
+LOG(INFO) << "[PSST] OnSetRequestDone called for URL: " << url << " with error: " << (error ? *error : "none");
   client_page_->OnSetRequestDone(url, error);
 }
 

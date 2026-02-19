@@ -128,6 +128,7 @@ export default class PsstProgressModal extends React.PureComponent<
     this.browserProxy_
       .getCallbackRouter()
       .onSetRequestDone.addListener((url: string, error: string | null) => {
+        console.log("[PSST] OnSetRequestDone called for URL: " + url + " with error: " + (error ? error : "none"));
         this.setPropForUrl(url, {
           settingState: error ? SettingState.Failed : SettingState.Completed,
           error: error,

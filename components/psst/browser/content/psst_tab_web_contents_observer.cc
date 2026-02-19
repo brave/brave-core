@@ -174,34 +174,17 @@ base::WeakPtr<PsstTabWebContentsObserver> PsstTabWebContentsObserver::AsWeakPtr(
   return weak_factory_.GetWeakPtr();
 }
 
-// void PsstTabWebContentsObserver::DidFinishNavigation(
-//     content::NavigationHandle* handle) {
-// LOG(INFO) << "[PSST] DidFinishNavigation called for URL: " << handle->GetURL();
-//   if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
-//       !handle->GetURL().SchemeIsHTTPOrHTTPS()) {
-// LOG(INFO) << "[PSST] DidFinishNavigation #100 URL: " << handle->GetURL();
-//     return;
-//   }
-
-//   if (handle->IsSameDocument() ||
-//       handle->GetRestoreType() == content::RestoreType::kRestored ||
-//       !prefs_->GetBoolean(prefs::kPsstEnabled)) {
-// LOG(INFO) << "[PSST] DidFinishNavigation #200 URL: " << handle->GetURL();
-//     return;
-//   } else {
-// LOG(INFO) << "[PSST] DidFinishNavigation #300 URL: " << handle->GetURL();
-
-//     handle->SetUserData(kShouldProcessKey,std::make_unique<base::SupportsUserData::Data>())
-//   }
-// }
-
 void PsstTabWebContentsObserver::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
-  LOG(INFO) << "[PSST] NavigationEntryCommitted called";
   CHECK(load_details.entry);
   if (!load_details.is_navigation_to_different_page() ||
       !load_details.entry->GetURL().SchemeIsHTTPOrHTTPS() ||
       load_details.entry->IsRestored()) {
+  LOG(INFO) << "[PSST] NavigationEntryCommitted skipped URL: " << load_details.entry->GetURL() 
+    << " is_navigation_to_different_page:" << load_details.is_navigation_to_different_page()
+    << " is_restored:" << load_details.entry->IsRestored()
+    << " scheme:" << load_details.entry->GetURL().scheme()
+    ;
     return;
   }
   LOG(INFO) << "[PSST] NavigationEntryCommitted called for URL: " << load_details.entry->GetURL();
@@ -212,13 +195,13 @@ void PsstTabWebContentsObserver::NavigationEntryCommitted(
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  LOG(INFO) << "[PSST] DocumentOnLoadCompletedInPrimaryMainFrame called";
   int id =
       web_contents()->GetController().GetLastCommittedEntry()->GetUniqueID();
   if (!ShouldInsertScriptForPage(id)) {
     return;
   }
 
+  LOG(INFO) << "[PSST] DocumentOnLoadCompletedInPrimaryMainFrame called id: " << id << " url:" << web_contents()->GetLastCommittedURL();
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
@@ -393,10 +376,13 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     return;
   }
 
+  const auto is_done = script_result_dict.FindBool("result");// TODO add constant string
+  if (!is_done.has_value()) {
+    return;
+  }
 
   LOG(INFO) << "[PSST] OnPolicyScriptResult called for id: " << id
     << " \nscript_result: " << script_result.DebugString()
-    << " \npsst: " << psst->DebugString()
     ;
   const auto script_result_parsed =
       PolicyScriptResult::FromValue(*psst);
@@ -406,10 +392,10 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     return;
   }
 
-  LOG(INFO) << "[PSST] OnPolicyScriptResult succeeded for id: " << id;
+  LOG(INFO) << "[PSST] OnPolicyScriptResult succeeded for id: " << id << " \nscript_result_parsed:" << script_result_parsed->ToValue().DebugString();
   ui_delegate_->UpdateTasks(
       script_result_parsed->progress, script_result_parsed->applied_tasks,
-      script_result_parsed->progress == 100 ? mojom::PsstStatus::kCompleted
+      is_done.value() ? mojom::PsstStatus::kCompleted
                                             : mojom::PsstStatus::kInProgress);
 }
 

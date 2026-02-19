@@ -103,6 +103,56 @@ class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
       infobar_observation_{this};
 };
 
+void EraseIfPresent(std::vector<std::u16string>& items, const std::u16string& target) {
+  auto it = std::find(items.begin(), items.end(), target);
+  if (it != items.end()) {
+    items.erase(it);
+  }
+}
+
+class PsstWebContentsConsoleObserver
+    : public content::WebContentsConsoleObserver {
+ public:
+  PsstWebContentsConsoleObserver(
+      content::WebContents* web_contents,
+      const std::vector<std::u16string>& user_script_messages,
+      const std::vector<std::u16string>& policy_script_messages)
+      : content::WebContentsConsoleObserver(web_contents),
+        user_script_messages_(user_script_messages),
+        policy_script_messages_(policy_script_messages) {
+    SetFilter(base::BindLambdaForTesting(
+        [this](const content::WebContentsConsoleObserver::Message& message) {
+          EraseIfPresent(user_script_messages_, message.message);
+          EraseIfPresent(policy_script_messages_, message.message);
+          return user_script_messages_.empty() &&
+                 policy_script_messages_.empty();
+        }));
+  }
+
+ private:
+  std::vector<std::u16string> user_script_messages_;
+  std::vector<std::u16string> policy_script_messages_;
+};
+
+class DialogCloseObserver : public content::WebContentsObserver {
+ public:
+  explicit DialogCloseObserver(content::WebContents* web_contents)
+      : content::WebContentsObserver(web_contents) {}
+
+  void WebContentsDestroyed() override {
+    run_loop_.Quit();
+  }
+
+  void Wait() {
+    if (web_contents()) {
+      run_loop_.Run();
+    }
+  }
+
+ private:
+  base::RunLoop run_loop_;
+};
+
 }  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
@@ -187,11 +237,11 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   bool AcceptModalDialog(
-      content::WebContents* web_contents,
+      content::WebContents* dialog_wc,
       const std::string& site_name,
       const std::vector<std::string>& skip_settings_urls) {
     auto* dialog_ui =
-        web_contents->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
     if (!dialog_ui) {
       LOG(INFO) << "[PSST] Could not get BravePsstDialogHandler";
       return false;
@@ -231,6 +281,22 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return is_found;
   }
 
+  bool CloseModalDialog(content::WebContents* dialog_wc) {
+    auto* dialog_ui =
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui) {
+      LOG(INFO) << "[PSST] Could not get BravePsstDialogHandler";
+      return false;
+    }
+    if (dialog_ui->psst_consent_handler_) {
+      LOG(INFO) << "[PSST] Found BravePsstDialogHandler";
+      dialog_ui->psst_consent_handler_->CloseDialog();
+      return true;
+    }
+
+    return false;
+  }
+
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
@@ -242,7 +308,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
-                       StartScriptHandlerBothScriptsExecuted) {
+                       ApplyPsstSettings) {
   // Enable the pref
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
@@ -277,39 +343,72 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   std::vector<std::u16string> user_script_messages;
   std::vector<std::u16string> policy_script_messages;
-  content::WebContentsConsoleObserver console_observer(web_contents());
-  console_observer.SetFilter(base::BindLambdaForTesting(
-      [&user_script_messages, &policy_script_messages](
-          const content::WebContentsConsoleObserver::Message& message) {
-        if (base::Contains(
-                message.message,
-                std::u16string(
-                    u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_0.html")) ||
-             base::Contains(
-                message.message,
-                std::u16string(
-                    u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_1.html"))) {
-          user_script_messages.push_back(message.message);
-        } else if (base::Contains(message.message,
-                                  std::u16string(u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_0.html")) ||
-                  base::Contains(message.message,
-                                  std::u16string(u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_1.html"))) {
-          LOG(INFO) << "[PSST POLICY SCRIPT] Console message: "
-                    << message.message;
-          policy_script_messages.push_back(message.message);
-        }
-        return user_script_messages.size() == 2 &&
-               policy_script_messages.size() == 2;
-      }));
+  PsstWebContentsConsoleObserver console_observer(
+      web_contents(),
+      {u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_0.html",
+       u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_1.html",
+       u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_2.html"},
+      {u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_0.html",
+       u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_1.html",
+       u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_2.html"});
 
   ASSERT_TRUE(AcceptModalDialog(wc, url::Origin::Create(url).GetURL().spec(),
                                 {}));
+  ASSERT_TRUE(console_observer.Wait());
+}
 
-  // Wait for both scripts executed
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       ApplyPsstSettings_SkipOneItem) {
+  // Enable the pref
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+
+  InfobarAddedObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  infobar_observer.Wait();
+
+  auto infobar =
+      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
+        return infobar->GetIdentifier() ==
+               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
+      });
+  ASSERT_TRUE(infobar != manager->infobars().end());
+  auto* confirm_delegate = (*infobar)->delegate()->AsConfirmInfoBarDelegate();
+  ASSERT_TRUE(confirm_delegate);
+  EXPECT_EQ(confirm_delegate->GetIdentifier(),
+            infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+
+  base::RunLoop().RunUntilIdle();
+  confirm_delegate->Accept();
+  base::RunLoop().RunUntilIdle();
+
+  auto* dialog_wc = WaitForAndGetDialogWebContents();
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  std::vector<std::u16string> user_script_messages;
+  std::vector<std::u16string> policy_script_messages;
+  PsstWebContentsConsoleObserver console_observer(
+      web_contents(),
+      {u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_0.html",
+       u"[PSST USER SCRIPT] Current URL: https://a.test:1111/a_test_2.html"},
+      {u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_0.html",
+       u"[PSST POLICY SCRIPT] Current URL: https://a.test:1111/a_test_2.html"});
+
+  ASSERT_TRUE(AcceptModalDialog(dialog_wc, url::Origin::Create(url).GetURL().spec(),
+                                {"https://a.test:1111/a_test_1.html"}));
   ASSERT_TRUE(console_observer.Wait());
 
-  // Ensure all pending tasks are completed before test ends
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(CloseModalDialog(dialog_wc));
+  
+  dialog_close_observer.Wait();
 }
 
 }  // namespace psst
