@@ -12,7 +12,11 @@
 
 namespace brave_news {
 
+// A set of publishers, keyed by publisher ID.
 using Publishers = absl::flat_hash_map<std::string, mojom::PublisherPtr>;
+
+// A mojo-compatible set of publishers, keyed by publisher ID. Prefer
+// `Publishers` for performance concerns.
 using MojomPublishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
 MojomPublishers ConvertToMojomPublishers(const Publishers& publishers);
