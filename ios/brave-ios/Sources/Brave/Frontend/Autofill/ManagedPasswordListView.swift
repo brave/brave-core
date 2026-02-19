@@ -79,6 +79,16 @@ struct ManagedPasswordListView: View {
             windowProtection: windowProtection,
             settingsDelegate: settingsDelegate
           )
+          .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive) {
+              deleteDomain(id)
+            } label: {
+              Label(
+                Strings.Autofill.managedPasswordDeleteCredentialButtonTitle,
+                systemImage: "trash"
+              )
+            }
+          }
         }
       } header: {
         Text(Strings.Autofill.managePasswordsListHeaderTitle)
@@ -101,6 +111,16 @@ struct ManagedPasswordListView: View {
               windowProtection: windowProtection,
               settingsDelegate: settingsDelegate
             )
+            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+              Button(role: .destructive) {
+                deleteDomain(id)
+              } label: {
+                Label(
+                  Strings.Autofill.managedPasswordDeleteCredentialButtonTitle,
+                  systemImage: "trash"
+                )
+              }
+            }
           }
         }
       }
@@ -257,6 +277,23 @@ struct ManagedPasswordListView: View {
     viewModel.removeCredentials(credentialsToRemove)
     selectedDomainIds.removeAll()
     updateEditMode(false)
+  }
+
+  private func deleteDomain(_ domainId: String) {
+    var credentialsToRemove: [PasswordForm] = []
+    if domainId.hasPrefix("saved:") {
+      let domain = String(domainId.dropFirst(6))
+      if let group = viewModel.groupedCredentialList.first(where: { $0.domain == domain }) {
+        credentialsToRemove.append(contentsOf: group.credentials)
+      }
+    } else if domainId.hasPrefix("blocked:") {
+      let domain = String(domainId.dropFirst(8))
+      if let group = viewModel.groupedBlockedList.first(where: { $0.domain == domain }) {
+        credentialsToRemove.append(contentsOf: group.credentials)
+      }
+    }
+    viewModel.removeCredentials(credentialsToRemove)
+    selectedDomainIds.remove(domainId)
   }
 }
 
