@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import MarkdownRenderer from './index'
+import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
+import * as searchResults from '../search_widget/storybook-data/searchResults.json'
 
 export default {
   title: 'MarkdownRenderer',
@@ -29,16 +31,27 @@ A list
 
 export const WithDirectives = () => {
   return (
-    <MarkdownRenderer
-      text={`
+    <AssistantResponseContextProvider
+      events={[
+        {
+          inlineSearchEvent: {
+            query: 'Approach shoes',
+            resultsJson: JSON.stringify(Array.from(searchResults)),
+          },
+        } as any,
+      ]}
+    >
+      <MarkdownRenderer
+        text={`
 ## Hello World
 
 This is some text about a product followed by a directive.
 
-::search[the product]{type=images}`}
-      shouldShowTextCursor={false}
-      allowedLinks={[]}
-    />
+::search[Approach shoes]{type=web}`}
+        shouldShowTextCursor={false}
+        allowedLinks={[]}
+      />
+    </AssistantResponseContextProvider>
   )
 }
 

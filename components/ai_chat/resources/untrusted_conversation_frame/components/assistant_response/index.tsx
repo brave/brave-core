@@ -20,6 +20,7 @@ import {
   normalizeCitationSpacing,
 } from '../conversation_entries/conversation_entries_utils'
 import RichSearchWidget from './rich_search_widget'
+import AssistantResponseContextProvider from './assistant_response_context'
 
 interface BaseProps {
   // Whether data is currently being received (generated)
@@ -171,7 +172,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
     || (props.events?.some((event) => event.completionEvent) ?? false)
 
   return (
-    <>
+    <AssistantResponseContextProvider events={props.events}>
       {sourcesEvent?.richResults
         .filter((r) => r)
         .map((r) => (
@@ -200,6 +201,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           )}
         </>
       )}
-    </>
+    </AssistantResponseContextProvider>
   )
 }
