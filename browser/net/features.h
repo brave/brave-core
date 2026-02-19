@@ -10,10 +10,7 @@
 
 namespace features {
 
-// Use base::WeakPtr instead of std::shared_ptr for BraveRequestInfo.
-// This reduces overhead by avoiding reference counting but requires
-// careful ownership management with std::unique_ptr.
-BASE_DECLARE_FEATURE(kBraveRequestInfoUseWeakPtr);
+BASE_DECLARE_FEATURE(kBraveRequestInfoUniquePtr);
 
 }  // namespace features
 

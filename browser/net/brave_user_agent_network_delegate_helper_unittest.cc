@@ -70,7 +70,7 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
         std::is_same_v<typename PtrStrategy::template Ptr<BraveRequestInfo>,
                        base::WeakPtr<BraveRequestInfo>>;
     scoped_feature_list_.InitWithFeatureState(
-        features::kBraveRequestInfoUseWeakPtr, enable_flag);
+        features::kBraveRequestInfoUniquePtr, enable_flag);
   }
 
   UserAgentTestResult RunUserAgentTest(bool feature_enabled,

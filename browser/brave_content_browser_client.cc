@@ -1171,7 +1171,7 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   // TODO(iefremov): Skip proxying for certain requests?
-  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUseWeakPtr)) {
+  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
         browser_context, frame, factory_builder,
         navigation_response_task_runner);
@@ -1221,7 +1221,7 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
-  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUseWeakPtr)) {
+  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
         frame, std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(frame, url, site_for_cookies,

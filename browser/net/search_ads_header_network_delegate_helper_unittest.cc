@@ -71,7 +71,7 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
 #if BUILDFLAG(IS_ANDROID)
         {brave_rewards::features::kBraveRewards, true},
 #endif  // BUILDFLAG(IS_ANDROID)
-        {features::kBraveRequestInfoUseWeakPtr, enable_flag}});
+        {features::kBraveRequestInfoUniquePtr, enable_flag}});
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
