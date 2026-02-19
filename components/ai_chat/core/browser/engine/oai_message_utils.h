@@ -43,7 +43,7 @@ std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
     PrefService* prefs,
-    bool is_temporary_chat,
+    bool exclude_memory,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input);
 

@@ -103,7 +103,7 @@ class OAIMessageUtilsTest : public testing::Test {
  protected:
   void TestNoMemoryInMessages(const base::Location& location,
                               PrefService* prefs,
-                              bool is_temporary_chat) {
+                              bool exclude_memory) {
     SCOPED_TRACE(testing::Message() << location.ToString());
 
     // Create simple 1 human turn history (no selected text, no page content)
@@ -112,7 +112,7 @@ class OAIMessageUtilsTest : public testing::Test {
 
     // Call BuildOAIMessages
     std::vector<OAIMessage> messages =
-        BuildOAIMessages(PageContentsMap(), history, prefs, is_temporary_chat,
+        BuildOAIMessages(PageContentsMap(), history, prefs, exclude_memory,
                          10000, [](std::string&) {});
 
     // Verify: Should have 1 human message with NO memory block
@@ -548,7 +548,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   VerifyTextBlock(FROM_HERE, messages[9].content[0], "response4");
 }
 
-TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_TempChat) {
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {
   // Enable customization and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
   base::DictValue customizations_dict;
@@ -563,7 +563,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_TempChat) {
   memories.Append("I prefer concise explanations");
   prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
-  // Verify no memory in temp chat
+  // Verify no memory when exclude memory is true
   TestNoMemoryInMessages(FROM_HERE, &prefs_, true);
 }
 
