@@ -622,15 +622,18 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   tab_strip->SetAvailableWidthCallback(base::BindRepeating(
       &BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer,
       base::Unretained(this)));
-  tab_strip->tab_container_->InvalidateIdealBounds();
-  tab_strip->tab_container_->CompleteAnimationAndLayout();
 
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     state_ == State::kCollapsed ? width_animation_.Hide()
                                 : width_animation_.Show();
-  } else if (state_ == State::kCollapsed) {
-    // Call the callback immediately if no animation.
-    OnCollapseAnimationEnded();
+  } else {
+    tab_strip->tab_container_->InvalidateIdealBounds();
+    tab_strip->tab_container_->CompleteAnimationAndLayout();
+
+    if (state_ == State::kCollapsed) {
+      // Call the callback immediately if no animation.
+      OnCollapseAnimationEnded();
+    }
   }
 
   if (!GetVisible() && state_ != State::kCollapsed) {
