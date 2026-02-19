@@ -44,7 +44,9 @@
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -1228,6 +1230,14 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
     polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(
         polkadot_seed, KeyringId::kPolkadotTestnet);
   }
+  if (IsKeyringEnabled(KeyringId::kPolkadotImport)) {
+    polkadot_import_mainnet_keyring_ =
+        std::make_unique<PolkadotImportKeyring>(KeyringId::kPolkadotImport);
+  }
+  if (IsKeyringEnabled(KeyringId::kPolkadotImportTestnet)) {
+    polkadot_import_testnet_keyring_ = std::make_unique<PolkadotImportKeyring>(
+        KeyringId::kPolkadotImportTestnet);
+  }
 }
 
 void KeyringService::ClearKeyrings() {
@@ -1253,6 +1263,8 @@ void KeyringService::ClearKeyrings() {
 
   polkadot_mainnet_keyring_.reset();
   polkadot_testnet_keyring_.reset();
+  polkadot_import_mainnet_keyring_.reset();
+  polkadot_import_testnet_keyring_.reset();
 }
 
 void KeyringService::CreateDefaultAccounts() {
@@ -1420,6 +1432,19 @@ PolkadotKeyring* KeyringService::GetKeyring(mojom::KeyringId keyring_id) const {
   return nullptr;
 }
 
+template <>
+PolkadotImportKeyring* KeyringService::GetKeyring(
+    mojom::KeyringId keyring_id) const {
+  for (auto* keyring : {polkadot_import_mainnet_keyring_.get(),
+                        polkadot_import_testnet_keyring_.get()}) {
+    if (keyring && keyring->keyring_id() == keyring_id) {
+      return keyring;
+    }
+  }
+
+  return nullptr;
+}
+
 void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
   CHECK(encryptor_);
 
@@ -1437,6 +1462,23 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
       keyring->AddAccount(
           imported_account_info.account_index,
           std::string(private_key->begin(), private_key->end()));
+    }
+    return;
+  }
+
+  if (IsPolkadotImportKeyring(keyring_id)) {
+    auto* keyring = GetKeyring<PolkadotImportKeyring>(keyring_id);
+    CHECK(keyring);
+    for (const auto& imported_account_info :
+         GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+      auto private_key = encryptor_->DecryptFromDict(
+          imported_account_info.imported_private_key);
+      if (!private_key || private_key->size() != kSr25519Pkcs8Size) {
+        continue;
+      }
+      keyring->AddAccount(
+          imported_account_info.account_index,
+          base::span<const uint8_t, kSr25519Pkcs8Size>(*private_key));
     }
     return;
   }
@@ -1606,6 +1648,12 @@ void KeyringService::EncodePolkadotKeyForExport(
         account_id->account_index, encryption_password));
     return;
   }
+  if (auto* keyring =
+          GetKeyring<PolkadotImportKeyring>(account_id->keyring_id)) {
+    std::move(callback).Run(keyring->EncodePrivateKeyForExport(
+        account_id->account_index, encryption_password));
+    return;
+  }
 
   std::move(callback).Run(std::nullopt);
 }
@@ -1708,6 +1756,75 @@ mojom::AccountInfoPtr KeyringService::ImportBitcoinAccountSync(
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*account_info);
 
+  NotifyAccountsAdded(*account_info);
+
+  return account_info;
+}
+
+void KeyringService::ImportPolkadotAccount(
+    const std::string& account_name,
+    const std::string& json_export,
+    const std::string& password,
+    const std::string& network,
+    ImportPolkadotAccountCallback callback) {
+  std::move(callback).Run(
+      ImportPolkadotAccountSync(account_name, json_export, password, network));
+}
+
+mojom::AccountInfoPtr KeyringService::ImportPolkadotAccountSync(
+    const std::string& account_name,
+    const std::string& json_export,
+    const std::string& password,
+    const std::string& network) {
+  if (account_name.empty() || json_export.empty() || password.empty() ||
+      IsLockedSync() || !IsPolkadotNetwork(network)) {
+    return nullptr;
+  }
+  CHECK(encryptor_);
+
+  mojom::KeyringId keyring_id;
+  if (network == mojom::kPolkadotMainnet) {
+    keyring_id = mojom::KeyringId::kPolkadotImport;
+  } else if (network == mojom::kPolkadotTestnet) {
+    keyring_id = mojom::KeyringId::kPolkadotImportTestnet;
+  } else {
+    NOTREACHED();  // IsPolkadotNetwork(network) already validated above.
+  }
+
+  auto* keyring = GetKeyring<PolkadotImportKeyring>(keyring_id);
+  if (!keyring) {
+    return nullptr;
+  }
+
+  auto pkcs8_key = DecodePrivateKeyFromExport(json_export, password);
+  if (!pkcs8_key) {
+    return nullptr;
+  }
+
+  uint32_t account_index = GenerateNextAccountIndex(profile_prefs_, keyring_id);
+  if (!keyring->AddAccount(account_index, *pkcs8_key)) {
+    return nullptr;
+  }
+
+  auto address = keyring->GetAccountAddress(account_index);
+  if (!address) {
+    keyring->RemoveAccount(account_index);
+    return nullptr;
+  }
+
+  ImportedAccountInfo imported_account_info(
+      keyring_id, account_name, *address, account_index,
+      encryptor_->EncryptToDict(
+          base::span<const uint8_t, kSr25519Pkcs8Size>(*pkcs8_key),
+          CreateNonceArray()));
+
+  auto account_info = MakeAccountInfoForImportedAccount(imported_account_info);
+
+  AddImportedAccountForKeyring(profile_prefs_, std::move(imported_account_info),
+                               keyring_id);
+  NotifyAccountsChanged();
+
+  SetSelectedAccountInternal(*account_info);
   NotifyAccountsAdded(*account_info);
 
   return account_info;
@@ -1870,6 +1987,13 @@ bool KeyringService::RemoveImportedAccountInternal(
 
   if (auto* keyring =
           GetKeyring<BitcoinImportKeyring>(account_id->keyring_id)) {
+    if (!keyring->RemoveAccount(account_id->account_index)) {
+      return false;
+    }
+  }
+
+  if (auto* keyring =
+          GetKeyring<PolkadotImportKeyring>(account_id->keyring_id)) {
     if (!keyring->RemoveAccount(account_id->account_index)) {
       return false;
     }
@@ -2970,13 +3094,15 @@ std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
 KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
 
-  auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id);
-  if (!keyring) {
-    return std::nullopt;
+  if (auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id)) {
+    auto key = keyring->GetPublicKey(account_id->account_index);
+    return {key};
   }
-
-  auto key = keyring->GetPublicKey(account_id->account_index);
-  return {key};
+  if (auto* keyring =
+          GetKeyring<PolkadotImportKeyring>(account_id->keyring_id)) {
+    return keyring->GetPublicKey(account_id->account_index);
+  }
+  return std::nullopt;
 }
 
 std::optional<std::array<uint8_t, kSr25519SignatureSize>>
@@ -2985,12 +3111,14 @@ KeyringService::SignMessageByPolkadotKeyring(
     base::span<const uint8_t> message) {
   CHECK(account_id);
 
-  auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id);
-  if (!keyring) {
-    return std::nullopt;
+  if (auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id)) {
+    return keyring->SignMessage(message, account_id->account_index);
   }
-
-  return keyring->SignMessage(message, account_id->account_index);
+  if (auto* keyring =
+          GetKeyring<PolkadotImportKeyring>(account_id->keyring_id)) {
+    return keyring->SignMessage(message, account_id->account_index);
+  }
+  return std::nullopt;
 }
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(

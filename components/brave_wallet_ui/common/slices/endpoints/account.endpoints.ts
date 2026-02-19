@@ -376,6 +376,52 @@ export const accountEndpoints = ({
       ],
     }),
 
+    importPolkadotAccount: mutation<
+      true,
+      {
+        accountName: string
+        jsonExport: string
+        password: string
+        network: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          const result = await keyringService.importPolkadotAccount(
+            arg.accountName,
+            arg.jsonExport,
+            arg.password,
+            arg.network,
+          )
+
+          if (!result.account) {
+            throw new Error('No result')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import Polkadot account',
+            error,
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance',
+      ],
+    }),
+
     importEthAccountFromJson: mutation<
       true,
       {

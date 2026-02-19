@@ -1133,6 +1133,8 @@ enum KeyringId {
   kCardanoTestnet = 13,
   kPolkadotMainnet = 14,
   kPolkadotTestnet = 15,
+  kPolkadotImport = 16,
+  kPolkadotImportTestnet = 17,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -1417,6 +1419,12 @@ interface KeyringService {
   // Imports a bitcoin account for a network. Payload is an extended private
   // key.
   ImportBitcoinAccount(string accountName, string payload, string network)
+      => (AccountInfo? account);
+
+  // Imports a Polkadot account from JSON export (Polkadot.js format).
+  // Network is kPolkadotMainnet or kPolkadotTestnet.
+  ImportPolkadotAccount(
+      string accountName, string jsonExport, string password, string network)
       => (AccountInfo? account);
 
   // Imports an account via JSON.

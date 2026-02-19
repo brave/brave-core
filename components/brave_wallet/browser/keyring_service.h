@@ -50,6 +50,7 @@ class FilecoinKeyring;
 class JsonRpcService;
 class KeyringServiceUnitTest;
 class PasswordEncryptor;
+class PolkadotImportKeyring;
 class PolkadotKeyring;
 class SolanaKeyring;
 class SolanaProviderImplUnitTest;
@@ -132,6 +133,16 @@ class KeyringService : public mojom::KeyringService {
   mojom::AccountInfoPtr ImportBitcoinAccountSync(
       const std::string& account_name,
       const std::string& payload,
+      const std::string& network);
+  void ImportPolkadotAccount(const std::string& account_name,
+                             const std::string& json_export,
+                             const std::string& password,
+                             const std::string& network,
+                             ImportPolkadotAccountCallback callback) override;
+  mojom::AccountInfoPtr ImportPolkadotAccountSync(
+      const std::string& account_name,
+      const std::string& json_export,
+      const std::string& password,
       const std::string& network);
   void AddHardwareAccounts(std::vector<mojom::HardwareWalletAccountPtr> info,
                            AddHardwareAccountsCallback callback) override;
@@ -465,6 +476,8 @@ class KeyringService : public mojom::KeyringService {
 
   std::unique_ptr<PolkadotKeyring> polkadot_mainnet_keyring_;
   std::unique_ptr<PolkadotKeyring> polkadot_testnet_keyring_;
+  std::unique_ptr<PolkadotImportKeyring> polkadot_import_mainnet_keyring_;
+  std::unique_ptr<PolkadotImportKeyring> polkadot_import_testnet_keyring_;
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
 

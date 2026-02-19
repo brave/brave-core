@@ -267,6 +267,7 @@ export const {
   useImportSolAccountMutation,
   useImportBtcAccountMutation,
   useImportFilAccountMutation,
+  useImportPolkadotAccountMutation,
   useImportFromMetaMaskMutation,
   useImportHardwareAccountsMutation,
   useInvalidateAccountInfosMutation,

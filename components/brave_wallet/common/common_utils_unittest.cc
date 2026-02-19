@@ -370,10 +370,23 @@ TEST(CommonUtils, GetNetworkForCardanoAccount) {
 TEST(CommonUtils, IsPolkadotKeyring) {
   for (const auto& keyring_id : kAllKeyrings) {
     if (keyring_id == mojom::KeyringId::kPolkadotMainnet ||
-        keyring_id == mojom::KeyringId::kPolkadotTestnet) {
+        keyring_id == mojom::KeyringId::kPolkadotTestnet ||
+        keyring_id == mojom::KeyringId::kPolkadotImport ||
+        keyring_id == mojom::KeyringId::kPolkadotImportTestnet) {
       EXPECT_TRUE(IsPolkadotKeyring(keyring_id));
     } else {
       EXPECT_FALSE(IsPolkadotKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsPolkadotImportKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kPolkadotImport ||
+        keyring_id == mojom::KeyringId::kPolkadotImportTestnet) {
+      EXPECT_TRUE(IsPolkadotImportKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsPolkadotImportKeyring(keyring_id));
     }
   }
 }
@@ -393,8 +406,13 @@ TEST(CommonUtils, IsPolkadotNetwork) {
 TEST(CommonUtils, GetNetworkForPolkadotKeyring) {
   EXPECT_EQ(mojom::kPolkadotMainnet,
             GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotMainnet));
+  EXPECT_EQ(mojom::kPolkadotMainnet,
+            GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotImport));
   EXPECT_EQ(mojom::kPolkadotTestnet,
             GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotTestnet));
+  EXPECT_EQ(
+      mojom::kPolkadotTestnet,
+      GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotImportTestnet));
 }
 
 TEST(CommonUtils, GetNetworkForPolkadotAccount) {
@@ -537,6 +555,8 @@ TEST(CommonUtils, GetEnabledKeyrings) {
     if (IsPolkadotEnabled()) {
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kPolkadotMainnet);
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kPolkadotTestnet);
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kPolkadotImport);
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kPolkadotImportTestnet);
     }
 
     EXPECT_EQ(last_pos, keyrings.size());
@@ -614,13 +634,16 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
 
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
                                              mojom::kPolkadotMainnet),
-              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet}));
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
+                                mojom::KeyringId::kPolkadotImport}));
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
                                              mojom::kPolkadotTestnet),
-              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
                                              "any non mainnet chain"),
-              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
 
   static_assert(AllCoinsTested<7>());
 

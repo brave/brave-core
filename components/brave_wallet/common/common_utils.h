@@ -76,6 +76,7 @@ std::string GetNetworkForCardanoKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
+bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id);
 bool IsPolkadotNetwork(std::string_view network_id);
 std::string GetNetworkForPolkadotKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForPolkadotAccount(const mojom::AccountIdPtr& account_id);

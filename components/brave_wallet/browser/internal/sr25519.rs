@@ -125,14 +125,23 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
         return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::InvalidPkcs8Header)));
     }
 
-    // Extract secret key (64 bytes after PAIR_HDR)
+    // Extract secret key (64 bytes after PAIR_HDR).
+    // Try from_bytes first (schnorrkel canonical). If the scalar has the high bit
+    // set (e.g. Polkadot.js / Ed25519-style export), try from_ed25519_bytes
+    // which divides by cofactor and accepts that format.
     let secret_key_start = PAIR_HDR.len();
     let secret_key_end = secret_key_start + 64;
-    let secret_key =
-        match schnorrkel::SecretKey::from_bytes(&pkcs8[secret_key_start..secret_key_end]) {
-            Ok(key) => key,
-            Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
-        };
+    let secret_key_bytes = &pkcs8[secret_key_start..secret_key_end];
+    let secret_key = match schnorrkel::SecretKey::from_bytes(secret_key_bytes) {
+        Ok(key) => key,
+        Err(schnorrkel::SignatureError::ScalarFormatError) => {
+            match schnorrkel::SecretKey::from_ed25519_bytes(secret_key_bytes) {
+                Ok(key) => key,
+                Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
+            }
+        }
+        Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
+    };
 
     // Validate PAIR_DIV after secret key
     let div_start = secret_key_end;
