@@ -2566,11 +2566,7 @@
 
 # These tests fail because we disable kAimEnabled.
 -All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/*
--ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
--ChromeAimEligibilityServiceCacheBrowserTest.RequestFromCache
--ChromeAimEligibilityServiceOffTheRecordBrowserTest.IsCreateImagesEligibleReturnsFalseForOffTheRecord
--ChromeAimEligibilityServiceStartupRequestBrowserTest.RespectsAllowedToolsConfig
--ChromeAimEligibilityServiceStartupRequestBrowserTest.RespectsPdfUploadConfig
+-ChromeAimEligibilityService*.*
 -OmniboxContextMenuControllerBrowserTest.ExecuteCommand
 
 # This test fails because we add our own item to omnibox contextual search
