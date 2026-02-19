@@ -15,7 +15,6 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/cppgc/persistent.h"
 #include "v8/include/v8.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -100,10 +99,6 @@ class SkusJSHandler final : public gin::Wrappable<SkusJSHandler>,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
 #endif
-
-  // Persistent self-reference to prevent GC from freeing this object while
-  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
-  cppgc::Persistent<SkusJSHandler> self_;
 };
 
 }  // namespace skus
