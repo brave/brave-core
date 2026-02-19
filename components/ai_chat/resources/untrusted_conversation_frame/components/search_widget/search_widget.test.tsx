@@ -5,12 +5,7 @@
 
 // Set up loadTimeData mock BEFORE importing components
 ;(window as any).loadTimeData = {
-  getString: jest.fn((key: string) => {
-    if (key === 'apiHost') {
-      return 'https://api.example.com'
-    }
-    return ''
-  }),
+  getString: jest.fn().mockReturnValue(''),
   getStringF: jest.fn().mockReturnValue(''),
   getInteger: jest.fn().mockReturnValue(0),
   getBoolean: jest.fn().mockReturnValue(false),
@@ -20,244 +15,164 @@
 
 import * as React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import SearchWidget from './search_widget'
 
-const mockWebSearchResults = {
-  type: 'search',
-  query: { original: 'test query' },
-  web: {
-    results: [
-      {
-        type: 'search_result',
-        title: 'Test Result 1',
-        url: 'https://example.com/1',
-        description: 'Test <strong>description</strong> 1',
-        thumbnail: { src: 'https://example.com/thumb1.jpg' },
-        meta_url: {
-          favicon: 'https://example.com/favicon1.ico',
-          path: '/path1',
-          scheme: 'https',
-          hostname: 'example.com',
-          net_loc: 'example.com',
-        },
-      },
-      {
-        type: 'search_result',
-        title: 'Test Result 2',
-        url: 'https://example.com/2',
-        description: 'Test description 2',
-        thumbnail: { src: 'https://example.com/thumb2.jpg' },
-        meta_url: {
-          favicon: 'https://example.com/favicon2.ico',
-          path: '/path2',
-          scheme: 'https',
-          hostname: 'example.com',
-          net_loc: 'example.com',
-        },
-      },
-    ],
+const webResults = [
+  {
+    type: 'search_result' as const,
+    title: 'Test Result 1',
+    url: 'https://example.com/1',
+    description: 'Test <strong>description</strong> 1',
+    thumbnail: { src: 'https://example.com/thumb1.jpg' },
+    meta_url: {
+      favicon: 'https://example.com/favicon1.ico',
+      path: '/path1',
+      scheme: 'https',
+      hostname: 'example.com',
+      net_loc: 'example.com',
+    },
   },
-}
-
-const mockImageResults = {
-  type: 'images',
-  query: { original: 'test query' },
-  results: [
-    {
-      type: 'image_result',
-      title: 'Test Image 1',
-      url: 'https://example.com/image1',
-      description: '',
-      thumbnail: {
-        src: 'https://example.com/thumb1.jpg',
-        original: 'https://example.com/orig1.jpg',
-      },
-      meta_url: {
-        favicon: 'https://example.com/favicon.ico',
-        path: '',
-        scheme: 'https',
-        hostname: 'example.com',
-        net_loc: 'example.com',
-      },
+  {
+    type: 'search_result' as const,
+    title: 'Test Result 2',
+    url: 'https://example.com/2',
+    description: 'Test description 2',
+    thumbnail: { src: 'https://example.com/thumb2.jpg' },
+    meta_url: {
+      favicon: 'https://example.com/favicon2.ico',
+      path: '/path2',
+      scheme: 'https',
+      hostname: 'example.com',
+      net_loc: 'example.com',
     },
-  ],
-}
+  },
+]
 
-const mockVideoResults = {
-  type: 'videos',
-  query: { original: 'test query' },
-  results: [
-    {
-      type: 'video_result',
-      title: 'Test Video 1',
-      url: 'https://example.com/video1',
-      description: 'Video description',
-      thumbnail: { src: 'https://example.com/video-thumb1.jpg' },
-      age: '2 days ago',
-      meta_url: {
-        favicon: 'https://example.com/favicon.ico',
-        path: '',
-        scheme: 'https',
-        hostname: 'example.com',
-        net_loc: 'example.com',
-      },
+const imageResults = [
+  {
+    type: 'image_result' as const,
+    title: 'Test Image 1',
+    url: 'https://example.com/image1',
+    description: '',
+    thumbnail: {
+      src: 'https://example.com/thumb1.jpg',
+      original: 'https://example.com/orig1.jpg',
     },
-  ],
-}
+    meta_url: {
+      favicon: 'https://example.com/favicon.ico',
+      path: '',
+      scheme: 'https',
+      hostname: 'example.com',
+      net_loc: 'example.com',
+    },
+  },
+]
 
-const mockNewsResults = {
-  type: 'news',
-  query: { original: 'test query' },
-  results: [
-    {
-      type: 'news_result',
-      title: 'Test News 1',
-      url: 'https://example.com/news1',
-      description: 'News description',
-      thumbnail: { src: 'https://example.com/news-thumb1.jpg' },
-      age: '1 hour ago',
-      meta_url: {
-        favicon: 'https://example.com/favicon.ico',
-        path: '',
-        scheme: 'https',
-        hostname: 'example.com',
-        net_loc: 'example.com',
-      },
+const videoResults = [
+  {
+    type: 'video_result' as const,
+    title: 'Test Video 1',
+    url: 'https://example.com/video1',
+    description: 'Video description',
+    thumbnail: { src: 'https://example.com/video-thumb1.jpg' },
+    age: '2 days ago',
+    meta_url: {
+      favicon: 'https://example.com/favicon.ico',
+      path: '',
+      scheme: 'https',
+      hostname: 'example.com',
+      net_loc: 'example.com',
     },
-  ],
-}
+  },
+]
+
+const newsResults = [
+  {
+    type: 'news_result' as const,
+    title: 'Test News 1',
+    url: 'https://example.com/news1',
+    description: 'News description',
+    thumbnail: { src: 'https://example.com/news-thumb1.jpg' },
+    age: '1 hour ago',
+    meta_url: {
+      favicon: 'https://example.com/favicon.ico',
+      path: '',
+      scheme: 'https',
+      hostname: 'example.com',
+      net_loc: 'example.com',
+    },
+  },
+]
 
 describe('SearchWidget', () => {
-  let mockFetch: jest.Mock
-
-  beforeEach(() => {
-    mockFetch = jest.fn((url) => {
-      const urlString = url.toString()
-      if (urlString.includes('/web/')) {
-        return Promise.resolve({
-          json: () => Promise.resolve(mockWebSearchResults),
-        } as Response)
-      } else if (urlString.includes('/images/')) {
-        return Promise.resolve({
-          json: () => Promise.resolve(mockImageResults),
-        } as Response)
-      } else if (urlString.includes('/videos/')) {
-        return Promise.resolve({
-          json: () => Promise.resolve(mockVideoResults),
-        } as Response)
-      } else if (urlString.includes('/news/')) {
-        return Promise.resolve({
-          json: () => Promise.resolve(mockNewsResults),
-        } as Response)
-      }
-      return Promise.reject(new Error('Unknown URL'))
-    })
-    global.fetch = mockFetch
-  })
-
-  afterEach(() => {
-    jest.restoreAllMocks()
-  })
-
-  test('should render loading state initially', async () => {
-    const { container } = render(
-      <SearchWidget
-        query='test query'
-        type='web'
-      />,
-    )
-    // Check for the leo-progressring custom element
-    const progressRing = container.querySelector('leo-progressring')
-    expect(progressRing).toBeInTheDocument()
-
-    // Wait for loading to complete to avoid act warnings
-    await waitFor(() => {
-      expect(screen.getByText('Test Result 1')).toBeInTheDocument()
-    })
-  })
-
-  test('should render web search results', async () => {
+  test('should render web search results', () => {
     render(
       <SearchWidget
         query='test query'
         type='web'
+        results={webResults}
       />,
     )
 
-    await waitFor(() => {
-      expect(screen.getByText('Test Result 1')).toBeInTheDocument()
-    })
-
+    expect(screen.getByText('Test Result 1')).toBeInTheDocument()
     expect(screen.getByText('Test Result 2')).toBeInTheDocument()
     const links = screen.getAllByRole('link')
-    expect(links.length).toBeGreaterThanOrEqual(2) // At least 2 results
+    expect(links.length).toBeGreaterThanOrEqual(2)
   })
 
-  test('should render image results', async () => {
+  test('should render image results', () => {
     render(
       <SearchWidget
         query='test query'
         type='images'
+        results={imageResults}
       />,
     )
 
-    // Wait for results to load
-    await waitFor(() => {
-      const links = screen.getAllByRole('link')
-      expect(links.length).toBeGreaterThan(0)
-    })
-
-    // Should fetch images endpoint
-    await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/images/search'),
-      )
-    })
+    const links = screen.getAllByRole('link')
+    expect(links.length).toBeGreaterThan(0)
   })
 
-  test('should render video results with age', async () => {
+  test('should render video results with age', () => {
     render(
       <SearchWidget
         query='test query'
         type='videos'
+        results={videoResults}
       />,
     )
 
-    await waitFor(() => {
-      expect(screen.getByText('Test Video 1')).toBeInTheDocument()
-    })
-
+    expect(screen.getByText('Test Video 1')).toBeInTheDocument()
     expect(screen.getByText('2 days ago')).toBeInTheDocument()
   })
 
-  test('should render news results with age', async () => {
+  test('should render news results with age', () => {
     render(
       <SearchWidget
         query='test query'
         type='news'
+        results={newsResults}
       />,
     )
 
-    await waitFor(() => {
-      expect(screen.getByText('Test News 1')).toBeInTheDocument()
-    })
-
+    expect(screen.getByText('Test News 1')).toBeInTheDocument()
     expect(screen.getByText('1 hour ago')).toBeInTheDocument()
   })
 
-  test('should render type selector buttons', async () => {
+  test('should render type selector buttons for available result types', () => {
     const { container } = render(
       <SearchWidget
         query='test query'
         type='web'
+        results={[
+          ...webResults,
+          ...imageResults,
+          ...videoResults,
+          ...newsResults,
+        ]}
       />,
     )
-
-    // Wait for initial web results
-    await waitFor(() => {
-      expect(screen.getByText('Test Result 1')).toBeInTheDocument()
-    })
 
     // Should have 4 type selector buttons (web, images, videos, news)
     const typeButtons = container.querySelectorAll('.types leo-button')
@@ -267,51 +182,41 @@ describe('SearchWidget', () => {
     expect(typeButtons[0].getAttribute('kind')).toBe('plain')
   })
 
-  test('should render description with strong tags', async () => {
+  test('should render description with strong tags', () => {
     const { container } = render(
       <SearchWidget
         query='test query'
         type='web'
+        results={webResults}
       />,
     )
 
-    await waitFor(() => {
-      expect(screen.getByText('Test Result 1')).toBeInTheDocument()
-    })
-
-    // The description should be present (strong tags are handled specially)
     const descriptions = container.querySelectorAll('.description')
     expect(descriptions.length).toBeGreaterThan(0)
     expect(descriptions[0].textContent).toContain('description')
   })
 
-  test('should have carousel buttons', async () => {
+  test('should have carousel buttons', () => {
     const { container } = render(
       <SearchWidget
         query='test query'
         type='web'
+        results={webResults}
       />,
     )
-
-    await waitFor(() => {
-      expect(screen.getByText('Test Result 1')).toBeInTheDocument()
-    })
 
     const carouselButtons = container.querySelectorAll('.carouselButton')
     expect(carouselButtons).toHaveLength(2)
   })
 
-  test('should disable left carousel button at start', async () => {
+  test('should disable left carousel button at start', () => {
     const { container } = render(
       <SearchWidget
         query='test query'
         type='web'
+        results={webResults}
       />,
     )
-
-    await waitFor(() => {
-      expect(screen.getByText('Test Result 1')).toBeInTheDocument()
-    })
 
     const carouselButtons = container.querySelectorAll('.carouselButton')
     const leftButton = carouselButtons[0] // First carousel button is left
@@ -320,17 +225,16 @@ describe('SearchWidget', () => {
     expect(leftButton.getAttribute('isdisabled')).toBe('true')
   })
 
-  test('should render search query link', async () => {
+  test('should render search query link', () => {
     render(
       <SearchWidget
         query='test query'
         type='web'
+        results={webResults}
       />,
     )
 
-    await waitFor(() => {
-      expect(screen.getByText('test query')).toBeInTheDocument()
-    })
+    expect(screen.getByText('test query')).toBeInTheDocument()
 
     const queryLink = screen.getByRole('link', { name: /test query/ })
     expect(queryLink).toHaveAttribute(
@@ -339,48 +243,31 @@ describe('SearchWidget', () => {
     )
   })
 
-  test('should encode query parameter in API call', async () => {
+  test('should encode query parameter in search link', () => {
     render(
       <SearchWidget
         query='test & query'
         type='web'
+        results={webResults}
       />,
     )
 
-    await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('q=test%20%26%20query'),
-      )
-    })
+    const queryLink = screen.getByRole('link', { name: /test & query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      expect.stringContaining('q=test%20%26%20query'),
+    )
   })
 
-  test('should handle empty results gracefully', async () => {
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        json: () =>
-          Promise.resolve({
-            type: 'search',
-            query: { original: 'test' },
-            web: { results: [] },
-          }),
-      } as Response),
-    )
-
+  test('should render nothing for empty results', () => {
     const { container } = render(
       <SearchWidget
         query='test query'
         type='web'
+        results={[]}
       />,
     )
 
-    await waitFor(() => {
-      expect(
-        container.querySelector('leo-progressring'),
-      ).not.toBeInTheDocument()
-    })
-
-    // Should not crash with empty results
-    const links = screen.getAllByRole('link')
-    expect(links.length).toBe(1) // Only the query link
+    expect(container.firstChild).toBeNull()
   })
 })

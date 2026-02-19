@@ -23,8 +23,8 @@ interface Query {
   original: string
 }
 
-interface SearchResult<T extends string> {
-  type: T
+interface SearchResult {
+  type: 'search_result' | 'image_result' | 'news_result' | 'video_result'
   title: string
   url: string
   description: string
@@ -37,48 +37,6 @@ interface SearchResult<T extends string> {
     hostname: string
     net_loc: string
   }
-}
-
-interface SearchResponse {
-  type: 'search'
-  query: Query
-  web: {
-    results: SearchResult<'search_result'>[]
-  }
-}
-
-interface NewsResponse {
-  type: 'news'
-  query: Query
-  results: SearchResult<'news_result'>[]
-}
-
-interface ImagesResponse {
-  type: 'images'
-  query: Query
-  results: SearchResult<'image_result'>[]
-}
-
-interface VideosResponse {
-  type: 'videos'
-  query: Query
-  results: SearchResult<'video_result'>[]
-}
-
-type Result = {
-  web: SearchResponse
-  news: NewsResponse
-  images: ImagesResponse
-  videos: VideosResponse
-}
-
-function fetchResults<T extends keyof Result>(
-  type: T,
-  query: string,
-): Promise<Result[T]> {
-  return fetch(
-    `${loadTimeData.getString('apiHost')}/search-api/${type}/search?q=${encodeURIComponent(query)}`,
-  ).then((r) => r.json())
 }
 
 function ChromeImage(props: {
@@ -109,7 +67,7 @@ function MetaRow(props: { favicon: string; children: React.ReactNode }) {
   )
 }
 
-function SearchCard(props: { result: SearchResult<'search_result'> }) {
+function SearchCard(props: { result: SearchResult }) {
   return (
     <SecureLink
       className={styles.searchResult}
@@ -129,9 +87,7 @@ function SearchCard(props: { result: SearchResult<'search_result'> }) {
   )
 }
 
-function DetailCard(props: {
-  result: SearchResult<'video_result' | 'news_result'>
-}) {
+function DetailCard(props: { result: SearchResult }) {
   return (
     <SecureLink
       className={styles.detailResult}
@@ -157,7 +113,7 @@ function DetailCard(props: {
   )
 }
 
-function ImageCard(props: { result: SearchResult<'image_result'> }) {
+function ImageCard(props: { result: SearchResult }) {
   return (
     <SecureLink
       className={styles.imageResult}
@@ -201,42 +157,70 @@ function SearchDescription(props: { description: string }) {
   )
 }
 
-function Result(props: { result: SearchResult<string> }) {
+function Result(props: { result: SearchResult }) {
   switch (props.result.type) {
     case 'search_result':
-      return (
-        <SearchCard result={props.result as SearchResult<'search_result'>} />
-      )
+      return <SearchCard result={props.result} />
     case 'image_result':
-      return <ImageCard result={props.result as SearchResult<'image_result'>} />
+      return <ImageCard result={props.result} />
     case 'news_result':
     case 'video_result':
-      return (
-        <DetailCard
-          result={props.result as SearchResult<'video_result' | 'news_result'>}
-        />
-      )
+      return <DetailCard result={props.result} />
     default:
       return null
   }
 }
 
+const searchTypes = ['web', 'images', 'videos', 'news'] as const
+type SearchTypes = (typeof searchTypes)[number]
+const resultTypeToType: Record<SearchResult['type'], SearchTypes> = {
+  'search_result': 'web',
+  'image_result': 'images',
+  'news_result': 'news',
+  'video_result': 'videos',
+}
+
+const resultTypeIcons: Record<SearchTypes, string> = {
+  web: 'search',
+  images: 'image',
+  videos: 'search-movie',
+  news: 'search-news',
+}
+
 export default function SearchWidget(props: {
   query: string
-  type: 'web' | 'images' | 'videos' | 'news'
-  fetchResults?: (
-    type: keyof Result,
-    query: string,
-  ) => Promise<Result[keyof Result]>
+  type: SearchTypes
+  results: SearchResult[]
 }) {
   const [type, setType] = React.useState(props.type)
-  const { result, loading } = usePromise(
-    () => (props.fetchResults ?? fetchResults)(type, props.query),
-    [props.query, type],
-  )
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = React.useState(false)
   const [canScrollRight, setCanScrollRight] = React.useState(false)
+
+  const results = React.useMemo(
+    () =>
+      props.results.reduce<Record<SearchTypes, SearchResult[]>>(
+        (acc, result) => {
+          acc[resultTypeToType[result.type]].push(result)
+          return acc
+        },
+        {
+          web: [],
+          images: [],
+          news: [],
+          videos: [],
+        },
+      ),
+    [props.results, type],
+  )
+
+  const resultTypes = React.useMemo(
+    () =>
+      Object.entries(results)
+        .filter(([_, results]) => results.length > 0)
+        .map(([type]) => type as SearchTypes),
+    [results],
+  )
 
   const checkScrollBounds = React.useCallback(() => {
     const container = scrollContainerRef.current
@@ -254,7 +238,7 @@ export default function SearchWidget(props: {
     checkScrollBounds()
     container.addEventListener('scroll', checkScrollBounds)
     return () => container.removeEventListener('scroll', checkScrollBounds)
-  }, [checkScrollBounds, result])
+  }, [checkScrollBounds, props.results])
 
   const scrollBy = (direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return
@@ -267,27 +251,25 @@ export default function SearchWidget(props: {
     })
   }
 
-  const results = result
-    ? 'results' in result
-      ? result.results
-      : result.web.results
-    : []
+  // If we have no search results, don't show the widget.
+  if (props.results.length === 0) {
+    return null
+  }
+
+  const searchResults = results[type]
+
   return (
     <div className={styles.searchWidget}>
       <div
         className={styles.searchResults}
         ref={scrollContainerRef}
       >
-        {results && !loading ? (
-          results.map((result, i) => (
-            <Result
-              key={i}
-              result={result}
-            />
-          ))
-        ) : (
-          <ProgressRing />
-        )}
+        {searchResults.map((result, i) => (
+          <Result
+            key={i}
+            result={result}
+          />
+        ))}
         <Button
           className={styles.carouselButton}
           size='small'
@@ -322,38 +304,17 @@ export default function SearchWidget(props: {
           <span>{props.query}</span>
         </SecureLink>
         <div className={styles.types}>
-          <Button
-            size='small'
-            kind={type === 'web' ? 'plain' : 'plain-faint'}
-            fab
-            onClick={() => setType('web')}
-          >
-            <Icon name='search' />
-          </Button>
-          <Button
-            size='small'
-            kind={type === 'images' ? 'plain' : 'plain-faint'}
-            fab
-            onClick={() => setType('images')}
-          >
-            <Icon name='image' />
-          </Button>
-          <Button
-            size='small'
-            kind={type === 'videos' ? 'plain' : 'plain-faint'}
-            fab
-            onClick={() => setType('videos')}
-          >
-            <Icon name='search-movie' />
-          </Button>
-          <Button
-            size='small'
-            kind={type === 'news' ? 'plain' : 'plain-faint'}
-            fab
-            onClick={() => setType('news')}
-          >
-            <Icon name='search-news' />
-          </Button>
+          {resultTypes.map((t) => (
+            <Button
+              key={t}
+              size='small'
+              kind={t === type ? 'plain' : 'plain-faint'}
+              fab
+              onClick={() => setType(t)}
+            >
+              <Icon name={resultTypeIcons[t]} />
+            </Button>
+          ))}
         </div>
       </div>
     </div>
