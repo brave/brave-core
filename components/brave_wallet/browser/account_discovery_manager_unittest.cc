@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -57,7 +58,8 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
 
     keyring_ = std::make_unique<BitcoinHDKeyring>(
         *bip39::MnemonicToSeed(kMnemonicDivideCruise),
-        mojom::KeyringId::kBitcoin84);
+        mojom::KeyringId::kBitcoin84,
+        base::BindLambdaForTesting([](const std::string&) { return true; }));
   }
 
   AccountUtils GetAccountUtils() {

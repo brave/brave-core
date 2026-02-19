@@ -22,7 +22,9 @@ class EthTransaction;
 
 class EthereumKeyring : public Secp256k1HDKeyring {
  public:
-  explicit EthereumKeyring(base::span<const uint8_t> seed);
+  EthereumKeyring(
+      base::span<const uint8_t> seed,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~EthereumKeyring() override = default;
   EthereumKeyring(const EthereumKeyring&) = delete;
   EthereumKeyring& operator=(const EthereumKeyring&) = delete;

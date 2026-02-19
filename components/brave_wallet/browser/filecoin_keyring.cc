@@ -19,7 +19,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/blockchain_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
@@ -90,9 +89,12 @@ std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,
 
 FilecoinKeyring::~FilecoinKeyring() = default;
 
-FilecoinKeyring::FilecoinKeyring(base::span<const uint8_t> seed,
-                                 mojom::KeyringId keyring_id)
-    : keyring_id_(keyring_id) {
+FilecoinKeyring::FilecoinKeyring(
+    base::span<const uint8_t> seed,
+    mojom::KeyringId keyring_id,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : Secp256k1HDKeyring(std::move(is_address_allowed)),
+      keyring_id_(keyring_id) {
   DCHECK(IsFilecoinKeyring(keyring_id));
   accounts_root_ = ConstructAccountsRootKey(
       seed, keyring_id == mojom::KeyringId::kFilecoinTestnet);
@@ -216,7 +218,7 @@ std::optional<std::string> FilecoinKeyring::ImportBlsAccount(
     return std::nullopt;
   }
   std::string address = fil_address.EncodeAsString();
-  if (IsOfacAddress(address)) {
+  if (!is_address_allowed_.Run(address)) {
     return std::nullopt;
   }
 

@@ -20,7 +20,10 @@ namespace brave_wallet {
 
 class BitcoinHDKeyring : public BitcoinBaseKeyring, public Secp256k1HDKeyring {
  public:
-  BitcoinHDKeyring(base::span<const uint8_t> seed, mojom::KeyringId keyring_id);
+  BitcoinHDKeyring(
+      base::span<const uint8_t> seed,
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~BitcoinHDKeyring() override = default;
   BitcoinHDKeyring(const BitcoinHDKeyring&) = delete;
   BitcoinHDKeyring& operator=(const BitcoinHDKeyring&) = delete;

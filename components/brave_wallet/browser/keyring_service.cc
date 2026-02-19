@@ -1172,22 +1172,28 @@ bool KeyringService::IsKeyringEnabled(mojom::KeyringId keyring_id) const {
 }
 
 void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
-  ethereum_keyring_ = std::make_unique<EthereumKeyring>(keyring_seed.eth_seed);
+  auto is_address_allowed = base::BindRepeating([](const std::string& address) {
+    return !BlockchainRegistry::GetInstance()->IsOfacAddress(address);
+  });
 
-  solana_keyring_ = std::make_unique<SolanaKeyring>(keyring_seed.seed);
+  ethereum_keyring_ = std::make_unique<EthereumKeyring>(keyring_seed.eth_seed,
+                                                        is_address_allowed);
+
+  solana_keyring_ =
+      std::make_unique<SolanaKeyring>(keyring_seed.seed, is_address_allowed);
 
   filecoin_mainnet_keyring_ = std::make_unique<FilecoinKeyring>(
-      keyring_seed.seed, KeyringId::kFilecoin);
+      keyring_seed.seed, KeyringId::kFilecoin, is_address_allowed);
   filecoin_testnet_keyring_ = std::make_unique<FilecoinKeyring>(
-      keyring_seed.seed, KeyringId::kFilecoinTestnet);
+      keyring_seed.seed, KeyringId::kFilecoinTestnet, is_address_allowed);
 
   if (IsKeyringEnabled(KeyringId::kBitcoin84)) {
     bitcoin_hd_mainnet_keyring_ = std::make_unique<BitcoinHDKeyring>(
-        keyring_seed.seed, KeyringId::kBitcoin84);
+        keyring_seed.seed, KeyringId::kBitcoin84, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kBitcoin84Testnet)) {
     bitcoin_hd_testnet_keyring_ = std::make_unique<BitcoinHDKeyring>(
-        keyring_seed.seed, KeyringId::kBitcoin84Testnet);
+        keyring_seed.seed, KeyringId::kBitcoin84Testnet, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kBitcoinImport)) {
     bitcoin_import_mainnet_keyring_ =
@@ -1209,11 +1215,11 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
 
   if (IsKeyringEnabled(KeyringId::kZCashMainnet)) {
     zcash_hd_mainnet_keyring_ = std::make_unique<ZCashKeyring>(
-        keyring_seed.seed, KeyringId::kZCashMainnet);
+        keyring_seed.seed, KeyringId::kZCashMainnet, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kZCashTestnet)) {
     zcash_hd_testnet_keyring_ = std::make_unique<ZCashKeyring>(
-        keyring_seed.seed, KeyringId::kZCashTestnet);
+        keyring_seed.seed, KeyringId::kZCashTestnet, is_address_allowed);
   }
 
   if (IsKeyringEnabled(KeyringId::kCardanoMainnet)) {
@@ -1228,9 +1234,9 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
     auto polkadot_seed =
         base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
     polkadot_mainnet_keyring_ = std::make_unique<PolkadotKeyring>(
-        polkadot_seed, KeyringId::kPolkadotMainnet);
+        polkadot_seed, KeyringId::kPolkadotMainnet, is_address_allowed);
     polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(
-        polkadot_seed, KeyringId::kPolkadotTestnet);
+        polkadot_seed, KeyringId::kPolkadotTestnet, is_address_allowed);
   }
 }
 
@@ -1971,6 +1977,10 @@ mojom::AccountInfoPtr KeyringService::AddHDAccountForKeyring(
 std::optional<std::string> KeyringService::AddHDAccountForKeyringInternal(
     mojom::KeyringId keyring_id,
     uint32_t index) {
+  auto is_address_allowed = base::BindRepeating([](const std::string& address) {
+    return BlockchainRegistry::GetInstance()->IsOfacAddress(address);
+  });
+
   if (auto* keyring = GetKeyring<EthereumKeyring>(keyring_id)) {
     return keyring->AddNewHDAccount(index);
   }

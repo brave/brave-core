@@ -58,6 +58,10 @@ static_library("browser") {
     "block_tracker.h",
     "blockchain_images_source_base.cc",
     "blockchain_images_source_base.h",
+    "blockchain_list_parser.cc",
+    "blockchain_list_parser.h",
+    "blockchain_registry.cc",
+    "blockchain_registry.h",
     "brave_wallet_ipfs_service.cc",
     "brave_wallet_ipfs_service.h",
     "brave_wallet_p3a.cc",
@@ -309,6 +313,7 @@ static_library("browser") {
   ]
   deps = [
     ":constants",
+    ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
     ":generated_simulation_responses",
     ":generated_swap_responses",
@@ -361,7 +366,6 @@ static_library("browser") {
   ]
 
   public_deps = [
-    ":blockchain_utils",
     ":utils",
     "//brave/components/api_request_helper",
     "//brave/components/brave_wallet/common",
@@ -442,24 +446,6 @@ source_set("pref_names") {
   deps = [ "//brave/components/brave_wallet/common/buildflags" ]
 }
 
-source_set("blockchain_utils") {
-  sources = [
-    "blockchain_list_parser.cc",
-    "blockchain_list_parser.h",
-    "blockchain_registry.cc",
-    "blockchain_registry.h",
-    "blockchain_utils.cc",
-    "blockchain_utils.h",
-  ]
-
-  deps = [
-    ":generated_blockchain_list_schemas",
-    ":utils",
-    "//brave/components/json",
-    "//net",
-  ]
-}
-
 source_set("utils") {
   sources = [
     "brave_wallet_utils.cc",
@@ -531,7 +517,6 @@ source_set("hd_keyring") {
   ]
 
   deps = [
-    ":blockchain_utils",
     ":transaction",
     "//base",
     "//brave/components/brave_wallet/browser:utils",
@@ -638,7 +623,7 @@ generated_types("generated_blockchain_list_schemas") {
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [
-    ":blockchain_utils",
+    ":browser",
     ":unit_tests",
   ]
 }
@@ -852,7 +837,6 @@ source_set("unit_tests") {
   }
 
   deps = [
-    ":blockchain_utils",
     ":browser",
     ":constants",
     ":generated_json_rpc_responses",

@@ -10,11 +10,6 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/json/json_writer.h"
-#include "base/numerics/byte_conversions.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/blockchain_utils.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
@@ -39,9 +34,11 @@ inline constexpr char const kPolkadotMainnet[] =
 
 PolkadotKeyring::PolkadotKeyring(
     base::span<const uint8_t, kPolkadotSeedSize> seed,
-    mojom::KeyringId keyring_id)
+    mojom::KeyringId keyring_id,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
     : root_account_key_(HDKeySr25519::GenerateFromSeed(seed)),
-      keyring_id_(keyring_id) {
+      keyring_id_(keyring_id),
+      is_address_allowed_(std::move(is_address_allowed)) {
   // Can be useful to remember:
   // https://wiki.polkadot.com/learn/learn-account-advanced/#derivation-paths
 
@@ -117,7 +114,7 @@ HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
 
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
   auto addr = GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
-  if (IsOfacAddress(addr)) {
+  if (!is_address_allowed_.Run(addr)) {
     return std::nullopt;
   }
   return addr;

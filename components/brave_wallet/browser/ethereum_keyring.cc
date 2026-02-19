@@ -49,7 +49,10 @@ std::unique_ptr<HDKey> ConstructAccountsRootKey(
 
 }  // namespace
 
-EthereumKeyring::EthereumKeyring(base::span<const uint8_t> seed) {
+EthereumKeyring::EthereumKeyring(
+    base::span<const uint8_t> seed,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : Secp256k1HDKeyring(std::move(is_address_allowed)) {
   accounts_root_ = ConstructAccountsRootKey(seed);
 }
 

@@ -10,6 +10,7 @@
 #include "base/containers/span.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
@@ -87,8 +88,10 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
   double longterm_fee_rate() const { return 3.0; }
 
   bool testnet_ = false;
-  BitcoinHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-                            mojom::KeyringId::kBitcoin84};
+  BitcoinHDKeyring keyring_{
+      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
+      mojom::KeyringId::kBitcoin84,
+      base::BindLambdaForTesting([](const std::string&) { return true; })};
 };
 
 TEST_F(BitcoinKnapsackSolverUnitTest, NoInputs) {

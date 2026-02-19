@@ -13,6 +13,7 @@
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -26,7 +27,11 @@ namespace {
 constexpr char kMnemonic[] =
     "home various adjust motion canvas stand combine gravity cluster behave "
     "despair dove";
+
+bool IsAddressAllowed(const std::string&) {
+  return true;
 }
+}  // namespace
 
 namespace brave_wallet {
 
@@ -38,7 +43,7 @@ TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
-  EthereumKeyring keyring(seed);
+  EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
   EXPECT_EQ(
       keyring.accounts_root_.get()->GetPrivateExtendedKey(
           ExtendedKeyVersion::kXprv),
@@ -57,7 +62,7 @@ TEST(EthereumKeyringUnitTest, EncodePrivateKeyForExport) {
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
-  EthereumKeyring keyring(seed);
+  EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
   auto address = *keyring.AddNewHDAccount(0);
   EXPECT_EQ(keyring.EncodePrivateKeyForExport(address),
             "8140cea58e3bebd6174dbc589a7f70e049556233d32e44969d62e51dd0d1189a");
@@ -69,7 +74,7 @@ TEST(EthereumKeyringUnitTest, Accounts) {
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
-  EthereumKeyring keyring(seed);
+  EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
   EXPECT_TRUE(keyring.AddNewHDAccount(0));
   EXPECT_FALSE(keyring.AddNewHDAccount(0));
   EXPECT_THAT(keyring.GetHDAccountsForTesting(),
@@ -101,7 +106,7 @@ TEST(EthereumKeyringUnitTest, Accounts) {
 
 TEST(EthereumKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
-  EthereumKeyring keyring({});
+  EthereumKeyring keyring({}, base::BindRepeating(IsAddressAllowed));
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
@@ -114,7 +119,7 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
-  EthereumKeyring keyring2(seed);
+  EthereumKeyring keyring2(seed, base::BindRepeating(IsAddressAllowed));
   auto address = *keyring2.AddNewHDAccount(0);
   keyring2.SignTransaction(address, &tx, 0);
   EXPECT_TRUE(tx.IsSigned());
@@ -126,7 +131,8 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
       "6969696969696969696969696969696969696969696969696969696969696969",
       private_key));
 
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
+  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
+                          base::BindRepeating(IsAddressAllowed));
   auto address = *keyring.ImportAccount(private_key);
   EXPECT_EQ(address, "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");
 
@@ -188,7 +194,7 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
-  EthereumKeyring keyring(seed);
+  EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
   for (auto& test_key : test_keys) {
     std::vector<uint8_t> private_key;
     EXPECT_TRUE(base::HexStringToBytes(test_key.key, &private_key));
@@ -242,7 +248,8 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
 }
 
 TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
+  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
+                          base::BindRepeating(IsAddressAllowed));
   auto address = *keyring.AddNewHDAccount(0);
   std::string public_encryption_key;
   EXPECT_TRUE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
@@ -259,7 +266,8 @@ TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
 }
 
 TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
+  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
+                          base::BindRepeating(IsAddressAllowed));
 
   // pub encryption key:
   // "eui9/fqCHT7aSUkKK9eooQFnOCD9COK9Mi1ZtOxIj2A="
@@ -375,7 +383,10 @@ TEST(EthereumKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
-  EthereumKeyring keyring(seed);
+  EthereumKeyring keyring(
+      seed, base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
@@ -398,7 +409,11 @@ TEST(EthereumKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
+  EthereumKeyring keyring(
+      *MnemonicToSeed(kMnemonic),
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   std::array<uint8_t, 32> private_key;
   EXPECT_TRUE(base::HexStringToSpan(

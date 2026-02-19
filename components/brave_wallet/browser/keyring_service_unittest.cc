@@ -3801,11 +3801,14 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       *brave_wallet_service.GetBitcoinWalletService());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
-  BitcoinHDKeyring keyring_84(*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-                              mojom::KeyringId::kBitcoin84);
+  BitcoinHDKeyring keyring_84(
+      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
+      mojom::KeyringId::kBitcoin84,
+      base::BindLambdaForTesting([](const std::string&) { return true; }));
   BitcoinHDKeyring keyring_84_test(
       *bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-      mojom::KeyringId::kBitcoin84Testnet);
+      mojom::KeyringId::kBitcoin84Testnet,
+      base::BindLambdaForTesting([](const std::string&) { return true; }));
 
   // Account 0
   bitcoin_test_rpc_server.AddTransactedAddress(

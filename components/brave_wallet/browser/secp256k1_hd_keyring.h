@@ -21,7 +21,8 @@ namespace brave_wallet {
 // Base class for ECDSA over the Secp256k1 types of HD keyrings.
 class Secp256k1HDKeyring {
  public:
-  Secp256k1HDKeyring();
+  explicit Secp256k1HDKeyring(
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   virtual ~Secp256k1HDKeyring();
 
   std::optional<std::string> AddNewHDAccount(uint32_t index);
@@ -49,6 +50,7 @@ class Secp256k1HDKeyring {
   // not HD keys.
   // (address, key)
   base::flat_map<std::string, std::unique_ptr<HDKey>> imported_accounts_;
+  base::RepeatingCallback<bool(const std::string&)> is_address_allowed_;
 };
 
 }  // namespace brave_wallet

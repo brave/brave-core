@@ -54,9 +54,12 @@ std::unique_ptr<HDKeyZip32> ConstructOrchardAccountsRootKey(
 
 }  // namespace
 
-ZCashKeyring::ZCashKeyring(base::span<const uint8_t> seed,
-                           mojom::KeyringId keyring_id)
-    : keyring_id_(keyring_id) {
+ZCashKeyring::ZCashKeyring(
+    base::span<const uint8_t> seed,
+    mojom::KeyringId keyring_id,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : Secp256k1HDKeyring(std::move(is_address_allowed)),
+      keyring_id_(keyring_id) {
   CHECK(IsZCashKeyring(keyring_id));
   accounts_root_ = ConstructAccountsRootKey(seed, IsTestnet());
 

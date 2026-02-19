@@ -21,6 +21,14 @@
 
 namespace brave_wallet {
 
+namespace {
+
+bool IsAddressAllowed(const std::string&) {
+  return true;
+}
+
+}  // namespace
+
 TEST(ZCashSerializerTest, HashPrevouts) {
   ZCashTransaction zcash_transaciton;
   zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
@@ -225,7 +233,7 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
           "0xe2c0aa2746fc727734c3beec18493053ca3e624fc6d4c4bffbcd7d56ae0f12c864"
           "70226552ba119ecb4de091bf51bc77ba22e1bd264af84ff5da575029edeab9")
           .value(),
-      mojom::KeyringId::kZCashTestnet);
+      mojom::KeyringId::kZCashTestnet, base::BindRepeating(IsAddressAllowed));
 
   keyring.AddNewHDAccount(0u);
   ZCashTransaction tx;
@@ -1074,7 +1082,7 @@ TEST(ZCashSerializerTest, OrchardBundle) {
                             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
                             0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}),
-      mojom::KeyringId::kZCashMainnet);
+      mojom::KeyringId::kZCashMainnet, base::BindRepeating(IsAddressAllowed));
 
   auto key_id = mojom::ZCashKeyId::New(0, 0, 0);
   auto address = keyring.GetTransparentAddress(*key_id)->address_string;

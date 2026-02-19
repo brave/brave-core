@@ -8,6 +8,7 @@
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -30,6 +31,11 @@ std::vector<uint8_t> GetPublicKey(const std::string& private_key_hex) {
   return base::ToVector(bls_private_key_to_public_key(
       rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
 }
+
+bool IsAddressAllowed(const std::string&) {
+  return true;
+}
+
 }  // namespace
 
 TEST(FilecoinKeyring, DecodeImportPayload) {
@@ -107,7 +113,8 @@ TEST(FilecoinKeyring, ImportFilecoinSECP) {
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
   FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
-                          mojom::KeyringId::kFilecoinTestnet);
+                          mojom::KeyringId::kFilecoinTestnet,
+                          base::BindRepeating(IsAddressAllowed));
   auto address = keyring.ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_THAT(keyring.GetImportedAccountsForTesting(),
@@ -125,7 +132,8 @@ TEST(FilecoinKeyring, ImportFilecoinBLS) {
                                                    &private_key, &protocol));
   EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
   FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
-                          mojom::KeyringId::kFilecoinTestnet);
+                          mojom::KeyringId::kFilecoinTestnet,
+                          base::BindRepeating(IsAddressAllowed));
   auto address = keyring.ImportFilecoinAccount(private_key, protocol);
   EXPECT_EQ(address,
             "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgytiul2dczrak3ghlbt5"
@@ -172,7 +180,8 @@ TEST(FilecoinKeyring, fil_private_key_public_key) {
 
 TEST(FilecoinKeyring, SignTransaction) {
   FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
-                          mojom::KeyringId::kFilecoinTestnet);
+                          mojom::KeyringId::kFilecoinTestnet,
+                          base::BindRepeating(IsAddressAllowed));
   const std::string address = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
 
   auto transaction = FilTransaction::FromTxData(
@@ -198,8 +207,12 @@ TEST(FilecoinKeyring, AddNewHDAccount_OfacSanctionedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
-  FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
-                          mojom::KeyringId::kFilecoinTestnet);
+  FilecoinKeyring keyring(
+      *MnemonicToSeed(kMnemonicDivideCruise),
+      mojom::KeyringId::kFilecoinTestnet,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
@@ -229,8 +242,12 @@ TEST(FilecoinKeyring, ImportAccount_SECP256K1_OfacSanctionedAddress) {
   ASSERT_FALSE(input_key.empty());
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
-  FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
-                          mojom::KeyringId::kFilecoinTestnet);
+  FilecoinKeyring keyring(
+      *MnemonicToSeed(kMnemonicDivideCruise),
+      mojom::KeyringId::kFilecoinTestnet,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   // Import account to get its address
   auto address = keyring.ImportFilecoinAccount(
@@ -265,8 +282,12 @@ TEST(FilecoinKeyring, ImportAccount_BLS_OfacSanctionedAddress) {
                                                    &private_key, &protocol));
   EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
 
-  FilecoinKeyring keyring(*MnemonicToSeed(kMnemonicDivideCruise),
-                          mojom::KeyringId::kFilecoinTestnet);
+  FilecoinKeyring keyring(
+      *MnemonicToSeed(kMnemonicDivideCruise),
+      mojom::KeyringId::kFilecoinTestnet,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   // Import account to get its address.
   auto address = keyring.ImportFilecoinAccount(private_key, protocol);
