@@ -431,10 +431,16 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
   } else if (tx_coin == mojom::CoinType::BTC) {
+    if (tx_type != mojom::TransactionType::Other) {
+      return;
+    }
     if (!count_test_networks && chain_id == mojom::kBitcoinTestnet) {
       return;
     }
   } else if (tx_coin == mojom::CoinType::ZEC) {
+    if (tx_type != mojom::TransactionType::Other) {
+      return;
+    }
     if (!count_test_networks && chain_id == mojom::kZCashTestnet) {
       return;
     }
