@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"

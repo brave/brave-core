@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 
 namespace brave_ads::json::reader {

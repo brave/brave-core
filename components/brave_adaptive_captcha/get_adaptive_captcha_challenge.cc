@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "net/http/http_status_code.h"

@@ -16,11 +16,14 @@
 #include "base/json/json_value_converter.h"
 #include "base/strings/escape.h"
 #include "base/types/expected.h"
-#include "base/values.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/url_pattern_set.h"
 
 class GURL;
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace debounce {
 

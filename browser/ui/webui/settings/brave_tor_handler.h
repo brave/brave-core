@@ -8,9 +8,13 @@
 
 #include <memory>
 
-#include "base/values.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
+
+namespace base {
+class ListValue;
+class Value;
+}  // namespace base
 
 class BraveTorHandler : public settings::SettingsPageUIHandler {
  public:

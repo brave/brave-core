@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/rlp_decode.h"
+
 #include <string>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/rlp_decode.h"
+#include "base/values.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
