@@ -14,7 +14,6 @@ source_set("features") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common",
-    "//brave/components/brave_account:features",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_news/common",
     "//brave/components/brave_origin:features",

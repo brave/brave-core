@@ -8,7 +8,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_origin/features.h"
@@ -282,11 +281,6 @@
 + (Feature*)kCosmeticFilteringSyncLoad {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kCosmeticFilteringSyncLoad];
-}
-
-+ (Feature*)kBraveAccount {
-  return
-      [[Feature alloc] initWithFeature:&brave_account::features::kBraveAccount];
 }
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)

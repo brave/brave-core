@@ -8,6 +8,8 @@ source_set("brave_account") {
     "brave_account_authentication_bridge.h",
     "brave_account_authentication_bridge_impl.h",
     "brave_account_authentication_bridge_impl.mm",
+    "brave_account_feature_bridge.h",
+    "brave_account_feature_bridge.mm",
     "brave_account_service_factory_ios.h",
     "brave_account_service_factory_ios.mm",
   ]
