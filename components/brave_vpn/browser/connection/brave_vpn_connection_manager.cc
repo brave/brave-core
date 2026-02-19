@@ -242,10 +242,7 @@ void BraveVPNConnectionManager::MaybeInstallSystemServices() {
 
 void BraveVPNConnectionManager::OnInstallSystemServicesCompleted(bool success) {
   VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
-  if (!has_reported_installation_result_) {
-    NotifyInstallSystemServicesCompleted(success);
-    has_reported_installation_result_ = true;
-  }
+  NotifyInstallSystemServicesCompleted(success);
   if (success) {
 #if BUILDFLAG(IS_WIN)
     // Update prefs first before signaling the event because the event could

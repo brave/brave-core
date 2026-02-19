@@ -152,12 +152,6 @@ class BraveVPNConnectionManager {
   // is already in progress.
   bool install_in_progress_ = false;
 
-  // Used to ensure that VPN dependencies installation metrics are only
-  // recorded once per session. This is necessary because the installation
-  // process can be triggered multiple times in a session, but we only
-  // want to record the result of the first installation attempt.
-  bool has_reported_installation_result_ = false;
-
   // Used for tracking if the VPN dependencies have been installed.
   // If the user has Brave VPN purchased and loaded with this profile
   // AND they did a system level install, we should call

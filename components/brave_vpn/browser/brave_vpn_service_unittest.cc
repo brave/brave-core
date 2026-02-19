@@ -1185,14 +1185,14 @@ INSTANTIATE_TEST_SUITE_P(,
                          testing::Values(false, true));
 
 TEST_F(BraveVPNServiceSystemInstallTest,
-       ReportsInstallSystemServicesCompletedOnceOnly) {
+       ReportsInstallSystemServicesCompletedMultipleTimes) {
   std::string env = skus::GetDefaultEnvironment();
   CreateConnectionManager(base::BindRepeating([]() { return false; }));
   ResetVpnService();
 
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
-  EXPECT_CALL(*service_, OnInstallSystemServicesCompleted(testing::_));
+  EXPECT_CALL(*service_, OnInstallSystemServicesCompleted(testing::_)).Times(2);
   {
     base::RunLoop loop;
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
