@@ -61,8 +61,7 @@ struct ManagedPasswordListView: View {
 
       if !isSearchActive {
         Toggle(Strings.Autofill.managePasswordsOfferToSavePasswords, isOn: $saveLogins.value)
-          .tint(Color(braveSystemName: .primary40))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          .tint(Color(braveSystemName: .schemesSurfaceTint))
       }
 
       Section {
@@ -80,7 +79,6 @@ struct ManagedPasswordListView: View {
             windowProtection: windowProtection,
             settingsDelegate: settingsDelegate
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.Autofill.managePasswordsListHeaderTitle)
@@ -103,13 +101,11 @@ struct ManagedPasswordListView: View {
               windowProtection: windowProtection,
               settingsDelegate: settingsDelegate
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
       }
     }
     .background(Color(.braveGroupedBackground))
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     .searchable(
       text: $searchText,
       isPresented: $isSearchActive,
@@ -136,7 +132,7 @@ struct ManagedPasswordListView: View {
             .font(.callout)
         }
         .edgesIgnoringSafeArea(.all)
-        .background(Color(.braveGroupedBackground))
+        .background(Color(braveSystemName: .schemesBackground))
       }
     }
     .overlay {
@@ -155,14 +151,16 @@ struct ManagedPasswordListView: View {
             Button(Strings.Autofill.managedPasswordDeleteCredentialButtonTitle) {
               showDeleteConfirmation = true
             }
-            .foregroundColor(selectedDomainIds.isEmpty ? Color(.braveDisabled) : .red)
+            .foregroundStyle(
+              selectedDomainIds.isEmpty ? Color(braveSystemName: .secondary40) : .red
+            )
             .disabled(selectedDomainIds.isEmpty)
             Spacer()
             Button(Strings.done) {
               updateEditMode(false)
               selectedDomainIds.removeAll()
             }
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundStyle(Color(braveSystemName: .textInteractive))
           } else {
             Spacer()
             Button(Strings.edit) {
@@ -271,7 +269,6 @@ private struct ManagedPasswordRowLabel: View {
     Label {
       VStack(alignment: .leading, spacing: 2) {
         Text(domain)
-          .foregroundColor(Color(.braveLabel))
         if credentials.count > 1 {
           Text("\(credentials.count) accounts")
             .font(.footnote)

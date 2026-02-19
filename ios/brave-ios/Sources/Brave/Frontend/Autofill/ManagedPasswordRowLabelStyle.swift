@@ -20,12 +20,11 @@ struct ManagedPasswordRowLabelStyle: LabelStyle {
       switch context {
       case .select:
         Image(braveSystemName: "leo.check.circle-filled")
-          .font(.title2)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundStyle(Color(braveSystemName: .textInteractive))
       case .unselect:
         Image(braveSystemName: "leo.radio.unchecked")
-          .font(.title2)
           .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundStyle(Color(braveSystemName: .secondary40))
       case .plain:
         EmptyView()
       }
