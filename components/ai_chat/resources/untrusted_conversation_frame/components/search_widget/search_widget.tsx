@@ -2,33 +2,20 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { loadTimeData } from '$web-common/loadTimeData'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
 import styles from './search_widget.module.scss'
-import usePromise from '$web-common/usePromise'
 import SecureLink from '$web-common/SecureLink'
-
-interface Thumbnail {
-  src: string
-  original?: string
-  logo?: boolean
-  width?: number
-  height?: number
-}
-
-interface Query {
-  original: string
-}
 
 interface SearchResult {
   type: 'search_result' | 'image_result' | 'news_result' | 'video_result'
   title: string
   url: string
   description: string
-  thumbnail?: Thumbnail
+  thumbnail?: {
+    src: string
+  }
   age?: string
   meta_url: {
     favicon: string
@@ -138,12 +125,15 @@ function SearchDescription(props: { description: string }) {
         return p
       }
       return (
-        <span
-          key={p.slice(0, index)}
-          className={styles.strong}
-        >
-          {p.slice(0, index)}
-        </span>
+        <>
+          <span
+            key={p.slice(0, index)}
+            className={styles.strong}
+          >
+            {p.slice(0, index)}
+          </span>
+          {p.slice(index)}
+        </>
       )
     })
   }, [props.description])
