@@ -16,7 +16,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
-#include "brave/components/brave_origin/test/fake_skus_service.h"
+#include "brave/components/skus/browser/test/fake_skus_service.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -24,6 +24,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_origin {
+
+using skus::FakeSkusService;
 
 // Test preference name constants
 constexpr char kTestProfileId[] = "test-profile-id";

@@ -63,20 +63,6 @@ static_library("brave_origin") {
   ]
 }
 
-source_set("test_support") {
-  testonly = true
-
-  sources = [
-    "test/fake_skus_service.cc",
-    "test/fake_skus_service.h",
-  ]
-
-  public_deps = [
-    "//brave/components/skus/common:mojom",
-    "//mojo/public/cpp/bindings",
-  ]
-}
-
 source_set("unit_tests") {
   testonly = true
 
@@ -90,8 +76,8 @@ source_set("unit_tests") {
 
   deps = [
     ":brave_origin",
-    ":test_support",
     "//base/test:test_support",
+    "//brave/components/skus/browser:test_support",
     "//components/policy/core/common:test_support",
     "//components/prefs:test_support",
     "//testing/gtest",

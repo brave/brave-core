@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_TEST_FAKE_SKUS_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_ORIGIN_TEST_FAKE_SKUS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_TEST_FAKE_SKUS_SERVICE_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_TEST_FAKE_SKUS_SERVICE_H_
 
 #include <string>
 
@@ -12,11 +12,11 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
-namespace brave_origin {
+namespace skus {
 
 // Fake SkusService that returns a configurable CredentialSummary response.
-// Used by BraveOriginService and handler tests to exercise the real JSON
-// parsing logic in OnCredentialSummary without a network-backed SKU service.
+// Used by tests to exercise the real JSON parsing logic in
+// OnCredentialSummary without a network-backed SKU service.
 class FakeSkusService : public skus::mojom::SkusService {
  public:
   FakeSkusService();
@@ -58,6 +58,6 @@ class FakeSkusService : public skus::mojom::SkusService {
   mojo::Receiver<skus::mojom::SkusService> receiver_{this};
 };
 
-}  // namespace brave_origin
+}  // namespace skus
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ORIGIN_TEST_FAKE_SKUS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_TEST_FAKE_SKUS_SERVICE_H_
