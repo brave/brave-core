@@ -47,11 +47,7 @@ export class LeoModelSelectorElement extends CrLitElement {
   }
 
   onSelectionChange_(e: any) {
-    this.dispatchEvent(new CustomEvent('model-changed', {
-      detail: {value: e.value},
-      bubbles: true,
-      composed: true,
-    }))
+    this.fire('model-changed', {value: e.value})
   }
 
   shouldShowPremiumLabel_(entry: ModelWithSubtitle):
