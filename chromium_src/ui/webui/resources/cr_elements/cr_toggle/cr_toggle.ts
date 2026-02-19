@@ -64,7 +64,8 @@ export class CrToggleElement extends CrLitElement {
     // with 2-way bindings on the `checked` attribute are updated first.
     await this.updateComplete
 
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true, detail: this.checked }))
+    this.fire('change', { bubbles: true, composed: true, detail: this.checked })
+
   }
 }
 
