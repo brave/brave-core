@@ -353,9 +353,9 @@
       initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
 }
 
-+ (Feature*)kUseChromiumWebViewsJavaScript {
++ (Feature*)kUseProfileWebViewConfiguration {
   return [[Feature alloc]
-      initWithFeature:&brave::features::kUseChromiumWebViewsJavaScript];
+      initWithFeature:&brave::features::kUseProfileWebViewConfiguration];
 }
 
 + (Feature*)kBraveAllowExternalPurchaseLinks {

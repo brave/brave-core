@@ -80,7 +80,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveAppleTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
-@property(class, nonatomic, readonly) Feature* kUseChromiumWebViewsJavaScript;
+@property(class, nonatomic, readonly) Feature* kUseProfileWebViewConfiguration;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
 @property(class, nonatomic, readonly) Feature* kModernTabTrayEnabled;
 @property(class, nonatomic, readonly, nullable) Feature* kBraveWalletWebUIIOS;
