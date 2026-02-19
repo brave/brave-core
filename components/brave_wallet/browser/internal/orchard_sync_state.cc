@@ -18,7 +18,7 @@
 namespace brave_wallet {
 
 namespace {
-inline constexpr char kOrchardDatabaseName[] = "orchard.db";
+constexpr char kOrchardDatabaseName[] = "orchard.db";
 }
 
 // static

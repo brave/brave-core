@@ -38,6 +38,7 @@ OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
 }
 
 TestingZCashWalletService::~TestingZCashWalletService() {
+  sync_state_ptr = nullptr;
   sync_state().SynchronouslyResetForTest();
 }
 
