@@ -21,6 +21,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -60,15 +61,10 @@ public class InAppPurchaseWrapper {
     private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
     private static final String LEO_YEARLY_SUBSCRIPTION = "brave.leo.yearly";
 
-    // Brave Origin premium features subscription product IDs
-    private static final String ORIGIN_MONTHLY_SUBSCRIPTION = "brave.origin.monthly";
-    private static final String ORIGIN_YEARLY_SUBSCRIPTION = "brave.origin.yearly";
-
-    private static final String ORIGIN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.origin.monthly";
-    private static final String ORIGIN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.origin.yearly";
-
-    private static final String ORIGIN_BETA_MONTHLY_SUBSCRIPTION = "beta.origin.monthly";
-    private static final String ORIGIN_BETA_YEARLY_SUBSCRIPTION = "beta.origin.yearly";
+    // Brave Origin one-time purchase (INAPP) product IDs
+    private static final String ORIGIN_PERPETUAL_PURCHASE = "brave.origin.perpetual";
+    private static final String ORIGIN_NIGHTLY_PERPETUAL_PURCHASE = "nightly.origin.perpetual";
+    private static final String ORIGIN_BETA_PERPETUAL_PURCHASE = "beta.origin.perpetual";
 
     private static final String VPN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     private static final String VPN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
@@ -114,11 +110,10 @@ public class InAppPurchaseWrapper {
             new MutableLiveData();
     private final LiveData<ProductDetails> mMonthlyProductDetailsLeo =
             mMutableMonthlyProductDetailsLeo;
-    // Origin monthly subscription product details
-    private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsOrigin =
+    // Origin one-time purchase product details
+    private final MutableLiveData<ProductDetails> mMutableOriginProductDetails =
             new MutableLiveData();
-    private final LiveData<ProductDetails> mMonthlyProductDetailsOrigin =
-            mMutableMonthlyProductDetailsOrigin;
+    private final LiveData<ProductDetails> mOriginProductDetails = mMutableOriginProductDetails;
 
     /**
      * Sets the monthly subscription product details for the specified subscription product. Updates
@@ -133,10 +128,15 @@ public class InAppPurchaseWrapper {
             mMutableMonthlyProductDetailsLeo.postValue(productDetails);
         } else if (product.equals(SubscriptionProduct.VPN)) {
             mMutableMonthlyProductDetailsVPN.postValue(productDetails);
-        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
-            // Set Origin monthly subscription product details
-            mMutableMonthlyProductDetailsOrigin.postValue(productDetails);
         }
+    }
+
+    private void setOriginProductDetails(@Nullable ProductDetails productDetails) {
+        mMutableOriginProductDetails.postValue(productDetails);
+    }
+
+    public LiveData<ProductDetails> getOriginProductDetails() {
+        return mOriginProductDetails;
     }
 
     /**
@@ -148,9 +148,6 @@ public class InAppPurchaseWrapper {
     public LiveData<ProductDetails> getMonthlyProductDetails(SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             return mMonthlyProductDetailsLeo;
-        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
-            // Return Origin monthly subscription product details
-            return mMonthlyProductDetailsOrigin;
         }
         // Default to VPN product details
         return mMonthlyProductDetailsVPN;
@@ -166,11 +163,6 @@ public class InAppPurchaseWrapper {
             new MutableLiveData();
     private final LiveData<ProductDetails> mYearlyProductDetailsLeo =
             mMutableYearlyProductDetailsLeo;
-    // Origin yearly subscription product details
-    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsOrigin =
-            new MutableLiveData();
-    private final LiveData<ProductDetails> mYearlyProductDetailsOrigin =
-            mMutableYearlyProductDetailsOrigin;
 
     private void setYearlyProductDetails(
             @Nullable ProductDetails productDetails, SubscriptionProduct product) {
@@ -178,16 +170,12 @@ public class InAppPurchaseWrapper {
             mMutableYearlyProductDetailsLeo.postValue(productDetails);
         } else if (product.equals(SubscriptionProduct.VPN)) {
             mMutableYearlyProductDetailsVPN.postValue(productDetails);
-        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
-            mMutableYearlyProductDetailsOrigin.postValue(productDetails);
         }
     }
 
     public LiveData<ProductDetails> getYearlyProductDetails(SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             return mYearlyProductDetailsLeo;
-        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
-            return mYearlyProductDetailsOrigin;
         }
         return mYearlyProductDetailsVPN;
     }
@@ -285,25 +273,111 @@ public class InAppPurchaseWrapper {
             return subscriptionType == SubscriptionType.MONTHLY
                     ? LEO_MONTHLY_SUBSCRIPTION
                     : LEO_YEARLY_SUBSCRIPTION;
-        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
-            String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
-            if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
-                return subscriptionType == SubscriptionType.MONTHLY
-                        ? ORIGIN_MONTHLY_SUBSCRIPTION
-                        : ORIGIN_YEARLY_SUBSCRIPTION;
-            } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
-                return subscriptionType == SubscriptionType.MONTHLY
-                        ? ORIGIN_BETA_MONTHLY_SUBSCRIPTION
-                        : ORIGIN_BETA_YEARLY_SUBSCRIPTION;
-            } else {
-                return subscriptionType == SubscriptionType.MONTHLY
-                        ? ORIGIN_NIGHTLY_MONTHLY_SUBSCRIPTION
-                        : ORIGIN_NIGHTLY_YEARLY_SUBSCRIPTION;
-            }
         } else {
             assert false;
             return "";
         }
+    }
+
+    /** Returns the one-time purchase product ID for Origin based on the current package name. */
+    public String getOriginProductId() {
+        String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
+        if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+            return ORIGIN_PERPETUAL_PURCHASE;
+        } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
+            return ORIGIN_BETA_PERPETUAL_PURCHASE;
+        } else {
+            return ORIGIN_NIGHTLY_PERPETUAL_PURCHASE;
+        }
+    }
+
+    /** Queries Google Play for Origin one-time purchase (INAPP) product details. */
+    public void queryOriginProductDetailsAsync() {
+        List<QueryProductDetailsParams.Product> products = new ArrayList<>();
+        products.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(getOriginProductId())
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build());
+        QueryProductDetailsParams queryProductDetailsParams =
+                QueryProductDetailsParams.newBuilder().setProductList(products).build();
+
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        LiveData<Boolean> billingConnectionState = _billingConnectionState;
+        startBillingServiceConnection(_billingConnectionState);
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected && mBillingClient != null) {
+                        mBillingClient.queryProductDetailsAsync(
+                                queryProductDetailsParams,
+                                (billingResult, productDetailsList) -> {
+                                    endConnection();
+                                    if (billingResult.getResponseCode()
+                                            == BillingClient.BillingResponseCode.OK) {
+                                        for (ProductDetails productDetail : productDetailsList) {
+                                            if (productDetail
+                                                    .getProductId()
+                                                    .equals(getOriginProductId())) {
+                                                setOriginProductDetails(productDetail);
+                                            }
+                                        }
+                                    } else {
+                                        Log.e(
+                                                TAG,
+                                                "queryOriginProductDetailsAsync failed: "
+                                                        + billingResult.getDebugMessage());
+                                        showToast(billingResult.getDebugMessage());
+                                    }
+                                });
+                    }
+                });
+    }
+
+    /**
+     * Consumes any existing Origin INAPP purchase, clearing the "already owned" state on Google
+     * Play. This is intended for QA/testing use only via Developer Options.
+     */
+    public void consumeExistingOriginPurchase() {
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        LiveData<Boolean> billingConnectionState = _billingConnectionState;
+        startBillingServiceConnection(_billingConnectionState);
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected && mBillingClient != null) {
+                        mBillingClient.queryPurchasesAsync(
+                                QueryPurchasesParams.newBuilder()
+                                        .setProductType(BillingClient.ProductType.INAPP)
+                                        .build(),
+                                (billingResult, purchases) -> {
+                                    if (billingResult.getResponseCode()
+                                            == BillingClient.BillingResponseCode.OK) {
+                                        for (Purchase purchase : purchases) {
+                                            if (isOriginProduct(purchase.getProducts())) {
+                                                ConsumeParams consumeParams =
+                                                        ConsumeParams.newBuilder()
+                                                                .setPurchaseToken(
+                                                                        purchase.getPurchaseToken())
+                                                                .build();
+                                                if (mBillingClient != null) {
+                                                    mBillingClient.consumeAsync(
+                                                            consumeParams,
+                                                            (consumeResult, token) -> {
+                                                                endConnection();
+                                                                showToast(
+                                                                        "Origin purchase consumed");
+                                                            });
+                                                }
+                                                return;
+                                            }
+                                        }
+                                        showToast("No Origin purchase found");
+                                    }
+                                    endConnection();
+                                });
+                    }
+                });
     }
 
     public void queryProductDetailsAsync(SubscriptionProduct product) {
@@ -363,8 +437,12 @@ public class InAppPurchaseWrapper {
                 });
     }
 
-    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases,
-                               SubscriptionProduct type) {
+    public void queryPurchases(
+            MutableLiveData<PurchaseModel> mutableActivePurchases, SubscriptionProduct type) {
+        String productType =
+                type.equals(SubscriptionProduct.ORIGIN)
+                        ? BillingClient.ProductType.INAPP
+                        : BillingClient.ProductType.SUBS;
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
@@ -374,7 +452,7 @@ public class InAppPurchaseWrapper {
                     if (isConnected && mBillingClient != null) {
                         mBillingClient.queryPurchasesAsync(
                                 QueryPurchasesParams.newBuilder()
-                                        .setProductType(BillingClient.ProductType.SUBS)
+                                        .setProductType(productType)
                                         .build(),
                                 (billingResult, purchases) -> {
                                     // End connection after getting purchases
@@ -470,6 +548,41 @@ public class InAppPurchaseWrapper {
 
         // Delegate to the original method
         initiatePurchase(activity, productDetails);
+    }
+
+    /**
+     * Initiates a one-time (INAPP) purchase flow. Unlike subscription purchases, INAPP products do
+     * not have offer tokens.
+     */
+    public void initiatePurchaseInApp(Activity activity, ProductDetails productDetails) {
+        List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
+        productDetailsParamsList.add(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(productDetails)
+                        .build());
+
+        BillingFlowParams billingFlowParams =
+                BillingFlowParams.newBuilder()
+                        .setProductDetailsParamsList(productDetailsParamsList)
+                        .build();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        LiveData<Boolean> billingConnectionState = _billingConnectionState;
+        startBillingServiceConnection(_billingConnectionState);
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected && mBillingClient != null) {
+                        BillingResult unused_billingResult =
+                                mBillingClient.launchBillingFlow(activity, billingFlowParams);
+                    }
+                });
+    }
+
+    /** Initiates a one-time (INAPP) purchase flow with profile context. */
+    public void initiatePurchaseInApp(
+            Activity activity, ProductDetails productDetails, @Nullable Profile profile) {
+        mPurchaseProfile = profile;
+        initiatePurchaseInApp(activity, productDetails);
     }
 
     public void processPurchases(Context context, Purchase activePurchase) {
@@ -598,12 +711,9 @@ public class InAppPurchaseWrapper {
      * @return true if any Origin product ID is found, false otherwise
      */
     private boolean isOriginProduct(List<String> productIds) {
-        return productIds.contains(ORIGIN_MONTHLY_SUBSCRIPTION)
-                || productIds.contains(ORIGIN_YEARLY_SUBSCRIPTION)
-                || productIds.contains(ORIGIN_NIGHTLY_MONTHLY_SUBSCRIPTION)
-                || productIds.contains(ORIGIN_NIGHTLY_YEARLY_SUBSCRIPTION)
-                || productIds.contains(ORIGIN_BETA_MONTHLY_SUBSCRIPTION)
-                || productIds.contains(ORIGIN_BETA_YEARLY_SUBSCRIPTION);
+        return productIds.contains(ORIGIN_PERPETUAL_PURCHASE)
+                || productIds.contains(ORIGIN_NIGHTLY_PERPETUAL_PURCHASE)
+                || productIds.contains(ORIGIN_BETA_PERPETUAL_PURCHASE);
     }
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
@@ -773,6 +883,26 @@ public class InAppPurchaseWrapper {
             return (int) Math.round(discountPercentage);
         }
         return 0;
+    }
+
+    /** Returns the formatted price string for a one-time purchase (INAPP) product. */
+    public @Nullable String getFormattedOneTimePurchasePrice(ProductDetails productDetails) {
+        ProductDetails.OneTimePurchaseOfferDetails offerDetails =
+                productDetails.getOneTimePurchaseOfferDetails();
+        if (offerDetails != null) {
+            return offerDetails.getFormattedPrice();
+        }
+        return null;
+    }
+
+    /** Returns the currency code for a one-time purchase product (e.g. "USD"). */
+    public @Nullable String getOneTimePurchaseCurrencyCode(ProductDetails productDetails) {
+        ProductDetails.OneTimePurchaseOfferDetails offerDetails =
+                productDetails.getOneTimePurchaseOfferDetails();
+        if (offerDetails != null) {
+            return offerDetails.getPriceCurrencyCode();
+        }
+        return null;
     }
 
     private void showToast(String message) {
