@@ -25,8 +25,13 @@
  public:                                                                     \
   virtual void SetGroup(__VA_ARGS__)
 
+#define GetTabSizeInfo(...)              \
+  GetTabSizeInfo(__VA_ARGS__) const = 0; \
+  virtual TabNestingInfo GetTabNestingInfo()
+
 #include <chrome/browser/ui/views/tabs/tab_slot_view.h>  // IWYU pragma: export
 
+#undef GetTabSizeInfo
 #undef SetGroup
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_VIEW_H_

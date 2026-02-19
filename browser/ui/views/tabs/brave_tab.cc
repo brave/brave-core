@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -34,6 +35,22 @@ void BraveTab::UpdateTabStyle() {
   ResetTabStyle(TabStyleViews::CreateForTab(this));
   UpdateInsets();
   InvalidateLayout();
+}
+
+const tabs::TreeTabNode* BraveTab::GetTreeTabNode() const {
+  if (tree_tab_node().has_value()) {
+    return &controller_->GetTreeTabNode(*tree_tab_node());
+  }
+
+  return nullptr;
+}
+
+int BraveTab::GetTreeHeight() const {
+  if (tree_tab_node().has_value()) {
+    return controller_->GetTreeHeight(*tree_tab_node());
+  }
+
+  return 0;
 }
 
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
@@ -65,6 +82,11 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
 void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
+
+  if (IsActive() && GetTreeTabNode()) {
+    LOG(ERROR) << "node level: " << GetTreeTabNode()->level() << " / "
+               << GetTreeHeight();
+  }
 
   // This should be called whenever the active state changes
   // see comment on UpdateEnabledForMuteToggle();
@@ -235,6 +257,15 @@ bool BraveTab::IsActive() const {
   // When SideBySide is enabled, chromium gives true if tab is in split tab even
   // it's not active. We want to give true only for current active tab.
   return controller_->IsActiveTab(this);
+}
+
+TabNestingInfo BraveTab::GetTabNestingInfo() const {
+  if (!tree_tab_node().has_value()) {
+    return TabNestingInfo{};
+  }
+
+  CHECK(GetTreeTabNode());
+  return {.tree_height = GetTreeHeight(), .level = GetTreeTabNode()->level()};
 }
 
 bool BraveTab::ShouldPaintTabAccent() const {

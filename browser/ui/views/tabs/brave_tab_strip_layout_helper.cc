@@ -73,6 +73,25 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
         kMarginForVerticalTabContainers +
         (tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup : 0));
     rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
+
+    if (int level = iter->state().nesting_info().level) {
+      constexpr int kBaseOffsetPerLevel = 20;
+
+      int offset = level * kBaseOffsetPerLevel;
+      const int tab_minimum_width = tab.size_info().min_inactive_width;
+      if (rect.width() - offset * 2 < tab_minimum_width) {
+        const int tree_height = tab.state().nesting_info().tree_height;
+        const int available_width_for_tree = rect.width() - tab_minimum_width;
+        const int offset_per_level =
+            available_width_for_tree / (tree_height + 1);
+        offset = offset_per_level * level;
+        offset = std::min(available_width_for_tree, std::max(1, offset));
+      }
+
+      rect.set_x(offset + rect.x());
+      rect.set_width(rect.width() - offset);
+    }
+
     rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
                                                          : 0);
     result->push_back(rect);

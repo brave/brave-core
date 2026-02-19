@@ -10,8 +10,13 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
+
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
 
 // Brave specific tab implementation that extends the base Tab class.
 // It includes features like vertical tab support.
@@ -30,6 +35,9 @@ class BraveTab : public Tab {
 
   // Resets tab_style_views_ so that it can have correct style for orientation.
   void UpdateTabStyle();
+
+  const tabs::TreeTabNode* GetTreeTabNode() const;
+  int GetTreeHeight() const;
 
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
@@ -50,6 +58,7 @@ class BraveTab : public Tab {
                                    int visual_width) const override;
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
+  TabNestingInfo GetTabNestingInfo() const override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;

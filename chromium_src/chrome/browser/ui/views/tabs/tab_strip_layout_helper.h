@@ -19,18 +19,23 @@ class BraveTabStrip;
   void set_use_vertical_tabs(bool vertical) {                       \
     use_vertical_tabs_ = vertical;                                  \
   }                                                                 \
-  void set_tab_strip(TabStrip* tab_strip) {                         \
-    tab_strip_ = tab_strip;                                         \
-  }                                                                 \
-                                                                    \
- private:                                                           \
-  friend class BraveTabContainer;                                   \
-  bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths); \
-  BraveTabStrip* GetBraveTabStrip() const;                          \
-  bool use_vertical_tabs_ = false;                                  \
-  raw_ptr<TabStrip> tab_strip_ = nullptr;                           \
-                                                                    \
- public:                                                            \
+  void set_tab_strip(TabStrip* tab_strip) {                           \
+    tab_strip_ = tab_strip;                                           \
+  }                                                                   \
+  void set_use_tree_tabs(bool tree) {                                 \
+    use_tree_tabs_ = tree;                                            \
+  }                                                                   \
+                                                                      \
+ private:                                                             \
+  friend class BraveTabContainer;                                     \
+  bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths);   \
+  bool FillNestingInfo(std::vector<TabWidthConstraints>& tab_widths); \
+  BraveTabStrip* GetBraveTabStrip() const;                            \
+  bool use_vertical_tabs_ = false;                                    \
+  bool use_tree_tabs_ = false;                                        \
+  raw_ptr<TabStrip> tab_strip_ = nullptr;                             \
+                                                                      \
+ public:                                                              \
   int UpdateIdealBounds
 
 // Add non-const version of group_header_ideal_bounds()

@@ -167,5 +167,12 @@ std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
   return color_utils::AlphaBlend(GetGroupColor(), blend_background, alpha);
 }
 
+TabNestingInfo BraveTabGroupHeader::GetTabNestingInfo() const {
+  CHECK(tree_tab_node().has_value());
+  return {
+      .tree_height = tab_slot_controller_->GetTreeHeight(*tree_tab_node()),
+      .level = tab_slot_controller_->GetTreeTabNode(*tree_tab_node()).level()};
+}
+
 BEGIN_METADATA(BraveTabGroupHeader)
 END_METADATA

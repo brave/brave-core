@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
+#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "ui/base/models/image_model.h"
 
 // Add a method to TabSlotController to determine whether to hide the close
@@ -44,8 +46,15 @@
   virtual ui::ImageModel GetTabAccentIcon(const Tab* tab) const = 0;           \
   virtual bool IsFrameCondensed()
 
+#define ShiftGroupRight(...)                                               \
+  ShiftGroupRight(__VA_ARGS__) = 0;                                        \
+  virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0;  \
+  virtual const tabs::TreeTabNode& GetTreeTabNode(                         \
+      const tree_tab::TreeTabNodeId& id) const
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef ShiftGroupRight
 #undef IsFrameCondensed
 #undef CanPaintThrobberToLayer
 #undef EndDrag
