@@ -181,11 +181,12 @@ TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
-  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
-  mojo::Remote<mojom::CardanoApi> api;
-  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
-  auto error = future.Take();
-  EXPECT_FALSE(error);
+  TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->Enable(future.GetCallback());
+  EXPECT_TRUE(future.Get<0>());
+  EXPECT_FALSE(future.Get<1>());
 }
 
 TEST_F(CardanoProviderImplUnitTest, IsEnabled) {
@@ -331,20 +332,21 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
   keyring_service()->Lock();
 
   base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
-  mojo::Remote<mojom::CardanoApi> api;
   base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback,
-              Run(EqualsMojo(mojom::CardanoProviderErrorBundlePtr())))
+  EXPECT_CALL(
+      first_callback,
+      Run(testing::_, EqualsMojo(mojom::CardanoProviderErrorBundlePtr())))
       .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
-  provider()->Enable(api.BindNewPipeAndPassReceiver(), first_callback.Get());
+  provider()->Enable(first_callback.Get());
 
   {
-    mojo::Remote<mojom::CardanoApi> api2;
     // Request will be rejected because it is still waiting for wallet unlock.
-    TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
-    provider()->Enable(api2.BindNewPipeAndPassReceiver(), future.GetCallback());
-    auto error = future.Take();
-    EXPECT_TRUE(error);
+    TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+               mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->Enable(future.GetCallback());
+    EXPECT_FALSE(future.Get<0>());
+    EXPECT_TRUE(future.Get<1>());
   }
 
   ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
@@ -372,11 +374,13 @@ TEST_F(CardanoProviderImplUnitTest, OnBoarding) {
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
   EXPECT_CALL(*delegate(), ShowWalletOnboarding(testing::_)).Times(1);
 
-  mojo::Remote<mojom::CardanoApi> api;
-  base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
-  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+  base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+                         mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->Enable(future.GetCallback());
 
-  EXPECT_TRUE(future.Get<0>());
+  EXPECT_FALSE(future.Get<0>());
+  EXPECT_TRUE(future.Get<1>());
 }
 
 TEST_F(CardanoProviderImplUnitTest, AccCreation) {
@@ -387,11 +391,13 @@ TEST_F(CardanoProviderImplUnitTest, AccCreation) {
                                testing::Eq(mojom::CoinType::ADA), testing::_))
       .Times(1);
 
-  mojo::Remote<mojom::CardanoApi> api;
-  base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
-  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+  base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+                         mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->Enable(future.GetCallback());
 
-  EXPECT_TRUE(future.Get<0>());
+  EXPECT_FALSE(future.Get<0>());
+  EXPECT_TRUE(future.Get<1>());
 }
 
 TEST_F(CardanoProviderImplUnitTest,
@@ -425,11 +431,12 @@ TEST_F(CardanoProviderImplUnitTest,
                                     std::vector<std::string>());
           });
 
-  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
-  provider()->Enable(mojo::PendingReceiver<mojom::CardanoApi>(),
-                     future.GetCallback());
-  auto error = future.Take();
-  EXPECT_TRUE(error);
+  TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->Enable(future.GetCallback());
+  EXPECT_FALSE(future.Get<0>());
+  EXPECT_TRUE(future.Get<1>());
 }
 
 TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
@@ -448,11 +455,12 @@ TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return false; });
 
-  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
-  provider()->Enable(mojo::PendingReceiver<mojom::CardanoApi>(),
-                     future.GetCallback());
-  auto error = future.Take();
-  EXPECT_TRUE(error);
+  TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->Enable(future.GetCallback());
+  EXPECT_FALSE(future.Get<0>());
+  EXPECT_TRUE(future.Get<1>());
 }
 
 }  // namespace brave_wallet
