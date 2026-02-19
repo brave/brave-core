@@ -192,7 +192,7 @@ source_set("unit_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser/ui/toasts",
       "//chrome/common:chrome_features",
-      "//components/legion",
+      "//components/private_ai",
       "//components/translate/core/common",
       "//extensions/common",
       "//ui/accessibility:ax_base",
