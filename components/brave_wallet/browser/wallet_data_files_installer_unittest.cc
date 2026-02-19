@@ -10,11 +10,9 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_path_override.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
@@ -28,7 +26,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -93,10 +90,6 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   ~WalletDataFilesInstallerUnitTest() override = default;
 
   void SetUp() override {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-
     RegisterProfilePrefs(prefs_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());

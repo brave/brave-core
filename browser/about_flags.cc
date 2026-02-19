@@ -139,8 +139,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      std::size(kZCashShieldedTransactionsDisabled), nullptr},
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
-     std::size(kZCashShieldedTransactionsEnabled), nullptr}
-};
+     std::size(kZCashShieldedTransactionsEnabled), nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace {
@@ -209,15 +208,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
-      {                                                                       \
-          "native-brave-wallet",                                              \
-          "Enable Brave Wallet",                                              \
-          "Native cryptocurrency wallet support without the use of "          \
-          "extensions",                                                       \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kNativeBraveWalletFeature),             \
-      },                                                                      \
       {"brave-wallet-zcash", "Enable BraveWallet ZCash support",              \
        "Zcash support for native Brave Wallet", kOsDesktop | kOsAndroid,      \
        FEATURE_WITH_PARAMS_VALUE_TYPE(                                        \

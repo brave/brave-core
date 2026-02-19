@@ -16,7 +16,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -30,7 +29,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -211,9 +209,6 @@ class EthAllowanceManagerUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     TestingProfile::Builder builder;
@@ -501,7 +496,6 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

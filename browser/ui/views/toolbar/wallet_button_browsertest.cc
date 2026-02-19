@@ -5,11 +5,7 @@
 
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 
-#include "base/feature_list.h"
-#include "base/run_loop.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -28,13 +24,6 @@ namespace brave_wallet {
 
 class WalletButtonButtonBrowserTest : public InProcessBrowserTest {
  public:
-  // InProcessBrowserTest:
-  void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
-    InProcessBrowserTest::SetUp();
-  }
-
   BrowserView* browser_view() {
     return BrowserView::GetBrowserViewForBrowser(browser());
   }
@@ -42,9 +31,6 @@ class WalletButtonButtonBrowserTest : public InProcessBrowserTest {
   WalletButton* wallet_button() {
     return static_cast<BraveBrowserView*>(browser_view())->GetWalletButton();
   }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
@@ -60,19 +46,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
 class WalletButtonBrowserUITest : public DialogBrowserTest {
  public:
   // DialogBrowserTest:
-  void SetUp() override {
-    feature_list_.InitAndEnableFeature(features::kNativeBraveWalletFeature);
-    DialogBrowserTest::SetUp();
-  }
   void ShowUi(const std::string& name) override {
     auto* wallet_button = static_cast<BraveBrowserView*>(
                               BrowserView::GetBrowserViewForBrowser(browser()))
                               ->GetWalletButton();
     views::test::ButtonTestApi(wallet_button).NotifyClick(GetDummyEvent());
   }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 // Invokes a wallet panel bubble.

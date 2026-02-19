@@ -10,7 +10,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -23,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
@@ -102,9 +100,6 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     TestingProfile::Builder builder;
@@ -156,7 +151,6 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 
   void TestDiscoverAssetsOnAllSupportedChains(
