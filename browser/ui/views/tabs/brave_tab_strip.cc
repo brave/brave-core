@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
@@ -217,6 +218,17 @@ void BraveTabStrip::AddedToWidget() {
 
 bool BraveTabStrip::ShouldAlwaysHideCloseButton() const {
   return *always_hide_close_button_;
+}
+
+int BraveTabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->GetTreeHeight(id);
+}
+
+const tabs::TreeTabNode& BraveTabStrip::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->GetTreeTabNode(id);
 }
 
 bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {

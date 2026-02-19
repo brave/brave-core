@@ -33,3 +33,13 @@ std::optional<SkColor> FakeTabSlotController::GetTabAccentColor(
 ui::ImageModel FakeTabSlotController::GetTabAccentIcon(const Tab* tab) const {
   return ui::ImageModel();
 }
+
+int FakeTabSlotController::GetTreeHeight(
+    const tree_tab::TreeTabNodeId& id) const {
+  return 0;
+}
+
+const tabs::TreeTabNode& FakeTabSlotController::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return tabs::TreeTabNode::GetEmptyTreeTabNode();
+}

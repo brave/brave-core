@@ -26,7 +26,9 @@ namespace {
 TabWidthConstraints MakeTabConstraints(TabPinned pinned,
                                        TabOpen open = TabOpen::kOpen,
                                        TabActive active = TabActive::kInactive,
-                                       bool in_group = false) {
+                                       bool in_group = false,
+                                       int tree_height = 0,
+                                       int level = 0) {
   TabSizeInfo size_info;
   size_info.pinned_tab_width = kVerticalTabMinWidth;
   size_info.min_active_width = 56;
@@ -34,6 +36,7 @@ TabWidthConstraints MakeTabConstraints(TabPinned pinned,
   size_info.standard_width = 256;
 
   TabLayoutState state(open, pinned, active, std::nullopt);
+  state.set_nesting_info({.tree_height = tree_height, .level = level});
   TabWidthConstraints constraints(state, size_info);
   constraints.set_is_tab_in_group(in_group);
   return constraints;
@@ -324,6 +327,104 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   // Tabs should be laid out left to right in the same row
   EXPECT_LT(bounds[0].right(), bounds[1].x());
   EXPECT_LT(bounds[1].right(), bounds[2].x());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_NestingUsesBaseOffsetWhenEnoughSpace) {
+  // Same three-node chain. With enough width, even_offset_per_level >= 20,
+  // so offset per level is kBaseOffsetPerLevel (20).
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/2, /*level=*/0));
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/2, /*level=*/1));
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/2, /*level=*/2));
+
+  constexpr int kBaseOffsetPerLevel = 20;
+  constexpr int kAvailableWidth = 200;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
+
+  ASSERT_EQ(3u, bounds.size());
+  EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].x());
+  EXPECT_EQ(kMarginForVerticalTabContainers + kBaseOffsetPerLevel,
+            bounds[1].x());
+  EXPECT_EQ(kMarginForVerticalTabContainers + 2 * kBaseOffsetPerLevel,
+            bounds[2].x());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_NestingFallbackUsesTreeHeightThreshold) {
+  // Three nodes in a chain: root (level 0), child (level 1), grandchild (level
+  // 2). Tree height is 2. Level starts at 0 for the root.
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/2, /*level=*/0));
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/2, /*level=*/1));
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/2, /*level=*/2));
+
+  // For this width, tree-wide even spacing is less than base offset.
+  constexpr int kAvailableWidth = 80;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
+
+  ASSERT_EQ(3u, bounds.size());
+
+  // Level 0 (root): no offset applied. Level 1 and 2 use narrow offset.
+  // tree_levels = tree_height + 1 = 3, available = 80 - 2*4 - 32 = 40,
+  // even_offset_per_level = 40 / 3 = 13.
+  EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].x());
+  EXPECT_EQ(kMarginForVerticalTabContainers + 13, bounds[1].x());
+  EXPECT_EQ(kMarginForVerticalTabContainers + 26, bounds[2].x());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_NestingDoesNotApplyNegativeOffset) {
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/4, /*level=*/3));
+
+  // This width is smaller than min width + margins and can produce
+  // negative available tree width, which should be clamped to 0.
+  constexpr int kAvailableWidth = 20;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
+
+  ASSERT_EQ(1u, bounds.size());
+  EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].x());
+  EXPECT_EQ(kAvailableWidth - 2 * kMarginForVerticalTabContainers,
+            bounds[0].width());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_NestingPreservesMinWidthAtHighLevel) {
+  auto constraints = MakeTabConstraints(
+      TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
+      /*in_group=*/false, /*tree_height=*/10, /*level=*/10);
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(constraints);
+
+  // With this narrow width, available tree width becomes 4 and
+  // even_offset_per_level is 4 / (10 + 1) = 0.
+  // Even though offset_per_level is floored to 1, final offset should be
+  // clamped to preserve tab minimum width.
+  constexpr int kAvailableWidth = 44;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
+
+  ASSERT_EQ(1u, bounds.size());
+  EXPECT_EQ(kMarginForVerticalTabContainers + 4, bounds[0].x());
+  EXPECT_EQ(constraints.size_info().min_inactive_width, bounds[0].width());
 }
 
 }  // namespace tabs

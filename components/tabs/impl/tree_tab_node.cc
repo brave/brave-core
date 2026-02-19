@@ -5,10 +5,19 @@
 
 #include "brave/components/tabs/public/tree_tab_node.h"
 
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 
 namespace tabs {
+
+const TreeTabNode& TreeTabNode::GetEmptyTreeTabNode() {
+  static base::NoDestructor<TreeTabNodeTabCollection>
+      empty_tree_tab_node_tab_collection(tree_tab::TreeTabNodeId::GenerateNew(),
+                                         nullptr, base::DoNothing());
+  return empty_tree_tab_node_tab_collection->node();
+}
 
 TreeTabNode::TreeTabNode(TreeTabNodeTabCollection& collection,
                          const tree_tab::TreeTabNodeId& id)

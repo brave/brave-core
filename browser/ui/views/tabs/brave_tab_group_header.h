@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 
 namespace tab_groups {
 class TabGroupId;
@@ -28,6 +29,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   void VisualsChanged() override;
   int GetDesiredWidth() const override;
   void Layout(PassKey) override;
+  TabNestingInfo GetTabNestingInfo() const override;
 
  private:
   bool ShouldShowVerticalTabs() const;

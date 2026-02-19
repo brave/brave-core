@@ -9,6 +9,8 @@
 #include <memory>
 #include <optional>
 
+#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
 class BraveBrowserTabStripController : public BrowserTabStripController {
@@ -27,6 +29,10 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
 
   bool IsCommandEnabledForTab(TabStripModel::ContextMenuCommand command_id,
                               const Tab* tab);
+
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
+  const tabs::TreeTabNode& GetTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const;
 
   // BrowserTabStripController overrides:
   void OnTreeTabChanged(const TreeTabChange& change) override;

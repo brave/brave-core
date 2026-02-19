@@ -89,3 +89,12 @@ std::optional<SkColor> TabStrip::GetTabAccentColor(const Tab* tab) const {
 ui::ImageModel TabStrip::GetTabAccentIcon(const Tab* tab) const {
   return ui::ImageModel();
 }
+
+int TabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
+  return 0;
+}
+
+const tabs::TreeTabNode& TabStrip::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return tabs::TreeTabNode::GetEmptyTreeTabNode();
+}

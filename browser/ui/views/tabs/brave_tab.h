@@ -10,8 +10,13 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
+
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
 
 // Brave specific tab implementation that extends the base Tab class.
 // It includes features like vertical tab support.
@@ -51,6 +56,7 @@ class BraveTab : public Tab {
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
   TabSizeInfo GetTabSizeInfo() const override;
+  TabNestingInfo GetTabNestingInfo() const override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -81,6 +87,12 @@ class BraveTab : public Tab {
       PinnedTabIconCenteredWhenFloatingFromCompletelyHiddenMode);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
+
+  // Returns the tree tab node for this tab.
+  const tabs::TreeTabNode* GetTreeTabNode() const;
+
+  // Returns the height of the tree tab node for this tab.
+  int GetTreeHeight() const;
 
   // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }

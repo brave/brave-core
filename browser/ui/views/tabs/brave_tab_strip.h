@@ -12,6 +12,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -43,6 +44,9 @@ class BraveTabStrip : public TabStrip {
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
   bool ShouldAlwaysHideCloseButton() const override;
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
+  const tabs::TreeTabNode& GetTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const override;
   bool IsVerticalTabsFloating() const override;
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
