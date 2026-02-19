@@ -3121,6 +3121,191 @@ TEST_F(KeyringServiceUnitTest, ImportBitcoinAccount) {
   EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcTestAccounts().size());
 }
 
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountTestnet_Error) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  EXPECT_FALSE(service.ImportPolkadotAccountSync("", "{}", kPasswordBrave,
+                                                 mojom::kPolkadotMainnet));
+  EXPECT_FALSE(service.ImportPolkadotAccountSync("Import", "", kPasswordBrave,
+                                                 mojom::kPolkadotMainnet));
+  EXPECT_FALSE(service.ImportPolkadotAccountSync("Import", "{}", "",
+                                                 mojom::kPolkadotMainnet));
+  EXPECT_FALSE(service.ImportPolkadotAccountSync("Import", "{}", kPasswordBrave,
+                                                 mojom::kMainnetChainId));
+}
+
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountFails_WrongPassword) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export.has_value()) << "Need JSON export to test import";
+
+  // Import with wrong password must fail and add no account.
+  EXPECT_FALSE(service.ImportPolkadotAccountSync("Imported Polkadot",
+                                                 *json_export, "wrong_password",
+                                                 mojom::kPolkadotMainnet));
+
+  auto dot_accounts = std::ranges::count_if(
+      service.GetAllAccountsSync()->accounts, [](const auto& acc) {
+        return acc->account_id->coin == mojom::CoinType::DOT;
+      });
+  EXPECT_EQ(dot_accounts, 1u) << "Only the HD account; import must not add.";
+}
+
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export.has_value()) << "Need JSON export to test import";
+
+  // AccountsAdded is triggered for the HD account (AddAccount) and for the
+  // imported account (ImportPolkadotAccountSync).
+  EXPECT_CALL(observer, AccountsAdded(_)).Times(2);
+  auto imported = service.ImportPolkadotAccountSync(
+      "Imported Polkadot", *json_export, "export_pwd", mojom::kPolkadotMainnet);
+  ASSERT_TRUE(imported);
+  observer.WaitAndVerify();
+
+  EXPECT_EQ(imported->account_id->keyring_id,
+            mojom::KeyringId::kPolkadotImport);
+  EXPECT_EQ(imported->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(imported->name, "Imported Polkadot");
+  EXPECT_EQ(imported->account_id->account_index, 0u);
+  EXPECT_TRUE(imported->address.empty());
+
+  auto all = service.GetAllAccountsSync();
+  auto dot_accounts = std::ranges::count_if(all->accounts, [](const auto& acc) {
+    return acc->account_id->coin == mojom::CoinType::DOT;
+  });
+  EXPECT_GE(dot_accounts, 2u);
+
+  auto pubkey = service.GetPolkadotPubKey(imported->account_id.Clone());
+  ASSERT_TRUE(pubkey.has_value());
+  EXPECT_EQ(pubkey->size(), 32u);
+}
+
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountTestnet) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  auto hd_account = AddAccount(&service, mojom::CoinType::DOT,
+                               mojom::KeyringId::kPolkadotTestnet,
+                               "Polkadot Testnet HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export.has_value()) << "Need JSON export to test import";
+
+  EXPECT_CALL(observer, AccountsAdded(_)).Times(2);
+  auto imported = service.ImportPolkadotAccountSync("Imported Polkadot Testnet",
+                                                    *json_export, "export_pwd",
+                                                    mojom::kPolkadotTestnet);
+  ASSERT_TRUE(imported);
+  observer.WaitAndVerify();
+
+  EXPECT_EQ(imported->account_id->keyring_id,
+            mojom::KeyringId::kPolkadotImportTestnet);
+  EXPECT_EQ(imported->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(imported->name, "Imported Polkadot Testnet");
+  EXPECT_EQ(imported->account_id->account_index, 0u);
+  EXPECT_TRUE(imported->address.empty());
+
+  auto dot_accounts = std::ranges::count_if(
+      service.GetAllAccountsSync()->accounts, [](const auto& acc) {
+        return acc->account_id->coin == mojom::CoinType::DOT;
+      });
+  EXPECT_GE(dot_accounts, 2u);
+
+  auto pubkey = service.GetPolkadotPubKey(imported->account_id.Clone());
+  ASSERT_TRUE(pubkey.has_value());
+  EXPECT_EQ(pubkey->size(), 32u);
+}
+
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountRestore) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export.has_value());
+
+  auto imported = service.ImportPolkadotAccountSync(
+      "Imported Dot", *json_export, "export_pwd", mojom::kPolkadotMainnet);
+  ASSERT_TRUE(imported);
+  auto imported_account_id = imported->account_id.Clone();
+
+  auto pubkey_before = service.GetPolkadotPubKey(imported_account_id.Clone());
+  ASSERT_TRUE(pubkey_before.has_value());
+
+  service.Lock();
+  ASSERT_TRUE(service.IsLockedSync());
+
+  Unlock(&service, kPasswordBrave);
+
+  auto all = service.GetAllAccountsSync();
+  auto found = std::ranges::find_if(all->accounts, [&](const auto& acc) {
+    return acc->account_id->keyring_id == mojom::KeyringId::kPolkadotImport &&
+           acc->account_id->account_index == imported_account_id->account_index;
+  });
+  ASSERT_TRUE(found != all->accounts.end())
+      << "Imported Polkadot account should be restored after unlock";
+
+  auto pubkey_after = service.GetPolkadotPubKey(imported_account_id.Clone());
+  ASSERT_TRUE(pubkey_after.has_value());
+  EXPECT_EQ(*pubkey_before, *pubkey_after);
+}
+
 TEST_F(KeyringServiceUnitTest, HardwareBitcoinAccount) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 

@@ -370,10 +370,23 @@ TEST(CommonUtils, GetNetworkForCardanoAccount) {
 TEST(CommonUtils, IsPolkadotKeyring) {
   for (const auto& keyring_id : kAllKeyrings) {
     if (keyring_id == mojom::KeyringId::kPolkadotMainnet ||
-        keyring_id == mojom::KeyringId::kPolkadotTestnet) {
+        keyring_id == mojom::KeyringId::kPolkadotTestnet ||
+        keyring_id == mojom::KeyringId::kPolkadotImport ||
+        keyring_id == mojom::KeyringId::kPolkadotImportTestnet) {
       EXPECT_TRUE(IsPolkadotKeyring(keyring_id));
     } else {
       EXPECT_FALSE(IsPolkadotKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsPolkadotImportKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kPolkadotImport ||
+        keyring_id == mojom::KeyringId::kPolkadotImportTestnet) {
+      EXPECT_TRUE(IsPolkadotImportKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsPolkadotImportKeyring(keyring_id));
     }
   }
 }
@@ -393,8 +406,13 @@ TEST(CommonUtils, IsPolkadotNetwork) {
 TEST(CommonUtils, GetNetworkForPolkadotKeyring) {
   EXPECT_EQ(mojom::kPolkadotMainnet,
             GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotMainnet));
+  EXPECT_EQ(mojom::kPolkadotMainnet,
+            GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotImport));
   EXPECT_EQ(mojom::kPolkadotTestnet,
             GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotTestnet));
+  EXPECT_EQ(
+      mojom::kPolkadotTestnet,
+      GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotImportTestnet));
 }
 
 TEST(CommonUtils, GetNetworkForPolkadotAccount) {
@@ -654,7 +672,7 @@ TEST(CommonUtils, MakeAccountId) {
     if (coin == mojom::CoinType::ETH) {
       continue;
     } else if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC ||
-               coin == mojom::CoinType::ADA) {
+               coin == mojom::CoinType::ADA || coin == mojom::CoinType::DOT) {
       EXPECT_DCHECK_DEATH(
           MakeAccountId(coin, id.keyring_id, id.kind, id.address));
     } else {
@@ -668,8 +686,7 @@ TEST(CommonUtils, MakeAccountId) {
   for (const auto& keyring : kAllKeyrings) {
     if (keyring == mojom::KeyringId::kDefault) {
       continue;
-    } else if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring) ||
-               IsCardanoKeyring(keyring)) {
+    } else if (!IsDeprecatedAddressBasedKeyring(keyring)) {
       EXPECT_DCHECK_DEATH(MakeAccountId(id.coin, keyring, id.kind, id.address));
     } else {
       EXPECT_NE(
@@ -704,8 +721,18 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ADA,
                                     mojom::KeyringId::kCardanoMainnet,
                                     mojom::AccountKind::kDerived, "0xabc"));
-  // TODO(https://github.com/brave/brave-browser/issues/49225): Polkadot Keyring
-  // Testing
+  EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::DOT,
+                                    mojom::KeyringId::kPolkadotMainnet,
+                                    mojom::AccountKind::kDerived, "0xabc"));
+  EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::DOT,
+                                    mojom::KeyringId::kPolkadotTestnet,
+                                    mojom::AccountKind::kDerived, "0xabc"));
+  EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::DOT,
+                                    mojom::KeyringId::kPolkadotImport,
+                                    mojom::AccountKind::kDerived, "0xabc"));
+  EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::DOT,
+                                    mojom::KeyringId::kPolkadotImportTestnet,
+                                    mojom::AccountKind::kDerived, "0xabc"));
   static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
@@ -714,8 +741,7 @@ TEST(CommonUtils, MakeAccountId) {
 TEST(CommonUtils, MakeIndexBasedAccountId) {
   // Coin differs
   for (const auto& coin : kAllCoins) {
-    if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC ||
-        coin == mojom::CoinType::ADA) {
+    if (!IsDeprecatedAddressBasedCoin(coin)) {
       continue;
     }
     EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
@@ -724,8 +750,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId) {
 
   // Keyring differs
   for (const auto& keyring : kAllKeyrings) {
-    if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring) ||
-        IsCardanoKeyring(keyring)) {
+    if (!IsDeprecatedAddressBasedKeyring(keyring)) {
       continue;
     }
     EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
@@ -856,6 +881,30 @@ TEST(CommonUtils, CoinSupportsDapps) {
       EXPECT_TRUE(CoinSupportsDapps(coin));
     } else {
       EXPECT_FALSE(CoinSupportsDapps(coin));
+    }
+  }
+}
+
+TEST(CommonUtils, IsDeprecatedAddressBasedCoin) {
+  for (auto coin : kAllCoins) {
+    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+        coin == mojom::CoinType::FIL) {
+      EXPECT_TRUE(IsDeprecatedAddressBasedCoin(coin));
+    } else {
+      EXPECT_FALSE(IsDeprecatedAddressBasedCoin(coin));
+    }
+  }
+}
+
+TEST(CommonUtils, IsDeprecatedAddressBasedKeyring) {
+  for (auto keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kDefault ||
+        keyring_id == mojom::KeyringId::kSolana ||
+        keyring_id == mojom::KeyringId::kFilecoin ||
+        keyring_id == mojom::KeyringId::kFilecoinTestnet) {
+      EXPECT_TRUE(IsDeprecatedAddressBasedKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsDeprecatedAddressBasedKeyring(keyring_id));
     }
   }
 }

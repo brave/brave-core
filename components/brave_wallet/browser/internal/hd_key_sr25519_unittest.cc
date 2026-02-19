@@ -404,4 +404,27 @@ TEST(HDKeySr25519, CreateFromPkcs8InvalidDivider) {
   EXPECT_FALSE(keypair.has_value());
 }
 
+TEST(HDKeySr25519, CreateFromPkcs8Ed25519Prefix) {
+  // Start with a valid PKCS8, then set the scalar high bit in the secret
+  // material to emulate Ed25519-style exports.
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8 = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0x3053020101300506032b657004220420866fd0f00965665948cf251e582180a7"
+      "ffff042d1b1078b41404de00b229fd099b4f0afe280b746a778684e75442502057"
+      "b7473a03f08f96f5a38e9287e01f8fa12303210044a996beb1eef7bdcab976ab6d"
+      "2ca26104834164ecf28fb375600576fcc6eb0f",
+      base::span(pkcs8)));
+
+  // Secret bytes are at [16, 79]. Setting the highest bit of the last scalar
+  // byte triggers the Ed25519 import path.
+  pkcs8[79] |= 0x80;
+
+  auto keypair = HDKeySr25519::CreateFromPkcs8(pkcs8);
+  ASSERT_TRUE(keypair.has_value());
+
+  auto message = base::byte_span_from_cstring("ed25519-prefix-regression");
+  auto sig = keypair->SignMessage(message);
+  EXPECT_TRUE(keypair->VerifyMessage(sig, message));
+}
+
 }  // namespace brave_wallet

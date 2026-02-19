@@ -457,6 +457,16 @@ bool CoinSupportsDapps(mojom::CoinType coin) {
          coin == mojom::CoinType::ADA;
 }
 
+bool IsDeprecatedAddressBasedCoin(mojom::CoinType coin) {
+  return coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+         coin == mojom::CoinType::FIL;
+}
+
+bool IsDeprecatedAddressBasedKeyring(mojom::KeyringId keyring_id) {
+  return IsEthereumKeyring(keyring_id) || IsSolanaKeyring(keyring_id) ||
+         IsFilecoinKeyring(keyring_id);
+}
+
 bool IsFixedSelectedNetworkCoin(mojom::CoinType coin) {
   // This might need to be extended with ZEC and FIL.
   return coin == mojom::CoinType::BTC || coin == mojom::CoinType::ADA;
@@ -513,13 +523,8 @@ mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
                                   mojom::KeyringId keyring_id,
                                   mojom::AccountKind kind,
                                   const std::string& address) {
-  DCHECK_NE(coin, mojom::CoinType::BTC);
-  DCHECK_NE(coin, mojom::CoinType::ZEC);
-  DCHECK_NE(coin, mojom::CoinType::ADA);
-  DCHECK(!IsBitcoinKeyring(keyring_id));
-  DCHECK(!IsZCashKeyring(keyring_id));
-  DCHECK(!IsCardanoKeyring(keyring_id));
-
+  DCHECK(IsDeprecatedAddressBasedCoin(coin));
+  DCHECK(IsDeprecatedAddressBasedKeyring(keyring_id));
   std::string unique_key =
       base::JoinString({base::NumberToString(static_cast<int>(coin)),
                         base::NumberToString(static_cast<int>(keyring_id)),

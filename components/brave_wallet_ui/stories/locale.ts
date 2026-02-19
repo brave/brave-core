@@ -443,6 +443,9 @@ provideStrings({
     'NOTE: Private key is provided as a hex-encoded JSON that contains private '
     + 'key and protocol information. $1Learn more$1.',
   braveWalletTestnetAccounts: 'Testnet accounts',
+  braveWalletPolkadotImportJsonDescription:
+    'Import using a JSON file exported from Polkadot.js or compatible wallets. '
+    + 'Enter the password used to encrypt the export.',
 
   // Import Account
   braveWalletImportAccountDisclaimer:
