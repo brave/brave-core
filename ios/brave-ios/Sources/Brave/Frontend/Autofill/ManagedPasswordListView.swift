@@ -64,42 +64,30 @@ struct ManagedPasswordListView: View {
           .tint(Color(braveSystemName: .schemesSurfaceTint))
       }
 
-      Section(header: Text(Strings.Autofill.managePasswordsListHeaderTitle)) {
-        ForEach(Array(viewModel.groupedCredentialList), id: \.domain) { domain, credentials in
-          let id = ManagedPasswordListView.domainId(saved: true, domain: domain)
-          ManagedPasswordListRow(
-            domain: domain,
-            credentials: credentials,
-            isSaved: true,
-            domainId: id,
-            isEditMode: isEditMode,
-            isSelected: selectedDomainIds.contains(id),
-            onToggleSelection: { toggleSelection(id) },
-            passwordAPI: passwordAPI,
-            windowProtection: windowProtection,
-            settingsDelegate: settingsDelegate
-          )
-          .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(role: .destructive) {
-              deleteDomain(id)
-            } label: {
-              Label(
-                Strings.Autofill.managedPasswordDeleteCredentialButtonTitle,
-                systemImage: "trash"
-              )
-            }
+      if isContentUnavailable {
+        ContentUnavailableView {
+          Label {
+            Text(Strings.Autofill.managePasswordsEmptyListTitle)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .font(.title3)
+          } icon: {
+            Image(braveSystemName: "leo.info.ios-only")
+              .foregroundStyle(Color(braveSystemName: .iconSecondary))
           }
+        } description: {
+          Text(Strings.Autofill.managePasswordsEmptyListDetail)
+            .foregroundStyle(Color(braveSystemName: .textTertiary))
+            .font(.callout)
         }
-      }
-
-      if !viewModel.blockedList.isEmpty {
-        Section(header: Text(Strings.Autofill.loginListNeverSavedListHeaderTitle)) {
-          ForEach(Array(viewModel.groupedBlockedList), id: \.domain) { domain, credentials in
-            let id = ManagedPasswordListView.domainId(saved: false, domain: domain)
+        .edgesIgnoringSafeArea(.all)
+      } else {
+        Section(header: Text(Strings.Autofill.managePasswordsListHeaderTitle)) {
+          ForEach(Array(viewModel.groupedCredentialList), id: \.domain) { domain, credentials in
+            let id = ManagedPasswordListView.domainId(saved: true, domain: domain)
             ManagedPasswordListRow(
               domain: domain,
               credentials: credentials,
-              isSaved: false,
+              isSaved: true,
               domainId: id,
               isEditMode: isEditMode,
               isSelected: selectedDomainIds.contains(id),
@@ -120,6 +108,36 @@ struct ManagedPasswordListView: View {
             }
           }
         }
+
+        if !viewModel.blockedList.isEmpty {
+          Section(header: Text(Strings.Autofill.loginListNeverSavedListHeaderTitle)) {
+            ForEach(Array(viewModel.groupedBlockedList), id: \.domain) { domain, credentials in
+              let id = ManagedPasswordListView.domainId(saved: false, domain: domain)
+              ManagedPasswordListRow(
+                domain: domain,
+                credentials: credentials,
+                isSaved: false,
+                domainId: id,
+                isEditMode: isEditMode,
+                isSelected: selectedDomainIds.contains(id),
+                onToggleSelection: { toggleSelection(id) },
+                passwordAPI: passwordAPI,
+                windowProtection: windowProtection,
+                settingsDelegate: settingsDelegate
+              )
+              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                  deleteDomain(id)
+                } label: {
+                  Label(
+                    Strings.Autofill.managedPasswordDeleteCredentialButtonTitle,
+                    systemImage: "trash"
+                  )
+                }
+              }
+            }
+          }
+        }
       }
     }
     .background(Color(.braveGroupedBackground))
@@ -132,26 +150,6 @@ struct ManagedPasswordListView: View {
     .scrollContentBackground(.hidden)
     .padding(.top, 100)
     .ignoresSafeArea()
-    .overlay {
-      if isContentUnavailable {
-        ContentUnavailableView {
-          Label {
-            Text(Strings.Autofill.managePasswordsEmptyListTitle)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-              .font(.title3)
-          } icon: {
-            Image(braveSystemName: "leo.info.ios-only")
-              .foregroundStyle(Color(braveSystemName: .iconSecondary))
-          }
-        } description: {
-          Text(Strings.Autofill.managePasswordsEmptyListDetail)
-            .foregroundStyle(Color(braveSystemName: .textTertiary))
-            .font(.callout)
-        }
-        .edgesIgnoringSafeArea(.all)
-        .background(Color(braveSystemName: .schemesBackground))
-      }
-    }
     .overlay {
       if !isSceneActive {
         Color(.braveGroupedBackground)
