@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/local_ai/browser/local_models_updater.h"
+#include "brave/components/local_ai/core/local_models_updater.h"
 
 #include <array>
 #include <cstdint>

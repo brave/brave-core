@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_LOCAL_AI_BROWSER_LOCAL_MODELS_UPDATER_H_
-#define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_LOCAL_MODELS_UPDATER_H_
+#ifndef BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_MODELS_UPDATER_H_
+#define BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_MODELS_UPDATER_H_
 
 #include <cstdint>
 #include <string>
@@ -96,4 +96,4 @@ void ManageLocalModelsComponentRegistration(
 
 }  // namespace local_ai
 
-#endif  // BRAVE_COMPONENTS_LOCAL_AI_BROWSER_LOCAL_MODELS_UPDATER_H_
+#endif  // BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_MODELS_UPDATER_H_

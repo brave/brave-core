@@ -3,7 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("browser") {
+static_library("core") {
+  assert_no_deps = [ "//content/public/*" ]
+
   sources = [
     "local_models_updater.cc",
     "local_models_updater.h",
@@ -26,7 +28,7 @@ source_set("unit_tests") {
   sources = [ "local_models_updater_unittest.cc" ]
 
   deps = [
-    ":browser",
+    ":core",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
