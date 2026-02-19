@@ -22,6 +22,7 @@
 #include "chrome/browser/browser_process.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/net_errors.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
@@ -98,9 +99,10 @@ void OnBeforeURLRequest_EnsRedirectWork(
     bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!next_callback.is_null());
 
-  if (error != brave_wallet::mojom::ProviderError::kSuccess) {
+  if (!ctx || error != brave_wallet::mojom::ProviderError::kSuccess) {
     next_callback.Run();
     return;
   }
@@ -128,7 +130,8 @@ void OnBeforeURLRequest_SnsRedirectWork(
     const std::optional<GURL>& url,
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message) {
-  if (error == brave_wallet::mojom::SolanaProviderError::kSuccess && url &&
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (ctx && error == brave_wallet::mojom::SolanaProviderError::kSuccess && url &&
       url->is_valid()) {
     ctx->set_new_url_spec(url->spec());
   }
@@ -145,7 +148,8 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const std::optional<GURL>& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
-  if (error == brave_wallet::mojom::ProviderError::kSuccess && url &&
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (ctx && error == brave_wallet::mojom::ProviderError::kSuccess && url &&
       url->is_valid()) {
     ctx->set_new_url_spec(url->spec());
   }
