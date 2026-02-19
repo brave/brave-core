@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
 import java.util.HashMap;
 
@@ -34,6 +35,10 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_site_settings_preferences);
         configureBravePreferences();
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    SiteSettings.class.getName(), R.xml.brave_site_settings_preferences);
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
