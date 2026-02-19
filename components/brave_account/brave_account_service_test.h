@@ -137,7 +137,8 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  base::test::ScopedFeatureList scoped_feature_list_{features::kBraveAccount};
+  base::test::ScopedFeatureList scoped_feature_list_{
+      features::BraveAccountFeatureForTesting()};
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   std::unique_ptr<BraveAccountService> brave_account_service_;

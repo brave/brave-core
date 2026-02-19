@@ -45,7 +45,10 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/components/email_aliases:features",
+  ]
 }
 
 source_set("test_support") {
@@ -69,6 +72,7 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
+    "features_unittest.cc",
   ]
 
   deps = [
@@ -78,6 +82,7 @@ source_set("unit_tests") {
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
+    "//brave/components/email_aliases:features",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",

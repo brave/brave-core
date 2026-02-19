@@ -5,15 +5,12 @@
 
 #include "brave/components/email_aliases/features.h"
 
-#include "brave/components/brave_account/features.h"
-
 namespace email_aliases::features {
 
 BASE_FEATURE(kEmailAliases, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsEmailAliasesEnabled() {
-  return brave_account::features::IsBraveAccountEnabled() &&
-         base::FeatureList::IsEnabled(kEmailAliases);
+  return base::FeatureList::IsEnabled(kEmailAliases);
 }
 
 }  // namespace email_aliases::features

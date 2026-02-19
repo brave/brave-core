@@ -41,7 +41,8 @@ class BraveAccountNavigationThrottleUnitTest
  protected:
   void SetUp() override {
     scoped_feature_list_.InitWithFeatureState(
-        brave_account::features::kBraveAccount, GetParam().enable_feature);
+        brave_account::features::BraveAccountFeatureForTesting(),
+        GetParam().enable_feature);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

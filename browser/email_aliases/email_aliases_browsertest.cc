@@ -317,9 +317,10 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 class EmailAliasesBrowserTest : public EmailAliasesBrowserTestBase {
  public:
   EmailAliasesBrowserTest() {
-    feature_list_.InitWithFeatures({{email_aliases::features::kEmailAliases},
-                                    brave_account::features::kBraveAccount},
-                                   {});
+    feature_list_.InitWithFeatures(
+        {{email_aliases::features::kEmailAliases},
+         brave_account::features::BraveAccountFeatureForTesting()},
+        {});
   }
 
  private:
