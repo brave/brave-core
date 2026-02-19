@@ -40,20 +40,14 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       isEmailValid: { type: Boolean },
       isPasswordInputFocused: { type: Boolean },
       isPasswordConfirmationInputFocused: { type: Boolean },
+      isPasswordStrongEnough: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
-      passwordStrength: { type: Number },
     }
   }
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.browserProxy.password_strength_meter
-      .getPasswordStrength(this.password)
-      .then(
-        (value: { strength: number }) =>
-          (this.passwordStrength = value.strength),
-      )
   }
 
   protected onPasswordConfirmationInput(detail: { value: string }) {
@@ -130,9 +124,9 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   protected accessor isEmailValid: boolean = false
   protected accessor isPasswordInputFocused: boolean = false
   protected accessor isPasswordConfirmationInputFocused: boolean = false
+  protected accessor isPasswordStrongEnough: boolean = false
   protected accessor password: string = ''
   protected accessor passwordConfirmation: string = ''
-  protected accessor passwordStrength: number = 0
   protected registration = new Registration()
 
   protected readonly passwordFocusHandler = makeFocusHandler(
