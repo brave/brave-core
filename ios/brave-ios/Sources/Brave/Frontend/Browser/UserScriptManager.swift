@@ -343,7 +343,9 @@ class UserScriptManager {
       return
     }
 
-    let userContentController = tab.configuration.userContentController
+    guard let userContentController = tab.configuration?.userContentController else {
+      return
+    }
 
     let logComponents = [
       userScripts.sorted(by: { $0.rawValue < $1.rawValue }).map { scriptType in

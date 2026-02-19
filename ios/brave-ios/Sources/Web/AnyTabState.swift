@@ -185,7 +185,7 @@ public class AnyTabState: TabState {
     tab.loadHTMLString(htmlString, baseURL: baseURL)
   }
 
-  public var configuration: WKWebViewConfiguration {
+  public var configuration: WKWebViewConfiguration? {
     tab.configuration
   }
 

@@ -485,11 +485,11 @@ class ChromiumTabState: TabState, TabStateImpl {
     )
   }
 
-  var configuration: WKWebViewConfiguration {
+  var configuration: WKWebViewConfiguration? {
     if let configuration = webView?.internalWebView?.configuration {
       return configuration
     }
-    return wkConfiguration ?? .init()
+    return wkConfiguration
   }
 
   var dataForDisplayedPDF: Data? {

@@ -988,7 +988,7 @@ class TabManager: NSObject {
   }
 
   @MainActor private func forgetData(for url: URL, in tab: (any TabState)?) async {
-    await forgetData(for: [url], dataStore: tab?.configuration.websiteDataStore)
+    await forgetData(for: [url], dataStore: tab?.configuration?.websiteDataStore)
 
     ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
     if let baseDomain = url.baseDomain, let tab {
@@ -1187,8 +1187,12 @@ class TabManager: NSObject {
     _ tab: some TabState,
     completionHandler: @escaping () -> Void = {}
   ) {
+    guard let configuration = tab.configuration else {
+      completionHandler()
+      return
+    }
     let dataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
-    tab.configuration.websiteDataStore.removeData(
+    configuration.websiteDataStore.removeData(
       ofTypes: dataTypes,
       modifiedSince: Date.distantPast,
       completionHandler: completionHandler
