@@ -208,6 +208,8 @@ class SettingsViewController: TableViewController {
     super.viewWillAppear(animated)
     // Reset dev options access count
     aboutHeaderTapCount = 0
+    // Hide toolbar in case it was enabled by a child controller
+    navigationController?.setToolbarHidden(true, animated: animated)
   }
 
   private func displayRewardsDebugMenu() {

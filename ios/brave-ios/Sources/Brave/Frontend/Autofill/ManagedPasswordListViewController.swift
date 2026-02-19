@@ -42,10 +42,4 @@ class ManagedPasswordListViewController: UIHostingController<ManagedPasswordList
     // UINavigationController hides the bottom toolbar by default
     navigationController?.setToolbarHidden(false, animated: animated)
   }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    // Restore hidden state of bottom toolbar
-    navigationController?.setToolbarHidden(true, animated: animated)
-  }
 }
