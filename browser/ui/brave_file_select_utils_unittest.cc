@@ -93,7 +93,8 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
             ? main_frame_origin
             : url::Origin::Create(GURL(test_case.alerting_frame_url));
     EXPECT_EQ(javascript_dialogs::AppModalDialogManager::GetSiteFrameTitle(
-                  main_frame_origin, alerting_frame_origin),
+                  GURL(test_case.main_frame_url), main_frame_origin,
+                  alerting_frame_origin),
               brave::GetSiteFrameTitleForFileSelect(
                   brave::GetSiteFrameTitleType(main_frame_origin,
                                                alerting_frame_origin),
