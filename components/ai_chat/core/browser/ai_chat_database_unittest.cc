@@ -555,18 +555,16 @@ TEST_P(AIChatDatabaseTest, InlineSearchEvent) {
 
   // Test 2 entries to verify they are recorded against different entries
   auto history = CreateSampleChatHistory(2u);
-  {
-    history[1]->events->emplace_back(
-        mojom::ConversationEntryEvent::NewInlineSearchEvent(
-            mojom::InlineSearchEvent::New(
-                "brave search",
-                R"([{"title":"Result 1","url":"https://example.com"}])")));
-    history[3]->events->emplace_back(
-        mojom::ConversationEntryEvent::NewInlineSearchEvent(
-            mojom::InlineSearchEvent::New(
-                "second search",
-                R"([{"title":"Result 2","url":"https://example2.com"}])")));
-  }
+  history[1]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(
+              "brave search",
+              R"([{"title":"Result 1","url":"https://example.com"}])")));
+  history[3]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(
+              "second search",
+              R"([{"title":"Result 2","url":"https://example2.com"}])")));
 
   EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
@@ -585,13 +583,11 @@ TEST_P(AIChatDatabaseTest, InlineSearchEvent_Invalid) {
       0, false, std::vector<mojom::AssociatedContentPtr>());
 
   auto history = CreateSampleChatHistory(1u);
-  {
-    // Invalid: empty query should not be persisted
-    history[1]->events->emplace_back(
-        mojom::ConversationEntryEvent::NewInlineSearchEvent(
-            mojom::InlineSearchEvent::New(
-                "", R"([{"title":"Result 1","url":"https://example.com"}])")));
-  }
+  // Invalid: empty query should not be persisted
+  history[1]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(
+              "", R"([{"title":"Result 1","url":"https://example.com"}])")));
 
   EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));

@@ -149,6 +149,12 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
       << "\n";
 }
 
+void PrintTo(const InlineSearchEvent& event, std::ostream* os) {
+  *os << "--InlineSearchEvent--\n";
+  *os << "query: " << event.query << "\n";
+  *os << "results: " << event.results_json << "\n";
+}
+
 void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
   *os << "--ConversationEntryEvent--\n";
   using Tag = ConversationEntryEvent::Tag;
@@ -181,6 +187,11 @@ void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
       for (const auto& r : event.get_sources_event()->rich_results) {
         *os << "  - rich_result: " << r << "\n";
       }
+      break;
+    }
+    case Tag::kInlineSearchEvent: {
+      *os << "inline_search_event:\n";
+      PrintTo(*event.get_inline_search_event(), os);
       break;
     }
     case Tag::kToolUseEvent: {
