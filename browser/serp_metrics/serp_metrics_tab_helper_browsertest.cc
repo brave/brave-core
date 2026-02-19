@@ -16,6 +16,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "build/build_config.h"
@@ -227,7 +228,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server_->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -236,7 +238,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -244,7 +247,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("duckduckgo.com", "/?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(1U, GetSerpMetrics()->GetOtherSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -261,11 +265,13 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(0U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  ASSERT_EQ(0U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForHttp4xxResponse) {
@@ -280,7 +286,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForHttp4xxResponse) {
       GetWebContents(),
       https_server->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForHttp5xxResponse) {
@@ -295,16 +302,20 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForHttp5xxResponse) {
       GetWebContents(),
       https_server->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordNonSearchUrl) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(0U, GetSerpMetrics()->GetBraveSearchCountForTesting());
-  EXPECT_EQ(0U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
-  EXPECT_EQ(0U, GetSerpMetrics()->GetOtherSearchCountForTesting());
+  EXPECT_EQ(0U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
+  EXPECT_EQ(
+      0U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -317,7 +328,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(), https_server_->GetURL("duckduckgo.com", "/?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetOtherSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -337,7 +349,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       /*number_of_navigations=*/1,
       /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -355,7 +368,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       /*number_of_navigations=*/1,
       /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -370,7 +384,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       https_server_->GetURL("search.brave.com", "/search?q=test&page=2"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -387,7 +402,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(), https_server_->GetURL("duckduckgo.com", "/?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(2U, GetSerpMetrics()->GetOtherSearchCountForTesting());
+  EXPECT_EQ(2U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -404,7 +420,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(), https_server_->GetURL("duckduckgo.com", "/?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(3U, GetSerpMetrics()->GetOtherSearchCountForTesting());
+  EXPECT_EQ(3U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordReloadNavigation) {
@@ -412,11 +429,13 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordReloadNavigation) {
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   Reload();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -425,12 +444,14 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   Reload();
   Reload();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -440,7 +461,8 @@ IN_PROC_BROWSER_TEST_F(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   Reload();
 
@@ -449,7 +471,8 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -471,13 +494,15 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  ASSERT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 
   Reload();
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -487,7 +512,8 @@ IN_PROC_BROWSER_TEST_F(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   Reload();
 
@@ -496,7 +522,8 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -509,12 +536,14 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   GoBack();
   GoForward();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -527,14 +556,16 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   GoBack();
   GoForward();
   GoBack();
   GoForward();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -548,7 +579,8 @@ IN_PROC_BROWSER_TEST_F(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   GoBack();
   GoForward();
@@ -558,7 +590,8 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -581,14 +614,16 @@ IN_PROC_BROWSER_TEST_F(
       GetWebContents(),
       https_server->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  ASSERT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 
   GoBack();
   GoForward();
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -602,7 +637,8 @@ IN_PROC_BROWSER_TEST_F(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   GoBack();
   GoForward();
@@ -612,7 +648,8 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -623,7 +660,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       https_server_->GetURL("www.google.com", "/search?q=test")));
   observer.Wait();
 
-  EXPECT_EQ(0U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      0U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
@@ -634,18 +672,21 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(),
       https_server_->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(0U, GetSerpMetrics()->GetBraveSearchCountForTesting());
+  EXPECT_EQ(0U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(0U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      0U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("duckduckgo.com", "/?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  EXPECT_EQ(0U, GetSerpMetrics()->GetOtherSearchCountForTesting());
+  EXPECT_EQ(0U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -654,7 +695,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  ASSERT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
   Profile* profile = chrome_test_utils::GetProfile(this);
 
@@ -673,7 +715,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
   }
   SetBrowser(browser_created_observer.Wait());
 
-  EXPECT_EQ(1U, GetSerpMetrics()->GetGoogleSearchCountForTesting());
+  EXPECT_EQ(
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)

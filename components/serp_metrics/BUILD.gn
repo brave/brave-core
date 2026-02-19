@@ -6,6 +6,7 @@
 static_library("serp_metrics") {
   public = [
     "serp_classifier.h",
+    "serp_metric_type.h",
     "serp_metrics.h",
   ]
 
