@@ -1215,7 +1215,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Autofill.managePasswordstTitle,
           selection: { [unowned self] in
-            let loginsPasswordsViewController = LoginListViewController(
+            let loginsPasswordsViewController = ManagedPasswordListViewController(
               passwordAPI: self.passwordAPI,
               windowProtection: self.windowProtection
             )

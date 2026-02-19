@@ -29,6 +29,31 @@ extension PasswordForm {
     return signOnRealm
   }
 
+  /// Creates a new PasswordForm for adding a login. Normalizes signOnRealm to a URL (adds https:// if no scheme).
+  static func newLogin(
+    signOnRealm: String,
+    username: String,
+    password: String
+  ) -> PasswordForm? {
+    let trimmed = signOnRealm.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else { return nil }
+    let realmString = trimmed.contains("://") ? trimmed : "https://\(trimmed)"
+    guard let url = URL(string: realmString), url.scheme != nil, url.host != nil else { return nil }
+    let now = Date()
+    return PasswordForm(
+      url: url,
+      signOnRealm: realmString,
+      dateCreated: now,
+      dateLastUsed: now,
+      datePasswordChanged: now,
+      usernameElement: "",
+      usernameValue: username,
+      passwordElement: "",
+      passwordValue: password,
+      isBlockedByUser: false,
+      scheme: .typeHtml
+    )
+  }
 }
 
 extension BravePasswordAPI {
