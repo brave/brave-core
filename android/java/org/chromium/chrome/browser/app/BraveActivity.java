@@ -127,6 +127,7 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsUtils;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -1476,7 +1477,7 @@ public abstract class BraveActivity extends ChromeActivity
                     .readBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false)) {
                 mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(this);
                 View rootView = requireViewById(android.R.id.content);
-                mSearchWidgetPromoPanel.showIfNeeded(rootView);
+                mSearchWidgetPromoPanel.showIfNeeded(rootView, getVisibleBottomToolbarHeight());
                 ChromeSharedPreferences.getInstance()
                         .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
             }
@@ -2650,6 +2651,34 @@ public abstract class BraveActivity extends ChromeActivity
                 sheetContainer.setLayoutParams(params);
             }
         }
+    }
+
+    @Override
+    protected void onOrientationChange(int orientation) {
+        super.onOrientationChange(orientation);
+
+        if (mSearchWidgetPromoPanel != null) {
+            View rootView = findViewById(android.R.id.content);
+            if (rootView != null) {
+                mSearchWidgetPromoPanel.showIfNeeded(
+                        rootView, getVisibleBottomToolbarHeight());
+            }
+        }
+    }
+
+    private int getVisibleBottomToolbarHeight() {
+        if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) return 0;
+
+        final BrowserControlsManager browserControlsManager = mBrowserControlsManagerSupplier.get();
+        if (browserControlsManager == null) {
+            return 0;
+        }
+
+        if (BrowserControlsUtils.areBrowserControlsOffScreen(browserControlsManager)) {
+            return 0;
+        }
+
+        return browserControlsManager.getBottomControlsHeight();
     }
 
     /**
