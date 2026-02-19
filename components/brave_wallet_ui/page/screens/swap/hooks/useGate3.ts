@@ -129,7 +129,7 @@ export function useGate3(params: SwapParams) {
                   toToken: toToken.contractAddress,
                   slippagePercentage: slippageTolerance,
                   routePriority: BraveWallet.RoutePriority.kCheapest,
-                  provider: BraveWallet.SwapProvider.kNearIntents,
+                  provider: indicativeRoute.provider,
                 },
                 jupiterTransactionParams: undefined,
                 lifiTransactionParams: undefined,

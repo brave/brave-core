@@ -382,7 +382,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       routePriority: .cheapest,
       // TODO(stephenheaps): Enable Lifi support
       // https://github.com/brave/brave-browser/issues/39043
-      provider: sellToken.coin == .sol ? .jupiter : .zeroEx
+      provider: sellToken.coin == .sol ? .jupiterLegacy : .zeroEx
     )
 
     return swapQuoteParams

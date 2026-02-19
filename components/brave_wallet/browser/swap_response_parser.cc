@@ -1057,12 +1057,23 @@ mojom::Gate3SwapToolPtr ParseTool(const swap_responses::Gate3SwapTool& value) {
 mojom::Gate3SwapStepTokenPtr ParseStepToken(
     const swap_responses::Gate3SwapStepToken& value) {
   auto result = mojom::Gate3SwapStepToken::New();
-  result->coin = value.coin;
+
+  auto coin = ParseCoinType(value.coin);
+  if (!coin) {
+    return nullptr;
+  }
+  result->coin = *coin;
+
   result->chain_id = value.chain_id;
   result->contract_address =
       ParseNullableString(value.contract_address).value_or("");
   result->symbol = value.symbol;
-  result->decimals = value.decimals;
+
+  // decimals is not essential, so we don't return nullptr if it fails to parse
+  int32_t decimals = 0;
+  base::StringToInt(value.decimals, &decimals);
+  result->decimals = decimals;
+
   result->logo = ParseNullableString(value.logo).value_or("");
   return result;
 }
@@ -1075,6 +1086,7 @@ mojom::Gate3SwapRouteStepPtr ParseRouteStep(
   result->destination_token = ParseStepToken(value.destination_token);
   result->destination_amount = value.destination_amount;
   result->tool = ParseTool(value.tool);
+  result->percent = value.percent;
   return result;
 }
 

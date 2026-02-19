@@ -669,7 +669,7 @@ provideStrings({
   braveWalletRoutes: 'Routes',
   braveWalletSwapOnNetworkViaExchange: 'Swap on $1 via $2',
   braveWalletBridgeFromNetworkToNetwork: 'Bridge from $1 to $2',
-  braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
+  braveWalletExchangeNamePlusSteps: '$1 ($2 $3)',
   braveWalletExchangeViaProvider: '$1 via $2',
   braveWalletSortBy: 'Sort by',
   braveWalletConfirmSwap: 'Confirm swap',

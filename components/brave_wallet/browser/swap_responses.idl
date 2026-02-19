@@ -364,6 +364,7 @@ namespace swap_responses {
     DOMString destinationAmount;
 
     Gate3SwapTool tool;
+    DOMString percent;
   };
 
   dictionary Gate3SwapNetworkFee {

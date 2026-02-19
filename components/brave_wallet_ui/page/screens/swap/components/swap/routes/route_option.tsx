@@ -5,8 +5,6 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Label from '@brave/leo/react/label'
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-import usePromise from '$web-common/usePromise'
 
 // Types
 import { QuoteOption } from '../../../constants/types'
@@ -16,7 +14,7 @@ import {
 } from '../../../../../../constants/types'
 
 // Constants
-import { SwapProviderMetadata } from '../../../constants/metadata'
+import { LPMetadata, SwapProviderMetadata } from '../../../constants/metadata'
 
 // Queries
 import {
@@ -38,6 +36,7 @@ import {
   getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
+import Amount from '../../../../../../utils/amount'
 
 // Components
 import {
@@ -47,6 +46,7 @@ import {
   CreateNetworkIcon, //
 } from '../../../../../../components/shared/create-network-icon'
 import { RouteStep } from './route_step'
+import { ProviderRoute } from '../provider_route'
 
 // Styles
 import {
@@ -66,13 +66,136 @@ import {
   Dot,
 } from './routes.style'
 import { LPIcon, BankIcon } from '../../shared-swap.styles'
-import { Row, Text, Column } from '../../../../../../components/shared/style'
+import {
+  Row,
+  Text,
+  Column,
+  SmallAssetIcon,
+} from '../../../../../../components/shared/style'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'medium',
   marginLeft: 0,
   marginRight: 0,
 })
+
+const SmallAssetIconWithPlaceholder = withPlaceholderIcon(SmallAssetIcon, {
+  size: 'small',
+  marginLeft: 0,
+  marginRight: 0,
+})
+
+const getGate3LPIcon = (step: BraveWallet.Gate3SwapRouteStep) => {
+  if (step.tool.logo) {
+    return `chrome://image?url=${encodeURIComponent(step.tool.logo)}&staticEncode=true`
+  }
+
+  const iconFromMetadata = LPMetadata[step.tool.name]
+  if (iconFromMetadata) {
+    return iconFromMetadata
+  }
+
+  return ''
+}
+
+const Gate3StepSource = ({
+  step,
+}: {
+  step: BraveWallet.Gate3SwapRouteStep
+}) => {
+  const { data: network } = useGetNetworkQuery(
+    step.destinationToken.chainId && step.destinationToken.coin !== undefined
+      ? {
+          chainId: step.destinationToken.chainId,
+          coin: step.destinationToken.coin,
+        }
+      : skipToken,
+  )
+
+  const stepAsset = React.useMemo(
+    () =>
+      ({
+        symbol: step.destinationToken.symbol,
+        name: step.destinationToken.symbol,
+        logo: step.destinationToken.logo,
+        decimals: step.destinationToken.decimals,
+        coin: step.destinationToken.coin,
+        contractAddress: step.destinationToken.contractAddress ?? '',
+        chainId: step.destinationToken.chainId ?? '',
+        isNft: false,
+        isErc721: false,
+        isShielded: false,
+      }) as BraveWallet.BlockchainToken,
+    [step.destinationToken],
+  )
+
+  const lpIcon = getGate3LPIcon(step)
+
+  return (
+    <Column
+      fullWidth={true}
+      alignItems='flex-start'
+      margin='12px 0px'
+    >
+      <Row justifyContent='flex-start'>
+        <IconsWrapper margin='0px 8px 0px 4px'>
+          <SmallAssetIconWithPlaceholder asset={stepAsset} />
+          {network && (
+            <NetworkIconWrapper padding='1px'>
+              <CreateNetworkIcon
+                network={network}
+                marginRight={0}
+                size='tiny'
+              />
+            </NetworkIconWrapper>
+          )}
+        </IconsWrapper>
+        <Row
+          justifyContent='flex-start'
+          width='unset'
+          gap='4px'
+        >
+          <Text
+            textSize='12px'
+            isBold={false}
+            textColor='tertiary'
+          >
+            {step.destinationToken.symbol} ← {step.sourceToken.symbol} via
+          </Text>
+          {lpIcon !== '' ? (
+            <LPIcon
+              icon={lpIcon}
+              size='14px'
+            />
+          ) : (
+            <BankIcon size='14px' />
+          )}
+          <Text
+            textSize='12px'
+            isBold={true}
+            textColor='tertiary'
+          >
+            {step.tool.name}
+          </Text>
+          {new Amount(step.percent).lt(100) && (
+            <PercentBubble
+              padding='4px 6px'
+              margin='0px 0px 0px 8px'
+            >
+              <Text
+                textSize='10px'
+                isBold={true}
+                textColor='primary'
+              >
+                {new Amount(step.percent).format()}%
+              </Text>
+            </PercentBubble>
+          )}
+        </Row>
+      </Row>
+    </Column>
+  )
+}
 
 interface Props {
   option: QuoteOption
@@ -148,26 +271,6 @@ export const RouteOption = (props: Props) => {
       token: toToken,
     }).formatAsFiat(defaultFiatCurrency)
   }, [spotPrices, toToken, toAmount, defaultFiatCurrency])
-
-  // Computed
-  const firstStep =
-    option.sources.find((source) =>
-      source.includedSteps?.some(
-        (step) => step.type === BraveWallet.LiFiStepType.kCross,
-      ),
-    ) || option.sources[0]
-  const firstStepName = firstStep.name
-  const firstStepIcon = getLPIcon(firstStep)
-  const additionalRoutesLength = option.sources.length - 1
-
-  const { result: exchangeStepsLocale } = usePromise(
-    async () =>
-      PluralStringProxyImpl.getInstance().getPluralString(
-        'braveWalletExchangeNamePlusSteps',
-        additionalRoutesLength,
-      ),
-    [additionalRoutesLength],
-  )
 
   return (
     <OptionButton
@@ -257,26 +360,10 @@ export const RouteOption = (props: Props) => {
           justifyContent='flex-end'
         >
           {!isExpanded && (
-            <Row
-              width='unset'
-              gap='4px'
-            >
-              {firstStepIcon !== '' ? (
-                <LPIcon icon={firstStepIcon} />
-              ) : (
-                <BankIcon />
-              )}
-              <Text
-                textSize='12px'
-                isBold={true}
-                textColor='secondary'
-                textAlign='right'
-              >
-                {additionalRoutesLength !== 0 && exchangeStepsLocale
-                  ? exchangeStepsLocale.replace('$1', firstStepName)
-                  : firstStepName}
-              </Text>
-            </Row>
+            <ProviderRoute
+              provider={option.provider}
+              sourcesLength={option.steps.length || option.sources.length}
+            />
           )}
           <CaratDownIcon isExpanded={isExpanded} />
         </Row>
@@ -292,87 +379,100 @@ export const RouteOption = (props: Props) => {
           </Row>
           <StepsWrapper fullWidth={true}>
             <Lines />
-            {option.sources.reverse().map((source) => {
-              const lpIcon = getLPIcon(source)
-              const exchangeViaProvider = formatLocale(
-                'braveWalletExchangeViaProvider',
-                {
-                  $1: (
-                    <Text
-                      textSize='16px'
-                      isBold={true}
-                      textColor='primary'
-                    >
-                      {source.name}
-                    </Text>
-                  ),
-                  $2: (
-                    <Text
-                      textSize='16px'
-                      isBold={true}
-                      textColor='primary'
-                    >
-                      {SwapProviderNameMapping[option.provider] ?? ''}
-                    </Text>
-                  ),
-                },
-              )
-              return (
-                <Column
-                  fullWidth={true}
-                  alignItems='flex-start'
-                  margin='12px 0px 12px 4px'
-                  key={source.name}
-                >
-                  <Row justifyContent='flex-start'>
-                    <LPIconWrapper
-                      padding='2px'
-                      margin='0px 12px 0px 0px'
-                    >
-                      {lpIcon !== '' ? <LPIcon icon={lpIcon} /> : <BankIcon />}
-                      <ProviderIcon
-                        size='14px'
-                        icon={SwapProviderMetadata[option.provider]}
-                      />
-                    </LPIconWrapper>
-                    <Row
-                      justifyContent='flex-start'
-                      width='unset'
-                      gap='4px'
-                    >
+            {option.steps.length > 0
+              && option.steps.map((step, index) => (
+                <Gate3StepSource
+                  step={step}
+                  key={index}
+                />
+              ))}
+
+            {option.steps.length === 0
+              && [...option.sources].reverse().map((source, index) => {
+                const lpIcon = getLPIcon(source)
+                const exchangeViaProvider = formatLocale(
+                  'braveWalletExchangeViaProvider',
+                  {
+                    $1: (
                       <Text
-                        textSize='12px'
-                        isBold={false}
-                        textColor='tertiary'
+                        textSize='16px'
+                        isBold={true}
+                        textColor='primary'
                       >
-                        {exchangeViaProvider}
+                        {source.name}
                       </Text>
-                      <PercentBubble
-                        padding='4px 6px'
-                        margin='0px 0px 0px 8px'
+                    ),
+                    $2: (
+                      <Text
+                        textSize='16px'
+                        isBold={true}
+                        textColor='primary'
+                      >
+                        {SwapProviderNameMapping[option.provider] ?? ''}
+                      </Text>
+                    ),
+                  },
+                )
+                return (
+                  <Column
+                    fullWidth={true}
+                    alignItems='flex-start'
+                    margin='12px 0px 12px 4px'
+                    key={index}
+                  >
+                    <Row justifyContent='flex-start'>
+                      <LPIconWrapper
+                        padding='2px'
+                        margin='0px 12px 0px 0px'
+                      >
+                        {lpIcon !== '' ? (
+                          <LPIcon icon={lpIcon} />
+                        ) : (
+                          <BankIcon />
+                        )}
+                        <ProviderIcon
+                          size='14px'
+                          icon={SwapProviderMetadata[option.provider]}
+                        />
+                      </LPIconWrapper>
+                      <Row
+                        justifyContent='flex-start'
+                        width='unset'
+                        gap='4px'
                       >
                         <Text
-                          textSize='10px'
-                          isBold={true}
-                          textColor='primary'
+                          textSize='12px'
+                          isBold={false}
+                          textColor='tertiary'
                         >
-                          {source.proportion.times(100).format()}%
+                          {exchangeViaProvider}
                         </Text>
-                      </PercentBubble>
+                        <PercentBubble
+                          padding='4px 6px'
+                          margin='0px 0px 0px 8px'
+                        >
+                          <Text
+                            textSize='10px'
+                            isBold={true}
+                            textColor='primary'
+                          >
+                            {source.proportion.times(100).format()}%
+                          </Text>
+                        </PercentBubble>
+                      </Row>
                     </Row>
-                  </Row>
-                  {source.includedSteps
-                    && Array.from(source.includedSteps)
-                      .reverse()
-                      .map((step) => (
-                        <RouteStep
-                          step={step}
-                          key={step.id}
-                        />
-                      ))}
-                </Column>
-              )
-            })}
+                    {source.includedSteps
+                      && Array.from(source.includedSteps)
+                        .reverse()
+                        .map((step) => (
+                          <RouteStep
+                            step={step}
+                            key={step.id}
+                          />
+                        ))}
+                  </Column>
+                )
+              })}
           </StepsWrapper>
           <Row
             justifyContent='flex-start'
@@ -381,37 +481,46 @@ export const RouteOption = (props: Props) => {
           >
             <Dot />
           </Row>
-          <Row justifyContent='flex-start'>
-            <IconsWrapper margin='0px 8px 0px 0px'>
-              <AssetIconWithPlaceholder asset={fromToken} />
-              {fromTokensNetwork && (
-                <NetworkIconWrapper padding='2px'>
-                  <CreateNetworkIcon
-                    network={fromTokensNetwork}
-                    marginRight={0}
-                  />
-                </NetworkIconWrapper>
-              )}
-            </IconsWrapper>
-            <Column alignItems='flex-start'>
-              <Text
-                textSize='16px'
-                isBold={true}
-                textColor='primary'
-              >
-                {fromAmount.formatAsAsset(6, fromToken.symbol)}
-              </Text>
-              <Text
-                textSize='12px'
-                isBold={false}
-                textColor='secondary'
-              >
-                {getLocale('braveWalletOnNetwork').replace(
-                  '$1',
-                  fromTokensNetwork?.chainName ?? '',
+          <Row justifyContent='space-between'>
+            <Row
+              width='unset'
+              justifyContent='flex-start'
+            >
+              <IconsWrapper margin='0px 8px 0px 0px'>
+                <AssetIconWithPlaceholder asset={fromToken} />
+                {fromTokensNetwork && (
+                  <NetworkIconWrapper padding='2px'>
+                    <CreateNetworkIcon
+                      network={fromTokensNetwork}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
                 )}
-              </Text>
-            </Column>
+              </IconsWrapper>
+              <Column alignItems='flex-start'>
+                <Text
+                  textSize='16px'
+                  isBold={true}
+                  textColor='primary'
+                >
+                  {fromAmount.formatAsAsset(6, fromToken.symbol)}
+                </Text>
+                <Text
+                  textSize='12px'
+                  isBold={false}
+                  textColor='secondary'
+                >
+                  {getLocale('braveWalletOnNetwork').replace(
+                    '$1',
+                    fromTokensNetwork?.chainName ?? '',
+                  )}
+                </Text>
+              </Column>
+            </Row>
+            <ProviderRoute
+              provider={option.provider}
+              sourcesLength={option.steps.length || option.sources.length}
+            />
           </Row>
         </Column>
       )}

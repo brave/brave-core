@@ -27,6 +27,9 @@ export type QuoteOption = {
   impact: Amount
   sources: LiquiditySource[]
 
+  // Gate3 route steps (use empty array for non-Gate3 routes)
+  steps: BraveWallet.Gate3SwapRouteStep[]
+
   /**
    * Indicates the kind of routing followed by the order:
    *
