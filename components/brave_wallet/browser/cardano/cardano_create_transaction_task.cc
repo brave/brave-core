@@ -208,12 +208,12 @@ void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
     StopWithError(std::move(address.error()));
     return;
   }
-  // TODO(https://github.com/brave/brave-browser/issues/45278): we support only
+  // TODO(https://github.com/brave/brave-browser/issues/46092): we support only
   // simple Cardano accounts now when there is only one address per account. So
   // change address is also external address.
   DCHECK_EQ(address.value()->payment_key_id->role,
             mojom::CardanoKeyRole::kExternal);
-  // TODO(https://github.com/brave/brave-browser/issues/45278): should update
+  // TODO(https://github.com/brave/brave-browser/issues/46092): should update
   // account pref with new address.
   change_address_ = CardanoAddress::FromString(address.value()->address_string);
   if (!change_address_) {
