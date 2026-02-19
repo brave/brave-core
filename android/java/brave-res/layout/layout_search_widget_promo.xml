@@ -16,33 +16,15 @@
         android:padding="24dp"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@color/schemes_surface_container_lowest"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="25dp"
         app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:padding="16dp"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivSearchWidgetPromoIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/ic_search_widget_promotion_icon" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:orientation="vertical">
-
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSearchWidgetPromoTitle"
                         android:layout_width="match_parent"
@@ -60,23 +42,21 @@
                         android:text="@string/try_brave_search_widget_description"
                         android:textColor="@color/schemes_on_surface_variant" />
 
-                </LinearLayout>
-
-            </LinearLayout>
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="16dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNotNow"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:text="@string/not_now"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:ellipsize="end"
                     android:layout_marginEnd="8dp"
                     android:padding="12dp"
@@ -85,8 +65,9 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btAddWidget"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:background="@drawable/add_widget_button"
@@ -95,7 +76,6 @@
                     android:padding="12dp"
                     android:textColor="@color/schemes_on_primary"
                     android:fontFamily="sans-serif-medium"
-                    app:drawableStartCompat="@drawable/ic_widget_generic"
                     app:drawableTint="@color/schemes_on_primary"
                     android:drawablePadding="2dp"
                     style="?android:attr/borderlessButtonStyle"/>
