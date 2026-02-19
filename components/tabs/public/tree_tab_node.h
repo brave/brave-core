@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
 
 #include "base/memory/raw_ref.h"
+#include "base/types/pass_key.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 
 namespace tabs {
@@ -39,7 +40,20 @@ class TreeTabNode {
   // node does not currently have an associated tab
   const TabInterface* GetTab() const;
 
+  // Exposes the calculation of level and height to TreeTabNodeTabCollection.
+  int CalculateLevelAndHeightRecursively(
+      base::PassKey<TreeTabNodeTabCollection> pass_key);
+  void OnChildHeightChanged(base::PassKey<TreeTabNodeTabCollection> pass_key);
+
  private:
+  // Recalculates the level and height of this node and its children recursively
+  // in the tree. This returns the deepest height of the subtree rooted at this
+  // node.
+  int CalculateLevelAndHeightRecursivelyImpl();
+
+  // Called when child node's height changes to update this node's height.
+  void OnChildHeightChangedImpl();
+
   // Owner of this TreeNode.
   base::raw_ref<TreeTabNodeTabCollection> collection_;
 
