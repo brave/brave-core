@@ -108,7 +108,6 @@ class CardanoTestRpcServer {
 
   network::TestURLLoaderFactory url_loader_factory_;
   raw_ref<CardanoWalletService> cardano_wallet_service_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<CardanoHDKeyring> keyring_;
 };
 

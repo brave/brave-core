@@ -53,10 +53,7 @@ class MockTrackerObserver : public CardanoBlockTracker::Observer {
 class CardanoBlockTrackerUnitTest : public testing::Test {
  public:
   CardanoBlockTrackerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~CardanoBlockTrackerUnitTest() override = default;
 
@@ -67,7 +64,8 @@ class CardanoBlockTrackerUnitTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     cardano_wallet_service_ = std::make_unique<CardanoWalletService>(
-        *keyring_service_, *network_manager_, shared_url_loader_factory_);
+        *keyring_service_, *network_manager_,
+        url_loader_factory_.GetSafeWeakWrapper());
     tracker_ = std::make_unique<CardanoBlockTracker>(*cardano_wallet_service_);
   }
 
@@ -86,7 +84,6 @@ class CardanoBlockTrackerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;

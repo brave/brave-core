@@ -230,22 +230,18 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   void InitWallet() {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
-
     wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             GetProfile());
     json_rpc_service_ = wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
     keyring_service_ = wallet_service_->keyring_service();
     asset_ratio_service_ =
         brave_wallet::AssetRatioServiceFactory::GetServiceForContext(
             GetProfile());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
 
     ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
                                                     kPasswordBrave, false));
@@ -364,7 +360,6 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   raw_ptr<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
   raw_ptr<brave_wallet::BraveWalletService> wallet_service_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   network::TestURLLoaderFactory url_loader_factory_;
 };
 

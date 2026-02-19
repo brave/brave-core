@@ -174,12 +174,10 @@ class KeyringServiceUnitTest : public testing::Test {
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &prefs_, nullptr);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   }
 
@@ -206,7 +204,7 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
+    return url_loader_factory_.GetSafeWeakWrapper();
   }
 
   std::string GetStringPrefForKeyring(const std::string& key,
@@ -534,7 +532,6 @@ class KeyringServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

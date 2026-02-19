@@ -206,10 +206,7 @@ mojom::AllowanceInfoPtr GetAllowanceInfo(const base::DictValue& current_item,
 class EthAllowanceManagerUnitTest : public testing::Test {
  public:
   EthAllowanceManagerUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~EthAllowanceManagerUnitTest() override = default;
 
  protected:
@@ -226,7 +223,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
         GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
@@ -496,7 +493,6 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;

@@ -189,10 +189,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
  public:
   EthereumProviderImplUnitTest()
       : browser_task_environment_(
-            base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void TearDown() override {
     provider_.reset();
@@ -216,14 +213,14 @@ class EthereumProviderImplUnitTest : public testing::Test {
     asset_ratio_service_ =
         AssetRatioServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
         &local_state_);
     ASSERT_TRUE(brave_wallet_service_.get());
     json_rpc_service()->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
     WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
@@ -922,7 +919,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
   raw_ptr<AssetRatioService> asset_ratio_service_;

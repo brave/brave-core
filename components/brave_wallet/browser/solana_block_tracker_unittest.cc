@@ -49,10 +49,7 @@ class MockTrackerObserver : public SolanaBlockTracker::Observer {
 class SolanaBlockTrackerUnitTest : public testing::Test {
  public:
   SolanaBlockTrackerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~SolanaBlockTrackerUnitTest() override = default;
 
@@ -60,7 +57,8 @@ class SolanaBlockTrackerUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &prefs_, nullptr);
     tracker_ = std::make_unique<SolanaBlockTracker>(json_rpc_service_.get());
   }
 
@@ -104,7 +102,6 @@ class SolanaBlockTrackerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SolanaBlockTracker> tracker_;

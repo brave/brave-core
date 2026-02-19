@@ -53,19 +53,12 @@ namespace brave_wallet {
 
 class MeldIntegrationServiceUnitTest : public testing::Test {
  public:
-  MeldIntegrationServiceUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
-    meld_integration_service_ =
-        std::make_unique<MeldIntegrationService>(shared_url_loader_factory_);
+  MeldIntegrationServiceUnitTest() {
+    meld_integration_service_ = std::make_unique<MeldIntegrationService>(
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   ~MeldIntegrationServiceUnitTest() override = default;
-
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
-  }
 
   using OnRequestPayloadCallback =
       base::RepeatingCallback<void(const std::string& request_payload)>;
@@ -654,7 +647,6 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 
  private:
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {

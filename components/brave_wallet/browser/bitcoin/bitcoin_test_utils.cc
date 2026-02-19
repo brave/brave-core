@@ -111,8 +111,7 @@ std::optional<std::string> IsAddressUtxoRequest(
 
 }  // namespace
 
-BitcoinTestRpcServer::BitcoinTestRpcServer()
-    : shared_url_loader_factory_(url_loader_factory_.GetSafeWeakWrapper()) {
+BitcoinTestRpcServer::BitcoinTestRpcServer() {
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
@@ -127,7 +126,7 @@ BitcoinTestRpcServer::~BitcoinTestRpcServer() = default;
 
 scoped_refptr<network::SharedURLLoaderFactory>
 BitcoinTestRpcServer::GetURLLoaderFactory() {
-  return shared_url_loader_factory_;
+  return url_loader_factory_.GetSafeWeakWrapper();
 }
 
 bitcoin_rpc::AddressStats BitcoinTestRpcServer::EmptyAddressStats(

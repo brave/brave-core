@@ -66,10 +66,7 @@ std::string LatestEpochParameters(int min_fee_a,
 class CardanoRpcUnitTest : public testing::Test {
  public:
   CardanoRpcUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~CardanoRpcUnitTest() override = default;
 
@@ -85,9 +82,11 @@ class CardanoRpcUnitTest : public testing::Test {
             ->GetNetworkURL(mojom::kCardanoTestnet, mojom::CoinType::ADA)
             .spec();
     cardano_mainnet_rpc_ = std::make_unique<cardano_rpc::CardanoRpc>(
-        mojom::kCardanoMainnet, *network_manager_, shared_url_loader_factory_);
+        mojom::kCardanoMainnet, *network_manager_,
+        url_loader_factory_.GetSafeWeakWrapper());
     cardano_testnet_rpc_ = std::make_unique<cardano_rpc::CardanoRpc>(
-        mojom::kCardanoTestnet, *network_manager_, shared_url_loader_factory_);
+        mojom::kCardanoTestnet, *network_manager_,
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   std::string GetResponseString() const {
@@ -107,7 +106,6 @@ class CardanoRpcUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<cardano_rpc::CardanoRpc> cardano_mainnet_rpc_;
   std::unique_ptr<cardano_rpc::CardanoRpc> cardano_testnet_rpc_;

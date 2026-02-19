@@ -58,12 +58,9 @@ namespace brave_wallet {
 
 class AssetRatioServiceUnitTest : public testing::Test {
  public:
-  AssetRatioServiceUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
-    asset_ratio_service_ =
-        std::make_unique<AssetRatioService>(shared_url_loader_factory_);
+  AssetRatioServiceUnitTest() {
+    asset_ratio_service_ = std::make_unique<AssetRatioService>(
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   // Helper function to create AssetPriceRequest
@@ -94,10 +91,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
   }
 
   ~AssetRatioServiceUnitTest() override = default;
-
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
-  }
 
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -163,7 +156,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
 
  private:
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

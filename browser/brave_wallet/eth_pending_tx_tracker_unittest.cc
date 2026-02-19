@@ -41,11 +41,7 @@ namespace brave_wallet {
 
 class EthPendingTxTrackerUnitTest : public testing::Test {
  public:
-  EthPendingTxTrackerUnitTest() {
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
-  }
+  EthPendingTxTrackerUnitTest() = default;
 
   void SetUp() override {
     TestingProfile::Builder builder;
@@ -72,17 +68,13 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(GetPrefs());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory(), network_manager_.get(), GetPrefs(),
-        nullptr);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        GetPrefs(), nullptr);
   }
 
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
-
-  network::SharedURLLoaderFactory* shared_url_loader_factory() {
-    return url_loader_factory_.GetSafeWeakWrapper().get();
-  }
 
   network::TestURLLoaderFactory* test_url_loader_factory() {
     return &url_loader_factory_;
@@ -92,7 +84,6 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 
  private:
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<NetworkManager> network_manager_;
