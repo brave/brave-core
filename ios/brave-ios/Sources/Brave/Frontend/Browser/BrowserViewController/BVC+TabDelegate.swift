@@ -678,8 +678,33 @@ extension BrowserViewController {
       request.mainDocumentURL.flatMap {
         tab.braveUserAgentExceptions?.canShowBrave($0)
       } ?? true
-    let mobile = isBraveAllowedInUA ? UserAgent.mobile : UserAgent.mobileMasked
-    let desktop = isBraveAllowedInUA ? UserAgent.desktop : UserAgent.desktopMasked
+
+    let mobile: String
+    let desktop: String
+    if isBraveAllowedInUA {
+      let userAgentType = GetDefaultBraveIOSUserAgentType()
+      switch userAgentType {
+      case .masked:
+        mobile = UserAgent.mobileMasked
+        desktop = UserAgent.desktopMasked
+      case .version:
+        mobile = UserAgent.mobile
+        desktop = UserAgent.desktop
+      case .suffix:
+        mobile = UserAgent.safariMobileBraveSuffix
+        desktop = UserAgent.safariDesktopBraveSuffix
+      case .suffixComment:
+        mobile = UserAgent.safariMobileBraveSuffixComment
+        desktop = UserAgent.safariDesktopBraveSuffixComment
+      @unknown default:
+        mobile = UserAgent.safariMobileBraveSuffix
+        desktop = UserAgent.safariDesktopBraveSuffix
+      }
+    } else {
+      mobile = UserAgent.mobileMasked
+      desktop = UserAgent.desktopMasked
+    }
+
     switch type {
     case .none, .automatic:
       let screenWidth = UIScreen.main.bounds.width

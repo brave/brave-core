@@ -44,6 +44,21 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
      std::size(kZCashShieldedTransactionsEnabled), nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
+const flags_ui::FeatureEntry::FeatureParam kBraveIOSUserAgentVersion[] = {
+    {"default_user_agent", "1"}};
+const flags_ui::FeatureEntry::FeatureParam kBraveIOSUserAgentSuffix[] = {
+    {"default_user_agent", "2"}};
+const flags_ui::FeatureEntry::FeatureParam kBraveIOSUserAgentSuffixComment[] = {
+    {"default_user_agent", "3"}};
+const flags_ui::FeatureEntry::FeatureVariation
+    kBraveIOSUserAgentFeatureVariations[] = {
+        {"- Version", kBraveIOSUserAgentVersion,
+         std::size(kBraveIOSUserAgentVersion), nullptr},
+        {"- Suffix", kBraveIOSUserAgentSuffix,
+         std::size(kBraveIOSUserAgentSuffix), nullptr},
+        {"- Suffix Comment", kBraveIOSUserAgentSuffixComment,
+         std::size(kBraveIOSUserAgentSuffixComment), nullptr}};
+
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                              \
       "skus-sdk",                                       \
@@ -266,7 +281,9 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "Use Brave user agent",                                              \
           "Includes Brave version information in the user agent",              \
           flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(brave_user_agent::features::kUseBraveUserAgent),  \
+          FEATURE_WITH_PARAMS_VALUE_TYPE(                                      \
+              brave_user_agent::features::kUseBraveUserAgent,                  \
+              kBraveIOSUserAgentFeatureVariations, "BraveIOSUserAgent"),       \
       },                                                                       \
       {                                                                        \
           "brave-use-chromium-web-views-javascript",                           \

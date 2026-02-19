@@ -7,9 +7,19 @@
 
 #include "base/feature_list.h"
 
-namespace brave_user_agent::features {
+namespace brave_user_agent {
+namespace features {
 
 BASE_FEATURE(kUseBraveUserAgent,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace brave_user_agent::features
+#if BUILDFLAG(IS_IOS)
+BASE_FEATURE_PARAM(int,
+                   kBraveIOSUserAgentDefault,
+                   &kUseBraveUserAgent,
+                   "default_user_agent",
+                   2);  // BraveIOSUserAgentTypeSuffix
+#endif
+
+}  // namespace features
+}  // namespace brave_user_agent

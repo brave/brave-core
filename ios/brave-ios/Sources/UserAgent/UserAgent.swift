@@ -22,4 +22,9 @@ public struct UserAgent {
     desktopMode: true,
     useSafariUA: true
   )
+
+  public static let safariMobileBraveSuffix = UserAgent.mobileMasked.appending(" Brave")
+  public static let safariDesktopBraveSuffix = UserAgent.desktopMasked.appending(" Brave")
+  public static let safariMobileBraveSuffixComment = UserAgent.mobileMasked.appending(" (Brave)")
+  public static let safariDesktopBraveSuffixComment = UserAgent.desktopMasked.appending(" (Brave)")
 }
