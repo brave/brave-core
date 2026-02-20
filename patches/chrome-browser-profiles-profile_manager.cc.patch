@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profiles/profile_manager.cc b/chrome/browser/profiles/profile_manager.cc
+index a0c168a79b050ad44005a3929617e74116afd669..cfe551937407e03857f79dbe48dfed765c8db18d 100644
+--- a/chrome/browser/profiles/profile_manager.cc
++++ b/chrome/browser/profiles/profile_manager.cc
+@@ -2218,6 +2218,7 @@ void ProfileManager::OnBrowserClosed(Browser* browser) {
+       browsing_data_lifetime_manager->ClearBrowsingDataForOnExitPolicy(
+           /*keep_browser_alive=*/true);
+     }
++    BRAVE_PROFILE_MANAGER_ON_BROWSER_CLOSED
+   }
+ }
+ 

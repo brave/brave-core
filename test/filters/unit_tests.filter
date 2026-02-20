@@ -745,9 +745,6 @@
 # These tests fail because we don't show the history sync promo
 -BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/SignedIn
 
-# This test fails because we disable kDestroyProfileOnBrowserClose feature.
--BookmarkDictImporterTest.FailsIfProfileIsDestroyed
-
 # These tests fail because we add IPH features but do not add associated UMA
 # histogram/actions XML entries (which are not needed for Brave since we don't
 # use Google's UMA for IPH metrics).

@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -31,6 +33,21 @@ std::vector<Profile*> ProfileManager::GetLastOpenedProfiles() {
   return profiles;
 }
 
+// When the last browser for a profile is closed, `ProfileManager` calls
+// `BrowsingDataLifetimeManager::ClearBrowsingDataForOnExitPolicy` to clear
+// browsing data for that profile. This macro is used at that point and allows
+// Brave to additionally call its own data clearing routine for the profile
+// before it is unloaded. This code path is currently not used on Android.
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_PROFILE_MANAGER_ON_BROWSER_CLOSED \
+  BraveClearBrowsingData::ClearOnBrowserClosed(profile);
+#else
+#define BRAVE_PROFILE_MANAGER_ON_BROWSER_CLOSED
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #define GetLastOpenedProfiles GetLastOpenedProfiles_ChromiumImpl
+
 #include <chrome/browser/profiles/profile_manager.cc>
+
 #undef GetLastOpenedProfiles
+#undef BRAVE_PROFILE_MANAGER_ON_BROWSER_CLOSED

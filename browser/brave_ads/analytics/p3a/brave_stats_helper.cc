@@ -53,7 +53,7 @@ void BraveStatsHelper::OnProfileAdded(Profile* profile) {
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
   if ((!last_used_path.empty() && profile->GetBaseName() == last_used_path) ||
       (last_used_path.empty() &&
-       profile == ProfileManager::GetLastUsedProfile())) {
+       profile == ProfileManager::GetLastUsedProfileIfLoaded())) {
 #endif
     OnLastUsedProfileChanged();
   }

@@ -117,8 +117,7 @@ bool UpgradeWhenIdle::AreAnyClearDataOnExitSettingsEnabled() {
     return false;
   }
   for (Profile* profile : profile_manager_->GetLoadedProfiles()) {
-    if (content::BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(
-            profile)) {
+    if (BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(profile)) {
       return true;
     }
   }

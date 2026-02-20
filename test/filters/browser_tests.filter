@@ -1998,18 +1998,9 @@
 -TrackingProtectionBubbleViewBrowserTest.TrackingProtectionsButtonUpdatesTrackingProtectionException
 -TrackingProtectionReminderDesktopUiController*
 
-# These tests fail because we disable features::kDestroyProfileOnBrowserClose
--DestroyProfileOnBrowserClose/ProfileHelperTestWithDestroyProfile.*
+# This test fails because it assumes that additional (e.g. Brave-defined)
+# browser data cleanup tasks are not added.
 -DestroyProfileOnBrowserClose/ProfileManagerBrowserTest.*
--ExtensionCrxInstallerTest.InstallFailsDuringProfileShutdown
--ExtensionServiceBrowserTest.NoHostObservationAfterShutDown
--ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
--ProfilePickerWithGlicParamBrowserTest.GlicLearnMoreClicked/*
--WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverWebAppInfoFetching
--WebAppProfileDeletionTest_WebContentsGracefulShutdown.IconDownloading
--WebAppProfileDeletionTest_WebContentsGracefulShutdown.UrlLoading
--WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverIconFetch
--WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverInstallabilityFetch
 
 # These tests DCHECK in views::View::ReorderChildLayers stemming from ViewShadow
 # c'tor. https://github.com/brave/brave-browser/issues/34103
