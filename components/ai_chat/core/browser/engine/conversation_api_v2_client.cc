@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -173,19 +174,15 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
           break;
 
         case mojom::ContentBlock::Tag::kImageContentBlock: {
-          const auto& image = block->get_image_content_block();
-          base::DictValue image_url;
-          image_url.Set("url", image->image_url.spec());
-          content_block_dict.Set("image_url", std::move(image_url));
+          content_block_dict.Set(
+              "image_url",
+              ImageContentBlockToDict(*block->get_image_content_block()));
           break;
         }
 
         case mojom::ContentBlock::Tag::kFileContentBlock: {
-          const auto& file = block->get_file_content_block();
-          base::DictValue file_dict;
-          file_dict.Set("filename", file->filename);
-          file_dict.Set("file_data", file->file_data.spec());
-          content_block_dict.Set("file", std::move(file_dict));
+          content_block_dict.Set(
+              "file", FileContentBlockToDict(*block->get_file_content_block()));
           break;
         }
 
@@ -198,20 +195,9 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
         }
 
         case mojom::ContentBlock::Tag::kMemoryContentBlock: {
-          const auto& memory_block = block->get_memory_content_block();
-          base::DictValue memory_dict;
-          for (const auto& [key, memory_value] : memory_block->memory) {
-            if (memory_value->is_string_value()) {
-              memory_dict.Set(key, memory_value->get_string_value());
-            } else if (memory_value->is_list_value()) {
-              base::ListValue list;
-              for (const auto& val : memory_value->get_list_value()) {
-                list.Append(val);
-              }
-              memory_dict.Set(key, std::move(list));
-            }
-          }
-          content_block_dict.Set("memory", std::move(memory_dict));
+          content_block_dict.Set(
+              "memory",
+              MemoryContentBlockToDict(*block->get_memory_content_block()));
           break;
         }
 
