@@ -1474,9 +1474,8 @@ public abstract class BraveActivity extends ChromeActivity
                     });
             if (ChromeSharedPreferences.getInstance()
                     .readBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false)) {
-                mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(this);
-                View rootView = requireViewById(android.R.id.content);
-                mSearchWidgetPromoPanel.showIfNeeded(rootView, getBottomOffsetForWidgetPromo());
+                mSearchWidgetPromoPanel = new SearchWidgetPromoPanel();
+                showWidgetPromoPanel();
                 ChromeSharedPreferences.getInstance()
                         .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
             }
@@ -2655,10 +2654,39 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     protected void onOrientationChange(int orientation) {
         super.onOrientationChange(orientation);
+        // The activity is not destroyed during orientation changes, but
+        // if the search widget promo panel is shown, it's important to recalculate its position
+        // as it's different between landscape and portrait.
+        if (mSearchWidgetPromoPanel != null && mSearchWidgetPromoPanel.isShowing()) {
+            showWidgetPromoPanel();
+        }
+    }
 
+    @Override
+    public void onNightModeStateChanged() {
+        // If the search widget promo panel is shown, we mark its visibility
+        // before the activity is destroyed and recreated when the night mode state changes.
+        // The new search widget promo panel will be recreated with the new appropriate theme.
+        if (mSearchWidgetPromoPanel != null && mSearchWidgetPromoPanel.isShowing()) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
+            mSearchWidgetPromoPanel.dismiss();
+            mSearchWidgetPromoPanel = null;
+        }
+        super.onNightModeStateChanged();
+    }
+
+    private void hideWidgetPromoPanel() {
+        if (mSearchWidgetPromoPanel != null) {
+            mSearchWidgetPromoPanel.dismiss();
+            mSearchWidgetPromoPanel = null;
+        }
+    }
+
+    private void showWidgetPromoPanel() {
         if (mSearchWidgetPromoPanel != null) {
             final View rootView = requireViewById(android.R.id.content);
-            mSearchWidgetPromoPanel.showIfNeeded(rootView, getBottomOffsetForWidgetPromo());
+            mSearchWidgetPromoPanel.showIfNeeded(rootView, getBottomOffsetForWidgetPromo(), this);
         }
     }
 
@@ -2935,6 +2963,7 @@ public abstract class BraveActivity extends ChromeActivity
     public void onKeyboardOpened(int keyboardHeight) {
         runOnUiThread(
                 () -> {
+                    hideWidgetPromoPanel();
                     if (!isFinishing()
                             && !isDestroyed()
                             && getBraveToolbarLayout().isUrlBarFocused()
@@ -2946,6 +2975,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onKeyboardClosed() {
+        hideWidgetPromoPanel();
         removeQuickActionSearchEnginesView();
     }
 

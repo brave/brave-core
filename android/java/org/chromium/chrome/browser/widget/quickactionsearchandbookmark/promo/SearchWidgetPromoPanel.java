@@ -17,23 +17,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 
 @NullMarked
 public class SearchWidgetPromoPanel implements View.OnClickListener {
-    private final PopupWindow mPopupWindow;
-    private final Context mContext;
-
-    public SearchWidgetPromoPanel(Context context) {
-        mContext = context;
-        View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
-        view.findViewById(R.id.btAddWidget).setOnClickListener(this);
-        view.findViewById(R.id.tvNotNow).setOnClickListener(this);
-        int width = LinearLayout.LayoutParams.MATCH_PARENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        mPopupWindow = new PopupWindow(view, width, height, true);
-    }
+    @Nullable
+    private PopupWindow mPopupWindow;
 
     @Override
     public void onClick(View view) {
@@ -42,11 +33,20 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
         } else if (view.getId() == R.id.tvNotNow) {
             BraveSearchWidgetUtils.setShouldShowWidgetPromo(false);
         }
-        mPopupWindow.dismiss();
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
     }
 
-    public void showIfNeeded(final View parentView, int extraBottomOffset) {
-        if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext)) {
+    public void showIfNeeded(final View parentView, final int extraBottomOffset, final Context context) {
+        dismiss();
+        if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(context)) {
+            View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
+            view.findViewById(R.id.btAddWidget).setOnClickListener(this);
+            view.findViewById(R.id.tvNotNow).setOnClickListener(this);
+            int width = LinearLayout.LayoutParams.MATCH_PARENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            mPopupWindow = new PopupWindow(view, width, height, true);
             int navigationBarBottomInset = 0;
             WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(parentView);
             if (insets != null) {
@@ -54,15 +54,31 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
                         insets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom;
             }
             int totalBottomOffset = extraBottomOffset + navigationBarBottomInset;
-            if (mPopupWindow.isShowing()) {
-                mPopupWindow.update(0, totalBottomOffset, -1, -1);
-            } else {
-                mPopupWindow.showAtLocation(
-                        parentView,
-                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-                        0,
-                        totalBottomOffset);
-            }
+            mPopupWindow.showAtLocation(
+                    parentView,
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                    0,
+                    totalBottomOffset);
         }
     }
+
+    /**
+     * Returns whether the promo popup is currently visible on screen.
+     */
+    public boolean isShowing() {
+        return mPopupWindow != null && mPopupWindow.isShowing();
+    }
+
+    /**
+     * Dismisses the promo popup if it is currently shown and clears its reference.
+     * This method is safe to call multiple times. If the popup is already dismissed, it will be a
+     * no-op.
+     */
+    public void dismiss() {
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+            mPopupWindow = null;
+        }
+    }
+
 }
