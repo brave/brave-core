@@ -5,16 +5,18 @@
 
 #include "content/browser/site_instance_impl.h"
 
-#include <content/browser/site_instance_impl.cc>  // IWYU pragma: export
+#include <content/browser/site_instance_impl.cc>
 
 namespace content {
 
-// static
+// Used by the containers feature so that SiteInstance::GetSiteInstanceForNewTab
+// can apply a container's StoragePartitionConfig when opening a new tab page,
+// rather than always falling back to the default partition via CreateForURL.
 scoped_refptr<SiteInstance>
 SiteInstance::CreateForURLWithOptionalFixedStoragePartition(
     BrowserContext* browser_context,
     const GURL& url,
-    const std::optional<StoragePartitionConfig>& storage_partition_config) {
+    base::optional_ref<StoragePartitionConfig> storage_partition_config) {
   if (storage_partition_config) {
     return CreateForFixedStoragePartition(browser_context, url,
                                           *storage_partition_config);

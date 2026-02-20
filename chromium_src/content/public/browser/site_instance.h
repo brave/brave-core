@@ -6,14 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_SITE_INSTANCE_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_SITE_INSTANCE_H_
 
-#include <optional>
+#include <base/types/optional_ref.h>
 
+// Extends SiteInstance with CreateForURLWithOptionalFixedStoragePartition, a
+// helper used by the containers feature to apply a StoragePartitionConfig. When
+// a config is present it delegates to CreateForFixedStoragePartition; otherwise
+// it falls back to CreateForURL.
 #define CreateForURL(...)                        \
   CreateForURL(__VA_ARGS__);                     \
   static scoped_refptr<SiteInstance>             \
   CreateForURLWithOptionalFixedStoragePartition( \
       __VA_ARGS__,                               \
-      const std::optional<StoragePartitionConfig>& storage_partition_config)
+      base::optional_ref<StoragePartitionConfig> storage_partition_config)
 
 #include <content/public/browser/site_instance.h>  // IWYU pragma: export
 
