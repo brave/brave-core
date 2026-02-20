@@ -10,8 +10,10 @@
 #include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
@@ -201,7 +203,9 @@ BraveOriginServiceFactory* BraveOriginServiceFactory::GetInstance() {
 BraveOriginServiceFactory::BraveOriginServiceFactory()
     : ProfileKeyedServiceFactory(
           "BraveOriginService",
-          ProfileSelections::BuildRedirectedInIncognito()) {}
+          ProfileSelections::BuildRedirectedInIncognito()) {
+  DependsOn(skus::SkusServiceFactory::GetInstance());
+}
 
 BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 
@@ -219,9 +223,12 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
   std::string profile_id = GetProfileId(profile->GetPath());
+  auto skus_service_getter =
+      base::BindRepeating(&skus::SkusServiceFactory::GetForContext, context);
   return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
-      GetPolicyServiceFromProfile(profile), GetBrowserPolicyService());
+      GetPolicyServiceFromProfile(profile), GetBrowserPolicyService(),
+      std::move(skus_service_getter));
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {

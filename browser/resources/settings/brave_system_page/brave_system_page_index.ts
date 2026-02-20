@@ -21,6 +21,7 @@ import { SearchableViewContainerMixin } from '../settings_page/searchable_view_c
 import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import { getTemplate } from './brave_system_page_index.html.js';
+import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js'
 
 // <if expr="enable_brave_vpn_wireguard">
 import '../brave_system_page/brave_vpn_page.js'
@@ -95,6 +96,10 @@ export class SettingsBraveSystemPageIndexElement extends
   declare private showVPNPage_: boolean;
   // </if>
 
+  private braveOriginHandler_:
+      BraveOriginMojom.BraveOriginSettingsHandlerRemote | null = null
+  private boundOnVisibilityChange_: (() => void) | null = null
+
   constructor() {
     super();
 
@@ -106,6 +111,47 @@ export class SettingsBraveSystemPageIndexElement extends
     // 'battery'.
     if (!initialHasBattery) {
       performanceBrowserProxy.getDeviceHasBattery().then(this.hasBatteryChanged_)
+    }
+
+    // If Origin onboarding is enabled, check if the user has already purchased
+    // and hide it if so.
+    if (this.showOriginOnboarding_) {
+      this.braveOriginHandler_ =
+          BraveOriginMojom.BraveOriginSettingsHandler.getRemote()
+      this.checkOriginPurchaseState_()
+
+      // Re-check when tab becomes visible (user may return from account page)
+      this.boundOnVisibilityChange_ = this.onVisibilityChange_.bind(this)
+      document.addEventListener('visibilitychange',
+          this.boundOnVisibilityChange_)
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+    if (this.boundOnVisibilityChange_) {
+      document.removeEventListener('visibilitychange',
+          this.boundOnVisibilityChange_)
+      this.boundOnVisibilityChange_ = null
+    }
+  }
+
+  private onVisibilityChange_() {
+    if (document.visibilityState === 'visible' &&
+        this.showOriginOnboarding_) {
+      this.checkOriginPurchaseState_()
+    }
+  }
+
+  private async checkOriginPurchaseState_() {
+    if (!this.braveOriginHandler_) {
+      return
+    }
+    const {isPurchased} =
+        await this.braveOriginHandler_.refreshPurchaseState()
+    if (isPurchased && this.showOriginOnboarding_) {
+      this.showOriginOnboarding_ = false
+      this.showDefaultViews_()
     }
   }
 

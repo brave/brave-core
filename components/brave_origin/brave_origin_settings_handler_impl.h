@@ -30,6 +30,7 @@ class BraveOriginSettingsHandlerImpl
 
   // mojom::BraveOriginSettingsHandler:
   void IsBraveOriginUser(IsBraveOriginUserCallback callback) override;
+  void RefreshPurchaseState(RefreshPurchaseStateCallback callback) override;
   void IsPolicyControlledByBraveOrigin(
       const std::string& policy_key,
       IsPolicyControlledByBraveOriginCallback callback) override;

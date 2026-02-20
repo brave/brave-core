@@ -5,8 +5,11 @@
 
 #include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
 
+#include <utility>
+
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 
 namespace brave_origin {
 
@@ -26,8 +29,28 @@ void BraveOriginSettingsHandlerImpl::BindInterface(
 
 void BraveOriginSettingsHandlerImpl::IsBraveOriginUser(
     IsBraveOriginUserCallback callback) {
-  bool is_brave_origin_user = brave_origin::IsBraveOriginEnabled();
-  std::move(callback).Run(is_brave_origin_user);
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  std::move(callback).Run(true);
+#else
+  if (!brave_origin::IsBraveOriginEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  brave_origin_service_->CheckPurchaseState(std::move(callback));
+#endif
+}
+
+void BraveOriginSettingsHandlerImpl::RefreshPurchaseState(
+    RefreshPurchaseStateCallback callback) {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  std::move(callback).Run(true);
+#else
+  if (!brave_origin::IsBraveOriginEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  brave_origin_service_->CheckPurchaseState(std::move(callback));
+#endif
 }
 
 void BraveOriginSettingsHandlerImpl::IsPolicyControlledByBraveOrigin(

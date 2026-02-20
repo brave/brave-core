@@ -7,8 +7,13 @@ module brave_origin.mojom;
 
 // Interface for communicating with BraveOriginService from WebUI
 interface BraveOriginSettingsHandler {
-  // Check if the current user is a Brave Origin user
+  // Check if the current user is a Brave Origin user (has purchased Origin
+  // or is using a branded build). This performs an async SKU credential check.
   IsBraveOriginUser() => (bool is_brave_origin_user);
+
+  // Re-check purchase state from SKU service. Call this after returning from
+  // the account page to detect a new purchase.
+  RefreshPurchaseState() => (bool is_purchased);
 
   // Check if a specific policy is controlled by Brave Origin
   IsPolicyControlledByBraveOrigin(string policy_key) =>
