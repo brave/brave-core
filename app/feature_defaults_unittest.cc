@@ -203,7 +203,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif  // !BUILDFLAG(IS_ANDROID)
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
-      &media::kLiveCaption,
       &metrics::features::kStructuredMetrics,
       &metrics::private_metrics::kPrivateMetricsFeature,
       &metrics::structured::kPhoneHubStructuredMetrics,

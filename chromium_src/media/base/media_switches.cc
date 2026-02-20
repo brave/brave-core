@@ -10,7 +10,10 @@
 namespace media {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kLiveCaption, base::FEATURE_DISABLED_BY_DEFAULT},
+    // kLiveCaption is no longer disabled: the SODA (Speech On-Device API)
+    // infrastructure must be available for on-device speech recognition
+    // via the WebSpeech API. Live Caption UI is removed in Brave's settings
+    // (a11y_page.ts), so the feature won't be visible to users.
     {kEnableTabMuting, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 

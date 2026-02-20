@@ -2340,10 +2340,8 @@
 # and size_in_pixel are (0,0). Have not investigated any further.
 -DownloadToolbarUIControllerBrowserTest.ImageBadgeShowsForMultipleDownloads
 
-# These tests fail because we stub captions::IsLiveCaptionFeatureSuppported to
-# always return false
--LiveCaptionAutomaticLanguageDownloadTest.*
--LiveCaptionControllerTest.*
+# LiveCaption tests should now pass since IsLiveCaptionFeatureSupported
+# delegates to the Chromium implementation (needed for SODA/on-device speech).
 
 # This test fails because we stub out NetworkService::UpdateKeysPinList
 -PKIMetadataComponentInstallerTest.InstallComponentUpdatesPinningConfig
