@@ -37,6 +37,7 @@ export interface UseGate3SwapStatusResult {
   error?: BraveWallet.Gate3SwapError
   errorString?: string
   isLoading: boolean
+  isEnabled: boolean
   refetch: () => void
 }
 
@@ -112,6 +113,7 @@ export function useGate3SwapStatus(
     error: data?.error ?? undefined,
     errorString: data?.errorString ?? undefined,
     isLoading: isLoading || isFetching,
+    isEnabled: shouldQuery,
     refetch,
   }
 }

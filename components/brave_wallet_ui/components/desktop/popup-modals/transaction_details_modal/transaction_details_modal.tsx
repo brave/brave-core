@@ -77,6 +77,7 @@ import { PopupModal } from '../../popup-modals/index'
 import { withPlaceholderIcon } from '../../../shared/create-placeholder-icon'
 import { NftIcon } from '../../../shared/nft-icon/nft-icon'
 import { CreateNetworkIcon } from '../../../shared/create-network-icon'
+import { LoadingSkeleton } from '../../../shared/loading-skeleton'
 
 // Styled Components
 import {
@@ -286,9 +287,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const isGate3Swap =
     transaction.swapInfo && transaction.swapInfo.routeId !== ''
-  const { status: swapStatus } = useGate3SwapStatus(
-    isGate3Swap ? transaction : null,
-  )
+  const { status: swapStatus, isEnabled: isGate3SwapStatusEnabled } =
+    useGate3SwapStatus(isGate3Swap ? transaction : null)
 
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(txNetwork)
@@ -632,11 +632,6 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 >
                   {effectiveStatusString}
                 </StatusText>
-                {swapStatus?.internalStatus && (
-                  <InternalStatusText>
-                    {swapStatus.internalStatus}
-                  </InternalStatusText>
-                )}
               </StatusBox>
               <DateText
                 textSize='12px'
@@ -820,7 +815,9 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
           </>
         )}
 
-        <SectionRow padding='16px 0px 0px 0px'>
+        <SectionRow
+          padding={isGate3SwapStatusEnabled ? '16px 0px' : '16px 0px 0px 0px'}
+        >
           <SectionLabel
             textAlign='left'
             textSize='14px'
@@ -845,6 +842,30 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             </SectionInfoText>
           </Row>
         </SectionRow>
+
+        {isGate3SwapStatusEnabled && (
+          <>
+            <VerticalDivider />
+            <SectionRow padding='16px 0px 0px 0px'>
+              <SectionLabel
+                textAlign='left'
+                textSize='14px'
+              >
+                {getLocale('braveWalletSwapProviderStatus')}
+              </SectionLabel>
+              {swapStatus?.internalStatus ? (
+                <InternalStatusText>
+                  {swapStatus.internalStatus}
+                </InternalStatusText>
+              ) : (
+                <LoadingSkeleton
+                  width={120}
+                  height={16}
+                />
+              )}
+            </SectionRow>
+          </>
+        )}
 
         {showCancelSpeedupButtons && (
           <Row padding='32px 0px 0px 0px'>
