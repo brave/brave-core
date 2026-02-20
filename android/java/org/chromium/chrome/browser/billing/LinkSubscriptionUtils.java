@@ -21,7 +21,7 @@ public class LinkSubscriptionUtils {
                 isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_URL_STAGING : BRAVE_ACCOUNT_URL;
         String linkType =
                 (SubscriptionProduct.LEO == subscriptionProduct) ? "link-order" : "connect-receipt";
-        String baseUrl = "https://%s?intent=%s&product=%s";
+        String baseUrl = "https://%s?intent=%s&product=%s&mtm_campaign=linking-android";
         return String.format(
                 baseUrl,
                 braveAccountUrl,
@@ -32,7 +32,8 @@ public class LinkSubscriptionUtils {
     public static String getBraveAccountRecoverUrl(SubscriptionProduct subscriptionProduct) {
         String braveAccountUrl =
                 isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_URL_STAGING : BRAVE_ACCOUNT_URL;
-        String baseUrl = "https://%s?intent=recover&product=%s&ux=mobile";
+        String baseUrl =
+                "https://%s?intent=recover&product=%s&ux=mobile&mtm_campaign=refresh-android";
         return String.format(
                 baseUrl, braveAccountUrl, subscriptionProduct.name().toLowerCase(Locale.ROOT));
     }
