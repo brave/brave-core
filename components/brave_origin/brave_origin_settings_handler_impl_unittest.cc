@@ -13,6 +13,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
@@ -119,20 +120,11 @@ class BraveOriginHandlerTest : public testing::Test {
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveOriginHandlerTest,
        IsBraveOriginUser_FeatureEnabled_NoSkus_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
   // Without a SKUs service, CheckPurchaseState returns the cached
   // is_purchased_ value (false by default).
-  handler_->IsBraveOriginUser(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_brave_origin_user) {
-        *result = is_brave_origin_user;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->IsBraveOriginUser(result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 #endif
 
@@ -307,18 +299,9 @@ TEST_F(BraveOriginHandlerTest, SetPolicyValue_ProfilePref_ReturnsTrue) {
 // In branded builds, RefreshPurchaseState unconditionally returns true.
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveOriginHandlerTest, RefreshPurchaseState_NoSkus_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->RefreshPurchaseState(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_purchased) {
-        *result = is_purchased;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->RefreshPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 #endif
 
@@ -409,16 +392,9 @@ TEST_F(BraveOriginHandlerWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 5})");
 
-  base::RunLoop run_loop;
-  bool result = false;
-  handler_->RefreshPurchaseState(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_purchased) {
-        *result = is_purchased;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  handler_->RefreshPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
 }
 
 // In branded builds, RefreshPurchaseState unconditionally returns true.
@@ -428,16 +404,9 @@ TEST_F(BraveOriginHandlerWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
-  base::RunLoop run_loop;
-  bool result = true;
-  handler_->RefreshPurchaseState(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_purchased) {
-        *result = is_purchased;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->RefreshPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 #endif
 
@@ -446,16 +415,9 @@ TEST_F(BraveOriginHandlerWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 1})");
 
-  base::RunLoop run_loop;
-  bool result = false;
-  handler_->IsBraveOriginUser(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_brave_origin_user) {
-        *result = is_brave_origin_user;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  handler_->IsBraveOriginUser(result.GetCallback());
+  EXPECT_TRUE(result.Get());
 }
 
 // Test class for when BraveOrigin feature is disabled
@@ -592,18 +554,9 @@ TEST_F(BraveOriginHandlerDisabledTest,
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveOriginHandlerDisabledTest,
        RefreshPurchaseState_FeatureDisabled_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->RefreshPurchaseState(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_purchased) {
-        *result = is_purchased;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->RefreshPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 #endif
 
