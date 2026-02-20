@@ -30,6 +30,8 @@ constexpr char kOmniboxTypedCountKey[] = "omnibox_typed";
 constexpr char kOmniboxSuggestionCountKey[] = "omnibox_suggestion";
 constexpr char kNTPSearchCountKey[] = "ntp_search";
 #if BUILDFLAG(IS_ANDROID)
+constexpr char kQuickSearchCountKey[] = "quick_search";
+constexpr char kQuickSearchKeyword[] = ":br";
 constexpr char kWidgetSearchCountKey[] = "widget_search";
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -109,6 +111,14 @@ void BraveSearchMetrics::MaybeRecordNTPSearch(int64_t engine_prepopulate_id) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
+void BraveSearchMetrics::MaybeRecordQuickSearch(bool is_leo,
+                                                std::string_view keyword) {
+  if (is_leo || keyword != kQuickSearchKeyword) {
+    return;
+  }
+  IncrementDictCount(kQuickSearchCountKey);
+}
+
 void BraveSearchMetrics::MaybeRecordWidgetSearch(const GURL& url) {
   if (!IsBraveSearchURL(url)) {
     return;
@@ -153,6 +163,8 @@ void BraveSearchMetrics::ReportAllMetrics() {
     RecordPercentageHistogram(counts, primary_queries, kNTPSearchCountKey,
                               kSearchNTPSearchPercentHistogramName);
 #if BUILDFLAG(IS_ANDROID)
+    RecordPercentageHistogram(counts, primary_queries, kQuickSearchCountKey,
+                              kSearchQuickSearchPercentHistogramName);
     RecordPercentageHistogram(counts, primary_queries, kWidgetSearchCountKey,
                               kSearchWidgetSearchPercentHistogramName);
 #endif  // BUILDFLAG(IS_ANDROID)

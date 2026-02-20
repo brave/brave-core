@@ -2553,8 +2553,7 @@ public abstract class BraveActivity extends ChromeActivity
                                             BraveActivity.this));
                             Intent launchIntent = getIntent();
                             if (launchIntent != null
-                                    && Intent.ACTION_VIEW.equals(
-                                            launchIntent.getAction())
+                                    && Intent.ACTION_VIEW.equals(launchIntent.getAction())
                                     && launchIntent.getData() != null) {
                                 mMiscAndroidMetrics.recordIntentUrl(
                                         launchIntent.getData().toString());
