@@ -1469,8 +1469,8 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.CardanoTxData = .init(
       to: mockToAccountAddress,
-      amount: 1_000_000,
-      sendingMaxAmount: false,
+      sendingLovelace: 1_000_000,
+      sendingToken: nil,
       fee: 100_000,
       inputs: [],
       outputs: []
