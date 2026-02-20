@@ -25,6 +25,8 @@ inline constexpr char kNavSourceHistorySourcePercentHistogramName[] =
     "Brave.Core.HistorySourcePercent";
 inline constexpr char kNavSourceExternalSourcePercentHistogramName[] =
     "Brave.Core.ExternalNavigationSourcePercent";
+inline constexpr char kNavSourcePWASourcePercentHistogramName[] =
+    "Brave.Core.PWASourcePercent";
 inline constexpr char kNavSourceNavigatedHistogramName[] =
     "Brave.Core.Navigated";
 
@@ -47,6 +49,8 @@ class NavigationSourceMetrics : public PagePercentageMetrics {
   void RecordTopSiteNavigation(bool is_custom);
   // Records a navigation opened externally via PAGE_TRANSITION_AUTO_TOPLEVEL.
   void RecordExternalNavigation();
+  // Records a navigation that occurred in a PWA (installed app) window.
+  void RecordPWANavigation();
   // Increments the total navigation count.
   void IncrementPagesLoadedCount();
   // Reports daily source percentages via P3A.

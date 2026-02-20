@@ -10,6 +10,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/page_transition_types.h"
 
 namespace content {
 class BrowserContext;
@@ -43,6 +44,8 @@ class PageMetricsTabHelper
 
   bool IsRelevantNavigationEvent(content::NavigationHandle* navigation_handle);
   bool IsPrivateWindowEvent();
+  void MaybeRecordNavigationSource(ui::PageTransition transition,
+                                   bool is_reload);
 
   raw_ptr<content::BrowserContext> browser_context_;
   raw_ptr<PageMetrics> page_metrics_ = nullptr;

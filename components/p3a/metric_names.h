@@ -249,6 +249,10 @@ inline constexpr auto kCollectedExpressHistograms =
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
+    {"Brave.Core.PWASourcePercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
     {"Brave.Core.PrivateWindowUsed", MetricConfig{.ephemeral = true}},
     {"Brave.Core.TorWindowUsed", MetricConfig{.ephemeral = true}},
     {"Brave.Core.UsageDaily", {}},
