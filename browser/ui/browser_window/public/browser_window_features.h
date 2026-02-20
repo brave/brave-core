@@ -8,8 +8,11 @@
 
 #include <memory>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+
+class GURL;
 
 class BraveShieldsUIContentsCache;
 class BraveNonClientHitTestHelper;
@@ -18,6 +21,7 @@ class FocusModeController;
 class PlaylistSidePanelCoordinator;
 class TreeTabSessionManager;
 class VerticalTabController;
+class WalletSidePanelCoordinator;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -63,6 +67,18 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
     return playlist_side_panel_coordinator_.get();
   }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  WalletSidePanelCoordinator* wallet_side_panel_coordinator() {
+    return wallet_side_panel_coordinator_.get();
+  }
+
+  // If the wallet side panel is currently visible, navigates it to |url| and
+  // returns true. Returns false if the side panel isn't active or wallet isn't
+  // enabled. Used by the bubble delegate to route dapp requests to an
+  // already-open side panel instead of creating a popup.
+  bool NavigateWalletSidePanelIfActive(const GURL& url);
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -113,6 +129,9 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 #if BUILDFLAG(ENABLE_PLAYLIST)
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  std::unique_ptr<WalletSidePanelCoordinator> wallet_side_panel_coordinator_;
 #endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   std::unique_ptr<email_aliases::EmailAliasesController>

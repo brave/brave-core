@@ -12,6 +12,7 @@ source_set("browser_window") {
 
   public_deps = [
     "//base",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/playlist/core/common/buildflags",
   ]
 

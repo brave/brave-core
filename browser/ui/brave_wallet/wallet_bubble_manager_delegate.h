@@ -18,6 +18,8 @@ namespace brave_wallet {
 
 class WalletBubbleManagerDelegate {
  public:
+  // Creates a bubble delegate, or returns nullptr if wallet is not allowed
+  // for the context.
   static std::unique_ptr<WalletBubbleManagerDelegate> MaybeCreate(
       content::WebContents* web_contents,
       const GURL& webui_url);

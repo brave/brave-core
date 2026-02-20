@@ -5,4 +5,8 @@
 
 brave_browser_ui_views_side_panel_deps =
     [ "//chrome/browser/ui:layout_constants" ]
+
+brave_browser_ui_views_side_panel_deps +=
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
 brave_browser_ui_views_side_panel_public_deps = []

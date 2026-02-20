@@ -63,6 +63,8 @@ static_library("browser") {
     deps += [
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:common_constants",
     ]
   }
 
