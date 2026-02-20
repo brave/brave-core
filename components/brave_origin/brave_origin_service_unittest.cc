@@ -489,15 +489,13 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(result);
 }
 
-TEST_F(BraveOriginServiceTest, IsPurchased_DefaultFalse) {
-  // Without any SKU service, IsPurchased should return false by default.
-  EXPECT_FALSE(service_->IsPurchased());
-}
-
 TEST_F(BraveOriginServiceTest,
-       CheckPurchaseState_NoSkusGetter_ReturnsCachedFalse) {
+       CheckPurchaseState_NoSkusGetter_ReturnsCachedValue) {
+  // Reset purchase state so we can verify the fallback path.
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+
   // Service was created with an empty SkusServiceGetter, so
-  // CheckPurchaseState should return the cached value (false).
+  // CheckPurchaseState should return the current manager value.
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());

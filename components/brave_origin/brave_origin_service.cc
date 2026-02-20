@@ -142,7 +142,7 @@ std::optional<bool> BraveOriginService::GetPolicyValue(
 void BraveOriginService::CheckPurchaseState(
     base::OnceCallback<void(bool)> callback) {
   if (!EnsureSkusConnected()) {
-    std::move(callback).Run(is_purchased_);
+    std::move(callback).Run(IsPurchased());
     return;
   }
 
@@ -153,7 +153,7 @@ void BraveOriginService::CheckPurchaseState(
 }
 
 bool BraveOriginService::IsPurchased() const {
-  return is_purchased_;
+  return BraveOriginPolicyManager::GetInstance()->IsPurchased();
 }
 
 void BraveOriginService::OnCredentialSummary(
@@ -178,7 +178,7 @@ void BraveOriginService::OnCredentialSummary(
     }
   }
 
-  is_purchased_ = purchased;
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(purchased);
   std::move(callback).Run(purchased);
 }
 
