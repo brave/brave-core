@@ -29,6 +29,8 @@ class BraveTabStrip : public TabStrip {
 
   bool ShouldShowPinnedTabsInGrid() const;
 
+  TabContainer* GetTabContainerForTesting();
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
@@ -50,17 +52,6 @@ class BraveTabStrip : public TabStrip {
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
 
  private:
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  // Internal helper methods for container detection
-  bool IsTabInContainer(const Tab* tab) const;
-
-  // These methods must be called only when IsTabInContainer() returns true.
-  std::string GetContainerIdForTab(const Tab* tab) const;
-  std::optional<containers::ContainerModel> GetContainerModelForTab(
-      const Tab* tab) const;
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
- private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            BraveTabContainerSeparator);
@@ -79,12 +70,21 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarThumbState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            RichAnimationIsDisabled);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // Internal helper methods for container detection
+  bool IsTabInContainer(const Tab* tab) const;
+
+  // These methods must be called only when IsTabInContainer() returns true.
+  std::string GetContainerIdForTab(const Tab* tab) const;
+  std::optional<containers::ContainerModel> GetContainerModelForTab(
+      const Tab* tab) const;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
-
-  TabContainer* GetTabContainerForTesting();
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

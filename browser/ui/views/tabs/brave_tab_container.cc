@@ -1364,6 +1364,7 @@ void BraveTabContainer::SetScrollOffset(int offset) {
   }
 
   // When offset changes, relayout tabs even when size doesn't change.
+  // Callers must pass offset in [0, GetMaxScrollOffset()].
   scroll_offset_ = offset;
   last_layout_size_ = std::nullopt;
   CompleteAnimationAndLayout();

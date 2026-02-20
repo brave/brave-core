@@ -112,6 +112,16 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarVisibilityWithManyTabs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            RichAnimationIsDisabled);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           GetScrollDirectionIsHorizontal);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           MaxScrollOffsetZeroWithFewTabs);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           MaxScrollOffsetPositiveWithManyTabs);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           ActiveTabScrollsIntoViewWhenSelectingLast);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           ScrollOffsetClampedWhenTabRemoved);
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
