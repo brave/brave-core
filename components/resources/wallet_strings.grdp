@@ -149,6 +149,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
   <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER " desc="Swap provider label">Provider</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER_STATUS" desc="Swap provider status label in transaction details">Provider status</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title">Confirm shield</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title">Confirm unshield</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
