@@ -394,7 +394,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 }
 
 void BraveTabContainer::OnBoundsChanged(const gfx::Rect& previous_bounds) {
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     TabContainerImpl::OnBoundsChanged(previous_bounds);
     return;
   }
@@ -518,7 +518,7 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
     return;
   }
 
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     last_layout_size_ = size();
   }
 
@@ -589,7 +589,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
 
   TabContainerImpl::SetTabSlotVisibility();
 
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     // Even though TabContainerImpl::SetTabSlotVisibility() already updates the
     // bounds of the group views for certain cases, we need to update them again
     // https://github.com/brave/brave-browser/issues/51786#issuecomment-3716778522
@@ -600,7 +600,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
 }
 
 void BraveTabContainer::InvalidateIdealBounds() {
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     last_layout_size_ = std::nullopt;
   }
 
@@ -609,13 +609,14 @@ void BraveTabContainer::InvalidateIdealBounds() {
 }
 
 void BraveTabContainer::Layout(PassKey) {
-  if (!ShouldShowVerticalTabs()) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     LayoutSuperclass<TabContainerImpl>(this);
     return;
   }
 
   // We don't need to layout if the height is 0 as it's invisible.
-  if (!height()) {
+  if (scroll_direction == views::LayoutOrientation::kVertical && !height()) {
     return;
   }
 
@@ -837,7 +838,8 @@ void BraveTabContainer::OnScrollEvent(ui::ScrollEvent* event) {
 
 views::View* BraveTabContainer::TargetForRect(views::View* root,
                                               const gfx::Rect& rect) {
-  if (!ShouldShowVerticalTabs()) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     return TabContainerImpl::TargetForRect(root, rect);
   }
 
@@ -890,7 +892,7 @@ bool BraveTabContainer::IsPointInTab(
 void BraveTabContainer::AnimateToIdealBounds() {
   TabContainerImpl::AnimateToIdealBounds();
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -1606,7 +1608,7 @@ void BraveTabContainer::OnGroupContentsChanged(
     const tab_groups::TabGroupId& group) {
   TabContainerImpl::OnGroupContentsChanged(group);
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -1624,7 +1626,7 @@ void BraveTabContainer::OnGroupContentsChanged(
 void BraveTabContainer::UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) {
   TabContainerImpl::UpdateTabGroupVisuals(group_id);
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
