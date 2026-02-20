@@ -32,6 +32,7 @@
 // splitting this tab helper.
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
+#include "brave/browser/ui/brave_wallet/wallet_side_panel_utils.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"  // nogncheck
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -209,12 +210,17 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveWalletTabHelper::ShowBubbleImpl(GURL url) {
+  // If the wallet side panel is already visible, route the request there
+  // instead of creating a popup bubble.
+  if (TryNavigateWalletSidePanel(&GetWebContents(), url)) {
+    return;
+  }
+
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
   if (!wallet_bubble_manager_delegate_) {
     return;
   }
-  // Suppress request if not from active web_contents.
   if (!IsWebContentsActive(GetWebContents())) {
     return;
   }

@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -586,8 +587,10 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
   };
 
   switch (type) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case sidebar::SidebarItem::BuiltInItemType::kWallet:
       return get_image_model(kLeoProductBraveWalletIcon, state);
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     case sidebar::SidebarItem::BuiltInItemType::kBraveTalk:
       return get_image_model(kLeoProductBraveTalkIcon, state);

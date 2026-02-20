@@ -2,13 +2,14 @@ diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/ac
 index 1a6acad48b6ffcc49e77229d79ffb838681abfa8..29385b33737f01066b8bad69947ccce695417c90 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
-@@ -551,6 +551,9 @@
+@@ -551,6 +551,10 @@
  // Should be reinserted into CHROME_COMMON_ACTION_IDS when general solution to
  // add action id mappings is implemented.
  #define SIDE_PANEL_ACTION_IDS \
 +  E(kActionSidePanelShowPlaylist) \
 +  E(kActionSidePanelShowChatUI) \
 +  E(kActionSidePanelShowBraveNews) \
++  E(kActionSidePanelShowWallet) \
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \

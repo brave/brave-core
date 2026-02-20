@@ -11,6 +11,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -47,10 +48,15 @@
 #include "chrome/browser/ui/page_action/page_action_triggers.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
+#endif
+
 namespace {
 
 #if BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT) || \
-    BUILDFLAG(ENABLE_BRAVE_NEWS)
+    BUILDFLAG(ENABLE_BRAVE_NEWS) || BUILDFLAG(ENABLE_BRAVE_WALLET)
 actions::ActionItem::ActionItemBuilder SidePanelAction(
     SidePanelEntryId id,
     int title_id,
@@ -68,7 +74,7 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
       .SetProperty(actions::kActionItemPinnableKey, is_pinnable);
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT) ||
-        // BUILDFLAG(ENABLE_BRAVE_NEWS)
+        // BUILDFLAG(ENABLE_BRAVE_NEWS) || BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 }  // namespace
 
@@ -150,4 +156,17 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif  // BUILDFLAG(ENABLE_PSST)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&
+      base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSidePanel)) {
+    root_action_item_->AddChild(
+        SidePanelAction(
+            SidePanelEntryId::kWallet, IDS_SIDEBAR_WALLET_ITEM_TITLE,
+            IDS_SIDEBAR_WALLET_ITEM_TITLE, kLeoProductBraveWalletIcon,
+            kActionSidePanelShowWallet, bwi, true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 }

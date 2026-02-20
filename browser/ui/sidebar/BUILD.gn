@@ -169,7 +169,10 @@ source_set("browser_tests") {
   }
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/common:common_constants" ]
+    deps += [
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:common_constants",
+    ]
   }
 }
 
