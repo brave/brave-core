@@ -7,9 +7,11 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_email_input.js'
 import './brave_account_password_icons.js'
+import './brave_account_password_strength_meter.js'
 import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
 import type { EmailInputEventDetail } from './brave_account_email_input.js'
 import { onToggleVisibility } from './brave_account_common.js'
+import type { PasswordStrengthChangedEventDetail } from './brave_account_password_strength_meter.js'
 
 export function getHtml(this: BraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
@@ -47,11 +49,18 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           </brave-account-password-icons>
           <div
             slot="errors"
-            class="dropdown ${this.passwordStrength !== 0 ? 'visible' : ''}"
+            class="dropdown ${this.password.length !== 0 ? 'visible' : ''}"
           >
             <div class="dropdown-content">
-              <password-strength-meter strength=${this.passwordStrength}>
-              </password-strength-meter>
+              <brave-account-password-strength-meter
+                password=${this.password}
+                @password-strength-changed=${(
+                  e: CustomEvent<PasswordStrengthChangedEventDetail>,
+                ) => {
+                  this.isPasswordStrongEnough = e.detail.isStrongEnough
+                }}
+              >
+              </brave-account-password-strength-meter>
             </div>
           </div>
         </leo-input>
@@ -101,7 +110,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
       <leo-button
         slot="buttons"
         ?isDisabled=${!this.isEmailValid
-        || this.passwordStrength !== 100
+        || !this.isPasswordStrongEnough
         || this.passwordConfirmation !== this.password}
         @click=${this.onCreateAccountButtonClicked}
       >
