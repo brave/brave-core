@@ -119,7 +119,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
         *keyring_service_, std::make_unique<testing::NiceMock<MockZCashRPC>>());
     zcash_wallet_service_->SetupSyncState(
-        OrchardSyncState::CreateSyncStateSequence(),
+        base::SequencedTaskRunner::GetCurrentDefault(),
         OrchardSyncState::CreateSyncState(temp_dir_.GetPath()));
 
     ResetSyncService();
