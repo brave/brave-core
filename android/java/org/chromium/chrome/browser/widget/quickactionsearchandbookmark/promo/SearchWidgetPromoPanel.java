@@ -47,20 +47,21 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
 
     public void showIfNeeded(final View parentView, int extraBottomOffset) {
         if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext)) {
-            if (extraBottomOffset == 0) {
-                WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(parentView);
-                if (insets != null) {
-                    extraBottomOffset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
-                }
+            int navigationBarBottomInset = 0;
+            WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(parentView);
+            if (insets != null) {
+                navigationBarBottomInset =
+                        insets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom;
             }
+            int totalBottomOffset = extraBottomOffset + navigationBarBottomInset;
             if (mPopupWindow.isShowing()) {
-                mPopupWindow.update(0, extraBottomOffset, -1, -1);
+                mPopupWindow.update(0, totalBottomOffset, -1, -1);
             } else {
                 mPopupWindow.showAtLocation(
                         parentView,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
                         0,
-                        extraBottomOffset);
+                        totalBottomOffset);
             }
         }
     }
