@@ -8,6 +8,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/types/to_address.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -28,6 +29,11 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #endif
 
 namespace {
@@ -85,6 +91,19 @@ void BraveBrowserActions::InitializeBrowserActions() {
                                     .SetActionId(kActionShowPartitionedStorage)
                                     .SetEnabled(true)
                                     .Build());
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&
+      base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSidePanel)) {
+    root_action_item_->AddChild(
+        SidePanelAction(
+            SidePanelEntryId::kWallet, IDS_SIDEBAR_WALLET_ITEM_TITLE,
+            IDS_SIDEBAR_WALLET_ITEM_TITLE, kLeoProductBraveWalletIcon,
+            kActionSidePanelShowWallet, bwi, true)
+            .Build());
   }
 #endif
 }

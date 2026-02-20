@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 source_set("internal") {
@@ -18,6 +19,7 @@ source_set("internal") {
     "//brave/browser/email_aliases",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui/browser_window",
@@ -34,6 +36,9 @@ source_set("internal") {
       "//brave/browser/ui/views/page_info",
       "//chrome/browser/ui/tabs:features",
     ]
+    if (enable_brave_wallet) {
+      deps += [ "//brave/browser/ui/views/side_panel/wallet" ]
+    }
   }
 
   if (enable_brave_rewards) {
@@ -42,5 +47,9 @@ source_set("internal") {
 
   if (enable_brave_vpn) {
     deps += [ "//brave/browser/ui/brave_vpn" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/browser:utils" ]
   }
 }

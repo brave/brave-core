@@ -15,14 +15,19 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_coordinator.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -201,8 +206,12 @@ WalletBubbleManagerDelegate::MaybeCreate(content::WebContents* web_contents,
     return nullptr;
   }
 
-  return std::make_unique<WalletBubbleManagerDelegateImpl>(web_contents,
-                                                           webui_url);
+  auto delegate = std::make_unique<WalletBubbleManagerDelegateImpl>(
+      web_contents, webui_url);
+  if (delegate->redirected_to_side_panel()) {
+    return nullptr;
+  }
+  return delegate;
 }
 
 WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
@@ -211,6 +220,26 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
     : web_contents_(web_contents), webui_url_(webui_url) {
   Browser* browser = chrome::FindBrowserWithTab(web_contents_);
   DCHECK(browser);
+
+  // When the wallet side panel is already visible, navigate it to the
+  // requested URL instead of creating a popup bubble. This handles all dapp
+  // request types (connections, signing, chain switching, token suggestions,
+  // transactions). The URL may include a hash fragment (e.g.
+  // #connectWithSite) that tells the panel frontend which screen to show.
+  auto* panel_ui = browser->GetFeatures().side_panel_ui();
+  if (panel_ui) {
+    auto current_entry =
+        panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+    if (current_entry && *current_entry == SidePanelEntryId::kWallet) {
+      auto* coordinator =
+          browser->GetFeatures().wallet_side_panel_coordinator();
+      if (coordinator) {
+        coordinator->Navigate(webui_url_);
+      }
+      redirected_to_side_panel_ = true;
+      return;
+    }
+  }
 
   views::View* anchor_view;
   if (browser->is_type_normal()) {
@@ -227,7 +256,9 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
-  webui_bubble_manager_->CloseBubble();
+  if (webui_bubble_manager_) {
+    webui_bubble_manager_->CloseBubble();
+  }
 }
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {

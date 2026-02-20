@@ -113,6 +113,10 @@ source_set("browser_tests") {
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
   }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common" ]
+  }
 }
 
 source_set("unit_tests") {
