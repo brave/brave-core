@@ -50,7 +50,7 @@ void BraveWKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
   // Reset fullscreen to default as it wasn't set in Brave
   [[configuration_ preferences] setElementFullscreenEnabled:NO];
 
-  // Add Brave-specicif adjustments to the WKWebViewConfiguration here
+  // Add Brave-specific adjustments to the WKWebViewConfiguration here
 
   configuration_.dataDetectorTypes = WKDataDetectorTypePhoneNumber;
 

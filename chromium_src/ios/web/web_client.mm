@@ -22,6 +22,9 @@ bool WebClient::ShouldBlockUniversalLinks(web::WebState* web_state,
 }
 
 void WebClient::DidResetConfiguration(web::BrowserState* browser_state,
-                                      WKWebViewConfiguration* configuration) {}
+                                      WKWebViewConfiguration* configuration) {
+  // Called when the underlying WKWebViewConfiguration is reset.
+  // Will be handled in BraveWebClient
+}
 
 }  // namespace web

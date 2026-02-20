@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
-#include "ios/web/public/browser_state.h"
 
 @class WKWebViewConfiguration;
 

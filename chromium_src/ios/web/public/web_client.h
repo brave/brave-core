@@ -16,7 +16,16 @@ class WebState;
 
 @class WKWebViewConfiguration;
 
-// Add methods to override in BraveWebClient for BraveCRWWKNavigationHandler
+// Add methods to override in BraveWebClient.
+//
+// `ShouldBlockJavaScript`, `GetUserAgentForRequest`, and
+// `ShouldBlockUniversalLinks` will be called from BraveCRWWKNavigationHandler
+// to allow us to implement a Brave specific features during web navigation
+//
+// `DidResetConfiguration` will be called from
+// `BraveWKWebViewConfigurationProvider` to allow us to do some post-reset setup
+// for Brave-specific configuration updates. This additional method will be
+// removed in the future
 #define IsBrowserLockdownModeEnabled                                           \
   ShouldBlockJavaScript(web::WebState* web_state, NSURLRequest* request);      \
   virtual NSString* GetUserAgentForRequest(web::WebState* web_state,           \
