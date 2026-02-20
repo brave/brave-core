@@ -258,8 +258,6 @@
 }
 
 .scrollToBottomButton.hasScrollableContent {
-  pointer-events: auto;
-
   animation: scroll-button-fade linear both;
   animation-timeline: scroll();
   animation-range: calc(100% - 96px) 100%;
@@ -268,8 +266,10 @@
 @keyframes scroll-button-fade {
   from {
     opacity: 1;
+    pointer-events: auto;
   }
   to {
     opacity: 0;
+    pointer-events: none;
   }
 }
