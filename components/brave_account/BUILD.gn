@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/config.gni")
+
 source_set("brave_account") {
   sources = [
     "brave_account_service.cc",
@@ -37,6 +39,10 @@ source_set("brave_account") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    deps += [ "//brave/components/brave_account/android" ]
+  }
 }
 
 source_set("features") {
