@@ -61,10 +61,11 @@ static_library("service") {
   ]
 }
 
-source_set("test_utils") {
+source_set("test_support") {
   testonly = true
 
   sources = [
+    "mock_endpoint.h",
     "test_utils.cc",
     "test_utils.h",
   ]
@@ -72,18 +73,27 @@ source_set("test_utils") {
   deps = [
     ":service",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/email_aliases:mojom",
     "//mojo/public/cpp/bindings",
+    "//net:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
   ]
+
+  public_deps = [ "//brave/components/brave_account/endpoint_client" ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "email_aliases_service_unittest.cc" ]
+  sources = [
+    "email_aliases_endpoints_unittest.cc",
+    "email_aliases_service_unittest.cc",
+  ]
   deps = [
     ":features",
     ":service",
-    ":test_utils",
+    ":test_support",
     "//base/test:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
