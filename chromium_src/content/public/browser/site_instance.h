@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_SITE_INSTANCE_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_SITE_INSTANCE_H_
 
-#include <base/types/optional_ref.h>
+#include "base/types/optional_ref.h"
 
 // Extends SiteInstance with CreateForURLWithOptionalFixedStoragePartition, a
 // helper used by the containers feature to apply a StoragePartitionConfig. When
