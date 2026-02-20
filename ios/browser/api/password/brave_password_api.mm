@@ -187,7 +187,8 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 
 - (bool)isAbleToSavePasswords {
   // Returns whether the initialization was successful.
-  return password_store_->IsAbleToSavePasswords();
+  return password_store_->GetError() ==
+         password_manager::ActionableError::kNoError;
 }
 
 - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer {
