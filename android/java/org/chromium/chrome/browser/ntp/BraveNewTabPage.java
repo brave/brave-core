@@ -151,9 +151,11 @@ public class BraveNewTabPage extends NewTabPage {
     protected void initializeMainView(
             Activity activity,
             WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
             SnackbarManager snackbarManager,
             boolean isInNightMode,
             Supplier<@Nullable ShareDelegate> shareDelegateSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             String url,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             StartupMetricsTracker startupMetricsTracker) {
@@ -208,7 +210,7 @@ public class BraveNewTabPage extends NewTabPage {
                         actionDelegate,
                         mTabStripHeightSupplier,
                         edgeToEdgeControllerSupplier,
-                        /*moduleRegistry */ null);
+                        /* moduleRegistry= */ null);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }
