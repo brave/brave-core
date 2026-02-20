@@ -57,11 +57,9 @@ class MockWorkItemList : public WorkItemList {
  public:
   MockWorkItemList() {}
 
-  MOCK_METHOD5(AddCopyTreeWorkItem,
+  MOCK_METHOD3(AddCopyTreeWorkItem,
                WorkItem*(const base::FilePath&,
                          const base::FilePath&,
-                         const base::FilePath&,
-                         CopyOverWriteOption,
                          const base::FilePath&));
   MOCK_METHOD1(AddCreateDirWorkItem, WorkItem*(const base::FilePath&));
   MOCK_METHOD3(AddCreateRegKeyWorkItem,
@@ -77,7 +75,7 @@ class MockWorkItemList : public WorkItemList {
                WorkItem*(const base::FilePath&,
                          const base::FilePath&,
                          const base::FilePath&,
-                         MoveTreeOption));
+                         MoveTreeOptions));
   // Workaround for gmock problems with disambiguating between string pointers
   // and DWORD.
   WorkItem* AddSetRegValueWorkItem(HKEY a1,
