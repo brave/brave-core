@@ -13,9 +13,7 @@
 #define browser_state_ \
   browser_state_;      \
   friend class BraveWKWebViewConfigurationProvider
-#define ResetWithWebViewConfiguration \
-  Unused() {}                         \
-  virtual void ResetWithWebViewConfiguration
+#define ResetWithWebViewConfiguration virtual ResetWithWebViewConfiguration
 #include <ios/web/web_state/ui/wk_web_view_configuration_provider.h>  // IWYU pragma: export
 #undef ResetWithWebViewConfiguration
 #undef browser_state_

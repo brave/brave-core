@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AIChatUIHandlerBridge;
 @protocol WalletPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
+@protocol ProfileBridge;
+
+typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
+                                           WKWebViewConfiguration*);
 
 CWV_EXPORT
 @interface BraveNavigationAction : CWVNavigationAction
@@ -98,6 +102,9 @@ CWV_EXPORT
 /// some Brave specific features
 CWV_EXPORT
 @interface BraveWebView : CWVWebView
+
+@property(nonatomic, class, nullable)
+    ResetConfigurationCallback didResetConfiguration;
 
 // This web view's navigation delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewNavigationDelegate>

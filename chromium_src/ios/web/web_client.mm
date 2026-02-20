@@ -21,4 +21,7 @@ bool WebClient::ShouldBlockUniversalLinks(web::WebState* web_state,
   return false;
 }
 
+void WebClient::DidResetConfiguration(web::BrowserState* browser_state,
+                                      WKWebViewConfiguration* configuration) {}
+
 }  // namespace web

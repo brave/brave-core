@@ -11,6 +11,9 @@
 #include <vector>
 
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
+#include "ios/web/public/browser_state.h"
+
+@class WKWebViewConfiguration;
 
 class BraveWebClient : public ChromeWebClient {
  public:
@@ -57,6 +60,9 @@ class BraveWebClient : public ChromeWebClient {
                     WKFrameInfo* frame,
                     base::OnceCallback<void(NSArray<NSURL*>*)> completion)
       const override API_AVAILABLE(ios(18.4));
+
+  void DidResetConfiguration(web::BrowserState* browser_state,
+                             WKWebViewConfiguration* configuration) override;
 
  private:
   std::string legacy_user_agent_;

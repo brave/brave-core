@@ -14,6 +14,8 @@ namespace web {
 class WebState;
 }
 
+@class WKWebViewConfiguration;
+
 // Add methods to override in BraveWebClient for BraveCRWWKNavigationHandler
 #define IsBrowserLockdownModeEnabled                                           \
   ShouldBlockJavaScript(web::WebState* web_state, NSURLRequest* request);      \
@@ -22,6 +24,8 @@ class WebState;
                                            NSURLRequest* request);             \
   virtual bool ShouldBlockUniversalLinks(web::WebState* web_state,             \
                                          NSURLRequest* request);               \
+  virtual void DidResetConfiguration(web::BrowserState* browser_state,         \
+                                     WKWebViewConfiguration* configuration);   \
   virtual bool IsBrowserLockdownModeEnabled
 #include <ios/web/public/web_client.h>  // IWYU pragma: export
 #undef IsBrowserLockdownModeEnabled
