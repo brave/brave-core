@@ -10,8 +10,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/base64.h"
-#include "base/containers/checked_iterators.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
@@ -29,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -62,21 +61,6 @@ struct GenerateRewriteTestParam {
   std::optional<std::string> tone;
   std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
-
-std::string_view ExtractPageContent(std::string_view content) {
-  constexpr std::string_view kOpen = "<page>\n";
-  constexpr std::string_view kClose = "\n</page>";
-  size_t start = content.find(kOpen);
-  if (start == std::string_view::npos) {
-    return {};
-  }
-  start += kOpen.size();
-  size_t end = content.find(kClose, start);
-  if (end == std::string_view::npos) {
-    return {};
-  }
-  return content.substr(start, end - start);
-}
 
 }  // namespace
 
@@ -286,114 +270,6 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
-  PageContent page_content("This is content 1", false);
-  PageContent video_content("This is content 2 and a video", true);
-  PageContents page_contents = {page_content, video_content};
-  uint32_t remaining_length = 100;
-  auto message = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-
-  EXPECT_EQ(message.size(), 2u);
-  EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is a video transcript:\n\n\u003Ctranscript>\nThis is content "
-            "2 and a video\n\u003C/transcript>");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
-            "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>");
-}
-
-TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
-  PageContent page_content("This is content 1", false);
-  PageContent video_content("This is content 2 and a video", true);
-  PageContents page_contents = {video_content, page_content};
-
-  uint32_t remaining_length = 20;
-  auto message = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-
-  EXPECT_EQ(message.size(), 2u);
-  EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
-            "This is a video "
-            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>");
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildPageContentMessages_MaxPerContentLength) {
-  // Test max_per_content_length parameter
-  PageContent page_content("This is content 1", false);
-  PageContent video_content("This is content 2 and a video", true);
-  PageContents page_contents = {video_content, page_content};
-
-  uint32_t remaining_length = 100;
-  auto message = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
-      10u);  // max_per_content_length = 10
-
-  EXPECT_EQ(message.size(), 2u);
-  EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n<page>\nThis is co\n</page>");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
-            "This is a video "
-            "transcript:\n\n<transcript>\nThis is co\n</transcript>");
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildPageContentMessages_MaxPerContentLength_UsesRemaining) {
-  // Test that remaining max_associated_content_length is used when smaller
-  // than max_per_content_length
-  std::string long_content(50, 'y');
-  PageContent page_content(long_content, false);
-  PageContents page_contents = {page_content};
-
-  uint32_t remaining_length = 15;  // Small remaining length
-  auto message = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
-      30u);  // max_per_content_length = 30 (larger)
-
-  EXPECT_EQ(message.size(), 1u);
-  EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  std::string expected_content = "This is the text of a web page:\n<page>\n" +
-                                 std::string(15, 'y') + "\n</page>";
-  EXPECT_EQ(*message[0].GetDict().Find("content"), expected_content);
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildPageContentMessages_MaxPerContentLength_NoTruncationNeeded) {
-  // Test when content is shorter than both limits
-  PageContent page_content("Short", false);
-  PageContent video_content("Video", true);
-  PageContents page_contents = {video_content, page_content};
-
-  uint32_t remaining_length = 100;
-  auto message = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
-      20u);  // max_per_content_length = 20
-
-  EXPECT_EQ(message.size(), 2u);
-  EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n<page>\nShort\n</page>");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(
-      *message[1].GetDict().Find("content"),
-      "This is a video transcript:\n\n<transcript>\nVideo\n</transcript>");
-}
-
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   PageContent page_content("This is a test page content", false);
   auto* client = GetClient();
@@ -576,26 +452,28 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  // Expect a single call to PerformRequest
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &human_input, &assistant_response](
-              const mojom::CustomModelOptions&, base::ListValue messages,
+              const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            // system role is added by the engine
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-            EXPECT_EQ(*messages[0].GetDict().Find("content"),
-                      expected_system_message);
+            ASSERT_EQ(messages.size(), 2u);
 
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "This is the text of a web "
-                      "page:\n\u003Cpage>\nPage content 1\n\u003C/page>");
+            // System message
+            EXPECT_EQ(messages[0].role, "system");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            expected_system_message);
 
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"), human_input);
+            // User message with page content + user text
+            EXPECT_EQ(messages[1].role, "user");
+            ASSERT_EQ(messages[1].content.size(), 2u);
+            VerifyPageTextBlock(FROM_HERE, messages[1].content[0],
+                                "Page content 1");
+            VerifyTextBlock(FROM_HERE, messages[1].content.back(), human_input);
 
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -626,7 +504,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
-       TestGenerateAssistantResponseWithCustomSystemPrompt) {
+       GenerateAssistantResponseWithCustomSystemPrompt) {
   EngineConsumer::ConversationHistory history;
 
   std::string human_input = "Which show is this catchphrase from?";
@@ -650,30 +528,40 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
-          [&expected_system_message, &assistant_input](
-              const mojom::CustomModelOptions, base::ListValue messages,
+          [&expected_system_message, &assistant_input, &human_input](
+              const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            // system role is added by the engine
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-            EXPECT_EQ(*messages[0].GetDict().Find("content"),
-                      expected_system_message);
+            // system + human turn 1 + assistant turn + human turn 3
+            ASSERT_EQ(messages.size(), 4u);
 
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(
-                *messages[1].GetDict().Find("content"),
-                "This is an excerpt of the page content:\n<excerpt>\nThis is "
-                "the way.\n</excerpt>\n\nWhich show is this catchphrase from?");
+            // System message
+            EXPECT_EQ(messages[0].role, "system");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            expected_system_message);
 
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "assistant");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"), assistant_input);
+            // First human turn with selected text + user text
+            EXPECT_EQ(messages[1].role, "user");
+            ASSERT_EQ(messages[1].content.size(), 2u);
+            VerifyPageExcerptBlock(FROM_HERE, messages[1].content[0],
+                                   "This is the way.");
+            VerifyTextBlock(FROM_HERE, messages[1].content[1], human_input);
 
-            EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[3].GetDict().Find("content"),
-                      "What's his name?");
+            // Assistant turn
+            EXPECT_EQ(messages[2].role, "assistant");
+            ASSERT_EQ(messages[2].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[2].content[0], assistant_input);
+
+            // Third human turn
+            EXPECT_EQ(messages[3].role, "user");
+            ASSERT_EQ(messages[3].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[3].content.back(),
+                            "What's his name?");
 
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -708,30 +596,37 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Test with a modified server reply.
   run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message](
-              const mojom::CustomModelOptions, base::ListValue messages,
+              const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            // system role is added by the engine
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-            EXPECT_EQ(*messages[0].GetDict().Find("content"),
-                      expected_system_message);
+            // system + human turn 1 + assistant turn + human turn 3
+            ASSERT_EQ(messages.size(), 4u);
 
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "Which show is 'This is the way' from?");
+            EXPECT_EQ(messages[0].role, "system");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            expected_system_message);
+
+            EXPECT_EQ(messages[1].role, "user");
+            ASSERT_EQ(messages[1].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[1].content.back(),
+                            "Which show is 'This is the way' from?");
 
             // Modified server reply should be used here.
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "assistant");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"),
-                      "The Mandalorian.");
+            EXPECT_EQ(messages[2].role, "assistant");
+            ASSERT_EQ(messages[2].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[2].content[0],
+                            "The Mandalorian.");
 
-            EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[3].GetDict().Find("content"),
-                      "Is it related to a broader series?");
+            EXPECT_EQ(messages[3].role, "user");
+            ASSERT_EQ(messages[3].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[3].content.back(),
+                            "Is it related to a broader series?");
 
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -748,450 +643,6 @@ TEST_F(EngineConsumerOAIUnitTest,
             run_loop->Quit();
           }));
   run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(client);
-}
-
-TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
-  EngineConsumer::ConversationHistory history;
-  auto* client = GetClient();
-  auto uploaded_images =
-      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kImage);
-  auto screenshot_images =
-      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kScreenshot);
-  uploaded_images.insert(uploaded_images.end(),
-                         std::make_move_iterator(screenshot_images.begin()),
-                         std::make_move_iterator(screenshot_images.end()));
-  constexpr char kTestPrompt[] = "Tell the user what these images are?";
-  constexpr char kAssistantResponse[] =
-      "There are images of a lion, a dragon and a stag. And screenshots appear "
-      "to be telling the story of Game of Thrones";
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce(
-          [kTestPrompt, kAssistantResponse, &uploaded_images](
-              const mojom::CustomModelOptions, base::ListValue messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback,
-              const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-            constexpr char kJsonTemplate[] = R"({
-                 "content": [{
-                    "text": "$1",
-                    "type": "text"
-                 }, {
-                    "image_url": {
-                       "url": "data:image/png;base64,$2"
-                    },
-                    "type": "image_url"
-                 }, {
-                    "image_url": {
-                       "url": "data:image/png;base64,$3"
-                    },
-                    "type": "image_url"
-                 }, {
-                    "image_url": {
-                       "url": "data:image/png;base64,$4"
-                    },
-                    "type": "image_url"
-                 }],
-                 "role": "user"
-                }
-            )";
-            ASSERT_EQ(uploaded_images.size(), 6u);
-            const std::string image_json_str = base::ReplaceStringPlaceholders(
-                kJsonTemplate,
-                {"These images are uploaded by the user",
-                 base::Base64Encode(uploaded_images[0]->data),
-                 base::Base64Encode(uploaded_images[1]->data),
-                 base::Base64Encode(uploaded_images[2]->data)},
-                nullptr);
-            EXPECT_EQ(messages[1].GetDict(), ParseJsonDict(image_json_str));
-            const std::string screenshot_json_str =
-                base::ReplaceStringPlaceholders(
-                    kJsonTemplate,
-                    {"These images are screenshots",
-                     base::Base64Encode(uploaded_images[3]->data),
-                     base::Base64Encode(uploaded_images[4]->data),
-                     base::Base64Encode(uploaded_images[5]->data)},
-                    nullptr);
-            EXPECT_EQ(messages[2].GetDict(),
-                      ParseJsonDict(screenshot_json_str));
-
-            EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[3].GetDict().Find("content"), kTestPrompt);
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New(kAssistantResponse)),
-                    std::nullopt /* model_key */)));
-          });
-
-  history.push_back(mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, Clone(uploaded_images),
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
-  base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
-                                     mojom::ConversationCapability::CHAT,
-                                     base::DoNothing(), future.GetCallback());
-  EXPECT_EQ(future.Take(),
-            EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */));
-  testing::Mock::VerifyAndClearExpectations(client);
-}
-
-TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
-  EngineConsumer::ConversationHistory history;
-  auto* client = GetClient();
-  auto uploaded_pdfs =
-      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
-  // Set filenames for the PDF files
-  uploaded_pdfs[0]->filename = "document1.pdf";
-  uploaded_pdfs[1]->filename = "document2.pdf";
-
-  constexpr char kTestPrompt[] = "What are these PDF files about?";
-  constexpr char kAssistantResponse[] =
-      "These PDFs contain technical documentation and user guides.";
-
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce(
-          [kTestPrompt, kAssistantResponse, &uploaded_pdfs](
-              const mojom::CustomModelOptions, base::ListValue messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback,
-              const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-            constexpr char kPdfJsonTemplate[] = R"({
-                 "content": [{
-                    "text": "$1",
-                    "type": "text"
-                 }, {
-                    "file": {
-                       "filename": "$2",
-                       "file_data": "$3"
-                    },
-                    "type": "file"
-                 }, {
-                    "file": {
-                       "filename": "$4",
-                       "file_data": "$5"
-                    },
-                    "type": "file"
-                 }],
-                 "role": "user"
-                }
-            )";
-
-            ASSERT_EQ(uploaded_pdfs.size(), 2u);
-            const std::string pdf_json_str = base::ReplaceStringPlaceholders(
-                kPdfJsonTemplate,
-                {"These PDFs are uploaded by the user", "document1.pdf",
-                 EngineConsumer::GetPdfDataURL(uploaded_pdfs[0]->data),
-                 "document2.pdf",
-                 EngineConsumer::GetPdfDataURL(uploaded_pdfs[1]->data)},
-                nullptr);
-            EXPECT_EQ(messages[1].GetDict(), ParseJsonDict(pdf_json_str));
-
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New(kAssistantResponse)),
-                    std::nullopt /* model_key */)));
-          });
-
-  history.push_back(mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      "Analyze these PDF files", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, Clone(uploaded_pdfs),
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
-
-  base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
-                                     mojom::ConversationCapability::CHAT,
-                                     base::DoNothing(), future.GetCallback());
-  EXPECT_EQ(future.Take(),
-            EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */));
-  testing::Mock::VerifyAndClearExpectations(client);
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       GenerateAssistantResponseUploadPdfWithoutFilename) {
-  EngineConsumer::ConversationHistory history;
-  auto* client = GetClient();
-  auto uploaded_pdfs =
-      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf);
-  // Leave filename empty to test default behavior
-  uploaded_pdfs[0]->filename = "";
-
-  constexpr char kTestPrompt[] = "What is this PDF about?";
-  constexpr char kAssistantResponse[] =
-      "This PDF contains important information.";
-
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce([kTestPrompt, kAssistantResponse, &uploaded_pdfs](
-                    const mojom::CustomModelOptions, base::ListValue messages,
-                    EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback
-                        completed_callback,
-                    const std::optional<std::vector<std::string>>&) {
-        EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-        constexpr char kPdfJsonTemplate[] = R"({
-                 "content": [{
-                    "text": "$1",
-                    "type": "text"
-                 }, {
-                    "file": {
-                       "filename": "$2",
-                       "file_data": "$3"
-                    },
-                    "type": "file"
-                 }],
-                 "role": "user"
-                }
-            )";
-
-        ASSERT_EQ(uploaded_pdfs.size(), 1u);
-        const std::string pdf_json_str = base::ReplaceStringPlaceholders(
-            kPdfJsonTemplate,
-            {"These PDFs are uploaded by the user",
-             "uploaded.pdf",  // Should default to this when filename is empty
-             EngineConsumer::GetPdfDataURL(uploaded_pdfs[0]->data)},
-            nullptr);
-        EXPECT_EQ(messages[1].GetDict(), ParseJsonDict(pdf_json_str));
-
-        EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-        EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
-
-        std::move(completed_callback)
-            .Run(base::ok(EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */)));
-      });
-
-  history.push_back(mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      "Analyze this PDF file", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, Clone(uploaded_pdfs),
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
-
-  base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
-                                     mojom::ConversationCapability::CHAT,
-                                     base::DoNothing(), future.GetCallback());
-  EXPECT_EQ(future.Take(),
-            EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */));
-  testing::Mock::VerifyAndClearExpectations(client);
-}
-
-TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
-  EngineConsumer::ConversationHistory history;
-  auto* client = GetClient();
-
-  // Create mixed uploads: images, screenshots, and PDFs
-  auto uploaded_images =
-      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kImage);
-  auto screenshot_images =
-      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot);
-  auto uploaded_pdfs =
-      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf);
-
-  uploaded_pdfs[0]->filename = "report.pdf";
-
-  // Combine all files
-  std::vector<mojom::UploadedFilePtr> all_files;
-  all_files.insert(all_files.end(),
-                   std::make_move_iterator(uploaded_images.begin()),
-                   std::make_move_iterator(uploaded_images.end()));
-  all_files.insert(all_files.end(),
-                   std::make_move_iterator(screenshot_images.begin()),
-                   std::make_move_iterator(screenshot_images.end()));
-  all_files.insert(all_files.end(),
-                   std::make_move_iterator(uploaded_pdfs.begin()),
-                   std::make_move_iterator(uploaded_pdfs.end()));
-
-  constexpr char kTestPrompt[] = "Analyze these mixed file types";
-  constexpr char kAssistantResponse[] =
-      "I can see images, screenshots, and a PDF document.";
-
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce([kTestPrompt, kAssistantResponse](
-                    const mojom::CustomModelOptions, base::ListValue messages,
-                    EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback
-                        completed_callback,
-                    const std::optional<std::vector<std::string>>&) {
-        EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-        // Should have 5 messages: system + uploaded images + screenshots +
-        // pdfs + user prompt
-        EXPECT_EQ(messages.size(), 5u);
-
-        // Check uploaded images message
-        EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-        const base::ListValue* images_content =
-            messages[1].GetDict().FindList("content");
-        ASSERT_TRUE(images_content);
-        EXPECT_EQ(images_content->size(), 3u);  // text + 2 images
-
-        // Verify first item is tex
-        const base::DictValue* text_item = (*images_content)[0].GetIfDict();
-        ASSERT_TRUE(text_item);
-        EXPECT_EQ(*text_item->FindString("type"), "text");
-        EXPECT_EQ(*text_item->FindString("text"),
-                  "These images are uploaded by the user");
-
-        // Verify second and third items are image_url types
-        const base::DictValue* image_item1 = (*images_content)[1].GetIfDict();
-        ASSERT_TRUE(image_item1);
-        EXPECT_EQ(*image_item1->FindString("type"), "image_url");
-        EXPECT_TRUE(image_item1->FindDict("image_url"));
-        EXPECT_TRUE(image_item1->FindDict("image_url")->FindString("url"));
-
-        const base::DictValue* image_item2 = (*images_content)[2].GetIfDict();
-        ASSERT_TRUE(image_item2);
-        EXPECT_EQ(*image_item2->FindString("type"), "image_url");
-        EXPECT_TRUE(image_item2->FindDict("image_url"));
-        EXPECT_TRUE(image_item2->FindDict("image_url")->FindString("url"));
-
-        // Check screenshots message
-        EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-        const base::ListValue* screenshots_content =
-            messages[2].GetDict().FindList("content");
-        ASSERT_TRUE(screenshots_content);
-        EXPECT_EQ(screenshots_content->size(), 2u);  // text + 1 screensho
-
-        // Verify first item is tex
-        const base::DictValue* screenshot_text_item =
-            (*screenshots_content)[0].GetIfDict();
-        ASSERT_TRUE(screenshot_text_item);
-        EXPECT_EQ(*screenshot_text_item->FindString("type"), "text");
-        EXPECT_EQ(*screenshot_text_item->FindString("text"),
-                  "These images are screenshots");
-
-        // Verify second item is image_url type
-        const base::DictValue* screenshot_item =
-            (*screenshots_content)[1].GetIfDict();
-        ASSERT_TRUE(screenshot_item);
-        EXPECT_EQ(*screenshot_item->FindString("type"), "image_url");
-        EXPECT_TRUE(screenshot_item->FindDict("image_url"));
-        EXPECT_TRUE(screenshot_item->FindDict("image_url")->FindString("url"));
-
-        // Check PDFs message
-        EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-        const base::ListValue* pdfs_content =
-            messages[3].GetDict().FindList("content");
-        ASSERT_TRUE(pdfs_content);
-        EXPECT_EQ(pdfs_content->size(), 2u);  // text + 1 pdf
-
-        // Verify first item is tex
-        const base::DictValue* pdf_text_item = (*pdfs_content)[0].GetIfDict();
-        ASSERT_TRUE(pdf_text_item);
-        EXPECT_EQ(*pdf_text_item->FindString("type"), "text");
-        EXPECT_EQ(*pdf_text_item->FindString("text"),
-                  "These PDFs are uploaded by the user");
-
-        // Verify second item is file type with filename and file_data
-        const base::DictValue* pdf_item = (*pdfs_content)[1].GetIfDict();
-        ASSERT_TRUE(pdf_item);
-        EXPECT_EQ(*pdf_item->FindString("type"), "file");
-        const base::DictValue* file_dict = pdf_item->FindDict("file");
-        ASSERT_TRUE(file_dict);
-        EXPECT_EQ(*file_dict->FindString("filename"), "report.pdf");
-        EXPECT_TRUE(file_dict->FindString("file_data"));
-        EXPECT_FALSE(file_dict->FindString("file_data")->empty());
-
-        // Check user prompt message
-        EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-        EXPECT_EQ(*messages[4].GetDict().Find("content"), kTestPrompt);
-
-        std::move(completed_callback)
-            .Run(base::ok(EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */)));
-      });
-
-  history.push_back(mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      "What do you see in these files?", kTestPrompt, std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt, Clone(all_files),
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
-
-  base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
-                                     mojom::ConversationCapability::CHAT,
-                                     base::DoNothing(), future.GetCallback());
-  EXPECT_EQ(future.Take(),
-            EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */));
-  testing::Mock::VerifyAndClearExpectations(client);
-}
-
-TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
-  auto* client = GetClient();
-  base::RunLoop run_loop;
-
-  EngineConsumer::ConversationHistory history;
-
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce(
-          [](const mojom::CustomModelOptions, base::ListValue messages,
-             EngineConsumer::GenerationDataCallback,
-             EngineConsumer::GenerationCompletedCallback completed_callback,
-             const std::optional<std::vector<std::string>>&) {
-            // Page content should always be attached to the first message
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "This is the text of a web page:\n<page>\nThis is a "
-                      "page.\n</page>");
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"),
-                      "Tell me more about this page");
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
-                    std::nullopt /* model_key */)));
-          });
-
-  {
-    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
-    entry->uuid = "turn-1";
-    entry->character_type = mojom::CharacterType::HUMAN;
-    entry->text = "Tell me more about this page";
-    history.push_back(std::move(entry));
-  }
-
-  PageContent page_content("This is a page.", false);
-  engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-
-  run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -1261,19 +712,21 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(std::move(entry));
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
-          [](const mojom::CustomModelOptions, base::ListValue messages,
+          [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             ASSERT_EQ(messages.size(), 2u);
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-            EXPECT_EQ(*messages[0].GetDict().Find("content"),
-                      "This is a custom system prompt.");
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "What is my name?");
+            EXPECT_EQ(messages[0].role, "system");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            "This is a custom system prompt.");
+            EXPECT_EQ(messages[1].role, "user");
+            ASSERT_EQ(messages[1].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[1].content.back(),
+                            "What is my name?");
 
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -1338,40 +791,35 @@ TEST_F(EngineConsumerOAIUnitTest,
       {l10n_util::GetStringUTF8(
           IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
 
-  // Setup the expected user memory message with HTML escaped values.
-  base::DictValue expected_user_memory_dict;
-  base::ListValue memories_list;
-  memories_list.Append("I like to eat apple");
-  memories_list.Append("&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;");
-  expected_user_memory_dict.Set("memories", std::move(memories_list));
-  expected_user_memory_dict.Set("name", "John Doe");
-  expected_user_memory_dict.Set("other",
-                                "&lt;user_memory&gt;tag&lt;/user_memory&gt;");
-  auto expected_user_memory_json = base::WriteJson(expected_user_memory_dict);
-  ASSERT_TRUE(expected_user_memory_json.has_value());
-
-  std::string expected_user_memory_message = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF8(
-          IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT),
-      {*expected_user_memory_json}, nullptr);
-
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::ListValue messages,
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            ASSERT_EQ(messages.size(), 3u);
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-            EXPECT_EQ(*messages[0].GetDict().Find("content"),
-                      expected_system_message);
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      expected_user_memory_message);
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"),
-                      "What is my name?");
+            ASSERT_EQ(messages.size(), 2u);
+
+            // System message should include memory system prompt segment
+            EXPECT_EQ(messages[0].role, "system");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            expected_system_message);
+
+            // User message should have memory block and user text
+            EXPECT_EQ(messages[1].role, "user");
+            ASSERT_EQ(messages[1].content.size(), 2u);
+            VerifyMemoryBlock(
+                FROM_HERE, messages[1].content[0],
+                BuildExpectedMemory(
+                    {{"name", "John Doe"},
+                     {"other", "&lt;user_memory&gt;tag&lt;/user_memory&gt;"}},
+                    {{"memories",
+                      {"I like to eat apple",
+                       "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;"}}}));
+            VerifyTextBlock(FROM_HERE, messages[1].content[1],
+                            "What is my name?");
 
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -1426,24 +874,29 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   base::RunLoop run_loop;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::ListValue messages,
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             // Should only have 2 messages: system prompt and user message
-            // NO user memory message should be present
+            // NO memory content block should be present
             ASSERT_EQ(messages.size(), 2u);
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+            EXPECT_EQ(messages[0].role, "system");
             // The system message should contain the default system prompt
             // but NOT include user memory instruction segment
-            std::string* content = messages[0].GetDict().FindString("content");
-            ASSERT_TRUE(content);
-            EXPECT_THAT(*content, testing::Not(testing::HasSubstr("memory")));
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "What is my name?");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            ASSERT_TRUE(messages[0].content[0]->is_text_content_block());
+            EXPECT_THAT(messages[0].content[0]->get_text_content_block()->text,
+                        testing::Not(testing::HasSubstr("memory")));
+
+            // No memory content block
+            EXPECT_EQ(messages[1].role, "user");
+            ASSERT_EQ(messages[1].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[1].content.back(),
+                            "What is my name?");
 
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -1461,400 +914,6 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildMessages_PageContentsOrderedBeforeTurns) {
-  PageContent page_content1("Test page 1 content", false);
-  PageContent page_content2("Test page 2 content", false);
-  PageContentsMap page_contents;
-  page_contents["turn-1"] = {std::cref(page_content1)};
-  page_contents["turn-3"] = {std::cref(page_content2)};
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  // Create a turn with the same UUID as in page_contents
-  auto turn1 = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn1));
-
-  auto turn2 = mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      "Assistant message 1", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn2));
-
-  auto turn3 = mojom::ConversationTurn::New(
-      "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn3));
-
-  auto messages = engine_->BuildMessages(
-      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
-      std::nullopt, conversation_history);
-
-  // Check that messages are built correctly
-  // Expected order: system message, page content, human turn, assistant turn
-  ASSERT_GE(messages.size(), 6u);
-
-  // First should be system message
-  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-  // Second should be the page content message
-  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-  std::string content = *messages[1].GetDict().FindString("content");
-  EXPECT_THAT(content, testing::HasSubstr("Test page 1 content"));
-  EXPECT_THAT(content, testing::HasSubstr("<page>"));
-
-  // Third should be the human turn
-  EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-  EXPECT_EQ(*messages[2].GetDict().Find("content"), "Human message 1");
-
-  // Fourth should be the assistant turn
-  EXPECT_EQ(*messages[3].GetDict().Find("role"), "assistant");
-  EXPECT_EQ(*messages[3].GetDict().Find("content"), "Assistant message 1");
-
-  // Fifth should be the second page content message
-  EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-  content = *messages[4].GetDict().FindString("content");
-  EXPECT_THAT(content, testing::HasSubstr("Test page 2 content"));
-  EXPECT_THAT(content, testing::HasSubstr("<page>"));
-
-  // Sixth should be the second human turn
-  EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
-  EXPECT_EQ(*messages[5].GetDict().Find("content"), "Human message 2");
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildMessages_PageContentsExcludedForMissingTurns) {
-  PageContent page_content1("Content for existing turn", false);
-  PageContent page_content2("Content for missing turn", false);
-  PageContentsMap page_contents;
-  page_contents["existing-turn"] = {std::cref(page_content1)};
-  page_contents["missing-turn"] = {std::cref(page_content2)};
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  // Only create a turn for "existing-turn", not "missing-turn"
-  auto turn = mojom::ConversationTurn::New(
-      "existing-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn));
-
-  auto messages = engine_->BuildMessages(
-      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
-      std::nullopt, conversation_history);
-
-  // Convert messages to string for easier searching
-  std::string all_messages_json;
-  for (const auto& message : messages) {
-    std::string message_json;
-    base::JSONWriter::Write(message, &message_json);
-    all_messages_json += message_json;
-  }
-
-  // Should contain content for existing turn
-  EXPECT_THAT(all_messages_json,
-              testing::HasSubstr("Content for existing turn"));
-
-  // Should NOT contain content for missing turn
-  EXPECT_THAT(all_messages_json,
-              testing::Not(testing::HasSubstr("Content for missing turn")));
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildMessages_MultiplePageContentsForSameTurn) {
-  PageContent page_content1("First page content", false);
-  PageContent video_content("Video content", true);
-  PageContentsMap page_contents;
-  page_contents["turn-1"] = {std::cref(page_content1),
-                             std::cref(video_content)};
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  auto turn = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn));
-
-  auto messages = engine_->BuildMessages(
-      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
-      std::nullopt, conversation_history);
-
-  // Should have system message + 2 page content messages + human turn
-  ASSERT_EQ(messages.size(), 4u);
-
-  EXPECT_EQ(*messages[0].GetDict().FindString("role"), "system");
-
-  // Check that video content is included
-  EXPECT_EQ(*messages[1].GetDict().FindString("role"), "user");
-  EXPECT_THAT(*messages[1].GetDict().FindString("content"),
-              testing::HasSubstr("Video content"));
-
-  // Check that the page content is included
-  EXPECT_EQ(*messages[2].GetDict().FindString("role"), "user");
-  EXPECT_THAT(*messages[2].GetDict().FindString("content"),
-              testing::HasSubstr("First page content"));
-
-  // Check that human turn is included after the page contents
-  EXPECT_EQ(*messages[3].GetDict().FindString("role"), "user");
-  EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message");
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildMessages_MultiplePageContents_MultipleTurns) {
-  PageContent page_1("Page 1", false);
-  PageContent page_2("Page 2", false);
-  PageContent page_3("Page 3", false);
-
-  PageContentsMap page_contents;
-  page_contents["turn-1"] = {std::cref(page_1)};
-  page_contents["turn-2"] = {std::cref(page_2), std::cref(page_3)};
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  auto turn1 = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn1));
-
-  auto turn2 = mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn2));
-
-  auto messages = engine_->BuildMessages(
-      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
-      std::nullopt, conversation_history);
-
-  // Should have system message + 3 page content messages + 2 human turns
-  ASSERT_EQ(messages.size(), 6u);
-
-  EXPECT_EQ(*messages[0].GetDict().FindString("role"), "system");
-
-  // Check that page content is included before the first human turn
-  EXPECT_EQ(*messages[1].GetDict().FindString("role"), "user");
-  EXPECT_THAT(*messages[1].GetDict().FindString("content"),
-              testing::HasSubstr("Page 1"));
-
-  // turn-1
-  EXPECT_EQ(*messages[2].GetDict().FindString("role"), "user");
-  EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
-
-  // Check that page 2 & 3 are included before the second human turn
-  EXPECT_EQ(*messages[3].GetDict().FindString("role"), "user");
-  EXPECT_THAT(*messages[3].GetDict().FindString("content"),
-              testing::HasSubstr("Page 3"));
-  EXPECT_EQ(*messages[4].GetDict().FindString("role"), "user");
-  EXPECT_THAT(*messages[4].GetDict().FindString("content"),
-              testing::HasSubstr("Page 2"));
-
-  // turn-2
-  EXPECT_EQ(*messages[5].GetDict().FindString("role"), "user");
-  EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
-}
-
-TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
-  PageContentsMap empty_page_contents;
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  auto turn = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn));
-
-  auto messages = engine_->BuildMessages(
-      *model_->options->get_custom_model_options(), empty_page_contents,
-      std::nullopt, std::nullopt, conversation_history);
-
-  // Should only have system message + human turn
-  ASSERT_EQ(messages.size(), 2u);
-
-  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
-}
-
-TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
-  PageContent page_content("This is a test page content", false);
-  PageContentsMap page_contents;
-  page_contents["non-existent-turn"] = {std::cref(page_content)};
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  auto turn = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn));
-
-  auto messages = engine_->BuildMessages(
-      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
-      std::nullopt, conversation_history);
-
-  // Should only have system message + human turn
-  ASSERT_EQ(messages.size(), 2u);
-
-  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildMessages_MultiplePageContents_MultipleTurns_TooLong) {
-  PageContent page_content_1(std::string(35, '1'), false);
-  PageContent page_content_2(std::string(35, '2'), false);
-  PageContent page_content_3(std::string(35, '3'), false);
-
-  PageContentsMap page_contents;
-  page_contents["turn-1"] = {std::cref(page_content_1),
-                             std::cref(page_content_2)};
-  page_contents["turn-2"] = {std::cref(page_content_3)};
-
-  EngineConsumer::ConversationHistory conversation_history;
-
-  auto turn1 = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn1));
-
-  auto turn2 = mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
-  conversation_history.push_back(std::move(turn2));
-
-  // Gets the content of a page content event
-  auto get_page_content_event = [](char c, int length) {
-    return "This is the text of a web "
-           "page:\n<page>\n" +
-           std::string(length, c) + "\n</page>";
-  };
-
-  auto test_content_truncation = [&](uint32_t max_length,
-                                     std::vector<std::string> event_contents) {
-    SCOPED_TRACE(
-        absl::StrFormat("Testing Truncation with max length: %d", max_length));
-    engine_->SetMaxAssociatedContentLengthForTesting(max_length);
-
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    ASSERT_EQ(messages.size(), event_contents.size() + 1);
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    for (size_t i = 0; i < event_contents.size(); ++i) {
-      SCOPED_TRACE(absl::StrFormat("Checking event %zu (max length: %d)", i,
-                                   max_length));
-      EXPECT_EQ(*messages[i + 1].GetDict().Find("role"), "user");
-      EXPECT_EQ(*messages[i + 1].GetDict().FindString("content"),
-                event_contents[i]);
-    }
-  };
-
-  // Max Length = 1000 (should include all the page contents)
-  test_content_truncation(1000, {
-                                    get_page_content_event('2', 35),
-                                    get_page_content_event('1', 35),
-                                    "Human message 1",
-                                    get_page_content_event('3', 35),
-                                    "Human message 2",
-                                });
-
-  // Max Length = 100 (should truncate some of page content 1)
-  test_content_truncation(100, {
-                                   get_page_content_event('2', 35),
-                                   get_page_content_event('1', 30),
-                                   "Human message 1",
-                                   get_page_content_event('3', 35),
-                                   "Human message 2",
-                               });
-
-  // Max Length = 71 (should include all of page content 3 and all of page
-  // content 2 and 1 character of page content 1).
-  test_content_truncation(71, {
-                                  get_page_content_event('2', 35),
-                                  get_page_content_event('1', 1),
-                                  "Human message 1",
-                                  get_page_content_event('3', 35),
-                                  "Human message 2",
-                              });
-
-  // Max Length = 70 (should include all of page content 3 and all of page
-  // content 2).
-  test_content_truncation(70, {
-                                  get_page_content_event('2', 35),
-                                  "Human message 1",
-                                  get_page_content_event('3', 35),
-                                  "Human message 2",
-                              });
-
-  // Max Length = 65 (should include all of page content 3 and most of page
-  // content 2).
-  test_content_truncation(65, {
-                                  get_page_content_event('2', 30),
-                                  "Human message 1",
-                                  get_page_content_event('3', 35),
-                                  "Human message 2",
-                              });
-
-  // Max Length = 36 (should include all of page content 3 and one character of
-  // page content 2).
-  test_content_truncation(36, {
-                                  get_page_content_event('2', 1),
-                                  "Human message 1",
-                                  get_page_content_event('3', 35),
-                                  "Human message 2",
-                              });
-
-  // Max Length = 35 (should include all of page content 3).
-  test_content_truncation(35, {
-                                  "Human message 1",
-                                  get_page_content_event('3', 35),
-                                  "Human message 2",
-                              });
-
-  // Max Length = 10 (should only include some of page content 3)
-  test_content_truncation(10, {
-                                  "Human message 1",
-                                  get_page_content_event('3', 10),
-                                  "Human message 2",
-                              });
-
-  // Max Length = 1 (should include one char of page content 3).
-  test_content_truncation(1, {
-                                 "Human message 1",
-                                 get_page_content_event('3', 1),
-                                 "Human message 2",
-                             });
-
-  // Max Length = 0 (should include no page content)
-  test_content_truncation(0, {
-                                 "Human message 1",
-                                 "Human message 2",
-                             });
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
@@ -2506,82 +1565,6 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_EQ(result.error(), mojom::APIError::InternalError);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSkill) {
-  auto* client = GetClient();
-
-  // Create conversation history with skill entry
-  EngineConsumer::ConversationHistory conversation_history;
-  auto skill_entry =
-      mojom::SkillEntry::New("summarize", "Please summarize the content");
-  conversation_history.push_back(mojom::ConversationTurn::New(
-      "uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "/summarize What is artificial intelligence?", std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_files */, std::move(skill_entry), false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
-
-  base::test::TestFuture<EngineConsumer::GenerationResult> future;
-
-  // Expect that PerformRequest is called with messages that include both
-  // skill definition message and the main user message
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce(
-          [](const mojom::CustomModelOptions&, base::ListValue messages,
-             EngineConsumer::GenerationDataCallback,
-             EngineConsumer::GenerationCompletedCallback completed_callback,
-             const std::optional<std::vector<std::string>>&) {
-            // Verify messages include system prompt and user message with
-            // content blocks
-            ASSERT_EQ(messages.size(), 2u);
-
-            // First message should be the system prompt
-            const auto& system_msg = messages[0].GetDict();
-            EXPECT_EQ(*system_msg.FindString("role"), "system");
-            EXPECT_EQ(*system_msg.FindString("content"),
-                      "This is a custom system prompt.");
-
-            // Second message should be the user message with content blocks
-            const auto& user_msg = messages[1].GetDict();
-            EXPECT_EQ(*user_msg.FindString("role"), "user");
-
-            // Verify content is now an array of content blocks
-            const auto* content = user_msg.FindList("content");
-            ASSERT_NE(content, nullptr);
-            ASSERT_EQ(content->size(), 2u);
-
-            // First content block should be the skill definition
-            const auto& skill_block = (*content)[0].GetDict();
-            EXPECT_EQ(*skill_block.FindString("type"), "text");
-            EXPECT_EQ(*skill_block.FindString("text"),
-                      "When handling the request, interpret '/summarize' as "
-                      "'Please summarize the content'");
-
-            // Second content block should be the user message
-            const auto& user_text_block = (*content)[1].GetDict();
-            EXPECT_EQ(*user_text_block.FindString("type"), "text");
-            EXPECT_EQ(*user_text_block.FindString("text"),
-                      "/summarize What is artificial intelligence?");
-
-            // Mock successful response
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("AI is a technology...")),
-                    std::nullopt)));
-          });
-
-  engine_->GenerateAssistantResponse(
-      {}, conversation_history, false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT,
-      base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
-      future.GetCallback());
-
-  // Wait for the response
-  auto result = future.Take();
-  EXPECT_TRUE(result.has_value());
-}
-
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateRewriteSuggestion_UnsupportedActionTypeReturnsInternalError) {
   auto* client = GetClient();
@@ -2760,91 +1743,5 @@ INSTANTIATE_TEST_SUITE_P(
     [](const testing::TestParamInfo<GenerateRewriteTestParam>& info) {
       return info.param.name;
     });
-
-TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_UTF8Truncation) {
-  // Tests that BuildPageContentMessages correctly handles UTF-8 character
-  // boundaries when truncating content and that remaining length is calculated
-  // using actual truncated size.
-  //
-  // Content 1 (newer): (max_length - 2) 'a' + 4-byte emoji
-  //   → Truncated to (max_length - 2) bytes before emoji
-  // Content 2 (older): 100 'b'
-  //   → Gets remaining 2 bytes
-
-  constexpr uint32_t max_length = 100;
-  std::string content1_str =
-      std::string(max_length - 2, 'a') + "\xF0\x9F\x98\x80";
-  ASSERT_EQ(content1_str.size(), max_length + 2);
-  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content1_str));
-
-  std::string content2_str = std::string(max_length, 'b');
-
-  PageContent content1(content1_str, false);
-  PageContent content2(content2_str, false);
-  // BuildPageContentMessages processes in reverse, so put content1 last
-  // to process it first
-  PageContents page_contents = {content2, content1};
-
-  uint32_t remaining_length = max_length;
-  auto messages = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-
-  ASSERT_EQ(messages.size(), 2u);
-
-  // Message 0: Content 1 (processed first, has emoji, truncated before it)
-  EXPECT_EQ(*messages[0].GetDict().Find("role"), "user");
-  const std::string* content_msg0 = messages[0].GetDict().FindString("content");
-  ASSERT_TRUE(content_msg0);
-  std::string_view truncated0 = ExtractPageContent(*content_msg0);
-  EXPECT_EQ(truncated0, std::string(max_length - 2, 'a'));
-  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated0));
-
-  // Message 1: Content 2 (processed second, gets remaining 2 bytes)
-  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-  const std::string* content_msg1 = messages[1].GetDict().FindString("content");
-  ASSERT_TRUE(content_msg1);
-  std::string_view truncated1 = ExtractPageContent(*content_msg1);
-  EXPECT_EQ(truncated1, "bb");
-  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated1));
-
-  // All remaining length consumed
-  EXPECT_EQ(remaining_length, 0u);
-}
-
-TEST_F(EngineConsumerOAIUnitTest,
-       BuildPageContentMessages_UTF8Truncation_FitsExactly) {
-  // Tests that when a multi-byte emoji fits exactly at the boundary,
-  // it's kept in the truncated output.
-  //
-  // Content: (max_length - 4) 'a' + 4-byte emoji = exactly max_length bytes
-  //   → Should keep the emoji since it fits exactly
-
-  constexpr uint32_t max_length = 100;
-  std::string content_str =
-      std::string(max_length - 4, 'a') + "\xF0\x9F\x98\x80";
-  ASSERT_EQ(content_str.size(), max_length);
-  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content_str));
-
-  PageContent content(content_str, false);
-  PageContents page_contents = {content};
-
-  uint32_t remaining_length = max_length;
-  auto messages = engine_->BuildPageContentMessages(
-      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
-      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-
-  ASSERT_EQ(messages.size(), 1u);
-
-  EXPECT_EQ(*messages[0].GetDict().Find("role"), "user");
-  const std::string* content_msg = messages[0].GetDict().FindString("content");
-  ASSERT_TRUE(content_msg);
-  std::string_view truncated = ExtractPageContent(*content_msg);
-  EXPECT_EQ(truncated, content_str);
-  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated));
-
-  // All remaining length consumed
-  EXPECT_EQ(remaining_length, 0u);
-}
 
 }  // namespace ai_chat
