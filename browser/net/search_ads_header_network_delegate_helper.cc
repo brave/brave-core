@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/search_ads_header_network_delegate_helper.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -46,6 +47,7 @@ int OnBeforeStartTransaction_SearchAdsHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     T<BraveRequestInfo> request) {
+  CHECK(request);
   // The header should be set if (to disable search ads):
   // - any of the following are true:
   //   - Rewards is enabled and not connected, and opted out of search ads.
