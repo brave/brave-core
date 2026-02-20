@@ -149,7 +149,7 @@ export const walletEndpoints = ({
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
-          const { keyringService, braveWalletService } = api
+          const { keyringService } = api
 
           const result = await keyringService.createWallet(arg.password)
           if (!result.mnemonic) {
@@ -166,7 +166,7 @@ export const walletEndpoints = ({
 
           const accounts = await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
-            braveWalletService,
+            keyringService,
             cache,
           })
 
@@ -200,7 +200,7 @@ export const walletEndpoints = ({
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
-          const { keyringService, braveWalletService } = api
+          const { keyringService } = api
 
           const result = await keyringService.restoreWallet(
             arg.mnemonic,
@@ -232,7 +232,7 @@ export const walletEndpoints = ({
 
           const accounts = await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
-            braveWalletService,
+            keyringService,
             cache,
           })
 
@@ -402,7 +402,7 @@ export const walletEndpoints = ({
 
           const accounts = await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
-            braveWalletService,
+            keyringService,
             cache,
           })
 
@@ -571,11 +571,11 @@ async function importFromExternalWallet(
 
 async function createDefaultAccounts({
   allowedNewWalletAccountTypeNetworkIds,
-  braveWalletService,
+  keyringService,
   cache,
 }: {
   cache: BaseQueryCache
-  braveWalletService: BraveWallet.BraveWalletServiceRemote
+  keyringService: BraveWallet.KeyringServiceRemote
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
 }) {
   const networksRegistry = await cache.getNetworksRegistry()
@@ -615,5 +615,5 @@ async function createDefaultAccounts({
       return accountArgs
     })
 
-  return await braveWalletService.createDefaultAccounts(addAccountArgs)
+  return await keyringService.createDefaultAccounts(addAccountArgs)
 }

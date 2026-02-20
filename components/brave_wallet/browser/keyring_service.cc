@@ -1151,7 +1151,10 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
                             base::Base64Encode(salt));
 
   CreateKeyrings(*keyring_seed);
-  CreateDefaultAccounts();
+  if (!CreateDefaultAccounts()) {
+    Reset(true);
+    return false;
+  }
 
   for (const auto& observer : observers_) {
     if (from_restore) {
@@ -1265,18 +1268,25 @@ void KeyringService::ClearKeyrings() {
   polkadot_testnet_keyring_.reset();
 }
 
-void KeyringService::CreateDefaultAccounts() {
+bool KeyringService::CreateDefaultAccounts() {
   if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kDefault,
                                             GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
+  } else {
+    return false;
   }
+
   if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kSolana,
                                             "Solana " + GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
+  } else {
+    return false;
   }
   ResetAllAccountInfosCache();
+
+  return true;
 }
 
 void KeyringService::LoadAllAccountsFromPrefs() {
@@ -1571,15 +1581,22 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   return account;
 }
 
-std::vector<mojom::AccountInfoPtr> KeyringService::CreateDefaultAccounts(
-    std::vector<mojom::AddAccountArgsPtr> account_args) {
+void KeyringService::CreateDefaultAccounts(
+    std::vector<mojom::AddAccountArgsPtr> account_args,
+    CreateDefaultAccountsCallback callback) {
+  if (account_args.empty()) {
+    return std::move(callback).Run({});
+  }
+
   std::vector<mojom::AccountInfoPtr> account_infos;
 
   for (auto& account_arg : account_args) {
     auto& [coin, keyring_id, account_name] = *account_arg;
     auto account = AddHDAccountForKeyring(std::move(keyring_id), account_name);
+
     if (!account) {
-      return {};
+      Reset(true);
+      return std::move(callback).Run(std::nullopt);
     }
 
     account_infos.push_back(std::move(account));
@@ -1592,7 +1609,7 @@ std::vector<mojom::AccountInfoPtr> KeyringService::CreateDefaultAccounts(
   SetSelectedAccountInternal(*account_infos.front());
   NotifyAccountsAdded(account_infos);
 
-  return account_infos;
+  std::move(callback).Run(std::move(account_infos));
 }
 
 void KeyringService::EncodePrivateKeyForExport(
@@ -1977,10 +1994,6 @@ mojom::AccountInfoPtr KeyringService::AddHDAccountForKeyring(
 std::optional<std::string> KeyringService::AddHDAccountForKeyringInternal(
     mojom::KeyringId keyring_id,
     uint32_t index) {
-  auto is_address_allowed = base::BindRepeating([](const std::string& address) {
-    return BlockchainRegistry::GetInstance()->IsOfacAddress(address);
-  });
-
   if (auto* keyring = GetKeyring<EthereumKeyring>(keyring_id)) {
     return keyring->AddNewHDAccount(index);
   }

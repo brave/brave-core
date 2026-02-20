@@ -102,8 +102,8 @@ class KeyringService : public mojom::KeyringService {
                                        mojom::KeyringId keyring_id,
                                        const std::string& account_name);
 
-  std::vector<mojom::AccountInfoPtr> CreateDefaultAccounts(
-      std::vector<mojom::AddAccountArgsPtr> account_args);
+  void CreateDefaultAccounts(std::vector<mojom::AddAccountArgsPtr> account_args,
+                             CreateDefaultAccountsCallback callback) override;
 
   void EncodePrivateKeyForExport(
       mojom::AccountIdPtr account_id,
@@ -412,7 +412,7 @@ class KeyringService : public mojom::KeyringService {
   bool IsKeyringEnabled(mojom::KeyringId keyring_id) const;
   void CreateKeyrings(const KeyringSeed& keyring_seed);
   void ClearKeyrings();
-  void CreateDefaultAccounts();
+  bool CreateDefaultAccounts();
   void LoadAllAccountsFromPrefs();
   void LoadAccountsFromPrefs(mojom::KeyringId keyring_id);
 

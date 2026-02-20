@@ -110,9 +110,6 @@ class BraveWalletService : public KeyedService,
       ::mojo::PendingRemote<mojom::BraveWalletServiceTokenObserver> observer)
       override;
 
-  void CreateDefaultAccounts(std::vector<mojom::AddAccountArgsPtr> account_args,
-                             CreateDefaultAccountsCallback callback) override;
-
   void GetUserAssets(const std::string& chain_id,
                      mojom::CoinType coin,
                      GetUserAssetsCallback callback) override;

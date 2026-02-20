@@ -1403,6 +1403,10 @@ interface KeyringService {
   AddAccount(CoinType coin, KeyringId keyring_id, string account_name)
       => (AccountInfo? account_info);
 
+  // Adds accounts to the keyring in bulk during wallet creation/restoration.
+  CreateDefaultAccounts(array<AddAccountArgs> account_args)
+      => (array<AccountInfo>? account_infos);
+
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(AccountId account_id, string password)
       => (string? privateKey);
@@ -3133,10 +3137,6 @@ interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
   AddTokenObserver(pending_remote<BraveWalletServiceTokenObserver> observer);
-
-  // Adds accounts to the keyring in bulk.
-  CreateDefaultAccounts(array<AddAccountArgs> account_args)
-      => (array<AccountInfo>? account_infos);
 
   // Obtains all the user assets.
   GetAllUserAssets() => (array<BlockchainToken> tokens);

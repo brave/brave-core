@@ -1351,20 +1351,6 @@ void BraveWalletService::AddTokenObserver(
   token_observers_.Add(std::move(observer));
 }
 
-void BraveWalletService::CreateDefaultAccounts(
-    std::vector<mojom::AddAccountArgsPtr> account_args,
-    CreateDefaultAccountsCallback callback) {
-  auto account_infos =
-      keyring_service_->CreateDefaultAccounts(std::move(account_args));
-
-  if (account_infos.empty()) {
-    Reset();
-    return std::move(callback).Run(std::nullopt);
-  }
-
-  return std::move(callback).Run(std::move(account_infos));
-}
-
 void BraveWalletService::OnActiveOriginChanged(
     const mojom::OriginInfoPtr& origin_info) {
   for (const auto& observer : observers_) {
