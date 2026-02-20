@@ -26,7 +26,6 @@ source_set("svg") {
   ]
 
   sources += [
-    "//third_party/skia/src/ports/SkImageGenerator_skia.cpp",
     "//third_party/skia/src/utils/SkOSPath.h",
     "//third_party/skia/src/utils/SkParsePath.cpp",
     "//third_party/skia/src/xml/SkDOM.cpp",
