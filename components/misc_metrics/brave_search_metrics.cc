@@ -13,6 +13,7 @@
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
@@ -28,6 +29,9 @@ constexpr char kPrimaryQueriesCountKey[] = "primary";
 constexpr char kOmniboxTypedCountKey[] = "omnibox_typed";
 constexpr char kOmniboxSuggestionCountKey[] = "omnibox_suggestion";
 constexpr char kNTPSearchCountKey[] = "ntp_search";
+#if BUILDFLAG(IS_ANDROID)
+constexpr char kWidgetSearchCountKey[] = "widget_search";
+#endif  // BUILDFLAG(IS_ANDROID)
 
 bool IsBraveSearchURL(const GURL& url) {
   static const base::NoDestructor<GURL> kBraveSearchURL(
@@ -104,6 +108,15 @@ void BraveSearchMetrics::MaybeRecordNTPSearch(int64_t engine_prepopulate_id) {
   IncrementDictCount(kNTPSearchCountKey);
 }
 
+#if BUILDFLAG(IS_ANDROID)
+void BraveSearchMetrics::MaybeRecordWidgetSearch(const GURL& url) {
+  if (!IsBraveSearchURL(url)) {
+    return;
+  }
+  IncrementDictCount(kWidgetSearchCountKey);
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
 void BraveSearchMetrics::ReportAllMetrics() {
   if (!HasReportIntervalElapsed()) {
     return;
@@ -139,6 +152,10 @@ void BraveSearchMetrics::ReportAllMetrics() {
                               kSearchOmniboxSuggestionPercentHistogramName);
     RecordPercentageHistogram(counts, primary_queries, kNTPSearchCountKey,
                               kSearchNTPSearchPercentHistogramName);
+#if BUILDFLAG(IS_ANDROID)
+    RecordPercentageHistogram(counts, primary_queries, kWidgetSearchCountKey,
+                              kSearchWidgetSearchPercentHistogramName);
+#endif  // BUILDFLAG(IS_ANDROID)
   }
 
   ResetCounts();

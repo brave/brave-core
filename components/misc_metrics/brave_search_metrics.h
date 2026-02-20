@@ -8,6 +8,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/page_percentage_metrics.h"
+#include "build/build_config.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -32,6 +33,10 @@ inline constexpr char kSearchOmniboxSuggestionPercentHistogramName[] =
     "Brave.Search.OmniboxSuggestionPercent";
 inline constexpr char kSearchNTPSearchPercentHistogramName[] =
     "Brave.Search.NTPSearchPercent";
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr char kSearchWidgetSearchPercentHistogramName[] =
+    "Brave.Search.WidgetSearchPercent";
+#endif  // BUILDFLAG(IS_ANDROID)
 
 class BraveSearchMetrics : public PagePercentageMetrics {
  public:
@@ -44,6 +49,9 @@ class BraveSearchMetrics : public PagePercentageMetrics {
   void MaybeRecordBraveQuery(const GURL& previous_url, const GURL& current_url);
   void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
   void MaybeRecordNTPSearch(int64_t engine_prepopulate_id);
+#if BUILDFLAG(IS_ANDROID)
+  void MaybeRecordWidgetSearch(const GURL& url);
+#endif  // BUILDFLAG(IS_ANDROID)
 
   void ClearQueryCounts();
 

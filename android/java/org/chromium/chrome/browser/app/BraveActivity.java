@@ -2551,6 +2551,14 @@ public abstract class BraveActivity extends ChromeActivity
                             mMiscAndroidMetrics.recordSetAsDefault(
                                     BraveSetDefaultBrowserUtils.isAppSetAsDefaultBrowser(
                                             BraveActivity.this));
+                            Intent launchIntent = getIntent();
+                            if (launchIntent != null
+                                    && Intent.ACTION_VIEW.equals(
+                                            launchIntent.getAction())
+                                    && launchIntent.getData() != null) {
+                                mMiscAndroidMetrics.recordIntentUrl(
+                                        launchIntent.getData().toString());
+                            }
                             if (mUsageMonitor == null) {
                                 mUsageMonitor = UsageMonitor.getInstance(mMiscAndroidMetrics);
                             }
