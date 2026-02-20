@@ -240,6 +240,8 @@ bool BraveTab::IsActive() const {
 TabSizeInfo BraveTab::GetTabSizeInfo() const {
   auto size_info = Tab::GetTabSizeInfo();
   if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    // In case horizontal scrollable tab strip is enabled, we can have wider
+    // inactive tabs.
     size_info.min_inactive_width = tab_style()->GetMinimumActiveWidth(false);
   }
   return size_info;
