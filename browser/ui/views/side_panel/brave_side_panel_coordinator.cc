@@ -41,7 +41,7 @@ BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
 
 void BraveSidePanelCoordinator::Show(
     const UniqueKey& entry,
-    std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
+    std::optional<SidePanelOpenTrigger> open_trigger,
     bool suppress_animations) {
   sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
                                 entry.key.id());
@@ -69,14 +69,12 @@ void BraveSidePanelCoordinator::Toggle() {
       !browser_view_->contents_height_side_panel()->IsClosing()) {
     Close(SidePanelEntry::PanelType::kContent);
   } else if (const auto key = GetLastActiveEntryKey()) {
-    SidePanelUIBase::Show(*key,
-                          SidePanelUtil::SidePanelOpenTrigger::kToolbarButton);
+    SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
   }
 }
 
-void BraveSidePanelCoordinator::Toggle(
-    SidePanelEntryKey key,
-    SidePanelUtil::SidePanelOpenTrigger open_trigger) {
+void BraveSidePanelCoordinator::Toggle(SidePanelEntryKey key,
+                                       SidePanelOpenTrigger open_trigger) {
   SidePanelCoordinator::Toggle(key, open_trigger);
 }
 
@@ -142,7 +140,7 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
 void BraveSidePanelCoordinator::PopulateSidePanel(
     bool supress_animations,
     const UniqueKey& unique_key,
-    std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
+    std::optional<SidePanelOpenTrigger> open_trigger,
     SidePanelEntry* entry,
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
