@@ -156,7 +156,8 @@ int BraveRequestHandler<T>::OnBeforeStartTransaction(
     net::CompletionOnceCallback callback,
     net::HttpRequestHeaders* headers) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (!ctx || before_start_transaction_callbacks_.empty() || IsInternalScheme(ctx)) {
+  if (!ctx || before_start_transaction_callbacks_.empty() ||
+      IsInternalScheme(ctx)) {
     return net::OK;
   }
   ctx->set_event_type(brave::kOnBeforeStartTransaction);

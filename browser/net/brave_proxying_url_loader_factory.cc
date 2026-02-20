@@ -157,9 +157,8 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::UpdateRequestInfo() {
 template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
-                                              request_id_, browser_context_,
-                                              ctx_.get());
+  ctx_ = brave::BraveRequestInfo::MakeCTX(
+      request_, render_frame_token_, request_id_, browser_context_, ctx_.get());
 }
 
 template <>

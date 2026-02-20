@@ -1234,7 +1234,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
             frame, std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
-        frame, url, site_for_cookies,  // nocheck
+        frame, url, site_for_cookies,        // nocheck
         user_agent, std::move(handshake_client), proxy);
   }
 }
