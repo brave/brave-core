@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+generate_jni("features_jni_headers") {
+  sources = [
+    "java/src/org/chromium/components/brave_account/BraveAccountFeatures.java",
+  ]
+}
+
+android_library("features_java") {
+  srcjar_deps =
+      [ "//brave/components/brave_account/android:features_jni_headers" ]
+
+  sources = [
+    "java/src/org/chromium/components/brave_account/BraveAccountFeatures.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+}
+
+static_library("features") {
+  sources = [ "brave_account_features_android.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account:features",
+    "//brave/components/brave_account/android:features_jni_headers",
+  ]
+}

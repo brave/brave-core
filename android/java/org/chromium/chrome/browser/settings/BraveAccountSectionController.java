@@ -24,12 +24,12 @@ import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.brave_account.BraveAccountFeature;
 import org.chromium.chrome.browser.brave_account.BraveAccountServiceFactory;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.PrefServiceUtil;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.components.prefs.PrefChangeRegistrar;
 import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -74,7 +74,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
 
     public static @Nullable BraveAccountSectionController maybeCreate(
             PreferenceFragmentCompat fragment, Profile profile) {
-        return BraveAccountFeature.isBraveAccountEnabled()
+        return BraveAccountFeatures.isBraveAccountEnabled()
                 ? new BraveAccountSectionController(fragment, profile)
                 : null;
     }

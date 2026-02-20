@@ -4,15 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/android/jni_android.h"
+#include "brave/components/brave_account/android/features_jni_headers/BraveAccountFeatures_jni.h"
 #include "brave/components/brave_account/features.h"
-#include "chrome/android/chrome_jni_headers/BraveAccountFeature_jni.h"
 
-namespace chrome::android {
+namespace brave_account {
 
-static jboolean JNI_BraveAccountFeature_IsBraveAccountEnabled(JNIEnv* env) {
-  return brave_account::features::IsBraveAccountEnabled();
+static jboolean JNI_BraveAccountFeatures_IsBraveAccountEnabled(JNIEnv* env) {
+  return features::IsBraveAccountEnabled();
 }
 
-}  // namespace chrome::android
+}  // namespace brave_account
 
-DEFINE_JNI(BraveAccountFeature)
+DEFINE_JNI(BraveAccountFeatures)
