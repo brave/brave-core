@@ -368,11 +368,6 @@ class PendingRemoteMojoTypemap(MojoTypemap):
         # by creating the MojoImpl wrapper
         objc_class = "%s%sMojoImpl" % (ObjCPrefixFromKind(
             self.kind.kind), self.kind.kind.name)
-        # For nullable PendingRemote, check is_valid() not .value()
-        # since PendingRemote has its own null state
-        if mojom.IsNullableKind(self.kind):
-            return "(%s.is_valid() ? [[%s alloc] initWith%s:std::move(%s)] : nil)" % (
-                accessor, objc_class, self.kind.kind.name, accessor)
         return "[[%s alloc] initWith%s:std::move(%s)]" % (
             objc_class, self.kind.kind.name, accessor)
 
@@ -619,8 +614,6 @@ class Generator(generator.Generator):
                 value_accessor = "%s.value()" % accessor
             else:
                 value_accessor = accessor
-            if isinstance(typemap, PendingRemoteMojoTypemap):
-                return typemap.CppToObjC(accessor)
             return "%s ? %s : nil" % (
                 accessor, typemap.CppToObjC(value_accessor))
         return typemap.CppToObjC(accessor)
