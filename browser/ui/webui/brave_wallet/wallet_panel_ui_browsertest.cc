@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -139,6 +140,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
         ->EnableDummyPricesForTesting();
+
+    // We need to prevent the wallet creation from being stuck waiting to
+    // download an OFAC list that doesn't exist.
+    WalletDataFilesInstaller::GetInstance().ResetForTesting();
 
     brave_wallet_service()->keyring_service()->CreateWallet("password_123",
                                                             base::DoNothing());

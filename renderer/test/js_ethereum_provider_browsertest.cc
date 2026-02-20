@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -118,6 +119,10 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(https_server_.Start());
     ASSERT_TRUE(test_server_handle_ =
                     embedded_test_server()->StartAndReturnHandle());
+
+    // We need to prevent the wallet creation from being stuck waiting to
+    // download an OFAC list that doesn't exist.
+    brave_wallet::WalletDataFilesInstaller::GetInstance().ResetForTesting();
   }
 
   content::WebContents* web_contents() {

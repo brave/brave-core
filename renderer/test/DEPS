@@ -29,6 +29,7 @@ specific_include_rules = {
     "!brave/components/brave_wallet/browser/brave_wallet_utils.h",
     "!brave/components/brave_wallet/browser/json_rpc_service.h",
     "!brave/components/brave_wallet/browser/keyring_service.h",
+    "!brave/components/brave_wallet/browser/wallet_data_files_installer.h",
     "!brave/components/constants/brave_paths.h",
   ],
   "navigator_connection_attribute_browsertest\.cc": [
