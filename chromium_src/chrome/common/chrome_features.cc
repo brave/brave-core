@@ -20,9 +20,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
-#if BUILDFLAG(IS_MAC)
-    {kImmersiveFullscreen, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kShortcutsNotApps, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
