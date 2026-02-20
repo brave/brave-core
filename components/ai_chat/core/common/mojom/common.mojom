@@ -345,6 +345,95 @@ struct ConversationTitleEvent {
   string title;
 };
 
+// Deep Research Events
+struct DeepResearchQueriesEvent {
+  array<string> queries;
+};
+
+struct DeepResearchAnalyzingEvent {
+  string query;
+  int32 urls;
+  int32 new_urls;
+};
+
+struct DeepResearchUrlInfo {
+  string url;
+  string favicon;
+};
+
+struct DeepResearchThinkingEvent {
+  string query;
+  int32 chunks_analyzed;
+  int32 chunks_selected;
+  int32 urls_analyzed;
+  array<string> urls_selected;
+  array<DeepResearchUrlInfo> urls_info;
+};
+
+struct DeepResearchCitation {
+  int32 number;
+  string url;
+  string snippet;
+  string favicon;
+};
+
+struct DeepResearchAnswerEvent {
+  string text;
+  bool final;
+  array<DeepResearchCitation> citations;
+};
+
+struct DeepResearchProgressEvent {
+  double elapsed_seconds;
+  int32 iterations;
+  int32 queries_count;
+  int32 urls_analyzed;
+  int32 snippets_analyzed;
+};
+
+struct DeepResearchBlindspotsEvent {
+  array<string> blindspots;
+};
+
+struct DeepResearchCompleteEvent {
+  string reason;
+};
+
+struct DeepResearchErrorEvent {
+  string error;
+};
+
+// Granular progress events for UX improvement
+struct DeepResearchSearchStatusEvent {
+  string status;  // "started" | "completed"
+  string query;
+  int32 query_index;
+  int32 total_queries;
+  int32 urls_found;  // only for completed
+  int32 elapsed_ms;  // only for completed
+};
+
+struct DeepResearchFetchStatusEvent {
+  string query;
+  int32 urls_total;
+  int32 urls_fetched;
+};
+
+struct DeepResearchAnalysisStatusEvent {
+  string status;  // "started" | "progress"
+  string query;
+  int32 chunks_analyzed;
+  int32 chunks_total;
+};
+
+struct DeepResearchIterationCompleteEvent {
+  int32 iteration;
+  int32 total_iterations;
+  int32 queries_this_iteration;
+  int32 urls_analyzed;
+  int32 blindspots_identified;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -353,6 +442,21 @@ union ConversationEntryEvent {
   WebSourcesEvent sources_event;
   ToolUseEvent tool_use_event;
   InlineSearchEvent inline_search_event;
+
+  // Deep Research events
+  DeepResearchQueriesEvent deep_research_queries_event;
+  DeepResearchAnalyzingEvent deep_research_analyzing_event;
+  DeepResearchThinkingEvent deep_research_thinking_event;
+  DeepResearchAnswerEvent deep_research_answer_event;
+  DeepResearchProgressEvent deep_research_progress_event;
+  DeepResearchBlindspotsEvent deep_research_blindspots_event;
+  DeepResearchCompleteEvent deep_research_complete_event;
+  DeepResearchErrorEvent deep_research_error_event;
+  // Granular progress events
+  DeepResearchSearchStatusEvent deep_research_search_status_event;
+  DeepResearchFetchStatusEvent deep_research_fetch_status_event;
+  DeepResearchAnalysisStatusEvent deep_research_analysis_status_event;
+  DeepResearchIterationCompleteEvent deep_research_iteration_complete_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.

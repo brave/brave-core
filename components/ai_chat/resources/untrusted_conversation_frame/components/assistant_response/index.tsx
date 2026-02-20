@@ -14,6 +14,7 @@ import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
 import Chart from './chart'
+import DeepResearchEvent from './deep_research_event'
 import styles from './style.module.scss'
 import {
   removeReasoning,
@@ -79,6 +80,52 @@ function SearchSummary(props: { searchQueries: string[] }) {
   )
 }
 
+function DeepResearchFinalAnswer(props: {
+  answerEvent: Mojom.DeepResearchAnswerEvent
+  isEntryInProgress: boolean
+}) {
+  const { answerEvent, isEntryInProgress } = props
+
+  const citations = answerEvent.citations || []
+  const citationUrls = citations.map(c => c.url)
+
+  // Build a map of citation number to URL for inline replacement
+  const citationMap = new Map<number, string>()
+  citations.forEach(c => citationMap.set(c.number, c.url))
+
+  // Replace [N] markers with clickable markdown links
+  let formattedText = answerEvent.text
+  // Add space before citation markers
+  formattedText = formattedText.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+  // Convert [N] to markdown links
+  formattedText = formattedText.replace(/\[(\d+)\]/g, (match, num) => {
+    const url = citationMap.get(parseInt(num, 10))
+    if (url) {
+      return `[[${num}]](${url})`
+    }
+    return match
+  })
+
+  // Add sources section at the end
+  const sourcesSection = citations.length > 0
+    ? '\n\n---\n\n**Sources:**\n\n' + citations
+        .map((c) => `- [${c.number}] [${new URL(c.url).hostname}](${c.url})`)
+        .join('\n')
+    : ''
+
+  // Add separator before the report to distinguish from LLM's intro message
+  const fullText = `---\n\n${formattedText}${sourcesSection}`
+
+  return (
+    <MarkdownRenderer
+      shouldShowTextCursor={isEntryInProgress}
+      text={fullText}
+      allowedLinks={citationUrls}
+      disableLinkRestrictions={false}
+    />
+  )
+}
+
 function AssistantEvent(
   props: BaseProps & {
     event: Mojom.ConversationEntryEvent
@@ -89,6 +136,12 @@ function AssistantEvent(
   const context = useUntrustedConversationContext()
 
   if (event.completionEvent) {
+    const completion = event.completionEvent.completion
+
+    // Check if this is a deep research completion (has our Sources section marker)
+    // For deep research content, we allow all links since they're verified sources
+    const isDeepResearchCompletion = completion.includes('**Sources:**\n\n-')
+
     const numberedLinks =
       allowedLinks.length > 0
         ? allowedLinks
@@ -96,25 +149,23 @@ function AssistantEvent(
             .join('\n') + '\n\n'
         : ''
 
-    // Remove citations with missing links
-    const filteredOutCitationsWithMissingLinks =
-      removeCitationsWithMissingLinks(
-        event.completionEvent.completion,
-        allowedLinks,
-      )
+    // Remove citations with missing links (skip for deep research which handles its own citations)
+    const filteredCompletion = isDeepResearchCompletion
+      ? completion
+      : removeCitationsWithMissingLinks(completion, allowedLinks)
 
-    const completion = normalizeCitationSpacing(
-      filteredOutCitationsWithMissingLinks,
+    const processedCompletion = normalizeCitationSpacing(
+      filteredCompletion,
     )
 
-    const fullText = `${numberedLinks}${removeReasoning(completion)}`
+    const fullText = `${numberedLinks}${removeReasoning(processedCompletion)}`
 
     return (
       <MarkdownRenderer
         shouldShowTextCursor={isEntryInProgress}
         text={fullText}
         allowedLinks={allowedLinks}
-        disableLinkRestrictions={!isLeoModel}
+        disableLinkRestrictions={!isLeoModel || isDeepResearchCompletion}
       />
     )
   }
@@ -173,9 +224,85 @@ export default function AssistantResponse(props: AssistantResponseProps) {
     (event) => event.searchQueriesEvent?.searchQueries ?? [],
   )
 
+  // Extract deep research events - use findLast to get most recent queries
+  const deepResearchQueriesEvent = props.events?.findLast(
+    (event) => event.deepResearchQueriesEvent,
+  )?.deepResearchQueriesEvent
+  const deepResearchThinkingEvents = props.events
+    ?.filter((event) => event.deepResearchThinkingEvent)
+    .map((event) => event.deepResearchThinkingEvent!) ?? []
+  // Use findLast to get the final answer (last answer event has final=true)
+  const deepResearchAnswerEvent = props.events?.findLast(
+    (event) => event.deepResearchAnswerEvent,
+  )?.deepResearchAnswerEvent
+  // Use findLast for events that update over time to get the most recent
+  const deepResearchProgressEvent = props.events?.findLast(
+    (event) => event.deepResearchProgressEvent,
+  )?.deepResearchProgressEvent
+  const deepResearchCompleteEvent = props.events?.find(
+    (event) => event.deepResearchCompleteEvent,
+  )?.deepResearchCompleteEvent
+  const deepResearchErrorEvent = props.events?.find(
+    (event) => event.deepResearchErrorEvent,
+  )?.deepResearchErrorEvent
+  // Granular progress events - use findLast to get most recent
+  const deepResearchSearchStatusEvent = props.events?.findLast(
+    (event) => event.deepResearchSearchStatusEvent,
+  )?.deepResearchSearchStatusEvent
+  const deepResearchAnalysisStatusEvent = props.events?.findLast(
+    (event) => event.deepResearchAnalysisStatusEvent,
+  )?.deepResearchAnalysisStatusEvent
+  const deepResearchIterationCompleteEvent = props.events?.findLast(
+    (event) => event.deepResearchIterationCompleteEvent,
+  )?.deepResearchIterationCompleteEvent
+  const deepResearchAnalyzingEvent = props.events?.findLast(
+    (event) => event.deepResearchAnalyzingEvent,
+  )?.deepResearchAnalyzingEvent
+  const deepResearchFetchStatusEvent = props.events?.findLast(
+    (event) => event.deepResearchFetchStatusEvent,
+  )?.deepResearchFetchStatusEvent
+
+  const hasDeepResearchEvents = deepResearchQueriesEvent
+    || deepResearchThinkingEvents.length > 0
+    || deepResearchAnswerEvent
+    || deepResearchProgressEvent
+    || deepResearchCompleteEvent
+    || deepResearchErrorEvent
+    || deepResearchSearchStatusEvent
+    || deepResearchAnalysisStatusEvent
+    || deepResearchIterationCompleteEvent
+    || deepResearchAnalyzingEvent
+    || deepResearchFetchStatusEvent
+
   const hasCompletionStarted =
     !props.isEntryInProgress
     || props.events.some((event) => event.completionEvent)
+
+  // Check if we have a deep research answer (any answer event with text, including streaming)
+  const hasDeepResearchAnswer = !!deepResearchAnswerEvent?.text
+
+  // Filter out deep research events from the main event rendering
+  // since we render them in a special component.
+  // Also filter out completion events when we have a final deep research answer,
+  // since the completion event is only for persistence (the answer event handles rendering).
+  const nonDeepResearchEvents = props.events?.filter(
+    (event) =>
+      !event.deepResearchQueriesEvent
+      && !event.deepResearchAnalyzingEvent
+      && !event.deepResearchThinkingEvent
+      && !event.deepResearchAnswerEvent
+      && !event.deepResearchProgressEvent
+      && !event.deepResearchBlindspotsEvent
+      && !event.deepResearchCompleteEvent
+      && !event.deepResearchErrorEvent
+      && !event.deepResearchSearchStatusEvent
+      && !event.deepResearchFetchStatusEvent
+      && !event.deepResearchAnalysisStatusEvent
+      && !event.deepResearchIterationCompleteEvent
+      // Filter out completion events when we have a deep research answer
+      // (the completion event is for persistence, the answer event is for rendering)
+      && !(hasDeepResearchAnswer && event.completionEvent),
+  )
 
   return (
     <AssistantResponseContextProvider events={props.events}>
@@ -185,7 +312,9 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           jsonData={r}
         />
       ))}
-      {props.events.map((event, i) => (
+
+      {/* Render LLM's initial response first (e.g., "I'll conduct research...") */}
+      {nonDeepResearchEvents?.map((event, i) => (
         <AssistantEvent
           key={i}
           event={event}
@@ -196,6 +325,31 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           isLeoModel={props.isLeoModel}
         />
       ))}
+
+      {/* Render deep research progress in a special component (hide after final report shown) */}
+      {hasDeepResearchEvents && !hasDeepResearchAnswer && (
+        <DeepResearchEvent
+          queriesEvent={deepResearchQueriesEvent}
+          thinkingEvents={deepResearchThinkingEvents}
+          progressEvent={deepResearchProgressEvent}
+          completeEvent={deepResearchCompleteEvent}
+          errorEvent={deepResearchErrorEvent}
+          searchStatusEvent={deepResearchSearchStatusEvent}
+          analysisStatusEvent={deepResearchAnalysisStatusEvent}
+          iterationCompleteEvent={deepResearchIterationCompleteEvent}
+          analyzingEvent={deepResearchAnalyzingEvent}
+          fetchStatusEvent={deepResearchFetchStatusEvent}
+          isActive={props.isEntryInProgress}
+        />
+      )}
+
+      {/* Render deep research answer (both streaming and final) */}
+      {hasDeepResearchAnswer && (
+        <DeepResearchFinalAnswer
+          answerEvent={deepResearchAnswerEvent!}
+          isEntryInProgress={props.isEntryInProgress}
+        />
+      )}
 
       {!props.isEntryInProgress && allSources.length > 0 && (
         <WebSourcesEvent sources={allSources} />
