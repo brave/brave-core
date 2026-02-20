@@ -220,6 +220,13 @@ export const ErrorIcon = styled(Icon).attrs({
   margin-right: 4px;
 `
 
+export const InternalStatusText = styled.code`
+  color: ${leo.color.text.primary};
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 24px;
+`
+
 export const DateText = styled(Text)`
   color: ${leo.color.text.primary};
   line-height: 18px;

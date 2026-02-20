@@ -665,6 +665,7 @@ provideStrings({
   braveWalletConfirmBridge: 'Confirm bridge',
   braveWalletConfirmSend: 'Confirm send',
   braveWalletSwapProvider: 'Provider',
+  braveWalletSwapProviderStatus: 'Provider status',
   braveWalletConfirmShield: 'Confirm shield',
   braveWalletConfirmUnshield: 'Confirm unshield',
   braveWalletSpend: 'Spend',

@@ -105,6 +105,13 @@ export const Alert = styled(LeoAlert)`
   margin-bottom: 46px;
 `
 
+export const InternalStatusText = styled.code`
+  color: ${leo.color.text.tertiary};
+  font-family: monospace;
+  font-size: 12px;
+  margin-top: 8px;
+`
+
 export const ErrorOrSuccessIconWrapper = styled.div<{
   kind: 'error' | 'success'
 }>`
