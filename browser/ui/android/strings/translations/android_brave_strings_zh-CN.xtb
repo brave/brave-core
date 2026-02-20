@@ -144,11 +144,11 @@
 <translation id="693506469193748756">关闭此网站后遗忘我</translation>
 <translation id="6975864539539353406">关闭网站时清除 cookie 和其他网站数据</translation>
 <translation id="7740929262043547697">允许在无痕式窗口中进行元素拦截</translation>
-<translation id="1260864846935682371">在无痕式窗口中启用盾牌元素拦截功能。请注意，在无痕式窗口中被拦截的元素在非无痕窗口中也将被拦截。</translation>
+<translation id="1260864846935682371">在无痕式窗口中启用盾牌元素拦截功能。请注意，在无痕式窗口中被拦截的元素在非无痕式窗口中也会被拦截。</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
-<translation id="4174337572777167894">Web 发现项目</translation>
+<translation id="4174337572777167894">网络发现项目</translation>
 <translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
@@ -361,7 +361,7 @@
 <translation id="1486343603936278248">代币</translation>
 <translation id="7781069478569868053">新标签页</translation>
 <translation id="5927196110206824867">赞助背景图片支持 Brave 实现构建独立与用户优先网络的使命。不同于大型科技公司，我们通过匿名方式衡量广告效果，以保护您的隐私。</translation>
-<translation id="8748471354357836070">了解更多 / 退出选择</translation>
+<translation id="8748471354357836070">了解更多/退出选择</translation>
 <translation id="3171669670217312786">背景圖片</translation>
 <translation id="8522669544471808198">显示背景图片</translation>
 <translation id="6258554626602400736">显示新标签页广告</translation>
@@ -372,10 +372,10 @@
 <translation id="7462178177755090262">启动屏幕</translation>
 <translation id="5365434987337264071">上次打开的标签页</translation>
 <translation id="6019856124237323989">{HOURS, plural,
-          =1 { <ph name="HOURS_ONE"/> 不活动小时后的新选项卡}
-          other { <ph name="HOURS_MANY"/> 不活动小时后的新选项卡}
+          =1 { 不活跃 <ph name="HOURS_ONE"/> 小时后的新标签页}
+          other { 不活跃 <ph name="HOURS_MANY"/> 小时后的新标签页}
         }</translation>
-<translation id="5233638681132016545">打开新的标签页</translation>
+<translation id="5233638681132016545">新标签页</translation>
 <translation id="8395271296293035055">返回最近使用的标签页</translation>
 <translation id="8297488609722895137">照片提供者：<ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">在 Brave 中打开外部链接</translation>
@@ -441,7 +441,7 @@
 <translation id="3037432377946455872">您遇到的主要问题是什么？</translation>
 <translation id="8731661215617360873">选择一个选项</translation>
 <translation id="650318023204990401">高级控制</translation>
-<translation id="7205939464631857223">清除所有已屏蔽的元素</translation>
+<translation id="7205939464631857223">清除所有已拦截的元素</translation>
 <translation id="5370478469168390143">在线保存数据</translation>
 <translation id="1118508688433541158">利用 Brave 更快速的流量并能拦截广告</translation>
 <translation id="7427391215172269363">我每天都用 Brave 浏览网页，节省数据。</translation>
@@ -588,7 +588,7 @@
 <translation id="3952797765659730604">输入、粘贴或导入您的私钥字符串文件或 JSON。</translation>
 <translation id="569068482611873351">导入...</translation>
 <translation id="4522570452068850558">详细信息</translation>
-<translation id="3114681061018999547">正在屏蔽</translation>
+<translation id="3114681061018999547">正在保护</translation>
 <translation id="3784455785234192852">锁定</translation>
 <translation id="4412698727486357573">帮助中心</translation>
 <translation id="8239147115686034860">自动锁定 Brave 钱包</translation>
@@ -948,7 +948,7 @@
 <translation id="7618347247876614969">地址查找表账户：</translation>
 <translation id="7659483790930268440">地址查询表索引：</translation>
 <translation id="5494920125229734069">全选</translation>
-<translation id="2361906291514218784">Leo 人工智能</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">奖励</translation>
 <translation id="4272190451231642425">自动发送崩溃报告</translation>
 <translation id="1199170151481311646">隐私保护分析</translation>
@@ -956,7 +956,7 @@
 <translation id="6709133671862442373">新闻</translation>
 <translation id="5990642573624858459">统计报告</translation>
 <translation id="7705524343798198388">VPN</translation>
-<translation id="2441719842399509963">重置为默认值</translation>
+<translation id="2441719842399509963">重置为默认设置</translation>
 <translation id="4922034974043704366">该功能已启用，因为您选择了该功能</translation>
 <translation id="3144818380093107753">Brave Origin是一种基于订阅的方式，用户可以禁用Brave的创收功能，否则这些功能将支持Brave的业务。Brave Origin用户将继续受益于我们业界领先的隐私、广告拦截和速度（通过Brave Shields），以及定期的软件更新、Chromium补丁、安全和隐私改进。他们还将解锁禁用 Brave Leo、新闻、奖励、钱包、VPN、Web3 域名等功能的选项。&lt;br/&gt;&lt;br/&gt;用户将在浏览器设置菜单中看到一个新的控制面板。&lt;br/&gt;&lt;br/&gt;&lt;b&gt;注意：Brave Origin不会禁用您当前使用的浏览器功能，也不会影响Brave搜索功能或Brave搜索广告。&lt;/b&gt;</translation>
 <translation id="8613144770663526433">用 Brave Wallet 登录</translation>
@@ -1105,7 +1105,7 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="1129510026454351943">错误详情：<ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="5594899180331219722">选择文件</translation>
 <translation id="3744219658596020825">密码未导入</translation>
-<translation id="8258027225380843424">导入成功!</translation>
+<translation id="8258027225380843424">导入成功！</translation>
 <translation id="766635563210446220">无法导入密码。请检查 <ph name="FILENAME"/> 并确保其格式正确。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="6581356304040102696">无法导入密码。文件大小应小于 1 MB。</translation>
 <translation id="5895244669404288318">{COUNT, plural, =1 {无法导入密码。一次只能导入 1 个密码。} other {无法导入密码。一次最多只能导入 <ph name="COUNT_MANY"/> 个密码。}}</translation>
@@ -1113,7 +1113,7 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="6438475350605608554">您已在另一个标签页中导入密码</translation>
 <translation id="3482868954775580230">无法读取所选文件。<ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {成功导入 1 个密码。} other {成功导入 <ph name="IMPORT_COUNT_MANY"/> 个密码。}}</translation>
-<translation id="4637949129057123593">导入失败.</translation>
+<translation id="4637949129057123593">导入失败。</translation>
 <translation id="4300452012226767715">密码管理器不可用。</translation>
 <translation id="6221633008163990886">需解锁才能导出您的密码</translation>
 <translation id="5245792669563792664">密码</translation>
