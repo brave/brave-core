@@ -23,8 +23,8 @@
 
 #include <components/sessions/content/content_serialized_navigation_driver.cc>
 
-#undef GetSanitizedPageStateForPickle
 #undef Sanitize
+#undef GetSanitizedPageStateForPickle
 
 namespace sessions {
 

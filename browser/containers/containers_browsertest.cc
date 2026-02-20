@@ -29,6 +29,7 @@
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
@@ -1247,9 +1248,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, CrossSiteNavigationPersistence) {
             content::EvalJs(web_contents, GetLocalStorageJS("site_b_key")));
 
   // Navigate back to site A using browser back
-  ASSERT_TRUE(content::ExecJs(web_contents, "window.history.back();",
-                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
-  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+  {
+    content::TestNavigationObserver nav_observer(web_contents, 1);
+    ASSERT_TRUE(content::ExecJs(web_contents, "window.history.back();"));
+    nav_observer.Wait();
+  }
 
   // Verify we're still in the same container
   storage_partition =
@@ -1319,10 +1322,12 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, NavigationHistoryPersistence) {
   EXPECT_EQ(1, controller.GetCurrentEntryIndex());
 
   // Navigate back to page 1
-  ASSERT_TRUE(content::ExecJs(web_contents, "window.history.back();",
-                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
-  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
-  EXPECT_EQ(url_page1, web_contents->GetLastCommittedURL());
+  {
+    content::TestNavigationObserver nav_observer(web_contents, 1);
+    ASSERT_TRUE(content::ExecJs(web_contents, "window.history.back();"));
+    nav_observer.Wait();
+    EXPECT_EQ(url_page1, web_contents->GetLastCommittedURL());
+  }
 
   // Verify still in same container
   storage_partition =
@@ -1330,10 +1335,12 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, NavigationHistoryPersistence) {
   EXPECT_EQ(kTestContainerId, storage_partition->GetConfig().partition_name());
 
   // Navigate forward
-  ASSERT_TRUE(content::ExecJs(web_contents, "window.history.forward();",
-                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
-  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
-  EXPECT_EQ(url_page2, web_contents->GetLastCommittedURL());
+  {
+    content::TestNavigationObserver nav_observer(web_contents, 1);
+    ASSERT_TRUE(content::ExecJs(web_contents, "window.history.forward();"));
+    nav_observer.Wait();
+    EXPECT_EQ(url_page2, web_contents->GetLastCommittedURL());
+  }
 
   // Verify still in same container
   storage_partition =
