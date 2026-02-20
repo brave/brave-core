@@ -383,6 +383,7 @@ function InputBox(props: InputBoxProps) {
               props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
             }}
             title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
+            data-test-id='quick-action-button'
           >
             <Icon
               className={classnames({
