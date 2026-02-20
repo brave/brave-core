@@ -76,18 +76,9 @@ class MockOAIAPIClient : public OAIAPIClient {
   ~MockOAIAPIClient() override = default;
 
   MOCK_METHOD(void,
-              PerformRequestWithOAIMessages,
-              (const mojom::CustomModelOptions&,
-               std::vector<OAIMessage>,
-               EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback,
-               const std::optional<std::vector<std::string>>&),
-              (override));
-
-  MOCK_METHOD(void,
               PerformRequest,
               (const mojom::CustomModelOptions&,
-               base::ListValue,
+               std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::vector<std::string>>&),
@@ -157,7 +148,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   auto* client = GetClient();
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([&run_loop, this](
                     const mojom::CustomModelOptions& model_options,
                     std::vector<OAIMessage>,
@@ -187,7 +178,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   run_loop.Run();
 
   base::RunLoop run_loop2;
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([&run_loop2](const mojom::CustomModelOptions& model_options,
                              std::vector<OAIMessage>,
                              EngineConsumer::GenerationDataCallback,
@@ -223,7 +214,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
     };
   };
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(invoke_completion_callback("Returning non question format"))
       .WillOnce(invoke_completion_callback(
           "<question>Question 1</question><question>Question 2</question>"))
@@ -277,7 +268,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result doesn't have a value
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
@@ -305,7 +296,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has an empty event
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
@@ -334,7 +325,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has a non-completion event
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
@@ -365,7 +356,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has an empty completion
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
@@ -452,7 +443,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &human_input, &assistant_response](
               const mojom::CustomModelOptions&,
@@ -528,7 +519,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &assistant_input, &human_input](
               const mojom::CustomModelOptions&,
@@ -596,7 +587,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Test with a modified server reply.
   run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message](
               const mojom::CustomModelOptions&,
@@ -712,7 +703,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(std::move(entry));
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -792,7 +783,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions&,
               std::vector<OAIMessage> messages,
@@ -874,7 +865,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   base::RunLoop run_loop;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions&,
               std::vector<OAIMessage> messages,
@@ -938,7 +929,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1029,7 +1020,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1108,7 +1099,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([](const mojom::CustomModelOptions&,
                    std::vector<OAIMessage> messages,
                    EngineConsumer::GenerationDataCallback,
@@ -1174,7 +1165,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1345,7 +1336,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_APIError) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1380,7 +1371,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1419,7 +1410,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_EmptyResponse) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1459,7 +1450,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1501,7 +1492,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_NullEvent) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1539,7 +1530,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, std::vector<OAIMessage> messages,
              EngineConsumer::GenerationDataCallback,
@@ -1570,7 +1561,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
 
   // Expect PerformRequest is NOT called for unsupported action types
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _)).Times(0);
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _)).Times(0);
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateRewriteSuggestion("Hello World",
@@ -1626,7 +1617,7 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
         ])",
       expected_excerpt_text, expected_text, expected_seed);
 
-  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions& options,
               std::vector<OAIMessage> messages,
