@@ -8,6 +8,9 @@ import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
 brave_browser_ui_views_side_panel_deps =
     [ "//brave/browser/ui/sidebar/buildflags" ]
 
+brave_browser_ui_views_side_panel_deps +=
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
 if (enable_sidebar_v2) {
   brave_browser_ui_views_side_panel_deps +=
       [ "//chrome/browser/ui:layout_constants" ]

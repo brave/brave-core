@@ -6,11 +6,11 @@ index 8164f26295c0bef2eaabd6ff584c31cfb447c64d..7428b7a4289b24c228f9b6b492dd32f5
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-+  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) \
++  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) E(kActionSidePanelShowWallet) \
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
    E(kActionSidePanelShowCustomizeChrome, IDC_SHOW_CUSTOMIZE_CHROME_SIDE_PANEL) \
-@@ -614,6 +615,8 @@
+@@ -614,6 +614,8 @@
    E(kActionCopyUrl, IDC_COPY_URL) \
    E(kActionTabGroupsMenu, IDC_SAVED_TAB_GROUPS_MENU) \
    E(kActionTabSearch, IDC_TAB_SEARCH) \
