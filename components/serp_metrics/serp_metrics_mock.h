@@ -8,6 +8,7 @@
 
 #include <cstddef>
 
+#include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -24,18 +25,15 @@ class SerpMetricsMock final : public SerpMetrics {
 
   ~SerpMetricsMock() override;
 
-  MOCK_METHOD(void, RecordBraveSearch, (), ());
-  MOCK_METHOD(size_t, GetBraveSearchCountForYesterday, (), (const));
+  MOCK_METHOD(void, RecordSearch, (SerpMetricType type), (override));
+  MOCK_METHOD(size_t,
+              GetSearchCountForYesterday,
+              (SerpMetricType type),
+              (const, override));
 
-  MOCK_METHOD(void, RecordGoogleSearch, (), ());
-  MOCK_METHOD(size_t, GetGoogleSearchCountForYesterday, (), (const));
+  MOCK_METHOD(size_t, GetSearchCountForStalePeriod, (), (const, override));
 
-  MOCK_METHOD(void, RecordOtherSearch, (), ());
-  MOCK_METHOD(size_t, GetOtherSearchCountForYesterday, (), (const));
-
-  MOCK_METHOD(size_t, GetSearchCountForStalePeriod, (), (const));
-
-  MOCK_METHOD(void, ClearHistory, (), ());
+  MOCK_METHOD(void, ClearHistory, (), (override));
 };
 
 }  // namespace serp_metrics

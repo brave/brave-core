@@ -12,6 +12,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_classifier.h"
+#include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "chrome/browser/browser_process.h"
@@ -111,17 +112,17 @@ void SerpMetricsTabHelper::RecordSearchEngine(
     SearchEngineType search_engine_type) {
   switch (search_engine_type) {
     case SEARCH_ENGINE_BRAVE: {
-      serp_metrics_->RecordBraveSearch();
+      serp_metrics_->RecordSearch(SerpMetricType::kBrave);
       break;
     }
 
     case SEARCH_ENGINE_GOOGLE: {
-      serp_metrics_->RecordGoogleSearch();
+      serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
       break;
     }
 
     default: {
-      serp_metrics_->RecordOtherSearch();
+      serp_metrics_->RecordSearch(SerpMetricType::kOther);
       break;
     }
   }

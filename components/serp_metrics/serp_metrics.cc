@@ -20,9 +20,32 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr char kBraveSearchEngineDictKey[] = "brave_search_engine";
-constexpr char kGoogleSearchEngineDictKey[] = "google_search_engine";
-constexpr char kOtherSearchEngineDictKey[] = "other_search_engine";
+struct TimePeriodStorageInfo {
+  SerpMetricType type;
+  const char* dict_key;
+};
+
+constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
+    {.type = SerpMetricType::kBrave, .dict_key = "brave_search_engine"},
+    {.type = SerpMetricType::kGoogle, .dict_key = "google_search_engine"},
+    {.type = SerpMetricType::kOther, .dict_key = "other_search_engine"},
+};
+
+base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+BuildTimePeriodStorages(PrefService* prefs) {
+  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+      time_period_storages;
+
+  for (const auto& [type, dict_key] : kTimePeriodStorages) {
+    time_period_storages.emplace(
+        type, std::make_unique<TimePeriodStorage>(
+                  prefs, prefs::kSerpMetricsTimePeriodStorage, dict_key,
+                  kSerpMetricsTimePeriodInDays.Get(),
+                  /*should_offset_dst=*/false));
+  }
+
+  return time_period_storages;
+}
 
 // Returns the start of yesterday in local time (midnight at the beginning of
 // the previous calendar day). Subtracting 12 hours ensures we cross into the
@@ -73,84 +96,46 @@ size_t GetYesterdaySumAfterLastCheckedCutoff(
 
 SerpMetrics::SerpMetrics(PrefService* local_state, PrefService* prefs)
     : local_state_(local_state),
-      prefs_(prefs),
-      brave_search_engine_time_period_storage_(
-          prefs,
-          prefs::kSerpMetricsTimePeriodStorage,
-          kBraveSearchEngineDictKey,
-          kSerpMetricsTimePeriodInDays.Get(),
-          /*should_offset_dst=*/false),
-      google_search_engine_time_period_storage_(
-          prefs,
-          prefs::kSerpMetricsTimePeriodStorage,
-          kGoogleSearchEngineDictKey,
-          kSerpMetricsTimePeriodInDays.Get(),
-          /*should_offset_dst=*/false),
-      other_search_engine_time_period_storage_(
-          prefs,
-          prefs::kSerpMetricsTimePeriodStorage,
-          kOtherSearchEngineDictKey,
-          kSerpMetricsTimePeriodInDays.Get(),
-          /*should_offset_dst=*/false) {
+      time_period_storages_(BuildTimePeriodStorages(prefs)) {
   CHECK(local_state_);
-  CHECK(prefs_);
   CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
 }
 
 SerpMetrics::~SerpMetrics() = default;
 
-void SerpMetrics::RecordBraveSearch() {
-  brave_search_engine_time_period_storage_.AddDelta(1);
+void SerpMetrics::RecordSearch(SerpMetricType type) {
+  CHECK(time_period_storages_.contains(type));
+  time_period_storages_.at(type)->AddDelta(1);
 }
 
-size_t SerpMetrics::GetBraveSearchCountForYesterday() const {
+size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
+  CHECK(time_period_storages_.contains(type));
   return GetYesterdaySumAfterLastCheckedCutoff(
-      brave_search_engine_time_period_storage_, GetStartOfYesterday(),
-      GetEndOfYesterday(), GetStartOfStalePeriod());
-}
-
-void SerpMetrics::RecordGoogleSearch() {
-  google_search_engine_time_period_storage_.AddDelta(1);
-}
-
-size_t SerpMetrics::GetGoogleSearchCountForYesterday() const {
-  return GetYesterdaySumAfterLastCheckedCutoff(
-      google_search_engine_time_period_storage_, GetStartOfYesterday(),
-      GetEndOfYesterday(), GetStartOfStalePeriod());
-}
-
-void SerpMetrics::RecordOtherSearch() {
-  other_search_engine_time_period_storage_.AddDelta(1);
-}
-
-size_t SerpMetrics::GetOtherSearchCountForYesterday() const {
-  return GetYesterdaySumAfterLastCheckedCutoff(
-      other_search_engine_time_period_storage_, GetStartOfYesterday(),
+      *time_period_storages_.at(type), GetStartOfYesterday(),
       GetEndOfYesterday(), GetStartOfStalePeriod());
 }
 
 size_t SerpMetrics::GetSearchCountForStalePeriod() const {
-  return GetBraveSearchCountForStalePeriod() +
-         GetGoogleSearchCountForStalePeriod() +
-         GetOtherSearchCountForStalePeriod();
+  const base::Time start_of_stale_period = GetStartOfStalePeriod();
+  const base::Time end_of_stale_period = GetEndOfStalePeriod();
+
+  size_t count = 0;
+  for (const auto& [_, time_period_storage] : time_period_storages_) {
+    count += time_period_storage->GetPeriodSumInTimeRange(start_of_stale_period,
+                                                          end_of_stale_period);
+  }
+  return count;
 }
 
 void SerpMetrics::ClearHistory() {
-  brave_search_engine_time_period_storage_.Clear();
-  google_search_engine_time_period_storage_.Clear();
-  other_search_engine_time_period_storage_.Clear();
+  for (auto& [_, time_period_storage] : time_period_storages_) {
+    time_period_storage->Clear();
+  }
 }
 
-size_t SerpMetrics::GetBraveSearchCountForTesting() const {
-  return brave_search_engine_time_period_storage_.GetPeriodSum();
-}
-
-size_t SerpMetrics::GetGoogleSearchCountForTesting() const {
-  return google_search_engine_time_period_storage_.GetPeriodSum();
-}
-
-size_t SerpMetrics::GetOtherSearchCountForTesting() const {
-  return other_search_engine_time_period_storage_.GetPeriodSum();
+size_t SerpMetrics::GetSearchCountForTesting(SerpMetricType type) const {
+  CHECK(time_period_storages_.contains(type));
+  return time_period_storages_.at(type)->GetPeriodSum();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -176,21 +161,6 @@ base::Time SerpMetrics::GetStartOfStalePeriod() const {
   // reports SERP metrics collected through the end of the prior day and does
   // not include any data from `kLastCheckYMD` itself.
   return last_checked_at.LocalMidnight();
-}
-
-size_t SerpMetrics::GetBraveSearchCountForStalePeriod() const {
-  return brave_search_engine_time_period_storage_.GetPeriodSumInTimeRange(
-      GetStartOfStalePeriod(), GetEndOfStalePeriod());
-}
-
-size_t SerpMetrics::GetGoogleSearchCountForStalePeriod() const {
-  return google_search_engine_time_period_storage_.GetPeriodSumInTimeRange(
-      GetStartOfStalePeriod(), GetEndOfStalePeriod());
-}
-
-size_t SerpMetrics::GetOtherSearchCountForStalePeriod() const {
-  return other_search_engine_time_period_storage_.GetPeriodSumInTimeRange(
-      GetStartOfStalePeriod(), GetEndOfStalePeriod());
 }
 
 }  // namespace serp_metrics
