@@ -5,9 +5,9 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { SettingsBraveAccountRow } from './brave_account_row.js'
+import { SettingsBraveAccountRowElement } from './brave_account_row.js'
 
-export function getHtml(this: SettingsBraveAccountRow) {
+export function getHtml(this: SettingsBraveAccountRowElement) {
   return html`
     <div class="row-container">
       ${this.getStateHtml()}
