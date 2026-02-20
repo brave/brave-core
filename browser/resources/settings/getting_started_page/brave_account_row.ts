@@ -22,7 +22,7 @@ import {
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
-export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
+export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'settings-brave-account-row'
   }
@@ -338,8 +338,8 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-row': SettingsBraveAccountRow
+    'settings-brave-account-row': SettingsBraveAccountRowElement
   }
 }
 
-customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow)
+customElements.define(SettingsBraveAccountRowElement.is, SettingsBraveAccountRowElement)
