@@ -292,11 +292,8 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
       // Show unpinned tabs only if they are within unpinned tab area.
       // If tabs are fully occluded by pinned tabs area, we should hide the
       // tabs.
-      auto tab_tail_edge =
-          scroll_direction == views::LayoutOrientation::kVertical
-              ? tabs_view_model_.ideal_bounds(*tab_index).bottom()
-              : tabs_view_model_.ideal_bounds(*tab_index).right();
-      return tab_tail_edge > GetPinnedTabsAreaBoundary();
+      return tabs_view_model_.ideal_bounds(*tab_index).right() >
+             GetPinnedTabsAreaBoundary();
     }
   }
 
