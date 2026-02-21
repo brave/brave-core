@@ -261,6 +261,11 @@ void CodeExecutionTool::SetExecutionTimeLimitForTesting(
   execution_time_limit_ = time_limit;
 }
 
+void CodeExecutionTool::AddCodePluginForTesting(
+    std::unique_ptr<CodePlugin> plugin) {
+  code_plugins_.push_back(std::move(plugin));
+}
+
 std::string CodeExecutionTool::WrapScript(const std::string& script) const {
   auto bignumber_js =
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(

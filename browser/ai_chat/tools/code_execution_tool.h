@@ -61,6 +61,7 @@ class CodeExecutionTool : public Tool {
                UseToolCallback callback) override;
 
   void SetExecutionTimeLimitForTesting(base::TimeDelta time_limit);
+  void AddCodePluginForTesting(std::unique_ptr<CodePlugin> plugin);
 
  private:
   class CodeExecutionRequest : public content::WebContentsObserver {
