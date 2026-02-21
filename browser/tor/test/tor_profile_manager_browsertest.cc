@@ -298,7 +298,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
-  ui_test_utils::WaitForBrowserToClose();
+  EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
   ASSERT_EQ(chrome::GetTotalBrowserCount(), 1u);
   EXPECT_FALSE(browser()->profile()->IsTor());
 }
@@ -338,11 +338,10 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   ASSERT_EQ(chrome::GetTotalBrowserCount(), 5u);
 
   testing::Mock::AllowLeak(GetTorLauncherFactory());
-  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(2);
   TorProfileManager::GetInstance().CloseAllTorWindows();
-  // We cannot predict the order of which Tor browser get closed first
-  ui_test_utils::WaitForBrowserToClose();
-  ui_test_utils::WaitForBrowserToClose();
+  EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile1));
+  EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile2));
   // only two regular windows and one private window left
   ASSERT_EQ(chrome::GetTotalBrowserCount(), 3u);
   GlobalBrowserCollection::GetInstance()->ForEach(
@@ -367,7 +366,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToNTP) {
     EXPECT_EQ(tor_browser->tab_strip_model()->GetActiveWebContents()->GetURL(),
               tor_browser->GetNewTabURL());
     TorProfileManager::CloseTorProfileWindows(tor_profile);
-    ui_test_utils::WaitForBrowserToClose();
+    EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
   }
 }
 
@@ -387,7 +386,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURL) {
     EXPECT_EQ(tor_browser->tab_strip_model()->GetActiveWebContents()->GetURL(),
               url);
     TorProfileManager::CloseTorProfileWindows(tor_profile);
-    ui_test_utils::WaitForBrowserToClose();
+    EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
   }
 }
 
@@ -427,7 +426,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
-  ui_test_utils::WaitForBrowserToClose();
+  EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
 }
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
@@ -460,7 +459,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
-  ui_test_utils::WaitForBrowserToClose();
+  EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
 }
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
@@ -494,7 +493,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
-  ui_test_utils::WaitForBrowserToClose();
+  EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
