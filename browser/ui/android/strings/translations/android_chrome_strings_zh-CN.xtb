@@ -168,7 +168,7 @@
 <translation id="1747593111377567311">{NUM_SITES,plural, =1{1 个网站近期发送了大量通知}other{# 个网站近期发送了大量通知}}</translation>
 <translation id="1749561566933687563">同步您的书签</translation>
 <translation id="12433225238423439">请继续使用您的 Brave 账号的密码</translation>
-<translation id="17513872634828108">目前打开的标签页</translation>
+<translation id="17513872634828108">打开的标签页</translation>
 <translation id="1753744496844366747">Aa</translation>
 <translation id="1755203724116202818">为衡量广告效果，网站之间会分享特定类型的数据，例如您在访问某个网站后是否进行了购买交易。</translation>
 <translation id="1760873718737761808">{FILE_COUNT,plural, =1{页面，列表中有 1 个页面}other{页面，列表中有 # 个页面}}</translation>
@@ -542,7 +542,7 @@
 <translation id="3448874648066942074">利用 AI 总结页面</translation>
 <translation id="7384339501748168186">为保护您的隐私，Brave 不会在此字段中自动填充您的密码。</translation>
 <translation id="3467081767799433066">启用广告衡量功能后，为了衡量各自的广告效果，网站之间会分享有限类型的数据，例如您在访问某个网站后是否购买了商品。</translation>
-<translation id="3474624961160222204">以 <ph name="NAME"/> 的身份继续</translation>
+<translation id="3474624961160222204">以“<ph name="NAME"/>”的身份继续</translation>
 <translation id="3478363558367712427">您可自行选择要使用的搜索引擎</translation>
 <translation id="6165882953768534820">其他人（包括应用）可能会有权访问导出的文件。导出后，系统会从 Brave 中删除您的密码。</translation>
 <translation id="3488199663160411179">姓名</translation>
@@ -1923,7 +1923,7 @@
 <translation id="5352668640894950863">离开 Brave 时锁定私人窗户</translation>
 <translation id="1014490034578104945">使用屏幕锁定查看打开的无痕标签页</translation>
 <translation id="5572558661069030949">使用屏幕锁定查看打开的私人窗口</translation>
-<translation id="383007806262310953">显示书签栏</translation>
+<translation id="383007806262310953">显示书签</translation>
 <translation id="2589970573128789862">Brave 隐私</translation>
 <translation id="5809126106485463836">私密模式可确保您浏览的内容不被其他使用您设备的人看见</translation>
 <translation id="2633278372998075009">私有标签页</translation>
@@ -1939,22 +1939,22 @@
 <translation id="5278260521317049275">开启私人锁</translation>
 <translation id="6302653771627628530">当您退出 Brave 时，私密标签页会被锁定</translation>
 <translation id="4167670741834902166">新的无痕标签页</translation>
-<translation id="5760418762676108038">打开新的无痕式窗口</translation>
+<translation id="5760418762676108038">新的无痕式窗口</translation>
 <translation id="408336132633586393">无痕窗口</translation>
 <translation id="8120164982795455341">新的无痕标签页</translation>
-<translation id="3377025655491224618">无痕标签页</translation>
-<translation id="8428257636009471988">访问网上商店</translation>
+<translation id="3377025655491224618">无痕式标签页</translation>
+<translation id="8428257636009471988">访问应用商店</translation>
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {关闭 1 个私人窗口}
           other {关闭 # 个私人窗口}}</translation>
 <translation id="1988906120194081364">转为无痕</translation>
 <translation id="4300497327999623298">退出无痕</translation>
-<translation id="8820817407110198400">书签栏</translation>
+<translation id="8820817407110198400">书签</translation>
 <translation id="4968908871398201967">私有模式</translation>
 <translation id="8448127664493413656">进入无痕模式</translation>
 <translation id="6484416399492735324">离开无痕模式</translation>
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, 无痕式标签页</translation>
-<translation id="1315014485411054095"><ph name="TAB_TITLE"/>, 选定的无痕式标签页</translation>
+<translation id="1315014485411054095"><ph name="TAB_TITLE"/>，选定的无痕式标签页</translation>
 <translation id="4306060575297422191"><ph name="TAB_TITLE"/>，已固定的无痕标签页</translation>
 <translation id="6401852251745802167"><ph name="TAB_TITLE"/>，已固定且已选中的无痕标签页</translation>
 <translation id="2258969413149160341"><ph name="TAB_TITLE"/>, Audible 专用选项卡</translation>

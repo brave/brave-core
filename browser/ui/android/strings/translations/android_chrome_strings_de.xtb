@@ -1397,7 +1397,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="7077143737582773186">SD-Karte</translation>
 <translation id="4947532681094581238">Meine Brave-Daten auch von diesem Gerät löschen</translation>
 <translation id="7080145768121641840"><ph name="TAB_TITLE"/>, ausgewählter, angepinnter, stummgeschalteter Tab</translation>
-<translation id="7084115944294706056">Addressleistenposition auswählen</translation>
+<translation id="7084115944294706056">Leistenposition auswählen</translation>
 <translation id="5499149312981370855">Lege fest, ob der Brave-Verlauf dafür verwendet werden soll, die Brave-Dienste stärker für dich zu personalisieren</translation>
 <translation id="8208853227947884571">Brave ist auf dem neuesten Stand</translation>
 <translation id="7106762743910369165">Dein Browser wird von deiner Organisation verwaltet</translation>
@@ -1947,8 +1947,8 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="3377025655491224618">Privater Tab</translation>
 <translation id="8428257636009471988">Web Store besuchen</translation>
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
-          =1 {Close 1 Private window}
-          other {Close # Private windows}}</translation>
+          =1 {1 privates Fenster schließen}
+          other {# private Fenster schließen}}</translation>
 <translation id="1988906120194081364">In den privaten Modus wechseln</translation>
 <translation id="4300497327999623298">Privaten Modus verlassen</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
@@ -1986,7 +1986,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="3797119261502402695"><ph name="TAB_TITLE"/>, mehrfach ausgewählter privater Tab</translation>
 <translation id="8511632746183549739"><ph name="TAB_TITLE"/>, mehrfach ausgewählter angehefteter privater Tab</translation>
 <translation id="2280910239864711607">Öffnen Sie eine neue Registerkarte im Privatmodus</translation>
-<translation id="4831439914611488655">Öffnen Sie ein neues Fenster im Privatmodus</translation>
+<translation id="4831439914611488655">Öffnen Sie ein neues Fenster im privaten Modus</translation>
 <translation id="7770295979628466744">Lesezeichen anzeigen oder ausblenden</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> privater Tab}
