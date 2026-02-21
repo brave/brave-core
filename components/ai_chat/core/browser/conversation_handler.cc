@@ -1351,6 +1351,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
         // Update the tool with the server's output
         existing_tool_use_event->output = std::move(tool_use_event->output);
+        existing_tool_use_event->artifacts =
+            std::move(tool_use_event->artifacts);
         existing_tool_use_event->is_server_result = true;
         // Notify UI about the tool completion
         OnToolUseEventOutput(entry.get(), existing_tool_use_event);
