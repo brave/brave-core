@@ -59,7 +59,7 @@
 <translation id="8685431198160039193">Zapisane informacje mogą być autouzupełniane w prywatnych oknach</translation>
 <translation id="6583902294974160967">Wsparcie</translation>
 <translation id="1799030480311994998">Funkcje</translation>
-<translation id="1919345977826869612">Ads</translation>
+<translation id="1919345977826869612">Reklamy</translation>
 <translation id="2839742394543397416">Analityka</translation>
 <translation id="2005732746077850308">Tarcze Brave i prywatność</translation>
 <translation id="4692623383562244444">Wyszukiwarki</translation>
@@ -144,7 +144,7 @@
 <translation id="693506469193748756">Zapomnij po zamknięciu tej strony</translation>
 <translation id="6975864539539353406">Usuwa pliki cookie i inne dane strony po jej zamknięciu</translation>
 <translation id="7740929262043547697">Zezwól na blokowanie elementów w prywatnych oknach</translation>
-<translation id="1260864846935682371">Włącza funkcję blokowania elementów Tarczy w prywatnych oknach. Uwaga: elementy zablokowane w prywatnych oknach będą również zablokowane w nieprywatnych.</translation>
+<translation id="1260864846935682371">Włącza funkcję blokowania elementów przez Tarcze w prywatnych oknach. Uwaga: elementy zablokowane w prywatnych oknach będą również blokowane w zwykłych oknach.</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
 <translation id="5254037869598726291">Zanonimizowane dane P3A pomagają Brave oszacować ogólny poziom użytkowania i upewnić się, że ulepszamy popularne funkcje.</translation>
@@ -361,7 +361,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Strona nowej karty</translation>
 <translation id="5927196110206824867">Sponsorowane obrazy tła wspierają misję Brave polegającą na budowaniu niezależnej, zorientowanej na użytkownika sieci. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.</translation>
-<translation id="8748471354357836070">Dowiedz się więcej / zrezygnuj z opcji</translation>
+<translation id="8748471354357836070">Dowiedz się więcej / opcje rezygnacji</translation>
 <translation id="3171669670217312786">Obrazy tła</translation>
 <translation id="8522669544471808198">Wyświetl obrazy w tle</translation>
 <translation id="6258554626602400736">Pokaż reklamy na stronie nowej karty</translation>
@@ -408,7 +408,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="218587021686734263">Zapobiegaj pobieraniu odcisków palców za pomocą ustawień językowych</translation>
 <translation id="1706099589708266367">Ogranicza ilość informacji, jakie strony internetowe mogą uzyskać o Tobie na podstawie ustawień językowych przeglądarki.</translation>
 <translation id="6486971767955110687">Przechowuj informacje kontaktowe na potrzeby przyszłych raportów o niedziałających witrynach</translation>
-<translation id="4085787265464238844">Jeśli podasz dane kontaktowe, zostaną one zapisane na potrzeby przyszłych raportów</translation>
+<translation id="4085787265464238844">Jeśli podasz dane kontaktowe, zostaną zapisane na potrzeby przyszłych raportów</translation>
 <translation id="4721088070859595932">Uniemożliwia stronom internetowym rozpoznawanie urządzenia</translation>
 <translation id="7445306466605902444">Zablokuj rozpoznawanie urządzenia (ścisłe, strona może nie działać)</translation>
 <translation id="5582686930349810484">Zablokuj rozpoznawanie urządzenia (standardowe)</translation>
@@ -434,7 +434,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="721949491455392748">Dołącz zrzut ekranu bieżącej strony</translation>
 <translation id="8459191579769999214">Wyświetl zrzut ekranu</translation>
 <translation id="6476216365964140603">Dodatkowe szczegóły (opcjonalne)</translation>
-<translation id="6145852496180774737">Skontaktuj się ze mną poprzez: (opcjonalne)</translation>
+<translation id="6145852496180774737">Skontaktuj się ze mną przez: (opcjonalne)</translation>
 <translation id="6367576083705149078">Jeśli podasz dane kontaktowe, zostaną one zapisane na potrzeby przyszłych raportów.</translation>
 <translation id="7616645803364270729">E-mail, Twitter, itp.</translation>
 <translation id="5299848999918506028">Dziękujemy!</translation>
@@ -949,7 +949,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="7618347247876614969">Konto w tabeli adresów:</translation>
 <translation id="7659483790930268440">Indeks w tabeli adresów:</translation>
 <translation id="5494920125229734069">Wybierz wszystko</translation>
-<translation id="2361906291514218784">Sztuczna inteligencja Leo</translation>
+<translation id="2361906291514218784">SI Leo</translation>
 <translation id="944736176598169208">Nagrody</translation>
 <translation id="4272190451231642425">Automatyczne wysyłanie raportów o awariach</translation>
 <translation id="1199170151481311646">Analityka chroniąca prywatność</translation>
@@ -1080,7 +1080,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="6061635824229591714">Usunąć dane strony?</translation>
 <translation id="1265051174491933207">Usunięcie spowoduje usunięcie danych strony i zamknięcie wszystkich kart „<ph name="SITE_NAME"/>”. Nie można tego cofnąć.</translation>
 <translation id="4279349293084858577">Usuń</translation>
-<translation id="4426990318287827331">Usuwaj dane</translation>
+<translation id="4426990318287827331">Usuń dane</translation>
 <translation id="7942415993090181327">Historia czatu</translation>
 <translation id="6859935199732075666">Pokazuj błędy Bezpiecznego przeglądania</translation>
 <translation id="2735247450315842119">Zezwalaj na zrzuty ekranu w kartach prywatnych</translation>
@@ -1105,7 +1105,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="1129510026454351943">Szczegóły: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="5594899180331219722">Wybierz plik</translation>
 <translation id="3744219658596020825">Twoje hasła nie zostały zaimportowane</translation>
-<translation id="8258027225380843424">Import zakończony sukcesem!</translation>
+<translation id="8258027225380843424">Importowanie zakończone sukcesem!</translation>
 <translation id="766635563210446220">Nie można zaimportować haseł. Sprawdź <ph name="FILENAME"/> i upewnij się, że jest poprawnie sformatowany. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="6581356304040102696">Nie można zaimportować haseł. Rozmiar pliku powinien być mniejszy niż 1 MB.</translation>
 <translation id="5895244669404288318">{COUNT, plural,
@@ -1115,7 +1115,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="6438475350605608554">Już trwa import haseł w innej karcie</translation>
 <translation id="3482868954775580230">Nie udało się odczytać wybranego pliku. <ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {Pomyślnie zaimportowano 1 hasło.} few {Pomyślnie zaimportowano kilka haseł.} many {Pomyślnie zaimportowano wiele haseł.} other {Pomyślnie zaimportowano <ph name="IMPORT_COUNT_MANY"/> haseł.}}</translation>
-<translation id="4637949129057123593">Import nie powiódł się.</translation>
+<translation id="4637949129057123593">Importowaanie nie powiodło się.</translation>
 <translation id="4300452012226767715">Menedżer haseł jest niedostępny.</translation>
 <translation id="6221633008163990886">Odblokuj, by wyeksportować hasła</translation>
 <translation id="5245792669563792664">hasła</translation>

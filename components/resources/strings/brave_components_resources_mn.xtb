@@ -196,7 +196,7 @@
 <translation id="7279636930553631442">Мэдээлэл захиалгын цонх гарч ирж байна</translation>
 <translation id="6136090320163235283">Социал түгээмэл мэдээний цонх</translation>
 <translation id="6657720240983439091">Чатжуулах цонх</translation>
-<translation id="3597441883564676263">browser дэмжигдэхгүй байна</translation>
+<translation id="3597441883564676263">Хөтөч дэмжигдээгүй байна</translation>
 <translation id="7138678301420049075">Бусад</translation>
 <translation id="4046860372562593546">Brave зар удирдах</translation>
 <translation id="5136973036012418831">Таны харж буй Brave зар сурталчилгааг болон хэрэвцгийг хянах.</translation>
@@ -524,6 +524,16 @@
     }</translation>
 <translation id="3264975266761862670">Цуглуулж эхлэхэд бэлэн үү?</translation>
 <translation id="2784412028126205842">Төлбөрийн данс холбох</translation>
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+      =0 {Та энэ сард <ph name="COUNT_BEGIN"/> # Зар<ph name="COUNT_END"/> үзсэн байна}
+      =1 {Та энэ сард үзсэн <ph name="COUNT_BEGIN"/> # Зарын<ph name="COUNT_END"/> төлөө мөнгө авах боломжтой.}
+      other {Та энэ сард үзсэн <ph name="COUNT_BEGIN"/> # Зарын<ph name="COUNT_END"/> төлөө мөнгө авах боломжтой.}
+    }</translation>
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+      =0 {Та энэ сард <ph name="COUNT_BEGIN"/> # Зар<ph name="COUNT_END"/> үзсэн байна}
+      =1 {Та энэ сар <ph name="COUNT_BEGIN"/> # Зар<ph name="COUNT_END"/> үзсэнээрээ орлого олж байна}
+      other {Та энэ сар <ph name="COUNT_BEGIN"/> # Зар<ph name="COUNT_END"/> үзсэнээрээ орлого олж байна}
+    }</translation>
 <translation id="6067959437127691361">Brave урамшуулал ашиглах нь контент бүтээгчдэд дэмжлэг үзүүлж, танд BAT олох боломж олгоно.</translation>
 <translation id="2359808026110333948">Үргэлжлүүлэх</translation>
 <translation id="3863981251715594911">Энэ хэрхэн ажилладаг вэ?</translation>
@@ -2301,12 +2311,12 @@
 <translation id="8103700533980268469">Энэ мэдэгдлийг хаах</translation>
 <translation id="3417835166382867856">Табуудыг хайх</translation>
 <translation id="3828029223314399057">Хадгалсан хуудсаар хайх</translation>
-<translation id="381480092025168632">browser түүхээр хайх</translation>
+<translation id="381480092025168632">Хөтчийн түүхийг хайх</translation>
 <translation id="7311244614769792472">Үр дүн олдсонгүй</translation>
 <translation id="3112448569149476523">Өөр хайлт оролдоно уу</translation>
 <translation id="1352836459737874921">Бусад табуудаас контент хавсаргах</translation>
 <translation id="7173836072258346701">Хадгалсан хуудсаас контент хавсаргах</translation>
-<translation id="163680814308917875">browser түүхээс контент хавсаргах</translation>
+<translation id="163680814308917875">Хөтчийн түүхээс контент хавсаргах</translation>
 <translation id="7039179822221107025">Leo-гийн ярианы хувьд өөрийн браузерын табуудаас контентыг хавсаргаж илгээнэ үү.</translation>
 <translation id="1602382615168212961">Leo-гийн ярианы хувьд өөрийн браузерын табуудаас контентыг хавсаргаж илгээнэ үү.</translation>
 <translation id="4808122506413075135">Leo-гийн ярианы хувьд өөрийн browser-ийн түүхээс хуудасны контентыг илгээнэ үү.</translation>
