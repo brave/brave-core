@@ -221,7 +221,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
   messages.push_back(std::move(user_msg));
 
   client_->PerformRequest(
-      *model_options, std::move(messages),
+      *model_options, std::move(messages), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -276,7 +276,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
   messages.push_back(std::move(user_msg));
 
   client_->PerformRequest(
-      *model_options, std::move(messages),
+      *model_options, std::move(messages), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -326,7 +326,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
   messages.push_back(std::move(user_msg));
 
   client_->PerformRequest(
-      *model_options, std::move(messages),
+      *model_options, std::move(messages), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -700,7 +700,7 @@ TEST_P(OAIAPIInvalidResponseTest,
 
   // Begin request
   client_->PerformRequest(
-      *model_options, std::vector<OAIMessage>(),
+      *model_options, std::vector<OAIMessage>(), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
