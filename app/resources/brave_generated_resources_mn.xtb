@@ -195,8 +195,8 @@
 <translation id="191143826155037518">Brave танд <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) лицензээр болон бусад олон төрлийн <ph name="BEGIN_LINK_OSS"/>нээлттэй эхийн программ хангамжийн<ph name="END_LINK_OSS"/> лицензүүдийн дагуу ашиглах боломжтой. Эндээс <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>татаж авч хэрхэн өөрөө байгуулах талаар мэдээг<ph name="END_LINK_BUILD_INSTRUCTIONS"/> уншиж болно <ph name="BEGIN_LINK_SOURCE_CODE"/>эх кодын <ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Бүх табуудыг хадгалах...</translation>
 <translation id="3987546108749866209">Босоо табуудыг ашиглах</translation>
-<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}</translation>
-<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}</translation>
+<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Табын дууг хаах} other {Табуудын дууг хаах}}</translation>
+<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Табын дууг нээх} other {Табуудын дууг нээх}}</translation>
 <translation id="2289567621059034186">Шинэ таб доор</translation>
 <translation id="3228962656492373217">Доорх табуудыг хаах</translation>
 <translation id="8030501904366631501">Бүх табуудыг энэ цонхонд авчрах</translation>
@@ -206,8 +206,8 @@
 <translation id="7302999361397024774">Хуудасны нэрийг өөрчлөх</translation>
 <translation id="2336228925368920074">Бүх табуудыг бий болгох...</translation>
 <translation id="2523967823495420116">Босоо табуудыг ашиглах</translation>
-<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}</translation>
-<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}</translation>
+<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Табын дууг хаах} other {Табуудын дууг хаах}}</translation>
+<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Табын дууг нээх} other {Табуудын дууг нээх}}</translation>
 <translation id="4405580203042711503">Шинэ Таб Доор</translation>
 <translation id="5611474372949142946">Доорх Табуудыг Хаах</translation>
 <translation id="573844928911967687">Бүх табыг энэ цонхруу авчрах</translation>
