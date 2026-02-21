@@ -202,4 +202,18 @@ TEST_F(BraveVpnMetricsTest, ConnectedDuration) {
 }
 #endif
 
+#if BUILDFLAG(IS_WIN)
+TEST_F(BraveVpnMetricsTest, SystemServiceInstallationResult) {
+  metrics_->RecordSystemServiceInstallationResult(true);
+  histogram_tester_.ExpectUniqueSample(
+      kSystemServiceInstallationResultHistogramName, true, 1);
+
+  metrics_->RecordSystemServiceInstallationResult(false);
+  histogram_tester_.ExpectBucketCount(
+      kSystemServiceInstallationResultHistogramName, true, 1);
+  histogram_tester_.ExpectBucketCount(
+      kSystemServiceInstallationResultHistogramName, false, 1);
+}
+#endif
+
 }  // namespace brave_vpn
