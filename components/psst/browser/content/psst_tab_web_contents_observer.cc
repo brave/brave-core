@@ -14,6 +14,8 @@
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
@@ -46,6 +48,23 @@ const char kUserScriptResultTasksPropName[] = "tasks";
 const char kUserScriptResultSiteNamePropName[] = "name";
 const char kUserScriptResultTaskItemUrlPropName[] = "url";
 const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
+
+const char kPolicyScriptResultPropName[] = "psst_settings_status";
+const char kGetPolicyScriptResultScript[] = R"(
+(() => {
+ console.log('[PSST] kGetPolicyScriptResultScript started key: psst_settings_status_$1')
+ const data = window.parent.localStorage.getItem("psst_settings_status_$1")
+  if (data !== null) {
+  console.log(`[PSST] kGetPolicyScriptResultScript found data for key: psst_settings_status_$1 data: ${JSON.stringify(data)}`);
+    window.parent.localStorage.removeItem("psst_settings_status_$1");
+    return JSON.parse(data)
+  } else {
+   console.log("[PSST] kGetPolicyScriptResultScript key not found. key: psst_settings_status_$1")
+    return { retry_counter: $2 }
+  }
+})()
+)";
+constexpr int kRetryCounterDefault = 5;
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -94,6 +113,7 @@ std::optional<PsstWebsiteSettings> CreatePsstWebsiteSettings(
 }
 
 void PrepareParametersForPolicyExecution(
+    int navigation_id,
     std::optional<base::DictValue>& params,
     const std::vector<std::string>& disabled_checks,
     const bool is_initial) {
@@ -112,6 +132,7 @@ void PrepareParametersForPolicyExecution(
   }
 
   params->Set(kUserScriptResultInitialExecutionPropName, is_initial);
+  params->Set(kPolicyScriptResultPropName, navigation_id);
 }
 
 }  // namespace
@@ -332,17 +353,18 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
     std::unique_ptr<MatchedRule> rule,
     std::optional<base::DictValue> script_params,
     const std::vector<std::string>& disabled_checks) {
+  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings 100 called for id: " << id ;    
   if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
 
-  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings called for id: " << id 
+  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings 200 called for id: " << id 
     << " is_initial:" << is_initial
     << " script_params: " << (script_params ? script_params->DebugString() : "null") 
     << " disabled_checks: " << (disabled_checks.empty() ? "none" : base::JoinString(disabled_checks, ","))
     ;
 
-  PrepareParametersForPolicyExecution(script_params, disabled_checks,
+  PrepareParametersForPolicyExecution(id, script_params, disabled_checks,
                                       is_initial);
 
 LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings preparing to run policy script for id: " << id
@@ -356,20 +378,62 @@ LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings preparing to run policy script f
                      weak_factory_.GetWeakPtr(), id));
 }
 
+void PsstTabWebContentsObserver::GetPolicyScriptReturnValue(
+    const int id,
+    const int retry_counter) {
+  LOG(INFO) << "[PSST] GetPolicyScriptReturnValue called for id: " << id << " retry_counter: " << retry_counter;
+  inject_script_callback_.Run(
+      base::ReplaceStringPlaceholders(
+          kGetPolicyScriptResultScript,
+          {base::NumberToString(id), base::NumberToString(retry_counter)},
+          nullptr),
+      base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
+                     weak_factory_.GetWeakPtr(), id));
+}
+
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
     int id,
     base::Value script_result) {
+LOG(INFO) << "[PSST] OnPolicyScriptResult for id: " << id << " script_result: " << script_result.DebugString();
   if (!ShouldInsertScriptForPage(id)) {
+    LOG(INFO) << "[PSST] OnPolicyScriptResult skipped for id: " << id;
     return;
   }
 
   timeout_timer_.Stop();
 
   if(!script_result.is_dict()) {
+    LOG(INFO) << "[PSST] OnPolicyScriptResult failed for id: " << id << " script_result is not a dictionary";
     return;
   }
 
   const auto& script_result_dict = script_result.GetDict();
+
+  // In case of empty dictionary means that it is return from async script started
+  // If the result contains the retry_counter, means we have to try again
+  const auto retry_counter = script_result_dict.FindInt("retry_counter");// TODO add constant string
+  if (script_result_dict.empty() || retry_counter.has_value()) {
+    LOG(INFO) << "[PSST] OnPolicyScriptResult detected async script result for id: " << id 
+      << " script_result_dict.empty():" << script_result_dict.empty()
+      << " retry_counter:" << (retry_counter.has_value() ? std::to_string(retry_counter.value()) : "none")
+      ;
+    const int retry_counter_value = script_result_dict.empty() ? kRetryCounterDefault : (retry_counter.value() - 1);
+    if (retry_counter_value > 0) {
+      LOG(INFO) << "[PSST] OnPolicyScriptResult 100 detected async script result for id: " << id;
+      base::SingleThreadTaskRunner::GetCurrentDefault()
+        ->PostDelayedTask(
+            FROM_HERE,
+            base::BindOnce(&PsstTabWebContentsObserver::GetPolicyScriptReturnValue,
+                          weak_factory_.GetWeakPtr(), id, retry_counter_value),
+            base::Seconds(3));
+      LOG(INFO) << "[PSST] OnPolicyScriptResult 200 detected async script result for id: " << id;
+      return;
+    }
+
+    LOG(INFO) << "[PSST] OnPolicyScriptResult 300 detected async script result for id: " << id;
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
 
   const auto* psst = script_result_dict.FindDict("psst");// TODO add constant string
   if(!psst) {
@@ -397,6 +461,16 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
       script_result_parsed->progress, script_result_parsed->applied_tasks,
       is_done.value() ? mojom::PsstStatus::kCompleted
                                             : mojom::PsstStatus::kInProgress);
+
+  const auto* next_url = script_result_dict.FindString("next_url");// TODO add constant string
+  if(next_url && !next_url->empty()) {
+    // Go to next URL
+    web_contents()->GetController().LoadURL(
+        GURL(*next_url),
+        content::Referrer(),
+        ui::PAGE_TRANSITION_LINK,
+        std::string());
+  }
 }
 
 void PsstTabWebContentsObserver::RunWithTimeout(

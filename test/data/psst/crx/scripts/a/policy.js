@@ -6,7 +6,8 @@
 const curUrl = window.location.href
 console.log("[PSST POLICY SCRIPT] Current URL: " + curUrl);
 // Timeout to wait of the URL opening
-const WAIT_FOR_PAGE_TIMEOUT = 6000
+const WAIT_FOR_PAGE_TIMEOUT = 1000
+const WAIT_FOR_PAGE_ATTEMPTS_COUNT = 6
 
 // Use tasks as list of the policy settings tasks to apply
 const PSST_TASKS = params.tasks
@@ -14,6 +15,8 @@ const PSST_TASKS_LENGTH = params.tasks?.length ?? 0
 
 // Flag which is present only for the first (initial) execution of the policy script
 const PSST_INITIAL_EXECUTION_FLAG = params.initial_execution ?? false
+
+const PSST_CHECK_SETTINGS_LOADED = params.psst_settings_status ?? null
 
 const PSST_LOCALSTORAGE_KEY = 'psst'
 
@@ -24,12 +27,7 @@ const psstState = {
 }
 
 /* Helper functions */
-const goToUrl = url => {
-console.log("[PSST] goToUrl: " + url)
-  window.location.href = url
-}
-
-const checkCheckboxes = (turnOff) => {
+const checkCheckboxes = (resolve, reject, turnOff) => {
   const checkboxes = document.querySelectorAll("input[type='checkbox']")
   if (checkboxes.length === 1) {
     if (turnOff) {
@@ -38,32 +36,35 @@ const checkCheckboxes = (turnOff) => {
         checkboxes[0].click()
       }
     }
-    return { success: true }
+    resolve(true)
   } else {
-    return { success: false, error: 'No checkbox found' }
+    // Throw error
+    reject('No checkbox found')
   }
 }
 
-const waitForCheckboxToLoadWithTimeout = (timeout, turnOff) => {
-  const startTime = Date.now()
-  let result = null
-  
-  while ((Date.now() - startTime) < timeout) {
-    result = checkCheckboxes(turnOff)
-    if (result.success) {
-      console.log("[PSST] Set Checkbox state successfully")
-      return result
+const waitForCheckboxToLoadWithTimeout = (turnOff) => {
+  return new Promise((resolve, reject) => {
+    let intervalId = null
+    let attemptCount = 0
+    
+    const wrappedResolve = (value) => {
+      if (intervalId) clearInterval(intervalId)
+      resolve(value)
     }
-    const now = Date.now()
-    while (Date.now() - now < 300) { /* busy wait 100ms */ }
-  }
-  
-  // Timeout reached, try one more time
-  result = checkCheckboxes(turnOff)
-  if (!result.success) {
-    result.error = 'Timeout waiting for checkbox'
-  }
-  return result
+    
+    const wrappedReject = (error) => {
+      attemptCount++
+      if (attemptCount >= WAIT_FOR_PAGE_ATTEMPTS_COUNT) {
+        if (intervalId) clearInterval(intervalId)
+        reject(`Checkbox not found after ${WAIT_FOR_PAGE_ATTEMPTS_COUNT} attempts`)
+      }
+    }
+    
+    intervalId = setInterval(() => {
+      checkCheckboxes(wrappedResolve, wrappedReject, turnOff)
+    }, WAIT_FOR_PAGE_TIMEOUT)
+  })
 }
 
 const getAvailableTasks = (psst) => {
@@ -76,27 +77,41 @@ const getProcessedTasks = (psst) => {
     return (psst?.applied_tasks?.length ?? 0) + (psst?.errors?.length ?? 0)
 }
 
-const calculateProgress = (processedTasks, availableTasks) => {
-  console.log(`[PSST] calculateProgress processedTasks:${processedTasks} availableTasks:${availableTasks}`)
-  
-  const processed = Number(processedTasks) || 0
-  const available = Number(availableTasks) || 0
+const calculateProgress = (psstObj) => {
+  const processed = Number(getProcessedTasks(psstObj)) || 0
+  const available = Number(getAvailableTasks(psstObj)) || 0
   const total = processed + available
   
+  console.log(`[PSST] calculateProgress processed:${processed} available:${available}`)
+
   return total === 0 ? 0 : (processed / total) * 100
 }
 
-const getResult = (result, psst) => {
+const clearPolicyResults = () => {
+  const prefix = "psst_settings_status";
+  const storage = window.parent.localStorage;
+  
+  Object.keys(storage)
+    .filter(k => k.startsWith(prefix))
+    .forEach(k => storage.removeItem(k));
+};
+
+const setResultToWindow = (result) => {
+  console.log(`[PSST] setResultToWindow psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}, result:${JSON.stringify(result)}`);
+  window.parent.localStorage.setItem(`psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}`, JSON.stringify(result))
+}
+
+const getResult = (result, psst, nextUrl) => {
   const result_value = {
     result: result,
-    psst: psst
+    psst: psst,
+    next_url: nextUrl
   };
   console.log("[PSST POLICY SCRIPT] Result:", JSON.stringify(result_value));
    return result_value;
 }
 
 const start = () => {
-  const curUrl = window.location.href;
   console.log(`[PSST] start #100 tasks:`, PSST_TASKS ?? []);
 
   // Ensure we have an array and safely get the first task (if any)
@@ -106,8 +121,8 @@ const start = () => {
   const psst = {
     state: psstState.STARTED,
     tasks_list: tasks,
-    start_url: curUrl,
-    progress: calculateProgress(0, PSST_TASKS_LENGTH),
+    start_url: window.location.href,
+    progress: 0,
     current_task: next_task,
     applied_tasks: []
   };
@@ -115,46 +130,49 @@ const start = () => {
   return [psst, next_task?.url ?? null];
 };
 
-const saveAndGoToNextUrl = (psst, nextUrl) => {
+const save = (psst) => {
   // Save the psst object to local storage.
   window.parent.localStorage.setItem(PSST_LOCALSTORAGE_KEY, JSON.stringify(psst))
-  // Go to the next URL.
-  goToUrl(nextUrl)
 }
 
-(() => {
-  const psst = window.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY)
-  console.log("[PSST] #100 PSST_INITIAL_EXECUTION_FLAG:", PSST_INITIAL_EXECUTION_FLAG)
-  console.log("[PSST] #101 psst:", psst)
-  
-  if (!psst || PSST_INITIAL_EXECUTION_FLAG) {
+const moveCurrentTask = (psstObj, checkboxResult) => {
+  const current_task = psstObj.current_task
+  if(!current_task) {
+    return
+  }
+  psstObj.applied_tasks.push(!checkboxResult ? psstObj.current_task : {
+    url: current_task.url,
+    description: current_task.description,
+    error_description: checkboxResult
+  })
+}
+
+(async() => {
+  const psstObj = JSON.parse(window.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY))
+  console.log(`[PSST] #100 PSST_INITIAL_EXECUTION_FLAG:${PSST_INITIAL_EXECUTION_FLAG} \nPSST_CHECK_SETTINGS_LOADED:${PSST_CHECK_SETTINGS_LOADED} \npsst:${JSON.stringify(psstObj)}`)
+  if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
+    clearPolicyResults()
     // Start applying-policy
     const [psstObj, nextUrl] = start()
-    saveAndGoToNextUrl(psstObj, nextUrl)
-    return getResult(false, psstObj)
-  }
-
-  const psstObj = JSON.parse(psst)
-  if (!psstObj) {
-    return getResult(false, null)
+    console.log(`[PSST] #130 psstObj:${JSON.stringify(psstObj)}`)
+    console.log(`[PSST] #130 nextUrl:${nextUrl}`)
+    setResultToWindow(getResult(false, psstObj, nextUrl))
+    save(psstObj)
+    return
   }
 
   if (psstObj.state === psstState.COMPLETED) {
-    return getResult(true, psstObj)
+    setResultToWindow(getResult(true, psstObj, null))
+    return
   }
 
-  const checkboxResult = waitForCheckboxToLoadWithTimeout(
-    WAIT_FOR_PAGE_TIMEOUT,
-    true /* turnOff */
-  )
   
-  const current_task = psstObj.current_task
-  if(current_task) {
-    psstObj.applied_tasks.push(checkboxResult.success ? psstObj.current_task : {
-        url: current_task.url,
-      description: current_task.description,
-      error_description: checkboxResult.error
-    })
+  try{
+    await waitForCheckboxToLoadWithTimeout(true /* turnOff */)
+    moveCurrentTask(psstObj, null)
+  } catch (error) {
+    console.error("[PSST] Error waiting for checkbox:", error)
+    moveCurrentTask(psstObj, error)
   }
 
   const next_task = psstObj.tasks_list.shift()
@@ -167,8 +185,9 @@ const saveAndGoToNextUrl = (psst, nextUrl) => {
   }
 
   psstObj.current_task = next_task
-  psstObj.progress = calculateProgress(getProcessedTasks(psstObj), getAvailableTasks(psstObj))
+  psstObj.progress = calculateProgress(psstObj)
 
-  saveAndGoToNextUrl(psstObj, nextUrl)
-  return getResult(false, psstObj)
+  setResultToWindow(getResult(false, psstObj, nextUrl))
+  save(psstObj)
+  return
 })()

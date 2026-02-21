@@ -93,10 +93,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                       const std::string& script,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
+  void GetPolicyScriptReturnValue(const int id, const int retry_counter);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
-//   void DidFinishNavigation(content::NavigationHandle* handle) override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
 
