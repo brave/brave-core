@@ -371,6 +371,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>
 <translation id="7462178177755090262">Skrin Pembukaan</translation>
 <translation id="5365434987337264071">Tab terakhir dibuka</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Tab baharu selepas <ph name="HOURS_ONE"/> jam tidak aktif}
+          other {Tab baharu selepas <ph name="HOURS_MANY"/> jam tidak aktif}
+        }</translation>
 <translation id="5233638681132016545">Tab baharu</translation>
 <translation id="8395271296293035055">Kembali ke tab terakhir anda</translation>
 <translation id="8297488609722895137">Gambar oleh <ph name="PHOTO_BY"/></translation>
