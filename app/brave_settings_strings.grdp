@@ -1683,6 +1683,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_VISION_SUPPORT_TOOLTIP_INFO" desc="A brief description for model vision support for adding a custom model.">
     If this model takes image as input, e.g. llama 3.2b vision
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_TOOL_SUPPORT_TOGGLE" desc="An label for model tool support toggle.">
+    Tool Support
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_TOOL_SUPPORT_TOOLTIP_INFO" desc="A brief description for model tool support for adding a custom model.">
+    If this model supports function calling / tool use
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL_TOOLTIP_INFO" desc="A brief description for the input title for adding a custom model">
     The name of the model as it will appear in the model selection menu
   </message>

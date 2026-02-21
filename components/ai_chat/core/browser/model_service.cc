@@ -64,6 +64,7 @@ constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
 constexpr char kCustomModelItemApiKey[] = "api_key";
 constexpr char kCustomModelItemKey[] = "key";
 constexpr char kCustomModelVisionSupport[] = "vision_support";
+constexpr char kCustomModelSupportsTools[] = "supports_tools";
 
 // When adding new models, especially for display, make sure to add the UI
 // strings to ai_chat_ui_strings.grdp and ai_chat/core/constants.cc.
@@ -544,6 +545,7 @@ base::DictValue GetModelDict(mojom::ModelPtr model) {
   model_dict.Set(kCustomModelItemKey, model->key);
   model_dict.Set(kCustomModelItemLabelKey, model->display_name);
   model_dict.Set(kCustomModelVisionSupport, model->vision_support);
+  model_dict.Set(kCustomModelSupportsTools, model->supports_tools);
   model_dict.Set(kCustomModelItemModelKey, options.model_request_name);
   model_dict.Set(kCustomModelItemEndpointUrlKey, options.endpoint.spec());
   model_dict.Set(kCustomModelItemApiKey, EncryptAPIKey(options.api_key));
@@ -1075,6 +1077,8 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
     model->display_name = *model_pref.FindString(kCustomModelItemLabelKey);
     model->vision_support =
         model_pref.FindBool(kCustomModelVisionSupport).value_or(false);
+    model->supports_tools =
+        model_pref.FindBool(kCustomModelSupportsTools).value_or(false);
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         std::move(custom_model_opts));
 

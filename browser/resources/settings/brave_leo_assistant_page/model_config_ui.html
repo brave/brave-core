@@ -316,6 +316,32 @@
           on-change="onVisionSupportChanged_">
       </leo-toggle>
     </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelToolSupport}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelToolSupportTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-toggle
+          checked="{{supportsTools}}"
+          on-change="onSupportsToolsChanged_">
+      </leo-toggle>
+    </div>
 
     <div class="actions-container">
       <leo-button
