@@ -4,9 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { createRoot } from 'react-dom/client'
 import {
-  LineChart,
+  LineChart as RechartsLineChart,
   Line,
   XAxis,
   YAxis,
@@ -16,7 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-interface ChartData {
+export interface ChartData {
   data: Array<Record<string, string | number>>
   labels?: Record<string, string>
 }
@@ -33,27 +32,11 @@ const CHART_COLORS = [
   'var(--leo-color-blue-40)',
 ]
 
-function parseChartData(): ChartData | null {
-  const encodedData = window.location.search.replace('?', '')
-  if (!encodedData) {
-    return null
-  }
-  try {
-    const jsonString = decodeURIComponent(encodedData)
-    return JSON.parse(jsonString) as ChartData
-  } catch (e) {
-    console.error('Failed to parse chart data:', e)
-    return null
-  }
+interface LineChartProps {
+  chartData: ChartData
 }
 
-function App() {
-  const chartData = parseChartData()
-
-  if (!chartData?.data || chartData.data.length === 0) {
-    return null
-  }
-
+export default function LineChart({ chartData }: LineChartProps) {
   const dataKeys = Object.keys(chartData.data[0]).filter((key) => key !== 'x')
 
   return (
@@ -61,7 +44,7 @@ function App() {
       width='100%'
       height='100%'
     >
-      <LineChart
+      <RechartsLineChart
         data={chartData.data}
         margin={{ top: 5, right: 5, left: -5, bottom: 5 }}
       >
@@ -80,14 +63,7 @@ function App() {
             strokeWidth={2}
           />
         ))}
-      </LineChart>
+      </RechartsLineChart>
     </ResponsiveContainer>
   )
 }
-
-function initialize() {
-  const root = createRoot(document.getElementById('root')!)
-  root.render(<App />)
-}
-
-document.addEventListener('DOMContentLoaded', initialize)

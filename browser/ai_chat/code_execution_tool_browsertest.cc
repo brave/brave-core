@@ -15,6 +15,7 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/code_plugin.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -319,7 +320,14 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
 
   const auto& artifact = artifacts[0];
   EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
-  EXPECT_FALSE(artifact->content_json.empty());
+  EXPECT_THAT(artifact->content_json, base::test::IsJson(R"json({
+                "data": [
+                  {"x": "Jan", "sales": 100, "profit": 30},
+                  {"x": "Feb", "sales": 150, "profit": 45},
+                  {"x": "Mar", "sales": 120, "profit": 35}
+                ],
+                "labels": {"sales": "Sales ($)", "profit": "Profit ($)"}
+              })json"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,

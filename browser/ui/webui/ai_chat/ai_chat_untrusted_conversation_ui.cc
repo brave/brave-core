@@ -358,16 +358,16 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome-untrusted://resources;");
 
-  std::string rich_search_widgets_csp;
+  std::string rich_search_widgets_url;
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
-    rich_search_widgets_csp =
+    rich_search_widgets_url =
         base::StrCat({" ", ai_chat::features::kRichSearchWidgetsOrigin.Get(),
                       "/embed.html"});
   }
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StrCat({"frame-src ", kAIChatChartDisplayUIURL,
-                    rich_search_widgets_csp, ";"}));
+                    rich_search_widgets_url, ";"}));
 
   // If the feature is not enabled don't specify an origin for loading the rich
   // search widgets.
@@ -394,8 +394,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "font-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      base::StrCat({"frame-ancestors ", kAIChatUIURL, " ",
-                    kAIChatUntrustedConversationUIURL, ";"}));
+      base::StrCat({"frame-ancestors ", kAIChatUIURL, ";"}));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 

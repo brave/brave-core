@@ -192,6 +192,9 @@ export const normalizeCitationSpacing = (text: string): string => {
   return withSeparatedCitations.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
 }
 
+/**
+ * Collects all tool artifacts from the events of a group of conversation turns.
+ */
 export function getToolArtifacts(
   group: Mojom.ConversationTurn[],
 ): Mojom.ToolArtifact[] {

@@ -13,11 +13,11 @@ import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import { getToolArtifacts } from '../conversation_entries/conversation_entries_utils'
 import AssistantResponse from '../assistant_response'
 import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
-import { getToolArtifacts } from '../conversation_entries/conversation_entries_utils'
 
 interface Props {
   // Entries that make up the task loop

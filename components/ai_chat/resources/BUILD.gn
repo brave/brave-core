@@ -24,7 +24,7 @@ transpile_web_ui("ai_chat_ui") {
     ],
     [
       "chart_display",
-      rebase_path("chart_display/chart_display.tsx"),
+      rebase_path("chart_display/index.tsx"),
     ],
   ]
 
