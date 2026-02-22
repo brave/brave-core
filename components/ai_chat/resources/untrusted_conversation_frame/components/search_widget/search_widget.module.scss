@@ -13,6 +13,7 @@
   gap: var(--leo-spacing-l);
 
   width: 100%;
+  margin-top: var(--leo-spacing-2xl);
 }
 
 .searchResults {
@@ -192,8 +193,6 @@
 }
 
 .footer {
-  margin-top: var(--leo-spacing-l);
-
   display: flex;
   justify-content: space-between;
   align-items: center;
