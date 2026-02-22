@@ -88,12 +88,12 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
-  void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
+  void OnPolicyScriptResult(const int id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
-  void GetPolicyScriptReturnValue(const int id, const int retry_counter);
+  void MaybeGetPolicyScriptResult(const int id, std::optional<int> retry_counter, const base::DictValue& script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
