@@ -42,7 +42,7 @@ const mockModels: Mojom.Model[] = [
       leoModelOptions: {
         name: 'brave-summary',
         displayMaker: 'Brave',
-        category: Mojom.ModelCategory.CHAT,
+        category: Mojom.ModelCategory.SUMMARY,
         access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 180000,
         longConversationWarningCharacterLimit: 320000,
@@ -82,16 +82,60 @@ const getOpenMenu = async () => {
   return menu
 }
 
-function renderAssistant(allowSummaryModel: boolean) {
+const humanSummarizeTurn: Mojom.ConversationTurn = {
+  characterType: Mojom.CharacterType.HUMAN,
+  text: 'Summarize',
+  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+  events: [],
+  createdTime: { internalValue: BigInt(0) },
+  edits: [],
+  fromBraveSearchSERP: false,
+  uploadedFiles: [],
+  uuid: 'human-uuid',
+  prompt: undefined,
+  selectedText: undefined,
+  modelKey: undefined,
+  skill: undefined,
+  nearVerificationStatus: undefined,
+}
+
+const assistantSummaryTurn: Mojom.ConversationTurn = {
+  characterType: Mojom.CharacterType.ASSISTANT,
+  text: 'Summary',
+  actionType: Mojom.ActionType.RESPONSE,
+  events: [],
+  createdTime: { internalValue: BigInt(1) },
+  edits: [],
+  fromBraveSearchSERP: false,
+  uploadedFiles: [],
+  uuid: 'turn-uuid',
+  prompt: undefined,
+  selectedText: undefined,
+  modelKey: 'model-one',
+  skill: undefined,
+  nearVerificationStatus: undefined,
+}
+
+function renderAssistant(isSummaryResponse: boolean) {
+  const conversationHistory: Mojom.ConversationTurn[] = isSummaryResponse
+    ? [humanSummarizeTurn, assistantSummaryTurn]
+    : [
+        {
+          ...humanSummarizeTurn,
+          actionType: Mojom.ActionType.UNSPECIFIED,
+          uuid: 'other-human',
+        },
+        { ...assistantSummaryTurn, uuid: 'turn-uuid' },
+      ]
   render(
     <MockContext
       allModels={mockModels}
       isPremiumUser={false}
+      conversationHistory={conversationHistory}
     >
       <ContextActionsAssistant
         turnUuid='turn-uuid'
         turnModelKey='model-one'
-        allowSummaryModel={allowSummaryModel}
       />
     </MockContext>,
   )

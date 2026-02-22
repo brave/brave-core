@@ -32,6 +32,7 @@ describe('ModelSelector', () => {
       supportsTools: true,
       options: {
         leoModelOptions: {
+          category: Mojom.ModelCategory.CHAT,
           access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         },
       },
@@ -44,6 +45,7 @@ describe('ModelSelector', () => {
       supportsTools: true,
       options: {
         leoModelOptions: {
+          category: Mojom.ModelCategory.CHAT,
           access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         },
       },
@@ -56,6 +58,7 @@ describe('ModelSelector', () => {
       supportsTools: false,
       options: {
         leoModelOptions: {
+          category: Mojom.ModelCategory.CHAT,
           access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         },
       },
@@ -68,6 +71,7 @@ describe('ModelSelector', () => {
       supportsTools: true,
       options: {
         leoModelOptions: {
+          category: Mojom.ModelCategory.CHAT,
           access: Mojom.ModelAccess.PREMIUM,
         },
       },
@@ -80,6 +84,7 @@ describe('ModelSelector', () => {
       supportsTools: false,
       options: {
         leoModelOptions: {
+          category: Mojom.ModelCategory.CHAT,
           access: Mojom.ModelAccess.PREMIUM,
         },
       },
@@ -92,6 +97,7 @@ describe('ModelSelector', () => {
       supportsTools: false,
       options: {
         leoModelOptions: {
+          category: Mojom.ModelCategory.SUMMARY,
           access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         },
       },
@@ -213,7 +219,8 @@ describe('ModelSelector', () => {
       'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
     )
 
-    // Check that all model items are visible (wait for re-render)
+    // Check that all model items are visible (wait for re-render).
+    // SUMMARY category (chat-brave-summary) is hidden, so 6 models + footer = 7 items.
     await waitFor(() => {
       const allMenuItems =
         document.querySelectorAll<HTMLElement>('leo-menu-item')
@@ -226,6 +233,9 @@ describe('ModelSelector', () => {
     expect(allMenuItems[3]).toHaveTextContent('Premium Model')
     expect(allMenuItems[4]).toHaveTextContent('Another Premium Model')
     expect(allMenuItems[5]).toHaveTextContent('Custom Model')
+    expect(allMenuItems[6]).toHaveTextContent(
+      'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
+    )
 
     const labels = document.querySelectorAll<HTMLElement>('leo-label')
 

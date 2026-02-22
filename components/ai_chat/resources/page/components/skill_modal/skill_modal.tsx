@@ -16,7 +16,7 @@ import styles from './skill_modal_style.module.scss'
 import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-import { isSelectableModel } from '../../model_utils'
+import { useSelectableModels } from '../../model_utils'
 import { AUTOMATIC_MODEL_KEY, getModelIcon } from '../../../common/constants'
 import * as Mojom from '../../../common/mojom'
 
@@ -45,10 +45,7 @@ export default function SkillModal() {
     [conversationContext.allModels, selectedModel],
   )
 
-  const selectableModels = React.useMemo(
-    () => conversationContext.allModels?.filter(isSelectableModel) ?? [],
-    [conversationContext.allModels],
-  )
+  const selectableModels = useSelectableModels(conversationContext.allModels)
 
   // Memos
   const shortcutError = React.useMemo(() => {

@@ -451,7 +451,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Brave";
       options->name = "brave-summary";
-      options->category = mojom::ModelCategory::CHAT;
+      options->category = mojom::ModelCategory::SUMMARY;
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;

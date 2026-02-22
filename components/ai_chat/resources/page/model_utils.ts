@@ -3,16 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BRAVE_SUMMARY_MODEL_KEY } from '../common/constants'
-
+import * as React from 'react'
 import * as Mojom from '../common/mojom'
-
-const HIDDEN_MODEL_KEYS = new Set<string>([BRAVE_SUMMARY_MODEL_KEY])
 
 export function isLeoModel(model: Mojom.Model) {
   return !!model.options.leoModelOptions
 }
 
 export function isSelectableModel(model: Mojom.Model) {
-  return !HIDDEN_MODEL_KEYS.has(model.key)
+  const category = model.options.leoModelOptions?.category
+  if (category === undefined) return true
+  return category !== Mojom.ModelCategory.SUMMARY
+}
+
+export function useSelectableModels(
+  allModels: Mojom.Model[] | undefined,
+): Mojom.Model[] {
+  return React.useMemo(
+    () => allModels?.filter(isSelectableModel) ?? [],
+    [allModels],
+  )
 }

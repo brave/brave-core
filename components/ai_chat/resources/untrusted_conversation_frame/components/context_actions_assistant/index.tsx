@@ -9,10 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import classnames from '$web-common/classnames'
-import {
-  AUTOMATIC_MODEL_KEY,
-  BRAVE_SUMMARY_MODEL_KEY,
-} from '../../../common/constants'
+import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import CopyButton from '../copy_button'
 import { RegenerateAnswerMenu } from '../regenerate_answer_menu'
@@ -24,7 +21,6 @@ type RatingStatus = (typeof statuses)[number]
 interface ContextActionsAssistantProps {
   turnUuid?: string
   turnModelKey?: string
-  allowSummaryModel?: boolean
   turnNEARVerified?: boolean
   onEditAnswerClicked?: () => void
   onCopyTextClicked?: () => void
@@ -83,7 +79,20 @@ export default function ContextActionsAssistant(
     [conversationContext, props.turnUuid],
   )
 
-  const includeSummaryModel = props.allowSummaryModel ?? false
+  const isSummaryResponseTurn = React.useMemo(() => {
+    if (!props.turnUuid) return false
+    const history = conversationContext.conversationHistory
+    const turnIndex = history.findIndex((t) => t.uuid === props.turnUuid)
+    if (turnIndex <= 0) return false
+    const prev = history[turnIndex - 1]
+    const curr = history[turnIndex]
+    return !!(
+      curr?.characterType === Mojom.CharacterType.ASSISTANT
+      && prev?.characterType === Mojom.CharacterType.HUMAN
+      && (prev.actionType === Mojom.ActionType.SUMMARIZE_PAGE
+        || prev.actionType === Mojom.ActionType.SUMMARIZE_VIDEO)
+    )
+  }, [props.turnUuid, conversationContext.conversationHistory])
 
   const leoModels = React.useMemo(
     () =>
@@ -94,12 +103,14 @@ export default function ContextActionsAssistant(
         if (model.key === AUTOMATIC_MODEL_KEY) {
           return false
         }
-        if (model.key === BRAVE_SUMMARY_MODEL_KEY && !includeSummaryModel) {
+        const isSummaryCategory =
+          model.options.leoModelOptions.category === Mojom.ModelCategory.SUMMARY
+        if (isSummaryCategory && !isSummaryResponseTurn) {
           return false
         }
         return true
       }),
-    [conversationContext.allModels, includeSummaryModel],
+    [conversationContext.allModels, isSummaryResponseTurn],
   )
 
   const handleOpenCloseRegenerateAnswerMenu = React.useCallback(
