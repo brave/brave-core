@@ -22,7 +22,12 @@ export function useScrollToBottom(
     if (!element) return
 
     const checkScrollable = () => {
-      const isScrollable = element.scrollHeight > element.clientHeight
+      // Note: We add some addition height to the iframe so menus can display properly.
+      // This needs to be taken into account for determining if the content is scrollable.
+      const bonusHeight = window.getComputedStyle(scrollContent.current!).getPropertyValue('--iframe-additional-margin-for-menus')
+      const bonusHeightNumber = parseInt(bonusHeight) || 0
+
+      const isScrollable = (element.scrollHeight - bonusHeightNumber) > element.clientHeight
       setHasScrollableContent(isScrollable)
     }
 
