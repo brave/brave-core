@@ -8,12 +8,13 @@ import { Meta, StoryObj } from '@storybook/react'
 
 import { createMockShieldsAPI } from '../api/shields_api_mock'
 import { ShieldsApiProvider } from '../api/shields_api_context'
+import { App } from '../components/app'
 
 function StorybookApp() {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       <ShieldsApiProvider api={createMockShieldsAPI()}>
-        <main />
+        <App />
       </ShieldsApiProvider>
     </div>
   )

@@ -235,6 +235,12 @@ export function createShieldsApi(opts: {
     dataHandler.registerUIHandler(
       createUIHandlerRemote({
         onSiteBlockInfoChanged(siteBlockInfo) {
+          // Reset site settings data when the host changes.
+          const prevHost = api.getSiteBlockInfo.current()?.host ?? ''
+          if (prevHost && prevHost !== siteBlockInfo.host) {
+            api.getSiteSettings.reset()
+          }
+
           api.getSiteBlockInfo.update(siteBlockInfo)
         },
       }),
