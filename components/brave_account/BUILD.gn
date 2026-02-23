@@ -76,6 +76,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//components/prefs:test_support",
