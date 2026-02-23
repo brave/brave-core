@@ -582,7 +582,7 @@ void BraveToolbarView::ResetBookmarkButtonBounds() {
   DCHECK_EQ(DisplayMode::kNormal, display_mode_);
 
   int button_right_margin =
-      GetLayoutConstant(LayoutConstant::kToolbarStandardSpacing);
+      GetLayoutConstant(LayoutConstant::kLocationBarMargin);
 
   if (bookmark_ && bookmark_->GetVisible()) {
     const int bookmark_width = bookmark_->GetPreferredSize().width();
