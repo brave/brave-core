@@ -236,7 +236,8 @@ void PolkadotMockRpc::FinalizeSetup() {
 void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
   url_loader_factory_->ClearResponses();
 
-  CHECK(req.url == mainnet_url_ || req.url == testnet_url_) << req.url;
+  CHECK(req.url == mainnet_url_ || req.url == testnet_url_)
+      << "Incorrect URL supplied to PolkadotMockRpc: " << req.url;
 
   auto req_body = RequestBodyToJsonDict(req);
 

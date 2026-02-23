@@ -146,6 +146,7 @@ void PolkadotWalletService::OnInitializeChainMetadata(
     mainnet_chain_metadata_callbacks_.clear();
   }
 }
+
 void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
@@ -240,7 +241,7 @@ void PolkadotWalletService::GetFeeEstimate(
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GetFeeEstimateCallback callback) {
   GenerateSignedTransferExtrinsicImpl(
-      std::move(chain_id), std::move(account_id), true, send_amount, recipient,
+      chain_id, std::move(account_id), true, send_amount, recipient,
       base::BindOnce(&PolkadotWalletService::OnGenerateTransferForFee,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
