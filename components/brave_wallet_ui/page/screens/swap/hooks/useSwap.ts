@@ -1179,16 +1179,41 @@ export const useSwap = () => {
       if (quoteErrorUnion?.gate3Error) {
         if (
           quoteErrorUnion.gate3Error.kind
-          === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
+            === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
+          || quoteUnion?.gate3Quote?.routes.length === 0
         ) {
           return 'insufficientLiquidity'
         }
 
-        return 'unknownError'
-      }
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kAmountTooLow
+        ) {
+          return 'amountTooLow'
+        }
 
-      if (quoteUnion?.gate3Quote?.routes.length === 0) {
-        return 'insufficientLiquidity'
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedNetwork
+        ) {
+          return 'unsupportedNetwork'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedTokens
+        ) {
+          return 'unsupportedTokens'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kInvalidRequest
+        ) {
+          return 'invalidRequest'
+        }
+
+        return 'unknownError'
       }
 
       const fromAmountWeiWrapped = new Amount(fromAmount).multiplyByDecimals(
@@ -1457,6 +1482,22 @@ export const useSwap = () => {
 
     if (swapValidationError === 'insufficientLiquidity') {
       return getLocale('braveSwapInsufficientLiquidity')
+    }
+
+    if (swapValidationError === 'amountTooLow') {
+      return getLocale('braveSwapAmountTooLow')
+    }
+
+    if (swapValidationError === 'unsupportedNetwork') {
+      return getLocale('braveSwapUnsupportedNetwork')
+    }
+
+    if (swapValidationError === 'unsupportedTokens') {
+      return getLocale('braveSwapUnsupportedTokens')
+    }
+
+    if (swapValidationError === 'invalidRequest') {
+      return getLocale('braveSwapInvalidRequest')
     }
 
     if (swapValidationError === 'unknownError') {
