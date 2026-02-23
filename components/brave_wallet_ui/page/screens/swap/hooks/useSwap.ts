@@ -1179,8 +1179,7 @@ export const useSwap = () => {
       if (quoteErrorUnion?.gate3Error) {
         if (
           quoteErrorUnion.gate3Error.kind
-            === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
-          || quoteUnion?.gate3Quote?.routes.length === 0
+          === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
         ) {
           return 'insufficientLiquidity'
         }
@@ -1214,6 +1213,10 @@ export const useSwap = () => {
         }
 
         return 'unknownError'
+      }
+
+      if (quoteUnion?.gate3Quote?.routes.length === 0) {
+        return 'insufficientLiquidity'
       }
 
       const fromAmountWeiWrapped = new Amount(fromAmount).multiplyByDecimals(
