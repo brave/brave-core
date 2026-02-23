@@ -77,7 +77,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  while (container->GetMaxScrollOffset() <= 0) {
+  while (container->GetMaxScrollOffset() == 0) {
     AppendTab();
     StopAnimatingAndLayout();
   }
