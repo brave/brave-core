@@ -131,6 +131,7 @@ import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
+import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
@@ -751,11 +752,13 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
-                        "showHomeSurfaceUiOnNtp",
+                        "setInitialOverviewStateOnResumeWithNtp",
                         MethodModifier.STATIC,
-                        void.class,
-                        Tab.class,
-                        Tab.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        TabModel.class,
+                        TabCreator.class,
                         HomeSurfaceTracker.class));
         Assert.assertTrue(
                 methodExists(
