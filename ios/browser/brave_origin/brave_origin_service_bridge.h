@@ -23,6 +23,13 @@ OBJC_EXPORT BraveOriginPolicyKey const BraveOriginPolicyKeyStatsPingEnabled;
 NS_SWIFT_NAME(BraveOriginService)
 @protocol BraveOriginServiceBridge
 
+// Asynchronously check purchase state via SKU credential summary.
+// The callback receives true if the user has a valid Origin purchase.
+- (void)checkPurchaseState:(void (^)(BOOL isPurchased))completionHandler;
+
+// Returns the cached purchase state (synchronous)
+- (BOOL)isPurchased;
+
 // Check if a policy is controlled by BraveOrigin
 - (BOOL)isPolicyControlledByBraveOrigin:(BraveOriginPolicyKey)policyKey;
 

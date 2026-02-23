@@ -146,6 +146,12 @@ private class MockOriginService: BraveOriginService {
   func getPolicyValue(_ policyKey: BraveOriginPolicyKey) -> NSNumber? {
     values[policyKey].map(NSNumber.init)
   }
+  func isPurchased() -> Bool {
+    return true
+  }
+  func checkPurchaseState() async -> Bool {
+    return true
+  }
 }
 #Preview {
   NavigationStack {
