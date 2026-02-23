@@ -1069,11 +1069,6 @@ mojom::Gate3SwapStepTokenPtr ParseStepToken(
       ParseNullableString(value.contract_address).value_or("");
   result->symbol = value.symbol;
 
-  // decimals is not essential, so we don't return nullptr if it fails to parse
-  int32_t decimals = 0;
-  base::StringToInt(value.decimals, &decimals);
-  result->decimals = decimals;
-
   result->logo = ParseNullableString(value.logo).value_or("");
   return result;
 }
