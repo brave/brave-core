@@ -430,7 +430,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
 
     https_server_.ServeFilesFromDirectory(
-        test_data_dir.AppendASCII("brave/test/data/psst/sites/a_test"));
+        test_data_dir.AppendASCII("brave/test/data/psst"));
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
 
