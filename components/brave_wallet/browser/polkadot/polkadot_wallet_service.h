@@ -86,18 +86,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   using GetFeeEstimateCallback =
       base::OnceCallback<void(base::expected<uint128_t, std::string>)>;
 
-  // Similar to GeneratedSignedTransferExtrinsic above except a dummy signature
-  // is used instead of a genuine signature from the user's keyring. A dummy
-  // signature of `0x0101...01` can be used in lieu of a real signature when
-  // getting fee estimates, which should be preferred as it's not a real
-  // extrinsic and will always fail validation at the node level.
-  void GenerateDummySignedTransferExtrinsic(
-      std::string chain_id,
-      mojom::AccountIdPtr account_id,
-      uint128_t send_amount,
-      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
-      GenerateSignedTransferExtrinsicCallback callback);
-
   void GetFeeEstimate(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
@@ -122,7 +110,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                                  const std::optional<std::string>&,
                                  const std::optional<std::string>&);
 
-  void GenerateMaybeSignedTransferExtrinsic(
+  void GenerateSignedTransferExtrinsicImpl(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
       bool use_dummy_signature,

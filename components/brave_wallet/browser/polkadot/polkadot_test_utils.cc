@@ -413,6 +413,17 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
       if (const auto* params_list = req_body.FindList("params")) {
         if (params_list->front().GetString() ==
             "TransactionPaymentApi_query_info") {
+          // Because this is a fee estimate call, we shouldn't be using a real
+          // signature here, so we need to probe for our dummy signature to
+          // ensure correctness here, which in binary winds up being encoded as:
+          // <signature type> <signature>
+          // In our case, signature type is 0x01 (sr25519) and our dummy
+          // signature is all 0x01.
+          const auto& extrinsic = (*params_list)[1].GetString();
+          EXPECT_NE(extrinsic.find(base::HexEncodeLower(
+                        std::vector<uint8_t>(0x01, 1 + 64))),
+                    std::string::npos);
+
           url_loader_factory_->AddResponse(
               req.url.spec(),
               R"({"jsonrpc":"2.0","id":18,"result":"0x82ab80766da800dc8df1b5030000000000000000000000"})");

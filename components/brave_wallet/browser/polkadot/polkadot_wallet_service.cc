@@ -146,7 +146,7 @@ void PolkadotWalletService::OnInitializeChainMetadata(
     mainnet_chain_metadata_callbacks_.clear();
   }
 }
-void PolkadotWalletService::GenerateMaybeSignedTransferExtrinsic(
+void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
     bool use_dummy_signature,
@@ -180,9 +180,9 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsic(
     uint128_t send_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GenerateSignedTransferExtrinsicCallback callback) {
-  GenerateMaybeSignedTransferExtrinsic(
-      std::move(chain_id), std::move(account_id), false, send_amount, recipient,
-      std::move(callback));
+  GenerateSignedTransferExtrinsicImpl(std::move(chain_id),
+                                      std::move(account_id), false, send_amount,
+                                      recipient, std::move(callback));
 }
 
 void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
@@ -233,25 +233,14 @@ void PolkadotWalletService::OnSubmitSignedExtrinsic(
   std::move(callback).Run(base::ok(transaction_hash.value()));
 }
 
-void PolkadotWalletService::GenerateDummySignedTransferExtrinsic(
-    std::string chain_id,
-    mojom::AccountIdPtr account_id,
-    uint128_t send_amount,
-    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
-    GenerateSignedTransferExtrinsicCallback callback) {
-  GenerateMaybeSignedTransferExtrinsic(std::move(chain_id),
-                                       std::move(account_id), true, send_amount,
-                                       recipient, std::move(callback));
-}
-
 void PolkadotWalletService::GetFeeEstimate(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
     uint128_t send_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GetFeeEstimateCallback callback) {
-  GenerateDummySignedTransferExtrinsic(
-      chain_id, std::move(account_id), send_amount, recipient,
+  GenerateSignedTransferExtrinsicImpl(
+      std::move(chain_id), std::move(account_id), true, send_amount, recipient,
       base::BindOnce(&PolkadotWalletService::OnGenerateTransferForFee,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
