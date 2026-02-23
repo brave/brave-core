@@ -104,9 +104,28 @@ void BraveTab::UpdateIconVisibility() {
       return;
     }
 
+    // When we show only icon for pinned vertical tab, we want to keep it
+    // centered all the time.
+    if ((showing_icon_ || showing_alert_indicator_) &&
+        !ShouldRenderAsNormalTab()) {
+      center_icon_ = true;
+    }
+
+    // Don't optimize icon visibility when floating with completely hidden mode.
+    // When floating from completely hidden, icon position could be changed
+    // between centered and non-centered per tab width.
+    // As it's shown from hidden and vice versa, it's hard to see
+    // flickering, but flickering optimization is complicated, so just skip it.
+    const bool is_floating = controller()->IsVerticalTabsFloating();
+    if (is_floating &&
+        tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(
+            controller()->GetBrowserWindowInterface())) {
+      return;
+    }
+
     // To prevent flickering during the floating animation,
     // disable centering the icon.
-    if (controller()->IsVerticalTabsFloating()) {
+    if (is_floating) {
       if (!showing_alert_indicator_) {
         showing_icon_ = true;
       }
@@ -126,13 +145,7 @@ void BraveTab::UpdateIconVisibility() {
       return;
     }
 
-    // When we show only icon for pinned vertical tab, we want to keep it
-    // centered all the time.
-    if ((showing_icon_ || showing_alert_indicator_) &&
-        !ShouldRenderAsNormalTab()) {
-      center_icon_ = true;
-      return;
-    }
+    return;
   }
 
   // To prevent flickering duing the toggle animation,
