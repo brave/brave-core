@@ -235,6 +235,101 @@ TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
   tab_ptr->OnMouseReleased(release_event);
 }
 
+// Tests that a pinned vertical tab's icon is centered when floating from
+// "completely hidden" collapsed mode. This is the regression fix: before the
+// fix, the floating check ran first and set center_icon_ = false, even though
+// the icon should remain centered in this mode.
+//
+// The center_icon_ = true block only fires when:
+//   (showing_icon_ || showing_alert_indicator_) && !ShouldRenderAsNormalTab()
+// Tab widths are derived from GetTabSizeInfo().pinned_tab_width and
+// kPinnedTabExtraWidthToRenderAsNormal (30, from tab.cc) to straddle the exact
+// boundary of ShouldRenderAsNormalTab().
+//
+// See: UpdateIconVisibility() in brave_tab.cc
+TEST_F(BraveTabTest,
+       PinnedTabIconCenteredWhenFloatingFromCompletelyHiddenMode) {
+  // kBraveVerticalTabHideCompletely is FEATURE_ENABLED_BY_DEFAULT, so
+  // kVerticalTabsHideCompletelyWhenCollapsed is already registered.
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  profile.GetPrefs()->SetBoolean(
+      brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, true);
+
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+  // Tab is floating (user hovered over the completely-hidden collapsed
+  // sidebar).
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(true));
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsAnimatingButNotFinalState())
+      .WillRepeatedly(testing::Return(false));
+
+  auto widget = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+  auto tab =
+      std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller);
+
+  BraveTab* tab_ptr = static_cast<BraveTab*>(tab.get());
+  widget->SetContentsView(std::move(tab));
+
+  // data().show_icon defaults to true, so Tab::UpdateIconVisibility() sets
+  // showing_icon_ = true for this pinned tab.
+  TabRendererData data;
+  data.pinned = true;
+  tab_ptr->SetData(std::move(data));
+
+  // Compute the exact boundary used by Tab::ShouldRenderAsNormalTab():
+  //   width >= pinned_tab_width + kPinnedTabExtraWidthToRenderAsNormal
+  // kPinnedTabExtraWidthToRenderAsNormal is defined as 30 in tab.cc.
+  const int pinned_tab_width = tab_ptr->GetTabSizeInfo().pinned_tab_width;
+  constexpr int kPinnedTabExtraWidthToRenderAsNormal = 30;
+  const int render_as_normal_threshold =
+      pinned_tab_width + kPinnedTabExtraWidthToRenderAsNormal;
+
+  // One pixel below the threshold: ShouldRenderAsNormalTab() == false, so the
+  // center_icon_ = true block fires and the completely-hidden early return
+  // preserves it.
+  tab_ptr->SetBoundsRect({0, 0, render_as_normal_threshold - 1, 50});
+
+  ASSERT_FALSE(tab_ptr->ShouldRenderAsNormalTab())
+      << "Precondition failed: width " << render_as_normal_threshold - 1
+      << " should be below the render-as-normal threshold "
+      << render_as_normal_threshold;
+
+  tab_ptr->UpdateIconVisibility();
+
+  // After the fix: center_icon_ is set to true before the early return for
+  // completely-hidden floating, so the "floating → center_icon_ = false"
+  // block is never reached.
+  EXPECT_TRUE(tab_ptr->center_icon_for_test())
+      << "Pinned tab icon should be centered when floating from "
+         "completely-hidden mode";
+
+  // Exactly at the threshold: ShouldRenderAsNormalTab() == true, so the
+  // center_icon_ = true block is skipped and center_icon_ stays false.
+  tab_ptr->SetBoundsRect({0, 0, render_as_normal_threshold, 50});
+
+  ASSERT_TRUE(tab_ptr->ShouldRenderAsNormalTab())
+      << "Precondition failed: width " << render_as_normal_threshold
+      << " should be at or above the render-as-normal threshold";
+
+  tab_ptr->UpdateIconVisibility();
+
+  EXPECT_FALSE(tab_ptr->center_icon_for_test())
+      << "center_icon_ should remain false when ShouldRenderAsNormalTab() "
+         "is true, since the center_icon_ = true block is guarded by "
+         "!ShouldRenderAsNormalTab()";
+}
+
 // Test that icon visibility is correctly set when vertical tabs are animating
 // to collapsed state across various tab widths. This prevents icon flickering
 // when the collapse animation occurs during the transition from max to min
