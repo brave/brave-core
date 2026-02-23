@@ -145,6 +145,7 @@
     }
   </message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER" desc="Exchange being used via API provider"><ph name="EXCHANGE_NAME"><ex>0x</ex>$1</ph> via <ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_SWAP_ROUTE_TO_FROM_VIA" desc="Swap route step showing destination token from source token via an exchange"><ph name="DESTINATION_TOKEN"><ex>USDC</ex>$1</ph> ← <ph name="SOURCE_TOKEN"><ex>SOL</ex>$2</ph> via</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SWAP" desc="Confirm swap title">Confirm swap</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>

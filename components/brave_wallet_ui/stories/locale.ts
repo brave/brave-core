@@ -671,6 +671,7 @@ provideStrings({
   braveWalletBridgeFromNetworkToNetwork: 'Bridge from $1 to $2',
   braveWalletExchangeNamePlusSteps: '$1 ($2 $3)',
   braveWalletExchangeViaProvider: '$1 via $2',
+  braveWalletSwapRouteToFromVia: '$1 ← $2 via',
   braveWalletSortBy: 'Sort by',
   braveWalletConfirmSwap: 'Confirm swap',
   braveWalletConfirmBridge: 'Confirm bridge',

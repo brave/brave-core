@@ -160,7 +160,9 @@ const Gate3StepSource = ({
             isBold={false}
             textColor='tertiary'
           >
-            {step.destinationToken.symbol} ← {step.sourceToken.symbol} via
+            {getLocale('braveWalletSwapRouteToFromVia')
+              .replace('$1', step.destinationToken.symbol)
+              .replace('$2', step.sourceToken.symbol)}
           </Text>
           {lpIcon !== '' ? (
             <LPIcon
