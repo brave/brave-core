@@ -562,6 +562,17 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     protected void onDestroyInternal() {
+        // If the search widget promo panel is shown, we mark its visibility
+        // before the activity is destroyed and recreated (e.g when the night mode state changes).
+        // The new search widget promo panel will be recreated with the new appropriate theme and
+        // position.
+        if (mSearchWidgetPromoPanel != null && mSearchWidgetPromoPanel.isShowing()) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
+            mSearchWidgetPromoPanel.dismiss();
+            mSearchWidgetPromoPanel = null;
+        }
+
         if (mNotificationPermissionController != null) {
             NotificationPermissionController.detach(mNotificationPermissionController);
             mNotificationPermissionController = null;
@@ -2660,20 +2671,6 @@ public abstract class BraveActivity extends ChromeActivity
         if (mSearchWidgetPromoPanel != null && mSearchWidgetPromoPanel.isShowing()) {
             showWidgetPromoPanel();
         }
-    }
-
-    @Override
-    public void onNightModeStateChanged() {
-        // If the search widget promo panel is shown, we mark its visibility
-        // before the activity is destroyed and recreated when the night mode state changes.
-        // The new search widget promo panel will be recreated with the new appropriate theme.
-        if (mSearchWidgetPromoPanel != null && mSearchWidgetPromoPanel.isShowing()) {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
-            mSearchWidgetPromoPanel.dismiss();
-            mSearchWidgetPromoPanel = null;
-        }
-        super.onNightModeStateChanged();
     }
 
     private void hideWidgetPromoPanel() {
