@@ -67,6 +67,8 @@ bool IsSidebarOnLeft(Browser* browser) {
 SidebarControlView::SidebarControlView(Delegate* delegate,
                                        BraveBrowser* browser)
     : delegate_(delegate), browser_(browser) {
+  // Don't follow RTL layout. Sidebar position is determined by its own setting.
+  SetMirrored(false);
   set_context_menu_controller(this);
 
   AddChildViews();

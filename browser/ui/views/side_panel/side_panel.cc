@@ -12,6 +12,7 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/i18n/rtl.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -79,6 +80,9 @@ SidePanel::SidePanel(BrowserView* browser_view,
           GetHorizontalAlignment(browser_view->GetProfile()->GetPrefs(), type)),
       browser_view_(browser_view),
       type_(type) {
+  // Disable mirroring as this panel can have different margin per alignment.
+  SetMirrored(false);
+
   // If panel has layer by default, adjust its radius whenever
   // updating shadow at UpdateBorder() instead of destroying layer.
   CHECK(!layer());
@@ -221,8 +225,11 @@ void SidePanel::OnResize(int resize_amount, bool done_resizing) {
   if (!starting_width_on_resize_) {
     starting_width_on_resize_ = width();
   }
+  // Use -resize_amount when (right-aligned in LTR) or (left-aligned in RTL);
+  // otherwise use +resize_amount (drag direction reverses in RTL).
+  const bool negate_amount = IsRightAligned() != base::i18n::IsRTL();
   int proposed_width = *starting_width_on_resize_ +
-                       (IsRightAligned() ? -resize_amount : resize_amount);
+                       (negate_amount ? -resize_amount : resize_amount);
 
   if (done_resizing) {
     starting_width_on_resize_ = std::nullopt;

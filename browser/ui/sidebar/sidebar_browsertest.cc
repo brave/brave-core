@@ -8,6 +8,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/i18n/rtl.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -1769,6 +1770,91 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 
   // Verify that SidebarContainerView is NOT observing the kToolbar entry.
   EXPECT_FALSE(toolbar_entry_ptr->IsBeingObservedBy(sidebar_container));
+}
+
+// Tests that sidebar container, side panel, control view, and contents
+// container are positioned correctly in RTL mode.
+//
+// Three fixes work together:
+//   - SetMirrored(false) on SidebarContainerView/SidebarControlView prevents
+//     the Views framework from flipping internal layout in RTL.
+//   - SetFlipCanvasOnPaintForRTLUI(false) on buttons prevents icon flipping.
+//   - GetMirroredRect(contents_bounds) in BraveBrowserViewLayout ensures the
+//     contents container is placed correctly next to the sidebar in RTL.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarLayoutInRTLTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* sidebar_container = GetSidebarContainerView();
+  auto* control_view = GetSidebarControlView();
+  auto* contents_view = browser_view->contents_container();
+
+  // Needs invalidation to apply RTL mode layout.
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  browser_view->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // --- Right-aligned sidebar (default) ---
+  ASSERT_FALSE(IsSidebarUIOnLeft());
+
+  // As we set mirrored rect for sidebar and contents during the layout,
+  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  EXPECT_LE(contents_view->GetMirroredBounds().right(),
+            sidebar_container->GetMirroredBounds().x());
+
+  // Open the side panel to verify panel/control positioning within the
+  // sidebar container.
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  RunScheduledLayouts();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+
+  // As container disabled mirroring(SetMirrored(false)),
+  // their bounds are what we're seeing.
+  EXPECT_LE(GetSidePanel()->bounds().right(), control_view->bounds().x());
+
+  // --- Left-aligned sidebar in RTL mode ---
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  ASSERT_TRUE(IsSidebarUIOnLeft());
+  RunScheduledLayouts();
+
+  // As container disabled mirroring(SetMirrored(false)),
+  // their bounds are what we're seeing.
+  EXPECT_LE(control_view->bounds().right(), GetSidePanel()->bounds().x());
+
+  // As we set mirrored rect for sidebar and contents during the layout,
+  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  EXPECT_LE(sidebar_container->GetMirroredBounds().right(),
+            contents_view->GetMirroredBounds().x());
+}
+
+// Tests that side panel resize direction is correct in RTL mode.
+// The OnResize sign convention is flipped in RTL compared to LTR because the
+// drag direction on screen is reversed.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeInRTLTest) {
+  // Open side panel (right-aligned by default).
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  RunScheduledLayouts();
+  int expected_width = kDefaultSidePanelWidth;
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == expected_width; }));
+
+  // In LTR with right-aligned sidebar: negative resize_amount increases width.
+  GetSidePanel()->OnResize(-20, true);
+  expected_width += 20;
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == expected_width; }));
+
+  // Enable RTL mode.
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  BrowserView::GetBrowserViewForBrowser(browser())->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // In RTL with right-aligned sidebar: positive resize_amount increases width
+  // (sign is flipped because screen drag direction reverses in RTL).
+  GetSidePanel()->OnResize(20, true);
+  expected_width += 20;
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == expected_width; }));
 }
 
 }  // namespace sidebar
