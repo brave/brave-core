@@ -89,16 +89,16 @@ const calculateProgress = (psstObj) => {
 
 const clearPolicyResults = () => {
   const prefix = "psst_settings_status";
-  const storage = window.parent.localStorage;
+  const storage = globalThis.parent.localStorage;
   
   Object.keys(storage)
     .filter(k => k.startsWith(prefix))
     .forEach(k => storage.removeItem(k));
 };
 
-const setResultToWindow = (result) => {
-  console.log(`[PSST] setResultToWindow psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}, result:${JSON.stringify(result)}`);
-  window.parent.localStorage.setItem(`psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}`, JSON.stringify(result))
+const saveSettingsStatus = (result) => {
+  console.log(`[PSST] saveSettingsStatus psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}, result:${JSON.stringify(result)}`);
+  globalThis.parent.localStorage.setItem(`psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}`, JSON.stringify(result))
 }
 
 const getResult = (result, psst, nextUrl) => {
@@ -121,7 +121,7 @@ const start = () => {
   const psst = {
     state: psstState.STARTED,
     tasks_list: tasks,
-    start_url: window.location.href,
+    start_url: globalThis.location.href,
     progress: 0,
     current_task: next_task,
     applied_tasks: []
@@ -130,9 +130,9 @@ const start = () => {
   return [psst, next_task?.url ?? null];
 };
 
-const save = (psst) => {
+const savePsstData = (psst) => {
   // Save the psst object to local storage.
-  window.parent.localStorage.setItem(PSST_LOCALSTORAGE_KEY, JSON.stringify(psst))
+  globalThis.parent.localStorage.setItem(PSST_LOCALSTORAGE_KEY, JSON.stringify(psst))
 }
 
 const moveCurrentTask = (psstObj, checkboxResult) => {
@@ -140,15 +140,15 @@ const moveCurrentTask = (psstObj, checkboxResult) => {
   if(!current_task) {
     return
   }
-  psstObj.applied_tasks.push(!checkboxResult ? psstObj.current_task : {
+  psstObj.applied_tasks.push(checkboxResult ? {
     url: current_task.url,
     description: current_task.description,
     error_description: checkboxResult
-  })
+  } : psstObj.current_task)
 }
 
 (async() => {
-  const psstObj = JSON.parse(window.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY))
+  const psstObj = JSON.parse(globalThis.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY))
   console.log(`[PSST] #100 PSST_INITIAL_EXECUTION_FLAG:${PSST_INITIAL_EXECUTION_FLAG} \nPSST_CHECK_SETTINGS_LOADED:${PSST_CHECK_SETTINGS_LOADED} \npsst:${JSON.stringify(psstObj)}`)
   if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
     clearPolicyResults()
@@ -156,13 +156,13 @@ const moveCurrentTask = (psstObj, checkboxResult) => {
     const [psstObj, nextUrl] = start()
     console.log(`[PSST] #130 psstObj:${JSON.stringify(psstObj)}`)
     console.log(`[PSST] #130 nextUrl:${nextUrl}`)
-    setResultToWindow(getResult(false, psstObj, nextUrl))
-    save(psstObj)
+    saveSettingsStatus(getResult(false, psstObj, nextUrl))
+    savePsstData(psstObj)
     return
   }
 
   if (psstObj.state === psstState.COMPLETED) {
-    setResultToWindow(getResult(true, psstObj, null))
+    saveSettingsStatus(getResult(true, psstObj, null))
     return
   }
 
@@ -177,17 +177,16 @@ const moveCurrentTask = (psstObj, checkboxResult) => {
 
   const next_task = psstObj.tasks_list.shift()
   let nextUrl = null
-  if (!next_task) {
+  if (next_task) {
+    nextUrl = next_task.url
+  } else {
     psstObj.state = psstState.COMPLETED
     nextUrl = psstObj.start_url
-  } else {
-    nextUrl = next_task.url
   }
 
   psstObj.current_task = next_task
   psstObj.progress = calculateProgress(psstObj)
 
-  setResultToWindow(getResult(false, psstObj, nextUrl))
-  save(psstObj)
-  return
+  saveSettingsStatus(getResult(false, psstObj, nextUrl))
+  savePsstData(psstObj)
 })()

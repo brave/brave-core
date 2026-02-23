@@ -5,7 +5,7 @@
 
 (() => {
   const getUserId = () => {
-    return "a_test_user"
+    return document.getElementById("current_user_id")?.textContent
   }
   const curUrl = window.location.href
   console.log("[PSST USER SCRIPT] Current URL: " + curUrl);
