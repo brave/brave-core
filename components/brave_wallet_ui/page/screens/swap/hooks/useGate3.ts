@@ -231,7 +231,7 @@ export function useGate3(params: SwapParams) {
               provider: firmRoute.provider,
               routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
-          })
+          }).unwrap()
           return
         }
 
@@ -265,7 +265,7 @@ export function useGate3(params: SwapParams) {
                 provider: firmRoute.provider,
                 routeId: firmRoute.id,
               } satisfies BraveWallet.SwapInfo,
-            })
+            }).unwrap()
             return
           }
 
@@ -293,7 +293,7 @@ export function useGate3(params: SwapParams) {
                 provider: firmRoute.provider,
                 routeId: firmRoute.id,
               } satisfies BraveWallet.SwapInfo,
-            })
+            }).unwrap()
             return
           }
 
@@ -317,7 +317,7 @@ export function useGate3(params: SwapParams) {
               provider: firmRoute.provider,
               routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
-          })
+          }).unwrap()
           return
         }
 
@@ -344,7 +344,7 @@ export function useGate3(params: SwapParams) {
               provider: firmRoute.provider,
               routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
-          })
+          }).unwrap()
           return
         }
 
@@ -371,7 +371,7 @@ export function useGate3(params: SwapParams) {
               provider: firmRoute.provider,
               routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
-          })
+          }).unwrap()
           return
         }
 
@@ -400,7 +400,7 @@ export function useGate3(params: SwapParams) {
               provider: firmRoute.provider,
               routeId: firmRoute.id,
             } satisfies BraveWallet.SwapInfo,
-          })
+          }).unwrap()
           return
         }
 
