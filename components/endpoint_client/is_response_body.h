@@ -13,7 +13,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // Concept that checks whether `T` defines a static, accessible member
 // function `FromValue()` such that:
@@ -27,6 +27,6 @@ concept IsResponseBody = requires(const base::Value& value) {
   { T::FromValue(value) } -> std::same_as<std::optional<T>>;
 };
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_

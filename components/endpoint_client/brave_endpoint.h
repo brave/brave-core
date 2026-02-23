@@ -14,7 +14,7 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <detail::StaticString Prefix,
           detail::StaticString Path,
@@ -31,6 +31,6 @@ struct BraveEndpoint {
   }
 };
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_BRAVE_ENDPOINT_H_

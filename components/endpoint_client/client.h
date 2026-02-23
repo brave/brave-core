@@ -46,7 +46,7 @@
 // See //brave/components/endpoint_client/README.md
 // for design, motivation, usage, and examples.
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 enum class RequestCancelability { kNonCancelable, kCancelable };
 
@@ -215,6 +215,6 @@ class Client {
   }
 };
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_CLIENT_H_

@@ -18,7 +18,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 // Registers a mock response for Endpoint in network::TestURLLoaderFactory.
 // Supports simulating transport errors, HTTP status codes, and
@@ -56,6 +56,6 @@ bool MatchesEndpoint(const network::ResourceRequest& request) {
          request.method == Endpoint::Request::Method();
 }
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_TEST_SUPPORT_H_

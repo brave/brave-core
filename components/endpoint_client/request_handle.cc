@@ -13,7 +13,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 RequestHandleDeleter::RequestHandleDeleter() = default;
 
@@ -36,4 +36,4 @@ RequestHandleDeleter::RequestHandleDeleter(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : task_runner_(std::move(task_runner)) {}
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail

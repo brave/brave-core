@@ -52,7 +52,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <typename T, typename E>
 bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
@@ -485,4 +485,4 @@ INSTANTIATE_TEST_SUITE_P(CancelableRequest,
                                       : "different_sequence";
                          });
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client

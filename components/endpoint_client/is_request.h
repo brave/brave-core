@@ -9,7 +9,7 @@
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // Primary template: a type does not satisfy IsRequest unless
 // matched by the partial specialization below.
@@ -26,6 +26,6 @@ inline constexpr bool kIsRequest<Request<T, M>> = true;
 template <typename T>
 concept IsRequest = kIsRequest<T>;
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_H_

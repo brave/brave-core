@@ -17,7 +17,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 namespace {
 
@@ -164,4 +164,4 @@ TYPED_TEST(IsEndpointConceptMatrixTest, SatisfyConcept) {
   EXPECT_EQ(IsEndpoint<TypeParam>, TypeParam::kSatisfiesConcept);
 }
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client

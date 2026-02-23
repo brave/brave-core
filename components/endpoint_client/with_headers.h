@@ -16,7 +16,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <typename T>
 struct WithHeaders {
@@ -47,6 +47,6 @@ void SetBearerToken(WithHeaders<T>& request, std::string_view bearer_token) {
                             base::StrCat({"Bearer ", bearer_token}));
 }
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_

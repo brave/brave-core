@@ -12,7 +12,7 @@
 #include "brave/components/endpoint_client/is_response.h"
 #include "url/gurl.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 namespace detail {
 
@@ -38,6 +38,6 @@ concept IsEndpoint =
     } && detail::IsRequest<typename T::Request> &&
     detail::IsResponse<typename T::Response> && detail::URL<T>;
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_ENDPOINT_H_

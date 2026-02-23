@@ -12,7 +12,7 @@
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "net/base/net_errors.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <detail::IsResponseBody T, detail::IsResponseBody E>
 struct Response {
@@ -24,6 +24,6 @@ struct Response {
   std::optional<base::expected<T, E>> body;
 };
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_RESPONSE_H_

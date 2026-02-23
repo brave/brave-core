@@ -13,7 +13,7 @@
 #include "brave/components/endpoint_client/request_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 namespace {
 
@@ -49,4 +49,4 @@ TYPED_TEST(IsRequestConceptTest, SatisfyConcept) {
   EXPECT_EQ(IsRequest<TestType>, ExpectedResult::value);
 }
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail

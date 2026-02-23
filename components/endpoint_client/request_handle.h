@@ -15,7 +15,7 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <IsEndpoint>
 class Client;
@@ -36,7 +36,7 @@ class RequestHandleDeleter {
 
  private:
   template <IsEndpoint>
-  friend class ::brave_account::endpoint_client::Client;
+  friend class ::endpoint_client::Client;
 
   explicit RequestHandleDeleter(
       scoped_refptr<base::SequencedTaskRunner> task_runner);
@@ -51,6 +51,6 @@ class RequestHandleDeleter {
 // reset the handle to cancel a request - hence the type erasure.
 using RequestHandle = std::unique_ptr<void, detail::RequestHandleDeleter>;
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_HANDLE_H_

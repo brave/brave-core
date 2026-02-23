@@ -15,7 +15,7 @@
 #include "brave/components/endpoint_client/with_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 namespace {
 
@@ -57,4 +57,4 @@ TYPED_TEST(MaybeStripWithHeadersTest, StripsWithHeaders) {
   EXPECT_TRUE((std::same_as<MaybeStripWithHeaders<TestType>, ExpectedType>));
 }
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client

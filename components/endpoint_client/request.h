@@ -13,7 +13,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // HTTP methods
 enum class Method {
@@ -64,6 +64,6 @@ struct Request : T {
   base::TimeDelta timeout_duration;
 };
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_

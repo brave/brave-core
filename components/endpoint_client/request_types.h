@@ -9,7 +9,7 @@
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <detail::IsRequestBody T>
 using CONNECT = detail::Request<T, detail::Method::kConnect>;
@@ -41,6 +41,6 @@ using TRACE = detail::Request<T, detail::Method::kTrace>;
 template <detail::IsRequestBody T>
 using TRACK = detail::Request<T, detail::Method::kTrack>;
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_TYPES_H_

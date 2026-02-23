@@ -9,7 +9,7 @@
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "brave/components/endpoint_client/response.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // Primary template: a type does not satisfy IsResponse unless
 // matched by the partial specialization below.
@@ -26,6 +26,6 @@ inline constexpr bool kIsResponse<Response<T, E>> = true;
 template <typename T>
 concept IsResponse = kIsResponse<T>;
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_H_

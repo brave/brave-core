@@ -13,31 +13,31 @@
 
 namespace email_aliases::endpoints {
 
-using AliasList = brave_account::endpoint_client::BraveEndpoint<
+using AliasList = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage?status=active",
-    brave_account::endpoint_client::GET<AliasListRequest>,
-    brave_account::endpoint_client::Response<AliasListResponse, ErrorMessage>>;
+    endpoint_client::GET<AliasListRequest>,
+    endpoint_client::Response<AliasListResponse, ErrorMessage>>;
 
-using GenerateAlias = brave_account::endpoint_client::BraveEndpoint<
+using GenerateAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
-    brave_account::endpoint_client::POST<GenerateAliasRequest>,
-    brave_account::endpoint_client::Response<GenerateAliasResponse,
+    endpoint_client::POST<GenerateAliasRequest>,
+    endpoint_client::Response<GenerateAliasResponse,
                                              ErrorMessage>>;
 
-using UpdateAlias = brave_account::endpoint_client::BraveEndpoint<
+using UpdateAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
-    brave_account::endpoint_client::PUT<UpdateAliasRequest>,
-    brave_account::endpoint_client::Response<AliasEditedResponse,
+    endpoint_client::PUT<UpdateAliasRequest>,
+    endpoint_client::Response<AliasEditedResponse,
                                              ErrorMessage>>;
 
-using DeleteAlias = brave_account::endpoint_client::BraveEndpoint<
+using DeleteAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
-    brave_account::endpoint_client::DELETE<DeleteAliasRequest>,
-    brave_account::endpoint_client::Response<AliasEditedResponse,
+    endpoint_client::DELETE<DeleteAliasRequest>,
+    endpoint_client::Response<AliasEditedResponse,
                                              ErrorMessage>>;
 
 }  // namespace email_aliases::endpoints

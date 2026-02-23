@@ -11,7 +11,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 struct ConceptTest {
   template <typename T>
@@ -31,6 +31,6 @@ struct ConceptTest {
   };
 };
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_CONCEPT_TEST_H_
