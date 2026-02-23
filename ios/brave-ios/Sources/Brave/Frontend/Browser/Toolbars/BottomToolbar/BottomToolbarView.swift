@@ -93,7 +93,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   func setSearchButtonState(url: URL?) {
     if let url = url {
-      isSearchButtonEnabled = InternalURL(url)?.isAboutHomeURL == true
+      isSearchButtonEnabled = url.isNewTabURL
     } else {
       isSearchButtonEnabled = false
     }

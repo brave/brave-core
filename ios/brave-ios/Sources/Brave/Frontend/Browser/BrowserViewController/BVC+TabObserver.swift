@@ -361,12 +361,10 @@ extension BrowserViewController: TabObserver {
 
   public func tabRenderProcessDidTerminate(_ tab: some TabState) {
     guard let url = tab.lastCommittedURL else { return }
-    if InternalURL.isValid(url: url) {
-      // No need to refresh an internal url
-      return
+    if url.isWebPage(includeDataURIs: false) {
+      // For now just reload the page when the process crashes
+      tab.reload()
     }
-    // For now just reload the page when the process crashes
-    tab.reload()
   }
 
   public func tabDidUpdateURL(_ tab: some TabState) {
@@ -424,8 +422,8 @@ extension BrowserViewController: TabObserver {
 
     // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
     // is still an internal URL even though a request may be pending for a web page.
-    if tab === tabManager.selectedTab, let url = tab.url,
-      !InternalURL.isValid(url: url), tab.estimatedProgress > 0
+    if tab === tabManager.selectedTab, let url = tab.visibleURL,
+      !url.isNewTabURL, !InternalURL.isValid(url: url), tab.estimatedProgress > 0
     {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
     }
@@ -439,7 +437,7 @@ extension BrowserViewController: TabObserver {
 
   public func tabDidChangeLoadProgress(_ tab: some TabState) {
     guard tab === tabManager.selectedTab else { return }
-    if let url = tab.url, !InternalURL.isValid(url: url) {
+    if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url) {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
     } else {
       topToolbar.hideProgressBar()

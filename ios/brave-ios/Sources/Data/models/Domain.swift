@@ -149,6 +149,7 @@ public final class Domain: NSManagedObject, CRUD {
       let mapToURL: (Domain) -> URL? = { domain -> URL? in
         guard let urlString = domain.url,
           let url = URL(string: urlString),
+          !url.isNewTabURL,
           !InternalURL.isValid(url: url)
         else {
           return nil

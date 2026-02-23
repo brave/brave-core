@@ -284,6 +284,12 @@ class URLExtensionTests: XCTestCase {
     XCTAssertEqual(URL(string: "https://test.otap.co")?.baseDomain, "test.otap.co")
     XCTAssertEqual(URL(string: "https://one.two.otap.co")?.baseDomain, "one.two.otap.co")
   }
+
+  func testNewTabPageURL() {
+    XCTAssertTrue(URL(string: "about://newtab")!.isNewTabURL)
+    XCTAssertFalse(URL(string: "internal://readermode")!.isNewTabURL)
+    XCTAssertFalse(URL(string: "https://brave.com")!.isNewTabURL)
+  }
 }
 
 private class NavigationDelegate: NSObject, WKNavigationDelegate {

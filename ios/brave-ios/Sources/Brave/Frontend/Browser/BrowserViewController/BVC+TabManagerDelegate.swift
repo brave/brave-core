@@ -120,7 +120,7 @@ extension BrowserViewController: TabManagerDelegate {
       updateURLBar()
       recordScreenTimeUsage(for: tab)
 
-      if let url = tab.visibleURL, !InternalURL.isValid(url: url) {
+      if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url) {
         let previousEstimatedProgress = previous?.estimatedProgress ?? 1.0
         let selectedEstimatedProgress = tab.estimatedProgress
 

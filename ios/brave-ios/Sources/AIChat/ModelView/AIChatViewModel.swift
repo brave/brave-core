@@ -274,7 +274,7 @@ extension AIChatViewModel: AIChatDelegate {
 
   public func getLastCommittedURL() -> URL? {
     if let url = webDelegate?.url {
-      return InternalURL.isValid(url: url) ? nil : url
+      return url.isNewTabURL || InternalURL.isValid(url: url) ? nil : url
     }
     return nil
   }
