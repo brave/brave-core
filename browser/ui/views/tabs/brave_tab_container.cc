@@ -1511,9 +1511,15 @@ int BraveTabContainer::GetMaxScrollOffset() const {
     return 0;
   }
 
-  const int total_size = GetUnpinnedTabsTotalSize();
+  int total_size = GetUnpinnedTabsTotalSize();
   if (total_size == 0) {
     return 0;
+  }
+
+  if (GetScrollDirection() == views::LayoutOrientation::kHorizontal) {
+    // We should subtract the overlap between pinned tabs area and unpinned tabs
+    // area
+    total_size -= tabs::kHorizontalTabOverlap;
   }
 
   return std::max(0, total_size - GetUnpinnedTabsViewportSize());

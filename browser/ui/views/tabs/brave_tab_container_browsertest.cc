@@ -70,6 +70,27 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       MaxScrollOffsetZeroWithPinnedAndUnpinnedTab) {
+  // With one pinned tab and one unpinned tab, and enough space so that the
+  // tab strip does not need to scroll, GetMaxScrollOffset() should be 0.
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+  auto* model = browser()->tab_strip_model();
+
+  ASSERT_EQ(1, model->count());
+  AppendTab();
+  ASSERT_EQ(2, model->count());
+  model->SetTabPinned(0, true);
+  StopAnimatingAndLayout();
+
+  EXPECT_EQ(0, container->GetMaxScrollOffset())
+      << "Pinned + one unpinned tab with enough space should not be scrollable";
+}
+
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
                        MaxScrollOffsetPositiveWithManyTabs) {
   auto* tab_strip = views::AsViewClass<BraveTabStrip>(
       browser_view()->horizontal_tab_strip_for_testing());

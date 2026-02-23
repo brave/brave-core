@@ -122,6 +122,9 @@ class BraveTabContainer : public TabContainerImpl,
                            ActiveTabScrollsIntoViewWhenSelectingLast);
   FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
                            ScrollOffsetClampedWhenTabRemoved);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           MaxScrollOffsetZeroWithPinnedAndUnpinnedTab);
+
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
