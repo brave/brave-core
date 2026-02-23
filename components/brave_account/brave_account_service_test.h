@@ -22,6 +22,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
 #include "components/prefs/testing_pref_service.h"
@@ -70,26 +71,8 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (requires { typename TestCase::Endpoint; }) {
       if (test_case.endpoint_response) {
-        auto head = test_case.endpoint_response->status_code
-                        .transform([](auto status_code) {
-                          return network::CreateURLResponseHead(
-                              static_cast<net::HttpStatusCode>(status_code));
-                        })
-                        .value_or(nullptr);
-
-        const auto body =
-            base::WriteJson(test_case.endpoint_response->body
-                                .transform([](const auto& body) {
-                                  return body.has_value()
-                                             ? body.value().ToValue()
-                                             : body.error().ToValue();
-                                })
-                                .value_or(base::DictValue()));
-
-        test_url_loader_factory_.AddResponse(
-            TestCase::Endpoint::URL(), std::move(head), CHECK_DEREF(body),
-            network::URLLoaderCompletionStatus(
-                test_case.endpoint_response->net_error));
+        endpoint_client::MockResponseFor<typename TestCase::Endpoint>(
+            test_url_loader_factory_, *test_case.endpoint_response);
       }
     }
 
