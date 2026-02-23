@@ -14,6 +14,8 @@ namespace features {
 // and non-owning references use base::WeakPtr for automatic null checking.
 // When disabled (default), std::shared_ptr is used for both ownership
 // and non-owning references (simpler but higher overhead).
+// Templates should be removed along with this flag
+// https://github.com/brave/brave-browser/issues/53065
 BASE_FEATURE(kBraveRequestInfoUniquePtr, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
