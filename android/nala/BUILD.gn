@@ -11,16 +11,16 @@ nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 group("nala") {
   public_deps = [
     ":nala_colors",
-    ":nala_colors_night"
+    ":nala_colors_night",
   ]
 }
 
 copy("nala_colors") {
-  sources = ["$nala_base_path/values/colors.xml"]
-  outputs = ["$target_gen_dir/values/colors.xml"]
+  sources = [ "$nala_base_path/values/colors.xml" ]
+  outputs = [ "$target_gen_dir/values/colors.xml" ]
 }
 
 copy("nala_colors_night") {
-  sources = ["$nala_base_path/values-night/colors.xml"]
-  outputs = ["$target_gen_dir/values-night/colors.xml"]
+  sources = [ "$nala_base_path/values-night/colors.xml" ]
+  outputs = [ "$target_gen_dir/values-night/colors.xml" ]
 }
