@@ -14,3 +14,15 @@ static_library("brave_private_cdn") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "private_cdn_helper_unittest.cc" ]
+
+  deps = [
+    ":brave_private_cdn",
+    "//base",
+    "//testing/gtest",
+  ]
+}

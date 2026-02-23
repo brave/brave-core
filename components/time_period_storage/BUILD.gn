@@ -24,3 +24,21 @@ static_library("time_period_storage") {
     "//components/prefs",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "daily_storage_unittest.cc",
+    "time_period_storage_unittest.cc",
+    "weekly_event_storage_unittest.cc",
+  ]
+
+  deps = [
+    ":time_period_storage",
+    "//base",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}

@@ -37,8 +37,14 @@ test("brave_components_unittests") {
     "//brave/components/json:unit_tests",
     "//brave/components/local_ai/core:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
+    "//brave/components/time_period_storage:unit_tests",
     "//brave/components/update_client:unit_tests",
     "//brave/components/url_sanitizer/core/browser:unit_tests",
+    "//brave/components/assist_ranker:unit_tests",
+    "//brave/components/brave_private_cdn:unit_tests",
+    "//brave/components/brave_search/browser:unit_tests",
+    "//brave/components/brave_sync:unit_tests",
+    "//brave/components/ntp_background_images/browser:unit_tests",
     "//components/test:run_all_unittests",
   ]
 
@@ -77,7 +83,10 @@ test("brave_components_unittests") {
   }
 
   if (use_blink) {
-    deps += [ "//brave/components/local_ai/content:unit_tests" ]
+    deps += [
+      "//brave/components/brave_perf_predictor/browser:unit_tests",
+      "//brave/components/local_ai/content:unit_tests",
+    ]
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }
