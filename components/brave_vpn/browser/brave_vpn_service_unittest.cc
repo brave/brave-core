@@ -251,6 +251,10 @@ class BraveVPNServiceTest : public testing::Test {
 
   void CreateConnectionManager(
       base::RepeatingCallback<bool()> service_installer) {
+    ASSERT_FALSE(service_)
+        << "Service must be destroyed before creating a new "
+           "ConnectionManager to avoid UAF in observer cleanup. "
+           "Call DestroyVpnService() first.";
 #if !BUILDFLAG(IS_ANDROID)
     connection_manager_ = std::make_unique<BraveVPNConnectionManager>(
         shared_url_loader_factory_, &local_pref_service_, service_installer);
@@ -258,6 +262,13 @@ class BraveVPNServiceTest : public testing::Test {
         std::make_unique<ConnectionAPIImplSim>(connection_manager_.get(),
                                                shared_url_loader_factory_));
 #endif
+  }
+
+  void DestroyVpnService() {
+    if (service_) {
+      service_->Shutdown();
+      service_.reset();
+    }
   }
 
   void ResetVpnService() {
@@ -1164,6 +1175,7 @@ TEST_P(BraveVPNServiceSystemInstallTest,
   base::RunLoop run_loop;
   std::string env = skus::GetDefaultEnvironment();
   const bool is_success = GetParam();
+  DestroyVpnService();
   CreateConnectionManager(
       base::BindRepeating([](bool success) { return success; }, is_success));
   ResetVpnService();
@@ -1187,6 +1199,7 @@ INSTANTIATE_TEST_SUITE_P(,
 TEST_F(BraveVPNServiceSystemInstallTest,
        ReportsInstallSystemServicesCompletedMultipleTimes) {
   std::string env = skus::GetDefaultEnvironment();
+  DestroyVpnService();
   CreateConnectionManager(base::BindRepeating([]() { return false; }));
   ResetVpnService();
 
