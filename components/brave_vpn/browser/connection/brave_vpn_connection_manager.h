@@ -60,6 +60,7 @@ class BraveVPNConnectionManager {
     // false when fetching region data is failed.
     virtual void OnRegionDataReady(bool success) {}
     virtual void OnSelectedRegionChanged(const std::string& region_name) {}
+    virtual void OnInstallSystemServicesCompleted(bool success) {}
 
    protected:
     ~Observer() override = default;
@@ -89,6 +90,7 @@ class BraveVPNConnectionManager {
 
   void NotifyConnectionStateChanged(mojom::ConnectionState state) const;
   void NotifySelectedRegionChanged(const std::string& name) const;
+  void NotifyInstallSystemServicesCompleted(bool success) const;
 
   void set_connection_api_impl_getter(ConnectionAPIImplGetter getter) {
     connection_api_impl_getter_ = std::move(getter);

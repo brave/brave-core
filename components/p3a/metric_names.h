@@ -158,6 +158,7 @@ inline constexpr auto kCollectedTypicalHistograms =
       .activation_metric_name = "Brave.VPN.LastUsageTime"
     }},
     {"Brave.VPN.WidgetUsage", MetricConfig{.ephemeral = true}},
+    {"Brave.VPN.SystemServicesInstalled", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.GroupTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.OpenTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
