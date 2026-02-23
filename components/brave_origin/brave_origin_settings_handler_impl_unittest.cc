@@ -66,6 +66,9 @@ class BraveOriginHandlerTest : public testing::Test {
     auto* manager = BraveOriginPolicyManager::GetInstance();
     manager->Init(std::move(browser_policies), std::move(profile_policies),
                   &local_state_);
+    // Set purchased state so IsBraveOriginEnabled() returns true when the
+    // feature flag is enabled.
+    manager->SetPurchased(true);
 
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
@@ -120,8 +123,10 @@ class BraveOriginHandlerTest : public testing::Test {
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveOriginHandlerTest,
        IsBraveOriginUser_FeatureEnabled_NoSkus_ReturnsFalse) {
-  // Without a SKUs service, CheckPurchaseState returns the cached
-  // is_purchased_ value (false by default).
+  // Reset purchase state - without a SKU service and no prior purchase,
+  // the user should not be considered a BraveOrigin user.
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+
   base::test::TestFuture<bool> result;
   handler_->IsBraveOriginUser(result.GetCallback());
   EXPECT_FALSE(result.Get());
@@ -299,6 +304,10 @@ TEST_F(BraveOriginHandlerTest, SetPolicyValue_ProfilePref_ReturnsTrue) {
 // In branded builds, RefreshPurchaseState unconditionally returns true.
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveOriginHandlerTest, RefreshPurchaseState_NoSkus_ReturnsFalse) {
+  // Reset purchase state - without a SKU service and no prior purchase,
+  // refresh should return false.
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+
   base::test::TestFuture<bool> result;
   handler_->RefreshPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());

@@ -79,7 +79,6 @@ class BraveOriginService : public KeyedService {
   SkusServiceGetter skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::string origin_sku_domain_;
-  bool is_purchased_ = false;
 
   base::WeakPtrFactory<BraveOriginService> weak_ptr_factory_{this};
 };
