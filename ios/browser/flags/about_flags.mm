@@ -211,6 +211,28 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Permits the use of private IP addresses as model endpoint URLs", \
           flags_ui::kOsIos,                                                 \
           FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),          \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-rich-search-widgets",                              \
+          "Brave AI Chat Rich Search Widgets",                              \
+          "Enables AI Chat Rich Search Widgets",                            \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kRichSearchWidgets),        \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-conversation-api-v2",                              \
+          "Brave AI Chat Conversation API V2",                              \
+          "Enables Conversation API V2 for AI Chat",                        \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),  \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-user-choice-tool",                                 \
+          "Brave AI Chat User Choice Tool",                                 \
+          "AI can offer a multiple choice question to the user during a "   \
+          "conversation.",                                                  \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),     \
       })
 
 #define BRAVE_WALLET_FEATURE_ENTRIES                                        \
