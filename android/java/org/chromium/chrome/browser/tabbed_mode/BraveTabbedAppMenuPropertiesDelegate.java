@@ -981,7 +981,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
-    boolean shouldShowIconRow() {
+    public boolean shouldShowIconRow() {
         if (isMenuButtonInBottomToolbar()) {
             return false;
         }

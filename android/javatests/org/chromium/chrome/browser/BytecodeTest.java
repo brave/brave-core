@@ -220,7 +220,6 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController;
-import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController.SubmenuHeaderFactory;
 import org.chromium.ui.insets.InsetObserver;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
@@ -1843,7 +1842,7 @@ public class BytecodeTest {
                         Supplier.class,
                         WindowAndroid.class,
                         BrowserControlsStateProvider.class,
-                        SubmenuHeaderFactory.class));
+                        int.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/cached_flags/CachedFlag",
