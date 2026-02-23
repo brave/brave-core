@@ -438,7 +438,7 @@ class BraveAppMenuModelBrowserTestForEmailAliases
     if (IsEmailAliasesEnabled()) {
       scoped_feature_list_.InitWithFeatures(
           {email_aliases::features::kEmailAliases,
-           brave_account::features::kBraveAccount},
+           brave_account::features::BraveAccountFeatureForTesting()},
           {});
     }
   }

@@ -30,10 +30,7 @@ static_library("features") {
     "features.h",
   ]
 
-  public_deps = [
-    "//base",
-    "//brave/components/brave_account:features",
-  ]
+  public_deps = [ "//base" ]
 }
 
 static_library("service") {
@@ -89,6 +86,7 @@ source_set("unit_tests") {
     ":test_utils",
     "//base/test:test_support",
     "//brave/components/brave_account",
+    "//brave/components/brave_account:features",
     "//brave/components/brave_account:test_support",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",

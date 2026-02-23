@@ -39,20 +39,32 @@ class EmailAliasesServiceFactoryTest : public ::testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
 };
 
+// Email Aliases depends on Brave Account. When Email Aliases is enabled,
+// brave_account::features::IsBraveAccountEnabled() returns true,
+// so the service is created even if kBraveAccount is explicitly disabled.
 TEST_F(EmailAliasesServiceFactoryTest,
-       NoServiceWhenBraveAccountFeatureDisabled) {
+       ServiceCreatedWhenEmailAliasesEnabledEvenIfBraveAccountDisabled) {
   scoped_feature_list_.Reset();
   scoped_feature_list_.InitWithFeatures(
-      {features::kEmailAliases}, {brave_account::features::kBraveAccount});
+      {features::kEmailAliases},
+      {brave_account::features::BraveAccountFeatureForTesting()});
   auto* profile = profile_manager_.CreateTestingProfile("test");
+  brave_account::BraveAccountServiceFactory::GetInstance()->SetTestingFactory(
+      profile, base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                              -> std::unique_ptr<KeyedService> {
+        return std::make_unique<brave_account::BraveAccountService>(
+            user_prefs::UserPrefs::Get(context),
+            test_url_loader_factory_.GetSafeWeakWrapper());
+      }));
   auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
-  EXPECT_EQ(service, nullptr);
+  EXPECT_NE(service, nullptr);
 }
 
 TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
   scoped_feature_list_.Reset();
   scoped_feature_list_.InitWithFeatures(
-      {brave_account::features::kBraveAccount}, {features::kEmailAliases});
+      {brave_account::features::BraveAccountFeatureForTesting()},
+      {features::kEmailAliases});
   auto* profile = profile_manager_.CreateTestingProfile("test");
   auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
   EXPECT_EQ(service, nullptr);
@@ -61,7 +73,9 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
 #if !BUILDFLAG(IS_ANDROID)
 TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
   scoped_feature_list_.InitWithFeatures(
-      {brave_account::features::kBraveAccount, features::kEmailAliases}, {});
+      {brave_account::features::BraveAccountFeatureForTesting(),
+       features::kEmailAliases},
+      {});
   auto* guest_profile = profile_manager_.CreateGuestProfile();
   auto* system_profile = profile_manager_.CreateSystemProfile();
   auto* service_guest =
@@ -75,7 +89,9 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
 
 TEST_F(EmailAliasesServiceFactoryTest, SameServiceForRegularAndIncognito) {
   scoped_feature_list_.InitWithFeatures(
-      {brave_account::features::kBraveAccount, features::kEmailAliases}, {});
+      {brave_account::features::BraveAccountFeatureForTesting(),
+       features::kEmailAliases},
+      {});
 
   [[maybe_unused]] auto* profile =
       profile_manager_.CreateTestingProfile("test");

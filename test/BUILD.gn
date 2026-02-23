@@ -955,6 +955,7 @@ test("brave_browser_tests") {
   }
 
   deps += [
+    "//brave/components/brave_account:features",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_search/browser",

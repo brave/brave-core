@@ -261,7 +261,7 @@ class SettingsViewController: TableViewController {
       aboutSection,
     ]
 
-    if FeatureList.kBraveAccount.enabled {
+    if IsBraveAccountEnabled() {
       list.insert(braveAccountSection, at: 1)
     }
 

@@ -8,7 +8,6 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_origin/features.h"
@@ -104,7 +103,6 @@
     &features::kBraveAndroidDynamicColors,                                     \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
-    &brave_account::features::kBraveAccount,                                   \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin
 
