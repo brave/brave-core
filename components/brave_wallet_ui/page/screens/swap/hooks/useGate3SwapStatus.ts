@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useCallback } from 'react'
+import { useState } from 'react'
 
 // Types / constants
 import {
@@ -20,11 +20,24 @@ import {
   getTransactionToAddress,
 } from '../../../../utils/tx-utils'
 
+const terminalSwapStatuses = new Set([
+  BraveWallet.Gate3SwapStatusCode.kSuccess,
+  BraveWallet.Gate3SwapStatusCode.kFailed,
+  BraveWallet.Gate3SwapStatusCode.kRefunded,
+])
+
+// Providers whose swaps support status polling.
+const needsStatusChecks = new Set([
+  BraveWallet.SwapProvider.kNearIntents,
+  BraveWallet.SwapProvider.kSquid,
+])
+
 export interface UseGate3SwapStatusResult {
   status?: BraveWallet.Gate3SwapStatus
   error?: BraveWallet.Gate3SwapError
   errorString?: string
   isLoading: boolean
+  isEnabled: boolean
   refetch: () => void
 }
 
@@ -34,7 +47,11 @@ export interface UseGate3SwapStatusResult {
  * @returns Status information including current state, error, and loading state
  */
 export function useGate3SwapStatus(
-  transaction: SerializableTransactionInfo | null | undefined,
+  transaction:
+    | BraveWallet.TransactionInfo
+    | SerializableTransactionInfo
+    | null
+    | undefined,
 ): UseGate3SwapStatusResult {
   // Extract swap info from transaction
   const swapInfo = transaction?.swapInfo
@@ -46,12 +63,13 @@ export function useGate3SwapStatus(
     ? Array.from(new TextEncoder().encode(memoString))
     : undefined
 
-  // Only query if we have a valid swap transaction with Gate3 provider
+  // Only query for Gate3-supported providers with a valid route and tx hash
   const shouldQuery =
     !!transaction
     && !!swapInfo
     && swapInfo.routeId !== ''
     && transaction.txHash !== ''
+    && needsStatusChecks.has(swapInfo.provider)
 
   // Build status params
   const statusParams: BraveWallet.Gate3SwapStatusParams | undefined =
@@ -71,22 +89,31 @@ export function useGate3SwapStatus(
 
   // Query the status with constant polling
   // The polling will continue until the transaction reaches a final state
+  const [isTerminal, setIsTerminal] = useState(false)
+
   const { data, isLoading, isFetching, refetch } = useGetSwapStatusQuery(
     statusParams,
     {
       skip: !shouldQuery,
-      // Poll every 3 seconds for swap status updates
-      pollingInterval: shouldQuery ? 3000 : 0,
+      pollingInterval: shouldQuery && !isTerminal ? 3000 : 0,
     },
   )
+
+  const currentStatus = data?.response?.status
+  if (
+    !isTerminal
+    && currentStatus !== undefined
+    && terminalSwapStatuses.has(currentStatus)
+  ) {
+    setIsTerminal(true)
+  }
 
   return {
     status: data?.response ?? undefined,
     error: data?.error ?? undefined,
     errorString: data?.errorString ?? undefined,
     isLoading: isLoading || isFetching,
-    refetch: useCallback(() => {
-      refetch()
-    }, [refetch]),
+    isEnabled: shouldQuery,
+    refetch,
   }
 }

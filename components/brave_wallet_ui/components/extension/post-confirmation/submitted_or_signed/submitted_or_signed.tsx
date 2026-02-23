@@ -25,7 +25,13 @@ import { SpeedUpAlert } from '../common/speed_up_alert'
 import { TransactionIntent } from '../common/transaction_intent'
 
 // Styled components
-import { LoadingRing, StatusIcon, Wrapper, Title } from '../common/common.style'
+import {
+  LoadingRing,
+  StatusIcon,
+  Wrapper,
+  Title,
+  InternalStatusText,
+} from '../common/common.style'
 import { Column, Row, Text, VerticalSpace } from '../../../shared/style'
 import {
   isBridgeTransaction,
@@ -127,13 +133,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
             swapStatus={swapStatus}
           />
           {isSwapOrBridge && swapStatus?.internalStatus && (
-            <Text
-              textSize='14px'
-              textColor='secondary'
-              isBold={true}
-            >
-              {swapStatus.internalStatus}
-            </Text>
+            <InternalStatusText>{swapStatus.internalStatus}</InternalStatusText>
           )}
         </Column>
       </Column>
