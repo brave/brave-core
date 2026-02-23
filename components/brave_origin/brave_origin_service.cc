@@ -18,6 +18,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
+#include "build/build_config.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_service.h"
@@ -141,6 +142,12 @@ std::optional<bool> BraveOriginService::GetPolicyValue(
 
 void BraveOriginService::CheckPurchaseState(
     base::OnceCallback<void(bool)> callback) {
+#if BUILDFLAG(IS_LINUX)
+  // On Linux, Origin is always considered purchased when the feature flag
+  // is enabled. There is no SKU store for credential purchase on Linux.
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(true);
+  std::move(callback).Run(true);
+#else
   if (!EnsureSkusConnected()) {
     std::move(callback).Run(IsPurchased());
     return;
@@ -150,6 +157,7 @@ void BraveOriginService::CheckPurchaseState(
       origin_sku_domain_,
       base::BindOnce(&BraveOriginService::OnCredentialSummary,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+#endif
 }
 
 bool BraveOriginService::IsPurchased() const {
