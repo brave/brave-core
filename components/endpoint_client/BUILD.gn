@@ -38,7 +38,7 @@ source_set("test_support") {
 
   deps = [
     "//base",
-    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/endpoint_client",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
@@ -62,7 +62,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/endpoint_client",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",

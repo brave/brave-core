@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_
 
 #include <string_view>
 
 #include "base/check.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
-#include "brave/components/brave_account/endpoint_client/is_request.h"
-#include "brave/components/brave_account/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_response.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 
@@ -49,4 +49,4 @@ void SetBearerToken(WithHeaders<T>& request, std::string_view bearer_token) {
 
 }  // namespace brave_account::endpoint_client
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_

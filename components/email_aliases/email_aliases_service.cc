@@ -13,7 +13,7 @@
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
+#include "brave/components/endpoint_client/client.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"

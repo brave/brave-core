@@ -22,7 +22,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service.h"
-#include "brave/components/brave_account/endpoint_client/test_support.h"
+#include "brave/components/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
 #include "components/prefs/testing_pref_service.h"

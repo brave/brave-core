@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_ENDPOINTS_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_ENDPOINTS_H_
 
-#include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
+#include "brave/components/endpoint_client/brave_endpoint.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 
 namespace email_aliases::endpoints {

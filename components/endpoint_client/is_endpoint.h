@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_ENDPOINT_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_ENDPOINT_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_ENDPOINT_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_ENDPOINT_H_
 
 #include <concepts>
 
-#include "brave/components/brave_account/endpoint_client/is_request.h"
-#include "brave/components/brave_account/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_response.h"
 #include "url/gurl.h"
 
 namespace brave_account::endpoint_client {
@@ -40,4 +40,4 @@ concept IsEndpoint =
 
 }  // namespace brave_account::endpoint_client
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_ENDPOINT_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_ENDPOINT_H_

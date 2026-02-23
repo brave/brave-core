@@ -19,7 +19,7 @@ source_set("brave_account") {
   deps = [
     "//base",
     "//brave/components/brave_account:features",
-    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/endpoint_client",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
@@ -86,7 +86,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
-    "//brave/components/brave_account/endpoint_client:test_support",
+    "//brave/components/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//brave/components/email_aliases:features",

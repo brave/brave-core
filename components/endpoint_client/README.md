@@ -209,8 +209,7 @@ request_handle.reset();  // cancels the request
 
 `Client<>::Send<>()` depends only on a `network::SharedURLLoaderFactory`, so in tests you can construct and configure a `network::TestURLLoaderFactory`, then pass `test_url_loader_factory_.GetSafeWeakWrapper()` to the code under test.
 
-Helpers for registering typed mock responses are available in 
-`//brave/components/endpoint_client:test_support`.
+Helpers for registering typed mock responses are available in `//brave/components/endpoint_client:test_support`.
 
 This allows you to simulate transport errors, HTTP failures, and both success/error bodies without introducing additional mock layers.
 

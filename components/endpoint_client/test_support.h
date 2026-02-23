@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_TEST_SUPPORT_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_TEST_SUPPORT_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_TEST_SUPPORT_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_TEST_SUPPORT_H_
 
 #include <utility>
 
 #include "base/check_deref.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
+#include "brave/components/endpoint_client/is_endpoint.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
@@ -58,4 +58,4 @@ bool MatchesEndpoint(const network::ResourceRequest& request) {
 
 }  // namespace brave_account::endpoint_client
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_TEST_SUPPORT_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_TEST_SUPPORT_H_

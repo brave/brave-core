@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_CLIENT_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_CLIENT_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_CLIENT_H_
 
 #include <concepts>
 #include <memory>
@@ -25,11 +25,11 @@
 #include "base/types/expected.h"
 #include "base/types/is_instantiation.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/endpoint_client/is_endpoint.h"
+#include "brave/components/endpoint_client/maybe_strip_with_headers.h"
+#include "brave/components/endpoint_client/request_handle.h"
+#include "brave/components/endpoint_client/response.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "net/base/load_flags.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -43,7 +43,7 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
-// See //brave/components/brave_account/endpoint_client/README.md
+// See //brave/components/endpoint_client/README.md
 // for design, motivation, usage, and examples.
 
 namespace brave_account::endpoint_client {
@@ -217,4 +217,4 @@ class Client {
 
 }  // namespace brave_account::endpoint_client
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_CLIENT_H_
