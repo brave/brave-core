@@ -7,6 +7,15 @@ import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
 source_set("browser_tests") {
   testonly = true
 
@@ -75,6 +84,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":features",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",

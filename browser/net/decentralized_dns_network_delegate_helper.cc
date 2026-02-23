@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -22,15 +23,19 @@
 #include "chrome/browser/browser_process.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/net_errors.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 namespace decentralized_dns {
 
+template <template <typename> class T>
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+    T<brave::BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(ctx);
   DCHECK(!next_callback.is_null());
 
   if (!ctx->browser_context() || ctx->browser_context()->IsOffTheRecord() ||
@@ -60,7 +65,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
           g_browser_process->local_state())) {
     json_rpc_service->UnstoppableDomainsResolveDns(
         std::string(ctx->request_url().host()),
-        base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
+        base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork<T>,
                        next_callback, ctx));
 
     return net::ERR_IO_PENDING;
@@ -70,7 +75,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       IsENSResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->EnsGetContentHash(
         std::string(ctx->request_url().host()),
-        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
+        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork<T>, next_callback,
                        ctx));
 
     return net::ERR_IO_PENDING;
@@ -80,7 +85,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       IsSnsResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->SnsResolveHost(
         std::string(ctx->request_url().host()),
-        base::BindOnce(&OnBeforeURLRequest_SnsRedirectWork, next_callback,
+        base::BindOnce(&OnBeforeURLRequest_SnsRedirectWork<T>, next_callback,
                        ctx));
 
     return net::ERR_IO_PENDING;
@@ -89,16 +94,18 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   return net::OK;
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::vector<uint8_t>& content_hash,
     bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!next_callback.is_null());
 
-  if (error != brave_wallet::mojom::ProviderError::kSuccess) {
+  if (!ctx || error != brave_wallet::mojom::ProviderError::kSuccess) {
     next_callback.Run();
     return;
   }
@@ -119,14 +126,16 @@ void OnBeforeURLRequest_EnsRedirectWork(
   next_callback.Run();
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequest_SnsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url,
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message) {
-  if (error == brave_wallet::mojom::SolanaProviderError::kSuccess && url &&
-      url->is_valid()) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (ctx && error == brave_wallet::mojom::SolanaProviderError::kSuccess &&
+      url && url->is_valid()) {
     ctx->set_new_url_spec(url->spec());
   }
 
@@ -135,13 +144,15 @@ void OnBeforeURLRequest_SnsRedirectWork(
   }
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
-  if (error == brave_wallet::mojom::ProviderError::kSuccess && url &&
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (ctx && error == brave_wallet::mojom::ProviderError::kSuccess && url &&
       url->is_valid()) {
     ctx->set_new_url_spec(url->spec());
   }
@@ -150,5 +161,13 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     next_callback.Run();
   }
 }
+
+template int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork<
+    std::shared_ptr>(const brave::ResponseCallback& next_callback,
+                     std::shared_ptr<brave::BraveRequestInfo> ctx);
+
+template int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork<base::WeakPtr>(
+    const brave::ResponseCallback& next_callback,
+    base::WeakPtr<brave::BraveRequestInfo> ctx);
 
 }  // namespace decentralized_dns

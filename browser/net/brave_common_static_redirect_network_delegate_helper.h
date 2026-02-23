@@ -6,17 +6,16 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_COMMON_STATIC_REDIRECT_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_BROWSER_NET_BRAVE_COMMON_STATIC_REDIRECT_NETWORK_DELEGATE_HELPER_H_
 
-#include <memory>
-
 #include "brave/browser/net/url_context.h"
 
 class GURL;
 
 namespace brave {
 
+template <template <typename> class T>
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
     const GURL& url,

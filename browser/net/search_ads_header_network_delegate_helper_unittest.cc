@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -44,19 +45,33 @@ constexpr std::string_view kNonBraveSearchRequestUrl =
 constexpr std::string_view kBraveSearchTabUrl = "https://search.brave.com";
 constexpr std::string_view kNonBraveSearchTabUrl = "https://brave.com";
 
+// Pointer strategy types for parameterized testing
+struct SharedPtrStrategy {
+  template <typename T>
+  using Ptr = std::shared_ptr<T>;
+};
+
+struct WeakPtrStrategy {
+  template <typename T>
+  using Ptr = base::WeakPtr<T>;
+};
+
 }  // namespace
 
+template <typename PtrStrategy>
 class SearchAdsHeaderDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitWithFeatures(
-        {
+    // Enable feature flag if using WeakPtrStrategy, disable if
+    // SharedPtrStrategy
+    bool enable_flag =
+        std::is_same_v<typename PtrStrategy::template Ptr<BraveRequestInfo>,
+                       base::WeakPtr<BraveRequestInfo>>;
+    scoped_feature_list_.InitWithFeatureStates({
 #if BUILDFLAG(IS_ANDROID)
-            brave_rewards::features::kBraveRewards
+        {brave_rewards::features::kBraveRewards, true},
 #endif  // BUILDFLAG(IS_ANDROID)
-        },
-        {});
-
+        {features::kBraveRequestInfoUniquePtr, enable_flag}});
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
@@ -82,19 +97,33 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
         brave_ads::prefs::kOptedInToSearchResultAds, false);
   }
 
-  std::shared_ptr<BraveRequestInfo> MakeRequest(std::string_view url,
-                                                TestingProfile* profile) {
-    auto request = std::make_shared<BraveRequestInfo>(GURL(url));
-    request->set_request_url(GURL(kBraveSearchTabUrl));
-    request->set_tab_origin(GURL(kBraveSearchTabUrl));
-    request->set_initiator_url(GURL(kBraveSearchTabUrl));
-    request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
-    request->set_browser_context(profile);
-    return request;
+  typename PtrStrategy::template Ptr<BraveRequestInfo> MakeRequest(
+      std::string_view url,
+      TestingProfile* profile) {
+    if constexpr (std::is_same_v<
+                      typename PtrStrategy::template Ptr<BraveRequestInfo>,
+                      std::shared_ptr<BraveRequestInfo>>) {
+      auto request = std::make_shared<BraveRequestInfo>(GURL(url));
+      request->set_request_url(GURL(kBraveSearchTabUrl));
+      request->set_tab_origin(GURL(kBraveSearchTabUrl));
+      request->set_initiator_url(GURL(kBraveSearchTabUrl));
+      request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
+      request->set_browser_context(profile);
+      return request;
+    } else {
+      // For WeakPtr strategy, store ownership in unique_ptr member
+      owned_request_ = std::make_unique<BraveRequestInfo>(GURL(url));
+      owned_request_->set_request_url(GURL(kBraveSearchTabUrl));
+      owned_request_->set_tab_origin(GURL(kBraveSearchTabUrl));
+      owned_request_->set_initiator_url(GURL(kBraveSearchTabUrl));
+      owned_request_->set_resource_type(blink::mojom::ResourceType::kMainFrame);
+      owned_request_->set_browser_context(profile);
+      return owned_request_->AsWeakPtr();
+    }
   }
 
   void VerifyHeaderExistsExpectation(
-      std::shared_ptr<BraveRequestInfo> request) {
+      typename PtrStrategy::template Ptr<BraveRequestInfo> request) {
     net::HttpRequestHeaders request_headers;
     const int result_code = OnBeforeStartTransaction_SearchAdsHeader(
         &request_headers, ResponseCallback(), request);
@@ -105,7 +134,7 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
   }
 
   void VerifyMissingHeaderExpectation(
-      std::shared_ptr<BraveRequestInfo> request) {
+      typename PtrStrategy::template Ptr<BraveRequestInfo> request) {
     net::HttpRequestHeaders request_headers;
     const int result_code = OnBeforeStartTransaction_SearchAdsHeader(
         &request_headers, ResponseCallback(), request);
@@ -117,140 +146,161 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<TestingProfile> profile_;
+  // For WeakPtr tests, store ownership of the request object
+  std::unique_ptr<BraveRequestInfo> owned_request_;
 };
 
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldExistForMainFrameResource) {
-  EnableBraveRewards();
-  OptOutOfSearchResultAds();
+using PtrStrategies = testing::Types<SharedPtrStrategy, WeakPtrStrategy>;
+TYPED_TEST_SUITE(SearchAdsHeaderDelegateHelperTest, PtrStrategies);
 
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
-  VerifyHeaderExistsExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest, HeaderShouldExistForXhrResource) {
-  EnableBraveRewards();
-  OptOutOfSearchResultAds();
-
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_resource_type(blink::mojom::ResourceType::kXhr);
-  VerifyHeaderExistsExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest, HeaderShouldExistForImageResource) {
-  EnableBraveRewards();
-  OptOutOfSearchResultAds();
-
-  auto request = MakeRequest(kBraveSearchImageRequestUrl, profile_.get());
-  request->set_resource_type(blink::mojom::ResourceType::kImage);
-  VerifyHeaderExistsExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForDisallowedTabOriginHost) {
-  EnableBraveRewards();
-
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_tab_origin(GURL());
-  VerifyMissingHeaderExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForDisallowedInitiatorUrlHost) {
-  EnableBraveRewards();
-
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_initiator_url(GURL());
-  VerifyMissingHeaderExpectation(request);
-}
-
-TEST_F(
-    SearchAdsHeaderDelegateHelperTest,
-    HeaderShouldNotExistForDisallowedTabOriginHostAndDisallowedInitiatorUrlHost) {
-  EnableBraveRewards();
-
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_tab_origin(GURL());
-  request->set_initiator_url(GURL());
-  VerifyMissingHeaderExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForNonSearchTabOrigin) {
-  EnableBraveRewards();
-
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_tab_origin(GURL(kNonBraveSearchTabUrl));
-  VerifyMissingHeaderExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForNonSearchInitiatorUrl) {
-  EnableBraveRewards();
-
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  request->set_initiator_url(GURL(kNonBraveSearchTabUrl));
-  VerifyMissingHeaderExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForNonSearchRequest) {
-  EnableBraveRewards();
-
-  auto request = MakeRequest(kNonBraveSearchRequestUrl, profile_.get());
-  VerifyMissingHeaderExpectation(request);
-}
-
-TEST_F(SearchAdsHeaderDelegateHelperTest, HeaderShouldNotExistForIncognito) {
-  EnableBraveRewards();
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldExistForMainFrameResource) {
+  this->EnableBraveRewards();
+  this->OptOutOfSearchResultAds();
 
   auto request =
-      MakeRequest(kBraveSearchRequestUrl,
-                  TestingProfile::Builder().BuildIncognito(profile_.get()));
-  VerifyMissingHeaderExpectation(request);
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
+  this->VerifyHeaderExistsExpectation(request);
 }
 
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForNonRewardsUser) {
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  VerifyMissingHeaderExpectation(request);
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest, HeaderShouldExistForXhrResource) {
+  this->EnableBraveRewards();
+  this->OptOutOfSearchResultAds();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_resource_type(blink::mojom::ResourceType::kXhr);
+  this->VerifyHeaderExistsExpectation(request);
 }
 
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldExistForDisconnectedRewardsUserOptedOutOfAds) {
-  EnableBraveRewards();
-  OptOutOfSearchResultAds();
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldExistForImageResource) {
+  this->EnableBraveRewards();
+  this->OptOutOfSearchResultAds();
 
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  VerifyHeaderExistsExpectation(request);
+  auto request =
+      this->MakeRequest(kBraveSearchImageRequestUrl, this->profile_.get());
+  request->set_resource_type(blink::mojom::ResourceType::kImage);
+  this->VerifyHeaderExistsExpectation(request);
 }
 
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldNotExistForDisconnectedRewardsUserOptedInToAds) {
-  EnableBraveRewards();
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForDisallowedTabOriginHost) {
+  this->EnableBraveRewards();
 
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  VerifyMissingHeaderExpectation(request);
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_tab_origin(GURL());
+  this->VerifyMissingHeaderExpectation(request);
 }
 
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldExistForConnectedRewardsUserOptedOutOfAds) {
-  EnableBraveRewards();
-  ConnectExternalBraveRewardsWallet();
-  OptOutOfSearchResultAds();
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForDisallowedInitiatorUrlHost) {
+  this->EnableBraveRewards();
 
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  VerifyHeaderExistsExpectation(request);
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_initiator_url(GURL());
+  this->VerifyMissingHeaderExpectation(request);
 }
 
-TEST_F(SearchAdsHeaderDelegateHelperTest,
-       HeaderShouldExistForConnectedRewardsUserOptedInToAds) {
-  EnableBraveRewards();
-  ConnectExternalBraveRewardsWallet();
+TYPED_TEST(
+    SearchAdsHeaderDelegateHelperTest,
+    HeaderShouldNotExistForDisallowedTabOriginHostAndDisallowedInitiatorUrlHost) {
+  this->EnableBraveRewards();
 
-  auto request = MakeRequest(kBraveSearchRequestUrl, profile_.get());
-  VerifyHeaderExistsExpectation(request);
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_tab_origin(GURL());
+  request->set_initiator_url(GURL());
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForNonSearchTabOrigin) {
+  this->EnableBraveRewards();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_tab_origin(GURL(kNonBraveSearchTabUrl));
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForNonSearchInitiatorUrl) {
+  this->EnableBraveRewards();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  request->set_initiator_url(GURL(kNonBraveSearchTabUrl));
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForNonSearchRequest) {
+  this->EnableBraveRewards();
+
+  auto request =
+      this->MakeRequest(kNonBraveSearchRequestUrl, this->profile_.get());
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForIncognito) {
+  this->EnableBraveRewards();
+
+  auto request = this->MakeRequest(
+      kBraveSearchRequestUrl,
+      TestingProfile::Builder().BuildIncognito(this->profile_.get()));
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForNonRewardsUser) {
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldExistForDisconnectedRewardsUserOptedOutOfAds) {
+  this->EnableBraveRewards();
+  this->OptOutOfSearchResultAds();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  this->VerifyHeaderExistsExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldNotExistForDisconnectedRewardsUserOptedInToAds) {
+  this->EnableBraveRewards();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  this->VerifyMissingHeaderExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldExistForConnectedRewardsUserOptedOutOfAds) {
+  this->EnableBraveRewards();
+  this->ConnectExternalBraveRewardsWallet();
+  this->OptOutOfSearchResultAds();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  this->VerifyHeaderExistsExpectation(request);
+}
+
+TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
+           HeaderShouldExistForConnectedRewardsUserOptedInToAds) {
+  this->EnableBraveRewards();
+  this->ConnectExternalBraveRewardsWallet();
+
+  auto request =
+      this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
+  this->VerifyHeaderExistsExpectation(request);
 }
 
 }  // namespace brave

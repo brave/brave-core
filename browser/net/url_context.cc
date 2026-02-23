@@ -419,13 +419,13 @@ void BraveRequestInfo::set_new_url(GURL* value) {
 }
 
 // static
-std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
+std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
     content::GlobalRenderFrameHostToken render_frame_token,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
-    std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
-  auto ctx = std::make_shared<brave::BraveRequestInfo>();
+    brave::BraveRequestInfo* old_ctx) {
+  auto ctx = std::make_unique<brave::BraveRequestInfo>();
   ctx->set_request_identifier(request_identifier);
   ctx->set_method(request.method);
   ctx->set_request_url(request.url);

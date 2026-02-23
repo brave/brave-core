@@ -35,10 +35,11 @@ void ReplaceBraveWithGoogleChromeInHeader(net::HttpRequestHeaders* headers,
 
 }  // namespace
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_UserAgentWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   if (ctx) {
     auto* exceptions =
         brave_user_agent::BraveUserAgentExceptions::GetInstance();
@@ -53,5 +54,15 @@ int OnBeforeStartTransaction_UserAgentWork(
   }
   return net::OK;
 }
+
+template int OnBeforeStartTransaction_UserAgentWork<std::shared_ptr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeStartTransaction_UserAgentWork<base::WeakPtr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave

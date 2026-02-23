@@ -87,12 +87,14 @@ void SetAdblockCnameHostResolverForTesting(
   g_testing_host_resolver = host_resolver;
 }
 
+template <template <typename> class T>
 void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
-                    std::shared_ptr<BraveRequestInfo> ctx,
+                    T<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
                     std::optional<std::string> cname);
 
+template <template <typename> class T>
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
@@ -103,11 +105,11 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
   AdblockCnameResolveHostClient(
       const ResponseCallback& next_callback,
       scoped_refptr<base::SequencedTaskRunner> task_runner,
-      std::shared_ptr<BraveRequestInfo> ctx,
+      T<BraveRequestInfo> ctx,
       EngineFlags previous_result) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-    cb_ = base::BindOnce(&UseCnameResult, task_runner, std::move(next_callback),
-                         ctx, previous_result);
+    cb_ = base::BindOnce(&UseCnameResult<T>, task_runner,
+                         std::move(next_callback), ctx, previous_result);
 
     const auto network_anonymization_key = ctx->network_anonymization_key();
 
@@ -278,13 +280,18 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
   return result;
 }
 
+template <template <typename> class T>
 void OnShouldBlockRequestResult(
     bool then_check_uncloaked,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx,
+    T<BraveRequestInfo> ctx,
     ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!ctx) {
+    next_callback.Run();
+    return;
+  }
   ctx->set_blocked_by(result.blocked_by);
   ctx->set_mock_data_url(std::move(result.mock_data_url));
   if (!result.new_url_spec.empty()) {
@@ -296,19 +303,25 @@ void OnShouldBlockRequestResult(
         ctx->request_url(), ctx->render_frame_token(), brave_shields::kAds);
   } else if (then_check_uncloaked) {
     // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
-    new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
-                                      ctx, result.engine_flags);
+    new AdblockCnameResolveHostClient<T>(std::move(next_callback), task_runner,
+                                         ctx, result.engine_flags);
     return;
   }
   next_callback.Run();
 }
 
+template <template <typename> class T>
 void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
-                    std::shared_ptr<BraveRequestInfo> ctx,
+                    T<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
                     std::optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!ctx) {
+    next_callback.Run();
+    return;
+  }
 
   if (cname.has_value() && ctx->request_url().host() != *cname &&
       !cname->empty()) {
@@ -329,7 +342,7 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                        previous_result,
                        std::make_optional<GURL>(canonical_url)),
-        base::BindOnce(&OnShouldBlockRequestResult, false, task_runner,
+        base::BindOnce(&OnShouldBlockRequestResult<T>, false, task_runner,
                        next_callback, ctx));
   } else {
     next_callback.Run();
@@ -385,8 +398,9 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
   return can_uncloak;
 }
 
+template <template <typename> class T>
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
-                                 std::shared_ptr<BraveRequestInfo> ctx) {
+                                 T<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK_NE(ctx->request_identifier(), 0UL);
   DCHECK(!ctx->request_url().is_empty());
@@ -426,12 +440,13 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       FROM_HERE,
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                      EngineFlags(), std::nullopt),
-      base::BindOnce(&OnShouldBlockRequestResult, should_check_uncloaked,
+      base::BindOnce(&OnShouldBlockRequestResult<T>, should_check_uncloaked,
                      task_runner, next_callback, ctx));
 }
 
+template <template <typename> class T>
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
-                                        std::shared_ptr<BraveRequestInfo> ctx) {
+                                        T<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->request_url().is_empty() || ctx->initiator_url().is_empty() ||
@@ -470,5 +485,13 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
 
   return net::ERR_IO_PENDING;
 }
+
+template int OnBeforeURLRequest_AdBlockTPPreWork<std::shared_ptr>(
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeURLRequest_AdBlockTPPreWork<base::WeakPtr>(
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave

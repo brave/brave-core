@@ -8,6 +8,7 @@
 #include <initializer_list>
 
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/net/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -1296,6 +1297,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "closing a site or terminating the application.",                    \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-request-info-unique-ptr",                                     \
+          "BraveRequestInfo unique_ptr",                                       \
+          "Enable experimental use of unique_ptr/WeakPtr instead of "          \
+          "shared_ptr"                                                         \
+          "for BraveRequestInfo",                                              \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \

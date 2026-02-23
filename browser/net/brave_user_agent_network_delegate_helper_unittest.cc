@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/net/features.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "net/base/net_errors.h"
@@ -39,6 +40,22 @@ struct UserAgentTestResult {
   std::optional<std::string> full_version_list_header_value;
 };
 
+namespace {
+
+// Pointer strategy types for parameterized testing
+struct SharedPtrStrategy {
+  template <typename T>
+  using Ptr = std::shared_ptr<T>;
+};
+
+struct WeakPtrStrategy {
+  template <typename T>
+  using Ptr = base::WeakPtr<T>;
+};
+
+}  // namespace
+
+template <typename PtrStrategy>
 class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
  protected:
   void SetUp() override {
@@ -46,6 +63,14 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
         brave_user_agent::BraveUserAgentExceptions::GetInstance();
     exceptions->AddToExceptedDomainsForTesting("excepted.com");
     exceptions->SetIsReadyForTesting();
+
+    // Enable feature flag if using WeakPtrStrategy, disable if
+    // SharedPtrStrategy
+    bool enable_flag =
+        std::is_same_v<typename PtrStrategy::template Ptr<BraveRequestInfo>,
+                       base::WeakPtr<BraveRequestInfo>>;
+    scoped_feature_list_.InitWithFeatureState(
+        features::kBraveRequestInfoUniquePtr, enable_flag);
   }
 
   UserAgentTestResult RunUserAgentTest(bool feature_enabled,
@@ -65,18 +90,34 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
     net::HttpRequestHeaders headers;
     headers.SetHeader(header_name_1, header_value_1);
     headers.SetHeader(header_name_2, header_value_2);
-    auto ctx = std::make_shared<BraveRequestInfo>();
+
+    typename PtrStrategy::template Ptr<BraveRequestInfo> ctx;
+    if constexpr (std::is_same_v<
+                      typename PtrStrategy::template Ptr<BraveRequestInfo>,
+                      std::shared_ptr<BraveRequestInfo>>) {
+      ctx = std::make_shared<BraveRequestInfo>();
+    } else {
+      owned_request_ = std::make_unique<BraveRequestInfo>();
+      ctx = owned_request_->AsWeakPtr();
+    }
     ctx->set_tab_origin(GURL(tab_origin));
     int result = OnBeforeStartTransaction_UserAgentWork(&headers, {}, ctx);
     EXPECT_EQ(result, net::OK);
     return {headers.GetHeader(kSecCHUAHeader),
             headers.GetHeader(kSecCHUAFullVersionListHeader)};
   }
+
+  // For WeakPtr tests, store ownership of the request object
+  std::unique_ptr<BraveRequestInfo> owned_request_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_F(BraveUserAgentNetworkDelegateHelperTest,
-       ReplacesBraveWithGoogleChromeIfExcepted) {
-  auto res = RunUserAgentTest(
+using PtrStrategies = testing::Types<SharedPtrStrategy, WeakPtrStrategy>;
+TYPED_TEST_SUITE(BraveUserAgentNetworkDelegateHelperTest, PtrStrategies);
+
+TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
+           ReplacesBraveWithGoogleChromeIfExcepted) {
+  auto res = this->RunUserAgentTest(
       /*feature_enabled=*/true, "https://excepted.com", kSecCHUAHeader,
       kSecCHUABrave, kSecCHUAFullVersionListHeader,
       kSecCHUABraveFullVersionList);
@@ -87,9 +128,9 @@ TEST_F(BraveUserAgentNetworkDelegateHelperTest,
             kSecCHUAGoogleChromeFullVersionList);
 }
 
-TEST_F(BraveUserAgentNetworkDelegateHelperTest,
-       DoesNotReplaceBraveWithGoogleChromeIfNotExcepted) {
-  auto res = RunUserAgentTest(
+TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
+           DoesNotReplaceBraveWithGoogleChromeIfNotExcepted) {
+  auto res = this->RunUserAgentTest(
       /*feature_enabled=*/true, "https://not-excepted.com", kSecCHUAHeader,
       kSecCHUABrave, kSecCHUAFullVersionListHeader,
       kSecCHUABraveFullVersionList);
@@ -100,18 +141,18 @@ TEST_F(BraveUserAgentNetworkDelegateHelperTest,
             kSecCHUABraveFullVersionList);
 }
 
-TEST_F(BraveUserAgentNetworkDelegateHelperTest,
-       DoesNotReplaceBraveWithGoogleChromeIfHeaderNotSet) {
-  auto res = RunUserAgentTest(
+TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
+           DoesNotReplaceBraveWithGoogleChromeIfHeaderNotSet) {
+  auto res = this->RunUserAgentTest(
       /*feature_enabled=*/true, "https://excepted.com", kSecCHUAMock,
       kSecCHUABrave, kSecCHUAMock, kSecCHUABraveFullVersionList);
   EXPECT_FALSE(res.header_value.has_value());
   EXPECT_FALSE(res.full_version_list_header_value.has_value());
 }
 
-TEST_F(BraveUserAgentNetworkDelegateHelperTest,
-       DoesNotReplaceBraveWithGoogleChromeIfHeaderSetToEmpty) {
-  auto res = RunUserAgentTest(
+TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
+           DoesNotReplaceBraveWithGoogleChromeIfHeaderSetToEmpty) {
+  auto res = this->RunUserAgentTest(
       /*feature_enabled=*/true, "https://excepted.com", kSecCHUAHeader, "",
       kSecCHUAFullVersionListHeader, "");
   ASSERT_TRUE(res.header_value.has_value());
@@ -127,9 +168,9 @@ TEST_F(BraveUserAgentNetworkDelegateHelperTest,
               testing::Not(testing::HasSubstr("\"Google Chrome\"")));
 }
 
-TEST_F(BraveUserAgentNetworkDelegateHelperTest,
-       DoesNotReplaceBraveWithGoogleChromeIfFeatureIsDisabled) {
-  auto res = RunUserAgentTest(
+TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
+           DoesNotReplaceBraveWithGoogleChromeIfFeatureIsDisabled) {
+  auto res = this->RunUserAgentTest(
       /*feature_enabled=*/false, "https://excepted.com", kSecCHUAHeader,
       kSecCHUABrave, kSecCHUAFullVersionListHeader,
       kSecCHUABraveFullVersionList);

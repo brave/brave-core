@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_TP_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_TP_NETWORK_DELEGATE_HELPER_H_
 
-#include <memory>
-
 #include "brave/browser/net/url_context.h"
 
 namespace network {
@@ -16,9 +14,9 @@ class HostResolver;
 
 namespace brave {
 
-int OnBeforeURLRequest_AdBlockTPPreWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+template <template <typename> class T>
+int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
+                                        T<BraveRequestInfo> ctx);
 
 // Be sure to reset this to `nullptr` when done testing to prevent future tests
 // from being affected.

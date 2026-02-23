@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_CSP_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_CSP_NETWORK_DELEGATE_HELPER_H_
 
-#include <memory>
-
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/url_context.h"
 
@@ -19,12 +17,13 @@ class GURL;
 
 namespace brave {
 
+template <template <typename> class T>
 int OnHeadersReceived_AdBlockCspWork(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+    T<brave::BraveRequestInfo> ctx);
 
 }  // namespace brave
 

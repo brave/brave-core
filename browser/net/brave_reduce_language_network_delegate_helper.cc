@@ -78,10 +78,11 @@ std::string FarbleAcceptLanguageHeader(
   return accept_language_string;
 }
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_ReduceLanguageWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   DCHECK(profile);
   HostContentSettingsMap* content_settings =
@@ -144,5 +145,15 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
 
   return net::OK;
 }
+
+template int OnBeforeStartTransaction_ReduceLanguageWork<std::shared_ptr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeStartTransaction_ReduceLanguageWork<base::WeakPtr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave

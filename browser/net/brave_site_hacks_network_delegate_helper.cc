@@ -26,7 +26,8 @@ namespace brave {
 
 namespace {
 
-bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
+template <template <typename> class T>
+bool ApplyPotentialReferrerBlock(T<BraveRequestInfo> ctx) {
   if (ctx->tab_origin().SchemeIs(kChromeExtensionScheme)) {
     return false;
   }
@@ -47,8 +48,8 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
   return false;
 }
 
-bool IsTrackingQueryParametersFilteringEnabled(
-    std::shared_ptr<BraveRequestInfo> ctx) {
+template <template <typename> class T>
+bool IsTrackingQueryParametersFilteringEnabled(T<BraveRequestInfo> ctx) {
   if (!ctx->browser_context()) {
     return true;
   }
@@ -68,8 +69,9 @@ bool IsTrackingQueryParametersFilteringEnabled(
 
 }  // namespace
 
+template <template <typename> class T>
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
-                                     std::shared_ptr<BraveRequestInfo> ctx) {
+                                     T<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
 
   if (ctx->allow_brave_shields() &&
@@ -85,10 +87,11 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
   return net::OK;
 }
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_SiteHacksWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   // Special case for handling top-level redirects. There is no other way to
   // normally change referrer in net::URLRequest during redirects
   // (except using network::mojom::TrustedURLLoaderHeaderClient, which
@@ -106,5 +109,23 @@ int OnBeforeStartTransaction_SiteHacksWork(
   }
   return net::OK;
 }
+
+template int OnBeforeURLRequest_SiteHacksWork<std::shared_ptr>(
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeURLRequest_SiteHacksWork<base::WeakPtr>(
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
+
+template int OnBeforeStartTransaction_SiteHacksWork<std::shared_ptr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeStartTransaction_SiteHacksWork<base::WeakPtr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave
