@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_ENDPOINTS_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_ENDPOINTS_H_
 
+#include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/endpoint_client/brave_endpoint.h"
 #include "brave/components/endpoint_client/request_types.h"
 #include "brave/components/endpoint_client/response.h"
-#include "brave/components/email_aliases/email_aliases_api.h"
 
 namespace email_aliases::endpoints {
 
@@ -23,22 +23,19 @@ using GenerateAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
     endpoint_client::POST<GenerateAliasRequest>,
-    endpoint_client::Response<GenerateAliasResponse,
-                                             ErrorMessage>>;
+    endpoint_client::Response<GenerateAliasResponse, ErrorMessage>>;
 
 using UpdateAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
     endpoint_client::PUT<UpdateAliasRequest>,
-    endpoint_client::Response<AliasEditedResponse,
-                                             ErrorMessage>>;
+    endpoint_client::Response<AliasEditedResponse, ErrorMessage>>;
 
 using DeleteAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
     endpoint_client::DELETE<DeleteAliasRequest>,
-    endpoint_client::Response<AliasEditedResponse,
-                                             ErrorMessage>>;
+    endpoint_client::Response<AliasEditedResponse, ErrorMessage>>;
 
 }  // namespace email_aliases::endpoints
 
