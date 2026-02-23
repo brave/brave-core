@@ -64,7 +64,6 @@ BravePsstDialogUI::~BravePsstDialogUI() = default;
 
 void BravePsstDialogUI::BindInterface(
     mojo::PendingReceiver<psst::mojom::PsstConsentFactory> receiver) {
-
   psst_consent_factory_receiver_.reset();
   psst_consent_factory_receiver_.Bind(std::move(receiver));
 }

@@ -52,8 +52,8 @@ void CloseDialog(content::WebContents* initiator_contents) {
   manager->CloseAllDialogs();
 }
 
-base::WeakPtr<psst::PsstTabWebContentsObserver> GetActivePsstTabHelperFromContext(
-    content::WebContents* web_contents) {
+base::WeakPtr<psst::PsstTabWebContentsObserver>
+GetActivePsstTabHelperFromContext(content::WebContents* web_contents) {
   auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents);
   if (!tab_interface) {
     return nullptr;
@@ -66,14 +66,15 @@ base::WeakPtr<psst::PsstTabWebContentsObserver> GetActivePsstTabHelperFromContex
   }
 
   auto* tab_helper = brave_tab_features->psst_web_contents_observer();
-  if(!tab_helper) {
+  if (!tab_helper) {
     return nullptr;
   }
 
   return tab_helper->AsWeakPtr();
 }
 
-base::WeakPtr<PsstUiDelegateImpl> GetPsstUIDelegate(base::WeakPtr<psst::PsstTabWebContentsObserver> tab_helper) {
+base::WeakPtr<PsstUiDelegateImpl> GetPsstUIDelegate(
+    base::WeakPtr<psst::PsstTabWebContentsObserver> tab_helper) {
   if (!tab_helper) {
     return nullptr;
   }
@@ -110,7 +111,7 @@ BravePsstDialogHandler::BravePsstDialogHandler(
   }
 
   psst_dialog_delegate_ = GetPsstUIDelegate(active_tab_helper_);
-  if(!psst_dialog_delegate_) {
+  if (!psst_dialog_delegate_) {
     return;
   }
 
@@ -127,18 +128,18 @@ BravePsstDialogHandler::~BravePsstDialogHandler() = default;
 void BravePsstDialogHandler::OnSetRequestDone(
     const std::string& url,
     const std::optional<std::string>& error) {
-  if (!client_page_ || !client_page_.is_bound() || !client_page_.is_connected()) {
-LOG(INFO) << "[PSST] OnSetRequestDone FAILED for URL: " << url << " with error: " << (error ? *error : "none");
+  if (!client_page_ || !client_page_.is_bound() ||
+      !client_page_.is_connected()) {
     return;
   }
-LOG(INFO) << "[PSST] OnSetRequestDone called for URL: " << url << " with error: " << (error ? *error : "none");
   client_page_->OnSetRequestDone(url, error);
 }
 
 void BravePsstDialogHandler::OnSetCompleted(
     const std::optional<std::vector<std::string>>& applied_checks,
     const std::optional<std::vector<std::string>>& errors) {
-  if (!client_page_ || !client_page_.is_bound() || !client_page_.is_connected()) {
+  if (!client_page_ || !client_page_.is_bound() ||
+      !client_page_.is_connected()) {
     return;
   }
   client_page_->OnSetCompleted(applied_checks, errors);
@@ -157,7 +158,7 @@ void BravePsstDialogHandler::OnTabStripModelChanged(
   if (selection.new_contents) {
     active_tab_helper_ =
         GetActivePsstTabHelperFromContext(selection.new_contents);
-    if(!active_tab_helper_) {
+    if (!active_tab_helper_) {
       return;
     }
 
@@ -169,24 +170,19 @@ void BravePsstDialogHandler::OnTabStripModelChanged(
   }
 }
 
-void BravePsstDialogHandler::ApplyChanges(const std::string& site_name,
+void BravePsstDialogHandler::ApplyChanges(
+    const std::string& site_name,
     const std::vector<std::string>& selected_settings_list) {
-
   if (!psst_dialog_delegate_) {
     return;
   }
 
   base::ListValue list;
-  for(const auto& setting : selected_settings_list) {
+  for (const auto& setting : selected_settings_list) {
     list.Append(setting);
   }
-LOG(INFO) << "[PSST] ApplyChanges called for site: " << site_name 
-  << " url:" << GURL(site_name)
-  << " origin:" << url::Origin::Create(GURL(site_name)).Serialize()
-;
   psst_dialog_delegate_->OnUserAcceptedPsstSettings(
-      url::Origin::Create(GURL(site_name)),
-      std::move(list));
+      url::Origin::Create(GURL(site_name)), std::move(list));
 }
 
 void BravePsstDialogHandler::CloseDialog() {

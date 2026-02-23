@@ -44,7 +44,7 @@ class BravePsstDialogUI : public ui::MojoWebDialogUI,
       mojo::PendingReceiver<psst::mojom::PsstConsentFactory> receiver);
 
  private:
- friend class PsstTabWebContentsObserverBrowserTest;
+  friend class PsstTabWebContentsObserverBrowserTest;
   void CreatePsstConsentHandler(
       ::mojo::PendingReceiver<psst::mojom::PsstConsentHelper>
           psst_consent_helper,

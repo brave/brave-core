@@ -17,8 +17,7 @@ namespace psst {
 namespace {
 
 inline constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";
-inline constexpr char kUserScriptResultTaskItemDescPropName[] =
-"description";
+inline constexpr char kUserScriptResultTaskItemDescPropName[] = "description";
 
 std::vector<std::string> ListValueToStringVector(
     const base::ListValue& list_value) {
@@ -91,7 +90,7 @@ void PsstUiDelegateImpl::UpdateTasks(
     });
   }
 
-  if(status != mojom::PsstStatus::kCompleted) {
+  if (status != mojom::PsstStatus::kCompleted) {
     return;
   }
 
@@ -117,10 +116,6 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     const url::Origin& origin,
     base::ListValue urls_to_skip) {
-  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings called for origin: " << origin.GetURL() << " urls: " << urls_to_skip 
-    << " dialog_data_: " << (dialog_data_ ? dialog_data_->ToValue() : base::DictValue())
-    << " apply_changes_callback_:" << !apply_changes_callback_.is_null()
-    ;
   // Save the PSST settings when user accepts the dialog
   psst_settings_service_->SetPsstWebsiteSettings(
       origin, ConsentStatus::kAllow, dialog_data_->script_version,
@@ -144,7 +139,7 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
 }
 
 psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
-  if(!origin_ || !tasks_) {
+  if (!origin_ || !tasks_) {
     return nullptr;
   }
 
@@ -161,12 +156,13 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
         item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
 
     if (description && url) {
-      items.push_back(psst::mojom::SettingCardDataItem::New(
-          *description, *url));
+      items.push_back(
+          psst::mojom::SettingCardDataItem::New(*description, *url));
     }
   }
 
-  return psst::mojom::SettingCardData::New(origin_->GetURL().spec(), std::move(items));
+  return psst::mojom::SettingCardData::New(origin_->GetURL().spec(),
+                                           std::move(items));
 }
 
 base::WeakPtr<PsstUiDelegateImpl> PsstUiDelegateImpl::AsWeakPtr() {

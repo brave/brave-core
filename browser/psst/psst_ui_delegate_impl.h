@@ -41,7 +41,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   bool HasObserver(Observer* observer);
 
   base::WeakPtr<PsstUiDelegateImpl> AsWeakPtr();
-  
+
   using ConsentCallback =
       base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
 

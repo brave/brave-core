@@ -73,6 +73,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstUiDelegate* GetPsstUiDelegate() const;
 
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
+
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
@@ -93,7 +94,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                       const std::string& script,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
-  void MaybeGetPolicyScriptResult(const int id, std::optional<int> retry_counter, const base::DictValue& script_result);
+  void MaybeGetPolicyScriptResult(const int id,
+                                  std::optional<int> retry_counter,
+                                  const base::DictValue& script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;

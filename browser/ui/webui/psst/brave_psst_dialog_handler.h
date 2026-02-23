@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_CONSENT_HELPER_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_CONSENT_HELPER_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_HANDLER_H_
 
 #include <string>
 #include <vector>
@@ -23,8 +23,8 @@ class BravePsstDialogUI;
 class PsstTabWebContentsObserver;
 
 class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
-                                      public PsstUiDelegateImpl::Observer,
-                                      public TabStripModelObserver {
+                               public PsstUiDelegateImpl::Observer,
+                               public TabStripModelObserver {
  public:
   explicit BravePsstDialogHandler(
       TabStripModel* tab_strip_model,
@@ -34,14 +34,14 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
   BravePsstDialogHandler() = delete;
   BravePsstDialogHandler(const BravePsstDialogHandler&) = delete;
-  BravePsstDialogHandler& operator=(
-      const BravePsstDialogHandler&) = delete;
+  BravePsstDialogHandler& operator=(const BravePsstDialogHandler&) = delete;
 
   ~BravePsstDialogHandler() override;
 
  private:
- friend class PsstTabWebContentsObserverBrowserTest;
-  void ApplyChanges(const std::string& site_name,
+  friend class PsstTabWebContentsObserverBrowserTest;
+  void ApplyChanges(
+      const std::string& site_name,
       const std::vector<std::string>& selected_settings_list) override;
   void CloseDialog() override;
 
@@ -66,4 +66,4 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
 }  // namespace psst
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_CONSENT_HELPER_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_HANDLER_H_

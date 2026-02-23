@@ -56,14 +56,11 @@ const char kPolicyScriptResultNextUrlPropName[] = "next_url";
 const char kGetPolicyScriptResultRetryCounter[] = "retry_counter";
 const char kGetPolicyScriptResultScript[] = R"(
 (() => {
- console.log('[PSST] kGetPolicyScriptResultScript started key: psst_settings_status_$1')
  const data = window.parent.localStorage.getItem("psst_settings_status_$1")
   if (data !== null) {
-  console.log(`[PSST] kGetPolicyScriptResultScript found data for key: psst_settings_status_$1 data: ${JSON.stringify(data)}`);
     window.parent.localStorage.removeItem("psst_settings_status_$1");
     return JSON.parse(data)
   } else {
-   console.log("[PSST] kGetPolicyScriptResultScript key not found. key: psst_settings_status_$1")
     return { retry_counter: $2 }
   }
 })()
@@ -196,7 +193,8 @@ PsstTabWebContentsObserver::GetPsstUiDelegate() const {
   return ui_delegate_.get();
 }
 
-base::WeakPtr<PsstTabWebContentsObserver> PsstTabWebContentsObserver::AsWeakPtr() {
+base::WeakPtr<PsstTabWebContentsObserver>
+PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
@@ -206,14 +204,8 @@ void PsstTabWebContentsObserver::NavigationEntryCommitted(
   if (!load_details.is_navigation_to_different_page() ||
       !load_details.entry->GetURL().SchemeIsHTTPOrHTTPS() ||
       load_details.entry->IsRestored()) {
-  LOG(INFO) << "[PSST] NavigationEntryCommitted skipped URL: " << load_details.entry->GetURL() 
-    << " is_navigation_to_different_page:" << load_details.is_navigation_to_different_page()
-    << " is_restored:" << load_details.entry->IsRestored()
-    << " scheme:" << load_details.entry->GetURL().scheme()
-    ;
     return;
   }
-  LOG(INFO) << "[PSST] NavigationEntryCommitted called for URL: " << load_details.entry->GetURL();
 
   load_details.entry->SetUserData(
       kShouldProcessKey,
@@ -227,7 +219,6 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
     return;
   }
 
-  LOG(INFO) << "[PSST] DocumentOnLoadCompletedInPrimaryMainFrame called id: " << id << " url:" << web_contents()->GetLastCommittedURL();
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
@@ -263,15 +254,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   timeout_timer_.Stop();
 
-  LOG(INFO) << "[PSST] OnUserScriptResult called for id: " << id << " user_script_result:" << user_script_result.DebugString();
-
   // We should break the flow in case of policy script is not available or user
   // script result is not a dictionary
   if (!rule || rule->policy_script().empty() || !user_script_result.is_dict()) {
-    LOG(INFO) << "[PSST] OnUserScriptResult #100 for id: " << id 
-      << " user_script_result:" << user_script_result.DebugString()
-      << " rule:" << (rule ? rule->policy_script().empty() : false)
-      ;
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
@@ -280,64 +265,36 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   // We should break the flow in case of signed-in user ID is not available
   if (!user_id || user_id->empty()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
-    LOG(INFO) << "[PSST] OnUserScriptResult #101 for id: " << id 
-      << " user_id:" << (user_id ? *user_id : "null");
     return;
   }
 
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
       url::Origin::Create(web_contents()->GetLastCommittedURL()), *user_id);
-  LOG_IF(INFO, !psst_settings) << "[PSST] OnUserScriptResult #101 for id: " << id
-      << " origin:" << url::Origin::Create(web_contents()->GetLastCommittedURL())
-      << " user_id:" << *user_id;
   if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
-    LOG(INFO) << "[PSST] OnUserScriptResult #102 for id: " << id 
-      << " user_id:" << *user_id
-      << " consent_status: kBlock";
     return;
   }
 
   const auto* tasks = params.FindList(kUserScriptResultTasksPropName);
   if (!tasks || tasks->empty()) {
-    LOG(INFO) << "[PSST] OnUserScriptResult #103 for id: " << id 
-      << " user_id:" << *user_id
-      << " tasks: empty";
     return;
   }
 
   const auto* site_name = params.FindString(kUserScriptResultSiteNamePropName);
   if (!site_name) {
-    LOG(INFO) << "[PSST] OnUserScriptResult #104 for id: " << id 
-      << " user_id:" << *user_id
-      << " site_name: null";
     return;
   }
 
   const auto is_initial = params.FindBool(kUserScriptIsInitialPropName);
-  LOG(INFO) << "[PSST] test val:" << ((!is_initial || !is_initial.value()) && psst_settings &&
-      psst_settings->consent_status == ConsentStatus::kAllow)
-      << " is_initial:" << (is_initial.has_value() ? (is_initial.value() ? "true" : "false") : "null")
-      << " psst_settings:" << (psst_settings ? psst_settings->ToValue() : base::DictValue())
-      ;
   if ((!is_initial || !is_initial.value()) && psst_settings &&
       psst_settings->consent_status == ConsentStatus::kAllow) {
-    // If permission is granted and it is not the initial iteration (i.e. it is
-    // not the first applied PSST setting), call we don't need to show the
-    // dialog again.
-    LOG(INFO) << "[PSST] OnUserScriptResult #105 for id: " << id 
-      << " user_id:" << *user_id
-      << " is_initial: false"
-      << " consent_status: kAllow";
+    // If user accepted the consent dialog and it is not the initial iteration
+    // (i.e. it is not the first applied PSST setting), call we don't need to
+    // show the dialog again.
     OnUserAcceptedPsstSettings(id, false, std::move(rule), params.Clone(),
                                psst_settings->urls_to_skip);
     return;
   }
 
-  LOG(INFO) << "[PSST] OnUserScriptResult show UI for id: " << id 
-    << " user_id:" << *user_id
-    << " is_initial:" << (is_initial.has_value() ? is_initial.value() : false)
-    << " psst_settings:" << (psst_settings ? psst_settings->ToValue() : base::DictValue())
-    ;
   // If PSST websettings doesn't exist, means initial call
   if (!psst_settings) {
     psst_settings = CreatePsstWebsiteSettings(*user_id, ConsentStatus::kAsk,
@@ -358,23 +315,12 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
     std::unique_ptr<MatchedRule> rule,
     std::optional<base::DictValue> script_params,
     const std::vector<std::string>& disabled_checks) {
-  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings 100 called for id: " << id ;    
   if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
 
-  LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings 200 called for id: " << id 
-    << " is_initial:" << is_initial
-    << " script_params: " << (script_params ? script_params->DebugString() : "null") 
-    << " disabled_checks: " << (disabled_checks.empty() ? "none" : base::JoinString(disabled_checks, ","))
-    ;
-
   PrepareParametersForPolicyExecution(id, script_params, disabled_checks,
                                       is_initial);
-
-LOG(INFO) << "[PSST] OnUserAcceptedPsstSettings preparing to run policy script for id: " << id
-    << " script_params: " << (script_params ? script_params->DebugString() : "null")
-;
 
   const auto policy_script = rule->policy_script();
   RunWithTimeout(
@@ -387,16 +333,15 @@ void PsstTabWebContentsObserver::MaybeGetPolicyScriptResult(
     const int id,
     std::optional<int> retry_counter,
     const base::DictValue& script_result) {
-
-  if(retry_counter.has_value() && retry_counter <= 0) {
-    LOG(INFO) << "[PSST] OnPolicyScriptResult retry counter exhausted for id: " << id;
+  if (retry_counter.has_value() && retry_counter <= 0) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
-  const int retry_counter_value = script_result.empty() ? kRetryCounterDefault : (retry_counter.value() - 1);
+  const int retry_counter_value = script_result.empty()
+                                      ? kRetryCounterDefault
+                                      : (retry_counter.value() - 1);
 
-  LOG(INFO) << "[PSST] MaybeGetPolicyScriptResult called for id: " << id << " retry_counter: " << retry_counter_value;
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(
@@ -415,16 +360,13 @@ void PsstTabWebContentsObserver::MaybeGetPolicyScriptResult(
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
     const int id,
     base::Value script_result) {
-LOG(INFO) << "[PSST] OnPolicyScriptResult for id: " << id << " script_result: " << script_result.DebugString();
   if (!ShouldInsertScriptForPage(id)) {
-    LOG(INFO) << "[PSST] OnPolicyScriptResult skipped for id: " << id;
     return;
   }
 
   timeout_timer_.Stop();
 
-  if(!script_result.is_dict()) {
-    LOG(INFO) << "[PSST] OnPolicyScriptResult failed for id: " << id << " script_result is not a dictionary";
+  if (!script_result.is_dict()) {
     return;
   }
 
@@ -435,50 +377,39 @@ LOG(INFO) << "[PSST] OnPolicyScriptResult for id: " << id << " script_result: " 
   const auto retry_counter =
       script_result_dict.FindInt(kGetPolicyScriptResultRetryCounter);
   if (script_result_dict.empty() || retry_counter.has_value()) {
-    LOG(INFO)
-        << "[PSST] OnPolicyScriptResult detected async script result for id: "
-        << id << " script_result_dict.empty():" << script_result_dict.empty()
-        << " retry_counter:"
-        << (retry_counter.has_value() ? std::to_string(retry_counter.value())
-                                      : "none");
     MaybeGetPolicyScriptResult(id, retry_counter, script_result_dict);
     return;
   }
 
-  const auto* psst = script_result_dict.FindDict(kPolicyScriptResultPsstPropName);
-  if(!psst) {
+  const auto* psst =
+      script_result_dict.FindDict(kPolicyScriptResultPsstPropName);
+  if (!psst) {
     return;
   }
 
-  const auto is_done = script_result_dict.FindBool(kPolicyScriptResultIsDonePropName);
+  const auto is_done =
+      script_result_dict.FindBool(kPolicyScriptResultIsDonePropName);
   if (!is_done.has_value()) {
     return;
   }
 
-  LOG(INFO) << "[PSST] OnPolicyScriptResult called for id: " << id
-    << " \nscript_result: " << script_result.DebugString()
-    ;
-  const auto script_result_parsed =
-      PolicyScriptResult::FromValue(*psst);
+  const auto script_result_parsed = PolicyScriptResult::FromValue(*psst);
   if (!script_result_parsed) {
-    LOG(INFO) << "[PSST] OnPolicyScriptResult failed for id: " << id;
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
-  LOG(INFO) << "[PSST] OnPolicyScriptResult succeeded for id: " << id << " \nscript_result_parsed:" << script_result_parsed->ToValue().DebugString();
-  ui_delegate_->UpdateTasks(
-      script_result_parsed->progress, script_result_parsed->applied_tasks,
-      is_done.value() ? mojom::PsstStatus::kCompleted
+  ui_delegate_->UpdateTasks(script_result_parsed->progress,
+                            script_result_parsed->applied_tasks,
+                            is_done.value() ? mojom::PsstStatus::kCompleted
                                             : mojom::PsstStatus::kInProgress);
 
-  const auto* next_url = script_result_dict.FindString(kPolicyScriptResultNextUrlPropName);
-  if(next_url && !next_url->empty()) {
+  const auto* next_url =
+      script_result_dict.FindString(kPolicyScriptResultNextUrlPropName);
+  if (next_url && !next_url->empty()) {
     // Go to next URL
     web_contents()->GetController().LoadURL(
-        GURL(*next_url),
-        content::Referrer(),
-        ui::PAGE_TRANSITION_LINK,
+        GURL(*next_url), content::Referrer(), ui::PAGE_TRANSITION_LINK,
         std::string());
   }
 }
