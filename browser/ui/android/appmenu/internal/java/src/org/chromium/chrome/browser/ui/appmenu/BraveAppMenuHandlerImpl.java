@@ -14,7 +14,6 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.ui.base.WindowAndroid;
-import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController.SubmenuHeaderFactory;
 
 import java.util.function.Supplier;
 
@@ -40,7 +39,7 @@ class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
             Supplier<Rect> appRect,
             WindowAndroid windowAndroid,
             BrowserControlsStateProvider browserControlsStateProvider,
-            SubmenuHeaderFactory submenuHeaderFactory) {
+            int submenuHeaderMenuId) {
         super(
                 context,
                 delegate,
@@ -51,7 +50,7 @@ class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
                 appRect,
                 windowAndroid,
                 browserControlsStateProvider,
-                submenuHeaderFactory);
+                submenuHeaderMenuId);
     }
 
     @Override
