@@ -22,6 +22,7 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/brave_user_agent_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
+#include "brave/browser/net/serp_metrics_network_delegate_helper.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -119,6 +120,10 @@ void BraveRequestHandler<T>::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader<T>);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+  start_transaction_callback =
+      base::BindRepeating(brave::OnBeforeStartTransaction_SerpMetricsWork<T>);
+  before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveAdblockCspRules)) {

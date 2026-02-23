@@ -11,6 +11,8 @@ namespace serp_metrics {
 enum class SerpMetricType {
   kBrave,
   kGoogle,
+  kChatGPT,
+  kPerplexity,
   kOther,
 };
 

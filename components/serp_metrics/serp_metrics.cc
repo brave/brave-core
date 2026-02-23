@@ -29,6 +29,9 @@ constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
     {.type = SerpMetricType::kBrave, .dict_key = "brave_search_engine"},
     {.type = SerpMetricType::kGoogle, .dict_key = "google_search_engine"},
     {.type = SerpMetricType::kOther, .dict_key = "other_search_engine"},
+    {.type = SerpMetricType::kChatGPT, .dict_key = "chatgpt_search_engine"},
+    {.type = SerpMetricType::kPerplexity,
+     .dict_key = "perplexity_search_engine"},
 };
 
 base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
