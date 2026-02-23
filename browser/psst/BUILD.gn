@@ -29,6 +29,11 @@ static_library("psst") {
     "//chrome/browser/profiles",
     "//components/content_settings/core/browser",
     "//components/permissions",
+    "//components/infobars/core",
+    "//chrome/browser/infobars",
+    "//chrome/browser/ui/webui",
+    "//components/infobars/content",
+    "//ui/web_dialogs",
   ]
 }
 
@@ -70,6 +75,8 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//net:test_support",
     "//url",
+    "//brave/browser/psst",
+    "//components/infobars/content",
   ]
 
   if (is_android) {

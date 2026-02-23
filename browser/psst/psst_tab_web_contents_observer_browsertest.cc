@@ -9,14 +9,11 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
-#include "base/task/task_observer.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -30,7 +27,6 @@
 #include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/infobars/test_support/infobar_observer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -40,8 +36,8 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
-#include "components/web_modal/web_contents_modal_dialog_host.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/test/browser_test.h"
@@ -398,13 +394,13 @@ class DialogCloseObserver : public content::WebContentsObserver {
   explicit DialogCloseObserver(content::WebContents* web_contents)
       : content::WebContentsObserver(web_contents) {}
 
-  void WebContentsDestroyed() override { run_loop_.Quit(); }
-
-  void Wait() {
-    if (web_contents()) {
-      run_loop_.Run();
+  void OnVisibilityChanged(content::Visibility visibility) override {
+    if (visibility == content::Visibility::HIDDEN) {
+      run_loop_.Quit();
     }
   }
+
+  void Wait() { run_loop_.Run(); }
 
  private:
   base::RunLoop run_loop_;
@@ -483,7 +479,6 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     // Ensure all pending tasks are completed before teardown
     psst_settings_service_ = nullptr;
     profile_ = nullptr;
-    base::RunLoop().RunUntilIdle();
     PlatformBrowserTest::TearDownOnMainThread();
   }
 
@@ -624,9 +619,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
-  base::RunLoop().RunUntilIdle();
   confirm_delegate->Accept();
-  base::RunLoop().RunUntilIdle();
 
   auto* wc = WaitForAndGetDialogWebContents();
   ASSERT_TRUE(wc);
@@ -687,9 +680,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
-  base::RunLoop().RunUntilIdle();
   confirm_delegate->Accept();
-  base::RunLoop().RunUntilIdle();
 
   auto* dialog_wc = WaitForAndGetDialogWebContents();
   ASSERT_TRUE(dialog_wc);
