@@ -39,9 +39,11 @@ static_library("browser") {
 
 source_set("unit_tests") {
   testonly = true
+
   sources = [
     "backup_results_allowed_urls_unittest.cc",
     "backup_results_metrics_unittest.cc",
+    "brave_search_fallback_host_unittest.cc",
   ]
 
   deps = [
