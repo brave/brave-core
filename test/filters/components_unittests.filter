@@ -9,6 +9,7 @@
 # LUCI Analysis. Already disabled on Android upstream. DCHECK failure in
 # MockResultQueue::NextOperationResult due to mock result queue race condition.
 -All/SharedStorageManagerErrorParamTest.InitFailure_DestroyAndRecreateDatabase/FileBacked
+-All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/FileBacked
 
 # These tests fail because we override Prefetch methods to do nothing.
 -AffiliationServiceImplTest.*
