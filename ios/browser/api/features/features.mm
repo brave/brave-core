@@ -34,6 +34,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #endif
 
 @interface Feature () {
@@ -257,7 +258,7 @@
   return nil;
 }
 
-+ (Feature*)kBraveWalletCardanoEnabled {
++ (nullable Feature*)kBraveWalletCardanoEnabled {
   return nil;
 }
 #endif
@@ -367,8 +368,16 @@
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletWebUIFeature];
 }
++ (Feature*)kBraveWalletCardanoDAppSupportIOS {
+  return
+      [[Feature alloc] initWithFeature:&brave_wallet::features::
+                                           kBraveWalletCardanoDAppSupportIOS];
+}
 #else
 + (nullable Feature*)kBraveWalletWebUIIOS {
+  return nil;
+}
++ (nullable Feature*)kBraveCardanoDAppSupportIOS {
   return nil;
 }
 #endif

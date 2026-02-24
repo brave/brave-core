@@ -26,6 +26,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -235,14 +236,24 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),     \
       })
 
-#define BRAVE_WALLET_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES({                                                  \
-      "brave-wallet-webui-ios",                                             \
-      "Enable WebUI for Brave Wallet iOS",                                  \
-      "Enables WebUI for Brave Wallet",                                     \
-      flags_ui::kOsIos,                                                     \
-      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletWebUIFeature), \
-  })
+#define BRAVE_WALLET_FEATURE_ENTRIES                                      \
+  EXPAND_FEATURE_ENTRIES(                                                 \
+      {                                                                   \
+          "brave-wallet-webui-ios",                                       \
+          "Enable WebUI for Brave Wallet iOS",                            \
+          "Enables WebUI for Brave Wallet",                               \
+          flags_ui::kOsIos,                                               \
+          FEATURE_VALUE_TYPE(                                             \
+              brave_wallet::features::kBraveWalletWebUIFeature),          \
+      },                                                                  \
+      {                                                                   \
+          "brave-wallet-cardano-dapp-support-ios",                        \
+          "Enable Cardano dApp Support for Brave Wallet(WebUI) iOS",      \
+          "Enables Cardano dApp Support for Brave Wallet(WebUI)",         \
+          flags_ui::kOsIos,                                               \
+          FEATURE_VALUE_TYPE(                                             \
+              brave_wallet::features::kBraveWalletCardanoDAppSupportIOS), \
+      })
 #else
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
 #define BRAVE_WALLET_FEATURE_ENTRIES
