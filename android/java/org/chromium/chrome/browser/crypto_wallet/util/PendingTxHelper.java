@@ -75,6 +75,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
             mTxServiceObserver.destroy();
             mTxServiceObserver = null;
         }
+        mTxService = null;
     }
 
     public HashMap<String, TransactionInfo[]> getTransactions() {
@@ -82,6 +83,10 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     }
 
     public void fetchTransactions() {
+        // mTxService can be null if destroy() was called or the Mojo connection died.
+        // Safe to skip — no UI is observing this helper, and a fresh instance will be
+        // created with a valid service when the user reopens the wallet.
+        if (mTxService == null) return;
         isFetchingTx = true;
         mTransactionInfos.clear();
         mCacheTransactionInfos.clear();
