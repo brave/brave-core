@@ -5,6 +5,7 @@
 
 'use strict'
 
+const os = require('os')
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
@@ -94,6 +95,18 @@ const getHostOS = () => {
     default:
       throw new Error(`Unsupported process.platform: ${process.platform}`)
   }
+}
+
+// Mirrors limitForRemote() from siso source to apply a hard limit.
+// https://source.chromium.org/chromium/build/+/main:siso/build/limits.go;l=169-181;drc=c2c13435ffe51d890a46d488c48dee362f82453b
+const getSisoBuiltinRemoteLimit = () => {
+  const kRemoteLimitFactor = 80
+  const kReproxyLimitCap = 5000
+  const limit = kRemoteLimitFactor * os.cpus().length
+  if (process.platform === 'darwin' && process.arch === 'x64') {
+    return Math.min(1000, limit)
+  }
+  return Math.min(kReproxyLimitCap, limit)
 }
 
 const Config = function () {
@@ -1101,8 +1114,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     if (this.useRemoteExec) {
       // Restrict remote execution jobs to x1.2 of available executors. This is
       // a slight overprovisioning to ensure that network latency does not cause
-      // remote execution starvation.
-      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 720)
+      // remote execution starvation. Apply siso hard limit to avoid overloading
+      // low-CPU machines.
+      const kExecutorCount = 1200
+      const kRemoteLimit = Math.min(
+        getEnvConfig(['rbe_jobs_limit'], kExecutorCount * 1.2),
+        getSisoBuiltinRemoteLimit(),
+      )
 
       // Prevent depot_tools from setting lower timeouts.
       const kRbeTimeout = '10m'
