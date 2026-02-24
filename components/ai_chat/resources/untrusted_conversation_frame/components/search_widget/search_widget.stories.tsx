@@ -22,3 +22,11 @@ export const Default: Story = {
     results: Array.from(searchResults) as any,
   },
 }
+
+export const Placeholder: Story = {
+  args: {
+    query: 'Approach shoes',
+    type: 'web',
+    results: [],
+  },
+}
