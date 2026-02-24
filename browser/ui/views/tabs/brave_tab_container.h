@@ -19,6 +19,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/controls/scrollbar/scroll_bar.h"
+#include "ui/views/layout/layout_types.h"
 
 namespace views {
 class ScrollView;
@@ -111,6 +112,19 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarVisibilityWithManyTabs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            RichAnimationIsDisabled);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           GetScrollDirectionIsHorizontal);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           MaxScrollOffsetZeroWithFewTabs);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           MaxScrollOffsetPositiveWithManyTabs);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           ActiveTabScrollsIntoViewWhenSelectingLast);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           ScrollOffsetClampedWhenTabRemoved);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           MaxScrollOffsetZeroWithPinnedAndUnpinnedTab);
+
   class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
@@ -170,6 +184,11 @@ class BraveTabContainer : public TabContainerImpl,
   // visible rect of unpinned tabs.
   int GetPinnedTabsAreaBottom() const;
 
+  // Returns the boundary coordinate of the pinned tabs area. For vertical tabs,
+  // returns the bottom (y-coordinate). For horizontal tabs, returns the right
+  // (x-coordinate). This represents where unpinned tabs begin.
+  int GetPinnedTabsAreaBoundary() const;
+
   // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
   // a layout.
   void SetScrollOffset(int offset);
@@ -192,12 +211,23 @@ class BraveTabContainer : public TabContainerImpl,
   // This excludes the pinned tabs area if any pinned tabs exist.
   int GetUnpinnedTabsViewportHeight() const;
 
+  // Returns the total size (height for vertical, width for horizontal) of
+  // unpinned tabs including margins.
+  int GetUnpinnedTabsTotalSize() const;
+
+  // Returns the viewport size (height for vertical, width for horizontal)
+  // available for unpinned tabs. This excludes the pinned tabs area if any
+  // pinned tabs exist.
+  int GetUnpinnedTabsViewportSize() const;
+
   // Clamp the current scroll_offset_ within valid range.
   void ClampScrollOffset();
 
   // Used to sets the clip path for child views (tabs, group views and etc).
+  // For vertical tabs, pinned_tabs_area_boundary is the bottom y-coordinate.
+  // For horizontal tabs, pinned_tabs_area_boundary is the right x-coordinate.
   void UpdateClipPathForChildren(views::View* view,
-                                 int pinned_tabs_area_bottom);
+                                 int pinned_tabs_area_boundary);
 
   // Updates clip path for all slot views (tabs and group views) based on
   // scroll_offset.
@@ -215,9 +245,14 @@ class BraveTabContainer : public TabContainerImpl,
   // Update the scroll bar's content size, viewport size and offset.
   void UpdateScrollBarState();
 
-  // Handles vertical scroll input for unpinned tabs. Returns true if the scroll
-  // was handled.
-  bool HandleVerticalScroll(int y_offset);
+  // Handles scroll input for unpinned tabs. Returns true if the scroll
+  // was handled. The scroll direction is determined automatically based on
+  // the current tab strip orientation.
+  bool HandleScroll(int offset);
+
+  // Returns the scroll direction if scrolling is enabled. Returns nullopt if
+  // browser is null or scrolling is not enabled.
+  std::optional<views::LayoutOrientation> GetScrollDirection() const;
 
   // Updates the separator visibility and position between pinned and unpinned
   // tabs.
@@ -249,8 +284,9 @@ class BraveTabContainer : public TabContainerImpl,
   // Size we last laid out at.
   std::optional<gfx::Size> last_layout_size_;
 
-  // Manual vertical scroll offset for unpinned tabs. Do not manupulate this
-  // value directly. Use SetScrollOffset() instead.
+  // Manual scroll offset for unpinned tabs. For vertical tabs, this is the
+  // y-axis offset. For horizontal tabs, this is the x-axis offset.
+  // Do not manipulate this value directly. Use SetScrollOffset() instead.
   int scroll_offset_ = 0;
 
   // Separator view between pinned and unpinned tabs

@@ -50,6 +50,7 @@ class BraveTab : public Tab {
                                    int visual_width) const override;
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
+  TabSizeInfo GetTabSizeInfo() const override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;

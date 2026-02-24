@@ -61,6 +61,24 @@ using BrowserRootView::DropIndex::GroupInclusion::kIncludeInGroup;
 using BrowserRootView::DropIndex::RelativeToIndex::kInsertBeforeIndex;
 using BrowserRootView::DropIndex::RelativeToIndex::kReplaceIndex;
 
+namespace {
+
+// Calculates the scroll offset for horizontal tabs from both horizontal and
+// vertical scroll events. Prioritizes horizontal scroll, falls back to
+// vertical scroll.
+template <class EventType>
+int CalculateScrollOffset(const EventType& event,
+                          views::LayoutOrientation scroll_direction) {
+  if (scroll_direction == views::LayoutOrientation::kHorizontal &&
+      event.x_offset() != 0) {
+    return event.x_offset();
+  }
+
+  return event.y_offset();
+}
+
+}  // namespace
+
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
@@ -244,7 +262,8 @@ void BraveTabContainer::EnterTabClosingMode(std::optional<int> override_width,
 }
 
 bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
-  if (ShouldShowVerticalTabs()) {
+  auto scroll_direction = GetScrollDirection();
+  if (scroll_direction == views::LayoutOrientation::kVertical) {
     // Dragging or detached tabs should always be visible regardless of pinned
     // state.
     if (tab->dragging() || tab->detached()) {
@@ -263,6 +282,18 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
       const auto tab_bottom =
           tabs_view_model_.ideal_bounds(*tab_index).bottom();
       return tab_bottom > GetPinnedTabsAreaBottom();
+    }
+  } else if (scroll_direction == views::LayoutOrientation::kHorizontal) {
+    if (tab->data().pinned || tab->dragging()) {
+      return TabContainerImpl::ShouldTabBeVisible(tab);
+    }
+
+    if (auto tab_index = tabs_view_model_.GetIndexOfView(tab)) {
+      // Show unpinned tabs only if they are within unpinned tab area.
+      // If tabs are fully occluded by pinned tabs area, we should hide the
+      // tabs.
+      return tabs_view_model_.ideal_bounds(*tab_index).right() >
+             GetPinnedTabsAreaBoundary();
     }
   }
 
@@ -363,7 +394,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 }
 
 void BraveTabContainer::OnBoundsChanged(const gfx::Rect& previous_bounds) {
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     TabContainerImpl::OnBoundsChanged(previous_bounds);
     return;
   }
@@ -487,7 +518,7 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
     return;
   }
 
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     last_layout_size_ = size();
   }
 
@@ -558,7 +589,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
 
   TabContainerImpl::SetTabSlotVisibility();
 
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     // Even though TabContainerImpl::SetTabSlotVisibility() already updates the
     // bounds of the group views for certain cases, we need to update them again
     // https://github.com/brave/brave-browser/issues/51786#issuecomment-3716778522
@@ -569,7 +600,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
 }
 
 void BraveTabContainer::InvalidateIdealBounds() {
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     last_layout_size_ = std::nullopt;
   }
 
@@ -578,13 +609,14 @@ void BraveTabContainer::InvalidateIdealBounds() {
 }
 
 void BraveTabContainer::Layout(PassKey) {
-  if (!ShouldShowVerticalTabs()) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     LayoutSuperclass<TabContainerImpl>(this);
     return;
   }
 
   // We don't need to layout if the height is 0 as it's invisible.
-  if (!height()) {
+  if (scroll_direction == views::LayoutOrientation::kVertical && !height()) {
     return;
   }
 
@@ -606,7 +638,12 @@ void BraveTabContainer::Layout(PassKey) {
 }
 
 void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
-  if (!ShouldShowVerticalTabs() || tab->data().pinned) {
+  if (tab->data().pinned) {
+    return;
+  }
+
+  auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction.has_value()) {
     return;
   }
 
@@ -614,34 +651,62 @@ void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
   CHECK(tab_index);
 
   const gfx::Rect tab_ideal_bounds = tabs_view_model_.ideal_bounds(*tab_index);
+  const int pinned_tabs_area_boundary = GetPinnedTabsAreaBoundary();
 
-  const int tab_top = tab_ideal_bounds.y();
-  const int visible_area_top = GetPinnedTabsAreaBottom();
+  if (scroll_direction == views::LayoutOrientation::kVertical) {
+    const int tab_top = tab_ideal_bounds.y();
+    const int visible_area_top = pinned_tabs_area_boundary;
 
-  if (tab_top < visible_area_top) {
-    // Make new tab top to be the tabs::kMarginForVerticalTabContainers below
-    // pinned tabs area.
-    auto new_offset = scroll_offset_ - (visible_area_top - tab_top) -
-                      tabs::kMarginForVerticalTabContainers;
-    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
-    SetScrollOffset(new_offset);
-    return;
-  }
+    if (tab_top < visible_area_top) {
+      // Make new tab top to be the tabs::kMarginForVerticalTabContainers below
+      // pinned tabs area.
+      auto new_offset = scroll_offset_ - (visible_area_top - tab_top) -
+                        tabs::kMarginForVerticalTabContainers;
+      new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+      SetScrollOffset(new_offset);
+      return;
+    }
 
-  const int tab_bottom = tab_ideal_bounds.bottom();
-  const int visible_area_bottom = height();
-  if (tab_bottom > visible_area_bottom) {
-    // Make bottom of the tab be at the bottom of visible area bottom padded by
-    // tabs::kMarginForVerticalTabContainers.
-    auto new_offset = scroll_offset_ + (tab_bottom - visible_area_bottom) +
-                      tabs::kMarginForVerticalTabContainers;
-    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
-    SetScrollOffset(new_offset);
-    return;
+    const int tab_bottom = tab_ideal_bounds.bottom();
+    const int visible_area_bottom = height();
+    if (tab_bottom > visible_area_bottom) {
+      // Make bottom of the tab be at the bottom of visible area bottom padded
+      // by tabs::kMarginForVerticalTabContainers.
+      auto new_offset = scroll_offset_ + (tab_bottom - visible_area_bottom) +
+                        tabs::kMarginForVerticalTabContainers;
+      new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+      SetScrollOffset(new_offset);
+      return;
+    }
+  } else {
+    const int tab_left = tab_ideal_bounds.x();
+    const int visible_area_left = pinned_tabs_area_boundary;
+
+    if (tab_left < visible_area_left) {
+      // Make tab left to be the the right of pinned tabs area.
+      auto new_offset = scroll_offset_ - (visible_area_left - tab_left);
+      new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+      SetScrollOffset(new_offset);
+      return;
+    }
+
+    const int tab_right = tab_ideal_bounds.right();
+    const int visible_area_right = width();
+    if (tab_right > visible_area_right) {
+      // Make right of the tab be at the right of visible area
+      auto new_offset = scroll_offset_ + (tab_right - visible_area_right);
+      new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+      SetScrollOffset(new_offset);
+      return;
+    }
   }
 }
 
 void BraveTabContainer::UpdateScrollBarVisibility() {
+  if (!scroll_bar_) {
+    return;
+  }
+
   const auto scroll_bar_mode = GetScrollBarMode();
   const bool should_show_scroll_bar =
       scroll_bar_mode == views::ScrollView::ScrollBarMode::kEnabled &&
@@ -663,12 +728,18 @@ void BraveTabContainer::UpdateScrollBarVisibility() {
 }
 
 void BraveTabContainer::UpdateScrollBarBounds() {
-  const int pinned_tabs_area_bottom = GetPinnedTabsAreaBottom();
-  if (scroll_bar_->GetVisible()) {
-    scroll_bar_->SetBounds(width() - scroll_bar_->GetThickness(),
-                           pinned_tabs_area_bottom, scroll_bar_->GetThickness(),
-                           height() - pinned_tabs_area_bottom);
+  if (!scroll_bar_ || !scroll_bar_->GetVisible()) {
+    return;
   }
+
+  CHECK_EQ(*GetScrollDirection(), views::LayoutOrientation::kVertical);
+
+  const int pinned_tabs_area_boundary = GetPinnedTabsAreaBoundary();
+
+  // Vertical scrollbar on the right side
+  scroll_bar_->SetBounds(width() - scroll_bar_->GetThickness(),
+                         pinned_tabs_area_boundary, scroll_bar_->GetThickness(),
+                         height() - pinned_tabs_area_boundary);
 
   UpdateScrollBarState();
 
@@ -678,6 +749,10 @@ void BraveTabContainer::UpdateScrollBarBounds() {
 }
 
 void BraveTabContainer::UpdateScrollBarState() {
+  if (!scroll_bar_) {
+    return;
+  }
+
   if (scroll_bar_->GetVisible()) {
     scroll_bar_->Update(GetUnpinnedTabsViewportHeight(),
                         GetUnpinnedTabsTotalHeight(), scroll_offset_);
@@ -690,15 +765,34 @@ void BraveTabContainer::UpdateScrollBarState() {
   }
 }
 
-bool BraveTabContainer::HandleVerticalScroll(int y_offset) {
-  if (ShouldShowVerticalTabs() && y_offset != 0) {
-    // Only handle vertical scroll
-    int new_offset = scroll_offset_ - y_offset;
-    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
-    SetScrollOffset(new_offset);
-    return true;
+bool BraveTabContainer::HandleScroll(int offset) {
+  if (offset == 0) {
+    return false;
   }
-  return false;
+
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction.has_value()) {
+    return false;
+  }
+
+  // Apply the scroll offset
+  int new_offset = scroll_offset_ - offset;
+  new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+  SetScrollOffset(new_offset);
+  return true;
+}
+
+std::optional<views::LayoutOrientation> BraveTabContainer::GetScrollDirection()
+    const {
+  if (ShouldShowVerticalTabs()) {
+    return views::LayoutOrientation::kVertical;
+  }
+
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    return views::LayoutOrientation::kHorizontal;
+  }
+
+  return std::nullopt;
 }
 
 void BraveTabContainer::OnSplitCreated(const std::vector<int>& indices) {
@@ -715,7 +809,12 @@ void BraveTabContainer::OnSplitContentsChanged(
 }
 
 bool BraveTabContainer::OnMouseWheel(const ui::MouseWheelEvent& event) {
-  if (HandleVerticalScroll(event.y_offset())) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
+    return TabContainerImpl::OnMouseWheel(event);
+  }
+
+  if (HandleScroll(CalculateScrollOffset(event, *scroll_direction))) {
     return true;
   }
 
@@ -723,7 +822,13 @@ bool BraveTabContainer::OnMouseWheel(const ui::MouseWheelEvent& event) {
 }
 
 void BraveTabContainer::OnScrollEvent(ui::ScrollEvent* event) {
-  if (HandleVerticalScroll(event->y_offset())) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction.has_value()) {
+    TabContainerImpl::OnScrollEvent(event);
+    return;
+  }
+
+  if (HandleScroll(CalculateScrollOffset(*event, *scroll_direction))) {
     event->SetHandled();
     return;
   }
@@ -733,11 +838,13 @@ void BraveTabContainer::OnScrollEvent(ui::ScrollEvent* event) {
 
 views::View* BraveTabContainer::TargetForRect(views::View* root,
                                               const gfx::Rect& rect) {
-  if (!ShouldShowVerticalTabs()) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     return TabContainerImpl::TargetForRect(root, rect);
   }
 
-  if (scroll_bar_->GetVisible() && scroll_bar_->bounds().Intersects(rect)) {
+  if (scroll_bar_ && scroll_bar_->GetVisible() &&
+      scroll_bar_->bounds().Intersects(rect)) {
     gfx::Rect rect_in_scroll_bar_coords =
         views::View::ConvertRectToTarget(this, scroll_bar_, rect);
     return scroll_bar_->GetEventHandlerForRect(rect_in_scroll_bar_coords);
@@ -785,7 +892,7 @@ bool BraveTabContainer::IsPointInTab(
 void BraveTabContainer::AnimateToIdealBounds() {
   TabContainerImpl::AnimateToIdealBounds();
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -799,7 +906,8 @@ void BraveTabContainer::AnimateToIdealBounds() {
 void BraveTabContainer::UpdateIdealBounds() {
   TabContainerImpl::UpdateIdealBounds();
 
-  if (!ShouldShowVerticalTabs()) {
+  auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     return;
   }
 
@@ -813,14 +921,22 @@ void BraveTabContainer::UpdateIdealBounds() {
     }
 
     gfx::Rect bounds = tabs_view_model_.ideal_bounds(i);
-    bounds.set_y(bounds.y() - scroll_offset_);
+    if (scroll_direction == views::LayoutOrientation::kVertical) {
+      bounds.set_y(bounds.y() - scroll_offset_);
+    } else {
+      bounds.set_x(bounds.x() - scroll_offset_);
+    }
     tabs_view_model_.set_ideal_bounds(i, bounds);
   }
 
   // Also move group views by scroll_offset
   for (auto& [group_id, _] : group_views_) {
     auto& bounds = layout_helper_->group_header_ideal_bounds().at(group_id);
-    bounds.set_y(bounds.y() - scroll_offset_);
+    if (scroll_direction == views::LayoutOrientation::kVertical) {
+      bounds.set_y(bounds.y() - scroll_offset_);
+    } else {
+      bounds.set_x(bounds.x() - scroll_offset_);
+    }
   }
 
   UpdateScrollBarVisibility();
@@ -830,7 +946,7 @@ void BraveTabContainer::UpdateIdealBounds() {
 void BraveTabContainer::OnTabSlotAnimationProgressed(TabSlotView* view) {
   TabContainerImpl::OnTabSlotAnimationProgressed(view);
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -840,7 +956,7 @@ void BraveTabContainer::OnTabSlotAnimationProgressed(TabSlotView* view) {
     }
   }
 
-  UpdateClipPathForChildren(view, GetPinnedTabsAreaBottom());
+  UpdateClipPathForChildren(view, GetPinnedTabsAreaBoundary());
 
   if (!bounds_animator_.IsAnimating()) {
     // Do not try clamp scroll offset when there's ongoing animation.
@@ -858,7 +974,9 @@ void BraveTabContainer::OnTabSlotAnimationProgressed(TabSlotView* view) {
 void BraveTabContainer::SetActiveTab(std::optional<size_t> prev_active_index,
                                      std::optional<size_t> new_active_index) {
   TabContainerImpl::SetActiveTab(prev_active_index, new_active_index);
-  if (ShouldShowVerticalTabs() && new_active_index.has_value()) {
+  // Scroll to make the active tab visible for both vertical and horizontal
+  // scrollable tab strip. ScrollTabToBeVisible no-ops when not scrollable.
+  if (GetScrollDirection() && new_active_index.has_value()) {
     ScrollTabToBeVisible(GetTabAtModelIndex(*new_active_index));
   }
 }
@@ -1215,8 +1333,29 @@ int BraveTabContainer::GetPinnedTabsAreaBottom() const {
   return bottom;
 }
 
+int BraveTabContainer::GetPinnedTabsAreaBoundary() const {
+  auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
+    return GetPinnedTabsAreaBottom();
+  }
+  if (scroll_direction == views::LayoutOrientation::kVertical) {
+    return GetPinnedTabsAreaBottom();
+  }
+
+  // For horizontal tabs, calculate the right boundary
+  const int pinned_tab_count = layout_helper_->GetPinnedTabCount();
+  if (pinned_tab_count == 0) {
+    return 0;
+  }
+
+  // Note that we should use ideal bounds instead of current bounds of the
+  // last pinned tab because the pinned tab could be being dragged over
+  // unpinned tab area.
+  return GetIdealBounds(pinned_tab_count - 1).right();
+}
+
 void BraveTabContainer::SetScrollOffset(int offset) {
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -1225,6 +1364,7 @@ void BraveTabContainer::SetScrollOffset(int offset) {
   }
 
   // When offset changes, relayout tabs even when size doesn't change.
+  // Callers must pass offset in [0, GetMaxScrollOffset()].
   scroll_offset_ = offset;
   last_layout_size_ = std::nullopt;
   CompleteAnimationAndLayout();
@@ -1330,27 +1470,72 @@ int BraveTabContainer::GetUnpinnedTabsViewportHeight() const {
   return height() - GetPinnedTabsAreaBottom();
 }
 
+int BraveTabContainer::GetUnpinnedTabsTotalSize() const {
+  auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
+    return 0;
+  }
+
+  if (scroll_direction == views::LayoutOrientation::kVertical) {
+    return GetUnpinnedTabsTotalHeight();
+  }
+
+  // For horizontal tabs, calculate total width from visible unpinned slots
+  auto [first_slot_view, last_slot_view] = FindVisibleUnpinnedSlotViews();
+  if (!first_slot_view || !last_slot_view) {
+    return 0;
+  }
+
+  const gfx::Rect first_bounds = GetIdealBoundsOf(first_slot_view);
+  const gfx::Rect last_bounds = GetIdealBoundsOf(last_slot_view);
+  return std::max(0, last_bounds.right() - first_bounds.x());
+}
+
+int BraveTabContainer::GetUnpinnedTabsViewportSize() const {
+  auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
+    return 0;
+  }
+
+  if (scroll_direction == views::LayoutOrientation::kVertical) {
+    return GetUnpinnedTabsViewportHeight();
+  }
+
+  // For horizontal tabs, calculate viewport width
+  return width() - GetPinnedTabsAreaBoundary();
+}
+
 int BraveTabContainer::GetMaxScrollOffset() const {
-  if (!ShouldShowVerticalTabs()) {
+  auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     return 0;
   }
 
-  const int total_height = GetUnpinnedTabsTotalHeight();
-  if (total_height == 0) {
+  int total_size = GetUnpinnedTabsTotalSize();
+  if (total_size == 0) {
     return 0;
   }
 
-  return std::max(0, total_height - GetUnpinnedTabsViewportHeight());
+  if (GetScrollDirection() == views::LayoutOrientation::kHorizontal) {
+    // We should subtract the overlap between pinned tabs area and unpinned tabs
+    // area
+    total_size -= tabs::kHorizontalTabOverlap;
+  }
+
+  return std::max(0, total_size - GetUnpinnedTabsViewportSize());
 }
 
 void BraveTabContainer::ClampScrollOffset() {
-  if (ShouldShowVerticalTabs()) {
+  if (GetScrollDirection()) {
     SetScrollOffset(std::clamp(scroll_offset_, 0, GetMaxScrollOffset()));
   }
 }
 
 void BraveTabContainer::UpdateClipPathForSlotViews() {
-  const int pinned_tabs_area_bottom = GetPinnedTabsAreaBottom();
+  if (!GetScrollDirection()) {
+    return;
+  }
+  const int pinned_tabs_area_boundary = GetPinnedTabsAreaBoundary();
   int tab_count = GetTabCount();
   for (int i = 0; i < tab_count; ++i) {
     Tab* tab = GetTabAtModelIndex(i);
@@ -1361,32 +1546,40 @@ void BraveTabContainer::UpdateClipPathForSlotViews() {
       continue;
     }
 
-    UpdateClipPathForChildren(tab, pinned_tabs_area_bottom);
+    UpdateClipPathForChildren(tab, pinned_tabs_area_boundary);
   }
 
-  // Also move group views by scroll_offset
+  // Also clip group views
   for (auto& [_, group_views] : group_views_) {
     for (auto* view : std::initializer_list<views::View*>{
              group_views->header(), group_views->underline(),
              group_views->highlight(), group_views->drag_underline()}) {
-      UpdateClipPathForChildren(view, pinned_tabs_area_bottom);
+      UpdateClipPathForChildren(view, pinned_tabs_area_boundary);
     }
   }
 }
 
-void BraveTabContainer::UpdateClipPathForChildren(views::View* view,
-                                                  int pinned_tabs_area_bottom) {
-  if (!view->parent()) {
+void BraveTabContainer::UpdateClipPathForChildren(
+    views::View* view,
+    int pinned_tabs_area_boundary) {
+  auto direction = GetScrollDirection();
+  if (!view->parent() || !direction) {
     // The |view| is detached so we just clear clip path.
     view->SetClipPath({});
     return;
   }
 
   gfx::Rect clip_bounds;
-  if (pinned_tabs_area_bottom) {
-    // In case we have pinned tabs, clip unpinned tabs below pinned tab area
-    clip_bounds = gfx::Rect(0, pinned_tabs_area_bottom, width(),
-                            height() - pinned_tabs_area_bottom);
+  if (pinned_tabs_area_boundary) {
+    if (direction == views::LayoutOrientation::kVertical) {
+      // In case we have pinned tabs, clip unpinned tabs below pinned tab area
+      clip_bounds = gfx::Rect(0, pinned_tabs_area_boundary, width(),
+                              height() - pinned_tabs_area_boundary);
+    } else {
+      // For horizontal tabs, clip unpinned tabs to the right of pinned tab area
+      clip_bounds = gfx::Rect(pinned_tabs_area_boundary, 0,
+                              width() - pinned_tabs_area_boundary, height());
+    }
   }
 
   auto get_clip_path_for_child = [this,
@@ -1422,7 +1615,7 @@ void BraveTabContainer::OnGroupContentsChanged(
     const tab_groups::TabGroupId& group) {
   TabContainerImpl::OnGroupContentsChanged(group);
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -1433,14 +1626,14 @@ void BraveTabContainer::OnGroupContentsChanged(
   for (auto* view : std::initializer_list<views::View*>{
            group_views->header(), group_views->underline(),
            group_views->highlight(), group_views->drag_underline()}) {
-    UpdateClipPathForChildren(view, GetPinnedTabsAreaBottom());
+    UpdateClipPathForChildren(view, GetPinnedTabsAreaBoundary());
   }
 }
 
 void BraveTabContainer::UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) {
   TabContainerImpl::UpdateTabGroupVisuals(group_id);
 
-  if (!ShouldShowVerticalTabs()) {
+  if (!GetScrollDirection()) {
     return;
   }
 
@@ -1457,7 +1650,7 @@ void BraveTabContainer::UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) {
            group_views->second->header(), group_views->second->underline(),
            group_views->second->highlight(),
            group_views->second->drag_underline()}) {
-    UpdateClipPathForChildren(view, GetPinnedTabsAreaBottom());
+    UpdateClipPathForChildren(view, GetPinnedTabsAreaBoundary());
   }
 }
 

@@ -125,12 +125,13 @@ bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
 }
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
-  if (!ShouldShowVerticalTabs()) {
+  if (!ShouldShowVerticalTabs() &&
+      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
     return TabStrip::CanPaintThrobberToLayer();
   }
 
-  // Don't allow throbber to be painted to layer. Vertical tabs are scrollable,
-  // and a tab could be out of the viewport. Otherwise, throbber would be
+  // Don't allow throbber to be painted to layer. When tabs are scrollable,
+  // a tab could be out of the viewport. Otherwise, throbber would be
   // painted even when the tab is not in the viewport.
   return false;
 }
