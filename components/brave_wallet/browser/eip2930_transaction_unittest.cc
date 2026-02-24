@@ -83,7 +83,7 @@ TEST(Eip2930TransactionUnitTest, GetHashedMessageToSign) {
                          "0x0101010101010101010101010101010101010101", "0x00",
                          data, false, std::nullopt),
       0x01);
-  ASSERT_EQ(tx.type(), 1);
+  ASSERT_EQ(tx.type(), EthTransactionType::kEip2930);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
   item.address.fill(0x01);
@@ -104,7 +104,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
                          "0xdf0a88b2b68c673713a8ec826003676f272e3573", "0x01",
                          std::vector<uint8_t>(), false, std::nullopt),
       0x796f6c6f763378);
-  ASSERT_EQ(tx.type(), 1);
+  ASSERT_EQ(tx.type(), EthTransactionType::kEip2930);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
   std::vector<uint8_t> address;

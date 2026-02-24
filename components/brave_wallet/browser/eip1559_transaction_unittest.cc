@@ -27,7 +27,7 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
                              "0x0101010101010101010101010101010101010101",
                              "0x00", data, false, std::nullopt),
           "0x04", "0x0", "0x0"));
-  ASSERT_EQ(tx.type(), 2);
+  ASSERT_EQ(tx.type(), EthTransactionType::kEip1559);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
   item.address.fill(0x01);

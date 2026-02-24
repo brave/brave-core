@@ -17,8 +17,8 @@ namespace brave_wallet {
 
 class Eip2930Transaction : public EthTransaction {
  public:
-  typedef std::array<uint8_t, 20> AccessedAddress;
-  typedef std::array<uint8_t, 32> AccessedStorageKey;
+  using AccessedAddress = std::array<uint8_t, 20>;
+  using AccessedStorageKey = std::array<uint8_t, 32>;
   struct AccessListItem {
     AccessListItem();
     ~AccessListItem();
@@ -29,7 +29,7 @@ class Eip2930Transaction : public EthTransaction {
     std::vector<AccessedStorageKey> storage_keys;
   };
   // [[{20 bytes}, [{32 bytes}...]]...]
-  typedef std::vector<AccessListItem> AccessList;
+  using AccessList = std::vector<AccessListItem>;
 
   Eip2930Transaction();
   Eip2930Transaction(const Eip2930Transaction&);
@@ -49,24 +49,6 @@ class Eip2930Transaction : public EthTransaction {
   const AccessList* access_list() const { return &access_list_; }
   AccessList* access_list() { return &access_list_; }
 
-  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
-  // accessList])
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const override;
-
-  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
-  // accessList, signatureYParity, signatureR, signatureS])
-  std::string GetSignedTransaction() const override;
-
-  // keccack(0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
-  // accessList, signatureYParity, signatureR, signatureS]))
-  std::string GetTransactionHash() const override;
-
-  bool IsSigned() const override;
-
-  base::DictValue ToValue() const override;
-
-  uint256_t GetDataFee() const override;
-
  protected:
   Eip2930Transaction(std::optional<uint256_t> nonce,
                      uint256_t gas_price,
@@ -76,13 +58,20 @@ class Eip2930Transaction : public EthTransaction {
                      const std::vector<uint8_t>& data,
                      uint256_t chain_id);
 
+  uint256_t GetDataFee() const override;
+
+  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
+  // accessList])
+  std::vector<uint8_t> GetMessageToSignImpl(uint256_t chain_id) const override;
+
+  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
+  // accessList, signatureYParity, signatureR, signatureS])
+  std::vector<uint8_t> Serialize() const override;
+
+  base::DictValue ToValueImpl() const override;
+
   uint256_t chain_id_;
   AccessList access_list_;
-
-  bool VIsRecid() const override;
-
- private:
-  std::vector<uint8_t> Serialize() const;
 };
 
 }  // namespace brave_wallet
