@@ -13,6 +13,9 @@ export const AssistantResponseContext = React.createContext<{
   events: [],
 })
 
+// This Context is used so that components in the MarkdownRenderer can access the
+// response from the Assistant they're being rendered for. This allows them to
+// access additional data that they may need to render correctly.
 export default function AssistantResponseContextProvider(props: {
   events: Mojom.ConversationEntryEvent[]
   children: React.ReactNode

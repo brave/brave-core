@@ -7,9 +7,10 @@ import * as React from 'react'
 import MarkdownRenderer from './index'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
 import * as searchResults from '../search_widget/storybook-data/searchResults.json'
+import { getEventTemplate } from '../../../common/test_data_utils'
 
 export default {
-  title: 'MarkdownRenderer',
+  title: 'Chat/MarkdownRenderer',
   component: MarkdownRenderer,
 }
 
@@ -34,11 +35,12 @@ export const WithDirectives = () => {
     <AssistantResponseContextProvider
       events={[
         {
+          ...getEventTemplate(),
           inlineSearchEvent: {
             query: 'Approach shoes',
             resultsJson: JSON.stringify(Array.from(searchResults)),
           },
-        } as any,
+        },
       ]}
     >
       <MarkdownRenderer

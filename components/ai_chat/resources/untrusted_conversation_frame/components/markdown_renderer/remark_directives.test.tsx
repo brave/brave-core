@@ -136,7 +136,7 @@ test('directiveComponents has components for all allowed directives', () => {
 })
 
 test('search directive renders something', () => {
-  const { container} = render(
+  const { container } = render(
     <AssistantResponseContextProvider events={[]}>
       <directiveComponents.search />
     </AssistantResponseContextProvider>,
