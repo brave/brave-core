@@ -98,6 +98,16 @@ public struct WalletConstants {
   }
   #endif
 
+  /// Returns true if all three Cardano dApp support feature flags are enabled:
+  /// - kBraveWalletWebUIIOS (wallet WebUI)
+  /// - kBraveWalletCardanoEnabled (Cardano support)
+  /// - kBraveWalletCardanoDAppSupportIOS (Cardano dApp support)
+  static var isCardanoDAppSupportEnabled: Bool {
+    FeatureList.kBraveWalletWebUIIOS?.enabled == true
+      && FeatureList.kBraveWalletCardanoEnabled?.enabled == true
+      && FeatureList.kBraveWalletCardanoDAppSupportIOS?.enabled == true
+  }
+
   /// The currently supported coin types in wallet
   public static func supportedCoinTypes(
     _ mode: SupportedCoinTypesMode = .general
