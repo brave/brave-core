@@ -175,6 +175,11 @@ const resultTypeIcons: Record<SearchTypes, string> = {
   news: 'search-news',
 }
 
+const getLinkPathForType = (type: SearchTypes) => {
+  if (type === 'web') return 'search'
+  return type ?? 'search'
+}
+
 export default function SearchWidget(props: {
   query: string
   type: SearchTypes
@@ -284,7 +289,7 @@ export default function SearchWidget(props: {
       <div className={styles.footer}>
         <SecureLink
           className={styles.query}
-          href={`https://search.brave.com/search?q=${encodeURIComponent(props.query)}`}
+          href={`https://search.brave.com/${getLinkPathForType(type)}?q=${encodeURIComponent(props.query)}`}
           target='_blank'
         >
           <Icon
