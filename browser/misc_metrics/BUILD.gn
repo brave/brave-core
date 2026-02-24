@@ -115,7 +115,6 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "brave_search_metrics_unittest.cc",
     "doh_metrics_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
@@ -129,7 +128,6 @@ source_set("unit_tests") {
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/brave_rewards/core",
     "//brave/components/misc_metrics",
-    "//brave/components/search_engines",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/history",
