@@ -115,6 +115,14 @@ class BraveSkusAccountLink {
         )
       }
 
+      if let orderId = Preferences.BraveOrigin.purchaseOrderId.value {
+        try await tab.evaluateJavaScript(
+          functionName: "localStorage.setItem",
+          args: ["braveOrigin.orderId", orderId],
+          contentWorld: .defaultClient
+        )
+      }
+
       return true
     } catch {
       Logger.module.error(
