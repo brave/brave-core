@@ -233,14 +233,18 @@ class EthereumProviderImplUnitTest : public testing::Test {
             PermissionManagerFactory::GetInstance()
                 ->BuildServiceInstanceForBrowserContext(browser_context())
                 .release())));
+  }
 
+  void InitProvider() {
+    CHECK(web_contents()->GetPrimaryMainFrame());
+    url::Origin origin =
+        web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
     provider_ = std::make_unique<EthereumProviderImpl>(
         host_content_settings_map(), brave_wallet_service_.get(),
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(),
             web_contents()->GetPrimaryMainFrame()->GetGlobalId()),
-        prefs());
-
+        prefs(), origin);
     observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
@@ -408,14 +412,20 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return brave_wallet_service_->keyring_service();
   }
   AccountUtils GetAccountUtils() { return AccountUtils(keyring_service()); }
-  EthereumProviderImpl* provider() { return provider_.get(); }
+  EthereumProviderImpl* provider() {
+    CHECK(provider_);
+    return provider_.get();
+  }
   content::BrowserContext* browser_context() { return &profile_; }
   PrefService* prefs() { return profile_.GetPrefs(); }
   HostContentSettingsMap* host_content_settings_map() {
     return HostContentSettingsMapFactory::GetForProfile(&profile_);
   }
 
-  void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
+  void Navigate(const GURL& url) {
+    web_contents()->NavigateAndCommit(url);
+    InitProvider();
+  }
 
   url::Origin GetOrigin() {
     return web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
@@ -922,6 +932,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
 };
 
 TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {
+  GURL url("https://brave.com");
+  Navigate(url);
+
   ValidateErrorCode(provider(), R"({"params": []})",
                     mojom::ProviderError::kInvalidParams);
   ValidateErrorCode(provider(), R"({"params": [{}]})",
@@ -946,9 +959,9 @@ TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, EmptyDelegate) {
-  EthereumProviderImpl provider_impl(host_content_settings_map(),
-                                     brave_wallet_service_.get(), nullptr,
-                                     prefs());
+  EthereumProviderImpl provider_impl(
+      host_content_settings_map(), brave_wallet_service_.get(), nullptr,
+      prefs(), url::Origin::Create(GURL("https://brave.com")));
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
         "chainId": "0x111",
@@ -1124,6 +1137,8 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionError) {
 TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
   bool callback_called = false;
   CreateWallet();
+  GURL url("https://brave.com");
+  Navigate(url);
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
   std::string normalized_json_request =
@@ -1328,6 +1343,9 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
+  GURL url("https://brave.com");
+  Navigate(url);
+
   std::string normalized_json_request =
       "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\","
       "\"params\":[{\"from\":\"" +
@@ -1366,6 +1384,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
 
   GURL url("https://brave.com");
   Navigate(url);
+
   AddEthereumPermission(account_0->account_id);
   base::RunLoop run_loop;
   EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0));
@@ -1376,11 +1395,20 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   bool new_setup_callback_called = false;
-  SetCallbackForNewSetupNeededForTesting(
-      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   bool permission_callback_called = false;
   CreateWallet();
-  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  GetAccountUtils().EnsureEthAccount(0);
+
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Block the site via "Block sites from accessing the Ethereum provider API"
+  // setting (no permission prompt is shown).
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
+
+  SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
 
   provider()->RequestEthereumPermissions(
       base::BindLambdaForTesting(
@@ -1389,8 +1417,9 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
             std::string error_message;
             GetErrorCodeMessage(std::move(response->formed_response), &error,
                                 &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(error_message.empty());
+            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+            EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
+                                         IDS_WALLET_USER_REJECTED_REQUEST));
             permission_callback_called = true;
           }),
       base::Value(), "", GetOrigin());
@@ -1400,6 +1429,9 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
+  GURL url("https://brave.com");
+  Navigate(url);
+
   bool new_setup_callback_called = false;
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
@@ -1613,6 +1645,8 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
   CreateWallet();
+  GURL url("https://brave.com");
+  Navigate(url);
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   for (const auto& method : {"personal_sign", "eth_sign"}) {
     std::string request_payload_json = absl::StrFormat(
@@ -1803,6 +1837,9 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, std::nullopt),
       "0x1");
   CreateWallet();
+  GURL url("https://brave.com");
+  Navigate(url);
+
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   std::string signature;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
@@ -1851,8 +1888,9 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-  GURL url("https://brave.com");
-  Navigate(url);
+  GURL url2("https://brave2.com");
+  Navigate(url2);
+
   AddEthereumPermission(account_0->account_id);
   SignTypedMessage(true, address_0, "{...}", domain_hash, primary_hash, "0x1",
                    nullptr, &signature, &error, &error_message);
@@ -1887,6 +1925,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
   GURL url("https://brave.com");
   Navigate(url);
+
   AddEthereumPermission(account_0->account_id);
   AddEthereumPermission(account_hw->account_id);
 
@@ -2062,12 +2101,16 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   // Does not fire for a different origin that has no permissions
   Navigate(GURL("https://bravesoftware.com"));
   AddEthereumPermission(account_1->account_id);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  observer_->Reset();
   SetSelectedAccount(account_0->account_id);
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
 TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   CreateWallet();
+  GURL url("https://brave.com");
+  Navigate(url);
 
   // Unsupported subscription type
   std::string request_payload_json =
@@ -2148,6 +2191,8 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
 
 TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
   CreateWallet();
+  GURL url("https://brave.com");
+  Navigate(url);
 
   // Unsupported subscription type
   std::string request_payload_json =
@@ -2227,6 +2272,8 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
 
 TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
   CreateWallet();
+  GURL url("https://brave.com");
+  Navigate(url);
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
@@ -2292,6 +2339,8 @@ TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
   std::string version;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
+  GURL url("https://brave.com");
+  Navigate(url);
   Web3ClientVersion(&version, &error, &error_message);
   EXPECT_EQ(version, expected_version);
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
@@ -2422,6 +2471,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   std::string error_message;
   GURL url("https://brave.com");
   Navigate(url);
+
   AddEthereumPermission(added_hw_account->account_id);
 
   // success
@@ -2740,6 +2790,9 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
+  GURL initial_url("https://brave1.com");
+  Navigate(initial_url);
+
   // Wallet that is not created should return empty base::Value for eth_coinbase
   std::string request_payload_json =
       R"({"id":1,"jsonrpc:": "2.0","method":"eth_coinbase"})";
@@ -2806,6 +2859,9 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
+  GURL initial_url("https://brave1.com");
+  Navigate(initial_url);
+
   base::Value input =
       ParseJson(R"({"id":"1","jsonrpc":"2.0","method":"eth_chainId"})");
   const std::string success_rpc_response =

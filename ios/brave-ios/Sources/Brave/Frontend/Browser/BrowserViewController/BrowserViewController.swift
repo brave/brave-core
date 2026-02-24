@@ -2428,7 +2428,6 @@ extension BrowserViewController: TabMiscDelegate {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
       Preferences.Wallet.displayWeb3Notifications.value,
-      let origin = tab.browserData?.getOrigin(),
       let tabDappStore = tab.tabDappStore
     else {
       return
@@ -2438,11 +2437,34 @@ extension BrowserViewController: TabMiscDelegate {
       origin: origin,
       isUsingBottomBar: isUsingBottomBar
     ) { [weak self] action in
+      // double check if tab lastCommittedURL's origin is the same as this notification's
+      guard let lastCommittedOrigin = tab.lastCommittedURL?.origin,
+        lastCommittedOrigin == origin
+      else {
+        return
+      }
       if action == .connectWallet {
         self?.presentWalletPanel(from: origin, with: tabDappStore)
       }
     }
     notificationsPresenter.display(notification: walletNotificaton, from: self)
+  }
+
+  /// Removes the wallet notification and clears the stored origin so it can be shown again for a different origin.
+  func removeWalletNotificationAndClearOrigin() {
+    notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
+  }
+
+  /// Dismisses the wallet notification if it was shown for a different origin than the committed one (e.g. after redirect).
+  func dismissWalletNotificationIfOriginDiffers(from committedOrigin: URLOrigin) {
+    guard
+      let visibleWalletNotification = notificationsPresenter.visibleNotification
+        as? WalletNotification,
+      visibleWalletNotification.origin != committedOrigin
+    else {
+      return
+    }
+    removeWalletNotificationAndClearOrigin()
   }
 
   func isTabVisible(_ tab: some TabState) -> Bool {
@@ -2925,7 +2947,7 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Wallet.defaultEthWallet.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()
-      notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
+      removeWalletNotificationAndClearOrigin()
       WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth])
       WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth])
       let privateMode = privateBrowsingManager.isPrivateBrowsing
@@ -2940,7 +2962,7 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Wallet.defaultSolWallet.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()
-      notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
+      removeWalletNotificationAndClearOrigin()
       WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.sol])
       WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.sol])
       let privateMode = privateBrowsingManager.isPrivateBrowsing
