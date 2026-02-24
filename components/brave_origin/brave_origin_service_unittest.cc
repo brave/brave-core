@@ -495,7 +495,7 @@ TEST_F(BraveOriginServiceTest,
        CheckPurchaseState_Linux_AlwaysReturnsPurchased) {
   // Reset purchase state to verify Linux always sets purchased to true.
   BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
-  EXPECT_FALSE(service_->IsPurchased());
+  ASSERT_FALSE(service_->IsPurchased());
 
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
