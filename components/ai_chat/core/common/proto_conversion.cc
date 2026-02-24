@@ -149,9 +149,9 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
             }
             mojom_sources->sources.push_back(std::move(mojom_source));
           }
-          if (proto_sources.queries_size() > 0) {
-            mojom_sources->queries.emplace(proto_sources.queries().begin(),
-                                           proto_sources.queries().end());
+          mojom_sources->queries.reserve(proto_sources.queries_size());
+          for (const auto& query : proto_sources.queries()) {
+            mojom_sources->queries.push_back(query);
           }
           mojom_sources->rich_results.reserve(
               proto_sources.rich_results_size());
@@ -240,10 +240,8 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
                   mojom_source->extra_snippets->end());
             }
           }
-          if (mojom_sources->queries.has_value()) {
-            for (const auto& q : *mojom_sources->queries) {
-              proto_sources->add_queries(q);
-            }
+          for (const auto& q : mojom_sources->queries) {
+            proto_sources->add_queries(q);
           }
           for (const auto& rich_result : mojom_sources->rich_results) {
             proto_sources->add_rich_results(rich_result);

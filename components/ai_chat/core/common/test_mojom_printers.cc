@@ -22,19 +22,14 @@ namespace {
 
 void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
                                  std::ostream* os) {
-  *os << "web_sources(queries: ";
-  if (ws.queries.has_value()) {
-    *os << "[";
-    for (size_t i = 0; i < ws.queries->size(); ++i) {
-      if (i > 0) {
-        *os << ", ";
-      }
-      *os << (*ws.queries)[i];
+  *os << "web_sources(queries: [";
+  for (size_t i = 0; i < ws.queries.size(); ++i) {
+    if (i > 0) {
+      *os << ", ";
     }
-    *os << "]";
-  } else {
-    *os << "<nullopt>";
+    *os << ws.queries[i];
   }
+  *os << "]";
   *os << ", sources: [";
   for (size_t i = 0; i < ws.sources.size(); ++i) {
     if (i > 0) {

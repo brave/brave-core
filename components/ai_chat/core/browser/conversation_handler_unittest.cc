@@ -5850,23 +5850,13 @@ TEST_F(ConversationHandlerUnitTest,
 
 TEST_F(ConversationHandlerUnitTest,
        ExtractSourcesFromRecentAssistantEntries_NoSearchQueriesEvent) {
-  // No search queries event should be emitted when queries are empty, nullopt,
+  // No search queries event should be emitted when queries are empty
   // or contain only empty strings.
-  auto make_output = [](std::optional<std::vector<std::string>> queries) {
-    std::vector<mojom::ContentBlockPtr> output;
-    output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
-        mojom::WebSourcesContentBlock::New(CreateWebSources(1),
-                                           std::move(queries),
-                                           std::vector<std::string>())));
-    return output;
-  };
-
   struct TestCase {
     std::string description;
-    std::optional<std::vector<std::string>> queries;
+    std::vector<std::string> queries;
   };
   TestCase cases[] = {
-      {"nullopt", std::nullopt},
       {"empty array", std::vector<std::string>{}},
       {"all empty strings", std::vector<std::string>{"", ""}},
   };
@@ -5880,7 +5870,7 @@ TEST_F(ConversationHandlerUnitTest,
     entry->events->push_back(
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
             "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-            make_output(std::move(queries)), nullptr, true)));
+            CreateWebSourcesOutput(1, std::move(queries)), nullptr, true)));
 
     conversation_handler_->chat_history_.push_back(std::move(entry));
 

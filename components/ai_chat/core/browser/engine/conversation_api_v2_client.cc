@@ -264,13 +264,12 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
             sources_list.Append(std::move(source_dict));
           }
           content_block_dict.Set("sources", std::move(sources_list));
-          if (web_sources->queries.has_value() &&
-              !web_sources->queries->empty()) {
-            if (web_sources->queries->size() == 1) {
-              content_block_dict.Set("query", web_sources->queries->front());
+          if (!web_sources->queries.empty()) {
+            if (web_sources->queries.size() == 1) {
+              content_block_dict.Set("query", web_sources->queries.front());
             } else {
               base::ListValue queries_list;
-              for (const auto& q : *web_sources->queries) {
+              for (const auto& q : web_sources->queries) {
                 queries_list.Append(q);
               }
               content_block_dict.Set("query", std::move(queries_list));

@@ -388,8 +388,7 @@ TEST(OaiParsingTest, ParseToolCallResult_WebSourcesOutput) {
 
   const auto& web_sources =
       (*result)->output->at(0)->get_web_sources_content_block();
-  ASSERT_TRUE(web_sources->queries.has_value());
-  EXPECT_THAT(*web_sources->queries, testing::ElementsAre("test search"));
+  EXPECT_THAT(web_sources->queries, testing::ElementsAre("test search"));
   ASSERT_EQ(web_sources->sources.size(), 1u);
   EXPECT_EQ(web_sources->sources[0]->title, "Example Site");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/");
@@ -439,7 +438,7 @@ TEST(OaiParsingTest, ParseToolCallResult_MixedOutputContent) {
   EXPECT_EQ(web_sources->sources[0]->title, "Result 1");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/1");
   EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(), kDefaultFaviconUrl);
-  EXPECT_FALSE(web_sources->queries.has_value());
+  EXPECT_TRUE(web_sources->queries.empty());
 
   ASSERT_TRUE((*result)->output->at(2)->is_text_content_block());
   EXPECT_EQ((*result)->output->at(2)->get_text_content_block()->text,
@@ -534,8 +533,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
   ASSERT_TRUE((*result)->is_web_sources_content_block());
 
   const auto& web_sources = (*result)->get_web_sources_content_block();
-  ASSERT_TRUE(web_sources->queries.has_value());
-  EXPECT_THAT(*web_sources->queries, testing::ElementsAre("search query"));
+  EXPECT_THAT(web_sources->queries, testing::ElementsAre("search query"));
   ASSERT_EQ(web_sources->sources.size(), 4u);
   EXPECT_EQ(web_sources->sources[0]->title, "Site 1");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://site1.com/");
@@ -624,8 +622,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesQueryOnly) {
   // Query without sources should still be valid
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE((*result)->is_web_sources_content_block());
-  ASSERT_TRUE((*result)->get_web_sources_content_block()->queries.has_value());
-  EXPECT_THAT(*(*result)->get_web_sources_content_block()->queries,
+  EXPECT_THAT((*result)->get_web_sources_content_block()->queries,
               testing::ElementsAre("search term"));
   EXPECT_TRUE((*result)->get_web_sources_content_block()->sources.empty());
 }
@@ -643,8 +640,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesQueryArray) {
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE((*result)->is_web_sources_content_block());
   const auto& web_sources = (*result)->get_web_sources_content_block();
-  ASSERT_TRUE(web_sources->queries.has_value());
-  EXPECT_THAT(*web_sources->queries,
+  EXPECT_THAT(web_sources->queries,
               testing::ElementsAre("query one", "query two"));
 }
 
@@ -663,10 +659,10 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesQueryEmptyArray) {
   auto block = base::test::ParseJsonDict(kBlockJson);
   auto result = ParseContentBlockFromDict(block);
 
-  // Empty query list → queries is nullopt, but sources are present
+  // Empty query list → queries is empty, but sources are present
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE((*result)->is_web_sources_content_block());
-  EXPECT_FALSE((*result)->get_web_sources_content_block()->queries.has_value());
+  EXPECT_TRUE((*result)->get_web_sources_content_block()->queries.empty());
   ASSERT_EQ((*result)->get_web_sources_content_block()->sources.size(), 1u);
 }
 
@@ -684,8 +680,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesQueryArrayMixedTypes) {
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE((*result)->is_web_sources_content_block());
   const auto& web_sources = (*result)->get_web_sources_content_block();
-  ASSERT_TRUE(web_sources->queries.has_value());
-  EXPECT_THAT(*web_sources->queries,
+  EXPECT_THAT(web_sources->queries,
               testing::ElementsAre("valid query", "another query"));
 }
 
@@ -802,8 +797,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesWithRichResults) {
   ASSERT_TRUE((*result)->is_web_sources_content_block());
 
   const auto& web_sources = (*result)->get_web_sources_content_block();
-  ASSERT_TRUE(web_sources->queries.has_value());
-  EXPECT_THAT(*web_sources->queries, testing::ElementsAre("test query"));
+  EXPECT_THAT(web_sources->queries, testing::ElementsAre("test query"));
   ASSERT_EQ(web_sources->sources.size(), 1u);
 
   // Verify rich_results were parsed as JSON strings

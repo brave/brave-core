@@ -577,8 +577,7 @@ TEST(ProtoConversionTest,
   ASSERT_TRUE(mojom_event->output->at(0)->is_web_sources_content_block());
   const auto& web_sources =
       mojom_event->output->at(0)->get_web_sources_content_block();
-  ASSERT_TRUE(web_sources->queries.has_value());
-  EXPECT_THAT(*web_sources->queries, testing::ElementsAre("test query"));
+  EXPECT_THAT(web_sources->queries, testing::ElementsAre("test query"));
   ASSERT_EQ(web_sources->sources.size(), 1u);
   EXPECT_EQ(web_sources->sources[0]->title, "Valid");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://valid.com/");
