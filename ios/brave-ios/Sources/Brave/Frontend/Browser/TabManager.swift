@@ -268,36 +268,9 @@ class TabManager: NSObject {
 
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
     let configuration: WKWebViewConfiguration = .init()
-    configuration.processPool = WKProcessPool()
-    configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
-
-    // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
-    // and pages that don't want the URL highlighted!
-    configuration.dataDetectorTypes = [.phoneNumber]
     configuration.userContentController = WKUserContentController()
-    configuration.preferences.isFraudulentWebsiteWarningEnabled =
-      Preferences.Shields.googleSafeBrowsing.value
-    configuration.allowsInlineMediaPlayback = true
-    // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
-    configuration.ignoresViewportScaleLimits = true
-    configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
-
-    if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
-      let senderKeyPath = String(format: "_setNetw%@rityEnabled:", "orkConnectionInteg")
-      let selector = Selector(senderKeyPath)
-      if configuration.defaultWebpagePreferences.responds(to: selector) {
-        configuration.defaultWebpagePreferences.perform(selector, with: true)
-      }
-    }
-
-    if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
-      configuration.setURLSchemeHandler(
-        InternalSchemeHandler(),
-        forURLScheme: InternalURL.scheme
-      )
-    }
-
+    configuration.prepareBraveConfiguration()
     return configuration
   }
 
@@ -1711,6 +1684,30 @@ extension TabManager: NSFetchedResultsControllerDelegate {
           tab.browserData?.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
         }
       }
+    }
+  }
+}
+
+extension WKWebViewConfiguration {
+  /// Updates a WebKit configuration with Brave's defaults and preferences that can't be done
+  /// from inside Chromium's `WKWebViewConfigurationProvider::ResetWithWebViewConfiguration`
+  func prepareBraveConfiguration() {
+    upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
+    preferences.isFraudulentWebsiteWarningEnabled = Preferences.Shields.googleSafeBrowsing.value
+
+    if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
+      let senderKeyPath = String(format: "_setNetw%@rityEnabled:", "orkConnectionInteg")
+      let selector = Selector(senderKeyPath)
+      if defaultWebpagePreferences.responds(to: selector) {
+        defaultWebpagePreferences.perform(selector, with: true)
+      }
+    }
+
+    if urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
+      setURLSchemeHandler(
+        InternalSchemeHandler(),
+        forURLScheme: InternalURL.scheme
+      )
     }
   }
 }
