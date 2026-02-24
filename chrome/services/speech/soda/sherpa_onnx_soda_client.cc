@@ -1,4 +1,4 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -103,12 +103,12 @@ struct SherpaOnnxOnlineRecognizerConfig {
 };
 
 struct SherpaOnnxOnlineRecognizerResult {
-  RAW_PTR_EXCLUSION const char* text;
-  RAW_PTR_EXCLUSION const char* tokens;
-  RAW_PTR_EXCLUSION const char* const* tokens_arr;
-  RAW_PTR_EXCLUSION float* timestamps;
+  const char* text;
+  const char* tokens;
+  const char* const* tokens_arr;
+  float* timestamps;
   int32_t count;
-  RAW_PTR_EXCLUSION const char* json;
+  const char* json;
 };
 
 constexpr int kTargetSampleRate = 16000;
