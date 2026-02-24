@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
+#include "chrome/browser/actor/actor_policy_checker.h"
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/ui/test_support/mock_actor_ui_state_manager.h"
 #include "chrome/common/actor/action_result.h"
@@ -65,6 +66,7 @@ class ContentAgentToolProviderTest : public testing::Test {
 
     actor_service_ = actor::ActorKeyedService::Get(profile_);
     actor_service_->SetActorUiStateManagerForTesting(BuildUiStateManagerMock());
+    actor_service_->GetPolicyChecker().set_act_on_web_for_testing(true);
 
     // Create ContentAgentToolProvider
     tool_provider_ = std::make_unique<ContentAgentToolProvider>(
