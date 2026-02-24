@@ -31,7 +31,7 @@ import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-# See //chrome/browser/ui:ui_public_dependencies.
+# See //chrome/browser/ui:ui_public_dependencies .
 group("ui_public_dependencies") {
   visibility = [
     "//brave/browser/ui",
