@@ -5,12 +5,28 @@
 
 #include "base/feature_override.h"
 
+#define IsHistoryEmbeddingsFeatureEnabled \
+  IsHistoryEmbeddingsFeatureEnabled_ChromiumImpl
+#define IsHistoryEmbeddingsEnabledForProfile \
+  IsHistoryEmbeddingsEnabledForProfile_ChromiumImpl
+
 #include <chrome/browser/history_embeddings/history_embeddings_utils.cc>
+
+#undef IsHistoryEmbeddingsEnabledForProfile
+#undef IsHistoryEmbeddingsFeatureEnabled
 
 namespace history_embeddings {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kLaunchedHistoryEmbeddings, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
+
+bool IsHistoryEmbeddingsFeatureEnabled() {
+  return true;
+}
+
+bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
+  return true;
+}
 
 }  // namespace history_embeddings
