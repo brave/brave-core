@@ -15,6 +15,7 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -32,6 +33,7 @@
 #include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/rrect_f.h"
+#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/menus/simple_menu_model.h"
@@ -196,6 +198,19 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
 
 BraveVPNButton::~BraveVPNButton() = default;
 
+void BraveVPNButton::AddedToWidget() {
+  ToolbarButton::AddedToWidget();
+  paint_as_active_subscription_ =
+      GetWidget()->RegisterPaintAsActiveChangedCallback(
+          base::BindRepeating(&BraveVPNButton::UpdateColorsAndInsets,
+                              base::Unretained(this)));
+}
+
+void BraveVPNButton::RemovedFromWidget() {
+  paint_as_active_subscription_ = {};
+  ToolbarButton::RemovedFromWidget();
+}
+
 void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
   if (IsErrorState() && (state == ConnectionState::CONNECTING ||
                          state == ConnectionState::DISCONNECTING)) {
@@ -267,9 +282,18 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   }
   image_source->SetIcon(gfx::Image(gfx::CreateVectorIcon(
       kLeoProductVpnIcon, GetIconSize(), GetIconColor())));
-  SetImageModel(views::Button::STATE_NORMAL,
-                ui::ImageModel::FromImageSkia(gfx::ImageSkia(
-                    std::move(image_source), kImageSizeWithBadge)));
+  gfx::ImageSkia vpn_image(std::move(image_source), kImageSizeWithBadge);
+
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
+  if (is_active) {
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromImageSkia(vpn_image));
+  } else {
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromImageSkia(
+                      gfx::ImageSkiaOperations::CreateTransparentImage(
+                          vpn_image, kBraveDisabledControlAlpha / 255.0)));
+  }
 }
 
 SkColor BraveVPNButton::GetIconColor() {

@@ -13,6 +13,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -28,6 +29,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
@@ -151,9 +153,20 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
 WalletButton::~WalletButton() = default;
 
 void WalletButton::AddedToWidget() {
+  ToolbarButton::AddedToWidget();
   if (notification_source_) {
     notification_source_->Init();
   }
+  paint_as_active_subscription_ =
+      GetWidget()->RegisterPaintAsActiveChangedCallback(
+          base::BindRepeating(&WalletButton::UpdateImageAndText,
+                              base::Unretained(this),
+                              /*activated=*/false));
+}
+
+void WalletButton::RemovedFromWidget() {
+  paint_as_active_subscription_ = {};
+  ToolbarButton::RemovedFromWidget();
 }
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
@@ -200,10 +213,17 @@ void WalletButton::UpdateImageAndText(bool activated) {
                 (counter_ > 0)));
 
   const ui::ColorProvider* color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
 
   ui::ColorId color_id = kColorToolbarButtonIcon;
   if (activated) {
     color_id = kColorToolbarButtonActivated;
+  } else if (!is_active) {
+    color_id = kColorToolbarButtonIconInactive;
   }
 
   if (counter_ == 0) {
@@ -233,9 +253,17 @@ void WalletButton::UpdateImageAndText(bool activated) {
   auto text = GetBadgeText();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, brave::kBadgeTextColor, brave::kBadgeNotificationBG));
-  SetImageModel(views::Button::STATE_NORMAL,
-                ui::ImageModel::FromImageSkia(
-                    gfx::ImageSkia(std::move(image_source), preferred_size)));
+  gfx::ImageSkia badge_image(std::move(image_source), preferred_size);
+
+  if (is_active) {
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromImageSkia(badge_image));
+  } else {
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromImageSkia(
+                      gfx::ImageSkiaOperations::CreateTransparentImage(
+                          badge_image, kBraveDisabledControlAlpha / 255.0)));
+  }
 }
 
 void WalletButton::ShowWalletBubble() {

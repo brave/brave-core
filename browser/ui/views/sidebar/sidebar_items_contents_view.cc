@@ -22,6 +22,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -39,6 +40,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/views/event_utils.h"
@@ -136,6 +138,56 @@ void SidebarItemsContentsView::OnThemeChanged() {
 
     SetDefaultImageFor(item);
     sidebar_model_->FetchFavicon(item);
+  }
+
+  UpdateIconsForActiveState();
+}
+
+void SidebarItemsContentsView::AddedToWidget() {
+  View::AddedToWidget();
+  paint_as_active_subscription_ =
+      GetWidget()->RegisterPaintAsActiveChangedCallback(base::BindRepeating(
+          &SidebarItemsContentsView::UpdateIconsForActiveState,
+          base::Unretained(this)));
+}
+
+void SidebarItemsContentsView::RemovedFromWidget() {
+  paint_as_active_subscription_ = {};
+  View::RemovedFromWidget();
+}
+
+void SidebarItemsContentsView::UpdateIconsForActiveState() {
+  if (children().empty()) {
+    return;
+  }
+
+  UpdateAllBuiltInItemsViewState();
+
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  if (items.size() != children().size()) {
+    return;
+  }
+
+  for (size_t i = 0; i < items.size(); ++i) {
+    if (!items[i].is_web_type()) {
+      continue;
+    }
+
+    SidebarItemView* item_view = GetItemViewAt(i);
+    auto current_image =
+        item_view->GetImage(views::Button::STATE_NORMAL);
+    if (current_image.isNull()) {
+      continue;
+    }
+
+    if (!is_active) {
+      item_view->SetImageModel(
+          views::Button::STATE_NORMAL,
+          ui::ImageModel::FromImageSkia(
+              gfx::ImageSkiaOperations::CreateTransparentImage(
+                  current_image, kBraveDisabledControlAlpha / 255.0)));
+    }
   }
 }
 
@@ -564,16 +616,21 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     sidebar::SidebarItem::BuiltInItemType type,
     views::Button::ButtonState state) const {
-  const auto get_image_model = [](const gfx::VectorIcon& icon,
-                                  views::Button::ButtonState state) {
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
+  const auto get_image_model = [is_active](const gfx::VectorIcon& icon,
+                                           views::Button::ButtonState state) {
+    ui::ColorId color_id;
+    if (state == views::Button::STATE_DISABLED) {
+      color_id = kColorSidebarArrowDisabled;
+    } else if (state == views::Button::STATE_PRESSED) {
+      color_id = kColorSidebarButtonPressed;
+    } else if (!is_active) {
+      color_id = kColorToolbarButtonIconInactive;
+    } else {
+      color_id = kColorSidebarButtonBase;
+    }
     return ui::ImageModel::FromVectorIcon(
-        icon,
-        state == views::Button::STATE_DISABLED
-            ? kColorSidebarArrowDisabled
-            : (state == views::Button::STATE_PRESSED
-                   ? kColorSidebarButtonPressed
-                   : kColorSidebarButtonBase),
-        SidebarButtonView::kDefaultIconSize);
+        icon, color_id, SidebarButtonView::kDefaultIconSize);
   };
 
   switch (type) {

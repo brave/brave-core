@@ -117,8 +117,7 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
   const gfx::VectorIcon* id = icon_type == BookmarkFolderIconType::kManaged
                                   ? &vector_icons::kFolderManagedRefreshIcon
                                   : &vector_icons::kFolderChromeRefreshIcon;
-  // Use toolbar icon color for visual consistency with other toolbar icons.
-  return ui::ImageModel::FromVectorIcon(*id, kColorToolbarButtonIcon, 20);
+  return ui::ImageModel::FromVectorIcon(*id, color, 20);
 }
 
 #endif  // defined(TOOLKIT_VIEWS)

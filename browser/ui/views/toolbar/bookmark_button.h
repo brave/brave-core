@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 
+#include "base/callback_list.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -20,8 +21,13 @@ class BraveBookmarkButton : public ToolbarButton {
   void SetToggled(bool on);
   void UpdateImageAndText();
 
+  // views::View:
+  void AddedToWidget() override;
+  void RemovedFromWidget() override;
+
  private:
   bool active_ = false;
+  base::CallbackListSubscription paint_as_active_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_

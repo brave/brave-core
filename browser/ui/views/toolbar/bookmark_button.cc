@@ -31,9 +31,29 @@ void BraveBookmarkButton::SetToggled(bool on) {
   UpdateImageAndText();
 }
 
+void BraveBookmarkButton::AddedToWidget() {
+  ToolbarButton::AddedToWidget();
+  paint_as_active_subscription_ =
+      GetWidget()->RegisterPaintAsActiveChangedCallback(
+          base::BindRepeating(&BraveBookmarkButton::UpdateImageAndText,
+                              base::Unretained(this)));
+}
+
+void BraveBookmarkButton::RemovedFromWidget() {
+  paint_as_active_subscription_ = {};
+  ToolbarButton::RemovedFromWidget();
+}
+
 void BraveBookmarkButton::UpdateImageAndText() {
   const ui::ColorProvider* color_provider = GetColorProvider();
-  SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
+  if (!color_provider) {
+    return;
+  }
+
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
+  const ui::ColorId color_id = is_active ? kColorToolbarButtonIcon
+                                         : kColorToolbarButtonIconInactive;
+  SkColor icon_color = color_provider->GetColor(color_id);
   const gfx::VectorIcon& icon = active_ ? omnibox::kStarActiveChromeRefreshIcon
                                         : omnibox::kStarChromeRefreshIcon;
   SetImageModel(

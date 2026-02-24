@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 
+#include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
@@ -45,6 +46,10 @@ class BraveVPNButton : public ToolbarButton,
       brave_vpn::mojom::PurchasedState state,
       const std::optional<std::string>& description) override;
 
+  // views::View:
+  void AddedToWidget() override;
+  void RemovedFromWidget() override;
+
  private:
   friend class brave_vpn::BraveVpnButtonUnitTest;
 
@@ -77,6 +82,7 @@ class BraveVPNButton : public ToolbarButton,
   raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
+  base::CallbackListSubscription paint_as_active_subscription_;
   base::WeakPtrFactory<BraveVPNButton> weak_ptr_factory_{this};
 };
 
