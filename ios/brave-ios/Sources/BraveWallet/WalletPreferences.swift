@@ -27,17 +27,17 @@ extension Preferences {
         }
       }
     }
-    /// The default wallet to use for Ethereum to be communicate with web3
+    /// The default wallet to use for Ethereum to communicate with web3
     public static let defaultEthWallet = Option<Int>(
       key: "wallet.default-wallet",
       default: WalletType.brave.rawValue
     )
-    /// The default wallet to use for Solana to be communicate with web3
+    /// The default wallet to use for Solana to communicate with web3
     public static let defaultSolWallet = Option<Int>(
       key: "wallet.default-sol-wallet",
       default: WalletType.brave.rawValue
     )
-    /// The default wallet to use for Cardano to be communicate with web3
+    /// The default wallet to use for Cardano to communicate with web3
     public static let defaultCardanoWallet = Option<Int>(
       key: "wallet.default-cardano-wallet",
       default: WalletType.brave.rawValue
@@ -52,7 +52,7 @@ extension Preferences {
       key: "wallet.allow-sol-provider-access",
       default: true
     )
-    /// Whether or not webpages can use the Cardano Provider API to communicate with users Solana wallet
+    /// Whether or not webpages can use the Cardano Provider API to communicate with users Cardano wallet
     public static let allowCardanoProviderAccess: Option<Bool> = .init(
       key: "wallet.allow-cardano-provider-access",
       default: true
