@@ -3,6 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+@keyframes blockReveal {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 .markdownContainer {
   h1,
   h2,
@@ -72,10 +83,34 @@
 
   word-break: break-word;
 
+  p,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  pre,
+  blockquote,
+  hr {
+    animation: blockReveal 200ms ease-out both;
+  }
+
+  .tableWrapper {
+    @for $i from 0 through 20 {
+      tbody tr:nth-child(#{$i}) {
+        animation: blockReveal 200ms ease-out both;
+        animation-delay: #{($i - 1) * 30}ms;
+      }
+    }
+  }
+
   // Table styles
   .tableWrapper {
     margin: var(--leo-spacing-xl) 0;
     overflow-x: auto;
+    overflow-y: clip;
     border-radius: var(--leo-radius-m);
     border: 1px solid var(--leo-color-divider-subtle);
   }
