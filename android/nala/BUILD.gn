@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/android/nala/icons.gni")
+
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 
 # Copies Nala Android tokens to the gen directory.
@@ -12,6 +14,7 @@ group("nala") {
   public_deps = [
     ":nala_colors",
     ":nala_colors_night",
+    ":nala_icons",
   ]
 }
 
@@ -23,4 +26,13 @@ copy("nala_colors") {
 copy("nala_colors_night") {
   sources = [ "$nala_base_path/values-night/colors.xml" ]
   outputs = [ "$target_gen_dir/values-night/colors.xml" ]
+}
+
+copy("nala_icons") {
+  sources = []
+  foreach(icon, nala_icons) {
+    sources +=
+        [ "//brave/node_modules/@brave/leo/tokens/android/drawable/$icon" ]
+  }
+  outputs = [ "$target_gen_dir/drawable/{{source_file_part}}" ]
 }
