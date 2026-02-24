@@ -34,6 +34,7 @@ source_set("brave_origin") {
     "//brave/components/playlist/core/common",
     "//brave/ios/browser/keyed_service",
     "//brave/ios/browser/policy",
+    "//brave/ios/browser/skus",
     "//components/keyed_service/core",
     "//components/policy/core/browser",
     "//components/user_prefs",
