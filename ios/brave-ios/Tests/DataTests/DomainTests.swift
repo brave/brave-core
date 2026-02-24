@@ -31,6 +31,10 @@ class DomainTests: CoreDataTestCase {
   let walletSolAccount = "8uMdzdJ6Mtsh2vGhJJGCfwo8PZrnZZ3qbT85wbo1o4xt"
   let walletSolAccount2 = "8umdzdJ6Mtsh2vFhJJGCfwo8PZrnZZ3ceT85wbo1o4dt"
 
+  let cardanoDAppURL = URL(string: "https://supermassive.github.io/ccvault-cip-0030-test/#/")!
+  let walletCardanoAccount = "1815_12_0_0"
+  let walletCardanoAccount2 = "1815_12_0_1"
+
   private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
     return NSEntityDescription.entity(forEntityName: String(describing: Domain.self), in: context)!
   }
@@ -202,9 +206,49 @@ class DomainTests: CoreDataTestCase {
     XCTAssertNil(raydiumDomain.wallet_solanaPermittedAcccounts)
   }
 
+  func testWalletCardanoDappPermission() {
+    let cardanoDappDomain = Domain.getOrCreate(forUrl: cardanoDAppURL, persistent: true)
+
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(
+        forUrl: cardanoDAppURL,
+        coin: .ada,
+        accounts: [walletCardanoAccount],
+        grant: true
+      )
+    }
+
+    XCTAssertTrue(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount))
+    XCTAssertFalse(cardanoDappDomain.walletPermissions(for: .eth, account: walletCardanoAccount))
+
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(
+        forUrl: cardanoDAppURL,
+        coin: .ada,
+        accounts: [walletCardanoAccount2],
+        grant: true
+      )
+    }
+    XCTAssertTrue(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount2))
+    XCTAssertTrue(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount))
+    XCTAssertFalse(cardanoDappDomain.walletPermissions(for: .eth, account: walletCardanoAccount2))
+
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(
+        forUrl: cardanoDAppURL,
+        coin: .ada,
+        accounts: [walletCardanoAccount2],
+        grant: false
+      )
+    }
+    XCTAssertFalse(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount2))
+    XCTAssertTrue(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount))
+  }
+
   func testClearAllWalletPermissions() {
     let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
     let raydiumDomain = Domain.getOrCreate(forUrl: raydium, persistent: true)
+    let cardanoDappDomain = Domain.getOrCreate(forUrl: cardanoDAppURL, persistent: true)
 
     // add permissions for `compound` Domain
     backgroundSaveAndWaitForExpectation {
@@ -226,6 +270,16 @@ class DomainTests: CoreDataTestCase {
       )
     }
     XCTAssertTrue(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
+    // add permissions for `cardano` Domain
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(
+        forUrl: cardanoDAppURL,
+        coin: .ada,
+        accounts: [walletCardanoAccount],
+        grant: true
+      )
+    }
+    XCTAssertTrue(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount))
     // Remove all eth permissions
     backgroundSaveAndWaitForExpectation {
       Domain.clearAllWalletPermissions(for: .eth)
@@ -236,6 +290,11 @@ class DomainTests: CoreDataTestCase {
       Domain.clearAllWalletPermissions(for: .sol)
     }
     XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
+    // Remove all cardano permissions
+    backgroundSaveAndWaitForExpectation {
+      Domain.clearAllWalletPermissions(for: .ada)
+    }
+    XCTAssertFalse(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount))
   }
 
   @MainActor func testAllDomainsWithAutoShredLevel() {

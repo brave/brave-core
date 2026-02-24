@@ -37,6 +37,11 @@ extension Preferences {
       key: "wallet.default-sol-wallet",
       default: WalletType.brave.rawValue
     )
+    /// The default wallet to use for Cardano to be communicate with web3
+    public static let defaultCardanoWallet = Option<Int>(
+      key: "wallet.default-cardano-wallet",
+      default: WalletType.brave.rawValue
+    )
     /// Whether or not webpages can use the Ethereum Provider API to communicate with users Ethereum wallet
     public static let allowEthProviderAccess: Option<Bool> = .init(
       key: "wallet.allow-eth-provider-access",
@@ -45,6 +50,11 @@ extension Preferences {
     /// Whether or not webpages can use the Solana Provider API to communicate with users Solana wallet
     public static let allowSolProviderAccess: Option<Bool> = .init(
       key: "wallet.allow-sol-provider-access",
+      default: true
+    )
+    /// Whether or not webpages can use the Cardano Provider API to communicate with users Solana wallet
+    public static let allowCardanoProviderAccess: Option<Bool> = .init(
+      key: "wallet.allow-cardano-provider-access",
       default: true
     )
     /// The option to display web3 notification
@@ -108,7 +118,10 @@ extension Preferences {
       case .sol:
         Preferences.Wallet.defaultSolWallet.reset()
         Preferences.Wallet.allowSolProviderAccess.reset()
-      case .fil, .btc, .zec:
+      case .ada:
+        Preferences.Wallet.defaultCardanoWallet.reset()
+        Preferences.Wallet.allowCardanoProviderAccess.reset()
+      case .fil, .btc, .zec, .dot:
         // not supported
         fallthrough
       @unknown default:
