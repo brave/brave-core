@@ -3,31 +3,52 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("browser") {
+# Core sources without browser-level dependencies, used directly by unit tests.
+source_set("core") {
   sources = [
     "bandwidth_linreg.cc",
     "bandwidth_linreg.h",
     "bandwidth_linreg_parameters.h",
-    "bandwidth_savings_predictor.cc",
-    "bandwidth_savings_predictor.h",
     "named_third_party_registry.cc",
     "named_third_party_registry.h",
-    "named_third_party_registry_factory.cc",
-    "named_third_party_registry_factory.h",
     "p3a_bandwidth_savings_tracker.cc",
     "p3a_bandwidth_savings_tracker.h",
+  ]
+
+  # Headers include base/ and keyed_service/core, so they must be public_deps.
+  public_deps = [
+    "//base",
+    "//components/keyed_service/core",
+  ]
+
+  deps = [
+    "//brave/components/brave_perf_predictor/common",
+    "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/time_period_storage",
+    "//components/prefs",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+static_library("browser") {
+  sources = [
+    "bandwidth_savings_predictor.cc",
+    "bandwidth_savings_predictor.h",
+    "named_third_party_registry_factory.cc",
+    "named_third_party_registry_factory.h",
     "perf_predictor_page_metrics_observer.cc",
     "perf_predictor_page_metrics_observer.h",
     "perf_predictor_tab_helper.cc",
     "perf_predictor_tab_helper.h",
   ]
 
+  public_deps = [ ":core" ]
+
   deps = [
-    "//base",
     "//brave/components/brave_perf_predictor/common",
-    "//brave/components/resources",
-    "//brave/components/resources:static_resources_grit",
-    "//brave/components/time_period_storage",
     "//components/keyed_service/content",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",
@@ -36,10 +57,9 @@ static_library("browser") {
     "//components/sessions",
     "//components/user_prefs",
     "//content/public/browser",
-    "//net/base/registry_controlled_domains",
+    "//net",
     "//services/metrics/public/cpp:metrics_cpp",
     "//third_party/blink/public/mojom:mojom_platform_headers",
-    "//ui/base",
     "//url",
   ]
 
@@ -60,7 +80,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
-    ":browser",
+    ":core",
     "//base",
     "//base/test:test_support",
     "//components/prefs:test_support",
