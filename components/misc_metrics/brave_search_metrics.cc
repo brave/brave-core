@@ -8,6 +8,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/no_destructor.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -21,8 +22,6 @@ namespace misc_metrics {
 
 namespace {
 
-constexpr char kBraveSearchHost[] = "search.brave.com";
-constexpr char kBraveSearchPath[] = "/search";
 constexpr int kDailyQueriesBuckets[] = {0, 3, 7};
 constexpr int kEntryPercentageBuckets[] = {0, 5, 20, 80, 95};
 constexpr char kQueriesCountKey[] = "queries";
@@ -33,8 +32,10 @@ constexpr char kNTPSearchCountKey[] = "ntp_search";
 constexpr base::TimeDelta kReportInterval = base::Hours(24);
 
 bool IsBraveSearchURL(const GURL& url) {
-  return url.host() == kBraveSearchHost && url.path() == kBraveSearchPath &&
-         url.has_query();
+  static const base::NoDestructor<GURL> kBraveSearchURL(
+      TemplateURLPrepopulateData::brave_search.search_url);
+  return url.host() == kBraveSearchURL->host() &&
+         url.path() == kBraveSearchURL->path() && url.has_query();
 }
 
 constexpr auto kDailyQueriesHistogramMap =
