@@ -12,6 +12,7 @@ const RICH_SEARCH_WIDGETS_ORIGIN = loadTimeData.getString(
 )
 
 /** Gets the browser theme (which might be user configured) */
+// <if expr="!is_ios">
 function getBrowserTheme() {
   const stringifyStyles = (stylesheet: CSSStyleSheet | null | undefined) => {
     if (!stylesheet) {
@@ -35,6 +36,7 @@ function getBrowserTheme() {
 
   return stringifyStyles(baseColors?.styleSheet) + stringifyStyles(nala)
 }
+// </if>
 
 export default function RichSearchWidget(props: { jsonData: string }) {
   if (!RICH_SEARCH_WIDGETS_ORIGIN) {
@@ -45,10 +47,12 @@ export default function RichSearchWidget(props: { jsonData: string }) {
     (iframe: HTMLIFrameElement | null) => {
       if (iframe) {
         const sendContent = () => {
+          // <if expr="!is_ios">
           iframe.contentWindow?.postMessage(
             { type: 'theme', styles: getBrowserTheme() },
             RICH_SEARCH_WIDGETS_ORIGIN,
           )
+          // </if>
           iframe.contentWindow?.postMessage(
             JSON.parse(props.jsonData),
             RICH_SEARCH_WIDGETS_ORIGIN,
