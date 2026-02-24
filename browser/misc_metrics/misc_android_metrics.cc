@@ -5,8 +5,6 @@
 
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 
-#include <utility>
-
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
