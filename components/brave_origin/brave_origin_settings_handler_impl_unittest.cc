@@ -21,6 +21,7 @@
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/test/fake_skus_service.h"
+#include "build/build_config.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -407,7 +408,8 @@ TEST_F(BraveOriginHandlerWithSkusTest,
 }
 
 // In branded builds, RefreshPurchaseState unconditionally returns true.
-#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+// On Linux, CheckPurchaseState always returns true (no SKU store).
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && !BUILDFLAG(IS_LINUX)
 TEST_F(BraveOriginHandlerWithSkusTest,
        RefreshPurchaseState_NoCredentials_ReturnsFalse) {
   fake_skus_service_->SetCredentialSummaryResponse(
