@@ -49,3 +49,21 @@ static_library("browser") {
     deps += [ "//brave/browser/android:android_browser_process" ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "bandwidth_linreg_unittest.cc",
+    "named_third_party_registry_unittest.cc",
+    "p3a_bandwidth_savings_tracker_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}

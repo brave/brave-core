@@ -77,7 +77,10 @@ test("brave_components_unittests") {
   }
 
   if (use_blink) {
-    deps += [ "//brave/components/local_ai/content:unit_tests" ]
+    deps += [
+      "//brave/components/brave_perf_predictor/browser:unit_tests",
+      "//brave/components/local_ai/content:unit_tests",
+    ]
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }
