@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/brave_onboarding_title"
-        style="@style/HeadingH2"
+        style="@style/HeadingH3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/wdp_title"
