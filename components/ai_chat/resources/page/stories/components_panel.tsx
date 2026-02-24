@@ -37,10 +37,7 @@ import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
 import { taskConversationEntries } from './story_utils/history'
 import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
-import {
-  Content,
-  stringifyContent,
-} from '../components/input_box/editable_content'
+import { Content } from '../components/input_box/editable_content'
 import { getToolUseEvent } from '../../common/test_data_utils'
 import { MockContext } from '../state/mock_context'
 
@@ -1185,8 +1182,7 @@ function StoryContext(
   }>,
 ) {
   /** @deprecated Use `args`, not `options.args` */
-  const options = { args: props.args }
-  const { args, setArgs } = props
+  const { args } = props
   // Ref holds current args - for inside function lookup
   const argsRef = React.useRef(args)
   argsRef.current = args
@@ -1371,7 +1367,7 @@ export default meta
 type Story = StoryObj<CustomArgs>
 
 export const _Panel: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <div className={styles.container}>
         <Main />
