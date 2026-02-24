@@ -1,0 +1,31 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("sherpa_onnx_soda_client") {
+  sources = [
+    "sherpa_onnx_soda_client.cc",
+    "sherpa_onnx_soda_client.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/services/speech/soda",
+    "//chrome/services/speech/soda:soda_api_proto",
+    "//media",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "sherpa_onnx_soda_client_unittest.cc" ]
+
+  deps = [
+    ":sherpa_onnx_soda_client",
+    "//base",
+    "//chrome/services/speech/soda:soda_api_proto",
+    "//testing/gtest",
+  ]
+}

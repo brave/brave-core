@@ -14,7 +14,10 @@
 namespace captions {
 
 bool IsLiveCaptionFeatureSupported() {
-  return false;
+  // Delegate to Chromium's implementation so that SODA (Speech On-Device API)
+  // is available for on-device speech recognition via the WebSpeech API.
+  // Live Caption UI is removed in Brave's settings (a11y_page.ts).
+  return IsLiveCaptionFeatureSupported_ChromiumImpl();
 }
 
 }  // namespace captions

@@ -1,0 +1,11 @@
+diff --git a/chrome/services/speech/BUILD.gn b/chrome/services/speech/BUILD.gn
+--- a/chrome/services/speech/BUILD.gn
++++ b/chrome/services/speech/BUILD.gn
+@@ -44,6 +44,7 @@ source_set("lib") {
+     "//net",
+     "//services/audio/public/cpp",
+   ]
++  import("//brave/services/speech/sources.gni") deps += brave_services_speech_deps
+
+   if (is_chromeos) {
+     sources += [
