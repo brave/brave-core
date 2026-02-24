@@ -17,6 +17,7 @@
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/test/fake_skus_service.h"
+#include "build/build_config.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -489,6 +490,20 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(result);
 }
 
+#if BUILDFLAG(IS_LINUX)
+TEST_F(BraveOriginServiceTest,
+       CheckPurchaseState_Linux_AlwaysReturnsPurchased) {
+  // Reset purchase state to verify Linux always sets purchased to true.
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+  ASSERT_FALSE(service_->IsPurchased());
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
+  EXPECT_TRUE(service_->IsPurchased());
+  EXPECT_TRUE(BraveOriginPolicyManager::GetInstance()->IsPurchased());
+}
+#else
 TEST_F(BraveOriginServiceTest,
        CheckPurchaseState_NoSkusGetter_ReturnsCachedValue) {
   // Reset purchase state so we can verify the fallback path.
@@ -501,8 +516,12 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(result.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
+#endif  // BUILDFLAG(IS_LINUX)
 
 // Test fixture that wires up a FakeSkusService.
+// On Linux, CheckPurchaseState always returns true without using SKUs,
+// so these tests only apply to non-Linux platforms.
+#if !BUILDFLAG(IS_LINUX)
 class BraveOriginServiceWithSkusTest : public testing::Test {
  public:
   BraveOriginServiceWithSkusTest() = default;
@@ -679,6 +698,7 @@ TEST_F(BraveOriginServiceWithSkusTest,
   EXPECT_FALSE(result2.Get());
   EXPECT_FALSE(service_->IsPurchased());
 }
+#endif  // !BUILDFLAG(IS_LINUX)
 
 // Test class for when BraveOrigin feature is disabled
 class BraveOriginServiceDisabledTest : public testing::Test {
