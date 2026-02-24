@@ -6,6 +6,8 @@
 # These resources override upstream's Chromium resources.
 # Brave-specific resources are located in `brave-res` folder.
 brave_java_resources = [
+  "$root_gen_dir/brave/android/nala/values-night/colors.xml",
+  "$root_gen_dir/brave/android/nala/values/colors.xml",
   "java/res/drawable-hdpi/btn_delete_24dp.png",
   "java/res/drawable-hdpi/btn_star_filled.png",
   "java/res/drawable-hdpi/btn_tabswitcher_modern.png",
