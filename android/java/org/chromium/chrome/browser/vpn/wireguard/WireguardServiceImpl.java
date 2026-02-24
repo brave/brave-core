@@ -111,15 +111,18 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mContext, BraveActivity.CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.drawable.ic_vpn)
+        notificationBuilder
+                .setSmallIcon(R.drawable.ic_product_vpn)
                 .setAutoCancel(false)
                 .setContentTitle(
-                        String.format(mContext.getResources().getString(R.string.connected_to_host),
+                        String.format(
+                                mContext.getResources().getString(R.string.connected_to_host),
                                 BraveVpnPrefUtils.getHostnameDisplay()))
                 .setContentText(notificationText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(R.drawable.ic_vpn,
+                .addAction(
+                        R.drawable.ic_product_vpn,
                         mContext.getResources().getString(R.string.disconnect),
                         disconnectVpnPendingIntent)
                 .setOnlyAlertOnce(true);

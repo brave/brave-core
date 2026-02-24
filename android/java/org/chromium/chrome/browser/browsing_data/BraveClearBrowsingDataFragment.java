@@ -43,7 +43,7 @@ public class BraveClearBrowsingDataFragment extends ClearBrowsingDataFragment {
                 new ClearBrowsingDataCheckBoxPreference(getContext(), null);
         mClearAIChatDataCheckBoxPreference.setTitle(R.string.brave_clear_ai_history_title);
         mClearAIChatDataCheckBoxPreference.setSummary(R.string.brave_clear_ai_history_summary);
-        mClearAIChatDataCheckBoxPreference.setIcon(R.drawable.ic_brave_ai);
+        mClearAIChatDataCheckBoxPreference.setIcon(R.drawable.ic_product_brave_leo);
 
         return mClearAIChatDataCheckBoxPreference;
     }

@@ -444,7 +444,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             if (itemId == R.id.new_tab_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_new_tab_page));
+                        AppCompatResources.getDrawable(
+                                mBraveContext, R.drawable.ic_window_tab_new));
             } else if (itemId == R.id.new_incognito_tab_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
@@ -1032,7 +1033,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 buildModelForStandardMenuItem(
                         R.id.brave_wallet_id,
                         R.string.menu_brave_wallet,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_crypto_wallets : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_wallet : 0));
     }
 
     private MVCListAdapter.ListItem buildBravePlaylistItem() {
@@ -1059,7 +1060,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 buildModelForStandardMenuItem(
                         R.id.brave_news_id,
                         R.string.brave_news_title,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_news : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_news : 0));
     }
 
     private MVCListAdapter.ListItem buildBraveLeoItem() {
@@ -1068,7 +1069,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 buildModelForStandardMenuItem(
                         R.id.brave_leo_id,
                         R.string.menu_brave_leo,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_brave_ai : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_leo : 0));
     }
 
     private MVCListAdapter.ListItem buildBraveShredItem() {
@@ -1086,7 +1087,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 buildModelForMenuItemWithCheckbox(
                         R.id.request_brave_vpn_id,
                         R.string.brave_vpn,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_vpn : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_vpn : 0,
                         R.id.request_brave_vpn_check_id,
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mBraveContext)));
     }

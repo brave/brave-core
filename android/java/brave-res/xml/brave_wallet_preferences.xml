@@ -55,6 +55,6 @@
 
     <!-- A description with hyperlink to explain more about NFT discovery settings. -->
     <org.chromium.components.browser_ui.settings.TextMessagePreference
-        app:icon="@drawable/ic_info"
+        app:icon="@drawable/ic_info_outline"
         android:key="nft_auto_discovery_learn_more" />
 </PreferenceScreen>
