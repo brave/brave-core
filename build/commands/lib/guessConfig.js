@@ -3,20 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import config from './config'
-import os from 'os'
-import path from 'path/posix'
-import fs from 'fs'
+const config = require('./config')
+const os = require('os')
+const path = require('path/posix')
+const fs = require('fs')
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
-// Choose which brave-core build directory to look for pre-compiled
-// resource dependencies:
+// Choose which brave-core build directory to look for pre-compiled resource
+// dependencies:
 // 1. Default for local builds for the actual platform / architecture
 // 2. platform / architecture overriden by environment variables
 // 3. most recently built - this caters to the common scenario when a
-// non-standard target has been built but no arguments are provided to storybook.
+//    non-standard target has been built but no arguments are provided to
+//    storybook.
 
 // This uses environment variables as there is currently no way to pass custom
 // arguments to the |storybook build| cli.
@@ -68,4 +69,4 @@ if (fs.existsSync(outputPath)) {
 }
 
 const genPath = path.join(outputPath, 'gen')
-export { outputPath, genPath }
+module.exports = { outputPath, genPath }
