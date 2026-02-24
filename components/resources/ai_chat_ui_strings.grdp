@@ -929,4 +929,44 @@
       Allowing this will send the <ph name="URL_FORMAT_START">$1<ex>&lt;b&gt;</ex></ph>URL<ph name="URL_FORMAT_END">/$1<ex>&lt;/b&gt;</ex></ph> and <ph name="TITLE_FORMAT_START">$2<ex>&lt;b&gt;</ex></ph>Title<ph name="TITLE_FORMAT_END">/$2<ex>&lt;/b&gt;</ex></ph> of all your Tabs and Tab Groups to Brave AI, and allow Brave AI to move them around. This permission applies only to this conversation.
     </message>
   </if>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_DEEP_RESEARCH" desc="Display label for the deep research tool shown above results" formatter_data="webui=AiChat">
+    Deep Research
+  </message>
+  <!-- Deep Research strings -->
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_SEARCHING" desc="Deep research status showing a search query in progress" formatter_data="webui=AiChat">
+    Searching: "<ph name="QUERY">$1<ex>quantum computing</ex></ph>"
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ANALYZING_SOURCES" desc="Deep research status showing analysis of sources for a query" formatter_data="webui=AiChat">
+    Analyzing <ph name="COUNT">$1<ex>10</ex></ph> sources for "<ph name="QUERY">$2<ex>quantum computing</ex></ph>"
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_PROCESSING_URLS" desc="Deep research status showing new URLs being processed for a query" formatter_data="webui=AiChat">
+    Processing <ph name="COUNT">$1<ex>3</ex></ph> new URLs for "<ph name="QUERY">$2<ex>quantum computing</ex></ph>"
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_FOUND_URLS" desc="Deep research status showing how many URLs were found for a query" formatter_data="webui=AiChat">
+    Found <ph name="COUNT">$1<ex>12</ex></ph> URLs for "<ph name="QUERY">$2<ex>quantum computing</ex></ph>"
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_FETCHING_URLS" desc="Deep research status showing URL fetch progress" formatter_data="webui=AiChat">
+    Fetching <ph name="FETCHED">$1<ex>5</ex></ph>/<ph name="TOTAL">$2<ex>10</ex></ph> URLs
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ANALYZED_URLS" desc="Deep research status showing completed analysis of URLs for a query" formatter_data="webui=AiChat">
+    Analyzed <ph name="COUNT">$1<ex>8</ex></ph> URLs for "<ph name="QUERY">$2<ex>quantum computing</ex></ph>"
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_SEARCHING_QUERIES" desc="Deep research status showing the number of search queries being executed" formatter_data="webui=AiChat">
+    Searching <ph name="COUNT">$1<ex>5</ex></ph> queries
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_PROGRESS" desc="Deep research status showing overall progress with URLs and searches" formatter_data="webui=AiChat">
+    Analyzed <ph name="URL_COUNT">$1<ex>14</ex></ph> URLs from <ph name="QUERY_COUNT">$2<ex>5</ex></ph> searches
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_COMPLETE" desc="Deep research status indicating research is complete" formatter_data="webui=AiChat">
+    Research complete
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ELAPSED_MINUTES_SECONDS" desc="Deep research elapsed time display showing minutes and seconds" formatter_data="webui=AiChat">
+    <ph name="MINUTES">$1<ex>2</ex></ph>m <ph name="SECONDS">$2<ex>15</ex></ph>s
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ELAPSED_SECONDS" desc="Deep research elapsed time display showing only seconds" formatter_data="webui=AiChat">
+    <ph name="SECONDS">$1<ex>45</ex></ph>s
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ERROR" desc="Deep research error message with error details" formatter_data="webui=AiChat">
+    Research error: <ph name="ERROR">$1<ex>Service timeout</ex></ph>
+  </message>
 </grit-part>

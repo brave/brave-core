@@ -38,6 +38,7 @@ const string kWaitToolName = "wait";
 const string kBraveNewsSearchToolName = "brave_news_search";
 const string kBraveWebSearchToolName = "brave_web_search";
 const string kBraveFaqsSearchToolName = "brave_faqs_search";
+const string kDeepResearchToolName = "deep_research";
 
 // Tool artifact types
 const string kLineChartArtifactType = "line_chart";

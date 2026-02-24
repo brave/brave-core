@@ -1,10 +1,11 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as mojom from '../../../common/mojom'
 import styles from './deep_research_event.module.scss'
 
@@ -22,10 +23,7 @@ interface DeepResearchEventProps {
   isActive: boolean
 }
 
-type EventCategory = 'search' | 'analysis' | 'progress' | 'complete'
-
 interface LastEventInfo {
-  category: EventCategory
   description: string
   iconName: string
 }
@@ -35,12 +33,10 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   // Events are checked for "active" status to avoid stale events dominating
 
   // Search in progress (not completed yet)
-  if (props.searchStatusEvent && props.searchStatusEvent.status === 'started') {
+  if (props.searchStatusEvent && props.searchStatusEvent.status === mojom.DeepResearchSearchStatus.kStarted) {
     const e = props.searchStatusEvent
-    const shortQuery = e.query.length > 30 ? e.query.slice(0, 30) + '...' : e.query
     return {
-      category: 'search',
-      description: `Searching: "${shortQuery}"`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_SEARCHING, { $1: e.query }),
       iconName: 'search'
     }
   }
@@ -48,10 +44,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   // LLM analysis in progress - only show if actively analyzing (not completed)
   if (props.analysisStatusEvent && props.analysisStatusEvent.chunksAnalyzed < props.analysisStatusEvent.chunksTotal) {
     const e = props.analysisStatusEvent
-    const shortQuery = e.query.length > 40 ? e.query.slice(0, 40) + '...' : e.query
     return {
-      category: 'analysis',
-      description: `Analyzing ${e.chunksTotal} sources for "${shortQuery}"`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_ANALYZING_SOURCES, { $1: String(e.chunksTotal), $2: e.query }),
       iconName: 'file'
     }
   }
@@ -59,21 +53,17 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   // Analyzing URLs (processing search results)
   if (props.analyzingEvent) {
     const e = props.analyzingEvent
-    const shortQuery = e.query.length > 40 ? e.query.slice(0, 40) + '...' : e.query
     return {
-      category: 'search',
-      description: `Processing ${e.newUrls} new URLs for "${shortQuery}"`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_PROCESSING_URLS, { $1: String(e.newUrlCount), $2: e.query }),
       iconName: 'search'
     }
   }
 
   // Search completed - shows URLs found
-  if (props.searchStatusEvent && props.searchStatusEvent.status === 'completed') {
+  if (props.searchStatusEvent && props.searchStatusEvent.status === mojom.DeepResearchSearchStatus.kCompleted) {
     const e = props.searchStatusEvent
-    const shortQuery = e.query.length > 30 ? e.query.slice(0, 30) + '...' : e.query
     return {
-      category: 'search',
-      description: `Found ${e.urlsFound} URLs for "${shortQuery}"`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_FOUND_URLS, { $1: String(e.urlsFound), $2: e.query }),
       iconName: 'search'
     }
   }
@@ -82,8 +72,7 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   if (props.fetchStatusEvent) {
     const e = props.fetchStatusEvent
     return {
-      category: 'search',
-      description: `Fetching ${e.urlsFetched}/${e.urlsTotal} URLs`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_FETCHING_URLS, { $1: String(e.urlsFetched), $2: String(e.urlsTotal) }),
       iconName: 'search'
     }
   }
@@ -91,10 +80,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   // Thinking event = analysis complete for a query (lower priority - it accumulates)
   if (props.thinkingEvents && props.thinkingEvents.length > 0) {
     const e = props.thinkingEvents[props.thinkingEvents.length - 1]
-    const shortQuery = e.query.length > 40 ? e.query.slice(0, 40) + '...' : e.query
     return {
-      category: 'analysis',
-      description: `Analyzed ${e.urlsAnalyzed} URLs for "${shortQuery}"`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_ANALYZED_URLS, { $1: String(e.urlsAnalyzed), $2: e.query }),
       iconName: 'file'
     }
   }
@@ -103,8 +90,7 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   if (props.queriesEvent && props.queriesEvent.queries.length > 0) {
     const queries = props.queriesEvent.queries
     return {
-      category: 'search',
-      description: `Searching ${queries.length} ${queries.length === 1 ? 'query' : 'queries'}`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_SEARCHING_QUERIES, { $1: String(queries.length) }),
       iconName: 'search'
     }
   }
@@ -113,8 +99,7 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   if (props.progressEvent) {
     const e = props.progressEvent
     return {
-      category: 'progress',
-      description: `Analyzed ${e.urlsAnalyzed} URLs from ${e.queriesCount} searches`,
+      description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_PROGRESS, { $1: String(e.urlsAnalyzed), $2: String(e.queriesCount) }),
       iconName: 'search'
     }
   }
@@ -122,8 +107,7 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   // Complete event = research finished
   if (props.completeEvent) {
     return {
-      category: 'complete',
-      description: 'Research complete',
+      description: getLocale(S.CHAT_UI_DEEP_RESEARCH_COMPLETE),
       iconName: 'check-circle-filled'
     }
   }
@@ -161,9 +145,13 @@ function ElapsedTimeCounter(props: { progressEvent?: mojom.DeepResearchProgressE
   const minutes = Math.floor(elapsed / 60)
   const seconds = elapsed % 60
 
+  const timeDisplay = minutes > 0
+    ? formatLocale(S.CHAT_UI_DEEP_RESEARCH_ELAPSED_MINUTES_SECONDS, { $1: String(minutes), $2: String(seconds) })
+    : formatLocale(S.CHAT_UI_DEEP_RESEARCH_ELAPSED_SECONDS, { $1: String(seconds) })
+
   return (
     <span className={styles.elapsed}>
-      {minutes > 0 ? `${minutes}m ` : ''}{seconds}s
+      {timeDisplay}
     </span>
   )
 }
@@ -172,7 +160,7 @@ function DeepResearchError(props: { errorEvent: mojom.DeepResearchErrorEvent }) 
   return (
     <div className={styles.error}>
       <Icon name='warning-triangle-filled' />
-      <span>Research error: {props.errorEvent.error}</span>
+      <span>{formatLocale(S.CHAT_UI_DEEP_RESEARCH_ERROR, { $1: props.errorEvent.error })}</span>
     </div>
   )
 }
@@ -265,7 +253,21 @@ export default function DeepResearchEvent(props: DeepResearchEventProps) {
   return (
     <div className={styles.deepResearch}>
       {/* Single-line progress while active */}
-      {showProgress && <DeepResearchProgressLine {...props} />}
+      {showProgress && (
+        <DeepResearchProgressLine
+          queriesEvent={props.queriesEvent}
+          thinkingEvents={props.thinkingEvents}
+          progressEvent={props.progressEvent}
+          completeEvent={props.completeEvent}
+          errorEvent={props.errorEvent}
+          searchStatusEvent={props.searchStatusEvent}
+          analysisStatusEvent={props.analysisStatusEvent}
+          iterationCompleteEvent={props.iterationCompleteEvent}
+          analyzingEvent={props.analyzingEvent}
+          fetchStatusEvent={props.fetchStatusEvent}
+          isActive={props.isActive}
+        />
+      )}
 
       {/* Error message if any */}
       {errorEvent && <DeepResearchError errorEvent={errorEvent} />}
@@ -274,7 +276,7 @@ export default function DeepResearchEvent(props: DeepResearchEventProps) {
       {completeEvent && !isActive && (
         <div className={styles.complete}>
           <Icon name='check-circle-filled' />
-          <span>Research complete</span>
+          <span>{getLocale(S.CHAT_UI_DEEP_RESEARCH_COMPLETE)}</span>
         </div>
       )}
     </div>
