@@ -6,6 +6,6 @@
 import { getLocale } from '$web-common/locale'
 import { BraveShieldsStrings } from 'gen/components/grit/brave_components_webui_strings'
 
-type StringKey = keyof typeof BraveShieldsStrings
+export type StringKey = keyof typeof BraveShieldsStrings
 
 export const getString = <(key: StringKey) => string>getLocale
