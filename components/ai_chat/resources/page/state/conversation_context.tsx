@@ -90,10 +90,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   const aiChat = useAIChat()
 
   const { api, selectedConversationId, updateSelectedConversationId } = props
-  const {
-    getConversationHistoryData: conversationHistory,
-    isPlaceholderData: isHistoryInitialized,
-  } = api.useGetConversationHistory()
+  const conversationHistory = api.useGetConversationHistoryData()
   const { getStateData: conversationState } = api.useGetState()
 
   const sendFeedbackState = useSendFeedback(api)
@@ -122,13 +119,16 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     setHasDismissedLongConversationInfo,
   ] = React.useState<boolean>(false)
 
+  // Some conversation (or profile) types might have different model
+  // availability.
   const availableModels = React.useMemo(() => {
-    return aiChat.isAIChatAgentProfile && aiChat.isAIChatAgentProfile
+    return aiChat.isAIChatAgentProfileFeatureEnabled
+      && aiChat.isAIChatAgentProfile
       ? conversationState.allModels.filter((m) => m.supportsTools)
       : conversationState.allModels
   }, [
     conversationState.allModels,
-    aiChat.isAIChatAgentProfile,
+    aiChat.isAIChatAgentProfileFeatureEnabled,
     aiChat.isAIChatAgentProfile,
   ])
 
@@ -160,6 +160,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     if (selectedConversationId === tabAssociatedChatId) return
     if (conversationState.conversationUuid === selectedConversationId) return
     updateSelectedConversationId(conversationState.conversationUuid)
+    // We don't want to re-run this effect on selectedConversationId change as
+    // that would cause an infinite loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasConversationStarted, updateSelectedConversationId])
 
   // Update page title when conversation changes
@@ -167,9 +170,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   React.useEffect(() => {
     const originalTitle = document.title
     const conversationTitle =
-      aiChat.conversations.find(
-        (c) => c.uuid === conversationState.conversationUuid,
-      )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+      conversations.find((c) => c.uuid === conversationState.conversationUuid)
+        ?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
     function setTitle(isPWA: boolean) {
       if (isPWA) {
@@ -226,7 +228,12 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       !hasDismissedLongConversationInfo
       && chatHistoryCharTotal >= totalCharLimit
     )
-  }, [conversationHistory, currentModel, hasDismissedLongConversationInfo])
+  }, [
+    conversationHistory,
+    currentModel,
+    hasDismissedLongConversationInfo,
+    conversationState.associatedContent.length,
+  ])
 
   const apiHasError = conversationState.error !== Mojom.APIError.None
   const shouldDisableUserInput = !!(
@@ -250,7 +257,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     try {
       aiChat.api.metrics.onQuickActionStatusChange(!!selectedActionType)
     } catch (e) {}
-  }, [selectedActionType])
+  }, [selectedActionType, aiChat.api])
 
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     setSelectedActionType(actionType)
@@ -546,7 +553,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     aiChat.setSkillDialog({
       id: '',
       shortcut: '',
-      prompt: prompt,
+      prompt,
       model: '',
       createdTime: { internalValue: BigInt(0) },
       lastUsed: { internalValue: BigInt(0) },
@@ -606,12 +613,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
      * Use `api.useGetConversationHistory().data` instead.
      */
     conversationHistory,
-
-    /**
-     * @deprecated
-     * Use `api.useGetConversationHistory().isPlaceholderData` instead.
-     */
-    historyInitialized: isHistoryInitialized,
 
     currentModel,
     userDefaultModel,
