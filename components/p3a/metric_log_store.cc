@@ -327,11 +327,11 @@ const metrics::LogMetadata MetricLogStore::staged_log_metadata() const {
   return {};
 }
 
-void MetricLogStore::InsertUnsentEntry(const std::string& histogram_name) {
+void MetricLogStore::InsertUnsentEntry(std::string_view histogram_name) {
   if (delegate_->ShouldDeferMetric(histogram_name)) {
-    deferred_entries_.insert(histogram_name);
+    deferred_entries_.insert(std::string(histogram_name));
   } else {
-    unsent_entries_.insert(histogram_name);
+    unsent_entries_.insert(std::string(histogram_name));
   }
 }
 

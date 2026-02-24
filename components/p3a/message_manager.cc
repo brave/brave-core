@@ -314,8 +314,7 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
                                          upload_type, metric_config);
 }
 
-bool MessageManager::IsEphemeralMetric(
-    const std::string& histogram_name) const {
+bool MessageManager::IsEphemeralMetric(std::string_view histogram_name) const {
   const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
 
   return (metric_config && metric_config->ephemeral) ||
@@ -341,8 +340,7 @@ void MessageManager::SetIsBrowserDefault(bool is_default) {
   }
 }
 
-bool MessageManager::ShouldDeferMetric(
-    const std::string& histogram_name) const {
+bool MessageManager::ShouldDeferMetric(std::string_view histogram_name) const {
   if (message_meta_.is_browser_default().has_value()) {
     return false;
   }

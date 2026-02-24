@@ -40,12 +40,12 @@ class MetricLogStore : public metrics::LogStore {
     // Returns std::nullopt if the metric is obsolete and should be cleaned up.
     virtual std::optional<MetricLogType> GetLogTypeForHistogram(
         std::string_view histogram_name) const = 0;
-    virtual bool IsEphemeralMetric(const std::string& histogram_name) const = 0;
+    virtual bool IsEphemeralMetric(std::string_view histogram_name) const = 0;
     // Returns true if the metric should be held in the deferred set
     // instead of the unsent set (i.e. metrics that depend on browser default
     // status). Deferred metrics are not eligible for staging/upload until
     // ReevaluateDeferredEntries() moves them.
-    virtual bool ShouldDeferMetric(const std::string& histogram_name) const = 0;
+    virtual bool ShouldDeferMetric(std::string_view histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 
@@ -111,7 +111,7 @@ class MetricLogStore : public metrics::LogStore {
   };
 
   const char* GetPrefName() const;
-  void InsertUnsentEntry(const std::string& histogram_name);
+  void InsertUnsentEntry(std::string_view histogram_name);
 
   const raw_ref<Delegate> delegate_;
   const raw_ref<PrefService, DanglingUntriaged> local_state_;

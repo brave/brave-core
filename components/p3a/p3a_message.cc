@@ -453,6 +453,10 @@ const std::string& MessageMetainfo::GetCountryCodeForNormalMetrics(
 #endif  // BUILDFLAG(IS_IOS)
 }
 
+void MessageMetainfo::SetIsBrowserDefault(bool is_default) {
+  is_browser_default_ = is_default;
+}
+
 std::optional<base::Time> MessageMetainfo::GetActivationDate(
     std::string_view histogram_name) const {
   const auto& activation_dates =

@@ -58,12 +58,8 @@ class MessageMetainfo {
   base::Time date_of_survey() const { return date_of_survey_; }
   int woi() const { return woi_; }
 
-  void SetIsBrowserDefault(bool is_default) {
-    is_browser_default_ = is_default;
-  }
-  const std::optional<bool>& is_browser_default() const {
-    return is_browser_default_;
-  }
+  void SetIsBrowserDefault(bool is_default);
+  std::optional<bool> is_browser_default() const { return is_browser_default_; }
 
  private:
   // Used to report major/minor version numbers to reduce amount of

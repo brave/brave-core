@@ -48,11 +48,11 @@ class P3AMetricLogStoreTest : public testing::Test,
                : std::nullopt;
   }
 
-  bool IsEphemeralMetric(const std::string& histogram_name) const override {
+  bool IsEphemeralMetric(std::string_view histogram_name) const override {
     return false;
   }
 
-  bool ShouldDeferMetric(const std::string& histogram_name) const override {
+  bool ShouldDeferMetric(std::string_view histogram_name) const override {
     return defer_metrics_.contains(histogram_name);
   }
 
