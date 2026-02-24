@@ -996,11 +996,19 @@ mojom::Gate3SwapErrorKind ParseErrorKind(
   switch (value) {
     case swap_responses::Gate3ErrorKind::kInsufficientLiquidity:
       return mojom::Gate3SwapErrorKind::kInsufficientLiquidity;
+    case swap_responses::Gate3ErrorKind::kAmountTooLow:
+      return mojom::Gate3SwapErrorKind::kAmountTooLow;
+    case swap_responses::Gate3ErrorKind::kUnsupportedNetwork:
+      return mojom::Gate3SwapErrorKind::kUnsupportedNetwork;
+    case swap_responses::Gate3ErrorKind::kUnsupportedTokens:
+      return mojom::Gate3SwapErrorKind::kUnsupportedTokens;
+    case swap_responses::Gate3ErrorKind::kInvalidRequest:
+      return mojom::Gate3SwapErrorKind::kInvalidRequest;
     case swap_responses::Gate3ErrorKind::kUnknown:
     case swap_responses::Gate3ErrorKind::kNone:
+    default:
       return mojom::Gate3SwapErrorKind::kUnknown;
   }
-  NOTREACHED();
 }
 
 std::optional<mojom::CoinType> ParseCoinType(const std::string& value) {

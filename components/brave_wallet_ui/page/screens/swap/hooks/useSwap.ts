@@ -1196,6 +1196,34 @@ export const useSwap = () => {
           return 'insufficientLiquidity'
         }
 
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kAmountTooLow
+        ) {
+          return 'amountTooLow'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedNetwork
+        ) {
+          return 'unsupportedNetwork'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedTokens
+        ) {
+          return 'unsupportedTokens'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kInvalidRequest
+        ) {
+          return 'invalidRequest'
+        }
+
         return 'unknownError'
       }
 
@@ -1469,6 +1497,22 @@ export const useSwap = () => {
 
     if (swapValidationError === 'insufficientLiquidity') {
       return getLocale('braveSwapInsufficientLiquidity')
+    }
+
+    if (swapValidationError === 'amountTooLow') {
+      return getLocale('braveSwapAmountTooLow')
+    }
+
+    if (swapValidationError === 'unsupportedNetwork') {
+      return getLocale('braveSwapUnsupportedNetwork')
+    }
+
+    if (swapValidationError === 'unsupportedTokens') {
+      return getLocale('braveSwapUnsupportedTokens')
+    }
+
+    if (swapValidationError === 'invalidRequest') {
+      return getLocale('braveSwapInvalidRequest')
     }
 
     if (swapValidationError === 'unknownError') {

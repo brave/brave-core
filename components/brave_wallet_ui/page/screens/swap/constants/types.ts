@@ -73,6 +73,10 @@ export type SwapValidationErrorType =
   | 'insufficientFundsForGas'
   | 'insufficientAllowance'
   | 'insufficientLiquidity'
+  | 'amountTooLow'
+  | 'unsupportedNetwork'
+  | 'unsupportedTokens'
+  | 'invalidRequest'
   | 'providerNotSupported'
   | 'unknownError'
 
