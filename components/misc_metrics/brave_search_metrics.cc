@@ -5,7 +5,6 @@
 
 #include "brave/components/misc_metrics/brave_search_metrics.h"
 
-#include "base/check_deref.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
