@@ -29,6 +29,9 @@ struct DappsSettings: View {
     case .sol:
       self.defaultWallet = Preferences.Wallet.defaultSolWallet
       self.allowProviderAccess = Preferences.Wallet.allowSolProviderAccess
+    case .ada:
+      self.defaultWallet = Preferences.Wallet.defaultCardanoWallet
+      self.allowProviderAccess = Preferences.Wallet.allowCardanoProviderAccess
     default:
       assertionFailure("Not supported coin type.")
       self.defaultWallet = Preferences.Wallet.defaultEthWallet
@@ -42,6 +45,8 @@ struct DappsSettings: View {
       return Strings.Wallet.web3PreferencesDefaultEthWallet
     case .sol:
       return Strings.Wallet.web3PreferencesDefaultSolWallet
+    case .ada:
+      return Strings.Wallet.web3PreferencesDefaultCardanoWallet
     default:
       return ""
     }
@@ -53,6 +58,8 @@ struct DappsSettings: View {
       return Strings.Wallet.web3PreferencesAllowEthProviderAccess
     case .sol:
       return Strings.Wallet.web3PreferencesAllowSolProviderAccess
+    case .ada:
+      return Strings.Wallet.web3PreferencesAllowCardanoProviderAccess
     default:
       return ""
     }
