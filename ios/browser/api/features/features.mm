@@ -377,7 +377,7 @@
 + (nullable Feature*)kBraveWalletWebUIIOS {
   return nil;
 }
-+ (nullable Feature*)kBraveCardanoDAppSupportIOS {
++ (nullable Feature*)kBraveWalletCardanoDAppSupportIOS {
   return nil;
 }
 #endif

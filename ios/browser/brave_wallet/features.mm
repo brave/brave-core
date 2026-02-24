@@ -6,7 +6,6 @@
 #include "brave/ios/browser/brave_wallet/features.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_wallet/common/features.h"
 
 namespace brave_wallet {
 namespace features {

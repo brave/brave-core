@@ -101,7 +101,7 @@ public struct WalletConstants {
   /// Returns true if all three Cardano dApp support feature flags are enabled:
   /// - kBraveWalletWebUIIOS (wallet WebUI)
   /// - kBraveWalletCardanoEnabled (Cardano support)
-  /// - kBraveCardanoDAppSupportIOS (Cardano dApp support)
+  /// - kBraveWalletCardanoDAppSupportIOS (Cardano dApp support)
   static var isCardanoDAppSupportEnabled: Bool {
     FeatureList.kBraveWalletWebUIIOS?.enabled == true
       && FeatureList.kBraveWalletCardanoEnabled?.enabled == true
