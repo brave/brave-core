@@ -3,12 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { render } from '@testing-library/react'
+import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
 import {
   remarkDirectives,
   ALLOWED_DIRECTIVES,
   directiveComponents,
 } from './remark_directives'
 import type { Node } from 'unist'
+import * as React from 'react'
 
 test('remarkDirectives processes allowed directives', () => {
   const tree: Node = {
@@ -132,7 +135,11 @@ test('directiveComponents has components for all allowed directives', () => {
   })
 })
 
-test('search directive component returns null', () => {
-  const result = directiveComponents.search({})
-  expect(result).toBeNull()
+test('search directive renders something', () => {
+  const { container } = render(
+    <AssistantResponseContextProvider events={[]}>
+      <directiveComponents.search />
+    </AssistantResponseContextProvider>,
+  )
+  expect(container).toBeTruthy()
 })
