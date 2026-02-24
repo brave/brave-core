@@ -33,7 +33,10 @@ std::string_view TabManagementTool::Name() const {
 
 std::string_view TabManagementTool::Description() const {
   return "Manage browser tabs - list, move, close tabs and manage tab "
-         "groups. "
+         "groups. Only use this tool when the user explicitly requests tab "
+         "organization, grouping, moving, or closing tabs. Do not use this "
+         "tool proactively or when the user's request can be answered without "
+         "modifying their tabs. "
          "This tool can list all open tabs with their window, group, URL and "
          "title information, "
          "move tabs or entire groups between windows or positions,"
