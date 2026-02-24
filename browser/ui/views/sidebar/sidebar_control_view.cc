@@ -84,6 +84,20 @@ void SidebarControlView::OnThemeChanged() {
 
   UpdateBackgroundAndBorder();
   UpdateItemAddButtonState();
+  UpdateSettingsButtonState();
+}
+
+void SidebarControlView::AddedToWidget() {
+  View::AddedToWidget();
+  paint_as_active_subscription_ =
+      GetWidget()->RegisterPaintAsActiveChangedCallback(
+          base::BindRepeating(&SidebarControlView::UpdateSettingsButtonState,
+                              base::Unretained(this)));
+}
+
+void SidebarControlView::RemovedFromWidget() {
+  paint_as_active_subscription_ = {};
+  View::RemovedFromWidget();
 }
 
 void SidebarControlView::UpdateBackgroundAndBorder() {
@@ -229,9 +243,13 @@ void SidebarControlView::UpdateItemAddButtonState() {
 
 void SidebarControlView::UpdateSettingsButtonState() {
   DCHECK(sidebar_settings_view_);
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
+  const ui::ColorId normal_color =
+      is_active ? static_cast<ui::ColorId>(kColorSidebarButtonBase)
+                : static_cast<ui::ColorId>(kColorToolbarButtonIconInactive);
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_NORMAL,
-      ui::ImageModel::FromVectorIcon(kLeoSettingsIcon, kColorSidebarButtonBase,
+      ui::ImageModel::FromVectorIcon(kLeoSettingsIcon, normal_color,
                                      SidebarButtonView::kDefaultIconSize));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_PRESSED,

@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -42,6 +43,19 @@ SidebarItemAddButton::SidebarItemAddButton(
 
 SidebarItemAddButton::~SidebarItemAddButton() = default;
 
+void SidebarItemAddButton::AddedToWidget() {
+  SidebarButtonView::AddedToWidget();
+  paint_as_active_subscription_ =
+      GetWidget()->RegisterPaintAsActiveChangedCallback(
+          base::BindRepeating(&SidebarItemAddButton::UpdateButtonImages,
+                              base::Unretained(this)));
+}
+
+void SidebarItemAddButton::RemovedFromWidget() {
+  paint_as_active_subscription_ = {};
+  SidebarButtonView::RemovedFromWidget();
+}
+
 void SidebarItemAddButton::OnButtonPressed() {
   if (IsBubbleVisible()) {
     return;
@@ -65,8 +79,12 @@ bool SidebarItemAddButton::IsBubbleVisible() const {
 }
 
 void SidebarItemAddButton::UpdateButtonImages() {
+  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
+  const ui::ColorId normal_color =
+      is_active ? static_cast<ui::ColorId>(kColorSidebarButtonBase)
+                : static_cast<ui::ColorId>(kColorToolbarButtonIconInactive);
   SetImageModel(STATE_NORMAL, ui::ImageModel::FromVectorIcon(
-                                  kLeoPlusAddIcon, kColorSidebarButtonBase,
+                                  kLeoPlusAddIcon, normal_color,
                                   kDefaultIconSize));
   SetImageModel(STATE_PRESSED, ui::ImageModel::FromVectorIcon(
                                    kLeoPlusAddIcon, kColorSidebarButtonPressed,
