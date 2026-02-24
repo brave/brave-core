@@ -52,6 +52,11 @@ extension Preferences {
       key: "wallet.allow-sol-provider-access",
       default: true
     )
+    /// Whether or not webpages can use the Cardano Provider API to communicate with users Solana wallet
+    public static let allowCardanoProviderAccess: Option<Bool> = .init(
+      key: "wallet.allow-cardano-provider-access",
+      default: true
+    )
     /// The option to display web3 notification
     public static let displayWeb3Notifications = Option<Bool>(
       key: "wallet.display-web3-notifications",

@@ -130,7 +130,7 @@ public struct WalletConstants {
         result.append(.ada)
       }
     case .dapps:
-      return [.eth, .sol]
+      return [.eth, .sol, .ada]
     }
     return result
   }

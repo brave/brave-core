@@ -149,30 +149,25 @@ class CardanoProviderScriptHandler: TabContentScript {
           await api.networkId()
         }
       case .getBalance:
-        break;
-//        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
-//          await api.balance()
-//        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.balance()
+        }
       case .getUsedAddresses:
-        break;
-//        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
-//          await api.usedAddresses()
-//        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.usedAddresses()
+        }
       case .getUnusedAddresses:
-        break;
-//        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
-//          await api.unusedAddresses()
-//        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.unusedAddresses()
+        }
       case .getChangeAddress:
-        break;
-//        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
-//          await api.changeAddress()
-//        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.changeAddress()
+        }
       case .getRewardAddresses:
-        break;
-//        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
-//          await api.rewardAddresses()
-//        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.rewardAddresses()
+        }
       case .getUtxos:
         break;
         // TODO: getUtxos

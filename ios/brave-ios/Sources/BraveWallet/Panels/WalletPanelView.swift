@@ -620,7 +620,7 @@ struct WalletPanelView: View {
         presentWalletWithContext(.createAccount(accountCreationRequest))
       } else if let request = WalletProviderPermissionRequestsManager.shared.firstPendingRequest(
         for: origin,
-        coinTypes: [.eth, .sol]
+        coinTypes: [.eth, .sol, .ada]
       ) {
         presentWalletWithContext(
           .requestPermissions(
@@ -628,7 +628,7 @@ struct WalletPanelView: View {
             onPermittedAccountsUpdated: { accounts in
               if request.coinType == .eth {
                 ethPermittedAccounts = accounts
-              } else if request.coinType == .sol {
+              } else if request.coinType == .sol || request.coinType == .ada {
                 isConnectHidden = false
               }
             }
