@@ -53,7 +53,12 @@ export function MainCard() {
     >
       <div className='site-info'>
         <div className='site-icon'>
-          {favicon && <img src={favicon} alt={siteHost} />}
+          {favicon && (
+            <img
+              src={favicon}
+              alt={siteHost}
+            />
+          )}
         </div>
         <div className='site-text'>
           <h3>{siteHost}</h3>
