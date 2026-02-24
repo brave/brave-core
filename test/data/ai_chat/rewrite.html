@@ -30,14 +30,22 @@
         return Promise.resolve(get_text(id));
       }
       return new Promise(function(resolve) {
-        var observer = new MutationObserver(function() {
-          if (get_text(id) === expected) {
+        var resolved = false;
+        function checkAndResolve() {
+          if (!resolved && get_text(id) === expected) {
+            resolved = true;
             observer.disconnect();
+            element.removeEventListener('input', checkAndResolve);
             resolve(get_text(id));
           }
-        });
+        }
+        // MutationObserver for contenteditable elements (DOM node changes).
+        var observer = new MutationObserver(checkAndResolve);
         observer.observe(element,
             {childList: true, subtree: true, characterData: true});
+        // input event for input/textarea elements whose .value property
+        // changes are not observed by MutationObserver.
+        element.addEventListener('input', checkAndResolve);
       });
     }
 
