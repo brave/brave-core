@@ -38,7 +38,7 @@ std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
       }
       result.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
           mojom::WebSourcesContentBlock::New(std::move(stripped_sources),
-                                             ws->query,
+                                             ws->queries,
                                              std::vector<std::string>())));
     } else {
       // Currently WebSourcesContentBlock is only used by server-side search

@@ -159,10 +159,22 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
       }
     }
 
-    std::optional<std::string> query;
-    const std::string* query_str = dict.FindString("query");
-    if (query_str && !query_str->empty()) {
-      query = *query_str;
+    std::optional<std::vector<std::string>> queries;
+    const base::Value* query_val = dict.Find("query");
+    if (query_val) {
+      if (query_val->is_string() && !query_val->GetString().empty()) {
+        queries.emplace({query_val->GetString()});
+      } else if (query_val->is_list()) {
+        std::vector<std::string> query_list;
+        for (const auto& item : query_val->GetList()) {
+          if (item.is_string() && !item.GetString().empty()) {
+            query_list.push_back(item.GetString());
+          }
+        }
+        if (!query_list.empty()) {
+          queries = std::move(query_list);
+        }
+      }
     }
 
     std::vector<std::string> rich_results;
@@ -179,13 +191,13 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
     }
 
     // Return nullopt if nothing useful was parsed
-    if (sources.empty() && !query.has_value()) {
+    if (sources.empty() && !queries.has_value()) {
       return std::nullopt;
     }
 
     return mojom::ContentBlock::NewWebSourcesContentBlock(
-        mojom::WebSourcesContentBlock::New(std::move(sources), std::move(query),
-                                           std::move(rich_results)));
+        mojom::WebSourcesContentBlock::New(
+            std::move(sources), std::move(queries), std::move(rich_results)));
   }
 
   return std::nullopt;
