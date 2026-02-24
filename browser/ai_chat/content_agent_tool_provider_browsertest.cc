@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
+#include "chrome/browser/actor/actor_policy_checker.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -67,6 +68,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     auto* actor_service =
         actor::ActorKeyedServiceFactory::GetActorKeyedService(GetProfile());
     ASSERT_NE(actor_service, nullptr);
+    actor_service->GetPolicyChecker().set_act_on_web_for_testing(true);
 
     // Create the tool provider
     tool_provider_ =
