@@ -163,46 +163,9 @@ public class ReaderModeHandler: InternalSchemeResponse {
         return (response, data)
       }
     } catch {
-      // This page has not been converted to reader mode yet. This happens when you for example add an
-      // item via the app extension and the application has not yet had a change to readerize that
-      // page in the background.
-      //
-      // What we do is simply queue the page in the ReadabilityService and then show our loading
-      // screen, which will periodically call page-exists to see if the readerized content has
-      // become available.
-      ReadabilityService.sharedInstance.process(
-        readerModeUrl,
-        cache: ReaderModeHandler.readerModeCache
-      )
-      if let asset = Bundle.module.url(forResource: "ReaderViewLoading", withExtension: "html"),
-        var contents = await AsyncFileManager.default.utf8Contents(at: asset)
-      {
-        let mapping = [
-          "%ORIGINAL-URL%": readerModeUrl.absoluteString,
-          "%READER-URL%": url.url.absoluteString,
-          "%LOADING-TEXT%": Strings.readerModeLoadingContentDisplayText,
-          "%LOADING-FAILED-TEXT%": Strings.readerModePageCantShowDisplayText,
-          "%LOAD-ORIGINAL-TEXT%": Strings.readerModeLoadOriginalLinkText,
-        ]
-
-        mapping.forEach {
-          contents = contents.replacingOccurrences(of: $0.key, with: $0.value)
-        }
-
-        guard
-          let response = HTTPURLResponse(
-            url: url.url,
-            statusCode: 200,
-            httpVersion: "HTTP/1.1",
-            headerFields: ["Content-Type": "text/html; charset=UTF-8"]
-          )
-        else {
-          return nil
-        }
-
-        let data = Data(contents.utf8)
-        return (response, data)
-      }
+      // Attempted to load this page without actually having previously calling `readerize` on the
+      // underlying page and storing the result in `ReaderModeHandler.readerModeCache`
+      return nil
     }
 
     assert(false)
