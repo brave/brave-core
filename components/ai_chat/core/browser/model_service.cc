@@ -746,8 +746,8 @@ ModelService::GetModelsWithSubtitles() {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
       } else if (model->key == "chat-near-glm-5") {
-        model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
-            IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE);
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE);
       } else if (model->key == "chat-automatic") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
