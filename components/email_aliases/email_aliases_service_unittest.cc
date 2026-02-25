@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -25,16 +25,14 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/mock_endpoint.h"
 #include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
-#include "net/base/net_errors.h"
-#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/functional/overload.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace email_aliases {
@@ -76,27 +74,6 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
 class EmailAliasesAPITest : public ::testing::Test {
  public:
-  void AddManageResponseFor(const std::optional<std::string>& body) {
-    const GURL manage_url = test::GetEmailAliasesServiceURL();
-    if (body.has_value()) {
-      url_loader_factory_.AddResponse(
-          manage_url.spec(), *body,
-          body->contains("error") ? net::HTTP_BAD_REQUEST : net::HTTP_OK);
-    } else {
-      network::URLLoaderCompletionStatus completion(net::ERR_FAILED);
-      url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
-                                      /*content=*/"", completion);
-    }
-  }
-
-  void AddRefreshResponseFor(
-      const std::optional<std::string>& refresh_body = std::nullopt) {
-    const GURL manage_url = test::GetEmailAliasesServiceURL();
-    url_loader_factory_.AddResponse(
-        manage_url.Resolve("?status=active").spec(),
-        refresh_body.value_or("{ \"result\": [] }"));
-  }
-
   template <typename T, typename InvokeFn>
   base::expected<T, std::string> InvokeAndWait(InvokeFn&& invoker) {
     base::test::TestFuture<base::expected<T, std::string>> future;
@@ -104,41 +81,27 @@ class EmailAliasesAPITest : public ::testing::Test {
     return future.Take();
   }
 
-  base::expected<std::string, std::string> CallGenerateAliasWith(
-      const std::optional<std::string>& body) {
-    AddManageResponseFor(body);
+  base::expected<std::string, std::string> CallGenerateAliasWith() {
     return InvokeAndWait<std::string>(
         [this](auto cb) { service_->GenerateAlias(std::move(cb)); });
   }
 
   base::expected<std::monostate, std::string> CallUpdateAliasWith(
-      const std::string& alias_email,
-      const std::optional<std::string>& put_body,
-      const std::optional<std::string>& refresh_body = std::nullopt,
-      bool wait_for_update = true) {
-    AddManageResponseFor(put_body);
-    AddRefreshResponseFor(refresh_body);
+      const std::string& alias_email) {
     auto result_out =
         InvokeAndWait<std::monostate>([this, &alias_email](auto cb) {
           service_->UpdateAlias(alias_email, /*note=*/std::string("note"),
                                 std::move(cb));
         });
-    if (wait_for_update) {
-      EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
-    }
     return result_out;
   }
 
   base::expected<std::monostate, std::string> CallDeleteAliasWith(
-      const std::string& alias_email,
-      const std::optional<std::string>& delete_body) {
-    AddManageResponseFor(delete_body);
-    AddRefreshResponseFor(/*refresh_body=*/std::nullopt);
+      const std::string& alias_email) {
     auto result_out =
         InvokeAndWait<std::monostate>([this, &alias_email](auto cb) {
           service_->DeleteAlias(alias_email, std::move(cb));
         });
-    EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     return result_out;
   }
 
@@ -168,6 +131,15 @@ class EmailAliasesAPITest : public ::testing::Test {
     service_->AddObserver(std::move(remote));
   }
 
+  template <typename... Args>
+  std::string GetErrorMessage(int idc, Args... args) {
+    if constexpr (sizeof...(Args) == 0) {
+      return l10n_util::GetStringUTF8(idc);
+    } else {
+      return l10n_util::GetStringFUTF8(idc, base::UTF8ToUTF16(args)...);
+    }
+  }
+
   base::test::ScopedFeatureList brave_account_feature_list_{
       brave_account::features::BraveAccountFeatureForTesting()};
   base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
@@ -181,197 +153,44 @@ class EmailAliasesAPITest : public ::testing::Test {
   AliasObserver observer_;
 };
 
-MATCHER_P(MatchesExpected, expected_result, "") {
-  if (expected_result.has_value()) {
-    return arg.has_value() && arg.value() == expected_result.value();
-  }
-
-  const std::string expected_error =
-      std::visit(absl::Overload{
-                     [](int id) { return l10n_util::GetStringUTF8(id); },
-                     [](std::string string) { return string; },
-                 },
-                 expected_result.error());
-
-  return !arg.has_value() && arg.error().contains(expected_error);
-}
-
-template <typename T>
-struct EmailAliasesAPIParamTestCase {
-  static constexpr auto kNameGenerator = [](const auto& info) {
-    return info.param.name;
-  };
-
-  const char* name;
-  std::optional<std::string> body;
-  base::expected<T, std::variant<int, std::string>> expected_result;
-};
-
-template <typename TestCase>
-class EmailAliasesAPIParamTest : public EmailAliasesAPITest,
-                                 public testing::WithParamInterface<TestCase> {
- protected:
-  void RunTestCase() {
-    const auto& test_case = this->GetParam();
-    EXPECT_THAT(TestCase::Run(*this, test_case),
-                MatchesExpected(test_case.expected_result));
-  }
-};
-
-// ================ GenerateAlias (parameterized) ================
-
-struct GenerateAliasTestCase : EmailAliasesAPIParamTestCase<std::string> {
-  static auto Run(EmailAliasesAPITest& test,
-                  const GenerateAliasTestCase& test_case) {
-    return test.CallGenerateAliasWith(test_case.body);
-  }
-};
-
-using GenerateAliasParamTest = EmailAliasesAPIParamTest<GenerateAliasTestCase>;
-
-TEST_P(GenerateAliasParamTest, HandlesResponses) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    EmailAliasesGenerateAlias,
-    GenerateAliasParamTest,
-    testing::Values(
-        GenerateAliasTestCase{
-            {.name = "Success",
-             .body =
-                 R"({ "message": "created",
-                      "alias": "mock-1234@bravealias.com" })",
-             .expected_result = base::ok("mock-1234@bravealias.com")}},
-        GenerateAliasTestCase{
-            {.name = "BackendError",
-             .body = R"({ "message": "alias_unavailable_error" })",
-             .expected_result = base::unexpected("alias_unavailable_error")}},
-        GenerateAliasTestCase{
-            {.name = "NoBody",
-             .body = std::nullopt,
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
-        GenerateAliasTestCase{
-            {.name = "InvalidJSON",
-             .body = "not a json",
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
-        GenerateAliasTestCase{
-            {.name = "UnexpectedPayload",
-             .body = R"({ "message": "ok_but_no_alias" })",
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}}),
-    GenerateAliasTestCase::kNameGenerator);
-
-// ================= UpdateAlias (parameterized) =================
-
-struct UpdateAliasTestCase : EmailAliasesAPIParamTestCase<std::monostate> {
-  static auto Run(EmailAliasesAPITest& test,
-                  const UpdateAliasTestCase& test_case) {
-    return test.CallUpdateAliasWith("alias@example.com", test_case.body);
-  }
-};
-
-using UpdateAliasParamTest = EmailAliasesAPIParamTest<UpdateAliasTestCase>;
-
-TEST_P(UpdateAliasParamTest, HandlesResponses) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    EmailAliasesUpdateAlias,
-    UpdateAliasParamTest,
-    testing::Values(
-        UpdateAliasTestCase{{.name = "Success",
-                             .body = R"({"message": "updated"})",
-                             .expected_result = std::monostate()}},
-        UpdateAliasTestCase{
-            {.name = "BackendError",
-             .body = "{\"message\":\"backend_error\"}",
-             .expected_result = base::unexpected("backend_error")}},
-        UpdateAliasTestCase{
-            {.name = "NonUpdatedMessage",
-             .body = "{\"message\":\"not_updated\"}",
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY)}},
-        UpdateAliasTestCase{
-            {.name = "NoBody",
-             .body = std::nullopt,
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
-        UpdateAliasTestCase{
-            {.name = "InvalidJSON",
-             .body = "not a json",
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}}),
-    UpdateAliasTestCase::kNameGenerator);
-
-// ================= DeleteAlias (parameterized) =================
-
-struct DeleteAliasTestCase : EmailAliasesAPIParamTestCase<std::monostate> {
-  static auto Run(EmailAliasesAPITest& test,
-                  const DeleteAliasTestCase& test_case) {
-    return test.CallDeleteAliasWith("alias@example.com", test_case.body);
-  }
-};
-
-using DeleteAliasParamTest = EmailAliasesAPIParamTest<DeleteAliasTestCase>;
-
-TEST_P(DeleteAliasParamTest, HandlesResponses) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    EmailAliasesDeleteAlias,
-    DeleteAliasParamTest,
-    testing::Values(
-        DeleteAliasTestCase{{.name = "Success",
-                             .body = "{\"message\":\"deleted\"}",
-                             .expected_result = std::monostate()}},
-        DeleteAliasTestCase{
-            {.name = "BackendError",
-             .body = "{\"message\":\"backend_error\"}",
-             .expected_result = base::unexpected("backend_error")}},
-        DeleteAliasTestCase{
-            {.name = "NoBody",
-             .body = std::nullopt,
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
-        DeleteAliasTestCase{
-            {.name = "InvalidJSON",
-             .body = "not a json",
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)}},
-        DeleteAliasTestCase{
-            {.name = "InvalidAnswer",
-             .body = "{\"message\":\"updated\"}",
-             .expected_result = base::unexpected(
-                 IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY)}}),
-    DeleteAliasTestCase::kNameGenerator);
-
 TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   const std::string alias_email = "alias@example.com";
-  auto result_out = CallUpdateAliasWith(
-      alias_email,
-      /*put_body=*/R"({"message":"updated"})",
-      /*refresh_body=*/
-      std::string(
-          "{ \"result\":[{\"email\":\"dest@example.com\",\"alias\":\"") +
-          alias_email +
-          "\",\"created_at\":\"2025-01-01T00:00:00Z\",\"last_used\":\"\","
-          "\"status\":\"active\"}] }");
-  ASSERT_TRUE(result_out.has_value());
+
+  test::MockResponseFor<endpoints::UpdateAlias>(url_loader_factory_, []() {
+    endpoints::UpdateAlias::Response::SuccessBody r;
+    r.message = "updated";
+    return r;
+  });
+  test::MockResponseFor<endpoints::AliasList>(
+      url_loader_factory_, [&alias_email]() {
+        email_aliases::AliasListEntry entry;
+        entry.alias = alias_email;
+        entry.email = "dest@example.com";
+        entry.status = "active";
+        entry.created_at = "2025-01-01T00:00:00Z";
+        endpoints::AliasList::Response::SuccessBody r;
+        r.result.push_back(std::move(entry));
+        return r;
+      });
+
+  auto result_out = CallUpdateAliasWith(alias_email);
+  EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
   ASSERT_FALSE(observer_.get_last_aliases().empty());
   EXPECT_EQ(observer_.get_last_aliases()[0]->email, alias_email);
 }
 
 TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
-  auto result_out =
-      CallUpdateAliasWith("alias@example.com",
-                          /*put_body=*/R"({"message":"updated"})",
-                          /*refresh_body=*/R"({"message":"backend_error"})",
-                          /*wait_for_update=*/false);
+  test::MockResponseFor<endpoints::UpdateAlias>(url_loader_factory_, []() {
+    endpoints::UpdateAlias::Response::SuccessBody r;
+    r.message = "updated";
+    return r;
+  });
+  test::MockResponseFor<endpoints::AliasList>(url_loader_factory_, []() {
+    endpoints::AliasList::Response::ErrorBody r;
+    r.message = "backend_error";
+    return r;
+  });
+  auto result_out = CallUpdateAliasWith("alias@example.com");
   ASSERT_TRUE(result_out.has_value());
   EXPECT_EQ(observer_.alias_update_count(), 0u);
 }
@@ -395,15 +214,141 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
 
   // Provide a successful GenerateAlias response to trigger ApiFetch.
   const std::string alias_email = "mock-1234@bravealias.com";
-  url_loader_factory_.AddResponse(
-      manage_url.spec(),
-      std::string(R"({"message":"created","alias":"")") + alias_email + "\"}");
+  test::MockResponseFor<endpoints::GenerateAlias>(
+      url_loader_factory_, [&alias_email]() {
+        endpoints::GenerateAlias::Response::SuccessBody r;
+        r.message = "created";
+        r.alias = alias_email;
+        return r;
+      });
 
-  auto gen_result = CallGenerateAliasWith(std::nullopt);
+  auto gen_result = CallGenerateAliasWith();
   // The helper enqueues the request body separately; here we just ensure it
   // ran. Validate headers captured by the interceptor.
   EXPECT_EQ(seen_authorization, "Bearer email-aliases-token");
   EXPECT_EQ(seen_api_key, BUILDFLAG(BRAVE_SERVICES_KEY));
+}
+
+TEST_F(EmailAliasesAPITest, GenerateAlias) {
+  {
+    test::MockResponseFor<endpoints::GenerateAlias>(url_loader_factory_, []() {
+      endpoints::GenerateAlias::Response::SuccessBody r;
+      r.message = "created";
+      r.alias = "test@alias";
+      return r;
+    });
+    auto result = CallGenerateAliasWith();
+    EXPECT_EQ("test@alias", result);
+  }
+  {
+    test::MockResponseFor<endpoints::GenerateAlias>(url_loader_factory_, []() {
+      endpoints::GenerateAlias::Response::SuccessBody r;
+      r.message = "???";
+      r.alias = "test@alias";
+      return r;
+    });
+    auto result = CallGenerateAliasWith();
+    EXPECT_EQ(
+        GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY),
+        result.error());
+  }
+  {
+    test::MockResponseFor<endpoints::GenerateAlias>(url_loader_factory_, []() {
+      endpoints::GenerateAlias::Response::ErrorBody r;
+      r.message = "backend_error";
+      return r;
+    });
+    auto result = CallGenerateAliasWith();
+    EXPECT_EQ(GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                              "backend_error"),
+              result.error());
+  }
+  {
+    test::MockResponseFor<endpoints::GenerateAlias>(url_loader_factory_, "");
+    auto result = CallGenerateAliasWith();
+    EXPECT_EQ(GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY),
+              result.error());
+  }
+}
+
+TEST_F(EmailAliasesAPITest, UpdateAlias) {
+  {
+    test::MockResponseFor<endpoints::UpdateAlias>(url_loader_factory_, []() {
+      endpoints::UpdateAlias::Response::SuccessBody r;
+      r.message = "updated";
+      return r;
+    });
+    auto result = CallUpdateAliasWith("test");
+    EXPECT_EQ(std::monostate{}, result);
+  }
+  {
+    test::MockResponseFor<endpoints::UpdateAlias>(url_loader_factory_, []() {
+      endpoints::UpdateAlias::Response::SuccessBody r;
+      r.message = "???";
+      return r;
+    });
+    auto result = CallUpdateAliasWith("test");
+    EXPECT_EQ(
+        GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY),
+        result.error());
+  }
+  {
+    test::MockResponseFor<endpoints::UpdateAlias>(url_loader_factory_, []() {
+      endpoints::GenerateAlias::Response::ErrorBody r;
+      r.message = "backend_error";
+      return r;
+    });
+    auto result = CallUpdateAliasWith("test");
+    EXPECT_EQ(GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                              "backend_error"),
+              result.error());
+  }
+  {
+    test::MockResponseFor<endpoints::UpdateAlias>(url_loader_factory_, "");
+    auto result = CallUpdateAliasWith("test");
+    EXPECT_EQ(GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY),
+              result.error());
+  }
+}
+
+TEST_F(EmailAliasesAPITest, DeleteAlias) {
+  {
+    test::MockResponseFor<endpoints::DeleteAlias>(url_loader_factory_, []() {
+      endpoints::DeleteAlias::Response::SuccessBody r;
+      r.message = "deleted";
+      return r;
+    });
+    auto result = CallDeleteAliasWith("test");
+    EXPECT_EQ(std::monostate{}, result);
+  }
+  {
+    test::MockResponseFor<endpoints::DeleteAlias>(url_loader_factory_, []() {
+      endpoints::DeleteAlias::Response::SuccessBody r;
+      r.message = "???";
+      return r;
+    });
+    auto result = CallDeleteAliasWith("test");
+    EXPECT_EQ(
+        GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY),
+        result.error());
+  }
+  {
+    test::MockResponseFor<endpoints::DeleteAlias>(url_loader_factory_, []() {
+      endpoints::DeleteAlias::Response::ErrorBody r;
+      r.message = "backend_error";
+      return r;
+    });
+    auto result = CallDeleteAliasWith("test");
+    EXPECT_EQ(GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                              "backend_error"),
+              result.error());
+  }
+  {
+    test::MockResponseFor<endpoints::DeleteAlias>(url_loader_factory_, "");
+    auto result = CallDeleteAliasWith("test");
+    EXPECT_EQ(GetErrorMessage(IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY),
+              result.error());
+  }
 }
 
 }  // namespace email_aliases

@@ -21,6 +21,7 @@
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/mock_endpoint.h"
 #include "brave/components/email_aliases/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
@@ -43,55 +44,18 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/url_loader_completion_status.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace email_aliases {
 
 namespace {
+
 constexpr char kSuccessEmail[] = "success@domain.com";
-
-std::unique_ptr<net::test_server::HttpResponse> ManageHandler(
-    const net::test_server::HttpRequest& request) {
-  if (!request.GetURL().has_path() ||
-      !request.GetURL().path().starts_with("/manage")) {
-    return nullptr;
-  }
-
-  auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-
-  if (request.method == net::test_server::HttpMethod::METHOD_GET) {
-    auto make_entry = [](const std::string& alias) {
-      email_aliases::AliasListEntry le;
-      le.alias = alias;
-      le.email = kSuccessEmail;
-      le.status = "active";
-      return le;
-    };
-    email_aliases::AliasListResponse list;
-    list.result.push_back(make_entry("first@alias.com"));
-    list.result.push_back(make_entry("second@alias.com"));
-    list.result.push_back(make_entry("third@alias.com"));
-
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("application/json");
-    response->set_content(*base::WriteJson(list.ToValue()));
-  } else if (request.method == net::test_server::HttpMethod::METHOD_POST) {
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("application/json");
-    email_aliases::GenerateAliasResponse generate;
-    generate.alias = "new@alias.com";
-    generate.message = "created";
-    response->set_content(*base::WriteJson(generate.ToValue()));
-  } else if (request.method == net::test_server::HttpMethod::METHOD_PUT) {
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("application/json");
-    email_aliases::AliasEditedResponse save;
-    save.message = "updated";
-    response->set_content(*base::WriteJson(save.ToValue()));
-  }
-
-  return response;
-}
 
 }  // namespace
 
@@ -114,15 +78,48 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
                                          -> std::unique_ptr<KeyedService> {
             return std::make_unique<EmailAliasesService>(
                 brave_account_auth_.BindAndGetRemote(),
-                context->GetDefaultStoragePartition()
-                    ->GetURLLoaderFactoryForBrowserProcess(),
+                test_url_loader_factory_.GetSafeWeakWrapper(),
                 user_prefs::UserPrefs::Get(context));
           }));
     }
   }
 
   void SetUpOnMainThread() override {
-    https_server_.RegisterRequestHandler(base::BindRepeating(&ManageHandler));
+    using email_aliases::test::MockResponseFor;
+
+    test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          MockResponseFor<endpoints::AliasList>(
+              test_url_loader_factory_, request, []() {
+                auto make_entry = [](const std::string& alias) {
+                  email_aliases::AliasListEntry le;
+                  le.alias = alias;
+                  le.email = kSuccessEmail;
+                  le.status = "active";
+                  return le;
+                };
+
+                endpoints::AliasList::Response::SuccessBody body;
+                body.result.push_back(make_entry("first@alias.com"));
+                body.result.push_back(make_entry("second@alias.com"));
+                body.result.push_back(make_entry("third@alias.com"));
+                return body;
+              });
+          MockResponseFor<endpoints::GenerateAlias>(
+              test_url_loader_factory_, request, []() {
+                endpoints::GenerateAlias::Response::SuccessBody body;
+                body.alias = "new@alias.com";
+                body.message = "created";
+                return body;
+              });
+          MockResponseFor<endpoints::UpdateAlias>(
+              test_url_loader_factory_, request, []() {
+                endpoints::UpdateAlias::Response::SuccessBody body;
+                body.message = "updated";
+                return body;
+              });
+        }));
+
     https_server_.ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
 
@@ -312,6 +309,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   testing::NiceMock<brave_account::MockBraveAccountAuthentication>
       brave_account_auth_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
 };
 
 class EmailAliasesBrowserTest : public EmailAliasesBrowserTestBase {

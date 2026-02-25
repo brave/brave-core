@@ -66,7 +66,7 @@ if (toolkit_views) {
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:service",
-      "//brave/components/email_aliases:test_utils",
+      "//brave/components/email_aliases:test_support",
       "//chrome/browser",
       "//chrome/browser/ui/views/bubble",
       "//chrome/test:test_support",
