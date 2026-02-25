@@ -31,6 +31,13 @@ static_library("ai_chat") {
     "upload_file_helper.h",
   ]
 
+  if (enable_ai_chat_tab_management_tool) {
+    sources += [
+      "tools/tab_management_tool.cc",
+      "tools/tab_management_tool.h",
+    ]
+  }
+
   deps = [
     "//brave/brave_domains",
     "//brave/browser:browser_process",
@@ -254,6 +261,10 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_ai_chat_tab_management_tool) {
+    sources += [ "tools/tab_management_tool_unittest.cc" ]
+  }
 
   if (enable_print_preview) {
     sources += [ "print_preview_extractor_unittest.cc" ]

@@ -13,6 +13,7 @@ generated_file("build_flags_json") {
 
   contents = {
     enable_ai_chat = enable_ai_chat
+    enable_ai_chat_tab_management_tool = enable_ai_chat_tab_management_tool
     enable_brave_wallet = enable_brave_wallet
     is_brave_origin_branded = is_brave_origin_branded
     is_ios = is_ios

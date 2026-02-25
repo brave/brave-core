@@ -11,4 +11,5 @@ declare_args() {
 
 declare_args() {
   enable_brave_ai_chat_agent_profile = enable_ai_chat && !is_android
+  enable_ai_chat_tab_management_tool = enable_ai_chat && !is_android
 }

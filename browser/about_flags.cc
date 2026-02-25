@@ -667,6 +667,17 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_AI_REWRITER
 #endif
 
+#define BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                               \
+  IF_BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL,                            \
+               EXPAND_FEATURE_ENTRIES({                                       \
+                   "brave-ai-chat-tab-management-tool",                       \
+                   "Brave AI Chat Tab Management Tool",                       \
+                   "AI can offer to sort, group, or close tabs to solve a "   \
+                   "user task during a conversation.",                        \
+                   kOsDesktop,                                                \
+                   FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool), \
+               }))
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #define BRAVE_ADS_FEATURE_ENTRIES                                             \
   EXPAND_FEATURE_ENTRIES(                                                     \
@@ -1343,6 +1354,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
+  BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_ADS_FEATURE_ENTRIES                                                    \
   BRAVE_LOCAL_AI_MODELS                                                        \
