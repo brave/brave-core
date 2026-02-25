@@ -7,7 +7,6 @@ import Shared
 import Storage
 import UIKit
 import Web
-import WebKit
 import XCTest
 
 @testable import Brave
@@ -154,16 +153,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   func testTabManagerDoesNotCallTabManagerStateDelegateOnStoreChangesWithPrivateTabs() {
     let stateDelegate = MockTabManagerStateDelegate()
     manager.stateDelegate = stateDelegate
-    let configuration = WKWebViewConfiguration()
-    configuration.processPool = WKProcessPool()
-    configuration.websiteDataStore = .nonPersistent()
 
-    // test that non-private tabs are saved to the db
-    // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = TabStateFactory.create(
-        with: .init(profile: nil, initialConfiguration: configuration)
-      )
+      let tab = FakeTabState()
+      tab.isPrivate = true
       tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,
