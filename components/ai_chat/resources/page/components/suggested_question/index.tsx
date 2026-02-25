@@ -20,7 +20,7 @@ export function SuggestedQuestion({
   const context = useConversation()
   return (
     <SuggestionButton
-      onClick={() => context.conversationHandler?.submitSuggestion(question)}
+      onClick={() => context.api.conversationHandler.submitSuggestion(question)}
       className={styles.questionButton}
     >
       <span

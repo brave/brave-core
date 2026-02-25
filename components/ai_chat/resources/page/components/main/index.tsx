@@ -94,7 +94,8 @@ function Main() {
 
   const showAttachments = !!conversationContext.attachmentsDialog
 
-  const showTemporaryChatInfo = conversationContext.isTemporaryChat
+  const showTemporaryChatInfo =
+    conversationContext.api.useGetState().data.temporary
 
   let currentErrorElement = null
 
@@ -175,7 +176,8 @@ function Main() {
     if (
       aiChatContext.isMobile
       && aiChatContext.hasAcceptedAgreement
-      && conversationContext.historyInitialized
+      // We have loaded real data
+      && !conversationContext.api.useGetConversationHistory().isPlaceholderData
       && !querySubmitted
       && !conversationContext.isGenerating
       && conversationContext.conversationHistory.length === 0

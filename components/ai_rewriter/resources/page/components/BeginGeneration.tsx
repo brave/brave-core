@@ -90,6 +90,8 @@ export default function BeginGeneration() {
             handleSkillClick: () => {},
             selectedSkill: undefined,
             skills: [],
+            handleVoiceRecognition: () => {},
+            associateDefaultContent: () => {},
           }}
         />
       </FiltersContainer>

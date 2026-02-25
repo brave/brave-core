@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 import { useRoute } from '$web-common/useRoute'
-import * as BindConversation from '../api'
+import * as BindConversation from '../api/bind_conversation'
 import { useAIChat } from './ai_chat_context'
 
 export const tabAssociatedChatId = 'tab'
 
 export interface SelectedChatDetails
-  extends BindConversation.ConversationBindings {
+  extends Pick<BindConversation.ConversationBindings, 'api'> {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
   createNewConversation: () => void
@@ -23,10 +23,9 @@ export interface SelectedChatDetails
 export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
   updateSelectedConversationId: () => {},
-  callbackRouter: undefined!,
-  conversationHandler: undefined!,
   createNewConversation: () => {},
   isTabAssociated: false,
+  api: undefined!,
 })
 
 export const updateSelectedConversation = (selectedId: string | undefined) => {
@@ -112,8 +111,7 @@ function ActiveChatProvider({
   // Clean up bindings when not used anymore
   React.useEffect(() => {
     return () => {
-      conversationAPI?.callbackRouter.$.close()
-      conversationAPI?.conversationHandler.$.close()
+      conversationAPI?.close()
     }
   }, [conversationAPI])
 

@@ -74,12 +74,12 @@ function UrlContentItem({ url, title }: { url: string; title: string }) {
           aiChat.api.uiHandler.associateUrlContent(
             { url },
             title,
-            conversation.conversationUuid!,
+            conversation.conversationUuid,
           )
         } else if (content) {
           aiChat.api.uiHandler.disassociateContent(
             content,
-            conversation.conversationUuid!,
+            conversation.conversationUuid,
           )
         }
       }}

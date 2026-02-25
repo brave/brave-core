@@ -6,15 +6,23 @@
 import * as React from 'react'
 import * as Mojom from '../../common/mojom'
 import createAIChatApi from '../api/ai_chat_api'
+import createConversationApi from '../api/conversation_api'
 import {
+  createMockConversationHandler,
   createMockService,
   createMockUIHandler,
   createMockBookmarksService,
   createMockHistoryService,
   createMockMetrics,
+  defaultConversationState,
   defaultServiceState,
 } from '../api/mock_interfaces'
 import { AIChatContext, AIChatProvider } from './ai_chat_context'
+import {
+  ConversationContext,
+  ConversationContextProps,
+  ConversationProvider,
+} from './conversation_context'
 
 export interface MockContextProps {
   children: React.ReactNode
@@ -25,16 +33,22 @@ export interface MockContextProps {
   bookmarksService?: Partial<Mojom.BookmarksPageHandlerInterface>
   historyService?: Partial<Mojom.HistoryUIHandlerInterface>
   metrics?: Partial<Mojom.MetricsInterface>
+  conversationHandler?: Partial<Mojom.ConversationHandlerInterface>
 
   // Initial state for state-type endpoints
   initialState?: {
     tabs?: Mojom.TabData[]
     isStandalone?: boolean
     serviceState?: Partial<Mojom.ServiceState>
+    conversationState?: Partial<Mojom.ConversationState>
   }
 
   // Context-level overrides (for things computed in the provider hooks)
   aiChatOverrides?: Partial<AIChatContext>
+  conversationOverrides?: Partial<ConversationContext>
+
+  // Context-level props
+  conversationProps?: Partial<ConversationContextProps>
 
   deps?: React.DependencyList
 }
@@ -104,6 +118,9 @@ export function MockContext(props: MockContextProps) {
     metrics,
     initialState = {},
     aiChatOverrides,
+    conversationHandler,
+    conversationOverrides,
+    conversationProps = {},
     deps = [],
   } = props
 
@@ -130,9 +147,21 @@ export function MockContext(props: MockContextProps) {
     return api
   })
 
+  const [conversationApi] = React.useState(() => {
+    const mockHandler = createMockConversationHandler(
+      conversationHandler,
+      initialState.conversationState ?? {},
+    )
+
+    const conversation = createConversationApi(mockHandler)
+
+    return conversation
+  })
+
   React.useLayoutEffect(() => {
     if (deps.length) {
       aiChatApi.api.invalidateAll()
+      conversationApi.api.invalidateAll()
       // Ensure that this effect is followed by the state.update effect so
       // we re-populate with intended data.
     }
@@ -150,11 +179,19 @@ export function MockContext(props: MockContextProps) {
     if (initialState.tabs) {
       aiChatApi.api.tabs.update(initialState.tabs)
     }
+
+    if (initialState.conversationState) {
+      conversationApi.api.getState.update({
+        ...defaultConversationState,
+        ...initialState.conversationState,
+      })
+    }
   }, [
     deps,
     initialState.serviceState,
     initialState.isStandalone,
     initialState.tabs,
+    initialState.conversationState,
   ])
 
   return (
@@ -168,7 +205,20 @@ export function MockContext(props: MockContextProps) {
         ...aiChatOverrides,
       }}
     >
-      {children}
+      <ConversationProvider
+        api={conversationApi.api}
+        selectedConversationId={
+          initialState.conversationState?.conversationUuid
+          ?? defaultConversationState.conversationUuid
+        }
+        updateSelectedConversationId={() => {}}
+        createNewConversation={() => {}}
+        isTabAssociated={false}
+        {...conversationProps}
+        overrides={conversationOverrides}
+      >
+        {children}
+      </ConversationProvider>
     </AIChatProvider>
   )
 }
