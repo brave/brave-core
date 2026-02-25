@@ -9,8 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+
+class Profile;
 
 namespace ai_chat {
 
