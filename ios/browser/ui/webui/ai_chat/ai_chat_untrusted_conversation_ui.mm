@@ -92,8 +92,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void GoPremium() override {
     id<AIChatUIHandlerBridge> bridge =
-        ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(
-            web_ui_->GetWebState())
+        ai_chat::UIHandlerBridgeHolder::FromWebState(web_ui_->GetWebState())
             ->bridge();
     [bridge goPremium];
   }

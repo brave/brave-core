@@ -142,8 +142,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
   // not a side panel. chat_context_web_state is nullptr in that case
   const bool is_standalone = chat_context_web_state == nullptr;
   if (!is_standalone) {
-    ai_chat_tab_helper_ = ai_chat::AIChatTabHelper::GetOrCreateForWebState(
-        chat_context_web_state);
+    ai_chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebState(chat_context_web_state);
     associated_content_delegate_observation_.Observe(ai_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_state, *this);
@@ -158,7 +158,7 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
     return;
   }
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   auto callback = base::CallbackToBlock(
       base::BindOnce(&AIChatUIPageHandler::SubmitVoiceQuery,
                      weak_ptr_factory_.GetWeakPtr(), conversation_uuid));
@@ -217,7 +217,7 @@ void AIChatUIPageHandler::ProcessImageFile(
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
                                      UploadFileCallback callback) {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   if (!bridge) {
     std::move(callback).Run(std::nullopt);
     return;
@@ -250,7 +250,7 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge openAIChatSettings];
 }
 
@@ -275,7 +275,7 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge openURL:net::NSURLWithGURL(url)];
 }
 
@@ -285,7 +285,7 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 
 void AIChatUIPageHandler::GoPremium() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge goPremium];
 }
 
@@ -295,7 +295,7 @@ void AIChatUIPageHandler::RefreshPremiumSession() {
 
 void AIChatUIPageHandler::ManagePremium() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge managePremium];
 }
 
@@ -318,7 +318,7 @@ void AIChatUIPageHandler::OnRequestArchive(
 
 void AIChatUIPageHandler::CloseUI() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge closeUI];
 }
 
@@ -356,12 +356,11 @@ void AIChatUIPageHandler::BindRelatedConversation(
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                        const std::string& conversation_uuid) {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   if (BraveWebView* web_view =
           [bridge webViewForTabWithSessionID:mojom_tab->id]) {
     web::WebState* web_state = web_view.webState;
-    auto* tab_helper =
-        ai_chat::AIChatTabHelper::GetOrCreateForWebState(web_state);
+    auto* tab_helper = ai_chat::AIChatTabHelper::FromWebState(web_state);
     if (!tab_helper) {
       return;
     }
@@ -378,7 +377,7 @@ void AIChatUIPageHandler::AssociateUrlContent(
     const std::string& title,
     const std::string& conversation_uuid) {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   if (!bridge) {
     return;
   }
