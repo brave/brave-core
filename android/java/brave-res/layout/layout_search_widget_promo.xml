@@ -13,75 +13,63 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@color/schemes_surface_container_lowest"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="0dp">
+        app:cardCornerRadius="25dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:padding="16dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical">
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSearchWidgetPromoTitle"
+                        style="@style/HeadingH4"
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/HeadingH4"
-                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
                         android:text="@string/try_brave_search_widget"
-                        android:textColor="@color/schemes_on_surface"/>
+                        android:textColor="@color/text_primary"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSearchWidgetPromoDescription"
+                        style="@style/DefaultRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/try_brave_search_widget_description"
-                        android:textColor="@color/schemes_on_surface_variant" />
+                        android:textColor="@color/semantic_text_secondary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginVertical="16dp"
+                android:layout_margin="16dp"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/tvNotNow"
+                    style="@style/LargeButtonBase"
+                    android:background="@drawable/button_transparent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:text="@string/not_now"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:ellipsize="end"
-                    android:layout_marginEnd="8dp"
-                    android:padding="12dp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="sans-serif-medium" />
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/schemes_on_surface_variant" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btAddWidget"
+                    style="@style/LargeFilledButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:background="@drawable/add_widget_button"
-                    android:text="@string/add_widget"
-                    android:textAllCaps="false"
-                    android:padding="12dp"
-                    android:textColor="@color/schemes_on_primary"
-                    android:fontFamily="sans-serif-medium"
-                    app:drawableTint="@color/schemes_on_primary"
-                    android:drawablePadding="2dp"
-                    style="?android:attr/borderlessButtonStyle"/>
-
+                    android:layout_marginStart="2dp"
+                    android:text="@string/add_widget" />
             </LinearLayout>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

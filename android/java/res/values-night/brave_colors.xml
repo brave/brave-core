@@ -219,8 +219,6 @@
     <color name="semantic_text_tertiary">#909093</color>
     <color name="text_interactive">#bcc6f3</color>
 
-    <color name="button_background_widget_promo">#C1C6FF</color>
-
     <color name="open_yt_dialog_bg">#000000</color>
 
     <!-- Empty state icon Colors -->

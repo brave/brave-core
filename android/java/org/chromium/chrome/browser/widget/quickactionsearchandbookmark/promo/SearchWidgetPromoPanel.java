@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -41,9 +42,16 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
             final View parentView, final int extraBottomOffset, final Context context) {
         dismiss();
         if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(context)) {
-            View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
-            view.findViewById(R.id.btAddWidget).setOnClickListener(this);
-            view.findViewById(R.id.tvNotNow).setOnClickListener(this);
+            final View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
+
+            final AppCompatButton addWidget = view.requireViewById(R.id.btAddWidget);
+            addWidget.setClipToOutline(true);
+            addWidget.setOnClickListener(this);
+
+            final AppCompatButton notNow = view.findViewById(R.id.tvNotNow);
+            notNow.setClipToOutline(true);
+            notNow.setOnClickListener(this);
+
             int width = LinearLayout.LayoutParams.MATCH_PARENT;
             int height = LinearLayout.LayoutParams.WRAP_CONTENT;
             mPopupWindow = new PopupWindow(view, width, height, true);
