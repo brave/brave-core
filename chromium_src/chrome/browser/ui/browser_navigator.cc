@@ -15,6 +15,7 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
+#include "content/public/browser/security_principal.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
@@ -53,7 +54,8 @@ GetStoragePartitionConfigToInherit(const NavigateParams& params) {
 
   if (params.source_site_instance) {
     return containers::MaybeInheritStoragePartition(
-        params.source_site_instance->GetStoragePartitionConfig());
+        params.source_site_instance->GetSecurityPrincipal()
+            .GetStoragePartitionConfig());
   }
 
   return std::nullopt;
