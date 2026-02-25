@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -272,13 +272,13 @@ void SherpaOnnxSodaClient::Reset(const SerializedSodaConfig config,
   speech::soda::chrome::ExtendedSodaConfigMsg config_msg;
   if (!config_msg.ParseFromArray(config.soda_config,
                                  config.soda_config_size)) {
-    LOG(ERROR) << "Failed to parse ExtendedSodaConfigMsg";
+    LOG(WARNING) << "Failed to parse ExtendedSodaConfigMsg";
     return;
   }
 
   std::string model_dir = config_msg.language_pack_directory();
   if (model_dir.empty()) {
-    LOG(ERROR) << "No language_pack_directory in config";
+    LOG(WARNING) << "No language_pack_directory in config";
     return;
   }
 
@@ -500,6 +500,36 @@ std::vector<float> SherpaOnnxSodaClient::ConvertAndResampleAudio(
 
   resampler.Resample(base::span<float>(resampled));
   return resampled;
+}
+
+void SherpaOnnxSodaClient::SetCallbackForTesting(
+    SerializedSodaEventHandler callback,
+    void* callback_handle) {
+  callback_ = callback;
+  callback_handle_ = callback_handle;
+}
+
+void SherpaOnnxSodaClient::FireRecognitionResultForTesting(
+    const std::string& text,
+    bool is_final) {
+  FireRecognitionResult(text, is_final);
+}
+
+void SherpaOnnxSodaClient::FireEndpointEventForTesting() {
+  FireEndpointEvent();
+}
+
+void SherpaOnnxSodaClient::FireStopEventForTesting() {
+  FireStopEvent();
+}
+
+std::vector<float> SherpaOnnxSodaClient::ConvertAndResampleAudioForTesting(
+    const char* audio_buffer,
+    int audio_buffer_size,
+    int source_sample_rate,
+    int channel_count) {
+  return ConvertAndResampleAudio(audio_buffer, audio_buffer_size,
+                                 source_sample_rate, channel_count);
 }
 
 }  // namespace soda

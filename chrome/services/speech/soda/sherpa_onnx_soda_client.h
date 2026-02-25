@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -6,7 +6,6 @@
 #ifndef BRAVE_CHROME_SERVICES_SPEECH_SODA_SHERPA_ONNX_SODA_CLIENT_H_
 #define BRAVE_CHROME_SERVICES_SPEECH_SODA_SHERPA_ONNX_SODA_CLIENT_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -15,7 +14,6 @@
 #include "base/scoped_native_library.h"
 #include "chrome/services/speech/soda/soda_async_impl.h"
 #include "chrome/services/speech/soda/soda_client.h"
-#include "testing/gtest/include/gtest/gtest_prod.h"
 
 namespace soda {
 
@@ -44,23 +42,19 @@ class SherpaOnnxSodaClient : public SodaClient {
   bool IsInitialized() override;
   bool BinaryLoadedSuccessfully() override;
 
-  // Allow tests to call Fire* and ConvertAndResampleAudio directly.
+  // Testing accessors — allow tests to exercise private helpers directly.
   void SetCallbackForTesting(SerializedSodaEventHandler callback,
-                             void* callback_handle) {
-    callback_ = callback;
-    callback_handle_ = callback_handle;
-  }
+                             void* callback_handle);
+  void FireRecognitionResultForTesting(const std::string& text, bool is_final);
+  void FireEndpointEventForTesting();
+  void FireStopEventForTesting();
+  std::vector<float> ConvertAndResampleAudioForTesting(
+      const char* audio_buffer,
+      int audio_buffer_size,
+      int source_sample_rate,
+      int channel_count);
 
  private:
-  FRIEND_TEST(SherpaOnnxSodaClientTest, ConvertMonoAudio16kHz);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, ConvertStereoToMono);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, ResampleFrom48kHzTo16kHz);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, EmptyAudioBuffer);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, FireRecognitionResultPartial);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, FireRecognitionResultFinal);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, FireEndpointEvent);
-  FRIEND_TEST(SherpaOnnxSodaClientTest, FireStopEvent);
-
   // Sherpa-ONNX C API function pointer typedefs.
   // All Sherpa-ONNX opaque types are represented as void* here since we load
   // the library dynamically and define the actual structs in the .cc file.

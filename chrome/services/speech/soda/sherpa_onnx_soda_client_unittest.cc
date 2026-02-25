@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -34,31 +34,29 @@ SherpaOnnxSodaClient CreateInvalidClient() {
       base::FilePath(FILE_PATH_LITERAL("/nonexistent/libsherpa-onnx.so")));
 }
 
-class SherpaOnnxSodaClientTest : public testing::Test {};
-
 // --- Graceful degradation tests (invalid library) ---
 
-TEST_F(SherpaOnnxSodaClientTest, InvalidLibraryPath) {
+TEST(SherpaOnnxSodaClientTest, InvalidLibraryPath) {
   auto client = CreateInvalidClient();
   EXPECT_FALSE(client.BinaryLoadedSuccessfully());
   EXPECT_FALSE(client.IsInitialized());
 }
 
-TEST_F(SherpaOnnxSodaClientTest, InvalidLibraryPathDoesNotCrashOnAddAudio) {
+TEST(SherpaOnnxSodaClientTest, InvalidLibraryPathDoesNotCrashOnAddAudio) {
   auto client = CreateInvalidClient();
   const char audio[] = {0, 0, 0, 0};
   client.AddAudio(audio, sizeof(audio));
   client.MarkDone();
 }
 
-TEST_F(SherpaOnnxSodaClientTest, DidAudioPropertyChangeDetectsChanges) {
+TEST(SherpaOnnxSodaClientTest, DidAudioPropertyChangeDetectsChanges) {
   auto client = CreateInvalidClient();
   // Default state: sample_rate=0, channel_count=0.
   EXPECT_TRUE(client.DidAudioPropertyChange(16000, 1));
   EXPECT_FALSE(client.DidAudioPropertyChange(0, 0));
 }
 
-TEST_F(SherpaOnnxSodaClientTest, ResetWithInvalidLibraryIsNoop) {
+TEST(SherpaOnnxSodaClientTest, ResetWithInvalidLibraryIsNoop) {
   auto client = CreateInvalidClient();
 
   speech::soda::chrome::ExtendedSodaConfigMsg config_msg;
@@ -77,8 +75,8 @@ TEST_F(SherpaOnnxSodaClientTest, ResetWithInvalidLibraryIsNoop) {
   EXPECT_FALSE(client.IsInitialized());
 }
 
-TEST_F(SherpaOnnxSodaClientTest,
-       UpdateRecognitionContextWithInvalidLibraryIsNoop) {
+TEST(SherpaOnnxSodaClientTest,
+     UpdateRecognitionContextWithInvalidLibraryIsNoop) {
   auto client = CreateInvalidClient();
 
   RecognitionContext context;
@@ -90,12 +88,12 @@ TEST_F(SherpaOnnxSodaClientTest,
 
 // --- Audio conversion tests ---
 
-TEST_F(SherpaOnnxSodaClientTest, ConvertMonoAudio16kHz) {
+TEST(SherpaOnnxSodaClientTest, ConvertMonoAudio16kHz) {
   auto client = CreateInvalidClient();
 
   // 4 mono samples at 16kHz (int16_t PCM).
   const int16_t samples[] = {0, 16384, -16384, 32767};
-  auto result = client.ConvertAndResampleAudio(
+  auto result = client.ConvertAndResampleAudioForTesting(
       reinterpret_cast<const char*>(samples), sizeof(samples), 16000, 1);
 
   ASSERT_EQ(result.size(), 4u);
@@ -105,13 +103,13 @@ TEST_F(SherpaOnnxSodaClientTest, ConvertMonoAudio16kHz) {
   EXPECT_FLOAT_EQ(result[3], 32767.0f / 32768.0f);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, ConvertStereoToMono) {
+TEST(SherpaOnnxSodaClientTest, ConvertStereoToMono) {
   auto client = CreateInvalidClient();
 
   // 2 stereo frames: (1000, 3000), (2000, 4000).
   // Expected mono: avg(1000,3000)/32768, avg(2000,4000)/32768.
   const int16_t samples[] = {1000, 3000, 2000, 4000};
-  auto result = client.ConvertAndResampleAudio(
+  auto result = client.ConvertAndResampleAudioForTesting(
       reinterpret_cast<const char*>(samples), sizeof(samples), 16000, 2);
 
   ASSERT_EQ(result.size(), 2u);
@@ -119,7 +117,7 @@ TEST_F(SherpaOnnxSodaClientTest, ConvertStereoToMono) {
   EXPECT_FLOAT_EQ(result[1], 3000.0f / 32768.0f);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, ResampleFrom48kHzTo16kHz) {
+TEST(SherpaOnnxSodaClientTest, ResampleFrom48kHzTo16kHz) {
   auto client = CreateInvalidClient();
 
   // Generate a simple 480-sample buffer at 48kHz (10ms of audio).
@@ -131,7 +129,7 @@ TEST_F(SherpaOnnxSodaClientTest, ResampleFrom48kHzTo16kHz) {
         16384.0 * std::sin(2.0 * M_PI * 1000.0 * i / 48000.0));
   }
 
-  auto result = client.ConvertAndResampleAudio(
+  auto result = client.ConvertAndResampleAudioForTesting(
       reinterpret_cast<const char*>(samples.data()),
       static_cast<int>(samples.size() * sizeof(int16_t)), 48000, 1);
 
@@ -145,21 +143,22 @@ TEST_F(SherpaOnnxSodaClientTest, ResampleFrom48kHzTo16kHz) {
   EXPECT_GT(max_val, 0.1f);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, EmptyAudioBuffer) {
+TEST(SherpaOnnxSodaClientTest, EmptyAudioBuffer) {
   auto client = CreateInvalidClient();
 
-  auto result = client.ConvertAndResampleAudio(nullptr, 0, 16000, 1);
+  auto result =
+      client.ConvertAndResampleAudioForTesting(nullptr, 0, 16000, 1);
   EXPECT_TRUE(result.empty());
 }
 
 // --- Callback / event firing tests ---
 
-TEST_F(SherpaOnnxSodaClientTest, FireRecognitionResultPartial) {
+TEST(SherpaOnnxSodaClientTest, FireRecognitionResultPartial) {
   auto client = CreateInvalidClient();
   CallbackCapture capture;
   client.SetCallbackForTesting(&CallbackCapture::Handler, &capture);
 
-  client.FireRecognitionResult("hello world", /*is_final=*/false);
+  client.FireRecognitionResultForTesting("hello world", /*is_final=*/false);
 
   ASSERT_EQ(capture.responses.size(), 1u);
   speech::soda::chrome::SodaResponse response;
@@ -171,12 +170,12 @@ TEST_F(SherpaOnnxSodaClientTest, FireRecognitionResultPartial) {
             speech::soda::chrome::SodaRecognitionResult::PARTIAL);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, FireRecognitionResultFinal) {
+TEST(SherpaOnnxSodaClientTest, FireRecognitionResultFinal) {
   auto client = CreateInvalidClient();
   CallbackCapture capture;
   client.SetCallbackForTesting(&CallbackCapture::Handler, &capture);
 
-  client.FireRecognitionResult("final text", /*is_final=*/true);
+  client.FireRecognitionResultForTesting("final text", /*is_final=*/true);
 
   ASSERT_EQ(capture.responses.size(), 1u);
   speech::soda::chrome::SodaResponse response;
@@ -185,12 +184,12 @@ TEST_F(SherpaOnnxSodaClientTest, FireRecognitionResultFinal) {
             speech::soda::chrome::SodaRecognitionResult::FINAL);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, FireEndpointEvent) {
+TEST(SherpaOnnxSodaClientTest, FireEndpointEvent) {
   auto client = CreateInvalidClient();
   CallbackCapture capture;
   client.SetCallbackForTesting(&CallbackCapture::Handler, &capture);
 
-  client.FireEndpointEvent();
+  client.FireEndpointEventForTesting();
 
   ASSERT_EQ(capture.responses.size(), 1u);
   speech::soda::chrome::SodaResponse response;
@@ -201,12 +200,12 @@ TEST_F(SherpaOnnxSodaClientTest, FireEndpointEvent) {
             speech::soda::chrome::SodaEndpointEvent::END_OF_UTTERANCE);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, FireStopEvent) {
+TEST(SherpaOnnxSodaClientTest, FireStopEvent) {
   auto client = CreateInvalidClient();
   CallbackCapture capture;
   client.SetCallbackForTesting(&CallbackCapture::Handler, &capture);
 
-  client.FireStopEvent();
+  client.FireStopEventForTesting();
 
   ASSERT_EQ(capture.responses.size(), 1u);
   speech::soda::chrome::SodaResponse response;
@@ -214,12 +213,12 @@ TEST_F(SherpaOnnxSodaClientTest, FireStopEvent) {
   EXPECT_EQ(response.soda_type(), speech::soda::chrome::SodaResponse::STOP);
 }
 
-TEST_F(SherpaOnnxSodaClientTest, FireWithNoCallbackIsNoop) {
+TEST(SherpaOnnxSodaClientTest, FireWithNoCallbackIsNoop) {
   auto client = CreateInvalidClient();
   // No callback set — these should not crash.
-  client.FireRecognitionResult("test", false);
-  client.FireEndpointEvent();
-  client.FireStopEvent();
+  client.FireRecognitionResultForTesting("test", false);
+  client.FireEndpointEventForTesting();
+  client.FireStopEventForTesting();
 }
 
 }  // namespace
