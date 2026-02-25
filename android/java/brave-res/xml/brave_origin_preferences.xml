@@ -50,13 +50,13 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="leo_ai_switch"
             android:title="@string/origin_leo_ai_toggle"
-            android:icon="@drawable/ic_brave_ai"
+            android:icon="@drawable/ic_product_brave_leo"
             android:defaultValue="false" />
         
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="news_switch"
             android:title="@string/origin_news_toggle"
-            android:icon="@drawable/ic_news"
+            android:icon="@drawable/ic_product_brave_news"
             android:defaultValue="false" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
@@ -68,13 +68,13 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="vpn_switch"
             android:title="@string/origin_vpn_toggle"
-            android:icon="@drawable/ic_vpn"
+            android:icon="@drawable/ic_product_vpn"
             android:defaultValue="false" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="wallet_switch"
             android:title="@string/origin_wallet_toggle"
-            android:icon="@drawable/ic_crypto_wallets"
+            android:icon="@drawable/ic_product_brave_wallet"
             android:defaultValue="false" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference

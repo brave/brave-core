@@ -104,7 +104,7 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
         var leoButtonController =
                 new BraveLeoButtonController(
                         mContext,
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_ai),
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_product_brave_leo),
                         mActivityTabProvider,
                         mProfileSupplier,
                         mModalDialogManagerSupplier.get());
@@ -114,7 +114,8 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
         var walletButtonController =
                 new BraveWalletButtonController(
                         mContext,
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets),
+                        AppCompatResources.getDrawable(
+                                mContext, R.drawable.ic_product_brave_wallet),
                         mActivityTabProvider,
                         mProfileSupplier,
                         mModalDialogManagerSupplier.get());

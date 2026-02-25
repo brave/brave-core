@@ -455,20 +455,20 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void updatePreferenceIcons() {
-        updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_brave_password);
-        updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_site_settings);
-        updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_payment_methods);
-        updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_downloads);
-        updatePreferenceIcon(PREF_LANGUAGES, R.drawable.ic_languages);
-        updatePreferenceIcon(PREF_BRAVE_LANGUAGES, R.drawable.ic_languages);
-        updatePreferenceIcon(PREF_ABOUT_CHROME, R.drawable.ic_info);
+        updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_key);
+        updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
+        updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_credit_card);
+        updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
+        updatePreferenceIcon(PREF_LANGUAGES, R.drawable.ic_product_translate);
+        updatePreferenceIcon(PREF_BRAVE_LANGUAGES, R.drawable.ic_product_translate);
+        updatePreferenceIcon(PREF_ABOUT_CHROME, R.drawable.ic_info_outline);
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
-        updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_privacy_reports);
-        updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
+        updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_bar_chart_search);
+        updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_location_on);
         updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
-        updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
-        updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
+        updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_code);
+        updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_browser_home);
         updatePreferenceIcon(MainSettings.PREF_TABS, R.drawable.ic_browser_mobile_tabs);
         updatePreferenceIcon(
                 MainSettings.PREF_ADDRESS_BAR,

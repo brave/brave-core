@@ -101,7 +101,7 @@ public class CustomizeBraveMenu {
 
     static {
         // Main menu items
-        MENU_ICON_MAP.put(R.id.new_tab_menu_id, R.drawable.ic_new_tab_page);
+        MENU_ICON_MAP.put(R.id.new_tab_menu_id, R.drawable.ic_window_tab_new);
         MENU_ICON_MAP.put(R.id.new_incognito_tab_menu_id, R.drawable.brave_menu_new_private_tab);
         MENU_ICON_MAP.put(R.id.add_to_group_menu_id, R.drawable.ic_widgets);
         MENU_ICON_MAP.put(R.id.pin_tab_menu_id, R.drawable.ic_keep_24dp);
@@ -114,12 +114,12 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.downloads_menu_id, R.drawable.brave_menu_downloads);
         MENU_ICON_MAP.put(R.id.all_bookmarks_menu_id, R.drawable.brave_menu_bookmarks);
         MENU_ICON_MAP.put(R.id.recent_tabs_menu_id, R.drawable.brave_menu_recent_tabs);
-        MENU_ICON_MAP.put(R.id.brave_wallet_id, R.drawable.ic_crypto_wallets);
+        MENU_ICON_MAP.put(R.id.brave_wallet_id, R.drawable.ic_product_brave_wallet);
         MENU_ICON_MAP.put(R.id.brave_playlist_id, R.drawable.ic_open_playlist);
         MENU_ICON_MAP.put(R.id.add_to_playlist_id, R.drawable.ic_baseline_add_24);
-        MENU_ICON_MAP.put(R.id.brave_news_id, R.drawable.ic_news);
-        MENU_ICON_MAP.put(R.id.brave_leo_id, R.drawable.ic_brave_ai);
-        MENU_ICON_MAP.put(R.id.request_brave_vpn_id, R.drawable.ic_vpn);
+        MENU_ICON_MAP.put(R.id.brave_news_id, R.drawable.ic_product_brave_news);
+        MENU_ICON_MAP.put(R.id.brave_leo_id, R.drawable.ic_product_brave_leo);
+        MENU_ICON_MAP.put(R.id.request_brave_vpn_id, R.drawable.ic_product_vpn);
         MENU_ICON_MAP.put(R.id.brave_rewards_id, R.drawable.brave_menu_rewards);
         MENU_ICON_MAP.put(R.id.set_default_browser, R.drawable.brave_menu_set_as_default);
         MENU_ICON_MAP.put(R.id.exit_id, R.drawable.brave_menu_exit);
