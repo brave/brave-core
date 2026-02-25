@@ -447,7 +447,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
     }
 
     // Brave Summary (Ocelot)
-    {
+    if (features::IsBraveSummaryModelEnabled()) {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Brave";
       options->name = "brave-summary";

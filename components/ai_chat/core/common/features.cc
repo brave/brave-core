@@ -137,6 +137,14 @@ bool IsNEARModelsEnabled() {
   return base::FeatureList::IsEnabled(features::kNEARModels);
 }
 
+BASE_FEATURE(kBraveSummaryModel,
+             "AIChatBraveSummaryModel",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+bool IsBraveSummaryModelEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveSummaryModel);
+}
+
 BASE_FEATURE(kRichSearchWidgets, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatConversationAPIV2, base::FEATURE_DISABLED_BY_DEFAULT);
