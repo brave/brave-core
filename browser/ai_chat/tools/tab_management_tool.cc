@@ -18,7 +18,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
-static_assert(BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL));
+static_assert(BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL));
 static_assert(!BUILDFLAG(IS_ANDROID));
 
 namespace ai_chat {

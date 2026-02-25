@@ -31,7 +31,7 @@ static_library("ai_chat") {
     "upload_file_helper.h",
   ]
 
-  if (enable_tab_management_tool) {
+  if (enable_ai_chat_tab_management_tool) {
     sources += [
       "tools/tab_management_tool.cc",
       "tools/tab_management_tool.h",
@@ -262,7 +262,7 @@ source_set("unit_tests") {
     "//url",
   ]
 
-  if (enable_tab_management_tool) {
+  if (enable_ai_chat_tab_management_tool) {
     sources += [ "tools/tab_management_tool_unittest.cc" ]
   }
 

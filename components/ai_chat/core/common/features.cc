@@ -129,9 +129,11 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
 BASE_FEATURE(kTabManagementTool,
              "BraveTabManagementTool",
              base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 
 BASE_FEATURE(kNEARModels,
              "AIChatNEARModels",

@@ -16,7 +16,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "content/public/browser/browser_context.h"
 
-#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+#if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
 #include "brave/browser/ai_chat/tools/tab_management_tool.h"
 #endif
 
@@ -35,7 +35,7 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
     tool_ptrs.push_back(code_execution_tool_->GetWeakPtr());
   }
 
-#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+#if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (tab_management_tool_) {
     tool_ptrs.push_back(tab_management_tool_->GetWeakPtr());
   }
@@ -49,7 +49,7 @@ void BrowserToolProvider::CreateTools(
   if (features::IsCodeExecutionToolEnabled()) {
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
   }
-#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+#if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {
     tab_management_tool_ = std::make_unique<TabManagementTool>();
   }
