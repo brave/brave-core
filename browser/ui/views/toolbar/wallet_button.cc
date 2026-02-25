@@ -29,12 +29,12 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/rrect_f.h"
+#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -160,7 +160,7 @@ void WalletButton::AddedToWidget() {
   paint_as_active_subscription_ =
       GetWidget()->RegisterPaintAsActiveChangedCallback(
           base::BindRepeating(&WalletButton::UpdateImageAndText,
-                              base::Unretained(this),
+                              weak_ptr_factory_.GetWeakPtr(),
                               /*activated=*/false));
 }
 

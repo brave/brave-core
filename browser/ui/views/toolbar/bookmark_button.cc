@@ -36,7 +36,7 @@ void BraveBookmarkButton::AddedToWidget() {
   paint_as_active_subscription_ =
       GetWidget()->RegisterPaintAsActiveChangedCallback(
           base::BindRepeating(&BraveBookmarkButton::UpdateImageAndText,
-                              base::Unretained(this)));
+                              weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveBookmarkButton::RemovedFromWidget() {

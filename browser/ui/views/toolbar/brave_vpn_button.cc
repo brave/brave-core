@@ -203,7 +203,7 @@ void BraveVPNButton::AddedToWidget() {
   paint_as_active_subscription_ =
       GetWidget()->RegisterPaintAsActiveChangedCallback(
           base::BindRepeating(&BraveVPNButton::UpdateColorsAndInsets,
-                              base::Unretained(this)));
+                              weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveVPNButton::RemovedFromWidget() {

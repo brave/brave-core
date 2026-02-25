@@ -48,7 +48,7 @@ void SidebarItemAddButton::AddedToWidget() {
   paint_as_active_subscription_ =
       GetWidget()->RegisterPaintAsActiveChangedCallback(
           base::BindRepeating(&SidebarItemAddButton::UpdateButtonImages,
-                              base::Unretained(this)));
+                              weak_ptr_factory_.GetWeakPtr()));
 }
 
 void SidebarItemAddButton::RemovedFromWidget() {

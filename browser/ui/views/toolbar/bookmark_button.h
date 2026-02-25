@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 
 #include "base/callback_list.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -28,6 +29,7 @@ class BraveBookmarkButton : public ToolbarButton {
  private:
   bool active_ = false;
   base::CallbackListSubscription paint_as_active_subscription_;
+  base::WeakPtrFactory<BraveBookmarkButton> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
