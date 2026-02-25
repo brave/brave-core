@@ -20,98 +20,9 @@ extension BrowserViewController: TabObserver {
       toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
     }
 
-    var injectedScripts: [TabContentScript] = [
-      ReaderModeScriptHandler(),
-      ErrorPageHelper(certStore: profile.certStore),
-      BlockedDomainScriptHandler(),
-      HTTPBlockedScriptHandler(tabManager: tabManager),
-      PrintScriptHandler(browserController: self),
-      DarkReaderScriptHandler(),
-      BraveGetUA(),
-      BraveSearchScriptHandler(profile: profile, rewards: rewards),
-      ResourceDownloadScriptHandler(),
-      AdsMediaReportingScriptHandler(rewards: rewards),
-      ReadyStateScriptHandler(),
-      DeAmpScriptHandler(),
-      SiteStateListenerScriptHandler(),
-      CosmeticFiltersScriptHandler(),
-      URLPartinessScriptHandler(),
-      FaviconScriptHandler(),
-      YoutubeQualityScriptHandler(),
-      BraveLeoScriptHandler(),
-      BraveSkusScriptHandler(),
-      RequestBlockingContentScriptHandler(),
-    ]
-
-    if let contentBlocker = tab.contentBlocker {
-      injectedScripts.append(contentBlocker)
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      installContentScriptHandlers(in: tab)
     }
-
-    if profileController.profile.prefs.isPlaylistAvailable {
-      injectedScripts.append(contentsOf: [
-        PlaylistScriptHandler(tab: tab),
-        PlaylistFolderSharingScriptHandler(),
-      ])
-    }
-
-    if profileController.profile.prefs.isBraveTalkAvailable {
-      injectedScripts.append(
-        BraveTalkScriptHandler(
-          rewards: rewards,
-          launchNativeBraveTalk: { [weak self] tab, room, token in
-            self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
-          }
-        )
-      )
-    }
-
-    if profileController.braveWalletAPI.isAllowed {
-      injectedScripts.append(Web3NameServiceScriptHandler())
-    }
-
-    // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
-    if !tab.isPrivate {
-      injectedScripts += [
-        LoginsScriptHandler(profile: profile, passwordAPI: profileController.passwordAPI),
-        BraveSearchResultAdScriptHandler(),
-      ]
-      if profileController.braveWalletAPI.isAllowed {
-        injectedScripts += [
-          EthereumProviderScriptHandler(),
-          SolanaProviderScriptHandler(),
-        ]
-      }
-    }
-
-    if FeatureList.kBraveTranslateEnabled.enabled {
-      injectedScripts.append(contentsOf: [
-        BraveTranslateScriptLanguageDetectionHandler(),
-        BraveTranslateScriptHandler(),
-      ])
-    }
-
-    // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
-    // let spotlightHelper = SpotlightHelper(tab: tab)
-    // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
-
-    injectedScripts.forEach {
-      tab.browserData?.addContentScript(
-        $0,
-        name: type(of: $0).scriptName,
-        contentWorld: type(of: $0).scriptSandbox
-      )
-    }
-
-    (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
-      as? ReaderModeScriptHandler)?
-      .delegate = self
-    (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
-      as? PlaylistScriptHandler)?
-      .delegate = self
-    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
-      as? PlaylistFolderSharingScriptHandler)?.delegate = self
-    (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
-      as? Web3NameServiceScriptHandler)?.delegate = self
   }
 
   public func tabWillDeleteWebView(_ tab: some TabState) {
@@ -484,5 +395,102 @@ extension BrowserViewController: TabObserver {
     if tabManager.selectedTab === tab {
       updateStatusBarOverlayColor()
     }
+  }
+}
+
+extension BrowserViewController {
+  fileprivate func installContentScriptHandlers(in tab: some TabState) {
+    var injectedScripts: [TabContentScript] = [
+      ReaderModeScriptHandler(),
+      ErrorPageHelper(certStore: profile.certStore),
+      BlockedDomainScriptHandler(),
+      HTTPBlockedScriptHandler(tabManager: tabManager),
+      PrintScriptHandler(browserController: self),
+      DarkReaderScriptHandler(),
+      BraveGetUA(),
+      BraveSearchScriptHandler(profile: profile, rewards: rewards),
+      ResourceDownloadScriptHandler(),
+      AdsMediaReportingScriptHandler(rewards: rewards),
+      ReadyStateScriptHandler(),
+      DeAmpScriptHandler(),
+      SiteStateListenerScriptHandler(),
+      CosmeticFiltersScriptHandler(),
+      URLPartinessScriptHandler(),
+      FaviconScriptHandler(),
+      YoutubeQualityScriptHandler(),
+      BraveLeoScriptHandler(),
+      BraveSkusScriptHandler(),
+      RequestBlockingContentScriptHandler(),
+    ]
+
+    if let contentBlocker = tab.contentBlocker {
+      injectedScripts.append(contentBlocker)
+    }
+
+    if profileController.profile.prefs.isPlaylistAvailable {
+      injectedScripts.append(contentsOf: [
+        PlaylistScriptHandler(tab: tab),
+        PlaylistFolderSharingScriptHandler(),
+      ])
+    }
+
+    if profileController.profile.prefs.isBraveTalkAvailable {
+      injectedScripts.append(
+        BraveTalkScriptHandler(
+          rewards: rewards,
+          launchNativeBraveTalk: { [weak self] tab, room, token in
+            self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
+          }
+        )
+      )
+    }
+
+    if profileController.braveWalletAPI.isAllowed {
+      injectedScripts.append(Web3NameServiceScriptHandler())
+    }
+
+    // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
+    if !tab.isPrivate {
+      injectedScripts += [
+        LoginsScriptHandler(profile: profile, passwordAPI: profileController.passwordAPI),
+        BraveSearchResultAdScriptHandler(),
+      ]
+      if profileController.braveWalletAPI.isAllowed {
+        injectedScripts += [
+          EthereumProviderScriptHandler(),
+          SolanaProviderScriptHandler(),
+        ]
+      }
+    }
+
+    if FeatureList.kBraveTranslateEnabled.enabled {
+      injectedScripts.append(contentsOf: [
+        BraveTranslateScriptLanguageDetectionHandler(),
+        BraveTranslateScriptHandler(),
+      ])
+    }
+
+    // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
+    // let spotlightHelper = SpotlightHelper(tab: tab)
+    // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
+
+    injectedScripts.forEach {
+      tab.browserData?.addContentScript(
+        $0,
+        name: type(of: $0).scriptName,
+        contentWorld: type(of: $0).scriptSandbox
+      )
+    }
+
+    (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
+      as? ReaderModeScriptHandler)?
+      .delegate = self
+    (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
+      as? PlaylistScriptHandler)?
+      .delegate = self
+    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
+      as? PlaylistFolderSharingScriptHandler)?.delegate = self
+    (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
+      as? Web3NameServiceScriptHandler)?.delegate = self
   }
 }

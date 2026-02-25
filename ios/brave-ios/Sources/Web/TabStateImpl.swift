@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import OrderedCollections
 
@@ -111,8 +112,10 @@ extension TabStateImpl {
   }
 
   func didCreateWebView() {
-    // Make sure to remove any message handlers on newly created web views
-    configuration?.userContentController.removeAllScriptMessageHandlers()
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      // Make sure to remove any message handlers on newly created web views
+      configuration?.userContentController.removeAllScriptMessageHandlers()
+    }
     observers.forEach {
       $0.tabDidCreateWebView(self)
     }
