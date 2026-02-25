@@ -58,8 +58,8 @@ public class BraveDownloadSettings extends DownloadSettings
         ChromeSwitchPreference locationPromptEnabledPref =
                 (ChromeSwitchPreference) findPreference(PREF_LOCATION_PROMPT_ENABLED);
         if (locationPromptEnabledPref != null) {
-            locationPromptEnabledPref.setTitle(
-                    R.string.brave_download_location_prompt_enabled_title);
+            locationPromptEnabledPref.setVisible(true);
+            locationPromptEnabledPref.setOnPreferenceChangeListener(this);
         }
     }
 
