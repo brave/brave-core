@@ -26,6 +26,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -1313,6 +1314,16 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "for BraveRequestInfo",                                              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
+      },                                                                       \
+      {                                                                        \
+          "brave-email-aliases",                                               \
+          "Enable Email Aliases",                                              \
+          "Enable Email Aliases to create unique, private "                    \
+          "addresses that forward to your primary inbox. This allows you to "  \
+          "sign up for services anonymously and keep your main account free "  \
+          "from spam.",                                                        \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),          \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
