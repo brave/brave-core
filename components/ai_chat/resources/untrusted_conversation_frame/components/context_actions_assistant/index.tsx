@@ -79,9 +79,38 @@ export default function ContextActionsAssistant(
     [conversationContext, props.turnUuid],
   )
 
-  const leoModels = conversationContext.allModels.filter(
-    (model) =>
-      model.options.leoModelOptions && model.key !== AUTOMATIC_MODEL_KEY,
+  const isSummaryResponseTurn = React.useMemo(() => {
+    if (!props.turnUuid) return false
+    const history = conversationContext.conversationHistory
+    const turnIndex = history.findIndex((t) => t.uuid === props.turnUuid)
+    if (turnIndex <= 0) return false
+    const prev = history[turnIndex - 1]
+    const curr = history[turnIndex]
+    return !!(
+      curr?.characterType === Mojom.CharacterType.ASSISTANT
+      && prev?.characterType === Mojom.CharacterType.HUMAN
+      && (prev.actionType === Mojom.ActionType.SUMMARIZE_PAGE
+        || prev.actionType === Mojom.ActionType.SUMMARIZE_VIDEO)
+    )
+  }, [props.turnUuid, conversationContext.conversationHistory])
+
+  const leoModels = React.useMemo(
+    () =>
+      conversationContext.allModels.filter((model) => {
+        if (!model.options.leoModelOptions) {
+          return false
+        }
+        if (model.key === AUTOMATIC_MODEL_KEY) {
+          return false
+        }
+        const isSummaryCategory =
+          model.options.leoModelOptions.category === Mojom.ModelCategory.SUMMARY
+        if (isSummaryCategory && !isSummaryResponseTurn) {
+          return false
+        }
+        return true
+      }),
+    [conversationContext.allModels, isSummaryResponseTurn],
   )
 
   const handleOpenCloseRegenerateAnswerMenu = React.useCallback(

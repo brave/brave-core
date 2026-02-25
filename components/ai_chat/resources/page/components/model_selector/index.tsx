@@ -17,6 +17,7 @@ import {
 } from '../../../common/constants'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { isSelectableModel } from '../../model_utils'
 import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import { NearIcon } from '../near_label/near_label'
 import styles from './style.module.scss'
@@ -30,16 +31,20 @@ export function ModelSelector() {
   const [showAllModels, setShowAllModels] = React.useState(false)
 
   // Memos
-  const suggestedModels = React.useMemo(() => {
-    return conversationContext.allModels.filter(
-      (model) => model.isSuggestedModel,
-    )
-  }, [conversationContext.allModels])
+  const selectableModels = React.useMemo(
+    () => conversationContext.allModels.filter(isSelectableModel),
+    [conversationContext.allModels],
+  )
+
+  const suggestedModels = React.useMemo(
+    () => selectableModels.filter((model) => model.isSuggestedModel),
+    [selectableModels],
+  )
 
   const models = React.useMemo(() => {
     // Show all BASIC_AND_PREMIUM models if showAllModels is true
     if (showAllModels) {
-      return conversationContext.allModels.filter(
+      return selectableModels.filter(
         (model) =>
           model.options.leoModelOptions?.access
           === Mojom.ModelAccess.BASIC_AND_PREMIUM,
@@ -47,7 +52,7 @@ export function ModelSelector() {
     }
 
     // Find the Auto model (chat-automatic)
-    const autoModel = conversationContext.allModels.find(
+    const autoModel = selectableModels.find(
       (model) => model.key === AUTOMATIC_MODEL_KEY,
     )
     const defaultModel = conversationContext.userDefaultModel
@@ -60,7 +65,11 @@ export function ModelSelector() {
     }
 
     // Add defaultModel if it exists and is not Auto
-    if (defaultModel && defaultModel.key !== AUTOMATIC_MODEL_KEY) {
+    if (
+      defaultModel
+      && defaultModel.key !== AUTOMATIC_MODEL_KEY
+      && isSelectableModel(defaultModel)
+    ) {
       recommendedList.push(defaultModel)
     }
 
@@ -69,6 +78,7 @@ export function ModelSelector() {
       currentModel
       && currentModel.key !== AUTOMATIC_MODEL_KEY
       && currentModel.key !== defaultModel?.key
+      && isSelectableModel(currentModel)
     ) {
       recommendedList.push(currentModel)
     }
@@ -83,26 +93,24 @@ export function ModelSelector() {
     return recommendedList
   }, [
     showAllModels,
-    conversationContext.allModels,
+    selectableModels,
     conversationContext.userDefaultModel,
+    conversationContext.currentModel,
     suggestedModels,
   ])
 
   const premiumModels = React.useMemo(
     () =>
-      conversationContext.allModels.filter(
+      selectableModels.filter(
         (model) =>
           model.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM,
       ),
-    [conversationContext.allModels],
+    [selectableModels],
   )
 
   const customModels = React.useMemo(
-    () =>
-      conversationContext.allModels.filter(
-        (model) => model.options.customModelOptions,
-      ),
-    [conversationContext.allModels],
+    () => selectableModels.filter((model) => model.options.customModelOptions),
+    [selectableModels],
   )
 
   const onClickLearnMore = React.useCallback(() => {

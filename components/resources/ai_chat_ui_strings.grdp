@@ -141,6 +141,9 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_OPUS" desc="AI Chat intro message for the Claude Opus model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Opus, a model created by Anthropic to power conversational and text processing tasks. Claude Opus is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BRAVE_SUMMARY" desc="AI Chat intro message for the Brave Summary model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Brave Ocelot, a model created by Brave to summarise web pages. Brave Ocelot is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
   <message name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model" formatter_data="webui=AiChat">
     Premium
   </message>
@@ -161,6 +164,9 @@
   </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat" formatter_data="webui=AiChat">
     Chat
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CATEGORY_SUMMARY" desc="Category name for Summary" formatter_data="webui=AiChat">
+    Summary
   </message>
   <message name="IDS_CHAT_UI_LABEL_OPEN_FULL_PAGE" desc="Menu item to expand a sidebar conversation to a the full page experience" formatter_data="webui=AiChat">
     Open full page
@@ -611,6 +617,9 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE" desc="A description for claude-opus model" formatter_data="webui=AiChat">
     Search • Vision
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_BRAVE_SUMMARY_SUBTITLE" desc="A description for ocelot model" formatter_data="webui=AiChat">
+    Summaries • Fast
   </message>
   <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip" formatter_data="webui=AiChat">
     Leo settings

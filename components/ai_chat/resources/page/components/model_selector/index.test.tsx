@@ -112,6 +112,25 @@ describe('ModelSelector', () => {
         },
       },
     },
+    {
+      key: 'chat-brave-summary',
+      displayName: 'Brave Summary',
+      isSuggestedModel: false,
+      isNearModel: false,
+      visionSupport: true,
+      supportsTools: false,
+      options: {
+        customModelOptions: undefined,
+        leoModelOptions: {
+          name: 'A summary model',
+          displayMaker: 'Brave',
+          longConversationWarningCharacterLimit: 1,
+          maxAssociatedContentLength: 2,
+          category: Mojom.ModelCategory.SUMMARY,
+          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+        },
+      },
+    },
 
     {
       key: 'chat-custom',
@@ -232,7 +251,8 @@ describe('ModelSelector', () => {
       'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
     )
 
-    // Check that all model items are visible (wait for re-render)
+    // Check that all model items are visible (wait for re-render).
+    // SUMMARY category (chat-brave-summary) is hidden, so 6 models + footer = 7 items.
     await waitFor(() => {
       const allMenuItems =
         document.querySelectorAll<HTMLElement>('leo-menu-item')
@@ -245,6 +265,9 @@ describe('ModelSelector', () => {
     expect(allMenuItems[3]).toHaveTextContent('Premium Model')
     expect(allMenuItems[4]).toHaveTextContent('Another Premium Model')
     expect(allMenuItems[5]).toHaveTextContent('Custom Model')
+    expect(allMenuItems[6]).toHaveTextContent(
+      'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
+    )
 
     const labels = document.querySelectorAll<HTMLElement>('leo-label')
 
@@ -264,6 +287,25 @@ describe('ModelSelector', () => {
     expect(labels[3]).toBeInTheDocument()
     expect(labels[3]).toBeVisible()
     expect(labels[3]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
+  })
+
+  it('hides internal models from the dropdown', async () => {
+    renderModelSelector()
+
+    const anchorButton = getAnchorButton()
+    await act(async () => {
+      anchorButton?.shadowRoot?.querySelector('button')?.click()
+    })
+
+    const menu = getMenu()
+    expect(menu).not.toHaveTextContent('Brave Ocelot')
+
+    const showAllModelsButton = getShowAllModelsButton()
+    await act(async () => {
+      showAllModelsButton?.click()
+    })
+
+    expect(menu).not.toHaveTextContent('Brave Ocelot')
   })
 
   it('should call setCurrentModel when a model is clicked', async () => {

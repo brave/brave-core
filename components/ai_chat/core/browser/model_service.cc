@@ -446,6 +446,31 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
+    // Brave Summary (Ocelot)
+    if (features::IsBraveSummaryModelEnabled()) {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Brave";
+      options->name = "brave-summary";
+      options->category = mojom::ModelCategory::SUMMARY;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 180000;
+      options->long_conversation_warning_character_limit = 320000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-brave-summary";
+      model->display_name = "Brave Ocelot";
+      model->vision_support = true;
+      model->supports_tools = false;
+      model->is_suggested_model = false;
+      model->is_near_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
     // DeepSeek V3.1 (NEAR)
     if (features::IsNEARModelsEnabled()) {
       auto options = mojom::LeoModelOptions::New();
