@@ -255,12 +255,12 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   AttachTabHelpers(self.webState);
 
   if (ai_chat::features::IsAIChatWebUIEnabled()) {
-    ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+    ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
         ->SetBridge(self.aiChatUIHandler);
-    ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
+    ai_chat::AIChatTabHelper::FromWebState(self.webState)
         ->SetPageFetcher(self.aiChatUIHandler);
   }
-  brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+  brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
 
   ProfileIOS* profile =
@@ -404,9 +404,9 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     (id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>)bridge {
   _aiChatUIHandler = bridge;
   if (ai_chat::features::IsAIChatWebUIEnabled()) {
-    ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+    ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
         ->SetBridge(bridge);
-    ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
+    ai_chat::AIChatTabHelper::FromWebState(self.webState)
         ->SetPageFetcher(self.aiChatUIHandler);
   }
 }
@@ -417,7 +417,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 - (void)setWalletPageHandler:(id<WalletPageHandlerBridge>)bridge {
   _walletPageHandler = bridge;
-  brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+  brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
       ->SetBridge(bridge);
 }
 

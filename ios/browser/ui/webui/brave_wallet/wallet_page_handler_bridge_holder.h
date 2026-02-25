@@ -6,7 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PAGE_HANDLER_BRIDGE_HOLDER_H_
 #define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PAGE_HANDLER_BRIDGE_HOLDER_H_
 
-#include "ios/web/public/lazy_web_state_user_data.h"
+#include "ios/web/public/web_state_user_data.h"
 
 @protocol WalletPageHandlerBridge;
 
@@ -14,14 +14,14 @@ namespace brave_wallet {
 
 // Some WebState user data that holds onto an WalletPageHandlerBridge
 class PageHandlerBridgeHolder
-    : public web::LazyWebStateUserData<PageHandlerBridgeHolder> {
+    : public web::WebStateUserData<PageHandlerBridgeHolder> {
  public:
   void SetBridge(id<WalletPageHandlerBridge> bridge) { bridge_ = bridge; }
   id<WalletPageHandlerBridge> bridge() { return bridge_; }
 
  private:
   explicit PageHandlerBridgeHolder(web::WebState*);
-  friend class web::LazyWebStateUserData<PageHandlerBridgeHolder>;
+  friend class web::WebStateUserData<PageHandlerBridgeHolder>;
   __weak id<WalletPageHandlerBridge> bridge_ = nullptr;
 };
 
