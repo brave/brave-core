@@ -128,6 +128,10 @@ class SettingsViewController: TableViewController {
 
     super.init(style: .insetGrouped)
 
+    Task { @MainActor in
+      await BraveOriginServiceFactory.get(profile: braveCore.profile)?.checkPurchaseState()
+    }
+
     UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
       .braveLabel
   }
@@ -779,9 +783,26 @@ class SettingsViewController: TableViewController {
             guard let service = BraveOriginServiceFactory.get(profile: braveCore.profile) else {
               return
             }
-            let controller = UIHostingController(rootView: OriginSettingsView(service: service))
-            controller.title = Strings.Origin.originProductName  // Not Translated
-            self.navigationController?.pushViewController(controller, animated: true)
+            if service.isPurchased() {
+              let controller = UIHostingController(rootView: OriginSettingsView(service: service))
+              controller.title = Strings.Origin.originProductName  // Not Translated
+              self.navigationController?.pushViewController(controller, animated: true)
+            } else {
+              let skusService = Skus.SkusServiceFactory.get(profile: braveCore.profile)
+              let controller = UIHostingController(
+                rootView: OriginPaywallView(
+                  viewModel: .init(store: .init(skusService: skusService))
+                )
+                .environment(
+                  \.openURL,
+                  OpenURLAction { [weak self] url in
+                    self?.settingsDelegate?.settingsOpenURLInNewTab(url)
+                    return .handled
+                  }
+                )
+              )
+              present(controller, animated: true)
+            }
           },
           image: UIImage(braveSystemNamed: "leo.product.origin"),
           accessory: .disclosureIndicator,
