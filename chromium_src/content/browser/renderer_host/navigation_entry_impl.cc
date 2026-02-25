@@ -53,7 +53,7 @@ NavigationEntryImpl::GetStoragePartitionKeyToRestore() {
                                 ? frame_tree_->frame_entry->site_instance()
                                 : nullptr) {
     const auto& storage_partition_config =
-        site_instance->GetStoragePartitionConfig();
+        site_instance->GetSecurityPrincipal().GetStoragePartitionConfig();
 
     // Set the storage partition key to be used during session serialization.
     if (!storage_partition_key_to_restore_) {
