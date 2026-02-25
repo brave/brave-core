@@ -54,7 +54,10 @@ class BraveSearchMetrics : public PagePercentageMetrics {
   void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
   void MaybeRecordNTPSearch(int64_t engine_prepopulate_id);
 #if BUILDFLAG(IS_ANDROID)
+  // Records a quick search if the keyword matches ":br" and the query is not
+  // via Leo.
   void MaybeRecordQuickSearch(bool is_leo, std::string_view keyword);
+  // Records a widget search if the destination URL is a Brave Search URL.
   void MaybeRecordWidgetSearch(const GURL& url);
 #endif  // BUILDFLAG(IS_ANDROID)
 

@@ -94,7 +94,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   auto* search_engine_tracker =
       SearchEngineTrackerFactory::GetInstance()->GetForBrowserContext(context);
   BraveSearchMetrics* brave_search_metrics =
-      page_metrics_ ? page_metrics_->brave_search_metrics() : nullptr;
+      page_metrics_ ? &page_metrics_->brave_search_metrics() : nullptr;
   misc_android_metrics_ = std::make_unique<MiscAndroidMetrics>(
       local_state, g_brave_browser_process->process_misc_metrics(),
       search_engine_tracker, template_url_service, brave_search_metrics);
