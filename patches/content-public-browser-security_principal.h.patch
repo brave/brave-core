@@ -1,0 +1,13 @@
+diff --git a/content/public/browser/security_principal.h b/content/public/browser/security_principal.h
+index 6895167f4f434c53d101656376b1bc00ef42ba5c..df920a41d5a8f7d67ff7873b1178fc68005f1c0d 100644
+--- a/content/public/browser/security_principal.h
++++ b/content/public/browser/security_principal.h
+@@ -5,6 +5,8 @@
+ #ifndef CONTENT_PUBLIC_BROWSER_SECURITY_PRINCIPAL_H_
+ #define CONTENT_PUBLIC_BROWSER_SECURITY_PRINCIPAL_H_
+ 
++#include "content/common/content_export.h"
++
+ namespace content {
+ 
+ class StoragePartitionConfig;
