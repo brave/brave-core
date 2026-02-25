@@ -9,6 +9,7 @@
 #include "brave/base/apple/foundation_util.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -57,7 +58,7 @@ void ConversationClient::OnModelDataChanged(
       [[NSMutableArray alloc] initWithCapacity:model_list.size()];
 
   for (auto& model : model_list) {
-    if (model->key == "chat-automatic") {
+    if (model->key == kChatAutomaticModelKey) {
       continue;
     }
     [models addObject:[[AiChatModel alloc] initWithModelPtr:model->Clone()]];

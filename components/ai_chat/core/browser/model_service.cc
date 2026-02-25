@@ -107,7 +107,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->long_conversation_warning_character_limit = 320000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-automatic";
+      model->key = kChatAutomaticModelKey;
       model->display_name = "Automatic";
       model->vision_support = true;
       model->supports_tools = features::kAutomaticModelSupportsTools.Get();
@@ -593,7 +593,7 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
   if (ai_chat::features::IsAIChatEnabled()) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
-    // Migrate old model keys to "chat-automatic"
+    // Migrate old model keys to kChatAutomaticModelKey
     constexpr std::array<const char*, 3> kOldModelKeys = {
         // Added: June 6, 2024. Checks can be removed eventually
         "chat-default",
@@ -772,7 +772,7 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-near-deepseek-v3-1") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
             IDS_CHAT_UI_CHAT_NEAR_DEEPSEEK_V3_1_SUBTITLE);
-      } else if (model->key == "chat-automatic") {
+      } else if (model->key == kChatAutomaticModelKey) {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
       } else if (model->key == "chat-llama-4-scout") {
