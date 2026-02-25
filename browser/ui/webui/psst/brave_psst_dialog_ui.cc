@@ -71,9 +71,6 @@ void BravePsstDialogUI::BindInterface(
 void BravePsstDialogUI::CreatePsstConsentHandler(
     ::mojo::PendingReceiver<psst::mojom::PsstConsentHelper> psst_consent_helper,
     ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog) {
-  auto* browser_window = BraveBrowserWindow::FindBrowserWindowWithWebContents(
-      web_ui()->GetWebContents());
-  CHECK(browser_window);
   BrowserWindowInterface* const bwi =
       GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   CHECK(bwi);
