@@ -11,10 +11,10 @@ import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBro
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import android.app.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.LayoutTransition;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -247,8 +247,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
      * Sends the post-FRE intent first and delays finishing this activity until either another
      * activity is resumed or this activity is already stopped/destroyed.
      *
-     * <p>This avoids handoff races where finishing too early can cause a brief re-show/flash of
-     * the onboarding activity during task/window transitions (for example around fold/unfold state
+     * <p>This avoids handoff races where finishing too early can cause a brief re-show/flash of the
+     * onboarding activity during task/window transitions (for example around fold/unfold state
      * changes).
      *
      * <p>This mirrors the upstream robust pattern used in FirstRunActivity and is specifically

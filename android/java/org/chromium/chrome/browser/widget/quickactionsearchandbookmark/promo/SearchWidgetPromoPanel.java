@@ -23,8 +23,7 @@ import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.Bra
 
 @NullMarked
 public class SearchWidgetPromoPanel implements View.OnClickListener {
-    @Nullable
-    private PopupWindow mPopupWindow;
+    @Nullable private PopupWindow mPopupWindow;
 
     @Override
     public void onClick(View view) {
@@ -38,7 +37,8 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
         }
     }
 
-    public void showIfNeeded(final View parentView, final int extraBottomOffset, final Context context) {
+    public void showIfNeeded(
+            final View parentView, final int extraBottomOffset, final Context context) {
         dismiss();
         if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(context)) {
             View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
@@ -55,24 +55,18 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
             }
             int totalBottomOffset = extraBottomOffset + navigationBarBottomInset;
             mPopupWindow.showAtLocation(
-                    parentView,
-                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-                    0,
-                    totalBottomOffset);
+                    parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, totalBottomOffset);
         }
     }
 
-    /**
-     * Returns whether the promo popup is currently visible on screen.
-     */
+    /** Returns whether the promo popup is currently visible on screen. */
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
 
     /**
-     * Dismisses the promo popup if it is currently shown and clears its reference.
-     * This method is safe to call multiple times. If the popup is already dismissed, it will be a
-     * no-op.
+     * Dismisses the promo popup if it is currently shown and clears its reference. This method is
+     * safe to call multiple times. If the popup is already dismissed, it will be a no-op.
      */
     public void dismiss() {
         if (mPopupWindow != null) {
@@ -80,5 +74,4 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
             mPopupWindow = null;
         }
     }
-
 }
