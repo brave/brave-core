@@ -14,10 +14,6 @@
 
 class Profile;
 
-namespace content {
-class BrowserContext;
-}
-
 namespace ai_chat {
 
 // Factory for creating ToolProvider instances in the browser layer
