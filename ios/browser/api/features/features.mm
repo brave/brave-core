@@ -400,4 +400,8 @@
       [[Feature alloc] initWithFeature:&brave_origin::features::kBraveOrigin];
 }
 
++ (Feature*)kUseChromiumWebViewsAutofill {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kUseChromiumWebViewsAutofill];
+}
 @end
