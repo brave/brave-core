@@ -103,11 +103,12 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   std::string domain2 = "d.test";
   GURL url1 = https_server_.GetURL(domain1, "/simple.html");
   GURL url2 = https_server_.GetURL(domain2, "/simple.html");
-  // set memory to 10GB
-  blink::ApproximatedDeviceMemory::SetPhysicalMemoryMBForTesting(1024 * 10);
+  // set memory to 64GB (greater than the ApproximatedDeviceMemory kMaxMemory of
+  // 32X).
+  blink::ApproximatedDeviceMemory::SetPhysicalMemoryMBForTesting(1024 * 64);
   int true_value =
       blink::ApproximatedDeviceMemory::GetApproximatedDeviceMemory() * 1024;
-  EXPECT_EQ(true_value, 8192);
+  EXPECT_EQ(true_value, 32768);
   // Farbling level: off
   AllowFingerprinting(domain1);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
@@ -130,7 +131,7 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
   AllowFingerprinting(domain2);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
-  EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(32768, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: default, but webcompat exception enabled
   SetFingerprintingDefault(domain1);
