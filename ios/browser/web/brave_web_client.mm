@@ -5,12 +5,15 @@
 
 #import "brave/ios/browser/web/brave_web_client.h"
 
+#import <WebKit/WebKit.h>
+
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/ios/ns_error_util.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/web/brave_web_main_parts.h"
@@ -19,6 +22,7 @@
 #include "components/autofill/ios/form_util/form_handlers_java_script_feature.h"
 #include "components/password_manager/ios/password_manager_java_script_feature.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
 #import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
@@ -95,7 +99,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
         autofill::SuggestionControllerJavaScriptFeature::GetInstance());
   }
   if (base::FeatureList::IsEnabled(
-          brave::features::kUseChromiumWebViewsJavaScript)) {
+          brave::features::kUseProfileWebViewConfiguration)) {
     // Add Brave iOS ported JavaScriptFeatures based on their original
     // counterpart in //brave-ios
   }
@@ -211,4 +215,14 @@ void BraveWebClient::RunOpenPanel(
     base::OnceCallback<void(NSArray<NSURL*>*)> completion) const
     API_AVAILABLE(ios(18.4)) {
   NOTIMPLEMENTED();
+}
+
+void BraveWebClient::DidResetConfiguration(web::BrowserState* browser_state,
+                                           WKWebViewConfiguration* config) {
+  if (BraveWebView.didResetConfiguration) {
+    auto* profile = ProfileIOS::FromBrowserState(browser_state);
+    ProfileBridgeImpl* profile_bridge =
+        [[ProfileBridgeImpl alloc] initWithProfile:profile];
+    BraveWebView.didResetConfiguration(profile_bridge, config);
+  }
 }

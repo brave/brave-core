@@ -6,9 +6,7 @@
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 
 #include "base/command_line.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,12 +28,7 @@ namespace permissions {
 
 class BraveWalletPermissionContextBrowserTest : public InProcessBrowserTest {
  public:
-  BraveWalletPermissionContextBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
-
+  BraveWalletPermissionContextBrowserTest() = default;
   ~BraveWalletPermissionContextBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -76,10 +69,8 @@ class BraveWalletPermissionContextBrowserTest : public InProcessBrowserTest {
 
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  net::test_server::EmbeddedTestServer https_server_;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
+  net::test_server::EmbeddedTestServer https_server_{
+      net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,

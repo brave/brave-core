@@ -10,12 +10,12 @@
 #include <optional>
 #include <string>
 
-#include "base/values.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 
 class PrefService;
 
 namespace base {
+class DictValue;
 class Time;
 }  // namespace base
 

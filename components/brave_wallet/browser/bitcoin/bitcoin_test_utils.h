@@ -118,7 +118,6 @@ class BitcoinTestRpcServer {
   std::optional<uint32_t> account_index_;
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BitcoinHDKeyring> keyring_;
 };
 

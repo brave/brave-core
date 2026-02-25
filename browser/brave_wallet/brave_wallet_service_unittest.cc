@@ -302,8 +302,7 @@ class TestBraveWalletServiceObserver
 class BraveWalletServiceUnitTest : public testing::Test {
  public:
   BraveWalletServiceUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(url_loader_factory_.GetSafeWeakWrapper()) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~BraveWalletServiceUnitTest() override = default;
 
@@ -347,7 +346,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
                   BraveWalletServiceDelegate::Create(profile),
                   profile->GetPrefs(), local_state);
             },
-            shared_url_loader_factory_, &local_state_));
+            url_loader_factory_.GetSafeWeakWrapper(), &local_state_));
     profile_ = builder.Build();
     service_ = brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
         profile_.get());
@@ -885,7 +884,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;

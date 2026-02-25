@@ -112,7 +112,7 @@ extension TabStateImpl {
 
   func didCreateWebView() {
     // Make sure to remove any message handlers on newly created web views
-    configuration.userContentController.removeAllScriptMessageHandlers()
+    configuration?.userContentController.removeAllScriptMessageHandlers()
     observers.forEach {
       $0.tabDidCreateWebView(self)
     }

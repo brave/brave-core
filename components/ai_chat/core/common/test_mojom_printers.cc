@@ -22,8 +22,15 @@ namespace {
 
 void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
                                  std::ostream* os) {
-  *os << "web_sources(query: " << ws.query.value_or("<nullopt>")
-      << ", sources: [";
+  *os << "web_sources(queries: [";
+  for (size_t i = 0; i < ws.queries.size(); ++i) {
+    if (i > 0) {
+      *os << ", ";
+    }
+    *os << ws.queries[i];
+  }
+  *os << "]";
+  *os << ", sources: [";
   for (size_t i = 0; i < ws.sources.size(); ++i) {
     if (i > 0) {
       *os << ", ";
@@ -31,7 +38,23 @@ void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
     *os << "{title: " << ws.sources[i]->title
         << ", url: " << ws.sources[i]->url.possibly_invalid_spec()
         << ", favicon_url: "
-        << ws.sources[i]->favicon_url.possibly_invalid_spec() << "}";
+        << ws.sources[i]->favicon_url.possibly_invalid_spec()
+        << ", page_content: "
+        << ws.sources[i]->page_content.value_or("<nullopt>")
+        << ", extra_snippets: ";
+    if (ws.sources[i]->extra_snippets.has_value()) {
+      *os << "[";
+      for (size_t j = 0; j < ws.sources[i]->extra_snippets->size(); ++j) {
+        if (j > 0) {
+          *os << ", ";
+        }
+        *os << ws.sources[i]->extra_snippets.value()[j];
+      }
+      *os << "]";
+    } else {
+      *os << "<nullopt>";
+    }
+    *os << "}";
   }
   *os << "], rich_results: [";
   for (size_t i = 0; i < ws.rich_results.size(); ++i) {
@@ -133,6 +156,12 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
       << "\n";
 }
 
+void PrintTo(const InlineSearchEvent& event, std::ostream* os) {
+  *os << "--InlineSearchEvent--\n";
+  *os << "query: " << event.query << "\n";
+  *os << "results: " << event.results_json << "\n";
+}
+
 void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
   *os << "--ConversationEntryEvent--\n";
   using Tag = ConversationEntryEvent::Tag;
@@ -165,6 +194,11 @@ void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
       for (const auto& r : event.get_sources_event()->rich_results) {
         *os << "  - rich_result: " << r << "\n";
       }
+      break;
+    }
+    case Tag::kInlineSearchEvent: {
+      *os << "inline_search_event:\n";
+      PrintTo(*event.get_inline_search_event(), os);
       break;
     }
     case Tag::kToolUseEvent: {

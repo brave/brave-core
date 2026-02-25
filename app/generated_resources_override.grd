@@ -1380,6 +1380,9 @@ are declared in tools/grit/grit_args.gni.
   <if expr="is_chromeos">
       </if>
 
+    <if expr="enable_glic and enable_pdf">
+      </if>
+
     <if expr="is_win">
       </if>
 

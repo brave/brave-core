@@ -23,7 +23,7 @@ message TextContentBlockProto {
 
 message WebSourcesContentBlockProto {
   repeated WebSourceProto sources = 1;
-  optional string query = 2;
+  repeated string queries = 2;
   repeated string rich_results = 3;
 }
 
@@ -53,11 +53,18 @@ message WebSourceProto {
   string title = 1;
   string url = 2;
   string favicon_url = 3;
+  optional string page_content = 4;
+  repeated string extra_snippets = 5;
 }
 
 message WebSourcesEventProto {
   repeated WebSourceProto sources = 1;
   repeated string rich_results = 2;
+}
+
+message InlineSearchEventProto {
+  string query = 1;
+  string results_json = 2;
 }
 
 message SkillEntryProto {

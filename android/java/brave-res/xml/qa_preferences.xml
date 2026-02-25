@@ -59,4 +59,9 @@
         android:key="qa_export_rewards_db"
         android:title="Export Rewards Database" />
 
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="qa_consume_origin_purchase"
+        android:title="Consume Origin Purchase"
+        android:summary="Clears Origin INAPP purchase on Play Store for re-testing"/>
+
 </PreferenceScreen>

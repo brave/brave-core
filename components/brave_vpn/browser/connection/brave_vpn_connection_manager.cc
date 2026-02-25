@@ -79,6 +79,13 @@ void BraveVPNConnectionManager::NotifySelectedRegionChanged(
   }
 }
 
+void BraveVPNConnectionManager::NotifyInstallSystemServicesCompleted(
+    bool success) const {
+  for (auto& obs : observers_) {
+    obs.OnInstallSystemServicesCompleted(success);
+  }
+}
+
 void BraveVPNConnectionManager::UpdateConnectionAPIImpl() {
   if (!connection_api_impl_getter_) {
     CHECK_IS_TEST();
@@ -235,6 +242,7 @@ void BraveVPNConnectionManager::MaybeInstallSystemServices() {
 
 void BraveVPNConnectionManager::OnInstallSystemServicesCompleted(bool success) {
   VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
+  NotifyInstallSystemServicesCompleted(success);
   if (success) {
 #if BUILDFLAG(IS_WIN)
     // Update prefs first before signaling the event because the event could

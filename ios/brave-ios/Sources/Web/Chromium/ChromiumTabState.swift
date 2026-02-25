@@ -278,14 +278,14 @@ class ChromiumTabState: TabState, TabStateImpl {
   var visibleSecureContentState: SecureContentState {
     guard let lastCommittedURL = lastCommittedURL else { return .unknown }
 
+    if lastCommittedURL.isNewTabURL {
+      // New Tab Page is a special case, should be treated as `unknown` instead of `localhost`
+      return .unknown
+    }
     let isAppSpecificURL =
       lastCommittedURL.scheme == "brave" || lastCommittedURL.scheme == "chrome"
       || InternalURL.isValid(url: lastCommittedURL)
     if isAppSpecificURL {
-      if let internalURL = InternalURL(lastCommittedURL), internalURL.isAboutHomeURL {
-        // New Tab Page is a special case, should be treated as `unknown` instead of `localhost`
-        return .unknown
-      }
       return .localhost
     }
 
@@ -485,11 +485,11 @@ class ChromiumTabState: TabState, TabStateImpl {
     )
   }
 
-  var configuration: WKWebViewConfiguration {
+  var configuration: WKWebViewConfiguration? {
     if let configuration = webView?.internalWebView?.configuration {
       return configuration
     }
-    return wkConfiguration ?? .init()
+    return wkConfiguration
   }
 
   var dataForDisplayedPDF: Data? {

@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 
+#include <memory>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -14,8 +15,11 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/net/brave_request_handler.h"
+#include "brave/browser/net/resource_context_data.h"
+#include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/content/browser/adblock_stub_response.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "content/public/browser/browser_context.h"
@@ -87,12 +91,17 @@ net::RedirectInfo CreateRedirectInfo(
 
 }  // namespace
 
-BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirectParams::
-    FollowRedirectParams() = default;
-BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirectParams::
-    ~FollowRedirectParams() = default;
+template <template <typename> class T>
+BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::FollowRedirectParams::FollowRedirectParams() =
+    default;
+template <template <typename> class T>
+BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::FollowRedirectParams::~FollowRedirectParams() =
+    default;
 
-BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
+template <template <typename> class T>
+BraveProxyingURLLoaderFactory<T>::InProgressRequest::InProgressRequest(
     BraveProxyingURLLoaderFactory& factory,
     uint64_t request_id,
     int32_t network_service_request_id,
@@ -121,28 +130,51 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
       weak_factory_(this) {
   // If there is a client error, clean up the request.
   target_client_.set_disconnect_handler(base::BindOnce(
-      &BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError,
+      &BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnRequestError,
       weak_factory_.GetWeakPtr(),
       network::URLLoaderCompletionStatus(net::ERR_ABORTED)));
 }
 
-BraveProxyingURLLoaderFactory::InProgressRequest::~InProgressRequest() {
+template <template <typename> class T>
+BraveProxyingURLLoaderFactory<T>::InProgressRequest::~InProgressRequest() {
   if (ctx_) {
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::Restart() {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::Restart() {
   UpdateRequestInfo();
   RestartInternal();
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::UpdateRequestInfo() {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::UpdateRequestInfo() {
   // TODO(iefremov): Update |ctx_| here and get rid of multiple spots where
   // it is refilled.
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
+template <>
+void BraveProxyingURLLoaderFactory<
+    std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
+  ctx_ = brave::BraveRequestInfo::MakeCTX(
+      request_, render_frame_token_, request_id_, browser_context_, ctx_.get());
+}
+
+template <>
+void BraveProxyingURLLoaderFactory<
+    base::WeakPtr>::InProgressRequest::CreateBraveRequestInfo() {
+  if (ctx_) {
+    factory_->request_handler_->OnURLRequestDestroyed(ctx_);
+  }
+  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
+                                                request_id_, browser_context_,
+                                                ctx_owned_.get());
+  ctx_ = ctx_owned_->AsWeakPtr();
+}
+
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::RestartInternal() {
   request_completed_ = false;
   elapsed_timer_ = {};
 
@@ -150,8 +182,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
       base::BindRepeating(&InProgressRequest::ContinueToBeforeSendHeaders,
                           weak_factory_.GetWeakPtr());
   redirect_url_ = GURL();
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
-                                          request_id_, browser_context_, ctx_);
+  CreateBraveRequestInfo();
   int result = factory_->request_handler_->OnBeforeURLRequest(
       ctx_, continuation, &redirect_url_);
 
@@ -180,7 +211,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
   continuation.Run(net::OK);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
@@ -208,7 +240,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
   RestartInternal();
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::SetPriority(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::SetPriority(
     net::RequestPriority priority,
     int32_t intra_priority_value) {
   if (target_loader_.is_bound()) {
@@ -216,10 +249,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::SetPriority(
   }
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {}
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr head,
     mojo::ScopedDataPipeConsumerHandle body,
     std::optional<mojo_base::BigBuffer> cached_metadata) {
@@ -232,7 +267,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
                           weak_factory_.GetWeakPtr()));
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
   current_response_head_ = std::move(head);
@@ -243,7 +279,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
                           weak_factory_.GetWeakPtr(), redirect_info));
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnUploadProgress(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnUploadProgress(
     int64_t current_position,
     int64_t total_size,
     OnUploadProgressCallback callback) {
@@ -251,12 +288,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnUploadProgress(
                                    std::move(callback));
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnTransferSizeUpdated(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnTransferSizeUpdated(
     int32_t transfer_size_diff) {
   target_client_->OnTransferSizeUpdated(transfer_size_diff);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnComplete(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnComplete(
     const network::URLLoaderCompletionStatus& status) {
   UMA_HISTOGRAM_TIMES("Brave.ProxyingURLLoader.TotalRequestTime",
                       elapsed_timer_.Elapsed());
@@ -270,8 +309,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnComplete(
   factory_->RemoveRequest(this);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    HandleBeforeRequestRedirect() {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::HandleBeforeRequestRedirect() {
   // The listener requested a redirect. Close the connection with the current
   // URLLoader and inform the URLLoaderClient redirect was generated.
   // To load |redirect_url_|, a new URLLoader will be recreated
@@ -321,8 +361,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   ContinueToBeforeRedirect(redirect_info, net::OK);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    ContinueToBeforeSendHeaders(int error_code) {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::ContinueToBeforeSendHeaders(int error_code) {
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
@@ -388,8 +429,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     auto continuation = base::BindRepeating(
         &InProgressRequest::ContinueToSendHeaders, weak_factory_.GetWeakPtr());
 
-    ctx_ = brave::BraveRequestInfo::MakeCTX(
-        request_, render_frame_token_, request_id_, browser_context_, ctx_);
+    CreateBraveRequestInfo();
     int result = factory_->request_handler_->OnBeforeStartTransaction(
         ctx_, continuation, &request_.headers);
 
@@ -417,8 +457,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   ContinueToSendHeaders(net::OK);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
-    int error_code) {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::ContinueToStartRequest(int error_code) {
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
@@ -445,7 +486,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
   // either |proxied_loader_receiver_|, |proxied_client_receiver_|.
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::ContinueToSendHeaders(
     int error_code) {
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
@@ -484,8 +526,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
   ContinueToStartRequest(net::OK);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    ContinueToResponseStarted(int error_code) {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::ContinueToResponseStarted(int error_code) {
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
@@ -532,9 +575,10 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
                                     std::move(cached_metadata_));
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
-    const net::RedirectInfo& redirect_info,
-    int error_code) {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
+    ContinueToBeforeRedirect(const net::RedirectInfo& redirect_info,
+                             int error_code) {
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
@@ -572,15 +616,15 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
   request_completed_ = true;
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
     HandleResponseOrRedirectHeaders(net::CompletionOnceCallback continuation) {
   override_headers_ = nullptr;
   redirect_url_ = GURL();
 
   auto split_once_callback = base::SplitOnceCallback(std::move(continuation));
   if (request_.url.SchemeIsHTTPOrHTTPS()) {
-    ctx_ = brave::BraveRequestInfo::MakeCTX(
-        request_, render_frame_token_, request_id_, browser_context_, ctx_);
+    CreateBraveRequestInfo();
     int result = factory_->request_handler_->OnHeadersReceived(
         ctx_, std::move(split_once_callback.first),
         current_response_head_->headers.get(), &override_headers_,
@@ -607,7 +651,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   std::move(split_once_callback.second).Run(net::OK);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnRequestError(
     const network::URLLoaderCompletionStatus& status) {
   if (!request_completed_) {
     // Make a non-const copy of status so that |should_collapse_initiator| can
@@ -627,8 +672,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
   factory_->RemoveRequest(this);
 }
 
-BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
-    BraveRequestHandler& request_handler,
+template <template <typename> class T>
+BraveProxyingURLLoaderFactory<T>::BraveProxyingURLLoaderFactory(
+    BraveRequestHandler<T>& request_handler,
     content::BrowserContext* browser_context,
     content::GlobalRenderFrameHostToken render_frame_token,
     network::URLLoaderFactoryBuilder& factory_builder,
@@ -661,23 +707,26 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
                           base::Unretained(this)));
 }
 
-BraveProxyingURLLoaderFactory::~BraveProxyingURLLoaderFactory() = default;
+template <template <typename> class T>
+BraveProxyingURLLoaderFactory<T>::~BraveProxyingURLLoaderFactory() = default;
 
 // static
-void BraveProxyingURLLoaderFactory::MaybeProxyRequest(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     network::URLLoaderFactoryBuilder& factory_builder,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  ResourceContextData::StartProxying(
+  ResourceContextData<T>::StartProxying(
       browser_context,
       render_frame_host ? render_frame_host->GetGlobalFrameToken()
                         : content::GlobalRenderFrameHostToken(),
       factory_builder, navigation_response_task_runner);
 }
 
-void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::CreateLoaderAndStart(
     mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
     int32_t request_id,
     uint32_t options,
@@ -699,19 +748,22 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   (*result.first)->Restart();
 }
 
-void BraveProxyingURLLoaderFactory::Clone(
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::Clone(
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> loader_receiver) {
   proxy_receivers_.Add(this, std::move(loader_receiver));
 }
 
-void BraveProxyingURLLoaderFactory::OnTargetFactoryError() {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::OnTargetFactoryError() {
   // Stop calls to CreateLoaderAndStart() when |target_factory_| is invalid.
   target_factory_.reset();
   proxy_receivers_.Clear();
   MaybeRemoveProxy();
 }
 
-void BraveProxyingURLLoaderFactory::OnProxyBindingError() {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::OnProxyBindingError() {
   if (proxy_receivers_.empty()) {
     target_factory_.reset();
   }
@@ -719,7 +771,9 @@ void BraveProxyingURLLoaderFactory::OnProxyBindingError() {
   MaybeRemoveProxy();
 }
 
-void BraveProxyingURLLoaderFactory::RemoveRequest(InProgressRequest* request) {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::RemoveRequest(
+    InProgressRequest* request) {
   auto it = requests_.find(request);
   DCHECK(it != requests_.end());
   requests_.erase(it);
@@ -727,7 +781,8 @@ void BraveProxyingURLLoaderFactory::RemoveRequest(InProgressRequest* request) {
   MaybeRemoveProxy();
 }
 
-void BraveProxyingURLLoaderFactory::MaybeRemoveProxy() {
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::MaybeRemoveProxy() {
   // Even if all URLLoaderFactory pipes connected to this object have been
   // closed it has to stay alive until all active requests have completed.
   if (target_factory_.is_bound() || !requests_.empty()) {
@@ -737,3 +792,6 @@ void BraveProxyingURLLoaderFactory::MaybeRemoveProxy() {
   // Deletes |this|.
   std::move(disconnect_callback_).Run(this);
 }
+
+template class BraveProxyingURLLoaderFactory<std::shared_ptr>;
+template class BraveProxyingURLLoaderFactory<base::WeakPtr>;

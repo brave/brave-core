@@ -23,29 +23,33 @@ namespace decentralized_dns {
 
 // Issue eth_call requests via Ethereum provider such as Infura to query
 // decentralized DNS records, and redirect URL requests based on them.
+template <template <typename> class T>
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+    T<brave::BraveRequestInfo> ctx);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+template <template <typename> class T>
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message);
 
+template <template <typename> class T>
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::vector<uint8_t>& content_hash,
     bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message);
 
+template <template <typename> class T>
 void OnBeforeURLRequest_SnsRedirectWork(
     const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url,
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message);

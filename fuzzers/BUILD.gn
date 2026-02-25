@@ -47,7 +47,7 @@ fuzzer_test("adblock_engine_matches_fuzzer") {
     "//base",
     "//base:i18n",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_shields/core/browser/adblock",
+    "//brave/components/brave_shields/core/common/adblock",
     "//testing/libfuzzer/proto:url_proto",
     "//testing/libfuzzer/proto:url_proto_converter",
     "//third_party/libprotobuf-mutator",
@@ -58,7 +58,7 @@ fuzzer_test("adblock_engine_useresources_fuzzer") {
   sources = [ "adblock/adblock_engine_useresources_fuzzer.cc" ]
   deps = [
     "//base",
-    "//brave/components/brave_shields/core/browser/adblock",
+    "//brave/components/brave_shields/core/common/adblock",
   ]
 
   dict = "//testing/libfuzzer/fuzzers/dicts/json.dict"

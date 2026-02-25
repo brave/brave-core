@@ -20,12 +20,36 @@
     <ph name="STATUS_BEFORE">$1</ph>Shields are DOWN<ph name="STATUS_AFTER">/$1</ph> for this site
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">
+  <message name="IDS_BRAVE_SHIELDS_STATUS_UP" desc="Status label for when Brave Shields is enabled." formatter_data="webui=BraveShields">
+    Shields <ph name="UP_BEFORE">$1</ph>up<ph name="UP_AFTER">/$1</ph> for this site
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_STATUS_DOWN" desc="Status label for when Brave Shields is disabled." formatter_data="webui=BraveShields">
+    Shields <ph name="DOWN_BEFORE">$1</ph>down<ph name="DOWN_AFTER">/$1</ph> for this site
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button." formatter_data="webui=BraveShields">
     If this site seems broken, try Shields down.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BROKEN_NOTE" desc="A footnote below the main Shields switch button to convey reduced privacy protections.">
     <ph name="NOTE_BEFORE">$1</ph>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER">/$1</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_PRIVACY_NOTE" desc="A note about reduced privacy protections with a link." formatter_data="webui=BraveShields">
+    This may reduce Brave's privacy protections. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED" desc="Summary text for blocked trackers and ads." formatter_data="webui=BraveShields">
+    Trackers, ads, and more blocked.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SITE_NOT_WORKING" desc="Prompt asking if site is not working with Shields enabled." formatter_data="webui=BraveShields">
+    Is this site not working correctly with Shields up?
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_REPORT" desc="Button label to report a broken site." formatter_data="webui=BraveShields">
+    Report
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_TITLE" desc="Title for the alert if the user is experiencing issues with the site.">
@@ -88,6 +112,10 @@
     Advanced controls
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_ADVANCED_OPTIONS" desc="A button label to expand/collapse advanced options." formatter_data="webui=BraveShields">
+    Advanced options
+  </message>
+
   <message name="IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION" desc="A description to explain the various options below will effect web compatibility.">
     Changing these settings might break sites.
   </message>
@@ -98,6 +126,10 @@
 
   <message name="IDS_BRAVE_SHIELDS_CHANGE_DEFAULTS" desc="A link that redirects to menu options for changing default Shield settings.">
     Global defaults
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_GLOBAL_SETTINGS" desc="Button label for global settings." formatter_data="webui=BraveShields">
+    Global Settings
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Button that shows all blocked elements">
@@ -124,7 +156,7 @@
     Block all
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists.">
+  <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists." formatter_data="webui=BraveShields">
     Filter lists
   </message>
 

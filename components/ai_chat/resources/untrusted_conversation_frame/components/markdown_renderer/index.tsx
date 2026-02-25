@@ -138,18 +138,12 @@ export function RenderLink(props: RenderLinkProps) {
   if (isCitation) {
     return (
       <Label>
-        <a
-          // While we preventDefault, we still need to pass the href
-          // here so we can continue to show link previews.
-          href={href}
+        <button
           className={styles.citation}
-          onClick={(e) => {
-            e.preventDefault()
-            handleLinkClicked()
-          }}
+          onClick={handleLinkClicked}
         >
           {children}
-        </a>
+        </button>
       </Label>
     )
   }

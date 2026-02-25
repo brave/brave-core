@@ -1,0 +1,13 @@
+diff --git a/components/tabs/public/tab_collection.h b/components/tabs/public/tab_collection.h
+index 1670f1fa2ed01dd94e2bf5f797c42c93ab7d1d94..83e125f2525fcee65c16045bdc2a414abdaac80b 100644
+--- a/components/tabs/public/tab_collection.h
++++ b/components/tabs/public/tab_collection.h
+@@ -233,7 +233,7 @@ class TabCollection : public SupportsHandles<TabCollectionHandleFactory> {
+   // This should be called either when this collection is added to another
+   // collection or it is removed from another collection. The child collection
+   // should not try to call this internally and set its parent.
+-  void OnReparented(TabCollection* new_parent);
++  virtual void OnReparented(TabCollection* new_parent);
+ 
+   const ChildrenVector& GetChildren() const { return impl_->GetChildren(); }
+   const ChildrenVector& GetChildren(

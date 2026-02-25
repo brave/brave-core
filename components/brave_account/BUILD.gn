@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/config.gni")
+
 source_set("brave_account") {
   sources = [
     "brave_account_service.cc",
@@ -37,6 +39,10 @@ source_set("brave_account") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    deps += [ "//brave/components/brave_account/android:features" ]
+  }
 }
 
 source_set("features") {
@@ -45,7 +51,10 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/components/email_aliases:features",
+  ]
 }
 
 source_set("test_support") {
@@ -69,6 +78,7 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
+    "features_unittest.cc",
   ]
 
   deps = [
@@ -76,8 +86,10 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
+    "//brave/components/email_aliases:features",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",

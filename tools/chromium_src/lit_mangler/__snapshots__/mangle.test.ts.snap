@@ -576,7 +576,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
    </div>
    <div id=\\"profilesWrapper\\" ?hidden=\\"\${(this.shouldHideProfilesWrapper_())}\\">
-@@ -28,48 +27,29 @@
+@@ -28,48 +27,33 @@
              @toggle-drag=\\"\${this.toggleDrag_}\\"
              @disable-all-picker-buttons=\\"\${this.disableAllPickerButtons_}\\">
          </profile-card>
@@ -599,8 +599,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<if expr=\\"enable_glic\\">
 -  <div id=\\"footer-text\\" class=\\"subtitle\\"
 -      ?hidden=\\"\${this.shouldHideFooterText_()}\\">
--    $i18nRaw{glicAddProfileHelper}
--  </div>
++
++  <div id=\\"footer-text\\" class=\\"subtitle\\" ?hidden=\\"\${this.shouldHideFooterText_()}\\">
+     $i18nRaw{glicAddProfileHelper}
+   </div>
 -</if>
 +
  </div>

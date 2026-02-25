@@ -638,9 +638,10 @@ class BraveBrowserCommandControllerWithEmailAliasesTest
     : public BraveBrowserCommandControllerTest {
  public:
   BraveBrowserCommandControllerWithEmailAliasesTest() {
-    scoped_features_.InitWithFeatures({email_aliases::features::kEmailAliases,
-                                       brave_account::features::kBraveAccount},
-                                      {});
+    scoped_features_.InitWithFeatures(
+        {email_aliases::features::kEmailAliases,
+         brave_account::features::BraveAccountFeatureForTesting()},
+        {});
   }
   ~BraveBrowserCommandControllerWithEmailAliasesTest() override = default;
 

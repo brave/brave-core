@@ -61,7 +61,7 @@ static_library("browser") {
   ]
   public_deps = [
     "//base",
-    "//brave/components/brave_shields/core/browser/adblock",
+    "//brave/components/brave_shields/core/common/adblock",
   ]
 }
 
@@ -78,6 +78,7 @@ source_set("unit_tests") {
     ":browser",
     "//base/test:test_support",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common/adblock",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/core/test:test_support",

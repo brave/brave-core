@@ -32,6 +32,8 @@ build_webui("build") {
     "brave_account_forgot_password_dialog.ts",
     "brave_account_password_icons.html.ts",
     "brave_account_password_icons.ts",
+    "brave_account_password_strength_meter.html.ts",
+    "brave_account_password_strength_meter.ts",
     "brave_account_sign_in_dialog.html.ts",
     "brave_account_sign_in_dialog.ts",
   ]
@@ -44,6 +46,7 @@ build_webui("build") {
     "brave_account_entry_dialog.css",
     "brave_account_forgot_password_dialog.css",
     "brave_account_password_icons.css",
+    "brave_account_password_strength_meter.css",
     "brave_account_sign_in_dialog.css",
   ]
 

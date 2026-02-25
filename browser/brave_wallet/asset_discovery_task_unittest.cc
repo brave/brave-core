@@ -176,19 +176,11 @@ class TestBraveWalletServiceObserverForAssetDiscoveryTask
 class AssetDiscoveryTaskUnitTest : public testing::Test {
  public:
   AssetDiscoveryTaskUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~AssetDiscoveryTaskUnitTest() override = default;
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitWithFeatures(
-        {features::kNativeBraveWalletFeature,
-         features::kBraveWalletAnkrBalancesFeature},
-        {});
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     TestingProfile::Builder builder;
@@ -198,7 +190,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
         GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
@@ -208,9 +200,9 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
             net::DefineNetworkTrafficAnnotation("asset_discovery_manager", ""),
-            shared_url_loader_factory_);
-    simple_hash_client_ =
-        std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
+            url_loader_factory_.GetSafeWeakWrapper());
+    simple_hash_client_ = std::make_unique<SimpleHashClient>(
+        url_loader_factory_.GetSafeWeakWrapper());
     asset_discovery_task_ = std::make_unique<AssetDiscoveryTask>(
         *api_request_helper_, *simple_hash_client_, *wallet_service_,
         *json_rpc_service_, GetPrefs());
@@ -452,7 +444,6 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   }
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryTask>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
@@ -465,7 +456,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
-  base::test::ScopedFeatureList scoped_feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_{
+      {features::kBraveWalletAnkrBalancesFeature}};
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

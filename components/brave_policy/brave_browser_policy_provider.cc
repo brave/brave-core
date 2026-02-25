@@ -62,15 +62,9 @@ void BraveBrowserPolicyProvider::OnBrowserPolicyChanged(
 policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  // TODO(https://github.com/brave/brave-browser/issues/47463)
-  // Get the actual purchase state from SKU service.
-#if !defined(OFFICIAL_BUILD)
   if (brave_origin::IsBraveOriginEnabled()) {
     LoadBraveOriginPolicies(bundle);
   }
-#else
-  // Always disabled in official builds
-#endif
 
   return bundle;
 }

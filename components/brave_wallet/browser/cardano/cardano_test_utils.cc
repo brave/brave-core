@@ -291,7 +291,7 @@ void CardanoTestRpcServer::AddConfirmedTransaction(const std::string& txid) {
 
 scoped_refptr<network::SharedURLLoaderFactory>
 CardanoTestRpcServer::GetURLLoaderFactory() {
-  return shared_url_loader_factory_;
+  return url_loader_factory_.GetSafeWeakWrapper();
 }
 
 }  // namespace brave_wallet

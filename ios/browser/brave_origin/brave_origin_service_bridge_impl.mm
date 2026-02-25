@@ -45,4 +45,12 @@
   return nil;
 }
 
+- (BOOL)isPurchased {
+  return _service->IsPurchased();
+}
+
+- (void)checkPurchaseState:(void (^)(BOOL))completionHandler {
+  _service->CheckPurchaseState(base::BindOnce(completionHandler));
+}
+
 @end

@@ -15,6 +15,11 @@
   }
 </style>
 
+<template is="dom-if" if="[[!isPurchased_]]">
+  <settings-brave-origin-onboarding></settings-brave-origin-onboarding>
+</template>
+
+<template is="dom-if" if="[[isPurchased_]]">
 <settings-section
   id="origin"
   page-title="$i18n{braveOriginTitle}">
@@ -142,3 +147,4 @@
   </cr-link-row>
 </div>
 </settings-section>
+</template>

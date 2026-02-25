@@ -17,7 +17,7 @@
 <translation id="8294286161128352783">只在新标签页</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
-<translation id="2361906291514218784">Leo 人工智能</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">更多…</translation>
 <translation id="1990886731975529483">安装并运行 Google Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
@@ -358,7 +358,7 @@
 <translation id="1336940801687497203">与窗口相同</translation>
 <translation id="8721331068159819483">与 macOS 相同</translation>
 <translation id="4171684937791228083">始终在全屏显示工具栏</translation>
-<translation id="5840822070878669614">打开 应用商店</translation>
+<translation id="5840822070878669614">打开应用商店</translation>
 <translation id="1692470335103807198">获得更多主题</translation>
 <translation id="2906510232093002459">Brave 默认图片</translation>
 <translation id="8000020256436988724">工具栏</translation>
@@ -411,7 +411,7 @@
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="5522420266446076076">启用快速阅读功能。</translation>
 <translation id="5211997910936574251">在可以的情况下自动使用快速阅读功能</translation>
-<translation id="2025435450953474282">文章自动以读者模式加载，节省您的时间</translation>
+<translation id="2025435450953474282">文章自动以读者模式加载，为您节省时间</translation>
 <translation id="7984721311211272523">禁用标签页扬声器图标中的静音功能</translation>
 <translation id="832432428796481785">显示侧边栏按钮</translation>
 <translation id="5581036754486769849">允许在无痕式窗口中自动填充</translation>
@@ -462,7 +462,7 @@
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
 <translation id="101592339984642584">内容过滤</translation>
-<translation id="2398817776566547893">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容</translation>
+<translation id="2398817776566547893">启用自定义过滤工具来阻止特定区域和语言的跟踪器和烦人的内容</translation>
 <translation id="3482656215021340727">添加自定义过滤器列表</translation>
 <translation id="1020877116991797978">添加由您信任的社区创建和维护的其他列表。</translation>
 <translation id="7617831480435794399">仅订阅您信任的实体的列表。您的浏览器会在定期检查您输入的 URL 中的列表更新情况，与此同时会将您的 IP 地址显示给其服务器。</translation>
@@ -507,7 +507,7 @@
 <translation id="2839742394543397416">分析</translation>
 <translation id="1799030480311994998">功能</translation>
 <translation id="6709133671862442373">新闻</translation>
-<translation id="6297791103122079275">视频会议</translation>
+<translation id="6297791103122079275">视频通话</translation>
 <translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="1199170151481311646">隐私保护分析</translation>
 <translation id="5990642573624858459">统计报告</translation>

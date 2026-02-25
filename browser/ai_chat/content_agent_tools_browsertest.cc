@@ -77,6 +77,7 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     auto* actor_service =
         actor::ActorKeyedServiceFactory::GetActorKeyedService(GetProfile());
     ASSERT_NE(actor_service, nullptr);
+    actor_service->GetPolicyChecker().set_act_on_web_for_testing(true);
 
     // Get the browser tool provider
     tool_provider_ =

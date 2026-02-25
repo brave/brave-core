@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_value_util.h"
 
 namespace brave_ads::json::reader {

@@ -372,8 +372,8 @@
 <translation id="7462178177755090262">開啟畫面</translation>
 <translation id="5365434987337264071">上次開啟的分頁</translation>
 <translation id="6019856124237323989">{HOURS, plural,
-          =1 {<ph name="HOURS_ONE"/> 一小時沒有活動後的新索引標籤}
-          other {<ph name="HOURS_MANY"/> 一小時沒有活動後的新索引標籤}
+          =1 {<ph name="HOURS_ONE"/> 小時沒有活動後的新分頁}
+          other {<ph name="HOURS_MANY"/> 小時沒有活動後的新分頁}
         }</translation>
 <translation id="5233638681132016545">新增分頁</translation>
 <translation id="8395271296293035055">返回您最近的分頁</translation>
@@ -1102,7 +1102,7 @@
 <translation id="1129510026454351943">詳細資料：<ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="5594899180331219722">選擇檔案</translation>
 <translation id="3744219658596020825">您的密碼未被匯入</translation>
-<translation id="8258027225380843424">匯入成功!</translation>
+<translation id="8258027225380843424">匯入成功！</translation>
 <translation id="766635563210446220">無法匯入密碼。請檢查 <ph name="FILENAME"/> 並確保其格式正確。<ph name="BEGIN_LINK"/>進一步瞭解<ph name="END_LINK"/></translation>
 <translation id="6581356304040102696">無法匯入密碼。檔案大小須小於 1 MB。</translation>
 <translation id="5895244669404288318">{COUNT, plural, =1 {無法匯入密碼。您每次只能匯入 1 組密碼。} other {無法匯入密碼。您每次最多只能匯入 <ph name="COUNT_MANY"/> 組密碼。}}</translation>
@@ -1110,7 +1110,7 @@
 <translation id="6438475350605608554">您正在另一個分頁中匯入密碼</translation>
 <translation id="3482868954775580230">讀取所選檔案時失敗。<ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {已成功匯入 1 組密碼。} other {已成功匯入 <ph name="IMPORT_COUNT_MANY"/> 組密碼。}}</translation>
-<translation id="4637949129057123593">匯入失敗.</translation>
+<translation id="4637949129057123593">匯入失敗。</translation>
 <translation id="4300452012226767715">密碼管理員無法使用。</translation>
 <translation id="6221633008163990886">解鎖即可匯出你的密碼</translation>
 <translation id="5245792669563792664">密碼</translation>

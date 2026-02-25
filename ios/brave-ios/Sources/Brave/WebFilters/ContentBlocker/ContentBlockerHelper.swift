@@ -97,14 +97,14 @@ class ContentBlockerHelper: ObservableObject {
     // Remove unwanted rule lists
     for ruleList in setRuleLists.subtracting(ruleLists) {
       // It's added but we don't want it. So we remove it.
-      tab?.configuration.userContentController.remove(ruleList)
+      tab?.configuration?.userContentController.remove(ruleList)
       setRuleLists.remove(ruleList)
       removedIds.append(ruleList.identifier)
     }
 
     // Add missing rule lists
     for ruleList in ruleLists.subtracting(setRuleLists) {
-      tab?.configuration.userContentController.add(ruleList)
+      tab?.configuration?.userContentController.add(ruleList)
       setRuleLists.insert(ruleList)
       addedIds.append(ruleList.identifier)
     }

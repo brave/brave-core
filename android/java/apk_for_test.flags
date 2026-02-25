@@ -653,7 +653,7 @@
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowNtpAsHomeSurfaceAtStartup(...);
     *** createNewTabAndShowHomeSurfaceUi(...);
-    *** showHomeSurfaceUiOnNtp(...);
+    *** setInitialOverviewStateOnResumeWithNtp(...);
 }
 
 -keep class org.chromium.chrome.browser.IntentHandler {

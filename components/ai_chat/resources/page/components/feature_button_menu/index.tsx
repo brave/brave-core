@@ -37,17 +37,15 @@ export default function FeatureMenu(props: Props) {
     conversationContext.conversationUuid,
   )
 
+  const isTemporaryChat = conversationContext.api.useGetStateData().temporary
+
   const handleTemporaryChatToggle = (detail: { checked: boolean }) => {
     conversationContext.setTemporary(detail.checked)
   }
 
   const copyEntireConversation = async () => {
-    // Fetch the full conversation history directly from the handler
-    // to avoid stale closure issues with the context state
-    const handler = conversationContext.conversationHandler
-    if (!handler) return
-
-    const { conversationHistory } = await handler.getConversationHistory()
+    const conversationHistory =
+      conversationContext.api.getConversationHistory.current()
     const formattedConversation =
       formatConversationForClipboard(conversationHistory)
     navigator.clipboard.writeText(formattedConversation).then(() => {
@@ -74,9 +72,7 @@ export default function FeatureMenu(props: Props) {
         <leo-menu-item
           data-is-interactive='true'
           onClick={() =>
-            handleTemporaryChatToggle({
-              checked: !conversationContext.isTemporaryChat,
-            })
+            handleTemporaryChatToggle({ checked: !isTemporaryChat })
           }
         >
           <div
@@ -92,7 +88,7 @@ export default function FeatureMenu(props: Props) {
             <Toggle
               size='small'
               onChange={handleTemporaryChatToggle}
-              checked={conversationContext.isTemporaryChat}
+              checked={isTemporaryChat}
             ></Toggle>
           </div>
         </leo-menu-item>
@@ -119,7 +115,7 @@ export default function FeatureMenu(props: Props) {
           <leo-menu-item
             onClick={() =>
               aiChatContext.setEditingConversationId(
-                conversationContext.conversationUuid!,
+                conversationContext.conversationUuid,
               )
             }
           >
@@ -138,7 +134,7 @@ export default function FeatureMenu(props: Props) {
           <leo-menu-item
             onClick={() =>
               aiChatContext.setDeletingConversationId(
-                conversationContext.conversationUuid!,
+                conversationContext.conversationUuid,
               )
             }
           >

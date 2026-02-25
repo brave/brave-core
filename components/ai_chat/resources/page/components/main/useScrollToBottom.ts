@@ -22,7 +22,15 @@ export function useScrollToBottom(
     if (!element) return
 
     const checkScrollable = () => {
-      const isScrollable = element.scrollHeight > element.clientHeight
+      // Note: We add some addition height to the iframe so menus can display properly.
+      // This needs to be taken into account for determining if the content is scrollable.
+      const bonusHeight = window
+        .getComputedStyle(scrollContent.current!)
+        .getPropertyValue('--iframe-additional-margin-for-menus')
+      const bonusHeightNumber = parseInt(bonusHeight) || 0
+
+      const isScrollable =
+        element.scrollHeight - bonusHeightNumber > element.clientHeight
       setHasScrollableContent(isScrollable)
     }
 
@@ -56,20 +64,21 @@ export function useScrollToBottom(
       const startTime = Date.now()
       const duration = 1000
       let isCancelled = false
+      let previousScrollTop = element.scrollTop
 
-      const cancelScroll = () => {
-        isCancelled = true
+      // If the user tried to scroll up, cancel the continuous scroll.
+      const handleScroll = (e: Event) => {
+        const top = element.scrollTop
+        if (top < previousScrollTop) {
+          isCancelled = true
+        }
+        previousScrollTop = top
       }
 
-      // We cancel the scroll if the user starts interacting with the page. We need to do
+      // We cancel the scroll if the user tries to scroll up. We need to do
       // this as we try to continuously scroll to ensure we finish scrolling after
       // elements are lazy loaded.
-      element.addEventListener('touchstart', cancelScroll, {
-        once: true,
-        passive: true,
-      })
-      document.addEventListener('wheel', cancelScroll)
-      document.addEventListener('keydown', cancelScroll)
+      element.addEventListener('scroll', handleScroll)
 
       // Scroll until we cancel, or the duration has expired.
       while (Date.now() - startTime < duration) {
@@ -83,9 +92,7 @@ export function useScrollToBottom(
       }
 
       // Remove the event listeners.
-      element.removeEventListener('touchstart', cancelScroll)
-      document.removeEventListener('wheel', cancelScroll)
-      document.removeEventListener('keydown', cancelScroll)
+      element.removeEventListener('scroll', handleScroll)
     },
     [],
   )

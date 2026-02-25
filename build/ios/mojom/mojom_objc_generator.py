@@ -348,8 +348,8 @@ class PendingRemoteMojoTypemap(MojoTypemap):
         return "id<%s%s>" % (ObjCPrefixFromKind(self.kind.kind),
                              self.kind.kind.name)
     def ExpectedCppType(self):
-        return "%s::%s" % (CppNamespaceFromKind(self.kind.kind),
-                           self.kind.kind.name)
+        return "mojo::PendingRemote<%s::%s>" % (CppNamespaceFromKind(
+            self.kind.kind), self.kind.kind.name)
     def DefaultObjCValue(self, default):
         return None
     def ObjCToCpp(self, accessor):
@@ -364,7 +364,12 @@ class PendingRemoteMojoTypemap(MojoTypemap):
             return bridgePtr->GetRemote();
         }()""" % args
     def CppToObjC(self, accessor):
-        return None
+        # Convert pending_remote<Interface> to id<BraveWalletInterface>
+        # by creating the MojoImpl wrapper
+        objc_class = "%s%sMojoImpl" % (ObjCPrefixFromKind(
+            self.kind.kind), self.kind.kind.name)
+        return "[[%s alloc] initWith%s:std::move(%s)]" % (
+            objc_class, self.kind.kind.name, accessor)
 
 class UnionMojoTypemap(MojoTypemap):
     @staticmethod
@@ -476,9 +481,9 @@ class Generator(generator.Generator):
         should_pass_param_by_value = self._ShouldPassParamByValue(kind)
         typemap = MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
-        if (mojom.IsNullableKind(kind)
-                and not (isinstance(
-                    typemap, (StructMojoTypemap, UnionMojoTypemap)))):
+        if (mojom.IsNullableKind(kind) and not (isinstance(
+                typemap,
+            (StructMojoTypemap, UnionMojoTypemap, PendingRemoteMojoTypemap)))):
             typestring = "std::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
@@ -604,7 +609,8 @@ class Generator(generator.Generator):
                  and not self.typemap[self._GetFullMojomNameForKind(
                      kind)]["nullable_is_same_type"])
                     or not isinstance(typemap,
-                                      (StructMojoTypemap, UnionMojoTypemap))):
+                                      (StructMojoTypemap, UnionMojoTypemap,
+                                       PendingRemoteMojoTypemap))):
                 value_accessor = "%s.value()" % accessor
             else:
                 value_accessor = accessor

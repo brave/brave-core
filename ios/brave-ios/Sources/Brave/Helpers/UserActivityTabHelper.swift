@@ -60,7 +60,7 @@ class UserActivityTabHelper: TabObserver {
   }
 
   fileprivate func setUserActivityForTab(_ tab: some TabState, url: URL) {
-    guard !tab.isPrivate, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    guard !tab.isPrivate, url.isWebPage(includeDataURIs: false)
     else {
       userActivity?.resignCurrent()
       userActivity = nil

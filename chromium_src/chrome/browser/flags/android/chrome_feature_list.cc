@@ -8,7 +8,6 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_origin/features.h"
@@ -39,32 +38,41 @@
 #include "brave/components/brave_wallet/common/features.h"
 #endif
 
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_AI_CHAT_FLAGS \
   &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory,
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_NEW_TAB_PAGE_AD_FLAG &brave_ads::kNewTabPageAdFeature,
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_NEW_TAB_PAGE_AD_FLAG
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/components/web_discovery/common/features.h"
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WEB_DISCOVERY_FLAG \
   &web_discovery::features::kBraveWebDiscoveryNative,
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WEB_DISCOVERY_FLAG
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_VPN_FLAG &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_VPN_FLAG
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_FLAG &brave_wallet::features::kNativeBraveWalletFeature,
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_FLAG
 #endif
 
@@ -95,7 +103,6 @@
     &features::kBraveAndroidDynamicColors,                                     \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
-    &brave_account::features::kBraveAccount,                                   \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin
 

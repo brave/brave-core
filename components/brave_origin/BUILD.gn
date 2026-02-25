@@ -9,7 +9,10 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "buildflags",
+    "//base",
+  ]
 }
 
 source_set("pref_names") {
@@ -53,7 +56,10 @@ static_library("brave_origin") {
     "//mojo/public/cpp/bindings",
   ]
   deps = [
+    "//brave/brave_domains",
     "//brave/components/brave_policy:brave_policy_observer",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",
     "//components/policy/core/common",
     "//components/prefs",
@@ -74,6 +80,7 @@ source_set("unit_tests") {
   deps = [
     ":brave_origin",
     "//base/test:test_support",
+    "//brave/components/skus/browser:test_support",
     "//components/policy/core/common:test_support",
     "//components/prefs:test_support",
     "//testing/gtest",

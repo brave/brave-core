@@ -10,8 +10,9 @@
 #include "chrome/browser/web_applications/web_app_provider.h"
 #include "chrome/common/webui_url_constants.h"
 
-// NOLINTNEXTLINE
+// CHROMIUM_SRC_NOLINT
 #define CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_
+// CHROMIUM_SRC_NOLINT
 #define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
 
 // `ChromeWebUIControllerFactory::GetFaviconResourceBytes` loads favicon data

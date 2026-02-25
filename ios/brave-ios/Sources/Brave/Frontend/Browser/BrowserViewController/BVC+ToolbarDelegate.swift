@@ -221,9 +221,6 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
     // use the initial value for the URL so we can do proper pattern matching with search URLs
     var searchURL = self.tabManager.selectedTab?.currentInitialURL
-    if let url = searchURL, InternalURL.isValid(url: url) {
-      searchURL = url
-    }
     if let query = profile.searchEngines.queryForSearchURL(
       searchURL as URL?,
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
@@ -316,12 +313,8 @@ extension BrowserViewController: TopToolbarDelegate {
 
     if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
-      if FeatureList.kUseChromiumWebViews.enabled {
-        finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
-        return true
-      } else {
-        return handleChromiumWebUIURL(url)
-      }
+      finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+      return true
     }
 
     guard let fixupURL = URIFixup.getURL(text) else {
@@ -360,46 +353,6 @@ extension BrowserViewController: TopToolbarDelegate {
     // Determine if url navigation is done from favourites or bookmarks
     // To handle bookmarklets properly
     finishEditingAndSubmit(fixupURL, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
-    return true
-  }
-
-  /// Handles displaying a Chromium web view for brave:// url that would display WebUI
-  func handleChromiumWebUIURL(_ url: URL) -> Bool {
-    let supportedPages = [
-      "flags",
-      "histograms",
-      "local-state",
-      "version",
-      "skus-internals",
-      "ads-internals",
-      "credits",
-      "sync-internals",
-      "policy",
-    ]
-    guard let host = url.host, supportedPages.contains(host) else {
-      return false
-    }
-    let controller = ChromeWebUIController(braveCore: profileController, isPrivateBrowsing: false)
-    controller.webView.load(URLRequest(url: url))
-    controller.title = url.host?.capitalizeFirstLetter
-    let webView = controller.webView
-    controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
-      systemItem: .search,
-      primaryAction: .init { [weak webView] _ in
-        webView?.findInPageController.startFindInPage()
-      }
-    )
-    let container = UINavigationController(rootViewController: controller)
-    container.presentationController?.delegate = self
-    controller.navigationItem.leftBarButtonItem = .init(
-      systemItem: .done,
-      primaryAction: .init { [unowned container] _ in
-        container.dismiss(animated: true) {
-          self.updateTabsBarVisibility()
-        }
-      }
-    )
-    self.present(container, animated: true)
     return true
   }
 
@@ -1003,6 +956,9 @@ extension BrowserViewController: TopToolbarDelegate {
         if internalURL.isReaderModePage {
           return internalURL.extractedUrlParam
         }
+        return nil
+      }
+      if url.isNewTabURL {
         return nil
       }
       return url

@@ -15,13 +15,17 @@ import {
   useAIChat,
 } from './state/ai_chat_context'
 import {
-  ConversationContextProvider,
+  ConversationProvider,
   useConversation,
+  useConversationState,
 } from './state/conversation_context'
 import Main from './components/main'
 import FullScreen from './components/full_page'
 import Loading from './components/loading'
-import { ActiveChatProviderFromUrl } from './state/active_chat_context'
+import {
+  ActiveChatProviderFromUrl,
+  useActiveChat,
+} from './state/active_chat_context'
 
 import '../common/strings'
 // <if expr="is_ios">
@@ -81,7 +85,14 @@ aiChat.api.subscribeToOnChildFrameBound((parentPageReceiver) => {
 function App() {
   // <if expr="is_ios">
   useIOSOneTapFix()
+
+  // When the iframe calls dismissMenus() (user tapped/clicked there), trigger a
+  // click in the parent so Leo's clickOutside closes any open menus.
+  aiChat.api.useDismissMenus(() => {
+    document.body.click()
+  })
   // </if>
+
   React.useEffect(() => {
     document.getElementById('mountPoint')?.classList.add('loaded')
   }, [])
@@ -109,10 +120,18 @@ function ContentWithConversationContext() {
 
   return (
     <ActiveChatProviderFromUrl>
-      <ConversationContextProvider>
-        <Content />
-      </ConversationContextProvider>
+      <MainConversation />
     </ActiveChatProviderFromUrl>
+  )
+}
+
+function MainConversation() {
+  // Get conversation based on the URL and set on this part of the tree
+  const selectedConversationDetails = useActiveChat()
+  return (
+    <ConversationProvider {...selectedConversationDetails}>
+      <Content />
+    </ConversationProvider>
   )
 }
 
@@ -127,8 +146,10 @@ function Content() {
 }
 
 function ConversationEntries(props: ConversationEntriesProps) {
-  const conversationContext = useConversation()
   const aiChatContext = useAIChat()
+
+  const { api: conversationApi } = useConversation()
+  const state = useConversationState()
 
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const hasNotifiedContentReady = React.useRef(false)
@@ -146,26 +167,26 @@ function ConversationEntries(props: ConversationEntriesProps) {
     if (iframeRef.current) {
       iframeRef.current.style.height = '0px'
     }
-  }, [conversationContext.conversationUuid, props.onIsContentReady])
+  }, [state.conversationUuid, props.onIsContentReady])
 
-  // The iframe has loaded if there're no conversation entries,
-  // it will never grow until a user action happens.
+  const conversationHasEntries =
+    !!conversationApi.useGetConversationHistory().getConversationHistoryData
+      .length
+
+  // Mark that iframe has loaded if there're no conversation entries,
+  // since we won't get ChildHeightChanged notification in that case.
   React.useEffect(() => {
     // conversationUuid populated is a sign that data has been fetched
     if (
       !hasNotifiedContentReady.current
-      && conversationContext.conversationUuid
-      && !conversationContext.conversationHistory.length
+      && state.conversationUuid
+      && !conversationHasEntries
       && hasLoaded
     ) {
       hasNotifiedContentReady.current = true
       props.onIsContentReady(true)
     }
-  }, [
-    conversationContext.conversationUuid,
-    conversationContext.conversationHistory.length,
-    hasLoaded,
-  ])
+  }, [state.conversationUuid, conversationHasEntries, hasLoaded])
 
   // When height of frame content changes, update the iframe height
   aiChatContext.api.useChildHeightChanged(
@@ -210,7 +231,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
       allow='clipboard-write'
       src={
         'chrome-untrusted://leo-ai-conversation-entries/'
-        + conversationContext.conversationUuid
+        + state.conversationUuid
       }
       ref={iframeRef}
       data-testid='conversation-entries-iframe'

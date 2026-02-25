@@ -67,6 +67,8 @@ class StackObjectCopy {
 // otherwise be optimized away or is not directly accessible.
 //
 // Usage: DEBUG_ALIAS_FOR_OBJECT(alias_name, pointer_to_object);
+//
+// CHROMIUM_SRC_NOLINT
 #define DEBUG_ALIAS_FOR_OBJECT(var_name, object)         \
   const ::base::debug::StackObjectCopy var_name(object); \
   ::base::debug::Alias(&var_name)

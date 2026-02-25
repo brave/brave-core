@@ -261,7 +261,7 @@ class SettingsViewController: TableViewController {
       aboutSection,
     ]
 
-    if FeatureList.kBraveAccount.enabled {
+    if IsBraveAccountEnabled() {
       list.insert(braveAccountSection, at: 1)
     }
 
@@ -1354,21 +1354,8 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.settingsLicenses,
           selection: { [unowned self] in
-            if FeatureList.kUseChromiumWebViews.enabled {
-              if let url = URL(string: "brave://credits") {
-                settingsDelegate?.settingsOpenURLInNewTab(url)
-              }
-            } else {
-              let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
-              let container = UINavigationController(rootViewController: controller)
-              controller.webView.load(URLRequest(url: URL(string: "brave://credits")!))
-              controller.navigationItem.leftBarButtonItem = .init(
-                systemItem: .done,
-                primaryAction: .init { [unowned container] _ in
-                  container.dismiss(animated: true)
-                }
-              )
-              present(container, animated: true)
+            if let url = URL(string: "brave://credits") {
+              settingsDelegate?.settingsOpenURLInNewTab(url)
             }
           },
           accessory: .disclosureIndicator
@@ -1583,7 +1570,7 @@ class SettingsViewController: TableViewController {
           cellClass: ButtonCell.self
         ),
         Row(
-          text: "Create 1000 History Entries",
+          text: "Create 10000 History Entries for past 10 days",
           selection: { [unowned self] in
             self.settingsDelegate?.settingsCreateFakeHistory()
             self.dismiss(animated: true)

@@ -50,6 +50,7 @@ import {
   Wrapper,
   ErrorOrSuccessIconWrapper,
   ErrorOrSuccessIcon,
+  InternalStatusText,
 } from '../common/common.style'
 import { Column, Row, Text } from '../../../shared/style'
 
@@ -156,13 +157,7 @@ export const TransactionFailedOrCanceled = (props: Props) => {
           swapStatus={swapStatus}
         />
         {isSwapOrBridge && swapStatus?.internalStatus && (
-          <Text
-            textSize='14px'
-            textColor='secondary'
-            isBold={true}
-          >
-            {swapStatus.internalStatus}
-          </Text>
+          <InternalStatusText>{swapStatus.internalStatus}</InternalStatusText>
         )}
         <Text
           textSize='12px'

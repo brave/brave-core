@@ -57,6 +57,7 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      "//brave/components/brave_account:features",
       "//brave/components/email_aliases:features",
       "//chrome/browser/ui/",
       "//chrome/browser/ui/webui/settings",

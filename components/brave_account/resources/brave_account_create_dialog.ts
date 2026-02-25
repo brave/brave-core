@@ -3,14 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
-import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { Error, makeFocusHandler } from './brave_account_common.js'
@@ -21,106 +19,6 @@ import {
 
 // @ts-expect-error
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
-
-class PasswordStrengthMeter extends CrLitElement {
-  static get is() {
-    return 'password-strength-meter'
-  }
-
-  static override get styles() {
-    return css`
-      :host {
-        align-items: center;
-        display: flex;
-        gap: var(--leo-spacing-m);
-        justify-content: space-between;
-        width: 100%;
-      }
-
-      :host([category='Weak']) {
-        --primary-color: var(--leo-color-systemfeedback-error-icon);
-        --secondary-color: var(--leo-color-systemfeedback-error-background);
-      }
-
-      :host([category='Medium']) {
-        --primary-color: var(--leo-color-systemfeedback-warning-icon);
-        --secondary-color: var(--leo-color-systemfeedback-warning-background);
-      }
-
-      :host([category='Strong']) {
-        --primary-color: var(--leo-color-systemfeedback-success-icon);
-        --secondary-color: var(--leo-color-systemfeedback-success-background);
-      }
-
-      .bar {
-        background-color: var(--secondary-color);
-        border-radius: var(--leo-radius-m);
-        flex-grow: 1;
-        height: 4px;
-        transition: 750ms;
-      }
-
-      .strength {
-        background-color: var(--primary-color);
-        border-radius: var(--leo-radius-m);
-        height: 100%;
-        transition: 750ms;
-        width: calc(1% * var(--strength));
-      }
-
-      .text {
-        color: var(--primary-color);
-        font: var(--leo-font-small-regular);
-        transition: 750ms;
-      }
-    `
-  }
-
-  override render() {
-    return html`
-      <div class="bar">
-        <div
-          class="strength"
-          style="--strength: ${this.strength}"
-        ></div>
-      </div>
-      <div class="text">
-        ${loadTimeData.getString(
-          this.category === 'Weak'
-            ? BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK
-            : this.category === 'Medium'
-              ? BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM
-              : BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG,
-        )}
-      </div>
-    `
-  }
-
-  static override get properties() {
-    return {
-      category: { type: String, reflect: true },
-      strength: { type: Number },
-    }
-  }
-
-  override updated(changedProperties: Map<PropertyKey, unknown>) {
-    if (changedProperties.has('strength')) {
-      this.category =
-        this.strength < 60 ? 'Weak' : this.strength < 100 ? 'Medium' : 'Strong'
-    }
-  }
-
-  protected accessor category: 'Weak' | 'Medium' | 'Strong' = 'Weak'
-  protected accessor strength: number = 0
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'password-strength-meter': PasswordStrengthMeter
-  }
-}
-
-customElements.define(PasswordStrengthMeter.is, PasswordStrengthMeter)
 
 export class BraveAccountCreateDialogElement extends CrLitElement {
   static get is() {
@@ -142,20 +40,14 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       isEmailValid: { type: Boolean },
       isPasswordInputFocused: { type: Boolean },
       isPasswordConfirmationInputFocused: { type: Boolean },
+      isPasswordStrongEnough: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
-      passwordStrength: { type: Number },
     }
   }
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.browserProxy.password_strength_meter
-      .getPasswordStrength(this.password)
-      .then(
-        (value: { strength: number }) =>
-          (this.passwordStrength = value.strength),
-      )
   }
 
   protected onPasswordConfirmationInput(detail: { value: string }) {
@@ -232,9 +124,9 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   protected accessor isEmailValid: boolean = false
   protected accessor isPasswordInputFocused: boolean = false
   protected accessor isPasswordConfirmationInputFocused: boolean = false
+  protected accessor isPasswordStrongEnough: boolean = false
   protected accessor password: string = ''
   protected accessor passwordConfirmation: string = ''
-  protected accessor passwordStrength: number = 0
   protected registration = new Registration()
 
   protected readonly passwordFocusHandler = makeFocusHandler(

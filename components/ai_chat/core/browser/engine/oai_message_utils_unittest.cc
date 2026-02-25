@@ -8,12 +8,15 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -36,6 +39,57 @@ struct RewriteActionTestParam {
   std::string expected_payload;  // non-empty for change tones
   std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
+
+// Creates a WebSourcesContentBlock. If any |page_content_sizes| element has
+// a value, the source includes page_content, extra_snippets, and rich_results
+// are populated; otherwise those fields are nullopt/empty (stripped).
+mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
+    std::vector<std::optional<size_t>> page_content_sizes,
+    std::vector<std::string> queries,
+    bool include_rich_results = true) {
+  std::vector<mojom::WebSourcePtr> sources;
+  for (size_t i = 0; i < page_content_sizes.size(); ++i) {
+    std::optional<std::string> page_content;
+    std::optional<std::vector<std::string>> extra_snippets;
+    if (page_content_sizes[i].has_value()) {
+      page_content = std::string(*page_content_sizes[i], 'x');
+      extra_snippets = std::vector<std::string>{"snippet0"};
+    }
+    sources.push_back(mojom::WebSource::New(
+        "Title " + base::NumberToString(i),
+        GURL("https://example.com/" + base::NumberToString(i)),
+        GURL("https://example.com/favicon" + base::NumberToString(i)),
+        std::move(page_content), std::move(extra_snippets)));
+  }
+  return mojom::WebSourcesContentBlock::New(
+      std::move(sources), std::move(queries),
+      include_rich_results
+          ? std::vector<std::string>{"{\"type\":\"rich_result\"}"}
+          : std::vector<std::string>{});
+}
+
+mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
+    std::optional<size_t> page_content_size,
+    std::vector<std::string> queries,
+    bool include_rich_results = true) {
+  return CreateWebSourcesContentBlock(
+      std::vector<std::optional<size_t>>{page_content_size}, std::move(queries),
+      include_rich_results);
+}
+
+// Creates a tool use entry event with a single output content block.
+mojom::ConversationEntryEventPtr CreateToolUseEvent(
+    const std::string& tool_name,
+    const std::string& id,
+    mojom::ContentBlockPtr output) {
+  auto tool = mojom::ToolUseEvent::New();
+  tool->tool_name = tool_name;
+  tool->id = id;
+  tool->arguments_json = "{}";
+  tool->output = std::vector<mojom::ContentBlockPtr>();
+  tool->output->push_back(std::move(output));
+  return mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool));
+}
 
 }  // namespace
 
@@ -1070,6 +1124,328 @@ TEST_F(OAIMessageUtilsTest, BuildChunkedTabFocusMessages_WithTopic) {
     VerifyFilterTabsBlock(FROM_HERE, chunked_messages[i][0].content[0],
                           expected_chunked_tabs_json[i], topic);
   }
+}
+
+// Tests that only the N most recent web sources tool outputs are kept with
+// full content; older ones are stripped to metadata only. Also verifies that
+// all sources within a multi-source stripped output are stripped.
+//
+// max_full=2, backward counting (newest output first):
+//   Output 3: ws_output_count=1 → kept
+//   Output 2: (two sources), ws_output_count=2 → kept
+//   Output 1: (two sources), ws_output_count=3 → STRIPPED
+//   Output 0: ws_output_count=4 → STRIPPED
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_StripWebSourcesOutputs) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_full_web_sources_tool_outputs", "2"}});
+
+  auto history = CreateSampleChatHistory(1);
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(
+        CreateToolUseEvent("search", "t0",
+                           mojom::ContentBlock::NewWebSourcesContentBlock(
+                               CreateWebSourcesContentBlock(100, {"q0"}))));
+    // Two sources — verifies all sources in a stripped event are stripped.
+    events.push_back(CreateToolUseEvent(
+        "search", "t1",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock({100, 100}, {"q1"}))));
+    // Two sources — verifies all sources in a kept output are kept.
+    events.push_back(CreateToolUseEvent(
+        "search", "t2",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock({100, 100}, {"q2"}))));
+    events.push_back(
+        CreateToolUseEvent("search", "t3",
+                           mojom::ContentBlock::NewWebSourcesContentBlock(
+                               CreateWebSourcesContentBlock(100, {"q3"}))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[1]->events = std::move(events);
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 100000, [](std::string&) {});
+
+  std::vector<const OAIMessage*> tool_msgs;
+  for (const auto& m : messages) {
+    if (m.role == "tool") {
+      tool_msgs.push_back(&m);
+    }
+  }
+  ASSERT_EQ(tool_msgs.size(), 4u);
+
+  // Newest 2 kept with full content.
+  ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(tool_msgs[3]->content[0],
+                  mojom::ContentBlock::NewWebSourcesContentBlock(
+                      CreateWebSourcesContentBlock(100, {"q3"})));
+  ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(tool_msgs[2]->content[0],
+                  mojom::ContentBlock::NewWebSourcesContentBlock(
+                      CreateWebSourcesContentBlock({100, 100}, {"q2"})));
+
+  // Older ones stripped to metadata only.
+  ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[1]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock({std::nullopt, std::nullopt}, {"q1"},
+                                       /*include_rich_results=*/false)));
+  ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[0]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q0"},
+                                       /*include_rich_results=*/false)));
+}
+
+// Tests that large text/image tool results are dropped when they exceed the
+// max count, while small results are preserved.
+//
+// Params: large_content_size = kLargeToolContentSize, max_count = 1.
+// Backward counting (newest event first):
+//   Event 4: small text (5),     not large    → kept
+//   Event 3: image (always large), tool_count=1 → kept (within max_count)
+//   Event 2: text at threshold,  tool_count=2 → DROPPED
+//   Event 1: small text (5),     not large    → kept
+//   Event 0: image (always large), tool_count=3 → DROPPED
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_DropLargeToolResults) {
+  constexpr size_t kLargeToolContentSize = 100;
+  constexpr size_t kMaxLargeToolCount = 1;
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"content_size_large_tool_use_events",
+                           base::NumberToString(kLargeToolContentSize)},
+                          {"max_count_large_tool_use_events",
+                           base::NumberToString(kMaxLargeToolCount)}});
+
+  auto history = CreateSampleChatHistory(1);
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    // Event 0: image (always large).
+    events.push_back(CreateToolUseEvent(
+        "image_tool", "t0",
+        mojom::ContentBlock::NewImageContentBlock(
+            mojom::ImageContentBlock::New(GURL("data:image/png;base64,abc")))));
+    // Event 1: small text, not large.
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "t1",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(5, 't')))));
+    // Event 2: text exactly at threshold.
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "t2",
+        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+            std::string(kLargeToolContentSize, 't')))));
+    // Event 3: image (always large).
+    events.push_back(CreateToolUseEvent(
+        "image_tool", "t3",
+        mojom::ContentBlock::NewImageContentBlock(
+            mojom::ImageContentBlock::New(GURL("data:image/png;base64,def")))));
+    // Event 4: small text, not large.
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "t4",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(5, 't')))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[1]->events = std::move(events);
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 100000, [](std::string&) {});
+
+  std::vector<const OAIMessage*> tool_msgs;
+  for (const auto& m : messages) {
+    if (m.role == "tool") {
+      tool_msgs.push_back(&m);
+    }
+  }
+  ASSERT_EQ(tool_msgs.size(), 5u);
+
+  // Verify in backward order (newest first) to match the counting logic.
+
+  // Tool 4 (Event 4): small text, not large → kept.
+  {
+    SCOPED_TRACE("tool 4: small text kept");
+    ASSERT_EQ(tool_msgs[4]->content.size(), 1u);
+    VerifyTextBlock(FROM_HERE, tool_msgs[4]->content[0], std::string(5, 't'));
+  }
+
+  // Tool 3 (Event 3): image, tool_count=1 → kept (within max_count).
+  {
+    SCOPED_TRACE("tool 3: image kept");
+    ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
+    ASSERT_TRUE(tool_msgs[3]->content[0]->is_image_content_block());
+  }
+
+  // Tool 2 (Event 2): text at threshold, tool_count=2 > 1 → DROPPED.
+  {
+    SCOPED_TRACE("tool 2: large text dropped");
+    ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
+    VerifyTextBlock(
+        FROM_HERE, tool_msgs[2]->content[0],
+        "[Large result removed to save space for subsequent results]");
+  }
+
+  // Tool 1 (Event 1): small text, not large → kept.
+  {
+    SCOPED_TRACE("tool 1: small text kept");
+    ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
+    VerifyTextBlock(FROM_HERE, tool_msgs[1]->content[0], std::string(5, 't'));
+  }
+
+  // Tool 0 (Event 0): image, tool_count=3 > 1 → DROPPED.
+  {
+    SCOPED_TRACE("tool 0: image dropped");
+    ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
+    VerifyTextBlock(
+        FROM_HERE, tool_msgs[0]->content[0],
+        "[Large result removed to save space for subsequent results]");
+  }
+}
+
+// Tests that web sources stripping and large tool result dropping use
+// independent counters across multiple assistant turns.
+//
+// max_full_ws=2, max_large_tools=2, large_tool_size=1000.
+// Backward counting (newest turn first, newest output within turn first):
+//   A1/image:    tool_count=1   → kept
+//   A1/text:     tool_count=2   → kept
+//   A1/ws:       ws_output_count=1 → kept
+//   A1/ws:       ws_output_count=2 → kept
+//   A0/text(10): not large      → kept
+//   A0/text:     tool_count=3   → DROPPED
+//   A0/ws:       ws_output_count=3 → STRIPPED
+//   A0/ws:       ws_output_count=4 → STRIPPED
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
+  constexpr size_t kMaxFullWebSources = 2;
+  constexpr size_t kLargeToolSize = 1000;
+  constexpr size_t kMaxLargeTools = 2;
+  constexpr size_t kSmallTextSize = 10;
+  constexpr size_t kWsPageContentSize = 100;
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_full_web_sources_tool_outputs",
+                           base::NumberToString(kMaxFullWebSources)},
+                          {"content_size_large_tool_use_events",
+                           base::NumberToString(kLargeToolSize)},
+                          {"max_count_large_tool_use_events",
+                           base::NumberToString(kMaxLargeTools)}});
+
+  // 2 human/assistant pairs.
+  auto history = CreateSampleChatHistory(2);
+
+  // Assistant 0 (idx 1): ws, ws, large text, small text
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(CreateToolUseEvent(
+        "search", "a0_0",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q0"}))));
+    events.push_back(CreateToolUseEvent(
+        "search", "a0_1",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q1"}))));
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "a0_2",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(kLargeToolSize, 't')))));
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "a0_3",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(kSmallTextSize, 't')))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[1]->events = std::move(events);
+  }
+
+  // Assistant 1 (idx 3): ws, ws, large text, image
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(CreateToolUseEvent(
+        "search", "a1_0",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q2"}))));
+    events.push_back(CreateToolUseEvent(
+        "search", "a1_1",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q3"}))));
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "a1_2",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(kLargeToolSize, 't')))));
+    events.push_back(CreateToolUseEvent(
+        "image_tool", "a1_3",
+        mojom::ContentBlock::NewImageContentBlock(
+            mojom::ImageContentBlock::New(GURL("data:image/png;base64,abc")))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[3]->events = std::move(events);
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 100000, [](std::string&) {});
+
+  // Collect tool-role messages.
+  std::vector<const OAIMessage*> tool_msgs;
+  for (const auto& m : messages) {
+    if (m.role == "tool") {
+      tool_msgs.push_back(&m);
+    }
+  }
+  ASSERT_EQ(tool_msgs.size(), 8u);
+
+  // --- A1 (newest turn) ---
+  // image: kept (tool_count=1)
+  ASSERT_EQ(tool_msgs[7]->content.size(), 1u);
+  ASSERT_TRUE(tool_msgs[7]->content[0]->is_image_content_block());
+  // large text: kept (tool_count=2)
+  ASSERT_EQ(tool_msgs[6]->content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, tool_msgs[6]->content[0],
+                  std::string(kLargeToolSize, 't'));
+  // ws: kept full (ws_output_count=1)
+  ASSERT_EQ(tool_msgs[5]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[5]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(kWsPageContentSize, {"q3"})));
+  // ws: kept full (ws_output_count=2)
+  ASSERT_EQ(tool_msgs[4]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[4]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(kWsPageContentSize, {"q2"})));
+
+  // --- A0 (oldest turn) ---
+  // small text: kept (not large)
+  ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, tool_msgs[3]->content[0],
+                  std::string(kSmallTextSize, 't'));
+  // large text: DROPPED (tool_count=3 > 2)
+  ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
+  VerifyTextBlock(
+      FROM_HERE, tool_msgs[2]->content[0],
+      "[Large result removed to save space for subsequent results]");
+  // ws: STRIPPED (ws_output_count=3 > 2)
+  ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[1]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q1"},
+                                       /*include_rich_results=*/false)));
+  // ws: STRIPPED (ws_output_count=4 > 2)
+  ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[0]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q0"},
+                                       /*include_rich_results=*/false)));
 }
 
 }  // namespace ai_chat

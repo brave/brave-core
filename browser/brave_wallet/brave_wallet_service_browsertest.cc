@@ -9,12 +9,10 @@
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -71,12 +69,6 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   BraveWalletServiceTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  void SetUp() override {
-    InProcessBrowserTest::SetUp();
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
-
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath test_data_dir;
@@ -109,7 +101,6 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
  private:
   net::EmbeddedTestServer https_server_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {

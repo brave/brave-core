@@ -32,7 +32,7 @@ source_set("browser_process") {
   deps = [
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/local_ai/common",
+    "//brave/components/local_ai/core",
     "//brave/components/request_otr/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",

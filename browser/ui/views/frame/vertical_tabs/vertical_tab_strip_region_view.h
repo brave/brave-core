@@ -67,6 +67,9 @@ class BraveVerticalTabStripRegionView : public views::View,
   State state() const { return state_; }
   State last_state() const { return last_state_; }
   bool is_animating() const { return width_animation_.is_animating(); }
+  const gfx::SlideAnimation& width_animation() const {
+    return width_animation_;
+  }
 
   const TabStrip* tab_strip() const {
     return original_region_view_->tab_strip_;

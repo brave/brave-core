@@ -145,7 +145,7 @@ extension FeedItem.Content {
   private static func imageURL(from document: HTMLDocument, releativeTo baseURL: URL?) -> URL? {
     if let src = document.firstChild(xpath: "//img[@src]")?.attr("src"),
       let url = URL(string: src, relativeTo: baseURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+      url.isWebPage(includeDataURIs: false)
     {
       return url
     }
@@ -174,7 +174,7 @@ extension FeedItem.Content {
     var description = ""
     var imageURL: URL?
     if let image = feedItem.image, let url = URL(string: image, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+      url.isWebPage(includeDataURIs: false)
     {
       imageURL = url
     }
@@ -229,7 +229,7 @@ extension FeedItem.Content {
     var imageURL: URL?
     if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
       let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+      url.isWebPage(includeDataURIs: false)
     {
       imageURL = url
     }
@@ -275,7 +275,7 @@ extension FeedItem.Content {
     var imageURL: URL?
     if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
       let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+      url.isWebPage(includeDataURIs: false)
     {
       imageURL = url
     }

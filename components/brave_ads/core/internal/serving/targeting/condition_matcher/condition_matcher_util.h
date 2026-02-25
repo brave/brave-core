@@ -9,7 +9,9 @@
 #include <map>
 #include <string>
 
-#include "base/values.h"
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 

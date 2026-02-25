@@ -64,10 +64,7 @@ void UpdateCustomNetworks(PrefService* prefs,
 
 class TestBraveWalletHandler : public BraveWalletHandler {
  public:
-  TestBraveWalletHandler()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+  TestBraveWalletHandler() {
     TestingProfile::Builder builder;
 
     profile_ = builder.Build();
@@ -79,7 +76,8 @@ class TestBraveWalletHandler : public BraveWalletHandler {
     brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
         profile_.get())
         ->json_rpc_service()
-        ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
+        ->SetAPIRequestHelperForTesting(
+            url_loader_factory_.GetSafeWeakWrapper());
   }
 
   ~TestBraveWalletHandler() override {
@@ -151,7 +149,6 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<content::WebContents> web_contents_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   content::TestWebUI test_web_ui_;
 };

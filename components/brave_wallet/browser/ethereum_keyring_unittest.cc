@@ -125,9 +125,6 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
       "6969696969696969696969696969696969696969696969696969696969696969",
       private_key));
 
-  std::unique_ptr<HDKey> key = std::make_unique<HDKey>();
-  key->SetPrivateKey(private_key);
-
   EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
   auto address = *keyring.ImportAccount(private_key);
   EXPECT_EQ(address, "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");

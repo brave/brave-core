@@ -40,7 +40,8 @@
   virtual void UpdateExclusiveAccessBubble_ChromiumImpl(__VA_ARGS__)
 
 #define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
-  if (dst->GetWidget() != src->GetWidget()) {        \
+  if (!src->GetWidget() || !dst->GetWidget() ||      \
+      dst->GetWidget() != src->GetWidget()) {        \
     return false;                                    \
   }
 

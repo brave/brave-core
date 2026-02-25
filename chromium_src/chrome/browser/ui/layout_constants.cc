@@ -27,7 +27,7 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
       // icon size - ToolbarButton::kDefaultIconSize
       return gfx::Insets(touch_ui ? 12 : 4);
     case TOOLBAR_INTERIOR_MARGIN:
-      return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 8);
+      return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 6);
     default:
       break;
   }

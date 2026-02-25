@@ -1,3 +1,8 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 static_library("brave_private_cdn") {
   sources = [
     "headers.h",
@@ -12,5 +17,17 @@ static_library("brave_private_cdn") {
     "//net",
     "//services/network/public/cpp",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "private_cdn_helper_unittest.cc" ]
+
+  deps = [
+    ":brave_private_cdn",
+    "//base",
+    "//testing/gtest",
   ]
 }

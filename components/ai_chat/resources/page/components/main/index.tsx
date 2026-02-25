@@ -94,7 +94,8 @@ function Main() {
 
   const showAttachments = !!conversationContext.attachmentsDialog
 
-  const showTemporaryChatInfo = conversationContext.isTemporaryChat
+  const showTemporaryChatInfo =
+    conversationContext.api.useGetState().data.temporary
 
   let currentErrorElement = null
 
@@ -175,7 +176,8 @@ function Main() {
     if (
       aiChatContext.isMobile
       && aiChatContext.hasAcceptedAgreement
-      && conversationContext.historyInitialized
+      // We have loaded real data
+      && !conversationContext.api.useGetConversationHistory().isPlaceholderData
       && !querySubmitted
       && !conversationContext.isGenerating
       && conversationContext.conversationHistory.length === 0
@@ -345,12 +347,15 @@ function Main() {
               {showSuggestions && (
                 <div className={styles.suggestionsContainer}>
                   <div className={styles.questionsList}>
-                    {conversationContext.suggestedQuestions.map((question) => (
-                      <SuggestedQuestion
-                        key={question}
-                        question={question}
-                      />
-                    ))}
+                    {conversationContext.suggestedQuestions.map(
+                      (question, i) => (
+                        <SuggestedQuestion
+                          key={question}
+                          question={question}
+                          index={i}
+                        />
+                      ),
+                    )}
                     {SUGGESTION_STATUS_SHOW_BUTTON.has(
                       conversationContext.suggestionStatus,
                     )
@@ -419,6 +424,7 @@ function Main() {
         <div className={styles.scrollButtonContainer}>
           <Button
             kind='outline'
+            size='small'
             title={getLocale(S.CHAT_UI_SCROLL_TO_BOTTOM_BUTTON_TITLE)}
             fab
             className={classnames({

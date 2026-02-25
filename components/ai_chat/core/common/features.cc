@@ -40,6 +40,9 @@ const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents{
 const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent{
     &kAIChat, "content_size_large_tool_use_events", 1000};
 
+const base::FeatureParam<size_t> kMaxFullWebSourcesToolOutputs{
+    &kAIChat, "max_full_web_sources_tool_outputs", 4};
+
 const base::FeatureParam<bool> kAutomaticModelSupportsTools{
     &kAIChat, "automatic_model_supports_tools", true};
 

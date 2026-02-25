@@ -23,10 +23,11 @@
 
 namespace brave {
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    T<BraveRequestInfo> ctx) {
   static const base::NoDestructor<std::vector<std::string>> allowed_domains{{
       kExtensionUpdaterDomain,
       std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
@@ -51,5 +52,15 @@ int OnBeforeStartTransaction_BraveServiceKey(
   }
   return net::OK;
 }
+
+template int OnBeforeStartTransaction_BraveServiceKey<std::shared_ptr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx);
+
+template int OnBeforeStartTransaction_BraveServiceKey<base::WeakPtr>(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    base::WeakPtr<BraveRequestInfo> ctx);
 
 }  // namespace brave

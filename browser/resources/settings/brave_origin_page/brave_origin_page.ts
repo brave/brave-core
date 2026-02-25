@@ -11,11 +11,13 @@ import 'chrome://resources/brave/leo.bundle.js';
 import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {getTemplate} from './brave_origin_page.html.js'
 import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js'
+import './brave_origin_onboarding.js'
 import './origin_toggle_button.js'
 import type {OriginToggleButtonElement} from './origin_toggle_button.js'
 
@@ -43,7 +45,18 @@ export class SettingsBraveOriginPageElement
     return getTemplate()
   }
 
+  static get properties() {
+    return {
+      isPurchased_: {
+        type: Boolean,
+        value: false,
+      },
+    }
+  }
+
+  declare private isPurchased_: boolean
   private braveOriginHandler_: BraveOriginMojom.BraveOriginSettingsHandlerRemote
+  private boundOnVisibilityChange_: (() => void) | null = null
 
   override ready() {
     super.ready()
@@ -51,6 +64,42 @@ export class SettingsBraveOriginPageElement
     // Initialize the mojo handler
     this.braveOriginHandler_ =
         BraveOriginMojom.BraveOriginSettingsHandler.getRemote()
+
+    // For branded builds, always show as purchased
+    if (loadTimeData.getBoolean('isBraveOriginBrandedBuild')) {
+      this.isPurchased_ = true
+      return
+    }
+
+    // Check purchase state
+    this.checkPurchaseState_()
+
+    // Re-check when the tab becomes visible (user may return from
+    // account page after purchasing)
+    this.boundOnVisibilityChange_ = this.onVisibilityChange_.bind(this)
+    document.addEventListener('visibilitychange',
+        this.boundOnVisibilityChange_)
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+    if (this.boundOnVisibilityChange_) {
+      document.removeEventListener('visibilitychange',
+          this.boundOnVisibilityChange_)
+      this.boundOnVisibilityChange_ = null
+    }
+  }
+
+  private onVisibilityChange_() {
+    if (document.visibilityState === 'visible') {
+      this.checkPurchaseState_()
+    }
+  }
+
+  private async checkPurchaseState_() {
+    const {isPurchased} =
+        await this.braveOriginHandler_.refreshPurchaseState()
+    this.isPurchased_ = isPurchased
   }
 
   private async resetToDefaults_() {

@@ -11,6 +11,7 @@
 
 // not a funtions because Set* methods are protected and WebView is a friend of
 // RuntimeEnabledFeatures.
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_APPLY_WEB_PREFERENCES(prefs)                       \
   {                                                              \
     RuntimeEnabledFeatures::SetBraveIsInTorContextEnabled(       \

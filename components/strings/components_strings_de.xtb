@@ -2015,6 +2015,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="4269599248168651462">Das Serverzertifikat wird für einen nicht eindeutigen Namen ausgestellt.</translation>
 <translation id="4270541775497538019">Stapelfach 6</translation>
 <translation id="4271311252511481365">{NUM_REVIEWS,plural, =0{0 Rezensionen ansehen. Die durchschnittliche Bewertung beträgt <ph name="STARS"/> Sterne.}=1{1 Rezension ansehen. Die durchschnittliche Bewertung beträgt <ph name="STARS"/> Sterne.}other{Alle # Rezensionen ansehen. Die durchschnittliche Bewertung beträgt <ph name="STARS"/> Sterne.}}</translation>
+<translation id="4275788652681621337">Seitenleiste schließen</translation>
 <translation id="4275830172053184480">Gerät neu starten</translation>
 <translation id="4276974990916607331">Nein, danke</translation>
 <translation id="4277028893293644418">Passwort zurücksetzen</translation>
@@ -2041,7 +2042,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="4300272766492248925">App öffnen</translation>
 <translation id="4300675098767811073">Mehrfache Lochung rechts</translation>
 <translation id="4300841966382281549">Fahrt</translation>
-<translation id="4302514097724775343">Tippe auf den Dino, um die Wiedergabe zu starten</translation>
+<translation id="4302514097724775343">Tippe auf den Dino, um zu spielen</translation>
 <translation id="4304049446746819918">{0,plural, =1{Gemäß der Administratorrichtlinie wird nicht empfohlen, diese Datei nach <ph name="DESTINATION_NAME"/> zu verschieben}other{Gemäß der Administratorrichtlinie wird nicht empfohlen, diese Dateien nach <ph name="DESTINATION_NAME"/> zu verschieben}}</translation>
 <translation id="4304485328308299773">Du kannst Kundenbewertungen und ‑rezensionen zu Produkten, Dienstleistungen oder Angeboten lesen, um fundiertere Entscheidungen zu treffen.</translation>
 <translation id="4305666528087210886">Zugriff auf die Datei nicht möglich</translation>
@@ -5108,8 +5109,8 @@ Weitere Details:
 <translation id="995782501881226248">YouTube</translation>
 <translation id="997986563973421916">Aus Google Pay</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
-<translation id="676689908809408009">Sie können diese Seite im Privatmodus nicht aufrufen</translation>
-<translation id="8153367140793579886">Ihre Organisation hat <ph name="HOST_NAME"/> im Privatmodus blockiert.</translation>
+<translation id="676689908809408009">Sie können diese Seite nicht im privaten Modus aufrufen</translation>
+<translation id="8153367140793579886">Ihre Organisation hat <ph name="HOST_NAME"/> im privaten Modus blockiert.</translation>
 <translation id="6837574658970608876">Ihre Organisation hat „<ph name="HOST_NAME"/>“-Links im Privatmodus blockiert.</translation>
 <translation id="2977472760057091832">Link im privaten Fenster öffnen</translation>
 <translation id="896703648578722320">Wenn Erweiterungen zu Brave hinzugefügt werden, werden relevante Daten zu diesen Erweiterungen zur Analyse an Dritte gesendet und können für deinen Administrator sichtbar sei. Die Daten umfassen Informationen zu den Erweiterungen wie Name, Installationszeit, Installationsquelle sowie Aktivitäten, die mit diesen Erweiterungen verknüpft sind (z. B. das Wechseln von Tabs, das Kontaktieren von Websites oder der Zugriff auf Cookies). Diese Daten werden für Erweiterungen erhoben, die aus dem Web Store und von Quellen außerhalb des Stores stammen.</translation>

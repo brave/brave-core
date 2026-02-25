@@ -608,6 +608,10 @@ union SwapTransactionUnion {
 
 enum Gate3SwapErrorKind {
   kInsufficientLiquidity,
+  kAmountTooLow,
+  kUnsupportedNetwork,
+  kUnsupportedTokens,
+  kInvalidRequest,
   kUnknown,
 };
 

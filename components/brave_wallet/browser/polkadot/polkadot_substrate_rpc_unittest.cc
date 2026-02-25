@@ -23,10 +23,7 @@ namespace brave_wallet {
 class PolkadotSubstrateRpcUnitTest : public testing::Test {
  public:
   PolkadotSubstrateRpcUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~PolkadotSubstrateRpcUnitTest() override = default;
 
@@ -36,7 +33,7 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, shared_url_loader_factory_);
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
   }
 
  protected:
@@ -47,7 +44,6 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {

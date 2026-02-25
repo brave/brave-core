@@ -106,6 +106,13 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
 }
 
 int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
+  // During window teardown or fullscreen transitions on Mac, AppKit can trigger
+  // hit tests via windowDidBecomeKey:/makeKeyAndOrderFront: while the widget is
+  // in a partially destroyed state. Guard against this to prevent crashes.
+  if (!GetWidget() || GetWidget()->IsClosed()) {
+    return HTNOWHERE;
+  }
+
   if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
       res != HTNOWHERE) {
     return res;

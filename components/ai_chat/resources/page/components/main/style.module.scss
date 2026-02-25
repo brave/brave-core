@@ -240,6 +240,8 @@
   height: 0;
   position: sticky;
   bottom: 0;
+
+  opacity: 0.8;
 }
 
 .scrollToBottomButton {
@@ -253,21 +255,21 @@
   z-index: 10;
   background: var(--leo-color-container-background);
   border-radius: 100%;
+}
 
+.scrollToBottomButton.hasScrollableContent {
   animation: scroll-button-fade linear both;
   animation-timeline: scroll();
   animation-range: calc(100% - 96px) 100%;
 }
 
-.scrollToBottomButton.hasScrollableContent {
-  pointer-events: auto;
-}
-
 @keyframes scroll-button-fade {
   from {
     opacity: 1;
+    pointer-events: auto;
   }
   to {
     opacity: 0;
+    pointer-events: none;
   }
 }

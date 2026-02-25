@@ -9,8 +9,10 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
@@ -31,11 +33,9 @@ Ss58Address::~Ss58Address() = default;
 Ss58Address::Ss58Address(Ss58Address&& addr) = default;
 Ss58Address& Ss58Address::operator=(Ss58Address&& addr) = default;
 
-std::string Base58EncodeWithCheck(const std::vector<uint8_t>& bytes) {
-  auto with_checksum = bytes;
-  auto checksum = DoubleSHA256Hash(bytes);
-  with_checksum.insert(with_checksum.end(), checksum.begin(),
-                       checksum.begin() + 4);
+std::string Base58EncodeWithCheck(base::span<const uint8_t> bytes) {
+  std::vector<uint8_t> with_checksum = base::ToVector(bytes);
+  base::Extend(with_checksum, base::span(DoubleSHA256Hash(bytes)).first<4>());
   return Base58Encode(with_checksum);
 }
 

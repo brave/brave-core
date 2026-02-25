@@ -133,6 +133,43 @@ const getAssetBalance = (
   )
 }
 
+// Coin types supported by each provider for swaps (same-chain)
+const swapProviderCoins = new Map<
+  BraveWallet.SwapProvider,
+  BraveWallet.CoinType[]
+>([
+  [BraveWallet.SwapProvider.kJupiter, [BraveWallet.CoinType.SOL]],
+  [BraveWallet.SwapProvider.kLiFi, [BraveWallet.CoinType.ETH]],
+  [BraveWallet.SwapProvider.kZeroEx, [BraveWallet.CoinType.ETH]],
+  [BraveWallet.SwapProvider.kSquid, [BraveWallet.CoinType.ETH]],
+  [
+    BraveWallet.SwapProvider.kNearIntents,
+    [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL],
+  ],
+])
+
+// Coin types supported by each provider for bridges (cross-chain)
+const bridgeProviderCoins = new Map<
+  BraveWallet.SwapProvider,
+  BraveWallet.CoinType[]
+>([
+  [
+    BraveWallet.SwapProvider.kLiFi,
+    [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL],
+  ],
+  [BraveWallet.SwapProvider.kSquid, [BraveWallet.CoinType.ETH]],
+  [
+    BraveWallet.SwapProvider.kNearIntents,
+    [
+      BraveWallet.CoinType.ETH,
+      BraveWallet.CoinType.SOL,
+      BraveWallet.CoinType.BTC,
+      BraveWallet.CoinType.ZEC,
+      BraveWallet.CoinType.ADA,
+    ],
+  ],
+])
+
 export const useSwap = () => {
   // routing
   const query = useQuery()
@@ -1048,45 +1085,20 @@ export const useSwap = () => {
       return [BraveWallet.SwapProvider.kAuto]
     }
 
-    const hasSolInFillPath =
-      fromToken?.coin === BraveWallet.CoinType.SOL
-      || toToken?.coin === BraveWallet.CoinType.SOL
+    const providerCoins = isBridge ? bridgeProviderCoins : swapProviderCoins
+    const providers: BraveWallet.SwapProvider[] = [
+      BraveWallet.SwapProvider.kAuto,
+    ]
 
-    const hasEthInFillPath =
-      fromToken?.coin === BraveWallet.CoinType.ETH
-      || toToken?.coin === BraveWallet.CoinType.ETH
-
-    if (!isBridge && hasSolInFillPath) {
-      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kJupiter]
+    for (const [provider, coins] of providerCoins) {
+      const fromSupported = fromToken ? coins.includes(fromToken.coin) : true
+      const toSupported = toToken ? coins.includes(toToken.coin) : true
+      if (fromSupported && toSupported) {
+        providers.push(provider)
+      }
     }
 
-    if (!isBridge && hasEthInFillPath) {
-      return [
-        BraveWallet.SwapProvider.kAuto,
-        BraveWallet.SwapProvider.kLiFi,
-        BraveWallet.SwapProvider.kZeroEx,
-        BraveWallet.SwapProvider.kSquid,
-      ]
-    }
-
-    if (isBridge && hasSolInFillPath) {
-      return [
-        BraveWallet.SwapProvider.kAuto,
-        BraveWallet.SwapProvider.kLiFi,
-        BraveWallet.SwapProvider.kNearIntents,
-      ]
-    }
-
-    if (isBridge && hasEthInFillPath) {
-      return [
-        BraveWallet.SwapProvider.kAuto,
-        BraveWallet.SwapProvider.kLiFi,
-        BraveWallet.SwapProvider.kSquid,
-        BraveWallet.SwapProvider.kNearIntents,
-      ]
-    }
-
-    return [BraveWallet.SwapProvider.kAuto]
+    return providers
   }, [isBridge, fromToken, toToken])
 
   const swapValidationError: SwapValidationErrorType | undefined =
@@ -1170,6 +1182,34 @@ export const useSwap = () => {
           === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
         ) {
           return 'insufficientLiquidity'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kAmountTooLow
+        ) {
+          return 'amountTooLow'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedNetwork
+        ) {
+          return 'unsupportedNetwork'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedTokens
+        ) {
+          return 'unsupportedTokens'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kInvalidRequest
+        ) {
+          return 'invalidRequest'
         }
 
         return 'unknownError'
@@ -1445,6 +1485,22 @@ export const useSwap = () => {
 
     if (swapValidationError === 'insufficientLiquidity') {
       return getLocale('braveSwapInsufficientLiquidity')
+    }
+
+    if (swapValidationError === 'amountTooLow') {
+      return getLocale('braveSwapAmountTooLow')
+    }
+
+    if (swapValidationError === 'unsupportedNetwork') {
+      return getLocale('braveSwapUnsupportedNetwork')
+    }
+
+    if (swapValidationError === 'unsupportedTokens') {
+      return getLocale('braveSwapUnsupportedTokens')
+    }
+
+    if (swapValidationError === 'invalidRequest') {
+      return getLocale('braveSwapInvalidRequest')
     }
 
     if (swapValidationError === 'unknownError') {

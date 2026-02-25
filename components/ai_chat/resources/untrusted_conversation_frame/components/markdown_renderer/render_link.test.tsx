@@ -47,11 +47,11 @@ test('RenderLink component with citations.', async () => {
   expect(label).toHaveTextContent('1')
 
   // Make sure the citation is visible
-  const citation = document.querySelector<HTMLAnchorElement>('.citation')
+  const citation = document.querySelector<HTMLButtonElement>('.citation')
   expect(citation).toBeInTheDocument()
   expect(citation).toBeVisible()
   expect(citation).toHaveTextContent('1')
-  expect(citation?.tagName).toBe('A')
+  expect(citation?.tagName).toBe('BUTTON')
   expect(citation?.className).toBe('citation')
 })
 

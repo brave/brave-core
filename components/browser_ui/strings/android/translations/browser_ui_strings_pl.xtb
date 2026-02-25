@@ -761,5 +761,5 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="3110967157686007724">Karta prywatna</translation>
 <translation id="8623552597614912461">Ta witryna chce udostępnić informacje aplikacji poza trybem prywatnym.</translation>
 <translation id="8157212814767579028">Opuścić tryb prywatny?</translation>
-<translation id="1593610935874634135">Firma może zdefiniować grupę witryn internetowych, które mogą wykorzystywać pliki cookie do udostępniania Twojej aktywności w grupie. Ta opcja jest wyłączona w przypadku wybrania funkcji Prywatne.</translation>
+<translation id="1593610935874634135">Firma może zdefiniować grupę witryn, które mogą używać plików cookie do udostępniania informacji o Twojej aktywności w obrębie tej grupy. Wyłączone w trybie prywatnym.</translation>
 </translationbundle>

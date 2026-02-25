@@ -8,8 +8,7 @@
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
-import { ContentType, UploadedFileType } from '../../../common/mojom'
-import { defaultContext } from '../../state/conversation_context'
+import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps } from '.'
 
@@ -32,16 +31,47 @@ Object.defineProperty(URL, 'createObjectURL', {
 })
 
 const testContext: InputBoxProps['context'] = {
-  ...defaultContext,
-  // Override specific properties for testing
   isMobile: false,
   hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
-  tabs: [],
   attachImages: jest.fn(),
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
   openAIChatAgentProfile: () => {},
+  associatedContentInfo: [],
+  inputText: [''],
+  isGenerating: false,
+  pendingMessageFiles: [],
+  conversationHistory: [],
+  unassociatedTabs: [],
+  setAttachmentsDialog: () => {},
+  uploadFile: jest.fn(),
+  getScreenshots: jest.fn(),
+  setInputText: () => {},
+  submitInputTextToAPI: jest.fn(),
+  selectedActionType: undefined,
+  resetSelectedActionType: () => {},
+  isCharLimitApproaching: false,
+  isCharLimitExceeded: false,
+  inputTextCharCountDisplay: '',
+  isToolsMenuOpen: false,
+  setIsToolsMenuOpen: () => {},
+  toolUseTaskState: TaskState.kNone,
+  shouldDisableUserInput: false,
+  handleVoiceRecognition: () => {},
+  handleStopGenerating: () => Promise.resolve(),
+  removeFile: () => {},
+  isUploadingFiles: false,
+  disassociateContent: () => {},
+  associateDefaultContent: undefined,
+  pauseTask: () => {},
+  resumeTask: () => {},
+  stopTask: () => {},
+  handleSkillClick: () => {},
+  selectedSkill: undefined,
+  processImageFile: jest.fn(),
+  skills: [],
+  openURL: () => {},
 }
 
 // Render InputBox and flush async state updates from usePromise.
@@ -80,7 +110,6 @@ describe('input box', () => {
           }}
           conversationStarted={false}
         />
-        ,
       </MockContext>,
     )
 
@@ -287,9 +316,9 @@ describe('input box', () => {
             pendingMessageFiles: [
               {
                 filename: 'test.pdf',
-                data: new ArrayBuffer(0),
+                data: [],
                 type: UploadedFileType.kPdf,
-                filesize: BigInt(1024),
+                filesize: 1024,
               },
             ],
           }}
@@ -312,15 +341,15 @@ describe('input box', () => {
             pendingMessageFiles: [
               {
                 filename: 'document1.pdf',
-                data: new ArrayBuffer(0),
+                data: [],
                 type: UploadedFileType.kPdf,
-                filesize: BigInt(2048),
+                filesize: 2048,
               },
               {
                 filename: 'document2.pdf',
-                data: new ArrayBuffer(0),
+                data: [],
                 type: UploadedFileType.kPdf,
-                filesize: BigInt(1536),
+                filesize: 1536,
               },
             ],
           }}
@@ -346,6 +375,7 @@ describe('input box', () => {
             ...testContext,
             associatedContentInfo: [
               {
+                conversationTurnUuid: undefined,
                 contentId: 1,
                 contentType: ContentType.PageContent,
                 contentUsedPercentage: 0.5,
@@ -357,15 +387,15 @@ describe('input box', () => {
             pendingMessageFiles: [
               {
                 filename: 'image.jpg',
-                data: new ArrayBuffer(0),
+                data: [],
                 type: UploadedFileType.kImage,
-                filesize: BigInt(1024),
+                filesize: 1024,
               },
               {
                 filename: 'document.pdf',
-                data: new ArrayBuffer(0),
+                data: [],
                 type: UploadedFileType.kPdf,
-                filesize: BigInt(2048),
+                filesize: 2048,
               },
             ],
           }}

@@ -32,7 +32,7 @@ class BraveSettingsEmailAliasesRowBrowserTest
 
  private:
   base::test::ScopedFeatureList brave_account_feature_list_{
-      brave_account::features::kBraveAccount};
+      brave_account::features::BraveAccountFeatureForTesting()};
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

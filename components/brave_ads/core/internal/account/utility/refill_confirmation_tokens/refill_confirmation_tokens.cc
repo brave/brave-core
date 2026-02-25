@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"

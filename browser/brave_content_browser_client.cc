@@ -14,6 +14,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
@@ -34,6 +35,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
+#include "brave/browser/net/features.h"
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
@@ -1169,8 +1171,18 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   // TODO(iefremov): Skip proxying for certain requests?
-  BraveProxyingURLLoaderFactory::MaybeProxyRequest(
-      browser_context, frame, factory_builder, navigation_response_task_runner);
+  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
+    BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
+        browser_context, frame, factory_builder,
+        navigation_response_task_runner);
+  } else {
+    // Ignore shared_ptr presubmit error, this is old code we are trying to
+    // convert to unique_ptr/WeakPtr
+    BraveProxyingURLLoaderFactory<
+        std::shared_ptr>::MaybeProxyRequest(  // nocheck
+        browser_context, frame, factory_builder,
+        navigation_response_task_runner);
+  }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
@@ -1184,6 +1196,23 @@ bool BraveContentBrowserClient::WillInterceptWebSocket(
   return (frame != nullptr);
 }
 
+template <template <typename> class T>
+void BraveContentBrowserClient::CreateChromeWebSocket(
+    content::RenderFrameHost* frame,
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    const std::optional<std::string>& user_agent,
+    mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+        handshake_client,
+    BraveProxyingWebSocket<T>* proxy) {
+  if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
+    ChromeContentBrowserClient::CreateWebSocket(
+        frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
+        user_agent, std::move(handshake_client));
+  } else {
+    proxy->Start(std::move(handshake_client));
+  }
+}
 void BraveContentBrowserClient::CreateWebSocket(
     content::RenderFrameHost* frame,
     content::ContentBrowserClient::WebSocketFactory factory,
@@ -1192,15 +1221,21 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
-  auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
-      frame, std::move(factory), url, site_for_cookies, user_agent);
-
-  if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
-    ChromeContentBrowserClient::CreateWebSocket(
-        frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client));
+  if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
+    auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
+        frame, std::move(factory), url, site_for_cookies, user_agent);
+    CreateChromeWebSocket<base::WeakPtr>(frame, url, site_for_cookies,
+                                         user_agent,
+                                         std::move(handshake_client), proxy);
   } else {
-    proxy->Start(std::move(handshake_client));
+    // Ignore shared_ptr presubmit error, this is old code we are trying to
+    // convert to unique_ptr/WeakPtr
+    auto* proxy =
+        BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
+            frame, std::move(factory), url, site_for_cookies, user_agent);
+    CreateChromeWebSocket<std::shared_ptr>(  // nocheck
+        frame, url, site_for_cookies,        // nocheck
+        user_agent, std::move(handshake_client), proxy);
   }
 }
 

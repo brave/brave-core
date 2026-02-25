@@ -31,6 +31,9 @@ import {
 import { useExplorer } from '../../../../common/hooks/explorer'
 import { useSwapTransactionParser } from '../../../../common/hooks/use-swap-tx-parser'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
+import {
+  useGate3SwapStatus, //
+} from '../../../../page/screens/swap/hooks/useGate3SwapStatus'
 
 // Types
 import {
@@ -74,6 +77,7 @@ import { PopupModal } from '../../popup-modals/index'
 import { withPlaceholderIcon } from '../../../shared/create-placeholder-icon'
 import { NftIcon } from '../../../shared/nft-icon/nft-icon'
 import { CreateNetworkIcon } from '../../../shared/create-network-icon'
+import { LoadingSkeleton } from '../../../shared/loading-skeleton'
 
 // Styled Components
 import {
@@ -108,6 +112,7 @@ import {
   TransactionValues,
   StatusBoxWrapper,
   NFTIconWrapper,
+  InternalStatusText,
 } from './transaction_details_modal.style'
 import {
   SellIconPlaceholder,
@@ -162,6 +167,42 @@ const errorTxTypes = [
   BraveWallet.TransactionStatus.Dropped,
   BraveWallet.TransactionStatus.Rejected,
 ]
+
+function getGate3EffectiveStatus(
+  swapStatusCode: BraveWallet.Gate3SwapStatusCode,
+): { status: BraveWallet.TransactionStatus; label: string } | undefined {
+  switch (swapStatusCode) {
+    case BraveWallet.Gate3SwapStatusCode.kPending:
+      return {
+        status: BraveWallet.TransactionStatus.Submitted,
+        label: getLocale('braveWalletSwapPending'),
+      }
+    case BraveWallet.Gate3SwapStatusCode.kProcessing:
+      return {
+        status: BraveWallet.TransactionStatus.Submitted,
+        label: getLocale('braveWalletSwapProcessing'),
+      }
+    case BraveWallet.Gate3SwapStatusCode.kSuccess:
+      return {
+        status: BraveWallet.TransactionStatus.Confirmed,
+        label: getTransactionStatusString(
+          BraveWallet.TransactionStatus.Confirmed,
+        ),
+      }
+    case BraveWallet.Gate3SwapStatusCode.kFailed:
+      return {
+        status: BraveWallet.TransactionStatus.Error,
+        label: getTransactionStatusString(BraveWallet.TransactionStatus.Error),
+      }
+    case BraveWallet.Gate3SwapStatusCode.kRefunded:
+      return {
+        status: BraveWallet.TransactionStatus.Error,
+        label: getLocale('braveWalletSwapRefunded'),
+      }
+    default:
+      return undefined
+  }
+}
 
 interface Props {
   onClose: () => void
@@ -243,6 +284,11 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       ? { requests: priceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
   )
+
+  const isGate3Swap =
+    transaction.swapInfo && transaction.swapInfo.routeId !== ''
+  const { status: swapStatus, isEnabled: isGate3SwapStatusEnabled } =
+    useGate3SwapStatus(isGate3Swap ? transaction : null)
 
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(txNetwork)
@@ -388,12 +434,6 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     ? sendToken.symbol
     : formattedSendFiatValue
 
-  const showPendingTxStatus = pendingTxTypes.includes(txStatus)
-
-  const showSuccessTxStatus = successTxTypes.includes(txStatus)
-
-  const showErrorTxStatus = errorTxTypes.includes(txStatus)
-
   const recipientLabel = getAddressLabel(recipient, accountInfosRegistry)
 
   const senderLabel = getAccountLabel(
@@ -407,6 +447,16 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   )
 
   const memoText = getTransactionMemo(transaction)
+
+  // For Gate3 swaps, override status display with swap progress.
+  // On-chain error/dropped always trumps swap status.
+  const mapped =
+    isGate3Swap && swapStatus && !errorTxTypes.includes(txStatus)
+      ? getGate3EffectiveStatus(swapStatus.status)
+      : undefined
+  const effectiveStatus = mapped?.status ?? txStatus
+  const effectiveStatusString =
+    mapped?.label ?? getTransactionStatusString(txStatus)
 
   // render
   return (
@@ -569,16 +619,18 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
               </TransactionValues>
             </IconAndValue>
             <StatusBoxWrapper alignItems='flex-end'>
-              <StatusBox status={txStatus}>
-                {showPendingTxStatus && <LoadingIcon status={txStatus} />}
-                {showSuccessTxStatus && <SuccessIcon />}
-                {showErrorTxStatus && <ErrorIcon />}
+              <StatusBox status={effectiveStatus}>
+                {pendingTxTypes.includes(effectiveStatus) && (
+                  <LoadingIcon status={effectiveStatus} />
+                )}
+                {successTxTypes.includes(effectiveStatus) && <SuccessIcon />}
+                {errorTxTypes.includes(effectiveStatus) && <ErrorIcon />}
                 <StatusText
-                  status={txStatus}
+                  status={effectiveStatus}
                   isBold={true}
                   textAlign='right'
                 >
-                  {getTransactionStatusString(txStatus)}
+                  {effectiveStatusString}
                 </StatusText>
               </StatusBox>
               <DateText
@@ -647,13 +699,22 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   </Button>
                   <HorizontalSpace space='12px' />
                   <Button
-                    onClick={onClickViewOnBlockExplorer(
-                      transaction.swapInfo?.provider
-                        === BraveWallet.SwapProvider.kLiFi
-                        ? 'lifi'
-                        : 'tx',
-                      transaction.txHash,
-                    )}
+                    onClick={
+                      swapStatus?.explorerUrl
+                        ? () =>
+                            window.open(
+                              swapStatus.explorerUrl,
+                              '_blank',
+                              'noreferrer',
+                            )
+                        : onClickViewOnBlockExplorer(
+                            transaction.swapInfo?.provider
+                              === BraveWallet.SwapProvider.kLiFi
+                              ? 'lifi'
+                              : 'tx',
+                            transaction.txHash,
+                          )
+                    }
                     kind='outline'
                     size='tiny'
                     fab
@@ -754,7 +815,9 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
           </>
         )}
 
-        <SectionRow padding='16px 0px 0px 0px'>
+        <SectionRow
+          padding={isGate3SwapStatusEnabled ? '16px 0px' : '16px 0px 0px 0px'}
+        >
           <SectionLabel
             textAlign='left'
             textSize='14px'
@@ -779,6 +842,30 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             </SectionInfoText>
           </Row>
         </SectionRow>
+
+        {isGate3SwapStatusEnabled && (
+          <>
+            <VerticalDivider />
+            <SectionRow padding='16px 0px 0px 0px'>
+              <SectionLabel
+                textAlign='left'
+                textSize='14px'
+              >
+                {getLocale('braveWalletSwapProviderStatus')}
+              </SectionLabel>
+              {swapStatus?.internalStatus ? (
+                <InternalStatusText>
+                  {swapStatus.internalStatus}
+                </InternalStatusText>
+              ) : (
+                <LoadingSkeleton
+                  width={120}
+                  height={16}
+                />
+              )}
+            </SectionRow>
+          </>
+        )}
 
         {showCancelSpeedupButtons && (
           <Row padding='32px 0px 0px 0px'>

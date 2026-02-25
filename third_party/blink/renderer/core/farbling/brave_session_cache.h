@@ -43,7 +43,7 @@ enum FarbleKey : uint64_t {
   kKeyCount
 };
 
-typedef absl::randen_engine<uint64_t> FarblingPRNG;
+using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);

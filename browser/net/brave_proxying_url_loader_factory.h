@@ -47,6 +47,7 @@ class RenderFrameHost;
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
 // signin::ProxyingURLLoaderFactory
+template <template <typename> class T>
 class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
  public:
   using DisconnectCallback =
@@ -100,6 +101,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     void OnComplete(const network::URLLoaderCompletionStatus& status) override;
 
    private:
+    void CreateBraveRequestInfo();
     // These two methods combined form the implementation of Restart().
     void UpdateRequestInfo();
     void RestartInternal();
@@ -117,8 +119,8 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
 
     base::ElapsedTimer elapsed_timer_;
 
-    // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
-    std::shared_ptr<brave::BraveRequestInfo> ctx_;
+    std::unique_ptr<brave::BraveRequestInfo> ctx_owned_;
+    T<brave::BraveRequestInfo> ctx_;
     const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
     const uint64_t request_id_;
@@ -181,7 +183,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
   // Constructor public for testing purposes. New instances should be created
   // by calling MaybeProxyRequest().
   BraveProxyingURLLoaderFactory(
-      BraveRequestHandler& request_handler,
+      BraveRequestHandler<T>& request_handler,
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,
@@ -223,7 +225,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
 
   void MaybeRemoveProxy();
 
-  const raw_ref<BraveRequestHandler> request_handler_;
+  const raw_ref<BraveRequestHandler<T>> request_handler_;
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const content::GlobalRenderFrameHostToken render_frame_token_;
 

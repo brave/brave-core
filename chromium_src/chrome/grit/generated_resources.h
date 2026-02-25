@@ -11,6 +11,8 @@
 #include "../gen/chrome/grit/generated_resources.h"  // IWYU pragma: export
 
 #undef IDS_PERMISSIONS_BUBBLE_PROMPT
+// This overrides the upstream value and shouldn't be undef'ed
+// CHROMIUM_SRC_NOLINT
 #define IDS_PERMISSIONS_BUBBLE_PROMPT IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_GRIT_GENERATED_RESOURCES_H_

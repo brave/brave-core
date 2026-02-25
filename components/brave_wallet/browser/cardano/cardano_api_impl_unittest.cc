@@ -90,10 +90,7 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
 
 class CardanoApiImplTest : public testing::Test {
  public:
-  CardanoApiImplTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+  CardanoApiImplTest() = default;
   ~CardanoApiImplTest() override = default;
 
   void SetUp() override {
@@ -101,8 +98,8 @@ class CardanoApiImplTest : public testing::Test {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
-        &prefs_, &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
     auto delegate =
         std::make_unique<testing::NiceMock<MockBraveWalletProviderDelegate>>();
     provider_ = std::make_unique<CardanoApiImpl>(
@@ -246,7 +243,6 @@ class CardanoApiImplTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
 

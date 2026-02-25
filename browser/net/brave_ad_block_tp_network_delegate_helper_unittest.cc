@@ -15,7 +15,9 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -38,6 +40,17 @@ using brave_component_updater::BraveComponent;
 using brave_shields::TestFiltersProvider;
 
 namespace {
+
+// Pointer strategy types for parameterized testing
+struct SharedPtrStrategy {
+  template <typename T>
+  using Ptr = std::shared_ptr<T>;
+};
+
+struct WeakPtrStrategy {
+  template <typename T>
+  using Ptr = base::WeakPtr<T>;
+};
 
 // Note: extract a common impl if needed for other tests, do not copy.
 
@@ -88,6 +101,7 @@ void FakeAdBlockSubscriptionDownloadManagerGetter(
   // no-op, subscription services are not currently used in unit tests
 }
 
+template <typename PtrStrategy>
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
@@ -116,6 +130,14 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
+
+    // Enable feature flag if using WeakPtrStrategy, disable if
+    // SharedPtrStrategy
+    bool enable_flag = std::is_same_v<
+        typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
+        base::WeakPtr<brave::BraveRequestInfo>>;
+    scoped_feature_list_.InitWithFeatureState(
+        features::kBraveRequestInfoUniquePtr, enable_flag);
   }
 
   void TearDown() override {
@@ -132,9 +154,22 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     task_environment_.RunUntilIdle();
   }
 
+  typename PtrStrategy::template Ptr<brave::BraveRequestInfo> MakeRequest(
+      const GURL& url) {
+    if constexpr (std::is_same_v<typename PtrStrategy::template Ptr<
+                                     brave::BraveRequestInfo>,
+                                 std::shared_ptr<brave::BraveRequestInfo>>) {
+      return std::make_shared<brave::BraveRequestInfo>(url);
+    } else {
+      owned_request_ = std::make_unique<brave::BraveRequestInfo>(url);
+      return owned_request_->AsWeakPtr();
+    }
+  }
+
   // Returns true if the request handler deferred control back to the calling
   // thread before completion, or true if it completed instantly.
-  bool CheckRequest(std::shared_ptr<brave::BraveRequestInfo> request_info) {
+  bool CheckRequest(typename PtrStrategy::template Ptr<brave::BraveRequestInfo>
+                        request_info) {
     // `request_identifier` must be nonzero, or else nothing will be tested.
     request_info->set_request_identifier(1);
 
@@ -156,102 +191,107 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 
   std::unique_ptr<TestFiltersProvider> filters_provider_;
+  std::unique_ptr<brave::BraveRequestInfo> owned_request_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 
  private:
   std::unique_ptr<network::HostResolver> resolver_wrapper_;
 };
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
+using PtrStrategies = testing::Types<SharedPtrStrategy, WeakPtrStrategy>;
+TYPED_TEST_SUITE(BraveAdBlockTPNetworkDelegateHelperTest, PtrStrategies);
+
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
   const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  auto request_info = this->MakeRequest(url);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
-  EXPECT_FALSE(CheckRequest(request_info));
+  EXPECT_FALSE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
+  auto request_info = this->MakeRequest(GURL());
   request_info->set_initiator_url(GURL("https://example.com"));
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
-  EXPECT_FALSE(CheckRequest(request_info));
+  EXPECT_FALSE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   const GURL url("devtools://devtools/");
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  auto request_info = this->MakeRequest(url);
   request_info->set_initiator_url(
       GURL("devtools://devtools/bundled/root/root.js"));
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
-  EXPECT_FALSE(CheckRequest(request_info));
+  EXPECT_FALSE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
   const GURL url(
       "data:image/gif;base64,R0lGODlhAQABAIAAAP///"
       "wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  auto request_info = this->MakeRequest(url);
   request_info->set_initiator_url(GURL("https://example.com"));
   request_info->set_resource_type(blink::mojom::ResourceType::kImage);
 
-  EXPECT_FALSE(CheckRequest(request_info));
+  EXPECT_FALSE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
 }
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
-  ResetAdblockInstance("||brave.com/test.txt");
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
+  this->ResetAdblockInstance("||brave.com/test.txt");
 
   const GURL url("https://brave.com/test.txt");
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  auto request_info = this->MakeRequest(url);
   request_info->set_request_identifier(1);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
   request_info->set_initiator_url(GURL("https://bravesoftware.com"));
 
-  EXPECT_TRUE(CheckRequest(request_info));
+  EXPECT_TRUE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
   // It's unclear whether or not this is a Tor request, so no DNS queries are
   // made (`browser_context` is `nullptr`).
-  EXPECT_EQ(0ULL, host_resolver_->num_resolve());
+  EXPECT_EQ(0ULL, this->host_resolver_->num_resolve());
 }
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
-  ResetAdblockInstance("||brave.com/test.txt");
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
+  this->ResetAdblockInstance("||brave.com/test.txt");
 
   const GURL url("https://brave.com/test.txt");
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  auto request_info = this->MakeRequest(url);
   request_info->set_request_identifier(1);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
   request_info->set_initiator_url(GURL("https://brave.com"));
 
-  EXPECT_TRUE(CheckRequest(request_info));
+  EXPECT_TRUE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
-  EXPECT_EQ(0ULL, host_resolver_->num_resolve());
+  EXPECT_EQ(0ULL, this->host_resolver_->num_resolve());
 }
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, AggressiveNo1pException) {
-  ResetAdblockInstance("||brave.com/test.txt");
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, AggressiveNo1pException) {
+  this->ResetAdblockInstance("||brave.com/test.txt");
 
   const GURL url("https://brave.com/test.txt");
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  auto request_info = this->MakeRequest(url);
   request_info->set_request_identifier(1);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
   request_info->set_initiator_url(GURL("https://brave.com"));
   request_info->set_aggressive_blocking(true);
 
-  EXPECT_TRUE(CheckRequest(request_info));
+  EXPECT_TRUE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
   EXPECT_TRUE(request_info->new_url_spec().empty());
   // It's unclear whether or not this is a Tor request, so no DNS queries are
   // made (`browser_context` is `nullptr`).
-  EXPECT_EQ(0ULL, host_resolver_->num_resolve());
+  EXPECT_EQ(0ULL, this->host_resolver_->num_resolve());
 }

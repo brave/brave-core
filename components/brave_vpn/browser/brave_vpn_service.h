@@ -190,6 +190,7 @@ class BraveVpnService :
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
   void OnRegionDataReady(bool success) override;
   void OnSelectedRegionChanged(const std::string& region_name) override;
+  void OnInstallSystemServicesCompleted(bool success) override;
 
   void OnCreateSupportTicket(CreateSupportTicketCallback callback,
                              const std::string& ticket,

@@ -172,4 +172,26 @@ TreeTabNodeTabCollection::GetTreeNodeChildren() {
   return children;
 }
 
+void TreeTabNodeTabCollection::OnReparented(TabCollection* new_parent) {
+  auto* old_parent = GetParentCollection();
+
+  TabCollection::OnReparented(new_parent);
+
+  node_->CalculateLevelAndHeightRecursively({});
+
+  CHECK_NE(old_parent, new_parent);
+
+  if (new_parent) {
+    if (new_parent->type() == TabCollection::Type::TREE_NODE) {
+      static_cast<TreeTabNodeTabCollection*>(new_parent)
+          ->node_->OnChildHeightChanged({});
+    }
+  } else {
+    if (old_parent && old_parent->type() == TabCollection::Type::TREE_NODE) {
+      static_cast<TreeTabNodeTabCollection*>(old_parent)
+          ->node_->OnChildHeightChanged({});
+    }
+  }
+}
+
 }  // namespace tabs

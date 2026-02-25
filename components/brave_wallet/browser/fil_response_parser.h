@@ -9,8 +9,11 @@
 #include <optional>
 #include <string>
 
-#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_wallet {
 

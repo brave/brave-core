@@ -10,14 +10,25 @@ import ConversationAreaButton from '../../../common/components/conversation_area
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 
-export function SuggestedQuestion({ question }: { question: string }) {
+export function SuggestedQuestion({
+  question,
+  index,
+}: {
+  question: string
+  index: number
+}) {
   const context = useConversation()
   return (
     <SuggestionButton
-      onClick={() => context.conversationHandler?.submitSuggestion(question)}
+      onClick={() => context.api.conversationHandler.submitSuggestion(question)}
       className={styles.questionButton}
     >
-      <span className={styles.questionButtonText}>{question}</span>
+      <span
+        className={styles.questionButtonText}
+        data-test-id={`suggested-question-${index}`}
+      >
+        {question}
+      </span>
     </SuggestionButton>
   )
 }

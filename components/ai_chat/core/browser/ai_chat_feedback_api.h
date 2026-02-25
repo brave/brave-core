@@ -23,8 +23,6 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
-using api_request_helper::APIRequestResult;
-
 class AIChatFeedbackAPI {
  public:
   AIChatFeedbackAPI(

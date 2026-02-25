@@ -67,7 +67,6 @@
     <color name="text_disabled">#21272a</color>
     <color name="text_on_primary">#FFFFFF</color>
     <color name="icon_interactive">#434fcf</color>
-    <color name="divider_subtle">#e4e4e5</color>
     <color name="system_feedback_error">#B3002A</color>
 
     <!-- Text colors -->
@@ -344,17 +343,6 @@
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
     <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 
-    <color name="primitive_blurple_10">#15192D</color>
-    <color name="primitive_blurple_15">#181266</color>
-    <color name="primitive_blurple_20">#20197f</color>
-    <color name="primitive_blurple_25">#272F55</color>
-    <color name="primitive_blurple_35">#3a2ecd</color>
-    <color name="primitive_blurple_40">#434fcf</color>
-    <color name="primitive_blurple_50">#5b67e8</color>
-    <color name="primitive_blurple_80">#bcc6f3</color>
-    <color name="primitive_blurple_90">#dfe4f6</color>
-    <color name="primitive_blurple_95">#f0f2fa</color>
-    <color name="primitive_blurple_98">#f9fafd</color>
     <color name="semantic_text_interactive">#BCC6F3</color>
     <color name="semantic_divider_interactive">#7686EC</color>
 

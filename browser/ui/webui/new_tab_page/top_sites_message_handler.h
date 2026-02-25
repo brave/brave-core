@@ -10,12 +10,16 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "base/values.h"
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/ntp_tile.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
 class Profile;
+
+namespace base {
+class ListValue;
+}  // namespace base
+
 namespace content {
 class WebUIDataSource;
 }

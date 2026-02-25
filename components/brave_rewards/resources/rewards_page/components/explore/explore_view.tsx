@@ -40,6 +40,7 @@ export function ExploreView() {
     const elem = ref.current?.querySelector(`[data-deep-link-id=${id}]`)
     if (elem instanceof HTMLElement) {
       elem.offsetParent?.scrollTo({ top: elem.offsetTop - 16 })
+      elem.classList.add('deep-link-highlight')
     }
   }, [cards])
 

@@ -27,6 +27,7 @@ void NetworkTimeHelper::SetNetworkTimeTracker(
     network_time::NetworkTimeTracker* tracker,
     const scoped_refptr<base::SingleThreadTaskRunner>& ui_task_runner) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(tracker->is_initialized());
   network_time_tracker_ = tracker;
   ui_task_runner_ = ui_task_runner;
 }

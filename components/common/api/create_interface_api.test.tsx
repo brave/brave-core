@@ -268,11 +268,14 @@ describe('createInterfaceApi', () => {
     }
 
     let hookResult = await act(async () => renderHook(useTestQueryData))
-
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
-
     await act(async () => hookResult.rerender())
-    expect(hookResult.result.current).toEqual([{ id: '1' }, { id: '2' }])
+    const dataFromHook = hookResult.result.current
+    expect(dataFromHook).toEqual([{ id: '1' }, { id: '2' }])
+    // Sanity check that we always get the same reference and not a re-built
+    // array. This is important for hook dependencies.
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current).toStrictEqual(dataFromHook)
   })
 
   it('gets array data from a query with placeholder', async () => {

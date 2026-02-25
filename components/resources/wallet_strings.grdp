@@ -149,6 +149,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
   <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER " desc="Swap provider label">Provider</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER_STATUS" desc="Swap provider status label in transaction details">Provider status</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title">Confirm shield</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title">Confirm unshield</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
@@ -1019,6 +1020,10 @@
   <message name="IDS_BRAVE_SWAP_APPROVE_TOKEN" desc="Text for swap button while approving ERC20 token">Approve <ph name="TOKEN">$1</ph></message>
   <message name="IDS_BRAVE_SWAP_INSUFFICIENT_BALANCE" desc="Text for swap button when token token balance is insufficient">Insufficient <ph name="TOKEN">$1</ph> balance</message>
   <message name="IDS_BRAVE_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
+  <message name="IDS_BRAVE_SWAP_AMOUNT_TOO_LOW" desc="Swap CTA text when the swap amount is too low">Amount too low</message>
+  <message name="IDS_BRAVE_SWAP_UNSUPPORTED_NETWORK" desc="Swap CTA text when the network is not supported">Unsupported network</message>
+  <message name="IDS_BRAVE_SWAP_UNSUPPORTED_TOKENS" desc="Swap CTA text when the token pair is not supported">Unsupported token(s)</message>
+  <message name="IDS_BRAVE_SWAP_INVALID_REQUEST" desc="Swap CTA text when the swap request is invalid">Invalid request</message>
   <message name="IDS_BRAVE_SWAP_SELECT_TOKEN" desc="Dropdown text to select token">Select token</message>
   <message name="IDS_BRAVE_SWAP_HALF" desc="Amount preset button text for half">Half</message>
   <message name="IDS_BRAVE_SWAP_MAX" desc="Amount preset button text for max">Max</message>

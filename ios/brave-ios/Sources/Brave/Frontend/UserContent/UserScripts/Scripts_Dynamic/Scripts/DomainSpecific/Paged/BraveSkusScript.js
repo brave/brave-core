@@ -43,6 +43,19 @@ window.__firefox__.includeOnce("BraveSkusScript", function($) {
     console.error(`An error occurred setting the local storage receipt: ${err}`);
   });
 
+  // Request Origin Receipt
+  sendMessage('$<setLocalStorageReceipt>', { "message": "origin" })
+  .then(function(jsonData) {
+    if (jsonData) {
+      window.localStorage.setItem("braveOrigin.orderId", jsonData["braveOrigin.orderId"])
+      window.localStorage.setItem(jsonData["key"], jsonData["data"]);
+    } else {
+      console.error("No Origin Purchase Data");
+    }
+  }).catch(function(err) {
+    console.error(`An error occurred setting the local storage receipt: ${err}`);
+  });
+
   Object.defineProperty(window.chrome, 'braveSkus', {
     enumerable: false,
     configurable: false,

@@ -8,7 +8,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/to_vector.h"
-#include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -568,9 +566,6 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
     GURL url = embedded_test_server()->GetURL("/empty.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-
-    ASSERT_TRUE(base::FeatureList::IsEnabled(
-        brave_wallet::features::kNativeBraveWalletFeature));
 
     // load solana web3 script
     if (g_provider_solana_web3_script->empty()) {

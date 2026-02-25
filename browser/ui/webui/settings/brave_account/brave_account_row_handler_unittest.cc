@@ -76,7 +76,8 @@ class BraveAccountRowHandlerTest : public testing::TestWithParam<const T*> {
   }
 
  private:
-  base::test::ScopedFeatureList scoped_feature_list_{features::kBraveAccount};
+  base::test::ScopedFeatureList scoped_feature_list_{
+      features::BraveAccountFeatureForTesting()};
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<content::WebContents> web_contents_;

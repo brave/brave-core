@@ -2312,7 +2312,7 @@
 <translation id="5794962229997281366">已改善「<ph name="SEARCH_TERMS"/>」的搜尋結果。</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> 更多…</translation>
 <translation id="8103700533980268469">關閉本通知</translation>
-<translation id="3417835166382867856">搜尋標籤頁</translation>
+<translation id="3417835166382867856">搜尋分頁</translation>
 <translation id="3828029223314399057">搜尋書籤</translation>
 <translation id="381480092025168632">搜尋瀏覽器記錄</translation>
 <translation id="7311244614769792472">未找到結果。</translation>
@@ -2320,11 +2320,11 @@
 <translation id="1352836459737874921">附加其他分頁的內容</translation>
 <translation id="7173836072258346701">從書籤附加內容</translation>
 <translation id="163680814308917875">附加瀏覽器歷程記錄中的內容</translation>
-<translation id="7039179822221107025">從您的瀏覽器分頁傳送頁面內容，為 Leo 提供更多對話內容.</translation>
+<translation id="7039179822221107025">將您瀏覽器分頁中的頁面內容傳送給 Leo，讓它能獲得更多對話所需的上下文資訊。</translation>
 <translation id="1602382615168212961">從書籤中的標籤傳送頁面內容，讓利奧為對話提供更多內容。</translation>
 <translation id="4808122506413075135">傳送瀏覽歷史中的頁面內容，為 Leo 提供更多對話內容。</translation>
 <translation id="220541218939267992">頁面內容將連同您的訊息一併傳送給 Leo。</translation>
-<translation id="2152389270152475874">為上下文添加標籤、書籤或瀏覽記錄。所選內容將與您的訊息一併發送給 Leo。</translation>
+<translation id="2152389270152475874">添加分頁、書籤或瀏覽記錄以查看上下文。所選內容將與您的訊息一併傳送給 Leo。</translation>
 <translation id="6237410387937453423">沒有匹配的附件</translation>
 <translation id="2315654674554095762">現在，Leo 會記住您的對話，以便您可以重新返回。它們會加密儲存於您的裝置中，您可以隨時刪除它們。</translation>
 <translation id="7821251979960635244">開始對話後，您的對話紀錄就會出現在這裡。</translation>
@@ -2415,7 +2415,7 @@
 <translation id="4798146464408730445">未找到任何技能。按一下「新增」按鈕，建立新的技能。</translation>
 <translation id="271033894570825754">新</translation>
 <translation id="8266605059880650542">記下一些頁面的資訊，以備日後參考</translation>
-<translation id="5103625298494362646">代理模式僅適用於支援工具的模型。不相容的模型將從此清單中隱藏。</translation>
+<translation id="5103625298494362646">AI 瀏覽模式僅適用於支援工具的模型；不相容的模型將從此列表中隱藏。</translation>
 <translation id="3397808797783614750">啟用 AI 自動為你瀏覽網站，可能會對你的隱私、財務與線上通訊造成有害且非預期的結果。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">安全性警告</translation>
 <translation id="6077070599873946984">Brave AI 需要你的許可：<ph name="TOOL_LABEL"/></translation>
@@ -2501,7 +2501,7 @@
 <translation id="466214682712474574">登入您的 <ph name="PROVIDER"/> 帳戶查看您的餘額</translation>
 <translation id="8332875111286275890">登入查看您的餘額</translation>
 <translation id="5430001801813715388">獎勵</translation>
-<translation id="5966055668402779222">無所不問，無所不答...</translation>
+<translation id="5966055668402779222">詢問 Brave 搜尋</translation>
 <translation id="167018310108390163">自定義新標籤頁面</translation>
 <translation id="6851426306697017546">顯示時鐘</translation>
 <translation id="4844370919312937270">在新標籤頁中顯示搜尋小工具</translation>

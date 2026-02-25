@@ -15,7 +15,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_account.mojom.Authentication;
@@ -27,10 +26,10 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_account.BraveAccountServiceFactory;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.PrefServiceUtil;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.components.prefs.PrefChangeRegistrar;
 import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -75,7 +74,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
 
     public static @Nullable BraveAccountSectionController maybeCreate(
             PreferenceFragmentCompat fragment, Profile profile) {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)
+        return BraveAccountFeatures.isBraveAccountEnabled()
                 ? new BraveAccountSectionController(fragment, profile)
                 : null;
     }

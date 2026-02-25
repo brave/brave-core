@@ -26,6 +26,10 @@ inline constexpr char kWidgetUsageHistogramName[] = "Brave.VPN.WidgetUsage";
 inline constexpr char kHideWidgetHistogramName[] = "Brave.VPN.HideWidget";
 inline constexpr char kVPNConnectedDurationHistogramName[] =
     "Brave.VPN.ConnectedDuration";
+#if BUILDFLAG(IS_WIN)
+inline constexpr char kSystemServiceInstallationResultHistogramName[] =
+    "Brave.VPN.SystemServicesInstalled";
+#endif
 
 class BraveVpnMetrics {
  public:
@@ -62,6 +66,10 @@ class BraveVpnMetrics {
 
   // Records one minute of VPN connected time
   void RecordVPNConnectedInterval();
+
+#if BUILDFLAG(IS_WIN)
+  void RecordSystemServiceInstallationResult(bool success);
+#endif
 
  private:
   void HandleShowWidgetChange();

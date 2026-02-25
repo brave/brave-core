@@ -244,18 +244,36 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
           break;
 
         case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
-          const auto& web_sources = block->get_web_sources_content_block();
+          auto& web_sources = block->get_web_sources_content_block();
           base::ListValue sources_list;
-          for (const auto& source : web_sources->sources) {
+          for (auto& source : web_sources->sources) {
             base::DictValue source_dict;
             source_dict.Set("title", source->title);
             source_dict.Set("url", source->url.spec());
             source_dict.Set("favicon", source->favicon_url.spec());
+            if (source->page_content) {
+              source_dict.Set("page_content", std::move(*source->page_content));
+            }
+            if (source->extra_snippets) {
+              base::ListValue snippets_list;
+              for (auto& snippet : source->extra_snippets.value()) {
+                snippets_list.Append(std::move(snippet));
+              }
+              source_dict.Set("extra_snippets", std::move(snippets_list));
+            }
             sources_list.Append(std::move(source_dict));
           }
           content_block_dict.Set("sources", std::move(sources_list));
-          if (web_sources->query.has_value()) {
-            content_block_dict.Set("query", web_sources->query.value());
+          if (!web_sources->queries.empty()) {
+            if (web_sources->queries.size() == 1) {
+              content_block_dict.Set("query", web_sources->queries.front());
+            } else {
+              base::ListValue queries_list;
+              for (const auto& q : web_sources->queries) {
+                queries_list.Append(q);
+              }
+              content_block_dict.Set("query", std::move(queries_list));
+            }
           }
           if (!web_sources->rich_results.empty()) {
             base::ListValue rich_results_list;
@@ -533,6 +551,16 @@ void ConversationAPIV2Client::OnQueryDataReceived(
       auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
           mojom::SearchStatusEvent::New(true));
       callback.Run(GenerationResultData(std::move(event), std::nullopt));
+    }
+  } else if (*object_type == "brave-chat.inlineSearch") {
+    auto* query = result_params.FindString("query");
+    auto* results = result_params.FindList("results");
+    if (query && !query->empty() && results) {
+      std::string results_json;
+      base::JSONWriter::Write(*results, &results_json);
+      auto event = mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(*query, std::move(results_json)));
+      callback.Run(GenerationResultData(std::move(event), model_key));
     }
   }
 

@@ -7,8 +7,11 @@
 #define BRAVE_COMPONENTS_SERP_METRICS_SERP_METRICS_H_
 
 #include <cstddef>
+#include <memory>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
 
 class PrefService;
@@ -37,14 +40,8 @@ class SerpMetrics {
 
   virtual ~SerpMetrics();
 
-  virtual void RecordBraveSearch();
-  virtual size_t GetBraveSearchCountForYesterday() const;
-
-  virtual void RecordGoogleSearch();
-  virtual size_t GetGoogleSearchCountForYesterday() const;
-
-  virtual void RecordOtherSearch();
-  virtual size_t GetOtherSearchCountForYesterday() const;
+  virtual void RecordSearch(SerpMetricType type);
+  virtual size_t GetSearchCountForYesterday(SerpMetricType type) const;
 
   virtual size_t GetSearchCountForStalePeriod() const;
 
@@ -52,9 +49,7 @@ class SerpMetrics {
 
   // Test helpers to return the total search count stored in `TimePeriodStorage`
   // without filtering by time range or staleness.
-  size_t GetBraveSearchCountForTesting() const;
-  size_t GetGoogleSearchCountForTesting() const;
-  size_t GetOtherSearchCountForTesting() const;
+  size_t GetSearchCountForTesting(SerpMetricType type) const;
 
  private:
   // Returns the start of the stale period in local time, based on the last day
@@ -65,16 +60,10 @@ class SerpMetrics {
   // full retention period should be considered stale.
   base::Time GetStartOfStalePeriod() const;
 
-  size_t GetBraveSearchCountForStalePeriod() const;
-  size_t GetGoogleSearchCountForStalePeriod() const;
-  size_t GetOtherSearchCountForStalePeriod() const;
-
   const raw_ptr<PrefService> local_state_;  // Not owned.
-  const raw_ptr<PrefService> prefs_;        // Not owned.
 
-  TimePeriodStorage brave_search_engine_time_period_storage_;
-  TimePeriodStorage google_search_engine_time_period_storage_;
-  TimePeriodStorage other_search_engine_time_period_storage_;
+  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+      time_period_storages_;
 };
 
 }  // namespace serp_metrics
