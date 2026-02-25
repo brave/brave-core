@@ -667,7 +667,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #endif
 
 #define BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                               \
-  IF_BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL,                                    \
+  IF_BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL,                            \
                EXPAND_FEATURE_ENTRIES({                                       \
                    "brave-ai-chat-tab-management-tool",                       \
                    "Brave AI Chat Tab Management Tool",                       \
