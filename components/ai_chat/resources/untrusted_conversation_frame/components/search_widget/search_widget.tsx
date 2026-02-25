@@ -246,12 +246,8 @@ export default function SearchWidget(props: {
     })
   }
 
-  // If we have no search results, don't show the widget.
-  if (props.results.length === 0) {
-    return null
-  }
-
   const searchResults = results[type] ?? []
+  const loading = props.results.length === 0
 
   return (
     <div className={styles.searchWidget}>
@@ -259,12 +255,16 @@ export default function SearchWidget(props: {
         className={styles.searchResults}
         ref={scrollContainerRef}
       >
-        {searchResults.map((result, i) => (
-          <Result
-            key={i}
-            result={result}
-          />
-        ))}
+        {loading ? (
+          <div className={styles.placeholderResult} />
+        ) : (
+          searchResults.map((result, i) => (
+            <Result
+              key={i}
+              result={result}
+            />
+          ))
+        )}
         <Button
           className={styles.carouselButton}
           size='small'

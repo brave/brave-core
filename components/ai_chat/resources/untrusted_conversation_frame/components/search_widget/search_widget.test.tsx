@@ -259,7 +259,7 @@ describe('SearchWidget', () => {
     )
   })
 
-  test('should render nothing for empty results', () => {
+  test('should render placeholder for empty results', () => {
     const { container } = render(
       <SearchWidget
         query='test query'
@@ -268,6 +268,9 @@ describe('SearchWidget', () => {
       />,
     )
 
-    expect(container.firstChild).toBeNull()
+    expect(container.querySelector('.placeholderResult')).toBeInTheDocument()
+    expect(
+      screen.queryAllByRole('link').filter((l) => l.closest('.searchResults')),
+    ).toHaveLength(0)
   })
 })
