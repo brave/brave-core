@@ -1912,7 +1912,7 @@ public class BytecodeTest {
                         FullscreenManager.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         SettableMonotonicObservableSupplier.class,
                         TopInsetProvider.class,
                         OneshotSupplierImpl.class,
