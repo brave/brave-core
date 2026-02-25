@@ -226,6 +226,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -338,6 +339,9 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl"));
@@ -788,6 +792,13 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         String.class,
                         Intent.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
+                        "onDirectoryOptionsRetrieved",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        ArrayList.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
@@ -2494,6 +2505,10 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mProfile"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
+                        "mController"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
