@@ -129,6 +129,7 @@ source_set("unit_tests") {
     "//brave/components/brave_rewards/core",
     "//brave/components/misc_metrics",
     "//chrome/browser",
+    "//chrome/browser/bookmarks",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/history",
     "//chrome/browser/search_engines",
