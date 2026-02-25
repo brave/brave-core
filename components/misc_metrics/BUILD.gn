@@ -83,6 +83,7 @@ source_set("unit_tests") {
     "general_browser_usage_unittest.cc",
     "language_metrics_unittest.cc",
     "menu_metrics_unittest.cc",
+    "navigation_source_metrics_unittest.cc",
     "new_tab_metrics_unittest.cc",
     "privacy_hub_metrics_unittest.cc",
     "split_view_metrics_unittest.cc",
