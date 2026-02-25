@@ -40,6 +40,10 @@ import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
 import { Content } from '../components/input_box/editable_content'
 import { getToolUseEvent } from '../../common/test_data_utils'
 import { MockContext } from '../state/mock_context'
+import {
+  ActiveChatContext,
+  SelectedChatDetails,
+} from '../state/active_chat_context'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -1193,6 +1197,15 @@ function StoryContext(
       ? ASSOCIATED_CONTENT
       : new Mojom.AssociatedContent()
 
+  const activeChatContext: SelectedChatDetails = {
+    // api instance not needed when we're providing ConversationContext directly
+    api: undefined!,
+    selectedConversationId: CONVERSATIONS[0].uuid,
+    updateSelectedConversationId: () => {},
+    createNewConversation: () => {},
+    isTabAssociated: argsRef.current.isDefaultConversation,
+  }
+
   const currentError = Mojom.APIError[args.currentErrorState]
   const currentModel =
     MODELS.find((m) => m.displayName === argsRef.current.model) ?? MODELS[0]
@@ -1322,8 +1335,8 @@ function StoryContext(
           }),
       }}
       conversationProps={{
-        selectedConversationId: CONVERSATIONS[0].uuid,
-        isTabAssociated: args.isDefaultConversation,
+        selectedConversationId: activeChatContext.selectedConversationId,
+        isTabAssociated: activeChatContext.isTabAssociated,
       }}
       // Overrides for values that come from internal hooks (useState, etc.)
       // and can't be controlled via API mocks
@@ -1353,11 +1366,13 @@ function StoryContext(
       }}
       deps={[...Object.values(args)]}
     >
-      <UntrustedConversationReactContext.Provider
-        value={conversationEntriesContext}
-      >
-        {props.children}
-      </UntrustedConversationReactContext.Provider>
+      <ActiveChatContext.Provider value={activeChatContext}>
+        <UntrustedConversationReactContext.Provider
+          value={conversationEntriesContext}
+        >
+          {props.children}
+        </UntrustedConversationReactContext.Provider>
+      </ActiveChatContext.Provider>
     </MockContext>
   )
 }
