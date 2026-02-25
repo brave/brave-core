@@ -446,19 +446,19 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // DeepSeek V3.1 (NEAR)
+    // GLM-5 (NEAR)
     if (features::IsNEARModelsEnabled()) {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "DeepSeek";
-      options->name = "near-deepseek-v3-1";
+      options->display_maker = "Z.ai";
+      options->name = "near-glm-5";
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
       options->max_associated_content_length = 128000;
       options->long_conversation_warning_character_limit = 128000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-near-deepseek-v3-1";
-      model->display_name = "DeepSeek V3.1";
+      model->key = "chat-near-glm-5";
+      model->display_name = "GLM-5";
       model->vision_support = false;
       model->supports_tools = false;
       model->is_suggested_model = true;
@@ -745,9 +745,9 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-qwen") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
-      } else if (model->key == "chat-near-deepseek-v3-1") {
+      } else if (model->key == "chat-near-glm-5") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
-            IDS_CHAT_UI_CHAT_NEAR_DEEPSEEK_V3_1_SUBTITLE);
+            IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE);
       } else if (model->key == "chat-automatic") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);

@@ -9,7 +9,7 @@ export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
 
 const modelIcons = {
   'chat-automatic': 'product-brave-leo',
-  'chat-near-deepseek-v3-1': 'deepseek-color',
+  'chat-near-glm-5': 'zai-color',
   'chat-claude-instant': 'anthropic-color',
   'chat-claude-haiku': 'anthropic-color',
   'chat-claude-sonnet': 'anthropic-color',
