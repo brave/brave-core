@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_properties_provider.cc b/chrome/browser/ui/views/page_action/page_action_properties_provider.cc
+index 3dfce9a2c3b183dc7f8d1c83033826e8349be6fb..0a59a67a38a8c70f4bc69e602c8b32d1fe902889 100644
+--- a/chrome/browser/ui/views/page_action/page_action_properties_provider.cc
++++ b/chrome/browser/ui/views/page_action/page_action_properties_provider.cc
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+ #include "chrome/browser/ui/views/page_action/page_action_properties_provider.h"
+ 
+ #include "base/containers/fixed_flat_map.h"
+@@ -174,6 +175,13 @@ constexpr auto kPageActionProperties =
+                 .type = PageActionIconType::kAutofillAddress,
+             },
+         },
++        {
++            kActionShowPartitionedStorage,
++            {
++                .histogram_name = "PartitionedStorage",
++                .type = brave::kPartitionedStorageActionIconType,
++            },
++        },
+         {
+             kActionVirtualCardEnroll,
+             {

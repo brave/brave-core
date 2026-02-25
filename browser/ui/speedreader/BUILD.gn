@@ -21,6 +21,7 @@ source_set("speedreader") {
 
   deps = [
     "//brave/browser:browser_process",
+    "//brave/browser/ui/page_action",
     "//brave/components/resources:static_resources_grit",
     "//chrome/common",
   ]

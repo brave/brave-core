@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_metrics_recorder.cc b/chrome/browser/ui/views/page_action/page_action_metrics_recorder.cc
+index f5cf8379758e5d7bbbb42761a452f7e279460851..2b6ca4d1c131babea6e43efd4c9ba118659650c8 100644
+--- a/chrome/browser/ui/views/page_action/page_action_metrics_recorder.cc
++++ b/chrome/browser/ui/views/page_action/page_action_metrics_recorder.cc
+@@ -105,7 +105,7 @@ bool PageActionPerActionMetricsRecorder::IsNewNavigation() {
+   return false;
+ }
+ 
+-void PageActionPerActionMetricsRecorder::RecordIconShown() {
++void PageActionPerActionMetricsRecorder::RecordIconShown_Chromium() {
+   if (current_navigation_metrics_.icon_shown_recorded) {
+     return;
+   }
+@@ -121,7 +121,7 @@ void PageActionPerActionMetricsRecorder::RecordIconShown() {
+                                 page_action_type_);
+ }
+ 
+-void PageActionPerActionMetricsRecorder::RecordChipShown() {
++void PageActionPerActionMetricsRecorder::RecordChipShown_Chromium() {
+   if (current_navigation_metrics_.chip_shown_recorded) {
+     return;
+   }
+@@ -153,7 +153,7 @@ void PageActionPerActionMetricsRecorder::RecordClick(
+   }
+ }
+ 
+-void PageActionPerActionMetricsRecorder::RecordIconClick() {
++void PageActionPerActionMetricsRecorder::RecordIconClick_Chromium() {
+   base::UmaHistogramEnumeration("PageActionController.Icon.CTR2",
+                                 PageActionCTREvent::kClicked);
+   base::UmaHistogramEnumeration(
+@@ -164,7 +164,7 @@ void PageActionPerActionMetricsRecorder::RecordIconClick() {
+       visible_ephemeral_page_actions_count_callback_.Run(), 20);
+ }
+ 
+-void PageActionPerActionMetricsRecorder::RecordChipClick() {
++void PageActionPerActionMetricsRecorder::RecordChipClick_Chromium() {
+   base::UmaHistogramEnumeration("PageActionController.Chip.CTR2",
+                                 PageActionCTREvent::kClicked);
+   base::UmaHistogramEnumeration(
