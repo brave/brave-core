@@ -33,14 +33,15 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
-  using ConsentCallback =
-      base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
   // reflects the current state accurately.
   class PsstUiDelegate {
    public:
+    using ConsentCallback = base::OnceCallback<void(
+        const std::vector<std::string>& disabled_checks)>;
+
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
     virtual void Show(const url::Origin& origin,
@@ -76,6 +77,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
+  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
+                           ShouldNotProcessRestoredNavigationEntry);
 
   PsstTabWebContentsObserver(content::WebContents* web_contents,
                              PsstRuleRegistry* registry,

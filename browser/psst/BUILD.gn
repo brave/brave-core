@@ -26,13 +26,13 @@ static_library("psst") {
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//chrome/browser/content_settings:content_settings_factory",
-    "//chrome/browser/profiles",
-    "//components/content_settings/core/browser",
-    "//components/permissions",
-    "//components/infobars/core",
     "//chrome/browser/infobars",
+    "//chrome/browser/profiles",
     "//chrome/browser/ui/webui",
+    "//components/content_settings/core/browser",
     "//components/infobars/content",
+    "//components/infobars/core",
+    "//components/permissions",
     "//ui/web_dialogs",
   ]
 }
@@ -64,6 +64,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/psst",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/cosmetic_filters/browser",
     "//brave/components/psst/browser/content",
@@ -72,11 +73,10 @@ source_set("browser_tests") {
     "//brave/components/psst/common",
     "//chrome/test:test_support",
     "//components/component_updater:test_support",
+    "//components/infobars/content",
     "//content/test:test_support",
     "//net:test_support",
     "//url",
-    "//brave/browser/psst",
-    "//components/infobars/content",
   ]
 
   if (is_android) {

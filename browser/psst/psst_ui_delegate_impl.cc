@@ -52,12 +52,11 @@ PsstUiDelegateImpl::PsstUiDelegateImpl(
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
-void PsstUiDelegateImpl::Show(
-    const url::Origin& origin,
-    PsstWebsiteSettings dialog_data,
-    const std::string& site_name,
-    base::ListValue tasks,
-    PsstTabWebContentsObserver::ConsentCallback apply_changes_callback) {
+void PsstUiDelegateImpl::Show(const url::Origin& origin,
+                              PsstWebsiteSettings dialog_data,
+                              const std::string& site_name,
+                              base::ListValue tasks,
+                              ConsentCallback apply_changes_callback) {
   auto psst_settings = psst_settings_service_->GetPsstWebsiteSettings(
       origin, dialog_data.user_id);
 

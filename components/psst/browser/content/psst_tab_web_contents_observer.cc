@@ -203,7 +203,8 @@ void PsstTabWebContentsObserver::NavigationEntryCommitted(
   CHECK(load_details.entry);
   if (!load_details.is_navigation_to_different_page() ||
       !load_details.entry->GetURL().SchemeIsHTTPOrHTTPS() ||
-      load_details.entry->IsRestored()) {
+      load_details.entry->IsRestored() ||
+      !prefs_->GetBoolean(prefs::kPsstEnabled)) {
     return;
   }
 
@@ -367,6 +368,7 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
   timeout_timer_.Stop();
 
   if (!script_result.is_dict()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
