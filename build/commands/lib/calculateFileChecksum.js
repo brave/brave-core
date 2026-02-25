@@ -3,13 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-const crypto = require('crypto')
-const fs = require('fs')
+import crypto from 'crypto'
+import fs from 'fs'
 
-module.exports = function CalculateFileChecksum(
-  filePath,
-  algorithm = 'sha256',
-) {
+export default function calculateFileChecksum(filePath, algorithm = 'sha256') {
   return new Promise((resolve, reject) => {
     try {
       const checksumGenerator = crypto.createHash(algorithm)

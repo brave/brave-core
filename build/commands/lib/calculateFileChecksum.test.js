@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const fs = require('fs-extra')
-const os = require('os')
-const calculateFileChecksum = require('./calculateFileChecksum')
+import path from 'path'
+import fs from 'fs-extra'
+import os from 'os'
+import calculateFileChecksum from './calculateFileChecksum.js'
 
 const dirPrefixTmp = 'brave-browser-test-calculate-file-checksum-'
 const testFile1Name = 'file1'

@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const fs = require('fs-extra')
-const prettier = require('prettier')
-const program = require('commander')
-const { spawnSync } = require('child_process')
+import path from 'path'
+import fs from 'fs-extra'
+import prettier from 'prettier'
+import program from 'commander'
+import { spawnSync } from 'child_process'
 
-const config = require('../lib/config')
-const util = require('../lib/util')
-const Log = require('../lib/logging')
+import config from '../lib/config.js'
+import util from '../lib/util.js'
+import Log from '../lib/logging.js'
 
 program
   .description(

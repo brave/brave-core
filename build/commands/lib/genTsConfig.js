@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const fs = require('fs-extra')
-const path = require('path')
-const Config = require('./config')
+import fs from 'fs-extra'
+import path from 'path'
+import Config from './config.js'
 
 /**
  * Generates a tsconfig.json file in the gen/ directory
@@ -18,7 +18,7 @@ const Config = require('./config')
  * @param {*} extendsFrom full path of tsconfig to extend
  * @returns full path to created tsconfig file
  */
-module.exports = async function createGenTsConfig(
+export default async function createGenTsConfig(
   genPath = process.env.ROOT_GEN_DIR,
   name = 'tsconfig-webpack.json',
   atPath = genPath,

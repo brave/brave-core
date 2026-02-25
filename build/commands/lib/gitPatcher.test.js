@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const fs = require('fs-extra')
-const GitPatcher = require('./gitPatcher')
-const { runGitAsync } = require('./util')
-const os = require('os')
+import path from 'path'
+import fs from 'fs-extra'
+import { GitPatcher, patchApplyReasons } from './gitPatcher.js'
+import util from './util.js'
+import os from 'os'
 
 const dirPrefixTmp = 'brave-browser-test-git-apply-'
 
@@ -17,7 +17,7 @@ const file1Name = 'file1'
 const writeReadFileOptions = { encoding: 'utf8' }
 
 function runGitAsyncWithErrorLog(repoPath, gitArgs) {
-  return runGitAsync(repoPath, gitArgs, false, true)
+  return util.runGitAsync(repoPath, gitArgs, false, true)
 }
 
 function getPatch(gitRepoPath, modifiedFilePath) {
@@ -113,7 +113,7 @@ describe('Apply Patches', function () {
     expect(affectedPaths[0]).toHaveProperty('error', undefined)
     expect(affectedPaths[0]).toHaveProperty(
       'reason',
-      GitPatcher.patchApplyReasons.NO_PATCH_INFO,
+      patchApplyReasons.NO_PATCH_INFO,
     )
   })
 
@@ -148,7 +148,7 @@ describe('Apply Patches', function () {
     expect(status).toHaveLength(1)
     expect(status[0].path).toBe(file1Name)
     expect(status[0].error).toBeUndefined()
-    expect(status[0].reason).toBe(GitPatcher.patchApplyReasons.PATCH_REMOVED)
+    expect(status[0].reason).toBe(patchApplyReasons.PATCH_REMOVED)
     // check file was reset
     const testFile1Content = await fs.readFile(
       testFile1Path,
@@ -177,10 +177,7 @@ describe('Apply Patches', function () {
     expect(status).toHaveLength(1)
     expect(status[0]).toHaveProperty('path', file1Name)
     expect(status[0]).toHaveProperty('warning')
-    expect(status[0]).toHaveProperty(
-      'reason',
-      GitPatcher.patchApplyReasons.PATCH_REMOVED,
-    )
+    expect(status[0]).toHaveProperty('reason', patchApplyReasons.PATCH_REMOVED)
   })
 
   test('handles missing file when patch file is still present', async function () {
@@ -201,10 +198,7 @@ describe('Apply Patches', function () {
     expect(status).toHaveLength(1)
     expect(status[0]).toHaveProperty('patchPath', testFile1PatchPath)
     expect(status[0]).toHaveProperty('error')
-    expect(status[0]).toHaveProperty(
-      'reason',
-      GitPatcher.patchApplyReasons.SRC_REMOVED,
-    )
+    expect(status[0]).toHaveProperty('reason', patchApplyReasons.SRC_REMOVED)
   })
 
   test('handles bad patch file', async function () {
@@ -230,9 +224,7 @@ describe('Apply Patches', function () {
     expect(status).toHaveLength(1)
     expect(status[0].path).toBe(file1Name)
     expect(status[0].error).toBeUndefined()
-    expect(status[0].reason).toBe(
-      GitPatcher.patchApplyReasons.PATCH_INFO_OUTDATED,
-    )
+    expect(status[0].reason).toBe(patchApplyReasons.PATCH_INFO_OUTDATED)
 
     // Verify the file content
     const finalContent = await fs.readFile(testFile1Path, writeReadFileOptions)

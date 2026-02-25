@@ -5,12 +5,12 @@
 
 'use strict'
 
-const assert = require('assert')
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
-const { parseEnv } = require('node:util')
-const Log = require('./logging')
+import assert from 'assert'
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import { parseEnv } from 'node:util'
+import Log from './logging.js'
 
 /**
  * EnvConfig - Unified configuration loader for Brave build system
@@ -21,7 +21,7 @@ const Log = require('./logging')
  *   2. Package configuration from package.json
  *   3. Default values provided by caller (lowest priority)
  */
-class EnvConfig {
+export default class EnvConfig {
   /** Directory containing package.json and .env files.
    *  @type {string}  */
   #configDir
@@ -417,5 +417,3 @@ class EnvConfig {
     }
   }
 }
-
-module.exports = EnvConfig
