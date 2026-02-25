@@ -219,7 +219,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getFullscreenManager(),
                         getCompositorViewHolderSupplier(),
                         getTabContentManagerSupplier(),
-                        this::getSnackbarManager,
+                        getSnackbarManagerSupplier(),
                         mEdgeToEdgeControllerSupplier,
                         getActivityType(),
                         this::isInOverviewMode,
