@@ -25,7 +25,7 @@ class EmailAliasesAuth {
   using OnChangedCallback = base::RepeatingClosure;
 
   explicit EmailAliasesAuth(
-      PrefService* prefs_service,
+      PrefService& prefs_service,
       mojo::PendingRemote<brave_account::mojom::Authentication>
           brave_account_auth,
       OnChangedCallback on_changed = base::DoNothing());
@@ -46,7 +46,7 @@ class EmailAliasesAuth {
 
   std::optional<std::string> auth_email_for_testing_;
 
-  const raw_ptr<PrefService> prefs_service_ = nullptr;
+  const raw_ref<PrefService> prefs_service_;
   mojo::Remote<brave_account::mojom::Authentication> brave_account_auth_;
 
   PrefChangeRegistrar pref_change_registrar_;

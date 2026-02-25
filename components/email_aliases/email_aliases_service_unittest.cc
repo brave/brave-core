@@ -166,7 +166,7 @@ class EmailAliasesAPITest : public ::testing::Test {
 
     service_ = std::make_unique<EmailAliasesService>(
         brave_account_auth_->BindAndGetRemote(),
-        url_loader_factory_.GetSafeWeakWrapper(), &prefs_);
+        url_loader_factory_.GetSafeWeakWrapper(), prefs_);
     email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
     service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 
@@ -434,7 +434,7 @@ TEST_F(EmailAliasesAPITest, Notes) {
         .DebugString();
   };
 
-  EmailAliasesNotes notes(&prefs_, "test@login.com");
+  EmailAliasesNotes notes(prefs_, "test@login.com");
 
   auto ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
                                     refresh_body({"alias1"}), "note1");

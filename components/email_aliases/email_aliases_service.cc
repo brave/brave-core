@@ -93,13 +93,12 @@ EmailAliasesService::EmailAliasesService(
     mojo::PendingRemote<brave_account::mojom::Authentication>
         brave_account_auth,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* pref_service)
+    PrefService& pref_service)
     : url_loader_factory_(url_loader_factory), pref_service_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
-  CHECK(pref_service_);
 
-  auth_.emplace(pref_service_, std::move(brave_account_auth),
+  auth_.emplace(pref_service_.get(), std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
 }
@@ -156,8 +155,11 @@ void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
 void EmailAliasesService::UpdateAlias(const std::string& alias_email,
                                       mojom::AliasUpdateDataPtr update_data,
                                       UpdateAliasCallback callback) {
-  CHECK(update_data->active.has_value() || update_data->note.has_value() ||
-        update_data->domains.has_value());
+  if (!update_data->active.has_value() && !update_data->note.has_value() &&
+      !update_data->domains.has_value()) {
+    // Nothing to update, just return success.
+    return std::move(callback).Run(std::monostate{});
+  }
 
   auto wrapper = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), std::monostate{});
@@ -278,7 +280,7 @@ void EmailAliasesService::UpdateAliasWithToken(
     }
 
     if (update_data->note.has_value()) {
-      EmailAliasesNotes notes(pref_service_, GetAuthEmail());
+      EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
       notes.UpdateNote(alias_email, *update_data->note);
     }
 
@@ -307,7 +309,7 @@ void EmailAliasesService::DeleteAliasWithToken(const std::string& alias_email,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        /*update_expected=*/false));
 
-    EmailAliasesNotes notes(pref_service_, GetAuthEmail());
+    EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
     notes.RemoveNote(alias_email);
   } else {
     std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
@@ -329,7 +331,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     return;
   }
 
-  EmailAliasesNotes notes(pref_service_, GetAuthEmail());
+  EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
   notes.RemoveInactiveNotes(response.body.value()->result);
 
   if (!observers_.empty()) {

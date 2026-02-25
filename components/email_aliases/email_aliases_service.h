@@ -44,7 +44,7 @@ class EmailAliasesService : public KeyedService,
       mojo::PendingRemote<brave_account::mojom::Authentication>
           brave_account_auth,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* pref_service);
+      PrefService& pref_service);
   ~EmailAliasesService() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -132,7 +132,7 @@ class EmailAliasesService : public KeyedService,
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  const raw_ptr<PrefService> pref_service_ = nullptr;
+  const raw_ref<PrefService> pref_service_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

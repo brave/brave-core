@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 
 class PrefRegistrySimple;
@@ -20,7 +20,7 @@ namespace email_aliases {
 
 class EmailAliasesNotes {
  public:
-  EmailAliasesNotes(PrefService* pref_service,
+  EmailAliasesNotes(PrefService& pref_service,
                     const std::string& primary_email);
   ~EmailAliasesNotes();
 
@@ -32,7 +32,7 @@ class EmailAliasesNotes {
   void RemoveInactiveNotes(const std::vector<AliasListEntry>& active_aliases);
 
  private:
-  const raw_ptr<PrefService> pref_service_ = nullptr;
+  const raw_ref<PrefService> pref_service_;
   const std::string primary_email_;
 };
 
