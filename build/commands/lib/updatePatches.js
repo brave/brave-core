@@ -15,7 +15,7 @@ const patchExtension = '.patch'
  * @param {string} gitRepoPath The repository to get modified files from
  * @param {(file: string) => boolean} [filter] Filter function for file paths to include or exclude (all included by default)
  * @param {string[]} [onlyFiles] If not empty, only modified paths for these files will be considered.
- * @returns {string[]} List of modified file paths
+ * @returns {Promise<string[]>} List of modified file paths
  */
 async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
   const onlyFilesSet = new Set(onlyFiles)

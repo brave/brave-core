@@ -21,24 +21,19 @@ describe('EnvConfig', () => {
   const envPath = path.join(configDir, '.env')
 
   let mockFiles = {}
-  let originalExistsSync
-  let originalReadFileSync
-  let originalWriteFileSync
 
   beforeEach(() => {
     jest.clearAllMocks()
     mockFiles = {}
 
     // Mock fs.existsSync
-    originalExistsSync = fs.existsSync
-    fs.existsSync = jest.fn((filePath) => {
-      return mockFiles.hasOwnProperty(filePath)
+    jest.spyOn(fs, 'existsSync').mockImplementation((filePath) => {
+      return mockFiles.hasOwnProperty(filePath.toString())
     })
 
     // Mock fs.readFileSync
-    originalReadFileSync = fs.readFileSync
-    fs.readFileSync = jest.fn((filePath, encoding) => {
-      if (!mockFiles.hasOwnProperty(filePath)) {
+    jest.spyOn(fs, 'readFileSync').mockImplementation((filePath) => {
+      if (!mockFiles.hasOwnProperty(filePath.toString())) {
         throw new Error(`ENOENT: no such file or directory, open '${filePath}'`)
       }
       const f = mockFiles[filePath]
@@ -55,8 +50,7 @@ describe('EnvConfig', () => {
     })
 
     // Mock fs.writeFileSync
-    originalWriteFileSync = fs.writeFileSync
-    fs.writeFileSync = jest.fn((filePath, data) => {
+    jest.spyOn(fs, 'writeFileSync').mockImplementation((filePath, data) => {
       mockFiles[filePath] = data
     })
 
@@ -67,9 +61,6 @@ describe('EnvConfig', () => {
   })
 
   afterEach(() => {
-    fs.existsSync = originalExistsSync
-    fs.readFileSync = originalReadFileSync
-    fs.writeFileSync = originalWriteFileSync
     jest.restoreAllMocks()
   })
 
