@@ -172,12 +172,15 @@ function Main() {
     conversationContext.conversationUuid,
   )
 
+  const isHistoryPlaceholderData =
+    conversationContext.api.useGetConversationHistory().isPlaceholderData
+
   const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
     if (
       aiChatContext.isMobile
       && aiChatContext.hasAcceptedAgreement
       // We have loaded real data
-      && !conversationContext.api.useGetConversationHistory().isPlaceholderData
+      && !isHistoryPlaceholderData
       && !querySubmitted
       && !conversationContext.isGenerating
       && conversationContext.conversationHistory.length === 0
