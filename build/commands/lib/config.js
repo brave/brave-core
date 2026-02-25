@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck
-
 'use strict'
 
 const os = require('os')
@@ -99,6 +97,16 @@ const getHostOS = () => {
   }
 }
 
+const validateTargetOS = (value) => {
+  const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
+  if (value) {
+    assert(
+      supportedTargetOS.includes(value),
+      `Unsupported target_os value: ${value}, supported values: ${supportedTargetOS.join(', ')}`,
+    )
+  }
+}
+
 // Mirrors limitForRemote() from siso source to apply a hard limit.
 // https://source.chromium.org/chromium/build/+/main:siso/build/limits.go;l=169-181;drc=c2c13435ffe51d890a46d488c48dee362f82453b
 const getSisoBuiltinRemoteLimit = () => {
@@ -145,8 +153,9 @@ const Config = function () {
   )
   this.gclientGlobalVars = envConfig.getMergedObject(['gclient', 'global_vars'])
   this.hostOS = getHostOS()
+  this.targetOS = getEnvConfig(['target_os'], this.hostOS)
+  validateTargetOS(this.targetOS)
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
-  this.targetOS = getEnvConfig(['target_os'])
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
   this.ignorePatchVersionNumber =
@@ -367,8 +376,7 @@ Config.prototype.getBraveLogoIconName = function () {
 
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
-  let versionParts = version.split('+')[0]
-  versionParts = versionParts.split('.')
+  const versionParts = version.split('+')[0].split('.')
 
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
@@ -809,6 +817,7 @@ Config.prototype.updateInternal = function (options) {
     } else {
       this.targetOS = options.target_os
     }
+    validateTargetOS(this.targetOS)
   }
 
   if (this.targetOS === 'android') {
@@ -996,27 +1005,6 @@ Config.prototype.update = function (options) {
   }
 }
 
-Object.defineProperty(Config.prototype, 'targetOS', {
-  get: function () {
-    if (this._targetOS) {
-      return this._targetOS
-    }
-    return this.hostOS
-  },
-  set: function (value) {
-    this._targetOS = value
-    if (this._targetOS) {
-      const supportedOS = ['android', 'ios', 'linux', 'mac', 'win']
-      assert(
-        supportedOS.includes(this._targetOS),
-        `Unsupported target_os value: ${
-          this._targetOS
-        }, supported values: ${supportedOS.join(', ')}`,
-      )
-    }
-  },
-})
-
 Config.prototype.isIOS = function () {
   return this.targetOS === 'ios'
 }
@@ -1106,9 +1094,9 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
           env.RBE_tls_client_auth_cert || this.rbeTlsClientAuthCert
         env.RBE_tls_client_auth_key =
           env.RBE_tls_client_auth_key || this.rbeTlsClientAuthKey
-        env.RBE_service_no_auth = env.RBE_service_no_auth || true
+        env.RBE_service_no_auth = env.RBE_service_no_auth || 'true'
         env.RBE_use_application_default_credentials =
-          env.RBE_use_application_default_credentials || true
+          env.RBE_use_application_default_credentials || 'true'
       }
     }
 
@@ -1131,11 +1119,14 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
-      env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
+      env.NINJA_CORE_MULTIPLIER = Math.min(
+        20,
+        parseInt(env.NINJA_CORE_MULTIPLIER) || 20,
+      ).toString()
       env.NINJA_CORE_LIMIT = Math.min(
         kRemoteLimit,
-        env.NINJA_CORE_LIMIT || kRemoteLimit,
-      )
+        parseInt(env.NINJA_CORE_LIMIT) || kRemoteLimit,
+      ).toString()
 
       // Siso has its own limits for remote execution that do not depend on
       // NINJA_CORE_* values. Set those limits separately. See docs for more
@@ -1148,7 +1139,9 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
       // Parse SISO_LIMITS from env if set.
       const envSisoLimits = new Map(
-        env.SISO_LIMITS?.split(',').map((item) => item.split('=')) || [],
+        env.SISO_LIMITS?.split(',').map(
+          (item) => /** @type {[string, string]} */ (item.split('=', 2)),
+        ) || [],
       )
       // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
       // not greater than the default values.
@@ -1157,7 +1150,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
           return
         }
         const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
-        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
+        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv).toString())
       })
       // Set SISO_LIMITS env var.
       env.SISO_LIMITS = Array.from(envSisoLimits.entries())
@@ -1174,7 +1167,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.isCI) {
       // Enables autoninja to show build speed and final stats on finish.
-      env.NINJA_SUMMARIZE_BUILD = 1
+      env.NINJA_SUMMARIZE_BUILD = '1'
     }
 
     if (process.platform === 'linux') {
@@ -1197,12 +1190,12 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       ? ['inherit', process.stderr, 'inherit']
       : 'inherit'
 
-    return {
+    return /** @type {Record<string, any>} */ ({
       env,
       stdio: stdio,
       cwd: this.srcDir,
       git_cwd: '.',
-    }
+    })
   },
 })
 
