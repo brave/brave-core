@@ -1038,6 +1038,7 @@ test("brave_browser_tests") {
     "//components/spellcheck/browser",
     "//components/subresource_filter/core/common",
     "//components/user_prefs",
+    "//extensions/browser:crx_installer",
     "//extensions/browser:test_support",
     "//extensions/common:common_constants",
     "//extensions/common:test_support",
