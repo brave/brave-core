@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
+#include "partition_alloc/pointers/raw_ptr_exclusion.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -105,8 +106,8 @@ struct SherpaOnnxOnlineRecognizerConfig {
 struct SherpaOnnxOnlineRecognizerResult {
   const char* text;
   const char* tokens;
-  const char* const* tokens_arr;
-  float* timestamps;
+  RAW_PTR_EXCLUSION const char* const* tokens_arr;
+  RAW_PTR_EXCLUSION float* timestamps;
   int32_t count;
   const char* json;
 };
@@ -254,14 +255,10 @@ void SherpaOnnxSodaClient::Reset(const SerializedSodaConfig config,
     return;
   }
 
-  // Clean up previous session.
+  // Clean up previous stream but keep recognizer if model hasn't changed.
   if (stream_ && destroy_stream_fn_) {
     destroy_stream_fn_(stream_);
     stream_ = nullptr;
-  }
-  if (recognizer_ && destroy_recognizer_fn_) {
-    destroy_recognizer_fn_(recognizer_);
-    recognizer_ = nullptr;
   }
   last_text_.clear();
 
@@ -285,64 +282,76 @@ void SherpaOnnxSodaClient::Reset(const SerializedSodaConfig config,
     return;
   }
 
-  // Build model file paths.
-  base::FilePath model_path(model_dir);
-  std::string encoder_path =
-      model_path.Append(FILE_PATH_LITERAL("encoder.onnx")).AsUTF8Unsafe();
-  std::string decoder_path =
-      model_path.Append(FILE_PATH_LITERAL("decoder.onnx")).AsUTF8Unsafe();
-  std::string joiner_path =
-      model_path.Append(FILE_PATH_LITERAL("joiner.onnx")).AsUTF8Unsafe();
-  std::string tokens_path =
-      model_path.Append(FILE_PATH_LITERAL("tokens.txt")).AsUTF8Unsafe();
+  // Reuse existing recognizer if model directory hasn't changed.
+  if (recognizer_ && model_dir == cached_model_dir_) {
+    // Fast path: recognizer already loaded.
+  } else {
+    // Model directory changed or first init — recreate recognizer.
+    if (recognizer_ && destroy_recognizer_fn_) {
+      destroy_recognizer_fn_(recognizer_);
+      recognizer_ = nullptr;
+    }
 
-  // Configure Sherpa-ONNX recognizer.
-  SherpaOnnxOnlineRecognizerConfig sherpa_config = {};
+    // Build model file paths.
+    base::FilePath model_path(model_dir);
+    std::string encoder_path =
+        model_path.Append(FILE_PATH_LITERAL("encoder.onnx")).AsUTF8Unsafe();
+    std::string decoder_path =
+        model_path.Append(FILE_PATH_LITERAL("decoder.onnx")).AsUTF8Unsafe();
+    std::string joiner_path =
+        model_path.Append(FILE_PATH_LITERAL("joiner.onnx")).AsUTF8Unsafe();
+    std::string tokens_path =
+        model_path.Append(FILE_PATH_LITERAL("tokens.txt")).AsUTF8Unsafe();
 
-  sherpa_config.feat_config.sample_rate = kTargetSampleRate;
-  sherpa_config.feat_config.feature_dim = 80;
+    // Configure Sherpa-ONNX recognizer.
+    SherpaOnnxOnlineRecognizerConfig sherpa_config = {};
 
-  sherpa_config.model_config.transducer.encoder = encoder_path.c_str();
-  sherpa_config.model_config.transducer.decoder = decoder_path.c_str();
-  sherpa_config.model_config.transducer.joiner = joiner_path.c_str();
-  sherpa_config.model_config.paraformer.encoder = "";
-  sherpa_config.model_config.paraformer.decoder = "";
-  sherpa_config.model_config.zipformer2_ctc.model = "";
-  sherpa_config.model_config.nemo_ctc.model = "";
-  sherpa_config.model_config.t_one_ctc.model = "";
-  sherpa_config.model_config.tokens = tokens_path.c_str();
-  sherpa_config.model_config.num_threads = 2;
-  sherpa_config.model_config.provider = "cpu";
-  sherpa_config.model_config.debug = 0;
-  sherpa_config.model_config.model_type = "";
-  sherpa_config.model_config.modeling_unit = "";
-  sherpa_config.model_config.bpe_vocab = "";
-  sherpa_config.model_config.tokens_buf = "";
-  sherpa_config.model_config.tokens_buf_size = 0;
+    sherpa_config.feat_config.sample_rate = kTargetSampleRate;
+    sherpa_config.feat_config.feature_dim = 80;
 
-  sherpa_config.decoding_method = "greedy_search";
-  sherpa_config.max_active_paths = 4;
-  sherpa_config.enable_endpoint = 1;
-  sherpa_config.rule1_min_trailing_silence = 2.4f;
-  sherpa_config.rule2_min_trailing_silence = 1.2f;
-  sherpa_config.rule3_min_utterance_length = 20.0f;
-  sherpa_config.hotwords_file = "";
-  sherpa_config.hotwords_score = 0.0f;
-  sherpa_config.ctc_fst_decoder_config.graph = "";
-  sherpa_config.ctc_fst_decoder_config.max_active = 0;
-  sherpa_config.rule_fsts = "";
-  sherpa_config.rule_fars = "";
-  sherpa_config.blank_penalty = 0.0f;
-  sherpa_config.hotwords_buf = "";
-  sherpa_config.hotwords_buf_size = 0;
-  sherpa_config.hr.rule_fst = "";
-  sherpa_config.hr.dict_dir = "";
+    sherpa_config.model_config.transducer.encoder = encoder_path.c_str();
+    sherpa_config.model_config.transducer.decoder = decoder_path.c_str();
+    sherpa_config.model_config.transducer.joiner = joiner_path.c_str();
+    sherpa_config.model_config.paraformer.encoder = "";
+    sherpa_config.model_config.paraformer.decoder = "";
+    sherpa_config.model_config.zipformer2_ctc.model = "";
+    sherpa_config.model_config.nemo_ctc.model = "";
+    sherpa_config.model_config.t_one_ctc.model = "";
+    sherpa_config.model_config.tokens = tokens_path.c_str();
+    sherpa_config.model_config.num_threads = 2;
+    sherpa_config.model_config.provider = "cpu";
+    sherpa_config.model_config.debug = 0;
+    sherpa_config.model_config.model_type = "";
+    sherpa_config.model_config.modeling_unit = "";
+    sherpa_config.model_config.bpe_vocab = "";
+    sherpa_config.model_config.tokens_buf = "";
+    sherpa_config.model_config.tokens_buf_size = 0;
 
-  recognizer_ = create_recognizer_fn_(&sherpa_config);
-  if (!recognizer_) {
-    LOG(ERROR) << "Failed to create Sherpa-ONNX online recognizer. "
-               << "Model dir: " << model_dir;
-    return;
+    sherpa_config.decoding_method = "modified_beam_search";
+    sherpa_config.max_active_paths = 4;
+    sherpa_config.enable_endpoint = 1;
+    sherpa_config.rule1_min_trailing_silence = 2.4f;
+    sherpa_config.rule2_min_trailing_silence = 1.2f;
+    sherpa_config.rule3_min_utterance_length = 20.0f;
+    sherpa_config.hotwords_file = "";
+    sherpa_config.hotwords_score = 0.0f;
+    sherpa_config.ctc_fst_decoder_config.graph = "";
+    sherpa_config.ctc_fst_decoder_config.max_active = 0;
+    sherpa_config.rule_fsts = "";
+    sherpa_config.rule_fars = "";
+    sherpa_config.blank_penalty = 2.0f;
+    sherpa_config.hotwords_buf = "";
+    sherpa_config.hotwords_buf_size = 0;
+    sherpa_config.hr.rule_fst = "";
+    sherpa_config.hr.dict_dir = "";
+
+    recognizer_ = create_recognizer_fn_(&sherpa_config);
+    if (!recognizer_) {
+      LOG(ERROR) << "Failed to create Sherpa-ONNX online recognizer. "
+                 << "Model dir: " << model_dir;
+      return;
+    }
+    cached_model_dir_ = model_dir;
   }
 
   stream_ = create_stream_fn_(recognizer_);

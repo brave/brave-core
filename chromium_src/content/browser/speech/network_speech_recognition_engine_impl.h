@@ -8,7 +8,9 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "content/browser/speech/speech_recognition_engine.h"
 
 #define NetworkSpeechRecognitionEngineImpl \
@@ -28,12 +30,18 @@ class CONTENT_EXPORT NetworkSpeechRecognitionEngineImpl
   ~NetworkSpeechRecognitionEngineImpl() override;
 
   void StartRecognition() override;
+  void TakeAudioChunk(const AudioChunk& data) override;
+  void AudioChunksEnded() override;
+  void EndRecognition() override;
 
  private:
   void OnStickySessionReady(std::unique_ptr<network::SimpleURLLoader> loader,
                             std::optional<std::string> response_body);
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  bool is_waiting_for_sticky_ = false;
+  bool audio_chunks_ended_ = false;
+  std::vector<scoped_refptr<AudioChunk>> pending_audio_chunks_;
   base::WeakPtrFactory<NetworkSpeechRecognitionEngineImpl> weak_ptr_factory_{
       this};
 };

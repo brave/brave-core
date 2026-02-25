@@ -116,6 +116,9 @@ class SherpaOnnxSodaClient : public SodaClient {
   // Last recognized text, used to detect changes for partial results.
   std::string last_text_;
 
+  // Cached model directory to avoid expensive recognizer recreation.
+  std::string cached_model_dir_;
+
   bool is_initialized_ = false;
   int sample_rate_ = 0;
   int channel_count_ = 0;

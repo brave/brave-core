@@ -9,6 +9,7 @@
 
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/speech_to_text/features.h"
+#include "components/speech/audio_buffer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
@@ -40,6 +41,8 @@ void NetworkSpeechRecognitionEngineImpl::StartRecognition() {
   if (!base::FeatureList::IsEnabled(stt::kSttFeature)) {
     return NetworkSpeechRecognitionEngineImpl_ChromiumImpl::StartRecognition();
   }
+
+  is_waiting_for_sticky_ = true;
 
   auto sticky_request = std::make_unique<network::ResourceRequest>();
   sticky_request->url = GURL(stt::kSttUrl.Get() + "/sticky");
@@ -82,10 +85,47 @@ void NetworkSpeechRecognitionEngineImpl::StartRecognition() {
       256);
 }
 
+void NetworkSpeechRecognitionEngineImpl::TakeAudioChunk(
+    const AudioChunk& data) {
+  if (is_waiting_for_sticky_) {
+    pending_audio_chunks_.push_back(base::MakeRefCounted<AudioChunk>(
+        reinterpret_cast<const uint8_t*>(data.AsString().data()),
+        data.AsString().size(), data.bytes_per_sample()));
+    return;
+  }
+  NetworkSpeechRecognitionEngineImpl_ChromiumImpl::TakeAudioChunk(data);
+}
+
+void NetworkSpeechRecognitionEngineImpl::AudioChunksEnded() {
+  if (is_waiting_for_sticky_) {
+    audio_chunks_ended_ = true;
+    return;
+  }
+  NetworkSpeechRecognitionEngineImpl_ChromiumImpl::AudioChunksEnded();
+}
+
+void NetworkSpeechRecognitionEngineImpl::EndRecognition() {
+  is_waiting_for_sticky_ = false;
+  pending_audio_chunks_.clear();
+  audio_chunks_ended_ = false;
+  NetworkSpeechRecognitionEngineImpl_ChromiumImpl::EndRecognition();
+}
+
 void NetworkSpeechRecognitionEngineImpl::OnStickySessionReady(
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response_body) {
+  is_waiting_for_sticky_ = false;
   NetworkSpeechRecognitionEngineImpl_ChromiumImpl::StartRecognition();
+
+  for (const auto& chunk : pending_audio_chunks_) {
+    NetworkSpeechRecognitionEngineImpl_ChromiumImpl::TakeAudioChunk(*chunk);
+  }
+  pending_audio_chunks_.clear();
+
+  if (audio_chunks_ended_) {
+    audio_chunks_ended_ = false;
+    NetworkSpeechRecognitionEngineImpl_ChromiumImpl::AudioChunksEnded();
+  }
 }
 
 }  // namespace content
