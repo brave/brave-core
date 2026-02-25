@@ -29,26 +29,85 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvSearchWidgetPromoTitle"
-                        style="@style/HeadingH4"
-                        android:textStyle="bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/try_brave_search_widget"
-                        android:textColor="@color/text_primary"/>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvSearchWidgetPromoDescription"
-                        style="@style/DefaultRegular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/try_brave_search_widget_description"
-                        android:textColor="@color/semantic_text_secondary" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@drawable/rounded_surface_container_background"
+                android:elevation="6dp">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="0.5"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@drawable/widget_promo_panel_search_background" >
+                    <ImageView
+                        app:tint="@color/schemes_on_primary_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:padding="8dp"
+                        android:layout_gravity="center_vertical|start"
+                        android:src="@drawable/brave_icon_search"
+                        android:contentDescription="@null"
+                        android:background="@drawable/widget_promo_panel_search_background" />
+
+                </FrameLayout>
+
+                <ImageView
+                    app:tint="@color/schemes_on_surface_variant"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_microphone"
+                    android:contentDescription="@null"
+                    android:background="@drawable/widget_promo_panel_search_background" />
+
+                <ImageView
+                    app:tint="@color/schemes_on_surface_variant"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_product_private_window"
+                    android:contentDescription="@null"
+                    android:background="@drawable/widget_promo_panel_search_background" />
+
+                <ImageView
+                    app:tint="@color/schemes_on_surface_variant"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_product_brave_leo"
+                    android:contentDescription="@null"
+                    android:background="@drawable/widget_promo_panel_search_background" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSearchWidgetPromoTitle"
+                style="@style/HeadingH4"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/try_brave_search_widget"
+                android:textColor="@color/text_primary"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSearchWidgetPromoDescription"
+                style="@style/DefaultRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"
+                android:text="@string/try_brave_search_widget_description"
+                android:textColor="@color/semantic_text_secondary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
