@@ -5,7 +5,6 @@
 
 import * as Mojom from '../../common/mojom'
 import createUntrustedConversationApi from './untrusted_conversation_api'
-import { registerDragStartCallback } from '../hooks/useUntrustedFrameDragHandling'
 
 export async function bindUntrustedConversation() {
   // Create remotes
@@ -24,9 +23,6 @@ export async function bindUntrustedConversation() {
 
   // Set up communication with the parent frame
   uiHandler.bindParentPage(parentUIFrame.$.bindNewPipeAndPassReceiver())
-
-  // Register drag start callback for the untrusted frame drag handling
-  registerDragStartCallback(parentUIFrame)
 
   // Create the API
   const conversationAPI = createUntrustedConversationApi(
