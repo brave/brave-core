@@ -54,7 +54,10 @@ source_set("ai_chat") {
       "//chrome/browser/ui/webui/util",
     ]
   } else {
-    deps += [ "//chrome/browser/ui/android/tab_model" ]
+    deps += [
+      "//chrome/browser/android:tabs_public",
+      "//chrome/browser/ui/android/tab_model",
+    ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {
