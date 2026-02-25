@@ -154,7 +154,7 @@ if (enable_print_preview) {
   }
 }
 
-if (enable_tab_management_tool) {
+if (enable_ai_chat_tab_management_tool) {
   source_set("ai_chat_tab_management_tool_impl") {
     visibility = [
       ":browser_tests",
@@ -386,7 +386,7 @@ source_set("browser_tests") {
       "//services/screen_ai/public/cpp:utilities",
     ]
 
-    if (enable_tab_management_tool) {
+    if (enable_ai_chat_tab_management_tool) {
       sources += [ "tools/tab_management_tool_browsertest.cc" ]
       deps += [
         ":ai_chat_tab_management_tool_impl",
