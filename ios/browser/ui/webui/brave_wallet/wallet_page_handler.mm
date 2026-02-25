@@ -19,28 +19,24 @@ WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::ShowApprovePanelUI() {
   id<WalletPageHandlerBridge> bridge =
-      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
-          ->bridge();
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
   [bridge showApprovePanelUI];
 }
 
 void WalletPageHandler::ShowWalletBackupUI() {
   id<WalletPageHandlerBridge> bridge =
-      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
-          ->bridge();
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
   [bridge showWalletBackupUI];
 }
 
 void WalletPageHandler::UnlockWalletUI() {
   id<WalletPageHandlerBridge> bridge =
-      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
-          ->bridge();
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
   [bridge unlockWalletUI];
 }
 
 void WalletPageHandler::ShowOnboarding(bool is_new_wallet) {
   id<WalletPageHandlerBridge> bridge =
-      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
-          ->bridge();
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
   [bridge showOnboarding:is_new_wallet];
 }
