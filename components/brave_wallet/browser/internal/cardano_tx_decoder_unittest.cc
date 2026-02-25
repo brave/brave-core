@@ -33,24 +33,24 @@ constexpr auto* kTaggedTx =
 CardanoTransaction GetUnsignedReferenceTransaction() {
   CardanoTransaction tx;
 
-  CardanoTransaction::TxInput input;
+  CardanoTransaction::TxInput input(*CardanoAddress::FromString(
+      "addr1qxkp8cu47ylplrt2m9atxrex7kh432k95uclun7khnw89ksw8meglqj5fqw5q0446fh"
+      "3rrtm5rqfatek7r735zkxyj5qky72dj"));
   input.utxo_outpoint.txid = test::HexToArray<32>(
       "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
   input.utxo_outpoint.index = 0;
   input.utxo_value = 34451133;
   tx.AddInput(std::move(input));
 
-  CardanoTransaction::TxOutput output1;
-  output1.address = *CardanoAddress::FromString(
+  CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
       "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53"
-      "l7lh5u7z08l0rvp49ht88s5uskl6tsl");
+      "l7lh5u7z08l0rvp49ht88s5uskl6tsl"));
   output1.amount = 10000000;
   tx.AddOutput(std::move(output1));
 
-  CardanoTransaction::TxOutput output2;
-  output2.address = *CardanoAddress::FromString(
+  CardanoTransaction::TxOutput output2(*CardanoAddress::FromString(
       "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefvjmpww7"
-      "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
+      "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg"));
   output2.amount = 24282816;
   output2.type = CardanoTransaction::TxOutputType::kChange;
   tx.AddOutput(std::move(output2));
@@ -63,24 +63,24 @@ CardanoTransaction GetUnsignedReferenceTransaction() {
 CardanoTransaction GetSignedReferenceTransaction() {
   CardanoTransaction tx;
 
-  CardanoTransaction::TxInput input;
+  CardanoTransaction::TxInput input(*CardanoAddress::FromString(
+      "addr1qxkp8cu47ylplrt2m9atxrex7kh432k95uclun7khnw89ksw8meglqj5fqw5q0446fh"
+      "3rrtm5rqfatek7r735zkxyj5qky72dj"));
   input.utxo_outpoint.txid = test::HexToArray<32>(
       "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
   input.utxo_outpoint.index = 0;
   input.utxo_value = 34451133;
   tx.AddInput(std::move(input));
 
-  CardanoTransaction::TxOutput output1;
-  output1.address = *CardanoAddress::FromString(
+  CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
       "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53"
-      "l7lh5u7z08l0rvp49ht88s5uskl6tsl");
+      "l7lh5u7z08l0rvp49ht88s5uskl6tsl"));
   output1.amount = 10000000;
   tx.AddOutput(std::move(output1));
 
-  CardanoTransaction::TxOutput output2;
-  output2.address = *CardanoAddress::FromString(
+  CardanoTransaction::TxOutput output2(*CardanoAddress::FromString(
       "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefvjmpww7"
-      "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
+      "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg"));
   output2.amount = 24282816;
   output2.type = CardanoTransaction::TxOutputType::kChange;
   tx.AddOutput(std::move(output2));
@@ -104,6 +104,47 @@ std::vector<uint8_t> CreateInvalidCborData() {
 }
 
 }  // namespace
+
+TEST(CardanoTxDecoderTest, EncodeTransaction_ValidTransaction) {
+  auto tx = GetSignedReferenceTransaction();
+
+  EXPECT_EQ(base::HexEncodeLower(
+                *CardanoTxDecoder::EncodeTransaction(*tx.ToSerializableTx())),
+            "84a400d9010281825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732c"
+            "c6240add8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff"
+            "61d29d9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde360"
+            "6a5bace785391a0098968082583901e057e6ff439d606a3e6c47a00b8677340984"
+            "61b83ad9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79"
+            "f746c1c21d1a017286c00200031a08ed50c4a100d9010281825820e68ca4655409"
+            "8776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fd"
+            "c64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca43"
+            "9b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
+}
+
+TEST(CardanoTxDecoderTest, EncodeTransaction_FailsOnDuplicateInputs) {
+  auto tx = GetSignedReferenceTransaction();
+  // Duplicate input with the same outpoint. Encoding should fail.
+  tx.AddInput(tx.inputs()[0]);
+
+  EXPECT_FALSE(CardanoTxDecoder::EncodeTransaction(*tx.ToSerializableTx()));
+
+  // Give that new inputs a different outpoint index. Encoding should succeed.
+  // (Tx is still invalid as amounts don't match).
+  tx.inputs_[1].utxo_outpoint.index = 10;
+
+  EXPECT_EQ(base::HexEncodeLower(
+                *CardanoTxDecoder::EncodeTransaction(*tx.ToSerializableTx())),
+            "84a400d9010282825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732c"
+            "c6240add8c71edb92500825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5"
+            "eb732cc6240add8c71edb9250a01828258390144e5e8699ab31de351be61dfeb7c"
+            "220eff61d29d9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3"
+            "fde3606a5bace785391a0098968082583901e057e6ff439d606a3e6c47a00b8677"
+            "34098461b83ad9943242b6bc04b7b276465449b932964b6173bc9f38a876771369"
+            "18dc79f746c1c21d1a017286c00200031a08ed50c4a100d9010281825820e68ca4"
+            "6554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd8"
+            "3381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b360"
+            "9bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
+}
 
 TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
   auto tx = GetSignedReferenceTransaction();

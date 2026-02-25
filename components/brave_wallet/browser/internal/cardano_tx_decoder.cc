@@ -193,6 +193,12 @@ CardanoTxDecoder::SerializableTx FromRust(const CxxSerializableTx& tx) {
   return result;
 }
 
+bool HasDuplicateInputs(const CardanoTxDecoder::SerializableTx& tx) {
+  auto inputs = tx.tx_body.inputs;
+  std::sort(inputs.begin(), inputs.end());
+  return std::adjacent_find(inputs.begin(), inputs.end()) != inputs.end();
+}
+
 }  // namespace
 
 CardanoTxDecoder::SerializableTxInput::SerializableTxInput() = default;
@@ -301,6 +307,12 @@ void CardanoTxDecoder::SetUseSetTagForTesting(bool enable) {
 // static
 std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransaction(
     const SerializableTx& tx) {
+  // Inputs come as vector but serialized as a set of supposed to be unique
+  // elements. We must ensure there is no duplicates and fail fast.
+  if (HasDuplicateInputs(tx)) {
+    return std::nullopt;
+  }
+
   auto result = encode_cardano_transaction(ToRust(tx));
   if (!result->is_ok()) {
     return std::nullopt;

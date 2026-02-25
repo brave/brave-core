@@ -14,6 +14,7 @@ bls-signatures = { version = "0.15", default-features = false, features = ["pair
 schnorrkel = "0.11.4"
 ciborium = "0.2.2"
 parity-scale-codec = "3.7.5"
+crc32fast = "1.5.0"
 
 [lib]
 name = "brave_wallet"

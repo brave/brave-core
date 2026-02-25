@@ -32,6 +32,7 @@ class CardanoTxDecoder {
     SerializableTxInput(SerializableTxInput&&);
     SerializableTxInput& operator=(SerializableTxInput&&);
     ~SerializableTxInput();
+    auto operator<=>(const SerializableTxInput&) const = default;
 
     std::array<uint8_t, kCardanoTxHashSize> tx_hash = {};
     uint32_t index = 0;

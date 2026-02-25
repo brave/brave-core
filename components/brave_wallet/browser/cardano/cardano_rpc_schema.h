@@ -57,7 +57,7 @@ struct Block {
 
 // Adapter of Blockfrost's UnspentOutput struct for wallet's use.
 struct UnspentOutput {
-  UnspentOutput();
+  explicit UnspentOutput(CardanoAddress address_to);
   UnspentOutput(const UnspentOutput&);
   UnspentOutput(UnspentOutput&&);
   UnspentOutput& operator=(const UnspentOutput&);

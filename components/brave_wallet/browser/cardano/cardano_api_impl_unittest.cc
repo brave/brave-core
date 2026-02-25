@@ -169,7 +169,8 @@ class CardanoApiImplTest : public testing::Test {
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925",
           "0", "34451133");
 
-      CardanoTransaction::TxInput input;
+      CardanoTransaction::TxInput input(
+          *CardanoAddress::FromString(input_address_1->address_string));
       input.utxo_outpoint.txid = test::HexToArray<32>(
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
       input.utxo_outpoint.index = 0;
@@ -183,7 +184,8 @@ class CardanoApiImplTest : public testing::Test {
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925",
           "10", "5000000");
 
-      CardanoTransaction::TxInput input;
+      CardanoTransaction::TxInput input(
+          *CardanoAddress::FromString(input_address_1->address_string));
       input.utxo_outpoint.txid = test::HexToArray<32>(
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
       input.utxo_outpoint.index = 10;
@@ -197,7 +199,8 @@ class CardanoApiImplTest : public testing::Test {
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925",
           "1", "34451133");
 
-      CardanoTransaction::TxInput input;
+      CardanoTransaction::TxInput input(
+          *CardanoAddress::FromString(input_address_2->address_string));
       input.utxo_outpoint.txid = test::HexToArray<32>(
           "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
       input.utxo_outpoint.index = 1;
@@ -206,27 +209,24 @@ class CardanoApiImplTest : public testing::Test {
     }
 
     // External
-    CardanoTransaction::TxOutput output1;
-    output1.address = *CardanoAddress::FromString(
+    CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
         "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z"
         "53"
-        "l7lh5u7z08l0rvp49ht88s5uskl6tsl");
+        "l7lh5u7z08l0rvp49ht88s5uskl6tsl"));
     output1.amount = 10000000;
     tx.AddOutput(std::move(output1));
 
-    CardanoTransaction::TxOutput output2;
-    output2.address = *CardanoAddress::FromString(
+    CardanoTransaction::TxOutput output2(*CardanoAddress::FromString(
         "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefvjmpw"
         "w7"
-        "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
+        "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg"));
     output2.amount = 24282816;
     output2.type = CardanoTransaction::TxOutputType::kChange;
     tx.AddOutput(std::move(output2));
 
     // Change
-    CardanoTransaction::TxOutput output3;
-    output3.address =
-        *CardanoAddress::FromString(input_address_1->address_string);
+    CardanoTransaction::TxOutput output3(
+        *CardanoAddress::FromString(input_address_1->address_string));
     output3.amount = 24282816;
     output3.type = CardanoTransaction::TxOutputType::kChange;
     tx.AddOutput(std::move(output3));
@@ -1345,7 +1345,8 @@ TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {
   SetupUnsignedReferenceTransaction(added_account, tx);
 
   // Add an external input.
-  CardanoTransaction::TxInput input;
+  CardanoTransaction::TxInput input(
+      *CardanoAddress::FromString(kMockCardanoAddress1));
   input.utxo_outpoint.txid.fill(55u);
   input.utxo_outpoint.index = 0;
   input.utxo_value = 34451133;
@@ -1569,7 +1570,8 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   CardanoTransaction unsigned_tx;
   SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
   // Add an external input.
-  CardanoTransaction::TxInput input;
+  CardanoTransaction::TxInput input(
+      *CardanoAddress::FromString(kMockCardanoAddress1));
   input.utxo_outpoint.txid.fill(55u);
   input.utxo_outpoint.index = 0;
   input.utxo_value = 34451133;

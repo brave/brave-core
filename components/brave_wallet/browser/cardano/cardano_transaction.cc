@@ -163,7 +163,10 @@ bool SubtractTokens(cardano_rpc::Tokens& from,
 
 }  // namespace
 
-TxBuilderParms::TxBuilderParms() = default;
+TxBuilderParms::TxBuilderParms(CardanoAddress send_to_address,
+                               CardanoAddress change_address)
+    : send_to_address(std::move(send_to_address)),
+      change_address(std::move(change_address)) {}
 TxBuilderParms::~TxBuilderParms() = default;
 TxBuilderParms::TxBuilderParms(const TxBuilderParms&) = default;
 TxBuilderParms& TxBuilderParms::operator=(const TxBuilderParms&) = default;
@@ -222,7 +225,8 @@ CardanoTransaction::Outpoint::FromValue(const base::DictValue& value) {
   return result;
 }
 
-CardanoTransaction::TxInput::TxInput() = default;
+CardanoTransaction::TxInput::TxInput(CardanoAddress utxo_address)
+    : utxo_address(std::move(utxo_address)) {}
 CardanoTransaction::TxInput::~TxInput() = default;
 CardanoTransaction::TxInput::TxInput(const CardanoTransaction::TxInput& other) =
     default;
@@ -249,12 +253,13 @@ base::DictValue CardanoTransaction::TxInput::ToValue() const {
 // static
 std::optional<CardanoTransaction::TxInput>
 CardanoTransaction::TxInput::FromValue(const base::DictValue& value) {
-  CardanoTransaction::TxInput result;
-
-  if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "utxo_address"),
-                              result.utxo_address)) {
+  std::optional<CardanoAddress> utxo_address =
+      ReadCardanoAddress(value, "utxo_address");
+  if (!utxo_address) {
     return std::nullopt;
   }
+
+  CardanoTransaction::TxInput result(std::move(*utxo_address));
 
   if (!base::OptionalUnwrapTo(ReadDict<Outpoint>(value, "utxo_outpoint"),
                               result.utxo_outpoint)) {
@@ -277,9 +282,8 @@ CardanoTransaction::TxInput::FromValue(const base::DictValue& value) {
 // static
 CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
     const cardano_rpc::UnspentOutput& utxo) {
-  CardanoTransaction::TxInput result;
+  CardanoTransaction::TxInput result(utxo.address_to);
 
-  result.utxo_address = utxo.address_to;
   result.utxo_outpoint.txid = utxo.tx_hash;
   result.utxo_outpoint.index = utxo.output_index;
   result.utxo_value = utxo.lovelace_amount;
@@ -349,7 +353,8 @@ CardanoTransaction::TxWitness::FromValue(const base::DictValue& value) {
   return result;
 }
 
-CardanoTransaction::TxOutput::TxOutput() = default;
+CardanoTransaction::TxOutput::TxOutput(CardanoAddress address)
+    : address(std::move(address)) {}
 CardanoTransaction::TxOutput::~TxOutput() = default;
 CardanoTransaction::TxOutput::TxOutput(
     const CardanoTransaction::TxOutput& other) = default;
@@ -375,7 +380,12 @@ base::DictValue CardanoTransaction::TxOutput::ToValue() const {
 // static
 std::optional<CardanoTransaction::TxOutput>
 CardanoTransaction::TxOutput::FromValue(const base::DictValue& value) {
-  CardanoTransaction::TxOutput result;
+  auto address = ReadCardanoAddress(value, "address");
+  if (!address) {
+    return std::nullopt;
+  }
+
+  CardanoTransaction::TxOutput result(std::move(*address));
 
   if (auto type = ReadString(value, "type")) {
     if (*type != kChangeOuputType && *type != kTargetOutputType) {
@@ -384,11 +394,6 @@ CardanoTransaction::TxOutput::FromValue(const base::DictValue& value) {
     result.type = *type == kTargetOutputType ? TxOutputType::kTarget
                                              : TxOutputType::kChange;
   } else {
-    return std::nullopt;
-  }
-
-  if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "address"),
-                              result.address)) {
     return std::nullopt;
   }
 
@@ -514,20 +519,18 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
 
 void CardanoTransaction::SetupTargetOutput(CardanoAddress target_address) {
   CHECK(!TargetOutput());
-  CardanoTransaction::TxOutput target_output;
+  CardanoTransaction::TxOutput target_output(std::move(target_address));
   target_output.type = CardanoTransaction::TxOutputType::kTarget;
   target_output.amount = 0;
-  target_output.address = std::move(target_address);
 
   AddOutput(std::move(target_output));
 }
 
 void CardanoTransaction::SetupChangeOutput(CardanoAddress change_address) {
   CHECK(!ChangeOutput());
-  CardanoTransaction::TxOutput change_output;
+  CardanoTransaction::TxOutput change_output(std::move(change_address));
   change_output.type = CardanoTransaction::TxOutputType::kChange;
   change_output.amount = 0;
-  change_output.address = std::move(change_address);
 
   AddOutput(std::move(change_output));
 }
