@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/page_action/BUILD.gn b/chrome/browser/ui/views/page_action/BUILD.gn
+index b02b3e6c0b5084ea53bf41d09bbe17052df955dd..0f328a9489e655cbac6d0df795f1f6eb28f4d4b6 100644
+--- a/chrome/browser/ui/views/page_action/BUILD.gn
++++ b/chrome/browser/ui/views/page_action/BUILD.gn
+@@ -129,6 +129,7 @@ source_set("impl") {
+     "//ui/gfx",
+     "//ui/views",
+   ]
++  deps += [ "//brave/browser/ui/page_action" ] 
+ 
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.

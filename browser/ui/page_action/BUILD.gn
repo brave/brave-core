@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("page_action") {
+  sources = [ "brave_page_action_icon_type.h" ]
+  deps = [
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/containers/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+    "//chrome/browser/ui/page_action:icon_type",
+  ]
+}

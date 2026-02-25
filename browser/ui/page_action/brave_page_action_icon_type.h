@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_PAGE_ACTION_BRAVE_PAGE_ACTION_ICON_TYPE_H_
 
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 
@@ -24,6 +25,9 @@ DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kWaybackMachineActionIconType, -4);
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kSpeedreaderPageActionIconType, -5);
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kPartitionedStorageActionIconType, -6);
 #endif
 
 #undef DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE

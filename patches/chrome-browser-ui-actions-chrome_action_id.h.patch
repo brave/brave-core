@@ -10,3 +10,11 @@ index faf125bfd6439aa0e4add87c965d5f970d848432..87c3cdd66981596d394fa07c5b36d30e
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
    E(kActionSidePanelShowCustomizeChrome) \
+@@ -596,6 +597,7 @@
+   E(kActionCopyUrl, IDC_COPY_URL) \
+   E(kActionTabGroupsMenu, IDC_SAVED_TAB_GROUPS_MENU) \
+   E(kActionTabSearch, IDC_TAB_SEARCH) \
++  E(kActionShowPartitionedStorage) \
+   E(kActionSplitTab, IDC_SPLIT_TAB) \
+ 
+ #define CHROME_ACTION_IDS \
