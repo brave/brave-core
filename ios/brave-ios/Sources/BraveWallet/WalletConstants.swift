@@ -102,7 +102,7 @@ public struct WalletConstants {
   /// - kBraveWalletWebUIIOS (wallet WebUI)
   /// - kBraveWalletCardanoEnabled (Cardano support)
   /// - kBraveWalletCardanoDAppSupportIOS (Cardano dApp support)
-  static var isCardanoDAppSupportEnabled: Bool {
+  public static var isCardanoDAppSupportEnabled: Bool {
     FeatureList.kBraveWalletWebUIIOS?.enabled == true
       && FeatureList.kBraveWalletCardanoEnabled?.enabled == true
       && FeatureList.kBraveWalletCardanoDAppSupportIOS?.enabled == true

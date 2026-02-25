@@ -37,6 +37,11 @@ extension Preferences {
       key: "wallet.default-sol-wallet",
       default: WalletType.brave.rawValue
     )
+    /// The default wallet to use for Cardona to communicate with web3
+    public static let defaultCardonaWallet = Option<Int>(
+      key: "wallet.default-cardona-wallet",
+      default: WalletType.brave.rawValue
+    )
     /// Whether or not webpages can use the Ethereum Provider API to communicate with users Ethereum wallet
     public static let allowEthProviderAccess: Option<Bool> = .init(
       key: "wallet.allow-eth-provider-access",

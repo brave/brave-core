@@ -124,6 +124,7 @@ class UserScriptManager {
     case readyStateHelper
     case ethereumProvider
     case solanaProvider
+    case cardanoProvider
     case searchResultAd
     case youtubeQuality
     case braveLeoAIChat
@@ -154,6 +155,9 @@ class UserScriptManager {
       case .solanaProvider:
         return Preferences.UserScript.solanaProvider.value
           ? SolanaProviderScriptHandler.userScript : nil
+      case .cardanoProvider:
+        return Preferences.UserScript.cardanoProvider.value
+          ? CardanoProviderScriptHandler.userScript : nil
       case .searchResultAd: return BraveSearchResultAdScriptHandler.userScript
 
       // Always enabled scripts
@@ -412,6 +416,16 @@ class UserScriptManager {
           ? self.walletSolanaWalletStandardScript : nil
       {
         scriptController.addUserScript(walletStandardScript)
+      }
+
+      // Inject Cardano provider script
+      if WalletConstants.isCardanoDAppSupportEnabled,
+        !tab.isPrivate,
+        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultCardonaWallet.value)
+          == .brave,
+        let script = self.dynamicScripts[.cardanoProvider]
+      {
+        scriptController.addUserScript(script)
       }
 
       // TODO: Refactor this and get rid of the `UserScriptType`
