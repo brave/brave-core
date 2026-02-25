@@ -33,6 +33,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
@@ -488,7 +489,7 @@ void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
   // Start manual cleanup.
   ephemeral_storage_service_->CleanupTLDFirstPartyStorage(
       web_contents()->GetLastCommittedURL(),
-      site_instance->GetStoragePartitionConfig(), true);
+      site_instance->GetSecurityPrincipal().GetStoragePartitionConfig(), true);
 }
 
 void BraveShieldsTabHelper::AllowScriptsOnce(
