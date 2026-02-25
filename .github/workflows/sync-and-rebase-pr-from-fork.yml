@@ -38,20 +38,20 @@ jobs:
           # as the race condition risk is mitigated by the operator controlling the bot
           TRUSTED_BOT_AUTHORS: "netzenbot"
         run: |
-          set -eEo pipefail
+          set -xeEo pipefail
           shopt -s inherit_errexit
-          set -x
 
           gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRefOid,headRepository,headRepositoryOwner,id,isCrossRepository,url)
 
           JQ=(jq -e -r)
-          pr_author=$("${JQ[@]}" .headRepositoryOwner.login <<<"$gh_pr_view")
-          
-          # Check if PR author is in trusted bot authors list
-          is_trusted_bot="$(case " $TRUSTED_BOT_AUTHORS " in *" $pr_author "*) echo true;; *) echo false;; esac)"
 
           # If commit hash not provided, fetch latest from PR (only allowed for trusted bots)
           if [[ -z "$COMMIT_HASH" ]]; then
+            pr_author=$("${JQ[@]}" .headRepositoryOwner.login <<<"$gh_pr_view")
+            
+            # Check if PR author is in trusted bot authors list
+            is_trusted_bot="$(case " $TRUSTED_BOT_AUTHORS " in *" $pr_author "*) echo true;; *) echo false;; esac)"
+
             if [[ "$is_trusted_bot" = true ]]; then
               echo "Trusted bot author '$pr_author' - fetching latest commit hash from PR"
               COMMIT_HASH=$("${JQ[@]}" .headRefOid <<<"$gh_pr_view")
