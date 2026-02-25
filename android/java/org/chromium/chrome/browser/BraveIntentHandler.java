@@ -70,20 +70,20 @@ public class BraveIntentHandler {
         return maybeReplaceWidgetSearchSource(intent, url);
     }
 
-    private static String maybeReplaceWidgetSearchSource(Intent intent, String url) {
+    private static String maybeReplaceWidgetSearchSource(final Intent intent, final String url) {
         if (!IntentUtils.safeGetBooleanExtra(
                 intent, SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, false)) {
             return url;
         }
 
-        Uri parsedUrl = Uri.parse(url);
-        String host = parsedUrl.getHost();
-        String source = parsedUrl.getQueryParameter(SOURCE);
+        final Uri parsedUrl = Uri.parse(url);
+        final String host = parsedUrl.getHost();
+        final String source = parsedUrl.getQueryParameter(SOURCE);
         if (!BRAVE_SEARCH_URL.equals(host) || !ANDROID.equals(source)) {
             return url;
         }
 
-        Uri.Builder builder = parsedUrl.buildUpon().clearQuery();
+        final Uri.Builder builder = parsedUrl.buildUpon().clearQuery();
         for (String name : parsedUrl.getQueryParameterNames()) {
             for (String value : parsedUrl.getQueryParameters(name)) {
                 builder.appendQueryParameter(
