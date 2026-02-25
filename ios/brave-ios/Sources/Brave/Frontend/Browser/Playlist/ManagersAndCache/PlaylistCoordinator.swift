@@ -45,7 +45,7 @@ public class PlaylistCoordinator: NSObject {
   public var isPlaylistAvailable: Bool = true
 
   func getCarPlayController(
-    profile: (any Profile)?
+    profile: any Profile
   ) -> Any? {
     // On iOS 14, we use CPTemplate (Custom UI)
     // We control what gets displayed
@@ -90,7 +90,7 @@ public class PlaylistCoordinator: NSObject {
 
   func getPlaylistController(
     tab: (any TabState)?,
-    profile: (any Profile)?,
+    profile: any Profile,
     initialItem: PlaylistInfo?,
     initialItemPlaybackOffset: Double
   ) -> UIViewController {
@@ -136,7 +136,7 @@ public class PlaylistCoordinator: NSObject {
 
   func getPlaylistController(
     tab: (any TabState)?,
-    profile: (any Profile)?,
+    profile: any Profile,
     completion: @escaping (UIViewController) -> Void
   ) {
     if let tab = tab,
@@ -195,9 +195,9 @@ public class PlaylistCoordinator: NSObject {
     // pass it to the carplay controller
     if isCarPlayAvailable {
       // Protect against reentrancy.
-      if carPlayController == nil {
+      if carPlayController == nil, let browserController {
         carPlayController = getCarPlayController(
-          profile: browserController?.profileController.profile
+          profile: browserController.profileController.profile
         )
       }
     } else {

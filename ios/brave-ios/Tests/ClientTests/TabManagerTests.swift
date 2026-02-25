@@ -135,7 +135,16 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       windowId: testWindowId,
       rewards: nil,
       braveCore: nil,
-      privateBrowsingManager: privateBrowsingManager
+      profile: FakeProfile(),
+      privateBrowsingManager: privateBrowsingManager,
+      tabCreationFactory: { params in
+        let tab = FakeTabState()
+        tab.isPrivate = params.profile.isOffTheRecord
+        if let lastActiveTime = params.lastActiveTime {
+          tab.lastActiveTime = lastActiveTime
+        }
+        return tab
+      }
     )
     privateBrowsingManager.isPrivateBrowsing = false
     Preferences.Privacy.persistentPrivateBrowsing.reset()

@@ -18,8 +18,14 @@ public final class FakeTabState: TabState {
   public var data: TabDataValues = .init()
   public let view: UIView = .init()
   public var opener: (any TabState)?
-  public var isVisible: Bool = false
-  public var lastActiveTime: Date?
+  public var isVisible: Bool = false {
+    didSet {
+      if isVisible {
+        lastActiveTime = .now
+      }
+    }
+  }
+  public var lastActiveTime: Date? = .now
   public var webViewProxy: WebViewProxy? { nil }
   public var isWebViewCreated: Bool { false }
   public func createWebView() {}
