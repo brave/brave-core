@@ -26,10 +26,9 @@ import {
   PremiumStatus,
   ModelWithSubtitle,
   PremiumInfo,
-  ModelAccess,
-  Model
 } from './brave_leo_assistant_browser_proxy.js'
 import './customization_subpage.js'
+import './model_selector.js'
 import { getTemplate } from './personalization.html.js'
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
@@ -47,11 +46,6 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
 
   static get properties() {
     return {
-      selectedModelDisplayName_: {
-        type: String,
-        computed: 'computeDisplayName_(models_, ' +
-          'defaultModelKeyPrefValue_)'
-      },
       isPremiumUser_: {
         type: Boolean,
         value: false,
@@ -59,7 +53,6 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
       },
       defaultModelKeyPrefValue_: String,
       models_: {
-        readOnly: true,
         type: Array,
       },
       isHistoryFeatureEnabled_: {
@@ -67,13 +60,18 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
         value: () => loadTimeData.getBoolean(
           'isLeoAssistantHistoryAllowed')
       },
+      isTabOrganizationFeatureEnabled_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean(
+          'isTabOrganizationFeatureEnabled')
+      },
     }
   }
 
   private declare isPremiumUser_: boolean
 
   declare isHistoryFeatureEnabled_: boolean
-  declare selectedModelDisplayName_: string
+  declare isTabOrganizationFeatureEnabled_: boolean
   declare defaultModelKeyPrefValue_: string
   declare models_: ModelWithSubtitle[]
   premiumStatus_: PremiumStatus = PremiumStatus.Unknown
@@ -130,30 +128,15 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
       })
   }
 
-  computeDisplayName_() {
-    const foundEntry = this.models_?.find(
-      (entry) => {
-        return entry.model.key === this.defaultModelKeyPrefValue_
-      }
-    )
-
-    return foundEntry?.model.displayName
-  }
-
   onModelSelectionChange_(e: any) {
-    this.browserProxy_.getSettingsHelper().setDefaultModelKey(e.value)
+    this.browserProxy_.getSettingsHelper().setDefaultModelKey(e.detail.value)
   }
-
 
   private updateCurrentPremiumStatus() {
     this.browserProxy_.getSettingsHelper().getPremiumStatus()
       .then((value: { status: PremiumStatus; info: PremiumInfo | null; }) => {
         this.premiumStatus_ = value.status
       })
-  }
-
-  private isLeoModel_(model: Model) {
-    return model.options.leoModelOptions !== undefined
   }
 
   computeIsPremiumUser_() {
@@ -163,10 +146,6 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
     }
 
     return false
-  }
-
-  shouldShowModelPremiumLabel_(modelAccess: ModelAccess) {
-    return (modelAccess === ModelAccess.PREMIUM && !this.isPremiumUser_)
   }
 
   private onStorageEnabledChange_(event: Event) {
@@ -184,6 +163,18 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
   openCustomizationPage_() {
     const router = Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_LEO_CUSTOMIZATION);
+  }
+
+  private onTabOrganizationModelChange_(e: any) {
+    this.setPrefValue(
+      'brave.ai_chat.tab_organization_model_key',
+      e.detail.value)
+  }
+
+  private isTabOrganizationDropdownVisible_(
+      featureEnabled: boolean,
+      prefEnabled: boolean) {
+    return featureEnabled && prefEnabled
   }
 }
 

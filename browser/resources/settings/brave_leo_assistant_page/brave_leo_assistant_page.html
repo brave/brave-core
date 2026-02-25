@@ -42,12 +42,15 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
     sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
   </settings-toggle-button>
-  <settings-toggle-button class="cr-row hr"
-    pref="{{prefs.brave.ai_chat.tab_organization_enabled}}"
-    label="$i18n{braveLeoAssistantTabOrganizationLabel}"
-    sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
-    on-sub-label-link-clicked="openTabOrganizationLearnMore_">
-  </settings-toggle-button>
+  <template is="dom-if"
+    if="[[isTabOrganizationFeatureEnabled_]]">
+    <settings-toggle-button class="cr-row hr"
+      pref="{{prefs.brave.ai_chat.tab_organization_enabled}}"
+      label="$i18n{braveLeoAssistantTabOrganizationLabel}"
+      sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
+      on-sub-label-link-clicked="openTabOrganizationLearnMore_">
+    </settings-toggle-button>
+  </template>
   <cr-link-row class="hr"
     label="$i18n{braveLeoAssistantAutocompleteLink}"
     on-click="openAutocompleteSetting_">
