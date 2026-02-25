@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const build = require('./build')
-const config = require('../lib/config')
-const fs = require('fs-extra')
-const path = require('path')
-const { spawn } = require('child_process')
-const jszip = require('jszip')
+import build from './build.js'
+import config from './config.js'
+import fs from 'fs-extra'
+import path from 'path'
+import { spawn } from 'child_process'
+import jszip from 'jszip'
 
 const fuzzerBuildConfig = 'Fuzzer'
 
@@ -82,4 +82,4 @@ const runFuzzer = (passthroughArgs, suite) => {
   })
 }
 
-module.exports = { buildFuzzer, runFuzzer }
+export { buildFuzzer, runFuzzer }

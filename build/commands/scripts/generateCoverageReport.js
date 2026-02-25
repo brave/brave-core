@@ -2,10 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-const { glob, rm } = require('fs/promises')
-const { writeJSON, mkdirp } = require('fs-extra')
-const utils = require('../lib/util')
-const config = require('../lib/config')
+import { glob, rm } from 'fs/promises'
+import { writeJSON, mkdirp } from 'fs-extra'
+import utils from '../lib/util.js'
+import config from '../lib/config.js'
 
 const dedupe = (xs) => [...new Set(xs)]
 const getTestBinariesFromRecordingsPath = (outputDir) => {
@@ -16,7 +16,7 @@ const getTestBinariesFromRecordingsPath = (outputDir) => {
   }
 }
 
-module.exports = (program) =>
+export default (program) =>
   program
     .command('coverage_report')
     .description(

@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const fs = require('fs-extra')
-const GitPatcher = require('./gitPatcher')
-const { runGitAsync } = require('./util')
-const os = require('os')
+import path from 'path'
+import fs from 'fs-extra'
+import * as GitPatcher from './gitPatcher.js'
+import util from './util.js'
+import os from 'os'
 
 const dirPrefixTmp = 'brave-browser-test-git-apply-'
 
@@ -17,7 +17,7 @@ const file1Name = 'file1'
 const writeReadFileOptions = { encoding: 'utf8' }
 
 function runGitAsyncWithErrorLog(repoPath, gitArgs) {
-  return runGitAsync(repoPath, gitArgs, false, true)
+  return util.runGitAsync(repoPath, gitArgs, false, true)
 }
 
 function getPatch(gitRepoPath, modifiedFilePath) {
@@ -76,7 +76,7 @@ describe('Apply Patches', function () {
     if (testFile1Content !== file1InitialContent) {
       throw new Error('Setup fail: file was not reset - ' + testFile1Path)
     }
-    gitPatcher = new GitPatcher(patchPath, repoPath, false)
+    gitPatcher = new GitPatcher.GitPatcher(patchPath, repoPath, false)
   })
 
   function validate() {
@@ -242,14 +242,14 @@ describe('Apply Patches', function () {
   test('handles no patch dir', async function () {
     validate()
     const badPatchPath = path.join(patchPath, 'not-exist')
-    const noDirPatcher = new GitPatcher(badPatchPath, repoPath)
+    const noDirPatcher = new GitPatcher.GitPatcher(badPatchPath, repoPath)
     const status = await noDirPatcher.applyPatches()
     expect(status).toHaveLength(0)
   })
 
   test('handles no repo dir', async function () {
     const badRepoPath = path.join(repoPath, 'not-exist')
-    const noRepoPatcher = new GitPatcher(patchPath, badRepoPath)
+    const noRepoPatcher = new GitPatcher.GitPatcher(patchPath, badRepoPath)
     await expect(noRepoPatcher.applyPatches()).rejects.toThrow()
   })
 })

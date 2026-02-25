@@ -3,21 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const fs = require('fs-extra')
-const path = require('path')
-
-const Config = require('../lib/config')
-const Log = require('../lib/logging')
-const util = require('../lib/util')
-const assert = require('assert')
-
-const { getAffectedTests } = require('./affectedTests')
-const {
+import fs from 'fs-extra'
+import path from 'path'
+import Config from './config.js'
+import Log from './logging.js'
+import util from './util.js'
+import assert from 'assert'
+import { getAffectedTests } from './affectedTests.js'
+import {
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,
   getChromiumTestsSuites,
-} = require('./testUtils')
+} from './testUtils.js'
 
 const test = async (
   passthroughArgs,
@@ -468,4 +466,4 @@ const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
   }
 }
 
-module.exports = test
+export default test

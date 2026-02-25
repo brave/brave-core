@@ -3,19 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const { promisify } = require('util')
-const { readFile, writeFile } = require('fs/promises')
-const exec = promisify(require('child_process').execFile)
-const path = require('path')
-const config = require('./config')
-const { unlink } = require('fs-extra')
-const { randomUUID } = require('crypto')
-const {
+import { promisify } from 'node:util'
+import { readFile, writeFile } from 'fs/promises'
+import child_process from 'node:child_process'
+import path from 'path'
+import config from './config.js'
+import { unlink } from 'fs-extra'
+import { randomUUID } from 'crypto'
+import { tmpdir } from 'os'
+import {
   getApplicableFilters,
   getTestsToRun,
   gnTargetToExecutableName,
-} = require('./testUtils')
-const { tmpdir } = require('os')
+} from './testUtils.js'
+
+const exec = promisify(child_process.execFile)
 
 const getTestTargets = (outDir, filters = ['//*']) => {
   const { env, shell } = config.defaultOptions
@@ -167,7 +169,4 @@ async function getAffectedTests(args = {}) {
   return [...new Set([...affectedTests, ...testAffectedDueModifiedFilterFiles])]
 }
 
-module.exports = {
-  analyzeAffectedTests,
-  getAffectedTests,
-}
+export { analyzeAffectedTests, getAffectedTests }
