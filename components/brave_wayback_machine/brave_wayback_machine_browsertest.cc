@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "chrome/browser/ui/browser.h"

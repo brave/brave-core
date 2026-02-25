@@ -5,11 +5,14 @@
 
 #include "brave/browser/ui/brave_browser_actions.h"
 
+#include "base/functional/callback_helpers.h"
 #include "base/types/to_address.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_action_callback.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
@@ -21,6 +24,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
 #endif
 
 namespace {
@@ -69,6 +76,15 @@ void BraveBrowserActions::InitializeBrowserActions() {
                         IDS_CHAT_UI_TITLE, kLeoProductBraveLeoIcon,
                         kActionSidePanelShowChatUI, bwi, true)
             .Build());
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    root_action_item_->AddChild(actions::ActionItem::Builder(base::DoNothing())
+                                    .SetActionId(kActionShowPartitionedStorage)
+                                    .SetEnabled(true)
+                                    .Build());
   }
 #endif
 }

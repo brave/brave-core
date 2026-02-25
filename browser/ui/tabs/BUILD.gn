@@ -18,6 +18,11 @@ source_set("tabs_public") {
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/tabs:tabs_public",
   ]
+
+  deps = [
+    "//brave/browser/ui/views/page_action",
+    "//brave/components/containers/buildflags",
+  ]
 }
 
 if (!is_android) {
@@ -30,6 +35,7 @@ if (!is_android) {
       ":tabs_public",
       "//brave/browser/psst",
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/views/page_action",
       "//brave/components/psst/browser/content",
       "//brave/components/psst/common",
       "//chrome/browser/content_settings:content_settings_factory",
@@ -39,6 +45,13 @@ if (!is_android) {
 
     if (enable_ai_chat) {
       deps += [ "//brave/browser/ai_chat" ]
+    }
+
+    if (enable_containers) {
+      deps += [
+        "//brave/components/containers/core/browser",
+        "//brave/components/containers/core/common:features",
+      ]
     }
   }
 

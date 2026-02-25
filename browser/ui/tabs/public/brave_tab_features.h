@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
@@ -17,6 +18,12 @@ class Profile;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 class TabDataWebContentsObserver;
+}
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+namespace page_actions {
+class PartitionedStoragePageActionController;
 }
 #endif
 
@@ -38,6 +45,13 @@ class BraveTabFeatures : public TabFeatures {
 
   void Init(TabInterface& tab, Profile* profile) override;
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  page_actions::PartitionedStoragePageActionController*
+  partitioned_storage_page_action_controller() {
+    return partitioned_storage_page_action_controller_.get();
+  }
+#endif
+
 #if BUILDFLAG(ENABLE_PSST)
   psst::PsstTabWebContentsObserver* psst_web_contents_observer() {
     return psst_web_contents_observer_.get();
@@ -50,6 +64,10 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 #if BUILDFLAG(ENABLE_PSST)
   std::unique_ptr<psst::PsstTabWebContentsObserver> psst_web_contents_observer_;
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::unique_ptr<page_actions::PartitionedStoragePageActionController>
+      partitioned_storage_page_action_controller_;
 #endif
 };
 

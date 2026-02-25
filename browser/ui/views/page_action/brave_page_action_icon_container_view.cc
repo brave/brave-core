@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/check_is_test.h"
-#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
