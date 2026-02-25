@@ -141,7 +141,7 @@ export function updateConversationHistory(
  * @returns Filtered array containing only image and screenshot files
  */
 export function getImageFiles(
-  files?: Mojom.UploadedFile[],
+  files?: readonly Mojom.UploadedFile[],
 ): Mojom.UploadedFile[] | undefined {
   return files?.filter(
     (file) =>
@@ -157,7 +157,7 @@ export function getImageFiles(
  * @returns Filtered array containing only document files
  */
 export function getDocumentFiles(
-  files?: Mojom.UploadedFile[],
+  files?: readonly Mojom.UploadedFile[],
 ): Mojom.UploadedFile[] | undefined {
   return files?.filter((file) => file.type === Mojom.UploadedFileType.kPdf)
 }
@@ -197,9 +197,9 @@ export function shouldDisableAttachmentsButton(
  * @returns The files the user can upload after checking limits
  */
 export const processUploadedFilesWithLimits = (
-  files: Mojom.UploadedFile[],
-  conversationHistory: Mojom.ConversationTurn[],
-  currentPendingFiles: Mojom.UploadedFile[],
+  files: readonly Mojom.UploadedFile[],
+  conversationHistory: readonly Mojom.ConversationTurn[],
+  currentPendingFiles: readonly Mojom.UploadedFile[],
 ): Mojom.UploadedFile[] => {
   // Calculate total uploaded files from conversation history
   const totalUploadedImages = conversationHistory.reduce(

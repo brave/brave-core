@@ -408,14 +408,20 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // This won't re-fetch the conversation history, just get the latest
     // version if it's not invalidated.
     const conversationHistory = await api.getConversationHistory.fetch()
-    const newFiles = processUploadedFilesWithLimits(
-      files,
-      conversationHistory,
-      pendingMessageFiles,
-    )
-    if (newFiles.length > 0) {
-      setPendingMessageFiles([...pendingMessageFiles, ...newFiles])
-    }
+    // Since we're in an async callback, we need to get the latest version of
+    // data.
+    setPendingMessageFiles((pendingMessageFiles) => {
+      const newFiles = processUploadedFilesWithLimits(
+        files,
+        conversationHistory,
+        pendingMessageFiles,
+      )
+      if (newFiles.length > 0) {
+        return [...pendingMessageFiles, ...newFiles]
+      }
+      // Do nothing
+      return pendingMessageFiles
+    })
   }
 
   // Register handler for when getScreenshots is called from
