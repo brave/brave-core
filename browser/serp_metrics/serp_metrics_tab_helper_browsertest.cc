@@ -636,8 +636,7 @@ IN_PROC_BROWSER_TEST_F(
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordBackForwardNavigation) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordBackForwardNavigation) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
@@ -653,11 +652,11 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   GoForward();
 
   EXPECT_EQ(
-      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
+      2U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordAfterMultipleBackForwardNavigations) {
+                       RecordAfterMultipleBackForwardNavigations) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
@@ -675,7 +674,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   GoForward();
 
   EXPECT_EQ(
-      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
+      3U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -701,7 +700,7 @@ IN_PROC_BROWSER_TEST_F(
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
   EXPECT_EQ(
-      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
+      2U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -737,7 +736,7 @@ IN_PROC_BROWSER_TEST_F(
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U,
+  EXPECT_EQ(3U,
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
@@ -767,8 +766,7 @@ IN_PROC_BROWSER_TEST_F(
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordWithoutUserGesture) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordWithoutUserGesture) {
   content::TestNavigationObserver observer(GetWebContents());
   ASSERT_TRUE(NavigateToURLFromRendererWithoutUserGesture(
       GetWebContents(),
@@ -776,7 +774,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   observer.Wait();
 
   EXPECT_EQ(
-      0U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
+      1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
