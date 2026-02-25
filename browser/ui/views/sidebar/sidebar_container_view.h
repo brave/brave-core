@@ -143,8 +143,9 @@ class SidebarContainerView : public sidebar::Sidebar,
   bool ShouldUseAnimation();
   void ShowSidebarControlView();
 
-  // Show control view. panel's visibility depends on |show_side_panel|.
-  void ShowSidebar(bool show_side_panel);
+  // Show sidebar. Panel's visibility depends on |show_side_panel|.
+  // Control view's visibility depends on |show_sidebar_control|.
+  void ShowSidebar(bool show_side_panel, bool show_sidebar_control = true);
 
   // Show all (panel + control view).
   void ShowSidebarAll();

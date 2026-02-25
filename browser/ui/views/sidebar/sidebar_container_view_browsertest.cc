@@ -7,16 +7,21 @@
 
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -91,4 +96,54 @@ IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
       sidebar::SidebarItem::BuiltInItemType::kReadingList, true));
   EXPECT_EQ(1u, GetService()->items().size());
   EXPECT_TRUE(toolbar_button()->GetVisible());
+}
+
+// Verifies that when "Show Sidebar" is set to Never, opening a side panel
+// shows only the panel content without the sidebar control view (icon strip).
+// Regression test for https://github.com/brave/brave-browser/issues/51271
+IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
+                       ShowNeverHidesControlViewWhenPanelOpens) {
+  // Set sidebar show option to "Never".
+  GetService()->SetSidebarShowOption(
+      sidebar::SidebarService::ShowSidebarOption::kShowNever);
+  EXPECT_FALSE(sidebar()->IsSidebarVisible());
+
+  // Open a built-in side panel entry (e.g., bookmarks).
+  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  ASSERT_TRUE(side_panel_ui);
+  side_panel_ui->Show(SidePanelEntryId::kBookmarks);
+
+  // The side panel should be visible, but the sidebar control view
+  // (icon strip) should remain hidden per the user's preference.
+  EXPECT_TRUE(sidebar()->side_panel()->GetVisible());
+  EXPECT_FALSE(sidebar()->IsSidebarVisible());
+}
+
+// Verifies that switching from ShowAlways to ShowNever while a panel is open
+// hides the control view but keeps the panel visible.
+IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
+                       SwitchToShowNeverWhilePanelOpen) {
+  // Start with ShowAlways and open a panel.
+  GetService()->SetSidebarShowOption(
+      sidebar::SidebarService::ShowSidebarOption::kShowAlways);
+  EXPECT_TRUE(sidebar()->IsSidebarVisible());
+
+  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  ASSERT_TRUE(side_panel_ui);
+  side_panel_ui->Show(SidePanelEntryId::kBookmarks);
+
+  EXPECT_TRUE(sidebar()->IsSidebarVisible());
+  EXPECT_TRUE(sidebar()->side_panel()->GetVisible());
+
+  // Switch to ShowNever — control should hide, panel should stay.
+  GetService()->SetSidebarShowOption(
+      sidebar::SidebarService::ShowSidebarOption::kShowNever);
+  EXPECT_FALSE(sidebar()->IsSidebarVisible());
+  EXPECT_TRUE(sidebar()->side_panel()->GetVisible());
+
+  // Switch back to ShowAlways — control should reappear alongside panel.
+  GetService()->SetSidebarShowOption(
+      sidebar::SidebarService::ShowSidebarOption::kShowAlways);
+  EXPECT_TRUE(sidebar()->IsSidebarVisible());
+  EXPECT_TRUE(sidebar()->side_panel()->GetVisible());
 }
