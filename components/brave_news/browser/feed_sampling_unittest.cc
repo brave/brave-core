@@ -98,26 +98,21 @@ TEST(BraveNewsFeedSampling, PickRouletteWithWeighting) {
   // No positively weighted items, so we shouldn't pick anything.
   EXPECT_EQ(std::nullopt,
             PickRouletteWithWeighting(
-                infos, base::BindRepeating(
-                           [](const mojom::FeedItemMetadataPtr& item,
-                              const ArticleMetadata& meta) { return 0.0; })));
+                infos, [](const mojom::FeedItemMetadataPtr& item,
+                          const ArticleMetadata& meta) { return 0.0; }));
   auto& first = std::get<0>(infos.at(0));
   auto& second = std::get<0>(infos.at(1));
   auto& third = std::get<0>(infos.at(2));
-  auto make_picker_for =
-      [](const mojom::FeedItemMetadataPtr& target) -> GetWeighting {
-    return base::BindRepeating(
-        [](mojom::FeedItemMetadata* target,
-           const mojom::FeedItemMetadataPtr& item,
-           const ArticleMetadata& meta) {
-          return target == item.get() ? 100.0 : 0.0;
-        },
-        target.get());
+  auto make_picker_for = [](const mojom::FeedItemMetadata* target) {
+    return [target](const mojom::FeedItemMetadataPtr& item,
+                    const ArticleMetadata& meta) {
+      return target == item.get() ? 100.0 : 0.0;
+    };
   };
 
-  EXPECT_EQ(0, PickRouletteWithWeighting(infos, make_picker_for(first)));
-  EXPECT_EQ(1, PickRouletteWithWeighting(infos, make_picker_for(second)));
-  EXPECT_EQ(2, PickRouletteWithWeighting(infos, make_picker_for(third)));
+  EXPECT_EQ(0, PickRouletteWithWeighting(infos, make_picker_for(first.get())));
+  EXPECT_EQ(1, PickRouletteWithWeighting(infos, make_picker_for(second.get())));
+  EXPECT_EQ(2, PickRouletteWithWeighting(infos, make_picker_for(third.get())));
 }
 
 }  // namespace brave_news

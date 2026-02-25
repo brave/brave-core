@@ -8,10 +8,9 @@
 #include <algorithm>
 #include <numeric>
 #include <optional>
+#include <string>
 #include <vector>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
@@ -71,8 +70,8 @@ std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
   std::vector<double> weights;
   std::ranges::transform(articles, std::back_inserter(weights),
                          [&get_weighting](const auto& article_info) {
-                           return get_weighting.Run(std::get<0>(article_info),
-                                                    std::get<1>(article_info));
+                           return get_weighting(std::get<0>(article_info),
+                                                std::get<1>(article_info));
                          });
 
   // None of the items are eligible to be picked.
@@ -97,23 +96,61 @@ std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
 
 std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
   return PickRouletteWithWeighting(
-      articles, base::BindRepeating([](const mojom::FeedItemMetadataPtr& data,
-                                       const ArticleMetadata& meta) {
+      articles,
+      [](const mojom::FeedItemMetadataPtr& data, const ArticleMetadata& meta) {
         return meta.subscribed ? meta.weighting : 0;
-      }));
+      });
 }
 
-std::optional<size_t> PickChannelRoulette(const std::string& channel,
-                                          const ArticleInfos& articles) {
+std::optional<size_t> PickChannelRoulette(const ArticleInfos& articles,
+                                          const std::string& channel) {
+  return PickRouletteWithWeighting(
+      articles, [&channel](const mojom::FeedItemMetadataPtr& metadata,
+                           const ArticleMetadata& meta) {
+        return meta.channels.contains(channel) ? meta.weighting : 0.0;
+      });
+}
+
+std::optional<size_t> PickDiscoveryRoulette(const ArticleInfos& articles) {
   return PickRouletteWithWeighting(
       articles,
-      base::BindRepeating(
-          [](const std::string& channel,
-             const mojom::FeedItemMetadataPtr& metadata,
-             const ArticleMetadata& weight) {
-            return weight.channels.contains(channel) ? weight.weighting : 0.0;
-          },
-          channel));
+      [](const mojom::FeedItemMetadataPtr& data, const ArticleMetadata& meta) {
+        if (!meta.discoverable || meta.subscribed) {
+          return 0.0;
+        }
+        return meta.pop_recency;
+      });
+}
+
+std::optional<size_t> PickContentGroupRoulette(
+    const ArticleInfos& articles,
+    const ContentGroup& content_group,
+    const PublisherChannels& publisher_channels,
+    bool require_image) {
+  const auto& [group_id, is_channel] = content_group;
+  return PickRouletteWithWeighting(
+      articles, [&group_id, is_channel, &publisher_channels, require_image](
+                    const mojom::FeedItemMetadataPtr& article,
+                    const ArticleMetadata& meta) {
+        if (require_image) {
+          const auto& image_url = article->image->is_padded_image_url()
+                                      ? article->image->get_padded_image_url()
+                                      : article->image->get_image_url();
+          if (!image_url.is_valid()) {
+            return 0.0;
+          }
+        }
+
+        if (is_channel) {
+          auto it = publisher_channels.find(article->publisher_id);
+          if (it != publisher_channels.end() && it->second.contains(group_id)) {
+            return meta.weighting;
+          }
+          return 0.0;
+        }
+
+        return article->publisher_id == group_id ? meta.weighting : 0.0;
+      });
 }
 
 }  // namespace brave_news

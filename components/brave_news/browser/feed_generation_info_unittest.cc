@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -156,15 +155,14 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
 
   // Removing the article from publisher1 should remove everything from p1 and
   // kTopNews.
-  PickArticles pickP1 = base::BindRepeating(
-      [](const ArticleInfos& articles) -> std::optional<size_t> {
-        for (size_t i = 0; i < articles.size(); ++i) {
-          if (std::get<0>(articles[i])->publisher_id == kPublisher1) {
-            return std::make_optional(i);
-          }
-        }
-        return std::nullopt;
-      });
+  auto pickP1 = [](const ArticleInfos& articles) -> std::optional<size_t> {
+    for (size_t i = 0; i < articles.size(); ++i) {
+      if (std::get<0>(articles[i])->publisher_id == kPublisher1) {
+        return std::make_optional(i);
+      }
+    }
+    return std::nullopt;
+  };
   info.PickAndConsume(pickP1);
   EXPECT_EQ(1u, info.GetEligibleContentGroups().size());
 }
@@ -183,15 +181,15 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   EXPECT_EQ(2u, info.EligibleChannels().size());
 
   // Pick top news
-  PickArticles pick_top_news = base::BindRepeating(
+  auto pick_top_news =
       [](const ArticleInfos& articles) -> std::optional<size_t> {
-        for (size_t i = 0; i < articles.size(); ++i) {
-          if (std::get<1>(articles[i]).channels.contains(kTopNewsChannel)) {
-            return std::make_optional(i);
-          }
-        }
-        return std::nullopt;
-      });
+    for (size_t i = 0; i < articles.size(); ++i) {
+      if (std::get<1>(articles[i]).channels.contains(kTopNewsChannel)) {
+        return std::make_optional(i);
+      }
+    }
+    return std::nullopt;
+  };
   info.PickAndConsume(pick_top_news);
   EXPECT_EQ(1u, info.GetEligibleContentGroups().size());
 

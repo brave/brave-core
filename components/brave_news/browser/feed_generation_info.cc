@@ -279,7 +279,7 @@ mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndConsume(
   CHECK(article_infos_.has_value());
   auto& articles = article_infos_.value();
 
-  auto maybe_index = picker.Run(article_infos_.value());
+  auto maybe_index = picker(article_infos_.value());
   // There won't be an index if there were no eligible articles.
   if (!maybe_index.has_value()) {
     return nullptr;
