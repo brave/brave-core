@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "absl/strings/str_format.h"
+#include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -54,6 +56,54 @@ namespace serp_metrics {
 
 namespace {
 
+constexpr char kSinglePageApplicationHtmlContent[] = R"HTML(
+    <html>
+    <head>
+      <title>Single Page Application</title>
+      <script>
+        function updatePageHeader(pageHeader) {
+          document.getElementById("pageHeader").textContent = pageHeader;
+        }
+
+        document.addEventListener("click", (event) => {
+          const link =
+              event.target.closest("a[data-navigation-type='same_document']");
+          if (!link)
+            return;
+
+          event.preventDefault();
+          history.pushState({ header: "same_document" },
+                            "",
+                            "same_document");
+          updatePageHeader("same_document");
+        });
+
+        window.addEventListener("popstate", (event) => {
+          if (event.state)
+            updatePageHeader(event.state.header);
+        });
+
+        history.replaceState(
+            { header: "Home" }, "", document.location.href);
+      </script>
+    </head>
+    <body>
+      <h1 id="pageHeader">Home</h1>
+      <a href="same_document" data-navigation-type="same_document">
+        Same Document
+      </a>
+    </body>
+    </html>
+  )HTML";
+
+constexpr char kHtmlWithAnchorLinkContent[] = R"HTML(
+    <html>
+    <body>
+      <a id='anchor_link' href='%s'>Link</a>
+    </body>
+    </html>
+  )HTML";
+
 // Builder class to help construct an HTTPS `EmbeddedTestServer` with various
 // configurations for testing.
 class TestHttpsServerBuilder {
@@ -71,8 +121,15 @@ class TestHttpsServerBuilder {
     return *this;
   }
 
-  TestHttpsServerBuilder& WithAnchorLink(GURL anchor_link) {
-    anchor_link_ = std::move(anchor_link);
+  TestHttpsServerBuilder& WithContentOverrideForPath(
+      const std::string& path,
+      const std::string& content) {
+    CHECK(!path.empty());
+    CHECK(!content.empty());
+    CHECK(override_http_response_content_.find(path) ==
+          override_http_response_content_.cend())
+        << "Duplicate content override for path: " << path;
+    override_http_response_content_[path] = content;
     return *this;
   }
 
@@ -92,7 +149,8 @@ class TestHttpsServerBuilder {
     }
 
     https_server->RegisterRequestHandler(base::BindLambdaForTesting(
-        [http_status_code = http_status_code_, anchor_link = anchor_link_,
+        [http_status_code = http_status_code_,
+         override_http_response_content = override_http_response_content_,
          source_path = source_path_, destination_path = destination_path_](
             const net::test_server::HttpRequest& http_request)
             -> std::unique_ptr<net::test_server::HttpResponse> {
@@ -108,20 +166,20 @@ class TestHttpsServerBuilder {
             return http_response;
           }
 
-          // Serve a basic HTML page with the specified status code and optional
-          // anchor link.
+          // Serve a HTML page with the specified status code.
           http_response->set_code(http_status_code);
           http_response->set_content_type("text/html");
-          std::string_view http_reason_phrase =
-              net::GetHttpReasonPhrase(http_status_code);
-          if (anchor_link) {
-            http_response->set_content(
-                absl::StrFormat("<html><body>%s<a id='anchor_link' "
-                                "href='%s'>Link</a></body></html>",
-                                http_reason_phrase, anchor_link->spec()));
+          const auto iter =
+              override_http_response_content.find(http_request.GetURL().path());
+          if (iter != override_http_response_content.cend()) {
+            // Override the default response content.
+            http_response->set_content(iter->second);
           } else {
-            http_response->set_content(absl::StrFormat(
-                "<html><body>%s</body></html>", http_reason_phrase));
+            // Default response content is a simple HTML page showing the status
+            // code reason phrase.
+            http_response->set_content(
+                absl::StrFormat("<html><body>%s</body></html>",
+                                net::GetHttpReasonPhrase(http_status_code)));
           }
 
           return http_response;
@@ -137,7 +195,45 @@ class TestHttpsServerBuilder {
   std::optional<std::string> destination_path_;
 
   net::HttpStatusCode http_status_code_ = net::HTTP_OK;
-  std::optional<GURL> anchor_link_;
+  base::flat_map</*path*/ std::string, /*http_response_content*/ std::string>
+      override_http_response_content_;
+};
+
+class SameDocumentNavigationWaiter : public content::WebContentsObserver {
+ public:
+  explicit SameDocumentNavigationWaiter(content::WebContents* web_contents)
+      : content::WebContentsObserver(web_contents) {}
+
+  SameDocumentNavigationWaiter(const SameDocumentNavigationWaiter&) = delete;
+  SameDocumentNavigationWaiter& operator=(const SameDocumentNavigationWaiter&) =
+      delete;
+
+  void Wait() {
+    if (seen_) {
+      return;
+    }
+    run_loop_.Run();
+  }
+
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    if (!navigation_handle->HasCommitted()) {
+      return;
+    }
+
+    if (!navigation_handle->IsSameDocument()) {
+      return;
+    }
+
+    seen_ = true;
+    if (run_loop_.running()) {
+      run_loop_.Quit();
+    }
+  }
+
+ private:
+  bool seen_ = false;
+  base::RunLoop run_loop_;
 };
 
 }  // namespace
@@ -184,6 +280,14 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
     ASSERT_TRUE(content::ExecJs(
         GetWebContents(), "document.getElementById('anchor_link').click();"));
     observer.Wait();
+  }
+
+  void SimulateClickingAnchorLinkWithSamePageNavigation() const {
+    SameDocumentNavigationWaiter waiter(GetWebContents());
+    ASSERT_TRUE(content::ExecJs(
+        GetWebContents(),
+        R"JS(document.querySelector("[data-navigation-type='same_document']").click();)JS"));
+    waiter.Wait();
   }
 
   void Reload() const {
@@ -256,8 +360,12 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   auto https_server =
       TestHttpsServerBuilder()
           .WithCertHostnames({"search.brave.com", "plugh.xyzzy.com"})
-          .WithAnchorLink(
-              https_server_->GetURL("search.brave.com", "/search?q=test"))
+          .WithContentOverrideForPath(
+              "/thud",
+              absl::StrFormat(
+                  kHtmlWithAnchorLinkContent,
+                  https_server_->GetURL("search.brave.com", "/search?q=test")
+                      .spec()))
           .Build();
   ASSERT_TRUE(https_server);
   ASSERT_TRUE(https_server->Start());
@@ -476,12 +584,16 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordSameSearchAfterReloadNavigationAndLinkClick) {
+                       DoNotRecordSameSearchAfterReloadNavigation) {
   auto https_server =
       TestHttpsServerBuilder()
           .WithCertHostnames({"search.brave.com", "plugh.xyzzy.com"})
-          .WithAnchorLink(
-              https_server_->GetURL("search.brave.com", "/search?q=test"))
+          .WithContentOverrideForPath(
+              "/thud",
+              absl::StrFormat(
+                  kHtmlWithAnchorLinkContent,
+                  https_server_->GetURL("search.brave.com", "/search?q=test")
+                      .spec()))
           .Build();
   ASSERT_TRUE(https_server);
   ASSERT_TRUE(https_server->Start());
@@ -498,8 +610,6 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 
   Reload();
-
-  SimulateClickingAnchorLink();
 
   EXPECT_EQ(1U,
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
@@ -600,8 +710,12 @@ IN_PROC_BROWSER_TEST_F(
   auto https_server =
       TestHttpsServerBuilder()
           .WithCertHostnames({"search.brave.com", "plugh.xyzzy.com"})
-          .WithAnchorLink(
-              https_server_->GetURL("search.brave.com", "/search?q=test"))
+          .WithContentOverrideForPath(
+              "/thud",
+              absl::StrFormat(
+                  kHtmlWithAnchorLinkContent,
+                  https_server_->GetURL("search.brave.com", "/search?q=test")
+                      .spec()))
           .Build();
   ASSERT_TRUE(https_server);
   ASSERT_TRUE(https_server->Start());
@@ -619,6 +733,7 @@ IN_PROC_BROWSER_TEST_F(
 
   GoBack();
   GoForward();
+  GoBack();
 
   SimulateClickingAnchorLink();
 
@@ -689,6 +804,28 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordSameDocument) {
+  auto https_server = TestHttpsServerBuilder()
+                          .WithCertHostnames({"search.brave.com"})
+                          .WithContentOverrideForPath(
+                              "/search", kSinglePageApplicationHtmlContent)
+                          .Build();
+  ASSERT_TRUE(https_server);
+  ASSERT_TRUE(https_server->Start());
+
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server->GetURL("search.brave.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  ASSERT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
+
+  SimulateClickingAnchorLinkWithSamePageNavigation();
+
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
+}
+
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
   content::NavigateToURLBlockUntilNavigationsComplete(
@@ -718,7 +855,6 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
   EXPECT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
-
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace serp_metrics
