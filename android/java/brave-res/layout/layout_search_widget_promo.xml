@@ -5,17 +5,24 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@color/schemes_surface_container_lowest"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="25dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="380dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,4 +79,4 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
