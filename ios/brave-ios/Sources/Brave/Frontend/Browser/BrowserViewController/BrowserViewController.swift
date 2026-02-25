@@ -552,6 +552,12 @@ public class BrowserViewController: UIViewController {
 
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
+
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      BraveWebView.didResetConfiguration = { profile, configuration in
+        configuration.prepareBraveConfiguration()
+      }
+    }
   }
 
   private func setupAdsNotificationHandler() {
