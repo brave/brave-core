@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
 import generateReactContext from '$web-common/api/react_api'
 import { UntrustedConversationAPI } from './api/untrusted_conversation_api'
 import { loadTimeData } from '$web-common/loadTimeData'
@@ -29,11 +28,6 @@ export function useProvideUntrustedConversationContext(
 
   const associatedContent = api.useCurrentAssociatedContentChanged().data?.[0]
   const contentTaskTabId = api.useCurrentContentTaskStarted().data?.[0]
-
-  React.useEffect(
-    () => console.log('event data', { associatedContent, contentTaskTabId }),
-    [associatedContent, contentTaskTabId],
-  )
 
   return {
     api,
