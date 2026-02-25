@@ -7,16 +7,19 @@
 
 #include <memory>
 
-#include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 
 namespace ai_chat {
@@ -29,6 +32,12 @@ class AIChatMetricsTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    // Simulate opted-in and a recent premium check so RecordEnabled proceeds
+    // without blocking on async credential or disclaimer checks.
+    browser()->profile()->GetPrefs()->SetTime(prefs::kLastAcceptedDisclaimer,
+                                              base::Time::Now());
+    g_browser_process->local_state()->SetTime(
+        prefs::kBraveChatP3ALastPremiumCheck, base::Time::Now());
     content::ContextMenuParams params;
     params.is_editable = false;
     params.selection_text = u"some text";
@@ -60,12 +69,7 @@ IN_PROC_BROWSER_TEST_F(AIChatMetricsTest, ContextMenuActions) {
   histogram_tester_.ExpectTotalCount(kMostUsedContextMenuActionHistogramName,
                                      0);
 
-  ai_chat_metrics_->RecordEnabled(
-      true, true,
-      base::BindLambdaForTesting(
-          [&](mojom::Service::GetPremiumStatusCallback callback) {
-            std::move(callback).Run(mojom::PremiumStatus::Active, nullptr);
-          }));
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/true);
   histogram_tester_.ExpectUniqueSample(kMostUsedContextMenuActionHistogramName,
                                        0, 1);
 
