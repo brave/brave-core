@@ -47,6 +47,7 @@
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -67,6 +68,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using ::testing::_;
 using ::testing::Eq;
@@ -1372,6 +1374,22 @@ TEST_P(AIChatServiceUnitTest, GetFocusTabs_EmptyTabs) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+TEST_P(AIChatServiceUnitTest,
+       CreateTabOrganizationEngineIfNeeded_InvalidModelKey) {
+  // Set the pref to a key that doesn't resolve to any valid model.
+  prefs_.SetString(prefs::kBraveAIChatTabOrganizationModelKey,
+                   "nonexistent-model");
+
+  // Call CreateTabOrganizationEngineIfNeeded directly to verify the fallback
+  // logic without triggering the full request flow.
+  ai_chat_service_->CreateTabOrganizationEngineIfNeeded();
+
+  auto* engine = ai_chat_service_->GetTabOrganizationEngineForTesting();
+  ASSERT_NE(engine, nullptr);
+
+  EXPECT_EQ(engine->GetModelName(), "automatic");
 }
 
 TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
