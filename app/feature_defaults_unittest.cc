@@ -231,7 +231,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
 #if !BUILDFLAG(IS_ANDROID)
-      &private_ai::kLegion,
+      &private_ai::kPrivateAi,
 #endif  // !BUILDFLAG(IS_ANDROID)
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
