@@ -223,12 +223,14 @@ docs/rust.md @brave/rust-reviewers
 **/*.dll @brave/sec-team
 **/*.dylib @brave/sec-team
 
-# Make we're not adding new non-Nala tokens/icons unless we have to.
+# Make sure we're not adding new non-Nala tokens/icons unless we have to.
 **/*.icon @brave/nala-token-reviewers
 **/*.svg @brave/nala-token-reviewers
-**/drawable/*.xml @brave/nala-token-reviewers
-**/values/*.xml @brave/nala-token-reviewers
-**/values-night/*.xml @brave/nala-token-reviewers
+**/drawable/ic_*.xml @brave/nala-token-reviewers
+**/values/brave_colors.xml @brave/nala-token-reviewers
+**/values-night/brave_colors.xml @brave/nala-token-reviewers
+**/values/colors.xml @brave/nala-token-reviewers
+**/values-night/colors.xml @brave/nala-token-reviewers
 **/*_color_mixer.cc @brave/nala-token-reviewers
 
 # Strings
