@@ -14,7 +14,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/brave_domains/service_domains.h"
@@ -44,15 +43,12 @@ std::map<std::string, std::string> ParseParams(std::string_view param_string) {
   url::Component query(0, param_string.size());
   url::Component key;
   url::Component value;
-  constexpr int kMaxUriDecodeLen = 2048;
   std::map<std::string, std::string> params;
   while (url::ExtractQueryKeyValue(param_string, &query, &key, &value)) {
-    url::RawCanonOutputW<kMaxUriDecodeLen> output;
-    url::DecodeURLEscapeSequences(param_string.substr(value.begin, value.len),
-                                  url::DecodeURLMode::kUTF8OrIsomorphic,
-                                  &output);
     params.insert({std::string(param_string.substr(key.begin, key.len)),
-                   base::UTF16ToUTF8(output.view())});
+                   url::DecodeUrlEscapeSequences(
+                       param_string.substr(value.begin, value.len),
+                       url::DecodeUrlMode::kUtf8OrIsomorphic)});
   }
   return params;
 }

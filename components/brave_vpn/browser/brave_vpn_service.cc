@@ -16,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
@@ -740,10 +739,8 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   const std::string encoded_credential = credential_cookie.Value();
   const auto time =
       net::cookie_util::ParseCookieExpirationTime(*credential_cookie.Expires());
-  url::RawCanonOutputT<char16_t> unescaped;
-  url::DecodeURLEscapeSequences(
-      encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
-  std::string credential = base::UTF16ToUTF8(unescaped.view());
+  std::string credential = url::DecodeUrlEscapeSequences(
+      encoded_credential, url::DecodeUrlMode::kUtf8OrIsomorphic);
   if (credential.empty()) {
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
