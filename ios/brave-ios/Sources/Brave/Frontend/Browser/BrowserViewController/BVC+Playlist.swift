@@ -310,6 +310,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
   ) {
     let playlistController = PlaylistCoordinator.shared.getPlaylistController(
       tab: tab,
+      profile: profileController.profile,
       initialItem: item,
       initialItemPlaybackOffset: playbackOffset
     )
@@ -360,7 +361,9 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
           Task { @MainActor in
             let mediaStreamer = PlaylistMediaStreamer(
               playerView: self.view,
-              webLoaderFactory: LivePlaylistWebLoaderFactory()
+              webLoaderFactory: LivePlaylistWebLoaderFactory(
+                profile: self.profileController.profile
+              )
             )
 
             let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
