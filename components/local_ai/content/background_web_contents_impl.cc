@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "base/task/sequenced_task_runner.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
@@ -113,7 +114,12 @@ void BackgroundWebContentsImpl::DidFinishLoad(
   }
   DVLOG(3) << "BackgroundWebContentsImpl: Page loaded: " << validated_url;
   if (validated_url != expected_url_) {
-    NotifyDestroyed(DestroyReason::kInvalidUrl);
+    // Post asynchronously to avoid destroying WebContents during
+    // observer notification (reentrancy crash).
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&BackgroundWebContents::NotifyDestroyed,
+                                  weak_ptr_factory_.GetWeakPtr(),
+                                  DestroyReason::kInvalidUrl));
     return;
   }
 }
@@ -122,7 +128,12 @@ void BackgroundWebContentsImpl::PrimaryMainFrameRenderProcessGone(
     base::TerminationStatus status) {
   DVLOG(1) << "BackgroundWebContentsImpl: Renderer process gone, status="
            << static_cast<int>(status);
-  NotifyDestroyed(DestroyReason::kRendererGone);
+  // Post asynchronously to avoid destroying WebContents during
+  // observer notification (reentrancy crash).
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&BackgroundWebContents::NotifyDestroyed,
+                                weak_ptr_factory_.GetWeakPtr(),
+                                DestroyReason::kRendererGone));
 }
 
 void BackgroundWebContentsImpl::NotifyDestroyed(DestroyReason reason) {
