@@ -12,15 +12,10 @@ import { UntrustedConversationContextProvider } from './untrusted_conversation_c
 import { untrustedFrameDragHandlingSetup } from './hooks/useUntrustedFrameDragHandling'
 // <if expr="is_ios">
 import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
-import UntrustedConversationFrameAPI from './untrusted_conversation_frame_api'
 // </if>
 
 import '../common/strings'
-
 // <if expr="is_ios">
-function onTapElsewhereDismissMenus() {
-  UntrustedConversationFrameAPI.getInstance().parentUIFrame.dismissMenus()
-}
 // </if>
 import {
   bindUntrustedConversation,
@@ -37,13 +32,18 @@ interface AppProps {
 }
 
 function App(props: AppProps) {
+  const api = props.boundConversation.api
   // <if expr="is_ios">
   // One-tap fix for iframe menus; notify parent when user taps on
   // non-interactive content so parent can close menus.
-  useIOSOneTapFix({ onTapElsewhere: onTapElsewhereDismissMenus })
+  useIOSOneTapFix({
+    onTapElsewhere: () => {
+      api.parentUIFrame.dismissMenus()
+    },
+  })
   // </if>
   return (
-    <UntrustedConversationContextProvider api={props.boundConversation.api}>
+    <UntrustedConversationContextProvider api={api}>
       <ConversationEntries />
     </UntrustedConversationContextProvider>
   )
