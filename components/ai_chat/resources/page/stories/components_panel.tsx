@@ -1185,7 +1185,6 @@ function StoryContext(
     setArgs: (newArgs: Partial<CustomArgs>) => void
   }>,
 ) {
-  /** @deprecated Use `args`, not `options.args` */
   const { args } = props
   // Ref holds current args - for inside function lookup
   const argsRef = React.useRef(args)
