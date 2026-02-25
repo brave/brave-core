@@ -887,10 +887,22 @@ class TabManager: NSObject {
     }
   }
 
+  private var websiteDataStoreForCurrentMode: WKWebsiteDataStore {
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    if FeatureList.kUseProfileWebViewConfiguration.enabled, let braveCore {
+      let configuration =
+        isPrivateBrowsing
+        ? braveCore.defaultWebViewConfiguration : braveCore.nonPersistentWebViewConfiguration
+      return configuration.websiteDataStore
+    } else {
+      let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
+      return configuration.websiteDataStore
+    }
+  }
+
   /// Shreds data for a set of tabs and returns tabs that are to be shredded/removed.
   @MainActor func shredDataForTabs(_ tabs: [any TabState]) -> Set<TabState.ID> {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
     let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
     let tabsToRemove = self.tabs(isPrivate: isPrivateBrowsing).filter({
       if let url = $0.visibleURL?.urlToShred {
@@ -900,18 +912,17 @@ class TabManager: NSObject {
     })
     Task {
       removeTabs(tabsToRemove)
-      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
+      await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
     }
     return Set(tabsToRemove.map(\.id))
   }
 
   @MainActor func shredAllTabsForCurrentMode() {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
     let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL))
     Task {
       removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
-      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
+      await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
     }
   }
 
