@@ -2490,6 +2490,8 @@ enum TransactionType {
   SolanaSwap = 13,
   ETHFilForwarderTransfer = 14,  // Used to send from FEVM to FVM
   SolanaCompressedNftTransfer = 15,
+  CardanoSendLovelace = 16,
+  CardanoSendToken = 17,
 };
 
 struct FilTxData {
@@ -2545,22 +2547,29 @@ struct ZecTxData {
   array<ZecTxOutput> outputs;
 };
 
+struct CardanoTxTokenValue {
+  string token_id_hex;
+  uint64 value;
+};
+
 struct CardanoTxInput {
   string address;
   string outpoint_txid;
   uint32 outpoint_index;
   uint64 value;
+  array<CardanoTxTokenValue> tokens;
 };
 
 struct CardanoTxOutput {
   string address;
   uint64 value;
+  array<CardanoTxTokenValue> tokens;
 };
 
 struct CardanoTxData {
   string to;
-  uint64 amount;
-  bool sending_max_amount;
+  uint64 sending_lovelace;
+  CardanoTxTokenValue? sending_token;
   uint64 fee;
   array<CardanoTxInput> inputs;
   array<CardanoTxOutput> outputs;
@@ -2708,6 +2717,7 @@ struct NewCardanoTransactionParams {
   string to;
   uint64 amount;
   bool sending_max_amount;
+  string? token;  // Send lovelace if null, otherwise specified token(hex).
   SwapInfo? swap_info;
 };
 
@@ -2942,7 +2952,7 @@ interface BraveWalletServiceObserver {
   // Fired when the default Solana wallet setting changes
   OnDefaultSolanaWalletChanged(DefaultWallet wallet);
 
-  // Fired when the default Colana wallet setting changes
+  // Fired when the default Cardano wallet setting changes
   OnDefaultCardanoWalletChanged(DefaultWallet wallet);
 
   // Fired when the default base currency changes (e.g. USD -> CAD)

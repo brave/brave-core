@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -146,7 +147,69 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction) {
   std::string to_account = kMockCardanoAddress1;
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, false, nullptr);
+      1000000, false, std::nullopt, nullptr);
+
+  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  std::string meta_id;
+  EXPECT_CALL(add_callback, Run(_, _, _))
+      .WillOnce(
+          testing::DoAll(SaveArg<1>(&meta_id),
+                         RunOnceClosure(task_environment_.QuitClosure())));
+  cardano_tx_manager()->AddUnapprovedCardanoTransaction(params.Clone(),
+                                                        add_callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&add_callback);
+  EXPECT_TRUE(!meta_id.empty());
+
+  auto tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
+  EXPECT_TRUE(tx_meta1);
+  EXPECT_EQ(tx_meta1->chain_id(), mojom::kCardanoMainnet);
+
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
+
+  base::MockCallback<TxManager::ApproveTransactionCallback> approve_callback;
+  EXPECT_CALL(approve_callback, Run(true, _, _))
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
+  ApproveTransaction(meta_id, approve_callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&approve_callback);
+
+  tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta1);
+  EXPECT_FALSE(tx_meta1->tx_hash().empty());
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
+
+  MockTxStateManagerObserver observer(
+      cardano_tx_manager()->GetCardanoTxStateManager());
+
+  cardano_test_rpc_server_->ConfirmAllTransactions();
+  EXPECT_CALL(observer, OnTransactionStatusChanged(_))
+      .Times(1)
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
+  cardano_tx_manager()->UpdatePendingTransactions(mojom::kCardanoMainnet);
+  task_environment_.RunUntilQuit();
+  tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta1);
+  EXPECT_FALSE(tx_meta1->tx_hash().empty());
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Confirmed);
+}
+
+TEST_F(CardanoTxManagerUnitTest, SubmitTransaction_SendToken) {
+  auto& token = cardano_test_rpc_server_->utxo_map()
+                    .begin()
+                    ->second.front()
+                    .amount.emplace_back();
+  token.unit = base::HexEncodeLower(GetMockTokenId("brave"));
+  token.quantity = "10";
+
+  const auto from_account = CardanoAcc(0);
+  std::string to_account = kMockCardanoAddress1;
+  auto params = mojom::NewCardanoTransactionParams::New(
+      mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1, 5,
+      false, base::HexEncodeLower(GetMockTokenId("brave")), nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -202,7 +265,7 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, false, nullptr);
+      1000000, false, std::nullopt, nullptr);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
@@ -259,7 +322,7 @@ TEST_F(CardanoTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
-      1000000, false, swap_info.Clone());
+      1000000, false, std::nullopt, swap_info.Clone());
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       add_tx_future;

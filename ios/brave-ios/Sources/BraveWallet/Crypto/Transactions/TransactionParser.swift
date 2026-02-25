@@ -386,7 +386,7 @@ enum TransactionParser {
         // fromValueFormatted="1"
         // toAddress="addr1qx723u2c3tku3mlq720m0qrpass8ppppkfksmd3trxvsay7dd5"
         let namedFromAccount = fromAccountInfo.name
-        let fromValue = "\(cardanoTxData.amount)"
+        let fromValue = "\(cardanoTxData.sendingLovelace)"
         let fromValueFormatted =
           formatter.decimalString(
             for: fromValue,
