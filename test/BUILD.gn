@@ -125,7 +125,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker_unittest.cc",
-    "//brave/components/brave_private_cdn/private_cdn_helper_unittest.cc",
     "//brave/components/brave_search/browser/brave_search_default_host_unittest.cc",
     "//brave/components/brave_search/browser/brave_search_fallback_host_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
@@ -192,7 +191,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_perf_predictor/browser",
-    "//brave/components/brave_private_cdn",
   ]
 
   if (enable_brave_news) {
