@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_controller.h b/chrome/browser/ui/views/page_action/page_action_controller.h
+index 16f7799a3f40a795bdf6e8be5fc11c971070c6eb..d3e7ad7867e06715191dc9616cd0f8f607a49d67 100644
+--- a/chrome/browser/ui/views/page_action/page_action_controller.h
++++ b/chrome/browser/ui/views/page_action/page_action_controller.h
+@@ -105,6 +105,17 @@ class PageActionController {
+  public:
+   virtual ~PageActionController() = default;
+ 
++  // Force the label to be shown regardless of the available space
++  virtual void SetAlwaysShowLabel(actions::ActionId action_id,
++                                  bool always_show) = 0;
++
++  // Override the colors of the chip
++  virtual void OverrideChipColors(
++      actions::ActionId action_id,
++      const std::optional<SkColor>& override_background_color,
++      const std::optional<SkColor>& override_foreground_color) = 0;
++  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;
++
+   // Requests that the page action be shown or hidden.
+   virtual void Show(actions::ActionId action_id) = 0;
+   virtual void Hide(actions::ActionId action_id) = 0;
+@@ -219,6 +230,13 @@ class PageActionControllerImpl : public PageActionController,
+   PageActionControllerImpl& operator=(const PageActionControllerImpl&) = delete;
+   ~PageActionControllerImpl() override;
+ 
++  void SetAlwaysShowLabel(actions::ActionId action_id,
++                          bool always_show) override;
++  void OverrideChipColors(actions::ActionId action_id,
++      const std::optional<SkColor>& override_background_color,
++      const std::optional<SkColor>& override_foreground_color) override;
++  void ClearOverrideChipColors(actions::ActionId action_id) override;
++
+   void Initialize(
+       tabs::TabInterface& tab_interface,
+       const std::vector<actions::ActionId>& action_ids,

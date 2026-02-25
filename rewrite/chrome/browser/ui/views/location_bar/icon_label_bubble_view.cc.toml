@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Use preferred size instead of minimum size when ShouldAlwaysShowLabel is true in CalculateProposedLayout()'
+re_pattern = 'if (\(ShouldShowLabel\(\) && label\(\)->GetElideBehavior\(\) != gfx::NO_ELIDE\)) {'
+replace = 'if (\1 || ShouldAlwaysShowLabel()) {'
+
+[[substitution]]
+description = 'Force should_use_label_bounds to true when ShouldAlwaysShowLabel is true in CalculateProposedLayout()'
+re_pattern = 'const bool should_use_label_bounds =([\s\S]*?);'
+replace = '''bool should_use_label_bounds =\1;
+  should_use_label_bounds = should_use_label_bounds || ShouldAlwaysShowLabel();'''
+
+[[substitution]]
+description = 'Use rounded corners from layout constants in GetHighlightPath()'
+re_pattern = 'const SkRect rect = RectToSkRect\(highlight_bounds\);[\s\S]*?return SkPath::RRect\(SkRRect::MakeRectRadii\(rect, sk_radii\)\);'
+replace = '''const int layout_radius =
+      GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);
+  return SkPath::RRect(gfx::RectToSkRect(highlight_bounds), layout_radius,
+                       layout_radius);'''
