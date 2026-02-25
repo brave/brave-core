@@ -3107,6 +3107,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TRY_BRAVE_SEARCH_WIDGET_DESCRIPTION" desc="Description of Brave search widget promo">
       Access private, independent search right from your home screen.
     </message>
+    <message name="IDS_SEARCH_WIDGET_PROMO_SEARCH_CONTENT_DESCRIPTION" desc="Content description for the search icon in the Brave search widget promo">
+      Search
+    </message>
+    <message name="IDS_SEARCH_WIDGET_PROMO_VOICE_SEARCH_CONTENT_DESCRIPTION" desc="Content description for the voice search icon in the Brave search widget promo">
+      Voice search
+    </message>
+    <message name="IDS_SEARCH_WIDGET_PROMO_PRIVATE_SEARCH_CONTENT_DESCRIPTION" desc="Content description for the private search icon in the Brave search widget promo">
+      Open private search
+    </message>
+    <message name="IDS_SEARCH_WIDGET_PROMO_LEO_CONTENT_DESCRIPTION" desc="Content description for the Leo icon in the Brave search widget promo">
+      Open Leo
+    </message>
     <message name="IDS_ADD_WIDGET" desc="Add widget button text">
       Add widget
     </message>

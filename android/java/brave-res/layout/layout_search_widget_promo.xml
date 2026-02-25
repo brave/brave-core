@@ -52,7 +52,7 @@
                         android:padding="8dp"
                         android:layout_gravity="center_vertical|start"
                         android:src="@drawable/brave_icon_search"
-                        android:contentDescription="@null"
+                        android:contentDescription="@string/search_widget_promo_search_content_description"
                         android:background="@drawable/widget_promo_panel_search_background" />
 
                 </FrameLayout>
@@ -64,7 +64,7 @@
                     android:layout_height="40dp"
                     android:padding="8dp"
                     android:src="@drawable/ic_microphone"
-                    android:contentDescription="@null"
+                    android:contentDescription="@string/search_widget_promo_voice_search_content_description"
                     android:background="@drawable/widget_promo_panel_search_background" />
 
                 <ImageView
@@ -74,7 +74,7 @@
                     android:layout_height="40dp"
                     android:padding="8dp"
                     android:src="@drawable/ic_product_private_window"
-                    android:contentDescription="@null"
+                    android:contentDescription="@string/search_widget_promo_private_search_content_description"
                     android:background="@drawable/widget_promo_panel_search_background" />
 
                 <ImageView
@@ -84,7 +84,7 @@
                     android:layout_height="40dp"
                     android:padding="8dp"
                     android:src="@drawable/ic_product_brave_leo"
-                    android:contentDescription="@null"
+                    android:contentDescription="@string/search_widget_promo_leo_content_description"
                     android:background="@drawable/widget_promo_panel_search_background" />
             </LinearLayout>
 
