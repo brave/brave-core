@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -840,7 +841,7 @@ TEST_F(BraveWalletP3AUnitTest, AdaTransactionSentObservation) {
 
   auto params = mojom::NewCardanoTransactionParams::New(
       mojom::kCardanoMainnet, ada_from(), kMockCardanoAddress1, 5000000, false,
-      nullptr);
+      std::nullopt, nullptr);
 
   TestFuture<bool, const std::string&, const std::string&> tx_add_future;
   tx_service()->AddUnapprovedCardanoTransaction(std::move(params),
