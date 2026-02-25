@@ -26,9 +26,7 @@ class PlaylistTabHelper: NSObject, TabObserver {
     self.tab = tab
     super.init()
     tab.addObserver(self)
-  }
 
-  func tabDidCreateWebView(_ tab: some TabState) {
     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
     longPress.delegate = self
     tab.view.addGestureRecognizer(longPress)

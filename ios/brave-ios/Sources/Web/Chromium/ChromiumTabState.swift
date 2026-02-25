@@ -26,6 +26,10 @@ class ChromiumTabState: TabState, TabStateImpl {
         configuration.isPersistent == wkConfiguration.websiteDataStore.isPersistent,
         "Persistance of configurations must match"
       )
+      assert(
+        !FeatureList.kUseProfileWebViewConfiguration.enabled,
+        "Passing in a WKWebViewConfiguration with UseChromiumWebViewsJavaScript enabled is invalid"
+      )
     }
     self.navigationHandler = .init(tab: self)
     self.uiHandler = .init(tab: self)
@@ -252,7 +256,14 @@ class ChromiumTabState: TabState, TabStateImpl {
 
     attachWebObservers()
 
-    if createdWKWebView != nil {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled || createdWKWebView != nil {
+      // If UseProfileWebViewConfiguration is enabled, we will never pass in a WebKit configuration
+      // while creating the CWVWebView which means we won't have a way to determine when the
+      // underlying WKWebView is created so we will call `didCreateWebView` anyways. The usage of
+      // `internalWebView` is mostly hidden anyways and `TabState.configuration` is not going to be
+      // useful when the feature flag is enabled anyways.
+      //
+      // If UseProfileWebViewConfiguration is not enabled:
       // CWVWebView only creates the underlying WKWebView if you pass in a WKWebViewConfiguration.
       // When a new web view is created via window.open we must wait until WebState creates the
       // underlying web view using the configuration passed by WebKit

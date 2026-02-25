@@ -53,7 +53,7 @@ public class TabStateFactory {
       return ChromiumTabState(
         id: params.id,
         configuration: cwvConfiuration,
-        wkConfiguration: wkConfiguration
+        wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
       )
     }
     let webKitTabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
