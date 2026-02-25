@@ -1643,9 +1643,10 @@ ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
         for (const auto& source : web_sources->sources) {
           all_sources.push_back(source.Clone());
         }
-        if (web_sources->query.has_value() &&
-            !web_sources->query.value().empty()) {
-          all_queries.push_back(web_sources->query.value());
+        for (const auto& q : web_sources->queries) {
+          if (!q.empty()) {
+            all_queries.push_back(q);
+          }
         }
         for (const auto& rich_result : web_sources->rich_results) {
           all_rich_results.push_back(rich_result);

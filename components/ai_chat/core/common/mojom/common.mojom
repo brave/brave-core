@@ -193,7 +193,7 @@ struct WebSource {
 // Content block for parsed web sources from search tool results.
 struct WebSourcesContentBlock {
   array<WebSource> sources;
-  string? query;
+  array<string> queries;
 
   // Note: These are expected to be JSON strings in the format of
   // https://api-dashboard.search.brave.com/app/documentation/rich-search/responses#RichResult

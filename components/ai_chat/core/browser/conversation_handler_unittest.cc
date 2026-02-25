@@ -199,10 +199,11 @@ std::vector<mojom::WebSourcePtr> CreateWebSources(size_t num_sources) {
 
 std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
     size_t num_sources,
-    const std::string& query) {
+    std::vector<std::string> queries) {
   std::vector<mojom::ContentBlockPtr> output;
   output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
-      mojom::WebSourcesContentBlock::New(CreateWebSources(num_sources), query,
+      mojom::WebSourcesContentBlock::New(CreateWebSources(num_sources),
+                                         std::move(queries),
                                          std::vector<std::string>())));
   return output;
 }
@@ -5677,7 +5678,7 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New(
                             "", "tool_id_1", "",
-                            CreateWebSourcesOutput(1, "weather"), nullptr,
+                            CreateWebSourcesOutput(1, {"weather"}), nullptr,
                             true)),
                     std::nullopt));
               }),
@@ -5693,7 +5694,7 @@ TEST_F(ConversationHandlerUnitTest,
   auto expected_tool_event =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"weather\"}",
-          CreateWebSourcesOutput(1, "weather"), nullptr, true));
+          CreateWebSourcesOutput(1, {"weather"}), nullptr, true));
 
   // UI should be notified when tool output is set
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput(_, _))
@@ -5745,7 +5746,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry1->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"q1\"}",
-          CreateWebSourcesOutput(2, "query one"), nullptr, true)));
+          CreateWebSourcesOutput(2, {"query one"}), nullptr, true)));
 
   // Second assistant entry with another search tool result.
   auto entry2 = mojom::ConversationTurn::New();
@@ -5754,7 +5755,7 @@ TEST_F(ConversationHandlerUnitTest,
   entry2->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_2", "{\"query\":\"q2\"}",
-          CreateWebSourcesOutput(1, "query two"), nullptr, true)));
+          CreateWebSourcesOutput(1, {"query two"}), nullptr, true)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry1));
   conversation_handler_->chat_history_.push_back(std::move(entry2));
@@ -5786,8 +5787,8 @@ TEST_F(ConversationHandlerUnitTest,
   entry->events = std::vector<mojom::ConversationEntryEventPtr>();
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "page_summary", "tool_id_1", "{}", CreateWebSourcesOutput(1, "query"),
-          nullptr, true)));
+          "page_summary", "tool_id_1", "{}",
+          CreateWebSourcesOutput(1, {"query"}), nullptr, true)));
   // Non-tool event is also ignored.
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("text")));
@@ -5827,7 +5828,7 @@ TEST_F(ConversationHandlerUnitTest,
   early_assistant->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"old\"}",
-          CreateWebSourcesOutput(1, "old query"), nullptr, true)));
+          CreateWebSourcesOutput(1, {"old query"}), nullptr, true)));
 
   auto user_entry = mojom::ConversationTurn::New();
   user_entry->character_type = mojom::CharacterType::HUMAN;
@@ -5848,27 +5849,66 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_SkipsEmptyQuery) {
-  // Empty or missing query is not added to search queries.
+       ExtractSourcesFromRecentAssistantEntries_NoSearchQueriesEvent) {
+  // No search queries event should be emitted when queries are empty
+  // or contain only empty strings.
+  struct TestCase {
+    std::string description;
+    std::vector<std::string> queries;
+  };
+  TestCase cases[] = {
+      {"empty array", std::vector<std::string>{}},
+      {"all empty strings", std::vector<std::string>{"", ""}},
+  };
+  for (auto& [description, queries] : cases) {
+    SCOPED_TRACE(description);
+    conversation_handler_->chat_history_.clear();
+
+    auto entry = mojom::ConversationTurn::New();
+    entry->character_type = mojom::CharacterType::ASSISTANT;
+    entry->events = std::vector<mojom::ConversationEntryEventPtr>();
+    entry->events->push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
+            CreateWebSourcesOutput(1, std::move(queries)), nullptr, true)));
+
+    conversation_handler_->chat_history_.push_back(std::move(entry));
+
+    auto events =
+        conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
+
+    ASSERT_EQ(events.size(), 1u);
+    EXPECT_TRUE(events[0]->is_sources_event());
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       ExtractSourcesFromRecentAssistantEntries_MultipleQueries) {
+  // A single WebSourcesContentBlock can carry multiple queries.
   auto entry = mojom::ConversationTurn::New();
   entry->character_type = mojom::CharacterType::ASSISTANT;
   entry->events = std::vector<mojom::ConversationEntryEventPtr>();
-
-  // Tool with empty query string.
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-          CreateWebSourcesOutput(1, ""), nullptr, true)));
+          CreateWebSourcesOutput(1, {"alpha", "beta", "gamma"}), nullptr,
+          true)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry));
 
   auto events =
       conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
 
-  // Sources are still extracted.
-  ASSERT_EQ(events.size(), 1u);
-  EXPECT_TRUE(events[0]->is_sources_event());
-  // No search queries event since the query was empty.
+  ASSERT_EQ(events.size(), 2u);
+  ASSERT_TRUE(events[0]->is_sources_event());
+  EXPECT_EQ(events[0]->get_sources_event()->sources.size(), 1u);
+
+  ASSERT_TRUE(events[1]->is_search_queries_event());
+  auto& queries = events[1]->get_search_queries_event()->search_queries;
+  ASSERT_EQ(queries.size(), 3u);
+  EXPECT_EQ(queries[0], "alpha");
+  EXPECT_EQ(queries[1], "beta");
+  EXPECT_EQ(queries[2], "gamma");
 }
 
 TEST_F(ConversationHandlerUnitTest,
@@ -5900,7 +5940,7 @@ TEST_F(ConversationHandlerUnitTest,
           testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 // Tool result from server
-                auto output = CreateWebSourcesOutput(1, "test");
+                auto output = CreateWebSourcesOutput(1, {"test"});
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("", "tool_id_1", "",
@@ -6039,7 +6079,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Build expected tool use events for verification
   auto expected_server_tool = mojom::ToolUseEvent::New(
       "brave_web_search", "tool_id_1", "{\"query\":\"NYC\"}",
-      CreateWebSourcesOutput(1, "NYC weather"), nullptr, true);
+      CreateWebSourcesOutput(1, {"NYC weather"}), nullptr, true);
 
   auto expected_client_tool = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_2", "{\"location\":\"NYC\"}",
@@ -6080,7 +6120,7 @@ TEST_F(ConversationHandlerUnitTest,
                                              std::nullopt, nullptr, false)),
                 std::nullopt));
             // Server tool result (server processed its own tool)
-            auto output = CreateWebSourcesOutput(1, "NYC weather");
+            auto output = CreateWebSourcesOutput(1, {"NYC weather"});
             callback.Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewToolUseEvent(
                     mojom::ToolUseEvent::New("", "tool_id_1", "",

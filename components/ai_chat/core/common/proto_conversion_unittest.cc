@@ -11,6 +11,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -354,7 +355,7 @@ TEST(ProtoConversionTest,
 
   // Create WebSourcesContentBlock
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
-  web_sources_block->query = "weather in San Jose";
+  web_sources_block->queries = std::vector<std::string>{"weather in San Jose"};
 
   auto source1 = mojom::WebSource::New(
       "Weather.com", GURL("https://weather.com/sanjose"),
@@ -386,7 +387,8 @@ TEST(ProtoConversionTest,
   // Verify WebSourcesContentBlock serialization
   ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
   const auto& proto_sources = proto_event.output(0).web_sources_content_block();
-  EXPECT_EQ(proto_sources.query(), "weather in San Jose");
+  ASSERT_EQ(proto_sources.queries_size(), 1);
+  EXPECT_EQ(proto_sources.queries(0), "weather in San Jose");
   ASSERT_EQ(proto_sources.sources_size(), 2);
   EXPECT_EQ(proto_sources.sources(0).title(), "Weather.com");
   EXPECT_EQ(proto_sources.sources(0).url(), "https://weather.com/sanjose");
@@ -431,7 +433,8 @@ TEST(ProtoConversionTest,
   EXPECT_TRUE(success);
   ASSERT_EQ(proto_event.output_size(), 1);
   ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
-  EXPECT_FALSE(proto_event.output(0).web_sources_content_block().has_query());
+  EXPECT_EQ(proto_event.output(0).web_sources_content_block().queries_size(),
+            0);
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeToolUseEvent(proto_event);
@@ -453,7 +456,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_MixedContentBlocks) {
 
   // Add WebSourcesContentBlock
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
-  web_sources_block->query = "test query";
+  web_sources_block->queries = std::vector<std::string>{"test query"};
   auto source = mojom::WebSource::New("Test Site", GURL("https://test.com"),
                                       GURL("https://test.com/favicon.ico"),
                                       std::nullopt, std::nullopt);
@@ -545,7 +548,7 @@ TEST(ProtoConversionTest,
 
   auto* proto_block = proto_event.add_output();
   auto* proto_sources = proto_block->mutable_web_sources_content_block();
-  proto_sources->set_query("test query");
+  proto_sources->add_queries("test query");
 
   // Valid source
   auto* valid_source = proto_sources->add_sources();
@@ -574,7 +577,7 @@ TEST(ProtoConversionTest,
   ASSERT_TRUE(mojom_event->output->at(0)->is_web_sources_content_block());
   const auto& web_sources =
       mojom_event->output->at(0)->get_web_sources_content_block();
-  EXPECT_EQ(web_sources->query, "test query");
+  EXPECT_THAT(web_sources->queries, testing::ElementsAre("test query"));
   ASSERT_EQ(web_sources->sources.size(), 1u);
   EXPECT_EQ(web_sources->sources[0]->title, "Valid");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://valid.com/");
@@ -592,7 +595,7 @@ TEST(ProtoConversionTest,
       std::vector<mojom::ContentBlockPtr>(), nullptr, false);
 
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
-  web_sources_block->query = "test page content";
+  web_sources_block->queries = std::vector<std::string>{"test page content"};
 
   // Source 1: both page_content and extra_snippets set
   auto source1 = mojom::WebSource::New(

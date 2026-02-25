@@ -23,7 +23,7 @@ message TextContentBlockProto {
 
 message WebSourcesContentBlockProto {
   repeated WebSourceProto sources = 1;
-  optional string query = 2;
+  repeated string queries = 2;
   repeated string rich_results = 3;
 }
 

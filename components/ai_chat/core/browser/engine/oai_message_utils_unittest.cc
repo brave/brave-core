@@ -45,7 +45,7 @@ struct RewriteActionTestParam {
 // are populated; otherwise those fields are nullopt/empty (stripped).
 mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
     std::vector<std::optional<size_t>> page_content_sizes,
-    const std::string& query,
+    std::vector<std::string> queries,
     bool include_rich_results = true) {
   std::vector<mojom::WebSourcePtr> sources;
   for (size_t i = 0; i < page_content_sizes.size(); ++i) {
@@ -62,7 +62,7 @@ mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
         std::move(page_content), std::move(extra_snippets)));
   }
   return mojom::WebSourcesContentBlock::New(
-      std::move(sources), query,
+      std::move(sources), std::move(queries),
       include_rich_results
           ? std::vector<std::string>{"{\"type\":\"rich_result\"}"}
           : std::vector<std::string>{});
@@ -70,10 +70,10 @@ mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
 
 mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
     std::optional<size_t> page_content_size,
-    const std::string& query,
+    std::vector<std::string> queries,
     bool include_rich_results = true) {
   return CreateWebSourcesContentBlock(
-      std::vector<std::optional<size_t>>{page_content_size}, query,
+      std::vector<std::optional<size_t>>{page_content_size}, std::move(queries),
       include_rich_results);
 }
 
@@ -1146,21 +1146,21 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_StripWebSourcesOutputs) {
     events.push_back(
         CreateToolUseEvent("search", "t0",
                            mojom::ContentBlock::NewWebSourcesContentBlock(
-                               CreateWebSourcesContentBlock(100, "q0"))));
+                               CreateWebSourcesContentBlock(100, {"q0"}))));
     // Two sources — verifies all sources in a stripped event are stripped.
     events.push_back(CreateToolUseEvent(
         "search", "t1",
         mojom::ContentBlock::NewWebSourcesContentBlock(
-            CreateWebSourcesContentBlock({100, 100}, "q1"))));
+            CreateWebSourcesContentBlock({100, 100}, {"q1"}))));
     // Two sources — verifies all sources in a kept output are kept.
     events.push_back(CreateToolUseEvent(
         "search", "t2",
         mojom::ContentBlock::NewWebSourcesContentBlock(
-            CreateWebSourcesContentBlock({100, 100}, "q2"))));
+            CreateWebSourcesContentBlock({100, 100}, {"q2"}))));
     events.push_back(
         CreateToolUseEvent("search", "t3",
                            mojom::ContentBlock::NewWebSourcesContentBlock(
-                               CreateWebSourcesContentBlock(100, "q3"))));
+                               CreateWebSourcesContentBlock(100, {"q3"}))));
     events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
         mojom::CompletionEvent::New("done")));
     history[1]->events = std::move(events);
@@ -1181,24 +1181,25 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_StripWebSourcesOutputs) {
   ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
   EXPECT_MOJOM_EQ(tool_msgs[3]->content[0],
                   mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock(100, "q3")));
+                      CreateWebSourcesContentBlock(100, {"q3"})));
   ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
   EXPECT_MOJOM_EQ(tool_msgs[2]->content[0],
                   mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock({100, 100}, "q2")));
+                      CreateWebSourcesContentBlock({100, 100}, {"q2"})));
 
   // Older ones stripped to metadata only.
   ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
   EXPECT_MOJOM_EQ(
       tool_msgs[1]->content[0],
       mojom::ContentBlock::NewWebSourcesContentBlock(
-          CreateWebSourcesContentBlock({std::nullopt, std::nullopt}, "q1",
+          CreateWebSourcesContentBlock({std::nullopt, std::nullopt}, {"q1"},
                                        /*include_rich_results=*/false)));
   ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
-  EXPECT_MOJOM_EQ(tool_msgs[0]->content[0],
-                  mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock(
-                          std::nullopt, "q0", /*include_rich_results=*/false)));
+  EXPECT_MOJOM_EQ(
+      tool_msgs[0]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q0"},
+                                       /*include_rich_results=*/false)));
 }
 
 // Tests that large text/image tool results are dropped when they exceed the
@@ -1346,11 +1347,11 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
     events.push_back(CreateToolUseEvent(
         "search", "a0_0",
         mojom::ContentBlock::NewWebSourcesContentBlock(
-            CreateWebSourcesContentBlock(kWsPageContentSize, "q0"))));
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q0"}))));
     events.push_back(CreateToolUseEvent(
         "search", "a0_1",
         mojom::ContentBlock::NewWebSourcesContentBlock(
-            CreateWebSourcesContentBlock(kWsPageContentSize, "q1"))));
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q1"}))));
     events.push_back(CreateToolUseEvent(
         "text_tool", "a0_2",
         mojom::ContentBlock::NewTextContentBlock(
@@ -1370,11 +1371,11 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
     events.push_back(CreateToolUseEvent(
         "search", "a1_0",
         mojom::ContentBlock::NewWebSourcesContentBlock(
-            CreateWebSourcesContentBlock(kWsPageContentSize, "q2"))));
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q2"}))));
     events.push_back(CreateToolUseEvent(
         "search", "a1_1",
         mojom::ContentBlock::NewWebSourcesContentBlock(
-            CreateWebSourcesContentBlock(kWsPageContentSize, "q3"))));
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q3"}))));
     events.push_back(CreateToolUseEvent(
         "text_tool", "a1_2",
         mojom::ContentBlock::NewTextContentBlock(
@@ -1410,14 +1411,16 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
                   std::string(kLargeToolSize, 't'));
   // ws: kept full (ws_output_count=1)
   ASSERT_EQ(tool_msgs[5]->content.size(), 1u);
-  EXPECT_MOJOM_EQ(tool_msgs[5]->content[0],
-                  mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock(kWsPageContentSize, "q3")));
+  EXPECT_MOJOM_EQ(
+      tool_msgs[5]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(kWsPageContentSize, {"q3"})));
   // ws: kept full (ws_output_count=2)
   ASSERT_EQ(tool_msgs[4]->content.size(), 1u);
-  EXPECT_MOJOM_EQ(tool_msgs[4]->content[0],
-                  mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock(kWsPageContentSize, "q2")));
+  EXPECT_MOJOM_EQ(
+      tool_msgs[4]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(kWsPageContentSize, {"q2"})));
 
   // --- A0 (oldest turn) ---
   // small text: kept (not large)
@@ -1431,16 +1434,18 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
       "[Large result removed to save space for subsequent results]");
   // ws: STRIPPED (ws_output_count=3 > 2)
   ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
-  EXPECT_MOJOM_EQ(tool_msgs[1]->content[0],
-                  mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock(
-                          std::nullopt, "q1", /*include_rich_results=*/false)));
+  EXPECT_MOJOM_EQ(
+      tool_msgs[1]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q1"},
+                                       /*include_rich_results=*/false)));
   // ws: STRIPPED (ws_output_count=4 > 2)
   ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
-  EXPECT_MOJOM_EQ(tool_msgs[0]->content[0],
-                  mojom::ContentBlock::NewWebSourcesContentBlock(
-                      CreateWebSourcesContentBlock(
-                          std::nullopt, "q0", /*include_rich_results=*/false)));
+  EXPECT_MOJOM_EQ(
+      tool_msgs[0]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q0"},
+                                       /*include_rich_results=*/false)));
 }
 
 }  // namespace ai_chat

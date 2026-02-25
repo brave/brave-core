@@ -518,9 +518,10 @@ INSTANTIATE_TEST_SUITE_P(
               rich_results.push_back(
                   R"({"type":"video","url":"https://video.example.com"})");
               return mojom::ContentBlock::NewWebSourcesContentBlock(
-                  mojom::WebSourcesContentBlock::New(std::move(sources),
-                                                     "test query",
-                                                     std::move(rich_results)));
+                  mojom::WebSourcesContentBlock::New(
+                      std::move(sources),
+                      std::vector<std::string>{"test query"},
+                      std::move(rich_results)));
             }),
             R"({
               "type": "brave-chat.webSources",
@@ -540,6 +541,28 @@ INSTANTIATE_TEST_SUITE_P(
                 {"type": "knowledge_graph", "title": "Test Title"},
                 {"type": "video", "url": "https://video.example.com"}
               ]
+            })"},
+        ContentBlockTestParam{
+            "WebSourcesMultipleQueries", base::BindRepeating([]() {
+              std::vector<mojom::WebSourcePtr> sources;
+              sources.push_back(mojom::WebSource::New(
+                  "Example Title", GURL("https://example.com/page"),
+                  GURL("https://example.com/favicon.ico"), std::nullopt,
+                  std::nullopt));
+              return mojom::ContentBlock::NewWebSourcesContentBlock(
+                  mojom::WebSourcesContentBlock::New(
+                      std::move(sources),
+                      std::vector<std::string>{"query one", "query two"},
+                      std::vector<std::string>()));
+            }),
+            R"({
+              "type": "brave-chat.webSources",
+              "sources": [{
+                "title": "Example Title",
+                "url": "https://example.com/page",
+                "favicon": "https://example.com/favicon.ico"
+              }],
+              "query": ["query one", "query two"]
             })"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
       return info.param.name;
@@ -2005,60 +2028,75 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallRequest) {
 }
 
 TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
-  // Test tool call result parsing (output_content present)
-  testing::StrictMock<MockCallbacks> mock_callbacks;
+  // Test tool call result parsing (output_content present).
+  // query can be either a string or an array of strings.
+  struct TestCase {
+    std::string description;
+    std::string query_json;
+    std::vector<std::string> expected_queries;
+  };
+  TestCase cases[] = {
+      {"string query", R"("query": "weather today")", {"weather today"}},
+      {"array query", R"("query": ["q1", "q2"])", {"q1", "q2"}},
+  };
 
-  auto chunk = base::test::ParseJsonDict(R"({
-    "object": "chat.completion.chunk",
-    "model": "llama-3-8b-instruct",
-    "choices": [{
-      "delta": {
-        "tool_calls": [
-          {
-            "id": "call_123",
-            "output_content": [
-              {
-                "type": "brave-chat.webSources",
-                "sources": [
-                  {
-                    "title": "Weather.com",
-                    "url": "https://weather.com",
-                    "favicon": "https://imgs.search.brave.com/weather.ico"
-                  }
-                ],
-                "query": "weather today"
-              }
-            ]
-          }
-        ]
-      }
-    }]
-  })");
+  for (auto& [description, query_json, expected_queries] : cases) {
+    SCOPED_TRACE(description);
+    testing::StrictMock<MockCallbacks> mock_callbacks;
 
-  std::vector<mojom::WebSourcePtr> sources;
-  sources.push_back(
-      mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
-                            GURL("https://imgs.search.brave.com/weather.ico"),
-                            std::nullopt, std::nullopt));
-  std::vector<mojom::ContentBlockPtr> output;
-  output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
-      mojom::WebSourcesContentBlock::New(std::move(sources), "weather today",
-                                         std::vector<std::string>())));
-  auto expected_event =
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "", "call_123", std::string(), std::move(output), nullptr, true));
-  EXPECT_CALL(mock_callbacks,
-              OnDataReceived(testing::Field(
-                  "event", &EngineConsumer::GenerationResultData::event,
-                  MojomEq(expected_event.get()))))
-      .Times(1);
+    auto chunk = base::test::ParseJsonDict(absl::StrFormat(R"({
+      "object": "chat.completion.chunk",
+      "model": "llama-3-8b-instruct",
+      "choices": [{
+        "delta": {
+          "tool_calls": [
+            {
+              "id": "call_123",
+              "output_content": [
+                {
+                  "type": "brave-chat.webSources",
+                  "sources": [
+                    {
+                      "title": "Weather.com",
+                      "url": "https://weather.com",
+                      "favicon": "https://imgs.search.brave.com/weather.ico"
+                    }
+                  ],
+                  %s
+                }
+              ]
+            }
+          ]
+        }
+      }]
+    })",
+                                                           query_json));
 
-  client_->OnQueryDataReceived(
-      base::BindRepeating(&MockCallbacks::OnDataReceived,
-                          base::Unretained(&mock_callbacks)),
-      base::ok(base::Value(std::move(chunk))));
+    std::vector<mojom::WebSourcePtr> sources;
+    sources.push_back(
+        mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
+                              GURL("https://imgs.search.brave.com/weather.ico"),
+                              std::nullopt, std::nullopt));
+    std::vector<mojom::ContentBlockPtr> output;
+    output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+        mojom::WebSourcesContentBlock::New(std::move(sources), expected_queries,
+                                           std::vector<std::string>())));
+    auto expected_event =
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "", "call_123", std::string(), std::move(output), nullptr, true));
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_event.get()))))
+        .Times(1);
 
-  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+    client_->OnQueryDataReceived(
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::ok(base::Value(std::move(chunk))));
+
+    testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
 }
 
 TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
