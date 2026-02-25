@@ -81,7 +81,14 @@ aiChat.api.subscribeToOnChildFrameBound((parentPageReceiver) => {
 function App() {
   // <if expr="is_ios">
   useIOSOneTapFix()
+
+  // When the iframe calls dismissMenus() (user tapped/clicked there), trigger a
+  // click in the parent so Leo's clickOutside closes any open menus.
+  aiChat.api.useDismissMenus(() => {
+    document.body.click()
+  })
   // </if>
+
   React.useEffect(() => {
     document.getElementById('mountPoint')?.classList.add('loaded')
   }, [])
