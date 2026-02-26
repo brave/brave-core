@@ -5,6 +5,12 @@
 
 #include "brave/utility/importer/chrome_importer.h"
 
+#if BUILDFLAG(IS_WIN)
+#include <windows.h>
+
+#include <wincrypt.h>
+#endif
+
 #include <memory>
 #include <optional>
 #include <string>
@@ -41,7 +47,6 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "base/base64.h"
-#include "base/win/wincrypt_shim.h"
 #endif
 
 using base::Time;
