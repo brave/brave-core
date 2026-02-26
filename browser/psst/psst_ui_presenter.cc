@@ -26,20 +26,15 @@ class PsstWebDialogDelegate : public ui::WebDialogDelegate {
   PsstWebDialogDelegate(const PsstWebDialogDelegate&) = delete;
   PsstWebDialogDelegate& operator=(const PsstWebDialogDelegate&) = delete;
   ~PsstWebDialogDelegate() override;
-
-  GURL GetDialogContentURL() const override;
 };
 
 PsstWebDialogDelegate::PsstWebDialogDelegate() {
+  set_dialog_content_url(GURL(kBraveUIPsstURL));
   set_show_dialog_title(false);
   set_can_close(true);
 }
 
 PsstWebDialogDelegate::~PsstWebDialogDelegate() = default;
-
-GURL PsstWebDialogDelegate::GetDialogContentURL() const {
-  return GURL(kBraveUIPsstURL);
-}
 
 void OpenPsstDialog(content::WebContents* initiator) {
   const gfx::Size min_size(kDialogWidth, kDialogMinHeight);

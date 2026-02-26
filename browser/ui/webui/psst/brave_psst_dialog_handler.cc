@@ -31,10 +31,6 @@ namespace psst {
 
 namespace {
 
-// inline constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";
-// inline constexpr char kUserScriptResultTaskItemDescPropName[] =
-// "description";
-
 void CloseDialog(content::WebContents* initiator_contents) {
   DCHECK(initiator_contents);
   auto* top_level_web_contents =
