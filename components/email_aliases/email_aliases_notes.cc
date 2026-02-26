@@ -58,7 +58,7 @@ void EmailAliasesNotes::RemoveNote(const std::string& alias) {
   UpdateNote(alias, {});
 }
 
-void EmailAliasesNotes::RemoveInactiveNotes(
+void EmailAliasesNotes::RemoveNotesForDeletedAliases(
     const std::vector<AliasListEntry>& active_aliases) {
   base::Value::Dict notes;
   for (const auto& alias : active_aliases) {

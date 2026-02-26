@@ -69,14 +69,14 @@ TEST_F(EmailAliasesNotesTest, InitAndRemoveInactive) {
   {
     EmailAliasesNotes email_aliases_notes(GetPrefs(), "a@prima.ry");
     // No active aliases for `a@primay.ry`
-    email_aliases_notes.RemoveInactiveNotes({});
+    email_aliases_notes.RemoveNotesForDeletedAliases({});
     EXPECT_EQ(2u, GetPrefs().GetDict(prefs::kEmailAliasesNotes).size());
     EXPECT_EQ(std::nullopt, email_aliases_notes.GetNote("alias1"));
   }
 
   {
     EmailAliasesNotes email_aliases_notes(GetPrefs(), "b@prima.ry");
-    email_aliases_notes.RemoveInactiveNotes(
+    email_aliases_notes.RemoveNotesForDeletedAliases(
         CreateAliases({"alias1", "alias3"}));
     EXPECT_EQ(2u, GetPrefs().GetDict(prefs::kEmailAliasesNotes).size());
     EXPECT_EQ(2u, GetPrefs()
@@ -89,7 +89,7 @@ TEST_F(EmailAliasesNotesTest, InitAndRemoveInactive) {
   }
   {
     EmailAliasesNotes email_aliases_notes(GetPrefs(), "c@prima.ry");
-    email_aliases_notes.RemoveInactiveNotes(
+    email_aliases_notes.RemoveNotesForDeletedAliases(
         CreateAliases({"alias1", "alias2", "alias3"}));
     EXPECT_EQ(2u, GetPrefs().GetDict(prefs::kEmailAliasesNotes).size());
     EXPECT_EQ(3u, GetPrefs()

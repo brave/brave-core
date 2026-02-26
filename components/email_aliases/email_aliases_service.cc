@@ -332,7 +332,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
   }
 
   EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
-  notes.RemoveInactiveNotes(response.body.value()->result);
+  notes.RemoveNotesForDeletedAliases(response.body.value()->result);
 
   if (!observers_.empty()) {
     std::vector<email_aliases::mojom::AliasPtr> aliases;

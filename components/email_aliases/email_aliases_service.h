@@ -58,7 +58,7 @@ class EmailAliasesService : public KeyedService,
   // Requests generation of a new alias and returns the result via |callback|.
   void GenerateAlias(GenerateAliasCallback callback) override;
 
-  // Creates or updates an alias identified by |alias_email| with optional note.
+  // Creates or updates an alias identified by |alias_email|.
   void UpdateAlias(const std::string& alias_email,
                    mojom::AliasUpdateDataPtr update_data,
                    UpdateAliasCallback callback) override;

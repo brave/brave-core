@@ -29,7 +29,8 @@ class EmailAliasesNotes {
   std::optional<std::string> GetNote(const std::string& alias);
   void UpdateNote(const std::string& alias, const std::string& notes);
   void RemoveNote(const std::string& alias);
-  void RemoveInactiveNotes(const std::vector<AliasListEntry>& active_aliases);
+  void RemoveNotesForDeletedAliases(
+      const std::vector<AliasListEntry>& active_aliases);
 
  private:
   const raw_ref<PrefService> pref_service_;
