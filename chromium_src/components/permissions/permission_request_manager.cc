@@ -85,6 +85,7 @@ void PermissionRequestManager::AcceptDenyCancel(
   for (const auto& request : requests_) {
     if (base::Contains(accepted_requests, request.get())) {
       PermissionGrantedIncludingDuplicates(request.get(),
+                                           /*prompt_options=*/std::monostate(),
                                            /*is_one_time=*/false);
     } else if (base::Contains(denied_requests, request.get())) {
       PermissionDeniedIncludingDuplicates(request.get());
@@ -106,7 +107,7 @@ void PermissionRequestManager::AcceptDenyCancel(
   } else if (!denied_requests.empty()) {
     action = PermissionAction::DENIED;
   }
-  CurrentRequestsDecided(action);
+  CurrentRequestsDecided(action, /*prompt_options=*/std::monostate());
 }
 
 void PermissionRequestManager::OnTabActiveStateChanged(bool active) {

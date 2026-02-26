@@ -54,6 +54,8 @@
 # These tests fail because we stub out
 # optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
 # optimization_guide::features::IsModelDownloadingEnabled
+-All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/EligibilityReturnsPendingUsageIfModelInstalledForOtherFeature
+-All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/EligibleIfBackgroundDownloadEnabled
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/import_data_handler.cc b/chrome/browser/ui/webui/settings/import_data_handler.cc
-index 1e4ecb4f715698a5f7d3f8c885293e92c549d66b..b1147d64653c5a310f6ec8129b0fcf864f5e3d4e 100644
+index cdbe7b0119d5daffbabc669c08de49cae4680b03..9a08618d88c60eb3b51777de885d6ad1a66c5ea5 100644
 --- a/chrome/browser/ui/webui/settings/import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/import_data_handler.cc
-@@ -146,6 +146,7 @@ void ImportDataHandler::HandleImportData(const base::Value::List& args) {
+@@ -146,6 +146,7 @@ void ImportDataHandler::HandleImportData(const base::ListValue& args) {
    if (*type_dict.FindBool(prefs::kImportDialogSearchEngine)) {
      selected_items |= user_data_importer::SEARCH_ENGINES;
    }

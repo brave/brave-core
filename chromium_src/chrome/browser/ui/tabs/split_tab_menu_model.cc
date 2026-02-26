@@ -15,9 +15,14 @@
     break;                                                 \
   }
 
+#define BRAVE_GET_METRICS_SUFFIX_FOR_COMMAND           \
+  case SplitTabMenuModel::CommandId::kToggleLinkState: \
+    return "ToggleLinkState";
+
 #include <chrome/browser/ui/tabs/split_tab_menu_model.cc>
 
 #undef BRAVE_SPLIT_TAB_MENU_MODEL_EXECUTE_COMMAND
+#undef BRAVE_GET_METRICS_SUFFIX_FOR_COMMAND
 #undef GetCommandIdInt
 #undef GetCommandIdEnum
 

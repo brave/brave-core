@@ -36,6 +36,7 @@ import android.content.res.Resources;
 import androidx.annotation.IntDef;
 
 import org.chromium.base.Callback;
+import org.chromium.base.CallbackUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
@@ -68,6 +69,7 @@ public class CredentialEditMediator implements UiActionHandler {
             "PasswordManager.CredentialEntryActions.BlockedCredential";
     private final PasswordAccessReauthenticationHelper mReauthenticationHelper;
     private final ConfirmationDialogHelper mDeleteDialogHelper;
+    private final Resources mResources;
     private final CredentialActionDelegate mCredentialActionDelegate;
     private final Runnable mHelpLauncher;
     private final boolean mIsBlockedCredential;
@@ -149,11 +151,13 @@ public class CredentialEditMediator implements UiActionHandler {
     CredentialEditMediator(
             PasswordAccessReauthenticationHelper reauthenticationHelper,
             ConfirmationDialogHelper deleteDialogHelper,
+            Resources resources,
             CredentialActionDelegate credentialActionDelegate,
             Runnable helpLauncher,
             boolean isBlockedCredential) {
         mReauthenticationHelper = reauthenticationHelper;
         mDeleteDialogHelper = deleteDialogHelper;
+        mResources = resources;
         mCredentialActionDelegate = credentialActionDelegate;
         mHelpLauncher = helpLauncher;
         mIsBlockedCredential = isBlockedCredential;
@@ -240,18 +244,17 @@ public class CredentialEditMediator implements UiActionHandler {
             mCredentialActionDelegate.deleteCredential();
             return;
         }
-        Resources resources = mDeleteDialogHelper.getResources();
-        if (resources == null) return;
+        if (mResources == null) return;
         String title =
-                resources.getString(R.string.password_entry_edit_delete_credential_dialog_title);
+                mResources.getString(R.string.password_entry_edit_delete_credential_dialog_title);
         String message =
-                resources.getString(
+                mResources.getString(
                         mIsInsecureCredential
                                 ? R.string.password_check_delete_credential_dialog_body
                                 : R.string.password_entry_edit_deletion_dialog_body,
                         mModel.get(URL_OR_APP));
         String confirmation =
-                resources.getString(R.string.password_entry_edit_delete_credential_dialog_confirm);
+                mResources.getString(R.string.password_entry_edit_delete_credential_dialog_confirm);
         mDeleteDialogHelper.showConfirmation(
                 title,
                 message,
@@ -259,7 +262,8 @@ public class CredentialEditMediator implements UiActionHandler {
                 () -> {
                     recordDeleted();
                     mCredentialActionDelegate.deleteCredential();
-                });
+                },
+                CallbackUtils.emptyRunnable());
     }
 
     @Override

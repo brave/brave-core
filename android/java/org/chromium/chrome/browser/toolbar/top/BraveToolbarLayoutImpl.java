@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.top;
 
+import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
@@ -49,7 +50,7 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -411,7 +412,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public boolean isUrlBarFocused() {
         if (getLocationBar() instanceof BraveLocationBarCoordinator) {
-            return ((BraveLocationBarCoordinator) getLocationBar()).isUrlBarFocused();
+            BraveLocationBarCoordinator coordinator =
+                    (BraveLocationBarCoordinator) getLocationBar();
+            assertNonNull(coordinator.getLocationBarMediator());
+            return coordinator.getLocationBarMediator().isUrlBarFocused();
         }
         return false;
     }
@@ -1600,7 +1604,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Nullable ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             HistoryDelegate historyDelegate,
             UserEducationHelper userEducationHelper,
-            ObservableSupplier<Tracker> trackerSupplier,
+            MonotonicObservableSupplier<Tracker> trackerSupplier,
             ToolbarProgressBar progressBar,
             @Nullable ReloadButtonCoordinator reloadButtonCoordinator,
             @Nullable BackButtonCoordinator backButtonCoordinator,

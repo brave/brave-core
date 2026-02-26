@@ -7,7 +7,7 @@ import '//resources/cr_elements/cr_button/cr_button.js'
 import '//resources/cr_elements/cr_input/cr_input.js'
 
 import {loadTimeData} from '//resources/js/load_time_data.js'
-import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js'
+import {CrLitElement, html} from '//resources/lit/v3_0/lit.rollup.js'
 
 import {BraveTabSearchApiProxy, TabSearchApiProxyImpl} from '../tab_search_api_proxy.js'
 import type {TabOrganizationSession} from '../tab_search.mojom-webui.js'
@@ -266,6 +266,118 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   protected onBackClick_() {
     this.fire('back-click')
+  }
+
+  protected getUndoFocusTabsHtml_() {
+    return this.undoTopic_ !== '' ? html`
+      <leo-alert
+        id="undo"
+        type="success"
+        hideIcon={true}
+      >
+        ${this.getWindowCreatedMessage_()}
+        <leo-button
+          id="undoButton"
+          kind="plain-faint"
+          size="tiny"
+          @click="${this.onUndoClicked_}"
+        >
+          ${this.getUndoButtonLabel_()}
+        </leo-button>
+      </leo-alert>
+    ` : ''
+  }
+
+  protected getTopicsHtml_() {
+    return this.isLoadingTopics
+    ? [1, 2, 3, 4, 5].map((key) => html`
+      <leo-button
+        key=${key}
+        class="topics-button"
+        size="small"
+        kind="outline"
+        isDisabled={true}
+      >
+        <div class="topic-description">
+          <div class="emoji-wrapper">
+            <leo-progressring class="loading-ring"></leo-progressring>
+          </div>
+          <div class="empty-state"></div>
+        </div>
+      </leo-button>
+    `)
+    : this.topics_.map((entry, index) => html`
+        <leo-button
+          id="${this.getTopicId_(index)}"
+          class="topics-button"
+          size="small"
+          kind="outline"
+          @click="${() => this.onTopicClicked_(index)}"
+        >
+          <div class="topic-description">
+            <div class="emoji-wrapper">
+              ${this.getTopicEmoji_(entry)}
+            </div>
+            ${this.getTopicWithoutEmoji_(entry)}
+          </div>
+        </leo-button>
+    `)
+  }
+
+  protected getHeaderHtml_() {
+    return html`
+      <div class="title-row">
+        ${!this.showBackButton ? html`
+          <div>
+            <leo-button
+              size="medium"
+              kind="plain-faint"
+              fab
+              @click=${this.onBackClick_}
+            >
+              <leo-icon name="arrow-left"></leo-icon>
+            </leo-button>
+          </div>
+        ` : ''}
+        <div class='title-column'>
+          <div class="title">${this.getTitle_()}</div>
+          ${!this.showFRE_ ? html`
+            <div class="subtitle">${this.getSubtitle_()}</div>
+          ` : ''}
+        </div>
+      </div>
+    `
+  }
+
+  protected getEnableTabFocusHtml_() {
+    return html`
+      <div class="enable-tab-focus-wrapper">
+        ${this.getHeaderHtml_()}
+        <div class="enable-tab-focus-content-wrapper">
+          <div class="enable-tab-focus-illustration"></div>
+          <div class="enable-tab-focus-info-wrapper">
+            <span class="enable-tab-focus-info-text">
+              ${this.getPrivacyDisclaimerMessage_()}
+            </span>
+            <div class="enable-tab-focus-button-row">
+              <span class="learn-more-link" @click=${this.onLearnMoreClicked_}>
+                ${this.getLearnMoreLabel_()}
+              </span>
+              <div>
+              <leo-button
+                id="enableButton"
+                kind="filled"
+                size="small"
+                @click="${this.onEnableTabFocusClicked_}"
+              >
+                ${this.getEnableButtonLabel_()}
+              </leo-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
   }
 
   private onElementVisibilityChanged_(visible: boolean) {

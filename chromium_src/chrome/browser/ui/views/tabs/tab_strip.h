@@ -20,17 +20,13 @@ class BraveTabHoverCardController;
   friend class BraveVerticalTabStripRegionView; \
   void UpdateHoverCard
 
-#define GetDragContext                                                  \
-  Unused_GetDragContext() {                                             \
-    return nullptr;                                                     \
-  }                                                                     \
-  bool ShouldAlwaysHideCloseButton() const override;                    \
-  bool CanCloseTabViaMiddleButtonClick() const override;                \
-  bool IsVerticalTabsFloating() const override;                         \
-  static constexpr bool IsUsingBraveTabHoverCardController() {          \
-    return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>, \
-                          decltype(TabStrip::hover_card_controller_)>;  \
-  }                                                                     \
+#define GetDragContext                                   \
+  Unused_GetDragContext() {                              \
+    return nullptr;                                      \
+  }                                                      \
+  bool ShouldAlwaysHideCloseButton() const override;     \
+  bool CanCloseTabViaMiddleButtonClick() const override; \
+  bool IsVerticalTabsFloating() const override;          \
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController
@@ -38,8 +34,5 @@ class BraveTabHoverCardController;
 #undef TabHoverCardController
 #undef GetDragContext
 #undef UpdateHoverCard
-
-static_assert(TabStrip::IsUsingBraveTabHoverCardController(),
-              "Should use BraveTabHoverCardController");
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_H_

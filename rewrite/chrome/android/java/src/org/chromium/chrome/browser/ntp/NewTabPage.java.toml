@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
+# This change is intended to make `ToolbarPhone` always use
+# `mLocationBarBackground` instead of `mNtpFakeboxBackground.
+# Otherwise url bar on NTP has orange color and too rounded corners.
+
+# Had to use direct patch because there are two `isInSingleUrlBarMode`
+# methods at `NewTabPage` class. Bytecode patch caused java.lang.VerifyError
+# crash.
+# Related Chromium change:
+# https://source.chromium.org/chromium/chromium/src/+/d23864706c014549e1f1333face1ece0046c52bd
+
+[[substitution]]
+description = 'Force single URL bar mode off (return false instead of !isTablet)'
+pattern = '''    public static boolean isInSingleUrlBarMode(boolean isTablet) {
+        return !isTablet;
+    }'''
+replace = '''    public static boolean isInSingleUrlBarMode(boolean isTablet) {
+        return false;
+    }'''

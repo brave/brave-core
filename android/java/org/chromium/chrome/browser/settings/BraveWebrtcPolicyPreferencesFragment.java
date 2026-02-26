@@ -10,8 +10,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -20,7 +21,8 @@ import org.chromium.ui.UiUtils;
 /** Fragment to manage webrtc policy settings. */
 public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragment {
     static final String PREF_WEBRTC_POLICY = "webrtc_policy";
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
@@ -38,7 +40,7 @@ public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragmen
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

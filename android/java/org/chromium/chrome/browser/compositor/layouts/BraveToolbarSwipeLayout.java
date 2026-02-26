@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.compositor.layouts;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -29,8 +29,9 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
             BrowserControlsStateProvider browserControlsStateProvider,
             LayoutManager layoutManager,
             TopUiThemeColorProvider topUiColorProvider,
-            ObservableSupplier<Integer> bottomControlsOffsetSupplier,
-            ViewGroup contentContainer) {
+            NonNullObservableSupplier<Integer> bottomControlsOffsetSupplier,
+            ViewGroup contentContainer,
+            Runnable forceLayoutUpdateAndCaptureRunnable) {
         super(
                 context,
                 updateHost,
@@ -39,7 +40,8 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
                 layoutManager,
                 topUiColorProvider,
                 bottomControlsOffsetSupplier,
-                contentContainer);
+                contentContainer,
+                forceLayoutUpdateAndCaptureRunnable);
 
         // To postpone toolbar transition animation to the end of the swipe.
         mMoveToolbar = false;

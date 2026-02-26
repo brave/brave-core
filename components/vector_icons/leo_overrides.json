@@ -51,6 +51,7 @@
   "//chrome/app/vector_icons/split_scene.icon": "leo_browser_split_view_vertical",
   "//chrome/app/vector_icons/split_scene_left.icon": "leo_browser_split_view_swap_left",
   "//chrome/app/vector_icons/split_scene_right.icon": "leo_browser_split_view_swap_right",
+  "//chrome/app/vector_icons/tab_search_toolbar.icon": "leo_window_search",
   "//chrome/app/vector_icons/task_manager.icon": "leo_window_binary_code",
   "//chrome/app/vector_icons/translate.icon": "leo_product_translate",
   "//chrome/app/vector_icons/trash_can_refresh.icon": "leo_trash",
@@ -107,6 +108,5 @@
   "//components/vector_icons/settings.icon": "leo_settings",
   "//components/vector_icons/submenu_arrow_chrome_refresh.icon": "leo_carat_right",
   "//components/vector_icons/submenu_arrow.icon": "leo_carat_right",
-  "//components/vector_icons/tab_search.icon": "leo_window_search",
   "//components/vector_icons/translate.icon": "leo_product_translate"
 }

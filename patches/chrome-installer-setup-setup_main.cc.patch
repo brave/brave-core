@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index 10acca87dfb81dc744b4fb31fe28e58fd2a53db3..b4a34f2609b9765e6274a2dcf896de7807367f2a 100644
+index 7ca7d00b209839cfc502c6b4ce7fc3285ff100e9..2a3bc1bfbd686f3ed2c889e80e638266e1c5812e 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
 @@ -706,6 +706,7 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,

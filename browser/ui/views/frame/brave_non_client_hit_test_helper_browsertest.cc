@@ -20,14 +20,9 @@ using BraveNonClientHitTestHelperBrowserTest = InProcessBrowserTest;
 IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
   auto* toolbar = browser_view->toolbar();
-  // Upstream has two more children |background_view_left_| and
-  // |background_view_right_| behind the container view.
-  ASSERT_EQ(3u, toolbar->children().size());
-  const int container_view_index = 2;
-  auto* toolbar_container = toolbar->children()[container_view_index].get();
   auto* frame_view = browser_view->browser_widget()->GetFrameView();
 
-  for (views::View* view : toolbar_container->GetChildrenInZOrder()) {
+  for (views::View* view : toolbar->GetChildrenInZOrder()) {
     // When a point is on a child view, hit test result will be HTCLIENT (see
     // BraveToolbarView::ViewHierarchyChanged where we set children that way).
     // To test the ability to drag by the toolbar hide the children.
@@ -37,21 +32,14 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   gfx::Point point = toolbar->GetLocalBounds().CenterPoint();
   views::View::ConvertPointToWidget(toolbar, &point);
 
-  // Dragging a window by the empty toolbar or container should work.
+  // Dragging a window by the empty toolbar should work.
   EXPECT_EQ(HTCAPTION, frame_view->NonClientHitTest(point));
-  toolbar_container->SetVisible(false);
-  EXPECT_EQ(HTCAPTION, frame_view->NonClientHitTest(point));
-
-  // It shouldn't be perceived as a HTCAPTION when the toolbar is not visible.
-  toolbar->SetVisible(false);
-  EXPECT_NE(HTCAPTION, frame_view->NonClientHitTest(point));
 
   // Any point within a child of the toolbar shouldn't be HTCAPTION so that
   // users can interact with the child elements. Checks a typical child of
   // toolbar as a sanity check.
   toolbar->SetVisible(true);
-  toolbar_container->SetVisible(true);
-  for (views::View* view : toolbar_container->GetChildrenInZOrder()) {
+  for (views::View* view : toolbar->GetChildrenInZOrder()) {
     view->SetVisible(true);
   }
 

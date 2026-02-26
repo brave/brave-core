@@ -145,7 +145,9 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
       // We also want the first tab (taking RTL into account) to be selectable
       // in maximized or fullscreen mode by clicking at the very edge of the
       // screen.
-      if (frame_condensed && tab()->controller()->IsTabFirst(tab())) {
+      auto* tab_container = views::AsViewClass<TabContainer>(tab()->parent());
+      if (frame_condensed && tab_container &&
+          tab_container->GetModelIndexOf(tab()) == 0) {
         if (tab()->GetMirrored()) {
           hit_test_outsets.set_right(tabs::kHorizontalTabInset * scale);
         } else {

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/infobar/InfoBarContainerView.java b/chrome/android/java/src/org/chromium/chrome/browser/infobar/InfoBarContainerView.java
-index d6f628c85406f22a3b739b839a6a8aa37733c803..fb5f1161c85d769c6091153f739814fa4f48ffc7 100644
+index 9c31fed21a20cc0ee6a871354cc3077945953111..d567a81855ddcb8a8abf102188ff44350a7cf150 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/infobar/InfoBarContainerView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/infobar/InfoBarContainerView.java
 @@ -86,6 +86,7 @@ public class InfoBarContainerView extends SwipableOverlayView

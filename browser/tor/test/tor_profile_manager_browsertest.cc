@@ -23,7 +23,7 @@
 #include "chrome/browser/net/profile_network_context_service_test_utils.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -339,10 +339,11 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   ui_test_utils::WaitForBrowserToClose();
   // only two regular windows and one private window left
   ASSERT_EQ(chrome::GetTotalBrowserCount(), 3u);
-  BrowserList* browser_list = BrowserList::GetInstance();
-  std::for_each(
-      browser_list->begin(), browser_list->end(),
-      [](Browser* browser) { EXPECT_FALSE(browser->profile()->IsTor()); });
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [](BrowserWindowInterface* browser) {
+        EXPECT_FALSE(browser->GetProfile()->IsTor());
+        return true;
+      });
 }
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToNTP) {
@@ -568,7 +569,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest, CookiesEvents) {
       extensions::CookiesAPI ::GetFactoryInstance()->Get(profile());
 
   extensions::EventListenerInfo details("chrome.cookies.onChanged", "id",
-                                        GURL("https://a.com"), profile());
+                                        GURL("https://a.com"),
+                                        /*filter=*/nullptr, profile());
 
   tor_cookies_api->OnListenerAdded(details);
 

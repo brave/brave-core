@@ -17,7 +17,9 @@ class Tab;
 class BraveTabStrip : public TabStrip {
   METADATA_HEADER(BraveTabStrip, TabStrip)
  public:
-  explicit BraveTabStrip(std::unique_ptr<TabStripController> controller);
+  explicit BraveTabStrip(
+      std::unique_ptr<TabStripController> tab_strip_controller,
+      std::unique_ptr<BraveTabHoverCardController> hover_card_controller);
   ~BraveTabStrip() override;
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
@@ -34,8 +36,6 @@ class BraveTabStrip : public TabStrip {
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
-  std::optional<int> GetCustomBackgroundId(
-      BrowserFrameActiveState active_state) const override;
   void SetCustomTitleForTab(
       Tab* tab,
       const std::optional<std::u16string>& title) override;

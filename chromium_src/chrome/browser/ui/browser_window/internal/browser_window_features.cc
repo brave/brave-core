@@ -39,3 +39,7 @@
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserActions
 #undef BrowserCommandController
+
+const SidePanelUI* BrowserWindowFeatures_ChromiumImpl::side_panel_ui() const {
+  return const_cast<BrowserWindowFeatures_ChromiumImpl*>(this)->side_panel_ui();
+}

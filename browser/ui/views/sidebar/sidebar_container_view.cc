@@ -24,8 +24,8 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
@@ -597,7 +597,8 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
       // to it.
       auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
       const int target_sidebar_width =
-          static_cast<BraveBrowserViewLayout*>(browser_view->GetLayoutManager())
+          static_cast<BraveBrowserViewTabbedLayoutImpl*>(
+              browser_view->GetLayoutManager())
               ->GetIdealSideBarWidth();
       animation_end_width_ =
           std::min(animation_end_width_, target_sidebar_width);

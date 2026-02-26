@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index 75d98ddc10ab0050ee1943e666b22cf1d2cfed49..88370d3cec871b7da2a37fea23c609e60ed34f30 100644
+index 17b98cc80f8985953e1df9aa2eee9d4882619672..ff857e611f16a6df331f51adc4384d7241d44f61 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -743,6 +743,7 @@ std::string GetPermissionStringForUma(
+@@ -711,6 +711,7 @@ std::string GetPermissionStringForUma(
      case ContentSettingsType::LOOPBACK_NETWORK:
        return "LoopbackNetwork";
      default:

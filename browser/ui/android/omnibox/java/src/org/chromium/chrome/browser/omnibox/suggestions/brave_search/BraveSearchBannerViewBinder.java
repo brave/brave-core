@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
-import org.chromium.chrome.browser.omnibox.R;
+import org.chromium.chrome.browser.omnibox.brave.R;
 import org.chromium.ui.modelutil.PropertyKey;
 import org.chromium.ui.modelutil.PropertyModel;
 

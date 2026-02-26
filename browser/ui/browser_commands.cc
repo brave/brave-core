@@ -52,11 +52,11 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -71,8 +71,8 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tab_groups/tab_group_visual_data.h"
-#include "components/tabs/public/split_tab_visual_data.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page_navigator.h"
@@ -779,9 +779,13 @@ bool CanBringAllTabs(Browser* browser) {
     return false;
   }
 
-  return std::ranges::any_of(
-      *BrowserList::GetInstance(),
-      [&](const Browser* from) { return CanTakeTabs(from, browser); });
+  bool result = false;
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [browser, &result](BrowserWindowInterface* from) {
+        result = CanTakeTabs(from->GetBrowserForMigrationOnly(), browser);
+        return !result;
+      });
+  return result;
 }
 
 void BringAllTabs(Browser* browser) {
@@ -791,10 +795,14 @@ void BringAllTabs(Browser* browser) {
 
   // Find all browsers with the same profile
   std::vector<Browser*> browsers;
-  base::flat_set<Browser*> browsers_to_close;
-  std::ranges::copy_if(
-      *BrowserList::GetInstance(), std::back_inserter(browsers),
-      [&](const Browser* from) { return CanTakeTabs(from, browser); });
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [&browsers, browser](BrowserWindowInterface* from) {
+        auto* from_deprecated = from->GetBrowserForMigrationOnly();
+        if (CanTakeTabs(from_deprecated, browser)) {
+          browsers.push_back(from_deprecated);
+        }
+        return true;
+      });
 
   // Detach all tabs from other browsers
   std::stack<std::unique_ptr<tabs::TabModel>> detached_pinned_tabs;
@@ -804,6 +812,7 @@ void BringAllTabs(Browser* browser) {
       base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser->profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab);
 
+  base::flat_set<Browser*> browsers_to_close;
   std::ranges::for_each(browsers, [&detached_pinned_tabs,
                                    &detached_unpinned_tabs, &browsers_to_close,
                                    shared_pinned_tab_enabled](auto* other) {

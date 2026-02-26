@@ -406,8 +406,8 @@ void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
   if (tab_strip_model->IsTabPinned(index)) {
     LOCK_REENTRANCE(tab_strip_model);
     SharedContentsData::CreateForWebContents(contents);
-    auto tab_renderer_data =
-        TabRendererData::FromTabInModel(tab_strip_model, index);
+    auto tab_renderer_data = TabRendererData::FromTabInterface(
+        tab_strip_model->GetTabAtIndex(index));
     DCHECK_LE(index, static_cast<int>(pinned_tab_data_.size()));
     pinned_tab_data_.insert(pinned_tab_data_.begin() + index,
                             {.renderer_data = tab_renderer_data,
@@ -443,8 +443,8 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
 
   LOCK_REENTRANCE(iter->contents_owner_model);
 
-  iter->renderer_data =
-      TabRendererData::FromTabInModel(iter->contents_owner_model, index);
+  iter->renderer_data = TabRendererData::FromTabInterface(
+      iter->contents_owner_model->GetTabAtIndex(index));
   for (auto* browser : browsers_) {
     auto* tab_strip_model = browser->tab_strip_model();
     if (tab_strip_model == change_source_model_) {
@@ -473,8 +473,8 @@ void SharedPinnedTabService::OnTabAdded(
       continue;
     }
 
-    auto tab_renderer_data =
-        TabRendererData::FromTabInModel(tab_strip_model, current_index);
+    auto tab_renderer_data = TabRendererData::FromTabInterface(
+        tab_strip_model->GetTabAtIndex(current_index));
     if (static_cast<int>(pinned_tab_data_.size()) > current_index &&
         pinned_tab_data_.at(current_index).renderer_data.last_committed_url ==
             tab_renderer_data.last_committed_url) {
@@ -726,7 +726,8 @@ void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
   std::vector<PinnedTabData> new_pinned_tabs;
   for (auto i = 0; i < model->IndexOfFirstNonPinnedTab(); i++) {
     new_pinned_tabs.push_back(
-        {.renderer_data = TabRendererData::FromTabInModel(model, i),
+        {.renderer_data =
+             TabRendererData::FromTabInterface(model->GetTabAtIndex(i)),
          .shared_contents = model->GetWebContentsAt(i),
          .contents_owner_model = model});
   }

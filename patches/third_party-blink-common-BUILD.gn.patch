@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
-index 4a8b8a1202bda8b9f134986ac5a5c008206fb11e..21a88bde76c48c59aa7871b133cd5a803002562e 100644
+index f56621d3f7602c4d002b2ce406099e09ddb6a4c5..4f0554fe0dc981687acb35bfe1fbeea9034a4360 100644
 --- a/third_party/blink/common/BUILD.gn
 +++ b/third_party/blink/common/BUILD.gn
 @@ -353,6 +353,7 @@ source_set("common") {

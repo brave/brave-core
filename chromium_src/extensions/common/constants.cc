@@ -4,6 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/map_util.h"
+#include "base/strings/string_util.h"
+#include "extensions/common/hashed_extension_id.h"
 
 #include <extensions/common/constants.cc>
 
@@ -41,6 +43,18 @@ static_assert(CheckExtensionMaps(),
               "kBraveHosted & kWebStoreHosted aren't consistent");
 }  // namespace
 
+std::string BuildBraveMV2ExceptionList() {
+  std::vector<std::string> hashed_ids;
+  hashed_ids.reserve(extensions_mv2::kPreconfiguredManifestV2Extensions.size());
+
+  for (std::string_view id :
+       extensions_mv2::kPreconfiguredManifestV2Extensions) {
+    hashed_ids.push_back(extensions::ExtensionId(id));
+  }
+
+  return base::JoinString(hashed_ids, ",");
+}
+
 bool IsKnownBraveHostedExtension(const extensions::ExtensionId& id) {
   return kBraveHosted.contains(id);
 }
@@ -68,5 +82,3 @@ std::optional<extensions::ExtensionId> GetWebStoreHostedExtensionId(
 }
 
 }  // namespace extensions_mv2
-
-// Put your code here
