@@ -415,10 +415,10 @@ const util = {
 
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
-        isDirty ||= updateFileUTimesIfOverrideIsNewer(
+        isDirty = updateFileUTimesIfOverrideIsNewer(
           overriddenFile,
           chromiumSrcFile,
-        )
+        ) || isDirty
       } else {
         // If the original file doesn't exist, assume that it's in the gen dir.
         overriddenFile = path.join(
@@ -426,7 +426,7 @@ const util = {
           'gen',
           relativeChromiumSrcFile,
         )
-        isDirty ||= deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        isDirty = deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile) || isDirty
         // Also check the secondary gen dir, if exists
         if (additionalGen) {
           overriddenFile = path.join(
@@ -435,10 +435,10 @@ const util = {
             'gen',
             relativeChromiumSrcFile,
           )
-          isDirty ||= deleteFileIfOverrideIsNewer(
+          isDirty = deleteFileIfOverrideIsNewer(
             overriddenFile,
             chromiumSrcFile,
-          )
+          ) || isDirty
         }
       }
     })
