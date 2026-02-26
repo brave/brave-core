@@ -118,7 +118,8 @@ function SearchDescription(props: { description: string }) {
   const content = React.useMemo(() => {
     const parts = props.description.split('<strong>')
     return parts.map((p) => {
-      const index = p.indexOf('</strong>')
+      const closeTag = '</strong>'
+      const index = p.indexOf(closeTag)
       if (index === -1) {
         return p
       }
@@ -130,7 +131,7 @@ function SearchDescription(props: { description: string }) {
           >
             {p.slice(0, index)}
           </span>
-          {p.slice(index)}
+          {p.slice(index + closeTag.length)}
         </>
       )
     })
