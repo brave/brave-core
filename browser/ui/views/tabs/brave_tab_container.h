@@ -261,6 +261,9 @@ class BraveTabContainer : public TabContainerImpl,
   // Checks if the vertical tabs should be shown
   bool ShouldShowVerticalTabs() const;
 
+  // Called when the tree tabs enabled state changes.
+  void OnTreeTabsEnabledChanged();
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContext> drag_context_;
