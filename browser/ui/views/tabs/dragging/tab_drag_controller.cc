@@ -69,8 +69,7 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
     return BraveTabDragController::BraveTabDragController::Liveness::kDeleted;
   }
 
-  offset_from_first_dragged_view_ =
-      views::View::ConvertPointToScreen(source_view, offset_from_source_view);
+  offset_from_first_dragged_view_ = offset_from_source_view;
 
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
