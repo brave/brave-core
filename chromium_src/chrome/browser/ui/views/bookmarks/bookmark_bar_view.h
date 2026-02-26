@@ -11,8 +11,19 @@
   friend class BraveBookmarkBarView;               \
   virtual bool UpdateOtherAndManagedButtonsVisibility
 
+#define ConfigureButton                                                \
+  ConfigureButton_Unused(const bookmarks::BookmarkNode* node,          \
+                         views::LabelButton* button);                  \
+  virtual void ConfigureButton
+
+#define UpdateAppearanceForTheme   \
+  UpdateAppearanceForTheme_Unused(); \
+  virtual void UpdateAppearanceForTheme
+
 #include <chrome/browser/ui/views/bookmarks/bookmark_bar_view.h>  // IWYU pragma: export
 
+#undef UpdateAppearanceForTheme
+#undef ConfigureButton
 #undef UpdateOtherAndManagedButtonsVisibility
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_BAR_VIEW_H_

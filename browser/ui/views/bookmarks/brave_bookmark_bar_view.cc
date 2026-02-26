@@ -33,10 +33,9 @@ BraveBookmarkBarView::~BraveBookmarkBarView() = default;
 void BraveBookmarkBarView::AddedToWidget() {
   BookmarkBarView::AddedToWidget();
   paint_as_active_subscription_ =
-      GetWidget()->RegisterPaintAsActiveChangedCallback(
-          base::BindRepeating(
-              &BraveBookmarkBarView::UpdateFolderIconsForActiveState,
-              base::Unretained(this)));
+      GetWidget()->RegisterPaintAsActiveChangedCallback(base::BindRepeating(
+          &BraveBookmarkBarView::UpdateAppearanceForTheme,
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveBookmarkBarView::RemovedFromWidget() {
@@ -44,41 +43,47 @@ void BraveBookmarkBarView::RemovedFromWidget() {
   BookmarkBarView::RemovedFromWidget();
 }
 
-void BraveBookmarkBarView::OnThemeChanged() {
-  BookmarkBarView::OnThemeChanged();
-  UpdateFolderIconsForActiveState();
+namespace {
+
+ui::ColorId GetFolderIconColorId(views::Widget* widget) {
+  const bool is_active = widget && widget->ShouldPaintAsActive();
+  return is_active ? kColorToolbarButtonIcon : kColorToolbarButtonIconInactive;
 }
 
-void BraveBookmarkBarView::UpdateFolderIconsForActiveState() {
+}  // namespace
+
+void BraveBookmarkBarView::ConfigureButton(
+    const bookmarks::BookmarkNode* node,
+    views::LabelButton* button) {
+  BookmarkBarView::ConfigureButton(node, button);
+  if (node->is_folder() && GetColorProvider()) {
+    button->SetImageModel(
+        views::Button::STATE_NORMAL,
+        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kNormal,
+                                      GetFolderIconColorId(GetWidget())));
+  }
+}
+
+void BraveBookmarkBarView::UpdateAppearanceForTheme() {
+  BookmarkBarView::UpdateAppearanceForTheme();
   if (!GetColorProvider()) {
     return;
   }
 
-  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
-  const ui::ColorId color_id = is_active ? kColorToolbarButtonIcon
-                                         : kColorToolbarButtonIconInactive;
-
-  for (auto& [button, node] : bookmark_buttons_) {
-    if (node->is_folder()) {
-      button->SetImageModel(
-          views::Button::STATE_NORMAL,
-          chrome::GetBookmarkFolderIcon(
-              chrome::BookmarkFolderIconType::kNormal, color_id));
-    }
-  }
+  const ui::ColorId color_id = GetFolderIconColorId(GetWidget());
 
   if (all_bookmarks_button_) {
     all_bookmarks_button_->SetImageModel(
         views::Button::STATE_NORMAL,
-        chrome::GetBookmarkFolderIcon(
-            chrome::BookmarkFolderIconType::kNormal, color_id));
+        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kNormal,
+                                      color_id));
   }
 
   if (managed_bookmarks_button_) {
     managed_bookmarks_button_->SetImageModel(
         views::Button::STATE_NORMAL,
-        chrome::GetBookmarkFolderIcon(
-            chrome::BookmarkFolderIconType::kManaged, color_id));
+        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kManaged,
+                                      color_id));
   }
 }
 

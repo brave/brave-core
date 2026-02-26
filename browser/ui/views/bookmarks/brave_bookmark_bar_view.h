@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -8,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BRAVE_BOOKMARK_BAR_VIEW_H_
 
 #include "base/callback_list.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -21,21 +21,23 @@ class BraveBookmarkBarView : public BookmarkBarView {
 
   // BookmarkBarView:
   bool UpdateOtherAndManagedButtonsVisibility() override;
+  void ConfigureButton(const bookmarks::BookmarkNode* node,
+                       views::LabelButton* button) override;
+  void UpdateAppearanceForTheme() override;
 
   // views::View:
   void AddedToWidget() override;
   void RemovedFromWidget() override;
-  void OnThemeChanged() override;
 
  private:
   // Note that so-called "Others button" is renamed to "All bookmarks button"
   void OnShowAllBookmarksButtonPrefChanged();
 
   void MaybeUpdateOtherAndManagedButtonsVisibility();
-  void UpdateFolderIconsForActiveState();
 
   BooleanPrefMember show_all_bookmarks_button_pref_;
   base::CallbackListSubscription paint_as_active_subscription_;
+  base::WeakPtrFactory<BraveBookmarkBarView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BRAVE_BOOKMARK_BAR_VIEW_H_
