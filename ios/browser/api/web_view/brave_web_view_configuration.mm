@@ -25,6 +25,11 @@
   CWVAutofillDataManager* _autofillDataManager;
 }
 
+- (id<ProfileBridge>)profile {
+  auto* profile = ProfileIOS::FromBrowserState(self.browserState);
+  return [[ProfileBridgeImpl alloc] initWithProfile:profile];
+}
+
 - (WKWebsiteDataStore*)websiteDataStore {
   DCHECK(base::FeatureList::IsEnabled(
       brave::features::kUseProfileWebViewConfiguration))
