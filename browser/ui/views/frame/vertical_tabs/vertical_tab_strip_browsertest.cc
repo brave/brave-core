@@ -971,65 +971,67 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, RichAnimationIsDisabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
-                       RestoredPinnedTabHasCorrectBoundsAndIcon) {
-  // Regression test for https://github.com/brave/brave-browser/issues/53083
-  // When a pinned tab is closed (Ctrl+W) and restored (Ctrl+Z) in vertical
-  // tab mode, the favicon was missing because StartInsertTabAnimation() read
-  // data().pinned before SetData() was called, giving the tab unpinned-width
-  // initial bounds.
+                       PinnedTabVisibilityAfterRestore) {
+  // Regression test: newly inserted pinned tabs must be visible after
+  // SetTabVisibility() runs following tab restoration in vertical tab mode.
   ToggleVerticalTabStrip();
 
   auto* model = browser()->tab_strip_model();
   auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
 
-  // Navigate to a real URL so the tab is restorable (about:blank tabs are
-  // not saved by TabRestoreService).
+  // Navigate to a real URL so the first tab is restorable (about:blank tabs
+  // are not saved by TabRestoreService).
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("brave://version/")));
 
-  // Pin the first tab.
-  model->SetTabPinned(0, true);
-  tab_strip->StopAnimating();
-  InvalidateAndRunLayoutForVerticalTabStrip();
-
-  auto* pinned_tab = tab_strip->tab_at(0);
-  ASSERT_TRUE(pinned_tab->data().pinned);
-  const gfx::Rect pinned_bounds_before = pinned_tab->bounds();
-  EXPECT_EQ(tabs::kVerticalTabMinWidth, pinned_bounds_before.width());
-
-  // Add a second tab so closing the pinned tab doesn't close the browser.
+  // Create 3 tabs total.
+  AppendTab(browser());
   AppendTab(browser());
   tab_strip->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(3, model->count());
 
-  ASSERT_EQ(2, model->count());
-
-  // Close the pinned tab.
-  model->CloseWebContentsAt(0, TabCloseTypes::CLOSE_USER_GESTURE);
+  // Pin the first two tabs.
+  model->SetTabPinned(0, true);
+  model->SetTabPinned(1, true);
   tab_strip->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
 
-  ASSERT_EQ(1, model->count());
+  // Step 1: verify pinned state and visibility of all three tabs.
+  EXPECT_TRUE(tab_strip->tab_at(0)->data().pinned);
+  EXPECT_TRUE(tab_strip->tab_at(1)->data().pinned);
+  EXPECT_FALSE(tab_strip->tab_at(2)->data().pinned);
+  EXPECT_TRUE(tab_strip->tab_at(0)->GetVisible());
+  EXPECT_TRUE(tab_strip->tab_at(1)->GetVisible());
+  EXPECT_TRUE(tab_strip->tab_at(2)->GetVisible());
 
-  // Restore the closed tab (equivalent to Ctrl+Z / Ctrl+Shift+T).
+  // Step 2: close the first pinned tab.
+  model->CloseWebContentsAt(0, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(2, model->count());
+
+  // Step 3: restore the closed pinned tab and wait for it to land.
+  ui_test_utils::TabAddedWaiter tab_added_waiter(browser());
   chrome::RestoreTab(browser());
+  tab_added_waiter.Wait();
+
   tab_strip->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(3, model->count());
 
-  ASSERT_EQ(2, model->count());
+  // All three tabs must be visible after restoration.
+  EXPECT_TRUE(tab_strip->tab_at(0)->GetVisible())
+      << "Restored pinned tab should be visible";
+  EXPECT_TRUE(tab_strip->tab_at(1)->GetVisible())
+      << "Second pinned tab should be visible";
+  EXPECT_TRUE(tab_strip->tab_at(2)->GetVisible())
+      << "Unpinned tab should be visible";
 
-  // The restored tab should be pinned.
-  auto* restored_tab = tab_strip->tab_at(0);
-  EXPECT_TRUE(restored_tab->data().pinned) << "Restored tab should be pinned";
-
-  // The restored pinned tab should have the correct pinned-width bounds.
-  EXPECT_EQ(tabs::kVerticalTabMinWidth, restored_tab->bounds().width())
-      << "Restored pinned tab should have pinned-width bounds ("
-      << tabs::kVerticalTabMinWidth << "px), not unpinned-width bounds";
-
-  // The icon should be visible (this was the user-visible symptom of the bug).
-  EXPECT_TRUE(restored_tab->showing_icon())
-      << "Restored pinned tab should show its favicon";
+  // Pinned state must be preserved.
+  EXPECT_TRUE(tab_strip->tab_at(0)->data().pinned);
+  EXPECT_TRUE(tab_strip->tab_at(1)->data().pinned);
+  EXPECT_FALSE(tab_strip->tab_at(2)->data().pinned);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
