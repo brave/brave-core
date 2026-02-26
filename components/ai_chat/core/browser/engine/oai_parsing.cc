@@ -354,8 +354,7 @@ std::optional<base::ListValue> ToolApiDefinitionsFromTools(
   return tools_list;
 }
 
-const base::DictValue* GetOAIContentContainer(
-    const base::DictValue& response) {
+const base::DictValue* GetOAIContentContainer(const base::DictValue& response) {
   const base::ListValue* choices = response.FindList("choices");
   if (!choices || choices->empty() || !choices->front().is_dict()) {
     VLOG(2) << "No choices list found in response, or it is empty.";
@@ -382,7 +381,6 @@ std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     return std::nullopt;
   }
 
-  // Standard completion content
   const std::string* content = content_container->FindString("content");
   if (!content || content->empty()) {
     return std::nullopt;

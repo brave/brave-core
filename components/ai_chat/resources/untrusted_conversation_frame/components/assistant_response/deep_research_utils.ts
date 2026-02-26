@@ -5,6 +5,7 @@
 
 import * as Mojom from '../../../common/mojom'
 
+/** Aggregated deep research events extracted from a conversation entry. */
 export interface ExtractedDeepResearchEvents {
   queriesEvent?: Mojom.DeepResearchQueriesEvent
   thinkingEvents: Mojom.DeepResearchThinkingEvent[]
@@ -19,48 +20,36 @@ export interface ExtractedDeepResearchEvents {
   hasDeepResearchEvents: boolean
 }
 
+/** Extracts and deduplicates deep research events from conversation events. */
 export function extractDeepResearchEvents(
   events: Mojom.ConversationEntryEvent[] | undefined,
 ): ExtractedDeepResearchEvents {
-  const drEvents = events?.filter(
-    (event) => event.deepResearchEvent,
-  ).map((event) => event.deepResearchEvent!) ?? []
+  const drEvents =
+    events
+      ?.filter((event) => event.deepResearchEvent)
+      .map((event) => event.deepResearchEvent!) ?? []
 
   const hasDeepResearchToolUse = events?.some(
     (event) => event.toolUseEvent?.toolName === Mojom.DEEP_RESEARCH_TOOL_NAME,
   )
 
   return {
-    queriesEvent: drEvents.findLast(
-      (e) => e.queriesEvent,
-    )?.queriesEvent,
+    queriesEvent: drEvents.findLast((e) => e.queriesEvent)?.queriesEvent,
     thinkingEvents: drEvents
       .filter((e) => e.thinkingEvent)
       .map((e) => e.thinkingEvent!),
-    progressEvent: drEvents.findLast(
-      (e) => e.progressEvent,
-    )?.progressEvent,
-    completeEvent: drEvents.find(
-      (e) => e.completeEvent,
-    )?.completeEvent,
-    errorEvent: drEvents.find(
-      (e) => e.errorEvent,
-    )?.errorEvent,
-    searchStatusEvent: drEvents.findLast(
-      (e) => e.searchStatusEvent,
-    )?.searchStatusEvent,
-    analysisStatusEvent: drEvents.findLast(
-      (e) => e.analysisStatusEvent,
-    )?.analysisStatusEvent,
-    iterationCompleteEvent: drEvents.findLast(
-      (e) => e.iterationCompleteEvent,
-    )?.iterationCompleteEvent,
-    analyzingEvent: drEvents.findLast(
-      (e) => e.analyzingEvent,
-    )?.analyzingEvent,
-    fetchStatusEvent: drEvents.findLast(
-      (e) => e.fetchStatusEvent,
-    )?.fetchStatusEvent,
+    progressEvent: drEvents.findLast((e) => e.progressEvent)?.progressEvent,
+    completeEvent: drEvents.find((e) => e.completeEvent)?.completeEvent,
+    errorEvent: drEvents.find((e) => e.errorEvent)?.errorEvent,
+    searchStatusEvent: drEvents.findLast((e) => e.searchStatusEvent)
+      ?.searchStatusEvent,
+    analysisStatusEvent: drEvents.findLast((e) => e.analysisStatusEvent)
+      ?.analysisStatusEvent,
+    iterationCompleteEvent: drEvents.findLast((e) => e.iterationCompleteEvent)
+      ?.iterationCompleteEvent,
+    analyzingEvent: drEvents.findLast((e) => e.analyzingEvent)?.analyzingEvent,
+    fetchStatusEvent: drEvents.findLast((e) => e.fetchStatusEvent)
+      ?.fetchStatusEvent,
     hasDeepResearchEvents: !!hasDeepResearchToolUse || drEvents.length > 0,
   }
 }

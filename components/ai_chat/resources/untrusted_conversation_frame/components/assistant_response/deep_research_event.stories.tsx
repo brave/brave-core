@@ -25,7 +25,10 @@ export const ActiveProgress = {
           chunksAnalyzed: 12,
           chunksSelected: 4,
           urlsAnalyzed: 8,
-          urlsSelected: [{url: 'https://example.com/1'}, {url: 'https://example.com/2'}],
+          urlsSelected: [
+            { url: 'https://example.com/1' },
+            { url: 'https://example.com/2' },
+          ],
           urlsInfo: [],
         },
       ]}

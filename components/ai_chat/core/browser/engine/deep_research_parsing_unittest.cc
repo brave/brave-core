@@ -20,26 +20,24 @@ TEST(DeepResearchParsingTest, ParseQueriesEvent) {
     "queries": ["quantum computing", "AI breakthroughs"]
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.queries", params, "model-1");
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.queries", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_queries_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_queries_event());
 
-  const auto& event =
-      result->event->get_deep_research_event()->get_queries_event();
+  const auto& event = (*result)->get_deep_research_event()->get_queries_event();
   ASSERT_EQ(event->queries.size(), 2u);
   EXPECT_EQ(event->queries[0], "quantum computing");
   EXPECT_EQ(event->queries[1], "AI breakthroughs");
-  EXPECT_EQ(result->model_key, "model-1");
 }
 
 TEST(DeepResearchParsingTest, ParseQueriesEvent_MissingQueries) {
   auto params = base::test::ParseJsonDict(R"({})");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.queries", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.queries", params);
 
   EXPECT_FALSE(result.has_value());
 }
@@ -51,15 +49,15 @@ TEST(DeepResearchParsingTest, ParseAnalyzingEvent) {
     "new_urls": 3
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.analyzing", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.analyzing", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_analyzing_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_analyzing_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_analyzing_event();
+      (*result)->get_deep_research_event()->get_analyzing_event();
   EXPECT_EQ(event->query, "test query");
   EXPECT_EQ(event->url_count, 10u);
   EXPECT_EQ(event->new_url_count, 3u);
@@ -77,15 +75,15 @@ TEST(DeepResearchParsingTest, ParseThinkingEvent) {
     ]
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.thinking", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.thinking", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_thinking_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_thinking_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_thinking_event();
+      (*result)->get_deep_research_event()->get_thinking_event();
   EXPECT_EQ(event->query, "deep thinking");
   EXPECT_EQ(event->chunks_analyzed, 12u);
   EXPECT_EQ(event->chunks_selected, 4u);
@@ -94,8 +92,7 @@ TEST(DeepResearchParsingTest, ParseThinkingEvent) {
   EXPECT_EQ(event->urls_selected[0], GURL("https://example.com/1"));
   ASSERT_EQ(event->urls_info.size(), 1u);
   EXPECT_EQ(event->urls_info[0]->url, GURL("https://example.com/1"));
-  EXPECT_EQ(event->urls_info[0]->favicon,
-            GURL("https://example.com/fav.ico"));
+  EXPECT_EQ(event->urls_info[0]->favicon, GURL("https://example.com/fav.ico"));
 }
 
 TEST(DeepResearchParsingTest, ParseProgressEvent) {
@@ -107,15 +104,15 @@ TEST(DeepResearchParsingTest, ParseProgressEvent) {
     "snippets_analyzed": 28
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.progress", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.progress", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_progress_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_progress_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_progress_event();
+      (*result)->get_deep_research_event()->get_progress_event();
   EXPECT_DOUBLE_EQ(event->elapsed_seconds, 45.5);
   EXPECT_EQ(event->iteration_count, 2u);
   EXPECT_EQ(event->queries_count, 5u);
@@ -133,16 +130,15 @@ TEST(DeepResearchParsingTest, ParseSearchStatusEvent_Started) {
     "elapsedMs": 0
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.searchStatus", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.searchStatus", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(
-      result->event->get_deep_research_event()->is_search_status_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_search_status_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_search_status_event();
+      (*result)->get_deep_research_event()->get_search_status_event();
   EXPECT_EQ(event->status, mojom::DeepResearchSearchStatus::kStarted);
   EXPECT_EQ(event->query, "test search");
   EXPECT_EQ(event->query_index, 1u);
@@ -159,19 +155,32 @@ TEST(DeepResearchParsingTest, ParseSearchStatusEvent_Completed) {
     "elapsedMs": 1500
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.searchStatus", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.searchStatus", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(
-      result->event->get_deep_research_event()->is_search_status_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_search_status_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_search_status_event();
+      (*result)->get_deep_research_event()->get_search_status_event();
   EXPECT_EQ(event->status, mojom::DeepResearchSearchStatus::kCompleted);
   EXPECT_EQ(event->urls_found, 12u);
   EXPECT_EQ(event->elapsed_ms, 1500u);
+}
+
+TEST(DeepResearchParsingTest, ParseSearchStatusEvent_UnknownStatus) {
+  auto params = base::test::ParseJsonDict(R"({
+    "status": "unknown_status",
+    "query": "test search",
+    "queryIndex": 1,
+    "totalQueries": 5
+  })");
+
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.searchStatus", params);
+
+  EXPECT_FALSE(result.has_value());
 }
 
 TEST(DeepResearchParsingTest, ParseAnalysisStatusEvent) {
@@ -182,20 +191,33 @@ TEST(DeepResearchParsingTest, ParseAnalysisStatusEvent) {
     "chunksTotal": 10
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.analysisStatus", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.analysisStatus", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(
-      result->event->get_deep_research_event()->is_analysis_status_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_analysis_status_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_analysis_status_event();
+      (*result)->get_deep_research_event()->get_analysis_status_event();
   EXPECT_EQ(event->status, mojom::DeepResearchAnalysisStatus::kProgress);
   EXPECT_EQ(event->query, "analysis test");
   EXPECT_EQ(event->chunks_analyzed, 5u);
   EXPECT_EQ(event->chunks_total, 10u);
+}
+
+TEST(DeepResearchParsingTest, ParseAnalysisStatusEvent_UnknownStatus) {
+  auto params = base::test::ParseJsonDict(R"({
+    "status": "unknown_status",
+    "query": "analysis test",
+    "chunksAnalyzed": 5,
+    "chunksTotal": 10
+  })");
+
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.analysisStatus", params);
+
+  EXPECT_FALSE(result.has_value());
 }
 
 TEST(DeepResearchParsingTest, ParseCompleteEvent) {
@@ -203,14 +225,13 @@ TEST(DeepResearchParsingTest, ParseCompleteEvent) {
     "reason": "All iterations finished"
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.complete", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.complete", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_complete_event());
-  EXPECT_EQ(result->event->get_deep_research_event()->get_complete_event()
-                ->reason,
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_complete_event());
+  EXPECT_EQ((*result)->get_deep_research_event()->get_complete_event()->reason,
             "All iterations finished");
 }
 
@@ -219,15 +240,13 @@ TEST(DeepResearchParsingTest, ParseErrorEvent) {
     "error": "Service timeout"
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.error", params, std::nullopt);
+  auto result = ParseDeepResearchEvent("brave-chat.deepResearch.error", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_error_event());
-  EXPECT_EQ(
-      result->event->get_deep_research_event()->get_error_event()->error,
-      "Service timeout");
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_error_event());
+  EXPECT_EQ((*result)->get_deep_research_event()->get_error_event()->error,
+            "Service timeout");
 }
 
 TEST(DeepResearchParsingTest, ParseIterationCompleteEvent) {
@@ -240,17 +259,15 @@ TEST(DeepResearchParsingTest, ParseIterationCompleteEvent) {
   })");
 
   auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.iterationComplete", params, std::nullopt);
+      "brave-chat.deepResearch.iterationComplete", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
   ASSERT_TRUE(
-      result->event->get_deep_research_event()
-          ->is_iteration_complete_event());
+      (*result)->get_deep_research_event()->is_iteration_complete_event());
 
   const auto& event =
-      result->event->get_deep_research_event()
-          ->get_iteration_complete_event();
+      (*result)->get_deep_research_event()->get_iteration_complete_event();
   EXPECT_EQ(event->iteration, 2u);
   EXPECT_EQ(event->total_iterations, 5u);
   EXPECT_EQ(event->queries_this_iteration, 3u);
@@ -263,16 +280,15 @@ TEST(DeepResearchParsingTest, ParseBlindspotsEvent) {
     "blindspots": ["topic A", "topic B", "topic C"]
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.blindspots", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.blindspots", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(
-      result->event->get_deep_research_event()->is_blindspots_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_blindspots_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_blindspots_event();
+      (*result)->get_deep_research_event()->get_blindspots_event();
   ASSERT_EQ(event->blindspots.size(), 3u);
   EXPECT_EQ(event->blindspots[0], "topic A");
   EXPECT_EQ(event->blindspots[1], "topic B");
@@ -286,16 +302,15 @@ TEST(DeepResearchParsingTest, ParseFetchStatusEvent) {
     "urlsFetched": 8
   })");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.fetchStatus", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.fetchStatus", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(
-      result->event->get_deep_research_event()->is_fetch_status_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_fetch_status_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_fetch_status_event();
+      (*result)->get_deep_research_event()->get_fetch_status_event();
   EXPECT_EQ(event->query, "fetch test");
   EXPECT_EQ(event->urls_total, 20u);
   EXPECT_EQ(event->urls_fetched, 8u);
@@ -304,8 +319,8 @@ TEST(DeepResearchParsingTest, ParseFetchStatusEvent) {
 TEST(DeepResearchParsingTest, UnknownEventType) {
   auto params = base::test::ParseJsonDict(R"({})");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.unknown", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.unknown", params);
 
   EXPECT_FALSE(result.has_value());
 }
@@ -314,15 +329,15 @@ TEST(DeepResearchParsingTest, DefaultValues) {
   // Test that missing fields get sensible defaults
   auto params = base::test::ParseJsonDict(R"({})");
 
-  auto result = ParseDeepResearchEvent(
-      "brave-chat.deepResearch.analyzing", params, std::nullopt);
+  auto result =
+      ParseDeepResearchEvent("brave-chat.deepResearch.analyzing", params);
 
   ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE(result->event->is_deep_research_event());
-  ASSERT_TRUE(result->event->get_deep_research_event()->is_analyzing_event());
+  ASSERT_TRUE((*result)->is_deep_research_event());
+  ASSERT_TRUE((*result)->get_deep_research_event()->is_analyzing_event());
 
   const auto& event =
-      result->event->get_deep_research_event()->get_analyzing_event();
+      (*result)->get_deep_research_event()->get_analyzing_event();
   EXPECT_EQ(event->query, "");
   EXPECT_EQ(event->url_count, 0u);
   EXPECT_EQ(event->new_url_count, 0u);

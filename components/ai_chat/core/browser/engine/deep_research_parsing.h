@@ -10,17 +10,16 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
 
 // Parse a deep research event from a top-level brave-chat.deepResearch.*
 // object. Returns nullopt if the object_type is not recognized or parsing
 // fails.
-std::optional<EngineConsumer::GenerationResultData> ParseDeepResearchEvent(
+std::optional<mojom::ConversationEntryEventPtr> ParseDeepResearchEvent(
     const std::string& object_type,
-    const base::DictValue& params,
-    std::optional<std::string> model_key);
+    const base::DictValue& params);
 
 }  // namespace ai_chat
 
