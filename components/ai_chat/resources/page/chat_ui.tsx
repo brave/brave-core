@@ -8,7 +8,7 @@ import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
-import createAIChatAPI from './api/ai_chat_api'
+import bindWebUiServices from './api/bind_webui_services'
 import {
   AIChatProvider,
   ConversationEntriesProps,
@@ -37,43 +37,7 @@ import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
 setIconBasePath('chrome://resources/brave-icons')
 
 // Create global mojo connections
-const serviceRemote = Mojom.Service.getRemote()
-const metricsRemote = new Mojom.MetricsRemote()
-serviceRemote.bindMetrics(metricsRemote.$.bindNewPipeAndPassReceiver())
-const uiHandlerRemote = Mojom.AIChatUIHandler.getRemote()
-const tabTrackerServiceRemote = Mojom.TabTrackerService.getRemote()
-
-const aiChat = createAIChatAPI(
-  serviceRemote,
-  uiHandlerRemote,
-  Mojom.BookmarksPageHandler.getRemote(),
-  Mojom.HistoryUIHandler.getRemote(),
-  metricsRemote,
-)
-
-// Bind mojo receivers to the appropriate observers, routing events.
-
-const serviceObserverReceiver = new Mojom.ServiceObserverReceiver(
-  aiChat.serviceObserver,
-)
-serviceRemote
-  .bindObserver(serviceObserverReceiver.$.bindNewPipeAndPassRemote())
-  .then(({ state }) => {
-    aiChat.api.state.update(state)
-  })
-
-const chatUIReceiver = new Mojom.ChatUIReceiver(aiChat.chatUIObserver)
-uiHandlerRemote
-  .setChatUI(chatUIReceiver.$.bindNewPipeAndPassRemote())
-  .then(({ isStandalone }) => {
-    aiChat.api.isStandalone.update(isStandalone)
-  })
-const tabDataObserverReceiver = new Mojom.TabDataObserverReceiver(
-  aiChat.tabDataObserver,
-)
-tabTrackerServiceRemote.addObserver(
-  tabDataObserverReceiver.$.bindNewPipeAndPassRemote(),
-)
+const aiChat = bindWebUiServices()
 
 // Receive child frame interface
 aiChat.api.subscribeToOnChildFrameBound((parentPageReceiver) => {

@@ -64,6 +64,7 @@ export function defaultSearchStore(): SearchStore {
     searchMatches: [],
     actions: {
       setShowSearchBox(showSearchBox) {},
+      setShowChatInput(showChatInput) {},
       setSearchSuggestionsEnabled(enabled) {},
       setSearchSuggestionsPromptDismissed(dismissed) {},
       setSearchEngineEnabled(engine, enabled) {},
@@ -106,4 +107,3 @@ export interface SearchActions {
   reportSearchEngineUsage: (engine: string) => void
   reportSearchResultUsage: (engine: string) => void
 }
-    setShowChatInput(showChatInput) {},

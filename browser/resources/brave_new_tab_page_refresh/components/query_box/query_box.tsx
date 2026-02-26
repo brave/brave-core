@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { AIChatProvider } from '../../context/ai_chat_context'
+import AIChatContexts from '../../context/ai_chat_context'
 import { useSearchState } from '../../context/search_context'
 import { usePersistedState } from '$web-common/usePersistedState'
 import { ChatInput } from './chat_input'
@@ -58,7 +58,7 @@ export function QueryBox(props: Props) {
     <div data-css-scope={style.scope}>
       <div className='query-container'>
         <div className='input-container'>
-          <AIChatProvider>
+          <AIChatContexts>
             {shouldShowSearch() ? (
               <SearchInput
                 showSearchSettings={props.showSearchSettings}
@@ -67,7 +67,7 @@ export function QueryBox(props: Props) {
             ) : (
               <ChatInput renderInputToggle={renderToggle} />
             )}
-          </AIChatProvider>
+          </AIChatContexts>
         </div>
       </div>
     </div>

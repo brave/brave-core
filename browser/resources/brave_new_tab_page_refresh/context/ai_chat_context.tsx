@@ -5,47 +5,40 @@
 
 import * as React from 'react'
 
-import * as API from '../../../../components/ai_chat/resources/page/api'
-import { AIChatContextProvider } from '../../../../components/ai_chat/resources/page/state/ai_chat_context'
+import { newConversation } from '../../../../components/ai_chat/resources/page/api/bind_conversation'
+import bindAiChatWebUiServices from '../../../../components/ai_chat/resources/page/api/bind_webui_services'
 import {
   ActiveChatContext,
   SelectedChatDetails,
 } from '../../../../components/ai_chat/resources/page/state/active_chat_context'
-import { ConversationContextProvider } from '../../../../components/ai_chat/resources/page/state/conversation_context'
+import { AIChatProvider } from '../../../../components/ai_chat/resources/page/state/ai_chat_context'
+import { ConversationProvider } from '../../../../components/ai_chat/resources/page/state/conversation_context'
 import '../../../../components/ai_chat/resources/common/strings'
 
-export function AIChatProvider(props: { children: React.ReactNode }) {
-  return (
-    <AIChatContextProvider conversationEntriesComponent={() => <></>}>
-      <NewTabActiveChatProvider>
-        <ConversationContextProvider>
-          {props.children}
-        </ConversationContextProvider>
-      </NewTabActiveChatProvider>
-    </AIChatContextProvider>
-  )
-}
+export default function AIChatContextsProvider(props: { children: React.ReactNode }) {
+  const aiChatBindings = React.useMemo(bindAiChatWebUiServices, [])
 
-function NewTabActiveChatProvider(props: { children: React.ReactNode }) {
-  const [details, setDetails] = React.useState<SelectedChatDetails>()
-
-  React.useEffect(() => {
-    setDetails({
-      ...API.newConversation(),
+  const conversationDetails = React.useMemo<SelectedChatDetails>(() => {
+    const conversationBindings = newConversation(aiChatBindings.api)
+    return {
+      ...conversationBindings,
       selectedConversationId: undefined,
       updateSelectedConversationId: () => {},
       createNewConversation: () => {},
       isTabAssociated: false,
-    })
+    }
   }, [])
 
-  if (!details) {
-    return null
-  }
-
   return (
-    <ActiveChatContext.Provider value={details}>
-      {props.children}
-    </ActiveChatContext.Provider>
+    <AIChatProvider
+      api={aiChatBindings.api}
+      conversationEntriesComponent={() => (<div />)}
+    >
+      <ActiveChatContext.Provider value={conversationDetails}>
+        <ConversationProvider {...conversationDetails}>
+          {props.children}
+        </ConversationProvider>
+      </ActiveChatContext.Provider>
+    </AIChatProvider>
   )
 }
