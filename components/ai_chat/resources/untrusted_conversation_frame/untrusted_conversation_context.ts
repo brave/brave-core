@@ -24,6 +24,7 @@ export function useProvideUntrustedConversationContext(
 
   // Use API hooks for state
   const state = api.useState().data
+  const serviceState = api.useServiceState().data
   const conversationHistory = api.useGetConversationHistoryData()
 
   const associatedContent = api.useCurrentAssociatedContentChanged().data?.[0]
@@ -55,9 +56,9 @@ export function useProvideUntrustedConversationContext(
     toolUseTaskState: state.toolUseTaskState,
 
     /**
-     * @deprecated Use `api.useState().data.isPremiumUser` instead
+     * @deprecated Use `api.useGetPremiumStatus().data.isPremiumUser` instead
      */
-    isPremiumUser: state.isPremiumUser,
+    isPremiumUser: api.useGetPremiumStatusData().isPremiumUser,
 
     /**
      * @deprecated Use `api.useState().data.isLeoModel` instead
@@ -121,6 +122,26 @@ export function useProvideUntrustedConversationContext(
      */
     contentTaskTabId,
 
+    /**
+     * @deprecated Use `api.useState().data.suggestedQuestions` instead
+     */
+    suggestedQuestions: state.suggestedQuestions,
+
+    /**
+     * @deprecated Use `api.useState().data.suggestionStatus` instead
+     */
+    suggestionStatus: state.suggestionStatus,
+
+    /**
+     * @deprecated Use `api.useState().data.currentError` instead
+     */
+    currentError: state.currentError,
+
+    /**
+     * @deprecated Use `api.useState().data.isTemporary` instead
+     */
+    isTemporary: state.isTemporary,
+
     // Expose action handlers via convenient aliases
     // These are deprecated - use api.actions directly instead
 
@@ -138,6 +159,38 @@ export function useProvideUntrustedConversationContext(
      * @deprecated Use `api.actions.parentUIFrame` instead
      */
     parentUiFrame: api.parentUIFrame,
+
+    /**
+     * @deprecated Use `api.actions.service` instead
+     */
+    service: api.service,
+
+    // Service state (profile-level)
+    /**
+     * @deprecated Use `api.useServiceState().data.hasAcceptedAgreement` instead
+     */
+    hasAcceptedAgreement: serviceState.hasAcceptedAgreement,
+
+    /**
+     * @deprecated Use `api.useServiceState().data.isStoragePrefEnabled` instead
+     */
+    isStoragePrefEnabled: serviceState.isStoragePrefEnabled,
+
+    /**
+     * @deprecated Use `api.useServiceState().data.isStorageNoticeDismissed` instead
+     */
+    isStorageNoticeDismissed: serviceState.isStorageNoticeDismissed,
+
+    /**
+     * @deprecated Use `api.useServiceState().data.canShowPremiumPrompt` instead
+     */
+    canShowPremiumPrompt: serviceState.canShowPremiumPrompt,
+
+    /**
+     * @deprecated Use `api.useGetPremiumStatus().data.isPremiumUserDisconnected` instead
+     */
+    isPremiumUserDisconnected:
+      api.useGetPremiumStatusData().isPremiumUserDisconnected,
   }
 }
 

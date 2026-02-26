@@ -548,6 +548,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     })
   })
 
+  // Listen for handleResetError requests from the child frame
+  aiChat.api.useHandleResetError(() => {
+    handleResetError()
+  })
+
   return {
     ...sendFeedbackState,
     api: props.api,

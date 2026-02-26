@@ -56,6 +56,13 @@ interface ParentUIFrame {
   // model to Regenerate an answer. We need to display the
   // premium suggestion.
   ShowPremiumSuggestionForRegenerate(bool is_visible);
+
+  // Request the parent frame to create a new conversation
+  RequestNewConversation();
+
+  // Request the parent frame to reset the current error and restore the
+  // failed message to the input box.
+  HandleResetError();
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying
@@ -80,6 +87,16 @@ interface UntrustedConversationHandler {
 
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
+
+  // Submit one of the generated suggested questions for response from
+  // the assistant.
+  SubmitSuggestion(string question);
+
+  // Request the browser to generate suggested questions.
+  GenerateQuestions();
+
+  // Retry the last failed API request.
+  RetryAPIRequest();
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -147,4 +164,44 @@ interface UntrustedUIHandler {
 
   // Check if a specific memory exists in storage
   HasMemory(string memory) => (bool exists);
+
+  // Opens the premium upgrade page
+  GoPremium();
+
+  // Refreshes the premium session status
+  RefreshPremiumSession();
+
+  // Opens the model support URL
+  OpenModelSupportUrl();
+
+  // Opens the storage support URL
+  OpenStorageSupportUrl();
+
+  // Opens a URL in a new tab
+  OpenURL(url.mojom.Url url);
+};
+
+// Browser-side service interface for profile-level operations from the
+// untrusted frame. This allows the untrusted frame to call a restricted set
+// of operations directly to AIChatService without proxying through the
+// ConversationHandler or ParentFrame.
+interface UntrustedService {
+  // Bind ability to send events to the UI and receive current state.
+  // Returns the same ServiceState as the parent frame's Service interface.
+  BindObserver(pending_remote<UntrustedServiceObserver> observer)
+      => (ServiceState state);
+
+  // Get the current premium status
+  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+
+  // Dismiss the storage notice
+  DismissStorageNotice();
+
+  // Dismiss the premium prompt
+  DismissPremiumPrompt();
+};
+
+// Observer for UntrustedService state changes
+interface UntrustedServiceObserver {
+  OnStateChanged(ServiceState state);
 };

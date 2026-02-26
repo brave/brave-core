@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
 import { getLocale, formatLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
 interface PremiumSuggestionProps {
@@ -42,7 +42,7 @@ const featuresList = [
 ]
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
-  const aiChatContext = useAIChat()
+  const context = useUntrustedConversationContext()
   const buttonRef = React.useRef<HTMLButtonElement>()
 
   const pricingInfo = formatLocale(S.CHAT_UI_PREMIUM_PRICING, {
@@ -57,6 +57,8 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
     if (buttonRef.current === undefined) return
     buttonRef.current.scrollIntoView({ behavior: 'smooth' })
   }, [])
+
+  const isMobile = context.isMobile
 
   return (
     <div className={styles.boxPremium}>
@@ -81,7 +83,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
           })}
         </ul>
       </div>
-      {!aiChatContext.isMobile && (
+      {!isMobile && (
         <div className={styles.priceListWrapper}>
           <div className={styles.priceList}>
             <button
@@ -118,7 +120,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
       )}
       <div className={styles.actions}>
         <Button
-          onClick={aiChatContext.goPremium}
+          onClick={() => context.uiHandler.goPremium()}
           ref={buttonRef}
         >
           {getLocale(S.CHAT_UI_UPGRADE_BUTTON_LABEL)}

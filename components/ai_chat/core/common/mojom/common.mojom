@@ -8,8 +8,42 @@ module ai_chat.mojom;
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
+enum PremiumStatus {
+  Unknown,
+  Inactive,
+  Active,
+  ActiveDisconnected,
+};
+
+struct PremiumInfo {
+  // How many credentials in the current batch are remaining
+  uint32 remaining_credential_count;
+
+  // When their next batch of credentials is active. If null, there is no
+  // next batch.
+  mojo_base.mojom.Time? next_active_at;
+};
+
 // Common types shared between ai_chat.mojom and untrusted_frame.mojom.
 // This file exists to break circular import dependencies between those files.
+
+enum APIError {
+  None,
+  InternalError,
+  ConnectionIssue,
+  RateLimitReached,
+  ContextLimitReached,
+  InvalidEndpointURL,
+  InvalidAPIKey,
+  ServiceOverloaded
+};
+
+enum SuggestionGenerationStatus {
+  None,
+  CanGenerate,
+  IsGenerating,
+  HasGenerated,
+};
 
 enum CharacterType {
   HUMAN,
@@ -79,6 +113,15 @@ enum UploadedFileType {
   kImage = 0,
   kScreenshot,
   kPdf,
+};
+
+// This does not cover more specific data that the Service owns, such as the
+// conversation list, but does cover status of preferences and notices.
+struct ServiceState {
+  bool has_accepted_agreement;
+  bool is_storage_pref_enabled;
+  bool is_storage_notice_dismissed;
+  bool can_show_premium_prompt;
 };
 
 // Represents the content that is associated with a conversation.
@@ -636,6 +679,12 @@ struct ConversationEntriesState {
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
   array<ConversationCapability> conversation_capabilities;
-  // Whether a user is a premium user or not
-  bool is_premium_user;
+  // Suggested questions for the conversation
+  array<string> suggested_questions;
+  // Status of suggestion generation
+  SuggestionGenerationStatus suggestion_status;
+  // Current API error state
+  APIError current_error;
+  // Whether this is a temporary (non-persisted) conversation
+  bool is_temporary = false;
 };

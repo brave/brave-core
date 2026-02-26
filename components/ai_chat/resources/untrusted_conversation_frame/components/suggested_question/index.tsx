@@ -7,7 +7,7 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
-import { useConversation } from '../../state/conversation_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
 export function SuggestedQuestion({
@@ -17,10 +17,10 @@ export function SuggestedQuestion({
   question: string
   index: number
 }) {
-  const context = useConversation()
+  const context = useUntrustedConversationContext()
   return (
     <SuggestionButton
-      onClick={() => context.api.conversationHandler.submitSuggestion(question)}
+      onClick={() => context.conversationHandler.submitSuggestion(question)}
       className={styles.questionButton}
     >
       <span
@@ -34,13 +34,13 @@ export function SuggestedQuestion({
 }
 
 export function GenerateSuggestionsButton() {
-  const conversationContext = useConversation()
+  const context = useUntrustedConversationContext()
+  const state = context.api.useState().data
   return (
     <SuggestionButton
-      onClick={conversationContext.generateSuggestedQuestions}
+      onClick={() => context.conversationHandler.generateQuestions()}
       isLoading={
-        conversationContext.suggestionStatus
-        === Mojom.SuggestionGenerationStatus.IsGenerating
+        state.suggestionStatus === Mojom.SuggestionGenerationStatus.IsGenerating
       }
       className={styles.questionButton}
     >
@@ -60,12 +60,13 @@ interface SuggestionButtonProps {
 export function SuggestionButton(
   props: React.PropsWithChildren<SuggestionButtonProps>,
 ) {
-  const context = useConversation()
+  const context = useUntrustedConversationContext()
+  const state = context.api.useState().data
   return (
     <ConversationAreaButton
       {...props}
       icon={<>💬</>}
-      isDisabled={context.shouldDisableUserInput}
+      isDisabled={!state.canSubmitUserEntries}
     />
   )
 }

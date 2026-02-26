@@ -56,41 +56,6 @@ const uint32 MAX_DOCUMENTS = 5;
 const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 
 
-enum APIError {
-  None,
-  InternalError,
-  ConnectionIssue,
-  RateLimitReached,
-  ContextLimitReached,
-  InvalidEndpointURL,
-  InvalidAPIKey,
-  ServiceOverloaded
-};
-
-
-enum PremiumStatus {
-  Unknown,
-  Inactive,
-  Active,
-  ActiveDisconnected,
-};
-
-struct PremiumInfo {
-  // How many credentials in the current batch are remaining
-  uint32 remaining_credential_count;
-
-  // When their next batch of credentials is active. If null, there is no
-  // next batch.
-  mojo_base.mojom.Time? next_active_at;
-};
-
-enum SuggestionGenerationStatus {
-  None,
-  CanGenerate,
-  IsGenerating,
-  HasGenerated,
-};
-
 struct Conversation {
   string uuid;
   // Set by the LLM or the user
@@ -162,15 +127,6 @@ union ActionEntry {
 struct ActionGroup {
   string category;
   array<ActionEntry> entries;
-};
-
-// This does not cover more specific data that the Service owns, such as the
-// conversation list, but does cover status of preferences and notices.
-struct ServiceState {
-  bool has_accepted_agreement;
-  bool is_storage_pref_enabled;
-  bool is_storage_notice_dismissed;
-  bool can_show_premium_prompt;
 };
 
 interface Service {

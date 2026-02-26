@@ -7,12 +7,12 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './notices.module.scss'
 import illustrationUrl from './conversation_storage.svg'
 
 export default function NoticeConversationStorage() {
-  const aiChatContext = useAIChat()
+  const context = useUntrustedConversationContext()
 
   return (
     <div className={styles.notice}>
@@ -28,7 +28,7 @@ export default function NoticeConversationStorage() {
         <p>
           <button
             className={styles.learnMoreLink}
-            onClick={() => aiChatContext.api.uiHandler.openStorageSupportUrl()}
+            onClick={() => context.uiHandler.openStorageSupportUrl()}
           >
             {getLocale(S.CHAT_UI_LEARN_MORE)}
           </button>
@@ -40,7 +40,7 @@ export default function NoticeConversationStorage() {
         size='tiny'
         fab
         title={getLocale(S.CHAT_UI_CLOSE_NOTICE)}
-        onClick={aiChatContext.dismissStorageNotice}
+        onClick={() => context.service.dismissStorageNotice()}
       >
         <Icon
           className={styles.closeIcon}

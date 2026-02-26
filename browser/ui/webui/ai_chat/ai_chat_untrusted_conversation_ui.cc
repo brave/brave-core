@@ -65,7 +65,7 @@
 
 namespace {
 
-// Implments the interface to calls from the UI to the browser
+// Implements the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebUI* web_ui,
@@ -98,14 +98,14 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURL(GURL(ai_chat::kLeoBraveSearchSupportUrl));
+    OpenURLInternal(GURL(ai_chat::kLeoBraveSearchSupportUrl));
   }
 
   void OpenSearchURL(const std::string& search_query) override {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURL(GURL("https://search.brave.com/search?q=" +
+    OpenURLInternal(GURL("https://search.brave.com/search?q=" +
                  base::EscapeQueryParamValue(search_query, true)));
   }
 
@@ -116,7 +116,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
       return;
     }
-    OpenURL(url);
+    OpenURLInternal(url);
   }
 
   void AddTabToThumbnailTracker(int32_t tab_id) override {
@@ -255,12 +255,48 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #endif
   }
 
- private:
-  void OpenURL(GURL url) {
-    if (!url.SchemeIs(url::kHttpsScheme)) {
+  void GoPremium() override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
+    OpenURLInternal(GURL(ai_chat::kLeoGoPremiumUrl));
+  }
 
+  void RefreshPremiumSession() override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
+    OpenURLInternal(GURL(ai_chat::kLeoRefreshPremiumSessionUrl));
+  }
+
+  void OpenModelSupportUrl() override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
+    OpenURLInternal(GURL(ai_chat::kLeoModelSupportUrl));
+  }
+
+  void OpenStorageSupportUrl() override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
+    OpenURLInternal(GURL(ai_chat::kLeoStorageSupportUrl));
+  }
+
+  void OpenURL(const GURL& url) override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
+    if (!url.is_valid() ||
+        (!url.SchemeIs(url::kHttpsScheme) &&
+         !url.SchemeIs(url::kHttpScheme))) {
+      return;
+    }
+    OpenURLInternal(url);
+  }
+
+ private:
+  void OpenURLInternal(GURL url) {
 #if !BUILDFLAG(IS_ANDROID)
     Browser* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
@@ -416,6 +452,16 @@ AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
 void AIChatUntrustedConversationUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
   ui_handler_ = std::make_unique<UIHandler>(web_ui(), std::move(receiver));
+}
+
+void AIChatUntrustedConversationUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::UntrustedService> receiver) {
+  ai_chat::AIChatService* service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          Profile::FromWebUI(web_ui()));
+  if (service) {
+    service->BindUntrustedService(std::move(receiver));
+  }
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(AIChatUntrustedConversationUI)

@@ -21,14 +21,14 @@ import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
 import UntrustedMockContext from '../../untrusted_conversation_frame/mock_untrusted_conversation_context'
-import ErrorConnection from '../components/alerts/error_connection'
-import ErrorConversationEnd from '../components/alerts/error_conversation_end'
-import ErrorInvalidAPIKey from '../components/alerts/error_invalid_api_key'
-import ErrorInvalidEndpointURL from '../components/alerts/error_invalid_endpoint_url'
-import ErrorRateLimit from '../components/alerts/error_rate_limit'
-import ErrorServiceOverloaded from '../components/alerts/error_service_overloaded'
-import LongConversationInfo from '../components/alerts/long_conversation_info'
-import WarningPremiumDisconnected from '../components/alerts/warning_premium_disconnected'
+import ErrorConnection from '../../untrusted_conversation_frame/components/alerts/error_connection'
+import ErrorConversationEnd from '../../untrusted_conversation_frame/components/alerts/error_conversation_end'
+import ErrorInvalidAPIKey from '../../untrusted_conversation_frame/components/alerts/error_invalid_api_key'
+import ErrorInvalidEndpointURL from '../../untrusted_conversation_frame/components/alerts/error_invalid_endpoint_url'
+import ErrorRateLimit from '../../untrusted_conversation_frame/components/alerts/error_rate_limit'
+import ErrorServiceOverloaded from '../../untrusted_conversation_frame/components/alerts/error_service_overloaded'
+import LongConversationInfo from '../../untrusted_conversation_frame/components/alerts/long_conversation_info'
+import WarningPremiumDisconnected from '../../untrusted_conversation_frame/components/alerts/warning_premium_disconnected'
 import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
@@ -1376,7 +1376,6 @@ function StoryContext(
               canSubmitUserEntries: currentError === Mojom.APIError.None,
               allModels: MODELS,
               currentModelKey: currentModel?.key ?? '',
-              isPremiumUser: args.isPremiumUser,
               conversationCapabilities: [
                 Mojom.ConversationCapability.CONTENT_AGENT,
               ],
@@ -1412,17 +1411,18 @@ export const _Panel: Story = {
 export const _Alerts = {
   render: () => {
     return (
-      <div className={`${styles.container} ${styles.containerAlerts}`}>
-        <ErrorConnection />
-        <ErrorConversationEnd />
-        <ErrorInvalidAPIKey />
-        <ErrorInvalidEndpointURL />
-        <ErrorRateLimit />
-        <ErrorRateLimit _testIsCurrentModelLeo={false} />
-        <ErrorServiceOverloaded />
-        <LongConversationInfo />
-        <WarningPremiumDisconnected />
-      </div>
+      <UntrustedMockContext>
+        <div className={`${styles.container} ${styles.containerAlerts}`}>
+          <ErrorConnection />
+          <ErrorConversationEnd />
+          <ErrorInvalidAPIKey />
+          <ErrorInvalidEndpointURL />
+          <ErrorRateLimit />
+          <ErrorServiceOverloaded />
+          <LongConversationInfo />
+          <WarningPremiumDisconnected />
+        </div>
+      </UntrustedMockContext>
     )
   },
 }
@@ -1430,9 +1430,11 @@ export const _Alerts = {
 export const _FeedbackForm = {
   render: () => {
     return (
-      <div className={styles.container}>
-        <FeedbackForm />
-      </div>
+      <UntrustedMockContext>
+        <div className={styles.container}>
+          <FeedbackForm />
+        </div>
+      </UntrustedMockContext>
     )
   },
 }

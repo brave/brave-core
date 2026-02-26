@@ -11,11 +11,17 @@ import * as Mojom from '../../common/mojom'
 import { AIChatAPI } from '../api/ai_chat_api'
 
 export interface ConversationEntriesProps {
-  onIsContentReady: (isContentReady: boolean) => void
+  /* Class to put on the element in order to customize scroll */
+  className: string
 }
 
 type AIChatContextProps = {
   api: AIChatAPI['api']
+
+  /**
+   * React component to render the conversation entries. iframe in the
+   * WebUI, direct Component in the Storybook.
+   */
   conversationEntriesComponent: (
     props: ConversationEntriesProps,
   ) => React.ReactElement

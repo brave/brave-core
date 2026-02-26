@@ -52,6 +52,11 @@ type UIHandlerActions = Pick<
   | 'deleteMemory'
   | 'openAIChatCustomizationSettings'
   | 'openURLFromResponse'
+  | 'goPremium'
+  | 'refreshPremiumSession'
+  | 'openModelSupportUrl'
+  | 'openStorageSupportUrl'
+  | 'openURL'
 >
 
 // State that comes from ConversationEntriesState plus additional UI state
@@ -69,9 +74,11 @@ export default function createUntrustedConversationApi(
   conversationHandler: Closable<Mojom.UntrustedConversationHandlerInterface>,
   uiHandler: Mojom.UntrustedUIHandlerInterface,
   parentUIFrame: Closable<Mojom.ParentUIFrameInterface>,
+  service: Closable<Mojom.UntrustedServiceInterface>,
 ) {
   let conversationObserver: Mojom.UntrustedConversationUIInterface
   let uiObserver: Mojom.UntrustedUIInterface
+  let serviceObserver: Mojom.UntrustedServiceObserverInterface
 
   const api = createInterfaceApi({
     actions: {
@@ -83,6 +90,10 @@ export default function createUntrustedConversationApi(
       parentUIFrame: parentUIFrame as Pick<
         Mojom.ParentUIFrameInterface,
         VoidMethodKeys<Mojom.ParentUIFrameInterface>
+      >,
+      service: service as Pick<
+        Mojom.UntrustedServiceInterface,
+        VoidMethodKeys<Mojom.UntrustedServiceInterface>
       >,
     },
 
@@ -107,7 +118,6 @@ export default function createUntrustedConversationApi(
         isGenerating: false,
         isToolExecuting: false,
         toolUseTaskState: Mojom.TaskState.kNone,
-        isPremiumUser: false,
         isLeoModel: true,
         allModels: [],
         currentModelKey: '',
@@ -117,6 +127,38 @@ export default function createUntrustedConversationApi(
         totalTokens: BigInt(0),
         canSubmitUserEntries: false,
         conversationCapabilities: [Mojom.ConversationCapability.CHAT],
+        suggestedQuestions: [],
+        suggestionStatus: Mojom.SuggestionGenerationStatus.None,
+        currentError: Mojom.APIError.None,
+        isTemporary: false,
+      }),
+
+      // Service state (profile-level) - updated via UntrustedServiceObserver
+      serviceState: state<Mojom.ServiceState>({
+        hasAcceptedAgreement: false,
+        isStoragePrefEnabled: false,
+        isStorageNoticeDismissed: false,
+        canShowPremiumPrompt: false,
+      }),
+
+      // Premium status - fetched from service
+      ...endpointsFor(service, {
+        getPremiumStatus: {
+          response: (result) => ({
+            isPremiumUser:
+              result.status !== undefined
+              && result.status !== Mojom.PremiumStatus.Inactive,
+
+            isPremiumUserDisconnected:
+              result.status === Mojom.PremiumStatus.ActiveDisconnected,
+          }),
+          placeholderData: {
+            isPremiumUser: false,
+            isPremiumUserDisconnected: false,
+          },
+          prefetchWithArgs: [],
+          refetchOnWindowFocus: 'always',
+        },
       }),
     },
 
@@ -180,6 +222,19 @@ export default function createUntrustedConversationApi(
           conversationObserver = observer
         },
       ),
+
+      // Service observer (profile-level state changes)
+      ...eventsFor(
+        Mojom.UntrustedServiceObserverInterface,
+        {
+          onStateChanged(state) {
+            api.serviceState.update(state)
+          },
+        },
+        (observer) => {
+          serviceObserver = observer
+        },
+      ),
     },
   })
 
@@ -188,11 +243,13 @@ export default function createUntrustedConversationApi(
 
     conversationObserver: conversationObserver!,
     uiObserver: uiObserver!,
+    serviceObserver: serviceObserver!,
 
     close: () => {
       api.close()
       conversationHandler.$.close()
       parentUIFrame.$.close()
+      service.$.close()
     },
   }
 }

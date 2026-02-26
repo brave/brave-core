@@ -7,8 +7,7 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
-import { useConversation } from '../../state/conversation_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
@@ -17,14 +16,12 @@ interface Props {
 }
 
 function ErrorRateLimit(props: Props) {
-  const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
+  const context = useUntrustedConversationContext()
+  const state = context.api.useState().data
+  const { isPremiumUser } = context.api.useGetPremiumStatusData()
 
   // Respond to BYOM scenarios
-  if (
-    !conversationContext.isCurrentModelLeo
-    || props._testIsCurrentModelLeo === false
-  ) {
+  if (!state.isLeoModel || props._testIsCurrentModelLeo === false) {
     return (
       <div className={styles.alert}>
         <Alert type='warning'>
@@ -32,7 +29,7 @@ function ErrorRateLimit(props: Props) {
           <Button
             slot='actions'
             kind='filled'
-            onClick={conversationContext.retryAPIRequest}
+            onClick={() => context.conversationHandler.retryAPIRequest()}
           >
             {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
           </Button>
@@ -42,7 +39,7 @@ function ErrorRateLimit(props: Props) {
   }
 
   // Respond to Leo (i.e., non-BYOM) scenarios
-  if (!aiChatContext.isPremiumUser) {
+  if (!isPremiumUser) {
     return (
       <PremiumSuggestion
         title={getLocale(S.CHAT_UI_RATE_LIMIT_REACHED_TITLE)}
@@ -50,7 +47,7 @@ function ErrorRateLimit(props: Props) {
         secondaryActionButton={
           <Button
             kind='plain-faint'
-            onClick={conversationContext.handleResetError}
+            onClick={() => context.parentUiFrame.handleResetError()}
           >
             {getLocale(S.AI_CHAT_MAYBE_LATER_LABEL)}
           </Button>
@@ -66,7 +63,7 @@ function ErrorRateLimit(props: Props) {
         <Button
           slot='actions'
           kind='filled'
-          onClick={conversationContext.retryAPIRequest}
+          onClick={() => context.conversationHandler.retryAPIRequest()}
         >
           {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
         </Button>

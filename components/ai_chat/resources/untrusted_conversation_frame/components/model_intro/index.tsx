@@ -1,4 +1,4 @@
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -9,8 +9,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { useAIChat } from '../../state/ai_chat_context'
-import { useConversation } from '../../state/conversation_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 
@@ -26,18 +25,20 @@ function getIntroMessageKey(model: Mojom.Model) {
 }
 
 export default function ModelIntro() {
-  const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
+  const context = useUntrustedConversationContext()
+  const state = context.api.useState().data
 
   // Only needed on iOS to fix one-tap issue with tooltip.
   // <if expr="is_ios">
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   // </if>
 
-  const model = conversationContext.currentModel
+  const model = state.allModels.find((m) => m.key === state.currentModelKey)
   if (!model) {
     return <></>
   }
+
+  const isLeoModel = state.isLeoModel
 
   return (
     <div className={styles.modelInfo}>
@@ -46,15 +47,15 @@ export default function ModelIntro() {
       </div>
       <div className={styles.meta}>
         <h4 className={styles.category}>
-          {conversationContext.isCurrentModelLeo
+          {isLeoModel
             ? getCategoryName(model.options.leoModelOptions!.category)
             : model.displayName}
         </h4>
         <h3 className={styles.name}>
-          {conversationContext.isCurrentModelLeo
+          {isLeoModel
             ? model.displayName
             : model.options.customModelOptions?.modelRequestName}
-          {conversationContext.isCurrentModelLeo && (
+          {isLeoModel && (
             <Tooltip
               mode='default'
               className={styles.tooltip}
@@ -72,9 +73,7 @@ export default function ModelIntro() {
                     return (
                       <button
                         key={content}
-                        onClick={() =>
-                          aiChatContext.api.uiHandler.openModelSupportUrl()
-                        }
+                        onClick={() => context.uiHandler.openModelSupportUrl()}
                       >
                         {content}
                       </button>

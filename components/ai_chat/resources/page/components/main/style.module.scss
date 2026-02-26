@@ -54,22 +54,10 @@
   margin-top: var(--conversation-content-margin);
 }
 
-.scroller {
-  position: relative;
-  --scrollbar-width: 6px;
-  overflow: auto;
-  scrollbar-gutter: stable;
+.conversationContainer {
+  border: 0;
   height: 100%;
-  padding-bottom: var(--leo-spacing-xl);
-
-  &::-webkit-scrollbar {
-    width: var(--scrollbar-width);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--leo-color-neutral-20);
-    border-radius: var(--leo-spacing-m);
-  }
+  width: 100%;
 }
 
 .conversationContent {
@@ -219,20 +207,7 @@
   padding: 0 16px;
 }
 
-.aichatIframeContainer {
-  // Negative margin to account for the additional height
-  // added to the iframe.
-  // See https://github.com/brave/brave-browser/issues/46042
-  margin-bottom: calc(-1 * var(--iframe-additional-margin-for-menus));
-  // Position the iframe relative to the main content when the regenerate
-  // answer menu is open.
-  // Otherwise the menu can sometimes be overlapped by the Suggested question
-  // buttons.
-  position: var(--iframe-position-for-menus);
-  z-index: 1;
-}
-
-.aichatIframeContainer.dragActive {
+.dragActive iframe {
   pointer-events: none; // Disable iframe interaction during drag operations
 }
 

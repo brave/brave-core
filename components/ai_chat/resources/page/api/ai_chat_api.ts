@@ -213,6 +213,8 @@ export default function createAIChatApi(
           regenerateAnswerMenuIsOpen(isOpen) {},
           showSkillDialog(prompt) {},
           showPremiumSuggestionForRegenerate(isVisible) {},
+          requestNewConversation() {},
+          handleResetError() {},
         },
         (observer) => {
           conversationEntriesFrameObserver = observer

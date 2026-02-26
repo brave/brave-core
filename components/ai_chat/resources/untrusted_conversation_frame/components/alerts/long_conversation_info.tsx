@@ -6,17 +6,14 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
-import { useConversation } from '../../state/conversation_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './alerts.module.scss'
-import { useActiveChat } from '../../state/active_chat_context'
 
 export default function LongConversationInfo() {
-  const context = useConversation()
-  const { createNewConversation } = useActiveChat()
+  const context = useUntrustedConversationContext()
 
   const handleClearChat = () => {
-    createNewConversation()
-    context.dismissLongConversationInfo()
+    context.parentUiFrame.requestNewConversation()
   }
 
   return (

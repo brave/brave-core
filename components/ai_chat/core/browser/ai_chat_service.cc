@@ -674,7 +674,8 @@ void AIChatService::GetActionMenuList(GetActionMenuListCallback callback) {
   std::move(callback).Run(ai_chat::GetActionMenuList());
 }
 
-void AIChatService::GetPremiumStatus(GetPremiumStatusCallback callback) {
+void AIChatService::GetPremiumStatus(
+    mojom::Service::GetPremiumStatusCallback callback) {
   credential_manager_->GetPremiumStatus(
       base::BindOnce(&AIChatService::OnPremiumStatusReceived,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -865,6 +866,9 @@ mojom::ServiceStatePtr AIChatService::BuildState() {
 void AIChatService::OnStateChanged() {
   mojom::ServiceStatePtr state = BuildState();
   for (auto& remote : observer_remotes_) {
+    remote->OnStateChanged(state.Clone());
+  }
+  for (auto& remote : untrusted_service_observer_remotes_) {
     remote->OnStateChanged(state.Clone());
   }
 }
@@ -1121,9 +1125,21 @@ void AIChatService::BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) {
 
 void AIChatService::BindObserver(
     mojo::PendingRemote<mojom::ServiceObserver> observer,
-    BindObserverCallback callback) {
+    mojom::Service::BindObserverCallback callback) {
   observer_remotes_.Add(std::move(observer));
   std::move(callback).Run(BuildState());
+}
+
+void AIChatService::BindObserver(
+    mojo::PendingRemote<mojom::UntrustedServiceObserver> observer,
+    mojom::UntrustedService::BindObserverCallback callback) {
+  untrusted_service_observer_remotes_.Add(std::move(observer));
+  std::move(callback).Run(BuildState());
+}
+
+void AIChatService::BindUntrustedService(
+    mojo::PendingReceiver<mojom::UntrustedService> receiver) {
+  untrusted_service_receivers_.Add(this, std::move(receiver));
 }
 
 bool AIChatService::GetIsContentAgentAllowed() const {

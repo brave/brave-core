@@ -1984,7 +1984,20 @@ ConversationHandler::GetStateForConversationEntries() {
            mojom::ModelAccess::PREMIUM);
   entries_state->conversation_capabilities = {
       conversation_capabilities_.begin(), conversation_capabilities_.end()};
-  entries_state->is_premium_user = ai_chat_service_->IsPremiumStatus();
+
+  // Suggested questions
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
+  entries_state->suggested_questions = std::move(suggestions);
+  entries_state->suggestion_status = suggestion_generation_status_;
+
+  // API error
+  entries_state->current_error = current_error_;
+
+  // Temporary chat flag
+  entries_state->is_temporary = metadata_->temporary;
+
   return entries_state;
 }
 
