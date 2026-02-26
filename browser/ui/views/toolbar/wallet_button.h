@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/toolbar/wallet_button_notification_source.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
@@ -41,7 +40,6 @@ class WalletButton : public ToolbarButton {
  private:
   // views::View:
   void AddedToWidget() override;
-  void RemovedFromWidget() override;
 
   std::string GetBadgeText();
   void OnWalletPressed(const ui::Event& event);
@@ -61,7 +59,6 @@ class WalletButton : public ToolbarButton {
   size_t counter_ = 0;
   bool show_suggest_badge_ = false;
 
-  base::CallbackListSubscription paint_as_active_subscription_;
   base::WeakPtrFactory<WalletButton> weak_ptr_factory_{this};
 };
 

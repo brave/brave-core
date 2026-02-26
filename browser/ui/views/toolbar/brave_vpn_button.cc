@@ -198,19 +198,6 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
 
 BraveVPNButton::~BraveVPNButton() = default;
 
-void BraveVPNButton::AddedToWidget() {
-  ToolbarButton::AddedToWidget();
-  paint_as_active_subscription_ =
-      GetWidget()->RegisterPaintAsActiveChangedCallback(
-          base::BindRepeating(&BraveVPNButton::UpdateColorsAndInsets,
-                              weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveVPNButton::RemovedFromWidget() {
-  paint_as_active_subscription_ = {};
-  ToolbarButton::RemovedFromWidget();
-}
-
 void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
   if (IsErrorState() && (state == ConnectionState::CONNECTING ||
                          state == ConnectionState::DISCONNECTING)) {
@@ -284,16 +271,12 @@ void BraveVPNButton::UpdateColorsAndInsets() {
       kLeoProductVpnIcon, GetIconSize(), GetIconColor())));
   gfx::ImageSkia vpn_image(std::move(image_source), kImageSizeWithBadge);
 
-  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
-  if (is_active) {
-    SetImageModel(views::Button::STATE_NORMAL,
-                  ui::ImageModel::FromImageSkia(vpn_image));
-  } else {
-    SetImageModel(views::Button::STATE_NORMAL,
-                  ui::ImageModel::FromImageSkia(
-                      gfx::ImageSkiaOperations::CreateTransparentImage(
-                          vpn_image, kBraveDisabledControlAlpha / 255.0)));
-  }
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromImageSkia(vpn_image));
+  SetImageModel(views::Button::STATE_DISABLED,
+                ui::ImageModel::FromImageSkia(
+                    gfx::ImageSkiaOperations::CreateTransparentImage(
+                        vpn_image, kBraveDisabledControlAlpha / 255.0)));
 }
 
 SkColor BraveVPNButton::GetIconColor() {

@@ -157,16 +157,6 @@ void WalletButton::AddedToWidget() {
   if (notification_source_) {
     notification_source_->Init();
   }
-  paint_as_active_subscription_ =
-      GetWidget()->RegisterPaintAsActiveChangedCallback(
-          base::BindRepeating(&WalletButton::UpdateImageAndText,
-                              weak_ptr_factory_.GetWeakPtr(),
-                              /*activated=*/false));
-}
-
-void WalletButton::RemovedFromWidget() {
-  paint_as_active_subscription_ = {};
-  ToolbarButton::RemovedFromWidget();
 }
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
@@ -217,20 +207,21 @@ void WalletButton::UpdateImageAndText(bool activated) {
     return;
   }
 
-  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
-
-  ui::ColorId color_id = kColorToolbarButtonIcon;
-  if (activated) {
-    color_id = kColorToolbarButtonActivated;
-  } else if (!is_active) {
-    color_id = kColorToolbarButtonIconInactive;
-  }
+  ui::ColorId color_id =
+      activated ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                : static_cast<ui::ColorId>(kColorToolbarButtonIcon);
 
   if (counter_ == 0) {
     SetImageModel(views::Button::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(
                       kLeoProductBraveWalletIcon,
                       color_provider->GetColor(color_id), GetIconSize()));
+    SetImageModel(
+        views::Button::STATE_DISABLED,
+        ui::ImageModel::FromVectorIcon(
+            kLeoProductBraveWalletIcon,
+            color_provider->GetColor(kColorToolbarButtonIconInactive),
+            GetIconSize()));
     return;
   }
 
@@ -255,15 +246,12 @@ void WalletButton::UpdateImageAndText(bool activated) {
       text, brave::kBadgeTextColor, brave::kBadgeNotificationBG));
   gfx::ImageSkia badge_image(std::move(image_source), preferred_size);
 
-  if (is_active) {
-    SetImageModel(views::Button::STATE_NORMAL,
-                  ui::ImageModel::FromImageSkia(badge_image));
-  } else {
-    SetImageModel(views::Button::STATE_NORMAL,
-                  ui::ImageModel::FromImageSkia(
-                      gfx::ImageSkiaOperations::CreateTransparentImage(
-                          badge_image, kBraveDisabledControlAlpha / 255.0)));
-  }
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromImageSkia(badge_image));
+  SetImageModel(views::Button::STATE_DISABLED,
+                ui::ImageModel::FromImageSkia(
+                    gfx::ImageSkiaOperations::CreateTransparentImage(
+                        badge_image, kBraveDisabledControlAlpha / 255.0)));
 }
 
 void WalletButton::ShowWalletBubble() {
