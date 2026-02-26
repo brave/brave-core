@@ -204,7 +204,9 @@ class ConversationHandler : public mojom::ConversationHandler,
       mojom::ActionType action_type) override;
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
-      const std::string& skill_id) override;
+      const std::string& skill_id,
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
+      override;
   void ModifyConversation(
       const std::string& entry_uuid,
       const std::string& new_text,

@@ -276,6 +276,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       api.conversationHandler.submitHumanConversationEntryWithSkill(
         stringifyContent(inputText),
         selectedSkill.id,
+        pendingMessageFiles,
       )
     } else if (selectedActionType) {
       api.conversationHandler.submitHumanConversationEntryWithAction(

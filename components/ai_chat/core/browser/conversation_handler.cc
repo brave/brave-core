@@ -643,7 +643,8 @@ void ConversationHandler::SubmitHumanConversationEntryWithAction(
 
 void ConversationHandler::SubmitHumanConversationEntryWithSkill(
     const std::string& input,
-    const std::string& skill_id) {
+    const std::string& skill_id,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -667,11 +668,14 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
     prefs::UpdateSkillLastUsedInPrefs(skill_id, *prefs_);
   }
 
+  // Auto-switch to vision model if needed
+  MaybeSwitchToVisionModel(uploaded_files);
+
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_files */, std::move(skill_entry), false,
+      std::move(uploaded_files), std::move(skill_entry), false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */);
 
   SubmitHumanConversationEntry(std::move(turn));

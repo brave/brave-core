@@ -5007,8 +5007,8 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("/playlist 2000",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/playlist 2000", skill_id, std::nullopt);
 
   run_loop.Run();
 
@@ -5052,7 +5052,7 @@ TEST_F(ConversationHandlerUnitTest,
           }));
 
   conversation_handler_->SubmitHumanConversationEntryWithSkill(
-      "Test input", "invalid-mode-id");
+      "Test input", "invalid-mode-id", std::nullopt);
 
   run_loop.Run();
 
@@ -5092,8 +5092,8 @@ TEST_F(ConversationHandlerUnitTest,
         run_loop.Quit();
       })));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "Test input", skill_id, std::nullopt);
 
   run_loop.Run();
 }
@@ -5132,13 +5132,107 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "Test input", skill_id, std::nullopt);
 
   run_loop.Run();
 
   // Verify model remained the same
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key, current_model);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntryWithSkill_WithUploadedFiles) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  // Add a skill to prefs
+  prefs::AddSkillToPrefs("describe", "Describe what you see in this image",
+                         std::nullopt /* model */, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Mock successful response
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("I see a photo")),
+                std::nullopt));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Create uploaded files with an image
+  auto uploaded_files = std::make_optional(
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage));
+
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/describe photo", skill_id, std::move(uploaded_files));
+
+  run_loop.Run();
+
+  // Verify conversation history contains both skill data and uploaded files
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->text, "/describe photo");
+  ASSERT_TRUE(history[0]->skill);
+  EXPECT_EQ(history[0]->skill->shortcut, "describe");
+  EXPECT_EQ(history[0]->skill->prompt, "Describe what you see in this image");
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
+            mojom::UploadedFileType::kImage);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntryWithSkill_AutoSwitchesToVisionModel) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  // Switch to a non-vision model before submitting.
+  base::RunLoop loop_for_change_model;
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
+                                           &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel("chat-basic");
+  loop_for_change_model.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  // Re-set the mock engine; ChangeModel replaces it.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Add an unmodeled skill (no pinned model) so the auto-switch is what moves
+  // the model, not the skill's own model preference.
+  prefs::AddSkillToPrefs("describe", "Describe what you see in this image",
+                         std::nullopt /* model */, prefs_);
+  std::string skill_id = prefs::GetSkillsFromPrefs(prefs_)[0]->id;
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
+        EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+        run_loop.Quit();
+      })));
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(testing::AnyNumber());
+
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/describe photo", skill_id,
+      std::make_optional(
+          CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage)));
+  run_loop.Run();
+
+  EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
 }
 
 TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
