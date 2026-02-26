@@ -28,27 +28,17 @@ class PsstWebDialogDelegate : public ui::WebDialogDelegate {
   ~PsstWebDialogDelegate() override;
 
   GURL GetDialogContentURL() const override;
-  void OnDialogClosed(const std::string& json_retval) override;
-  void OnCloseContents(content::WebContents* source,
-                       bool* out_close_dialog) override;
 };
 
 PsstWebDialogDelegate::PsstWebDialogDelegate() {
   set_show_dialog_title(false);
+  set_can_close(true);
 }
 
 PsstWebDialogDelegate::~PsstWebDialogDelegate() = default;
 
 GURL PsstWebDialogDelegate::GetDialogContentURL() const {
   return GURL(kBraveUIPsstURL);
-}
-
-void PsstWebDialogDelegate::OnDialogClosed(
-    const std::string& /* json_retval */) {}
-
-void PsstWebDialogDelegate::OnCloseContents(content::WebContents* /* source */,
-                                            bool* out_close_dialog) {
-  *out_close_dialog = true;
 }
 
 void OpenPsstDialog(content::WebContents* initiator) {
