@@ -45,7 +45,10 @@ export function ChatInput(props: Props) {
   }, [conversationUuid, conversationHistory.length])
 
   return (
-    <div data-css-scope={style.scope}>
+    <div
+      data-css-scope={style.scope}
+      data-test-id='ntp-chat-input'
+    >
       <InputBox
         conversationStarted={false}
         context={{ ...conversationContext, ...aiChatContext }}

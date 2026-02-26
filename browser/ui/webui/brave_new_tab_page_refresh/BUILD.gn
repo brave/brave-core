@@ -96,7 +96,7 @@ source_set("brave_new_tab_page_refresh") {
       "//brave/browser/brave_rewards:util",
     ]
   }
-  
+
   if (enable_ai_chat) {
     deps += [
       "//brave/browser/ai_chat",
@@ -148,6 +148,17 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    sources += [ "ntp_ai_chat_browsertest.cc" ]
+
+    deps += [
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/brave_search_conversion",
+      "//chrome/browser/profiles:profile",
+      "//components/prefs",
+    ]
+  }
 
   if (enable_brave_ads) {
     sources += [ "new_tab_takeover_browsertest.cc" ]

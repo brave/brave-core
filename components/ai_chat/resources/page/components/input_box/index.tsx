@@ -471,6 +471,7 @@ function InputBox(props: InputBoxProps) {
               onClick={handleSubmit}
               disabled={isSendButtonDisabled}
               title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
+              data-test-id='leo-submit-button'
             >
               <Icon
                 className={classnames({

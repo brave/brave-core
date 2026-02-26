@@ -19,10 +19,14 @@ interface Props {
 
 export function QueryModeToggle(props: Props) {
   return (
-    <div data-css-scope={style.scope}>
+    <div
+      data-css-scope={style.scope}
+      data-test-id='query-mode-toggle'
+    >
       <button
         onClick={() => props.onChange('search')}
         disabled={props.queryMode === 'search'}
+        data-test-id='query-mode-toggle-search'
       >
         <Icon
           name='search'
@@ -35,6 +39,7 @@ export function QueryModeToggle(props: Props) {
       <button
         onClick={() => props.onChange('chat')}
         disabled={props.queryMode === 'chat'}
+        data-test-id='query-mode-toggle-chat'
       >
         <Icon
           name='product-brave-leo'
