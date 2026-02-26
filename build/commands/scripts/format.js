@@ -164,7 +164,7 @@ const handleDifference = async (file, dryRun, formatted) => {
   }
 }
 
-const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
+const runPrettierForFile = async (file, dryRun, ignorePath) => {
   const fileInfo = await prettier.getFileInfo(file, {
     ignorePath: ignorePath,
     withNodeModules: false,
@@ -174,6 +174,7 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
     return
   }
 
+  const options = await prettier.resolveConfig(file)
   const content = await fs.readFile(file, { encoding: 'utf-8' })
   const formatted = await prettier.format(content, {
     ...options,
@@ -187,7 +188,6 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
 
 const runPrettier = async (files, dryRun) => {
   console.log('run prettier for', files.length, 'files')
-  const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
     throw new Error(`${ignorePath} file not found`)
@@ -196,7 +196,7 @@ const runPrettier = async (files, dryRun) => {
   const prettierIssues = []
   for (const file of files) {
     try {
-      const issue = await runPrettierForFile(file, dryRun, options, ignorePath)
+      const issue = await runPrettierForFile(file, dryRun, ignorePath)
       if (issue) {
         prettierIssues.push(issue)
       }
