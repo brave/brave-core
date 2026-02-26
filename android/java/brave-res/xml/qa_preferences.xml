@@ -64,4 +64,10 @@
         android:title="Consume Origin Purchase"
         android:summary="Clears Origin INAPP purchase on Play Store for re-testing"/>
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="qa_force_in_app_review"
+        android:title="Force in-app review flow"
+        android:summary="Rate from settings uses in-app review instead of Play Store"
+        android:defaultValue="false" />
+
 </PreferenceScreen>
