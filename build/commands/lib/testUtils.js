@@ -67,6 +67,7 @@ const getTestsToRun = (config, suite) => {
 const getApplicableFilters = (config, suite) => {
   let filterFilePaths = []
 
+  /** @type {string} */
   let targetPlatform = process.platform
   if (targetPlatform === 'win32') {
     targetPlatform = 'windows'

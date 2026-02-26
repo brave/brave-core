@@ -111,6 +111,7 @@ const chromiumConfigs = {
 function getChromiumGnArgs() {
   const targetOs = config.targetOS
   const targetArch = config.targetArch
+  /** @type {Record<string, any>} */
   const args = {
     target_cpu: targetArch,
     target_os: targetOs,

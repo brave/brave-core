@@ -36,6 +36,7 @@ function writeGclientConfig(
   targetArchList,
   onlyChromium = false,
 ) {
+  /** @type {Record<string, any>} */
   const gclientConfig = {
     solutions: [
       {

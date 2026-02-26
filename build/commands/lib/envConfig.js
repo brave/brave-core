@@ -196,7 +196,6 @@ class EnvConfig {
   /**
    * Retrieves and parses a value from .env configuration.
    *
-   * @private
    * @param {string} keyJoined - The joined key path (e.g., 'projects_chrome_tag')
    * @param {ConfigValueType} expectedValueType - Expected type of the value
    * @returns {*} The parsed configuration value, or undefined if not found
@@ -239,7 +238,6 @@ class EnvConfig {
   /**
    * Loads package.json file from the specified directory.
    *
-   * @private
    * @param {string} configDir - Directory containing package.json
    * @returns {Record<string, any>} The parsed package.json
    */
@@ -265,10 +263,11 @@ class EnvConfig {
    * Supports include_env directives for composing multiple .env files.
    * Creates a placeholder .env file if none exists.
    *
-   * @private
    * @param {string} configDir - Directory containing .env file
+   * @returns {Record<string, string>} The parsed .env file
    */
   static #loadDotenvConfig(configDir) {
+    /** @type {Record<string, string>} */
     let dotenvConfig = {}
     // Parse {configDir}/.env with all included env files.
     const dotenvConfigPath = path.join(configDir, '.env')
@@ -337,7 +336,6 @@ class EnvConfig {
   /**
    * Asserts that the defaultValue is the same as the previous one.
    *
-   * @private
    * @param {string} key - The key (e.g., 'projects_chrome_tag')
    * @param {*} defaultValue - The default value to assert
    */
@@ -356,7 +354,6 @@ class EnvConfig {
   /**
    * Validates the value against the expected value type.
    *
-   * @private
    * @param {*} value - The value to validate
    * @param {ConfigValueType} expectedValueType - Expected type of the value
    * @param {function(): string} valueDescCallback - Callback to get the
