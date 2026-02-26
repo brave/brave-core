@@ -332,7 +332,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
 TEST(BraveTabStripLayoutHelperUnitTest,
      CalculateVerticalTabBounds_NestingUsesBaseOffsetWhenEnoughSpace) {
   // Same three-node chain. With enough width, even_offset_per_level >= 20,
-  // so offset per level is kBaseOffsetPerLevel (20).
+  // so offset per level is tabs::kBaseOffsetPerLevel.
   std::vector<TabWidthConstraints> tabs;
   tabs.push_back(MakeTabConstraints(
       TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
@@ -344,16 +344,15 @@ TEST(BraveTabStripLayoutHelperUnitTest,
       TabPinned::kUnpinned, TabOpen::kOpen, TabActive::kInactive,
       /*in_group=*/false, /*tree_height=*/2, /*level=*/2));
 
-  constexpr int kBaseOffsetPerLevel = 20;
   constexpr int kAvailableWidth = 200;
   auto [bounds, _] = CalculateVerticalTabBounds(
       tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
 
   ASSERT_EQ(3u, bounds.size());
   EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].x());
-  EXPECT_EQ(kMarginForVerticalTabContainers + kBaseOffsetPerLevel,
+  EXPECT_EQ(kMarginForVerticalTabContainers + tabs::kBaseOffsetPerLevel,
             bounds[1].x());
-  EXPECT_EQ(kMarginForVerticalTabContainers + 2 * kBaseOffsetPerLevel,
+  EXPECT_EQ(kMarginForVerticalTabContainers + 2 * tabs::kBaseOffsetPerLevel,
             bounds[2].x());
 }
 
