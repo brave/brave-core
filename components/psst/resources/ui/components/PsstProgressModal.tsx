@@ -17,7 +17,8 @@ import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { BravePsstConsentDialogProxy, SettingCardData } from '../browser_proxy'
-import { getLocalizedString } from '../lib/locale_context'
+import { PsstStrings } from 'gen/components/grit/brave_components_webui_strings'
+import { getLocale } from '$web-common/locale'
 
 export interface Props {}
 
@@ -164,7 +165,7 @@ export default class PsstProgressModal extends React.PureComponent<
           <LeftAlignedItem>
             <TextSection>
               <ModalTitle>
-                {getLocalizedString('bravePsstDialogTitle')}
+                {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
               </ModalTitle>
             </TextSection>
           </LeftAlignedItem>
@@ -181,9 +182,9 @@ export default class PsstProgressModal extends React.PureComponent<
             </Button>
           </RightAlignedItem>
         </HorizontalContainer>
-        <TextSection>{getLocalizedString('bravePsstDialogTitle')}</TextSection>
+        <TextSection>{getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}</TextSection>
         <SettingsCard
-          title={getLocalizedString('bravePsstDialogOptionsTitle')}
+          title={getLocale(PsstStrings.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
           subTitle={this.state.site_name}
           progressModelState={this.state}
           onItemChecked={this.handleSettingItemCheck}
@@ -198,7 +199,7 @@ export default class PsstProgressModal extends React.PureComponent<
                   isDisabled={isInProgress}
                   onClick={this.closeDialog}
                 >
-                  {getLocalizedString('bravePsstDialogCancelBtn')}
+                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
                 </PsstDlgButton>
                 <PsstDlgButton
                   id='psst-dialog-ok-btn'
@@ -231,7 +232,7 @@ export default class PsstProgressModal extends React.PureComponent<
                       .applyChanges(this.state.site_name, settingsToProcess)
                   }}
                 >
-                  {getLocalizedString('bravePsstDialogOkBtn')}
+                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_OK)}
                 </PsstDlgButton>
               </RightAlignedItem>
             )
@@ -244,7 +245,7 @@ export default class PsstProgressModal extends React.PureComponent<
                   isDisabled={false}
                   onClick={this.closeDialog}
                 >
-                  {getLocalizedString('bravePsstDialogReportFailedBtn')}
+                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
                 </PsstDlgButton>
                 <PsstDlgButton
                   kind='filled'
@@ -253,7 +254,7 @@ export default class PsstProgressModal extends React.PureComponent<
                   isLoading={false}
                   onClick={this.closeDialog}
                 >
-                  {getLocalizedString('bravePsstDialogCloseBtn')}
+                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
                 </PsstDlgButton>
               </RightAlignedItem>
             )
