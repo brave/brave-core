@@ -69,8 +69,8 @@ public protocol TabState: AnyObject {
   typealias ID = UUID
   /// A unique identifier associated with this TabState
   var id: ID { get }
-  /// Whehter or not the TabState persists data
-  var isPrivate: Bool { get }
+  /// The associated profile
+  var profile: any Profile { get }
   /// Arbitrary data that is associated with this TabState
   var data: TabDataValues { get set }
   /// The view containing the contents of the current web page.
@@ -274,6 +274,11 @@ extension TabState {
 
 // Default args for methods
 extension TabState {
+  /// Whether or not the Tab uses an off the record/private profile
+  public var isPrivate: Bool {
+    profile.isOffTheRecord
+  }
+
   /// Presents the find in page interaction
   public func presentFindInteraction() {
     presentFindInteraction(with: "")

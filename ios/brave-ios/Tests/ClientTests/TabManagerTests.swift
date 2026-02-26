@@ -139,7 +139,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       privateBrowsingManager: privateBrowsingManager,
       tabCreationFactory: { params in
         let tab = FakeTabState()
-        tab.isPrivate = params.profile.isOffTheRecord
+        tab.profile = params.profile
         if let lastActiveTime = params.lastActiveTime {
           tab.lastActiveTime = lastActiveTime
         }
@@ -165,7 +165,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     for _ in 0..<3 {
       let tab = FakeTabState()
-      tab.isPrivate = true
+      tab.profile = tab.profile.offTheRecordProfile
       tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,
