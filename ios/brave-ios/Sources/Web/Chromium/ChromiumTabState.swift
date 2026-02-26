@@ -15,10 +15,11 @@ import os
 class ChromiumTabState: TabState, TabStateImpl {
   init(
     id: UUID,
-    configuration: CWVWebViewConfiguration,
+    configuration: BraveWebViewConfiguration,
     wkConfiguration: WKWebViewConfiguration?
   ) {
     self.id = id
+    self.profile = configuration.profile
     self.cwvConfiguration = configuration
     self.wkConfiguration = wkConfiguration
     if let wkConfiguration {
@@ -194,10 +195,8 @@ class ChromiumTabState: TabState, TabStateImpl {
 
   // MARK: - Tab
 
-  var id: UUID
-  var isPrivate: Bool {
-    !cwvConfiguration.isPersistent
-  }
+  let id: UUID
+  let profile: any Profile
 
   var data: TabDataValues {
     get { _data.withLock { $0 } }

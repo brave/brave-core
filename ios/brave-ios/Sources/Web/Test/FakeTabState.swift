@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import FaviconModels
 import Foundation
 import UIKit
@@ -14,7 +15,7 @@ import WebKit
 /// allow attaching tab helpers and expose some mutable state for testing purposes
 public final class FakeTabState: TabState {
   public var id: ID = .init()
-  public var isPrivate: Bool = false
+  public var profile: any Profile = FakeProfile()
   public var data: TabDataValues = .init()
   public let view: UIView = .init()
   public var opener: (any TabState)?
