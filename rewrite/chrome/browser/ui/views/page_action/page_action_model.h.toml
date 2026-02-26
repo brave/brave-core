@@ -9,8 +9,8 @@ re_pattern = '(class PageActionModelInterface {[\s\S]*?~PageActionModelInterface
 replace = '''\1
   virtual void SetOverrideChipColors(
       base::PassKey<PageActionController>,
-      const std::optional<SkColor>& override_background_color,
-      const std::optional<SkColor>& override_foreground_color) = 0;
+      std::optional<SkColor> override_background_color,
+      std::optional<SkColor> override_foreground_color) = 0;
   virtual void SetAlwaysShowLabel(base::PassKey<PageActionController>,
                                   bool always_show) = 0;
 
@@ -25,8 +25,8 @@ replace = '''\1
 
   void SetOverrideChipColors(
       base::PassKey<PageActionController>,
-      const std::optional<SkColor>& override_background_color,
-      const std::optional<SkColor>& override_foreground_color) override;
+      std::optional<SkColor> override_background_color,
+      std::optional<SkColor> override_foreground_color) override;
   void SetAlwaysShowLabel(base::PassKey<PageActionController>,
                           bool always_show) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;

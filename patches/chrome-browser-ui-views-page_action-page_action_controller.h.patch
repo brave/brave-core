@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_controller.h b/chrome/browser/ui/views/page_action/page_action_controller.h
-index 16f7799a3f40a795bdf6e8be5fc11c971070c6eb..d3e7ad7867e06715191dc9616cd0f8f607a49d67 100644
+index 16f7799a3f40a795bdf6e8be5fc11c971070c6eb..3dd945428de976433be271de7cbfbb8ed716ca11 100644
 --- a/chrome/browser/ui/views/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/views/page_action/page_action_controller.h
 @@ -105,6 +105,17 @@ class PageActionController {
@@ -13,8 +13,8 @@ index 16f7799a3f40a795bdf6e8be5fc11c971070c6eb..d3e7ad7867e06715191dc9616cd0f8f6
 +  // Override the colors of the chip
 +  virtual void OverrideChipColors(
 +      actions::ActionId action_id,
-+      const std::optional<SkColor>& override_background_color,
-+      const std::optional<SkColor>& override_foreground_color) = 0;
++      std::optional<SkColor> override_background_color,
++      std::optional<SkColor> override_foreground_color) = 0;
 +  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;
 +
    // Requests that the page action be shown or hidden.
@@ -27,8 +27,8 @@ index 16f7799a3f40a795bdf6e8be5fc11c971070c6eb..d3e7ad7867e06715191dc9616cd0f8f6
 +  void SetAlwaysShowLabel(actions::ActionId action_id,
 +                          bool always_show) override;
 +  void OverrideChipColors(actions::ActionId action_id,
-+      const std::optional<SkColor>& override_background_color,
-+      const std::optional<SkColor>& override_foreground_color) override;
++      std::optional<SkColor> override_background_color,
++      std::optional<SkColor> override_foreground_color) override;
 +  void ClearOverrideChipColors(actions::ActionId action_id) override;
 +
    void Initialize(

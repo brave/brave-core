@@ -22,8 +22,8 @@ bool PageActionModel::GetAlwaysShowLabel() const {
 
 void PageActionModel::SetOverrideChipColors(
     base::PassKey<PageActionController>,
-    const std::optional<SkColor>& override_background_color,
-    const std::optional<SkColor>& override_foreground_color) {
+    std::optional<SkColor> override_background_color,
+    std::optional<SkColor> override_foreground_color) {
   if (override_background_color_ == override_background_color &&
       override_foreground_color_ == override_foreground_color) {
     return;

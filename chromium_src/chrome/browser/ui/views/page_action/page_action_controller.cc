@@ -14,8 +14,8 @@ void PageActionControllerImpl::SetAlwaysShowLabel(actions::ActionId action_id,
 
 void PageActionControllerImpl::OverrideChipColors(
     actions::ActionId action_id,
-    const std::optional<SkColor>& override_background_color,
-    const std::optional<SkColor>& override_foreground_color) {
+    std::optional<SkColor> override_background_color,
+    std::optional<SkColor> override_foreground_color) {
   FindPageActionModel(action_id).SetOverrideChipColors(
       PassKey(), override_background_color, override_foreground_color);
 }

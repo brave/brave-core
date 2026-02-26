@@ -24,8 +24,8 @@ class MockPageActionModel : public MockPageActionModel_Chromium {
   MOCK_METHOD(void,
               SetOverrideChipColors,
               (base::PassKey<PageActionController>,
-               const std::optional<SkColor>&,
-               const std::optional<SkColor>&),
+               std::optional<SkColor>,
+               std::optional<SkColor>),
               (override));
   MOCK_METHOD(std::optional<SkColor>,
               GetOverrideBackgroundColor,
