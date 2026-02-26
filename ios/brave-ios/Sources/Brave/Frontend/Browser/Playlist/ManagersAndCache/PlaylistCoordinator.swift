@@ -44,7 +44,9 @@ public class PlaylistCoordinator: NSObject {
   /// Whether or not playlist is available and CarPlay should display playlist data
   public var isPlaylistAvailable: Bool = true
 
-  func getCarPlayController() -> Any? {
+  func getCarPlayController(
+    profile: (any Profile)?
+  ) -> Any? {
     // On iOS 14, we use CPTemplate (Custom UI)
     // We control what gets displayed
     guard let carplayInterface = carplayInterface else {
@@ -73,7 +75,7 @@ public class PlaylistCoordinator: NSObject {
 
     let mediaStreamer = PlaylistMediaStreamer(
       playerView: currentWindow ?? UIView(),
-      webLoaderFactory: LivePlaylistWebLoaderFactory()
+      webLoaderFactory: LivePlaylistWebLoaderFactory(profile: profile)
     )
 
     let player =
@@ -88,6 +90,7 @@ public class PlaylistCoordinator: NSObject {
 
   func getPlaylistController(
     tab: (any TabState)?,
+    profile: (any Profile)?,
     initialItem: PlaylistInfo?,
     initialItemPlaybackOffset: Double
   ) -> UIViewController {
@@ -100,7 +103,7 @@ public class PlaylistCoordinator: NSObject {
 
     let mediaStreamer = PlaylistMediaStreamer(
       playerView: browserController!.view,
-      webLoaderFactory: LivePlaylistWebLoaderFactory()
+      webLoaderFactory: LivePlaylistWebLoaderFactory(profile: profile)
     )
     let player =
       self.playerModel
@@ -131,8 +134,11 @@ public class PlaylistCoordinator: NSObject {
     )
   }
 
-  func getPlaylistController(tab: (any TabState)?, completion: @escaping (UIViewController) -> Void)
-  {
+  func getPlaylistController(
+    tab: (any TabState)?,
+    profile: (any Profile)?,
+    completion: @escaping (UIViewController) -> Void
+  ) {
     if let tab = tab,
       let item = tab.playlistItem,
       let tag = tab.playlistItem?.tagId
@@ -142,6 +148,7 @@ public class PlaylistCoordinator: NSObject {
         completion(
           self.getPlaylistController(
             tab: tab,
+            profile: profile,
             initialItem: item,
             initialItemPlaybackOffset: currentTime
           )
@@ -151,6 +158,7 @@ public class PlaylistCoordinator: NSObject {
       return completion(
         getPlaylistController(
           tab: tab,
+          profile: profile,
           initialItem: nil,
           initialItemPlaybackOffset: 0.0
         )
@@ -188,7 +196,9 @@ public class PlaylistCoordinator: NSObject {
     if isCarPlayAvailable {
       // Protect against reentrancy.
       if carPlayController == nil {
-        carPlayController = getCarPlayController()
+        carPlayController = getCarPlayController(
+          profile: browserController?.profileController.profile
+        )
       }
     } else {
       carPlayController = nil

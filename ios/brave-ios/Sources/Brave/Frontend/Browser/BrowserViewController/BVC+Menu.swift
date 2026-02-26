@@ -123,7 +123,7 @@ extension BrowserViewController {
 
     // Retrieve the item and offset-time from the current tab's webview.
     let tab = self.tabManager.selectedTab
-    PlaylistCoordinator.shared.getPlaylistController(tab: tab) {
+    PlaylistCoordinator.shared.getPlaylistController(tab: tab, profile: profileController.profile) {
       [weak self] playlistController in
       guard let self = self else { return }
 
