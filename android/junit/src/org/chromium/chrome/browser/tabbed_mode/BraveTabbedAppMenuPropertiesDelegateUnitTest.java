@@ -123,6 +123,7 @@ import java.util.List;
     ChromeFeatureList.GLIC,
     ChromeFeatureList.NEW_TAB_PAGE_CUSTOMIZATION,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
+    DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
     BraveFeatureList.BRAVE_SHRED,
 })
