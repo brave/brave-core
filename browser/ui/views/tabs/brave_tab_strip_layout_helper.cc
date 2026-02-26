@@ -77,8 +77,6 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
     if (int level = iter->state().nesting_info().level) {
       // In case of a tab has nesting level, we need to adjust the x position
       // and width of the tab to fit the nesting level.
-      constexpr int kBaseOffsetPerLevel = 20;
-
       const int tab_minimum_width = tab.size_info().min_inactive_width;
       const int tree_height = tab.state().nesting_info().tree_height;
       const int available_width_for_tree = rect.width() - tab_minimum_width;
