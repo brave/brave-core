@@ -133,6 +133,7 @@ class TabGridViewModel {
   func closeTabs(_ tabIDs: Set<TabState.ID>) {
     let tabs = tabIDs.compactMap { tabManager[$0] }
     withAnimation {
+      tabManager.addTabsToRecentlyClosed(tabs)
       tabManager.removeTabs(tabs)
     }
   }
@@ -140,6 +141,7 @@ class TabGridViewModel {
   func closeOtherTabs(_ tabIDs: Set<TabState.ID>) {
     let tabs = tabManager.tabsForCurrentMode.filter({ !tabIDs.contains($0.id) })
     withAnimation {
+      tabManager.addTabsToRecentlyClosed(tabs)
       tabManager.removeTabs(tabs)
     }
   }
