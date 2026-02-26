@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 0e1725bf6d5b087bf1af2b192acb7581fa346ee7..b9e5ddaec5dab160762840e8a5278ad74c59b4ca 100644
+index 7ceef75f86e1dd08fd0d3d5a9ec9f224a8453fd8..e20c208fd6e927b9ee8dde336016d31c59d3f153 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
 @@ -459,7 +459,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
@@ -27,7 +27,7 @@ index 0e1725bf6d5b087bf1af2b192acb7581fa346ee7..b9e5ddaec5dab160762840e8a5278ad7
    static const std::array<IconResourceInfo, kDefaultAvatarIconsCount>
        resource_info = {{
    // Old avatar icons:
-@@ -969,6 +971,7 @@ base::Value::List GetIconsAndLabelsForProfileAvatarSelector(
+@@ -969,6 +971,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
          selected_avatar_idx == GetPlaceholderAvatarIndex());
      avatars.Insert(avatars.begin(),
                     base::Value(std::move(generic_avatar_info)));

@@ -4,7 +4,7 @@ index 474768656bdae1d5c212bfd3034c8f8bfe718983..dcae794035dc71dc55e05ea3c58eff33
 +++ b/components/webui/version/resources/about_version.css
 @@ -39,6 +39,7 @@ body {
  }
-
+ 
  #inner {
 +  border-spacing: 0 5px;
    padding-top: 10px;

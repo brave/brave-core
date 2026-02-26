@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/bindings/checks/mojom_attributes_check.py b/mojo/public/tools/bindings/checks/mojom_attributes_check.py
-index 49a792cbdf1db2d7e97d5982ccb47bda89ec7064..be8c9fd2e0e1f95744d4d765b821093ed9363c31 100644
+index 9b3618b9f8f2d296733658828598d9341a4db1b9..1451c399ef51af9b349efc3b004722480bc7feac 100644
 --- a/mojo/public/tools/bindings/checks/mojom_attributes_check.py
 +++ b/mojo/public/tools/bindings/checks/mojom_attributes_check.py
 @@ -7,6 +7,7 @@ import mojom.generate.check as check
@@ -10,7 +10,7 @@ index 49a792cbdf1db2d7e97d5982ccb47bda89ec7064..be8c9fd2e0e1f95744d4d765b821093e
      'EnableIf',
      'EnableIfNot',
      'VendorSpecified',
-@@ -186,6 +187,7 @@ _NATIVE_ALLOWLIST = {
+@@ -177,6 +178,7 @@ _NATIVE_ALLOWLIST = {
      'search.mojom.OmniboxFocusState',
      'ui.mojom.EventPointerType',
      'ui.mojom.ScrollGranularity',
