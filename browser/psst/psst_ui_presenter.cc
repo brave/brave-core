@@ -7,6 +7,7 @@
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/psst/common/constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"

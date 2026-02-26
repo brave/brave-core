@@ -113,7 +113,4 @@ inline constexpr auto kInstallablePWAWebUIHosts =
     base::fixed_flat_set<std::string_view, 0>{};
 #endif
 
-inline constexpr char kBravePsstHost[] = "psst";
-inline constexpr char kBraveUIPsstURL[] = "chrome://psst/";
-
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

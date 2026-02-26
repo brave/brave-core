@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_handler.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/psst/common/constants.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
