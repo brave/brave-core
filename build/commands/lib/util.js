@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck
-
 const path = require('path')
 const { spawn, spawnSync } = require('child_process')
 const readline = require('readline')
@@ -169,6 +167,7 @@ const getAdditionalGenLocation = () => {
   return ''
 }
 
+/** @returns {[string, string[]]} */
 const normalizeCommand = (cmd, args) => {
   if (process.platform === 'win32') {
     args = ['/c', cmd, ...args]
@@ -179,7 +178,7 @@ const normalizeCommand = (cmd, args) => {
 
 const util = {
   generateInstrumentationFile,
-  runProcess: (cmd, args = [], options = {}, skipLogging = false) => {
+  runProcess: (cmd, args = [], options = /** @type {Record<string, any>} */ ({}), skipLogging = false) => {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
     }
@@ -213,7 +212,7 @@ const util = {
     }
   },
 
-  runAsync: (cmd, args = [], options = {}) => {
+  runAsync: (cmd, args = [], options = /** @type {Record<string, any>} */ ({})) => {
     let { continueOnFail, verbose, onStdErrLine, onStdOutLine, ...cmdOptions } =
       options
     if (verbose !== false) {
@@ -272,8 +271,10 @@ const util = {
           }
         }
         if (hasFailed) {
-          const err = new Error(
-            `Program ${cmd} exited with error code ${statusCode}.`,
+          const err = /** @type {Error & {stderr: string, stdout: string, statusCode: number}} */ (
+            new Error(
+              `Program ${cmd} exited with error code ${statusCode}.`,
+            )
           )
           err.stderr = stderr
           err.stdout = stdout
@@ -414,10 +415,10 @@ const util = {
 
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
-        isDirty |= updateFileUTimesIfOverrideIsNewer(
+        isDirty = updateFileUTimesIfOverrideIsNewer(
           overriddenFile,
           chromiumSrcFile,
-        )
+        ) || isDirty
       } else {
         // If the original file doesn't exist, assume that it's in the gen dir.
         overriddenFile = path.join(
@@ -425,7 +426,7 @@ const util = {
           'gen',
           relativeChromiumSrcFile,
         )
-        isDirty |= deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        isDirty = deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile) || isDirty
         // Also check the secondary gen dir, if exists
         if (additionalGen) {
           overriddenFile = path.join(
@@ -434,10 +435,10 @@ const util = {
             'gen',
             relativeChromiumSrcFile,
           )
-          isDirty |= deleteFileIfOverrideIsNewer(
+          isDirty = deleteFileIfOverrideIsNewer(
             overriddenFile,
             chromiumSrcFile,
-          )
+          ) || isDirty
         }
       }
     })
