@@ -1258,7 +1258,7 @@
       <message name="IDS_EDUCATIONAL_TIP_SEE_MORE" desc="Text for a link to view all Educational tip items in two cell mode.">
         See more
       </message>
-      <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_TITLE" desc="Title of the default browser section in the educational tip module on NTP.">
+      <message name="IDS_USE_CHROME_BY_DEFAULT" desc="Generic title prompting the user to set Brave as their default browser.">
         Use Brave by default
       </message>
       <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_DESCRIPTION" desc="Description of the default browser section in the educational tip module on NTP.">
@@ -1281,9 +1281,6 @@
       </message>
       <message name="IDS_EDUCATIONAL_TIP_QUICK_DELETE_DESCRIPTION" desc="Description of the quick delete promo in the educational tip module on NTP.">
         You can delete some or all of your history, cookies, site data and more
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_BOTTOM_SHEET_TITLE" desc="Title of the default browser section's bottom sheet in the educational tip module on NTP.">
-        Use Brave By Default
       </message>
       <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_BOTTOM_SHEET_DESCRIPTION" desc="Description of the default browser section's bottom sheet in the educational tip module on NTP.">
         You can now use Brave anytime you browse or tap links in messages, documents, and other apps.
@@ -1405,8 +1402,33 @@
         Switch the position to customize your browsing experience
       </message>
 
+      <!-- Setup list celebratory promo strings -->
+      <message name="IDS_SETUP_LIST_CELEBRATORY_PROMO_TITLE" desc="Title for the celebratory promo shown when all setup tasks are completed.">
+        You’re all set!
+      </message>
+      <message name="IDS_SETUP_LIST_CELEBRATORY_PROMO_DESCRIPTION" desc="Description for the celebratory promo shown when all setup tasks are completed.">
+        You’ll now get the most out of Brave on your device.
+      </message>
+
       <message name="IDS_EDUCATIONAL_TIP_BUTTON_GO_TO_SETTINGS" desc="Text on the clickable button for promos that invites users to adjust settings in the educational tip module on NTP.">
         Go to settings
+      </message>
+
+      <!-- Setup List "See More" bottom sheet strings -->
+      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_TITLE" desc="Title for the setup list bottom sheet when set up tasks are still remaining.">
+        Get the most out of Brave
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_DESCRIPTION" desc="Description text for the setup list bottom sheet when set up tasks are still remaining.">
+        Complete these suggested actions below to get the most out of Brave
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_ACCESSIBILITY_CLOSED" desc="Accessibility string that describes that the setup list bottom sheet has closed.">
+        Setup sheet closed
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the setup list bottom sheet.">
+        Bottom sheet displaying completed and uncompleted set up list tasks
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_ACCESSIBILITY_OPENED" desc="Accessibility string that describes that the setup list bottom sheet has fully opened.">
+        Setup sheet opened
       </message>
 
       <!-- Safety Hub Magic Stack strings -->
@@ -1642,6 +1664,18 @@
       </message>
       <message name="IDS_WHATS_NEW_PAGE_DESCRIPTION" translateable="false" desc="Description of the what's new page.">
         What's New in Brave
+      </message>
+
+      <!-- Android Advanced Protection -->
+      <message name="IDS_ADVANCED_PROTECTION_MESSAGE_ENABLED_TITLE" desc="Title of message to notify user that the Android-OS Advanced-Protection mode has been enabled">
+        Advanced Protection is on                                                                  </message>
+      <message name="IDS_ADVANCED_PROTECTION_MESSAGE_DESCRIPTION" desc="Description of message to notify user that Android-OS Advanced-Protection mode has changed. Informs user that the Android OS setting affects some Brave settings.">                                                   Some Brave settings changed
+      </message>                                                                                   <message name="IDS_ADVANCED_PROTECTION_MESSAGE_PRIMARY_BUTTON" desc="Label of button. Tapping the button sends user to page with information about which settings have changed as a result of the Android-OS Advanced-Protection mode change.">
+        Details                                                                                    </message>
+      <message name="IDS_HTTPS_FIRST_MODE_ENFORCED_BY_ADVANCED_PROTECTION_WARNING" desc="Message displayed on https-first-settings page notifying the user that the setting is uneditable because the setting is controlled by the Android-OS-advanced-protection setting's 'on' state">                                                                                                    This setting remains on as long as you have Advanced Protection turned on in Android Settings.
+      </message>
+      <message name="IDS_JAVASCRIPT_OPTIMIZER_DISABLED_DUE_TO_ADVANCED_PROTECTION_SETTINGS_MESSAGE" desc="Message displayed in Javascript-Optimizer site-settings page to inform user that Javascript-Optimizer toggle is disabled because Android Advanced Protection was enabled in Android OS Settings.">
+        This setting is disabled because you turned on Advanced Protection in Android Settings.
       </message>
     </messages>
   </release>

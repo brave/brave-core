@@ -145,6 +145,9 @@
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_EDIT_LABEL" desc="Label of the edit keyboard shortcut setting button.">
     Edit keyboard shortcut
   </message>
+  <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_CLEAR_LABEL" desc="Label of the clear keyboard shortcut setting button.">
+    Clear keyboard shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut that's used to globally invoke Gemini.">
     Open Gemini with a keyboard shortcut.
   </message>
@@ -163,6 +166,9 @@
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_EDIT_LABEL" desc="Label of the edit navigation shortcut setting button.">
     Edit navigation shortcut
   </message>
+  <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_CLEAR_LABEL" desc="Label of the clear navigation shortcut setting button.">
+    Clear navigation shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut navigate between Brave and Gemini.">
     To leave or return to Gemini, use keyboard shortcut.
   </message>
@@ -175,13 +181,13 @@
   <message name="IDS_SETTINGS_GLIC_KEEP_SIDEPANEL_OPEN_ON_NEW_TABS" desc="Name of the daisy chain new tabs setting.">
     Keep the Gemini sidebar open when you open a new tab
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE" desc="Name of the location sharing setting.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE" desc="Name of the location sharing setting." formatter_data="android_java">
     Precise Location
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers">
     When you share your precise location, Gemini can answer your questions more accurately
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers, but the user's data is not used to improve the model">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers, but the user's data is not used to improve the model" formatter_data="android_java">
     When you share your precise location, Gemini can answer your questions more accurately. Your data is not used to improve generative AI models.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE" desc="Name of the microphone setting.">
@@ -211,20 +217,23 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini by default, but the user's data is not used to improve the model.">
     The current tab is shared with Gemini when you start a new chat. Your data is not used to improve generative AI models. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more about AI and privacy<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON" desc="Name of the Gemini Apps Activity link out.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON" desc="Name of the Gemini Apps Activity link out." formatter_data="android_java">
     Gemini Apps Activity
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to view and manage their activity relating to Gemini Apps.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to view and manage their activity relating to Gemini Apps." formatter_data="android_java">
     View and manage your Gemini Apps activity
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_URL" translateable="false" desc="URL to navigate when clicking the 'manage your activity' button.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_URL" translateable="false" desc="URL to navigate when clicking the 'manage your activity' button." formatter_data="android_java">
     https://myactivity.google.com/product/gemini?utm_source=gemini
   </message>
-  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON" desc="Name of the Gemini Extensions link out.">
+  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON" desc="Name of the Gemini Extensions link out." formatter_data="android_java">
     Manage connected apps
   </message>
-  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to manage Gemini connected apps.">
+  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to manage Gemini connected apps." formatter_data="android_java">
     Manage which apps Gemini connects to
+  </message>
+  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_URL" translateable="false" desc="URL to navigate when clicking the 'manage connected apps' button." formatter_data="android_java">
+    https://gemini.google.com/apps
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_WHEN_ON_1" desc="First point in the 'when on' column of the 'tab access' expando">
     You can easily ask Gemini questions about your current tab as you browse
@@ -407,10 +416,10 @@
 
   <!-- Shortcut IPH -->
   <message name="IDS_GLIC_SHORTCUT_IPH_TEXT_TEMPLATE" desc="Placeholder for string to be shown for IPH informing users about Glic keyboard shortcut." translateable="false">
-    <ph name="message">$1<ex>Easily open with Ctrl+⌘+G</ex></ph>
+    <ph name="message">$1<ex>Use Ctrl+⌘+G to open Gemini in Brave</ex></ph>
   </message>
   <message name="IDS_GLIC_SHORTCUT_IPH_TEXT" desc="Title for a promo pointing to the Gemini icon in Brave. It informs the user about a keyboard shortcut for quicly opening Gemini in Brave.">
-    Easily open with <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph>
+    Use <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph> to open Gemini in Brave
   </message>
   <message name="IDS_GLIC_SHORTCUT_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Title for a promo pointing to the Gemini icon in Brave for screen readers. It informs the user about a keyboard shortcut for quicly opening Gemini in Brave.">
     Easily open Gemini in Brave with <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph>

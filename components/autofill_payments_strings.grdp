@@ -1013,6 +1013,9 @@
   <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_KLARNA" desc="Text for the payment option button in the BNPL Pay Later tab, explaining that users can pay monthly or in installments. It is specifically for Klarna options.">
       Pay in 4 or monthly
   </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_CLEAR_FORM_TO_ENABLE" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the user must clear the form to enable and use the pay later option.">
+      Clear form to use pay later option
+  </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_NOT_SUPPORTED_BY_MERCHANT" desc="Text for the disabled payment option button in the BNPL select provider screen, explaining that the provider is not supported by the merchant based on the page's URL.">
       Not supported by merchant
   </message>
@@ -1023,10 +1026,10 @@
       Purchase must be under <ph name="CHECKOUT_AMOUNT_MAXIMUM">$1<ex>$10,000.00</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_AI_FOOTNOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount.">
-      Page content from the checkout page is shared with Brave to offer these options. To hide pay later options in autofill, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>.
+      Content from the checkout page is shared with Brave to offer these options. To hide pay later options in autofill, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>.
   </message>
-  <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_FOR_AI_AMOUNT_EXTRACTION_NOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount.">
-      Page content from the checkout page is shared with Brave to offer these options.
+  <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_FOR_AI_AMOUNT_EXTRACTION_NOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount. This string is only part of what's shown on UI and is used for embolding text for first time users.">
+      Content from the checkout page is shared with Brave to offer these options.
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION" desc="Text shown in the footnote of the BNPL select provider screen, instructing users how to hide the pay later options.">
   To hide pay later options, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>
