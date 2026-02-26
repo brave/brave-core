@@ -37,7 +37,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` disabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -73,7 +73,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       isBraveShieldsEnabled = enabled
     }
 
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -102,7 +102,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` disabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -189,7 +189,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       return isBraveShieldsEnabled
     }
 
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -269,7 +269,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` disabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -334,7 +334,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       return false
     }
 
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -387,7 +387,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` disabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -461,7 +461,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       return false
     }
 
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -510,7 +510,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` disabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
@@ -555,7 +555,7 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       return true
     }
 
-    let tabState = TabStateFactory.create(with: .init(profile: nil))
+    let tabState = FakeTabState()
     // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
