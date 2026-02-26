@@ -354,6 +354,9 @@ TEST(BraveTabStripLayoutHelperUnitTest,
             bounds[1].x());
   EXPECT_EQ(kMarginForVerticalTabContainers + 2 * tabs::kBaseOffsetPerLevel,
             bounds[2].x());
+
+  EXPECT_EQ(bounds[0].right(), bounds[1].right());
+  EXPECT_EQ(bounds[1].right(), bounds[2].right());
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,
@@ -384,6 +387,9 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].x());
   EXPECT_EQ(kMarginForVerticalTabContainers + 13, bounds[1].x());
   EXPECT_EQ(kMarginForVerticalTabContainers + 26, bounds[2].x());
+
+  EXPECT_EQ(bounds[0].right(), bounds[1].right());
+  EXPECT_EQ(bounds[1].right(), bounds[2].right());
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,
