@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { ClockFormat } from '../../state/new_tab_state'
+import { ClockFormat } from '../../state/new_tab_store'
 import { useNewTabState } from '../../context/new_tab_context'
 
 export function Clock() {

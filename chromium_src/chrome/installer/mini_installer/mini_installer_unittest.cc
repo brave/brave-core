@@ -9,6 +9,7 @@
 
 #include <chrome/installer/mini_installer/mini_installer_unittest.cc>
 
+// CHROMIUM_SRC_INTERNAL_USE
 #define PREVIOUS_VERSION L"62.0.1234.0"
 
 namespace mini_installer {

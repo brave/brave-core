@@ -40,7 +40,9 @@ if (tsm) {
   // This is a known Node.js fix for issues caused by *Sync functions blocking
   // the event loop. Ideally, we should switch to async/await and wait for the
   // "drain" event.
+  // @ts-ignore
   process.stdout._handle.setBlocking(true)
+  // @ts-ignore
   process.stderr._handle.setBlocking(true)
 
   process.on('exit', () => {

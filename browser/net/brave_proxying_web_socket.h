@@ -36,6 +36,7 @@ class RenderFrameHost;
 
 // Ensures that all web socket requests go through Brave network request
 // handling framework. Cargoculted from |WebRequestProxyingWebSocket|.
+template <template <typename> class T>
 class BraveProxyingWebSocket
     : public network::mojom::WebSocketHandshakeClient,
       public network::mojom::WebSocketAuthenticationHandler,
@@ -49,7 +50,7 @@ class BraveProxyingWebSocket
                          content::GlobalRenderFrameHostToken render_frame_token,
                          content::BrowserContext* browser_context,
                          scoped_refptr<RequestIDGenerator> request_id_generator,
-                         BraveRequestHandler& handler,
+                         BraveRequestHandler<T>& handler,
                          DisconnectCallback on_disconnect);
   BraveProxyingWebSocket(const BraveProxyingWebSocket&) = delete;
   BraveProxyingWebSocket& operator=(const BraveProxyingWebSocket&) = delete;
@@ -96,6 +97,7 @@ class BraveProxyingWebSocket
                          OnHeadersReceivedCallback callback) override;
 
  private:
+  void CreateBraveRequestInfo();
   void WebSocketFactoryRun(
       const GURL& url,
       std::vector<network::mojom::HttpHeaderPtr> additional_headers,
@@ -125,10 +127,10 @@ class BraveProxyingWebSocket
   void OnMojoConnectionError(uint32_t custom_reason,
                              const std::string& description);
 
-  const raw_ref<BraveRequestHandler> request_handler_;
-  // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
-  // TODO(iefremov): Init this only once.
-  std::shared_ptr<brave::BraveRequestInfo> ctx_;
+  const raw_ref<BraveRequestHandler<T>> request_handler_;
+  // Ownership of BraveRequestInfo when T is WeakPtr
+  std::unique_ptr<brave::BraveRequestInfo> ctx_owned_;
+  T<brave::BraveRequestInfo> ctx_;
 
   const content::GlobalRenderFrameHostToken render_frame_token_;
   content::ContentBrowserClient::WebSocketFactory factory_;

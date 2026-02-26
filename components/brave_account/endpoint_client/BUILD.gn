@@ -31,6 +31,20 @@ source_set("endpoint_client") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [ "test_support.h" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account/endpoint_client",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

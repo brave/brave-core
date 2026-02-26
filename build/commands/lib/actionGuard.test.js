@@ -182,7 +182,7 @@ describe('ActionGuard', () => {
     })
 
     it('should handle action interruption and cleanup correctly', () => {
-      expect(!fs.existsSync(guardFilePath))
+      expect(fs.existsSync(guardFilePath)).toBe(false)
 
       const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
       expect(() => {
@@ -191,7 +191,7 @@ describe('ActionGuard', () => {
         })
       }).toThrow()
 
-      expect(fs.existsSync(guardFilePath))
+      expect(fs.existsSync(guardFilePath)).toBe(true)
       expect(cleanupClosure).not.toHaveBeenCalled()
       expect(actionGuard.wasInterrupted()).toBe(true)
 
@@ -199,7 +199,7 @@ describe('ActionGuard', () => {
       actionGuard.run(actionClosure)
       expect(cleanupClosure).toHaveBeenCalled()
       expect(actionClosure).toHaveBeenCalledWith(true)
-      expect(!fs.existsSync(guardFilePath))
+      expect(fs.existsSync(guardFilePath)).toBe(false)
 
       cleanupClosure.mockClear()
       actionClosure.mockClear()
@@ -207,7 +207,7 @@ describe('ActionGuard', () => {
       actionGuard.run(actionClosure)
       expect(cleanupClosure).not.toHaveBeenCalled()
       expect(actionClosure).toHaveBeenCalledWith(false)
-      expect(!fs.existsSync(guardFilePath))
+      expect(fs.existsSync(guardFilePath)).toBe(false)
     })
   })
 

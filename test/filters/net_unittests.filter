@@ -5,6 +5,13 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# Upstream third-party test with 1.5% flake rate (Chromium LUCI Analysis, 30-day
+# lookback). The test corrupts tokens by setting byte 50 to 'a', but if the
+# random token already has 'a' at position 50, no corruption occurs and
+# verification succeeds unexpectedly.
+# https://github.com/brave/brave-browser/issues/52852
+-AnonymousTokensRsaBssaClientWithPublicMetadataTest.FailureToVerifyWithCorruptedTokens
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -CanPoolTest.CanNotPoolWithBadPins
 -CanonicalCookieTest.CreateWithExpires

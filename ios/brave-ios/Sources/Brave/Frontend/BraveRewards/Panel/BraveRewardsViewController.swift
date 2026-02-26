@@ -82,7 +82,9 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       self.rewardsView.statusView.setVisibleStatus(status: .rewardsOff, animated: false)
       self.rewardsView.publisherView.isHidden = true
     } else {
-      if let url = self.browserTab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
+      if let url = self.browserTab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url),
+        !url.isNewTabURL
+      {
         self.rewardsView.publisherView.isHidden = false
         self.rewardsView.publisherView.hostLabel.text = url.baseDomain
         rewardsAPI.fetchPublisherActivity(

@@ -29,6 +29,11 @@ export default function ModelIntro() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
+  // Only needed on iOS to fix one-tap issue with tooltip.
+  // <if expr="is_ios">
+  const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
+  // </if>
+
   const model = conversationContext.currentModel
   if (!model) {
     return <></>
@@ -54,6 +59,9 @@ export default function ModelIntro() {
               mode='default'
               className={styles.tooltip}
               offset={4}
+              // <if expr="is_ios">
+              visible={isTooltipVisible}
+              // </if>
             >
               <div
                 slot='content'
@@ -65,7 +73,7 @@ export default function ModelIntro() {
                       <button
                         key={content}
                         onClick={() =>
-                          aiChatContext.uiHandler?.openModelSupportUrl()
+                          aiChatContext.api.uiHandler.openModelSupportUrl()
                         }
                       >
                         {content}
@@ -78,6 +86,9 @@ export default function ModelIntro() {
                 fab
                 kind='plain-faint'
                 className={styles.tooltipButton}
+                // <if expr="is_ios">
+                onClick={() => setIsTooltipVisible((prev) => !prev)}
+                // </if>
               >
                 <Icon name='info-outline' />
               </Button>

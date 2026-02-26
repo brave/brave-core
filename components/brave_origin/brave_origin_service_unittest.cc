@@ -5,13 +5,18 @@
 
 #include "brave/components/brave_origin/brave_origin_service.h"
 
+#include <utility>
+
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
+#include "brave/components/skus/browser/test/fake_skus_service.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -19,6 +24,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_origin {
+
+using skus::FakeSkusService;
 
 // Test preference name constants
 constexpr char kTestProfileId[] = "test-profile-id";
@@ -70,11 +77,15 @@ class BraveOriginServiceTest : public testing::Test {
     auto* manager = BraveOriginPolicyManager::GetInstance();
     manager->Init(std::move(browser_policies), std::move(profile_policies),
                   &local_state_);
+    // Set purchased state so IsBraveOriginEnabled() returns true when the
+    // feature flag is enabled.
+    manager->SetPurchased(true);
 
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId,
-        &mock_profile_policy_service_, &mock_browser_policy_service_);
+        &mock_profile_policy_service_, &mock_browser_policy_service_,
+        BraveOriginService::SkusServiceGetter());
   }
 
   void TearDown() override {
@@ -478,6 +489,197 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(result);
 }
 
+TEST_F(BraveOriginServiceTest,
+       CheckPurchaseState_NoSkusGetter_ReturnsCachedValue) {
+  // Reset purchase state so we can verify the fallback path.
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+
+  // Service was created with an empty SkusServiceGetter, so
+  // CheckPurchaseState should return the current manager value.
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
+// Test fixture that wires up a FakeSkusService.
+class BraveOriginServiceWithSkusTest : public testing::Test {
+ public:
+  BraveOriginServiceWithSkusTest() = default;
+  ~BraveOriginServiceWithSkusTest() override = default;
+
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(features::kBraveOrigin);
+
+    local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kTestBrowserPref, false);
+    profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePref, true);
+
+    auto browser_policies = CreateBrowserTestPolicies();
+    auto profile_policies = CreateProfileTestPolicies();
+    auto* manager = BraveOriginPolicyManager::GetInstance();
+    manager->Init(std::move(browser_policies), std::move(profile_policies),
+                  &local_state_);
+
+    fake_skus_service_ = std::make_unique<FakeSkusService>();
+
+    // Set a recognizable initial response so we can observe when the
+    // constructor's eager CheckPurchaseState call completes.
+    fake_skus_service_->SetCredentialSummaryResponse(
+        R"({"remaining_credential_count": 1})");
+
+    auto getter = base::BindRepeating(
+        &BraveOriginServiceWithSkusTest::GetSkusServiceRemote,
+        base::Unretained(this));
+    service_ = std::make_unique<BraveOriginService>(
+        &local_state_, &profile_prefs_, kTestProfileId,
+        &mock_profile_policy_service_, &mock_browser_policy_service_,
+        std::move(getter));
+
+    // Wait for the constructor's eager CheckPurchaseState to complete.
+    ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
+  }
+
+  void TearDown() override {
+    service_.reset();
+    fake_skus_service_.reset();
+    auto* manager = BraveOriginPolicyManager::GetInstance();
+    manager->Shutdown();
+  }
+
+ protected:
+  mojo::PendingRemote<skus::mojom::SkusService> GetSkusServiceRemote() {
+    return fake_skus_service_->MakeRemote();
+  }
+
+  void CreateTestPolicy(BraveOriginPolicyMap& policies,
+                        const std::string& pref_name,
+                        bool default_value,
+                        bool user_settable) {
+    std::string policy_key = base::StrCat({pref_name, ".policy"});
+    policies.emplace(
+        policy_key,
+        BraveOriginPolicyInfo(pref_name, default_value, user_settable,
+                              base::StrCat({pref_name, ".brave_origin_key"})));
+  }
+
+  BraveOriginPolicyMap CreateBrowserTestPolicies() {
+    BraveOriginPolicyMap test_policies;
+    CreateTestPolicy(test_policies, kTestBrowserPref, false, true);
+    return test_policies;
+  }
+
+  BraveOriginPolicyMap CreateProfileTestPolicies() {
+    BraveOriginPolicyMap test_policies;
+    CreateTestPolicy(test_policies, kTestProfilePref, true, true);
+    return test_policies;
+  }
+
+  base::test::TaskEnvironment task_environment_;
+  base::test::ScopedFeatureList feature_list_;
+  TestingPrefServiceSimple local_state_;
+  TestingPrefServiceSimple profile_prefs_;
+  policy::MockPolicyService mock_profile_policy_service_;
+  policy::MockPolicyService mock_browser_policy_service_;
+  std::unique_ptr<FakeSkusService> fake_skus_service_;
+  std::unique_ptr<BraveOriginService> service_;
+};
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_WithRemainingCredentials_ReturnsTrue) {
+  fake_skus_service_->SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 5, "expires_at": ""})");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
+  EXPECT_TRUE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_WithExpiresAt_ReturnsTrue) {
+  fake_skus_service_->SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 0,)"
+      R"( "expires_at": "2099-12-31T23:59:59"})");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
+  EXPECT_TRUE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_NoCredentials_ReturnsFalse) {
+  fake_skus_service_->SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 0, "expires_at": ""})");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_EmptyResponse_ReturnsFalse) {
+  fake_skus_service_->SetCredentialSummaryResponse("");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_EmptyJsonObject_ReturnsFalse) {
+  fake_skus_service_->SetCredentialSummaryResponse("{}");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_InvalidJson_ReturnsFalse) {
+  fake_skus_service_->SetCredentialSummaryResponse("not valid json");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_WhitespaceOnlyResponse_ReturnsFalse) {
+  fake_skus_service_->SetCredentialSummaryResponse("   ");
+
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
+TEST_F(BraveOriginServiceWithSkusTest,
+       CheckPurchaseState_CachesPurchasedState) {
+  // First check returns purchased.
+  fake_skus_service_->SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 3})");
+
+  base::test::TestFuture<bool> result1;
+  service_->CheckPurchaseState(result1.GetCallback());
+  EXPECT_TRUE(result1.Get());
+  EXPECT_TRUE(service_->IsPurchased());
+
+  // Second check returns not purchased - cached value should update.
+  fake_skus_service_->SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 0, "expires_at": ""})");
+
+  base::test::TestFuture<bool> result2;
+  service_->CheckPurchaseState(result2.GetCallback());
+  EXPECT_FALSE(result2.Get());
+  EXPECT_FALSE(service_->IsPurchased());
+}
+
 // Test class for when BraveOrigin feature is disabled
 class BraveOriginServiceDisabledTest : public testing::Test {
  public:
@@ -506,7 +708,8 @@ class BraveOriginServiceDisabledTest : public testing::Test {
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId,
-        &mock_profile_policy_service_, &mock_browser_policy_service_);
+        &mock_profile_policy_service_, &mock_browser_policy_service_,
+        BraveOriginService::SkusServiceGetter());
   }
 
   void TearDown() override {

@@ -9,7 +9,7 @@ import {
   SearchEngineInfo,
   AutocompleteMatch,
   ClickEvent,
-} from '../../state/search_state'
+} from '../../state/search_store'
 
 import {
   useSearchState,

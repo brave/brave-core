@@ -30,11 +30,11 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     private final boolean mReturnAll;
     private final List<TransactionInfo> mTransactionInfos;
     private final List<TransactionCacheRecord> mCacheTransactionInfos;
-    private boolean isFetchingTx;
-    private final MutableLiveData<TransactionInfo> _mSelectedPendingRequest;
-    private final MutableLiveData<Boolean> _mHasNoPendingTxAfterProcessing;
-    private final MutableLiveData<List<TransactionInfo>> _mTransactionInfos;
-    private final MutableLiveData<List<TransactionInfo>> _mPendingTransactionInfoLd;
+    private boolean mIsFetchingTx;
+    private final MutableLiveData<TransactionInfo> mSelectedPendingRequestMutable;
+    private final MutableLiveData<Boolean> mHasNoPendingTxAfterProcessingMutable;
+    private final MutableLiveData<List<TransactionInfo>> mTransactionInfosMutable;
+    private final MutableLiveData<List<TransactionInfo>> mPendingTransactionInfoLdMutable;
     public LiveData<List<TransactionInfo>> mPendingTransactionInfoLd;
     public LiveData<List<TransactionInfo>> mTransactionInfoLd;
     public LiveData<TransactionInfo> mSelectedPendingRequest;
@@ -54,14 +54,14 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
 
         mTransactionInfos = new ArrayList<>();
         mCacheTransactionInfos = new ArrayList<>();
-        _mSelectedPendingRequest = new MutableLiveData<>();
-        _mHasNoPendingTxAfterProcessing = new MutableLiveData<>();
-        _mTransactionInfos = new MutableLiveData<>(Collections.emptyList());
-        _mPendingTransactionInfoLd = new MutableLiveData<>(Collections.emptyList());
-        mPendingTransactionInfoLd = _mPendingTransactionInfoLd;
-        mTransactionInfoLd = _mTransactionInfos;
-        mSelectedPendingRequest = _mSelectedPendingRequest;
-        mHasNoPendingTxAfterProcessing = _mHasNoPendingTxAfterProcessing;
+        mSelectedPendingRequestMutable = new MutableLiveData<>();
+        mHasNoPendingTxAfterProcessingMutable = new MutableLiveData<>();
+        mTransactionInfosMutable = new MutableLiveData<>(Collections.emptyList());
+        mPendingTransactionInfoLdMutable = new MutableLiveData<>(Collections.emptyList());
+        mPendingTransactionInfoLd = mPendingTransactionInfoLdMutable;
+        mTransactionInfoLd = mTransactionInfosMutable;
+        mSelectedPendingRequest = mSelectedPendingRequestMutable;
+        mHasNoPendingTxAfterProcessing = mHasNoPendingTxAfterProcessingMutable;
 
         if (shouldObserveTxUpdates) {
             mTxServiceObserver = new TxServiceObserverImpl(this);
@@ -75,6 +75,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
             mTxServiceObserver.destroy();
             mTxServiceObserver = null;
         }
+        mTxService = null;
     }
 
     public HashMap<String, TransactionInfo[]> getTransactions() {
@@ -82,12 +83,16 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     }
 
     public void fetchTransactions() {
-        isFetchingTx = true;
+        // mTxService can be null if destroy() was called or the Mojo connection died.
+        // Safe to skip — no UI is observing this helper, and a fresh instance will be
+        // created with a valid service when the user reopens the wallet.
+        if (mTxService == null) return;
+        mIsFetchingTx = true;
         mTransactionInfos.clear();
         mCacheTransactionInfos.clear();
         mTxInfos.clear();
-        _mTransactionInfos.postValue(Collections.emptyList());
-        _mSelectedPendingRequest.postValue(null);
+        mTransactionInfosMutable.postValue(Collections.emptyList());
+        mSelectedPendingRequestMutable.postValue(null);
         AsyncUtils.MultiResponseHandler allTxMultiResponse =
                 new AsyncUtils.MultiResponseHandler(mAccountInfos.length);
         ArrayList<AsyncUtils.GetAllTransactionInfoResponseContext> allTxContexts =
@@ -110,7 +115,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                                 newValue.add(txInfo);
                             }
                         }
-                        newValue.sort(sortByDateComparator);
+                        newValue.sort(mSortByDateComparator);
                         TransactionInfo[] newArray = new TransactionInfo[newValue.size()];
                         newArray = newValue.toArray(newArray);
                         TransactionInfo[] value = mTxInfos.get(allTxContext.name);
@@ -123,7 +128,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                             mTxInfos.put(allTxContext.name, both);
                         }
                     }
-                    isFetchingTx = false;
+                    mIsFetchingTx = false;
                     updateTransactionList();
                 });
     }
@@ -183,18 +188,18 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
             Collections.addAll(mTransactionInfos, transactionInfoArr);
         }
         processCachedTx();
-        mTransactionInfos.sort(sortByDateComparator);
-        _mTransactionInfos.postValue(mTransactionInfos);
+        mTransactionInfos.sort(mSortByDateComparator);
+        mTransactionInfosMutable.postValue(mTransactionInfos);
         updatePending(mTransactionInfos);
         postTxUpdates();
     }
 
     private void processTx(TransactionInfo txInfo, TxActionType txActionType) {
-        if (isFetchingTx) {
+        if (mIsFetchingTx) {
             mCacheTransactionInfos.add(new TransactionCacheRecord(txActionType, txInfo));
         } else {
             updateTransactionList(txInfo, txActionType);
-            _mTransactionInfos.postValue(mTransactionInfos);
+            mTransactionInfosMutable.postValue(mTransactionInfos);
             updatePending(mTransactionInfos);
         }
     }
@@ -211,7 +216,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     private void updateTransactionList(TransactionInfo txInfo, TxActionType txActionType) {
         if (txActionType == TxActionType.NEW_UNAPPROVED_TRANSACTION) {
             if (mTransactionInfos.isEmpty()) {
-                _mSelectedPendingRequest.postValue(txInfo);
+                mSelectedPendingRequestMutable.postValue(txInfo);
             }
             mTransactionInfos.add(txInfo);
         } else {
@@ -225,7 +230,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 }
                 if (getSelectedPendingRequest() != null
                         && getSelectedPendingRequest().id.equals(txInfo.id)) {
-                    _mSelectedPendingRequest.postValue(txInfo);
+                    mSelectedPendingRequestMutable.postValue(txInfo);
                 }
             } else if (txActionType == TxActionType.TRANSACTION_STATUS_CHANGED) {
                 List<TransactionInfo> newTransactionInfos = new ArrayList<>();
@@ -240,10 +245,10 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 }
                 mTransactionInfos.clear();
                 mTransactionInfos.addAll(newTransactionInfos);
-                mTransactionInfos.sort(sortByDateComparator);
-                if (((_mSelectedPendingRequest.getValue() != null
-                                && _mSelectedPendingRequest.getValue().id.equals(txInfo.id))
-                        || _mSelectedPendingRequest.getValue() == null)) {
+                mTransactionInfos.sort(mSortByDateComparator);
+                if (((mSelectedPendingRequestMutable.getValue() != null
+                                && mSelectedPendingRequestMutable.getValue().id.equals(txInfo.id))
+                        || mSelectedPendingRequestMutable.getValue() == null)) {
                     postTxUpdates();
                 }
             }
@@ -256,8 +261,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
 
     private void postTxUpdates() {
         TransactionInfo mFirstPendingInfo = getFirstUnapprovedTx();
-        _mSelectedPendingRequest.postValue(mFirstPendingInfo);
-        _mHasNoPendingTxAfterProcessing.postValue(mFirstPendingInfo == null);
+        mSelectedPendingRequestMutable.postValue(mFirstPendingInfo);
+        mHasNoPendingTxAfterProcessingMutable.postValue(mFirstPendingInfo == null);
     }
 
     private void updatePending(List<TransactionInfo> transactionInfos) {
@@ -267,7 +272,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 infos.add(info);
             }
         }
-        _mPendingTransactionInfoLd.postValue(infos);
+        mPendingTransactionInfoLdMutable.postValue(infos);
     }
 
     /*
@@ -283,7 +288,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         return null;
     }
 
-    private final Comparator<TransactionInfo> sortByDateComparator =
+    private final Comparator<TransactionInfo> mSortByDateComparator =
             (lhs, rhs) -> Long.compare(rhs.createdTime.microseconds, lhs.createdTime.microseconds);
 
     private static class TransactionCacheRecord {

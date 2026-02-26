@@ -41,10 +41,12 @@ class CardanoTransactionSerializer {
       const cardano_rpc::EpochParameters& epoch_parameters);
 
   // Based on `base_tx` find valid fee and outputs to cover the transaction
-  // costs.
+  // costs. Depending on `adjust_target_amount` either adjust target or change
+  // output's lovelace amount.
   static std::optional<CardanoTransaction> AdjustFeeAndOutputsForTx(
-      const CardanoTransaction& base_tx,
-      const cardano_rpc::EpochParameters& epoch_parameters);
+      CardanoTransaction tx,
+      const cardano_rpc::EpochParameters& epoch_parameters,
+      bool adjust_target_amount);
 
   // Calculates minimum ADA required for the output.
   static std::optional<uint64_t> CalcMinAdaRequired(

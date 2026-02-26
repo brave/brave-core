@@ -18,6 +18,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "build/build_config.h"
 #include "chrome/browser/headless/headless_mode_util.h"
@@ -225,16 +226,18 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
 
     update_url = net::AppendQueryParameter(
         update_url, "braveSearch",
-        base::NumberToString(serp_metrics_->GetBraveSearchCountForYesterday()));
+        base::NumberToString(serp_metrics_->GetSearchCountForYesterday(
+            serp_metrics::SerpMetricType::kBrave)));
 
     update_url = net::AppendQueryParameter(
         update_url, "googleSearch",
-        base::NumberToString(
-            serp_metrics_->GetGoogleSearchCountForYesterday()));
+        base::NumberToString(serp_metrics_->GetSearchCountForYesterday(
+            serp_metrics::SerpMetricType::kGoogle)));
 
     update_url = net::AppendQueryParameter(
         update_url, "otherSearch",
-        base::NumberToString(serp_metrics_->GetOtherSearchCountForYesterday()));
+        base::NumberToString(serp_metrics_->GetSearchCountForYesterday(
+            serp_metrics::SerpMetricType::kOther)));
 
     update_url = net::AppendQueryParameter(
         update_url, "staleSearch",

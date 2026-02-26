@@ -14,11 +14,12 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
-#include "base/functional/callback_forward.h"
+#include "base/functional/function_ref.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 
@@ -45,7 +46,7 @@ struct ArticleMetadata {
   bool discoverable = false;
 
   // All the channels this Article belongs to.
-  base::flat_set<std::string> channels;
+  absl::flat_hash_set<std::string> channels;
 
   ArticleMetadata();
   ArticleMetadata(const ArticleMetadata&) = delete;
@@ -61,14 +62,18 @@ using ArticleInfos = std::vector<ArticleInfo>;
 // Gets a weighting for a specific article. This determines how likely an
 // article is to be chosen.
 using GetWeighting =
-    base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& data,
-                                   const ArticleMetadata& meta)>;
+    base::FunctionRef<double(const mojom::FeedItemMetadataPtr& data,
+                             const ArticleMetadata& meta)>;
+
+using PublisherChannels =
+    absl::flat_hash_map<std::string, absl::flat_hash_set<std::string>>;
 
 // PickArticles is a strategy used to pick articles (for example, taking the
 // first article). Different feeds use different strategies for picking
-// articles.
+// articles. This is a non-owning reference, so the callable must outlive the
+// FunctionRef.
 using PickArticles =
-    base::RepeatingCallback<std::optional<size_t>(const ArticleInfos& infos)>;
+    base::FunctionRef<std::optional<size_t>(const ArticleInfos& infos)>;
 using ContentGroup = std::pair<std::string, bool>;
 
 template <typename T>
@@ -82,7 +87,7 @@ T PickRandom(const base::span<T>& items) {
 ContentGroup SampleContentGroup(
     base::span<const ContentGroup> eligible_content_groups);
 
-std::vector<std::string> GetChannelsForPublisher(
+absl::flat_hash_set<std::string> GetChannelsForPublisher(
     const std::string& locale,
     const mojom::PublisherPtr& publisher);
 
@@ -106,8 +111,14 @@ std::optional<size_t> PickFirstIndex(const ArticleInfos& articles);
 std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
                                                 GetWeighting get_weighting);
 std::optional<size_t> PickRoulette(const ArticleInfos& articles);
-std::optional<size_t> PickChannelRoulette(const std::string& channel,
-                                          const ArticleInfos& articles);
+std::optional<size_t> PickChannelRoulette(const ArticleInfos& articles,
+                                          const std::string& channel);
+std::optional<size_t> PickDiscoveryRoulette(const ArticleInfos& articles);
+std::optional<size_t> PickContentGroupRoulette(
+    const ArticleInfos& articles,
+    const ContentGroup& content_group,
+    const PublisherChannels& publisher_channels,
+    bool require_image);
 
 }  // namespace brave_news
 

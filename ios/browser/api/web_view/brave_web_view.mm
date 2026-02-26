@@ -59,6 +59,8 @@
 
 namespace {
 
+ResetConfigurationCallback gDidResetConfigurationCallback;
+
 class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
  public:
   BraveWebViewWebStatePolicyDecider(web::WebState* web_state,
@@ -186,6 +188,14 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     return nil;
   }
   return holder->web_view();
+}
+
++ (ResetConfigurationCallback)didResetConfiguration {
+  return gDidResetConfigurationCallback;
+}
+
++ (void)setDidResetConfiguration:(ResetConfigurationCallback)callback {
+  gDidResetConfigurationCallback = callback;
 }
 
 - (void)resetWebStateWithCoder:(NSCoder*)coder

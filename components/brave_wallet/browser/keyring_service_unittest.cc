@@ -15,9 +15,12 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -44,6 +47,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -85,6 +89,35 @@ struct ImportData {
   const char* address;
   const char* private_key;
 };
+
+std::string GenerateEthImportPayload(std::string_view private_key_hex) {
+  return base::StrCat({"0x", private_key_hex});
+}
+
+std::string GenerateFilImportPayload(std::string_view private_key_hex) {
+  base::Value::Dict json_payload;
+  json_payload.Set("Type", "secp256k1");
+  json_payload.Set("PrivateKey",
+                   base::Base64Encode(test::HexToArray<32>(private_key_hex)));
+  return base::HexEncode(*base::WriteJson(json_payload));
+}
+
+std::string GenerateBtcImportPayload(std::string_view private_key_hex) {
+  // version(4) || depth(1) || parent_fingerprint(4) || index(4) ||
+  // chain(32) || key(33)
+  std::array<uint8_t, 78> buf;
+  auto span_writer = base::SpanWriter(base::span(buf));
+  span_writer.WriteU32BigEndian(0x04b2430c);     // zprv
+  span_writer.WriteU8BigEndian(0);               // depth
+  span_writer.Write(std::array<uint8_t, 4>());   // parent_fingerprint
+  span_writer.WriteU32BigEndian(0);              // index
+  span_writer.Write(std::array<uint8_t, 32>());  // chain
+  span_writer.WriteU8BigEndian(0);
+  span_writer.Write(test::HexToArray<32>(private_key_hex));
+
+  CHECK_EQ(span_writer.remaining(), 0u);
+  return Base58EncodeWithCheck(buf);
+}
 
 }  // namespace
 
@@ -141,12 +174,10 @@ class KeyringServiceUnitTest : public testing::Test {
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &prefs_, nullptr);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   }
 
@@ -173,7 +204,7 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
+    return url_loader_factory_.GetSafeWeakWrapper();
   }
 
   std::string GetStringPrefForKeyring(const std::string& key,
@@ -501,7 +532,6 @@ class KeyringServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -1258,6 +1288,61 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   ASSERT_TRUE(encrypted_private_key.FindString("ciphertext"));
   EXPECT_NE(*encrypted_private_key.FindString("ciphertext"),
             base::Base64Encode(private_key0));
+}
+
+TEST_F(KeyringServiceUnitTest, ImportedAccounts_InvalidPrivateKeys) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  struct TestCase {
+    std::string private_key_hex;
+    bool valid;
+  };
+
+  // https://en.bitcoin.it/wiki/Secp256k1
+  // https://en.bitcoin.it/wiki/Private_key "Range of valid ECDSA private keys"
+  TestCase test_cases[] = {
+      // 1 - Valid
+      {"0000000000000000000000000000000000000000000000000000000000000001",
+       true},
+
+      // 0 - Invalid
+      {"0000000000000000000000000000000000000000000000000000000000000000",
+       false},
+      // n of Secp256k1 - Invalid
+      {"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+       false},
+      // max - Invalid
+      {"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+       false},
+  };
+
+  base::test::TestFuture<mojom::AccountInfoPtr> future;
+  for (auto& test_case : test_cases) {
+    auto payload = GenerateEthImportPayload(test_case.private_key_hex);
+    SCOPED_TRACE(test_case.private_key_hex + " " + payload);
+    service.ImportEthereumAccount(payload, payload, future.GetCallback());
+    EXPECT_EQ(test_case.valid, !!future.Take());
+  }
+
+  for (auto& test_case : test_cases) {
+    auto payload = GenerateFilImportPayload(test_case.private_key_hex);
+    SCOPED_TRACE(test_case.private_key_hex + " " + payload);
+    service.ImportFilecoinAccount(payload, payload, mojom::kFilecoinMainnet,
+                                  future.GetCallback());
+
+    EXPECT_EQ(test_case.valid, !!future.Take());
+  }
+
+  for (auto& test_case : test_cases) {
+    auto payload = GenerateBtcImportPayload(test_case.private_key_hex);
+    SCOPED_TRACE(test_case.private_key_hex + " " + payload);
+    service.ImportBitcoinAccount(payload, payload, mojom::kBitcoinMainnet,
+                                 future.GetCallback());
+
+    EXPECT_EQ(test_case.valid, !!future.Take());
+  }
 }
 
 TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
@@ -4228,7 +4313,6 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
             service.GetZCashAccountInfo(zec_acc->account_id)
                 ->next_transparent_change_address->key_id);
 }
-
 
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {

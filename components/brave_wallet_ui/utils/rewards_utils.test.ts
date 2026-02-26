@@ -125,7 +125,7 @@ describe('getRewardsTokenDescription', () => {
       'braveWalletBraveRewardsDescription',
     )
   })
-  it('Should return empty string', () => {
+  it('Should return empty string for empty provider name', () => {
     expect(getRewardsProviderName('')).toEqual('')
   })
 })

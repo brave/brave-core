@@ -24,19 +24,23 @@ test("brave_components_unittests") {
     "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/api_request_helper:unit_tests",
+    "//brave/components/assist_ranker:unit_tests",
     "//brave/components/brave_account:unit_tests",
     "//brave/components/brave_account/endpoint_client:unit_tests",
     "//brave/components/brave_account/endpoints:unit_tests",
     "//brave/components/brave_origin:unit_tests",
     "//brave/components/brave_policy:unit_tests",
     "//brave/components/brave_policy/ad_block_only_mode:unit_tests",
+    "//brave/components/brave_private_cdn:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
+    "//brave/components/brave_sync:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/email_aliases:unit_tests",
     "//brave/components/json:unit_tests",
-    "//brave/components/local_ai/browser:unit_tests",
+    "//brave/components/local_ai/core:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
+    "//brave/components/time_period_storage:unit_tests",
     "//brave/components/update_client:unit_tests",
     "//brave/components/url_sanitizer/core/browser:unit_tests",
     "//components/test:run_all_unittests",
@@ -77,6 +81,7 @@ test("brave_components_unittests") {
   }
 
   if (use_blink) {
+    deps += [ "//brave/components/local_ai/content:unit_tests" ]
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }

@@ -20,7 +20,7 @@ source_set("test_support") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
-    "//brave/components/brave_shields/core/browser/adblock",
+    "//brave/components/brave_shields/core/common/adblock",
   ]
 }
 
@@ -39,8 +39,8 @@ source_set("unit_tests") {
   deps = [
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
-    "//brave/components/brave_shields/core/browser/adblock",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common/adblock",
     "//chrome/test:test_support",
     "//testing/gtest",
   ]

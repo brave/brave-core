@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Please keep this list sorted alphabetically.
+nala_icons = [
+  "ic_accessibility.xml",
+  "ic_appearance.xml",
+  "ic_bar_chart_search.xml",
+  "ic_browser_customizable_shortcut.xml",
+  "ic_browser_home.xml",
+  "ic_browser_mobile_tabs_bottom.xml",
+  "ic_browser_mobile_tabs_top.xml",
+  "ic_browser_mobile_tabs.xml",
+  "ic_code.xml",
+  "ic_credit_card.xml",
+  "ic_download.xml",
+  "ic_media_player.xml",
+  "ic_info_outline.xml",
+  "ic_key.xml",
+  "ic_autofill.xml",
+  "ic_location_on.xml",
+  "ic_star_circle.xml",
+  "ic_notification.xml",
+  "ic_product_brave_leo.xml",
+  "ic_product_brave_news.xml",
+  "ic_product_brave_wallet.xml",
+  "ic_product_sync.xml",
+  "ic_product_translate.xml",
+  "ic_product_vpn.xml",
+  "ic_search.xml",
+  "ic_shield_done.xml",
+  "ic_tune.xml",
+  "ic_widget_search2.xml",
+  "ic_window_tab_close.xml",
+  "ic_window_tab_new.xml",
+  "ic_window.xml",
+]

@@ -24,6 +24,10 @@ extension URL {
     .init(url: self)
   }
 
+  public var isNewTabURL: Bool {
+    return scheme == "about" && host == "newtab"
+  }
+
   /// Obtains a clean stripped url from the current Internal URL
   ///
   /// Returns the original url without  internal parameters
@@ -32,7 +36,7 @@ extension URL {
       switch internalURL.urlType {
       case .errorPage:
         return internalURL.originalURLFromErrorPage
-      case .web3Page, .aboutHomePage:
+      case .web3Page:
         return internalURL.extractedUrlParam
       case .blockedPage:
         return decodeEmbeddedInternalURL(for: .blocked)
@@ -78,7 +82,7 @@ extension URL {
       return self
     }
 
-    if !InternalURL.isValid(url: self) {
+    if !isNewTabURL, !InternalURL.isValid(url: self) {
       let url = self.havingRemovedAuthorisationComponents()
       if let internalUrl = InternalURL(url), internalUrl.isErrorPage {
         return internalUrl.originalURLFromErrorPage?.displayURL
@@ -365,7 +369,6 @@ extension InternalURL {
     case httpBlockedPage
     case errorPage
     case readerModePage
-    case aboutHomePage
     case web3Page
     case other
   }
@@ -392,10 +395,6 @@ extension InternalURL {
 
     if isReaderModePage {
       return .readerModePage
-    }
-
-    if isAboutHomeURL {
-      return .aboutHomePage
     }
 
     return .other

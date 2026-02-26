@@ -52,7 +52,6 @@
     <color name="text_disabled">#ebeef0</color>
     <color name="text_on_primary">#251491</color>
     <color name="icon_interactive">#bcc6f3</color>
-    <color name="divider_subtle">#303032</color>
     <color name="system_feedback_error">#FFB1B0</color>
 
 
@@ -64,6 +63,10 @@
     <color name="brave_theme_subtitle_text">#C2C4CF</color>
     <color name="brave_theme_hint_text">#84889C</color>
     <color name="brave_text_button_color">#A0A5EB</color>
+
+    <!-- Onboarding colors -->
+    <color name="onboarding_background_gradient_start">#FF1A1F38</color>
+    <color name="onboarding_background_gradient_end">#FF101322</color>
 
     <!-- Set Default Browser colors -->
     <color name="set_default_bottom_sheet_bg_color">#1E2029</color>

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,13 +17,13 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -30,9 +31,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -40,6 +39,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::TestFuture;
 using testing::_;
 using testing::SaveArg;
 
@@ -48,10 +48,7 @@ namespace brave_wallet {
 class BraveWalletP3AUnitTest : public testing::Test {
  public:
   BraveWalletP3AUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
@@ -64,13 +61,15 @@ class BraveWalletP3AUnitTest : public testing::Test {
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
-        &prefs_, &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
     brave_wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
     brave_wallet_service_->GetBitcoinWalletService()
         ->SetUrlLoaderFactoryForTesting(
             bitcoin_test_rpc_server_->GetURLLoaderFactory());
+    cardano_test_rpc_server_ = std::make_unique<CardanoTestRpcServer>(
+        *brave_wallet_service_->GetCardanoWalletService());
     WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
   }
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
@@ -113,6 +112,12 @@ class BraveWalletP3AUnitTest : public testing::Test {
 
   mojom::AccountIdPtr ZecAccount(size_t index) {
     return GetAccountUtils().EnsureZecAccount(index)->account_id->Clone();
+  }
+
+  mojom::AccountIdPtr ada_from() { return AdaAccount(0); }
+
+  mojom::AccountIdPtr AdaAccount(size_t index) {
+    return GetAccountUtils().EnsureAdaAccount(index)->account_id->Clone();
   }
 
   void ContinueAddUnapprovedZecTransaction(
@@ -286,94 +291,17 @@ class BraveWalletP3AUnitTest : public testing::Test {
         }));
   }
 
-  bool AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& chain_id,
-                                const mojom::AccountIdPtr& from_account,
-                                std::string* tx_meta_id) {
-    bool success;
-    base::RunLoop run_loop;
-    tx_service()->AddUnapprovedTransaction(
-        tx_data_union.Clone(), chain_id, from_account.Clone(), nullptr,
-        base::BindLambdaForTesting([&](bool v, const std::string& tx_id,
-                                       const std::string& error_message) {
-          success = v;
-          *tx_meta_id = tx_id;
-          ASSERT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-
-    return success;
-  }
-
-  bool AddUnapprovedEvmTransaction(mojom::NewEvmTransactionParamsPtr params,
-                                   std::string* tx_meta_id) {
-    bool success;
-    base::RunLoop run_loop;
-    tx_service()->AddUnapprovedEvmTransaction(
-        std::move(params),
-        base::BindLambdaForTesting([&](bool v, const std::string& tx_id,
-                                       const std::string& error_message) {
-          success = v;
-          *tx_meta_id = tx_id;
-          ASSERT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-
-    return success;
-  }
-
-  bool AddUnapprovedBitcoinTransaction(
-      mojom::NewBitcoinTransactionParamsPtr params,
-      std::string* tx_meta_id) {
-    bool success;
-    base::RunLoop run_loop;
-    tx_service()->AddUnapprovedBitcoinTransaction(
-        std::move(params),
-        base::BindLambdaForTesting([&](bool v, const std::string& tx_id,
-                                       const std::string& error_message) {
-          success = v;
-          *tx_meta_id = tx_id;
-          ASSERT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-
-    return success;
-  }
-
-  bool ApproveTransaction(const mojom::CoinType coin_type,
-                          const std::string& chain_id,
-                          const std::string& tx_meta_id) {
-    bool success;
-    base::RunLoop run_loop;
-    tx_service()->ApproveTransaction(
-        coin_type, chain_id, tx_meta_id,
-        base::BindLambdaForTesting([&](bool v,
-                                       mojom::ProviderErrorUnionPtr error,
-                                       const std::string& error_message) {
-          success = v;
-          ASSERT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return success;
-  }
-
  protected:
-  base::test::ScopedFeatureList feature_btc_feature_{
-      features::kBraveWalletBitcoinFeature};
-  base::test::ScopedFeatureList feature_zec_feature_{
-      features::kBraveWalletZCashFeature};
+  base::test::ScopedFeatureList feature_cardano_feature_{
+      features::kBraveWalletCardanoFeature};
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
+  network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
@@ -428,6 +356,7 @@ TEST_F(BraveWalletP3AUnitTest, ReportTransactionSent) {
   histogram_tester_->ExpectTotalCount(kFilTransactionSentHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kBtcTransactionSentHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kZecTransactionSentHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kAdaTransactionSentHistogramName, 0);
 
   wallet_p3a()->ReportTransactionSent(mojom::CoinType::ETH, true);
   histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
@@ -444,12 +373,16 @@ TEST_F(BraveWalletP3AUnitTest, ReportTransactionSent) {
   wallet_p3a()->ReportTransactionSent(mojom::CoinType::ZEC, true);
   histogram_tester_->ExpectUniqueSample(kZecTransactionSentHistogramName, 1, 1);
 
+  wallet_p3a()->ReportTransactionSent(mojom::CoinType::ADA, true);
+  histogram_tester_->ExpectUniqueSample(kAdaTransactionSentHistogramName, 1, 1);
+
   task_environment_.FastForwardBy(base::Days(4));
   histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 5);
   histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 5);
   histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 5);
   histogram_tester_->ExpectUniqueSample(kBtcTransactionSentHistogramName, 1, 5);
   histogram_tester_->ExpectUniqueSample(kZecTransactionSentHistogramName, 1, 5);
+  histogram_tester_->ExpectUniqueSample(kAdaTransactionSentHistogramName, 1, 5);
 
   task_environment_.FastForwardBy(base::Days(3));
   histogram_tester_->ExpectBucketCount(kEthTransactionSentHistogramName, 0, 1);
@@ -457,6 +390,7 @@ TEST_F(BraveWalletP3AUnitTest, ReportTransactionSent) {
   histogram_tester_->ExpectBucketCount(kFilTransactionSentHistogramName, 0, 1);
   histogram_tester_->ExpectBucketCount(kBtcTransactionSentHistogramName, 0, 1);
   histogram_tester_->ExpectBucketCount(kZecTransactionSentHistogramName, 0, 1);
+  histogram_tester_->ExpectBucketCount(kAdaTransactionSentHistogramName, 0, 1);
 }
 
 TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
@@ -465,6 +399,7 @@ TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
   wallet_p3a()->RecordActiveWalletCount(0, mojom::CoinType::SOL);
   wallet_p3a()->RecordActiveWalletCount(0, mojom::CoinType::BTC);
   wallet_p3a()->RecordActiveWalletCount(0, mojom::CoinType::ZEC);
+  wallet_p3a()->RecordActiveWalletCount(0, mojom::CoinType::ADA);
 
   // Should not record zero to histogram if user never had an active account
   histogram_tester_->ExpectTotalCount(kEthActiveAccountHistogramName, 0);
@@ -472,30 +407,35 @@ TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
   histogram_tester_->ExpectTotalCount(kSolActiveAccountHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kBtcActiveAccountHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kZecActiveAccountHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kAdaActiveAccountHistogramName, 0);
 
   wallet_p3a()->RecordActiveWalletCount(3, mojom::CoinType::ETH);
   wallet_p3a()->RecordActiveWalletCount(9, mojom::CoinType::FIL);
   wallet_p3a()->RecordActiveWalletCount(7, mojom::CoinType::SOL);
   wallet_p3a()->RecordActiveWalletCount(4, mojom::CoinType::BTC);
   wallet_p3a()->RecordActiveWalletCount(2, mojom::CoinType::ZEC);
+  wallet_p3a()->RecordActiveWalletCount(1, mojom::CoinType::ADA);
 
   histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 3, 1);
   histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 5, 1);
   histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 4, 1);
   histogram_tester_->ExpectBucketCount(kBtcActiveAccountHistogramName, 4, 1);
   histogram_tester_->ExpectBucketCount(kZecActiveAccountHistogramName, 2, 1);
+  histogram_tester_->ExpectBucketCount(kAdaActiveAccountHistogramName, 1, 1);
 
   wallet_p3a()->RecordActiveWalletCount(0, mojom::CoinType::ETH);
   wallet_p3a()->RecordActiveWalletCount(1, mojom::CoinType::FIL);
   wallet_p3a()->RecordActiveWalletCount(2, mojom::CoinType::SOL);
   wallet_p3a()->RecordActiveWalletCount(3, mojom::CoinType::BTC);
   wallet_p3a()->RecordActiveWalletCount(4, mojom::CoinType::ZEC);
+  wallet_p3a()->RecordActiveWalletCount(5, mojom::CoinType::ADA);
 
   histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 0, 1);
   histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 1, 1);
   histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 2, 1);
   histogram_tester_->ExpectBucketCount(kBtcActiveAccountHistogramName, 3, 1);
   histogram_tester_->ExpectBucketCount(kZecActiveAccountHistogramName, 4, 1);
+  histogram_tester_->ExpectBucketCount(kAdaActiveAccountHistogramName, 4, 1);
 }
 
 TEST_F(BraveWalletP3AUnitTest, NewUserBalance) {
@@ -615,17 +555,28 @@ TEST_F(BraveWalletP3AUnitTest, EthTransactionSentObservation) {
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
   // Create & add unapproved ETH transaction
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedEvmTransaction(
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  tx_service()->AddUnapprovedEvmTransaction(
       mojom::NewEvmTransactionParams::New(
           mojom::kBnbSmartChainMainnetChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
           "0x0974", std::vector<uint8_t>(), nullptr),
-      &tx_meta_id));
+      tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the ETH transaction
-  EXPECT_TRUE(ApproveTransaction(
-      mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId, tx_meta_id));
+  TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  tx_service()->ApproveTransaction(mojom::CoinType::ETH,
+                                   mojom::kBnbSmartChainMainnetChainId,
+                                   tx_meta_id, approve_tx_future.GetCallback());
+  auto [approve_success, approve_error, approve_error_message] =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
 
   // Verify EthTransactionSent
   histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
@@ -641,17 +592,28 @@ TEST_F(BraveWalletP3AUnitTest, TestnetEthTransactionSentObservation) {
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
   // Create & add unapproved ETH transaction on testnet
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedEvmTransaction(
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  tx_service()->AddUnapprovedEvmTransaction(
       mojom::NewEvmTransactionParams::New(
           mojom::kLocalhostChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
           "0x0974", std::vector<uint8_t>(), nullptr),
-      &tx_meta_id));
+      tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the ETH transaction on testnet
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH, mojom::kLocalhostChainId,
-                                 tx_meta_id));
+  TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  tx_service()->ApproveTransaction(mojom::CoinType::ETH,
+                                   mojom::kLocalhostChainId, tx_meta_id,
+                                   approve_tx_future.GetCallback());
+  auto [approve_success, approve_error, approve_error_message] =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
 
   // Verify EthTransactionSent not updated (testnet switch disabled)
   histogram_tester_->ExpectTotalCount(kEthTransactionSentHistogramName, 0);
@@ -660,16 +622,25 @@ TEST_F(BraveWalletP3AUnitTest, TestnetEthTransactionSentObservation) {
   cmdline->AppendSwitch(mojom::kP3ACountTestNetworksSwitch);
 
   // Create & add unapproved ETH transaction on testnet
-  EXPECT_TRUE(AddUnapprovedEvmTransaction(
+  tx_service()->AddUnapprovedEvmTransaction(
       mojom::NewEvmTransactionParams::New(
           mojom::kLocalhostChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
           "0x0974", std::vector<uint8_t>(), nullptr),
-      &tx_meta_id));
+      tx_add_future.GetCallback());
+  std::tie(success, tx_meta_id, error_message) = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the ETH transaction on testnet
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH, mojom::kLocalhostChainId,
-                                 tx_meta_id));
+  tx_service()->ApproveTransaction(mojom::CoinType::ETH,
+                                   mojom::kLocalhostChainId, tx_meta_id,
+                                   approve_tx_future.GetCallback());
+  std::tie(approve_success, approve_error, approve_error_message) =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
 
   // Verify EthTransactionSent
   histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
@@ -721,14 +692,24 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
   SetSolInterceptor(latest_blockhash1, last_valid_block_height1, tx_hash1,
                     last_valid_block_height1);
 
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedTransaction(
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  tx_service()->AddUnapprovedTransaction(
       mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
-      mojom::kSolanaMainnet, sol_from(), &tx_meta_id));
+      mojom::kSolanaMainnet, sol_from(), nullptr, tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the SOL transaction
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::SOL, mojom::kSolanaMainnet,
-                                 tx_meta_id));
+  TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  tx_service()->ApproveTransaction(mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                                   tx_meta_id, approve_tx_future.GetCallback());
+  auto [approve_success, approve_error, approve_error_message] =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
 
   // Verify SolTransactionSent
   histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 1);
@@ -745,14 +726,26 @@ TEST_F(BraveWalletP3AUnitTest, FilTransactionSentObservation) {
   auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
                                        "" /* gas_fee_cap */, "" /* gas_limit */,
                                        "" /* max_fee */, to_account, "11");
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedTransaction(
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  tx_service()->AddUnapprovedTransaction(
       mojom::TxDataUnion::NewFilTxData(std::move(tx_data)),
-      mojom::kFilecoinMainnet, fil_from(), &tx_meta_id));
+      mojom::kFilecoinMainnet, fil_from(), nullptr,
+      tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the FIL transaction
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::FIL, mojom::kFilecoinMainnet,
-                                 tx_meta_id));
+  TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  tx_service()->ApproveTransaction(mojom::CoinType::FIL,
+                                   mojom::kFilecoinMainnet, tx_meta_id,
+                                   approve_tx_future.GetCallback());
+  auto [approve_success, approve_error, approve_error_message] =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
 
   // Verify FilTransactionSent
   histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 1);
@@ -769,12 +762,23 @@ TEST_F(BraveWalletP3AUnitTest, BtcTransactionSentObservation) {
       mojom::kBitcoinMainnet, btc_from(), kMockBtcAddress, 5000, false,
       nullptr);
 
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedBitcoinTransaction(std::move(params), &tx_meta_id));
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  tx_service()->AddUnapprovedBitcoinTransaction(std::move(params),
+                                                tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the BTC transaction
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::BTC, mojom::kBitcoinMainnet,
-                                 tx_meta_id));
+  TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  tx_service()->ApproveTransaction(mojom::CoinType::BTC, mojom::kBitcoinMainnet,
+                                   tx_meta_id, approve_tx_future.GetCallback());
+  auto [approve_success, approve_error, approve_error_message] =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
 
   // Verify BtcTransactionSent
   histogram_tester_->ExpectUniqueSample(kBtcTransactionSentHistogramName, 1, 1);
@@ -810,13 +814,14 @@ TEST_F(BraveWalletP3AUnitTest, ZecTransactionSentObservation) {
     zcash_transaction.transparent_part().outputs.push_back(std::move(output));
   }
 
-  std::string tx_meta_id;
-  base::MockCallback<TxService::AddUnapprovedTransactionCallback> add_callback;
-  EXPECT_CALL(add_callback, Run(true, _, _)).WillOnce(SaveArg<1>(&tx_meta_id));
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
   ContinueAddUnapprovedZecTransaction(mojom::kZCashMainnet, zec_from(),
-                                      std::nullopt, add_callback.Get(),
+                                      std::nullopt, tx_add_future.GetCallback(),
                                       std::move(zcash_transaction));
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
   EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
 
   // Approve the ZEC transaction
   tx_service()->ApproveTransaction(mojom::CoinType::ZEC, mojom::kZCashMainnet,
@@ -825,6 +830,38 @@ TEST_F(BraveWalletP3AUnitTest, ZecTransactionSentObservation) {
 
   // Verify ZecTransactionSent
   histogram_tester_->ExpectUniqueSample(kZecTransactionSentHistogramName, 1, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, AdaTransactionSentObservation) {
+  histogram_tester_->ExpectTotalCount(kAdaTransactionSentHistogramName, 0);
+  AccountUtils(keyring_service())
+      .CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+
+  cardano_test_rpc_server_->SetUpCardanoRpc(kMnemonicDivideCruise, 0);
+
+  auto params = mojom::NewCardanoTransactionParams::New(
+      mojom::kCardanoMainnet, ada_from(), kMockCardanoAddress1, 5000000, false,
+      std::nullopt, nullptr);
+
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  tx_service()->AddUnapprovedCardanoTransaction(std::move(params),
+                                                tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(tx_meta_id, "");
+  EXPECT_EQ(error_message, "");
+
+  TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  tx_service()->ApproveTransaction(mojom::CoinType::ADA, mojom::kCardanoMainnet,
+                                   tx_meta_id, approve_tx_future.GetCallback());
+  auto [approve_success, approve_error, approve_error_message] =
+      approve_tx_future.Take();
+  EXPECT_TRUE(approve_success);
+  EXPECT_EQ(approve_error_message, "");
+
+  // Verify AdaTransactionSent
+  histogram_tester_->ExpectUniqueSample(kAdaTransactionSentHistogramName, 1, 1);
 }
 
 }  // namespace brave_wallet

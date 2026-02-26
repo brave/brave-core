@@ -133,6 +133,43 @@ const getAssetBalance = (
   )
 }
 
+// Coin types supported by each provider for swaps (same-chain)
+const swapProviderCoins = new Map<
+  BraveWallet.SwapProvider,
+  BraveWallet.CoinType[]
+>([
+  [BraveWallet.SwapProvider.kJupiter, [BraveWallet.CoinType.SOL]],
+  [BraveWallet.SwapProvider.kLiFi, [BraveWallet.CoinType.ETH]],
+  [BraveWallet.SwapProvider.kZeroEx, [BraveWallet.CoinType.ETH]],
+  [BraveWallet.SwapProvider.kSquid, [BraveWallet.CoinType.ETH]],
+  [
+    BraveWallet.SwapProvider.kNearIntents,
+    [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL],
+  ],
+])
+
+// Coin types supported by each provider for bridges (cross-chain)
+const bridgeProviderCoins = new Map<
+  BraveWallet.SwapProvider,
+  BraveWallet.CoinType[]
+>([
+  [
+    BraveWallet.SwapProvider.kLiFi,
+    [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL],
+  ],
+  [BraveWallet.SwapProvider.kSquid, [BraveWallet.CoinType.ETH]],
+  [
+    BraveWallet.SwapProvider.kNearIntents,
+    [
+      BraveWallet.CoinType.ETH,
+      BraveWallet.CoinType.SOL,
+      BraveWallet.CoinType.BTC,
+      BraveWallet.CoinType.ZEC,
+      BraveWallet.CoinType.ADA,
+    ],
+  ],
+])
+
 export const useSwap = () => {
   // routing
   const query = useQuery()
@@ -851,12 +888,23 @@ export const useSwap = () => {
     if (!fromAccount || !toAccount || !fromToken || !toToken) {
       return
     }
+
+    // After flip: newFrom = oldTo, newTo = oldFrom
+    // Route type based on whether these are same network
+    const isSameNetwork = toToken.chainId === fromToken.chainId
+    const routeType = isSameNetwork ? 'swap' : 'bridge'
+
+    // Check coin compatibility for the flipped positions:
+    // - toAccount becomes new fromAccount, must be able to hold toToken (new fromToken)
+    // - fromAccount becomes new toAccount, must be able to hold fromToken (new toToken)
     if (
-      !isBridge
-      && (fromAccount.accountId.coin !== toToken.coin
-        || toAccountId?.coin !== fromToken.coin)
+      toAccount.accountId.coin !== toToken.coin
+      || fromAccount.accountId.coin !== fromToken.coin
     ) {
-      history.replace(WalletRoutes.Swap)
+      // Incompatible coins - clear params
+      history.replace(
+        routeType === 'bridge' ? WalletRoutes.Bridge : WalletRoutes.Swap,
+      )
     } else {
       history.replace(
         makeSwapOrBridgeRoute({
@@ -864,7 +912,7 @@ export const useSwap = () => {
           fromAccount: toAccount,
           toToken: fromToken,
           toAccountId: fromAccount.accountId,
-          routeType: isBridge ? 'bridge' : 'swap',
+          routeType,
         }),
       )
     }
@@ -874,10 +922,8 @@ export const useSwap = () => {
     toAccount,
     fromToken,
     toToken,
-    toAccountId,
     handleOnSetFromAmount,
     history,
-    isBridge,
   ])
 
   // Changing the To asset does the following:
@@ -896,13 +942,18 @@ export const useSwap = () => {
         return
       }
       setEditingFromOrToAmount('from')
+
+      // Dynamic route type: same network = swap, different network = bridge
+      const isSameNetwork = fromToken.chainId === token.chainId
+      const routeType = isSameNetwork ? 'swap' : 'bridge'
+
       history.replace(
         makeSwapOrBridgeRoute({
           fromToken,
           fromAccount,
           toToken: token,
           toAccountId: account?.accountId,
-          routeType: isBridge ? 'bridge' : 'swap',
+          routeType,
         }),
       )
       setSelectingFromOrTo(undefined)
@@ -915,14 +966,7 @@ export const useSwap = () => {
         toAccountId: account?.accountId,
       })
     },
-    [
-      fromToken,
-      fromAccount,
-      history,
-      isBridge,
-      reset,
-      handleQuoteRefreshInternal,
-    ],
+    [fromToken, fromAccount, history, reset, handleQuoteRefreshInternal],
   )
 
   // Changing the From asset does the following:
@@ -940,45 +984,26 @@ export const useSwap = () => {
       }
       setEditingFromOrToAmount('from')
 
-      if (isBridge) {
-        history.replace(
-          makeSwapOrBridgeRoute({
-            fromToken: token,
-            fromAccount: account,
-            toToken,
-            toAccountId,
-            routeType: 'bridge',
-          }),
-        )
-        setSelectingFromOrTo(undefined)
-        setFromAmount('')
-        setToAmount('')
-        reset()
-        return
+      // Dynamic route type based on whether toToken exists and network comparison
+      // If no toToken, preserve current mode (stay on bridge if already on bridge)
+      // If toToken exists: same network = swap, different network = bridge
+      let routeType: 'swap' | 'bridge'
+      if (toToken) {
+        routeType = toToken.chainId !== token.chainId ? 'bridge' : 'swap'
+      } else {
+        // No toToken yet, preserve current mode
+        routeType = isBridge ? 'bridge' : 'swap'
       }
 
-      // For regular Swaps we check that the toToken
-      // and the incoming fromToken are on the same network.
-      // If not we clear the toToken from params.
-      if (toToken && toToken.chainId === token.chainId) {
-        history.replace(
-          makeSwapOrBridgeRoute({
-            fromToken: token,
-            fromAccount: account,
-            toToken,
-            toAccountId,
-            routeType: 'swap',
-          }),
-        )
-      } else {
-        history.replace(
-          makeSwapOrBridgeRoute({
-            fromToken: token,
-            fromAccount: account,
-            routeType: 'swap',
-          }),
-        )
-      }
+      history.replace(
+        makeSwapOrBridgeRoute({
+          fromToken: token,
+          fromAccount: account,
+          toToken,
+          toAccountId,
+          routeType,
+        }),
+      )
       setSelectingFromOrTo(undefined)
       setFromAmount('')
       setToAmount('')
@@ -1060,45 +1085,20 @@ export const useSwap = () => {
       return [BraveWallet.SwapProvider.kAuto]
     }
 
-    const hasSolInFillPath =
-      fromToken?.coin === BraveWallet.CoinType.SOL
-      || toToken?.coin === BraveWallet.CoinType.SOL
+    const providerCoins = isBridge ? bridgeProviderCoins : swapProviderCoins
+    const providers: BraveWallet.SwapProvider[] = [
+      BraveWallet.SwapProvider.kAuto,
+    ]
 
-    const hasEthInFillPath =
-      fromToken?.coin === BraveWallet.CoinType.ETH
-      || toToken?.coin === BraveWallet.CoinType.ETH
-
-    if (!isBridge && hasSolInFillPath) {
-      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kJupiter]
+    for (const [provider, coins] of providerCoins) {
+      const fromSupported = fromToken ? coins.includes(fromToken.coin) : true
+      const toSupported = toToken ? coins.includes(toToken.coin) : true
+      if (fromSupported && toSupported) {
+        providers.push(provider)
+      }
     }
 
-    if (!isBridge && hasEthInFillPath) {
-      return [
-        BraveWallet.SwapProvider.kAuto,
-        BraveWallet.SwapProvider.kLiFi,
-        BraveWallet.SwapProvider.kZeroEx,
-        BraveWallet.SwapProvider.kSquid,
-      ]
-    }
-
-    if (isBridge && hasSolInFillPath) {
-      return [
-        BraveWallet.SwapProvider.kAuto,
-        BraveWallet.SwapProvider.kLiFi,
-        BraveWallet.SwapProvider.kNearIntents,
-      ]
-    }
-
-    if (isBridge && hasEthInFillPath) {
-      return [
-        BraveWallet.SwapProvider.kAuto,
-        BraveWallet.SwapProvider.kLiFi,
-        BraveWallet.SwapProvider.kSquid,
-        BraveWallet.SwapProvider.kNearIntents,
-      ]
-    }
-
-    return [BraveWallet.SwapProvider.kAuto]
+    return providers
   }, [isBridge, fromToken, toToken])
 
   const swapValidationError: SwapValidationErrorType | undefined =
@@ -1182,6 +1182,34 @@ export const useSwap = () => {
           === BraveWallet.Gate3SwapErrorKind.kInsufficientLiquidity
         ) {
           return 'insufficientLiquidity'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kAmountTooLow
+        ) {
+          return 'amountTooLow'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedNetwork
+        ) {
+          return 'unsupportedNetwork'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kUnsupportedTokens
+        ) {
+          return 'unsupportedTokens'
+        }
+
+        if (
+          quoteErrorUnion.gate3Error.kind
+          === BraveWallet.Gate3SwapErrorKind.kInvalidRequest
+        ) {
+          return 'invalidRequest'
         }
 
         return 'unknownError'
@@ -1457,6 +1485,22 @@ export const useSwap = () => {
 
     if (swapValidationError === 'insufficientLiquidity') {
       return getLocale('braveSwapInsufficientLiquidity')
+    }
+
+    if (swapValidationError === 'amountTooLow') {
+      return getLocale('braveSwapAmountTooLow')
+    }
+
+    if (swapValidationError === 'unsupportedNetwork') {
+      return getLocale('braveSwapUnsupportedNetwork')
+    }
+
+    if (swapValidationError === 'unsupportedTokens') {
+      return getLocale('braveSwapUnsupportedTokens')
+    }
+
+    if (swapValidationError === 'invalidRequest') {
+      return getLocale('braveSwapInvalidRequest')
     }
 
     if (swapValidationError === 'unknownError') {

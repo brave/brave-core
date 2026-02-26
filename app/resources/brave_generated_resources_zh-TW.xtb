@@ -518,11 +518,11 @@
 <translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
 <translation id="8826461509529116322">顯示 Brave Rewards 按鈕</translation>
 <translation id="4859866966646365361">僅限廣告攔截模式</translation>
-<translation id="4146834954839563870">只使用廣告封鎖模式</translation>
+<translation id="4146834954839563870">使用「僅限廣告攔截」模式</translation>
 <translation id="420732343671200734">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則。警告：會移除所有隱私保護。請注意，對於被 Brave 隱私保護破壞的個別網站，您可以將盾牌設定為「關閉」。此為實驗模式。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="3055675200351793825">盾牌選項目前已停用。</translation>
 <translation id="2687830906359353344">「僅限廣告攔截」模式保留 Brave 盾牌的核心廣告攔截規則，並關閉隱私保護。如果您想啟用標準的盾牌功能，請停用此模式。</translation>
-<translation id="3809423899581611047">關閉「僅限廣告封鎖」模式</translation>
+<translation id="3809423899581611047">關閉「僅限廣告攔截」模式</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="7791141927430186653">允許 X (原為 Twitter) 嵌入的推文</translation>

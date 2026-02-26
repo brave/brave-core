@@ -25,7 +25,7 @@ import {
   backgroundCSSValue,
   gradientPreviewBackground,
   solidPreviewBackground,
-} from '../../state/background_state'
+} from '../../state/background_store'
 
 import { style } from './background_panel.style'
 

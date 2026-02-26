@@ -40,6 +40,9 @@ const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents{
 const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent{
     &kAIChat, "content_size_large_tool_use_events", 1000};
 
+const base::FeatureParam<size_t> kMaxFullWebSourcesToolOutputs{
+    &kAIChat, "max_full_web_sources_tool_outputs", 4};
+
 const base::FeatureParam<bool> kAutomaticModelSupportsTools{
     &kAIChat, "automatic_model_supports_tools", true};
 
@@ -126,12 +129,26 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
+BASE_FEATURE(kTabManagementTool,
+             "BraveTabManagementTool",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
 BASE_FEATURE(kNEARModels,
              "AIChatNEARModels",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsNEARModelsEnabled() {
   return base::FeatureList::IsEnabled(features::kNEARModels);
+}
+
+BASE_FEATURE(kBraveSummaryModel,
+             "AIChatBraveSummaryModel",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+bool IsBraveSummaryModelEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveSummaryModel);
 }
 
 BASE_FEATURE(kRichSearchWidgets, base::FEATURE_ENABLED_BY_DEFAULT);

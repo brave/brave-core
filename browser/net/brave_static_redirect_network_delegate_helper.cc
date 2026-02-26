@@ -16,18 +16,6 @@
 
 namespace brave {
 
-int OnBeforeURLRequest_StaticRedirectWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
-  GURL new_url;
-  int rc = OnBeforeURLRequest_StaticRedirectWorkForGURL(ctx->request_url(),
-                                                        &new_url);
-  if (!new_url.is_empty()) {
-    ctx->set_new_url_spec(new_url.spec());
-  }
-  return rc;
-}
-
 int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     const GURL& request_url,
     GURL* new_url) {

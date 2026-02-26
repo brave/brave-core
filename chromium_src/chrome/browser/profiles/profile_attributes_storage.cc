@@ -11,6 +11,7 @@
 
 // We want to use our own default profile name "Personal" instead of upstream's
 // branded default profile name "Your Brave".
+// CHROMIUM_SRC_INTERNAL_USE
 #define IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME_SAVE \
   IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME
 #undef IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME

@@ -371,6 +371,10 @@
 <translation id="7275773481201277457">Показати статистику Brave</translation>
 <translation id="7462178177755090262">Початковий екран</translation>
 <translation id="5365434987337264071">Остання відкрита вкладка</translation>
+<translation id="6019856124237323989">{HOURS, plural,
+          =1 {Нова вкладка після <ph name="HOURS_ONE"/> години бездіяльності}
+          other {Нова вкладка після <ph name="HOURS_MANY"/> годин бездіяльності}
+        }</translation>
 <translation id="5233638681132016545">Нова вкладка</translation>
 <translation id="8395271296293035055">Поверніться до останньої вкладки</translation>
 <translation id="8297488609722895137">Фото зроблене <ph name="PHOTO_BY"/></translation>

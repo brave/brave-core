@@ -161,7 +161,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // test that non-private tabs are saved to the db
     // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = TabStateFactory.create(with: .init(initialConfiguration: configuration))
+      let tab = TabStateFactory.create(
+        with: .init(profile: nil, initialConfiguration: configuration)
+      )
       tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,

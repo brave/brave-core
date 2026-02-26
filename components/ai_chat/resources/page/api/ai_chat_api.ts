@@ -207,6 +207,9 @@ export default function createAIChatApi(
           rateMessage(turnUuid, isLiked) {},
           userRequestedOpenGeneratedUrl(url) {},
           dragStart() {},
+          // <if expr="is_ios">
+          dismissMenus() {},
+          // </if>
           regenerateAnswerMenuIsOpen(isOpen) {},
           showSkillDialog(prompt) {},
           showPremiumSuggestionForRegenerate(isVisible) {},

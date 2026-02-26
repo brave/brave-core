@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { useBackgroundActions } from '../../context/background_context'
-import { braveSearchHost } from '../../state/search_state'
+import { braveSearchHost } from '../../state/search_store'
 import {
   useSearchMatches,
   useSearchActions,

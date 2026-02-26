@@ -14,6 +14,7 @@ def _add_brave_metrics(options):
     tracing_categories.AddIncludedCategory('brave')
     tracing_categories.AddIncludedCategory('brave.adblock')
     tracing_categories.AddIncludedCategory('brave.ads')
+    tracing_categories.AddIncludedCategory('brave.news')
     return options
 
 

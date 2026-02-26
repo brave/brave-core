@@ -251,8 +251,8 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
       histogram_name = kZecTransactionSentHistogramName;
       break;
     case mojom::CoinType::ADA:
-      // TODO(https://github.com/brave/brave-browser/issues/49535): Cardano P3A
-      return;
+      histogram_name = kAdaTransactionSentHistogramName;
+      break;
     case mojom::CoinType::DOT:
       // TODO(https://github.com/brave/brave-browser/issues/49536): Polkadot P3A
       return;
@@ -307,8 +307,8 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       histogram_name = kZecActiveAccountHistogramName;
       break;
     case mojom::CoinType::ADA:
-      // TODO(https://github.com/brave/brave-browser/issues/49535): Cardano P3A
-      return;
+      histogram_name = kAdaActiveAccountHistogramName;
+      break;
     case mojom::CoinType::DOT:
       // TODO(https://github.com/brave/brave-browser/issues/49536): Polkadot P3A
       return;
@@ -445,9 +445,6 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
   } else if (tx_coin == mojom::CoinType::ADA) {
-    if (tx_type != mojom::TransactionType::Other) {
-      return;
-    }
     if (!count_test_networks && chain_id == mojom::kCardanoTestnet) {
       return;
     }

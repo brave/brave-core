@@ -58,9 +58,9 @@ describe('gridSitesReducer', () => {
         payload: { gridSites }
       })
 
-      expect(tilesUpdatedStub).toBeCalledTimes(1)
+      expect(tilesUpdatedStub).toHaveBeenCalledTimes(1)
       expect(tilesUpdatedStub)
-        .toBeCalledWith(storage.initialGridSitesState, gridSites)
+        .toHaveBeenCalledWith(storage.initialGridSitesState, gridSites)
     })
     it('update state.gridSites list', () => {
       const assertion = gridSitesReducer(storage.initialGridSitesState, {
@@ -89,9 +89,9 @@ describe('gridSitesReducer', () => {
         payload: { shouldShow }
       })
 
-      expect(showTilesRemovedNoticeStub).toBeCalledTimes(1)
+      expect(showTilesRemovedNoticeStub).toHaveBeenCalledTimes(1)
       expect(showTilesRemovedNoticeStub)
-        .toBeCalledWith(storage.initialGridSitesState, shouldShow)
+        .toHaveBeenCalledWith(storage.initialGridSitesState, shouldShow)
     })
     it('update state with the specified payload value', () => {
       const assertion = gridSitesReducer(storage.initialGridSitesState, {

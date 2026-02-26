@@ -11,7 +11,6 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
-import getAPI from '../../api'
 import { useConversation } from '../../state/conversation_context'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
@@ -110,6 +109,7 @@ function ConversationItem(props: ConversationItemProps) {
             <div
               className={styles.text}
               title={title}
+              data-test-id='conversation-title'
             >
               {title}
             </div>
@@ -148,7 +148,7 @@ function ConversationItem(props: ConversationItemProps) {
               onBlur={() => aiChatContext.setEditingConversationId(null)}
               onSubmit={(value) => {
                 aiChatContext.setEditingConversationId(null)
-                getAPI().service.renameConversation(uuid, value)
+                aiChatContext.api.service.renameConversation(uuid, value)
               }}
             />
           </div>

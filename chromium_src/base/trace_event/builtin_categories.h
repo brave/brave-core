@@ -17,7 +17,7 @@
 // macros of the chromium builtin_categories.h.
 #define BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES                \
   perfetto::Category("brave"), perfetto::Category("brave.adblock"), \
-      perfetto::Category("brave.ads"),
+      perfetto::Category("brave.ads"), perfetto::Category("brave.news"),
 
 #include <base/trace_event/builtin_categories.h>  // IWYU pragma: export
 

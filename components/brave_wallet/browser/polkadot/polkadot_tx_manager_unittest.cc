@@ -40,10 +40,7 @@ namespace brave_wallet {
 class PolkadotTxManagerUnitTest : public testing::Test {
  public:
   PolkadotTxManagerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
     feature_list_.InitAndEnableFeature(
@@ -55,8 +52,8 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&profile_prefs_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &profile_prefs_,
-        &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &profile_prefs_, &local_state_);
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
 
@@ -66,7 +63,8 @@ class PolkadotTxManagerUnitTest : public testing::Test {
         &url_loader_factory_, network_manager_.get());
 
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_, shared_url_loader_factory_);
+        *keyring_service_, *network_manager_,
+        url_loader_factory_.GetSafeWeakWrapper());
 
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr,
@@ -123,7 +121,6 @@ class PolkadotTxManagerUnitTest : public testing::Test {
   mojom::AccountInfoPtr polkadot_testnet_account_;
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;

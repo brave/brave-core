@@ -33,11 +33,12 @@ class LinkPreviewViewController: UIViewController {
     }
 
     let isPrivate = parentTab?.isPrivate ?? false
+    let originalProfile = browserController.profileController.profile
     let tab = TabStateFactory.create(
       with: .init(
+        profile: isPrivate ? originalProfile.offTheRecordProfile : originalProfile,
         initialConfiguration: isPrivate
-          ? TabManager.privateConfiguration : TabManager.defaultConfiguration,
-        braveCore: browserController.profileController
+          ? TabManager.privateConfiguration : TabManager.defaultConfiguration
       )
     )
     tab.miscDelegate = browserController
@@ -72,7 +73,7 @@ class LinkPreviewViewController: UIViewController {
         shieldLevel: shieldLevel
       )
       for ruleList in ruleLists {
-        currentTab.configuration.userContentController.add(ruleList)
+        currentTab.configuration?.userContentController.add(ruleList)
       }
     }
 

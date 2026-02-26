@@ -131,8 +131,8 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
         "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
         private_key));
 
-    HDKey key;
-    key.SetPrivateKey(private_key);
+    std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
+    ASSERT_TRUE(key);
     Eip1559Transaction tx =
         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
             mojom::TxData::New(entry.nonce, "0x00", entry.gas_limit,
@@ -142,7 +142,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
             "0x04", entry.max_priority_fee_per_gas, entry.max_fee_per_gas,
             nullptr));
 
-    auto signature = *key.SignCompact(tx.GetHashedMessageToSign(0));
+    auto signature = *key->SignCompact(tx.GetHashedMessageToSign(0));
     tx.ProcessSignature(signature, 0);
     EXPECT_EQ(tx.GetSignedTransaction(), entry.signed_tx);
     EXPECT_EQ(tx.GetTransactionHash(), entry.hash);

@@ -56,11 +56,13 @@ class CardanoWalletService : public mojom::CardanoWalletService {
 
   using CardanoCreateTransactionTaskCallback =
       base::OnceCallback<void(base::expected<CardanoTransaction, std::string>)>;
-  void CreateCardanoTransaction(mojom::AccountIdPtr account_id,
-                                const CardanoAddress& address_to,
-                                uint64_t amount,
-                                bool sending_max_amount,
-                                CardanoCreateTransactionTaskCallback callback);
+  void CreateCardanoTransaction(
+      mojom::AccountIdPtr account_id,
+      const CardanoAddress& address_to,
+      uint64_t amount_to_send,
+      bool sending_max_amount,
+      std::optional<cardano_rpc::TokenId> token_to_send,
+      CardanoCreateTransactionTaskCallback callback);
 
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, CardanoTransaction, std::string)>;

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import getAPI from '../api'
+import { useAIChat } from '../state/ai_chat_context'
 
 interface DocumentDragHandlers {
   setDragActive: (active: boolean) => void
@@ -22,19 +22,13 @@ export function useIsDragging({
   clearDragState,
 }: DocumentDragHandlers) {
   // Iframe drag detection
-  React.useEffect(() => {
-    const api = getAPI()
+  const aiChat = useAIChat()
 
-    const dragStartId =
-      api.conversationEntriesFrameObserver.dragStart.addListener(() => {
-        setDragActive(true)
-        setDragOver(true)
-      })
-
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(dragStartId)
-    }
-  }, [])
+  // Forward events from child frame
+  aiChat.api.useDragStart(() => {
+    setDragActive(true)
+    setDragOver(true)
+  })
 
   // Document-level drag detection
   React.useEffect(() => {

@@ -56,6 +56,7 @@ enum ActionType {
 // be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
 enum ModelCategory {
   CHAT,
+  SUMMARY,
 };
 
 enum ModelAccess {
@@ -181,12 +182,19 @@ struct WebSource {
   string title;
   url.mojom.Url url;
   url.mojom.Url favicon_url;
+
+  // Extra context to be optionally provided by server-side search tools.
+  // Currently these are only used in WebSourcesContentBlock and would not be
+  // populated in WebSourcesEvent, which we plan to retire and just utilize
+  // WebSourcesContentBlock from tool outputs directly in frontend.
+  string? page_content;
+  array<string>? extra_snippets;
 };
 
 // Content block for parsed web sources from search tool results.
 struct WebSourcesContentBlock {
   array<WebSource> sources;
-  string? query;
+  array<string> queries;
 
   // Note: These are expected to be JSON strings in the format of
   // https://api-dashboard.search.brave.com/app/documentation/rich-search/responses#RichResult
@@ -303,6 +311,16 @@ struct WebSourcesEvent {
   array<string> rich_results;
 };
 
+// Inline search results which can be displayed as part of the response
+struct InlineSearchEvent {
+  // The query that was used for the results.
+  string query;
+
+  // The results of the search - stored as a JSON string so we can pass
+  // them around transparently.
+  string results_json;
+};
+
 struct CompletionEvent {
   // TODO(petemill): Use ContentBlock or even array<ContentBlock>
   // and rely less on multiple events.
@@ -325,6 +343,7 @@ union ConversationEntryEvent {
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
   ToolUseEvent tool_use_event;
+  InlineSearchEvent inline_search_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.

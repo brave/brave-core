@@ -59,6 +59,9 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   std::vector<std::variant<tabs::TabInterface*, TabCollection*>>
   GetTreeNodeChildren();
 
+  // TabCollection:
+  void OnReparented(TabCollection* new_parent) override;
+
  private:
   // Returns all TreeTabNodeTabCollections recursively from the given parent
   // collection.

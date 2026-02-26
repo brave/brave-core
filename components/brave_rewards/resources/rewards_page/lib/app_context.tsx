@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { StringKey } from './locale_strings'
 import { defaultAppStore } from './app_store'
-import { createUseStateHook } from './state_store_hooks'
+import { createUseStateHook } from '$web-common/state_store_hooks'
 
 export const AppContext = React.createContext(defaultAppStore())
 

@@ -29,10 +29,11 @@ std::string FarbleAcceptLanguageHeader(
     Profile* profile,
     HostContentSettingsMap* content_settings);
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_ReduceLanguageWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

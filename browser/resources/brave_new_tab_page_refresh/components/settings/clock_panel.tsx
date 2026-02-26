@@ -8,7 +8,7 @@ import DropDown from '@brave/leo/react/dropdown'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
-import { ClockFormat } from '../../state/new_tab_state'
+import { ClockFormat } from '../../state/new_tab_store'
 import { getString } from '../../lib/strings'
 import { formatString } from '$web-common/formatString'
 

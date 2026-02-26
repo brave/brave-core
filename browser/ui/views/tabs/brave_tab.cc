@@ -95,13 +95,13 @@ void BraveTab::UpdateIconVisibility() {
   }
 
   const auto is_at_min_width = IsAtMinWidthForVerticalTabStrip();
-
   if (data().pinned) {
     if (is_at_min_width) {
       // When pinned vertical tab is at min width, we show only icon.
       center_icon_ = true;
       showing_icon_ = !showing_alert_indicator_;
       showing_close_button_ = false;
+      return;
     }
 
     // When we show only icon for pinned vertical tab, we want to keep it
@@ -110,6 +110,52 @@ void BraveTab::UpdateIconVisibility() {
         !ShouldRenderAsNormalTab()) {
       center_icon_ = true;
     }
+
+    // Don't optimize icon visibility when floating with completely hidden mode.
+    // When floating from completely hidden, icon position could be changed
+    // between centered and non-centered per tab width.
+    // As it's shown from hidden and vice versa, it's hard to see
+    // flickering, but flickering optimization is complicated, so just skip it.
+    const bool is_floating = controller()->IsVerticalTabsFloating();
+    if (is_floating &&
+        tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(
+            controller()->GetBrowserWindowInterface())) {
+      return;
+    }
+
+    // To prevent flickering during the floating animation,
+    // disable centering the icon.
+    if (is_floating) {
+      if (!showing_alert_indicator_) {
+        showing_icon_ = true;
+      }
+      center_icon_ = false;
+      showing_close_button_ = false;
+      return;
+    }
+
+    // To prevent flickering during the collaps/expand animation,
+    // put icon at center always.
+    if (controller()->IsVerticalTabsAnimatingButNotFinalState()) {
+      if (!showing_alert_indicator_) {
+        showing_icon_ = true;
+      }
+      center_icon_ = true;
+      showing_close_button_ = false;
+      return;
+    }
+
+    return;
+  }
+
+  // To prevent flickering duing the toggle animation,
+  // disable centering the icon.
+  if (controller()->IsVerticalTabsAnimatingButNotFinalState()) {
+    if (!showing_alert_indicator_) {
+      showing_icon_ = true;
+    }
+    center_icon_ = false;
+    showing_close_button_ = false;
     return;
   }
 
@@ -235,6 +281,16 @@ bool BraveTab::IsActive() const {
   // When SideBySide is enabled, chromium gives true if tab is in split tab even
   // it's not active. We want to give true only for current active tab.
   return controller_->IsActiveTab(this);
+}
+
+TabSizeInfo BraveTab::GetTabSizeInfo() const {
+  auto size_info = Tab::GetTabSizeInfo();
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    // In case horizontal scrollable tab strip is enabled, we can have wider
+    // inactive tabs.
+    size_info.min_inactive_width = tab_style()->GetMinimumActiveWidth(false);
+  }
+  return size_info;
 }
 
 bool BraveTab::ShouldPaintTabAccent() const {

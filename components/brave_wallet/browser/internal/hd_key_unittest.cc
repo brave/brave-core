@@ -21,8 +21,8 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -456,9 +456,21 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
 
 TEST(HDKeyUnitTest, SetPrivateKey) {
   HDKey key;
-  key.SetPrivateKey(std::array<uint8_t, 32>{1, 2, 3});
+  EXPECT_TRUE(key.SetPrivateKey(std::array<uint8_t, 32>{1, 2, 3}));
   EXPECT_FALSE(key.GetPrivateKeyBytes().empty());
   EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
+
+  // https://en.bitcoin.it/wiki/Secp256k1
+  // https://en.bitcoin.it/wiki/Private_key "Range of valid ECDSA private keys"
+  constexpr std::string_view kInvalidPrivateKeys[] = {
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+      "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  };
+  for (auto& test_case : kInvalidPrivateKeys) {
+    HDKey invalid_key;
+    EXPECT_FALSE(invalid_key.SetPrivateKey(test::HexToArray<32>(test_case)));
+  }
 }
 
 TEST(HDKeyUnitTest, SetPublicKey) {

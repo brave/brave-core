@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/values.h"
+
 namespace {
 
 // Decodes an integer

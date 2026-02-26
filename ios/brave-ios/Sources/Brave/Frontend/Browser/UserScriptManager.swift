@@ -285,7 +285,9 @@ class UserScriptManager {
     scripts: Set<ScriptType>,
     tab: any TabState
   ) {
-    if Preferences.UserScript.blockAllScripts.value {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled
+      || Preferences.UserScript.blockAllScripts.value
+    {
       return
     }
 
@@ -339,11 +341,15 @@ class UserScriptManager {
     userScripts: Set<ScriptType>,
     customScripts: Set<UserScriptType>
   ) {
-    if Preferences.UserScript.blockAllScripts.value {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled
+      || Preferences.UserScript.blockAllScripts.value
+    {
       return
     }
 
-    let userContentController = tab.configuration.userContentController
+    guard let userContentController = tab.configuration?.userContentController else {
+      return
+    }
 
     let logComponents = [
       userScripts.sorted(by: { $0.rawValue < $1.rawValue }).map { scriptType in

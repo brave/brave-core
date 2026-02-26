@@ -29,16 +29,13 @@ namespace brave_wallet {
 class SimpleHashClientUnitTest : public testing::Test {
  public:
   SimpleHashClientUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~SimpleHashClientUnitTest() override = default;
 
  protected:
   void SetUp() override {
-    simple_hash_client_ =
-        std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
+    simple_hash_client_ = std::make_unique<SimpleHashClient>(
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   void SetInterceptor(const GURL& intended_url, const std::string& content) {
@@ -180,7 +177,6 @@ class SimpleHashClientUnitTest : public testing::Test {
   }
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

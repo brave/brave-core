@@ -18,7 +18,7 @@ const createWindow = (): Window => {
     value: 'chrome-untrusted://ledger-bridge',
   })
   if (!iframe.contentWindow) {
-    fail('transport should be defined')
+    throw new Error('transport should be defined')
   }
   return iframe.contentWindow
 }

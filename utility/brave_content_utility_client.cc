@@ -8,9 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
-#include "brave/components/services/bat_rewards/rewards_engine_factory.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
@@ -21,6 +20,11 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
+#include "brave/components/services/bat_rewards/rewards_engine_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -43,12 +47,14 @@ auto RunTorLauncher(mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 auto RunRewardsEngineFactory(
     mojo::PendingReceiver<brave_rewards::mojom::RewardsEngineFactory>
         receiver) {
   return std::make_unique<brave_rewards::internal::RewardsEngineFactory>(
       std::move(receiver));
 }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 auto RunBraveWalletUtilsService(
@@ -74,7 +80,9 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunTorLauncher);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   services.Add(RunRewardsEngineFactory);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   services.Add(RunBraveWalletUtilsService);

@@ -524,6 +524,16 @@
     }</translation>
 <translation id="3264975266761862670">Envie de gagner des récompenses ?</translation>
 <translation id="2784412028126205842">Connecter le compte de paiement</translation>
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+      =0 {Vous avez vu <ph name="COUNT_BEGIN"/> # publicités<ph name="COUNT_END"/> ce mois-ci}
+      =1 {Vous pourriez être rémunéré pour <ph name="COUNT_BEGIN"/> # publicité<ph name="COUNT_END"/> vue ce mois-ci.}
+      other {Vous pourriez être rémunéré pour <ph name="COUNT_BEGIN"/> # publicités<ph name="COUNT_END"/> vues ce mois-ci.}
+    }</translation>
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+      =0 {Vous avez vu <ph name="COUNT_BEGIN"/> # publicités<ph name="COUNT_END"/> ce mois-ci}
+      =1 {Vous gagnez de l’argent grâce à <ph name="COUNT_BEGIN"/> # publicité<ph name="COUNT_END"/> vue ce mois-ci}
+      other {Vous gagnez de l’argent grâce aux <ph name="COUNT_BEGIN"/> # publicités<ph name="COUNT_END"/> vues ce mois-ci}
+    }</translation>
 <translation id="6067959437127691361">En optant pour le programme de récompenses Brave, vous soutenez les créateurs de contenu et gagnez des BAT.</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="3863981251715594911">Comment ça marche?</translation>
@@ -2491,7 +2501,7 @@
 <translation id="466214682712474574">Connectez-vous à <ph name="PROVIDER"/> pour voir votre solde</translation>
 <translation id="8332875111286275890">Connectez-vous pour voir votre solde</translation>
 <translation id="5430001801813715388">RÉCOMPENSES</translation>
-<translation id="5966055668402779222">Des réponses à toutes vos questions…</translation>
+<translation id="5966055668402779222">Recherchez avec Brave</translation>
 <translation id="167018310108390163">Personnaliser la page de nouvel onglet</translation>
 <translation id="6851426306697017546">Afficher l'horloge</translation>
 <translation id="4844370919312937270">Afficher le widget du moteur de recherche dans les nouveaux onglets</translation>

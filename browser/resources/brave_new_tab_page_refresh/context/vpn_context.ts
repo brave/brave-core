@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { defaultVpnState } from '../state/vpn_state'
-import { createVpnHandler } from '../state/vpn_handler'
-import { createStateProvider } from '../lib/state_provider'
+import * as React from 'react'
 
-export const VpnProvider = createStateProvider(
-  defaultVpnState(),
-  createVpnHandler,
-)
+import { defaultVpnStore } from '../state/vpn_store'
+import { createUseStateHook } from '$web-common/state_store_hooks'
 
-export const useVpnState = VpnProvider.useState
-export const useVpnActions = VpnProvider.useActions
+export const VpnContext = React.createContext(defaultVpnStore())
+
+export const useVpnState = createUseStateHook(VpnContext)
+
+export function useVpnActions() {
+  return useVpnState((s) => s.actions)
+}

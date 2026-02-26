@@ -1930,7 +1930,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>wyczyść dane Brave na swoim
 <translation id="5809126106485463836">Tryb prywatny pozwala na przeglądanie, do którego nie mają dostępu inni użytkownicy na urządzeniu</translation>
 <translation id="2633278372998075009">Karty prywatne</translation>
 <translation id="8810805383611013660">Otwórz w karcie prywatnej</translation>
-<translation id="5556722972306334687">Otwórz okno w trybie prywatnym</translation>
+<translation id="5556722972306334687">Otwórz w trybie prywatnym</translation>
 <translation id="3110967157686007724">Karta prywatna</translation>
 <translation id="1961291599064731706">Odwiedzane strony nie są zapisywane w trybie prywatnym</translation>
 <translation id="3442126301004443274">Aby usunąć historię przeglądania w trybie prywatnym, zamknij wszystkie prywatne karty.</translation>
@@ -1945,7 +1945,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>wyczyść dane Brave na swoim
 <translation id="408336132633586393">Okno prywatne</translation>
 <translation id="8120164982795455341">Nowa karta prywatna</translation>
 <translation id="3377025655491224618">Karta prywatna</translation>
-<translation id="8428257636009471988">Odwiedź sklep internetowy</translation>
+<translation id="8428257636009471988">Odwiedź Web Store</translation>
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {Zamknij 1 okno prywatne}
           other {Zamknij # okna prywatne}}</translation>

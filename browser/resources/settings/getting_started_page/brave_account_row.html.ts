@@ -11,7 +11,7 @@ import { SettingsBraveAccountRow } from './brave_account_row.js'
 
 const createFirstRow = (
   title: string,
-  description: string | string[],
+  description: string | string[] | ReturnType<typeof html>,
   button?: ReturnType<typeof html>
 ) => {
   const descriptions = Array.isArray(description)
@@ -42,7 +42,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
       this.i18n(
           BraveAccountSettingsStrings
                .SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE),
-      this.state!.loggedIn!.email,
+      html`<div id="email">${this.state!.loggedIn!.email}</div>`,
       html`
         <leo-button kind="outline"
                     size="small"

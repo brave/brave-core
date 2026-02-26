@@ -3,17 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { defaultSearchState } from '../state/search_state'
-import { createSearchHandler } from '../state/search_handler'
-import { createStateProvider } from '../lib/state_provider'
+import * as React from 'react'
 
-export const SearchProvider = createStateProvider(
-  defaultSearchState(),
-  createSearchHandler,
-)
+import { defaultSearchStore } from '../state/search_store'
+import { createUseStateHook } from '$web-common/state_store_hooks'
 
-export const useSearchState = SearchProvider.useState
-export const useSearchActions = SearchProvider.useActions
+export const SearchContext = React.createContext(defaultSearchStore())
+
+export const useSearchState = createUseStateHook(SearchContext)
+
+export function useSearchActions() {
+  return useSearchState((s) => s.actions)
+}
 
 // Returns the current autocomplete search result matches for the current search
 // query. If the currently active search input key is not `inputKey`, then null

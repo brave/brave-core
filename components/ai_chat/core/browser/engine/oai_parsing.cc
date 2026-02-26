@@ -133,15 +133,44 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
           continue;
         }
 
-        sources.push_back(mojom::WebSource::New(*title, std::move(url),
-                                                std::move(favicon_url)));
+        std::optional<std::string> page_content;
+        const auto* page_content_str = source_dict.FindString("page_content");
+        if (page_content_str) {
+          page_content = *page_content_str;
+        }
+
+        std::optional<std::vector<std::string>> extra_snippets;
+        const auto* snippets_list = source_dict.FindList("extra_snippets");
+        if (snippets_list) {
+          std::vector<std::string> snippets;
+          for (const auto& snippet : *snippets_list) {
+            if (snippet.is_string()) {
+              snippets.push_back(snippet.GetString());
+            }
+          }
+          if (!snippets.empty()) {
+            extra_snippets = std::move(snippets);
+          }
+        }
+
+        sources.push_back(mojom::WebSource::New(
+            *title, std::move(url), std::move(favicon_url),
+            std::move(page_content), std::move(extra_snippets)));
       }
     }
 
-    std::optional<std::string> query;
-    const std::string* query_str = dict.FindString("query");
-    if (query_str && !query_str->empty()) {
-      query = *query_str;
+    std::vector<std::string> queries;
+    const base::Value* query_val = dict.Find("query");
+    if (query_val) {
+      if (query_val->is_string() && !query_val->GetString().empty()) {
+        queries.push_back(query_val->GetString());
+      } else if (query_val->is_list()) {
+        for (const auto& item : query_val->GetList()) {
+          if (item.is_string() && !item.GetString().empty()) {
+            queries.push_back(item.GetString());
+          }
+        }
+      }
     }
 
     std::vector<std::string> rich_results;
@@ -158,13 +187,13 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
     }
 
     // Return nullopt if nothing useful was parsed
-    if (sources.empty() && !query.has_value()) {
+    if (sources.empty() && queries.empty()) {
       return std::nullopt;
     }
 
     return mojom::ContentBlock::NewWebSourcesContentBlock(
-        mojom::WebSourcesContentBlock::New(std::move(sources), std::move(query),
-                                           std::move(rich_results)));
+        mojom::WebSourcesContentBlock::New(
+            std::move(sources), std::move(queries), std::move(rich_results)));
   }
 
   return std::nullopt;

@@ -344,7 +344,7 @@ extension BrowserViewController: TabPolicyDecider {
         BraveSearchManager.isValidURL(requestURL)
       {
         // We fetch cookies to determine if backup search was enabled on the website.
-        let cookies = await tab.configuration.websiteDataStore.httpCookieStore.allCookies()
+        let cookies = await tab.configuration?.websiteDataStore.httpCookieStore.allCookies() ?? []
         tab.braveSearchManager = BraveSearchManager(
           url: requestURL,
           cookies: cookies

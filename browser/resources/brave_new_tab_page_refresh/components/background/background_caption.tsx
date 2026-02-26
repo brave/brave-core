@@ -12,7 +12,7 @@ import { getString } from '../../lib/strings'
 import {
   BraveBackground,
   SponsoredImageBackground,
-} from '../../state/background_state'
+} from '../../state/background_store'
 import {
   useCurrentBackground,
   useBackgroundActions,

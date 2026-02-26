@@ -16,6 +16,7 @@ import styles from './skill_modal_style.module.scss'
 import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { useSelectableModels } from '../../model_utils'
 import { AUTOMATIC_MODEL_KEY, getModelIcon } from '../../../common/constants'
 import * as Mojom from '../../../common/mojom'
 
@@ -43,6 +44,8 @@ export default function SkillModal() {
     () => conversationContext.allModels?.find((m) => m.key === selectedModel),
     [conversationContext.allModels, selectedModel],
   )
+
+  const selectableModels = useSelectableModels(conversationContext.allModels)
 
   // Memos
   const shortcutError = React.useMemo(() => {
@@ -120,14 +123,14 @@ export default function SkillModal() {
     }
 
     if (isEditMode && aiChatContext.skillDialog?.id) {
-      aiChatContext.service?.updateSkill(
+      aiChatContext.api.service?.updateSkill(
         aiChatContext.skillDialog.id,
         shortcut.trim(),
         prompt.trim(),
         selectedModel,
       )
     } else {
-      aiChatContext.service?.createSkill(
+      aiChatContext.api.service?.createSkill(
         shortcut.trim(),
         prompt.trim(),
         selectedModel,
@@ -143,7 +146,7 @@ export default function SkillModal() {
     shortcut,
     prompt,
     selectedModel,
-    aiChatContext.service,
+    aiChatContext.api.service,
     closeAndReset,
   ])
 
@@ -152,14 +155,14 @@ export default function SkillModal() {
       return
     }
 
-    if (aiChatContext.service?.deleteSkill) {
-      aiChatContext.service.deleteSkill(aiChatContext.skillDialog.id)
+    if (aiChatContext.api.service?.deleteSkill) {
+      aiChatContext.api.service.deleteSkill(aiChatContext.skillDialog.id)
     }
     closeAndReset()
   }, [
     isEditMode,
     aiChatContext.skillDialog?.id,
-    aiChatContext.service,
+    aiChatContext.api.service,
     closeAndReset,
   ])
 
@@ -208,7 +211,7 @@ export default function SkillModal() {
                 (m) => m.key === selectedModel,
               )?.displayName ?? ''}
             </div>
-            {conversationContext.allModels?.map((model: Mojom.Model) => (
+            {selectableModels.map((model: Mojom.Model) => (
               <ModelOption
                 key={model.key}
                 model={model}

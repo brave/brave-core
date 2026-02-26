@@ -3,7 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+:global {
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      translate: 0 4px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+}
+
 .actionInProgress {
+  animation: reveal 200ms ease-out both;
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-primary);
   --leo-progressring-color: var(--leo-color-icon-interactive);

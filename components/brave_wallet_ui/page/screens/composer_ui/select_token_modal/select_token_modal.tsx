@@ -108,7 +108,7 @@ import {
   SearchInput,
 } from './select_token_modal.style'
 
-const checkIsSwapDropdownOptionDisabled = (
+const checkIsDropdownOptionDisabled = (
   account: BraveWallet.AccountInfo,
   network: BraveWallet.NetworkInfo,
 ) => {
@@ -119,13 +119,6 @@ const checkIsSwapDropdownOptionDisabled = (
     return false
   }
   return account.accountId.coin !== network.coin
-}
-
-const checkIsBridgeNetworkDropdownOptionDisabled = (
-  networkChainId: string,
-  tokenChainId: string,
-) => {
-  return networkChainId === tokenChainId
 }
 
 const getFullAssetBalance = (
@@ -178,6 +171,7 @@ interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
   modalType: 'send' | 'swap' | 'bridge'
   needsAccount?: boolean
+  defaultAccount?: BraveWallet.AccountInfo
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
@@ -193,6 +187,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       selectedNetwork,
       modalType,
       needsAccount,
+      defaultAccount,
     } = props
 
     // Routing
@@ -275,44 +270,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         }),
       })
 
-    const bridgeAndSwapNetworks = React.useMemo(() => {
-      if (
-        modalType === 'bridge'
-        && selectingFromOrTo === 'to'
-        && selectedFromToken
-      ) {
-        return swapNetworks.filter(
-          (network) =>
-            !checkIsBridgeNetworkDropdownOptionDisabled(
-              network.chainId,
-              selectedFromToken.chainId,
-            ),
-        )
-      }
-      if (
-        modalType === 'bridge'
-        && selectingFromOrTo === 'from'
-        && selectedToToken
-      ) {
-        return swapNetworks.filter(
-          (network) =>
-            !checkIsBridgeNetworkDropdownOptionDisabled(
-              network.chainId,
-              selectedToToken.chainId,
-            ),
-        )
-      }
-      return swapNetworks
-    }, [
-      modalType,
-      selectingFromOrTo,
-      selectedFromToken,
-      selectedToToken,
-      swapNetworks,
-    ])
-
-    const networks =
-      modalType === 'send' ? visibleNetworks : bridgeAndSwapNetworks
+    const networks = modalType === 'send' ? visibleNetworks : swapNetworks
 
     const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
       useBalancesFetcher(
@@ -340,9 +298,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const tokensBySelectedComposerOption = React.useMemo(() => {
       if (modalType === 'swap' || modalType === 'bridge') {
         return fullVisibleFungibleTokensList.filter((token) =>
-          bridgeAndSwapNetworks.some(
-            ({ chainId }) => chainId === token.chainId,
-          ),
+          swapNetworks.some(({ chainId }) => chainId === token.chainId),
         )
       }
 
@@ -358,7 +314,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [
       modalType,
       fullVisibleFungibleTokensList,
-      bridgeAndSwapNetworks,
+      swapNetworks,
       userVisibleNfts,
       userVisibleFungibleTokens,
       selectedSendOption,
@@ -371,22 +327,24 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         // wait for balances before computing this list
         return {}
       }
+      const isAllAccounts =
+        selectedAccountFilter.accountId.uniqueKey
+        === AllAccountsOption.accountId.uniqueKey
+
       const balancesMap: Record<string, string> = {}
       for (const asset of tokensBySelectedComposerOption) {
-        balancesMap[getAssetIdKey(asset)] =
-          selectedAccountFilter.accountId.uniqueKey
-          === AllAccountsOption.accountId.uniqueKey
-            ? getFullAssetBalance(
-                asset,
-                networks,
-                accounts,
-                tokenBalancesRegistry,
-              )
-            : getBalance(
-                selectedAccountFilter.accountId,
-                asset,
-                tokenBalancesRegistry,
-              )
+        balancesMap[getAssetIdKey(asset)] = isAllAccounts
+          ? getFullAssetBalance(
+              asset,
+              networks,
+              accounts,
+              tokenBalancesRegistry,
+            )
+          : getBalance(
+              selectedAccountFilter.accountId,
+              asset,
+              tokenBalancesRegistry,
+            )
       }
       return balancesMap
     }, [
@@ -528,18 +486,21 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     // Methods
     const handleSelectAsset = React.useCallback(
       (token: BraveWallet.BlockchainToken) => {
-        // No need to select an account when selecting
-        // a token to receive right now.
-        // This will change with bridge.
-        if (selectingFromOrTo === 'to' && modalType === 'swap') {
-          onSelectAsset(token)
+        const hasAccountSelected =
+          selectedAccountFilter.accountId.uniqueKey
+          !== AllAccountsOption.accountId.uniqueKey
+
+        // Skip account selection if a specific account is already selected
+        if (hasAccountSelected) {
+          onSelectAsset(token, selectedAccountFilter)
           onClose()
           return
         }
 
+        // Prompt user to select an account
         setPendingSelectedAssetState(token)
       },
-      [onSelectAsset, onClose, selectingFromOrTo, modalType],
+      [onSelectAsset, onClose, selectedAccountFilter],
     )
 
     const handleSelectAccount = React.useCallback(
@@ -552,82 +513,19 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       [onSelectAsset, onClose, pendingSelectedAsset],
     )
 
+    // Only disable networks incompatible with selected account
     const checkIsNetworkOptionDisabled = React.useCallback(
       (network: BraveWallet.NetworkInfo) => {
-        if (modalType === 'swap') {
-          return checkIsSwapDropdownOptionDisabled(
-            selectedAccountFilter,
-            network,
-          )
-        }
-        if (
-          modalType === 'bridge'
-          && selectingFromOrTo === 'to'
-          && selectedFromToken
-        ) {
-          return checkIsBridgeNetworkDropdownOptionDisabled(
-            selectedFromToken.chainId,
-            network.chainId,
-          )
-        }
-        if (
-          modalType === 'bridge'
-          && selectingFromOrTo === 'from'
-          && selectedToToken
-        ) {
-          return checkIsBridgeNetworkDropdownOptionDisabled(
-            selectedToToken.chainId,
-            network.chainId,
-          )
-        }
-        return false
+        return checkIsDropdownOptionDisabled(selectedAccountFilter, network)
       },
-      [
-        modalType,
-        selectingFromOrTo,
-        selectedAccountFilter,
-        selectedFromToken,
-        selectedToToken,
-      ],
+      [selectedAccountFilter],
     )
 
     const checkIsAccountOptionDisabled = React.useCallback(
       (account: BraveWallet.AccountInfo) => {
-        if (modalType === 'swap') {
-          return checkIsSwapDropdownOptionDisabled(
-            account,
-            selectedNetworkFilter,
-          )
-        }
-        if (
-          modalType === 'bridge'
-          && selectingFromOrTo === 'to'
-          && selectedFromToken
-        ) {
-          return (
-            account.accountId.coin === BraveWallet.CoinType.SOL
-            && selectedFromToken.coin === BraveWallet.CoinType.SOL
-          )
-        }
-        if (
-          modalType === 'bridge'
-          && selectingFromOrTo === 'from'
-          && selectedToToken
-        ) {
-          return (
-            account.accountId.coin === BraveWallet.CoinType.SOL
-            && selectedToToken.coin === BraveWallet.CoinType.SOL
-          )
-        }
-        return false
+        return checkIsDropdownOptionDisabled(account, selectedNetworkFilter)
       },
-      [
-        modalType,
-        selectingFromOrTo,
-        selectedFromToken,
-        selectedToToken,
-        selectedNetworkFilter,
-      ],
+      [selectedNetworkFilter],
     )
 
     const onSelectNetworkFilter = React.useCallback(
@@ -772,6 +670,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 ? getTokenPriceFromRegistry(spotPrices, pendingSelectedAsset)
                 : undefined
             }
+            defaultAccount={defaultAccount}
             onSelectAccount={handleSelectAccount}
             onCancel={handleOnBack}
           />
@@ -837,31 +736,27 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 <Icon name='search' />
               </div>
             </SearchInput>
-            {!(selectingFromOrTo === 'to' && modalType === 'swap') && (
-              <Row
-                padding='16px 0px 0px 0px'
-                gap='8px'
-              >
-                <AccountsDropdown
-                  accounts={
-                    modalType === 'send' ? accounts : swapSupportedAccounts
-                  }
-                  selectedAccount={selectedAccountFilter}
-                  showAllAccountsOption={true}
-                  onSelectAccount={onSelectAccountFilter}
-                  checkIsAccountOptionDisabled={checkIsAccountOptionDisabled}
-                />
-                <NetworksDropdown
-                  networks={
-                    modalType === 'send' ? visibleNetworks : swapNetworks
-                  }
-                  selectedNetwork={selectedNetworkFilter}
-                  showAllNetworksOption={true}
-                  onSelectNetwork={onSelectNetworkFilter}
-                  checkIsNetworkOptionDisabled={checkIsNetworkOptionDisabled}
-                />
-              </Row>
-            )}
+            <Row
+              padding='16px 0px 0px 0px'
+              gap='8px'
+            >
+              <AccountsDropdown
+                accounts={
+                  modalType === 'send' ? accounts : swapSupportedAccounts
+                }
+                selectedAccount={selectedAccountFilter}
+                showAllAccountsOption={true}
+                onSelectAccount={onSelectAccountFilter}
+                checkIsAccountOptionDisabled={checkIsAccountOptionDisabled}
+              />
+              <NetworksDropdown
+                networks={modalType === 'send' ? visibleNetworks : swapNetworks}
+                selectedNetwork={selectedNetworkFilter}
+                showAllNetworksOption={true}
+                onSelectNetwork={onSelectNetworkFilter}
+                checkIsNetworkOptionDisabled={checkIsNetworkOptionDisabled}
+              />
+            </Row>
           </Column>
           <ScrollContainer
             fullWidth={true}
@@ -888,6 +783,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                       )
                     : undefined
                 }
+                defaultAccount={defaultAccount}
                 onSelectAccount={handleSelectAccount}
                 onCancel={handleOnBack}
               />

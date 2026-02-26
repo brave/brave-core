@@ -7,6 +7,8 @@
 
 #include <string_view>
 
+#include "base/values.h"
+
 namespace brave_ads {
 
 namespace {

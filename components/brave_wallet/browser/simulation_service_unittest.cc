@@ -47,34 +47,27 @@ namespace brave_wallet {
 
 class SimulationServiceUnitTest : public testing::Test {
  public:
-  SimulationServiceUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+  SimulationServiceUnitTest() {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterLocalStatePrefsForMigration(local_state_.registry());
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
-        &prefs_, &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
     network_manager_ = brave_wallet_service_->network_manager();
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
     simulation_service_ = std::make_unique<SimulationService>(
-        shared_url_loader_factory_, brave_wallet_service_.get());
+        url_loader_factory_.GetSafeWeakWrapper(), brave_wallet_service_.get());
 
     SetTransactionSimulationOptInStatus(&prefs_,
                                         mojom::BlowfishOptInStatus::kAllowed);
   }
 
   ~SimulationServiceUnitTest() override = default;
-
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
-  }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(brave_wallet_service_->keyring_service());
@@ -247,7 +240,6 @@ class SimulationServiceUnitTest : public testing::Test {
 
  private:
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

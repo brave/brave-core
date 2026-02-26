@@ -158,6 +158,7 @@ inline constexpr auto kCollectedTypicalHistograms =
       .activation_metric_name = "Brave.VPN.LastUsageTime"
     }},
     {"Brave.VPN.WidgetUsage", MetricConfig{.ephemeral = true}},
+    {"Brave.VPN.SystemServicesInstalled", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.GroupTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.OpenTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
@@ -165,6 +166,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.ActiveEthAccounts", {}},
     {"Brave.Wallet.ActiveSolAccounts", {}},
     {"Brave.Wallet.ActiveZecAccounts", {}},
+    {"Brave.Wallet.ActiveAdaAccounts", {}},
     {"Brave.Wallet.BtcTransactionSent", {}},
     {"Brave.Wallet.EthTransactionSent", {}},
     {"Brave.Wallet.NFTCount", MetricConfig{.ephemeral = true}},
@@ -172,6 +174,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.OnboardingConversion.3", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.SolTransactionSent", {}},
     {"Brave.Wallet.ZecTransactionSent", {}},
+    {"Brave.Wallet.AdaTransactionSent", {}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 

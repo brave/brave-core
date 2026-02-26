@@ -21,7 +21,7 @@
         android:title="@string/dapps_menu_view_on_block_explorer" />
 
     <item android:id="@+id/action_help_center"
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_info_outline"
         android:title="@string/brave_wallet_help_center" />
 
 </menu>

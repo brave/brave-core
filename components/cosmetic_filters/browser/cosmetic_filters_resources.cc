@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
+#include "base/json/string_escape.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -32,7 +33,7 @@ constexpr char kProceduralActionsScript[] =
             }
             return $1;
           };
-          CC.proceduralActionFilters = JSON.parse(String.raw`$2`).filter(f => takeStyleFilter(f));
+          CC.proceduralActionFilters = JSON.parse($2).filter(f => takeStyleFilter(f));
           CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
           return stylesheet;
         })();)";
@@ -117,9 +118,12 @@ void CosmeticFiltersResources::UrlCosmeticResources(
                    });
     std::string procedural_actions_json = base::StrCat(
         {"[", base::JoinString(procedural_actions_strings, ","), "]"});
+    std::string escaped_procedural_actions;
+    base::EscapeJSONString(procedural_actions_json, true,
+                           &escaped_procedural_actions);
     std::string procedural_actions_script = base::ReplaceStringPlaceholders(
         kProceduralActionsScript,
-        {procedural_filtering_feature_enabled, procedural_actions_json},
+        {procedural_filtering_feature_enabled, escaped_procedural_actions},
         nullptr);
     resources.Set("procedural_actions_script", procedural_actions_script);
   }

@@ -138,18 +138,12 @@ export function RenderLink(props: RenderLinkProps) {
   if (isCitation) {
     return (
       <Label>
-        <a
-          // While we preventDefault, we still need to pass the href
-          // here so we can continue to show link previews.
-          href={href}
+        <button
           className={styles.citation}
-          onClick={(e) => {
-            e.preventDefault()
-            handleLinkClicked()
-          }}
+          onClick={handleLinkClicked}
         >
           {children}
-        </a>
+        </button>
       </Label>
     )
   }
@@ -270,8 +264,20 @@ interface MarkdownRendererProps {
   disableLinkRestrictions?: boolean
 }
 
+// Module-level constant so the array reference is stable across all renders.
+const REMARK_PLUGINS = [remarkGfm, remarkDirective, remarkDirectives]
+
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   const lastElementRef = React.useRef<HastElement | undefined>()
+
+  // Store changing props in refs so component functions can read the latest
+  // values without being recreated when those props change.
+  const allowedLinksRef = React.useRef(mainProps.allowedLinks)
+  allowedLinksRef.current = mainProps.allowedLinks
+  const disableLinkRestrictionsRef = React.useRef(
+    mainProps.disableLinkRestrictions,
+  )
+  disableLinkRestrictionsRef.current = mainProps.disableLinkRestrictions
 
   const plugin = React.useCallback(() => {
     const transformer = (tree: Root) => {
@@ -291,6 +297,55 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     return transformer
   }, [])
 
+  // Empty deps: all captured values are refs, so function references never
+  // change. Stable references prevent react-markdown from seeing new component
+  // types on re-renders, which would unmount/remount DOM nodes and re-fire
+  // CSS animations.
+  const components = React.useMemo(
+    () => ({
+      p: (props: React.ComponentProps<'p'> & { node?: HastElement }) => (
+        <CursorDecorator
+          as='p'
+          children={props.children}
+          isCursorVisible={props.node === lastElementRef.current}
+        />
+      ),
+      li: (props: React.ComponentProps<'li'> & { node?: HastElement }) => (
+        <CursorDecorator
+          as='li'
+          children={props.children}
+          isCursorVisible={props.node === lastElementRef.current}
+        />
+      ),
+      code: (props: React.ComponentProps<'code'>) => {
+        const { children, className } = props
+        const match = /language-([^ ]+)/.exec(className || '')
+        return match ? (
+          <React.Suspense fallback={'...'}>
+            <CodeBlock
+              lang={match[1]}
+              code={String(children).replace(/\n$/, '')}
+            />
+          </React.Suspense>
+        ) : (
+          <React.Suspense fallback={'...'}>
+            <CodeInline code={String(children)} />
+          </React.Suspense>
+        )
+      },
+      a: (props: any) => (
+        <RenderLink
+          a={props}
+          allowedLinks={allowedLinksRef.current}
+          disableLinkRestrictions={disableLinkRestrictionsRef.current}
+        />
+      ),
+      ...buildTableRenderer(),
+      ...directiveComponents,
+    }),
+    [],
+  )
+
   return (
     <div className={styles.markdownContainer}>
       <Markdown
@@ -298,54 +353,10 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         // We only read the total lines value from AST
         // if the component is allowed to show the text cursor.
         rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
-        remarkPlugins={[remarkGfm, remarkDirective, remarkDirectives]}
+        remarkPlugins={REMARK_PLUGINS}
         unwrapDisallowed={true}
         children={mainProps.text}
-        components={{
-          p: (props) => (
-            <CursorDecorator
-              as='p'
-              children={props.children}
-              isCursorVisible={
-                (props.node as HastElement) === lastElementRef.current
-              }
-            />
-          ),
-          li: (props) => (
-            <CursorDecorator
-              as='li'
-              children={props.children}
-              isCursorVisible={
-                (props.node as HastElement) === lastElementRef.current
-              }
-            />
-          ),
-          code: (props) => {
-            const { children, className } = props
-            const match = /language-([^ ]+)/.exec(className || '')
-            return match ? (
-              <React.Suspense fallback={'...'}>
-                <CodeBlock
-                  lang={match[1]}
-                  code={String(children).replace(/\n$/, '')}
-                />
-              </React.Suspense>
-            ) : (
-              <React.Suspense fallback={'...'}>
-                <CodeInline code={String(children)} />
-              </React.Suspense>
-            )
-          },
-          a: (props: any) => (
-            <RenderLink
-              a={props}
-              allowedLinks={mainProps.allowedLinks}
-              disableLinkRestrictions={mainProps.disableLinkRestrictions}
-            />
-          ),
-          ...buildTableRenderer(),
-          ...directiveComponents,
-        }}
+        components={components as any}
       />
     </div>
   )

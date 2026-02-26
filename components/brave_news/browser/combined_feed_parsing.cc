@@ -17,6 +17,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_news/api/combined_feed.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"

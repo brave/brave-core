@@ -244,7 +244,7 @@ struct SubmitReportView: View {
   SubmitReportView(
     url: URL(string: "https://brave.com/privacy-features")!,
     isPrivateBrowsing: false,
-    tab: TabStateFactory.create(with: .init())
+    tab: TabStateFactory.create(with: .init(profile: nil))
   )
 }
 

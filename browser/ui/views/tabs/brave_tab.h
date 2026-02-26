@@ -50,6 +50,7 @@ class BraveTab : public Tab {
                                    int visual_width) const override;
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
+  TabSizeInfo GetTabSizeInfo() const override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -73,11 +74,17 @@ class BraveTab : public Tab {
   friend class BraveTabTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveTabTest, ShouldAlwaysHideTabCloseButton);
+  FRIEND_TEST_ALL_PREFIXES(BraveTabTest,
+                           IconVisibilityWhenVerticalTabsAnimating);
+  FRIEND_TEST_ALL_PREFIXES(
+      BraveTabTest,
+      PinnedTabIconCenteredWhenFloatingFromCompletelyHiddenMode);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
 
-  // Reveals the close button which is in base class member.
+  // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }
+  bool center_icon_for_test() const { return center_icon_; }
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_

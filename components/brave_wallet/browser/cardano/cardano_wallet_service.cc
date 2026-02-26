@@ -122,7 +122,7 @@ void CardanoWalletService::DiscoverNextUnusedAddress(
     DiscoverNextUnusedAddressCallback callback) {
   CHECK(IsCardanoAccount(account_id));
 
-  // TODO(https://github.com/brave/brave-browser/issues/45278): this always
+  // TODO(https://github.com/brave/brave-browser/issues/46092): this always
   // returns first address.
   auto address = keyring_service().GetCardanoAddress(
       account_id, mojom::CardanoKeyId::New(role, 0));
@@ -180,12 +180,19 @@ void CardanoWalletService::CreateCardanoTransaction(
     const CardanoAddress& address_to,
     uint64_t amount,
     bool sending_max_amount,
+    std::optional<cardano_rpc::TokenId> token_to_send,
     CardanoCreateTransactionTaskCallback callback) {
   CHECK(IsCardanoAccount(account_id));
+  if (sending_max_amount) {
+    CHECK_EQ(amount, 0u);
+  } else {
+    CHECK_GT(amount, 0u);
+  }
 
   auto [task_it, inserted] = create_transaction_tasks_.insert(
       std::make_unique<CardanoCreateTransactionTask>(
-          *this, account_id, address_to, amount, sending_max_amount));
+          *this, account_id, address_to, amount, sending_max_amount,
+          token_to_send));
   CHECK(inserted);
   auto* task_ptr = task_it->get();
 

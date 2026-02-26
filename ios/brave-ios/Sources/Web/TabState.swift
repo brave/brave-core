@@ -28,35 +28,32 @@ public enum SecureContentState {
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
+    public var profile: (any Profile)?
     public var initialConfiguration: WKWebViewConfiguration?
     public var lastActiveTime: Date?
-    public var braveCore: BraveProfileController?
 
     public init(
       id: UUID = .init(),
+      profile: (any Profile)?,
       initialConfiguration: WKWebViewConfiguration? = nil,
-      lastActiveTime: Date? = nil,
-      braveCore: BraveProfileController? = nil
+      lastActiveTime: Date? = nil
     ) {
       self.id = id
+      self.profile = profile
       self.initialConfiguration = initialConfiguration
       self.lastActiveTime = lastActiveTime
-      self.braveCore = braveCore
     }
   }
 
   public static func create(with params: CreateTabParams) -> any TabState {
     let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
-    if let braveCore = params.braveCore, FeatureList.kUseChromiumWebViews.enabled {
-      let cwvConfiuration =
-        wkConfiguration.websiteDataStore.isPersistent
-        ? braveCore.defaultWebViewConfiguration
-        : braveCore.nonPersistentWebViewConfiguration
+    if let profile = params.profile {
+      let cwvConfiuration = BraveWebViewConfiguration(profile: profile)
       return ChromiumTabState(
         id: params.id,
         configuration: cwvConfiuration,
-        wkConfiguration: wkConfiguration
+        wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
       )
     }
     let webKitTabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
@@ -250,7 +247,7 @@ public protocol TabState: AnyObject {
   ///
   /// This will be the initial configuration passed in TabStateFactory until `isWebViewCreated`
   /// is true, at which point, it will be the configuration associated with the web view
-  var configuration: WKWebViewConfiguration { get }
+  var configuration: WKWebViewConfiguration? { get }
   /// The print formatter associated with the underlying web view to allow for printing the page
   var viewPrintFormatter: UIViewPrintFormatter? { get }
   /// Returns the PDF data for the current page if one is being displayed

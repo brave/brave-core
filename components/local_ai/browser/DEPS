@@ -1,5 +1,0 @@
-include_rules = [
-  "+components/component_updater",
-  "+components/update_client",
-  "+crypto",
-]

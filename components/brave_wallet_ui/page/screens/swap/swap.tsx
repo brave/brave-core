@@ -290,11 +290,16 @@ export const Swap = () => {
           selectedFromToken={fromToken}
           selectedToToken={toToken}
           selectedNetwork={
-            !isBridge && selectingFromOrTo === 'to' ? fromNetwork : undefined
+            !isBridge
+              ? selectingFromOrTo === 'to'
+                ? fromNetwork // Swap: selecting TO → pre-fill with FROM's network
+                : toNetwork // Swap: selecting FROM → pre-fill with TO's network
+              : undefined // Bridge: no pre-fill
           }
           modalType={isBridge ? 'bridge' : 'swap'}
           selectedSendOption='#token'
           needsAccount={needsAccountSelected}
+          defaultAccount={selectingFromOrTo === 'to' ? toAccount : fromAccount}
         />
       )}
       {showPrivacyModal && (

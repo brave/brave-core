@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
+import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.url.GURL;
 
@@ -149,15 +150,39 @@ public final class BraveReturnToChromeUtil {
     }
 
     /**
-     * Shows the home surface UI on the given NTP. This is a wrapper around the upstream method that
-     * adds a null check for homeSurfaceTracker to prevent crashes when the tracker is not
-     * initialized.
+     * Sets the initial overview state on resume with NTP. Wraps the upstream method to handle the
+     * case where homeSurfaceTracker is null (not yet initialized during warm startup). When null,
+     * we pass a temporary no-op HomeSurfaceTracker to avoid the NPE in upstream's
+     * homeSurfaceTracker.isHomeSurfaceTab() call. This is safe because the temporary tracker's
+     * isHomeSurfaceTab() always returns false (no home surface tab set), which causes upstream to
+     * call updateHomeSurfaceAndTrackingTabs() on the throwaway instance — effectively a no-op that
+     * doesn't interfere with the real tracker created later in ChromeTabbedActivity initialization.
+     * The no-op tracker is also safe when passed through to upstream's showHomeSurfaceUiOnNtp() and
+     * createNewTabAndShowHomeSurfaceUi() in the else branch — those methods only call
+     * updateHomeSurfaceAndTrackingTabs() on it, which again just sets fields on the throwaway. The
+     * real tracker (ChromeTabbedActivity.mHomeSurfaceTracker) is created independently and flows
+     * into NewTabPage via NativePageFactory, so subsequent reads are unaffected.
+     *
+     * <p>Note: unlike upstream's shouldShowNtpAsHomeSurfaceAtStartup which bails out on activity
+     * recreate (isFromRecreate check), we intentionally allow the NTP to show in recreate scenarios
+     * (e.g., rotation, process death restore, foldable transitions). This is because our
+     * inactivity-based NTP logic should still apply — if the user was away for 1+ hours, we want
+     * the NTP shown regardless of whether the activity was recreated on return.
      */
-    static void showHomeSurfaceUiOnNtp(
-            Tab ntpTab, Tab lastActiveTab, @Nullable HomeSurfaceTracker homeSurfaceTracker) {
+    public static boolean setInitialOverviewStateOnResumeWithNtp(
+            boolean isIncognito,
+            boolean shouldShowNtpHomeSurfaceOnStartup,
+            TabModel currentTabModel,
+            TabCreator tabCreator,
+            @Nullable HomeSurfaceTracker homeSurfaceTracker) {
         if (homeSurfaceTracker == null) {
-            return;
+            homeSurfaceTracker = new HomeSurfaceTracker();
         }
-        ReturnToChromeUtil.showHomeSurfaceUiOnNtp(ntpTab, lastActiveTab, homeSurfaceTracker);
+        return ReturnToChromeUtil.setInitialOverviewStateOnResumeWithNtp(
+                isIncognito,
+                shouldShowNtpHomeSurfaceOnStartup,
+                currentTabModel,
+                tabCreator,
+                homeSurfaceTracker);
     }
 }

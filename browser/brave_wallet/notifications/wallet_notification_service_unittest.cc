@@ -34,18 +34,15 @@ namespace brave_wallet {
 class WalletNotificationServiceUnitTest : public testing::Test {
  public:
   WalletNotificationServiceUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterLocalStatePrefsForMigration(local_state_.registry());
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
-        prefs(), local_state());
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), prefs(), local_state());
 
     notification_service_ = std::make_unique<WalletNotificationService>(
         brave_wallet_service_.get(), profile());
@@ -90,7 +87,6 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   TestingProfile profile_;
   TestingPrefServiceSimple local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<WalletNotificationService> notification_service_;
 };

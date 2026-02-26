@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
+#include <string_view>
+
+#include "base/check.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
@@ -128,15 +131,20 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildRewardConfirmationWithInvalidTransaction) {
+       DoNotBuildRewardConfirmationWithInvalidTransaction) {
   // Act & Assert
+#if CHECK_WILL_STREAM()
+  constexpr std::string_view kFailureLog = "Check failed: transaction.IsValid*";
+#else
+  constexpr std::string_view kFailureLog = ".*";
+#endif
   EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(/*transaction=*/{},
                                                     /*user_data=*/{}),
-                            "Check failed: transaction.IsValid*");
+                            kFailureLog);
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildRewardConfirmationForNonRewardsUser) {
+       DoNotBuildRewardConfirmationForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -146,9 +154,15 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*should_generate_random_uuids=*/false);
 
   // Act & Assert
+#if CHECK_WILL_STREAM()
+  constexpr std::string_view kFailureLog =
+      "Check failed: UserHasJoinedBraveRewards*";
+#else
+  constexpr std::string_view kFailureLog = ".*";
+#endif
   EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(transaction,
                                                     /*user_data=*/{}),
-                            "Check failed: UserHasJoinedBraveRewards*");
+                            kFailureLog);
 }
 
 }  // namespace brave_ads

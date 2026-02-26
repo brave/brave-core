@@ -11,7 +11,10 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/values.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace user_prefs {
 class PrefRegistrySyncable;

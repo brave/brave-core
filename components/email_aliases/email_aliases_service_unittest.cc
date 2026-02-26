@@ -169,7 +169,7 @@ class EmailAliasesAPITest : public ::testing::Test {
   }
 
   base::test::ScopedFeatureList brave_account_feature_list_{
-      brave_account::features::kBraveAccount};
+      brave_account::features::BraveAccountFeatureForTesting()};
   base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;

@@ -77,6 +77,7 @@ interface Props {
   spotPrice?: BraveWallet.AssetPrice
   onSelectAccount: (account: BraveWallet.AccountInfo) => void
   onCancel?: () => void
+  defaultAccount?: BraveWallet.AccountInfo
 }
 
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
@@ -91,6 +92,7 @@ export const SelectAccount = (props: Props) => {
     spotPrice,
     onSelectAccount,
     onCancel,
+    defaultAccount,
   } = props
 
   // Queries
@@ -100,7 +102,12 @@ export const SelectAccount = (props: Props) => {
   // State
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
-  >(accounts.length > 0 ? accounts[0] : undefined)
+  >(
+    // Pre-select the default account if it's in the list, otherwise first
+    accounts.find(
+      (a) => a.accountId.uniqueKey === defaultAccount?.accountId.uniqueKey,
+    ) ?? (accounts.length > 0 ? accounts[0] : undefined),
+  )
 
   // Callbacks
   const handleAccountCreated = React.useCallback(

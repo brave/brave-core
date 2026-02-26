@@ -521,6 +521,16 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,=1 {Bu ay Brave Mükafatları tərəfindən dəstəklənən # yaradıcıya baxmısınız}other {Bu ay Brave Mükafatları tərəfindən dəstəklənən # yaradıcıya baxmısınız}}</translation>
 <translation id="3264975266761862670">Qazanmağa hazırsınız?</translation>
 <translation id="2784412028126205842">Ödəniş hesabını bağlayın</translation>
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+      =0 {Bu ay siz <ph name="COUNT_BEGIN"/> # reklama<ph name="COUNT_END"/> baxmısınız}
+      =1 {Bu ay baxdığınız <ph name="COUNT_BEGIN"/> # reklama görə<ph name="COUNT_END"/> ödəniş ala bilərdiniz.}
+      other {Bu ay baxdığınız <ph name="COUNT_BEGIN"/> # reklama görə<ph name="COUNT_END"/> ödəniş ala bilərdiniz.}
+    }</translation>
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+      =0 {Bu ay siz <ph name="COUNT_BEGIN"/> # reklama<ph name="COUNT_END"/> baxmısınız}
+      =1 {Bu ay baxdığınız <ph name="COUNT_BEGIN"/> # reklama görə<ph name="COUNT_END"/> qazanırsınız}
+      other {Bu ay baxdığınız <ph name="COUNT_BEGIN"/> # reklama görə<ph name="COUNT_END"/> qazanırsınız}
+    }</translation>
 <translation id="6067959437127691361">Brave Mükafatlarından istifadə edərək məzmun yaradıcılarına dəstək olun və BAT qazanın.</translation>
 <translation id="2359808026110333948">Davam et</translation>
 <translation id="3863981251715594911">Necə işləyir?</translation>
@@ -2488,7 +2498,7 @@
 <translation id="466214682712474574">Balansınızı görmək üçün <ph name="PROVIDER"/> hesabınıza daxil olun</translation>
 <translation id="8332875111286275890">Balansınızı görmək üçün daxil olun</translation>
 <translation id="5430001801813715388">MÜKAFATLAR</translation>
-<translation id="5966055668402779222">Bir şey soruş, bir şey tap...</translation>
+<translation id="5966055668402779222">Brave Axtarışa soruş</translation>
 <translation id="167018310108390163">Yeni Tab Səhifəsini Fərdiləşdir</translation>
 <translation id="6851426306697017546">Saatı göstər</translation>
 <translation id="4844370919312937270">Yeni tablarda axtarış widgetını göstər</translation>

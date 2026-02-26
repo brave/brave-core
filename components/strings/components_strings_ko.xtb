@@ -2017,6 +2017,7 @@
 <translation id="4269599248168651462">서버 인증서가 고유하지 않은 이름으로 발급됩니다.</translation>
 <translation id="4270541775497538019">스태커 6</translation>
 <translation id="4271311252511481365">{NUM_REVIEWS,plural, =0{리뷰 0개 보기. 평균 평점은 별 <ph name="STARS"/>개입니다.}=1{리뷰 1개 보기. 평균 평점은 별 <ph name="STARS"/>개입니다.}other{리뷰 #개 모두 보기. 평균 평점은 별 <ph name="STARS"/>개입니다.}}</translation>
+<translation id="4275788652681621337">측면 패널 닫기</translation>
 <translation id="4275830172053184480">기기 다시 시작</translation>
 <translation id="4276974990916607331">나중에</translation>
 <translation id="4277028893293644418">비밀번호 재설정</translation>

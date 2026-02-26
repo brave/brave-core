@@ -475,6 +475,16 @@
     *** getActionButtonTintList(...);
 }
 
+-keep class org.chromium.chrome.browser.download.dialogs.DownloadLocationDialogCoordinator {
+    public <init>(...);
+    *** mController;
+    *** onDirectoryOptionsRetrieved(...);
+}
+
+-keep class org.chromium.chrome.browser.download.dialogs.BraveDownloadLocationDialogCoordinator {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
     *** isVisibleToUser(...);
 }
@@ -653,7 +663,7 @@
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowNtpAsHomeSurfaceAtStartup(...);
     *** createNewTabAndShowHomeSurfaceUi(...);
-    *** showHomeSurfaceUiOnNtp(...);
+    *** setInitialOverviewStateOnResumeWithNtp(...);
 }
 
 -keep class org.chromium.chrome.browser.IntentHandler {

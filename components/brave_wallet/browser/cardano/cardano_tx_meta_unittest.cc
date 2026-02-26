@@ -7,10 +7,10 @@
 
 #include <optional>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -24,16 +24,25 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
 
   std::unique_ptr<CardanoTransaction> tx =
       std::make_unique<CardanoTransaction>();
-  tx->set_amount(200000);
-  tx->set_to(*CardanoAddress::FromString(kMockCardanoAddress2));
   CardanoTransaction::TxInput input;
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress1);
   input.utxo_value = 200000;
   tx->AddInput(std::move(input));
 
+  input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);
+  input.utxo_value = 400000;
+  input.utxo_tokens = {{GetMockTokenId("brave"), 123}};
+  tx->AddInput(std::move(input));
+
   CardanoTransaction::TxOutput output;
   output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
-  output.amount = 200000 - 1000;
+  output.amount = 300000 - 1000;
+  tx->AddOutput(std::move(output));
+
+  output.type = CardanoTransaction::TxOutputType::kChange;
+  output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
+  output.amount = 300000;
+  output.tokens = {{GetMockTokenId("foo"), 1}};
   tx->AddOutput(std::move(output));
 
   tx->set_fee(1000u);
@@ -62,14 +71,27 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   const auto& tx_data = ti->tx_data_union->get_cardano_tx_data();
 
   EXPECT_EQ(tx_data->to, kMockCardanoAddress2);
-  EXPECT_EQ(tx_data->amount, 200000ULL);
-  EXPECT_EQ(tx_data->fee, 1000ULL);
-  EXPECT_EQ(tx_data->inputs.size(), 1u);
+  EXPECT_EQ(tx_data->sending_lovelace, 299000u);
+  EXPECT_EQ(tx_data->fee, 1000u);
+  EXPECT_EQ(tx_data->inputs.size(), 2u);
   EXPECT_EQ(tx_data->inputs[0]->address, kMockCardanoAddress1);
-  EXPECT_EQ(tx_data->inputs[0]->value, 200000ULL);
-  EXPECT_EQ(tx_data->outputs.size(), 1u);
+  EXPECT_EQ(tx_data->inputs[0]->value, 200000u);
+  EXPECT_EQ(tx_data->inputs[1]->address, kMockCardanoAddress2);
+  EXPECT_EQ(tx_data->inputs[1]->value, 400000u);
+  EXPECT_EQ(tx_data->inputs[1]->tokens.size(), 1u);
+  EXPECT_EQ(tx_data->inputs[1]->tokens[0],
+            mojom::CardanoTxTokenValue::New(
+                base::HexEncodeLower(GetMockTokenId("brave")), 123));
+  EXPECT_EQ(tx_data->outputs.size(), 2u);
   EXPECT_EQ(tx_data->outputs[0]->address, kMockCardanoAddress2);
-  EXPECT_EQ(tx_data->outputs[0]->value, 200000ULL - 1000);
+  EXPECT_EQ(tx_data->outputs[0]->value, 300000u - 1000);
+  EXPECT_EQ(tx_data->outputs[1]->address, kMockCardanoAddress2);
+  EXPECT_EQ(tx_data->outputs[1]->value, 300000u);
+  EXPECT_EQ(tx_data->outputs[1]->tokens.size(), 1u);
+  EXPECT_EQ(tx_data->outputs[1]->tokens[0],
+            mojom::CardanoTxTokenValue::New(
+                base::HexEncodeLower(GetMockTokenId("foo")), 1));
+  EXPECT_EQ(ti->tx_type, mojom::TransactionType::CardanoSendLovelace);
 }
 
 TEST(CardanoTxMeta, ToValue) {
@@ -79,18 +101,28 @@ TEST(CardanoTxMeta, ToValue) {
 
   std::unique_ptr<CardanoTransaction> tx =
       std::make_unique<CardanoTransaction>();
-  tx->set_amount(200000);
-  tx->set_to(*CardanoAddress::FromString(kMockCardanoAddress1));
 
   CardanoTransaction::TxInput input;
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);
   input.utxo_value = 200000;
   tx->AddInput(std::move(input));
 
+  input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);
+  input.utxo_value = 400000;
+  input.utxo_tokens = {{GetMockTokenId("brave"), 123}};
+  tx->AddInput(std::move(input));
+
   CardanoTransaction::TxOutput output;
   output.address = *CardanoAddress::FromString(kMockCardanoAddress1);
   output.amount = 200000 - 1000;
   tx->AddOutput(std::move(output));
+
+  output.type = CardanoTransaction::TxOutputType::kChange;
+  output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
+  output.amount = 300000;
+  output.tokens = {{GetMockTokenId("foo"), 1}};
+  tx->AddOutput(std::move(output));
+
   auto tx_value = tx->ToValue();
 
   CardanoTxMeta meta(cardano_account_id, std::move(tx));

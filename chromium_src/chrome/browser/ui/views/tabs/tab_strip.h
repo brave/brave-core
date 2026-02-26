@@ -27,6 +27,7 @@ class BraveTabHoverCardController;
   bool ShouldAlwaysHideCloseButton() const override;                       \
   bool CanCloseTabViaMiddleButtonClick() const override;                   \
   bool IsVerticalTabsFloating() const override;                            \
+  bool IsVerticalTabsAnimatingButNotFinalState() const override;           \
   bool ShouldPaintTabAccent(const Tab* tab) const override;                \
   std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \

@@ -214,9 +214,17 @@ extension BrowserViewController {
 
   // MARK: KeyCommands
 
-  override public var keyCommands: [UIKeyCommand]? {
-    let isEditingText = tabManager.selectedTab?.isEditing ?? false
+  private var isEditingText: Bool {
+    let isKeyboardVisible = keyboardState != nil
+    if isKeyboardVisible {
+      return true
+    }
+    guard let tab = tabManager.selectedTab else { return isKeyboardVisible }
+    let firstResponder = UIView.findSubViewWithFirstResponder(tab.view)
+    return firstResponder is UITextField || firstResponder is UITextView
+  }
 
+  override public var keyCommands: [UIKeyCommand]? {
     var navigationCommands = [
       // Web Page Key Commands
       UIKeyCommand(

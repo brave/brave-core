@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .sources {
+  animation: reveal 200ms ease-out both;
   h4 {
     margin: 16px 0 6px 0;
     font: var(--leo-font-small-regular);
@@ -28,8 +29,10 @@
     display: contents;
   }
 
-  a,
   button {
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
     border-radius: var(--leo-radius-xl);
     border: 1px solid var(--leo-color-divider-subtle);
     padding: 2px 6px 2px 2px;
@@ -42,10 +45,7 @@
     gap: 4px;
   }
 
-  button {
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
+  button[name='expand'] {
     color: var(--leo-color-text-secondary);
   }
 

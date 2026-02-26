@@ -13,6 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/network_anonymization_key.h"
@@ -22,6 +23,7 @@
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
+template <template <typename> class T>
 class BraveRequestHandler;
 
 namespace content {
@@ -38,8 +40,9 @@ using ResponseCallback = base::RepeatingCallback<void()>;
 }  // namespace brave
 
 namespace brave_rewards {
+template <template <typename> class T>
 int OnBeforeURLRequest(const brave::ResponseCallback& next_callback,
-                       std::shared_ptr<brave::BraveRequestInfo> ctx);
+                       T<brave::BraveRequestInfo> ctx);
 }  // namespace brave_rewards
 
 namespace brave {
@@ -179,16 +182,21 @@ class BraveRequestInfo {
   const std::optional<std::string>& devtools_request_id() const;
   void set_devtools_request_id(const std::optional<std::string>& value);
 
-  static std::shared_ptr<brave::BraveRequestInfo> MakeCTX(
+  static std::unique_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
       content::GlobalRenderFrameHostToken render_frame_token,
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
-      std::shared_ptr<brave::BraveRequestInfo> old_ctx);
+      brave::BraveRequestInfo* old_ctx);
+
+  base::WeakPtr<BraveRequestInfo> AsWeakPtr() {
+    return weak_factory_.GetWeakPtr();
+  }
 
  private:
   // Please don't add any more friends here if it can be avoided.
   // We should also remove the one below.
+  template <template <typename> class T>
   friend class ::BraveRequestHandler;
 
   GURL* new_url() const;
@@ -255,22 +263,28 @@ class BraveRequestInfo {
   raw_ptr<GURL, DanglingUntriaged> new_url_ = nullptr;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<BraveRequestInfo> weak_factory_{this};
 };
 
 // ResponseListener
+template <template <typename> class T>
 using OnBeforeURLRequestCallback =
     base::RepeatingCallback<int(const ResponseCallback& next_callback,
-                                std::shared_ptr<BraveRequestInfo> ctx)>;
+                                T<BraveRequestInfo> ctx)>;
+
+template <template <typename> class T>
 using OnBeforeStartTransactionCallback =
     base::RepeatingCallback<int(net::HttpRequestHeaders* headers,
                                 const ResponseCallback& next_callback,
-                                std::shared_ptr<BraveRequestInfo> ctx)>;
+                                T<BraveRequestInfo> ctx)>;
+
+template <template <typename> class T>
 using OnHeadersReceivedCallback = base::RepeatingCallback<int(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx)>;
+    T<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
 

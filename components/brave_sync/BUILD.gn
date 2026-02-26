@@ -135,15 +135,18 @@ group("constants") {
 
 source_set("unit_tests") {
   testonly = true
+
   sources = [
     "//brave/components/brave_sync/brave_sync_p3a_unittest.cc",
     "//brave/components/brave_sync/brave_sync_prefs_unittest.cc",
+    "//brave/components/brave_sync/crypto/crypto_unittest.cc",
     "//brave/components/brave_sync/qr_code_data_unittest.cc",
     "//brave/components/brave_sync/qr_code_validator_unittest.cc",
     "//brave/components/brave_sync/time_limited_words_unittest.cc",
   ]
 
   deps = [
+    ":crypto",
     ":p3a",
     ":prefs",
     ":time_limited_codes",
@@ -152,5 +155,7 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//components/sync/base",
     "//components/sync/service",
+    "//crypto",
+    "//testing/gtest",
   ]
 }

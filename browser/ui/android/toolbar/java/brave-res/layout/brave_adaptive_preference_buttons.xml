@@ -40,7 +40,7 @@
           android:layout_height="wrap_content"
           android:minHeight="@dimen/min_touch_target_size"
           android:paddingTop="10dp"
-          app:iconSrc="@drawable/ic_brave_ai"
+          app:iconSrc="@drawable/ic_product_brave_leo"
           app:primaryText="@string/menu_brave_leo"/>
 
      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
@@ -49,7 +49,7 @@
           android:layout_height="wrap_content"
           android:minHeight="@dimen/min_touch_target_size"
           android:paddingTop="10dp"
-          app:iconSrc="@drawable/ic_crypto_wallets"
+          app:iconSrc="@drawable/ic_product_brave_wallet"
           app:primaryText="@string/menu_brave_wallet"/>
 
 </merge>

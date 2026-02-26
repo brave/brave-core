@@ -128,6 +128,10 @@ class SettingsViewController: TableViewController {
 
     super.init(style: .insetGrouped)
 
+    Task { @MainActor in
+      await BraveOriginServiceFactory.get(profile: braveCore.profile)?.checkPurchaseState()
+    }
+
     UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
       .braveLabel
   }
@@ -261,7 +265,7 @@ class SettingsViewController: TableViewController {
       aboutSection,
     ]
 
-    if FeatureList.kBraveAccount.enabled {
+    if IsBraveAccountEnabled() {
       list.insert(braveAccountSection, at: 1)
     }
 
@@ -779,9 +783,26 @@ class SettingsViewController: TableViewController {
             guard let service = BraveOriginServiceFactory.get(profile: braveCore.profile) else {
               return
             }
-            let controller = UIHostingController(rootView: OriginSettingsView(service: service))
-            controller.title = Strings.Origin.originProductName  // Not Translated
-            self.navigationController?.pushViewController(controller, animated: true)
+            if service.isPurchased() {
+              let controller = UIHostingController(rootView: OriginSettingsView(service: service))
+              controller.title = Strings.Origin.originProductName  // Not Translated
+              self.navigationController?.pushViewController(controller, animated: true)
+            } else {
+              let skusService = Skus.SkusServiceFactory.get(profile: braveCore.profile)
+              let controller = UIHostingController(
+                rootView: OriginPaywallView(
+                  viewModel: .init(store: .init(skusService: skusService))
+                )
+                .environment(
+                  \.openURL,
+                  OpenURLAction { [weak self] url in
+                    self?.settingsDelegate?.settingsOpenURLInNewTab(url)
+                    return .handled
+                  }
+                )
+              )
+              present(controller, animated: true)
+            }
           },
           image: UIImage(braveSystemNamed: "leo.product.origin"),
           accessory: .disclosureIndicator,
@@ -1354,21 +1375,8 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.settingsLicenses,
           selection: { [unowned self] in
-            if FeatureList.kUseChromiumWebViews.enabled {
-              if let url = URL(string: "brave://credits") {
-                settingsDelegate?.settingsOpenURLInNewTab(url)
-              }
-            } else {
-              let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
-              let container = UINavigationController(rootViewController: controller)
-              controller.webView.load(URLRequest(url: URL(string: "brave://credits")!))
-              controller.navigationItem.leftBarButtonItem = .init(
-                systemItem: .done,
-                primaryAction: .init { [unowned container] _ in
-                  container.dismiss(animated: true)
-                }
-              )
-              present(container, animated: true)
+            if let url = URL(string: "brave://credits") {
+              settingsDelegate?.settingsOpenURLInNewTab(url)
             }
           },
           accessory: .disclosureIndicator
@@ -1514,15 +1522,6 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: "Injected Scripts",
-          selection: { [unowned self] in
-            let controller = UIHostingController(rootView: UserScriptsDebugView())
-            self.navigationController?.pushViewController(controller, animated: true)
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
-        ),
-        Row(
           text: "StoreKit Receipt Viewer",
           selection: { [unowned self] in
             let controller = UIHostingController(rootView: StoreKitReceiptView())
@@ -1583,7 +1582,7 @@ class SettingsViewController: TableViewController {
           cellClass: ButtonCell.self
         ),
         Row(
-          text: "Create 1000 History Entries",
+          text: "Create 10000 History Entries for past 10 days",
           selection: { [unowned self] in
             self.settingsDelegate?.settingsCreateFakeHistory()
             self.dismiss(animated: true)
@@ -1634,6 +1633,19 @@ class SettingsViewController: TableViewController {
       )
     }
     #endif
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      section.rows.append(
+        Row(
+          text: "Injected Scripts",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: UserScriptsDebugView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        )
+      )
+    }
     if AppConstants.isOfficialBuild {
       section.rows.append(
         Row(

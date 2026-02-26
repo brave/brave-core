@@ -16,6 +16,7 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   sourcesEvent: undefined,
   contentReceiptEvent: undefined,
   toolUseEvent: undefined,
+  inlineSearchEvent: undefined,
 }
 
 export function getEventTemplate() {

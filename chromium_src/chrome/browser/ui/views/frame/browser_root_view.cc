@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/defaults.h"
 
 // Workaround for vertical tabs to work with drag&drop of text/links.
 #define ConvertPointToTarget(THIS, TARGET_GETTER, POINT)                    \
@@ -19,6 +20,12 @@
     ConvertPointToTarget(THIS, target_v, POINT);                            \
   }
 
+// Disable scroll-event-changes-tab if scrollable tab strip is enabled.
+#define kScrollEventChangesTab \
+  kScrollEventChangesTab &&    \
+      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)
+
 #include <chrome/browser/ui/views/frame/browser_root_view.cc>
 
+#undef kScrollEventChangesTab
 #undef ConvertPointToTarget

@@ -8,7 +8,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_origin/features.h"
@@ -35,6 +34,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #endif
 
 @interface Feature () {
@@ -258,7 +258,7 @@
   return nil;
 }
 
-+ (Feature*)kBraveWalletCardanoEnabled {
++ (nullable Feature*)kBraveWalletCardanoEnabled {
   return nil;
 }
 #endif
@@ -282,11 +282,6 @@
 + (Feature*)kCosmeticFilteringSyncLoad {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kCosmeticFilteringSyncLoad];
-}
-
-+ (Feature*)kBraveAccount {
-  return
-      [[Feature alloc] initWithFeature:&brave_account::features::kBraveAccount];
 }
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
@@ -353,9 +348,9 @@
       initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
 }
 
-+ (Feature*)kUseChromiumWebViews {
-  return
-      [[Feature alloc] initWithFeature:&brave::features::kUseChromiumWebViews];
++ (Feature*)kUseProfileWebViewConfiguration {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kUseProfileWebViewConfiguration];
 }
 
 + (Feature*)kBraveAllowExternalPurchaseLinks {
@@ -373,8 +368,16 @@
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletWebUIFeature];
 }
++ (Feature*)kBraveWalletCardanoDAppSupportIOS {
+  return
+      [[Feature alloc] initWithFeature:&brave_wallet::features::
+                                           kBraveWalletCardanoDAppSupportIOS];
+}
 #else
 + (nullable Feature*)kBraveWalletWebUIIOS {
+  return nil;
+}
++ (nullable Feature*)kBraveWalletCardanoDAppSupportIOS {
   return nil;
 }
 #endif
@@ -400,4 +403,8 @@
       [[Feature alloc] initWithFeature:&brave_origin::features::kBraveOrigin];
 }
 
++ (Feature*)kUseChromiumWebViewsAutofill {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kUseChromiumWebViewsAutofill];
+}
 @end

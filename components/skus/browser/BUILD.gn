@@ -33,6 +33,20 @@ static_library("browser") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_skus_service.cc",
+    "test/fake_skus_service.h",
+  ]
+
+  public_deps = [
+    "//brave/components/skus/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

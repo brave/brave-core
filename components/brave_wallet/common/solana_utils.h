@@ -13,8 +13,11 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_wallet {
 

@@ -24,7 +24,6 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
@@ -857,13 +856,16 @@ TEST_F(BraveStatsUpdaterTest, SendSerpMetricsUsageIfEnabled) {
   serp_metrics::SerpMetricsMock serp_metrics_mock(GetLocalState(), GetPrefs());
   auto params = BuildUpdaterParams(&serp_metrics_mock);
 
-  EXPECT_CALL(serp_metrics_mock, GetBraveSearchCountForYesterday)
+  EXPECT_CALL(serp_metrics_mock,
+              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kBrave))
       .WillOnce(::testing::Return(3));
 
-  EXPECT_CALL(serp_metrics_mock, GetGoogleSearchCountForYesterday)
+  EXPECT_CALL(serp_metrics_mock,
+              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kGoogle))
       .WillOnce(::testing::Return(2));
 
-  EXPECT_CALL(serp_metrics_mock, GetOtherSearchCountForYesterday)
+  EXPECT_CALL(serp_metrics_mock,
+              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kOther))
       .WillOnce(::testing::Return(1));
 
   EXPECT_CALL(serp_metrics_mock, GetSearchCountForStalePeriod)

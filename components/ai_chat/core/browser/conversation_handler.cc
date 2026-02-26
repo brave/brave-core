@@ -57,10 +57,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#define STARTER_PROMPT(TYPE)                                              \
-  l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_TITLE_##TYPE),      \
-      l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_PROMPT_##TYPE), \
-      mojom::ActionType::CONVERSATION_STARTER
+using api_request_helper::APIRequestResult;
 
 namespace ai_chat {
 class AIChatCredentialManager;
@@ -1388,6 +1385,11 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
       return;
     }
 
+#define STARTER_PROMPT(TYPE)                                              \
+  l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_TITLE_##TYPE),      \
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_PROMPT_##TYPE), \
+      mojom::ActionType::CONVERSATION_STARTER
+
     suggestions_.emplace_back(STARTER_PROMPT(MEMO));
     suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
     suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
@@ -1397,6 +1399,8 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestions_.emplace_back(STARTER_PROMPT(BRAINSTORM));
     suggestions_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
     suggestions_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
+
+#undef STARTER_PROMPT
 
     // We don't have an external list of all the available suggestions, so we
     // generate all of them  and remove random ones until we have the required
@@ -1639,9 +1643,10 @@ ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
         for (const auto& source : web_sources->sources) {
           all_sources.push_back(source.Clone());
         }
-        if (web_sources->query.has_value() &&
-            !web_sources->query.value().empty()) {
-          all_queries.push_back(web_sources->query.value());
+        for (const auto& q : web_sources->queries) {
+          if (!q.empty()) {
+            all_queries.push_back(q);
+          }
         }
         for (const auto& rich_result : web_sources->rich_results) {
           all_rich_results.push_back(rich_result);
@@ -2438,5 +2443,3 @@ void ConversationHandler::OnAutoScreenshotsTaken(
 }
 
 }  // namespace ai_chat
-
-#undef STARTER_PROMPT

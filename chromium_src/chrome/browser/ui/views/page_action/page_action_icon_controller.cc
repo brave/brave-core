@@ -27,6 +27,7 @@ constexpr bool kSupportsPlaylistActionIconView = false;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE                   \
   case brave::kSpeedreaderPageActionIconType:                                \
     add_page_action_icon(                                                    \
@@ -35,10 +36,12 @@ constexpr bool kSupportsPlaylistActionIconView = false;
                   params.page_action_icon_delegate));                        \
     break;
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE                                 \
   case brave::kWaybackMachineActionIconType:                                   \
     add_page_action_icon(type, std::make_unique<WaybackMachineActionIconView>( \
@@ -47,6 +50,7 @@ constexpr bool kSupportsPlaylistActionIconView = false;
                                    params.page_action_icon_delegate));         \
     break;
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE
 #endif
 

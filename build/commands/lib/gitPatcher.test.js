@@ -73,11 +73,8 @@ describe('Apply Patches', function () {
       testFile1Path,
       writeReadFileOptions,
     )
-    try {
-      expect(testFile1Content).toBe(file1InitialContent)
-    } catch (err) {
-      console.error('Setup fail: file was not reset - ' + testFile1Path)
-      throw new Error(err)
+    if (testFile1Content !== file1InitialContent) {
+      throw new Error('Setup fail: file was not reset - ' + testFile1Path)
     }
     gitPatcher = new GitPatcher(patchPath, repoPath, false)
   })
@@ -253,6 +250,6 @@ describe('Apply Patches', function () {
   test('handles no repo dir', async function () {
     const badRepoPath = path.join(repoPath, 'not-exist')
     const noRepoPatcher = new GitPatcher(patchPath, badRepoPath)
-    await expect(noRepoPatcher.applyPatches()).rejects.toThrowError()
+    await expect(noRepoPatcher.applyPatches()).rejects.toThrow()
   })
 })

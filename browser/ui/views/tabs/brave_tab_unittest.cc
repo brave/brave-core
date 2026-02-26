@@ -5,13 +5,18 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+#include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -28,6 +33,15 @@ class MockTabSlotController : public FakeTabSlotController {
 
   // FakeTabSlotController overrides:
   MOCK_METHOD(void, CloseTab, (Tab * tab, CloseTabSource source), (override));
+  MOCK_METHOD(bool, IsVerticalTabsFloating, (), (const, override));
+  MOCK_METHOD(bool,
+              IsVerticalTabsAnimatingButNotFinalState,
+              (),
+              (const, override));
+  MOCK_METHOD(BrowserWindowInterface*,
+              GetBrowserWindowInterface,
+              (),
+              (override));
 };
 
 class BraveTabTest : public ChromeViewsTestBase {
@@ -43,6 +57,47 @@ class BraveTabTest : public ChromeViewsTestBase {
     int left_inset = insets.left();
     left_inset += BraveTab::kExtraLeftPadding;
     EXPECT_EQ(left_inset, tab->GetInsets().left());
+  }
+
+  void TestIconVisibilityAcrossWidths(
+      MockTabSlotController& tab_slot_controller,
+      int tab_handle_id,
+      bool is_pinned,
+      bool expect_centered,
+      const std::string& description_prefix) {
+    constexpr int kMaxWidth = 240;  // Typical max width for vertical tabs
+    constexpr int kMinWidth = tabs::kVerticalTabMinWidth;  // 32px
+    constexpr int kStep = 20;
+
+    auto widget =
+        CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+    auto tab = std::make_unique<BraveTab>(tabs::TabHandle(tab_handle_id),
+                                          &tab_slot_controller);
+    if (is_pinned) {
+      tab_slot_controller.set_active_tab(nullptr);
+    } else {
+      tab_slot_controller.set_active_tab(tab.get());
+    }
+    widget->SetContentsView(std::move(tab));
+    auto* tab_ptr = static_cast<BraveTab*>(widget->GetContentsView());
+
+    if (is_pinned) {
+      TabRendererData data;
+      data.pinned = true;
+      tab_ptr->SetData(std::move(data));
+    }
+
+    for (int width = kMaxWidth; width > kMinWidth; width -= kStep) {
+      tab_ptr->SetBoundsRect({0, 0, width, 50});
+      tab_ptr->UpdateIconVisibility();
+
+      EXPECT_TRUE(tab_ptr->showing_icon())
+          << description_prefix << " icon should be visible at width " << width;
+      EXPECT_EQ(expect_centered, tab_ptr->center_icon_for_test())
+          << description_prefix << " icon centering should be "
+          << (expect_centered ? "enabled" : "disabled") << " at width "
+          << width;
+    }
   }
 };
 
@@ -178,4 +233,148 @@ TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
       .Times(1);
   tab_ptr->OnMousePressed(press_event);
   tab_ptr->OnMouseReleased(release_event);
+}
+
+// Tests that a pinned vertical tab's icon is centered when floating from
+// "completely hidden" collapsed mode. This is the regression fix: before the
+// fix, the floating check ran first and set center_icon_ = false, even though
+// the icon should remain centered in this mode.
+//
+// The center_icon_ = true block only fires when:
+//   (showing_icon_ || showing_alert_indicator_) && !ShouldRenderAsNormalTab()
+// Tab widths are derived from GetTabSizeInfo().pinned_tab_width and
+// kPinnedTabExtraWidthToRenderAsNormal (30, from tab.cc) to straddle the exact
+// boundary of ShouldRenderAsNormalTab().
+//
+// See: UpdateIconVisibility() in brave_tab.cc
+TEST_F(BraveTabTest,
+       PinnedTabIconCenteredWhenFloatingFromCompletelyHiddenMode) {
+  // kBraveVerticalTabHideCompletely is FEATURE_ENABLED_BY_DEFAULT, so
+  // kVerticalTabsHideCompletelyWhenCollapsed is already registered.
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  profile.GetPrefs()->SetBoolean(
+      brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, true);
+
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+  // Tab is floating (user hovered over the completely-hidden collapsed
+  // sidebar).
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(true));
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsAnimatingButNotFinalState())
+      .WillRepeatedly(testing::Return(false));
+
+  auto widget = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+  auto tab =
+      std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller);
+
+  BraveTab* tab_ptr = static_cast<BraveTab*>(tab.get());
+  widget->SetContentsView(std::move(tab));
+
+  // data().show_icon defaults to true, so Tab::UpdateIconVisibility() sets
+  // showing_icon_ = true for this pinned tab.
+  TabRendererData data;
+  data.pinned = true;
+  tab_ptr->SetData(std::move(data));
+
+  // Compute the exact boundary used by Tab::ShouldRenderAsNormalTab():
+  //   width >= pinned_tab_width + kPinnedTabExtraWidthToRenderAsNormal
+  // kPinnedTabExtraWidthToRenderAsNormal is defined as 30 in tab.cc.
+  const int pinned_tab_width = tab_ptr->GetTabSizeInfo().pinned_tab_width;
+  constexpr int kPinnedTabExtraWidthToRenderAsNormal = 30;
+  const int render_as_normal_threshold =
+      pinned_tab_width + kPinnedTabExtraWidthToRenderAsNormal;
+
+  // One pixel below the threshold: ShouldRenderAsNormalTab() == false, so the
+  // center_icon_ = true block fires and the completely-hidden early return
+  // preserves it.
+  tab_ptr->SetBoundsRect({0, 0, render_as_normal_threshold - 1, 50});
+
+  ASSERT_FALSE(tab_ptr->ShouldRenderAsNormalTab())
+      << "Precondition failed: width " << render_as_normal_threshold - 1
+      << " should be below the render-as-normal threshold "
+      << render_as_normal_threshold;
+
+  tab_ptr->UpdateIconVisibility();
+
+  // After the fix: center_icon_ is set to true before the early return for
+  // completely-hidden floating, so the "floating → center_icon_ = false"
+  // block is never reached.
+  EXPECT_TRUE(tab_ptr->center_icon_for_test())
+      << "Pinned tab icon should be centered when floating from "
+         "completely-hidden mode";
+
+  // Exactly at the threshold: ShouldRenderAsNormalTab() == true, so the
+  // center_icon_ = true block is skipped and center_icon_ stays false.
+  tab_ptr->SetBoundsRect({0, 0, render_as_normal_threshold, 50});
+
+  ASSERT_TRUE(tab_ptr->ShouldRenderAsNormalTab())
+      << "Precondition failed: width " << render_as_normal_threshold
+      << " should be at or above the render-as-normal threshold";
+
+  tab_ptr->UpdateIconVisibility();
+
+  EXPECT_FALSE(tab_ptr->center_icon_for_test())
+      << "center_icon_ should remain false when ShouldRenderAsNormalTab() "
+         "is true, since the center_icon_ = true block is guarded by "
+         "!ShouldRenderAsNormalTab()";
+}
+
+// Test that icon visibility is correctly set when vertical tabs are animating
+// to collapsed state across various tab widths. This prevents icon flickering
+// when the collapse animation occurs during the transition from max to min
+// width.
+// See: UpdateIconVisibility() in brave_tab.cc
+TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsAnimating) {
+  // Set up a profile with vertical tabs enabled
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+
+  // Set up mock browser window interface
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  // Mock both const and non-const overloads of GetProfile()
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  // Set up mock tab slot controller
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsAnimatingButNotFinalState())
+      .WillRepeatedly(testing::Return(true));
+
+  // Test unpinned tab: icon visible but not centered during animation
+  TestIconVisibilityAcrossWidths(tab_slot_controller, /*tab_handle_id=*/1,
+                                 /*is_pinned=*/false,
+                                 /*expect_centered=*/false, "Unpinned tab");
+
+  // Test pinned tab during floating animation: icon visible but not centered
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(true));
+  TestIconVisibilityAcrossWidths(tab_slot_controller, /*tab_handle_id=*/2,
+                                 /*is_pinned=*/true,
+                                 /*expect_centered=*/false,
+                                 "Pinned tab (floating)");
+
+  // Test pinned tab during non-floating animation: icon visible and centered
+  EXPECT_CALL(tab_slot_controller, IsVerticalTabsFloating())
+      .WillRepeatedly(testing::Return(false));
+  TestIconVisibilityAcrossWidths(tab_slot_controller, /*tab_handle_id=*/3,
+                                 /*is_pinned=*/true,
+                                 /*expect_centered=*/true,
+                                 "Pinned tab (non-floating)");
 }

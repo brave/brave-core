@@ -9,14 +9,17 @@
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/features.h"
 
 namespace brave_origin {
 
 bool IsBraveOriginEnabled() {
-  // TODO(https://github.com/brave/brave-browser/issues/47463)
-  // Get the actual purchase state from SKU service.
-  return base::FeatureList::IsEnabled(features::kBraveOrigin);
+  if (!base::FeatureList::IsEnabled(features::kBraveOrigin)) {
+    return false;
+  }
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  return manager->IsInitialized() && manager->IsPurchased();
 }
 
 std::string GetBraveOriginPrefKey(std::string_view policy_key,

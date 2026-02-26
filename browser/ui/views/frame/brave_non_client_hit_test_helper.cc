@@ -16,6 +16,10 @@ namespace brave {
 
 int NonClientHitTest(BrowserView* browser_view,
                      const gfx::Point& point_in_widget) {
+  if (!browser_view) {
+    return HTNOWHERE;
+  }
+
   if (!browser_view->toolbar() || !browser_view->toolbar()->GetVisible()) {
     return HTNOWHERE;
   }

@@ -28,7 +28,7 @@ public class BraveReturnToChromeUtilClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sReturnToChromeUtilClassName,
-                "showHomeSurfaceUiOnNtp",
+                "setInitialOverviewStateOnResumeWithNtp",
                 sBraveReturnToChromeUtilClassName);
     }
 }

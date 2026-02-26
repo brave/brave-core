@@ -32,6 +32,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"

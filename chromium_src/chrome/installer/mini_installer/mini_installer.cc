@@ -25,6 +25,7 @@
 #if defined(OFFICIAL_BUILD) && !BUILDFLAG(GOOGLE_CHROME_BRANDING)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
+// CHROMIUM_SRC_INTERNAL_USE
 #define NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif  // defined(OFFICIAL_BUILD)
 
@@ -132,7 +133,7 @@ void SafeStrASCIIUpper(wchar_t* str, size_t size) {
 }
 
 bool ParseStandardReferralCode(const wchar_t* filename,
-                ReferralCodeString* referral_code) {
+                               ReferralCodeString* referral_code) {
   // Scan backwards for last dash in filename.
   const wchar_t* anchor = UNSAFE_TODO(filename + lstrlen(filename) - 1);
   const wchar_t* scan = anchor;
@@ -177,7 +178,7 @@ bool ParseStandardReferralCode(const wchar_t* filename,
 }
 
 bool ParseExtendedReferralCode(const wchar_t* filename,
-                ReferralCodeString* referral_code) {
+                               ReferralCodeString* referral_code) {
   // Scan backwards for second-to-last dash in filename, since this
   // type of referral code has an embedded dash.
   const wchar_t* scan = UNSAFE_TODO(filename + lstrlen(filename) - 1);

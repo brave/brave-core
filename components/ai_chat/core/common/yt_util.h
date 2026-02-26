@@ -12,7 +12,11 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_tree.h"
-#include "base/values.h"
+
+namespace base {
+class ListValue;
+class Value;
+}  // namespace base
 
 namespace ai_chat {
 

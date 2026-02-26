@@ -90,7 +90,6 @@ source_set("unit_tests") {
     "//brave/browser/brave_stats",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_rewards/content",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/misc_metrics",

@@ -446,6 +446,31 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
+    // Brave Summary (Ocelot)
+    if (features::IsBraveSummaryModelEnabled()) {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Brave";
+      options->name = "brave-summary";
+      options->category = mojom::ModelCategory::SUMMARY;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 180000;
+      options->long_conversation_warning_character_limit = 320000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-brave-summary";
+      model->display_name = "Brave Ocelot";
+      model->vision_support = true;
+      model->supports_tools = false;
+      model->is_suggested_model = false;
+      model->is_near_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
     // GLM-5 (NEAR)
     if (features::IsNEARModelsEnabled()) {
       auto options = mojom::LeoModelOptions::New();
@@ -525,9 +550,8 @@ base::DictValue GetModelDict(mojom::ModelPtr model) {
   model_dict.Set(kCustomModelContextSizeKey,
                  static_cast<int32_t>(options.context_size));
 
-  // Check if the model has a user-specified system prompt
-  if (options.model_system_prompt.has_value() &&
-      !options.model_system_prompt->empty()) {
+  // Save system prompt (even if empty to allow clearing)
+  if (options.model_system_prompt.has_value()) {
     model_dict.Set(kCustomModelSystemPromptKey,
                    options.model_system_prompt.value());
   }

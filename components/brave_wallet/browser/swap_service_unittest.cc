@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
@@ -299,19 +298,13 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
 
 class SwapServiceUnitTest : public testing::Test {
  public:
-  SwapServiceUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+  SwapServiceUnitTest() {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    swap_service_ = std::make_unique<SwapService>(shared_url_loader_factory_);
+    swap_service_ =
+        std::make_unique<SwapService>(url_loader_factory_.GetSafeWeakWrapper());
   }
 
   ~SwapServiceUnitTest() override = default;
-
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
-  }
 
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -391,7 +384,6 @@ class SwapServiceUnitTest : public testing::Test {
 
  private:
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

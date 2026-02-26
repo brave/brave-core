@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_parser.h"
 #include "url/gurl.h"
 

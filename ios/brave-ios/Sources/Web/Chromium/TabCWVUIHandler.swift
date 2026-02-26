@@ -38,7 +38,11 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
 
   func webViewDidCreateNewWebView(_ webView: CWVWebView) {
     guard let tab else { return }
-    tab.didCreateWebView()
+    // This is already called in ChromiumTabState.createWebView when created without a WebKit
+    // configuration so there's no need to call it again.
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.didCreateWebView()
+    }
   }
 
   func webViewDidClose(_ webView: CWVWebView) {

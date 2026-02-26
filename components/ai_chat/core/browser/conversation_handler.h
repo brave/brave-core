@@ -349,7 +349,10 @@ class ConversationHandler : public mojom::ConversationHandler,
       ExtractSourcesFromRecentAssistantEntries_StopsAtUserEntry);
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_SkipsEmptyQuery);
+      ExtractSourcesFromRecentAssistantEntries_NoSearchQueriesEvent);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      ExtractSourcesFromRecentAssistantEntries_MultipleQueries);
 
   void InitEngine();
 

@@ -6,11 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_KEYSTORE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_KEYSTORE_PARSER_H_
 
+#include <stdint.h>
+
 #include <optional>
 #include <string>
 #include <vector>
 
-#include "base/values.h"
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_wallet {
 

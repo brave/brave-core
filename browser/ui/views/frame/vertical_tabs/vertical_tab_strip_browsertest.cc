@@ -32,6 +32,7 @@
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -279,6 +280,48 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
   EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   EXPECT_EQ(browser_view()->GetWidget(),
             browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       TabLayoutAfterToggleVerticalTabStrip) {
+  AppendTab(browser());
+  auto* model = browser()->tab_strip_model();
+  ASSERT_EQ(model->count(), 2);
+  model->SetTabPinned(0, true);
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+  ASSERT_EQ(model->count(), 3);
+  auto assert_tab_insets = [this]() {
+    for (int i = 0; i < browser()->tab_strip_model()->count(); i++) {
+      auto* tab = GetTabAt(browser(), i);
+      EXPECT_EQ(tab->GetInsets(), tab->tab_style_views()->GetContentsInsets())
+          << "Tab " << i << " internal insets should match style";
+    }
+  };
+
+  // Horizontal mode (vertical tab off).
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  assert_tab_insets();
+
+  // Vertical mode (vertical tab on).
+  ToggleVerticalTabStrip();
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  assert_tab_insets();
+
+  // Back to horizontal, then vertical again.
+  ToggleVerticalTabStrip();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  assert_tab_insets();
+
+  ToggleVerticalTabStrip();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  assert_tab_insets();
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {

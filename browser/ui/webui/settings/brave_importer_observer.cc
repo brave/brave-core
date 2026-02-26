@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/values.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 
 BraveImporterObserver::BraveImporterObserver(

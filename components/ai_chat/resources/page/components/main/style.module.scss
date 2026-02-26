@@ -235,3 +235,41 @@
 .aichatIframeContainer.dragActive {
   pointer-events: none; // Disable iframe interaction during drag operations
 }
+
+.scrollButtonContainer {
+  height: 0;
+  position: sticky;
+  bottom: 0;
+
+  opacity: 0.8;
+}
+
+.scrollToBottomButton {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--leo-color-container-background);
+  border-radius: 100%;
+}
+
+.scrollToBottomButton.hasScrollableContent {
+  animation: scroll-button-fade linear both;
+  animation-timeline: scroll();
+  animation-range: calc(100% - 96px) 100%;
+}
+
+@keyframes scroll-button-fade {
+  from {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

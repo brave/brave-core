@@ -67,10 +67,11 @@ export default function BeginGeneration() {
             isAIChatAgentProfileFeatureEnabled: false,
             isAIChatAgentProfile: false,
             openAIChatAgentProfile: () => {},
+            openURL: () => {},
             isGenerating: context.isGenerating,
             handleStopGenerating: async () => {},
             removeFile: () => {},
-            uploadFile: (useMediaCapture: boolean) => {},
+            uploadFile: () => {},
             getScreenshots: () => {},
             associatedContentInfo: [],
             conversationHistory: [],
@@ -78,6 +79,7 @@ export default function BeginGeneration() {
             isUploadingFiles: false,
             disassociateContent: () => {},
             getPluralString: () => Promise.resolve(''),
+            processImageFile: () => Promise.resolve(null),
             setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},
@@ -88,6 +90,8 @@ export default function BeginGeneration() {
             handleSkillClick: () => {},
             selectedSkill: undefined,
             skills: [],
+            handleVoiceRecognition: () => {},
+            associateDefaultContent: () => {},
           }}
         />
       </FiltersContainer>

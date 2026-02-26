@@ -8,4 +8,61 @@ import("//brave/components/brave_origin/buildflags/buildflags.gni")
 declare_args() {
   enable_brave_rewards = !is_brave_origin_branded
   enable_gemini_wallet = is_mac || is_linux || is_win || is_android
+
+  bitflyer_production_client_id = ""
+  bitflyer_production_client_secret = ""
+  bitflyer_production_fee_address = ""
+  bitflyer_production_url = ""
+  bitflyer_sandbox_client_id = ""
+  bitflyer_sandbox_client_secret = ""
+  bitflyer_sandbox_fee_address = ""
+  bitflyer_sandbox_url = ""
+
+  gemini_production_api_url = ""
+  gemini_production_fee_address = ""
+  gemini_production_oauth_url = ""
+  gemini_sandbox_api_url = ""
+  gemini_sandbox_fee_address = ""
+  gemini_sandbox_oauth_url = ""
+
+  rewards_grant_dev_endpoint = ""
+  rewards_grant_staging_endpoint = ""
+  rewards_grant_prod_endpoint = ""
+
+  uphold_production_api_url = ""
+  uphold_production_fee_address = ""
+  uphold_production_oauth_url = ""
+  uphold_sandbox_api_url = ""
+  uphold_sandbox_fee_address = ""
+  uphold_sandbox_oauth_url = ""
+
+  zebpay_production_api_url = ""
+  zebpay_production_oauth_url = ""
+  zebpay_sandbox_api_url = ""
+  zebpay_sandbox_oauth_url = ""
+}
+
+# Note: This block is NOT executed during PR builder CI runs. When making
+# changes to this block, ensure that "release-test" passes in CI before merging.
+if (is_official_build) {
+  if (enable_brave_rewards && target_os != "ios") {
+    assert(bitflyer_production_client_id != "")
+    assert(bitflyer_production_client_secret != "")
+    assert(bitflyer_production_fee_address != "")
+    assert(bitflyer_production_url != "")
+    assert(gemini_production_api_url != "")
+    assert(gemini_production_fee_address != "")
+    assert(gemini_production_oauth_url != "")
+    assert(uphold_production_api_url != "")
+    assert(uphold_production_fee_address != "")
+    assert(uphold_production_oauth_url != "")
+    assert(zebpay_production_api_url != "")
+    assert(zebpay_production_oauth_url != "")
+  }
+
+  # These args are currently used by "components/brave_adaptive_captcha" when
+  # rewards is disabled.
+  assert(rewards_grant_dev_endpoint != "")
+  assert(rewards_grant_staging_endpoint != "")
+  assert(rewards_grant_prod_endpoint != "")
 }

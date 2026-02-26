@@ -56,7 +56,7 @@ class TabManager: NSObject {
   weak var stateDelegate: TabManagerStateDelegate?
 
   /// Internal url to access the new tab page.
-  static let ntpInteralURL = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)#panel=0")!
+  static let ntpInteralURL = URL(string: "about://newtab")!
 
   /// When a URL is invalid and can't be restored or loaded, we display about:blank#blocked (same as on Desktop)
   static let aboutBlankBlockedURL = URL(string: "about:blank")!
@@ -105,7 +105,7 @@ class TabManager: NSObject {
   var isBrowserEmptyForCurrentMode: Bool {
     guard tabsForCurrentMode.count == 1,
       let tabURL = tabsForCurrentMode.first?.visibleURL,
-      InternalURL(tabURL)?.isAboutHomeURL == true
+      tabURL.isNewTabURL
     else {
       return false
     }
@@ -198,7 +198,7 @@ class TabManager: NSObject {
   var openedWebsitesCount: Int {
     tabsForCurrentMode.filter {
       if let url = $0.visibleURL {
-        return url.isWebPage() && !(InternalURL(url)?.isAboutHomeURL ?? false)
+        return url.isWebPage()
       }
       return false
     }.count
@@ -268,36 +268,9 @@ class TabManager: NSObject {
 
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
     let configuration: WKWebViewConfiguration = .init()
-    configuration.processPool = WKProcessPool()
-    configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
-
-    // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
-    // and pages that don't want the URL highlighted!
-    configuration.dataDetectorTypes = [.phoneNumber]
     configuration.userContentController = WKUserContentController()
-    configuration.preferences.isFraudulentWebsiteWarningEnabled =
-      Preferences.Shields.googleSafeBrowsing.value
-    configuration.allowsInlineMediaPlayback = true
-    // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
-    configuration.ignoresViewportScaleLimits = true
-    configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
-
-    if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
-      let senderKeyPath = String(format: "_setNetw%@rityEnabled:", "orkConnectionInteg")
-      let selector = Selector(senderKeyPath)
-      if configuration.defaultWebpagePreferences.responds(to: selector) {
-        configuration.defaultWebpagePreferences.perform(selector, with: true)
-      }
-    }
-
-    if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
-      configuration.setURLSchemeHandler(
-        InternalSchemeHandler(),
-        forURLScheme: InternalURL.scheme
-      )
-    }
-
+    configuration.prepareBraveConfiguration()
     return configuration
   }
 
@@ -364,7 +337,6 @@ class TabManager: NSObject {
 
     if let t = selectedTab, !t.isWebViewCreated, t.opener == nil {
       selectedTab?.createWebView()
-      restoreTab(t)
     }
 
     guard tab === selectedTab else {
@@ -379,16 +351,13 @@ class TabManager: NSObject {
     }
 
     UIImpactFeedbackGenerator(style: .light).vibrate()
-    if tab?.opener == nil {
-      selectedTab?.createWebView()
-    }
 
     if let selectedTab = selectedTab,
-      selectedTab.visibleURL == nil
+      selectedTab.lastCommittedURL == nil,
+      !selectedTab.isLoading
     {
-      selectedTab.setVirtualURL(selectedTab.visibleURL ?? TabManager.ntpInteralURL)
+      // Realize a zombie tab with restoration data
       restoreTab(selectedTab)
-      Logger.module.error("Force Restored a Zombie (any TabState)?!")
     }
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
@@ -460,8 +429,8 @@ class TabManager: NSObject {
   ) -> any TabState {
     let popup = TabStateFactory.create(
       with: .init(
-        initialConfiguration: parentTab.configuration,
-        braveCore: braveCore
+        profile: parentTab.isPrivate ? braveCore?.profile.offTheRecordProfile : braveCore?.profile,
+        initialConfiguration: parentTab.configuration
       )
     )
     configureTab(
@@ -541,9 +510,9 @@ class TabManager: NSObject {
     let tab = TabStateFactory.create(
       with: .init(
         id: tabId,
+        profile: isPrivate ? braveCore?.profile.offTheRecordProfile : braveCore?.profile,
         initialConfiguration: initialConfiguration,
-        lastActiveTime: lastActiveTime,
-        braveCore: braveCore
+        lastActiveTime: lastActiveTime
       )
     )
     configureTab(
@@ -700,14 +669,19 @@ class TabManager: NSObject {
 
     if !zombie {
       tab.createWebView()
-    }
 
-    if let request = request {
-      tab.loadRequest(request)
-      tab.setVirtualURL(request.url)
-    } else if !isPopup {
-      tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
-      tab.setVirtualURL(TabManager.ntpInteralURL)
+      if let request = request {
+        tab.loadRequest(request)
+      } else if !isPopup {
+        tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
+      }
+    } else {
+      // Set virtual urls for unrealized/zombie tabs
+      if let request = request {
+        tab.setVirtualURL(request.url)
+      } else if !isPopup {
+        tab.setVirtualURL(TabManager.ntpInteralURL)
+      }
     }
 
     // Ignore on restore.
@@ -886,10 +860,22 @@ class TabManager: NSObject {
     }
   }
 
+  private var websiteDataStoreForCurrentMode: WKWebsiteDataStore {
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    if FeatureList.kUseProfileWebViewConfiguration.enabled, let braveCore {
+      let configuration =
+        isPrivateBrowsing
+        ? braveCore.defaultWebViewConfiguration : braveCore.nonPersistentWebViewConfiguration
+      return configuration.websiteDataStore
+    } else {
+      let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
+      return configuration.websiteDataStore
+    }
+  }
+
   /// Shreds data for a set of tabs and returns tabs that are to be shredded/removed.
   @MainActor func shredDataForTabs(_ tabs: [any TabState]) -> Set<TabState.ID> {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
     let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
     let tabsToRemove = self.tabs(isPrivate: isPrivateBrowsing).filter({
       if let url = $0.visibleURL?.urlToShred {
@@ -899,18 +885,17 @@ class TabManager: NSObject {
     })
     Task {
       removeTabs(tabsToRemove)
-      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
+      await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
     }
     return Set(tabsToRemove.map(\.id))
   }
 
   @MainActor func shredAllTabsForCurrentMode() {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
     let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL))
     Task {
       removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
-      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
+      await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
     }
   }
 
@@ -987,7 +972,7 @@ class TabManager: NSObject {
   }
 
   @MainActor private func forgetData(for url: URL, in tab: (any TabState)?) async {
-    await forgetData(for: [url], dataStore: tab?.configuration.websiteDataStore)
+    await forgetData(for: [url], dataStore: tab?.configuration?.websiteDataStore)
 
     ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
     if let baseDomain = url.baseDomain, let tab {
@@ -1186,8 +1171,12 @@ class TabManager: NSObject {
     _ tab: some TabState,
     completionHandler: @escaping () -> Void = {}
   ) {
+    guard let configuration = tab.configuration else {
+      completionHandler()
+      return
+    }
     let dataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
-    tab.configuration.websiteDataStore.removeData(
+    configuration.websiteDataStore.removeData(
       ofTypes: dataTypes,
       modifiedSince: Date.distantPast,
       completionHandler: completionHandler
@@ -1586,7 +1575,7 @@ class TabManager: NSObject {
     // The NTP shold be removed if last recently close opened using empty tab
     if let currentTab = selectedTab,
       let currentTabURL = currentTab.visibleURL,
-      InternalURL(currentTabURL)?.isAboutHomeURL == true
+      currentTabURL.isNewTabURL
     {
       removeTab(currentTab)
     }
@@ -1619,16 +1608,13 @@ class TabManager: NSObject {
       return nil
     }
 
-    guard var recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url else {
+    guard var recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url,
+      !recentlyClosedURL.isNewTabURL
+    else {
       return nil
     }
 
     if let internalURL = InternalURL(recentlyClosedURL) {
-      // NTP should not be passed as a Recently Closed item
-      if internalURL.isAboutHomeURL {
-        return nil
-      }
-
       // Convert any internal URLs to their real URL for the Recently Closed item
       if let actualURL = internalURL.extractedUrlParam ?? internalURL.originalURLFromErrorPage {
         recentlyClosedURL = actualURL
@@ -1709,6 +1695,30 @@ extension TabManager: NSFetchedResultsControllerDelegate {
           tab.browserData?.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
         }
       }
+    }
+  }
+}
+
+extension WKWebViewConfiguration {
+  /// Updates a WebKit configuration with Brave's defaults and preferences that can't be done
+  /// from inside Chromium's `WKWebViewConfigurationProvider::ResetWithWebViewConfiguration`
+  func prepareBraveConfiguration() {
+    upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
+    preferences.isFraudulentWebsiteWarningEnabled = Preferences.Shields.googleSafeBrowsing.value
+
+    if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
+      let senderKeyPath = String(format: "_setNetw%@rityEnabled:", "orkConnectionInteg")
+      let selector = Selector(senderKeyPath)
+      if defaultWebpagePreferences.responds(to: selector) {
+        defaultWebpagePreferences.perform(selector, with: true)
+      }
+    }
+
+    if urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
+      setURLSchemeHandler(
+        InternalSchemeHandler(),
+        forURLScheme: InternalURL.scheme
+      )
     }
   }
 }

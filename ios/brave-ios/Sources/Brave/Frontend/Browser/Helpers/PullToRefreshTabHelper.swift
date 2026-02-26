@@ -34,7 +34,7 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
   private func updatePullToRefreshVisibility() {
     guard let url = tab?.visibleURL, let scrollView = tab?.webViewProxy?.scrollView else { return }
     let isRefreshControlVisible =
-      !url.isLocalUtility && Preferences.General.enablePullToRefresh.value
+      url.isWebPage() && Preferences.General.enablePullToRefresh.value
     if isRefreshControlVisible {
       if scrollView.refreshControl == nil {
         scrollView.refreshControl = UIRefreshControl(

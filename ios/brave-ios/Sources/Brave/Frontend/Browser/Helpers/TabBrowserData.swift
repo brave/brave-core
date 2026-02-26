@@ -165,8 +165,6 @@ class TabBrowserData: NSObject, TabObserver {
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
   @MainActor var currentPageData: PageData?
 
-  var isEditing = false
-
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
   var translationState: TranslateURLBarButton.TranslateState = .unavailable
@@ -438,7 +436,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func uninstall(from tab: some TabState) {
     helpers.forEach {
       let name = type(of: $0.value).messageHandlerName
-      tab.configuration.userContentController.removeScriptMessageHandler(forName: name)
+      tab.configuration?.userContentController.removeScriptMessageHandler(forName: name)
     }
   }
 
@@ -473,7 +471,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     // If this helper handles script messages, then get the handler name and register it. The Tab
     // receives all messages and then dispatches them to the right TabHelper.
     let scriptMessageHandlerName = type(of: helper).messageHandlerName
-    tab.configuration.userContentController.addScriptMessageHandler(
+    tab.configuration?.userContentController.addScriptMessageHandler(
       self,
       contentWorld: contentWorld,
       name: scriptMessageHandlerName
@@ -483,7 +481,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func removeContentScript(name: String, forTab tab: some TabState, contentWorld: WKContentWorld) {
     if let helper = helpers[name] {
       let scriptMessageHandlerName = type(of: helper).messageHandlerName
-      tab.configuration.userContentController.removeScriptMessageHandler(
+      tab.configuration?.userContentController.removeScriptMessageHandler(
         forName: scriptMessageHandlerName,
         contentWorld: contentWorld
       )

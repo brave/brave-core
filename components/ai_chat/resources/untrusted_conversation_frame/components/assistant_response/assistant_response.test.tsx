@@ -99,15 +99,17 @@ test('AssistantResponse should include expandable sources', async () => {
       allowedLinks={[]}
     />,
   )
-  // There should be the first items showing
-  let links = screen.getAllByRole('link')
-  expect(links).toHaveLength(4)
+  // There should be the first 4 source buttons + 1 expand button
+  let buttons = screen.getAllByRole('button')
+  expect(buttons).toHaveLength(5)
   // The expand button should be visible
-  const expandButton = screen.getByRole('button')
+  const expandButton = document.querySelector<HTMLButtonElement>(
+    'button[name="expand"]',
+  )!
   await userEvent.click(expandButton)
-  // There should be all items showing
-  links = screen.getAllByRole('link')
-  expect(links).toHaveLength(8)
+  // There should be all 8 source buttons (expand button removed)
+  buttons = screen.getAllByRole('button')
+  expect(buttons).toHaveLength(8)
 })
 
 test('AssistantResponse should render memory tool events inline', async () => {

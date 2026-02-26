@@ -32,7 +32,7 @@ class MockScriptsViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let tab = TabStateFactory.create(with: .init())
+    let tab = TabStateFactory.create(with: .init(profile: nil))
 
     // Will load some base scripts into this webview
     userScriptManager.loadScripts(

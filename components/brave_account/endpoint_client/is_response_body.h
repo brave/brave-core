@@ -9,7 +9,9 @@
 #include <concepts>
 #include <optional>
 
-#include "base/values.h"
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_account::endpoint_client::detail {
 

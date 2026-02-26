@@ -15,6 +15,7 @@
 .toolUse {
   margin-top: var(--leo-spacing-m);
   position: relative;
+  animation: reveal 200ms ease-out both;
 
   .toolLabel {
     all: unset;

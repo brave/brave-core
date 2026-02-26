@@ -881,7 +881,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       if !isShieldsEnabled {
         shieldIcon = shieldsOffIcon
       }
-      if currentURL.isLocal || currentURL.isLocalUtility {
+      if currentURL.isLocal || currentURL.isNewTabURL {
         shieldIcon = shieldsOffIcon
       }
     } else {

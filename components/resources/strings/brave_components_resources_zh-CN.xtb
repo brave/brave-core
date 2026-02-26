@@ -1080,7 +1080,7 @@
 <translation id="3586752056660754651">签名</translation>
 <translation id="4217653732094303705">公共加密密钥</translation>
 <translation id="3484981968509595506">DApp 正在请求提供你的公共加密密钥</translation>
-<translation id="2300240008330189182"><ph name="URL"/>正在请求您的钱包的公共加密密钥。如果您同意，本站点就能编写要发送给您的加密消息。</translation>
+<translation id="2300240008330189182"><ph name="URL"/> 正在请求获取您的钱包的公共加密密钥。如果您同意提供密钥，站点将能够编写发送给您的加密消息。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1619778919922494944">此 DApp 想读取此消息以完成您的请求</translation>
 <translation id="714506544401754321">解密信息</translation>
@@ -2262,7 +2262,7 @@ other {# 个来源}
 <translation id="6696824203401957025">新技能</translation>
 <translation id="6410279677882692627">技能将显示在 [/] 工具中，只需输入下面设置的"/名称 "即可访问。</translation>
 <translation id="1344606707744657196">提示模型</translation>
-<translation id="8458341576712814616">捷徑</translation>
+<translation id="8458341576712814616">快捷方式</translation>
 <translation id="1326559827339317236">在此输入您的快捷方式</translation>
 <translation id="5032574515228824816">提示</translation>
 <translation id="2573797314568446575">在此输入您的提示</translation>
@@ -2301,7 +2301,7 @@ other {# 个来源}
 <translation id="7417895556119762861">点击喜欢或不喜欢某个回答会向 Brave 发送评分、对话、模型、语言、版本和高级状态以优化 Leo。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">发送消息给 Leo</translation>
 <translation id="6222803935921999130">打开 AI 浏览配置文件窗口</translation>
-<translation id="1530903352777607099">Leo AI 内容代理在此配置文件中始终启用</translation>
+<translation id="1530903352777607099">AI 浏览在此配置文件中始终启用</translation>
 <translation id="8650874793377330048">停止回答</translation>
 <translation id="8712637175834984815">知道了</translation>
 <translation id="1093419424466417703">对 Leo 来说，此页面过于冗长。对话可能遗漏某些内容。因此 Leo 无法读取该页面内容的 <ph name="PERCENTAGE"/> 。</translation>
@@ -2320,7 +2320,7 @@ other {# 个来源}
 <translation id="1352836459737874921">附加其他标签页的内容</translation>
 <translation id="7173836072258346701">从书签中附加内容</translation>
 <translation id="163680814308917875">附加浏览器历史记录中的内容</translation>
-<translation id="7039179822221107025">从您的浏览器标签页发送页面内容，为 Leo 提供更多对话上下文.</translation>
+<translation id="7039179822221107025">从您的浏览器标签页发送页面内容，为 Leo 提供更多对话上下文。</translation>
 <translation id="1602382615168212961">从您的书签标签页中发送页面内容，为 Leo 提供更多对话上下文信息。</translation>
 <translation id="4808122506413075135">从您的浏览器历史记录中发送页面内容，为 Leo 提供更多对话上下文信息。</translation>
 <translation id="220541218939267992">页面内容将与您的消息一同发送给 Leo。</translation>
@@ -2422,14 +2422,14 @@ other {# 个来源}
 <translation id="4163837693685963037">该操作被检测为可能与您的请求不一致：</translation>
 <translation id="3927932062596804919">拒绝</translation>
 <translation id="4569155249847375786">已验证</translation>
-<translation id="8200772114523450471">恢復</translation>
+<translation id="8200772114523450471">继续</translation>
 <translation id="7607002721634913082">暂停</translation>
 <translation id="4773299976671772492">已停止</translation>
 <translation id="6946722113367118030">思考中</translation>
 <translation id="2113810663179257944">代码执行</translation>
 <translation id="4790888275629207278">已在沙盒中执行代码</translation>
 <translation id="4379566111233326721">代码：</translation>
-<translation id="3542130965673205258">输出:</translation>
+<translation id="3542130965673205258">输出：</translation>
 <translation id="3428245742224818842">AI 浏览</translation>
 <translation id="2854657728271352435">关于 AI 浏览配置文件</translation>
 <translation id="2301685062527585986">为保护您的数据，此独立的 AI 浏览配置文件确保 AI 代理无法访问您的主力浏览配置文件，仅在必要时具有访问和与网站交互的权限。您可以通过分派任务、让它帮您浏览网站以提升效率。</translation>
@@ -2501,7 +2501,7 @@ other {# 个来源}
 <translation id="466214682712474574">登录您的<ph name="PROVIDER"/>账户查看余额</translation>
 <translation id="8332875111286275890">登录查看余额</translation>
 <translation id="5430001801813715388">奖励</translation>
-<translation id="5966055668402779222">随心提问 随心查询...</translation>
+<translation id="5966055668402779222">询问 Brave 搜索</translation>
 <translation id="167018310108390163">自定义新标签页</translation>
 <translation id="6851426306697017546">显示时钟</translation>
 <translation id="4844370919312937270">在新标签页中显示搜索小部件</translation>
@@ -2518,12 +2518,12 @@ other {# 个来源}
 <translation id="1849266032237224734">显示更少项目</translation>
 <translation id="9125416311275819193">显示更多项目</translation>
 <translation id="8425213833346101688">更改</translation>
-<translation id="755045397420611731">额外的在线隐私和安全</translation>
+<translation id="755045397420611731">提供额外的在线隐私和安全保护</translation>
 <translation id="4520128772974831415">隐藏您的 IP 并变更您的位置</translation>
-<translation id="6819278685469225453">保护您的设备上的每个应用程序</translation>
+<translation id="6819278685469225453">保护您设备上的每个应用程序</translation>
 <translation id="8422279921836245017">已经购买？</translation>
 <translation id="8703188411226330709">开始免费试用</translation>
-<translation id="8814357473522731680">技术支持：</translation>
+<translation id="8814357473522731680">技术支持</translation>
 <translation id="7143207342074048698">正在连接</translation>
 <translation id="1202549130170287307">正在断开连接</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
@@ -2631,7 +2631,7 @@ other {# 个来源}
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="4988030440045495002">超深色主题</translation>
 <translation id="2422927186524098759">侧边栏</translation>
-<translation id="2361906291514218784">Leo 人工智能</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">工具栏</translation>
 <translation id="6225572914528673855">地址栏</translation>

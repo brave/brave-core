@@ -268,11 +268,14 @@ describe('createInterfaceApi', () => {
     }
 
     let hookResult = await act(async () => renderHook(useTestQueryData))
-
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
-
     await act(async () => hookResult.rerender())
-    expect(hookResult.result.current).toEqual([{ id: '1' }, { id: '2' }])
+    const dataFromHook = hookResult.result.current
+    expect(dataFromHook).toEqual([{ id: '1' }, { id: '2' }])
+    // Sanity check that we always get the same reference and not a re-built
+    // array. This is important for hook dependencies.
+    await act(async () => hookResult.rerender())
+    expect(hookResult.result.current).toStrictEqual(dataFromHook)
   })
 
   it('gets array data from a query with placeholder', async () => {
@@ -783,10 +786,42 @@ describe('createInterfaceApi', () => {
     expect(observer).toHaveBeenCalledTimes(2)
   })
 
+  it('fires and handles same-argument events', () => {
+    let emitter: (...args: []) => void = () => {}
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {},
+      events: {
+        myVoidEvent: event<[], []>((emit) => {
+          emitter = emit
+        }),
+      },
+    })
+
+    const observer = jest.fn()
+    const unsubscribe = api.subscribeToMyVoidEvent(observer)
+
+    // manually call the event
+    api.emitEvent('myVoidEvent', [])
+    api.emitEvent('myVoidEvent', [])
+    api.emitEvent('myVoidEvent', [])
+
+    expect(observer).toHaveBeenCalled()
+
+    // call the event from some outside function
+    expect(observer).toHaveBeenCalledTimes(3)
+
+    // verify unsubscribe no longer gets notifications
+    unsubscribe()
+    api.emitEvent('myVoidEvent', [])
+    expect(observer).toHaveBeenCalledTimes(3)
+    emitter()
+    expect(observer).toHaveBeenCalledTimes(3)
+  })
+
   it('updates the event data hook when an event is emitted', async () => {
     let emitter: (...args: [string, number]) => void = () => {}
     const api = createInterfaceApi({
-      key: 'test',
       actions: {},
       endpoints: {},
       events: {

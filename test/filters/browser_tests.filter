@@ -93,9 +93,18 @@
 
 # Optimization Guide is disabled
 # These tests crash/fail because we have kOptimizationHints feature disabled.
+-ActionTrackerForMetricsTest.*
+-Actor*BrowserTest*.*
+-Actor*BrowserTest*.*/*
+-ActorAttempt*.*
+-ActorTool*.*
 -Aiv4ModelLanguageDetectionTest/Aiv4ModelLanguageDetectionBrowserTest.CheckLanguageDetectionHistogramStatus/*
 -Aiv4ModelTimeoutBrowserTest.PassageEmbedderTestTimeout
--All/ContextualTasksContextServiceParameterizedTest.LogSignalsAndMetricsInAllTabSelectionModes/*
+-All/Actor*BrowserTest.*
+-All/Actor*BrowserTest.*/*
+-All/AutofillPrivateApiAuthToViewSensitiveEntityTest.*/*
+-All/ContextualTasksContextServiceParameterizedTest.*/*
+-All/ExecutionEngine*BrowserTest.*/*
 -All/NewTabPageUtilBrowserTest.*
 -All/NewTabPageUtilDisableFlagBrowserTest.*
 -All/NewTabPageUtilDriveHistorySyncBrowserTest.*
@@ -103,14 +112,15 @@
 -All/NewTabPageUtilSignInRequirementBrowserTest.DriveWithSignInRequirement/*
 -All/NewTabPageUtilSignInRequirementBrowserTest.GoogleCalendarWithSignInRequirement/*
 -All/PageContentAnnotationsServiceContentExtractionResponseCodeTest.SameDocumentNonErrorNavigation/*
+-AttemptFormFillingToolTest.*
 -AudioProcessMlModelForwarderBrowserTest.TriggerRegistrationWithOptimizationGuide
--AutofillPrivateApiUnitTest.*
--AutofillPrivateApiUnitTest/*.*/*
+-AutofillPrivateApi*Test.*
 -ChromeRenderFrameObserverTest.OptGuideGetsText
 -ComposeSessionBrowserTest.*
 -ContextualTasksContextServiceTest.*
 -ContextualTasksContextServiceTitlesOnlyTest.Success
 -DependencyParserModelLoaderBrowserTest.*
+-ExecutionEngine*BrowserTest.*
 -HintsFetcherPre3pcdBrowserTest.HintsFetcherDoesntFetchOnNSP
 -HistoryEmbeddingsKillSwitchBrowserTest.NoCrashAfterKillSwitch
 -HistoryEmbeddingsRestrictedSigninBrowserTest.SearchDoesNotReceiveAnswerForRestrictedSignin
@@ -153,9 +163,7 @@
 -PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
--PasswordChangeBrowserTest.*
--PasswordChangeBrowserTestShowHiddenTab.*
--PasswordChangeBrowserTestWithLoginCheck.*
+-PasswordChangeBrowserTest*.*
 -PasswordChangeUiBrowserTest.InvokeUi_LeakBubble
 -ProactivePersonalizationHintsFetcherBrowserTest.*
 -ProactivePersonalizationNoAllowedTypesHintsFetcherBrowserTest.*
@@ -543,6 +551,7 @@
 -SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderNavigationTwice
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithIframeNavigation/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
+-ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -ServiceWorker/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -ServiceWorkerAndFalse/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
@@ -859,6 +868,7 @@
 -NewTabPageUtilBrowserTest.SyncRequired
 -NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL
 -NTPTilesForSupervisedUsersTest.LoadURL
+-OpportunisticKeyRetrievalEnclaveAuthenticatorBrowserTest.*
 -PasskeyUnlockManagerBrowserTest.IsCreated
 -PasskeyUnlockManagerBrowserTest.NotifyObserversOnEnclaveStateUpdated
 -PasskeyUnlockManagerBrowserTest.OpensNewTabWithPasskeyUnlockUrl
@@ -1442,6 +1452,7 @@
 -AccountSettingsPagePixelBrowserTest.*
 -All/AvatarToolbarButtonBrowserTestWithExplicitBrowserSignin.*/*
 -All/ForceSigninProfilePickerCreationFlowBrowserTest.ForceSignin*
+-All/GlicProfileManagerDidSelectProfileTest.DidSelectProfile_NoConsent/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_MemoryPressure/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotLaunchProfile/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotSupportedProfile/*
@@ -1501,14 +1512,19 @@
 -EnterpriseWelcomeUIDialogPixelTest.InvokeUi_default/*
 -EnterpriseWelcomeUIWindowPixelTest.InvokeUi_default/*
 -GaiaRemoteConsentFlowParamBrowserTest.*
+-GlicActorGlobalFlagDisabledBrowserTest.*
+-GlicActuationOnWebPolicyTest.*
+-GlicApiTest*.*
 -GlicButtonTest.ContextMenuPinned
 -GlicButtonTest.ContextMenuUnpinned
 -GlicButtonTest.UnpinCommand
 -GlicEnablingTest.EnabledForProfileTest
+-GlicPolicy*Test.*
 -GlicProfileManagerBrowserTest.ProfileForLaunch_BasedOnActivationOrder
 -GlicProfileManagerBrowserTest.ProfileForLaunch_WithDetachedGlic
 -GlicProfileManagerBrowserTest.SetActiveGlic_DifferentProfiles
 -GlicProfileManagerBrowserTest.SetActiveGlic_SameProfile
+-GlicSidePanelCoordinator*Test.*
 -GraduatedComposeEnablingBrowserTest.GraduatedCompose
 -IOSPromosUtilsTest.InvokeUi_addresses
 -IOSPromosUtilsTest.InvokeUi_passwords
@@ -2426,7 +2442,8 @@
 -OpticalCharacterRecognizerResultsTest.PerformOCR*
 
 # These tests fail because we disable contextual cueing service.
--ContextualCueingServiceBrowserTestCCFlag.ServiceSpawnsWithCCFlag
+-ContextualCueingServiceBrowserTest*.*
+-WithContentExtraction/ZeroStateSuggestionsBrowserTest.*/*
 
 # This test fails because it sets last access date for a cookie to -8 days, but
 # we only keep them for 7 days.
@@ -2442,11 +2459,16 @@
 -PKPModelClientTest.PKPEnforced
 
 # This test fails because we set enable_glic to false.
+-ActorPageContextMetricsTest.*
 -ActorSitePolicyBrowserTest.*
 -ActorSitePolicyDelayedWarningBrowserTest.*
 -ActorSitePolicyNoSafetyChecksBrowserTest.*
 -ActorSitePolicySafeBrowsingBrowserTest.*
 -ExtensionApiTestWithFlags.ExtensionExperimentalActor
+-GlicInstanceCoordinatorBrowserTest.*
+-GlicInstanceCoordinatorTrustFirstOnboardingArm1BrowserTest.*
+-GlicTabSubMenuModelTest.UnpinThenNavigateToOtherTabAndRemainsUnpinned
+-GlicUserStatusBrowserTest.ClientDataHeaderExists
 
 # These tests fail because we change BACKGROUND_SYNC content setting to be
 # BLOCKED by default. This prevents reports from being sent.
@@ -2565,11 +2587,8 @@
 
 # These tests fail because we disable kAimEnabled.
 -All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/*
--ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
--ChromeAimEligibilityServiceCacheBrowserTest.RequestFromCache
--ChromeAimEligibilityServiceOffTheRecordBrowserTest.IsCreateImagesEligibleReturnsFalseForOffTheRecord
--ChromeAimEligibilityServiceStartupRequestBrowserTest.RespectsAllowedToolsConfig
--ChromeAimEligibilityServiceStartupRequestBrowserTest.RespectsPdfUploadConfig
+-ChromeAimEligibilityService*.*
+-OmniboxContextMenuControllerBrowserTest.AddRecentTabsToMenu
 -OmniboxContextMenuControllerBrowserTest.ExecuteCommand
 
 # This test fails because we add our own item to omnibox contextual search
@@ -3352,6 +3371,7 @@
 -SiteEngagementHelperBrowserTest.*
 -SitePerProcessWebViewTest.*
 -SmartSessionRestoreTest.CorrectLoadingOrder
+-SocketApiTest.SocketTCPExtension
 -SoundContentSettingObserverBrowserTest.*
 -SpeculationNoStatePrefetchBrowserTest.*
 -SpellcheckServiceBrowserTest.*

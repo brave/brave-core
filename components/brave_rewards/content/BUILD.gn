@@ -5,9 +5,10 @@
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/core/engine/config.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
+
+assert(enable_brave_rewards)
 
 static_library("content") {
   sources = [
@@ -90,6 +91,7 @@ source_set("testutil") {
     ":content",
     "//base",
     "//brave/browser",
+    "//brave/browser/brave_rewards",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_rewards/core/engine:headers",
@@ -99,10 +101,6 @@ source_set("testutil") {
     "//content/public/browser",
     "//testing/gtest",
   ]
-
-  if (enable_brave_rewards) {
-    deps += [ "//brave/browser/brave_rewards" ]
-  }
 
   sources = [
     "test_util.cc",

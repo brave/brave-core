@@ -35,6 +35,8 @@ consteval bool IsBuiltinTrackedInPageGraph(std::string_view name) {
 static_assert(false, "BUILTIN macro is expected to be defined");
 #endif
 #undef BUILTIN
+// Intentionally not #undef'ed.
+// CHROMIUM_SRC_NOLINT
 #define BUILTIN(name)                                                      \
   V8_WARN_UNUSED_RESULT static Tagged<Object> Builtin_Impl_##name(         \
       BuiltinArguments args, Isolate* isolate);                            \

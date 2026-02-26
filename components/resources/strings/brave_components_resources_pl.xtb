@@ -70,7 +70,7 @@
 <translation id="3446024864193919737">Pokaż Nagrody Brave</translation>
 <translation id="5585019845078534178">Karty</translation>
 <translation id="3870475560794762985">Pokaż obrazy sponsorowane</translation>
-<translation id="5684562942023496754">Możesz zarabiać na oglądaniu obrazów sponsorowanych</translation>
+<translation id="5684562942023496754">Możesz zarabiać na oglądaniu obrazów sponsorowanych.</translation>
 <translation id="6168679340384667457">Zdobywasz tokeny BAT za wyświetlone obrazy sponsorowane. Wyłączenie obrazów sponsorowanych zmniejszy liczbę tokenów, które możesz zdobyć.</translation>
 <translation id="6165508094623778733">Więcej informacji</translation>
 <translation id="2414654907269324670">Zarabiasz tokeny BAT na obrazach sponsorowanych</translation>
@@ -2109,7 +2109,7 @@
 <translation id="874783686573493196">Skup na poprzedniej grupie kart</translation>
 <translation id="9169594135889675189">Dodaj nową kartę do grupy</translation>
 <translation id="1722567105086139392">Link</translation>
-<translation id="4729794914864902904">Odlinkuj</translation>
+<translation id="4729794914864902904">Rozłącz</translation>
 <translation id="1926106318101432555">Otwórz zakładkę...</translation>
 <translation id="6118819645013156507">Przełącz do okna...</translation>
 <translation id="1623204575967809688">Scal bieżące okno z...</translation>
@@ -2318,7 +2318,7 @@
 <translation id="5794962229997281366">Udoskonalona odpowiedź wyszukiwania dla <ph name="SEARCH_TERMS"/></translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> więcej…</translation>
 <translation id="8103700533980268469">Zamknij to powiadomienie</translation>
-<translation id="3417835166382867856">Wyszukaj karty</translation>
+<translation id="3417835166382867856">Wyszukaj w kartach</translation>
 <translation id="3828029223314399057">Wyszukaj zakładki</translation>
 <translation id="381480092025168632">Historia wyszukiwania w przeglądarce</translation>
 <translation id="7311244614769792472">Brak wyników</translation>
@@ -2343,7 +2343,7 @@
 <translation id="3184606955650139158">Szybki • Search • Vision</translation>
 <translation id="7465032796278724624">Zweryfikowana prywatność dzięki NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model jest dynamicznie zmieniany, by dopasować się do specyfiki zadania.</translation>
-<translation id="3213834013136637671">Search • Vision</translation>
+<translation id="3213834013136637671">Wyszukaj • Wizja</translation>
 <translation id="3965507912994218570">Ustawienia Leo</translation>
 <translation id="3754337604877048671">Poznaj Leo AI</translation>
 <translation id="5295261408976371809">Twój <ph name="TEXT_BEFORE"/>prywatny<ph name="TEXT_AFTER"/> asystent AI wbudowany bezpośrednio w przeglądarkę.</translation>
@@ -2507,7 +2507,7 @@
 <translation id="466214682712474574">Zaloguj się na swoje konto <ph name="PROVIDER"/>, by wyświetlić saldo</translation>
 <translation id="8332875111286275890">Zaloguj się, by wyświetlić saldo</translation>
 <translation id="5430001801813715388">NAGRODY</translation>
-<translation id="5966055668402779222">Zapytaj o cokolwiek. Znajdź, co chcesz...</translation>
+<translation id="5966055668402779222">Zapytaj Brave Search</translation>
 <translation id="167018310108390163">Dostosuj stronę Nowa karta</translation>
 <translation id="6851426306697017546">Pokaż godzinę</translation>
 <translation id="4844370919312937270">Wyświetl widżet wyszukiwania w nowych kartach</translation>
@@ -2526,7 +2526,7 @@
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="755045397420611731">Dodatkowa prywatność i bezpieczeństwo w Internecie</translation>
 <translation id="4520128772974831415">Ukrywanie adresu IP i zmiana lokalizacji</translation>
-<translation id="6819278685469225453">Chroń aplikacje na Twoim urządzeniu</translation>
+<translation id="6819278685469225453">Chroń aplikacje na swoim urządzeniu</translation>
 <translation id="8422279921836245017">Masz już wykupioną tę usługę?</translation>
 <translation id="8703188411226330709">Rozpocznij bezpłatny okres próbny</translation>
 <translation id="8814357473522731680">Technologia</translation>
@@ -2637,7 +2637,7 @@
 <translation id="7207456302801184289">Witamy w Brave</translation>
 <translation id="4988030440045495002">Ultraciemny motyw</translation>
 <translation id="2422927186524098759">Pasek boczny</translation>
-<translation id="2361906291514218784">Sztuczna inteligencja Leo</translation>
+<translation id="2361906291514218784">SI Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Pasek narzędzi</translation>
 <translation id="6225572914528673855">Pasek adresu</translation>

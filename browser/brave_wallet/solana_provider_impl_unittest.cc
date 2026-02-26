@@ -93,10 +93,7 @@ class MockEventsListener : public mojom::SolanaEventsListener {
 
 class SolanaProviderImplUnitTest : public testing::Test {
  public:
-  SolanaProviderImplUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+  SolanaProviderImplUnitTest() = default;
   ~SolanaProviderImplUnitTest() override = default;
 
   void TearDown() override {
@@ -127,12 +124,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
         }));
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()),
         profile_.GetPrefs(), &local_state_);
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+        url_loader_factory_.GetSafeWeakWrapper());
     keyring_service_ = brave_wallet_service_->keyring_service();
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::PermissionManager*>(
@@ -495,7 +492,6 @@ class SolanaProviderImplUnitTest : public testing::Test {
   TestingProfile profile_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

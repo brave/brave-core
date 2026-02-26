@@ -766,9 +766,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void SetUp() override {
     Test::SetUp();
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
@@ -790,18 +787,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &prefs_,
-        &local_state_prefs_);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &prefs_, &local_state_prefs_);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL, std::nullopt);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL, std::nullopt);
   }
 
   ~JsonRpcServiceUnitTest() override = default;
-
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
-  }
 
   PrefService* prefs() { return &prefs_; }
   PrefService* local_state_prefs() { return &local_state_prefs_; }
@@ -1942,7 +1935,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
  private:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_prefs_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

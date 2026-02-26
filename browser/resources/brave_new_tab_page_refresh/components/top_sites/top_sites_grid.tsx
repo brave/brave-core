@@ -7,7 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import NavDots from '@brave/leo/react/navdots'
 
-import { TopSite } from '../../state/top_sites_state'
+import { TopSite } from '../../state/top_sites_store'
 import {
   useTopSitesState,
   useTopSitesActions,

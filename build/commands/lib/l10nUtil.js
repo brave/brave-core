@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// @ts-nocheck
+
 /**
  * This file manages the following:
  * - Lists of files needed to be translated (Which is all top level GRD and JSON files)

@@ -10,6 +10,7 @@ import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/components/ai_chat/ios/browser/headers.gni")
 import("//brave/components/brave_shields/ios/browser/headers.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/brave_user_agent/ios/common/headers.gni")
 import("//brave/components/debounce/ios/browser/headers.gni")
 import("//brave/components/url_sanitizer/ios/browser/headers.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
@@ -90,6 +91,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h",
   "//brave/ios/browser/brave_account/brave_account_authentication_bridge.h",
   "//brave/ios/browser/brave_account/brave_account_authentication_bridge_impl.h",
+  "//brave/ios/browser/brave_account/brave_account_feature_bridge.h",
   "//brave/ios/browser/brave_origin/brave_origin_service_bridge.h",
   "//brave/ios/browser/brave_origin/brave_origin_service_factory_bridge.h",
   "//brave/ios/browser/brave_news/brave_news_pref_names_bridge.h",
@@ -130,6 +132,7 @@ brave_core_public_headers += brave_domains_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += brave_shields_api_public_headers
 brave_core_public_headers += brave_shields_component_public_headers
+brave_core_public_headers += brave_user_agent_component_public_headers
 brave_core_public_headers += content_settings_component_public_headers
 brave_core_public_headers += url_sanitizer_component_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers

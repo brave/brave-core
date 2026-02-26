@@ -7,11 +7,9 @@
 
 #include <memory>
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -82,10 +80,7 @@ int32_t OpenPanelPopup(const GURL& url,
 
 class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
  public:
-  BraveWalletTabHelperBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kNativeBraveWalletFeature);
-  }
+  BraveWalletTabHelperBrowserTest() = default;
 
   void SetUpInProcessBrowserTestFixture() override {
     InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
@@ -151,7 +146,6 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,

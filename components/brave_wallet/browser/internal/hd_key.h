@@ -125,12 +125,6 @@ class HDKey {
   std::array<uint8_t, kSecp256k1FingerprintSize> GetFingerprint() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(Eip1559TransactionUnitTest,
-                           GetSignedTransactionAndHash);
-  FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest,
-                           GetSignedTransactionAndHash);
-  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, SignMessage);
-  FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransactionAndHash);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GenerateFromExtendedKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPrivateKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
@@ -139,7 +133,8 @@ class HDKey {
   HDKey& operator=(const HDKey& other);
   HDKey(const HDKey& other);
 
-  void SetPrivateKey(base::span<const uint8_t, kSecp256k1PrivateKeySize> value);
+  [[nodiscard]] bool SetPrivateKey(
+      base::span<const uint8_t, kSecp256k1PrivateKeySize> value);
   void SetChainCode(base::span<const uint8_t, kSecp256k1ChainCodeSize> value);
   void SetPublicKey(base::span<const uint8_t, kSecp256k1PubkeySize> value);
 

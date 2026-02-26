@@ -31,29 +31,35 @@ leo-input:focus:has(> .error) {
 }
 
 .dropdown {
-  height: var(--height);
-  margin: calc(-1 * var(--height)) var(--leo-spacing-s) 0px var(--leo-spacing-s);
-  position: relative;
-  transition: all 750ms;
-  z-index: -1;
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-inline: var(--leo-spacing-s);
+  overflow: hidden;
+  transition: all 400ms;
 
   &.visible {
+    grid-template-rows: 1fr;
     margin-top: var(--leo-spacing-s);
   }
 
-  leo-icon[name='check-circle-filled'] {
-    --leo-icon-color: var(--leo-color-text-interactive);
+  .dropdown-content {
+    align-self: end;
+    min-height: 0;
 
-    & + div {
-      color: var(--leo-color-text-interactive);
+    leo-icon[name='check-circle-filled'] {
+      --leo-icon-color: var(--leo-color-text-interactive);
+
+      & + div {
+        color: var(--leo-color-text-interactive);
+      }
     }
-  }
 
-  leo-icon[name='warning-triangle-filled'] {
-    --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+    leo-icon[name='warning-triangle-filled'] {
+      --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
 
-    & + div {
-      color: var(--leo-color-systemfeedback-error-text);
+      & + div {
+        color: var(--leo-color-systemfeedback-error-text);
+      }
     }
   }
 }

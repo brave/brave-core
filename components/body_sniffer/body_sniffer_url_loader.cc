@@ -450,6 +450,10 @@ void BodySnifferURLLoader::ForwardBodyToClient() {
 }
 
 void BodySnifferURLLoader::Cancel() {
+  if (!throttle_) {
+    Abort();
+    return;
+  }
   throttle_->Cancel();
 }
 

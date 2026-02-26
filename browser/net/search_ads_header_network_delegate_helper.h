@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_SEARCH_ADS_HEADER_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_BROWSER_NET_SEARCH_ADS_HEADER_NETWORK_DELEGATE_HELPER_H_
 
-#include <memory>
-
 #include "brave/browser/net/url_context.h"
 
 namespace net {
@@ -19,10 +17,11 @@ namespace brave {
 inline constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
 inline constexpr char kSearchAdsDisabledValue[] = "?0";
 
+template <template <typename> class T>
 int OnBeforeStartTransaction_SearchAdsHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+    T<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

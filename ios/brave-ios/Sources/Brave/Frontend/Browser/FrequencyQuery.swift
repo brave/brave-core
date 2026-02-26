@@ -129,7 +129,7 @@ class FrequencyQuery {
     }
 
     for tab in tabs {
-      if let url = tab.visibleURL, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
+      if let url = tab.visibleURL, url.isWebPage() {
         if selectedTab.id == tab.id {
           continue
         }

@@ -23,10 +23,7 @@ namespace brave_wallet {
 class PolkadotSubstrateRpcUnitTest : public testing::Test {
  public:
   PolkadotSubstrateRpcUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~PolkadotSubstrateRpcUnitTest() override = default;
 
@@ -36,7 +33,7 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, shared_url_loader_factory_);
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
   }
 
  protected:
@@ -47,7 +44,6 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
@@ -675,9 +671,22 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     EXPECT_TRUE(header);
 
     EXPECT_EQ(
-        base::HexEncode(header->parent_hash),
-        "F7B0A3C2684DD0C5233B41B584FAF3DDED56105DEA0F6D232A3432F973962B44");
+        base::HexEncodeLower(header->parent_hash),
+        "f7b0a3c2684dd0c5233b41b584faf3dded56105dea0f6d232a3432f973962b44");
     EXPECT_EQ(header->block_number, 13089907u);
+    EXPECT_EQ(
+        base::HexEncodeLower(header->state_root),
+        "6d55a8ef28545bd8569d1c0b8f1c5bd60e30690cbb153323e69a8281a3a96d6c");
+    EXPECT_EQ(
+        base::HexEncodeLower(header->extrinsics_root),
+        "0bd881aa73ac25f97052d9e34310b814a9ee500e7e04ef43940464e192234acb");
+
+    EXPECT_EQ(
+        base::HexEncodeLower(header->encoded_logs),
+        "0c"
+        R"(066175726120ac1b7f1100000000)"
+        R"(045250535290c612cd85d07c699b58d278616cbc9ddfe571eaab038455ee857274d0f313dc35a66bba06)"
+        R"(05617572610101ea4d72dd31de7db13b8a042c6d7519f059663e5a5ea6da72b6a5b7f35a8a894406e57d7577d4e64338991bb44363eab1a8f64a2c2d5109eaad1296974d4e088a)");
 
     parent_hash = header->parent_hash;  // Make this available to the next test.
   }
@@ -707,7 +716,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
         "id": 1,
         "jsonrpc": "2.0",
         "method": "chain_getHeader",
-        "params": ["F7B0A3C2684DD0C5233B41B584FAF3DDED56105DEA0F6D232A3432F973962B44"]
+        "params": ["f7b0a3c2684dd0c5233b41b584faf3dded56105dea0f6d232a3432f973962b44"]
       })";
 
     EXPECT_EQ(base::test::ParseJsonDict(
@@ -742,9 +751,65 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     EXPECT_TRUE(header);
 
     EXPECT_EQ(
-        base::HexEncode(header->parent_hash),
-        "8C8728C828CED532D4B5785536EF426FFED39A9459F14400342E0F2B4D78C86F");
+        base::HexEncodeLower(header->parent_hash),
+        "8c8728c828ced532d4b5785536ef426ffed39a9459f14400342e0f2b4d78c86f");
     EXPECT_EQ(header->block_number, 13089906u);
+    EXPECT_EQ(
+        base::HexEncodeLower(header->state_root),
+        "7b65214cc5e536236b8367f07e6e4acbe124ca4a249f6c4848ee817e2348e35a");
+    EXPECT_EQ(
+        base::HexEncodeLower(header->extrinsics_root),
+        "f544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554");
+
+    EXPECT_EQ(
+        base::HexEncodeLower(header->encoded_logs),
+        "0c"
+        R"(066175726120ab1b7f1100000000)"
+        R"(04525053529041db728d7bcb58fab647191ba508a795f2434129c8266de0b83317d3e3bb0001a26bba06)"
+        R"(056175726101015827097fca69ea42dc9155f4c62220ebf2cdcf191915a497be0d35a19403937e7260444c17abb52af25f45caeb5f6117a727b4cec521e0a03d19661e2f64408b)");
+  }
+
+  {
+    // Successful RPC call (genesis block).
+    url_loader_factory_.AddResponse(testnet_url, R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "number": "0x0",
+          "stateRoot": "0x7e92439a94f79671f9cade9dff96a094519b9001a7432244d46ab644bb6f746f",
+          "extrinsicsRoot": "0x03170a2e7597b7b7e3d84c05391d139a62b157e78786d8c082f29dcf4c111314",
+          "digest": {
+            "logs": []
+          }
+        }
+      })");
+
+    std::array<uint8_t, kPolkadotBlockHashSize> genesis_hash = {};
+    EXPECT_TRUE(PrefixedHexStringToFixed(
+        "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
+        genesis_hash));
+    polkadot_substrate_rpc_->GetBlockHeader(chain_id, genesis_hash,
+                                            future.GetCallback());
+
+    auto [header, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_TRUE(header);
+
+    EXPECT_EQ(
+        base::HexEncodeLower(header->parent_hash),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    EXPECT_EQ(header->block_number, 0u);
+    EXPECT_EQ(
+        base::HexEncodeLower(header->state_root),
+        "7e92439a94f79671f9cade9dff96a094519b9001a7432244d46ab644bb6f746f");
+    EXPECT_EQ(
+        base::HexEncodeLower(header->extrinsics_root),
+        "03170a2e7597b7b7e3d84c05391d139a62b157e78786d8c082f29dcf4c111314");
+
+    EXPECT_EQ(base::HexEncodeLower(header->encoded_logs), "00");
   }
 
   {
@@ -890,7 +955,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
   }
 
   {
-    // RPC nodes return hex that's too short.
+    // RPC nodes return hex that's too short (parent hash).
 
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
@@ -923,7 +988,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
   }
 
   {
-    // RPC nodes return hex that's too long.
+    // RPC nodes return hex that's too long (parent hash).
 
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
@@ -989,7 +1054,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
   }
 
   {
-    // RPC nodes return an incomplete message, which we accept.
+    // RPC nodes return an incomplete message, which we no longer accept.
 
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
@@ -1008,11 +1073,163 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
 
     auto [header, error] = future.Take();
 
-    EXPECT_FALSE(error);
-    EXPECT_EQ(
-        base::HexEncode(header->parent_hash),
-        "8C8728C828CED532D4B5785536EF426FFED39A9459F14400342E0F2B4D78C86F");
-    EXPECT_EQ(header->block_number, 13089906u);
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_FALSE(header);
+  }
+
+  {
+    // RPC nodes return hex that's too long (state root).
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "parentHash": "0x8c8728c828ced532d4b5785536ef426ffed39a9459f14400342e0f2b4d78c86f",
+          "number": "0xc7bc72",
+          "stateRoot": "0x7b65214cc5e536236b8367f07e6e4acbe124ca4a249f6c4848ee817e2348e35aff",
+          "extrinsicsRoot": "0xf544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554",
+          "digest": {
+            "logs": [
+              "0x066175726120ab1b7f1100000000",
+              "0x04525053529041db728d7bcb58fab647191ba508a795f2434129c8266de0b83317d3e3bb0001a26bba06",
+              "0x056175726101015827097fca69ea42dc9155f4c62220ebf2cdcf191915a497be0d35a19403937e7260444c17abb52af25f45caeb5f6117a727b4cec521e0a03d19661e2f64408b"
+            ]
+          }
+        }
+      })");
+
+    std::array<uint8_t, kPolkadotBlockHashSize> blockhash = {};
+    polkadot_substrate_rpc_->GetBlockHeader(chain_id, blockhash,
+                                            future.GetCallback());
+
+    auto [header, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_FALSE(header);
+  }
+
+  {
+    // RPC nodes return hex that's too long (extrinsics root).
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "parentHash": "0x8c8728c828ced532d4b5785536ef426ffed39a9459f14400342e0f2b4d78c86f",
+          "number": "0xc7bc72",
+          "stateRoot": "0x7b65214cc5e536236b8367f07e6e4acbe124ca4a249f6c4848ee817e2348e35a",
+          "extrinsicsRoot": "0xf544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554ff",
+          "digest": {
+            "logs": [
+              "0x066175726120ab1b7f1100000000",
+              "0x04525053529041db728d7bcb58fab647191ba508a795f2434129c8266de0b83317d3e3bb0001a26bba06",
+              "0x056175726101015827097fca69ea42dc9155f4c62220ebf2cdcf191915a497be0d35a19403937e7260444c17abb52af25f45caeb5f6117a727b4cec521e0a03d19661e2f64408b"
+            ]
+          }
+        }
+      })");
+
+    std::array<uint8_t, kPolkadotBlockHashSize> blockhash = {};
+    polkadot_substrate_rpc_->GetBlockHeader(chain_id, blockhash,
+                                            future.GetCallback());
+
+    auto [header, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_FALSE(header);
+  }
+
+  {
+    // RPC nodes digest logs that contain non-hex (no length minimum on logs).
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "parentHash": "0x8c8728c828ced532d4b5785536ef426ffed39a9459f14400342e0f2b4d78c86f",
+          "number": "0xc7bc72",
+          "stateRoot": "0x7b65214cc5e536236b8367f07e6e4acbe124ca4a249f6c4848ee817e2348e35a",
+          "extrinsicsRoot": "0xf544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554",
+          "digest": {
+            "logs": [
+              "0x066175726120ab1b7f1100000000cat",
+              "0x04525053529041db728d7bcb58fab647191ba508a795f2434129c8266de0b83317d3e3bb0001a26bba06",
+              "0x056175726101015827097fca69ea42dc9155f4c62220ebf2cdcf191915a497be0d35a19403937e7260444c17abb52af25f45caeb5f6117a727b4cec521e0a03d19661e2f64408b"
+            ]
+          }
+        }
+      })");
+
+    std::array<uint8_t, kPolkadotBlockHashSize> blockhash = {};
+    polkadot_substrate_rpc_->GetBlockHeader(chain_id, blockhash,
+                                            future.GetCallback());
+
+    auto [header, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_FALSE(header);
+  }
+
+  {
+    // RPC nodes return invalid digest.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "parentHash": "0x8c8728c828ced532d4b5785536ef426ffed39a9459f14400342e0f2b4d78c86f",
+          "number": "0xc7bc72",
+          "stateRoot": "0x7b65214cc5e536236b8367f07e6e4acbe124ca4a249f6c4848ee817e2348e35a",
+          "extrinsicsRoot": "0xf544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554",
+          "digest": 1234
+        }
+      })");
+
+    std::array<uint8_t, kPolkadotBlockHashSize> blockhash = {};
+    polkadot_substrate_rpc_->GetBlockHeader(chain_id, blockhash,
+                                            future.GetCallback());
+
+    auto [header, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_FALSE(header);
+  }
+
+  {
+    // RPC nodes return invalid logs.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "parentHash": "0x8c8728c828ced532d4b5785536ef426ffed39a9459f14400342e0f2b4d78c86f",
+          "number": "0xc7bc72",
+          "stateRoot": "0x7b65214cc5e536236b8367f07e6e4acbe124ca4a249f6c4848ee817e2348e35a",
+          "extrinsicsRoot": "0xf544c1490c646fc9a4786486085781a23560fb6da1e3ca42df1491045a26a554",
+          "digest": {
+            "logs": 1234
+          }
+        }
+      })");
+
+    std::array<uint8_t, kPolkadotBlockHashSize> blockhash = {};
+    polkadot_substrate_rpc_->GetBlockHeader(chain_id, blockhash,
+                                            future.GetCallback());
+
+    auto [header, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_FALSE(header);
   }
 }
 

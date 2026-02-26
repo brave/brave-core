@@ -11,11 +11,13 @@
 #include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
 #include "chrome/grit/generated_resources.h"
 
+// CHROMIUM_SRC_INTERNAL_USE
 #define IDS_NEW_INCOGNITO_WINDOW_OLD IDS_NEW_INCOGNITO_WINDOW
 #undef IDS_NEW_INCOGNITO_WINDOW
 #define IDS_NEW_INCOGNITO_WINDOW IDS_BRAVE_NEW_INCOGNITO_WINDOW
 
 // Keep "Save and share" menu title instead of "Cast, save, and share".
+// CHROMIUM_SRC_INTERNAL_USE
 #define IDS_CAST_SAVE_AND_SHARE_MENU_OLD IDS_CAST_SAVE_AND_SHARE_MENU
 #undef IDS_CAST_SAVE_AND_SHARE_MENU
 #define IDS_CAST_SAVE_AND_SHARE_MENU IDS_SAVE_AND_SHARE_MENU

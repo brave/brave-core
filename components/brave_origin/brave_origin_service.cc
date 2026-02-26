@@ -5,8 +5,15 @@
 
 #include "brave/components/brave_origin/brave_origin_service.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/features.h"
@@ -20,6 +27,11 @@
 namespace brave_origin {
 
 namespace {
+
+constexpr char kOriginSkuHostnamePart[] = "origin";
+constexpr char kRemainingCredentialCount[] = "remaining_credential_count";
+constexpr char kExpiresAt[] = "expires_at";
+
 // Helper function to check if a policy is controlled by BraveOrigin in a given
 // policy service
 bool IsPolicyControlledByBraveOrigin(policy::PolicyService* policy_service,
@@ -40,15 +52,23 @@ BraveOriginService::BraveOriginService(
     PrefService* profile_prefs,
     std::string_view profile_id,
     policy::PolicyService* profile_policy_service,
-    policy::PolicyService* browser_policy_service)
+    policy::PolicyService* browser_policy_service,
+    SkusServiceGetter skus_service_getter)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       profile_id_(profile_id),
       profile_policy_service_(profile_policy_service),
-      browser_policy_service_(browser_policy_service) {
+      browser_policy_service_(browser_policy_service),
+      skus_service_getter_(std::move(skus_service_getter)),
+      origin_sku_domain_(brave_domains::GetServicesDomain(
+          kOriginSkuHostnamePart,
+          brave_domains::ServicesEnvironment::STAGING)) {
   CHECK(local_state_);
   CHECK(profile_prefs_);
   CHECK(!profile_id_.empty());
+
+  // Eagerly check purchase state on startup so the cached value is available.
+  CheckPurchaseState(base::DoNothing());
 }
 
 BraveOriginService::~BraveOriginService() = default;
@@ -117,6 +137,63 @@ std::optional<bool> BraveOriginService::GetPolicyValue(
     return manager->GetPolicyValue(policy_key, profile_id_);
   }
   return std::nullopt;
+}
+
+void BraveOriginService::CheckPurchaseState(
+    base::OnceCallback<void(bool)> callback) {
+  if (!EnsureSkusConnected()) {
+    std::move(callback).Run(IsPurchased());
+    return;
+  }
+
+  skus_service_->CredentialSummary(
+      origin_sku_domain_,
+      base::BindOnce(&BraveOriginService::OnCredentialSummary,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+bool BraveOriginService::IsPurchased() const {
+  return BraveOriginPolicyManager::GetInstance()->IsPurchased();
+}
+
+void BraveOriginService::OnCredentialSummary(
+    base::OnceCallback<void(bool)> callback,
+    skus::mojom::SkusResultPtr summary) {
+  bool purchased = false;
+
+  std::string summary_trimmed;
+  base::TrimWhitespaceASCII(summary->message, base::TrimPositions::TRIM_ALL,
+                            &summary_trimmed);
+  if (!summary_trimmed.empty()) {
+    std::optional<base::Value::Dict> records = base::JSONReader::ReadDict(
+        summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
+
+    if (records && !records->empty()) {
+      // If there are remaining credentials or an expires_at field, the user
+      // has a valid Origin purchase.
+      int remaining = records->FindInt(kRemainingCredentialCount).value_or(0);
+      const std::string* expires_at = records->FindString(kExpiresAt);
+      purchased =
+          remaining > 0 || (expires_at != nullptr && !expires_at->empty());
+    }
+  }
+
+  BraveOriginPolicyManager::GetInstance()->SetPurchased(purchased);
+  std::move(callback).Run(purchased);
+}
+
+bool BraveOriginService::EnsureSkusConnected() {
+  if (!skus_service_) {
+    if (!skus_service_getter_) {
+      return false;
+    }
+    auto pending = skus_service_getter_.Run();
+    if (pending.is_valid()) {
+      skus_service_.Bind(std::move(pending));
+      skus_service_.reset_on_disconnect();
+    }
+  }
+  return !!skus_service_;
 }
 
 }  // namespace brave_origin

@@ -26,6 +26,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
 // Add Brave cases into GetIconIdAndroid.
 // TODO(jocelyn): Might need to update icon when we have ethereum.enable UI
 // support in Android.
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_ANDROID_CASES  \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -40,6 +41,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_DESKTOP_CASES  \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -54,6 +56,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
     return vector_icons::kExtensionIcon
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_KEYS             \
   case permissions::RequestType::kBraveEthereum: \
     return "brave_ethereum";                     \
@@ -62,6 +65,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case permissions::RequestType::kBraveCardano:  \
     return "brave_cardano";
 #else
+// CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_KEYS             \
   case permissions::RequestType::kBraveEthereum: \
   case permissions::RequestType::kBraveSolana:   \

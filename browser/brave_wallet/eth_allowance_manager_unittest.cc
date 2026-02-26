@@ -16,7 +16,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -30,7 +29,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -206,17 +204,11 @@ mojom::AllowanceInfoPtr GetAllowanceInfo(const base::DictValue& current_item,
 class EthAllowanceManagerUnitTest : public testing::Test {
  public:
   EthAllowanceManagerUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~EthAllowanceManagerUnitTest() override = default;
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     TestingProfile::Builder builder;
@@ -226,7 +218,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
         GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
@@ -496,7 +488,6 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
@@ -505,7 +496,6 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

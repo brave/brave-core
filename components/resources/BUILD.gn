@@ -7,6 +7,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -42,13 +43,16 @@ brave_grit("static_resources") {
   ]
   deps = [
     ":strings",
-    "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
   ]
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/resources" ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/components/brave_rewards/resources" ]
   }
 
   if (enable_brave_wallet) {
@@ -213,6 +217,7 @@ brave_grit("strings") {
   defines = [
     "enable_ai_chat=$enable_ai_chat",
     "enable_brave_ai_chat_agent_profile=$enable_brave_ai_chat_agent_profile",
+    "enable_ai_chat_tab_management_tool=$enable_ai_chat_tab_management_tool",
     "enable_speedreader=$enable_speedreader",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",

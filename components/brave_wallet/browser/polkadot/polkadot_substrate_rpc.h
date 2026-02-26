@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -15,11 +16,6 @@
 namespace brave_wallet {
 
 class NetworkManager;
-
-struct PolkadotBlockHeader {
-  std::array<uint8_t, kPolkadotBlockHashSize> parent_hash = {};
-  uint32_t block_number = 0;
-};
 
 struct PolkadotRuntimeVersion {
   uint32_t spec_version = 0;

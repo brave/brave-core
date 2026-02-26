@@ -7,16 +7,8 @@ import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
-import {
-  AIChatContext,
-  AIChatReactContext,
-  defaultContext as defaultAIChatContext,
-} from '../../state/ai_chat_context'
-import {
-  ConversationReactContext,
-  ConversationContext,
-  defaultContext as defaultConversationContext,
-} from '../../state/conversation_context'
+import { MockContext } from '../../state/mock_context'
+import { clearAllDataForTesting } from '$web-common/api'
 import Attachments from './index'
 import {
   AssociatedContent,
@@ -26,33 +18,6 @@ import {
   Bookmark,
   HistoryEntry,
 } from 'components/ai_chat/resources/common/mojom'
-
-const MockContext = (
-  props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,
-) => {
-  const { children, ...contextOverrides } = props
-
-  const mockContext = {
-    ...defaultConversationContext,
-    unassociatedTabs: [],
-    associatedContentInfo: [],
-    conversationUuid: undefined,
-    ...contextOverrides,
-  }
-
-  return (
-    <AIChatReactContext.Provider
-      value={{
-        ...defaultAIChatContext,
-        ...contextOverrides,
-      }}
-    >
-      <ConversationReactContext.Provider value={mockContext}>
-        {children}
-      </ConversationReactContext.Provider>
-    </AIChatReactContext.Provider>
-  )
-}
 
 // Render and flush async state updates from usePromise hooks.
 async function renderAttachments(
@@ -104,15 +69,20 @@ describe('Attachments Component', () => {
   const mockDisassociateContent = jest.fn()
 
   beforeEach(() => {
+    clearAllDataForTesting()
     jest.clearAllMocks()
   })
 
   it('renders the attachments dialog with correct title', async () => {
     await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        attachmentsDialog='tabs'
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -127,9 +97,13 @@ describe('Attachments Component', () => {
   it('renders the close button', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        attachmentsDialog='tabs'
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -142,8 +116,12 @@ describe('Attachments Component', () => {
   it('calls setAttachmentsDialog(null) when close button is clicked', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -158,9 +136,13 @@ describe('Attachments Component', () => {
   it('displays all unassociated tabs', async () => {
     await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        setAttachmentsDialog={mockSetAttachmentsDialog}
-        attachmentsDialog='tabs'
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -176,9 +158,13 @@ describe('Attachments Component', () => {
   it('displays tab URLs', async () => {
     await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        attachmentsDialog='tabs'
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -196,9 +182,13 @@ describe('Attachments Component', () => {
   it('displays favicons for each tab', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        setAttachmentsDialog={mockSetAttachmentsDialog}
-        attachmentsDialog='tabs'
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -226,10 +216,16 @@ describe('Attachments Component', () => {
   it('shows checkboxes in unchecked state for unassociated tabs', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        associatedContentInfo={[]}
-        attachmentsDialog='tabs'
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: [],
+          },
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -248,10 +244,16 @@ describe('Attachments Component', () => {
   it('shows checkboxes in checked state for associated tabs', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        associatedContentInfo={mockAssociatedContent}
-        attachmentsDialog='tabs'
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: mockAssociatedContent,
+          },
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -271,17 +273,20 @@ describe('Attachments Component', () => {
   it('has proper checkbox structure for association', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        associatedContentInfo={[]}
-        attachmentsDialog='tabs'
-        conversationUuid='test-conversation'
-        uiHandler={
-          {
-            ...defaultAIChatContext.uiHandler,
-            associateTab: mockAssociateTab,
-          } as any
-        }
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: [],
+            conversationUuid: 'test-conversation',
+          },
+        }}
+        uiHandler={{
+          associateTab: mockAssociateTab,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -301,17 +306,20 @@ describe('Attachments Component', () => {
   it('properly renders associated content info', async () => {
     const { container } = await renderAttachments(
       <MockContext
-        unassociatedTabs={mockTabs}
-        associatedContentInfo={mockAssociatedContent}
-        attachmentsDialog='tabs'
-        conversationUuid='test-conversation'
-        uiHandler={
-          {
-            ...defaultAIChatContext.uiHandler,
-            disassociateContent: mockDisassociateContent,
-          } as any
-        }
-        setAttachmentsDialog={mockSetAttachmentsDialog}
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: mockAssociatedContent,
+            conversationUuid: 'test-conversation',
+          },
+        }}
+        uiHandler={{
+          disassociateContent: mockDisassociateContent,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
       >
         <Attachments />
       </MockContext>,
@@ -329,8 +337,12 @@ describe('Attachments Component', () => {
     it('renders search input', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          unassociatedTabs={mockTabs}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -343,9 +355,13 @@ describe('Attachments Component', () => {
     it('renders all tabs when no search filter is applied', async () => {
       await renderAttachments(
         <MockContext
-          unassociatedTabs={mockTabs}
-          attachmentsDialog='tabs'
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -362,8 +378,12 @@ describe('Attachments Component', () => {
     it('shows search input with correct styling', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          unassociatedTabs={mockTabs}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -376,8 +396,12 @@ describe('Attachments Component', () => {
     it('shows search icon in input', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          unassociatedTabs={mockTabs}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -394,8 +418,12 @@ describe('Attachments Component', () => {
     it('shows no results message when there are no unassociated tabs', async () => {
       await renderAttachments(
         <MockContext
-          unassociatedTabs={[]}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: [],
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -413,9 +441,13 @@ describe('Attachments Component', () => {
     it('renders properly with empty tabs list', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          unassociatedTabs={[]}
-          attachmentsDialog='tabs'
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: [],
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -449,9 +481,13 @@ describe('Attachments Component', () => {
     it('displays bookmarks when attachmentsDialog is set to bookmarks', async () => {
       await renderAttachments(
         <MockContext
-          attachmentsDialog='bookmarks'
-          getBookmarks={() => Promise.resolve(mockBookmarks)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -471,9 +507,13 @@ describe('Attachments Component', () => {
     it('displays correct title for bookmarks dialog', async () => {
       await renderAttachments(
         <MockContext
-          attachmentsDialog='bookmarks'
-          getBookmarks={() => Promise.resolve(mockBookmarks)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -487,9 +527,13 @@ describe('Attachments Component', () => {
     it('displays correct description for bookmarks dialog', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          attachmentsDialog='bookmarks'
-          getBookmarks={() => Promise.resolve(mockBookmarks)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -503,9 +547,13 @@ describe('Attachments Component', () => {
     it('displays favicons for bookmarks', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          attachmentsDialog='bookmarks'
-          getBookmarks={() => Promise.resolve(mockBookmarks)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -531,9 +579,13 @@ describe('Attachments Component', () => {
     it('displays tabs when attachmentsDialog is set to tabs', async () => {
       await renderAttachments(
         <MockContext
-          attachmentsDialog='tabs'
-          unassociatedTabs={mockTabs}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -548,9 +600,13 @@ describe('Attachments Component', () => {
     it('displays correct title for tabs dialog', async () => {
       await renderAttachments(
         <MockContext
-          attachmentsDialog='tabs'
-          unassociatedTabs={mockTabs}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -579,9 +635,13 @@ describe('Attachments Component', () => {
     it('displays history when attachmentsDialog is set to history', async () => {
       await renderAttachments(
         <MockContext
-          attachmentsDialog='history'
-          getHistory={() => Promise.resolve(mockHistory)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -603,9 +663,13 @@ describe('Attachments Component', () => {
     it('displays correct title for history dialog', async () => {
       await renderAttachments(
         <MockContext
-          attachmentsDialog='history'
-          getHistory={() => Promise.resolve(mockHistory)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -619,9 +683,13 @@ describe('Attachments Component', () => {
     it('displays correct description for history dialog', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          attachmentsDialog='history'
-          getHistory={() => Promise.resolve(mockHistory)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,
@@ -635,9 +703,13 @@ describe('Attachments Component', () => {
     it('displays favicons for history items', async () => {
       const { container } = await renderAttachments(
         <MockContext
-          attachmentsDialog='history'
-          getHistory={() => Promise.resolve(mockHistory)}
-          setAttachmentsDialog={mockSetAttachmentsDialog}
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
         >
           <Attachments />
         </MockContext>,

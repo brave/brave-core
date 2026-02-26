@@ -552,6 +552,12 @@ public class BrowserViewController: UIViewController {
 
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
+
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      BraveWebView.didResetConfiguration = { profile, configuration in
+        configuration.prepareBraveConfiguration()
+      }
+    }
   }
 
   private func setupAdsNotificationHandler() {
@@ -1561,7 +1567,7 @@ public class BrowserViewController: UIViewController {
   func updateInContentHomePanel(_ url: URL?) {
     let isAboutHomeURL = { () -> Bool in
       if let url = url {
-        return InternalURL(url)?.isAboutHomeURL == true
+        return url.isNewTabURL
       }
       return false
     }()
@@ -2050,8 +2056,8 @@ public class BrowserViewController: UIViewController {
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    if isUsingBottomBar, let tab = tabManager.selectedTab,
-      tab.visibleURL.map(InternalURL.isValid) == false,
+    if isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
+      !url.isNewTabURL, !InternalURL.isValid(url: url),
       let color = tab.sampledPageTopColor
     {
       return color.isLight ? .darkContent : .lightContent
@@ -2061,8 +2067,8 @@ public class BrowserViewController: UIViewController {
 
   func updateStatusBarOverlayColor() {
     defer { setNeedsStatusBarAppearanceUpdate() }
-    guard isUsingBottomBar, let tab = tabManager.selectedTab,
-      tab.visibleURL.map(InternalURL.isValid) == false,
+    guard isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
+      !url.isNewTabURL, !InternalURL.isValid(url: url),
       let color = tab.sampledPageTopColor
     else {
       statusBarOverlay.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
@@ -2080,7 +2086,9 @@ public class BrowserViewController: UIViewController {
       // Whether to show search icon or + icon
       toolbar?.setSearchButtonState(url: url)
 
-      if !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode), !url.isFileURL {
+      if !url.isNewTabURL, !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
+        !url.isFileURL
+      {
         // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
         // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
@@ -2305,12 +2313,15 @@ extension BrowserViewController: SettingsDelegate {
   }
 
   func settingsCreateFakeHistory() {
-    let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
+    let urls = (0..<10000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
     for (index, url) in urls.enumerated() {
+      let factor = index / 1000
+      let dateAdded =
+        factor == 0 ? Date() : Calendar.current.date(byAdding: .day, value: -factor, to: Date())!
       profileController.historyAPI.add(
         url: url,
         title: "QA-History - BraveSearch - \(index)",
-        dateAdded: Date()
+        dateAdded: dateAdded
       )
     }
   }
@@ -2597,13 +2608,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
   }
 
   func searchViewControllerAllowFindInPage() -> Bool {
-    if let url = tabManager.selectedTab?.visibleURL,
-      let internalURL = InternalURL(url),
-      internalURL.isAboutHomeURL
-    {
-      return false
-    }
-    return true
+    return tabManager.selectedTab?.visibleURL?.isNewTabURL != true
   }
 
   @objc private func dismissQuickSearchEngines() {
@@ -3294,7 +3299,7 @@ extension BrowserViewController {
       return
     }
 
-    if FeatureList.kAIChatWebUIEnabled.enabled, FeatureList.kUseChromiumWebViews.enabled {
+    if FeatureList.kAIChatWebUIEnabled.enabled {
       if let query,
         let conversationURL = AIChatUtils.openLeoURL(
           withQuerySubmitted: query,

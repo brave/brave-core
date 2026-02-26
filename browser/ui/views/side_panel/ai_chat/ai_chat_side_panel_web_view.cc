@@ -15,11 +15,13 @@
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/browser/browser_context.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
@@ -29,6 +31,23 @@
 using SidePanelWebUIViewT_AIChatUI = SidePanelWebUIViewT<AIChatUI>;
 BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_AIChatUI, SidePanelWebUIViewT)
 END_METADATA
+
+namespace {
+BrowserWindowInterface* FindNormalBrowser(
+    const content::BrowserContext* context) {
+  BrowserWindowInterface* normal_browser = nullptr;
+  ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
+      [&](BrowserWindowInterface* browser) {
+        if (browser->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
+            browser->GetProfile() == context) {
+          normal_browser = browser;
+          return false;  // stop iterating
+        }
+        return true;  // continue iterating
+      });
+  return normal_browser;
+}
+}  // namespace
 
 // static
 std::unique_ptr<views::View> AIChatSidePanelWebView::CreateView(
@@ -110,4 +129,21 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   Navigate(&params);
 
   return params.navigated_or_inserted_contents;
+}
+
+content::WebContents* AIChatSidePanelWebView::OpenURLFromTab(
+    content::WebContents* source,
+    const content::OpenURLParams& params,
+    base::OnceCallback<void(content::NavigationHandle&)>
+        navigation_handle_callback) {
+  auto* browser = FindNormalBrowser(source->GetBrowserContext());
+  if (browser &&
+      (params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
+       params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB ||
+       params.disposition == WindowOpenDisposition::NEW_WINDOW ||
+       params.disposition == WindowOpenDisposition::OFF_THE_RECORD)) {
+    return browser->OpenURL(params, std::move(navigation_handle_callback));
+  }
+  return WebUIContentsWrapper::Host::OpenURLFromTab(
+      source, params, std::move(navigation_handle_callback));
 }

@@ -127,6 +127,7 @@ public class OnboardingStepAdapter
 
         public OnboardingBaseViewHolder(View itemView) {
             super(itemView);
+            itemView.setClipToOutline(true);
         }
 
         public abstract void viewRecycled();

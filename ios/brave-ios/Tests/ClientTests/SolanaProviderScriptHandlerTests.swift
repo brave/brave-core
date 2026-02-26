@@ -14,7 +14,7 @@ import XCTest
 @MainActor class SolanaProviderScriptHandlerTests: XCTestCase {
 
   private func testTab() -> TabState {
-    let tab = TabStateFactory.create(with: .init(braveCore: nil))
+    let tab = TabStateFactory.create(with: .init(profile: nil))
     tab.browserData = .init(tab: tab)
     return tab
   }

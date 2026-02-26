@@ -64,7 +64,7 @@ class WebKitTabState: TabState, TabStateImpl {
       guard let webView = webView, let committedURL = self.lastCommittedURL else {
         return .unknown
       }
-      if let internalURL = InternalURL(committedURL), internalURL.isAboutHomeURL {
+      if committedURL.isNewTabURL {
         // New Tab Page is a special case, should be treated as `unknown` instead of `localhost`
         return .unknown
       }
@@ -551,7 +551,7 @@ class WebKitTabState: TabState, TabStateImpl {
     )
   }
 
-  var configuration: WKWebViewConfiguration {
+  var configuration: WKWebViewConfiguration? {
     if let webView {
       return webView.configuration
     }

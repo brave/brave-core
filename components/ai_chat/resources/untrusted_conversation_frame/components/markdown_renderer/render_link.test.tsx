@@ -8,7 +8,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { RenderLink } from '.'
 
-test('Test RenderLink component with allowed links.', async () => {
+test('RenderLink component with allowed links.', async () => {
   render(
     <RenderLink
       a={{ href: 'https://example.com', children: 'Test Link' }}
@@ -20,7 +20,7 @@ test('Test RenderLink component with allowed links.', async () => {
   expect(screen.getByText('Test Link').className).toBe('conversationLink')
 })
 
-test('Test RenderLink component with disallowed links.', async () => {
+test('RenderLink component with disallowed links.', async () => {
   render(
     <RenderLink
       a={{ href: 'https://example.com', children: 'Test Link' }}
@@ -32,7 +32,7 @@ test('Test RenderLink component with disallowed links.', async () => {
   expect(screen.getByText('Test Link').className).toBe('')
 })
 
-test('Test RenderLink component with citations.', async () => {
+test('RenderLink component with citations.', async () => {
   render(
     <RenderLink
       a={{ href: 'https://brave.com', children: '1' }}
@@ -47,15 +47,15 @@ test('Test RenderLink component with citations.', async () => {
   expect(label).toHaveTextContent('1')
 
   // Make sure the citation is visible
-  const citation = document.querySelector<HTMLAnchorElement>('.citation')
+  const citation = document.querySelector<HTMLButtonElement>('.citation')
   expect(citation).toBeInTheDocument()
   expect(citation).toBeVisible()
   expect(citation).toHaveTextContent('1')
-  expect(citation?.tagName).toBe('A')
+  expect(citation?.tagName).toBe('BUTTON')
   expect(citation?.className).toBe('citation')
 })
 
-test('Test RenderLink component with disableLinkRestrictions.', async () => {
+test('RenderLink component with disableLinkRestrictions.', async () => {
   render(
     <RenderLink
       a={{ href: 'https://example.com', children: 'Test Link' }}
@@ -69,7 +69,7 @@ test('Test RenderLink component with disableLinkRestrictions.', async () => {
 })
 
 // HTTP links should never be allowed
-test('Test RenderLink component with http links.', async () => {
+test('RenderLink component with http links.', async () => {
   render(
     <RenderLink
       a={{ href: 'http://example.com', children: 'Test Link' }}

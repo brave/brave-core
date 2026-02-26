@@ -14,6 +14,7 @@ const modelIcons = {
   'chat-claude-haiku': 'anthropic-color',
   'chat-claude-sonnet': 'anthropic-color',
   'chat-qwen': 'qwen-color',
+  'chat-brave-summary': 'social-brave-release-favicon-fullheight-color',
   'chat-basic': 'meta-color',
   'chat-glm-4-7-flash': 'zai-color',
   'chat-llama-4-maverick': 'meta-color',
@@ -40,5 +41,7 @@ export function getModelIcon(model: Mojom.Model): string {
 }
 
 export const AUTOMATIC_MODEL_KEY = 'chat-automatic'
+
+export const BRAVE_SUMMARY_MODEL_KEY = 'chat-brave-summary'
 
 export const NEAR_AI_LEARN_MORE_URL = 'https://brave.com/blog/browser-ai-tee/'

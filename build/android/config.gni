@@ -43,6 +43,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/theme:java",
   "//brave/browser/ui/android/toolbar:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",
+  "//brave/components/brave_account/android:features_java",
   "//brave/components/brave_account/mojom:mojom_java",
   "//brave/components/brave_ads/core/mojom:mojom_java",
   "//brave/components/brave_news/common:mojom_java",
@@ -112,6 +113,7 @@ brave_chrome_java_srcjar_deps = [
 
 brave_chrome_app_java_resources_deps = [
   "//brave/android:java_resources",
+  "//brave/android/nala",
   "//brave/browser/first_run/android:java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",

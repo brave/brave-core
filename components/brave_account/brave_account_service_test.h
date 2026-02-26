@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -23,6 +22,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
 #include "components/prefs/testing_pref_service.h"
@@ -71,27 +71,8 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (requires { typename TestCase::Endpoint; }) {
       if (test_case.endpoint_response) {
-        const auto& endpoint_response_status_code =
-            test_case.endpoint_response->status_code;
-        auto head = endpoint_response_status_code
-                        ? network::CreateURLResponseHead(
-                              static_cast<net::HttpStatusCode>(
-                                  *endpoint_response_status_code))
-                        : nullptr;
-
-        const auto& endpoint_response_body = test_case.endpoint_response->body;
-        base::Value value(endpoint_response_body
-                              ? endpoint_response_body->has_value()
-                                    ? endpoint_response_body->value().ToValue()
-                                    : endpoint_response_body->error().ToValue()
-                              : base::DictValue());
-        const auto body = base::WriteJson(value);
-        CHECK(body);
-
-        test_url_loader_factory_.AddResponse(
-            TestCase::Endpoint::URL(), std::move(head), *body,
-            network::URLLoaderCompletionStatus(
-                test_case.endpoint_response->net_error));
+        endpoint_client::MockResponseFor<typename TestCase::Endpoint>(
+            test_url_loader_factory_, *test_case.endpoint_response);
       }
     }
 
@@ -139,7 +120,8 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  base::test::ScopedFeatureList scoped_feature_list_{features::kBraveAccount};
+  base::test::ScopedFeatureList scoped_feature_list_{
+      features::BraveAccountFeatureForTesting()};
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   std::unique_ptr<BraveAccountService> brave_account_service_;

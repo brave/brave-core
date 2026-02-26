@@ -109,14 +109,14 @@ describe('endpointsFor', () => {
     },
   })
 
-  it('should create endpoints with the correct structure', () => {
+  it('should create endpoints with the correct structure', async () => {
     // getScreenshots should generate a mutation
     expect(testResult.getScreenshots.mutation).toBeDefined()
 
     // getState should generate a query
     expect(testResult.getState.query).toBeDefined()
     // await getState.query() and check the result
-    expect(testResult.getState.query()).resolves.toEqual({
+    await expect(testResult.getState.query()).resolves.toEqual({
       aProp: 'fetched',
       bProp: false,
     })

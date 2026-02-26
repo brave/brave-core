@@ -32,10 +32,7 @@ namespace brave_wallet {
 class AccountDiscoveryManagerUnitTest : public testing::Test {
  public:
   AccountDiscoveryManagerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   ~AccountDiscoveryManagerUnitTest() override = default;
 
@@ -47,7 +44,8 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &prefs_, nullptr);
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         *keyring_service_, *network_manager_,
@@ -78,7 +76,6 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;

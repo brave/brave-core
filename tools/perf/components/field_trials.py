@@ -62,10 +62,12 @@ def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
 
   seed_path = os.path.join(artifacts_dir, 'seed.bin')
 
-  npm = 'npm.cmd' if sys.platform == 'win32' else 'npm'
-  GetProcessOutput([npm, 'install'], cwd=variations_repo_dir, check=True)
+  pnpm = 'pnpm.cmd' if sys.platform == 'win32' else 'pnpm'
+  GetProcessOutput([pnpm, 'install', '--frozen-lockfile'],
+                   cwd=variations_repo_dir,
+                   check=True)
 
-  args = [npm, 'run', 'seed_tools', 'create', '--'] + [
+  args = [pnpm, 'seed_tools', 'create'] + [
       'studies', seed_path, '--perf_mode'
   ] + ['--revision', sha1] + ['--version', f'perf@{sha1}']
 

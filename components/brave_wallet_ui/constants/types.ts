@@ -328,6 +328,7 @@ export interface SendZecTransactionParams extends BaseTransactionParams {
 
 export interface SendCardanoTransactionParams extends BaseTransactionParams {
   sendingMaxAmount: boolean
+  tokenId: string | undefined
 }
 
 export interface SendPolkadotTransactionParams extends BaseTransactionParams {

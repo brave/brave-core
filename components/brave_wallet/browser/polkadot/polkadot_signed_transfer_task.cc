@@ -131,7 +131,7 @@ void PolkadotSignedTransferTask::OnGetParentHeader(
   }
 
   CHECK(header);
-  chain_header_ = header;
+  chain_header_ = std::move(header);
   UpdateSigningHeader();
 }
 
@@ -157,7 +157,7 @@ void PolkadotSignedTransferTask::OnGetFinalizedBlockHeader(
   }
 
   CHECK(header);
-  finalized_header_ = header;
+  finalized_header_ = std::move(header);
   UpdateSigningHeader();
 }
 
@@ -187,15 +187,12 @@ void PolkadotSignedTransferTask::UpdateSigningHeader() {
 
   auto lag = current - finalized;
   if (lag.IsValidAnd([](uint32_t lag) { return lag > kMaxFinalityLag; })) {
-    signing_header_ = chain_header_;
+    signing_header_ = std::move(chain_header_);
   } else {
-    signing_header_ = finalized_header_;
+    signing_header_ = std::move(finalized_header_);
   }
 
-  GetPolkadotRpc()->GetBlockHash(
-      chain_id_, signing_header_->block_number,
-      base::BindOnce(&PolkadotSignedTransferTask::OnGetSigningBlockHash,
-                     weak_ptr_factory_.GetWeakPtr()));
+  signing_block_hash_ = signing_header_->GetHash();
 
   GetPolkadotRpc()->GetRuntimeVersion(
       chain_id_, signing_header_->parent_hash,
@@ -212,18 +209,6 @@ void PolkadotSignedTransferTask::OnGetGenesisHash(
 
   CHECK(genesis_hash);
   genesis_hash_ = genesis_hash;
-  MaybeFinalizeSignTransaction();
-}
-
-void PolkadotSignedTransferTask::OnGetSigningBlockHash(
-    std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> block_hash,
-    std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
-  }
-
-  CHECK(block_hash);
-  signing_block_hash_ = block_hash;
   MaybeFinalizeSignTransaction();
 }
 

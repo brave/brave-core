@@ -633,7 +633,7 @@ export const transactionEndpoints = ({
           const { errorMessage, success } =
             await txService.addUnapprovedBitcoinTransaction(params)
 
-          if (!success && errorMessage) {
+          if (!success) {
             throw new Error(errorMessage || 'unknown error')
           }
 
@@ -641,7 +641,11 @@ export const transactionEndpoints = ({
             data: { success },
           }
         } catch (error) {
-          return { error: 'Failed to send Btc transaction' }
+          return handleEndpointError(
+            'sendBtcTransaction',
+            'Failed to send Btc transaction',
+            error,
+          )
         }
       },
       invalidatesTags: (res, err, arg) =>
@@ -677,7 +681,7 @@ export const transactionEndpoints = ({
           const { errorMessage, success } =
             await txService.addUnapprovedZCashTransaction(params)
 
-          if (!success && errorMessage) {
+          if (!success) {
             throw new Error(errorMessage || 'unknown error')
           }
 
@@ -685,7 +689,11 @@ export const transactionEndpoints = ({
             data: { success },
           }
         } catch (error) {
-          return { error: 'Failed to send Zec transaction' }
+          return handleEndpointError(
+            'sendZecTransaction',
+            'Failed to send Zec transaction',
+            error,
+          )
         }
       },
       invalidatesTags: (res, err, arg) =>
@@ -713,13 +721,14 @@ export const transactionEndpoints = ({
             to: payload.to,
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
+            token: payload.tokenId,
             swapInfo: payload.swapInfo,
           }
 
           const { errorMessage, success } =
             await txService.addUnapprovedCardanoTransaction(params)
 
-          if (!success && errorMessage) {
+          if (!success) {
             throw new Error(errorMessage || 'unknown error')
           }
 
@@ -727,7 +736,11 @@ export const transactionEndpoints = ({
             data: { success },
           }
         } catch (error) {
-          return { error: 'Failed to send ADA transaction' }
+          return handleEndpointError(
+            'sendCardanoTransaction',
+            'Failed to send ADA transaction',
+            error,
+          )
         }
       },
       invalidatesTags: (res, err, arg) =>
@@ -761,7 +774,7 @@ export const transactionEndpoints = ({
           const { errorMessage, success } =
             await txService.addUnapprovedPolkadotTransaction(params)
 
-          if (!success && errorMessage) {
+          if (!success) {
             throw new Error(errorMessage || 'unknown error')
           }
 
@@ -769,7 +782,11 @@ export const transactionEndpoints = ({
             data: { success },
           }
         } catch (error) {
-          return { error: 'Failed to send DOT transaction' }
+          return handleEndpointError(
+            'sendPolkadotTransaction',
+            'Failed to send DOT transaction',
+            error,
+          )
         }
       },
       invalidatesTags: (res, err, arg) =>

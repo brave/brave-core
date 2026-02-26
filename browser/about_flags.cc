@@ -8,6 +8,7 @@
 #include <initializer_list>
 
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/net/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -25,8 +26,9 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/local_ai/common/features.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -139,8 +141,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      std::size(kZCashShieldedTransactionsDisabled), nullptr},
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
-     std::size(kZCashShieldedTransactionsEnabled), nullptr}
-};
+     std::size(kZCashShieldedTransactionsEnabled), nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace {
@@ -209,15 +210,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
-      {                                                                       \
-          "native-brave-wallet",                                              \
-          "Enable Brave Wallet",                                              \
-          "Native cryptocurrency wallet support without the use of "          \
-          "extensions",                                                       \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kNativeBraveWalletFeature),             \
-      },                                                                      \
       {"brave-wallet-zcash", "Enable BraveWallet ZCash support",              \
        "Zcash support for native Brave Wallet", kOsDesktop | kOsAndroid,      \
        FEATURE_WITH_PARAMS_VALUE_TYPE(                                        \
@@ -480,6 +472,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables the Tree Tab feature",                                    \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                           \
+      },                                                                     \
+      {                                                                      \
+          "brave-scrollable-tab-strip",                                      \
+          "Scrollable horizontal tab strip",                                 \
+          "Enables scrolling for horizontal tab strip when tabs overflow",   \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveScrollableTabStrip),                \
       })
 
 #else
@@ -576,6 +575,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),               \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-global-side-panel",                                   \
+          "Brave AI Chat Global Side Panel",                                   \
+          "Keeps the same conversation when navigating sites or changing "     \
+          "active tab",                                                        \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatGlobalSidePanelEverywhere),            \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-rich-search-widgets",                                 \
           "Brave AI Chat Rich Search Widgets",                                 \
           "Enables AI Chat Rich Search Widgets",                               \
@@ -658,6 +666,17 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #else
 #define BRAVE_AI_REWRITER
 #endif
+
+#define BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                               \
+  IF_BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL,                            \
+               EXPAND_FEATURE_ENTRIES({                                       \
+                   "brave-ai-chat-tab-management-tool",                       \
+                   "Brave AI Chat Tab Management Tool",                       \
+                   "AI can offer to sort, group, or close tabs to solve a "   \
+                   "user task during a conversation.",                        \
+                   kOsDesktop,                                                \
+                   FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool), \
+               }))
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #define BRAVE_ADS_FEATURE_ENTRIES                                             \
@@ -1297,6 +1316,25 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "closing a site or terminating the application.",                    \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-request-info-unique-ptr",                                     \
+          "BraveRequestInfo unique_ptr",                                       \
+          "Enable experimental use of unique_ptr/WeakPtr instead of "          \
+          "shared_ptr"                                                         \
+          "for BraveRequestInfo",                                              \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
+      },                                                                       \
+      {                                                                        \
+          "brave-email-aliases",                                               \
+          "Enable Email Aliases",                                              \
+          "Enable Email Aliases to create unique, private "                    \
+          "addresses that forward to your primary inbox. This allows you to "  \
+          "sign up for services anonymously and keep your main account free "  \
+          "from spam.",                                                        \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),          \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1316,6 +1354,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
+  BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_ADS_FEATURE_ENTRIES                                                    \
   BRAVE_LOCAL_AI_MODELS                                                        \
