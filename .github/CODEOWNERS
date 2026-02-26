@@ -9,9 +9,6 @@ script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 rewrite/ @brave/brave-core-owners
 
-# Layered Components
-/components/**/ios/ @brave/ios
-
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
 chromium_src/ui/views/view.h @brave/brave-core-owners
@@ -157,10 +154,6 @@ browser/net/brave_network_audit_search_ad_browsertest.cc @brave/sec-team
 
 # Canary
 tools/cr/ @brave/chromium-rebase-team
-
-# iOS
-/ios/ @brave/ios
-build/ios/ @brave/ios
 
 # Android tests
 android/android_browser_tests.gni @brave/android-tests-reviewers
