@@ -1,8 +1,8 @@
 diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
-index 20b61c2dfc3433f02f5c6b8f25386b8a9a6011db..100ab767232b8a6ebb9afd7d4077ac48fdd2a6bf 100644
+index 5487c3756c60389a3442c2e59a08c91890fb6f87..ea56692d02ac934885ab03a29bd624daa5328c80 100644
 --- a/content/common/BUILD.gn
 +++ b/content/common/BUILD.gn
-@@ -62,6 +62,7 @@ source_set("common") {
+@@ -64,6 +64,7 @@ source_set("common") {
    # must not link to this because it will duplicate the code in the component
    # build.
    visibility = [ "//content/*" ]

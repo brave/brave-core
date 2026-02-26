@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 3f477375e099dfb2f60c035b34318a593f7eaf5f..5a58254cafb2185f4f0f7042accd2733434e681f 100644
+index 8dfeb6d4f0012f487db0599eaf8c409f568db8cb..78812fa24f9149a2cc8961997337d843c19ccde1 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -1159,6 +1159,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1182,6 +1182,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();

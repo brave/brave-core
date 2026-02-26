@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index dac5e9152bb28b2e3ed65e5412f9f172a9aaf3ab..833de51a8a4d9bd8fa0dcc5fa34f1931c60bff08 100644
+index 1664c9a920902bcd0ab49117fb8af267beec2b7e..a18bebc1af0906477bdd1b36d1c03f120239de9f 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -772,6 +772,7 @@ static_library("ui") {
+@@ -786,6 +786,7 @@ static_library("ui") {
      # gets componentized.
      "//chrome/browser/ui/extensions:impl",
    ]
@@ -10,7 +10,7 @@ index dac5e9152bb28b2e3ed65e5412f9f172a9aaf3ab..833de51a8a4d9bd8fa0dcc5fa34f1931
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3367,7 +3368,10 @@ static_library("ui") {
+@@ -3387,7 +3388,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index dac5e9152bb28b2e3ed65e5412f9f172a9aaf3ab..833de51a8a4d9bd8fa0dcc5fa34f1931
      }
    }
  
-@@ -5519,6 +5523,7 @@ static_library("ui_public_dependencies") {
+@@ -5525,6 +5529,7 @@ static_library("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -30,7 +30,7 @@ index dac5e9152bb28b2e3ed65e5412f9f172a9aaf3ab..833de51a8a4d9bd8fa0dcc5fa34f1931
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5530,6 +5535,7 @@ static_library("ui_public_dependencies") {
+@@ -5537,6 +5542,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -38,7 +38,7 @@ index dac5e9152bb28b2e3ed65e5412f9f172a9aaf3ab..833de51a8a4d9bd8fa0dcc5fa34f1931
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5670,6 +5676,7 @@ source_set("browser_navigator_params_headers") {
+@@ -5678,6 +5684,7 @@ source_set("browser_navigator_params_headers") {
      "//url",
    ]
    deps = []

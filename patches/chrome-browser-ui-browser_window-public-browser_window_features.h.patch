@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 7e7d6be3f3a7d0baa25820a2a0b14471b68af192..7ff21e5fd2460215e4c621230a17e4c6b9d1912c 100644
+index d6a7dd18636dca1335d4c7c6bc0648a5275a846c..24794bd696517481c9c5e1ee1941a2afcd9b63cb 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -227,7 +227,7 @@ class SkillsUiWindowController;
+@@ -233,7 +233,7 @@ class SkillsUiWindowController;
  class BrowserWindowFeatures {
   public:
    BrowserWindowFeatures();

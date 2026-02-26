@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts b/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
-index 0b337de8ed64b75c4d6fd5933bdbd78e739ddc57..ba6f188dd5d24443de2baadc1b921ee59513626d 100644
+index c89d604892ee95c9c2adf401ee9d6c12a47488ef..b6258df4913cad40855a4ad8ac9b432d93cdc3a5 100644
 --- a/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
 +++ b/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
 @@ -277,7 +277,7 @@ export class CrDialogElement extends CrLitElement {

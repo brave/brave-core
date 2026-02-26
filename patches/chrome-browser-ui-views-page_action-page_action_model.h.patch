@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
-index d78b31798b488fdde784361dce940287253dbd3d..f8eb1deef4b7fa4358a54f84a268f7b7133f4599 100644
+index c8ba568169cc1616fef1ce587fb7b218f8216185..52aeee3c1241a1fcc67f09f3b8fccbeaf6ae7ae7 100644
 --- a/chrome/browser/ui/views/page_action/page_action_model.h
 +++ b/chrome/browser/ui/views/page_action/page_action_model.h
-@@ -32,6 +32,16 @@ class PageActionModelInterface {
+@@ -33,6 +33,16 @@ class PageActionModelInterface {
   public:
    PageActionModelInterface() = default;
    virtual ~PageActionModelInterface() = default;
@@ -19,7 +19,7 @@ index d78b31798b488fdde784361dce940287253dbd3d..f8eb1deef4b7fa4358a54f84a268f7b7
  
    virtual void AddObserver(PageActionModelObserver* observer) = 0;
    virtual void RemoveObserver(PageActionModelObserver* observer) = 0;
-@@ -97,6 +107,23 @@ class PageActionModel : public PageActionModelInterface {
+@@ -115,6 +125,23 @@ class PageActionModel : public PageActionModelInterface {
    PageActionModel& operator=(const PageActionModel&) = delete;
    ~PageActionModel() override;
  

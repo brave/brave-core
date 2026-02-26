@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 341cc8bea7ae84d7eb2bebd762cd253652a89c01..474d0d0a6bbae5d5cd92477d0b90eac104861d8c 100644
+index fa9df39f3cb3a8ff96928a3133697b481c6bc812..e20a0221bba87a6bcbd03dbedc7244275382c7d7 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -169,6 +169,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -168,6 +168,7 @@ class AvatarToolbarButton : public ToolbarButton,
  #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
  
   private:

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 1cccb68181828003d6b99ae39c531513bb5ae4b5..aa0586dd47d8be0ae5a10b33888c702da5f1046c 100644
+index 7643bc14a4d59fe15dad1e3585880bd655cabe00..7bf86e5b9a176bb8322f80796600d4f21472cced 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-@@ -78,6 +78,7 @@ found in the LICENSE file.
+@@ -79,6 +79,7 @@ found in the LICENSE file.
              android:background="@drawable/modern_toolbar_tablet_text_box_background"
              android:paddingEnd="@dimen/location_bar_end_padding"
              android:clipToPadding="false" />

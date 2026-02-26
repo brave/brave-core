@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/omnibox_text_util.cc b/components/omnibox/browser/omnibox_text_util.cc
-index d6c631cc7e79b27ae5f916d4d964cc6d1807e1e8..8fcc07fe929cd583ded49e53f029141f1680885a 100644
+index f06ace0ab31b5b52be66deec28adf1cf6e8a0bcc..d66dae931ff14a25b3a69027c39e1daa923080ca 100644
 --- a/components/omnibox/browser/omnibox_text_util.cc
 +++ b/components/omnibox/browser/omnibox_text_util.cc
-@@ -151,6 +151,7 @@ void AdjustTextForCopy(int sel_min,
+@@ -158,6 +158,7 @@ void AdjustTextForCopy(int sel_min,
    if (!has_user_modified_text) {
      *url_from_text = client->GetNavigationEntryURL();
      *write_url = true;
