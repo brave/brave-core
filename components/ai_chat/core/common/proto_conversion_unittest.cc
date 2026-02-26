@@ -262,6 +262,11 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
   artifact->content_json = content_json;
   mojom_event->artifacts->push_back(std::move(artifact));
 
+  auto text_block = mojom::TextContentBlock::New();
+  text_block->text = "This is a text response";
+  mojom_event->output->push_back(
+      mojom::ContentBlock::NewTextContentBlock(std::move(text_block)));
+
   // Serialize to proto
   store::ToolUseEventProto proto_event;
   bool success = SerializeToolUseEvent(mojom_event, &proto_event);
@@ -270,6 +275,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
   EXPECT_EQ(proto_event.artifacts_size(), 1);
   EXPECT_EQ(proto_event.artifacts(0).type(), "chart");
   EXPECT_EQ(proto_event.artifacts(0).content_json(), content_json);
+  EXPECT_EQ(proto_event.output_size(), 1);
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeToolUseEvent(proto_event);
