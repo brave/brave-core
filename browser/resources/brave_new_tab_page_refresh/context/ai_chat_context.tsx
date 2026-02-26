@@ -15,7 +15,9 @@ import { AIChatProvider } from '../../../../components/ai_chat/resources/page/st
 import { ConversationProvider } from '../../../../components/ai_chat/resources/page/state/conversation_context'
 import '../../../../components/ai_chat/resources/common/strings'
 
-export default function AIChatContextsProvider(props: { children: React.ReactNode }) {
+export default function AIChatContextsProvider(props: {
+  children: React.ReactNode
+}) {
   const aiChatBindings = React.useMemo(bindAiChatWebUiServices, [])
 
   const conversationDetails = React.useMemo<SelectedChatDetails>(() => {
@@ -32,7 +34,8 @@ export default function AIChatContextsProvider(props: { children: React.ReactNod
   return (
     <AIChatProvider
       api={aiChatBindings.api}
-      conversationEntriesComponent={() => (<div />)}
+      // Conversation entries are not rendered in this WebUI
+      conversationEntriesComponent={() => <></>}
     >
       <ActiveChatContext.Provider value={conversationDetails}>
         <ConversationProvider {...conversationDetails}>
