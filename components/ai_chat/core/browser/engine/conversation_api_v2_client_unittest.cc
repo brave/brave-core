@@ -2085,7 +2085,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
                                            std::vector<std::string>())));
     auto expected_event =
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-            "", "call_123", std::string(), std::move(output), std::nullopt, nullptr, true));
+            "", "call_123", std::string(), std::move(output), std::nullopt,
+            nullptr, true));
     EXPECT_CALL(mock_callbacks,
                 OnDataReceived(testing::Field(
                     "event", &EngineConsumer::GenerationResultData::event,

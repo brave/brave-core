@@ -5793,7 +5793,8 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New(
                             "", "tool_id_1", "",
-                            CreateWebSourcesOutput(1, {"weather"}), std::vector<mojom::ToolArtifactPtr>(), nullptr,
+                            CreateWebSourcesOutput(1, {"weather"}),
+                            std::vector<mojom::ToolArtifactPtr>(), nullptr,
                             true)),
                     std::nullopt));
               }),
@@ -5809,7 +5810,8 @@ TEST_F(ConversationHandlerUnitTest,
   auto expected_tool_event =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"weather\"}",
-          CreateWebSourcesOutput(1, {"weather"}), std::vector<mojom::ToolArtifactPtr>(), nullptr, true));
+          CreateWebSourcesOutput(1, {"weather"}),
+          std::vector<mojom::ToolArtifactPtr>(), nullptr, true));
 
   // UI should be notified when tool output is set
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput(_, _))
@@ -5861,7 +5863,8 @@ TEST_F(ConversationHandlerUnitTest,
   entry1->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"q1\"}",
-          CreateWebSourcesOutput(2, {"query one"}), std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
+          CreateWebSourcesOutput(2, {"query one"}),
+          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
 
   // Second assistant entry with another search tool result.
   auto entry2 = mojom::ConversationTurn::New();
@@ -5870,7 +5873,8 @@ TEST_F(ConversationHandlerUnitTest,
   entry2->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_2", "{\"query\":\"q2\"}",
-          CreateWebSourcesOutput(1, {"query two"}), std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
+          CreateWebSourcesOutput(1, {"query two"}),
+          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry1));
   conversation_handler_->chat_history_.push_back(std::move(entry2));
@@ -5903,7 +5907,8 @@ TEST_F(ConversationHandlerUnitTest,
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "page_summary", "tool_id_1", "{}",
-          CreateWebSourcesOutput(1, {"query"}), std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
+          CreateWebSourcesOutput(1, {"query"}),
+          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
   // Non-tool event is also ignored.
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("text")));
@@ -5943,7 +5948,8 @@ TEST_F(ConversationHandlerUnitTest,
   early_assistant->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"old\"}",
-          CreateWebSourcesOutput(1, {"old query"}), std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
+          CreateWebSourcesOutput(1, {"old query"}),
+          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
 
   auto user_entry = mojom::ConversationTurn::New();
   user_entry->character_type = mojom::CharacterType::HUMAN;
@@ -5985,7 +5991,8 @@ TEST_F(ConversationHandlerUnitTest,
     entry->events->push_back(
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
             "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-            CreateWebSourcesOutput(1, std::move(queries)), nullptr, true)));
+            CreateWebSourcesOutput(1, std::move(queries)),
+            std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
 
     conversation_handler_->chat_history_.push_back(std::move(entry));
 
@@ -6006,8 +6013,8 @@ TEST_F(ConversationHandlerUnitTest,
   entry->events->push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-          CreateWebSourcesOutput(1, {"alpha", "beta", "gamma"}), std::vector<mojom::ToolArtifactPtr>(), nullptr,
-          true)));
+          CreateWebSourcesOutput(1, {"alpha", "beta", "gamma"}),
+          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
 
   conversation_handler_->chat_history_.push_back(std::move(entry));
 
@@ -6196,7 +6203,8 @@ TEST_F(ConversationHandlerUnitTest,
   // Build expected tool use events for verification
   auto expected_server_tool = mojom::ToolUseEvent::New(
       "brave_web_search", "tool_id_1", "{\"query\":\"NYC\"}",
-      CreateWebSourcesOutput(1, {"NYC weather"}), std::vector<mojom::ToolArtifactPtr>(), nullptr, true);
+      CreateWebSourcesOutput(1, {"NYC weather"}),
+      std::vector<mojom::ToolArtifactPtr>(), nullptr, true);
 
   auto expected_client_tool = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_2", "{\"location\":\"NYC\"}",
