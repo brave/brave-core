@@ -8,12 +8,15 @@
 
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 
-// Add methods to override the IconLabelBubbleView methods
-#define ShouldShowLabelAfterAnimation()           \
-  ShouldShowLabelAfterAnimation() const override; \
-  bool ShouldShowLabel() const override;          \
-  SkColor GetBackgroundColor() const override;    \
-  SkColor GetForegroundColor() const override;    \
+// Add methods to override the IconLabelBubbleView methods.
+// Also add a friend class for testing.
+#define ShouldShowLabelAfterAnimation()                        \
+  ShouldShowLabelAfterAnimation() const override;              \
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                 \
+                           AlwaysShowsLabelEnsuresLabelWidth); \
+  bool ShouldShowLabel() const override;                       \
+  SkColor GetBackgroundColor() const override;                 \
+  SkColor GetForegroundColor() const override;                 \
   bool ShouldAlwaysShowLabel()
 
 #include <chrome/browser/ui/views/page_action/page_action_view.h>  // IWYU pragma: export
