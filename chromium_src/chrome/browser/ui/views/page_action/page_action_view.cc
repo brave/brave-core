@@ -20,7 +20,7 @@ bool PageActionView::ShouldAlwaysShowLabel() const {
     return true;
   }
 
-  return IconLabelBubbleView::ShouldShowLabel();
+  return IconLabelBubbleView::ShouldAlwaysShowLabel();
 }
 
 SkColor PageActionView::GetBackgroundColor() const {
