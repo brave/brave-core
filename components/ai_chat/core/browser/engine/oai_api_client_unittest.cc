@@ -81,6 +81,9 @@ struct ContentBlockSerializationTestParam {
   std::string expected_type;
   std::optional<LocalizedText> localized_text;
   std::optional<std::string> literal_text;
+  // For file content block
+  std::optional<std::string> expected_filename;
+  std::optional<std::string> expected_file_data;
 };
 
 class MockCallbacks {
@@ -431,6 +434,12 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
     image_url_dict.Set("url", img->image_url.spec());
 
     expected_content_block.Set("image_url", std::move(image_url_dict));
+  } else if (content_block->which() ==
+             mojom::ContentBlock::Tag::kFileContentBlock) {
+    base::DictValue file_dict;
+    file_dict.Set("filename", *params.expected_filename);
+    file_dict.Set("file_data", *params.expected_file_data);
+    expected_content_block.Set("file", std::move(file_dict));
   } else {
     expected_content_block.Set("text", expected_text);
   }
@@ -548,7 +557,39 @@ INSTANTIATE_TEST_SUITE_P(
             "text",
             LocalizedText{IDS_AI_CHAT_GENERATE_CONVERSATION_TITLE_PROMPT,
                           kTestContent},
-            std::nullopt}),
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_RequestSummary", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestSummary));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "Memory", base::BindRepeating([]() {
+              base::flat_map<std::string, mojom::MemoryValuePtr> memory;
+              memory["name"] = mojom::MemoryValue::NewStringValue("John Doe");
+              std::vector<std::string> prefs = {"coding", "reading"};
+              memory["preferences"] =
+                  mojom::MemoryValue::NewListValue(std::move(prefs));
+              return mojom::ContentBlock::NewMemoryContentBlock(
+                  mojom::MemoryContentBlock::New(std::move(memory)));
+            }),
+            "text",
+            LocalizedText{
+                IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT,
+                R"({"name":"John Doe","preferences":["coding","reading"]})"},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "File", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileContentBlock(
+                  mojom::FileContentBlock::New(
+                      GURL("data:application/pdf;base64,abc123"),
+                      "document.pdf"));
+            }),
+            "file", std::nullopt, std::nullopt, "document.pdf",
+            "data:application/pdf;base64,abc123"}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
       return info.param.name;
     });
