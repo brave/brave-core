@@ -70,13 +70,11 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
 
   void RequestCardanoPermissions(
       mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
-      EnableCallback callback,
-      const url::Origin& origin);
+      EnableCallback callback);
 
   void OnRequestCardanoPermissions(
       mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
       EnableCallback callback,
-      const url::Origin& origin,
       mojom::RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
@@ -87,7 +85,6 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
 
   EnableCallback pending_request_cardano_permissions_callback_;
   mojo::PendingReceiver<mojom::CardanoApi> pending_cardano_api_;
-  url::Origin pending_request_cardano_permissions_origin_;
   bool wallet_page_shown_ = false;
 
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{

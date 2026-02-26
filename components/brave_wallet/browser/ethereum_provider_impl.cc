@@ -625,7 +625,6 @@ void EthereumProviderImpl::GetEncryptionPublicKey(const std::string& address,
 void EthereumProviderImpl::Decrypt(
     const std::string& untrusted_encrypted_data_json,
     const std::string& address,
-    const url::Origin& origin,
     RequestCallback callback,
     base::Value id) {
   const auto account_id =
@@ -638,14 +637,13 @@ void EthereumProviderImpl::Decrypt(
       untrusted_encrypted_data_json,
       base::BindOnce(&EthereumProviderImpl::ContinueDecryptWithSanitizedJson,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), account_id->Clone(), origin));
+                     std::move(id), account_id->Clone()));
 }
 
 void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     RequestCallback callback,
     base::Value id,
     const mojom::AccountIdPtr& account_id,
-    const url::Origin& origin,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
     SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
@@ -680,10 +678,10 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  brave_wallet_service_->AddDecryptRequest(account_id, origin,
+  brave_wallet_service_->AddDecryptRequest(account_id, origin_,
                                            std::move(unsafe_message),
                                            std::move(callback), std::move(id));
-  delegate_->ShowPanel(origin);
+  delegate_->ShowPanel(origin_);
 }
 
 void EthereumProviderImpl::SignTypedMessage(
@@ -924,7 +922,7 @@ void EthereumProviderImpl::HandleEthRequestAccountsMethod(
     JsonRpcRequest request,
     RequestCallback callback) {
   RequestEthereumPermissions(std::move(callback), std::move(request.id),
-                             kEthRequestAccounts, origin_);
+                             kEthRequestAccounts);
 }
 
 void EthereumProviderImpl::HandleAddEthereumChainMethodMethod(
@@ -1066,7 +1064,7 @@ void EthereumProviderImpl::HandleEthDecryptMethod(JsonRpcRequest request,
     return;
   }
   Decrypt(eth_decrypt_params->untrusted_encrypted_data_json,
-          eth_decrypt_params->address, origin_, std::move(callback),
+          eth_decrypt_params->address, std::move(callback),
           std::move(request.id));
 }
 
@@ -1124,7 +1122,7 @@ void EthereumProviderImpl::HandleRequestPermissionsMethod(
   }
 
   RequestEthereumPermissions(std::move(callback), std::move(request.id),
-                             kRequestPermissionsMethod, origin_);
+                             kRequestPermissionsMethod);
 }
 
 void EthereumProviderImpl::HandleGetPermissionsMethod(
@@ -1211,12 +1209,11 @@ void EthereumProviderImpl::Send(const std::string& method,
 void EthereumProviderImpl::RequestEthereumPermissions(
     RequestCallback callback,
     base::Value id,
-    const std::string& method,
-    const url::Origin& origin) {
+    const std::string& method) {
   CHECK(delegate_);
   if (delegate_->IsPermissionDenied(mojom::CoinType::ETH)) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 origin, RequestPermissionsError::kNone,
+                                 RequestPermissionsError::kNone,
                                  std::vector<std::string>());
     return;
   }
@@ -1231,26 +1228,25 @@ void EthereumProviderImpl::RequestEthereumPermissions(
 
   if (addresses.empty()) {
     if (!wallet_onboarding_shown_) {
-      delegate_->ShowWalletOnboarding(origin);
+      delegate_->ShowWalletOnboarding(origin_);
       wallet_onboarding_shown_ = true;
     }
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 origin, RequestPermissionsError::kInternal,
+                                 RequestPermissionsError::kInternal,
                                  std::nullopt);
     return;
   }
 
   if (keyring_service_->IsLockedSync()) {
     if (pending_request_ethereum_permissions_callback_) {
-      OnRequestEthereumPermissions(
-          std::move(callback), std::move(id), method, origin,
-          RequestPermissionsError::kRequestInProgress, std::nullopt);
+      OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
+                                   RequestPermissionsError::kRequestInProgress,
+                                   std::nullopt);
       return;
     }
     pending_request_ethereum_permissions_callback_ = std::move(callback);
     pending_request_ethereum_permissions_id_ = std::move(id);
     pending_request_ethereum_permissions_method_ = method;
-    pending_request_ethereum_permissions_origin_ = origin;
     keyring_service_->RequestUnlock();
     delegate_->ShowPanel(origin_);
     return;
@@ -1262,22 +1258,22 @@ void EthereumProviderImpl::RequestEthereumPermissions(
 
   if (!success) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 origin, RequestPermissionsError::kInternal,
+                                 RequestPermissionsError::kInternal,
                                  std::nullopt);
     return;
   }
 
   if (success && !allowed_accounts->empty()) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 origin, RequestPermissionsError::kNone,
+                                 RequestPermissionsError::kNone,
                                  allowed_accounts);
   } else {
     // Request accounts if no accounts are connected.
     delegate_->RequestPermissions(
-        mojom::CoinType::ETH, addresses, origin,
+        mojom::CoinType::ETH, addresses, origin_,
         base::BindOnce(&EthereumProviderImpl::OnRequestEthereumPermissions,
                        weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), method, origin));
+                       std::move(id), method));
   }
 }
 
@@ -1289,7 +1285,7 @@ void EthereumProviderImpl::Enable(EnableCallback callback) {
         std::move(callback), base::Value());
     return;
   }
-  RequestEthereumPermissions(std::move(callback), base::Value(), "", origin_);
+  RequestEthereumPermissions(std::move(callback), base::Value(), "");
   delegate_->WalletInteractionDetected();
 }
 
@@ -1297,7 +1293,6 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     RequestCallback callback,
     base::Value id,
     const std::string& method,
-    const url::Origin& origin,
     RequestPermissionsError error,
     const std::optional<std::vector<std::string>>&
         allowed_accounts_identifiers) {
@@ -1336,7 +1331,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     }
   } else if (method == kRequestPermissionsMethod) {
     formed_response =
-        base::Value(PermissionRequestResponseToValue(origin, accounts));
+        base::Value(PermissionRequestResponseToValue(origin_, accounts));
   } else {
     base::Value::List list;
     for (const auto& account : accounts) {
@@ -1580,8 +1575,7 @@ void EthereumProviderImpl::Unlocked() {
     RequestEthereumPermissions(
         std::move(pending_request_ethereum_permissions_callback_),
         std::move(pending_request_ethereum_permissions_id_),
-        pending_request_ethereum_permissions_method_,
-        pending_request_ethereum_permissions_origin_);
+        pending_request_ethereum_permissions_method_);
   } else {
     UpdateKnownAccounts();
   }

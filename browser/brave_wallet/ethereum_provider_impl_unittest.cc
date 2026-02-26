@@ -345,7 +345,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
               }
               run_loop.Quit();
             }),
-        base::Value(), "", GetOrigin());
+        base::Value(), "");
     run_loop.Run();
     return allowed_accounts;
   }
@@ -823,7 +823,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     *unsafe_message = "";
     base::RunLoop run_loop;
     provider_->Decrypt(
-        encrypted_data_json, address, GetOrigin(),
+        encrypted_data_json, address,
         base::BindLambdaForTesting(
             [&](mojom::EthereumProviderResponsePtr response) {
               if (response->formed_response.type() ==
@@ -1418,7 +1418,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
                                          IDS_WALLET_USER_REJECTED_REQUEST));
             permission_callback_called = true;
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(permission_callback_called);
   EXPECT_FALSE(new_setup_callback_called);
@@ -1443,7 +1443,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
             EXPECT_FALSE(error_message.empty());
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   run_loop.Run();
   EXPECT_TRUE(new_setup_callback_called);
 
@@ -1463,7 +1463,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
             EXPECT_FALSE(error_message.empty());
             run_loop2.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   run_loop2.Run();
   EXPECT_FALSE(new_setup_callback_called);
 }
@@ -1517,7 +1517,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
                                          IDS_WALLET_USER_REJECTED_REQUEST));
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   run_loop.Run();
   // When CONTENT_SETTING_BLOCK is removed, previously granted permission works
   // again.
@@ -1553,7 +1553,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
             }
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   // Wait for KeyringService::GetSelectedAccount called by
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   browser_task_environment_.RunUntilIdle();
@@ -2832,7 +2832,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
             }
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   // Wait for KeyringService::GetSelectedAccount called by
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   browser_task_environment_.RunUntilIdle();
