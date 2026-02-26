@@ -206,8 +206,19 @@ export default function SearchWidget(props: {
           videos: [],
         },
       ),
-    [props.results, type],
+    [props.results],
   )
+
+  // If we have no results for the specified type, pick the first type with results (if any).
+  React.useEffect(() => {
+    if (!props.results.length) return
+    if (!results[type].length) {
+      const firstTypeWithResults = searchTypes.find(
+        (key) => results[key].length > 0,
+      )
+      if (firstTypeWithResults) setType(firstTypeWithResults)
+    }
+  }, [props.results, results, type])
 
   const resultTypes = React.useMemo(
     () =>

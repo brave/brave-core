@@ -259,6 +259,59 @@ describe('SearchWidget', () => {
     )
   })
 
+  test('should fall back to first type with results when specified type has no results', () => {
+    // type='web' but only image results provided - should fall back to 'images'
+    render(
+      <SearchWidget
+        query='test query'
+        type='web'
+        results={imageResults}
+      />,
+    )
+
+    // The query footer link reflects the active type - should be 'images' after fallback
+    const queryLink = screen.getByRole('link', { name: /test query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      'https://search.brave.com/images?q=test%20query',
+    )
+  })
+
+  test('should fall back to earliest available type (per searchTypes order) when specified type has no results', () => {
+    // type='news' but only web and video results provided - should fall back to 'web' (first in order)
+    render(
+      <SearchWidget
+        query='test query'
+        type='news'
+        results={[...webResults, ...videoResults]}
+      />,
+    )
+
+    expect(screen.getByText('Test Result 1')).toBeInTheDocument()
+    const queryLink = screen.getByRole('link', { name: /test query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      'https://search.brave.com/search?q=test%20query',
+    )
+  })
+
+  test('should not fall back when specified type has results', () => {
+    // type='images' with both web and image results - should stay on 'images'
+    render(
+      <SearchWidget
+        query='test query'
+        type='images'
+        results={[...webResults, ...imageResults]}
+      />,
+    )
+
+    const queryLink = screen.getByRole('link', { name: /test query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      'https://search.brave.com/images?q=test%20query',
+    )
+  })
+
   test('should render placeholder for empty results', () => {
     const { container } = render(
       <SearchWidget
