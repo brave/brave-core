@@ -9,6 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_infobar_delegate.h"
+#include "ui/web_dialogs/web_dialog_delegate.h"
 
 namespace content {
 class WebContents;
@@ -27,6 +28,28 @@ class PsstUiPresenter {
 
 class UiDesktopPresenter : public PsstUiPresenter {
  public:
+  class UiDesktopDelegate : public ui::WebDialogDelegate {
+   public:
+    void SetDelegateToWebContents(content::WebContents* dialog_web_contents);
+    static UiDesktopDelegate* GetDelegateFromWebContents(
+        content::WebContents* web_contents);
+
+    explicit UiDesktopDelegate(
+        content::WebContents* initiator_web_contents);
+    UiDesktopDelegate(const UiDesktopDelegate&) = delete;
+    UiDesktopDelegate& operator=(const UiDesktopDelegate&) = delete;
+    ~UiDesktopDelegate() override;
+
+    content::WebContents* GetInitiatorWebContents() const;
+
+    // ui::WebDialogDelegate:
+    void OnDialogClosed(const std::string& json_retval) override;
+
+   private:
+    raw_ptr<content::WebContents> initiator_web_contents_;  // unowned
+    raw_ptr<content::WebContents> dialog_web_contents_;     // unowned
+  };
+
   explicit UiDesktopPresenter(content::WebContents* web_contents);
   ~UiDesktopPresenter() override;
 

@@ -55,15 +55,15 @@ const char kPolicyScriptResultIsDonePropName[] = "result";
 const char kPolicyScriptResultNextUrlPropName[] = "next_url";
 const char kGetPolicyScriptResultRetryCounter[] = "retry_counter";
 const char kGetPolicyScriptResultScript[] = R"(
-(() => {
- const data = window.parent.localStorage.getItem("psst_settings_status_$1")
+((item, counter) => {
+ const data = window.parent.localStorage.getItem(item)
   if (data !== null) {
-    window.parent.localStorage.removeItem("psst_settings_status_$1");
+    window.parent.localStorage.removeItem(item);
     return JSON.parse(data)
   } else {
-    return { retry_counter: $2 }
+    return { retry_counter: counter }
   }
-})()
+})("psst_settings_status_$1",  $2)
 )";
 constexpr int kGetPolicyScriptExecutionDelay = 3;
 constexpr int kRetryCounterDefault = 5;
