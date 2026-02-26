@@ -3316,7 +3316,11 @@ extension BrowserViewController {
           zombie: true,
           isPrivate: false
         )
-        tab.aiChatWebUIHelper?.associatedTab = tabManager.selectedTab
+        if let selectedTab = tabManager.selectedTab, let url = selectedTab.lastCommittedURL,
+          url.isWebPage(includeDataURIs: false)
+        {
+          tab.aiChatWebUIHelper?.associatedTab = selectedTab
+        }
         tabManager.selectTab(tab)
       }
       return
