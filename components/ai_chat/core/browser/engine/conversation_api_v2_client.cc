@@ -544,7 +544,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     auto event = mojom::ConversationEntryEvent::NewContentReceiptEvent(
         mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
 
-    callback.Run(GenerationResultData(std::move(event), std::move(model_key)));
+    callback.Run(GenerationResultData(std::move(event), model_key));
   } else if (*object_type == "brave-chat.toolStart") {
     const std::string* tool_name = result_params.FindString("tool_name");
     if (tool_name && IsBraveSearchTool(*tool_name)) {
