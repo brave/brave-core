@@ -257,8 +257,8 @@ interface CardanoApi {
 };
 
 interface CardanoProvider {
-  Enable(pending_receiver<CardanoApi> incoming_connection)
-      => (CardanoProviderErrorBundle? error);
+  Enable()
+      => (pending_remote<CardanoApi>? api, CardanoProviderErrorBundle? error);
 
   IsEnabled() => (bool enabled);
 };
