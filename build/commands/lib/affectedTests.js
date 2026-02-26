@@ -8,7 +8,7 @@ import { readFile, writeFile } from 'fs/promises'
 import child_process from 'node:child_process'
 import path from 'path'
 import config from './config.js'
-import { unlink } from 'fs-extra'
+import fs from 'fs-extra'
 import { randomUUID } from 'crypto'
 import { tmpdir } from 'os'
 import {
@@ -115,7 +115,7 @@ async function analyzeAffectedTests(
 
   const output = await readFile(analyzeOutJson, 'utf-8').then(JSON.parse)
 
-  await Promise.all([unlink(analyzeJson), unlink(analyzeOutJson)])
+  await Promise.all([fs.unlink(analyzeJson), fs.unlink(analyzeOutJson)])
 
   return {
     outDir,
