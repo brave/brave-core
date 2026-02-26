@@ -6,6 +6,7 @@
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 import jest from 'eslint-plugin-jest'
+import importPlugin from 'eslint-plugin-import'
 import licenses from 'eslint-plugin-licenses'
 import noUnsanitized from 'eslint-plugin-no-unsanitized'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -285,6 +286,19 @@ export default defineConfig([
     files: ['**/*.{js,jsx,mjs,cjs}'],
     rules: {
       '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    // Enforce import resolution for build/commands scripts. When running
+    // TypeScript natively via Node.js (no transpilation), imports must use the
+    // real file extension. For example, if a file is named config.ts, importing
+    // it as './config.js' is an error.
+    files: ['build/commands/**/*.{js,cjs,mjs,ts,cts,mts}'],
+    plugins: {
+      import: importPlugin,
+    },
+    rules: {
+      'import/no-unresolved': 'error',
     },
   },
   {
