@@ -334,7 +334,7 @@ extension ToolbarVisibilityViewModel {
 
     send(action: .dragged(snapshot: snapshot, panData: panData))
 
-    if pan.state == .ended {
+    if pan.state == .ended || pan.state == .cancelled || pan.state == .failed {
       send(action: .endedDrag(snapshot: snapshot, panData: panData))
     }
   }

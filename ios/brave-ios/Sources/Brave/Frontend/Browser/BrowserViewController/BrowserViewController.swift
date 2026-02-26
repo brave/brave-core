@@ -761,6 +761,17 @@ public class BrowserViewController: UIViewController {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
     }
+
+    // If toolbarVisibilityViewModel.isEnabled got stuck false while the keyboard isn't actually
+    // showing, recover the toolbar visibility state that the keyboard handler left behind
+    if !toolbarVisibilityViewModel.isEnabled, keyboardState == nil {
+      toolbarVisibilityViewModel.isEnabled = true
+      header.expandedBarStackView.alpha = 1
+      header.collapsedBarContainerView.alpha =
+        toolbarVisibilityViewModel.toolbarState == .expanded ? 0 : 1
+      collapsedURLBarView.isKeyboardVisible = false
+    }
+
     if !isContentHiddenInBackground {
       return
     }
@@ -2188,8 +2199,9 @@ public class BrowserViewController: UIViewController {
       toolbarTopConstraint?.update(offset: 0)
       toolbarBottomConstraint?.update(offset: 0)
 
-      // Check if UI side is collapsed already
-      if topToolbar.locationContainer.alpha < 1 {
+      // Check if UI side is collapsed already, and that bar visibility isn't being managed
+      // externally (e.g. by the keyboard handler which sets isEnabled = false)
+      if topToolbar.locationContainer.alpha < 1, toolbarVisibilityViewModel.isEnabled {
         let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
         animator.addAnimations { [self] in
           view.layoutIfNeeded()
@@ -2242,10 +2254,16 @@ public class BrowserViewController: UIViewController {
       topToolbar.locationContainer.alpha = 0
       toolbarBottomConstraint?.update(offset: footerHeight)
     }
-    tabsBar.view.alpha = topToolbar.locationContainer.alpha
-    topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
-    header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
-    toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+    // Only update bar visibility alphas when the toolbar visibility isn't being managed
+    // externally (e.g. by the keyboard handler which sets isEnabled = false). Skipping
+    // this when isEnabled = false prevents zeroing out collapsedBarContainerView while
+    // expandedBarStackView is already hidden, which would leave both bars invisible.
+    if toolbarVisibilityViewModel.isEnabled {
+      tabsBar.view.alpha = topToolbar.locationContainer.alpha
+      topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+      header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
+      toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+    }
     let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
     animator.addAnimations {
       self.view.layoutIfNeeded()
