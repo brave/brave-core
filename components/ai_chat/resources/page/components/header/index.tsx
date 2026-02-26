@@ -186,6 +186,7 @@ export function NavigationHeader() {
             aria-label={newChatButtonLabel}
             title={newChatButtonLabel}
             onClick={createNewConversation}
+            data-test-id='new-chat-button'
           >
             <Icon name='edit-box' />
           </Button>
