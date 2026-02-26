@@ -315,7 +315,9 @@ public class BrowserViewController: UIViewController {
       windowId: windowId,
       rewards: rewards,
       braveCore: profileController,
-      privateBrowsingManager: privateBrowsingManager
+      profile: profileController.profile,
+      privateBrowsingManager: privateBrowsingManager,
+      tabCreationFactory: TabStateFactory.create
     )
 
     // Remove outdated Recently Closed tabs

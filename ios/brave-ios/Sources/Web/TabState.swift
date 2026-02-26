@@ -28,13 +28,13 @@ public enum SecureContentState {
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
-    public var profile: (any Profile)?
+    public var profile: any Profile
     public var initialConfiguration: WKWebViewConfiguration?
     public var lastActiveTime: Date?
 
     public init(
       id: UUID = .init(),
-      profile: (any Profile)?,
+      profile: any Profile,
       initialConfiguration: WKWebViewConfiguration? = nil,
       lastActiveTime: Date? = nil
     ) {
@@ -48,19 +48,12 @@ public class TabStateFactory {
   public static func create(with params: CreateTabParams) -> any TabState {
     let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
-    if let profile = params.profile {
-      let cwvConfiuration = BraveWebViewConfiguration(profile: profile)
-      return ChromiumTabState(
-        id: params.id,
-        configuration: cwvConfiuration,
-        wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
-      )
-    }
-    let webKitTabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
-    if let lastActiveTime = params.lastActiveTime {
-      webKitTabState.lastActiveTime = lastActiveTime
-    }
-    return webKitTabState
+    let cwvConfiuration = BraveWebViewConfiguration(profile: params.profile)
+    return ChromiumTabState(
+      id: params.id,
+      configuration: cwvConfiuration,
+      wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
+    )
   }
 }
 

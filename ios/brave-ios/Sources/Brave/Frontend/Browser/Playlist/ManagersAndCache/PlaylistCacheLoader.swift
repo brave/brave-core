@@ -18,8 +18,8 @@ import WebKit
 import os.log
 
 class LivePlaylistWebLoaderFactory: PlaylistWebLoaderFactory {
-  let profile: (any Profile)?
-  init(profile: (any Profile)?) {
+  let profile: any Profile
+  init(profile: any Profile) {
     self.profile = profile
   }
   func makeWebLoader() -> PlaylistWebLoader {
@@ -35,10 +35,10 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   private weak var certStore: CertStore?
   private var handler: ((PlaylistInfo?) -> Void)?
 
-  init(profile: (any Profile)?) {
+  init(profile: any Profile) {
     let tab = TabStateFactory.create(
       with: .init(
-        profile: profile?.offTheRecordProfile,
+        profile: profile.offTheRecordProfile,
         initialConfiguration:
           WKWebViewConfiguration().then {
             $0.preferences = WKPreferences()
