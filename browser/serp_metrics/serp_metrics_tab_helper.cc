@@ -6,7 +6,6 @@
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 
 #include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -17,11 +16,9 @@
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_engine_utils.h"
-#include "components/search_engines/template_url_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
@@ -43,15 +40,6 @@ SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents)
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
-
-  if (TemplateURLService* template_url_service =
-          TemplateURLServiceFactory::GetForProfile(profile)) {
-    serp_classifier_ = std::make_unique<SerpClassifier>(template_url_service);
-  } else {
-    // `TemplateURLService` can only be null in tests.
-    CHECK_IS_TEST();
-  }
-
   misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           profile);
@@ -75,22 +63,12 @@ SerpMetricsTabHelper::~SerpMetricsTabHelper() = default;
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SerpMetricsTabHelper::IsSameSearchQuery(const GURL& url) const {
-  if (!serp_classifier_) {
-    CHECK_IS_TEST();
-    return false;
-  }
-
   return last_recorded_serp_url_ &&
-         serp_classifier_->IsSameSearchQuery(url, *last_recorded_serp_url_);
+         serp_classifier_.IsSameSearchQuery(url, *last_recorded_serp_url_);
 }
 
 void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
     const GURL& url) {
-  if (!serp_classifier_) {
-    CHECK_IS_TEST();
-    return;
-  }
-
   if (IsSameSearchQuery(url)) {
     // The navigation repeats the same search query as the last recorded SERP,
     // so do not double-count it.
@@ -98,7 +76,7 @@ void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
   }
 
   std::optional<SearchEngineType> search_engine_type =
-      serp_classifier_->MaybeClassify(url);
+      serp_classifier_.MaybeClassify(url);
   if (!search_engine_type) {
     return;
   }

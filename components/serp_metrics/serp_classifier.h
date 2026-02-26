@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_SERP_METRICS_SERP_CLASSIFIER_H_
 #define BRAVE_COMPONENTS_SERP_METRICS_SERP_CLASSIFIER_H_
 
+#include <memory>
 #include <optional>
 
-#include "base/memory/raw_ptr.h"
 #include "components/search_engines/search_engine_type.h"
 
 class GURL;
-class TemplateURLService;
+class TemplateURL;
 
 namespace serp_metrics {
 
@@ -21,8 +21,8 @@ namespace serp_metrics {
 
 class SerpClassifier final {
  public:
-  explicit SerpClassifier(TemplateURLService* template_url_service);
-  ~SerpClassifier();
+  SerpClassifier() = default;
+  ~SerpClassifier() = default;
 
   SerpClassifier(const SerpClassifier&) = delete;
   SerpClassifier& operator=(const SerpClassifier&) = delete;
@@ -31,15 +31,16 @@ class SerpClassifier final {
   bool IsSameSearchQuery(const GURL& lhs, const GURL& rhs) const;
 
   // Returns the corresponding search engine type if `url` is a SERP. Returns
-  // `std::nullopt` if `url` is not a SERP or if the navigation repeats the same
-  // canonical SERP URL consecutively. This avoids double-counting.
+  // `std::nullopt` if `url` is not a SERP.
   std::optional<SearchEngineType> MaybeClassify(const GURL& url);
 
  private:
   // Normalizes a URL so equivalent search results pages compare equal.
   GURL NormalizeUrl(const GURL& url) const;
 
-  const raw_ptr<TemplateURLService> template_url_service_;  // Not owned.
+  // Returns a `TemplateURL` if `url` matches the search engine results page for
+  // any prepopulated engine in the allow list.
+  std::unique_ptr<TemplateURL> MaybeGetTemplateUrl(const GURL& url) const;
 };
 
 }  // namespace serp_metrics

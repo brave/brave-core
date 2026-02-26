@@ -5,12 +5,13 @@
 
 #include "brave/components/serp_metrics/serp_classifier.h"
 
-#include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
-#include "components/search_engines/template_url_service.h"
+#include "components/search_engines/template_url_data_util.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
 #include "url/gurl.h"
 
 namespace serp_metrics {
@@ -29,54 +30,47 @@ constexpr auto kDisallowList = base::MakeFixedFlatSet<SearchEngineType>(
         SEARCH_ENGINE_STARTER_PACK_AI_MODE,
     });
 
-}  // namespace
+// Returns a `TemplateURL` if `url` matches the search engine results page for
+// `prepopulated_engine`.
+std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
+    const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine,
+    const GURL& url) {
+  const auto template_url_data =
+      TemplateURLDataFromPrepopulatedEngine(prepopulated_engine);
+  auto template_url = std::make_unique<TemplateURL>(*template_url_data);
 
-SerpClassifier::SerpClassifier(TemplateURLService* template_url_service)
-    : template_url_service_(template_url_service) {
-  CHECK(template_url_service_);
+  if (template_url->type() != TemplateURL::NORMAL) {
+    // Ignore non-standard search engines (e.g. extension/omnibox).
+    return nullptr;
+  }
 
-  template_url_service->Load();
+  if (!template_url->IsSearchURL(url, SearchTermsData())) {
+    return nullptr;
+  }
+
+  return template_url;
 }
 
-SerpClassifier::~SerpClassifier() = default;
+}  // namespace
 
 bool SerpClassifier::IsSameSearchQuery(const GURL& lhs, const GURL& rhs) const {
   return NormalizeUrl(lhs) == NormalizeUrl(rhs);
 }
 
 std::optional<SearchEngineType> SerpClassifier::MaybeClassify(const GURL& url) {
-  if (!template_url_service_->loaded()) {
-    return std::nullopt;
-  }
-
   const GURL normalized_url = NormalizeUrl(url);
 
-  TemplateURL* template_url =
-      template_url_service_->GetTemplateURLForHost(normalized_url.GetHost());
-  if (!template_url) {
-    return std::nullopt;
+  if (const auto template_url = MaybeGetTemplateUrl(normalized_url)) {
+    const SearchEngineType search_engine_type =
+        template_url->GetEngineType(SearchTermsData());
+    if (kDisallowList.contains(search_engine_type)) {
+      return std::nullopt;
+    }
+
+    return search_engine_type;
   }
 
-  if (template_url->type() != TemplateURL::NORMAL) {
-    // Ignore non-standard search engines (e.g. extension/omnibox).
-    return std::nullopt;
-  }
-
-  const SearchTermsData& search_terms_data =
-      template_url_service_->search_terms_data();
-
-  if (!template_url->IsSearchURL(normalized_url, search_terms_data)) {
-    // Not a search URL.
-    return std::nullopt;
-  }
-
-  const SearchEngineType search_engine_type =
-      template_url->GetEngineType(search_terms_data);
-  if (kDisallowList.contains(search_engine_type)) {
-    return std::nullopt;
-  }
-
-  return search_engine_type;
+  return std::nullopt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -94,26 +88,36 @@ GURL SerpClassifier::NormalizeUrl(const GURL& url) const {
   url_replacements.ClearPort();
   GURL normalized_url = url.ReplaceComponents(url_replacements);
 
-  TemplateURL* template_url =
-      template_url_service_->GetTemplateURLForHost(normalized_url.GetHost());
-  if (!template_url) {
-    return normalized_url;
+  if (const auto template_url = MaybeGetTemplateUrl(normalized_url)) {
+    template_url->KeepSearchTermsInURL(normalized_url, SearchTermsData(),
+                                       /*keep_search_intent_params=*/false,
+                                       /*normalize_search_terms=*/true,
+                                       /*out_url=*/&normalized_url,
+                                       /*out_search_terms=*/nullptr);
   }
-
-  const SearchTermsData& search_terms_data =
-      template_url_service_->search_terms_data();
-
-  if (!template_url->IsSearchURL(normalized_url, search_terms_data)) {
-    return normalized_url;
-  }
-
-  template_url->KeepSearchTermsInURL(normalized_url, search_terms_data,
-                                     /*keep_search_intent_params=*/false,
-                                     /*normalize_search_terms=*/true,
-                                     /*out_url=*/&normalized_url,
-                                     /*out_search_terms=*/nullptr);
 
   return normalized_url;
+}
+
+std::unique_ptr<TemplateURL> SerpClassifier::MaybeGetTemplateUrl(
+    const GURL& url) const {
+  for (const auto* prepopulated_engine :
+       TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
+    if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
+            *prepopulated_engine, url)) {
+      return search_engine;
+    }
+  }
+
+  for (const auto& [_, prepopulated_engine] :
+       TemplateURLPrepopulateData::kBraveEngines) {
+    if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
+            *prepopulated_engine, url)) {
+      return search_engine;
+    }
+  }
+
+  return nullptr;
 }
 
 }  // namespace serp_metrics
