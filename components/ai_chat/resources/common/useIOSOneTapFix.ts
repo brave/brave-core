@@ -55,6 +55,12 @@ function handleTapPath(path: EventTarget[], e: TouchEvent): boolean {
         e.preventDefault()
         return true
       }
+      if (tag === 'button' && el.closest('leo-dialog')) {
+        e.stopPropagation()
+        e.preventDefault()
+        el.click()
+        return true
+      }
       if (INTERACTIVE_TAGS.has(tag)) {
         e.preventDefault()
         el.click()
@@ -62,7 +68,11 @@ function handleTapPath(path: EventTarget[], e: TouchEvent): boolean {
       }
       // onTapElsewhere should not be called for Leo Inputs or Textareas
       // defaulting to true so the input or textarea is focused on first tap.
-      if (tag === 'leo-input' || tag === 'leo-textarea') {
+      if (
+        tag === 'leo-input'
+        || tag === 'leo-textarea'
+        || tag === 'leo-dialog'
+      ) {
         return true
       }
     }
