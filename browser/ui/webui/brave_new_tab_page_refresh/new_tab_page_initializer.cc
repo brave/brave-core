@@ -203,12 +203,12 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 
   source_->AddInteger("maxCustomTopSites", ntp_tiles::kMaxNumCustomLinks);
 
+  bool ai_chat_input_enabled = false;
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  bool ai_chat_input_enabled =
+  ai_chat_input_enabled =
       ai_chat::features::IsAIChatEnabled() &&
       ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
-
-  source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
 
   // Required by Brave AI Chat UI.
   source_->AddBoolean("isMobile", false);
@@ -217,6 +217,8 @@ void NewTabPageInitializer::AddLoadTimeValues() {
                       ai_chat::features::IsAIChatAgentProfileEnabled());
   source_->AddBoolean("isAIChatAgentProfile", profile->IsAIChatAgent());
 #endif
+
+  source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
 }
 
 void NewTabPageInitializer::AddStrings() {
