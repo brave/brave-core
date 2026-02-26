@@ -31,10 +31,9 @@ bool IsContainersStoragePartitionKey(std::string_view partition_domain,
 
 bool IsValidStoragePartitionKeyComponent(std::string_view component) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  return !component.empty() &&
-         std::ranges::all_of(component, [](const char& c) {
-           return base::IsAsciiAlphaNumeric(c) || c == '-';
-         });
+  return !component.empty() && std::ranges::all_of(component, [](char c) {
+    return base::IsAsciiAlphaNumeric(c) || c == '-';
+  });
 }
 
 std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
