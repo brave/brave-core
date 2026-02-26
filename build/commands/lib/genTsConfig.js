@@ -24,7 +24,9 @@ export default async function createGenTsConfig(
   atPath = genPath,
   extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json'),
 ) {
-  const pathMap = require('../../../components/webpack/path-map')(genPath)
+  const pathMap = await import('../../../components/webpack/path-map.js').then(
+    (module) => module.default(genPath),
+  )
   const configExtendsFrom = path.relative(atPath, extendsFrom)
   const tsConfigPath = path.join(atPath, name)
   // Even though ts-loader will get the paths from webpack for module resolution
