@@ -28,7 +28,7 @@ import {
   mockTransactionInfo,
 } from '../../../../stories/mock-data/mock-transaction-info'
 import { createMockStore } from '../../../../utils/test-utils'
-import { default as BraveCoreThemeProvider } from '../../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
 
 // Mock the specific query hooks
 jest.mock('../../../../common/slices/api.slice', () => {

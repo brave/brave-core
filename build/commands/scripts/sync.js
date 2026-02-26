@@ -6,9 +6,9 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import fs from 'fs'
+import fs from 'node:fs'
 import program from 'commander'
-import path from 'path'
+import path from 'node:path'
 import config from '../lib/config.js'
 import util from '../lib/util.js'
 import Log from '../lib/logging.js'

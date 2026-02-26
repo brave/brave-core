@@ -267,9 +267,7 @@ export default defineConfig([
       '@eslint-community/eslint-comments/require-description': 'off',
 
       'import/enforce-node-protocol-usage': 'off',
-      'import/first': 'off',
       'import/no-absolute-path': 'off',
-      'import/no-named-default': 'off',
 
       'react-hooks/immutability': 'off',
       'react-hooks/preserve-manual-memoization': 'off',
@@ -307,6 +305,17 @@ export default defineConfig([
     rules: {
       'licenses/header': 'off',
       'no-undef': 'off',
+    },
+  },
+
+  {
+    // Specific rules for NodeJS targets (build/commands and test files)
+    files: ['build/commands/**/*', '**/*.test.{js,ts}', '**/*.{cts,cjs}'],
+    plugins: {
+      import: importPlugin,
+    },
+    rules: {
+      'import/enforce-node-protocol-usage': ['error', 'always'],
     },
   },
 ])

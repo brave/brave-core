@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
+import path from 'node:path'
 import fs from 'fs-extra'
 import prettier from 'prettier'
 import program from 'commander'
-import { spawnSync } from 'child_process'
+import { spawnSync } from 'node:child_process'
 
 import config from '../lib/config.js'
 import util from '../lib/util.js'
