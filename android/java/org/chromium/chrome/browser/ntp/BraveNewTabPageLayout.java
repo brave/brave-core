@@ -191,8 +191,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private long mNewsFeedLastViewTime;
-    private ViewTreeObserver.@org.chromium.build.annotations.Nullable OnGlobalLayoutListener
-            mBgImageViewOnGlobalLayoutListener;
+    private ViewTreeObserver.@Nullable OnGlobalLayoutListener mBgImageViewOnGlobalLayoutListener;
 
     private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
