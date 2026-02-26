@@ -21,6 +21,9 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
+class PrefRegistrySimple;
+class PrefService;
+
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
@@ -41,7 +44,7 @@ class EmailAliasesService : public KeyedService,
       mojo::PendingRemote<brave_account::mojom::Authentication>
           brave_account_auth,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* pref_service);
+      PrefService& pref_service);
   ~EmailAliasesService() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -55,9 +58,9 @@ class EmailAliasesService : public KeyedService,
   // Requests generation of a new alias and returns the result via |callback|.
   void GenerateAlias(GenerateAliasCallback callback) override;
 
-  // Creates or updates an alias identified by |alias_email| with optional note.
+  // Creates or updates an alias identified by |alias_email|.
   void UpdateAlias(const std::string& alias_email,
-                   const std::optional<std::string>& note,
+                   mojom::AliasUpdateDataPtr update_data,
                    UpdateAliasCallback callback) override;
 
   // Deletes the alias identified by |alias_email|.
@@ -97,7 +100,7 @@ class EmailAliasesService : public KeyedService,
   void GenerateAliasWithToken(GenerateAliasCallback user_callback,
                               TokenResult token);
   void UpdateAliasWithToken(const std::string& alias_email,
-                            const std::optional<std::string>& note,
+                            mojom::AliasUpdateDataPtr update_data,
                             UpdateAliasCallback callback,
                             TokenResult token);
   void DeleteAliasWithToken(const std::string& alias_email,
@@ -129,7 +132,7 @@ class EmailAliasesService : public KeyedService,
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  const raw_ptr<PrefService> pref_service_ = nullptr;
+  const raw_ref<PrefService> pref_service_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

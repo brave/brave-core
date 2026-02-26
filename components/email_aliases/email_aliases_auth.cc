@@ -13,14 +13,13 @@
 namespace email_aliases {
 
 EmailAliasesAuth::EmailAliasesAuth(
-    PrefService* prefs_service,
+    PrefService& prefs_service,
     mojo::PendingRemote<brave_account::mojom::Authentication>
         brave_account_auth,
     OnChangedCallback on_changed)
     : prefs_service_(prefs_service),
       brave_account_auth_(std::move(brave_account_auth)),
       on_changed_(std::move(on_changed)) {
-  CHECK(prefs_service_);
   CHECK(brave_account_auth_);
   CHECK(on_changed_);
 
@@ -29,7 +28,7 @@ EmailAliasesAuth::EmailAliasesAuth(
       base::Unretained(
           this)));  // Unretained is safe because we own the remote<>
 
-  pref_change_registrar_.Init(prefs_service_);
+  pref_change_registrar_.Init(&prefs_service_.get());
   pref_change_registrar_.Add(
       brave_account::prefs::kBraveAccountServiceTokens,
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
