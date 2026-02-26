@@ -14,7 +14,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #endif
@@ -37,21 +37,27 @@ void AddBlockchainTokenImageSource(Profile* profile) {
 
 content::WebContents* GetWebContentsFromTabId(Browser** browser,
                                               int32_t tab_id) {
+  content::WebContents* contents_found = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
-  for (Browser* target_browser : *BrowserList::GetInstance()) {
-    TabStripModel* tab_strip_model = target_browser->tab_strip_model();
-    for (int index = 0; index < tab_strip_model->count(); ++index) {
-      content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);
-      if (sessions::SessionTabHelper::IdForTab(contents).id() == tab_id) {
-        if (browser) {
-          *browser = target_browser;
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [&contents_found, &browser,
+       tab_id](BrowserWindowInterface* target_browser) {
+        TabStripModel* tab_strip_model = target_browser->GetTabStripModel();
+        for (int index = 0; index < tab_strip_model->count(); ++index) {
+          content::WebContents* contents =
+              tab_strip_model->GetWebContentsAt(index);
+          if (sessions::SessionTabHelper::IdForTab(contents).id() == tab_id) {
+            if (browser) {
+              *browser = target_browser->GetBrowserForMigrationOnly();
+            }
+            contents_found = contents;
+            return false;
+          }
         }
-        return contents;
-      }
-    }
-  }
+        return true;
+      });
 #endif
-  return nullptr;
+  return contents_found;
 }
 
 content::WebContents* GetActiveWebContents() {

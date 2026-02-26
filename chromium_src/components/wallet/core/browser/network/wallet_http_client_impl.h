@@ -33,7 +33,11 @@ class WalletHttpClientImpl : public WalletHttpClient {
   WalletHttpClientImpl& operator=(const WalletHttpClientImpl&) = delete;
 
   // WalletHttpClient:
-  void SavePass(const WalletablePass& pass, SavePassCallback callback) override;
+  void UpsertPublicPass(Pass pass, UpsertPublicPassCallback callback) override;
+  void UpsertPrivatePass(PrivatePass pass,
+                         UpsertPrivatePassCallback callback) override;
+  void GetUnmaskedPass(std::string_view pass_id,
+                       GetUnmaskedPassCallback callback) override;
 };
 
 }  // namespace wallet

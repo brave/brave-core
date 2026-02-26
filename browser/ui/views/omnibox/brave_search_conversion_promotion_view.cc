@@ -468,7 +468,7 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   views::SetImageFromVectorIconWithColor(
       close_button, kLeoCloseIcon,
       (UseDDG() ? kBannerTypeCloseButtonSizeDDG : kBannerTypeCloseButtonSize),
-      GetCloseButtonColor(), gfx::kPlaceholderColor);
+      {GetCloseButtonColor(), gfx::kPlaceholderColor});
   views::InstallCircleHighlightPathGenerator(close_button);
   views::FocusRing::Install(close_button);
   close_button->SetProperty(views::kMarginsKey,

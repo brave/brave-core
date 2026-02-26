@@ -22,11 +22,14 @@ static_library("browser") {
     "sidebar_service.h",
   ]
 
-  deps = [
-    "//base",
+  public_deps = [
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
+  ]
+
+  deps = [
+    "//base",
     "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/playlist/core/common",
@@ -59,12 +62,15 @@ source_set("unit_tests") {
   testonly = true
   sources = [ "sidebar_service_unittest.cc" ]
 
-  deps = [
-    "//base",
-    "//base/test:test_support",
+  public_deps = [
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/playlist/core/common",
     "//brave/components/sidebar/browser",

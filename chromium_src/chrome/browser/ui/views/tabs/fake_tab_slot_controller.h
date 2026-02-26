@@ -34,21 +34,16 @@
   bool IsVerticalTabsFloating() const override; \
   bool IsVerticalTabsAnimatingButNotFinalState() const
 
-// Add override for CanCloseTabViaMiddleButtonClick()
-#define CanPaintThrobberToLayer()           \
-  CanPaintThrobberToLayer() const override; \
-  bool CanCloseTabViaMiddleButtonClick()
-
 // Add overrides for TabAccent related methods
-#define IsFrameCondensed()                                                 \
+#define CanPaintThrobberToLayer()                                          \
   ShouldPaintTabAccent(const Tab* tab) const override;                     \
   std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \
-  bool IsFrameCondensed()
+  bool CanCloseTabViaMiddleButtonClick() const override;                   \
+  bool CanPaintThrobberToLayer()
 
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
-#undef IsFrameCondensed
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

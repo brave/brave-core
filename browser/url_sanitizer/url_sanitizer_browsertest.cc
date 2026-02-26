@@ -233,10 +233,16 @@ class DisabledURLSanitizerTest : public URLSanitizerTestBase {
   DisabledURLSanitizerTest() : URLSanitizerTestBase(false) {}
 };
 
-IN_PROC_BROWSER_TEST_F(EnabledURLSanitizerTest, JSApi) {
+// These tests require document focus, and waiting for focus is flaky on mac.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_JSApi DISABLED_JSApi
+#else
+#define MAYBE_JSApi JSApi
+#endif
+IN_PROC_BROWSER_TEST_F(EnabledURLSanitizerTest, MAYBE_JSApi) {
   Check();
 }
 
-IN_PROC_BROWSER_TEST_F(DisabledURLSanitizerTest, JSApi) {
+IN_PROC_BROWSER_TEST_F(DisabledURLSanitizerTest, MAYBE_JSApi) {
   Check();
 }

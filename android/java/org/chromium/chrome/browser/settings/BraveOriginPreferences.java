@@ -20,8 +20,9 @@ import androidx.preference.PreferenceGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.brave_origin.BraveOriginServiceFactory;
 import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
@@ -56,7 +57,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_ACCOUNT_MANAGE = "account_manage";
     private static final String PREF_LINK_PURCHASE = "link_purchase";
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
     @Nullable private BraveOriginSettingsHandler mBraveOriginSettingsHandler;
     @Nullable private Snackbar mRestartSnackbar;
 
@@ -145,7 +147,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

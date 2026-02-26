@@ -17,8 +17,7 @@
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -163,14 +162,15 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     if (wait_for_tor_window) {
       browser_creation_observer.Wait();
     }
-    BrowserList* browser_list = BrowserList::GetInstance();
     ASSERT_EQ(2U, chrome::GetTotalBrowserCount());
     Browser* tor_browser = nullptr;
-    for (Browser* a_browser : *browser_list) {
-      if (a_browser->profile()->IsTor()) {
-        tor_browser = a_browser;
-      }
-    }
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [&tor_browser](BrowserWindowInterface* a_browser) {
+          if (a_browser->GetProfile()->IsTor()) {
+            tor_browser = a_browser->GetBrowserForMigrationOnly();
+          }
+          return !tor_browser;
+        });
     ASSERT_NE(nullptr, tor_browser);
     content::WebContents* tor_web_contents =
         tor_browser->GetTabStripModel()->GetActiveWebContents();

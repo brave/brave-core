@@ -21,7 +21,6 @@ class BraveTabDragController : public TabDragController {
   [[nodiscard]] Liveness Init(TabDragContext* source_context,
                               TabSlotView* source_view,
                               const std::vector<TabSlotView*>& dragging_views,
-                              const gfx::Point& offset_from_first_dragged_view,
                               const gfx::Point& offset_from_source_view,
                               ui::ListSelectionModel initial_selection_model,
                               ui::mojom::DragEventSource event_source) override;

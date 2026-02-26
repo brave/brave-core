@@ -17,8 +17,9 @@ import androidx.preference.PreferenceCategory;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.build.annotations.NullMarked;
@@ -191,7 +192,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final int STANDARD = 1;
     private static final int ALLOW = 2;
 
-    private ObservableSupplierImpl<String> mBravePageTitle;
+    private final SettableMonotonicObservableSupplier<String> mBravePageTitle =
+            ObservableSuppliers.createMonotonic();
     private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
             PrivacyPreferencesManagerImpl.getInstance();
     private ChromeSwitchPreference mCanMakePayment;
@@ -253,8 +255,7 @@ public class BravePrivacySettings extends PrivacySettings {
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
-        mBravePageTitle =
-                new ObservableSupplierImpl<>(getString(R.string.brave_shields_and_privacy));
+        mBravePageTitle.set(getString(R.string.brave_shields_and_privacy));
 
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
@@ -972,7 +973,7 @@ public class BravePrivacySettings extends PrivacySettings {
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mBravePageTitle;
     }
 }

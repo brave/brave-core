@@ -64,14 +64,15 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
@@ -1038,7 +1039,6 @@ void BraveBrowserView::OnThemeChanged() {
 
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners.
-  UpdateContentsSeparatorVisibility();
   UpdateContentsShadowVisibility();
   UpdateWebViewRoundedCorners();
   UpdateVerticalTabStripBorder();
@@ -1120,17 +1120,6 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   }
 }
 
-void BraveBrowserView::UpdateContentsSeparatorVisibility() {
-  // It's not shown with rounded corners mode always.
-  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
-    top_container_separator_->SetPreferredSize({});
-    return;
-  }
-
-  top_container_separator_->SetPreferredSize(
-      gfx::Size(views::Separator::kThickness, views::Separator::kThickness));
-}
-
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser()->profile()->GetPrefs()->GetBoolean(
@@ -1204,6 +1193,15 @@ bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
   }
 
   return false;
+}
+
+ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
+  ClientFrameElementInfo info = BrowserView::GetFrameElementInfo();
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    // In case of Brave vertical tabs, we don't want to show the tabstrip.
+    info.tabstrip_preferred_height = 0;
+  }
+  return info;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

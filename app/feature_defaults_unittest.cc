@@ -12,6 +12,7 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
+#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/aggregation_service/features.h"
@@ -143,7 +144,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
       &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
-      &features::kAppBrowserUseNewLayout,
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
       &features::kDevToolsAiCodeCompletion,
@@ -162,10 +162,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
-      &features::kKAnonymityService,
-      &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
-      &features::kPopupBrowserUseNewLayout,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -175,7 +172,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
-      &features::kTabbedBrowserUseNewLayout,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
@@ -265,20 +261,14 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
+#if !BUILDFLAG(IS_ANDROID)
+      &extensions_features::kExtensionManifestV2ExceptionList,
+#endif
       &features::kBookmarkTriggerForPrerender2KillSwitch,
       &features::kCertificateTransparencyAskBeforeEnabling,
       &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
-#endif
-      &features::kTabstripComboButton,
-#if !BUILDFLAG(IS_ANDROID)
-      &kDesktopMediaPickerMultiLineTitle,
-#endif
-  // We are following upstream's field trial with this feature and they only
-  // enabled it on desktop platforms.
-#if BUILDFLAG(ENABLE_SCREEN_CAPTURE) && !BUILDFLAG(IS_ANDROID)
-      &kDisplayMediaRejectLongDomains,
 #endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,

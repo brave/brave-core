@@ -243,24 +243,24 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   infobars::ContentInfoBarManager::FromWebContents(
       browser()->tab_strip_model()->GetWebContentsAt(0))
       ->RemoveAllInfoBars(/*animate=*/false);
-  browser_view->InvalidateLayout();
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser_view->infobar_container()->GetVisible(); }));
+  RunScheduledLayouts();
+  ASSERT_FALSE(browser_view->infobar_container()->GetVisible());
 
   // separator should not be empty and visible when split view is closed.
   EXPECT_TRUE(
       browser_view->top_container_separator_for_testing()->GetVisible());
-  EXPECT_NE(
-      gfx::Size(),
-      browser_view->top_container_separator_for_testing()->GetPreferredSize());
+  EXPECT_NE(gfx::Size(),
+            browser_view->top_container_separator_for_testing()->size());
 
   chrome::NewSplitTab(browser(),
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
+  RunScheduledLayouts();
 
   // separator should be empty when split view is opened.
-  EXPECT_EQ(
-      gfx::Size(),
-      browser_view->top_container_separator_for_testing()->GetPreferredSize());
+  EXPECT_EQ(gfx::Size(),
+            browser_view->top_container_separator_for_testing()->size());
+  EXPECT_FALSE(
+      browser_view->top_container_separator_for_testing()->GetVisible());
   EXPECT_TRUE(split_view_separator()->GetVisible());
   EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
 

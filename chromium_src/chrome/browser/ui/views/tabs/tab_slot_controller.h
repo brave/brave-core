@@ -21,15 +21,9 @@
   virtual bool IsVerticalTabsFloating() const = 0; \
   virtual bool IsVerticalTabsAnimatingButNotFinalState() const
 
-// Add a method to TabSlotController to determine whether tabs can be closed via
-// middle mouse button click.
-#define CanPaintThrobberToLayer()      \
-  CanPaintThrobberToLayer() const = 0; \
-  virtual bool CanCloseTabViaMiddleButtonClick()
-
 // Add methods to TabSlotController to determine whether the tab should have an
 // accent painted.
-#define IsFrameCondensed()                                                     \
+#define CanPaintThrobberToLayer()                                              \
   /* Returns whether the tab should have an accent painted (e.g., container */ \
   /* tab, or other features that require visual accent). This allows the */    \
   /* tab style to determine if accent painting is needed without exposing */   \
@@ -43,11 +37,13 @@
   /* painted. Returns an empty ImageModel if the tab should not have an */     \
   /* accent or icon cannot be determined. */                                   \
   virtual ui::ImageModel GetTabAccentIcon(const Tab* tab) const = 0;           \
-  virtual bool IsFrameCondensed()
+  /* Method to TabSlotController to determine whether tabs can be closed */    \
+  /* via middle mouse button click. */                                         \
+  virtual bool CanCloseTabViaMiddleButtonClick() const = 0;                    \
+  virtual bool CanPaintThrobberToLayer()
 
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
-#undef IsFrameCondensed
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

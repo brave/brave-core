@@ -33,18 +33,19 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
-#include "chrome/browser/ui/views/tabs/tab_context_menu_controller.h"
+#include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
@@ -1406,10 +1407,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
       point_out_of_tabstrip, base::BindLambdaForTesting([&]() {
         // Creating new browser during drag-and-drop will create
         // a nested run loop. So we should do things within callback.
-        auto* browser_list = BrowserList::GetInstance();
-        EXPECT_EQ(2, std::ranges::count_if(*browser_list, [&](Browser* b) {
-                    return b->profile() == browser()->profile();
-                  }));
+        int same_profile = 0;
+        GlobalBrowserCollection::GetInstance()->ForEach(
+            [&same_profile, this](BrowserWindowInterface* bwi) {
+              if (bwi->GetProfile() == browser()->profile()) {
+                ++same_profile;
+              }
+              return true;
+            });
+        EXPECT_EQ(2, same_profile);
         auto* new_browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
         auto* browser_view = BrowserView::GetBrowserViewForBrowser(new_browser);
         auto* tab = browser_view->horizontal_tab_strip_for_testing()->tab_at(0);

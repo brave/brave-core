@@ -32,7 +32,7 @@ import org.jni_zero.CalledByNative;
 
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -431,7 +431,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             return null;
         }
 
-        ObservableSupplier<TabModelSelector> supplier = activity.getTabModelSelectorSupplier();
+        MonotonicObservableSupplier<TabModelSelector> supplier =
+                activity.getTabModelSelectorSupplier();
         TabModelSelector selector = supplier.get();
         if (selector == null) {
             return null;

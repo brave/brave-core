@@ -8,7 +8,6 @@
 
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
-#include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
@@ -22,7 +21,6 @@
   virtual bool IsWebPanelContents(content::WebContents* contents)
 
 #define BrowserWindow BraveBrowserWindow
-#define BrowserViewLayout BraveBrowserViewLayout
 #define BookmarkBarView BraveBookmarkBarView
 
 #define MaybeShowReadingListInSidePanelIPH \
@@ -49,9 +47,11 @@
 #define ReparentTopContainerForEndOfImmersive \
   virtual ReparentTopContainerForEndOfImmersive
 #define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
+#define GetFrameElementInfo virtual GetFrameElementInfo
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
+#undef GetFrameElementInfo
 #undef ReparentTopContainerForEndOfImmersive
 #undef ShouldDrawTabStrokes
 #undef HideSplitView
@@ -67,7 +67,6 @@
 #undef MaybeUpdateDevtools
 #undef MaybeShowReadingListInSidePanelIPH
 #undef BookmarkBarView
-#undef BrowserViewLayout
 #undef BrowserWindow
 #undef BrowserViewLayoutDelegateImplOld
 

@@ -1,5 +1,5 @@
 diff --git a/third_party/i18n/collect-strings.js b/third_party/i18n/collect-strings.js
-index 8e139b17d3d8800a6a96c64cb384a8b6375ebec9..70d8242f5c66b62f6d0a35f2db20618f5c4649d5 100644
+index 437947bb664d67b474966bb7d189283d22daa268..29061971d0575c96c363d3d293f9ab689eddc55a 100644
 --- a/third_party/i18n/collect-strings.js
 +++ b/third_party/i18n/collect-strings.js
 @@ -28,6 +28,7 @@ export const IGNORED_PATH_COMPONENTS = [

@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.tab.Tab;
@@ -23,7 +23,7 @@ public class BraveIncognitoNewTabPage extends IncognitoNewTabPage {
             Activity activity,
             NativePageHost host,
             Tab tab,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             @Nullable IncognitoNtpMetrics incognitoNtpMetrics) {
         super(activity, host, tab, edgeToEdgeControllerSupplier, incognitoNtpMetrics);
 

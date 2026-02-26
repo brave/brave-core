@@ -227,12 +227,6 @@ CHAR_LIMIT guidelines:
           =1 {Close 1 Private window}
           other {Close # Private windows}}
       </message>
-      <message name="IDS_MENU_SWITCH_TO_INCOGNITO" desc="Menu item for switching to private.">
-        Switch to Private
-      </message>
-      <message name="IDS_MENU_SWITCH_OUT_OF_INCOGNITO" desc="Menu item for switching out of private.">
-        Switch out of Private
-      </message>
       <message name="IDS_BOOKMARK_BAR_CONTENT_DESCRIPTION" desc="Accessibility label for the encompassing view of the entire bookmark bar.">
         Bookmarks
       </message>
@@ -383,11 +377,6 @@ CHAR_LIMIT guidelines:
           =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
           other {<ph name="TAB_COUNT_MANY">%1$s<ex>4</ex></ph> private tabs will be closed}}
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED" desc="The phrase used in the message for deleting private-selected instance.">
-        {TAB_COUNT, plural,
-          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
-          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
-      </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED_V2" desc="The phrase used in the message for deleting private-selected instance.">
         {TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> other tab will be closed}
@@ -405,11 +394,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
         Double tap and hold to switch out of Private
       </message>
-      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
-        Private is not available on this device
-      </message>
       <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_DESCRIPTION" desc="Description text for the quick action search widget">
         Search using keyboard, voice, Private, or camera
+      </message>
+
+      <message name="IDS_INCOGNITO_NOT_AVAILABLE_MESSAGE" desc="Toast message shown when the user tries to open Private tab or window which is disabled on the device.">
+        Private is not available on this device
       </message>
 
       <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">

@@ -10,7 +10,7 @@ import android.view.View;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Callback;
-import org.chromium.chrome.browser.omnibox.R;
+import org.chromium.chrome.browser.omnibox.brave.R;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionListViewBinder.SuggestionListViewHolder;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionView;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewBinder;

@@ -43,7 +43,7 @@ public class BraveReturnToChromeUtilUnitTest {
         assertFalse(IntentUtils.isMainIntentFromLauncher(intent));
         assertFalse(
                 BraveReturnToChromeUtil.shouldShowNtpAsHomeSurfaceAtStartup(
-                        intent, null, mInactivityTracker));
+                        intent, null, /* persistableBundle= */ null, mInactivityTracker));
 
         // Verify snackbar flag was NOT set.
         assertFalse(
@@ -61,7 +61,7 @@ public class BraveReturnToChromeUtilUnitTest {
         assertFalse(IntentUtils.isMainIntentFromLauncher(intent));
         assertFalse(
                 BraveReturnToChromeUtil.shouldShowNtpAsHomeSurfaceAtStartup(
-                        intent, null, mInactivityTracker));
+                        intent, null, /* persistableBundle= */ null, mInactivityTracker));
     }
 
     @Test

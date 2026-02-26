@@ -72,9 +72,6 @@ class BraveToolbarView : public ToolbarView,
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
 
-  std::pair<ToolbarView::CornerStyle, ToolbarView::CornerStyle>
-  GetCornerStyles() const override;
-
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
