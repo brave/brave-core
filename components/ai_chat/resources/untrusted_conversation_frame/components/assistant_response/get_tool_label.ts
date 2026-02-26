@@ -68,6 +68,7 @@ export function getToolLabel(toolName: string, toolInput: any) {
     // </if>
     case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME:
+    case Mojom.BRAVE_FAQS_SEARCH_TOOL_NAME:
       // Tool use events for server search tools are not displayed here but
       // through existing WebSourcesEvent and SearchQueriesEvent.
       return null

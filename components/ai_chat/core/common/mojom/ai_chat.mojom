@@ -37,6 +37,7 @@ const string kWaitToolName = "wait";
 // Server side tools
 const string kBraveNewsSearchToolName = "brave_news_search";
 const string kBraveWebSearchToolName = "brave_web_search";
+const string kBraveFaqsSearchToolName = "brave_faqs_search";
 
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
