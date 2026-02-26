@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc>
-
 #include "brave/components/tabs/public/tree_tab_node.h"
+
+#include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc>
 
 bool FakeTabSlotController::ShouldAlwaysHideCloseButton() const {
   return should_always_hide_close_button_;

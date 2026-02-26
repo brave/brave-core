@@ -12,13 +12,12 @@
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
 namespace tabs {
-  class TreeTabNode;
+class TreeTabNode;
 }  // namespace tabs
 
 namespace tree_tab {
-  class TreeTabNodeId;
+class TreeTabNodeId;
 }  // namespace tree_tab
-
 
 class BraveBrowserTabStripController : public BrowserTabStripController {
  public:

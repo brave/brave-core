@@ -16,7 +16,6 @@ namespace tree_tab {
 class TreeTabNodeId;
 }  // namespace tree_tab
 
-
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.
 #define ShouldCompactLeadingEdge()      \
