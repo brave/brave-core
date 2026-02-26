@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { glob, rm } from 'fs/promises'
-import { writeJSON, mkdirp } from 'fs-extra'
+import fs from 'fs-extra'
 import utils from '../lib/util.js'
 import config from '../lib/config.js'
 
@@ -96,7 +96,7 @@ export default (program) =>
       const cwd = config.outputDir
       const coverageToolPath = `${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
       // fetch coverage tools if not available
-      await mkdirp(distPath)
+      await fs.mkdirp(distPath)
 
       await utils.runAsync(
         `${coverageToolPath}/llvm-profdata`,
@@ -131,7 +131,7 @@ export default (program) =>
 
       try {
         const summary = JSON.parse(output)
-        await writeJSON(`${distPath}/coverage.json`, summary)
+        await fs.writeJSON(`${distPath}/coverage.json`, summary)
         console.log(summary.data[0].totals)
       } catch (e) {
         console.error(e)
