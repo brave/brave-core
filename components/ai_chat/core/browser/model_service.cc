@@ -594,13 +594,18 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
     // Migrate old model keys to "chat-automatic"
-    constexpr std::array<const char*, 3> kOldModelKeys = {
+    constexpr std::array<const char*, 7> kOldModelKeys = {
         // Added: June 6, 2024. Checks can be removed eventually
         "chat-default",
         // Added: May 28, 2025. Checks can be removed eventually
         "chat-leo-expanded",
         // Added: July 15, 2025. Checks can be removed eventually
         "chat-vision-basic",
+        // These 4 added Feb 26, 2026. Checks can be removed eventually
+        "chat-llama-4-scout",
+        "chat-pixtral-large",
+        "chat-deepseek-v3-1",
+        "near-deepseek-v3-1",
     };
 
     if (auto* default_model_value =
