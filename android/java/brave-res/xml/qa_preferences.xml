@@ -59,4 +59,10 @@
         android:key="qa_export_rewards_db"
         android:title="Export Rewards Database" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="qa_force_in_app_review"
+        android:title="Force in-app review flow"
+        android:summary="Rate from settings uses in-app review instead of Play Store"
+        android:defaultValue="false" />
+
 </PreferenceScreen>
