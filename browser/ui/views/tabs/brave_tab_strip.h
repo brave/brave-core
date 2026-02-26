@@ -12,7 +12,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

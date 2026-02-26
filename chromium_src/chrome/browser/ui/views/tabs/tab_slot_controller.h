@@ -6,9 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
-#include "brave/components/tabs/public/tree_tab_node.h"
-#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "ui/base/models/image_model.h"
+
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
+
+namespace tree_tab {
+class TreeTabNodeId;
+}  // namespace tree_tab
+
 
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.

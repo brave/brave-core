@@ -9,9 +9,16 @@
 #include <memory>
 #include <optional>
 
-#include "brave/components/tabs/public/tree_tab_node.h"
-#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
+
+namespace tabs {
+  class TreeTabNode;
+}  // namespace tabs
+
+namespace tree_tab {
+  class TreeTabNodeId;
+}  // namespace tree_tab
+
 
 class BraveBrowserTabStripController : public BrowserTabStripController {
  public:
