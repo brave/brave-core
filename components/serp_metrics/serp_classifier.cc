@@ -18,17 +18,14 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr auto kDisallowList = base::MakeFixedFlatSet<SearchEngineType>(
-    base::sorted_unique,
-    {
-        SEARCH_ENGINE_UNKNOWN,
-        SEARCH_ENGINE_STARTER_PACK_BOOKMARKS,
-        SEARCH_ENGINE_STARTER_PACK_HISTORY,
-        SEARCH_ENGINE_STARTER_PACK_TABS,
-        SEARCH_ENGINE_STARTER_PACK_GEMINI,
-        SEARCH_ENGINE_STARTER_PACK_PAGE,
-        SEARCH_ENGINE_STARTER_PACK_AI_MODE,
-    });
+// Returns a `TemplateURL` if `url` matches the search engine results page for
+// `prepopulated_engine`.
+std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
+    const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine,
+    const GURL& url) {
+  const auto template_url_data =
+      TemplateURLDataFromPrepopulatedEngine(prepopulated_engine);
+  auto template_url = std::make_unique<TemplateURL>(*template_url_data);
 
 // Returns a `TemplateURL` if `url` matches the search engine results page for
 // `prepopulated_engine`.
@@ -61,13 +58,7 @@ std::optional<SearchEngineType> SerpClassifier::MaybeClassify(const GURL& url) {
   const GURL normalized_url = NormalizeUrl(url);
 
   if (const auto template_url = MaybeGetTemplateUrl(normalized_url)) {
-    const SearchEngineType search_engine_type =
-        template_url->GetEngineType(SearchTermsData());
-    if (kDisallowList.contains(search_engine_type)) {
-      return std::nullopt;
-    }
-
-    return search_engine_type;
+    return template_url->GetEngineType(SearchTermsData());
   }
 
   return std::nullopt;
