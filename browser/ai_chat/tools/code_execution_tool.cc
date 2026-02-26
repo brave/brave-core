@@ -120,7 +120,7 @@ void CodeExecutionTool::ResolveRequest(
     std::list<CodeExecutionRequest>::iterator request_it,
     UseToolCallback callback,
     std::string console_logs,
-    base::Value::List artifacts) {
+    base::ListValue artifacts) {
   requests_.erase(request_it);
 
   std::vector<mojom::ToolArtifactPtr> artifact_ptrs;

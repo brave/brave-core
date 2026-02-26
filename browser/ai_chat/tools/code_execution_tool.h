@@ -67,7 +67,7 @@ class CodeExecutionTool : public Tool {
   class CodeExecutionRequest : public content::WebContentsObserver {
    public:
     using ResolveCallback = base::OnceCallback<void(std::string console_logs,
-                                                    base::Value::List output)>;
+                                                    base::ListValue output)>;
 
     CodeExecutionRequest(Profile* profile,
                          std::string script,
@@ -107,7 +107,7 @@ class CodeExecutionTool : public Tool {
   void ResolveRequest(std::list<CodeExecutionRequest>::iterator request_it,
                       UseToolCallback callback,
                       std::string console_logs,
-                      base::Value::List output);
+                      base::ListValue output);
 
   raw_ptr<Profile> profile_;
   std::vector<std::unique_ptr<CodePlugin>> code_plugins_;
