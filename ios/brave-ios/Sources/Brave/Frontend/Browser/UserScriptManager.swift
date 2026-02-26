@@ -421,7 +421,7 @@ class UserScriptManager {
       // Inject Cardano provider script
       if WalletConstants.isCardanoDAppSupportEnabled,
         !tab.isPrivate,
-        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultCardonaWallet.value)
+        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultCardanoWallet.value)
           == .brave,
         let script = self.dynamicScripts[.cardanoProvider]
       {
