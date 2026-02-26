@@ -422,7 +422,7 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
           // signature is all 0x01.
           const auto& extrinsic = (*params_list)[1].GetString();
           EXPECT_NE(extrinsic.find(base::HexEncodeLower(
-                        std::vector<uint8_t>(0x01, 1 + 64))),
+                        std::vector<uint8_t>(1 + 64, 0x01))),
                     std::string::npos);
 
           url_loader_factory_->AddResponse(
