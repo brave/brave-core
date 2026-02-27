@@ -35,7 +35,14 @@ export default function AttachmentButtonMenu(props: Props) {
   const isMenuDisabled = shouldDisableAttachmentsButton(
     props.conversationHistory,
   )
-  const hasAssociatedContent = props.associatedContentInfo.length > 0
+
+  const hasAssociatedContent =
+    // Screenshots are not supported on iOS.
+    // <if expr="is_ios">
+    false
+  // <else>
+  props.associatedContentInfo.length > 0
+  // </if>
 
   return (
     <>
