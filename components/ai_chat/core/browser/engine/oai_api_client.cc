@@ -252,20 +252,9 @@ void OAIAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
-void OAIAPIClient::PerformRequestWithOAIMessages(
-    const mojom::CustomModelOptions& model_options,
-    std::vector<OAIMessage> messages,
-    GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback,
-    const std::optional<std::vector<std::string>>& stop_sequences) {
-  PerformRequest(model_options, SerializeOAIMessages(std::move(messages)),
-                 std::move(data_received_callback),
-                 std::move(completed_callback), stop_sequences);
-}
-
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
-    base::ListValue messages,
+    std::vector<OAIMessage> messages,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
@@ -276,8 +265,9 @@ void OAIAPIClient::PerformRequest(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body = CreateJSONRequestBody(
-      std::move(messages), is_sse_enabled, model_options, stop_sequences);
+  const std::string request_body =
+      CreateJSONRequestBody(SerializeOAIMessages(std::move(messages)),
+                            is_sse_enabled, model_options, stop_sequences);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",

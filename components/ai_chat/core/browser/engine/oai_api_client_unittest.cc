@@ -155,7 +155,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
   std::string expected_chunk_response = "It was played in Arlington, Texas.";
   std::string expected_completion_response = "\n\nCan I assist you further?";
   std::string expected_conversation_body = R"([
-    {"role": "user", "content": "Where was it played?"}
+    {"role": "user", "content": [{"type": "text", "text": "Where was it?"}]}
   ])";
 
   MockAPIRequestHelper* mock_request_helper =
@@ -212,7 +212,12 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
       });
 
   // Begin request
-  auto messages = base::test::ParseJsonList(expected_conversation_body);
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Where was it?")));
+  messages.push_back(std::move(user_msg));
 
   client_->PerformRequest(
       *model_options, std::move(messages),
@@ -233,9 +238,6 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
       "test_model");
 
   std::vector<std::string> stop_sequences = {"/title", "END"};
-  std::string expected_conversation_body = R"([
-    {"role": "user", "content": "Test message"}
-  ])";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -265,7 +267,13 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
 
-  auto messages = base::test::ParseJsonList(expected_conversation_body);
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Test message")));
+  messages.push_back(std::move(user_msg));
+
   client_->PerformRequest(
       *model_options, std::move(messages),
       base::BindRepeating(&MockCallbacks::OnDataReceived,
@@ -283,9 +291,6 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
       "test_model");
 
   std::vector<std::string> empty_stop_sequences = {};
-  std::string expected_conversation_body = R"([
-    {"role": "user", "content": "Test message"}
-  ])";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -312,7 +317,13 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
 
-  auto messages = base::test::ParseJsonList(expected_conversation_body);
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Test message")));
+  messages.push_back(std::move(user_msg));
+
   client_->PerformRequest(
       *model_options, std::move(messages),
       base::BindRepeating(&MockCallbacks::OnDataReceived,
@@ -644,7 +655,7 @@ TEST_P(OAIAPIInvalidResponseTest,
 
   // Begin request
   client_->PerformRequest(
-      *model_options, base::ListValue(),
+      *model_options, std::vector<OAIMessage>(),
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

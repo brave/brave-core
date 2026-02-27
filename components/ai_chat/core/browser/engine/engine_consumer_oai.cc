@@ -95,7 +95,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
   messages->push_back(BuildOAISeedMessage(
       "Here is the requested rewritten version of the excerpt "
       "in <response> tags:\n<response>"));
-  api_->PerformRequestWithOAIMessages(
+  api_->PerformRequest(
       model_options_, std::move(*messages), std::move(received_callback),
       std::move(completed_callback), std::vector<std::string>{"</response>"});
 }
@@ -111,7 +111,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
       "Here are three questions the user may ask about the content "
       "in <question> tags:\n"));
 
-  api_->PerformRequestWithOAIMessages(
+  api_->PerformRequest(
       model_options_, std::move(messages), base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
@@ -175,7 +175,7 @@ void EngineConsumerOAIRemote::GenerateConversationTitle(
       "Here is the title for the above conversation in <title> tags:\n"
       "<title>"));
 
-  api_->PerformRequestWithOAIMessages(
+  api_->PerformRequest(
       model_options_, std::move(*messages), base::NullCallback(),
       base::BindOnce(&EngineConsumerOAIRemote::OnConversationTitleGenerated,
                      weak_ptr_factory_.GetWeakPtr(),
@@ -209,9 +209,9 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   messages.push_back(BuildSystemMessage(conversation_messages));
   std::ranges::move(conversation_messages, std::back_inserter(messages));
 
-  api_->PerformRequestWithOAIMessages(model_options_, std::move(messages),
-                                      std::move(data_received_callback),
-                                      std::move(completed_callback));
+  api_->PerformRequest(model_options_, std::move(messages),
+                       std::move(data_received_callback),
+                       std::move(completed_callback));
 }
 
 OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
