@@ -789,6 +789,15 @@
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat" formatter_data="webui=AiChat">
     New conversation
   </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_FILTER_PLACEHOLDER" desc="Placeholder text for the conversation list filter input" formatter_data="webui=AiChat">
+    Filter conversations
+  </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS" desc="Title shown when no conversations match the filter query" formatter_data="webui=AiChat">
+    No results found
+  </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS_SUBTITLE" desc="Subtitle shown when no conversations match the filter query" formatter_data="webui=AiChat">
+    Please try a different query
+  </message>
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu" formatter_data="webui=AiChat">
     Temporary chat
   </message>
