@@ -429,7 +429,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
 
   std::unique_ptr<base::Value> blob_msg =
       v8_value_converter_->FromV8Value(message, isolate->GetCurrentContext());
-  if (!blob_msg->is_blob()) {
+  if (!blob_msg || !blob_msg->is_blob()) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
@@ -440,7 +440,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
   if (arguments->GetNext(&display)) {
     std::unique_ptr<base::Value> display_value =
         v8_value_converter_->FromV8Value(display, isolate->GetCurrentContext());
-    if (display_value->is_string()) {
+    if (display_value && display_value->is_string()) {
       display_str = display_value->GetString();
     }
   }
@@ -477,7 +477,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
 
   std::unique_ptr<base::Value> arg_value =
       v8_value_converter_->FromV8Value(arg, isolate->GetCurrentContext());
-  if (!arg_value->is_dict()) {
+  if (!arg_value || !arg_value->is_dict()) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
@@ -895,7 +895,7 @@ std::optional<std::string> JSSolanaProvider::GetSerializedMessage(
 
   std::unique_ptr<base::Value> blob_value = v8_value_converter_->FromV8Value(
       serialized_msg.ToLocalChecked(), context);
-  if (!blob_value->is_blob()) {
+  if (!blob_value || !blob_value->is_blob()) {
     return std::nullopt;
   }
 
