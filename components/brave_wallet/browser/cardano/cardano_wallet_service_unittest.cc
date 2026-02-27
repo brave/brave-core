@@ -365,17 +365,37 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
 
   cardano_wallet_service_->CreateCardanoTransaction(
       account_id(), *CardanoAddress::FromString(kMockCardanoAddress1), 8800000,
-      false, create_tx_future.GetCallback());
+      false, std::nullopt, create_tx_future.GetCallback());
 
   auto captured_tx = create_tx_future.Take();
 
   ASSERT_TRUE(captured_tx.has_value());
 
   EXPECT_EQ(captured_tx->inputs().size(), 3u);
+
   EXPECT_EQ(captured_tx->outputs().size(), 2u);
-  EXPECT_EQ(captured_tx->GetTotalInputsAmount().ValueOrDie(), 9969750u);
+  EXPECT_EQ(captured_tx->inputs()[0].utxo_tokens, cardano_rpc::Tokens());
+
+  EXPECT_EQ(captured_tx->outputs()[0].type,
+            CardanoTransaction::TxOutputType::kTarget);
+  EXPECT_EQ(captured_tx->outputs()[0].address,
+            *CardanoAddress::FromString(kMockCardanoAddress1));
+  EXPECT_EQ(captured_tx->outputs()[0].amount, 8'800'000u);
+  EXPECT_EQ(captured_tx->outputs()[0].tokens, cardano_rpc::Tokens());
+
+  EXPECT_EQ(captured_tx->outputs()[1].type,
+            CardanoTransaction::TxOutputType::kChange);
+  EXPECT_EQ(
+      captured_tx->outputs()[1].address.ToString(),
+      cardano_wallet_service_->GetChangeAddress(account_id())->address_string);
+  EXPECT_EQ(captured_tx->outputs()[1].amount, 993'733u);
+  EXPECT_EQ(captured_tx->outputs()[1].tokens, cardano_rpc::Tokens());
+
+  EXPECT_EQ(captured_tx->GetTotalInputsAmount().ValueOrDie(), 9'969'750u);
+  EXPECT_EQ(captured_tx->GetTotalInputTokensAmount(), cardano_rpc::Tokens());
   EXPECT_EQ(captured_tx->GetTotalOutputsAmount().ValueOrDie(),
-            9969750u - 176017);
+            9'969'750u - 176'017);
+  EXPECT_EQ(captured_tx->GetTotalOutputTokensAmount(), cardano_rpc::Tokens());
   EXPECT_EQ(captured_tx->fee(), 176017u);
   EXPECT_EQ(captured_tx->invalid_after(), 155486947u);
 
@@ -403,6 +423,83 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
       "36ABCA7296584035CD7F035C4C7BA9B930CE2319FB7369358110622E9E297230BB0B4C71"
       "1F4D6196FF7CAB4458419710CED215A4ADD19B969A9359A3E2F98A94BAD92A638FC202F5"
       "F6",
+      cardano_test_rpc_server_->captured_raw_tx());
+}
+
+TEST_F(CardanoWalletServiceUnitTest,
+       CreateAndSignCardanoTransaction_TokenSend) {
+  SetupCardanoAccount();
+
+  auto& token = cardano_test_rpc_server_->utxo_map()
+                    .begin()
+                    ->second.front()
+                    .amount.emplace_back();
+  token.unit = base::HexEncodeLower(GetMockTokenId("brave"));
+  token.quantity = "10";
+
+  TestFuture<base::expected<CardanoTransaction, std::string>> create_tx_future;
+
+  cardano_wallet_service_->CreateCardanoTransaction(
+      account_id(), *CardanoAddress::FromString(kMockCardanoAddress1), 3, false,
+      GetMockTokenId("brave"), create_tx_future.GetCallback());
+
+  auto captured_tx = create_tx_future.Take();
+
+  ASSERT_TRUE(captured_tx.has_value());
+
+  EXPECT_EQ(captured_tx->inputs().size(), 1u);
+  EXPECT_EQ(captured_tx->outputs().size(), 2u);
+  EXPECT_EQ(captured_tx->inputs()[0].utxo_tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 10}}));
+
+  EXPECT_EQ(captured_tx->outputs()[0].type,
+            CardanoTransaction::TxOutputType::kTarget);
+  EXPECT_EQ(captured_tx->outputs()[0].address,
+            *CardanoAddress::FromString(kMockCardanoAddress1));
+  EXPECT_EQ(captured_tx->outputs()[0].amount, 1'142'150u);
+  EXPECT_EQ(captured_tx->outputs()[0].tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 3}}));
+
+  EXPECT_EQ(captured_tx->outputs()[1].type,
+            CardanoTransaction::TxOutputType::kChange);
+  EXPECT_EQ(
+      captured_tx->outputs()[1].address.ToString(),
+      cardano_wallet_service_->GetChangeAddress(account_id())->address_string);
+  EXPECT_EQ(captured_tx->outputs()[1].amount, 5'685'925u);
+  EXPECT_EQ(captured_tx->outputs()[1].tokens,
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 7}}));
+
+  EXPECT_EQ(captured_tx->GetTotalInputsAmount().ValueOrDie(), 7'000'000u);
+  EXPECT_EQ(captured_tx->GetTotalInputTokensAmount(),
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 10}}));
+  EXPECT_EQ(captured_tx->GetTotalOutputsAmount().ValueOrDie(),
+            7'000'000u - 171'925u);
+  EXPECT_EQ(captured_tx->GetTotalOutputTokensAmount(),
+            cardano_rpc::Tokens({{GetMockTokenId("brave"), 10}}));
+  EXPECT_EQ(captured_tx->fee(), 171'925u);
+  EXPECT_EQ(captured_tx->invalid_after(), 155486947u);
+
+  TestFuture<std::string, CardanoTransaction, std::string> post_future;
+
+  cardano_wallet_service_->SignAndPostTransaction(
+      account_id(), captured_tx.value(), post_future.GetCallback());
+
+  auto [txid, signed_tx, error] = post_future.Take();
+  EXPECT_EQ(signed_tx.witnesses().size(), 1u);
+  EXPECT_EQ(error, "");
+
+  EXPECT_EQ(
+      "84A400D90102818258200200000000000000000000000000000000000000000000000000"
+      "0000000000000D01828258390144E5E8699AB31DE351BE61DFEB7C220EFF61D29D9C88CA"
+      "9D1599B36DEB20324C1F3C7C6A216E551523FF7EF4E784F3FDE3606A5BACE78539821A00"
+      "116D86A1581C62626262626262626262626262626262626262626262626262626262A145"
+      "6272617665038258390151328FA5FAB628D3987B9CF05909A6F88C0804330747650DEE0D"
+      "DF2AB7706FFA3868D70F03E0C121D82AD948F44982CC4CEFC2E9B11BB182821A0056C2A5"
+      "A1581C62626262626262626262626262626262626262626262626262626262A145627261"
+      "766507021A00029F95031A09448AE3A100D9010281825820D9E38698F13131246B9234BB"
+      "DDE147AFBA999E34EFF03EEADDA5A336ABCA7296584026A8C1C0DE7C5BA92710BE0275B5"
+      "FDA07EE49504D7DFB7F3CE3DBEF33B2896039B82BD603DF0D9D4692E832CD9028B4385BC"
+      "75078A214C1FFA5C67E8D6240607F5F6",
       cardano_test_rpc_server_->captured_raw_tx());
 }
 

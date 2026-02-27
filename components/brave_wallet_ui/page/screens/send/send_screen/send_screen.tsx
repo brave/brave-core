@@ -523,6 +523,7 @@ export const SendScreen = React.memo(() => {
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
+          tokenId: tokenFromParams.contractAddress || undefined,
         })
         resetSendFields()
         return

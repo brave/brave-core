@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_block_tracker.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
@@ -65,13 +66,22 @@ void CardanoTxManager::AddUnapprovedCardanoTransaction(
     return;
   }
 
+  std::optional<cardano_rpc::TokenId> token_to_send;
+  if (params->token) {
+    token_to_send = cardano_rpc::TokenIdFromHex(*params->token);
+    if (!token_to_send) {
+      std::move(callback).Run(false, "", WalletInternalErrorMessage());
+      return;
+    }
+  }
+
   // We don't support Cardano dApps so far, so all transactions come from
   // wallet origin.
   std::optional<url::Origin> origin = std::nullopt;
 
   cardano_wallet_service_->CreateCardanoTransaction(
       params->from.Clone(), *address_to, params->amount,
-      params->sending_max_amount,
+      params->sending_max_amount, std::move(token_to_send),
       base::BindOnce(&CardanoTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
                      origin, std::move(params->swap_info),

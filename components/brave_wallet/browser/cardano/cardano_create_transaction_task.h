@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_CREATE_TRANSACTION_TASK_H_
 
 #include <map>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -35,11 +36,13 @@ class CardanoCreateTransactionTask {
   using Callback =
       base::OnceCallback<void(base::expected<CardanoTransaction, std::string>)>;
 
-  CardanoCreateTransactionTask(CardanoWalletService& cardano_wallet_service,
-                               const mojom::AccountIdPtr& account_id,
-                               const CardanoAddress& address_to,
-                               uint64_t amount,
-                               bool sending_max_amount);
+  CardanoCreateTransactionTask(
+      CardanoWalletService& cardano_wallet_service,
+      const mojom::AccountIdPtr& account_id,
+      const CardanoAddress& address_to,
+      uint64_t amount,
+      bool sending_max_amount,
+      std::optional<cardano_rpc::TokenId> token_to_send);
 
   ~CardanoCreateTransactionTask();
 
@@ -70,9 +73,11 @@ class CardanoCreateTransactionTask {
   const raw_ref<CardanoWalletService> cardano_wallet_service_;
   mojom::AccountIdPtr account_id_;
   CardanoAddress address_to_;
-  bool sending_max_amount_ = false;
 
-  CardanoTransaction transaction_;
+  uint64_t amount_ = 0;
+  bool sending_max_amount_ = false;
+  std::optional<cardano_rpc::TokenId> token_to_send_;
+
   std::optional<CardanoAddress> change_address_;
 
   std::optional<cardano_rpc::EpochParameters> latest_epoch_parameters_;
