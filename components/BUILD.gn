@@ -38,6 +38,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_sync:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/email_aliases:unit_tests",
+    "//brave/components/https_upgrade_exceptions/browser:unit_tests",
     "//brave/components/json:unit_tests",
     "//brave/components/local_ai/core:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",

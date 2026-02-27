@@ -74,7 +74,13 @@ bool HttpsUpgradeExceptionsService::CanUpgradeToHTTPS(const GURL& url) {
     // don't upgrade any websites yet.
     return false;
   }
-  // Allow upgrade only if the domain is not on the exceptions list.
+
+  // The exceptions list is provided by the "Brave Local Data Files Updater"
+  // CRX. It contains a list of hosts that should be excluded from HTTPS
+  // upgrades. The matching logic checks only the host name, as a result, if a
+  // subdomain is not explicitly listed, it will still be upgraded to HTTPS.
+  // For example, if a.com is on the list, a.com will not be upgraded, but
+  // sub.a.com will be upgraded.
   return !exceptional_domains_.contains(url.host());
 }
 
