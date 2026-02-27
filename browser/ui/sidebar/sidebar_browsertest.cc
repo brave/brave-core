@@ -1929,7 +1929,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
 //   - SetFlipCanvasOnPaintForRTLUI(false) on buttons prevents icon flipping.
 //   - GetMirroredRect(contents_bounds) in BraveBrowserViewLayout ensures the
 //     contents container is placed correctly next to the sidebar in RTL.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* sidebar_container = GetSidebarContainerView();
   auto* control_view = GetSidebarControlView();
@@ -1983,7 +1983,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
 // Tests that side panel resize direction is correct in RTL mode.
 // The OnResize sign convention is flipped in RTL compared to LTR because the
 // drag direction on screen is reversed.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestV1AndV2, SidePanelResizeInRTLTest) {
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidePanelResizeInRTLTest) {
   if (IsV2Enabled()) {
     GTEST_SKIP() << "Panel resize test is V1-specific";
   }
