@@ -328,8 +328,30 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
       EXPECT_TRUE(WaitForWalletBubble(web_contents()));
       brave_wallet_service()->NotifySignMessageRequestProcessed(
           true, request_index++, nullptr, std::nullopt);
+      // The second sign message (wrong origin) is rejected immediately,
+      // overwriting signMessageResult with an error before the approved
+      // first message's signature arrives via mojo. Wait for the signature
+      // (starts with "0x") to be delivered to the renderer.
+      static constexpr char kWaitForSignResult[] = R"(
+        new Promise((resolve, reject) => {
+          const deadline = Date.now() + 10000;
+          const check = () => {
+            if (typeof signMessageResult === 'string' &&
+                signMessageResult.startsWith('0x')) {
+              const result = signMessageResult;
+              signMessageResult = undefined;
+              resolve(result);
+            } else if (Date.now() >= deadline) {
+              reject(new Error('Timeout: signMessageResult=' +
+                               signMessageResult));
+            } else {
+              setTimeout(check, 10);
+            }
+          };
+          check();
+        }))";
       // port is dynamic
-      EXPECT_TRUE(EvalJs(web_contents(), "getSignMessageResult()")
+      EXPECT_TRUE(EvalJs(web_contents(), kWaitForSignResult)
                       .ExtractString()
                       .starts_with("0x"));
     }
