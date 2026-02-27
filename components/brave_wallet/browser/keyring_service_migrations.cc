@@ -117,7 +117,7 @@ void MigrateDerivedAccountIndex(PrefService* profile_prefs) {
     }
 
     std::map<uint32_t, base::DictValue> new_accounts_map;
-    for (auto acc_item : *account_metas_dict) {
+    for (const auto& acc_item : *account_metas_dict) {
       auto account_index = ExtractAccountIndex(keyring_id, acc_item.first);
       if (!account_index) {
         continue;

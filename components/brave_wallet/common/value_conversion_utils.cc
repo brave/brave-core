@@ -409,7 +409,7 @@ base::ListValue PermissionRequestResponseToValue(
   caveats_obj2.Set("name", "exposedAccounts");
   caveats_obj2.Set("type", "filterResponse");
   base::ListValue filter_response_list;
-  for (auto account : accounts) {
+  for (const auto& account : accounts) {
     filter_response_list.Append(base::ToLowerASCII(account));
   }
   caveats_obj2.Set("value", std::move(filter_response_list));

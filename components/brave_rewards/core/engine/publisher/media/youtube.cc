@@ -259,7 +259,7 @@ bool YouTube::IsPredefinedPath(const std::string& path) {
   // make sure we are ignoring actual YT paths and not
   // a custom path that might start with a YT path
   const std::string clean_path = GetBasicPath(path);
-  for (std::string str_path : paths) {
+  for (const auto& str_path : paths) {
     if (clean_path == str_path) {
       return true;
     }

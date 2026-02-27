@@ -130,7 +130,7 @@ AssetDiscoveryManager::GetNonFungibleSupportedChains() {
           },
           mojom::CoinType::ETH);
 
-  for (auto custom_chain : custom_non_fungible_eth_chains) {
+  for (const auto& custom_chain : custom_non_fungible_eth_chains) {
     non_fungible_supported_chains.push_back(
         mojom::ChainId::New(mojom::CoinType::ETH, custom_chain));
   }

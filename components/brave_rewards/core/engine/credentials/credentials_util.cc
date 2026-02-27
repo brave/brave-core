@@ -57,7 +57,7 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& creds) {
   DCHECK_NE(creds.size(), 0UL);
 
   std::vector<BlindedToken> blinded_creds;
-  for (auto cred : creds) {
+  for (const auto& cred : creds) {
     BlindedToken blinded_cred = cred.Blind();
     blinded_creds.push_back(std::move(blinded_cred));
   }

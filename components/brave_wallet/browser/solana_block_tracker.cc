@@ -30,10 +30,11 @@ SolanaBlockTracker::~SolanaBlockTracker() = default;
 
 void SolanaBlockTracker::Start(const std::string& chain_id,
                                base::TimeDelta interval) {
-  if (!timers_.contains(chain_id)) {
-    timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
+  auto [it, inserted] = timers_.try_emplace(chain_id);
+  if (inserted) {
+    it->second = std::make_unique<base::RepeatingTimer>();
   }
-  timers_[chain_id]->Start(
+  it->second->Start(
       FROM_HERE, interval,
       base::BindRepeating(&SolanaBlockTracker::GetLatestBlockhash,
                           weak_ptr_factory_.GetWeakPtr(), chain_id,
@@ -43,15 +44,19 @@ void SolanaBlockTracker::Start(const std::string& chain_id,
 void SolanaBlockTracker::GetLatestBlockhash(const std::string& chain_id,
                                             GetLatestBlockhashCallback callback,
                                             bool try_cached_value) {
-  if (try_cached_value && latest_blockhash_map_.contains(chain_id) &&
-      !latest_blockhash_map_[chain_id].empty() &&
-      latest_blockhash_expired_time_map_.contains(chain_id) &&
-      latest_blockhash_expired_time_map_[chain_id] > base::Time::Now() &&
-      last_valid_block_height_map_.contains(chain_id)) {
-    std::move(callback).Run(latest_blockhash_map_[chain_id],
-                            last_valid_block_height_map_[chain_id],
-                            mojom::SolanaProviderError::kSuccess, "");
-    return;
+  if (try_cached_value) {
+    auto it_hash = latest_blockhash_map_.find(chain_id);
+    auto it_time = latest_blockhash_expired_time_map_.find(chain_id);
+    auto it_height = last_valid_block_height_map_.find(chain_id);
+    if (it_hash != latest_blockhash_map_.end() &&
+        !it_hash->second.empty() &&
+        it_time != latest_blockhash_expired_time_map_.end() &&
+        it_time->second > base::Time::Now() &&
+        it_height != last_valid_block_height_map_.end()) {
+      std::move(callback).Run(it_hash->second, it_height->second,
+                              mojom::SolanaProviderError::kSuccess, "");
+      return;
+    }
   }
 
   json_rpc_service_->GetSolanaLatestBlockhash(
@@ -78,8 +83,9 @@ void SolanaBlockTracker::OnGetLatestBlockhash(
     return;
   }
 
-  if (latest_blockhash_map_.contains(chain_id) &&
-      latest_blockhash_map_[chain_id] == latest_blockhash) {
+  auto it = latest_blockhash_map_.find(chain_id);
+  if (it != latest_blockhash_map_.end() &&
+      it->second == latest_blockhash) {
     return;
   }
 

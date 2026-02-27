@@ -704,7 +704,7 @@ std::optional<base::flat_set<std::string>> ParseRequestPermissionsParams(
     return std::nullopt;
   }
   std::vector<std::string> restricted_methods;
-  for (auto prop : *param_obj) {
+  for (const auto& prop : *param_obj) {
     restricted_methods.push_back(prop.first);
   }
   return restricted_methods;

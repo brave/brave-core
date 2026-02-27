@@ -672,7 +672,7 @@ void RewardsServiceImpl::Shutdown() {
   }
 
   if (!cancel_image_request_callback_.is_null()) {
-    for (auto mapping : current_media_fetchers_) {
+    for (const auto& mapping : current_media_fetchers_) {
       cancel_image_request_callback_.Run(mapping.second);
     }
   }
@@ -1029,7 +1029,7 @@ void RewardsServiceImpl::Reset() {
   url_loaders_.clear();
 
   if (!cancel_image_request_callback_.is_null()) {
-    for (auto mapping : current_media_fetchers_) {
+    for (const auto& mapping : current_media_fetchers_) {
       cancel_image_request_callback_.Run(mapping.second);
     }
   }

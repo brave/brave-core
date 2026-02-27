@@ -369,7 +369,7 @@ std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
       brave_wallet::IsEndpointUsingBraveWalletProxy(url)
           ? brave_wallet::MakeBraveServicesKeyHeaders()
           : base::flat_map<std::string, std::string>();
-  for (auto entry : request_headers) {
+  for (const auto& entry : request_headers) {
     request->headers.SetHeader(entry.first, entry.second);
   }
 

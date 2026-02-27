@@ -41,7 +41,7 @@ void AdBlockListP3A::ReportFilterListUsage() {
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
   int count = 0;
-  for (const auto [uuid, dict_value] : regional_filter_dict) {
+  for (const auto& [uuid, dict_value] : regional_filter_dict) {
     const auto* dict = dict_value.GetIfDict();
     if (!dict || !dict->FindBool(kEnabledDictKey).value_or(false)) {
       continue;

@@ -976,7 +976,7 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
     return false;
   }
 
-  for (auto origin : *coin_dict) {
+  for (const auto& origin : *coin_dict) {
     const auto* chain_id_each = origin.second.GetIfString();
     if (!chain_id_each) {
       continue;
@@ -1047,7 +1047,7 @@ void BraveWalletService::MigrateDeadNetwork(
     return;
   }
 
-  for (auto origin : *coin_dict) {
+  for (const auto& origin : *coin_dict) {
     const auto* chain_id_each = origin.second.GetIfString();
     if (!chain_id_each) {
       continue;
