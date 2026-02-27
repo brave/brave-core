@@ -18,9 +18,7 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #endif
@@ -44,14 +42,6 @@ constexpr char kBarDotComTitle2[] = "bar.com 2";
 constexpr char kCatDotComTitle1[] = "cat.com 1";
 constexpr char kCatDotComTitle2[] = "cat.com 2";
 
-class MockAIChatCredentialManager : public ai_chat::AIChatCredentialManager {
- public:
-  using ai_chat::AIChatCredentialManager::AIChatCredentialManager;
-  MOCK_METHOD(void,
-              GetPremiumStatus,
-              (ai_chat::mojom::Service::GetPremiumStatusCallback callback),
-              (override));
-};
 #endif
 
 }  // namespace
@@ -65,21 +55,6 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
   // Disable caching suggested topics, caching using tab tracker service is
   // covered by TabSearchPageHandlerBrowserTest.
   ai_chat_service->SetTabTrackerServiceForTesting(nullptr);
-
-  ai_chat_service->SetCredentialManagerForTesting(
-      std::make_unique<testing::NiceMock<MockAIChatCredentialManager>>(
-          base::NullCallback(), nullptr));
-
-  auto* mock_credential_manager = static_cast<MockAIChatCredentialManager*>(
-      ai_chat_service->GetCredentialManagerForTesting());
-  ON_CALL(*mock_credential_manager, GetPremiumStatus(_))
-      .WillByDefault(
-          [&](ai_chat::mojom::Service::GetPremiumStatusCallback callback) {
-            ai_chat::mojom::PremiumInfoPtr premium_info =
-                ai_chat::mojom::PremiumInfo::New();
-            std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive,
-                                    std::move(premium_info));
-          });
 
   // Create multiple tabs in different windows and verify GetSuggestedTopics is
   // called with expected tabs info.
@@ -118,9 +93,6 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
                                               "topic4", "topic5"};
   auto* mock_engine = static_cast<ai_chat::MockEngineConsumer*>(
       ai_chat_service->GetTabOrganizationEngineForTesting());
-  std::string model_name = ai_chat::kClaudeHaikuModelName;
-  EXPECT_CALL(*mock_engine, GetModelName())
-      .WillRepeatedly(testing::ReturnRef(model_name));
   EXPECT_CALL(*mock_engine, GetSuggestedTopics(expected_tabs, _))
       .WillOnce(base::test::RunOnceCallback<1>(expected_topics));
 
@@ -138,8 +110,6 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
 
   testing::Mock::VerifyAndClearExpectations(mock_engine);
 
-  EXPECT_CALL(*mock_engine, GetModelName())
-      .WillOnce(testing::ReturnRef(model_name));
   EXPECT_CALL(*mock_engine, GetSuggestedTopics(expected_tabs, _))
       .WillOnce(base::test::RunOnceCallback<1>(
           base::unexpected(ai_chat::mojom::APIError::RateLimitReached)));
@@ -167,8 +137,6 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_engine, GetSuggestedTopics(expected_tabs, _))
       .WillOnce(base::test::RunOnceCallback<1>(
           base::unexpected(ai_chat::mojom::APIError::ConnectionIssue)));
-  EXPECT_CALL(*mock_engine, GetModelName())
-      .WillOnce(testing::ReturnRef(model_name));
 
   handler()->GetSuggestedTopics(
       base::BindLambdaForTesting([&](const std::vector<std::string>& topics,
@@ -193,20 +161,6 @@ TEST_F(TabSearchPageHandlerTest, GetFocusTabs) {
       ai_chat::AIChatServiceFactory::GetForBrowserContext(profile());
   ai_chat_service->SetTabOrganizationEngineForTesting(
       std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
-
-  ai_chat_service->SetCredentialManagerForTesting(
-      std::make_unique<testing::NiceMock<MockAIChatCredentialManager>>(
-          base::NullCallback(), nullptr));
-  auto* mock_credential_manager = static_cast<MockAIChatCredentialManager*>(
-      ai_chat_service->GetCredentialManagerForTesting());
-  ON_CALL(*mock_credential_manager, GetPremiumStatus(_))
-      .WillByDefault(
-          [&](ai_chat::mojom::Service::GetPremiumStatusCallback callback) {
-            ai_chat::mojom::PremiumInfoPtr premium_info =
-                ai_chat::mojom::PremiumInfo::New();
-            std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive,
-                                    std::move(premium_info));
-          });
 
   // Create multiple tabs in different windows and verify GetFocusTabs is called
   // with expected tabs info.
@@ -252,9 +206,6 @@ TEST_F(TabSearchPageHandlerTest, GetFocusTabs) {
       base::NumberToString(tab_id4), base::NumberToString(tab_id5)};
   auto* mock_engine = static_cast<ai_chat::MockEngineConsumer*>(
       ai_chat_service->GetTabOrganizationEngineForTesting());
-  std::string model_name = ai_chat::kClaudeHaikuModelName;
-  EXPECT_CALL(*mock_engine, GetModelName())
-      .WillOnce(testing::ReturnRef(model_name));
   EXPECT_CALL(*mock_engine, GetFocusTabs(expected_tabs, "topic", _))
       .WillOnce(base::test::RunOnceCallback<2>(mock_ret_tabs));
 
@@ -274,8 +225,6 @@ TEST_F(TabSearchPageHandlerTest, GetFocusTabs) {
   testing::Mock::VerifyAndClearExpectations(mock_engine);
 
   // Test error.
-  EXPECT_CALL(*mock_engine, GetModelName())
-      .WillOnce(testing::ReturnRef(model_name));
   EXPECT_CALL(*mock_engine, GetFocusTabs(expected_tabs, "topic", _))
       .WillOnce(base::test::RunOnceCallback<2>(
           base::unexpected(ai_chat::mojom::APIError::RateLimitReached)));

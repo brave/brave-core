@@ -37,7 +37,6 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
@@ -367,22 +366,6 @@ class AIChatServiceUnitTest : public testing::Test,
   void EmulateUserOptedIn() { ::ai_chat::SetUserOptedIn(&prefs_, true); }
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
-
-  void TestGetEngineForTabOrganization(const std::string& expected_model_name,
-                                       mojom::PremiumStatus premium_status) {
-    auto* cred_manager = static_cast<MockAIChatCredentialManager*>(
-        ai_chat_service_->GetCredentialManagerForTesting());
-    EXPECT_CALL(*cred_manager, GetPremiumStatus(_))
-        .WillOnce([&](mojom::Service::GetPremiumStatusCallback callback) {
-          mojom::PremiumInfoPtr premium_info = mojom::PremiumInfo::New();
-          std::move(callback).Run(premium_status, std::move(premium_info));
-        });
-    ai_chat_service_->GetEngineForTabOrganization(base::DoNothing());
-    EXPECT_EQ(
-        ai_chat_service_->GetTabOrganizationEngineForTesting()->GetModelName(),
-        expected_model_name);
-    testing::Mock::VerifyAndClearExpectations(cred_manager);
-  }
 
   void TestGetSuggestedTopics(
       base::expected<std::vector<std::string>, mojom::APIError> expected_result,
@@ -1348,24 +1331,11 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
   }
 }
 
-TEST_P(AIChatServiceUnitTest, GetEngineForTabOrganization) {
-  TestGetEngineForTabOrganization(kClaudeHaikuModelName,
-                                  mojom::PremiumStatus::Inactive);
-  TestGetEngineForTabOrganization(kClaudeSonnetModelName,
-                                  mojom::PremiumStatus::Active);
-  TestGetEngineForTabOrganization(kClaudeHaikuModelName,
-                                  mojom::PremiumStatus::Inactive);
-}
-
 TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_CacheTopics) {
   ai_chat_service_->SetTabOrganizationEngineForTesting(
       std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
   auto* engine = static_cast<MockEngineConsumer*>(
       ai_chat_service_->GetTabOrganizationEngineForTesting());
-
-  std::string model_name = kClaudeSonnetModelName;
-  ON_CALL(*engine, GetModelName())
-      .WillByDefault(testing::ReturnRef(model_name));
 
   std::vector<std::string> topics1{"topic1"};
   std::vector<std::string> topics2{"topic2"};

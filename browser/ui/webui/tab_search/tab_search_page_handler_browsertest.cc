@@ -22,7 +22,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -206,8 +205,6 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
         std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
     auto* mock_engine = static_cast<ai_chat::MockEngineConsumer*>(
         service()->GetTabOrganizationEngineForTesting());
-    ON_CALL(*mock_engine, GetModelName())
-        .WillByDefault(testing::ReturnRef(model_name_));
     return mock_engine;
   }
 
@@ -217,7 +214,6 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
  private:
   net::EmbeddedTestServer https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
-  std::string model_name_ = ai_chat::kClaudeHaikuModelName;
 };
 
 IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest,

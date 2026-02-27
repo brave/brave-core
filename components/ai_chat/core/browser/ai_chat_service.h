@@ -217,8 +217,6 @@ class AIChatService : public KeyedService,
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
 
-  std::unique_ptr<EngineConsumer> GetEngineForTabOrganization();
-
   void SetCredentialManagerForTesting(
       std::unique_ptr<AIChatCredentialManager> credential_manager) {
     credential_manager_ = std::move(credential_manager);
@@ -319,15 +317,7 @@ class AIChatService : public KeyedService,
   void OnMemoryEnabledChanged();
   void InitializeTools();
 
-  void GetEngineForTabOrganization(base::OnceClosure callback);
-  void ContinueGetEngineForTabOrganization(base::OnceClosure callback,
-                                           mojom::PremiumStatus status,
-                                           mojom::PremiumInfoPtr info);
-  void GetSuggestedTopicsWithEngine(const std::vector<Tab>& tabs,
-                                    GetSuggestedTopicsCallback callback);
-  void GetFocusTabsWithEngine(const std::vector<Tab>& tabs,
-                              const std::string& topic,
-                              GetFocusTabsCallback callback);
+  void CreateTabOrganizationEngineIfNeeded();
 
   void OnSuggestedTopicsReceived(
       GetSuggestedTopicsCallback callback,
