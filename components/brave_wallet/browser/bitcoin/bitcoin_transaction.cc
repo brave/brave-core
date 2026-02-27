@@ -314,8 +314,8 @@ BitcoinTransaction::TxOutput::FromValue(const base::DictValue& value) {
   BitcoinTransaction::TxOutput result;
 
   std::string type_string;
-  if (!ReadStringTo(value, "type", type_string) &&
-      type_string != kChangeOuputType && type_string != kTargetOutputType) {
+  if (!ReadStringTo(value, "type", type_string) ||
+      (type_string != kChangeOuputType && type_string != kTargetOutputType)) {
     return std::nullopt;
   }
   result.type = type_string == kTargetOutputType ? TxOutputType::kTarget
