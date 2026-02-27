@@ -435,11 +435,12 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   for (const auto& kv : deal_category_counts) {
     deal_category_names_by_priority.emplace_back(kv.first);
   }
-  std::sort(deal_category_names_by_priority.begin(),
-            deal_category_names_by_priority.end(),
-            [&deal_category_counts](const std::string& a, const std::string& b) {
-              return (deal_category_counts.at(a) < deal_category_counts.at(b));
-            });
+  std::sort(
+      deal_category_names_by_priority.begin(),
+      deal_category_names_by_priority.end(),
+      [&deal_category_counts](const std::string& a, const std::string& b) {
+        return (deal_category_counts.at(a) < deal_category_counts.at(b));
+      });
   VLOG(1) << "Got deal categories # " << deal_category_names_by_priority.size();
 
   // Get first headline
