@@ -27,8 +27,7 @@ namespace brave_vpn {
 BraveVPNRegionDataManager::BraveVPNRegionDataManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
-    : url_loader_factory_(url_loader_factory), local_prefs_(local_prefs) {
-}
+    : url_loader_factory_(url_loader_factory), local_prefs_(local_prefs) {}
 
 BraveVPNRegionDataManager::~BraveVPNRegionDataManager() = default;
 
