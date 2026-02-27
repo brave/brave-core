@@ -87,7 +87,7 @@ void SidebarButtonView::AddedToWidget() {
     paint_as_active_subscription_ =
         GetWidget()->RegisterPaintAsActiveChangedCallback(
             base::BindRepeating(&SidebarButtonView::SchedulePaint,
-                                base::Unretained(this)));
+                                weak_ptr_factory_.GetWeakPtr()));
   }
 }
 

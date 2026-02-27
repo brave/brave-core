@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/callback_list.h"
+#include "base/memory/weak_ptr.h"
 #include "ui/views/controls/button/image_button.h"
 
 class SidebarButtonView : public views::ImageButton {
@@ -43,6 +44,7 @@ class SidebarButtonView : public views::ImageButton {
 
  private:
   base::CallbackListSubscription paint_as_active_subscription_;
+  base::WeakPtrFactory<SidebarButtonView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_
