@@ -56,7 +56,9 @@ std::optional<Signer> Signer::FromRecoverySeed(
                       recovery_seed.data(), kSeedLength, kHkdfSalt, kSaltLength,
                       info, sizeof(info) / sizeof(info[0]));
 
-  DCHECK(hkdf_res);
+  if (!hkdf_res) {
+    return std::nullopt;
+  }
 
   std::vector<uint8_t> public_key(crypto_sign_PUBLICKEYBYTES);
   secret_key.resize(crypto_sign_SECRETKEYBYTES);
