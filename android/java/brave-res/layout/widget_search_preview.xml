@@ -25,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical|start"
-            android:background="@drawable/widget_promo_panel_search_background"
             android:contentDescription="@string/search_widget_promo_search_content_description"
             android:padding="8dp"
             android:src="@drawable/brave_icon_search"
