@@ -399,15 +399,14 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   // Get unique categories present with article counts
   std::map<std::string, std::int32_t> category_counts;
   for (auto const& article : articles) {
-    auto category = article->data->category_name;
+    const auto& category = article->data->category_name;
     if (!category.empty() && category != "Top News") {
-      auto existing_count = category_counts[category];
-      category_counts[category] = existing_count + 1;
+      ++category_counts[category];
     }
   }
   // Ordered by # of occurrences
   std::vector<std::string> category_names_by_priority;
-  for (auto kv : category_counts) {
+  for (const auto& kv : category_counts) {
     // Top News is always first category
     // TODO(petemill): handle translated version in non-english feeds
     if (kv.first != "Top News") {
@@ -416,7 +415,7 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   }
   std::sort(category_names_by_priority.begin(),
             category_names_by_priority.end(),
-            [category_counts](std::string& a, std::string& b) {
+            [&category_counts](const std::string& a, const std::string& b) {
               return (category_counts.at(a) < category_counts.at(b));
             });
   // Top News is always first category
@@ -426,7 +425,7 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   // Get unique deals categories present
   std::map<std::string, std::int32_t> deal_category_counts;
   for (auto const& deal : deals) {
-    auto category = deal->offers_category;
+    const auto& category = deal->offers_category;
     if (!category.empty()) {
       auto existing_count = category_counts[category];
       category_counts[category] = existing_count + 1;
@@ -434,12 +433,12 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   }
   // Ordered by # of occurrences
   std::vector<std::string> deal_category_names_by_priority;
-  for (auto kv : deal_category_counts) {
+  for (const auto& kv : deal_category_counts) {
     deal_category_names_by_priority.emplace_back(kv.first);
   }
   std::sort(deal_category_names_by_priority.begin(),
             deal_category_names_by_priority.end(),
-            [deal_category_counts](std::string& a, std::string& b) {
+            [&deal_category_counts](const std::string& a, const std::string& b) {
               return (deal_category_counts.at(a) < deal_category_counts.at(b));
             });
   VLOG(1) << "Got deal categories # " << deal_category_names_by_priority.size();
