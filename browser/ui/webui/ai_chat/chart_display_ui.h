@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 

@@ -5,7 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 
-#include <string>
+#include <string_view>
 
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -33,75 +33,36 @@ TEST(ChartCodePluginTest, ValidateArtifact_Success) {
 TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
   ChartCodePlugin chart_plugin;
 
-  // Not an object
-  {
-    auto value = base::Value("not an object");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(), "Chart must be an object");
-  }
+  struct TestCase {
+    std::string_view name;
+    std::string_view input;
+    std::string_view expected_error;
+  } cases[] = {
+      {"Not an object", "\"not an object\"", "Chart must be an object"},
+      {"Missing data array", R"({"labels": {}})",
+       "Chart is missing 'data' array"},
+      {"Empty data array", R"({"data": []})", "Chart has empty data array"},
+      {"Missing x field", R"({"data": [{"value": 10}]})",
+       "Chart data entry is missing required 'x' field"},
+      {"Invalid x field type", R"({"data": [{"x": true, "value": 10}]})",
+       "Chart data entry 'x' field must be a string or number"},
+      {"Non-numeric value field",
+       R"({"data": [{"x": "A", "value": "not a number"}]})",
+       "Chart data entry values (except 'x') must be numbers"},
+      {"Invalid labels type",
+       R"({"data": [{"x": "A", "value": 10}], "labels": "not an object"})",
+       "Chart labels must be an object"},
+      {"Unexpected chart keys",
+       R"({"data": [{"x": "A", "value": 10}], "extra": {}})",
+       "Chart may only contain 'data' and optional 'labels' fields"},
+  };
 
-  // Missing data array
-  {
-    auto value = base::test::ParseJson(R"({"labels": {}})");
-    auto result = chart_plugin.ValidateArtifact(value);
+  for (auto& tc : cases) {
+    SCOPED_TRACE(tc.name);
+    auto input = base::test::ParseJson(tc.input);
+    auto result = chart_plugin.ValidateArtifact(input);
     ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(), "Chart is missing 'data' array");
-  }
-
-  // Empty data array
-  {
-    auto value = base::test::ParseJson(R"({"data": []})");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(), "Chart has empty data array");
-  }
-
-  // Missing x field
-  {
-    auto value = base::test::ParseJson(R"({"data": [{"value": 10}]})");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(), "Chart data entry is missing required 'x' field");
-  }
-
-  // Invalid x field type
-  {
-    auto value =
-        base::test::ParseJson(R"({"data": [{"x": true, "value": 10}]})");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(),
-              "Chart data entry 'x' field must be a string or number");
-  }
-
-  // Non-numeric value field
-  {
-    auto value = base::test::ParseJson(
-        R"({"data": [{"x": "A", "value": "not a number"}]})");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(),
-              "Chart data entry values (except 'x') must be numbers");
-  }
-
-  // Invalid labels type
-  {
-    auto value = base::test::ParseJson(
-        R"({"data": [{"x": "A", "value": 10}], "labels": "not an object"})");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(), "Chart labels must be an object");
-  }
-
-  // Unexpected chart keys
-  {
-    auto value = base::test::ParseJson(
-        R"({"data": [{"x": "A", "value": 10}], "extra": {}})");
-    auto result = chart_plugin.ValidateArtifact(value);
-    ASSERT_TRUE(result.has_value());
-    EXPECT_EQ(result.value(),
-              "Chart may only contain 'data' and optional 'labels' fields");
+    EXPECT_EQ(result.value(), tc.expected_error);
   }
 }
 

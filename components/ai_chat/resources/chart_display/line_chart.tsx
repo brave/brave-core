@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
+/** Chart data where each entry has an `x` key and numeric value keys; `labels` maps value keys to display names. */
 export interface ChartData {
   data: Array<Record<string, string | number>>
   labels?: Record<string, string>
