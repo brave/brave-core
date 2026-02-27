@@ -50,6 +50,7 @@ void RecordSearchPercentage(const base::DictValue& counts,
                             int primary_queries,
                             std::string_view count_key,
                             const char* histogram_name) {
+  CHECK_GT(primary_queries, 0);
   int count = counts.FindInt(count_key).value_or(0);
   if (count == 0) {
     return;
