@@ -186,7 +186,7 @@ void SkusServiceImpl::GetValueFromStore(
   const auto& state = prefs_->GetDict(prefs::kSkusState);
   const base::Value* value = state.Find(key);
   std::string result;
-  if (value) {
+  if (value && value->is_string()) {
     result = value->GetString();
   }
 
