@@ -425,6 +425,9 @@ uint64_t BitcoinTransaction::TotalInputsAmount() const {
   for (auto& input : inputs_) {
     result += input.utxo_value;
   }
+  if (!result.IsValid()) {
+    return 0;
+  }
   return result.ValueOrDie();
 }
 
@@ -433,11 +436,19 @@ uint64_t BitcoinTransaction::TotalOutputsAmount() const {
   for (auto& output : outputs_) {
     result += output.amount;
   }
+  if (!result.IsValid()) {
+    return 0;
+  }
   return result.ValueOrDie();
 }
 
 bool BitcoinTransaction::AmountsAreValid(uint64_t min_fee) const {
-  return TotalInputsAmount() >= TotalOutputsAmount() + min_fee;
+  base::CheckedNumeric<uint64_t> checked_outputs = TotalOutputsAmount();
+  checked_outputs += min_fee;
+  if (!checked_outputs.IsValid()) {
+    return false;
+  }
+  return TotalInputsAmount() >= checked_outputs.ValueOrDie();
 }
 
 uint64_t BitcoinTransaction::EffectiveFeeAmount() const {
