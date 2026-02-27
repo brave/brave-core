@@ -57,6 +57,12 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
 
+    # Unconditional for gn check as the NTP WebUI always needs the mojom
+    # types since typescript cannnot yet conditionally import during typecheck.
+    # TODO(https://github.com/brave/brave-browser/issues/53190): remove when
+    # fixed.
+    "//brave/components/ai_chat/core/common/mojom",
+
     # Unconditional for gn check since the mojom-forward header is included
     # in brave_new_tab_page_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).
     "//brave/components/brave_news/common:mojom",
@@ -75,6 +81,7 @@ source_set("brave_new_tab_page_refresh") {
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/contextual_search",
+    "//chrome/browser/history",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/browser/themes",
@@ -103,8 +110,6 @@ source_set("brave_new_tab_page_refresh") {
       "//brave/browser/ui/webui/ai_chat",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common/mojom",
-      "//chrome/browser/history",
     ]
   }
 
