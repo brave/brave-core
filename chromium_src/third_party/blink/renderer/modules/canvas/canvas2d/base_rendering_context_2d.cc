@@ -15,35 +15,35 @@ namespace {
 
 bool IsGoogleMaps(const blink::KURL& url) {
   const auto host = url.Host().ToString();
-  // Find "google." in the hostname. It must be either at position 0
-  // (bare "google.<tld>") or preceded by a dot (subdomain like
-  // "maps.google.<tld>").
-  int pos = host.ReverseFind("google.");
+  // Find "google." at a domain boundary (position 0 or after a '.').
+  // Use ReverseFind to match the rightmost occurrence so that
+  // "maps.google.evil.com" does not pass.
+  wtf_size_t pos = host.ReverseFind("google.");
   if (pos == WTF::kNotFound) {
     return false;
   }
   if (pos > 0 && host[pos - 1] != '.') {
     return false;
   }
-  // Validate that the part after "google." is a legitimate TLD, not another
-  // registrable domain. The previous check using Contains(".google.") was
-  // bypassable by hostnames like "maps.google.evil.com".
-  // Google operates on: single TLDs (com, de, fr, ...) and compound TLDs
-  // (co.uk, com.au, com.br, ...).
-  WTF::String tld = host.Substring(pos + 7);  // skip "google."
-  unsigned tld_len = tld.length();
-  // Single-component TLD: 2-3 lowercase letters (e.g., "com", "de")
-  if (tld_len >= 2 && tld_len <= 3) {
-    const auto path = url.GetPath();
-    return path == "/maps" || path.ToString().StartsWith("/maps/");
+  // Validate the TLD after "google." — reject private registries like
+  // "github.io" or "duckdns.org" by requiring each label to be 2-3 chars,
+  // which covers all Google ccTLDs (com, co.uk, com.au, de, fr, ...).
+  WTF::String tld = host.Substring(pos + 7);
+  if (tld.empty()) {
+    return false;
   }
-  // Compound TLD: "co.xx" or "com.xx" (e.g., "co.uk", "com.au")
-  if ((tld.StartsWith("co.") && tld_len == 5) ||
-      (tld.StartsWith("com.") && tld_len == 6)) {
-    const auto path = url.GetPath();
-    return path == "/maps" || path.ToString().StartsWith("/maps/");
+  Vector<WTF::String> labels;
+  tld.Split('.', labels);
+  if (labels.size() == 0 || labels.size() > 2) {
+    return false;
   }
-  return false;
+  for (const auto& label : labels) {
+    if (label.length() < 2 || label.length() > 3) {
+      return false;
+    }
+  }
+  const auto path = url.GetPath();
+  return path == "/maps" || path.ToString().StartsWith("/maps/");
 }
 
 }  // namespace
