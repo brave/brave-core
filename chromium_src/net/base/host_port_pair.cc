@@ -35,7 +35,9 @@ HostPortPair FromStringWithAuthentication(std::string_view str) {
       auth_host[0], ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
   host_port_pair.set_username(std::string(user_pass[0]));
-  host_port_pair.set_password(std::string(user_pass[1]));
+  if (user_pass.size() >= 2) {
+    host_port_pair.set_password(std::string(user_pass[1]));
+  }
   return host_port_pair;
 }
 

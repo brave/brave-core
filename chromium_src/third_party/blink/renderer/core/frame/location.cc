@@ -38,7 +38,7 @@ DOMStringList* Location::ancestorOrigins() const {
     }
     if (is_onion_service(origin.get()) &&
         !origin->IsSameOriginWith(innermost_origin)) {
-      filtered_origins->Append("\"null\"");
+      filtered_origins->Append("null");
     } else {
       filtered_origins->Append(raw_origin);
     }
