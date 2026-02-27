@@ -133,8 +133,10 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
 
             @Override
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
-                isControllable = true;
-                isPaused = false;
+                if (!isControllable) {
+                    isControllable = true;
+                    isPaused = false;
+                }
                 mediaSessionObserver.mediaSessionStateChanged(isControllable, isPaused);
             }
 
