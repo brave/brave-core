@@ -5,12 +5,21 @@
 
 static_library("serp_metrics") {
   public = [
+
+    "profile_attributes_time_period_store.h",
+    "serp_metrics_all_profiles_aggregator.h",
     "serp_metrics_tab_helper.h",
     "serp_metrics_time_period_store.h",
+    "serp_metrics_util.h",
   ]
 
   sources = [
+    "profile_attributes_time_period_store.cc",
+    "serp_metrics_all_profiles_aggregator.cc",
+
     "serp_metrics_tab_helper.cc",
+    "serp_metrics_util.cc",
+ ,
     "serp_metrics_time_period_store.cc",
   ]
 

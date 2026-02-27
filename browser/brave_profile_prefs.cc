@@ -383,6 +383,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2025-12
   registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines, false);
+
+  // Added 2026-02
+  serp_metrics::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -574,8 +577,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
     registry->RegisterBooleanPref(darker_theme::prefs::kBraveDarkerMode, false);
   }
 #endif  // defined(TOOLKIT_VIEWS)
-
-  serp_metrics::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::RegisterProfilePrefs(registry);

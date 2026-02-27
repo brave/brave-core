@@ -8,6 +8,7 @@ static_library("serp_metrics") {
     "serp_classifier.h",
     "serp_metric_type.h",
     "serp_metrics.h",
+    "serp_metrics_aggregator.h",
   ]
 
   sources = [
@@ -31,10 +32,7 @@ static_library("serp_metrics") {
 }
 
 static_library("prefs") {
-  public = [
-    "pref_names.h",
-    "pref_registry.h",
-  ]
+  public = [ "pref_registry.h" ]
 
   sources = [ "pref_registry.cc" ]
 
@@ -80,13 +78,12 @@ source_set("test_support") {
   testonly = true
 
   sources = [
-    "serp_metrics_mock.cc",
-    "serp_metrics_mock.h",
+    "serp_metrics_aggregator_mock.cc",
+    "serp_metrics_aggregator_mock.h",
   ]
 
   deps = [
     ":serp_metrics",
-    "//components/prefs",
     "//testing/gmock",
   ]
 }

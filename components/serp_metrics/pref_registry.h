@@ -10,7 +10,7 @@ class PrefRegistrySimple;
 
 namespace serp_metrics {
 
-void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 
 }  // namespace serp_metrics
 
