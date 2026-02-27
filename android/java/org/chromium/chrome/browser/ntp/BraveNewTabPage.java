@@ -167,19 +167,20 @@ public class BraveNewTabPage extends NewTabPage {
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
         // No-op stub to deal with non-null requirement
-        FeedActionDelegate actionDelegate =
-                new FeedActionDelegate() {
-                    @Override
-                    public void openSuggestionUrl(
-                            int disposition,
-                            LoadUrlParams params,
-                            boolean inGroup,
-                            int pageId,
-                            PageLoadObserver pageLoadObserver,
-                            Callback<VisitResult> onVisitComplete) {
-                        assert false : "Not supposed to be invoked";
-                    }
-                };
+        FeedSurfaceCoordinator.ActionDelegateFactory actionDelegate =
+                () ->
+                        new FeedActionDelegate() {
+                            @Override
+                            public void openSuggestionUrl(
+                                    int disposition,
+                                    LoadUrlParams params,
+                                    boolean inGroup,
+                                    int pageId,
+                                    PageLoadObserver pageLoadObserver,
+                                    Callback<VisitResult> onVisitComplete) {
+                                assert false : "Not supposed to be invoked";
+                            }
+                        };
 
         assertNonNull(mBrowserControlsStateProvider);
         assertNonNull(mToolbarSupplier);
