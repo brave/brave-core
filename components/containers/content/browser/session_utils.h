@@ -63,6 +63,30 @@ namespace containers {
 // 4. Sets StoragePartitionConfig on the restored SerializedNavigationEntry.
 // 5. Removes prefix from URLs in SerializedNavigationEntry and PageState.
 
+// Result of RestoreStoragePartitionKeyFromUrl(). Contains the decoded original
+// URL, the extracted storage partition key, and the byte length of the prefix
+// that was stripped from the encoded URL.
+
+struct COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
+    RestoreStoragePartitionKeyResult {
+  RestoreStoragePartitionKeyResult(
+      const GURL& url,
+      const std::pair<std::string, std::string>& storage_partition_key,
+      size_t url_prefix_length);
+
+  ~RestoreStoragePartitionKeyResult();
+  RestoreStoragePartitionKeyResult(const RestoreStoragePartitionKeyResult&);
+  RestoreStoragePartitionKeyResult& operator=(
+      const RestoreStoragePartitionKeyResult&);
+  RestoreStoragePartitionKeyResult(RestoreStoragePartitionKeyResult&&) noexcept;
+  RestoreStoragePartitionKeyResult& operator=(
+      RestoreStoragePartitionKeyResult&&) noexcept;
+
+  GURL url;
+  std::pair<std::string, std::string> storage_partition_key;
+  size_t url_prefix_length = 0;
+};
+
 // Generates a URL prefix for encoding container storage partition info. Given a
 // storage partition key, returns a URL prefix that can be prepended to URLs in
 // SerializedNavigationEntry and PageState during session serialization.
@@ -75,10 +99,8 @@ std::optional<std::string> GetUrlPrefixForSessionPersistence(
 // container prefix, extracts the storage partition key (partition_domain,
 // partition_name) and the original URL (https://example.com).
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
-std::optional<GURL> RestoreStoragePartitionKeyFromUrl(
-    const GURL& url,
-    std::pair<std::string, std::string>& storage_partition_key,
-    size_t& url_prefix_length);
+std::optional<RestoreStoragePartitionKeyResult>
+RestoreStoragePartitionKeyFromUrl(const GURL& url);
 
 }  // namespace containers
 

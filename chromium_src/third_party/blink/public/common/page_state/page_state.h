@@ -9,7 +9,7 @@
 #define RemoveScrollOffset()                               \
   RemoveScrollOffset() const;                              \
   PageState PrefixTopURL(const std::string& prefix) const; \
-  PageState RemoveTopURLPrefix(const size_t& prefix_length)
+  PageState RemoveTopURLPrefix(size_t prefix_length)
 
 #include <third_party/blink/public/common/page_state/page_state.h>  // IWYU pragma: export
 

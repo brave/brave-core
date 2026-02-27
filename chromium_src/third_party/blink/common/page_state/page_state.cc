@@ -61,7 +61,7 @@ PageState PageState::PrefixTopURL(const std::string& prefix) const {
 //
 // Returns a new PageState with the prefix removed, or the original PageState if
 // the operation fails or the PageState is empty.
-PageState PageState::RemoveTopURLPrefix(const size_t& prefix_length) const {
+PageState PageState::RemoveTopURLPrefix(size_t prefix_length) const {
   if (data_.empty()) {
     return *this;
   }

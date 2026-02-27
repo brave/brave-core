@@ -87,32 +87,28 @@ void ContentSerializedNavigationDriver::Sanitize(
   // container tab is synced to a device with Containers disabled, the URL will
   // remain unhandleable (the prefix won't be removed).
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    std::pair<std::string, std::string> storage_partition_key;
-    size_t url_prefix_length;
-
     // Try to parse the virtual_url as a container-encoded URL.
     // If it has the format "containers+<uuid>:https://...", this returns
     // the original URL and extracts the partition key.
-    if (auto restored_virtual_url =
-            containers::RestoreStoragePartitionKeyFromUrl(
-                navigation->virtual_url(), storage_partition_key,
-                url_prefix_length)) {
+    if (auto result = containers::RestoreStoragePartitionKeyFromUrl(
+            navigation->virtual_url())) {
       // Extract just the prefix part for PageState manipulation.
       // For "containers+work:https://example.com", this extracts
       // "containers+work:" (everything before the original URL).
       navigation->set_virtual_url_prefix(
-          navigation->virtual_url().spec().substr(0, url_prefix_length));
+          navigation->virtual_url().spec().substr(0,
+                                                  result->url_prefix_length));
 
       // Update the virtual_url to the original URL without the prefix.
       // "containers+work:https://example.com" -> "https://example.com"
       // This is what will be used to create the NavigationEntry.
-      navigation->set_virtual_url(*restored_virtual_url);
+      navigation->set_virtual_url(result->url);
 
       // Store the extracted storage partition key.
       // This will be used by ContentSerializedNavigationBuilder::
       // ToNavigationEntry() to set the correct StoragePartitionConfig
       // when creating the NavigationEntry.
-      navigation->set_storage_partition_key(storage_partition_key);
+      navigation->set_storage_partition_key(result->storage_partition_key);
 
       // Remove the prefix from PageState too.
       if (!navigation->encoded_page_state().empty()) {
@@ -120,7 +116,7 @@ void ContentSerializedNavigationDriver::Sanitize(
             blink::PageState::CreateFromEncodedData(
                 navigation->encoded_page_state());
         navigation->set_encoded_page_state(
-            page_state_obj.RemoveTopURLPrefix(url_prefix_length)
+            page_state_obj.RemoveTopURLPrefix(result->url_prefix_length)
                 .ToEncodedData());
       }
     }

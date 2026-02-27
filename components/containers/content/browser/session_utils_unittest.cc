@@ -92,13 +92,13 @@ TEST_F(ContainersSessionUtilsTest, RestoreStoragePartitionKeyFromUrl) {
 
   for (const auto& test_case : test_cases) {
     SCOPED_TRACE(test_case.encoded_url.spec());
-    std::pair<std::string, std::string> key;
-    size_t prefix_length = 0;
-    auto restored_url = RestoreStoragePartitionKeyFromUrl(test_case.encoded_url,
-                                                          key, prefix_length);
-    EXPECT_EQ(restored_url, test_case.expected_url);
-    EXPECT_EQ(key, test_case.expected_key);
-    EXPECT_EQ(prefix_length, test_case.expected_prefix_length);
+    auto result = RestoreStoragePartitionKeyFromUrl(test_case.encoded_url);
+    EXPECT_EQ(result.has_value(), test_case.expected_url.has_value());
+    if (result.has_value()) {
+      EXPECT_EQ(result->url, *test_case.expected_url);
+      EXPECT_EQ(result->storage_partition_key, test_case.expected_key);
+      EXPECT_EQ(result->url_prefix_length, test_case.expected_prefix_length);
+    }
   }
 }
 
@@ -111,14 +111,11 @@ TEST_F(ContainersSessionUtilsTest, GetAndRestore) {
   ASSERT_TRUE(prefix.has_value());
   GURL encoded_url(*prefix + original_url.spec());
 
-  std::pair<std::string, std::string> decoded_key;
-  size_t prefix_length;
-  auto decoded_url = RestoreStoragePartitionKeyFromUrl(encoded_url, decoded_key,
-                                                       prefix_length);
+  auto result = RestoreStoragePartitionKeyFromUrl(encoded_url);
 
-  ASSERT_TRUE(decoded_url.has_value());
-  EXPECT_EQ(original_url, *decoded_url);
-  EXPECT_EQ(original_key, decoded_key);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(original_url, result->url);
+  EXPECT_EQ(original_key, result->storage_partition_key);
 }
 
 }  // namespace containers

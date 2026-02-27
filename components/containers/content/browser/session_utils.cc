@@ -23,6 +23,23 @@ constexpr std::string_view kStoragePartitionKeySeparator = "+";
 
 }  // namespace
 
+RestoreStoragePartitionKeyResult::RestoreStoragePartitionKeyResult(
+    const GURL& url,
+    const std::pair<std::string, std::string>& storage_partition_key,
+    size_t url_prefix_length)
+    : url(url),
+      storage_partition_key(storage_partition_key),
+      url_prefix_length(url_prefix_length) {}
+RestoreStoragePartitionKeyResult::~RestoreStoragePartitionKeyResult() = default;
+RestoreStoragePartitionKeyResult::RestoreStoragePartitionKeyResult(
+    const RestoreStoragePartitionKeyResult&) = default;
+RestoreStoragePartitionKeyResult::RestoreStoragePartitionKeyResult(
+    RestoreStoragePartitionKeyResult&&) noexcept = default;
+RestoreStoragePartitionKeyResult& RestoreStoragePartitionKeyResult::operator=(
+    const RestoreStoragePartitionKeyResult&) = default;
+RestoreStoragePartitionKeyResult& RestoreStoragePartitionKeyResult::operator=(
+    RestoreStoragePartitionKeyResult&&) noexcept = default;
+
 std::optional<std::string> GetUrlPrefixForSessionPersistence(
     const std::pair<std::string, std::string>& storage_partition_key) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
@@ -41,10 +58,8 @@ std::optional<std::string> GetUrlPrefixForSessionPersistence(
   });
 }
 
-std::optional<GURL> RestoreStoragePartitionKeyFromUrl(
-    const GURL& url,
-    std::pair<std::string, std::string>& storage_partition_key,
-    size_t& url_prefix_length) {
+std::optional<RestoreStoragePartitionKeyResult>
+RestoreStoragePartitionKeyFromUrl(const GURL& url) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
 
   // Parse the URL scheme to check if it's an encoded container URL. We split on
@@ -63,16 +78,14 @@ std::optional<GURL> RestoreStoragePartitionKeyFromUrl(
     return std::nullopt;
   }
 
-  // Extract the storage partition key for restoration.
-  storage_partition_key = {std::string(parts[0]), std::string(parts[1])};
-
   // Calculate the exact length of the prefix.
-  url_prefix_length = parts[0].length() +
-                      kStoragePartitionKeySeparator.length() +
-                      parts[1].length() + kUrlSchemeSeparator.length();
+  const size_t url_prefix_length =
+      parts[0].length() + kStoragePartitionKeySeparator.length() +
+      parts[1].length() + kUrlSchemeSeparator.length();
 
-  // Remove the prefix to get the original URL.
-  return GURL(url.spec().substr(url_prefix_length));
+  return RestoreStoragePartitionKeyResult(
+      GURL(url.spec().substr(url_prefix_length)),
+      {std::string(parts[0]), std::string(parts[1])}, url_prefix_length);
 }
 
 }  // namespace containers
