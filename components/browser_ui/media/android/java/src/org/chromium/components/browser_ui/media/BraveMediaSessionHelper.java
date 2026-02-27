@@ -79,6 +79,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         // set by BraveBrowserMainParts::PostProfileInit() when the background video playback
         // feature and preference are both enabled, and the app restarts whenever the preference
         // changes, so the switch reliably reflects the current preference state.
+        // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
         boolean enabled =
                 CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
                         && isYouTube(webContents);
