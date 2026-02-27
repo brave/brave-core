@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_AI_SERVICE_H_
 
 #include <memory>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -16,16 +17,17 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace local_ai {
 
 // LocalAIService manages the lifecycle of background model workers.
 //
 // Consumers call GetPassageEmbedder() to obtain a PassageEmbedder remote
-// bound directly to the content layer (BackgroundWebContentsImpl). The
-// service itself does not proxy inference calls — it only manages
-// creation/teardown of the background WebContents and forwards the
-// renderer's PassageEmbedder registration to it.
+// bound directly to the renderer. The service uses a
+// PassageEmbedderFactory (registered by the renderer) to create direct
+// consumer→renderer bindings on demand — it never proxies inference
+// calls itself.
 class LocalAIService : public KeyedService,
                        public mojom::LocalAIService,
                        public BackgroundWebContents::Delegate {
@@ -47,8 +49,8 @@ class LocalAIService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::LocalAIService> receiver);
 
   // mojom::LocalAIService:
-  void RegisterPassageEmbedder(
-      mojo::PendingRemote<mojom::PassageEmbedder> embedder) override;
+  void RegisterPassageEmbedderFactory(
+      mojo::PendingRemote<mojom::PassageEmbedderFactory> factory) override;
   void GetPassageEmbedder(GetPassageEmbedderCallback callback) override;
 
  private:
@@ -56,16 +58,24 @@ class LocalAIService : public KeyedService,
   void Shutdown() override;
 
   // BackgroundWebContents::Delegate:
-  void OnBackgroundContentsReady() override;
   void OnBackgroundContentsDestroyed(
       BackgroundWebContents::DestroyReason reason) override;
 
   void MaybeCreateBackgroundContents();
   void CloseBackgroundContents();
 
+  // Creates a pipe, asks the factory to bind the receiver end, and
+  // runs the callback with the remote end.
+  void BindPassageEmbedder(GetPassageEmbedderCallback callback);
+  void ProcessPendingCallbacks();
+  void OnFactoryDisconnected();
+  void CancelPendingCallbacks();
+
   std::unique_ptr<BackgroundWebContents> background_web_contents_;
   BackgroundWebContentsFactory background_web_contents_factory_;
   mojo::ReceiverSet<mojom::LocalAIService> receivers_;
+  mojo::Remote<mojom::PassageEmbedderFactory> factory_;
+  std::vector<GetPassageEmbedderCallback> pending_embedder_callbacks_;
 
   base::WeakPtrFactory<LocalAIService> weak_ptr_factory_{this};
 };

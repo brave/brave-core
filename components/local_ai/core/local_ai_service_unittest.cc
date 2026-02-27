@@ -10,7 +10,6 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
-#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -33,6 +32,7 @@ std::vector<double> TestEmbedding() {
 }
 
 // Fake PassageEmbedder implementation (acts as the renderer worker).
+// Supports multiple consumers via ReceiverSet.
 class FakeWorker : public mojom::PassageEmbedder {
  public:
   void GenerateEmbeddings(const std::string& text,
@@ -41,71 +41,61 @@ class FakeWorker : public mojom::PassageEmbedder {
     std::move(callback).Run(TestEmbedding());
   }
 
-  mojo::PendingRemote<mojom::PassageEmbedder> BindNewPipeAndPassRemote() {
-    return receiver_.BindNewPipeAndPassRemote();
+  void AddReceiver(mojo::PendingReceiver<mojom::PassageEmbedder> receiver) {
+    receivers_.Add(this, std::move(receiver));
   }
 
-  void Reset() { receiver_.reset(); }
+  void ClearReceivers() { receivers_.Clear(); }
 
   int embed_count() const { return embed_count_; }
 
  private:
   int embed_count_ = 0;
-  mojo::Receiver<mojom::PassageEmbedder> receiver_{this};
+  mojo::ReceiverSet<mojom::PassageEmbedder> receivers_;
 };
 
-// Fake BackgroundWebContents that implements SetWorkerRemote and
-// BindNewPassageEmbedder with a simple proxy PassageEmbedder.
-class FakeBackgroundWebContents : public BackgroundWebContents,
-                                  public mojom::PassageEmbedder {
+// Fake PassageEmbedderFactory that binds directly to FakeWorker.
+class FakePassageEmbedderFactory : public mojom::PassageEmbedderFactory {
  public:
-  FakeBackgroundWebContents(Delegate* delegate, base::OnceClosure on_destroyed)
-      : delegate_(delegate), on_destroyed_(std::move(on_destroyed)) {}
-  ~FakeBackgroundWebContents() override { std::move(on_destroyed_).Run(); }
+  explicit FakePassageEmbedderFactory(FakeWorker* worker) : worker_(worker) {}
 
-  void SimulateReady() { delegate_->OnBackgroundContentsReady(); }
+  void Bind(mojo::PendingReceiver<mojom::PassageEmbedder> receiver) override {
+    worker_->AddReceiver(std::move(receiver));
+  }
+
+  mojo::PendingRemote<mojom::PassageEmbedderFactory> BindRemote() {
+    return receiver_.BindNewPipeAndPassRemote();
+  }
+
+ private:
+  raw_ptr<FakeWorker> worker_;
+  mojo::Receiver<mojom::PassageEmbedderFactory> receiver_{this};
+};
+
+// Pure lifecycle fake — no Mojo proxy code.
+// On destruction, clears the FakeWorker's receivers to simulate the
+// renderer dying when the real BackgroundWebContents is destroyed.
+class FakeBackgroundWebContents : public BackgroundWebContents {
+ public:
+  FakeBackgroundWebContents(Delegate* delegate,
+                            FakeWorker* worker,
+                            base::OnceClosure on_destroyed)
+      : delegate_(delegate),
+        worker_(worker),
+        on_destroyed_(std::move(on_destroyed)) {}
+  ~FakeBackgroundWebContents() override {
+    worker_->ClearReceivers();
+    std::move(on_destroyed_).Run();
+  }
+
   void SimulateDestroyed() {
     delegate_->OnBackgroundContentsDestroyed(DestroyReason::kRendererGone);
   }
 
-  // BackgroundWebContents:
-  void SetWorkerRemote(
-      mojo::PendingRemote<mojom::PassageEmbedder> remote) override {
-    worker_remote_.Bind(std::move(remote));
-    for (auto& receiver : pending_receivers_) {
-      receivers_.Add(this, std::move(receiver));
-    }
-    pending_receivers_.clear();
-  }
-
-  mojo::PendingRemote<mojom::PassageEmbedder> BindNewPassageEmbedder()
-      override {
-    mojo::PendingRemote<mojom::PassageEmbedder> remote;
-    auto receiver = remote.InitWithNewPipeAndPassReceiver();
-    if (worker_remote_.is_bound()) {
-      receivers_.Add(this, std::move(receiver));
-    } else {
-      pending_receivers_.push_back(std::move(receiver));
-    }
-    return remote;
-  }
-
-  // mojom::PassageEmbedder:
-  void GenerateEmbeddings(const std::string& text,
-                          GenerateEmbeddingsCallback callback) override {
-    if (worker_remote_.is_bound()) {
-      worker_remote_->GenerateEmbeddings(text, std::move(callback));
-    } else {
-      std::move(callback).Run({});
-    }
-  }
-
  private:
   raw_ptr<Delegate> delegate_;
+  raw_ptr<FakeWorker> worker_;
   base::OnceClosure on_destroyed_;
-  mojo::Remote<mojom::PassageEmbedder> worker_remote_;
-  mojo::ReceiverSet<mojom::PassageEmbedder> receivers_;
-  std::vector<mojo::PendingReceiver<mojom::PassageEmbedder>> pending_receivers_;
 };
 
 }  // namespace
@@ -126,12 +116,17 @@ class LocalAIServiceTest : public testing::Test {
   std::unique_ptr<BackgroundWebContents> CreateFakeWebContents(
       BackgroundWebContents::Delegate* delegate) {
     auto web_contents = std::make_unique<FakeBackgroundWebContents>(
-        delegate,
+        delegate, &fake_worker_,
         base::BindOnce(
             [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
             &last_created_web_contents_));
     last_created_web_contents_ = web_contents.get();
     return web_contents;
+  }
+
+  // Helper: register the factory with the service.
+  void RegisterFactory() {
+    service_->RegisterPassageEmbedderFactory(fake_factory_.BindRemote());
   }
 
   // Helper: get a PassageEmbedder remote from the service.
@@ -147,29 +142,43 @@ class LocalAIServiceTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<LocalAIService> service_;
   FakeWorker fake_worker_;
+  FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
 };
 
 TEST_F(LocalAIServiceTest, GetPassageEmbedderCreatesBackgroundContents) {
-  auto embedder = GetEmbedder();
+  // GetPassageEmbedder queues the callback (factory not yet registered).
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
   EXPECT_TRUE(last_created_web_contents_);
+
+  // Register factory to flush the pending callback.
+  RegisterFactory();
+  EXPECT_TRUE(future.Get().is_valid());
 }
 
-TEST_F(LocalAIServiceTest, RegisterPassageEmbedderForwardsToWebContents) {
-  auto embedder = GetEmbedder();
-  ASSERT_TRUE(last_created_web_contents_);
+TEST_F(LocalAIServiceTest, GetPassageEmbedderWaitsForFactory) {
+  // Call GetPassageEmbedder before factory is registered — callback
+  // should be deferred.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  EXPECT_FALSE(future.IsReady());
 
-  service_->RegisterPassageEmbedder(fake_worker_.BindNewPipeAndPassRemote());
-
-  base::test::TestFuture<const std::vector<double>&> future;
-  embedder->GenerateEmbeddings("test", future.GetCallback());
-  EXPECT_EQ(TestEmbedding(), future.Get());
+  // Registering the factory flushes the pending callback.
+  RegisterFactory();
+  EXPECT_TRUE(future.IsReady());
+  EXPECT_TRUE(future.Get().is_valid());
 }
 
 TEST_F(LocalAIServiceTest, EndToEndEmbedding) {
-  // Get embedder, register worker, call GenerateEmbeddings.
-  auto embedder = GetEmbedder();
-  service_->RegisterPassageEmbedder(fake_worker_.BindNewPipeAndPassRemote());
+  // Register factory first, then get embedder — callback should
+  // resolve immediately.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  RegisterFactory();
+
+  mojo::Remote<mojom::PassageEmbedder> embedder;
+  embedder.Bind(future.Take());
 
   base::test::TestFuture<const std::vector<double>&> future1;
   base::test::TestFuture<const std::vector<double>&> future2;
@@ -182,9 +191,16 @@ TEST_F(LocalAIServiceTest, EndToEndEmbedding) {
 }
 
 TEST_F(LocalAIServiceTest, MultipleConsumersEachGetResults) {
-  auto embedder1 = GetEmbedder();
-  auto embedder2 = GetEmbedder();
-  service_->RegisterPassageEmbedder(fake_worker_.BindNewPipeAndPassRemote());
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f1;
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> f2;
+  service_->GetPassageEmbedder(f1.GetCallback());
+  service_->GetPassageEmbedder(f2.GetCallback());
+  RegisterFactory();
+
+  mojo::Remote<mojom::PassageEmbedder> embedder1;
+  embedder1.Bind(f1.Take());
+  mojo::Remote<mojom::PassageEmbedder> embedder2;
+  embedder2.Bind(f2.Take());
 
   base::test::TestFuture<const std::vector<double>&> future1;
   base::test::TestFuture<const std::vector<double>&> future2;
@@ -197,34 +213,77 @@ TEST_F(LocalAIServiceTest, MultipleConsumersEachGetResults) {
 }
 
 TEST_F(LocalAIServiceTest, ShutdownDisconnectsConsumers) {
-  auto embedder = GetEmbedder();
-  service_->RegisterPassageEmbedder(fake_worker_.BindNewPipeAndPassRemote());
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  RegisterFactory();
+
+  mojo::Remote<mojom::PassageEmbedder> embedder;
+  embedder.Bind(future.Take());
+
+  // Ensure the factory's Bind message is delivered by doing a
+  // round-trip on the embedder pipe. This guarantees the receiver is
+  // bound in FakeWorker before Shutdown tears things down.
+  base::test::TestFuture<const std::vector<double>&> ping;
+  embedder->GenerateEmbeddings("ping", ping.GetCallback());
+  EXPECT_EQ(TestEmbedding(), ping.Get());
 
   static_cast<KeyedService*>(service_.get())->Shutdown();
 
-  // After shutdown, background contents is destroyed, disconnecting
-  // the embedder remote.
-  EXPECT_TRUE(base::test::RunUntil([&] { return !embedder.is_connected(); }));
+  embedder.FlushForTesting();
+  EXPECT_FALSE(embedder.is_connected());
+}
+
+TEST_F(LocalAIServiceTest, ShutdownCancelsPendingCallbacks) {
+  // Queue a callback without registering the factory.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+
+  static_cast<KeyedService*>(service_.get())->Shutdown();
+
+  // Pending callback should receive an invalid remote.
+  EXPECT_FALSE(future.Get().is_valid());
 }
 
 TEST_F(LocalAIServiceTest, ReinitializesAfterDestroyed) {
-  auto embedder1 = GetEmbedder();
-  service_->RegisterPassageEmbedder(fake_worker_.BindNewPipeAndPassRemote());
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  RegisterFactory();
 
   ASSERT_TRUE(last_created_web_contents_);
   last_created_web_contents_->SimulateDestroyed();
 
   // Getting a new embedder should create new background contents.
-  auto embedder2 = GetEmbedder();
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future2;
+  service_->GetPassageEmbedder(future2.GetCallback());
   EXPECT_TRUE(last_created_web_contents_);
 }
 
 TEST_F(LocalAIServiceTest, DoubleShutdownIsIdempotent) {
-  auto embedder = GetEmbedder();
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
 
   auto* keyed_service = static_cast<KeyedService*>(service_.get());
   keyed_service->Shutdown();
   keyed_service->Shutdown();
+}
+
+TEST_F(LocalAIServiceTest, FactoryDisconnectCancelsPendingCallbacks) {
+  // Queue a callback, register factory, then disconnect.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>>
+      pending_future;
+  service_->GetPassageEmbedder(pending_future.GetCallback());
+  RegisterFactory();
+
+  // First callback should have been served.
+  EXPECT_TRUE(pending_future.Get().is_valid());
+
+  // Queue another callback and simulate factory disconnect.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future2;
+  service_->GetPassageEmbedder(future2.GetCallback());
+
+  // Factory is still bound, so this callback should be served
+  // immediately.
+  EXPECT_TRUE(future2.Get().is_valid());
 }
 
 }  // namespace local_ai

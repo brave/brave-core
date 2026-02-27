@@ -35,33 +35,40 @@ void LocalAIService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void LocalAIService::RegisterPassageEmbedder(
-    mojo::PendingRemote<mojom::PassageEmbedder> embedder) {
+void LocalAIService::RegisterPassageEmbedderFactory(
+    mojo::PendingRemote<mojom::PassageEmbedderFactory> factory) {
   if (!background_web_contents_) {
-    DVLOG(1) << "RegisterPassageEmbedder: No background contents";
+    DVLOG(1) << "RegisterPassageEmbedderFactory: No background contents";
     return;
   }
-  background_web_contents_->SetWorkerRemote(std::move(embedder));
+  factory_.Bind(std::move(factory));
+  factory_.set_disconnect_handler(base::BindOnce(
+      &LocalAIService::OnFactoryDisconnected, weak_ptr_factory_.GetWeakPtr()));
+  ProcessPendingCallbacks();
 }
 
 void LocalAIService::GetPassageEmbedder(GetPassageEmbedderCallback callback) {
   MaybeCreateBackgroundContents();
-  std::move(callback).Run(background_web_contents_->BindNewPassageEmbedder());
-}
-
-void LocalAIService::OnBackgroundContentsReady() {
-  DVLOG(3) << "LocalAIService: Background contents ready";
+  if (factory_.is_bound()) {
+    BindPassageEmbedder(std::move(callback));
+  } else {
+    pending_embedder_callbacks_.push_back(std::move(callback));
+  }
 }
 
 void LocalAIService::OnBackgroundContentsDestroyed(
     BackgroundWebContents::DestroyReason reason) {
   DVLOG(1) << "LocalAIService: Background contents destroyed";
+  factory_.reset();
+  CancelPendingCallbacks();
   CloseBackgroundContents();
 }
 
 void LocalAIService::Shutdown() {
   DVLOG(3) << "LocalAIService: Shutting down";
   receivers_.Clear();
+  factory_.reset();
+  CancelPendingCallbacks();
   CloseBackgroundContents();
 }
 
@@ -77,6 +84,31 @@ void LocalAIService::MaybeCreateBackgroundContents() {
 void LocalAIService::CloseBackgroundContents() {
   DVLOG(3) << "LocalAIService: Closing background contents to free memory";
   background_web_contents_.reset();
+}
+
+void LocalAIService::BindPassageEmbedder(GetPassageEmbedderCallback callback) {
+  mojo::PendingRemote<mojom::PassageEmbedder> remote;
+  factory_->Bind(remote.InitWithNewPipeAndPassReceiver());
+  std::move(callback).Run(std::move(remote));
+}
+
+void LocalAIService::ProcessPendingCallbacks() {
+  auto callbacks = std::move(pending_embedder_callbacks_);
+  for (auto& cb : callbacks) {
+    BindPassageEmbedder(std::move(cb));
+  }
+}
+
+void LocalAIService::OnFactoryDisconnected() {
+  factory_.reset();
+  CancelPendingCallbacks();
+}
+
+void LocalAIService::CancelPendingCallbacks() {
+  auto callbacks = std::move(pending_embedder_callbacks_);
+  for (auto& cb : callbacks) {
+    std::move(cb).Run(mojo::PendingRemote<mojom::PassageEmbedder>());
+  }
 }
 
 }  // namespace local_ai

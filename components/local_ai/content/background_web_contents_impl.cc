@@ -52,63 +52,9 @@ BackgroundWebContentsImpl::BackgroundWebContentsImpl(
 BackgroundWebContentsImpl::~BackgroundWebContentsImpl() {
   // Prevent delegate callbacks during teardown.
   delegate_ = nullptr;
-  // Reset worker remote before web_contents_ to avoid disconnect handler
-  // firing during destruction.
-  worker_remote_.reset();
   if (web_contents_) {
     web_contents_->SetDelegate(nullptr);
   }
-}
-
-// BackgroundWebContents:
-
-void BackgroundWebContentsImpl::SetWorkerRemote(
-    mojo::PendingRemote<mojom::PassageEmbedder> remote) {
-  if (worker_remote_.is_bound()) {
-    DVLOG(1) << "Worker already bound, resetting";
-    worker_remote_.reset();
-  }
-  worker_remote_.Bind(std::move(remote));
-
-  worker_remote_.set_disconnect_handler(base::BindOnce(
-      [](BackgroundWebContentsImpl* self) {
-        DVLOG(1) << "Worker remote disconnected";
-        self->worker_remote_.reset();
-        self->passage_embedder_receivers_.Clear();
-        self->NotifyDestroyed(DestroyReason::kRendererGone);
-      },
-      base::Unretained(this)));
-
-  DVLOG(3) << "SetWorkerRemote: Bound worker, binding "
-           << pending_receivers_.size() << " pending receivers";
-
-  BindPendingReceivers();
-}
-
-mojo::PendingRemote<mojom::PassageEmbedder>
-BackgroundWebContentsImpl::BindNewPassageEmbedder() {
-  mojo::PendingRemote<mojom::PassageEmbedder> remote;
-  auto receiver = remote.InitWithNewPipeAndPassReceiver();
-
-  if (worker_remote_.is_bound()) {
-    passage_embedder_receivers_.Add(this, std::move(receiver));
-  } else {
-    pending_receivers_.push_back(std::move(receiver));
-  }
-
-  return remote;
-}
-
-// mojom::PassageEmbedder:
-
-void BackgroundWebContentsImpl::GenerateEmbeddings(
-    const std::string& text,
-    GenerateEmbeddingsCallback callback) {
-  if (!worker_remote_.is_bound()) {
-    std::move(callback).Run({});
-    return;
-  }
-  worker_remote_->GenerateEmbeddings(text, std::move(callback));
 }
 
 // content::WebContentsDelegate:
@@ -170,9 +116,6 @@ void BackgroundWebContentsImpl::DidFinishLoad(
     NotifyDestroyed(DestroyReason::kInvalidUrl);
     return;
   }
-  if (delegate_) {
-    delegate_->OnBackgroundContentsReady();
-  }
 }
 
 void BackgroundWebContentsImpl::PrimaryMainFrameRenderProcessGone(
@@ -187,13 +130,6 @@ void BackgroundWebContentsImpl::NotifyDestroyed(DestroyReason reason) {
     delegate_->OnBackgroundContentsDestroyed(reason);
     // |this| is deleted.
   }
-}
-
-void BackgroundWebContentsImpl::BindPendingReceivers() {
-  for (auto& receiver : pending_receivers_) {
-    passage_embedder_receivers_.Add(this, std::move(receiver));
-  }
-  pending_receivers_.clear();
 }
 
 }  // namespace local_ai
