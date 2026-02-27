@@ -56,7 +56,7 @@ function runPresubmit(options) {
     }
   }
   if (options.files) {
-    args.push('--files', `"${options.files}"`)
+    args.push('--files', options.files)
   }
   if (options.verbose) {
     args.push(...Array(options.verbose).fill('--verbose'))
