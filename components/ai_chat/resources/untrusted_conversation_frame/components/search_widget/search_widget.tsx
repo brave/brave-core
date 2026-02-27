@@ -28,6 +28,8 @@ function ChromeImage(props: {
   className?: string
   src?: string
   alt?: string
+  style?: React.CSSProperties
+  onError?: React.ReactEventHandler<HTMLImageElement>
 }) {
   const url =
     props.src && window.location.protocol.startsWith('chrome')
@@ -39,6 +41,8 @@ function ChromeImage(props: {
       className={props.className}
       src={url}
       alt={props.alt}
+      style={props.style}
+      onError={props.onError}
     />
   )
 }
@@ -72,7 +76,10 @@ function SearchCard(props: { result: SearchResult }) {
   )
 }
 
+const imgHidden: React.CSSProperties = { visibility: 'hidden' }
+
 function DetailCard(props: { result: SearchResult }) {
+  const [imgFailed, setImgFailed] = React.useState(false)
   return (
     <SecureLink
       className={styles.detailResult}
@@ -84,6 +91,8 @@ function DetailCard(props: { result: SearchResult }) {
         className={styles.thumbnail}
         src={props.result.thumbnail?.src}
         alt={props.result.title}
+        style={imgFailed ? imgHidden : undefined}
+        onError={() => setImgFailed(true)}
       />
       <div className={styles.content}>
         <MetaRow favicon={props.result.meta_url.favicon}>
@@ -99,6 +108,8 @@ function DetailCard(props: { result: SearchResult }) {
 }
 
 function ImageCard(props: { result: SearchResult }) {
+  const [failed, setFailed] = React.useState(false)
+  if (failed) return null
   return (
     <SecureLink
       className={styles.imageResult}
@@ -109,6 +120,7 @@ function ImageCard(props: { result: SearchResult }) {
         className={styles.thumbnail}
         src={props.result.thumbnail?.src}
         alt={props.result.title}
+        onError={() => setFailed(true)}
       />
     </SecureLink>
   )
