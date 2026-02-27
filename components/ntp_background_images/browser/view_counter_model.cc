@@ -103,12 +103,9 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
     // Randomize SI campaign branded image index for next time.
     if (campaigns_total_branded_image_count_[current_campaign_index_] > 1) {
       campaigns_current_branded_image_index_[current_campaign_index_] =
-          base::RandInt(
-              0,
-              static_cast<int>(
-                  campaigns_total_branded_image_count_
-                      [current_campaign_index_]) -
-                  1);
+          base::RandInt(0, static_cast<int>(campaigns_total_branded_image_count_
+                                                [current_campaign_index_]) -
+                               1);
     } else {
       campaigns_current_branded_image_index_[current_campaign_index_] = 0;
     }
