@@ -34,8 +34,6 @@ extension URL {
   public var strippedInternalURL: URL? {
     if let internalURL = InternalURL(self) {
       switch internalURL.urlType {
-      case .errorPage:
-        return internalURL.originalURLFromErrorPage
       case .web3Page:
         return internalURL.extractedUrlParam
       case .blockedPage:
@@ -67,10 +65,6 @@ extension URL {
         .havingRemovedAuthorisationComponents()
     }
 
-    if let internalUrl = InternalURL(self), internalUrl.isErrorPage {
-      return internalUrl.originalURLFromErrorPage?.displayURL
-    }
-
     if let internalUrl = InternalURL(self),
       internalUrl.isWeb3URL || internalUrl.isHTTPBlockedPage
         || internalUrl.isBlockedPage
@@ -83,11 +77,7 @@ extension URL {
     }
 
     if !isNewTabURL, !InternalURL.isValid(url: self) {
-      let url = self.havingRemovedAuthorisationComponents()
-      if let internalUrl = InternalURL(url), internalUrl.isErrorPage {
-        return internalUrl.originalURLFromErrorPage?.displayURL
-      }
-      return url
+      return self.havingRemovedAuthorisationComponents()
     }
 
     return nil
@@ -367,7 +357,6 @@ extension InternalURL {
   enum URLType {
     case blockedPage
     case httpBlockedPage
-    case errorPage
     case readerModePage
     case web3Page
     case other
@@ -383,10 +372,6 @@ extension InternalURL {
 
     if isBlockedPage {
       return .blockedPage
-    }
-
-    if isErrorPage {
-      return .errorPage
     }
 
     if isWeb3URL {

@@ -802,32 +802,6 @@ extension Strings {
   }
 }
 
-// MARK:-  ErrorPageHelper.swift
-extension Strings {
-  public static let errorPageReloadButtonTitle = NSLocalizedString(
-    "ErrorPageReloadButtonTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Reload",
-    comment: "Shown in error pages on a button that will try to load the page again"
-  )
-  public static let errorPageOpenInSafariButtonTitle = NSLocalizedString(
-    "ErrorPageOpenInSafariButtonTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Open in Safari",
-    comment: "Shown in error pages for files that can't be shown and need to be downloaded."
-  )
-  public static let errorPageCantBeReachedTry =
-    NSLocalizedString(
-      "errorPageCantBeReachedTry",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Try re-typing the URL, or opening a search engine and searching for the new URL.",
-      comment: "Shown in error pages to suggest a fix to the user."
-    )
-}
-
 // MARK:-  FindInPageBar.swift
 extension Strings {
   public static let findInPagePreviousResultButtonAccessibilityLabel = NSLocalizedString(
