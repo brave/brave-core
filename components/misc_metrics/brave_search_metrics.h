@@ -36,6 +36,7 @@ class BraveSearchMetrics {
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void RecordBraveQuery();
+  void ClearQueryCounts();
 
  private:
   void ReportDailyQueries();

@@ -62,6 +62,10 @@ void BraveSearchMetrics::RecordBraveQuery() {
   update->Set(kQueriesCountKey, current + 1);
 }
 
+void BraveSearchMetrics::ClearQueryCounts() {
+  local_state_->SetDict(kMiscMetricsBraveSearchQueryCounts, {});
+}
+
 void BraveSearchMetrics::ReportDailyQueries() {
   report_check_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportCheckInterval,
@@ -84,7 +88,7 @@ void BraveSearchMetrics::ReportDailyQueries() {
   SearchEngineType engine_type =
       provider->GetEngineType(template_url_service_->search_terms_data());
 
-  const base::Value::Dict& counts =
+  const base::DictValue& counts =
       local_state_->GetDict(kMiscMetricsBraveSearchQueryCounts);
   int sum = counts.FindInt(kQueriesCountKey).value_or(0);
 

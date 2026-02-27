@@ -203,6 +203,27 @@ TEST_F(BraveSearchMetricsUnitTest, CountsClearedAfterReport) {
       kSearchDailyQueriesBraveDefaultHistogramName, 1, 2);
 }
 
+TEST_F(BraveSearchMetricsUnitTest, ClearQueryCounts) {
+  SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
+
+  for (int i = 0; i < 5; i++) {
+    brave_search_metrics_->RecordBraveQuery();
+  }
+
+  brave_search_metrics_->ClearQueryCounts();
+
+  // No report yet before the frame expires.
+  histogram_tester_.ExpectTotalCount(
+      kSearchDailyQueriesBraveDefaultHistogramName, 0);
+
+  // Advance past 24 hours to trigger the report.
+  task_environment_.FastForwardBy(base::Hours(24));
+
+  // Should report bucket 0 (0 queries) since counts were cleared.
+  histogram_tester_.ExpectUniqueSample(
+      kSearchDailyQueriesBraveDefaultHistogramName, 0, 1);
+}
+
 TEST_F(BraveSearchMetricsUnitTest, NoReportBeforeFrameExpires) {
   SetDefaultSearchEngine(TemplateURLPrepopulateData::brave_search);
 
