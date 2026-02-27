@@ -220,6 +220,10 @@ docs/rust.md @brave/rust-reviewers
 **/*.grd @brave/string-reviewers-team
 **/*.grdp @brave/string-reviewers-team
 components/brave_extension/extension/brave_extension/_locales/en_US/messages.json @brave/string-reviewers-team
+# This file only contains AI prompts that aren't neither user facing nor
+# translateable. There's no reason for the string reviewers team to review
+# them.
+components/resources/ai_chat_prompts.grdp
 
 # Browser commands available via Brave Education content
 browser/ui/webui/brave_browser_command/brave_browser_command_handler.cc @brave/sec-team
