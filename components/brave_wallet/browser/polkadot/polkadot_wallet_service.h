@@ -83,6 +83,16 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       SignAndSendTransactionCallback callback);
 
+  using GetFeeEstimateCallback =
+      base::OnceCallback<void(base::expected<uint128_t, std::string>)>;
+
+  void GetFeeEstimate(
+      std::string chain_id,
+      mojom::AccountIdPtr account_id,
+      uint128_t send_amount,
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+      GetFeeEstimateCallback callback);
+
  private:
   // KeyringServiceObserverBase:
   void Unlocked() override;
@@ -100,6 +110,14 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                                  const std::optional<std::string>&,
                                  const std::optional<std::string>&);
 
+  void GenerateSignedTransferExtrinsicImpl(
+      std::string chain_id,
+      mojom::AccountIdPtr account_id,
+      bool use_dummy_signature,
+      uint128_t send_amount,
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+      GenerateSignedTransferExtrinsicCallback callback);
+
   void OnGenerateSignedTransferExtrinsic(
       PolkadotSignedTransferTask* transaction_state,
       GenerateSignedTransferExtrinsicCallback callback,
@@ -113,6 +131,14 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void OnSubmitSignedExtrinsic(SignAndSendTransactionCallback callback,
                                std::optional<std::string>,
                                std::optional<std::string>);
+
+  void OnGenerateTransferForFee(
+      std::string chain_id,
+      GetFeeEstimateCallback callback,
+      base::expected<std::vector<uint8_t>, std::string> signed_extrinsic);
+
+  void OnEstimatedFee(GetFeeEstimateCallback callback,
+                      base::expected<uint128_t, std::string> partial_fee);
 
   const raw_ref<KeyringService> keyring_service_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;

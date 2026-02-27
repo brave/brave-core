@@ -11,7 +11,6 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -22,8 +21,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: export
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -1849,6 +1847,78 @@ TEST_F(PolkadotWalletServiceUnitTest,
   auto tx_hash = future.Take();
   ASSERT_FALSE(tx_hash.has_value());
   EXPECT_EQ(tx_hash.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  // We opt into using a manual RunLoop here because of the limitations around
+  // base::test::TestFuture and uint128_t.
+  base::RunLoop run_loop;
+  auto quit = run_loop.QuitClosure();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->GetFeeEstimate(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), uint128_t{1234},
+      recipient_pubkey,
+      base::BindLambdaForTesting(
+          [=](base::expected<uint128_t, std::string> partial_fee) {
+            ASSERT_TRUE(partial_fee.has_value());
+            EXPECT_EQ(partial_fee.value(), uint128_t{15937408476ull});
+            quit.Run();
+          }));
+
+  run_loop.Run();
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  polkadot_mock_rpc->RejectAccountInfoRequest();
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  // We opt into using a manual RunLoop here because of the limitations around
+  // base::test::TestFuture and uint128_t.
+  base::RunLoop run_loop;
+  auto quit = run_loop.QuitClosure();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->GetFeeEstimate(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), uint128_t{1234},
+      recipient_pubkey,
+      base::BindLambdaForTesting(
+          [=](base::expected<uint128_t, std::string> partial_fee) {
+            ASSERT_FALSE(partial_fee.has_value());
+            quit.Run();
+          }));
+
+  run_loop.Run();
 }
 
 }  // namespace brave_wallet

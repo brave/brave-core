@@ -84,6 +84,12 @@ class PolkadotTxManager : public TxManager,
       AddUnapprovedPolkadotTransactionCallback callback,
       base::expected<PolkadotChainMetadata, std::string> chain_metadata);
 
+  void OnGetFeeForUnapproved(
+      PolkadotChainMetadata chain_metadata,
+      mojom::NewPolkadotTransactionParamsPtr params,
+      AddUnapprovedPolkadotTransactionCallback callback,
+      base::expected<uint128_t, std::string> partial_fee);
+
   void OnApprovePolkadotTransaction(
       std::unique_ptr<PolkadotTxMeta> tx_metadata,
       ApproveTransactionCallback callback,
