@@ -165,10 +165,7 @@ bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
 
   syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
-    const std::string error_msg = sync_service
-                                      ? "invalid sync code:" + sync_code
-                                      : "sync service is not available";
-    LOG(ERROR) << error_msg;
+    LOG(ERROR) << (sync_service ? "invalid sync code" : "sync service is not available");
     return false;
   }
 
