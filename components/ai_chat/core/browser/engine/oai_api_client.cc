@@ -97,7 +97,7 @@ std::string CreateJSONRequestBody(
 base::ListValue OAIAPIClient::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
   base::ListValue serialized_messages;
-  for (const auto& message : messages) {
+  for (auto& message : messages) {
     base::DictValue message_dict;
     message_dict.Set("role", std::move(message.role));
 

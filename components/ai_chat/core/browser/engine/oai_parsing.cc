@@ -245,7 +245,7 @@ std::optional<base::ListValue> ToolApiDefinitionsFromTools(
     return std::nullopt;
   }
   base::ListValue tools_list;
-  for (const base::WeakPtr<Tool> tool : tools) {
+  for (const auto& tool : tools) {
     if (!tool) {
       DLOG(ERROR) << "Tool is null, skipping tool.";
       continue;
@@ -282,7 +282,7 @@ std::optional<base::ListValue> ToolApiDefinitionsFromTools(
         if (tool->RequiredProperties().has_value() &&
             !tool->RequiredProperties()->empty()) {
           base::ListValue required_properties;
-          const auto properties = tool->RequiredProperties().value();
+          const auto& properties = tool->RequiredProperties().value();
           for (const auto& property : properties) {
             required_properties.Append(property);
           }
