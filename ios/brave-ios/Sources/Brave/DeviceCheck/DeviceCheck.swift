@@ -386,7 +386,15 @@ extension DeviceCheckClient {
           }
 
           if T.self == String.self {
-            continuation.resume(returning: String(data: data, encoding: .utf8) as! T)
+            guard let string = String(data: data, encoding: .utf8) else {
+              continuation.resume(
+                throwing: DeviceCheckError(
+                  message: "Response data is not valid UTF-8", code: 0
+                )
+              )
+              return
+            }
+            continuation.resume(returning: string as! T)
             return
           }
 
