@@ -389,7 +389,7 @@ extension DeviceCheckClient {
             guard let string = String(data: data, encoding: .utf8) else {
               continuation.resume(
                 throwing: DeviceCheckError(
-                  message: "Response data is not valid UTF-8", code: 0
+                  message: "Response data is not valid UTF-8", code: 500
                 )
               )
               return
