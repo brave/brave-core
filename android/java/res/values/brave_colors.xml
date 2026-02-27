@@ -359,8 +359,6 @@
     <color name="semantic_text_secondary">#464649</color>
     <color name="semantic_text_tertiary">#78787C</color>
 
-    <color name="button_background_widget_promo">#4551D1</color>
-
     <color name="open_yt_dialog_bg">#FFFFFF</color>
 
     <!-- Address Bar preference Colors -->

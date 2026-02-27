@@ -12,7 +12,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider;
@@ -80,30 +79,30 @@ public class BraveSearchWidgetUtils {
     public static boolean isRequestPinAppWidgetSupported() {
         AppWidgetManager appWidgetManager =
                 ContextUtils.getApplicationContext().getSystemService(AppWidgetManager.class);
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && appWidgetManager != null
-                && appWidgetManager.isRequestPinAppWidgetSupported();
+        return appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported();
     }
 
     public static void requestPinAppWidget() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Context context = ContextUtils.getApplicationContext();
-            AppWidgetManager appWidgetManager = context.getSystemService(AppWidgetManager.class);
+        Context context = ContextUtils.getApplicationContext();
+        AppWidgetManager appWidgetManager = context.getSystemService(AppWidgetManager.class);
 
-            ComponentName appWidgetProvider =
-                    new ComponentName(context, QuickActionSearchAndBookmarkWidgetProvider.class);
+        ComponentName appWidgetProvider =
+                new ComponentName(context, QuickActionSearchAndBookmarkWidgetProvider.class);
 
-            if (appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported()) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(QuickActionSearchAndBookmarkWidgetProvider.FROM_SETTINGS, true);
-                Intent pinnedWidgetCallbackIntent =
-                        new Intent(context, QuickActionSearchAndBookmarkWidgetProvider.class);
-                pinnedWidgetCallbackIntent.putExtras(bundle);
-                PendingIntent successCallback =
-                        PendingIntent.getBroadcast(context, 0, pinnedWidgetCallbackIntent,
-                                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        if (appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported()) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(QuickActionSearchAndBookmarkWidgetProvider.FROM_SETTINGS, true);
+            Intent pinnedWidgetCallbackIntent =
+                    new Intent(context, QuickActionSearchAndBookmarkWidgetProvider.class);
+            pinnedWidgetCallbackIntent.putExtras(bundle);
+            PendingIntent successCallback =
+                    PendingIntent.getBroadcast(
+                            context,
+                            0,
+                            pinnedWidgetCallbackIntent,
+                            PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-                appWidgetManager.requestPinAppWidget(appWidgetProvider, null, successCallback);
-            }
+            appWidgetManager.requestPinAppWidget(appWidgetProvider, null, successCallback);
         }
     }
 }

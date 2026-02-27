@@ -8,8 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginVertical="96dp"
-    android:layout_marginHorizontal="82dp"
+    android:layout_marginVertical="@dimen/onboarding_tablet_portrait_card_vertical_margin"
+    android:layout_marginHorizontal="@dimen/onboarding_tablet_portrait_card_horizontal_margin"
     android:padding="40dp"
     android:elevation="4dp"
     android:background="@drawable/onboarding_card_background">
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/brave_onboarding_title"
-        style="@style/HeadingH2"
+        style="@style/HeadingH3Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/p3a_title"

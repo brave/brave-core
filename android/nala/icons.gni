@@ -17,6 +17,7 @@ nala_icons = [
   "ic_credit_card.xml",
   "ic_download.xml",
   "ic_media_player.xml",
+  "ic_microphone.xml",
   "ic_info_outline.xml",
   "ic_key.xml",
   "ic_autofill.xml",

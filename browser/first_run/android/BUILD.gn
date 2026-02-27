@@ -48,7 +48,12 @@ android_resources("java_resources") {
     "java/res/raw-night/no_video_ads.json",
     "java/res/raw/no_video_ads.json",
     "java/res/values-night/colors.xml",
+    "java/res/values-sw600dp-h1000dp-port/dimens.xml",
+    "java/res/values-sw600dp-h700dp-port/dimens.xml",
+    "java/res/values-sw600dp-h800dp-port/dimens.xml",
+    "java/res/values-sw600dp-h900dp-port/dimens.xml",
     "java/res/values/colors.xml",
+    "java/res/values/dimens.xml",
   ]
 }
 

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import org.chromium.base.IntentUtils;
@@ -16,6 +17,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
@@ -40,6 +42,11 @@ public class BraveIntentHandler {
             "https://support.google.com/chrome/topic/6069782";
     public static final String BRAVE_FALLBACK_SUPPORT_URL = "https://support.brave.app/hc/en-us";
 
+    private static final String BRAVE_SEARCH_URL = "search.brave.com";
+    private static final String SOURCE = "source";
+    private static final String ANDROID = "android";
+    private static final String ANDROID_WIDGET = "android-widget";
+
     /**
      * Helper method to extract the raw URL from the intent, without further processing. The URL may
      * be in multiple locations.
@@ -59,7 +66,32 @@ public class BraveIntentHandler {
         if (url == null) url = getWebSearchUrl(intent);
         if (url == null) return null;
         url = url.trim();
-        return TextUtils.isEmpty(url) ? null : url;
+        if (TextUtils.isEmpty(url)) return null;
+        return maybeReplaceWidgetSearchSource(intent, url);
+    }
+
+    private static String maybeReplaceWidgetSearchSource(final Intent intent, final String url) {
+        if (!IntentUtils.safeGetBooleanExtra(
+                intent, SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, false)) {
+            return url;
+        }
+
+        final Uri parsedUrl = Uri.parse(url);
+        final String host = parsedUrl.getHost();
+        final String source = parsedUrl.getQueryParameter(SOURCE);
+        if (!BRAVE_SEARCH_URL.equals(host) || !ANDROID.equals(source)) {
+            return url;
+        }
+
+        final Uri.Builder builder = parsedUrl.buildUpon().clearQuery();
+        for (String name : parsedUrl.getQueryParameterNames()) {
+            for (String value : parsedUrl.getQueryParameters(name)) {
+                builder.appendQueryParameter(
+                        name,
+                        SOURCE.equals(name) && ANDROID.equals(value) ? ANDROID_WIDGET : value);
+            }
+        }
+        return builder.build().toString();
     }
 
     @Nullable
