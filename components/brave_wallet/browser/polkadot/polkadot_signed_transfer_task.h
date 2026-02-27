@@ -165,7 +165,7 @@ struct PolkadotSignedTransferTask {
   base::raw_ref<KeyringService> keyring_service_;
   mojom::AccountIdPtr sender_account_id_;
   std::string chain_id_;
-  bool use_dummy_signature_ = true;
+  bool use_dummy_signature_;
   uint128_t send_amount_ = 0;
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_ = {};
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_ = {};
