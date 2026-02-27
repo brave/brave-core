@@ -348,7 +348,7 @@ void ExtensionsImporter::ImportExtensionSettings(
   auto* extension = FindExtension(extension_id);
   if (!extension) {
     return std::move(on_extension)
-        .Run(extension->id, ExtensionImportStatus::kFailedToImportSettings);
+        .Run(extension_id, ExtensionImportStatus::kFailedToImportSettings);
   }
   CHECK(extension->has_local_settings);
   extensions::GetExtensionFileTaskRunner()->PostTaskAndReplyWithResult(
@@ -367,7 +367,7 @@ void ExtensionsImporter::OnExtensionSettingsImported(
   auto* extension = FindExtension(extension_id);
   if (!extension) {
     return std::move(on_extension)
-        .Run(extension->id, ExtensionImportStatus::kFailedToImportSettings);
+        .Run(extension_id, ExtensionImportStatus::kFailedToImportSettings);
   }
   extensions::ExtensionRegistrar::Get(target_profile_)
       ->EnableExtension(extension->id);
