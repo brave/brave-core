@@ -5,9 +5,16 @@
 
 #include "brave/components/serp_metrics/serp_classifier.h"
 
+#include <optional>
+#include <string>
+#include <string_view>
+
+#include "base/containers/fixed_flat_set.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -17,6 +24,19 @@ namespace serp_metrics {
 
 namespace {
 
+constexpr auto kAllowedPrepopulatedEngines =
+    base::MakeFixedFlatSet<SearchEngineType>(
+        base::sorted_unique,
+        {SEARCH_ENGINE_BING, SEARCH_ENGINE_GOOGLE, SEARCH_ENGINE_YAHOO,
+         SEARCH_ENGINE_DUCKDUCKGO, SEARCH_ENGINE_QWANT, SEARCH_ENGINE_ECOSIA,
+         SEARCH_ENGINE_BRAVE, SEARCH_ENGINE_STARTPAGE});
+
+constexpr auto kAdditionalSearchUrls = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
+        "https://www.youtube.com/results?search_query={searchTerms}",
+    });
+
 void VerifySerpClassifierExpectation(
     const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine) {
   const auto template_url_data =
@@ -24,6 +44,21 @@ void VerifySerpClassifierExpectation(
   TemplateURL template_url(*template_url_data);
 
   GURL url = template_url.GenerateSearchURL(SearchTermsData(), u"test");
+  ASSERT_TRUE(url.is_valid());
+
+  SerpClassifier classifier;
+  if (std::optional<SearchEngineType> search_engine_type =
+          classifier.MaybeClassify(url)) {
+    EXPECT_TRUE(kAllowedPrepopulatedEngines.contains(*search_engine_type));
+  }
+}
+
+void VerifySerpClassifierExpectation(std::string_view search_url) {
+  TemplateURLData template_url_data;
+  template_url_data.SetURL(std::string(search_url));
+  auto template_url = std::make_unique<TemplateURL>(template_url_data);
+
+  GURL url = template_url->GenerateSearchURL(SearchTermsData(), u"test");
   ASSERT_TRUE(url.is_valid());
 
   SerpClassifier classifier;
@@ -63,7 +98,13 @@ TEST(SerpClassifierTest, IsNotSameSearchQueryWithInvalidUrl) {
       GURL(R"(https://www.qwant.com/?q=foobar)"), GURL("foobar")));
 }
 
-TEST(SerpClassifierTest, ClassifySearchEngines) {
+TEST(SerpClassifierTest, ClassifyAdditionalSearchUrls) {
+  for (const auto& search_url : kAdditionalSearchUrls) {
+    VerifySerpClassifierExpectation(search_url);
+  }
+}
+
+TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {
   for (const auto* prepopulated_engine :
        TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
     VerifySerpClassifierExpectation(*prepopulated_engine);

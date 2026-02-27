@@ -38,8 +38,8 @@ class SerpClassifier final {
   // Normalizes a URL so equivalent search results pages compare equal.
   GURL NormalizeUrl(const GURL& url) const;
 
-  // Returns a `TemplateURL` if `url` matches the search engine results page for
-  // any prepopulated engine in the allow list.
+  // Returns a `TemplateURL` if `url` matches the search results page of a
+  // prepopulated engine in the allow list.
   std::unique_ptr<TemplateURL> MaybeGetTemplateUrl(const GURL& url) const;
 };
 

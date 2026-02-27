@@ -81,14 +81,22 @@ void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
     return;
   }
 
-  RecordSearchEngine(*search_engine_type);
+  RecordSearchEngine(*search_engine_type, url);
 
   last_recorded_serp_url_ = url;
 }
 
 void SerpMetricsTabHelper::RecordSearchEngine(
-    SearchEngineType search_engine_type) {
+    SearchEngineType search_engine_type,
+    const GURL& url) {
   switch (search_engine_type) {
+    case SEARCH_ENGINE_UNKNOWN: {
+      if (url.host() == "www.youtube.com") {
+        serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+      }
+      break;
+    }
+
     case SEARCH_ENGINE_BRAVE: {
       serp_metrics_->RecordSearch(SerpMetricType::kBrave);
       break;
