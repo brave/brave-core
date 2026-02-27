@@ -86,7 +86,9 @@ std::string BraveVPNRegionDataManager::GetRegionPrecisionForName(
       }
     }
   }
-  NOTREACHED();
+  // Region may not be found if the user's cached selection was removed from
+  // the server-side list. Fall back to country precision rather than crashing.
+  return brave_vpn::mojom::kRegionPrecisionCountry;
 }
 
 void BraveVPNRegionDataManager::SetFallbackDeviceRegion() {
