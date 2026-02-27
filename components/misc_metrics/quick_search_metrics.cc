@@ -62,6 +62,7 @@ QuickSearchMetrics::QuickSearchMetrics(PrefService* local_state,
 QuickSearchMetrics::~QuickSearchMetrics() = default;
 
 void QuickSearchMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
+  CHECK(registry);
   registry->RegisterDictionaryPref(kMiscMetricsQuickSearchActionStorage);
   registry->RegisterTimePref(kMiscMetricsQuickSearchLastClickTime, {});
 }
