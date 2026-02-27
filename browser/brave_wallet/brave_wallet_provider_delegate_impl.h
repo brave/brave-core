@@ -39,18 +39,19 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   ~BraveWalletProviderDelegateImpl() override;
 
   bool IsTabVisible() override;
-  void ShowPanel() override;
+  void ShowPanel(const url::Origin& origin) override;
   void ShowWalletBackup() override;
   void UnlockWallet() override;
   void WalletInteractionDetected() override;
-  void ShowWalletOnboarding() override;
-  void ShowAccountCreation(mojom::CoinType type) override;
-  url::Origin GetOrigin() const override;
+  void ShowWalletOnboarding(const url::Origin& origin) override;
+  void ShowAccountCreation(mojom::CoinType type,
+                           const url::Origin& origin) override;
   std::optional<std::vector<std::string>> GetAllowedAccounts(
       mojom::CoinType type,
       const std::vector<std::string>& accounts) override;
   void RequestPermissions(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
+                          const url::Origin& origin,
                           RequestPermissionsCallback callback) override;
   bool IsAccountAllowed(mojom::CoinType type,
                         const std::string& account) override;

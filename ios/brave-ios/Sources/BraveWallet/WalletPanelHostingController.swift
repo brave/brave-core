@@ -16,6 +16,8 @@ import UIKit
 public class WalletPanelHostingController: UIHostingController<WalletPanelContainerView> {
 
   public weak var delegate: BraveWalletDelegate?
+  /// The origin (dApp site) this panel was presented for. Used to dismiss the panel when the tab navigates to a different origin.
+  public let origin: URLOrigin
   private var cancellable: AnyCancellable?
   private var walletStore: WalletStore?
 
@@ -25,6 +27,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
     origin: URLOrigin,
     webImageDownloader: WebImageDownloaderType
   ) {
+    self.origin = origin
     gesture = WalletInteractionGestureRecognizer(
       keyringStore: walletStore.keyringStore
     )

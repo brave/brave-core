@@ -52,17 +52,12 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
 
-url::Origin BraveWalletProviderDelegateImpl::GetOrigin() const {
-  auto* rfh = content::RenderFrameHost::FromID(host_id_);
-  return rfh ? rfh->GetLastCommittedOrigin() : url::Origin();
-}
-
 bool BraveWalletProviderDelegateImpl::IsTabVisible() {
   CHECK(web_contents());
   return web_contents()->GetVisibility() == content::Visibility::VISIBLE;
 }
 
-void BraveWalletProviderDelegateImpl::ShowPanel() {
+void BraveWalletProviderDelegateImpl::ShowPanel(const url::Origin& origin) {
   ::brave_wallet::ShowPanel(web_contents());
 }
 
@@ -78,12 +73,14 @@ void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
   ::brave_wallet::WalletInteractionDetected(web_contents());
 }
 
-void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
+void BraveWalletProviderDelegateImpl::ShowWalletOnboarding(
+    const url::Origin& origin) {
   ::brave_wallet::ShowWalletOnboarding(web_contents());
 }
 
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
-    mojom::CoinType type) {
+    mojom::CoinType type,
+    const url::Origin& origin) {
   DCHECK(type == mojom::CoinType::SOL || type == mojom::CoinType::ADA);
   ::brave_wallet::ShowAccountCreation(web_contents(), type);
 }
@@ -108,6 +105,7 @@ BraveWalletProviderDelegateImpl::GetAllowedAccounts(
 void BraveWalletProviderDelegateImpl::RequestPermissions(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,
+    const url::Origin& origin,
     RequestPermissionsCallback callback) {
   if (!IsWeb3NotificationAllowed()) {
     std::move(callback).Run(mojom::RequestPermissionsError::kNone,
@@ -131,7 +129,7 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
   }
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      accounts, *permission, content::RenderFrameHost::FromID(host_id_),
+      accounts, *permission, origin, content::RenderFrameHost::FromID(host_id_),
       base::BindOnce(&OnRequestPermissions, std::move(callback)));
 }
 

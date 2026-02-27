@@ -105,7 +105,7 @@ void WalletPanelHandler::RequestPermission(
   auto address = brave_wallet::GetAccountPermissionIdentifier(account_id);
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      {address}, *permission, rfh,
+      {address}, *permission, rfh->GetLastCommittedOrigin(), rfh,
       base::BindOnce(
           [](RequestPermissionCallback cb, std::string address,
              std::vector<std::string> allowed_addresses) {

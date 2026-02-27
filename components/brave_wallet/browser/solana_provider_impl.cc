@@ -56,13 +56,15 @@ constexpr char kSolanaSignAllTransactions[] = "signAllTransactions";
 SolanaProviderImpl::SolanaProviderImpl(
     HostContentSettingsMap& host_content_settings_map,
     BraveWalletService* brave_wallet_service,
-    std::unique_ptr<BraveWalletProviderDelegate> delegate)
+    std::unique_ptr<BraveWalletProviderDelegate> delegate,
+    const url::Origin& origin)
     : host_content_settings_map_(host_content_settings_map),
       brave_wallet_service_(brave_wallet_service),
       keyring_service_(brave_wallet_service->keyring_service()),
       tx_service_(brave_wallet_service->tx_service()),
       json_rpc_service_(brave_wallet_service->json_rpc_service()),
       delegate_(std::move(delegate)),
+      origin_(origin),
       weak_factory_(this) {
   DCHECK(keyring_service_);
   keyring_service_->AddObserver(
@@ -94,7 +96,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
   auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     if (!keyring_service_->IsWalletCreatedSync()) {
-      delegate_->ShowWalletOnboarding();
+      delegate_->ShowWalletOnboarding(origin_);
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), "");
@@ -104,7 +106,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
     // Prompt users to create a Solana account. If wallet is not setup, users
     // will be lead to onboarding first.
     if (!account_creation_shown_) {
-      delegate_->ShowAccountCreation(mojom::CoinType::SOL);
+      delegate_->ShowAccountCreation(mojom::CoinType::SOL, origin_);
       account_creation_shown_ = true;
     }
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
@@ -130,7 +132,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
     pending_connect_callback_ = std::move(callback);
     pending_connect_arg_ = std::move(arg);
     keyring_service_->RequestUnlock();
-    delegate_->ShowPanel();
+    delegate_->ShowPanel(origin_);
     return;
   }
 
@@ -164,7 +166,7 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
       });
     }
     delegate_->RequestPermissions(
-        mojom::CoinType::SOL, identifiers,
+        mojom::CoinType::SOL, identifiers, origin_,
         base::BindOnce(&SolanaProviderImpl::OnConnect,
                        weak_factory_.GetWeakPtr(), std::move(sol_accounts),
                        std::move(callback)));
@@ -256,8 +258,8 @@ void SolanaProviderImpl::SignTransaction(
     return;
   }
 
-  const std::string chain_id = json_rpc_service_->GetChainIdSync(
-      mojom::CoinType::SOL, delegate_->GetOrigin());
+  const std::string chain_id =
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, origin_);
   const std::string blockhash = msg_pair->first.recent_blockhash();
   auto internal_callback = base::BindOnce(
       &SolanaProviderImpl::ContinueSignTransaction, weak_factory_.GetWeakPtr(),
@@ -293,7 +295,7 @@ void SolanaProviderImpl::ContinueSignTransaction(
   raw_messages.push_back(std::move(msg_pair->second));
 
   auto request = mojom::SignSolTransactionsRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
+      MakeOriginInfo(origin_), -1, account->account_id.Clone(),
       std::move(tx_datas), std::move(raw_messages),
       mojom::ChainId::New(mojom::CoinType::SOL, chain_id));
   brave_wallet_service_->AddSignSolTransactionsRequest(
@@ -301,7 +303,7 @@ void SolanaProviderImpl::ContinueSignTransaction(
       base::BindOnce(&SolanaProviderImpl::OnSignTransactionRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(tx), account.Clone(),
                      std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::OnSignTransactionRequestProcessed(
@@ -370,8 +372,8 @@ void SolanaProviderImpl::SignAllTransactions(
   std::vector<std::unique_ptr<SolanaTransaction>> txs;
   std::vector<std::vector<uint8_t>> raw_messages;
   std::vector<std::string> blockhashs;
-  const std::string chain_id = json_rpc_service_->GetChainIdSync(
-      mojom::CoinType::SOL, delegate_->GetOrigin());
+  const std::string chain_id =
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, origin_);
   for (auto& param : params) {
     auto msg_pair = GetDeserializedMessage(param->encoded_serialized_msg);
     if (!msg_pair) {
@@ -394,13 +396,12 @@ void SolanaProviderImpl::SignAllTransactions(
 
   const auto barrier_callback = base::BarrierCallback<bool>(
       params.size(),
-      base::BindOnce(&SolanaProviderImpl::ContinueSignAllTransactions,
-                     weak_factory_.GetWeakPtr(), std::move(tx_datas),
-                     std::move(txs), std::move(raw_messages),
-                     std::move(account),
-                     json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
-                                                       delegate_->GetOrigin()),
-                     std::move(callback)));
+      base::BindOnce(
+          &SolanaProviderImpl::ContinueSignAllTransactions,
+          weak_factory_.GetWeakPtr(), std::move(tx_datas), std::move(txs),
+          std::move(raw_messages), std::move(account),
+          json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, origin_),
+          std::move(callback)));
   for (const auto& blockhash : blockhashs) {
     json_rpc_service_->IsSolanaBlockhashValid(
         chain_id, blockhash, std::nullopt,
@@ -434,7 +435,7 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
   }
 
   auto request = mojom::SignSolTransactionsRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
+      MakeOriginInfo(origin_), -1, account->account_id.Clone(),
       std::move(tx_datas), std::move(raw_messages),
       mojom::ChainId::New(mojom::CoinType::SOL, chain_id));
 
@@ -443,7 +444,7 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
       base::BindOnce(&SolanaProviderImpl::OnSignAllTransactionsRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(txs),
                      std::move(account), std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
@@ -545,9 +546,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
 
   tx_service_->AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
-      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
-                                        delegate_->GetOrigin()),
-      account->account_id.Clone(), nullptr, delegate_->GetOrigin(),
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, origin_),
+      account->account_id.Clone(), nullptr, origin_,
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -565,7 +565,7 @@ void SolanaProviderImpl::OnAddUnapprovedTransaction(
   }
 
   sign_and_send_tx_callbacks_[tx_meta_id] = std::move(callback);
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::OnTransactionStatusChanged(
@@ -658,19 +658,18 @@ void SolanaProviderImpl::SignMessage(
     message = std::string(blob_msg.begin(), blob_msg.end());
   }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), 0, account->account_id.Clone(),
+      MakeOriginInfo(origin_), 0, account->account_id.Clone(),
       mojom::SignDataUnion::NewSolanaSignData(
           mojom::SolanaSignData::New(message, blob_msg)),
       mojom::CoinType::SOL,
-      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
-                                        delegate_->GetOrigin()));
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, origin_));
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignMessageRequestProcessed,
                      weak_factory_.GetWeakPtr(), blob_msg, std::move(account),
                      std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void SolanaProviderImpl::Request(base::DictValue arg,

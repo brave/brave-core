@@ -45,6 +45,7 @@ class BraveWalletPermissionContext
   static void RequestWalletPermissions(
       const std::vector<std::string>& addresses,
       blink::PermissionType permission,
+      const url::Origin& origin,
       content::RenderFrameHost* rfh,
       RequestWalletPermissionsCallback callback);
   static bool HasRequestsInProgress(content::RenderFrameHost* rfh,

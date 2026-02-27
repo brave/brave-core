@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "content/public/browser/web_contents.h"
 
 AndroidWalletPageHandler::AndroidWalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
@@ -26,7 +27,12 @@ void AndroidWalletPageHandler::ShowApprovePanelUI() {
     return;
   }
 
-  ::brave_wallet::ShowPanel(webui_controller_->web_ui()->GetWebContents());
+  auto* wc = webui_controller_->web_ui()->GetWebContents();
+  if (!wc) {
+    return;
+  }
+
+  ::brave_wallet::ShowPanel(wc);
 }
 
 void AndroidWalletPageHandler::ShowWalletBackupUI() {

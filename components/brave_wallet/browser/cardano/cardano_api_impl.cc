@@ -154,10 +154,12 @@ std::optional<cardano_rpc::UnspentOutput> FindUtxoByOutpoint(
 CardanoApiImpl::CardanoApiImpl(
     BraveWalletService& brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
-    mojom::AccountIdPtr selected_account)
+    mojom::AccountIdPtr selected_account,
+    const url::Origin& origin)
     : brave_wallet_service_(brave_wallet_service),
       delegate_(std::move(delegate)),
-      selected_account_(std::move(selected_account)) {}
+      selected_account_(std::move(selected_account)),
+      origin_(origin) {}
 
 CardanoApiImpl::~CardanoApiImpl() = default;
 
@@ -470,7 +472,7 @@ void CardanoApiImpl::OnGetUtxosForSignTx(
                      weak_ptr_factory_.GetWeakPtr(), std::move(decoded_tx),
                      std::move(payment_key_ids), std::move(callback)));
 
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 mojom::SignCardanoTransactionRequestPtr
@@ -501,7 +503,7 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
   }
 
   return mojom::SignCardanoTransactionRequest::New(
-      -1, selected_account_.Clone(), MakeOriginInfo(delegate_->GetOrigin()),
+      -1, selected_account_.Clone(), MakeOriginInfo(origin_),
       mojom::ChainId::New(mojom::CoinType::ADA,
                           GetNetworkForCardanoAccount(selected_account_)),
       base::HexEncode(decoded_tx.raw_tx_bytes), std::move(inputs),
@@ -636,12 +638,12 @@ void CardanoApiImpl::SignData(const std::string& address,
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), 0, selected_account_.Clone(),
+      MakeOriginInfo(origin_), 0, selected_account_.Clone(),
       mojom::SignDataUnion::NewCardanoSignData(mojom::CardanoSignData::New(
           std::string(base::as_string_view(message)))),
       mojom::CoinType::ADA,
       brave_wallet_service_->network_manager()->GetCurrentChainId(
-          mojom::CoinType::ADA, delegate_->GetOrigin()));
+          mojom::CoinType::ADA, origin_));
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),
@@ -649,7 +651,7 @@ void CardanoApiImpl::SignData(const std::string& address,
                      weak_ptr_factory_.GetWeakPtr(), selected_account_.Clone(),
                      std::move(supported_signing_address->payment_key_id),
                      std::move(message), std::move(callback)));
-  delegate_->ShowPanel();
+  delegate_->ShowPanel(origin_);
 }
 
 void CardanoApiImpl::OnSignMessageRequestProcessed(

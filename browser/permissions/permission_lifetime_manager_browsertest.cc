@@ -215,7 +215,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
           url::Origin::Create(active_web_contents()->GetLastCommittedURL());
 
       BraveWalletPermissionContext::RequestWalletPermissions(
-          {entry.address}, *entry.permission,
+          {entry.address}, *entry.permission, url::Origin::Create(url),
           active_web_contents()->GetPrimaryMainFrame(), base::DoNothing());
 
       auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
