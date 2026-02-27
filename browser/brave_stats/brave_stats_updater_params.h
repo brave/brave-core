@@ -55,7 +55,8 @@ class BraveStatsUpdaterParams {
   GURL GetUpdateURL(const GURL& base_update_url,
                     std::string_view platform_id,
                     std::string_view channel_name,
-                    std::string_view full_brave_version) const;
+                    std::string_view full_brave_version,
+                    std::string_view default_search_engine) const;
 
   void SavePrefs();
 

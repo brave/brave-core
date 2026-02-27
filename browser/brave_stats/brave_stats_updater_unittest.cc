@@ -344,7 +344,7 @@ TEST_F(BraveStatsUpdaterTest, GetUpdateURLHasFirstAndDtoi) {
 
   GURL response = brave_stats_updater_params.GetUpdateURL(
       GURL("https://demo.brave.com"), "platform id here", "channel name here",
-      "full brave version here");
+      "full brave version here", "default search engine here");
 
   base::StringPairs kv_pairs;
   base::SplitStringIntoKeyValuePairsUsingSubstr(response.query(), '=', "&",
@@ -792,7 +792,11 @@ TEST_F(BraveStatsUpdaterTest, StatsUpdaterMigration) {
   GURL base_url("http://localhost:8080");
 
   // Verify that update url is valid
-  const GURL update_url = params->GetUpdateURL(base_url, "", "", "");
+  const GURL update_url = params->GetUpdateURL(
+      base_url,
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*default_search_engine=*/"");
+
   EXPECT_TRUE(update_url.is_valid());
 
   // Verify that daily parameter is true
@@ -842,7 +846,8 @@ TEST_F(BraveStatsUpdaterTest, SendSerpMetricsUsageIfEnabled) {
 
   const GURL update_url = params->GetUpdateURL(
       GURL("http://localhost:8080"),
-      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"");
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*default_search_engine=*/"");
   ASSERT_TRUE(update_url.is_valid());
 
   std::string query_value;
@@ -872,7 +877,8 @@ TEST_F(BraveStatsUpdaterTest, DoNotSendSerpMetricsUsageIfDisabled) {
 
   const GURL update_url = params->GetUpdateURL(
       GURL("http://localhost:8080"),
-      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"");
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*default_search_engine=*/"");
   ASSERT_TRUE(update_url.is_valid());
 
   EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "braveSearch",
@@ -883,4 +889,34 @@ TEST_F(BraveStatsUpdaterTest, DoNotSendSerpMetricsUsageIfDisabled) {
                                           /*out_value=*/nullptr));
   EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "staleSearch",
                                           /*out_value=*/nullptr));
+}
+
+TEST_F(BraveStatsUpdaterTest, RecordDefaultSearchEngine) {
+  auto params = BuildUpdaterParams(/*serp_metrics=*/nullptr);
+
+  const GURL update_url = params->GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*default_search_engine=*/"Brave");
+  ASSERT_TRUE(update_url.is_valid());
+
+  std::string query_value;
+  EXPECT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "defaultSearch", &query_value));
+  EXPECT_EQ(query_value, "Brave");
+}
+
+TEST_F(BraveStatsUpdaterTest, SendEmptyDefaultSearchEngine) {
+  auto params = BuildUpdaterParams(/*serp_metrics=*/nullptr);
+
+  const GURL update_url = params->GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*default_search_engine=*/"");
+  ASSERT_TRUE(update_url.is_valid());
+
+  std::string query_value;
+  EXPECT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "defaultSearch", &query_value));
+  EXPECT_EQ(query_value, "");
 }

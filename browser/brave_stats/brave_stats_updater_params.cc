@@ -179,7 +179,8 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
     const GURL& base_update_url,
     std::string_view platform_id,
     std::string_view channel_name,
-    std::string_view full_brave_version) const {
+    std::string_view full_brave_version,
+    std::string_view default_search_engine) const {
   GURL update_url(base_update_url);
   update_url = net::AppendQueryParameter(update_url, "platform", platform_id);
   update_url = net::AppendQueryParameter(update_url, "channel", channel_name);
@@ -202,6 +203,9 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
   update_url =
       net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  update_url = net::AppendQueryParameter(update_url, "defaultSearch",
+                                         default_search_engine);
+
   if (serp_metrics_ && ymd_ != last_check_ymd_) {
     // If `kSerpMetricsFeature` is disabled, `serp_metrics_` will be null and
     // SERP metrics will not be reported.
