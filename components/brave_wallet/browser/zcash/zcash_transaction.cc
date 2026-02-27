@@ -34,8 +34,8 @@ ZCashTransaction& ZCashTransaction::operator=(ZCashTransaction&& other) =
     default;
 bool ZCashTransaction::operator==(const ZCashTransaction& other) const {
   return std::tie(this->transparent_part_, this->orchard_part_, this->locktime_,
-                  this->to_, this->amount_, this->fee_, this->memo()) ==
-         std::tie(other.transparent_part_, this->orchard_part_, other.locktime_,
+                  this->to_, this->amount_, this->fee_, this->memo_) ==
+         std::tie(other.transparent_part_, other.orchard_part_, other.locktime_,
                   other.to_, other.amount_, other.fee_, other.memo_);
 }
 
