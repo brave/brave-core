@@ -95,7 +95,7 @@ void BraveSyncServiceImplDelegate::RecordP3ASyncStatus() {
   // 3 - three or more devices in chain
   int p3a_value = std::min(num_devices, 3);
 
-  base::UmaHistogramExactLinear("Brave.Sync.Status.2", p3a_value, 3);
+  base::UmaHistogramExactLinear("Brave.Sync.Status.2", p3a_value, 4);
 }
 
 void BraveSyncServiceImplDelegate::SetLocalDeviceAppearedCallback(
