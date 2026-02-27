@@ -1333,6 +1333,28 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
       return false;
     }
 
+    static constexpr char kDeleteToolUseEventQuery[] =
+        "DELETE FROM conversation_entry_event_tool_use "
+        " WHERE conversation_entry_uuid=?";
+    sql::Statement delete_tool_use_event_statement(
+        GetDB().GetUniqueStatement(kDeleteToolUseEventQuery));
+    CHECK(delete_tool_use_event_statement.is_valid());
+    delete_tool_use_event_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_tool_use_event_statement.Run()) {
+      return false;
+    }
+
+    static constexpr char kDeleteInlineSearchEventQuery[] =
+        "DELETE FROM conversation_entry_event_inline_search "
+        " WHERE conversation_entry_uuid=?";
+    sql::Statement delete_inline_search_event_statement(
+        GetDB().GetUniqueStatement(kDeleteInlineSearchEventQuery));
+    CHECK(delete_inline_search_event_statement.is_valid());
+    delete_inline_search_event_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_inline_search_event_statement.Run()) {
+      return false;
+    }
+
     static constexpr char kDeleteEntryQuery[] =
         "DELETE FROM conversation_entry WHERE uuid=?";
     sql::Statement delete_conversation_entry_statement(
@@ -1486,6 +1508,40 @@ bool AIChatDatabase::DeleteConversationEntry(
     if (!delete_statement.Run()) {
       DLOG(ERROR) << "Failed to delete from "
                      "conversation_entry_uploaded_files for conversation "
+                     "entry uuid: "
+                  << conversation_entry_uuid;
+      return false;
+    }
+  }
+
+  // Delete from conversation_entry_event_tool_use
+  {
+    static constexpr char kQuery[] =
+        "DELETE FROM conversation_entry_event_tool_use WHERE "
+        "conversation_entry_uuid=?";
+    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
+    CHECK(delete_statement.is_valid());
+    delete_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_statement.Run()) {
+      DLOG(ERROR) << "Failed to delete from "
+                     "conversation_entry_event_tool_use for conversation "
+                     "entry uuid: "
+                  << conversation_entry_uuid;
+      return false;
+    }
+  }
+
+  // Delete from conversation_entry_event_inline_search
+  {
+    static constexpr char kQuery[] =
+        "DELETE FROM conversation_entry_event_inline_search WHERE "
+        "conversation_entry_uuid=?";
+    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
+    CHECK(delete_statement.is_valid());
+    delete_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_statement.Run()) {
+      DLOG(ERROR) << "Failed to delete from "
+                     "conversation_entry_event_inline_search for conversation "
                      "entry uuid: "
                   << conversation_entry_uuid;
       return false;
