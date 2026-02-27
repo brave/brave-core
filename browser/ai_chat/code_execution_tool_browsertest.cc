@@ -15,9 +15,11 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/code_plugin.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -67,7 +69,10 @@ class MockCodePlugin : public CodePlugin {
 
 class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
  public:
-  AIChatCodeExecutionToolBrowserTest() = default;
+  AIChatCodeExecutionToolBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kCodeExecutionTool, {{"charts", "true"}});
+  }
   ~AIChatCodeExecutionToolBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -126,6 +131,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<CodeExecutionTool> tool_;
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<net::test_server::HttpResponse> HandleTestRequest(
       const net::test_server::HttpRequest& request) {
     if (request.relative_url == "/test") {
