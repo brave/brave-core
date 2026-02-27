@@ -88,7 +88,8 @@ void BraveSyncWorker::SaveCodeWords(
 
   auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(str_passphrase)) {
-    LOG(ERROR) << (sync_service ? "invalid sync code" : "sync service is not available");
+    LOG(ERROR) << (sync_service ? "invalid sync code"
+                                : "sync service is not available");
     return;
   }
 
