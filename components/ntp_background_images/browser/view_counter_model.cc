@@ -34,11 +34,22 @@ void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
   campaigns_total_branded_image_count_ = campaigns_total_image_count;
   total_campaign_count_ = campaigns_total_branded_image_count_.size();
 
+  if (total_campaign_count_ == 0) {
+    campaigns_current_branded_image_index_.clear();
+    current_campaign_index_ = 0;
+    return;
+  }
+
   // Pick the first image index for each campaign randomly for SI
+  campaigns_current_branded_image_index_.clear();
   for (size_t i = 0; i < total_campaign_count_; ++i) {
-    const int index = base::RandInt(
-        0, static_cast<int>(campaigns_total_branded_image_count_[i]) - 1);
-    campaigns_current_branded_image_index_.push_back(index);
+    if (campaigns_total_branded_image_count_[i] > 0) {
+      const int index = base::RandInt(
+          0, static_cast<int>(campaigns_total_branded_image_count_[i]) - 1);
+      campaigns_current_branded_image_index_.push_back(index);
+    } else {
+      campaigns_current_branded_image_index_.push_back(0);
+    }
   }
 
   // Pick the first campaign index randomly.
@@ -90,12 +101,17 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
     count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get() - 1;
 
     // Randomize SI campaign branded image index for next time.
-    campaigns_current_branded_image_index_[current_campaign_index_] =
-        base::RandInt(
-            0,
-            static_cast<int>(
-                campaigns_total_branded_image_count_[current_campaign_index_]) -
-                1);
+    if (campaigns_total_branded_image_count_[current_campaign_index_] > 1) {
+      campaigns_current_branded_image_index_[current_campaign_index_] =
+          base::RandInt(
+              0,
+              static_cast<int>(
+                  campaigns_total_branded_image_count_
+                      [current_campaign_index_]) -
+                  1);
+    } else {
+      campaigns_current_branded_image_index_[current_campaign_index_] = 0;
+    }
 
     // Randomize campaign index for next time.
     current_campaign_index_ =
