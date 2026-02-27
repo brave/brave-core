@@ -1,0 +1,5 @@
+include_rules = [
+  "+components/favicon/core",
+  "+components/favicon_base",
+  "+components/image_fetcher/core",
+]
