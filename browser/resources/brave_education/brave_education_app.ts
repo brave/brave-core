@@ -74,7 +74,7 @@ export class BraveEducationAppElement extends CrLitElement {
 
     BraveEducationProxyImpl.getInstance()
       .handler.getServerUrl()
-      .then(({ url }: { url: Url }) => this.handleUrlResult_(url.url))
+      .then(({ url }: { url: Url }) => this.handleUrlResult_(url))
   }
 
   override disconnectedCallback() {
@@ -141,6 +141,12 @@ export class BraveEducationAppElement extends CrLitElement {
 
     const commandId = this.readCommandMessage(event.data as BrowserCommand)
     handleBrowserCommand(commandId)
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'brave-education-app': BraveEducationAppElement
   }
 }
 

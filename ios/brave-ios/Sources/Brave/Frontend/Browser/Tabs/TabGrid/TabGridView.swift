@@ -779,7 +779,11 @@ extension Animation {
       windowId: .init(),
       rewards: nil,
       braveCore: nil,
-      privateBrowsingManager: .init()
+      profile: FakeProfile(),
+      privateBrowsingManager: .init(),
+      tabCreationFactory: { _ in
+        FakeTabState()
+      }
     ),
     historyModel: nil,
     openTabsModel: MockOpenTabsModel(),

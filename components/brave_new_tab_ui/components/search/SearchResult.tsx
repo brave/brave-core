@@ -109,7 +109,7 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
   //    url machinery.
   const isGeneric = !match.imageUrl
   return isGeneric
-    ? <SearchIcon url={match.iconUrl.url} />
+    ? <SearchIcon url={match.iconUrl} />
     : match.imageUrl.startsWith('chrome')
       ? <FavIcon url={match.imageUrl} />
       : <MaybeImage src={match.imageUrl} />
@@ -120,7 +120,7 @@ export default function SearchResult({ match, selected, onClick }: Props) {
   const description = match.swapContentsAndDescription ? match.contents : match.description
   const isAskLeo = description === getLocale('searchAskLeo')
 
-  const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
+  const result = <Container href={match.destinationUrl} aria-selected={selected} onClick={e => {
     e.preventDefault()
     onClick(e)
   }}>

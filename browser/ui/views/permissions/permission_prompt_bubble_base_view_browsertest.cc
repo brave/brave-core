@@ -46,12 +46,11 @@ class MockPermissionPromptDelegate
 
   GURL GetEmbeddingOrigin() const override { return GURL(); }
 
-  void Accept() override {}
-  void AcceptThisTime() override {}
-  void Deny() override {}
-  void Dismiss() override {}
-  void Ignore() override {}
-  void SetPromptOptions(PromptOptions prompt_options) override {}
+  void Accept(const PromptOptions& prompt_options) override {}
+  void AcceptThisTime(const PromptOptions& prompt_options) override {}
+  void Deny(const PromptOptions& prompt_options) override {}
+  void Dismiss(const PromptOptions& prompt_options) override {}
+  void Ignore(const PromptOptions& prompt_options) override {}
   GeolocationAccuracy GetInitialGeolocationAccuracySelection() const override {
     NOTREACHED();
   }

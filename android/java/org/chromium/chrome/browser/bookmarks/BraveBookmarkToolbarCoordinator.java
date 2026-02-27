@@ -12,7 +12,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
-import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
+import org.chromium.components.browser_ui.widget.dragreorder.DragTouchHandler;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
@@ -30,7 +30,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             SelectableListLayout<BookmarkId> selectableListLayout,
             SelectionDelegate<BookmarkId> selectionDelegate,
             SearchDelegate searchDelegate,
-            DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
+            DragTouchHandler dragTouchHandler,
             boolean isDialogUi,
             OneshotSupplier<BookmarkDelegate> bookmarkDelegateSupplier,
             BookmarkModel bookmarkModel,
@@ -48,7 +48,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 selectableListLayout,
                 selectionDelegate,
                 searchDelegate,
-                dragReorderableRecyclerViewAdapter,
+                dragTouchHandler,
                 isDialogUi,
                 bookmarkDelegateSupplier,
                 bookmarkModel,

@@ -30,10 +30,12 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
+import org.chromium.components.browser_ui.widget.dragreorder.DragTouchHandler;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.ui.base.ActivityWindowAndroid;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -67,6 +69,7 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             SelectionDelegate<BookmarkId> selectionDelegate,
             RecyclerView recyclerView,
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
+            DragTouchHandler dragTouchHandler,
             boolean isDialogUi,
             SettableNonNullObservableSupplier<Boolean> backPressStateSupplier,
             Profile profile,
@@ -80,7 +83,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
             BookmarkManagerOpener bookmarkManagerOpener,
-            PriceDropNotificationManager priceDropNotificationManager) {
+            PriceDropNotificationManager priceDropNotificationManager,
+            Clipboard clipboard) {
         super(
                 activity,
                 lifecycleOwner,
@@ -91,6 +95,7 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 selectionDelegate,
                 recyclerView,
                 dragReorderableRecyclerViewAdapter,
+                dragTouchHandler,
                 isDialogUi,
                 backPressStateSupplier,
                 profile,
@@ -104,7 +109,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 canShowSigninPromo,
                 onScrollListenerConsumer,
                 bookmarkManagerOpener,
-                priceDropNotificationManager);
+                priceDropNotificationManager,
+                clipboard);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

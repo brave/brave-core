@@ -17,6 +17,7 @@ class BraveMultiContentsViewDelegateImpl
   ~BraveMultiContentsViewDelegateImpl() override;
 
   // MultiContentsViewDelegateImpl:
+  void WebContentsFocused(content::WebContents* contents) override;
   void ResizeWebContents(double ratio, bool done_resizing) override;
 
  private:

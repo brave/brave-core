@@ -153,6 +153,7 @@ export default function FullScreen() {
                   fab
                   kind='plain-faint'
                   onClick={createNewConversation}
+                  data-test-id='new-chat-button'
                 >
                   <Icon name='edit-box' />
                 </Button>

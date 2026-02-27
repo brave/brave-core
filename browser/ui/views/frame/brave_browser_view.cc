@@ -25,6 +25,7 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
@@ -49,6 +50,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
@@ -64,14 +66,15 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
@@ -349,14 +352,20 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
-    // Wrap chromium side panel with our sidebar container
-    auto original_side_panel =
-        RemoveChildViewT(contents_height_side_panel_.get());
-    sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(
-            browser_, SidePanelCoordinator::From(browser_),
-            std::move(original_side_panel)));
-    contents_height_side_panel_ = sidebar_container_view_->side_panel();
+    if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
+      sidebar_container_view_ =
+          AddChildView(std::make_unique<SidebarContainerView>(
+              browser_, SidePanelCoordinator::From(browser_), nullptr));
+    } else {
+      // V1: wrap chromium's side panel inside SidebarContainerView.
+      auto original_side_panel =
+          RemoveChildViewT(contents_height_side_panel_.get());
+      sidebar_container_view_ =
+          AddChildView(std::make_unique<SidebarContainerView>(
+              browser_, SidePanelCoordinator::From(browser_),
+              std::move(original_side_panel)));
+      contents_height_side_panel_ = sidebar_container_view_->side_panel();
+    }
 
     if (IsBraveWebViewRoundedCornersEnabled()) {
       sidebar_separator_view_ =
@@ -459,7 +468,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   if (multi_contents_view_ &&
       base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
     GetBraveMultiContentsView()->SetWebPanelWidth(
-        sidebar_container_view_->side_panel()->GetPreferredSize().width());
+        sidebar::kDefaultSidePanelWidth);
     GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
   }
 
@@ -1038,7 +1047,6 @@ void BraveBrowserView::OnThemeChanged() {
 
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners.
-  UpdateContentsSeparatorVisibility();
   UpdateContentsShadowVisibility();
   UpdateWebViewRoundedCorners();
   UpdateVerticalTabStripBorder();
@@ -1120,17 +1128,6 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   }
 }
 
-void BraveBrowserView::UpdateContentsSeparatorVisibility() {
-  // It's not shown with rounded corners mode always.
-  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
-    top_container_separator_->SetPreferredSize({});
-    return;
-  }
-
-  top_container_separator_->SetPreferredSize(
-      gfx::Size(views::Separator::kThickness, views::Separator::kThickness));
-}
-
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser()->profile()->GetPrefs()->GetBoolean(
@@ -1204,6 +1201,15 @@ bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
   }
 
   return false;
+}
+
+ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
+  ClientFrameElementInfo info = BrowserView::GetFrameElementInfo();
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    // In case of Brave vertical tabs, we don't want to show the tabstrip.
+    info.tabstrip_preferred_height = 0;
+  }
+  return info;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

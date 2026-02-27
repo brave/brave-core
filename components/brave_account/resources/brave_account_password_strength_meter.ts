@@ -15,6 +15,10 @@ import {
 import { getCss } from './brave_account_password_strength_meter.css.js'
 import { getHtml } from './brave_account_password_strength_meter.html.js'
 
+// Minimum required password strength as a percentage.
+// This corresponds to zxcvbn's score 3 (0-4).
+const MINIMUM_PASSWORD_STRENGTH = 80
+
 export type PasswordStrengthChangedEventDetail = { isStrongEnough: boolean }
 
 export class BraveAccountPasswordStrengthMeter extends CrLitElement {
@@ -64,7 +68,7 @@ export class BraveAccountPasswordStrengthMeter extends CrLitElement {
         this.strength < 60 ? 'Weak' : this.strength < 100 ? 'Medium' : 'Strong'
 
       this.fire('password-strength-changed', {
-        isStrongEnough: this.strength === 100,
+        isStrongEnough: this.strength >= MINIMUM_PASSWORD_STRENGTH,
       })
     }
   }

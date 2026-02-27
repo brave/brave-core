@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Adding interfaces to PageActionController in order to customize PageActionView'
+re_pattern = '(class PageActionController {[\s\S]*?~PageActionController\(\) = default;)'
+replace = '''\1
+
+  // Force the label to be shown regardless of the available space
+  virtual void SetAlwaysShowLabel(actions::ActionId action_id,
+                                  bool always_show) = 0;
+
+  // Override the colors of the chip
+  virtual void OverrideChipColors(
+      actions::ActionId action_id,
+      std::optional<SkColor> override_background_color,
+      std::optional<SkColor> override_foreground_color) = 0;
+  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;'''
+
+
+[[substitution]]
+description = 'Implementing the interfaces in PageActionControllerImpl'
+re_pattern = '(class PageActionControllerImpl :[\s\S]*?~PageActionControllerImpl\(\) override;)'
+replace = '''\1
+
+  void SetAlwaysShowLabel(actions::ActionId action_id,
+                          bool always_show) override;
+  void OverrideChipColors(actions::ActionId action_id,
+      std::optional<SkColor> override_background_color,
+      std::optional<SkColor> override_foreground_color) override;
+  void ClearOverrideChipColors(actions::ActionId action_id) override;'''

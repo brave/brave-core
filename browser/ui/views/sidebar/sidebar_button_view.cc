@@ -16,6 +16,10 @@
 #include "ui/views/view_class_properties.h"
 
 SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
+  // Don't want to draw flipped images in RTL, as the image should be the same
+  // regardless of RTL or LTR.
+  SetFlipCanvasOnPaintForRTLUI(false);
+
   // Locate image at center of the button.
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);

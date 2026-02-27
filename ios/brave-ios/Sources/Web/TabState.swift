@@ -28,13 +28,13 @@ public enum SecureContentState {
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
-    public var profile: (any Profile)?
+    public var profile: any Profile
     public var initialConfiguration: WKWebViewConfiguration?
     public var lastActiveTime: Date?
 
     public init(
       id: UUID = .init(),
-      profile: (any Profile)?,
+      profile: any Profile,
       initialConfiguration: WKWebViewConfiguration? = nil,
       lastActiveTime: Date? = nil
     ) {
@@ -48,19 +48,12 @@ public class TabStateFactory {
   public static func create(with params: CreateTabParams) -> any TabState {
     let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
-    if let profile = params.profile {
-      let cwvConfiuration = BraveWebViewConfiguration(profile: profile)
-      return ChromiumTabState(
-        id: params.id,
-        configuration: cwvConfiuration,
-        wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
-      )
-    }
-    let webKitTabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
-    if let lastActiveTime = params.lastActiveTime {
-      webKitTabState.lastActiveTime = lastActiveTime
-    }
-    return webKitTabState
+    let cwvConfiuration = BraveWebViewConfiguration(profile: params.profile)
+    return ChromiumTabState(
+      id: params.id,
+      configuration: cwvConfiuration,
+      wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
+    )
   }
 }
 
@@ -76,8 +69,8 @@ public protocol TabState: AnyObject {
   typealias ID = UUID
   /// A unique identifier associated with this TabState
   var id: ID { get }
-  /// Whehter or not the TabState persists data
-  var isPrivate: Bool { get }
+  /// The associated profile
+  var profile: any Profile { get }
   /// Arbitrary data that is associated with this TabState
   var data: TabDataValues { get set }
   /// The view containing the contents of the current web page.
@@ -281,6 +274,11 @@ extension TabState {
 
 // Default args for methods
 extension TabState {
+  /// Whether or not the Tab uses an off the record/private profile
+  public var isPrivate: Bool {
+    profile.isOffTheRecord
+  }
+
   /// Presents the find in page interaction
   public func presentFindInteraction() {
     presentFindInteraction(with: "")

@@ -15,7 +15,7 @@
 
 import * as React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import SearchWidget from './search_widget'
 
 const webResults = [
@@ -257,6 +257,110 @@ describe('SearchWidget', () => {
       'href',
       expect.stringContaining('q=test%20%26%20query'),
     )
+  })
+
+  test('should fall back to first type with results when specified type has no results', () => {
+    // type='web' but only image results provided - should fall back to 'images'
+    render(
+      <SearchWidget
+        query='test query'
+        type='web'
+        results={imageResults}
+      />,
+    )
+
+    // The query footer link reflects the active type - should be 'images' after fallback
+    const queryLink = screen.getByRole('link', { name: /test query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      'https://search.brave.com/images?q=test%20query',
+    )
+  })
+
+  test('should fall back to earliest available type (per searchTypes order) when specified type has no results', () => {
+    // type='news' but only web and video results provided - should fall back to 'web' (first in order)
+    render(
+      <SearchWidget
+        query='test query'
+        type='news'
+        results={[...webResults, ...videoResults]}
+      />,
+    )
+
+    expect(screen.getByText('Test Result 1')).toBeInTheDocument()
+    const queryLink = screen.getByRole('link', { name: /test query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      'https://search.brave.com/search?q=test%20query',
+    )
+  })
+
+  test('should not fall back when specified type has results', () => {
+    // type='images' with both web and image results - should stay on 'images'
+    render(
+      <SearchWidget
+        query='test query'
+        type='images'
+        results={[...webResults, ...imageResults]}
+      />,
+    )
+
+    const queryLink = screen.getByRole('link', { name: /test query/ })
+    expect(queryLink).toHaveAttribute(
+      'href',
+      'https://search.brave.com/images?q=test%20query',
+    )
+  })
+
+  describe('image error handling', () => {
+    test('hides entire card when an image result thumbnail fails', () => {
+      const { container } = render(
+        <SearchWidget
+          query='test query'
+          type='images'
+          results={imageResults}
+        />,
+      )
+
+      const thumbnail = container.querySelector('.thumbnail')
+      expect(thumbnail).toBeInTheDocument()
+
+      fireEvent.error(thumbnail!)
+
+      expect(container.querySelector('.imageResult')).not.toBeInTheDocument()
+    })
+
+    test('hides only thumbnail with visibility:hidden for video when image fails', () => {
+      const { container } = render(
+        <SearchWidget
+          query='test query'
+          type='videos'
+          results={videoResults}
+        />,
+      )
+
+      const thumbnail = container.querySelector('.thumbnail')
+      fireEvent.error(thumbnail!)
+
+      expect(screen.getByText('Test Video 1')).toBeInTheDocument()
+      expect(thumbnail).toHaveStyle({ visibility: 'hidden' })
+    })
+
+    test('hides only thumbnail with visibility:hidden for news when image fails', () => {
+      const { container } = render(
+        <SearchWidget
+          query='test query'
+          type='news'
+          results={newsResults}
+        />,
+      )
+
+      const thumbnail = container.querySelector('.thumbnail')
+      fireEvent.error(thumbnail!)
+
+      expect(screen.getByText('Test News 1')).toBeInTheDocument()
+      expect(thumbnail).toHaveStyle({ visibility: 'hidden' })
+    })
   })
 
   test('should render placeholder for empty results', () => {

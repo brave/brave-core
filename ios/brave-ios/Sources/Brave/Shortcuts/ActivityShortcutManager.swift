@@ -232,7 +232,10 @@ public class ActivityShortcutManager: NSObject {
       bvc.popToBVC()
 
       let tab = bvc.tabManager.selectedTab
-      PlaylistCoordinator.shared.getPlaylistController(tab: tab) { playlistController in
+      PlaylistCoordinator.shared.getPlaylistController(
+        tab: tab,
+        profile: bvc.profileController.profile
+      ) { playlistController in
         PlaylistP3A.recordUsage()
         bvc.present(playlistController, animated: true)
       }

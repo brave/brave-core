@@ -1262,19 +1262,21 @@ void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
         tab_data_observer_receiver_.BindNewPipeAndPassRemote());
   }
 
-  GetEngineForTabOrganization(base::BindOnce(
-      &AIChatService::GetSuggestedTopicsWithEngine,
-      weak_ptr_factory_.GetWeakPtr(), tabs, std::move(callback)));
+  CreateTabOrganizationEngineIfNeeded();
+  tab_organization_engine_->GetSuggestedTopics(
+      tabs,
+      base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
                                  const std::string& topic,
                                  GetFocusTabsCallback callback) {
-  GetEngineForTabOrganization(base::BindOnce(
-      &AIChatService::GetFocusTabsWithEngine, weak_ptr_factory_.GetWeakPtr(),
+  CreateTabOrganizationEngineIfNeeded();
+  tab_organization_engine_->GetFocusTabs(
       tabs, topic,
       base::BindOnce(&AIChatService::OnGetFocusTabs,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AIChatService::OnGetFocusTabs(
@@ -1301,44 +1303,10 @@ AIChatService::CreateToolProvidersForNewConversation() {
   return tool_providers;
 }
 
-void AIChatService::GetEngineForTabOrganization(base::OnceClosure callback) {
-  GetPremiumStatus(
-      base::BindOnce(&AIChatService::ContinueGetEngineForTabOrganization,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AIChatService::ContinueGetEngineForTabOrganization(
-    base::OnceClosure callback,
-    mojom::PremiumStatus status,
-    mojom::PremiumInfoPtr info) {
-  bool is_premium = IsPremiumStatus();
-  if (tab_organization_engine_) {
-    // Check if model name matches the current premium status.
-    if ((is_premium &&
-         tab_organization_engine_->GetModelName() != kClaudeSonnetModelName) ||
-        (!is_premium &&
-         tab_organization_engine_->GetModelName() != kClaudeHaikuModelName)) {
-      tab_organization_engine_.reset();
-    }
-  }
-
+void AIChatService::CreateTabOrganizationEngineIfNeeded() {
   if (!tab_organization_engine_) {
-    tab_organization_engine_ = GetEngineForModel(
-        is_premium ? kClaudeSonnetModelKey : kClaudeHaikuModelKey);
+    tab_organization_engine_ = GetEngineForModel(kChatAutomaticModelKey);
   }
-
-  std::move(callback).Run();
-}
-
-void AIChatService::GetSuggestedTopicsWithEngine(
-    const std::vector<Tab>& tabs,
-    GetSuggestedTopicsCallback callback) {
-  CHECK(tab_organization_engine_);
-  auto internal_callback =
-      base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  tab_organization_engine_->GetSuggestedTopics(tabs,
-                                               std::move(internal_callback));
 }
 
 void AIChatService::OnSuggestedTopicsReceived(
@@ -1353,13 +1321,6 @@ void AIChatService::OnSuggestedTopicsReceived(
 
 void AIChatService::TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) {
   cached_focus_topics_.clear();
-}
-
-void AIChatService::GetFocusTabsWithEngine(const std::vector<Tab>& tabs,
-                                           const std::string& topic,
-                                           GetFocusTabsCallback callback) {
-  CHECK(tab_organization_engine_);
-  tab_organization_engine_->GetFocusTabs(tabs, topic, std::move(callback));
 }
 
 }  // namespace ai_chat

@@ -1,0 +1,45 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
+index d78b31798b488fdde784361dce940287253dbd3d..f8eb1deef4b7fa4358a54f84a268f7b7133f4599 100644
+--- a/chrome/browser/ui/views/page_action/page_action_model.h
++++ b/chrome/browser/ui/views/page_action/page_action_model.h
+@@ -32,6 +32,16 @@ class PageActionModelInterface {
+  public:
+   PageActionModelInterface() = default;
+   virtual ~PageActionModelInterface() = default;
++  virtual void SetOverrideChipColors(
++      base::PassKey<PageActionController>,
++      std::optional<SkColor> override_background_color,
++      std::optional<SkColor> override_foreground_color) = 0;
++  virtual void SetAlwaysShowLabel(base::PassKey<PageActionController>,
++                                  bool always_show) = 0;
++
++  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
++  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
++  virtual bool GetAlwaysShowLabel() const = 0;
+ 
+   virtual void AddObserver(PageActionModelObserver* observer) = 0;
+   virtual void RemoveObserver(PageActionModelObserver* observer) = 0;
+@@ -97,6 +107,23 @@ class PageActionModel : public PageActionModelInterface {
+   PageActionModel& operator=(const PageActionModel&) = delete;
+   ~PageActionModel() override;
+ 
++  void SetOverrideChipColors(
++      base::PassKey<PageActionController>,
++      std::optional<SkColor> override_background_color,
++      std::optional<SkColor> override_foreground_color) override;
++  void SetAlwaysShowLabel(base::PassKey<PageActionController>,
++                          bool always_show) override;
++  std::optional<SkColor> GetOverrideBackgroundColor() const override;
++  std::optional<SkColor> GetOverrideForegroundColor() const override;
++  bool GetAlwaysShowLabel() const override;
++
++ private:
++  std::optional<SkColor> override_background_color_;
++  std::optional<SkColor> override_foreground_color_;
++  bool always_show_label_ = false;
++
++ public:
++
+   void AddObserver(PageActionModelObserver* observer) override;
+   void RemoveObserver(PageActionModelObserver* observer) override;
+ 

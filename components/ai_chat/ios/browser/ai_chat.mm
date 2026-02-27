@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -182,7 +183,8 @@
           [models filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(
                                                         AiChatModel* model,
                                                         NSDictionary*) {
-                    return ![model.key isEqualToString:@"chat-automatic"];
+                    return ![model.key
+                        isEqualToString:@(ai_chat::kChatAutomaticModelKey)];
                   }]];
           bridgedState.allModels = [models copy];
           completion(bridgedState);

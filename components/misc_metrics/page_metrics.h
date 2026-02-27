@@ -105,9 +105,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
                                    uint64_t name_hash,
                                    base::HistogramBase::Sample32 sample);
 
-  void OnDomainDiversityResult(
-      std::pair<history::DomainDiversityResults,
-                history::DomainDiversityResults> result);
+  void OnDomainDiversityResult(history::DomainDiversityResults metrics);
 
   void OnBookmarkCountResult(
       std::unique_ptr<browsing_data::BrowsingDataCounter::Result> result);

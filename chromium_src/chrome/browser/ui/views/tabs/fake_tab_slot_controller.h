@@ -34,21 +34,26 @@
   bool IsVerticalTabsFloating() const override; \
   bool IsVerticalTabsAnimatingButNotFinalState() const
 
-// Add override for CanCloseTabViaMiddleButtonClick()
-#define CanPaintThrobberToLayer()           \
-  CanPaintThrobberToLayer() const override; \
-  bool CanCloseTabViaMiddleButtonClick()
-
 // Add overrides for TabAccent related methods
-#define IsFrameCondensed()                                                 \
+#define CanPaintThrobberToLayer()                                          \
   ShouldPaintTabAccent(const Tab* tab) const override;                     \
   std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \
-  bool IsFrameCondensed()
+  bool CanCloseTabViaMiddleButtonClick() const override;                   \
+  bool CanPaintThrobberToLayer()
+
+// Add a method to TabSlotController to get the height of the tree tab node for
+// the given tab.
+#define ShiftGroupRight(...)                                                 \
+  ShiftGroupRight_Unused();                                                  \
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
+  const tabs::TreeTabNode& GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
+      const override;                                                        \
+  void ShiftGroupRight(__VA_ARGS__)
 
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
-#undef IsFrameCondensed
+#undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

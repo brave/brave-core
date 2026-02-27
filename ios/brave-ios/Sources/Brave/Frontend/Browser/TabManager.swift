@@ -90,6 +90,7 @@ class TabManager: NSObject {
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
   private var braveCore: BraveProfileController?
+  private let profile: any Profile
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
@@ -98,6 +99,7 @@ class TabManager: NSObject {
   private let historyAPI: BraveHistoryAPI?
   public let privateBrowsingManager: PrivateBrowsingManager
   private var forgetTasks: [Bool: [String: Task<Void, Error>]] = [:]
+  private let tabCreationFactory: (TabStateFactory.CreateTabParams) -> any TabState
 
   let windowId: UUID
 
@@ -117,16 +119,20 @@ class TabManager: NSObject {
     windowId: UUID,
     rewards: BraveRewards?,
     braveCore: BraveProfileController?,
-    privateBrowsingManager: PrivateBrowsingManager
+    profile: any Profile,
+    privateBrowsingManager: PrivateBrowsingManager,
+    tabCreationFactory: @escaping (TabStateFactory.CreateTabParams) -> any TabState
   ) {
     assert(Thread.isMainThread)
 
     self.windowId = windowId
     self.rewards = rewards
     self.braveCore = braveCore
+    self.profile = profile
     self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
     self.historyAPI = braveCore?.historyAPI
     self.privateBrowsingManager = privateBrowsingManager
+    self.tabCreationFactory = tabCreationFactory
     super.init()
 
     Preferences.General.nightModeEnabled.observe(from: self)
@@ -427,9 +433,9 @@ class TabManager: NSObject {
   @MainActor func addPopupForParentTab(
     _ parentTab: any TabState
   ) -> any TabState {
-    let popup = TabStateFactory.create(
-      with: .init(
-        profile: parentTab.isPrivate ? braveCore?.profile.offTheRecordProfile : braveCore?.profile,
+    let popup = tabCreationFactory(
+      .init(
+        profile: parentTab.isPrivate ? profile.offTheRecordProfile : profile,
         initialConfiguration: parentTab.configuration
       )
     )
@@ -507,10 +513,10 @@ class TabManager: NSObject {
 
     let tabId = id ?? UUID()
     let initialConfiguration = isPrivate ? Self.privateConfiguration : Self.defaultConfiguration
-    let tab = TabStateFactory.create(
-      with: .init(
+    let tab = tabCreationFactory(
+      .init(
         id: tabId,
-        profile: isPrivate ? braveCore?.profile.offTheRecordProfile : braveCore?.profile,
+        profile: isPrivate ? profile.offTheRecordProfile : profile,
         initialConfiguration: initialConfiguration,
         lastActiveTime: lastActiveTime
       )
@@ -763,8 +769,7 @@ class TabManager: NSObject {
     Task { @MainActor in
       var shredOnAppExitURLs: [URL] = []
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        guard let profile = self.braveCore?.profile,
-          let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
+        guard let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
         else { return }
         // iterate over WKWebsiteDataStore data records
         let dataRecords = await WKWebsiteDataStore.default().dataRecords(
@@ -1355,8 +1360,7 @@ class TabManager: NSObject {
         shouldShredTab = shouldShredDomain
       } else {
         if FeatureList.kBraveShieldsContentSettings.enabled {
-          guard let braveCore = self.braveCore else { return false }
-          let profile = isPrivate ? braveCore.profile.offTheRecordProfile : braveCore.profile
+          let profile = isPrivate ? self.profile.offTheRecordProfile : self.profile
           let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
           shouldShredTab =
             braveShieldsSettings?.autoShredMode(
@@ -1546,22 +1550,27 @@ class TabManager: NSObject {
     }
   }
 
-  /// Function to add all the tabs to recently closed before the list is removed entirely by Close All Tabs
-  func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
+  /// Adds a list of tabs that are to be closed to the recently closed list
+  func addTabsToRecentlyClosed(_ tabs: [any TabState]) {
     var allRecentlyClosed: [SavedRecentlyClosed] = []
 
-    for tab in tabs(isPrivate: false) {
-      // Do not include the active tab for case isActiveTabIncluded is false
-      if !isActiveTabIncluded, let currentTab = selectedTab, currentTab.id == tab.id {
-        continue
-      }
-
+    for tab in tabs {
       if let savedItem = createRecentlyClosedFromActiveTab(tab) {
         allRecentlyClosed.append(savedItem)
       }
     }
 
     RecentlyClosed.insertAll(allRecentlyClosed)
+  }
+
+  /// Function to add all the tabs to recently closed before the list is removed entirely by
+  /// Close All Tabs
+  func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
+    var tabs = tabs(isPrivate: false)
+    if let selectedTab, !selectedTab.isPrivate, !isActiveTabIncluded {
+      tabs.removeAll(where: { $0.id == selectedTab.id })
+    }
+    addTabsToRecentlyClosed(tabs)
   }
 
   /// Function invoked when a Recently Closed item is selected

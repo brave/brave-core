@@ -31,10 +31,12 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "build/build_config.h"
-#include "chrome/browser/actor/actor_policy_checker.h"
+#include "chrome/browser/actor/site_policy.h"
+#include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -106,7 +108,6 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     agent_profile_ = agent_browser->profile();
     agent_browser_window_ = agent_browser;
 
-    GetActorService()->GetPolicyChecker().set_act_on_web_for_testing(true);
     actor::InitActionBlocklist(agent_profile_);
 
     // Get the AI Chat service from the agent profile
@@ -319,13 +320,13 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,
-                                    nullptr, false);
+                                    std::nullopt, nullptr, false);
   }
 
   mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
                                             const std::string& tool_id) {
     return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
-                                    nullptr, false);
+                                    std::nullopt, nullptr, false);
   }
 
   raw_ptr<Profile> agent_profile_ = nullptr;
@@ -382,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
-                    CreateContentBlocksForText("tool result"));
+                    CreateContentBlocksForText("tool result"), {});
               },
               std::move(callback));
         }));
@@ -658,7 +659,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
-                    CreateContentBlocksForText("1st tool result"));
+                    CreateContentBlocksForText("1st tool result"), {});
               },
               std::move(callback));
         }));
@@ -699,7 +700,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
-                    CreateContentBlocksForText("2nd tool result"));
+                    CreateContentBlocksForText("2nd tool result"), {});
               },
               std::move(callback));
         }));

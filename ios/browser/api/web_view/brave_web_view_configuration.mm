@@ -14,9 +14,8 @@
 #include "components/autofill/core/browser/data_manager/personal_data_manager.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
-#include "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
-#include "ios/chrome/browser/passwords/model/ios_chrome_account_password_store_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web_view/internal/autofill/cwv_autofill_data_manager_internal.h"
@@ -24,6 +23,11 @@
 
 @implementation BraveWebViewConfiguration {
   CWVAutofillDataManager* _autofillDataManager;
+}
+
+- (id<ProfileBridge>)profile {
+  auto* profile = ProfileIOS::FromBrowserState(self.browserState);
+  return [[ProfileBridgeImpl alloc] initWithProfile:profile];
 }
 
 - (WKWebsiteDataStore*)websiteDataStore {
@@ -49,14 +53,11 @@
     autofill::PersonalDataManager* personalDataManager =
         autofill::PersonalDataManagerFactory::GetForProfile(profile);
     scoped_refptr<password_manager::PasswordStoreInterface> passwordStore =
-        IOSChromeAccountPasswordStoreFactory::GetForProfile(
+        IOSChromeProfilePasswordStoreFactory::GetForProfile(
             profile, ServiceAccessType::EXPLICIT_ACCESS);
-    affiliations::AffiliationService* affiliation_service =
-        IOSChromeAffiliationServiceFactory::GetForProfile(profile);
     _autofillDataManager = [[CWVAutofillDataManager alloc]
          initWithPersonalDataManager:personalDataManager
                        passwordStore:passwordStore.get()
-                 affiliationsService:affiliation_service
         isPasswordAffiliationEnabled:NO];
   }
   return _autofillDataManager;

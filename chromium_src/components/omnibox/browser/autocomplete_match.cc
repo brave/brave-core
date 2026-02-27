@@ -37,7 +37,7 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
   kAskBraveSearch:                                                  \
   message_id = IDS_OMNIBOX_ASK_BRAVE_SEARCH_SCOPE_PLACEHOLDER_TEXT; \
   break;                                                            \
-  case template_url_starter_pack_data::kAiMode
+  case template_url_starter_pack_data::StarterPackId::kAiMode
 
 // Handle Brave-specific OPEN_HERE action ID to prevent unhandled enum value
 // error in upstream switch statement.

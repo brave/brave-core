@@ -18,8 +18,8 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
-#include "chrome/browser/actor/actor_policy_checker.h"
-#include "chrome/browser/actor/browser_action_util.h"
+#include "chrome/browser/actor/actor_proto_conversion.h"
+#include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -41,7 +41,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
  public:
   ContentAgentToolProviderBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
-        /*enabled_features=*/{ai_chat::features::kAIChatAgentProfile},
+        /*enabled_features=*/{features::kAIChatAgentProfile},
         /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 
@@ -68,7 +68,6 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     auto* actor_service =
         actor::ActorKeyedServiceFactory::GetActorKeyedService(GetProfile());
     ASSERT_NE(actor_service, nullptr);
-    actor_service->GetPolicyChecker().set_act_on_web_for_testing(true);
 
     // Create the tool provider
     tool_provider_ =
@@ -194,10 +193,11 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   // Close the tab
   tab_handle.Get()->Close();
 
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
   tool_provider_->ExecuteActions(actions, result_future.GetCallback());
 
-  auto result = result_future.Take();
+  auto [result, artifacts] = result_future.Take();
+  EXPECT_TRUE(artifacts.empty());
   EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(
                           "Error: action failed - incorrect parameters")));
 
@@ -206,7 +206,9 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   // does this, so let's call OnActionsFinished directly.
   OnActionsFinished(result_future.GetCallback(),
                     actor::mojom::ActionResultCode::kOk, std::nullopt, {});
-  EXPECT_THAT(result_future.Take(),
+  auto [result_2, artifacts_2] = result_future.Take();
+  EXPECT_TRUE(artifacts_2.empty());
+  EXPECT_THAT(result_2,
               ContentBlockText(testing::HasSubstr("tab is no longer open")));
 }
 
@@ -219,10 +221,11 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   tool_provider_->GetOrCreateTabHandleForTask(tab_handle_future.GetCallback());
   ASSERT_TRUE(tab_handle_future.Wait());
 
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
   ReceivedAnnotatedPageContent(result_future.GetCallback(),
                                base::unexpected("Uninitialized"));
-  auto result = result_future.Take();
+  auto [result, artifacts] = result_future.Take();
+  EXPECT_TRUE(artifacts.empty());
   EXPECT_THAT(result, ContentBlockText(
                           testing::HasSubstr("could not get page content")));
 }
@@ -236,11 +239,12 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   tool_provider_->GetOrCreateTabHandleForTask(tab_handle_future.GetCallback());
   ASSERT_TRUE(tab_handle_future.Wait());
 
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
   optimization_guide::AIPageContentResult page_content;
   ReceivedAnnotatedPageContent(result_future.GetCallback(),
                                base::ok(std::move(page_content)));
-  auto result = result_future.Take();
+  auto [result, artifacts] = result_future.Take();
+  EXPECT_TRUE(artifacts.empty());
 
   EXPECT_THAT(result, ContentBlockText(testing::HasSubstr("No root node")));
 }

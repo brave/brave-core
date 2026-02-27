@@ -18,6 +18,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
+#include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
@@ -92,13 +93,12 @@ EmailAliasesService::EmailAliasesService(
     mojo::PendingRemote<brave_account::mojom::Authentication>
         brave_account_auth,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* pref_service)
+    PrefService& pref_service)
     : url_loader_factory_(url_loader_factory), pref_service_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
-  CHECK(pref_service_);
 
-  auth_.emplace(pref_service_, std::move(brave_account_auth),
+  auth_.emplace(pref_service_.get(), std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
 }
@@ -106,7 +106,9 @@ EmailAliasesService::EmailAliasesService(
 EmailAliasesService::~EmailAliasesService() = default;
 
 // static
-void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {}
+void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  EmailAliasesNotes::RegisterProfilePrefs(registry);
+}
 
 void EmailAliasesService::Shutdown() {
   receivers_.Clear();
@@ -151,13 +153,19 @@ void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
 }
 
 void EmailAliasesService::UpdateAlias(const std::string& alias_email,
-                                      const std::optional<std::string>& note,
+                                      mojom::AliasUpdateDataPtr update_data,
                                       UpdateAliasCallback callback) {
+  if (!update_data->active.has_value() && !update_data->note.has_value() &&
+      !update_data->domains.has_value()) {
+    // Nothing to update, just return success.
+    return std::move(callback).Run(std::monostate{});
+  }
+
   auto wrapper = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-      std::move(callback), base::unexpected(std::string()));
+      std::move(callback), std::monostate{});
   auth_->GetServiceToken(base::BindOnce(
       &EmailAliasesService::UpdateAliasWithToken, weak_factory_.GetWeakPtr(),
-      alias_email, note, std::move(wrapper)));
+      alias_email, std::move(update_data), std::move(wrapper)));
 }
 
 void EmailAliasesService::DeleteAlias(const std::string& alias_email,
@@ -200,14 +208,16 @@ void EmailAliasesService::OnEditAliasResponse(
         user_callback,
     bool update_expected,
     endpoints::UpdateAlias::Response response) {
-  RefreshAliases();
-
   auto parsed = HandleEmailAliasesResponse(
       std::move(response), update_expected ? "updated" : "deleted");
   auto result =
       parsed.has_value()
           ? base::expected<std::monostate, std::string>(std::monostate{})
           : base::unexpected(parsed.error());
+
+  if (result.has_value()) {
+    RefreshAliases();
+  }
   std::move(user_callback).Run(std::move(result));
 }
 
@@ -249,23 +259,37 @@ void EmailAliasesService::GenerateAliasWithToken(GenerateAliasCallback callback,
 
 void EmailAliasesService::UpdateAliasWithToken(
     const std::string& alias_email,
-    const std::optional<std::string>& note,
+    mojom::AliasUpdateDataPtr update_data,
     UpdateAliasCallback callback,
     TokenResult token) {
   if (token.has_value()) {
-    auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
-        endpoints::UpdateAlias::Request>>(token.value()->serviceToken);
-    request.alias = alias_email;
-    request.status = "active";  // For now, we only support active aliases.
+    bool refresh_aliases = true;
 
-    // TODO(https://github.com/brave/brave-browser/issues/49229):
-    // Add support for storing alias note in the client.
+    if (update_data->active.has_value()) {
+      auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
+          endpoints::UpdateAlias::Request>>(token.value()->serviceToken);
+      request.alias = alias_email;
+      request.status = *update_data->active ? "active" : "inactive";
 
-    brave_account::endpoint_client::Client<endpoints::UpdateAlias>::Send(
-        url_loader_factory_, std::move(request),
-        base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       /*update_expected=*/true));
+      refresh_aliases = false;  // will be updated in response.
+      brave_account::endpoint_client::Client<endpoints::UpdateAlias>::Send(
+          url_loader_factory_, std::move(request),
+          base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
+                         weak_factory_.GetWeakPtr(), std::move(callback),
+                         /*update_expected=*/true));
+    }
+
+    if (update_data->note.has_value()) {
+      EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
+      notes.UpdateNote(alias_email, *update_data->note);
+    }
+
+    if (refresh_aliases) {
+      RefreshAliases();
+    }
+    if (callback) {
+      std::move(callback).Run(std::monostate{});
+    }
   } else {
     std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)));
@@ -284,6 +308,9 @@ void EmailAliasesService::DeleteAliasWithToken(const std::string& alias_email,
         base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        /*update_expected=*/false));
+
+    EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
+    notes.RemoveNote(alias_email);
   } else {
     std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)));
@@ -303,14 +330,22 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     LOG(ERROR) << "Email Aliases service error: Invalid response format";
     return;
   }
-  std::vector<email_aliases::mojom::AliasPtr> aliases;
-  for (const auto& entry : response.body.value()->result) {
-    auto alias_obj = email_aliases::mojom::Alias::New();
-    alias_obj->email = entry.alias;
-    aliases.push_back(std::move(alias_obj));
-  }
-  for (auto& observer : observers_) {
-    observer->OnAliasesUpdated(mojo::Clone(aliases));
+
+  EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
+  notes.RemoveNotesForDeletedAliases(response.body.value()->result);
+
+  if (!observers_.empty()) {
+    std::vector<email_aliases::mojom::AliasPtr> aliases;
+    for (const auto& entry : response.body.value()->result) {
+      auto alias_obj = email_aliases::mojom::Alias::New();
+      alias_obj->email = entry.alias;
+      alias_obj->note = notes.GetNote(entry.alias);
+      aliases.push_back(std::move(alias_obj));
+    }
+
+    for (auto& observer : observers_) {
+      observer->OnAliasesUpdated(mojo::Clone(aliases));
+    }
   }
 }
 

@@ -95,7 +95,7 @@ std::string GenerateEthImportPayload(std::string_view private_key_hex) {
 }
 
 std::string GenerateFilImportPayload(std::string_view private_key_hex) {
-  base::Value::Dict json_payload;
+  base::DictValue json_payload;
   json_payload.Set("Type", "secp256k1");
   json_payload.Set("PrivateKey",
                    base::Base64Encode(test::HexToArray<32>(private_key_hex)));

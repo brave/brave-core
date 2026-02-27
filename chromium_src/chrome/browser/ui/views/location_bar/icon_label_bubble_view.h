@@ -16,8 +16,14 @@ class BraveLocationBarView;
   friend class BraveLocationBarView; \
   void UpdateLabelColors
 
+// Add a method to always show the label
+#define ShouldShowLabel()  \
+  ShouldShowLabel() const; \
+  virtual bool ShouldAlwaysShowLabel()
+
 #include <chrome/browser/ui/views/location_bar/icon_label_bubble_view.h>  // IWYU pragma: export
 
+#undef ShouldShowLabel
 #undef UpdateLabelColors
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_ICON_LABEL_BUBBLE_VIEW_H_

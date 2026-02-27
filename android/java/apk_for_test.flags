@@ -49,12 +49,8 @@
     *** mMvtContentFits;
     *** mProfile;
     *** initializeSiteSectionView(...);
-    *** setSearchProviderTopMargin(...);
-    *** setSearchProviderBottomMargin(...);
-    *** getLogoMargin(...);
     *** calculateTabletMvtWidth(...);
     *** updateMvtOnTablet(...);
-    *** isInNarrowWindowOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -105,6 +101,7 @@
     *** mProfile;
     *** mSearchEngineAdapter;
     *** createAdapterIfNecessary(...);
+    *** openSiteSearchSettings(...);
 }
 
 -keep class org.chromium.components.browser_ui.site_settings.SiteSettingsCategory {
@@ -114,6 +111,14 @@
 
 -keep class org.chromium.base.CommandLineInitUtil {
     *** initCommandLine(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
+    *** isInNarrowWindowOnTablet(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
+    *** isInNarrowWindowOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {

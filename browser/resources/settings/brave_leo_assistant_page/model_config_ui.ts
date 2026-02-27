@@ -154,7 +154,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
           // Determined at runtime based on contextSize
           longConversationWarningCharacterLimit: -1,
           modelSystemPrompt: this.modelSystemPrompt,
-          endpoint: mojomUrl,
+          endpoint: mojomUrl.toString(),
           apiKey: this.apiKey
         }
       },
@@ -164,9 +164,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
       supportsTools: false,
       isSuggestedModel: false,
       isNearModel: false,
-    }
+    };
 
-    this.fire('save', { modelConfig })
+    this.fire('save', {modelConfig})
   }
 
   handleCloseClick_() {
@@ -243,16 +243,16 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   private onModelItemChange_(newValue: mojom.Model | null) {
     if (newValue?.options.customModelOptions) {
-      this.label = newValue.displayName
+      this.label = newValue.displayName;
       this.modelRequestName =
-        newValue.options.customModelOptions.modelRequestName
+        newValue.options.customModelOptions.modelRequestName;
       this.contextSize =
-        newValue.options.customModelOptions.contextSize
-      this.endpointUrl = newValue.options.customModelOptions.endpoint.url
-      this.apiKey = newValue.options.customModelOptions.apiKey
+        newValue.options.customModelOptions.contextSize;
+      this.endpointUrl = newValue.options.customModelOptions.endpoint;
+      this.apiKey = newValue.options.customModelOptions.apiKey;
       this.modelSystemPrompt =
-        newValue.options.customModelOptions.modelSystemPrompt
-      this.hasVisionSupport = newValue.visionSupport
+        newValue.options.customModelOptions.modelSystemPrompt;
+      this.hasVisionSupport = newValue.visionSupport;
     }
     this.constructTokenEstimateString_()
   }

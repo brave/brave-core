@@ -28,7 +28,7 @@
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -103,12 +103,15 @@ bool HasPinnedTabs(const TabStripModel* model) {
 }
 
 bool CanMoveTabsToExistingWindow(const Browser* browser_to_exclude) {
-  const BrowserList* browser_list = BrowserList::GetInstance();
-  return std::ranges::any_of(
-      *browser_list, [browser_to_exclude](Browser* browser) {
-        return browser != browser_to_exclude && browser->is_type_normal() &&
-               browser->profile() == browser_to_exclude->profile();
+  bool has_found = false;
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [browser_to_exclude, &has_found](BrowserWindowInterface* browser) {
+        has_found = browser != browser_to_exclude &&
+                    browser->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
+                    browser->GetProfile() == browser_to_exclude->profile();
+        return !has_found;
       });
+  return has_found;
 }
 
 void MoveTabsToExistingWindow(base::WeakPtr<Browser> source,

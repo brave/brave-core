@@ -12,6 +12,7 @@
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -20,7 +21,7 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
-#include "chrome/browser/actor/actor_policy_checker.h"
+#include "chrome/browser/actor/site_policy.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -50,7 +51,7 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
  public:
   ContentAgentToolsTest() {
     scoped_feature_list_.InitWithFeatures(
-        /*enabled_features=*/{ai_chat::features::kAIChatAgentProfile},
+        /*enabled_features=*/{features::kAIChatAgentProfile},
         /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
   }
 
@@ -77,7 +78,6 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     auto* actor_service =
         actor::ActorKeyedServiceFactory::GetActorKeyedService(GetProfile());
     ASSERT_NE(actor_service, nullptr);
-    actor_service->GetPolicyChecker().set_act_on_web_for_testing(true);
 
     // Get the browser tool provider
     tool_provider_ =
@@ -114,14 +114,15 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   Tool::ToolResult ExecuteToolAndWait(base::WeakPtr<Tool> tool,
                                       const std::string& input_json,
                                       bool verify_success = true) {
-    base::test::TestFuture<Tool::ToolResult> result_future;
+    base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
     tool->UseTool(input_json, result_future.GetCallback());
-    auto result = result_future.Take();
+    auto [result, artifacts] = result_future.Take();
+    EXPECT_TRUE(artifacts.empty());
     if (verify_success) {
       EXPECT_THAT(result, ContentBlockText(
                               testing::HasSubstr(kToolResultSuccessSubstring)));
     }
-    return result;
+    return std::move(result);
   }
 
   // Helper to get the document identifier for the main frame
@@ -379,9 +380,11 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   base::test::TestFuture<actor::MayActOnUrlBlockReason> allowed;
   auto* actor_service =
       actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
-  actor_service->GetPolicyChecker().MayActOnUrl(
+  ::actor::MayActOnUrl(
       GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
-      actor_service->GetJournal(), actor::TaskId(), allowed.GetCallback());
+      actor_service->GetJournal(), actor::TaskId(),
+      *AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+      allowed.GetCallback());
   EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);
 }
 

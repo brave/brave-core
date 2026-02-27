@@ -89,4 +89,25 @@
   <message name="IDS_CONTEXTUAL_TASKS_CANNOT_SHARE_TAB_TOOL_TIP" desc="A tool tip shown on the compose box on the contextual task page when user try to add a tab that cannot be shared.">
     This tab can’t be shared
   </message>
+  <message name="IDS_CONTEXTUAL_TASKS_OAUTH_ERROR_DIALOG_TITLE" desc="Title of the error dialog shown when an oAuth error occurs.">
+    Something went wrong
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_OAUTH_ERROR_DIALOG_BODY" desc="Body of the error dialog shown when an oAuth error occurs.">
+    There was an error. Try again.
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_OAUTH_ERROR_DIALOG_RELOAD_BUTTON" desc="Reload button shown on the oAuth error dialog.">
+    Reload
+  </message>
+
+  <!-- AI Mode Strings -->
+  <message name="IDS_AI_MODE_FRIENDLY_ZERO_STATE_TITLE" desc="Title for the AI Mode zero state welcome message in the Lens tab. The first placeholder is the user's given name.">
+    Hi <ph name="USER_NAME">$1<ex>Josh</ex></ph>, what's on your mind?
+  </message>
+
+  <message name="IDS_AI_MODE_FRIENDLY_ZERO_STATE_TITLE_WITHOUT_NAME" desc="Title for the AI Mode zero state welcome message in the Lens tab.">
+    What's on your mind?
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_COMPOSEBOX_PLACEHOLDER_TEXT" desc="Placeholder text shown on the compose box of the contextual task page.">
+    Ask anything
+  </message>
 </grit-part>

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "base/check_deref.h"
 #include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
@@ -116,7 +117,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
                 brave_account_auth_.BindAndGetRemote(),
                 context->GetDefaultStoragePartition()
                     ->GetURLLoaderFactoryForBrowserProcess(),
-                user_prefs::UserPrefs::Get(context));
+                CHECK_DEREF(user_prefs::UserPrefs::Get(context)));
           }));
     }
   }

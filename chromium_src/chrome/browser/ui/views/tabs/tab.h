@@ -7,7 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_
 
 #include "base/memory/raw_ref.h"
+#include "chrome/browser/ui/views/tabs/hover_card_anchor_target.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "components/tabs/public/tab_interface.h"
 
 class BraveTabTest;
 class BraveTab;

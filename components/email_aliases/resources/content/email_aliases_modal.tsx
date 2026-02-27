@@ -258,10 +258,11 @@ export const EmailAliasModal = ({
     setUpdateErrorMessage(null)
     setAwaitingUpdate(true)
     try {
-      await emailAliasesService.updateAlias(
-        generateAliasResult.aliasEmail,
-        proposedNote,
-      )
+      await emailAliasesService.updateAlias(generateAliasResult.aliasEmail, {
+        note: proposedNote,
+        active: editing ? undefined : true,
+        domains: undefined,
+      })
       onReturnToMain({
         type: EmailAliasModalResultType.AliasCreated,
         email: generateAliasResult.aliasEmail,

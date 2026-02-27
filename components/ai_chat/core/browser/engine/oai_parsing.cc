@@ -57,8 +57,9 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallRequest(
   const std::string* id = tool_call.FindString("id");
   const std::string* name = function->FindString("name");
 
-  mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New(
-      name ? *name : "", id ? *id : "", "", std::nullopt, nullptr, false);
+  mojom::ToolUseEventPtr tool_use_event =
+      mojom::ToolUseEvent::New(name ? *name : "", id ? *id : "", "",
+                               std::nullopt, std::nullopt, nullptr, false);
 
   const std::string* arguments_raw = function->FindString("arguments");
   if (arguments_raw) {
@@ -212,8 +213,8 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
     return std::nullopt;
   }
 
-  mojom::ToolUseEventPtr tool_use_event =
-      mojom::ToolUseEvent::New("", *id, "", std::nullopt, nullptr, true);
+  mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New(
+      "", *id, "", std::nullopt, std::nullopt, nullptr, true);
 
   tool_use_event->output = std::vector<mojom::ContentBlockPtr>();
   for (const auto& output_item : *output_content) {

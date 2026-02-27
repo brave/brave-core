@@ -48,6 +48,7 @@ enum class SpeedreaderBubbleLocation : int;
 namespace sidebar {
 FORWARD_DECLARE_TEST(SidebarBrowserWithSplitViewTest,
                      ShowSidebarOnMouseOverTest);
+FORWARD_DECLARE_TEST(SidebarV2BrowserTest, BrowserStartsWithV2Enabled);
 }  // namespace sidebar
 
 namespace content {
@@ -108,7 +109,6 @@ class BraveBrowserView : public BrowserView,
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
 #endif
-  void UpdateContentsSeparatorVisibility();
 
   // Triggers layout of web modal dialogs
   void NotifyDialogPositionRequiresUpdate();
@@ -137,6 +137,7 @@ class BraveBrowserView : public BrowserView,
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
   bool IsWebPanelContents(content::WebContents* contents) override;
+  ClientFrameElementInfo GetFrameElementInfo() const override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -198,6 +199,8 @@ class BraveBrowserView : public BrowserView,
                            ContentsShadowTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithSplitViewTest,
                            ShowSidebarOnMouseOverTest);
+  FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarV2BrowserTest,
+                           BrowserStartsWithV2Enabled);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 

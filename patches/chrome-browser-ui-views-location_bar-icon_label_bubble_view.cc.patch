@@ -1,12 +1,43 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index 0585acc5fc2d8497f2e6a057412a1133781774a3..c99f71fb298403909e973d7bcc7122c84f3ec2e8 100644
+index a5c48e669dbf2f16648536bc4ccf47ecefd04f44..f7d63f606c13e674781f659b5ae1bce65cfed0b7 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -827,6 +827,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
-                                 {radii.lower_right(), radii.lower_right()},
-                                 {radii.lower_left(), radii.lower_left()}};
+@@ -237,7 +237,7 @@ views::ProposedLayout IconLabelBubbleView::CalculateProposedLayout(
+     preferred_size = GetMinimumSize();
+     // If the label should be shown, and supports elision, then extend the
+     // width to whatever space is available.
+-    if (ShouldShowLabel() && label()->GetElideBehavior() != gfx::NO_ELIDE) {
++    if ((ShouldShowLabel() && label()->GetElideBehavior() != gfx::NO_ELIDE) || ShouldAlwaysShowLabel()) {
+       preferred_size.set_width(
+           std::max(preferred_size.width(), size_bounds.width().value()));
+     } else {
+@@ -300,8 +300,9 @@ views::ProposedLayout IconLabelBubbleView::CalculateProposedLayout(
+   // If the fully expanded label fits, or it is mid-animation, then we
+   // accept the "_with_label" image bounds.
+   const bool can_label_expand = available_label_width >= preferred_label_width;
+-  const bool should_use_label_bounds =
++  bool should_use_label_bounds =
+       ShouldShowLabel() && (can_label_expand || can_expand_label_for_animation);
++  should_use_label_bounds = should_use_label_bounds || ShouldAlwaysShowLabel();
+   layout.child_layouts.emplace_back(
+       const_cast<views::View*>(this->image_container_view()), true,
+       should_use_label_bounds ? image_bounds_with_label : image_bounds);
+@@ -819,14 +820,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+   }
+   highlight_bounds = GetMirroredRect(highlight_bounds);
  
-+  BRAVE_ICON_LABEL_BUBBLE_VIEW_GET_HIGHLIGHT_PATH
-   return SkPath::RRect(SkRRect::MakeRectRadii(rect, sk_radii));
+-  const SkRect rect = RectToSkRect(highlight_bounds);
+-  gfx::RoundedCornersF radii = GetCornerRadii();
+-  const SkVector sk_radii[4] = {{radii.upper_left(), radii.upper_left()},
+-                                {radii.upper_right(), radii.upper_right()},
+-                                {radii.lower_right(), radii.lower_right()},
+-                                {radii.lower_left(), radii.lower_left()}};
+-
+-  return SkPath::RRect(SkRRect::MakeRectRadii(rect, sk_radii));
++  const int layout_radius =
++      GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);
++  return SkPath::RRect(gfx::RectToSkRect(highlight_bounds), layout_radius,
++                       layout_radius);
  }
  
+ bool IconLabelBubbleView::PaintedOnSolidBackground() const {

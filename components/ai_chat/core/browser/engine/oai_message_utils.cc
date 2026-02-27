@@ -78,9 +78,8 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
 }
 
 std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
-    PrefService* prefs,
-    bool is_temporary_chat) {
-  if (is_temporary_chat || !prefs) {
+    PrefService* prefs) {
+  if (!prefs) {
     return std::nullopt;
   }
 
@@ -160,7 +159,7 @@ std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
     PrefService* prefs,
-    bool is_temporary_chat,
+    bool exclude_memory,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
   std::vector<OAIMessage> oai_messages;
@@ -285,9 +284,10 @@ std::vector<OAIMessage> BuildOAIMessages(
                            : "assistant";
 
     // Add memory content block for latest human turn.
-    if (message->character_type == mojom::CharacterType::HUMAN &&
+    if (!exclude_memory &&
+        message->character_type == mojom::CharacterType::HUMAN &&
         message_index == conversation_history.size() - 1) {
-      auto memory_block = BuildMemoryContentBlock(prefs, is_temporary_chat);
+      auto memory_block = BuildMemoryContentBlock(prefs);
       if (memory_block) {
         oai_message.content.push_back(
             mojom::ContentBlock::NewMemoryContentBlock(

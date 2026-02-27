@@ -160,7 +160,8 @@ bool IsBraveSearchSERP(const GURL& url) {
 
 bool IsBraveSearchTool(std::string_view tool_name) {
   return tool_name == mojom::kBraveWebSearchToolName ||
-         tool_name == mojom::kBraveNewsSearchToolName;
+         tool_name == mojom::kBraveNewsSearchToolName ||
+         tool_name == mojom::kBraveFaqsSearchToolName;
 }
 
 bool IsPremiumStatus(mojom::PremiumStatus status) {

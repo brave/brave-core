@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -41,10 +42,15 @@ class TorBrowserListObserver : public BrowserListObserver {
   ~TorBrowserListObserver() override {}
 
   size_t GetTorBrowserCount() {
-    BrowserList* list = BrowserList::GetInstance();
-    return std::count_if(list->begin(), list->end(), [](Browser* browser) {
-      return browser->profile()->IsTor();
-    });
+    size_t count = 0;
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [&count](BrowserWindowInterface* browser) {
+          if (browser->GetProfile()->IsTor()) {
+            ++count;
+          }
+          return true;
+        });
+    return count;
   }
 
   // BrowserListObserver:
@@ -186,9 +192,8 @@ Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile,
 // static
 void TorProfileManager::CloseTorProfileWindows(Profile* tor_profile) {
   DCHECK(tor_profile);
-  BrowserList::CloseAllBrowsersWithIncognitoProfile(
-      tor_profile, base::DoNothing(), base::DoNothing(),
-      true /* skip_beforeunload */);
+  chrome::CloseAllBrowsersWithIncognitoProfile(tor_profile,
+                                               true /* skip_beforeunload */);
 }
 
 TorProfileManager::TorProfileManager()

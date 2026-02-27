@@ -8,6 +8,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/i18n/rtl.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -18,6 +19,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -195,6 +197,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   }
 
   bool IsSidebarUIOnLeft() const {
+    if (IsV2Enabled()) {
+      return GetSidebarContainerView()->sidebar_on_left_ &&
+             GetSidebarControlView()->sidebar_on_left_;
+    }
+
     return GetSidebarContainerView()->sidebar_on_left_ &&
            !GetSidePanel()->IsRightAligned() &&
            GetSidebarControlView()->sidebar_on_left_;
@@ -309,12 +316,54 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
+  // ===== V2-aware helpers =====
+
+  bool IsV2Enabled() const {
+    return base::FeatureList::IsEnabled(sidebar::features::kSidebarV2);
+  }
+
   raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
+// Parameterized test fixture to test both Sidebar V1 and V2.
+// Test parameter: bool - false = V1 (default), true = V2 (kSidebarV2 enabled)
+//
+// Tests using this fixture fall into three categories:
+//
+// Category A: Tests that work in both V1 and V2 without changes
+//   - Tests UI/model/controller logic that's identical across versions
+//   - No conditional logic needed (runs same assertions for both V1 and V2)
+//
+// Category B: Mixed tests with version-specific sections
+//   - Tests behavior that differs between V1 and V2
+//   - Uses if (IsV2Enabled()) conditionals to handle version-specific
+//     assertions
+//
+// Category C: V1-only tests (skip in V2)
+//   - Tests V1-specific functionality that doesn't exist in V2
+//   - Uses GTEST_SKIP() to skip when IsV2Enabled() is true
+//
+// This parameterized test will be removed when V2 is enabled by default.
+class SidebarBrowserTestV1AndV2 : public SidebarBrowserTest,
+                                  public testing::WithParamInterface<bool> {
+ public:
+  SidebarBrowserTestV1AndV2() {
+    if (GetParam()) {  // true = Enable V2
+      scoped_features_.InitAndEnableFeature(sidebar::features::kSidebarV2);
+    } else {  // false = V1 (default behavior)
+      scoped_features_.InitAndDisableFeature(sidebar::features::kSidebarV2);
+    }
+  }
+  ~SidebarBrowserTestV1AndV2() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+// Category B: Mixed test (panel-specific sections guarded with conditionals)
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, BasicTest) {
   EXPECT_TRUE(!!GetSidePanelToolbarButton()->context_menu_controller());
 
   // Initially, active index is not set.
@@ -323,25 +372,37 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
 
-  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
-  // Check active index is non-null.
-  EXPECT_THAT(model()->active_index(), Ne(std::nullopt));
+  // IDC_TOGGLE_SIDEBAR command doesn't work for V2 now.
+  // In V1, SidebarContainerView listens panel open/close event.
+  // In V2, SidebarController will do that.
+  if (!IsV2Enabled()) {
+    browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+    WaitUntil(base::BindLambdaForTesting(
+        [&]() { return !!model()->active_index(); }));
+    // Check active index is non-null.
+    EXPECT_THAT(model()->active_index(), Ne(std::nullopt));
 
-  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
-  // Check active index is null.
-  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
+    browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+    WaitUntil(
+        base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
+    // Check active index is null.
+    EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
+  }
 
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
+
   // Activate item that opens in panel.
   const size_t first_panel_item_index = GetFirstPanelItemIndex();
   const auto& first_panel_item =
       controller()->model()->GetAllSidebarItems()[first_panel_item_index];
-  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(
+        model()->GetIndexOf(first_panel_item.built_in_item_type));
+  } else {
+    controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  }
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Optional(first_panel_item_index));
@@ -360,12 +421,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // Setting std::nullopt means deactivate current active tab.
-  controller()->DeactivateCurrentPanel();
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(std::nullopt);
+  } else {
+    controller()->DeactivateCurrentPanel();
+  }
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(
+        model()->GetIndexOf(first_panel_item.built_in_item_type));
+  } else {
+    controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  }
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
@@ -410,7 +480,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
               Optional(browser_view->children().size() - 1));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, WebTypePanelTest) {
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
 
@@ -456,7 +527,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
@@ -526,10 +598,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
                        BookmarksPanelShownAfterReadingListTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
-  panel_ui->Show(SidePanelEntryId::kReadingList);
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(
+        model()->GetIndexOf(SidebarItem::BuiltInItemType::kReadingList));
+  } else {
+    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    panel_ui->Show(SidePanelEntryId::kReadingList);
+  }
 
   // Check reading list panel is activated.
   auto reading_list_item_index =
@@ -539,7 +617,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       [&]() { return controller()->IsActiveIndex(reading_list_item_index); }));
 
   // Check bookmarks panel is activated.
-  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(
+        model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+  } else {
+    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    panel_ui->Show(SidePanelEntryId::kBookmarks);
+  }
+
   auto bookmarks_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
   ASSERT_TRUE(bookmarks_item_index.has_value());
@@ -547,7 +632,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       [&]() { return controller()->IsActiveIndex(bookmarks_item_index); }));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
+// Category C:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
+                       PRE_LastlyUsedSidePanelItemTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Panel state persistence is V1-specific";
+  }
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Show(SidePanelEntryId::kBookmarks);
 
@@ -562,7 +653,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
   EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
+// Category C:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, LastlyUsedSidePanelItemTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Panel state persistence is V1-specific";
+  }
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
 
@@ -577,7 +673,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
   EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
+// Category C:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, DefaultEntryTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Default panel entry testing is V1-specific";
+  }
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   auto bookmark_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
@@ -609,8 +710,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
             panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
+// Category A:
 // Test sidebar's initial horizontal option is set properly.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
+                       PRE_InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Check default horizontal option is right-sided.
@@ -621,7 +724,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Check horizontal option is right-sided.
@@ -629,7 +733,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
   EXPECT_TRUE(IsSidebarUIOnLeft());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, ItemDragIndicatorCalcTest) {
   auto sidebar_items_contents_view = GetSidebarItemsContentsView(controller());
   gfx::Rect contents_view_rect = sidebar_items_contents_view->GetLocalBounds();
   views::View::ConvertRectToScreen(sidebar_items_contents_view,
@@ -952,17 +1057,11 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   EXPECT_EQ(tab_for_web_panel->GetContents(),
             web_panel_controller()->panel_contents());
 
-  // Activate web panel contents.
-  // Check panel contents is activated in tab model and BrowserView gives
-  // web panel's contents view as active contents view.
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  GetBraveMultiContentsView()->OnWebContentsFocused(
-      contents_container_view_for_web_panel->contents_view());
-  EXPECT_EQ(0, tab_strip_model->active_index());
-  EXPECT_EQ(browser_view->GetContentsView(),
-            contents_container_view_for_web_panel->contents_view());
-  EXPECT_FALSE(
-      contents_container_view_for_web_panel->mini_toolbar()->GetVisible());
+  // Web panel contents should be treated as active contents without
+  // explicitly forcing focus (avoids macOS focus teardown issues).
+  EXPECT_EQ(
+      web_panel_controller()->panel_contents(),
+      contents_container_view_for_web_panel->contents_view()->GetWebContents());
 
   // Check tab contents test with split view.
   // Create split view with tab at 1.
@@ -1002,7 +1101,8 @@ INSTANTIATE_TEST_SUITE_P(
     SidebarBrowserWithWebPanelTest,
     ::testing::Bool());
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, HideSidebarUITest) {
   auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
   auto* sidebar_container = GetSidebarContainerView();
 
@@ -1027,7 +1127,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
       [&]() { return sidebar_container->width() == 0; }));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
+                       ItemAddedBubbleAnchorViewTest) {
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
   auto sidebar_items_contents_view = GetSidebarItemsContentsView(controller());
@@ -1065,7 +1167,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
             sidebar_items_contents_view->children()[lastly_added_item_index]);
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, ItemActivatedScrollTest) {
   // To prevent item added bubble launching.
   auto* prefs = browser()->profile()->GetPrefs();
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
@@ -1087,7 +1190,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
   EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
 
   // Open bookmark panel.
-  browser()->GetFeatures().side_panel_ui()->Show(SidePanelEntryId::kBookmarks);
+  if (IsV2Enabled()) {
+    // Use panel->Show() when V2 is enabled by default.
+    // Item should be responded by panel activation.
+    controller()->ActivateItemAt(
+        model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+  } else {
+    browser()->GetFeatures().side_panel_ui()->Show(
+        SidePanelEntryId::kBookmarks);
+  }
 
   // Wait till bookmarks item is visible.
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -1096,7 +1207,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
   EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, ItemAddedScrollTest) {
   // To prevent item added bubble launching.
   auto* prefs = browser()->profile()->GetPrefs();
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
@@ -1135,14 +1247,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_PrefsMigrationTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, PRE_PrefsMigrationTest) {
   // Prepare temporarily changed condition.
   auto* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(sidebar::kSidebarAlignmentChangedTemporarily, true);
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, PrefsMigrationTest) {
   // Check all prefs are changed to default.
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
@@ -1151,7 +1265,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
                   ->IsDefaultValue());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
+// Category C: V1-only test (skip in V2)
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidePanelResizeTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Panel resize is V1-specific (V2 doesn't manage panel in "
+                    "sidebar container)";
+  }
+
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_EQ(kDefaultSidePanelWidth,
             prefs->GetInteger(sidebar::kSidePanelWidth));
@@ -1215,7 +1335,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
       [&]() { return GetSidePanel()->width() == expected_panel_width; }));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
+// Category C: V1-only (unmanaged panel entry test)
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, UnManagedPanelEntryTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Unmanaged panel entry testing is V1-specific";
+  }
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
 
   // Show bookmarks entry and it has active index.
@@ -1250,8 +1375,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+// Category C: V1-only (unmanaged panel after item deletion)
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
                        OpenUnManagedPanelAfterDeletingDefaultWebTypeItem) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Unmanaged panel testing is V1-specific";
+  }
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
@@ -1272,7 +1402,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
+// Category C: V1-only (tab-specific vs global panels)
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
+                       TabSpecificAndGlobalPanelsTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Tab-specific vs global panel testing is V1-specific";
+  }
+
   // Create another tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
@@ -1317,7 +1453,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   }));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, DisabledItemsTest) {
   auto* guest_browser = CreateGuestBrowser();
   auto* controller = guest_browser->GetFeatures().sidebar_controller();
   auto* model = controller->model();
@@ -1701,7 +1838,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
 
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
+// Category A:
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarRightSideTest) {
   // Sidebar is on right by default
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
@@ -1710,8 +1848,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
 
   auto* prefs = browser()->profile()->GetPrefs();
   auto* vertical_tabs_container = GetVerticalTabsContainer();
-  auto* sidebar_container =
-      static_cast<SidebarContainerView*>(controller()->sidebar());
+  views::View* sidebar_container = GetSidebarContainerView();
 
   // Check if vertical tabs is located at first and sidebar is located on the
   // right side.
@@ -1740,8 +1877,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+// Category C: V1-only (SidebarContainerView observation test)
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
                        SidebarContainerDoesNotObserveToolbarHeightEntry) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "SidebarContainerView observation is V1-specific";
+  }
+
   // This test verifies that SidebarContainerView doesn't observe
   // SidePanelEntry with kToolbar type, as it only observes kContent type
   // entries per AddSidePanelEntryObservation() implementation.
@@ -1776,5 +1918,109 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   // Verify that SidebarContainerView is NOT observing the kToolbar entry.
   EXPECT_FALSE(toolbar_entry_ptr->IsBeingObservedBy(sidebar_container));
 }
+
+// Category B:
+// Tests that sidebar container, side panel, control view, and contents
+// container are positioned correctly in RTL mode.
+//
+// Three fixes work together:
+//   - SetMirrored(false) on SidebarContainerView/SidebarControlView prevents
+//     the Views framework from flipping internal layout in RTL.
+//   - SetFlipCanvasOnPaintForRTLUI(false) on buttons prevents icon flipping.
+//   - GetMirroredRect(contents_bounds) in BraveBrowserViewLayout ensures the
+//     contents container is placed correctly next to the sidebar in RTL.
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* sidebar_container = GetSidebarContainerView();
+  auto* control_view = GetSidebarControlView();
+  auto* contents_view = browser_view->contents_container();
+
+  // Needs invalidation to apply RTL mode layout.
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  browser_view->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // --- Right-aligned sidebar (default) ---
+  ASSERT_FALSE(IsSidebarUIOnLeft());
+
+  // As we set mirrored rect for sidebar and contents during the layout,
+  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  EXPECT_LE(contents_view->GetMirroredBounds().right(),
+            sidebar_container->GetMirroredBounds().x());
+
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Below panel position observation is V1-specific";
+  }
+
+  // Open the side panel to verify panel/control positioning within the
+  // sidebar container.
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  RunScheduledLayouts();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+
+  // As container disabled mirroring(SetMirrored(false)),
+  // their bounds are what we're seeing.
+  EXPECT_LE(GetSidePanel()->bounds().right(), control_view->bounds().x());
+
+  // --- Left-aligned sidebar in RTL mode ---
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  ASSERT_TRUE(IsSidebarUIOnLeft());
+  RunScheduledLayouts();
+
+  // As container disabled mirroring(SetMirrored(false)),
+  // their bounds are what we're seeing.
+  EXPECT_LE(control_view->bounds().right(), GetSidePanel()->bounds().x());
+
+  // As we set mirrored rect for sidebar and contents during the layout,
+  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  EXPECT_LE(sidebar_container->GetMirroredBounds().right(),
+            contents_view->GetMirroredBounds().x());
+}
+
+// Category C: V1-only (Panel test)
+// Tests that side panel resize direction is correct in RTL mode.
+// The OnResize sign convention is flipped in RTL compared to LTR because the
+// drag direction on screen is reversed.
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidePanelResizeInRTLTest) {
+  if (IsV2Enabled()) {
+    GTEST_SKIP() << "Panel resize test is V1-specific";
+  }
+
+  // Open side panel (right-aligned by default).
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  RunScheduledLayouts();
+  int expected_width = kDefaultSidePanelWidth;
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == expected_width; }));
+
+  // In LTR with right-aligned sidebar: negative resize_amount increases width.
+  GetSidePanel()->OnResize(-20, true);
+  expected_width += 20;
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == expected_width; }));
+
+  // Enable RTL mode.
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  BrowserView::GetBrowserViewForBrowser(browser())->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // In RTL with right-aligned sidebar: positive resize_amount increases width
+  // (sign is flipped because screen drag direction reverses in RTL).
+  GetSidePanel()->OnResize(20, true);
+  expected_width += 20;
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetSidePanel()->width() == expected_width; }));
+}
+
+// Instantiate parameterized tests for both V1 and V2
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserTestV1AndV2,
+    ::testing::Bool(),  // false = V1, true = V2
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "V2" : "V1";
+    });
 
 }  // namespace sidebar

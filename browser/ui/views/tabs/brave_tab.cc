@@ -15,13 +15,14 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/alert/tab_alert_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
-#include "chrome/browser/ui/views/tabs/tab_close_button.h"
+#include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
+#include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/views/animation/ink_drop.h"
@@ -34,6 +35,22 @@ void BraveTab::UpdateTabStyle() {
   ResetTabStyle(TabStyleViews::CreateForTab(this));
   UpdateInsets();
   InvalidateLayout();
+}
+
+const tabs::TreeTabNode* BraveTab::GetTreeTabNode() const {
+  if (tree_tab_node().has_value()) {
+    return &controller_->GetTreeTabNode(*tree_tab_node());
+  }
+
+  return nullptr;
+}
+
+int BraveTab::GetTreeHeight() const {
+  if (tree_tab_node().has_value()) {
+    return controller_->GetTreeHeight(*tree_tab_node());
+  }
+
+  return 0;
 }
 
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
@@ -291,6 +308,15 @@ TabSizeInfo BraveTab::GetTabSizeInfo() const {
     size_info.min_inactive_width = tab_style()->GetMinimumActiveWidth(false);
   }
   return size_info;
+}
+
+TabNestingInfo BraveTab::GetTabNestingInfo() const {
+  if (!tree_tab_node().has_value()) {
+    return TabNestingInfo{};
+  }
+
+  CHECK(GetTreeTabNode());
+  return {.tree_height = GetTreeHeight(), .level = GetTreeTabNode()->level()};
 }
 
 bool BraveTab::ShouldPaintTabAccent() const {

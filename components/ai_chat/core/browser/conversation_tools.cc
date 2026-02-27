@@ -133,9 +133,11 @@ class AssistantDetailStorageTool : public Tool {
 
   void UseTool(const std::string& input_json,
                Tool::UseToolCallback callback) override {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Look at the function input for the information the assistant needed "
-        "to remember"));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Look at the function input for the "
+                                   "information the assistant needed "
+                                   "to remember"),
+        {});
   }
 };
 

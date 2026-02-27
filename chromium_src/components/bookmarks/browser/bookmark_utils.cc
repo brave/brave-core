@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/bookmarks/browser/bookmark_utils.h"
+
 #include <algorithm>
 
 #include "components/bookmarks/browser/bookmark_node.h"

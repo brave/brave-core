@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 CWV_EXPORT
 @interface BraveWebViewConfiguration : CWVWebViewConfiguration
 
+/// The profile associated with this web view configuration
+@property(readonly) id<ProfileBridge> profile;
+
 /// Exposes the website data store associated with the WKWebViewConfiguration
 ///
 /// Note: Usage of this should be limited to when the

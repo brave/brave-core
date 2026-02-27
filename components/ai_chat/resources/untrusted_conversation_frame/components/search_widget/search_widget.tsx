@@ -28,6 +28,8 @@ function ChromeImage(props: {
   className?: string
   src?: string
   alt?: string
+  style?: React.CSSProperties
+  onError?: React.ReactEventHandler<HTMLImageElement>
 }) {
   const url =
     props.src && window.location.protocol.startsWith('chrome')
@@ -39,6 +41,8 @@ function ChromeImage(props: {
       className={props.className}
       src={url}
       alt={props.alt}
+      style={props.style}
+      onError={props.onError}
     />
   )
 }
@@ -72,7 +76,10 @@ function SearchCard(props: { result: SearchResult }) {
   )
 }
 
+const imgHidden: React.CSSProperties = { visibility: 'hidden' }
+
 function DetailCard(props: { result: SearchResult }) {
+  const [imgFailed, setImgFailed] = React.useState(false)
   return (
     <SecureLink
       className={styles.detailResult}
@@ -84,6 +91,8 @@ function DetailCard(props: { result: SearchResult }) {
         className={styles.thumbnail}
         src={props.result.thumbnail?.src}
         alt={props.result.title}
+        style={imgFailed ? imgHidden : undefined}
+        onError={() => setImgFailed(true)}
       />
       <div className={styles.content}>
         <MetaRow favicon={props.result.meta_url.favicon}>
@@ -99,6 +108,8 @@ function DetailCard(props: { result: SearchResult }) {
 }
 
 function ImageCard(props: { result: SearchResult }) {
+  const [failed, setFailed] = React.useState(false)
+  if (failed) return null
   return (
     <SecureLink
       className={styles.imageResult}
@@ -109,6 +120,7 @@ function ImageCard(props: { result: SearchResult }) {
         className={styles.thumbnail}
         src={props.result.thumbnail?.src}
         alt={props.result.title}
+        onError={() => setFailed(true)}
       />
     </SecureLink>
   )
@@ -118,7 +130,8 @@ function SearchDescription(props: { description: string }) {
   const content = React.useMemo(() => {
     const parts = props.description.split('<strong>')
     return parts.map((p) => {
-      const index = p.indexOf('</strong>')
+      const closeTag = '</strong>'
+      const index = p.indexOf(closeTag)
       if (index === -1) {
         return p
       }
@@ -130,7 +143,7 @@ function SearchDescription(props: { description: string }) {
           >
             {p.slice(0, index)}
           </span>
-          {p.slice(index)}
+          {p.slice(index + closeTag.length)}
         </>
       )
     })
@@ -206,8 +219,19 @@ export default function SearchWidget(props: {
           videos: [],
         },
       ),
-    [props.results, type],
+    [props.results],
   )
+
+  // If we have no results for the specified type, pick the first type with results (if any).
+  React.useEffect(() => {
+    if (!props.results.length) return
+    if (!results[type].length) {
+      const firstTypeWithResults = searchTypes.find(
+        (key) => results[key].length > 0,
+      )
+      if (firstTypeWithResults) setType(firstTypeWithResults)
+    }
+  }, [props.results, results, type])
 
   const resultTypes = React.useMemo(
     () =>

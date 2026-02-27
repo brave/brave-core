@@ -16,7 +16,7 @@
 #include "brave/browser/ai_chat/tools/content_agent_tool_base_test.h"
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
-#include "chrome/browser/actor/browser_action_util.h"
+#include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "components/tabs/public/tab_interface.h"
@@ -91,10 +91,11 @@ void ContentAgentToolBaseTest::RunWithExpectedError(
   EXPECT_CALL(*mock_task_provider_, GetOrCreateTabHandleForTask).Times(0);
   EXPECT_CALL(*mock_task_provider_, ExecuteActions).Times(0);
 
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
   tool_->UseTool(input_json, future.GetCallback());
 
-  auto result = future.Take();
+  auto [result, artifacts] = future.Take();
+  EXPECT_TRUE(artifacts.empty());
   EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
 }
 

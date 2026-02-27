@@ -8,6 +8,14 @@
 
 #include "ui/base/models/image_model.h"
 
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
+
+namespace tree_tab {
+class TreeTabNodeId;
+}  // namespace tree_tab
+
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.
 #define ShouldCompactLeadingEdge()      \
@@ -21,15 +29,9 @@
   virtual bool IsVerticalTabsFloating() const = 0; \
   virtual bool IsVerticalTabsAnimatingButNotFinalState() const
 
-// Add a method to TabSlotController to determine whether tabs can be closed via
-// middle mouse button click.
-#define CanPaintThrobberToLayer()      \
-  CanPaintThrobberToLayer() const = 0; \
-  virtual bool CanCloseTabViaMiddleButtonClick()
-
 // Add methods to TabSlotController to determine whether the tab should have an
 // accent painted.
-#define IsFrameCondensed()                                                     \
+#define CanPaintThrobberToLayer()                                              \
   /* Returns whether the tab should have an accent painted (e.g., container */ \
   /* tab, or other features that require visual accent). This allows the */    \
   /* tab style to determine if accent painting is needed without exposing */   \
@@ -43,11 +45,22 @@
   /* painted. Returns an empty ImageModel if the tab should not have an */     \
   /* accent or icon cannot be determined. */                                   \
   virtual ui::ImageModel GetTabAccentIcon(const Tab* tab) const = 0;           \
-  virtual bool IsFrameCondensed()
+  /* Method to TabSlotController to determine whether tabs can be closed */    \
+  /* via middle mouse button click. */                                         \
+  virtual bool CanCloseTabViaMiddleButtonClick() const = 0;                    \
+  virtual bool CanPaintThrobberToLayer()
+
+// Add a method to TabSlotController to get the height of the tree tab node for
+// the given tab.
+#define ShiftGroupRight(...)                                              \
+  ShiftGroupRight(__VA_ARGS__) = 0;                                       \
+  virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0; \
+  virtual const tabs::TreeTabNode& GetTreeTabNode(                        \
+      const tree_tab::TreeTabNodeId& id) const
 
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
-#undef IsFrameCondensed
+#undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

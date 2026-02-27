@@ -39,10 +39,9 @@ const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
     {{"zcash_shielded_transactions_enabled", "true"}};
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
-     std::size(kZCashShieldedTransactionsDisabled), nullptr},
+     nullptr},
     {"- Shielded support enabled (WebUI Only)",
-     kZCashShieldedTransactionsEnabled,
-     std::size(kZCashShieldedTransactionsEnabled), nullptr}};
+     kZCashShieldedTransactionsEnabled, nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 const flags_ui::FeatureEntry::FeatureParam kBraveIOSUserAgentVersion[] = {
@@ -53,12 +52,9 @@ const flags_ui::FeatureEntry::FeatureParam kBraveIOSUserAgentSuffixComment[] = {
     {"default_user_agent", "3"}};
 const flags_ui::FeatureEntry::FeatureVariation
     kBraveIOSUserAgentFeatureVariations[] = {
-        {"- Version", kBraveIOSUserAgentVersion,
-         std::size(kBraveIOSUserAgentVersion), nullptr},
-        {"- Suffix", kBraveIOSUserAgentSuffix,
-         std::size(kBraveIOSUserAgentSuffix), nullptr},
-        {"- Suffix Comment", kBraveIOSUserAgentSuffixComment,
-         std::size(kBraveIOSUserAgentSuffixComment), nullptr}};
+        {"- Version", kBraveIOSUserAgentVersion, nullptr},
+        {"- Suffix", kBraveIOSUserAgentSuffix, nullptr},
+        {"- Suffix Comment", kBraveIOSUserAgentSuffixComment, nullptr}};
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                              \

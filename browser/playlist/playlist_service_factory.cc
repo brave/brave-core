@@ -47,8 +47,8 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
@@ -107,20 +107,23 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 #if !BUILDFLAG(IS_ANDROID)
     // Before removing the Playlist item from the service, close all active
     // Playlist panels.
-    for (Browser* browser : *BrowserList::GetInstance()) {
-      if (!browser->is_type_normal() || browser->profile() != profile_) {
-        continue;
-      }
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [this](BrowserWindowInterface* browser) {
+          if (!browser->GetBrowserForMigrationOnly()->is_type_normal() ||
+              browser->GetProfile() != profile_) {
+            return true;
+          }
 
-      auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
-      if (!side_panel_ui || side_panel_ui->GetCurrentEntryId(
-                                SidePanelEntry::PanelType::kContent) !=
-                                SidePanelEntryId::kPlaylist) {
-        continue;
-      }
+          auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
+          if (!side_panel_ui || side_panel_ui->GetCurrentEntryId(
+                                    SidePanelEntry::PanelType::kContent) !=
+                                    SidePanelEntryId::kPlaylist) {
+            return true;
+          }
 
-      side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
-    }
+          side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
+          return true;
+        });
 #endif  // !BUILDFLAG(IS_ANDROID)
 
     UpdateSidebarState(enabled);

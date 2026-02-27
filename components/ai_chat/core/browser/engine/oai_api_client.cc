@@ -24,8 +24,10 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -111,10 +113,9 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
 
         case mojom::ContentBlock::Tag::kImageContentBlock: {
           content_block_dict.Set("type", "image_url");
-          const auto& image = block->get_image_content_block();
-          base::DictValue image_url;
-          image_url.Set("url", image->image_url.spec());
-          content_block_dict.Set("image_url", std::move(image_url));
+          content_block_dict.Set(
+              "image_url",
+              ImageContentBlockToDict(*block->get_image_content_block()));
           break;
         }
 
@@ -176,6 +177,9 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
             case mojom::SimpleRequestType::kRequestQuestions:
               message_id = IDS_AI_CHAT_SUGGEST_QUESTIONS_PROMPT;
               break;
+            case mojom::SimpleRequestType::kRequestSummary:
+              message_id = IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE;
+              break;
             default:
               DVLOG(2) << "Unsupported simple request type: "
                        << static_cast<int>(request->type);
@@ -183,6 +187,30 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
           }
 
           content_block_dict.Set("text", l10n_util::GetStringUTF8(message_id));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kMemoryContentBlock: {
+          auto memory_dict =
+              MemoryContentBlockToDict(*block->get_memory_content_block());
+          auto memories_json = base::WriteJson(memory_dict);
+          if (!memories_json) {
+            continue;
+          }
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text",
+              base::ReplaceStringPlaceholders(
+                  l10n_util::GetStringUTF8(
+                      IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT),
+                  {*memories_json}, nullptr));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kFileContentBlock: {
+          content_block_dict.Set("type", "file");
+          content_block_dict.Set(
+              "file", FileContentBlockToDict(*block->get_file_content_block()));
           break;
         }
 
@@ -224,20 +252,9 @@ void OAIAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
-void OAIAPIClient::PerformRequestWithOAIMessages(
-    const mojom::CustomModelOptions& model_options,
-    std::vector<OAIMessage> messages,
-    GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback,
-    const std::optional<std::vector<std::string>>& stop_sequences) {
-  PerformRequest(model_options, SerializeOAIMessages(std::move(messages)),
-                 std::move(data_received_callback),
-                 std::move(completed_callback), stop_sequences);
-}
-
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
-    base::ListValue messages,
+    std::vector<OAIMessage> messages,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
@@ -248,8 +265,9 @@ void OAIAPIClient::PerformRequest(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body = CreateJSONRequestBody(
-      std::move(messages), is_sse_enabled, model_options, stop_sequences);
+  const std::string request_body =
+      CreateJSONRequestBody(SerializeOAIMessages(std::move(messages)),
+                            is_sse_enabled, model_options, stop_sequences);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",

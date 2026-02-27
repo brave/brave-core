@@ -35,6 +35,7 @@
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
@@ -356,18 +357,20 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
   // Check toolbar corner radius is always kTabstripCurve regardless of active
   // tab index.
+  auto* custom_corners_background =
+      static_cast<CustomCornersBackground*>(toolbar_view_->background());
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().first,
-            ToolbarView::CornerStyle::kTabstripCurve);
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().second,
-            ToolbarView::CornerStyle::kTabstripCurve);
+  EXPECT_EQ(custom_corners_background->GetCorners().upper_leading.type,
+            CustomCornersBackground::CornerType::kRoundedWithBackground);
+  EXPECT_EQ(custom_corners_background->GetCorners().upper_trailing.type,
+            CustomCornersBackground::CornerType::kRoundedWithBackground);
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().first,
-            ToolbarView::CornerStyle::kTabstripCurve);
-  EXPECT_EQ(toolbar_view_->GetCornerStyles().second,
-            ToolbarView::CornerStyle::kTabstripCurve);
+  EXPECT_EQ(custom_corners_background->GetCorners().upper_leading.type,
+            CustomCornersBackground::CornerType::kRoundedWithBackground);
+  EXPECT_EQ(custom_corners_background->GetCorners().upper_trailing.type,
+            CustomCornersBackground::CornerType::kRoundedWithBackground);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,

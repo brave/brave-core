@@ -107,7 +107,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->long_conversation_warning_character_limit = 320000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-automatic";
+      model->key = kChatAutomaticModelKey;
       model->display_name = "Automatic";
       model->vision_support = true;
       model->supports_tools = features::kAutomaticModelSupportsTools.Get();

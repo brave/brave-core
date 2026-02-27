@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -87,53 +86,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest, BuildPageContentMessages);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildPageContentMessages_Truncates);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildPageContentMessages_MaxPerContentLength);
-  FRIEND_TEST_ALL_PREFIXES(
-      EngineConsumerOAIUnitTest,
-      BuildPageContentMessages_MaxPerContentLength_UsesRemaining);
-  FRIEND_TEST_ALL_PREFIXES(
-      EngineConsumerOAIUnitTest,
-      BuildPageContentMessages_MaxPerContentLength_NoTruncationNeeded);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildMessages_PageContentsOrderedBeforeTurns);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildMessages_PageContentsExcludedForMissingTurns);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildMessages_MultiplePageContentsForSameTurn);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildMessages_MultiplePageContents_MultipleTurns);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildMessages_EmptyPageContentsMap);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildMessages_NonExistentTurnId);
-  FRIEND_TEST_ALL_PREFIXES(
-      EngineConsumerOAIUnitTest,
-      BuildMessages_MultiplePageContents_MultipleTurns_TooLong);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildPageContentMessages_UTF8Truncation);
-  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
-                           BuildPageContentMessages_UTF8Truncation_FitsExactly);
-
-  base::ListValue BuildPageContentMessages(
-      const PageContents& page_contents,
-      uint32_t& max_associated_content_length,
-      int video_message_id,
-      int page_message_id,
-      std::optional<uint32_t> max_per_content_length = std::nullopt);
-
-  base::ListValue BuildMessages(
-      const mojom::CustomModelOptions& model_options,
-      PageContentsMap& page_contents,
-      std::optional<base::DictValue> user_memory_message,
-      const std::optional<std::string>& selected_text,
-      const EngineConsumer::ConversationHistory& conversation_history);
-
-  std::optional<base::DictValue> BuildUserMemoryMessage(bool is_temporary_chat);
-
+  OAIMessage BuildSystemMessage(
+      const std::vector<OAIMessage>& conversation_messages);
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

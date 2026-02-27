@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -33,8 +34,9 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     private Profile mProfile;
     private boolean mNeedUpdateActiveDSE;
 
-    public BraveSearchEngineAdapter(Context context, Profile profile) {
-        super(context, profile);
+    public BraveSearchEngineAdapter(
+            Context context, Profile profile, @Nullable Runnable siteSearchClickHandler) {
+        super(context, profile, siteSearchClickHandler);
     }
 
     public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
@@ -158,7 +160,15 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             return;
         }
 
-        TemplateUrl templateUrl = (TemplateUrl) getItem((int) view.getTag());
+        int position = (int) view.getTag();
+
+        if (getItemViewType(position) == ViewType.SITE_SEARCH_SETTINGS) {
+            // Super class already processed it, see
+            // SearchEngineAdapter.onClick.
+            return;
+        }
+
+        TemplateUrl templateUrl = (TemplateUrl) getItem(position);
         setDSEPrefs(templateUrl, mProfile);
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, true);

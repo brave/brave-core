@@ -38,6 +38,8 @@ CI/storybook-url:
       - "**/*.svelte"
       - "**/*.css"
       - "**/*.scss"
+      - package.json
+      - package-lock.json
 
 feature/web3/wallet:
   - changed-files:

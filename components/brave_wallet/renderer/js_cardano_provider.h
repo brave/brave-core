@@ -42,10 +42,10 @@ class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
  private:
   bool EnsureConnected();
   v8::Local<v8::Promise> Enable(v8::Isolate* isolate);
-  void OnEnableResponse(mojo::Remote<mojom::CardanoApi> remote,
-                        v8::Global<v8::Context> global_context,
+  void OnEnableResponse(v8::Global<v8::Context> global_context,
                         v8::Global<v8::Promise::Resolver> promise_resolver,
                         v8::Isolate* isolate,
+                        mojo::PendingRemote<mojom::CardanoApi> pending_remote,
                         mojom::CardanoProviderErrorBundlePtr error_message);
 
   v8::Local<v8::Promise> IsEnabled(v8::Isolate* isolate);

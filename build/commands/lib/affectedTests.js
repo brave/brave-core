@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck
-
 const { promisify } = require('util')
 const { readFile, writeFile } = require('fs/promises')
 const exec = promisify(require('child_process').execFile)
@@ -62,7 +60,7 @@ async function getReferenceCommit() {
 
 async function analyzeAffectedTests(
   outDir,
-  { filters = ['//*'], files = [], base, quiet } = {},
+  { filters = ['//*'], files = [], base = undefined, quiet = undefined } = {},
 ) {
   const targetCommit =
     !base || base === true ? await getReferenceCommit() : base

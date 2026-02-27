@@ -138,9 +138,21 @@ function Main() {
   const { scrollToBottomContinuously, hasScrollableContent } =
     useScrollToBottom(scrollElement, conversationContentElement)
 
+  // Reset scroll and content-ready state when switching conversations
+  // so the new conversation starts fresh at the top. useLayoutEffect
+  // runs before paint so the user never sees the stale scroll position.
+  // <if expr="is_ios">
+  React.useLayoutEffect(() => {
+    setIsContentReady(false)
+    if (scrollElement.current) {
+      scrollElement.current.scrollTop = 0
+    }
+  }, [conversationContext.conversationUuid])
+  // </if>
+
   // Scroll to bottom when opening a conversation
   React.useEffect(() => {
-    if (!conversationContext.conversationUuid) {
+    if (!conversationContext.conversationUuid || !isContentReady) {
       return
     }
 
@@ -331,6 +343,11 @@ function Main() {
               >
                 {!!conversationContext.conversationUuid && (
                   <aiChatContext.conversationEntriesComponent
+                    // Force remount when switching conversations on iOS
+                    // so the iframe height resets cleanly.
+                    // <if expr="is_ios">
+                    key={conversationContext.conversationUuid}
+                    // </if>
                     onIsContentReady={setIsContentReady}
                   />
                 )}

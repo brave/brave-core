@@ -193,7 +193,7 @@ std::optional<EthTransaction> EthTransaction::FromValue(
 std::vector<uint8_t> EthTransaction::GetMessageToSign(
     uint256_t chain_id) const {
   DCHECK(nonce_);
-  base::Value::List list;
+  base::ListValue list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
   list.Append(RLPUint256ToBlob(gas_limit_));
@@ -267,8 +267,8 @@ bool EthTransaction::IsSigned() const {
   return v_ != (uint256_t)0 && r_.size() != 0 && s_.size() != 0;
 }
 
-base::Value::Dict EthTransaction::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue EthTransaction::ToValue() const {
+  base::DictValue dict;
   dict.Set("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
   dict.Set("gas_price", Uint256ValueToHex(gas_price_));
   dict.Set("gas_limit", Uint256ValueToHex(gas_limit_));
@@ -305,7 +305,7 @@ bool EthTransaction::VIsRecid() const {
 }
 
 base::Value EthTransaction::Serialize() const {
-  base::Value::List list;
+  base::ListValue list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
   list.Append(RLPUint256ToBlob(gas_limit_));

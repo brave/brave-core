@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck
-
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -44,7 +42,7 @@ const test = async (
     return
   }
 
-  await buildTests(testsToRun, Config, options)
+  await buildTests(testsToRun, Config)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
 

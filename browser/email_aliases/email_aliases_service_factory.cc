@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_deref.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
@@ -63,7 +64,7 @@ EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
       std::move(brave_account_auth),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      user_prefs::UserPrefs::Get(context));
+      CHECK_DEREF(user_prefs::UserPrefs::Get(context)));
 }
 
 }  // namespace email_aliases

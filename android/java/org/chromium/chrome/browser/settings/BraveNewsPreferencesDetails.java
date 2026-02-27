@@ -29,8 +29,9 @@ import com.bumptech.glide.Glide;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
@@ -64,7 +65,8 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     private String mBraveNewsPreferencesType;
     private String mSearch = "";
     private HashMap<String, String> mFeedSearchResultItemFollowMap = new HashMap<>();
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
     private @MonotonicNonNull SearchViewProvider.Observer mSearchViewObserver;
 
     @Override
@@ -141,7 +143,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

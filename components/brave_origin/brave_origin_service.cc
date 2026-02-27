@@ -165,7 +165,7 @@ void BraveOriginService::OnCredentialSummary(
   base::TrimWhitespaceASCII(summary->message, base::TrimPositions::TRIM_ALL,
                             &summary_trimmed);
   if (!summary_trimmed.empty()) {
-    std::optional<base::Value::Dict> records = base::JSONReader::ReadDict(
+    std::optional<base::DictValue> records = base::JSONReader::ReadDict(
         summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
     if (records && !records->empty()) {

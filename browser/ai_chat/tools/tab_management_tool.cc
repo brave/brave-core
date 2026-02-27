@@ -63,7 +63,7 @@ std::string_view TabManagementTool::Description() const {
          "the plan parameter when using the list operation.";
 }
 
-std::optional<base::Value::Dict> TabManagementTool::InputProperties() const {
+std::optional<base::DictValue> TabManagementTool::InputProperties() const {
   return CreateInputProperties(
       {{"action", StringProperty("The action to perform",
                                  std::vector<std::string>{
@@ -149,7 +149,8 @@ void TabManagementTool::UseTool(const std::string& input_json,
   if (!input.has_value()) {
     std::move(callback).Run(
         CreateContentBlocksForText("Failed to parse input JSON. Please provide "
-                                   "valid JSON with an 'action' field."));
+                                   "valid JSON with an 'action' field."),
+        {});
     return;
   }
 
@@ -161,16 +162,18 @@ void TabManagementTool::UseTool(const std::string& input_json,
     auto* plan = dict.FindString("plan");
     if (!plan || plan->empty()) {
       // No plan provided, so we can't grant permission
-      std::move(callback).Run(CreateContentBlocksForText(
-          "No plan provided which the user will be asked to approve. Provide a "
-          "plan for the first use of this tool."));
+      std::move(callback).Run(
+          CreateContentBlocksForText("No plan provided which the user will be "
+                                     "asked to approve. Provide a "
+                                     "plan for the first use of this tool."),
+          {});
       return;
     }
     // We shouldn't get here since we expect callers to call
     // RequiresUserInteractionBeforeHandling first and only call UseTool if
     // permission was granted but, just in case, still provide output so the
     // conversation can proceed without running this tool.
-    std::move(callback).Run(CreateContentBlocksForText("Unknown error"));
+    std::move(callback).Run(CreateContentBlocksForText("Unknown error"), {});
     return;
   }
 
@@ -179,14 +182,17 @@ void TabManagementTool::UseTool(const std::string& input_json,
   const auto* action = dict.FindString("action");
 
   if (!action) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Missing required 'action' field. Must be one of: list, move, close, "
-        "create_group, update_group, remove_from_group"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Missing required 'action' field. Must be one of: list, move, "
+            "close, "
+            "create_group, update_group, remove_from_group"),
+        {});
     return;
   }
 
   std::move(callback).Run(
-      CreateContentBlocksForText("This tool is not yet implemented"));
+      CreateContentBlocksForText("This tool is not yet implemented"), {});
 }
 
 }  // namespace ai_chat

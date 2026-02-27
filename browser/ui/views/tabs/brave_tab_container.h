@@ -260,6 +260,10 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Checks if the vertical tabs should be shown
   bool ShouldShowVerticalTabs() const;
+  bool IsPinned(const Tab* tab) const;
+
+  // Called when the tree tabs enabled state changes.
+  void OnTreeTabsEnabledChanged();
 
   base::flat_set<Tab*> closing_tabs_;
 
@@ -277,6 +281,7 @@ class BraveTabContainer : public TabContainerImpl,
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;
   BooleanPrefMember vertical_tabs_collapsed_;
+  BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember should_show_scroll_bar_;
 
   bool layout_locked_ = false;

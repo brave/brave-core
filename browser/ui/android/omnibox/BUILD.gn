@@ -56,7 +56,7 @@ android_library("java") {
     "//url:gurl_java",
   ]
 
-  resources_package = "org.chromium.chrome.browser.omnibox"
+  resources_package = "org.chromium.chrome.browser.omnibox.brave"
 }
 
 android_resources("java_resources") {

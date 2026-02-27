@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import FaviconModels
 import Foundation
 import UIKit
@@ -22,7 +23,7 @@ public class AnyTabState: TabState {
   }
 
   public var id: ID { tab.id }
-  public var isPrivate: Bool { tab.isPrivate }
+  public var profile: any Profile { tab.profile }
   public var data: TabDataValues {
     get { tab.data }
     set { tab.data = newValue }

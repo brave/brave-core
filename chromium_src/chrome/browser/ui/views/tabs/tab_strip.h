@@ -20,21 +20,20 @@ class BraveTabHoverCardController;
   friend class BraveVerticalTabStripRegionView; \
   void UpdateHoverCard
 
-#define GetDragContext                                                     \
-  Unused_GetDragContext() {                                                \
-    return nullptr;                                                        \
-  }                                                                        \
-  bool ShouldAlwaysHideCloseButton() const override;                       \
-  bool CanCloseTabViaMiddleButtonClick() const override;                   \
-  bool IsVerticalTabsFloating() const override;                            \
-  bool IsVerticalTabsAnimatingButNotFinalState() const override;           \
-  bool ShouldPaintTabAccent(const Tab* tab) const override;                \
-  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
-  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \
-  static constexpr bool IsUsingBraveTabHoverCardController() {             \
-    return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>,    \
-                          decltype(TabStrip::hover_card_controller_)>;     \
-  }                                                                        \
+#define GetDragContext                                                       \
+  Unused_GetDragContext() {                                                  \
+    return nullptr;                                                          \
+  }                                                                          \
+  bool ShouldAlwaysHideCloseButton() const override;                         \
+  bool CanCloseTabViaMiddleButtonClick() const override;                     \
+  bool IsVerticalTabsFloating() const override;                              \
+  bool IsVerticalTabsAnimatingButNotFinalState() const override;             \
+  bool ShouldPaintTabAccent(const Tab* tab) const override;                  \
+  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override;   \
+  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;            \
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
+  const tabs::TreeTabNode& GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
+      const override;                                                        \
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController
@@ -42,8 +41,5 @@ class BraveTabHoverCardController;
 #undef TabHoverCardController
 #undef GetDragContext
 #undef UpdateHoverCard
-
-static_assert(TabStrip::IsUsingBraveTabHoverCardController(),
-              "Should use BraveTabHoverCardController");
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_H_

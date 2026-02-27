@@ -35,6 +35,11 @@ message ContentBlockProto {
   }
 }
 
+message ToolArtifactProto {
+  string type = 1;
+  string content_json = 2;
+}
+
 message ToolUseEventProto {
   string tool_name = 1;
   string id = 2;
@@ -47,6 +52,8 @@ message ToolUseEventProto {
 
   // True if the output was provided by the server (server-side tool execution).
   bool is_server_result = 5;
+
+  repeated ToolArtifactProto artifacts = 6;
 }
 
 message WebSourceProto {

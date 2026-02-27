@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.toolbar.top;
 import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -19,14 +19,15 @@ import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
  */
 public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMenuCoordinator {
     public BottomTabSwitcherActionMenuCoordinator(
-            Profile profile, ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+            Profile profile,
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
         super(profile, tabModelSelectorSupplier);
     }
 
     public static OnLongClickListener createOnLongClickListener(
             Callback<Integer> onItemClicked,
             Profile profile,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
         return createOnLongClickListener(
                 new BottomTabSwitcherActionMenuCoordinator(profile, tabModelSelectorSupplier),
                 profile,

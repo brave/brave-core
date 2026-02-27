@@ -7,7 +7,6 @@ import Shared
 import Storage
 import UIKit
 import Web
-import WebKit
 import XCTest
 
 @testable import Brave
@@ -136,7 +135,16 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       windowId: testWindowId,
       rewards: nil,
       braveCore: nil,
-      privateBrowsingManager: privateBrowsingManager
+      profile: FakeProfile(),
+      privateBrowsingManager: privateBrowsingManager,
+      tabCreationFactory: { params in
+        let tab = FakeTabState()
+        tab.profile = params.profile
+        if let lastActiveTime = params.lastActiveTime {
+          tab.lastActiveTime = lastActiveTime
+        }
+        return tab
+      }
     )
     privateBrowsingManager.isPrivateBrowsing = false
     Preferences.Privacy.persistentPrivateBrowsing.reset()
@@ -154,16 +162,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   func testTabManagerDoesNotCallTabManagerStateDelegateOnStoreChangesWithPrivateTabs() {
     let stateDelegate = MockTabManagerStateDelegate()
     manager.stateDelegate = stateDelegate
-    let configuration = WKWebViewConfiguration()
-    configuration.processPool = WKProcessPool()
-    configuration.websiteDataStore = .nonPersistent()
 
-    // test that non-private tabs are saved to the db
-    // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = TabStateFactory.create(
-        with: .init(profile: nil, initialConfiguration: configuration)
-      )
+      let tab = FakeTabState()
+      tab.profile = tab.profile.offTheRecordProfile
       tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,
