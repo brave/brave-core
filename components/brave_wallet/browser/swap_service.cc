@@ -325,8 +325,8 @@ GURL SwapService::GetLiFiTransactionURL() {
 
 // static
 GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
-  return net::AppendQueryParameter(
-      GURL(kLiFiBaseAPIURL).Resolve("/v1/status"), "txHash", tx_hash);
+  return net::AppendQueryParameter(GURL(kLiFiBaseAPIURL).Resolve("/v1/status"),
+                                   "txHash", tx_hash);
 }
 
 // static
