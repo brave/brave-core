@@ -79,14 +79,13 @@ inline constexpr auto kUnstoppableDomains =
          ".pbdx",       ".pendle",      ".pilot",       ".podcast",
          ".pog",        ".pokt",        ".polygon",     ".presearch",
          ".privacy",    ".propykeys",   ".pudgy",       ".pundi",
-         ".quantum",
-         ".rad",        ".raiin",       ".secret",      ".smobler",
-         ".south",      ".spend",       ".stepn",       ".supernova",
-         ".tball",      ".tea",         ".tribe",       ".twin",
-         ".u",          ".ubu",         ".unstoppable", ".wallet",
-         ".web3",       ".wifi",        ".witg",        ".wrkx",
-         ".x",          ".xec",         ".xmr",         ".xyo",
-         ".zano",       ".zil"},
+         ".quantum",    ".rad",         ".raiin",       ".secret",
+         ".smobler",    ".south",       ".spend",       ".stepn",
+         ".supernova",  ".tball",       ".tea",         ".tribe",
+         ".twin",       ".u",           ".ubu",         ".unstoppable",
+         ".wallet",     ".web3",        ".wifi",        ".witg",
+         ".wrkx",       ".x",           ".xec",         ".xmr",
+         ".xyo",        ".zano",        ".zil"},
         SuffixComparator());
 
 // Ensure all domain suffixes start with `.`
