@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback_list.h"
 #include "ui/views/controls/button/image_button.h"
 
 class SidebarButtonView : public views::ImageButton {
@@ -29,9 +30,19 @@ class SidebarButtonView : public views::ImageButton {
   SidebarButtonView operator=(const SidebarButtonView&) = delete;
 
   // views::ImageButton overrides:
+  gfx::ImageSkia GetImage(ButtonState state) const override;
   void OnThemeChanged() override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
+  void AddedToWidget() override;
+  void RemovedFromWidget() override;
+
+ protected:
+  // views::ImageButton:
+  gfx::ImageSkia GetImageToPaint() override;
+
+ private:
+  base::CallbackListSubscription paint_as_active_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_

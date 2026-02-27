@@ -10,7 +10,6 @@
 
 #include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/views/widget/widget.h"
@@ -32,10 +31,6 @@ class SidebarItemAddButton : public SidebarButtonView,
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;
 
-  // SidebarButtonView:
-  void AddedToWidget() override;
-  void RemovedFromWidget() override;
-
   bool IsBubbleVisible() const;
 
  private:
@@ -46,10 +41,8 @@ class SidebarItemAddButton : public SidebarButtonView,
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   base::CallbackListSubscription on_enabled_changed_subscription_;
-  base::CallbackListSubscription paint_as_active_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};
-  base::WeakPtrFactory<SidebarItemAddButton> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADD_BUTTON_H_

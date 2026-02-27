@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 
-#include "base/callback_list.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -51,8 +50,6 @@ class SidebarItemsContentsView : public views::View,
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
-  void AddedToWidget() override;
-  void RemovedFromWidget() override;
 
   // views::ContextMenuController overrides:
   void ShowContextMenuForViewImpl(
@@ -115,7 +112,6 @@ class SidebarItemsContentsView : public views::View,
       sidebar::SidebarItem::BuiltInItemType type,
       views::Button::ButtonState state) const;
   void UpdateAllBuiltInItemsViewState();
-  void UpdateIconsForActiveState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 
   // When item count is five, drag indicator is drawn in front of first item.
@@ -138,7 +134,6 @@ class SidebarItemsContentsView : public views::View,
   // Observe to know whether item added feedback bubble is visible or not.
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};
-  base::CallbackListSubscription paint_as_active_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEMS_CONTENTS_VIEW_H_

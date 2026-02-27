@@ -43,19 +43,6 @@ SidebarItemAddButton::SidebarItemAddButton(
 
 SidebarItemAddButton::~SidebarItemAddButton() = default;
 
-void SidebarItemAddButton::AddedToWidget() {
-  SidebarButtonView::AddedToWidget();
-  paint_as_active_subscription_ =
-      GetWidget()->RegisterPaintAsActiveChangedCallback(
-          base::BindRepeating(&SidebarItemAddButton::UpdateButtonImages,
-                              weak_ptr_factory_.GetWeakPtr()));
-}
-
-void SidebarItemAddButton::RemovedFromWidget() {
-  paint_as_active_subscription_ = {};
-  SidebarButtonView::RemovedFromWidget();
-}
-
 void SidebarItemAddButton::OnButtonPressed() {
   if (IsBubbleVisible()) {
     return;
@@ -79,20 +66,16 @@ bool SidebarItemAddButton::IsBubbleVisible() const {
 }
 
 void SidebarItemAddButton::UpdateButtonImages() {
-  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
-  const ui::ColorId normal_color =
-      is_active ? static_cast<ui::ColorId>(kColorSidebarButtonBase)
-                : static_cast<ui::ColorId>(kColorToolbarButtonIconInactive);
-  SetImageModel(STATE_NORMAL, ui::ImageModel::FromVectorIcon(
-                                  kLeoPlusAddIcon, normal_color,
-                                  kDefaultIconSize));
+  SetImageModel(STATE_NORMAL,
+                ui::ImageModel::FromVectorIcon(
+                    kLeoPlusAddIcon, kColorSidebarButtonBase, kDefaultIconSize));
   SetImageModel(STATE_PRESSED, ui::ImageModel::FromVectorIcon(
                                    kLeoPlusAddIcon, kColorSidebarButtonPressed,
                                    kDefaultIconSize));
-  SetImageModel(
-      STATE_DISABLED,
-      ui::ImageModel::FromVectorIcon(
-          kLeoPlusAddIcon, kColorSidebarAddButtonDisabled, kDefaultIconSize));
+  SetImageModel(STATE_DISABLED,
+                ui::ImageModel::FromVectorIcon(
+                    kLeoPlusAddIcon, kColorToolbarButtonIconInactive,
+                    kDefaultIconSize));
 }
 
 BEGIN_METADATA(SidebarItemAddButton)

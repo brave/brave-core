@@ -139,56 +139,6 @@ void SidebarItemsContentsView::OnThemeChanged() {
     SetDefaultImageFor(item);
     sidebar_model_->FetchFavicon(item);
   }
-
-  UpdateIconsForActiveState();
-}
-
-void SidebarItemsContentsView::AddedToWidget() {
-  View::AddedToWidget();
-  paint_as_active_subscription_ =
-      GetWidget()->RegisterPaintAsActiveChangedCallback(base::BindRepeating(
-          &SidebarItemsContentsView::UpdateIconsForActiveState,
-          base::Unretained(this)));
-}
-
-void SidebarItemsContentsView::RemovedFromWidget() {
-  paint_as_active_subscription_ = {};
-  View::RemovedFromWidget();
-}
-
-void SidebarItemsContentsView::UpdateIconsForActiveState() {
-  if (children().empty()) {
-    return;
-  }
-
-  UpdateAllBuiltInItemsViewState();
-
-  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
-  const auto& items = sidebar_model_->GetAllSidebarItems();
-  if (items.size() != children().size()) {
-    return;
-  }
-
-  for (size_t i = 0; i < items.size(); ++i) {
-    if (!items[i].is_web_type()) {
-      continue;
-    }
-
-    SidebarItemView* item_view = GetItemViewAt(i);
-    auto current_image =
-        item_view->GetImage(views::Button::STATE_NORMAL);
-    if (current_image.isNull()) {
-      continue;
-    }
-
-    if (!is_active) {
-      item_view->SetImageModel(
-          views::Button::STATE_NORMAL,
-          ui::ImageModel::FromImageSkia(
-              gfx::ImageSkiaOperations::CreateTransparentImage(
-                  current_image, kBraveDisabledControlAlpha / 255.0)));
-    }
-  }
 }
 
 void SidebarItemsContentsView::Update() {
@@ -455,11 +405,15 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
+  const auto resized = gfx::ImageSkiaOperations::CreateResizedImage(
+      image, skia::ImageOperations::RESIZE_BEST, kIconSize);
+  item_view->SetImageModel(views::Button::STATE_NORMAL,
+                           ui::ImageModel::FromImageSkia(resized));
   item_view->SetImageModel(
-      views::Button::STATE_NORMAL,
+      views::Button::STATE_DISABLED,
       ui::ImageModel::FromImageSkia(
-          gfx::ImageSkiaOperations::CreateResizedImage(
-              image, skia::ImageOperations::RESIZE_BEST, kIconSize)));
+          gfx::ImageSkiaOperations::CreateTransparentImage(
+              resized, kBraveDisabledControlAlpha / 255.0)));
 }
 
 void SidebarItemsContentsView::ClearDragIndicator() {
@@ -616,16 +570,13 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     sidebar::SidebarItem::BuiltInItemType type,
     views::Button::ButtonState state) const {
-  const bool is_active = GetWidget() && GetWidget()->ShouldPaintAsActive();
-  const auto get_image_model = [is_active](const gfx::VectorIcon& icon,
-                                           views::Button::ButtonState state) {
+  const auto get_image_model = [](const gfx::VectorIcon& icon,
+                                  views::Button::ButtonState state) {
     ui::ColorId color_id;
     if (state == views::Button::STATE_DISABLED) {
-      color_id = kColorSidebarArrowDisabled;
+      color_id = kColorToolbarButtonIconInactive;
     } else if (state == views::Button::STATE_PRESSED) {
       color_id = kColorSidebarButtonPressed;
-    } else if (!is_active) {
-      color_id = kColorToolbarButtonIconInactive;
     } else {
       color_id = kColorSidebarButtonBase;
     }

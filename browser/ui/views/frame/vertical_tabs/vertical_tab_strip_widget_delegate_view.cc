@@ -41,6 +41,9 @@ class VerticalTabStripWidget : public ThemeCopyingWidget {
     return new VerticalTabStripRootView(browser_view_, this);
   }
 
+  // views::Widget:
+  bool ShouldViewsStyleFollowWidgetActivation() const override { return true; }
+
  private:
   raw_ptr<BrowserView> browser_view_;
 };
