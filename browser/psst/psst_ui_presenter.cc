@@ -65,14 +65,15 @@ void UiDesktopPresenter::UiDesktopDelegate::SetDelegateToWebContents(
   if (!dialog_web_contents) {
     return;
   }
-  dialog_web_contents->SetUserData(kUiDesktopDelegateUserDataKey,
-                            std::make_unique<UiDesktopDelegateUserData>(this));
+  dialog_web_contents->SetUserData(
+      kUiDesktopDelegateUserDataKey,
+      std::make_unique<UiDesktopDelegateUserData>(this));
   dialog_web_contents_ = dialog_web_contents;
 }
 
 void UiDesktopPresenter::UiDesktopDelegate::OnDialogClosed(
     const std::string& /* json_retval */) {
-  if(!dialog_web_contents_) {
+  if (!dialog_web_contents_) {
     return;
   }
   dialog_web_contents_->RemoveUserData(kUiDesktopDelegateUserDataKey);

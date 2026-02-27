@@ -34,8 +34,7 @@ class UiDesktopPresenter : public PsstUiPresenter {
     static UiDesktopDelegate* GetDelegateFromWebContents(
         content::WebContents* web_contents);
 
-    explicit UiDesktopDelegate(
-        content::WebContents* initiator_web_contents);
+    explicit UiDesktopDelegate(content::WebContents* initiator_web_contents);
     UiDesktopDelegate(const UiDesktopDelegate&) = delete;
     UiDesktopDelegate& operator=(const UiDesktopDelegate&) = delete;
     ~UiDesktopDelegate() override;

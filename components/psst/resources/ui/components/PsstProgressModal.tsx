@@ -182,7 +182,9 @@ export default class PsstProgressModal extends React.PureComponent<
             </Button>
           </RightAlignedItem>
         </HorizontalContainer>
-        <TextSection>{getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}</TextSection>
+        <TextSection>
+          {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
+        </TextSection>
         <SettingsCard
           title={getLocale(PsstStrings.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
           subTitle={this.state.site_name}
@@ -245,7 +247,9 @@ export default class PsstProgressModal extends React.PureComponent<
                   isDisabled={false}
                   onClick={this.closeDialog}
                 >
-                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
+                  {getLocale(
+                    PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED,
+                  )}
                 </PsstDlgButton>
                 <PsstDlgButton
                   kind='filled'
