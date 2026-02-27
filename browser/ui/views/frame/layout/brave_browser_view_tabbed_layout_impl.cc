@@ -350,7 +350,11 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   }
 
   // Apply the updated contents bounds via ProposedLayout.
-  contents_layout->bounds = contents_bounds;
+
+  // Set mirrored rect so we'll see that the sidebar alignment follows its own
+  // settings order.
+  contents_layout->bounds =
+      views().browser_view->GetMirroredRect(contents_bounds);
 
   // Update sidebar bounds via ProposedLayout.
   const gfx::Rect mirrored_sidebar_bounds =
