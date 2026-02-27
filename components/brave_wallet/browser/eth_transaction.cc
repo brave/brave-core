@@ -155,11 +155,19 @@ std::optional<EthTransaction> EthTransaction::FromValue(
   }
   tx.data_ = std::vector<uint8_t>(data_decoded.begin(), data_decoded.end());
 
-  std::optional<int> v = value.FindInt("v");
-  if (!v) {
-    return std::nullopt;
+  const std::string* v_str = value.FindString("v");
+  if (v_str) {
+    if (!HexValueToUint256(*v_str, &tx.v_)) {
+      return std::nullopt;
+    }
+  } else {
+    // Legacy format: v stored as int.
+    std::optional<int> v_int = value.FindInt("v");
+    if (!v_int) {
+      return std::nullopt;
+    }
+    tx.v_ = static_cast<uint256_t>(*v_int);
   }
-  tx.v_ = (uint8_t)*v;
 
   const std::string* r = value.FindString("r");
   if (!r) {
@@ -275,7 +283,7 @@ base::DictValue EthTransaction::ToValue() const {
   dict.Set("to", GetToHex());
   dict.Set("value", Uint256ValueToHex(value_));
   dict.Set("data", base::Base64Encode(data_));
-  dict.Set("v", static_cast<int>(v_));
+  dict.Set("v", Uint256ValueToHex(v_));
   dict.Set("r", base::Base64Encode(r_));
   dict.Set("s", base::Base64Encode(s_));
   dict.Set("type", static_cast<int>(type_));
