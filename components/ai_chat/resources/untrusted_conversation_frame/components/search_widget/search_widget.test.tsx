@@ -15,7 +15,7 @@
 
 import * as React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import SearchWidget from './search_widget'
 
 const webResults = [
@@ -310,6 +310,57 @@ describe('SearchWidget', () => {
       'href',
       'https://search.brave.com/images?q=test%20query',
     )
+  })
+
+  describe('image error handling', () => {
+    test('hides entire card when an image result thumbnail fails', () => {
+      const { container } = render(
+        <SearchWidget
+          query='test query'
+          type='images'
+          results={imageResults}
+        />,
+      )
+
+      const thumbnail = container.querySelector('.thumbnail')
+      expect(thumbnail).toBeInTheDocument()
+
+      fireEvent.error(thumbnail!)
+
+      expect(container.querySelector('.imageResult')).not.toBeInTheDocument()
+    })
+
+    test('hides only thumbnail with visibility:hidden for video when image fails', () => {
+      const { container } = render(
+        <SearchWidget
+          query='test query'
+          type='videos'
+          results={videoResults}
+        />,
+      )
+
+      const thumbnail = container.querySelector('.thumbnail')
+      fireEvent.error(thumbnail!)
+
+      expect(screen.getByText('Test Video 1')).toBeInTheDocument()
+      expect(thumbnail).toHaveStyle({ visibility: 'hidden' })
+    })
+
+    test('hides only thumbnail with visibility:hidden for news when image fails', () => {
+      const { container } = render(
+        <SearchWidget
+          query='test query'
+          type='news'
+          results={newsResults}
+        />,
+      )
+
+      const thumbnail = container.querySelector('.thumbnail')
+      fireEvent.error(thumbnail!)
+
+      expect(screen.getByText('Test News 1')).toBeInTheDocument()
+      expect(thumbnail).toHaveStyle({ visibility: 'hidden' })
+    })
   })
 
   test('should render placeholder for empty results', () => {
