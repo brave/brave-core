@@ -127,6 +127,10 @@ SidebarContainerView::SidebarContainerView(
       side_panel_coordinator_(side_panel_coordinator),
       browser_window_event_observer_(
           std::make_unique<BrowserWindowEventObserver>(*this)) {
+  // Don't follow RTL layout.
+  // As we use sidebar's alignment settings for its position,
+  // all UIs inside the container view shouldn't be mirrored.
+  SetMirrored(false);
   constexpr int kAnimationDurationMS = 150;
   width_animation_.SetSlideDuration(base::Milliseconds(kAnimationDurationMS));
 
