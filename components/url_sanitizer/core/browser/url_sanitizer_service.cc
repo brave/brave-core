@@ -214,22 +214,37 @@ std::string URLSanitizerService::StripQueryParameter(
   // a single query string.
   const std::vector<std::string_view> input_kv_strings = base::SplitStringPiece(
       query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::vector<std::string> output_kv_strings;
-  int disallowed_count = 0;
+
+  // First pass: check if any tracking parameters are present.
+  // This avoids building the output string vector in the common case
+  // where no tracking parameters are found.
+  bool has_trackers = false;
   for (const std::string_view kv_string : input_kv_strings) {
     const std::vector<std::string_view> pieces = base::SplitStringPiece(
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
     std::string_view key = pieces.empty() ? std::string_view() : pieces[0];
     if (pieces.size() >= 2 && trackers.count(key) == 1) {
-      ++disallowed_count;
-    } else {
+      has_trackers = true;
+      break;
+    }
+  }
+
+  if (!has_trackers) {
+    return std::string(query);
+  }
+
+  // Second pass: build the filtered query string, excluding trackers.
+  std::vector<std::string> output_kv_strings;
+  output_kv_strings.reserve(input_kv_strings.size());
+  for (const std::string_view kv_string : input_kv_strings) {
+    const std::vector<std::string_view> pieces = base::SplitStringPiece(
+        kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    std::string_view key = pieces.empty() ? std::string_view() : pieces[0];
+    if (pieces.size() < 2 || trackers.count(key) == 0) {
       output_kv_strings.emplace_back(std::string(kv_string));
     }
   }
-  if (disallowed_count > 0) {
-    return base::JoinString(output_kv_strings, "&");
-  }
-  return std::string(query);
+  return base::JoinString(output_kv_strings, "&");
 }
 
 }  // namespace brave
