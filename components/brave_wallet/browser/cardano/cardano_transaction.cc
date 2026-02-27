@@ -603,7 +603,8 @@ void CardanoTransaction::AddInput(TxInput input) {
 }
 
 void CardanoTransaction::AddInputs(std::vector<TxInput> inputs) {
-  for (auto input : inputs) {
+  inputs_.reserve(inputs_.size() + inputs.size());
+  for (auto& input : inputs) {
     inputs_.push_back(std::move(input));
   }
 }

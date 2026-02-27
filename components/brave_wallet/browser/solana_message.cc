@@ -211,7 +211,7 @@ void SolanaMessage::GetUniqueAccountMetas(
   // 3. Accounts do not need to sign and are writable.
   // 4. Accounts do not need to sign and read-only.
   std::stable_sort(account_metas.begin(), account_metas.end(),
-                   [](SolanaAccountMeta a, SolanaAccountMeta b) {
+                   [](const SolanaAccountMeta& a, const SolanaAccountMeta& b) {
                      if (a.is_signer != b.is_signer) {
                        return a.is_signer;
                      }

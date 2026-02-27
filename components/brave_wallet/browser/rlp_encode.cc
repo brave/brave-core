@@ -21,8 +21,12 @@ std::vector<uint8_t> RLPToBinary(size_t x) {
   if (x == 0) {
     return {};
   }
-  std::vector<uint8_t> ret = RLPToBinary(x / 256);
-  ret.push_back(x % 256);
+  std::vector<uint8_t> ret;
+  while (x > 0) {
+    ret.push_back(x % 256);
+    x /= 256;
+  }
+  std::reverse(ret.begin(), ret.end());
   return ret;
 }
 
@@ -60,9 +64,9 @@ std::vector<uint8_t> RLPEncode(const base::Value& val) {
   }
 
   if (val.is_blob()) {
-    base::Value::BlobStorage blob = val.GetBlob();
+    const base::Value::BlobStorage& blob = val.GetBlob();
     if (blob.size() == 1 && blob[0] < kStringOffset) {
-      return blob;
+      return {blob[0]};
     }
     auto result = RLPEncodeLength(blob.size(), kStringOffset);
     base::Extend(result, blob);
