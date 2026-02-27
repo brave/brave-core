@@ -121,28 +121,11 @@ void SerpMetricsTabHelper::DidFinishNavigation(
 
   const GURL& url = navigation_handle->GetURL();
 
-  const bool is_new_navigation =
-      ui::PageTransitionIsNewNavigation(navigation_handle->GetPageTransition());
-
-  if (!IsSameSearchQuery(url) && is_new_navigation) {
+  if (!IsSameSearchQuery(url)) {
     // Any navigation that doesn't match the previous search engine results page
     // should reset it along with any user initiated navigation (omnibox,
     // bookmarks, etc...) whether it matches or not.
     last_recorded_serp_url_.reset();
-  }
-
-  if (!navigation_handle->HasUserGesture() &&
-      navigation_handle->IsRendererInitiated()) {
-    // Ignore renderer-initiated navigations without a user gesture. These
-    // navigations may occur automatically (e.g. redirects or SPA updates) and
-    // should not be treated as explicit user actions.
-    return;
-  }
-
-  if (!is_new_navigation) {
-    // Ignore back/forward navigations and reloads, as they are not considered
-    // user-initiated search queries.
-    return;
   }
 
   MaybeClassifyAndRecordSearchEngineForUrl(url);
