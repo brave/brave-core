@@ -102,8 +102,7 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
 
 JSSolanaProvider::~JSSolanaProvider() = default;
 
-void JSSolanaProvider::OnDestruct() {
-}
+void JSSolanaProvider::OnDestruct() {}
 
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
