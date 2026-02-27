@@ -52,6 +52,7 @@ BraveSearchMetrics::BraveSearchMetrics(PrefService* local_state,
 BraveSearchMetrics::~BraveSearchMetrics() = default;
 
 void BraveSearchMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
+  CHECK(registry);
   registry->RegisterTimePref(kMiscMetricsBraveSearchReportFrameStartTime, {});
   registry->RegisterDictionaryPref(kMiscMetricsBraveSearchQueryCounts);
 }
