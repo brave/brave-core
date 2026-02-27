@@ -529,8 +529,7 @@ IN_PROC_BROWSER_TEST_F(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordBackForwardNavigation) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordBackForwardNavigation) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
@@ -545,12 +544,12 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   GoBack();
   GoForward();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordAfterMultipleBackForwardNavigations) {
+                       RecordAfterMultipleBackForwardNavigations) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
@@ -567,7 +566,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   GoBack();
   GoForward();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(3U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -593,7 +592,7 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -625,7 +624,7 @@ IN_PROC_BROWSER_TEST_F(
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -649,21 +648,20 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
   EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordWithoutUserGesture) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordWithoutUserGesture) {
   content::TestNavigationObserver observer(GetWebContents());
   ASSERT_TRUE(NavigateToURLFromRendererWithoutUserGesture(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test")));
   observer.Wait();
 
-  EXPECT_EQ(0U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -693,7 +691,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordIfTabWasRestored) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
@@ -718,7 +716,9 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
   }
   SetBrowser(browser_created_observer.Wait());
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  content::WaitForLoadStop(GetWebContents());
+
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
