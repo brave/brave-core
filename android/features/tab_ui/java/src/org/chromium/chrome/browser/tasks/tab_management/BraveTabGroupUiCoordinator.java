@@ -14,6 +14,7 @@ import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
@@ -58,7 +59,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             ThemeColorProvider themeColorProvider,
             UndoBarThrottle undoBarThrottle,
             MonotonicObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
-            Supplier<ShareDelegate> shareDelegateSupplier) {
+            Supplier<@Nullable ShareDelegate> shareDelegateSupplier) {
         super(
                 activity,
                 parentView,

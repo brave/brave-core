@@ -93,6 +93,7 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
@@ -1241,7 +1242,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             WindowAndroid windowAndroid,
             ActivityResultTracker activityResultTracker,
             BottomSheetController bottomSheetController,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             SnackbarManager snackbarManager,
             boolean isTablet,
             Supplier<Integer> tabStripHeightSupplier,
@@ -1571,8 +1572,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         // On cold start, tabs are restored asynchronously, so we need to wait
         // for them to be fully loaded before searching for the last active tab.
         BraveActivity braveActivity = (BraveActivity) mActivity;
+        TabModelSelector tabModelSelector = braveActivity.getTabModelSelectorSupplier().get();
+        assertNonNull(tabModelSelector);
         TabModelUtils.runOnTabStateInitialized(
-                braveActivity.getTabModelSelectorSupplier().get(),
+                tabModelSelector,
                 (selector) -> {
                     BraveRecentTabsSnackbarHelper snackbarHelper =
                             new BraveRecentTabsSnackbarHelper();

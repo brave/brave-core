@@ -16,7 +16,6 @@ import androidx.annotation.Px;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -53,7 +52,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             FeedSurfaceDelegate delegate,
             Profile profile,
             BottomSheetController bottomSheetController,
-            Supplier<ShareDelegate> shareDelegateSupplier,
+            Supplier<@Nullable ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
             @NewTabPageLaunchOrigin int launchOrigin,
             PrivacyPreferencesManagerImpl privacyPreferencesManager,

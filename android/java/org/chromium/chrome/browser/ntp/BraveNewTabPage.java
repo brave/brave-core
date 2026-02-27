@@ -10,8 +10,8 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
-import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.Callback;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.EnsuresNonNull;

@@ -34,11 +34,11 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
             Supplier<TabGroupModelFilter> incognitoTabGroupModelFilterSupplier,
             OnClickListener newTabButtonClickListener,
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
-            @NonNull DoubleConsumer onToolbarAlphaChange,
-            @NonNull UserEducationHelper userEducationHelper,
-            @NonNull MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
-            @NonNull MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
-            @NonNull TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
+            DoubleConsumer onToolbarAlphaChange,
+            UserEducationHelper userEducationHelper,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
+            TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 context,

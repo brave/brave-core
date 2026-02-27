@@ -52,8 +52,6 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.omnibox.OmniboxFocusReason;
 
-import java.util.function.Supplier;
-
 /**
  * The root coordinator for the bottom toolbar. It has two sub-components: the browsing mode bottom
  * toolbar and the tab switcher mode bottom toolbar.
@@ -314,8 +312,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         }
 
         if (mScrollingBottomView != null && activity != null) {
-            Supplier<CompositorViewHolder> cvh = activity.getCompositorViewHolderSupplier();
-            LayoutManagerImpl layoutManager = cvh.get().getLayoutManager();
+            CompositorViewHolder viewHolder = activity.getCompositorViewHolderSupplier().get();
+            assertNonNull(viewHolder);
+
+            LayoutManagerImpl layoutManager = viewHolder.getLayoutManager();
             if (layoutManager != null) {
                 mScrollingBottomView.setSwipeDetector(layoutManager.getToolbarSwipeHandler());
             }

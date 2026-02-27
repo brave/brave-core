@@ -9,6 +9,7 @@ import android.content.Context;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
@@ -45,8 +46,8 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     }
 
     @Override
-    public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
-            @NonNull HubContainerView hubContainerView) {
+    public HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
+            HubContainerView hubContainerView) {
         if (getTabSwitcherPaneCoordinator() == null && getCurrentTab() != null) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set
