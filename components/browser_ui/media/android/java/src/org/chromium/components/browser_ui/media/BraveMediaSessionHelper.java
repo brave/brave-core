@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.CommandLine;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.content.browser.MediaSessionImpl;
 import org.chromium.content_public.browser.MediaSession;
@@ -28,6 +29,8 @@ import java.util.Set;
 public class BraveMediaSessionHelper implements MediaImageCallback {
     private static final List<String> sBraveTalkHosts =
             Arrays.asList("talk.brave.com", "talk.bravesoftware.com", "talk.brave.software");
+    private static final List<String> sYouTubeHosts =
+            Arrays.asList("www.youtube.com", "m.youtube.com", "youtube.com");
 
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
@@ -43,13 +46,44 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         return false;
     }
 
-    private boolean isBraveTalk() {
+    private boolean shouldSuppressMediaNotificationActions() {
         WebContents webContents =
                 (WebContents)
                         BraveReflectionUtil.getField(
                                 MediaSessionHelper.class, "mWebContents", this);
 
         return isBraveTalk(webContents);
+    }
+
+    private boolean shouldSuppressMediaPause() {
+        WebContents webContents =
+                (WebContents)
+                        BraveReflectionUtil.getField(
+                                MediaSessionHelper.class, "mWebContents", this);
+
+        return isBraveTalk(webContents) || isBackgroundVideo(webContents);
+    }
+
+    private boolean isYouTube(WebContents webContents) {
+        if (webContents == null) return false;
+        GURL pageUrl = webContents.getLastCommittedUrl();
+        return pageUrl.isValid()
+                && pageUrl.getScheme().equals(UrlConstants.HTTPS_SCHEME)
+                && sYouTubeHosts.contains(pageUrl.getHost());
+    }
+
+    private boolean isBackgroundVideo(WebContents webContents) {
+        // We check the command line switch rather than reading the preference directly because
+        // this class is in the components layer and cannot access Profile or UserPrefs (chrome
+        // layer) without causing R8 module boundary violations in the AAB build. The switch is
+        // set by BraveBrowserMainParts::PostProfileInit() when the background video playback
+        // feature and preference are both enabled, and the app restarts whenever the preference
+        // changes, so the switch reliably reflects the current preference state.
+        // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
+        boolean enabled =
+                CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
+                        && isYouTube(webContents);
+        return enabled;
     }
 
     @Override
@@ -60,7 +94,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                 (MediaNotificationInfo.Builder)
                         BraveReflectionUtil.getField(
                                 MediaSessionHelper.class, "mNotificationInfoBuilder", this);
-        if (notificationInfoBuilder != null && isBraveTalk()) {
+        if (notificationInfoBuilder != null && shouldSuppressMediaNotificationActions()) {
             notificationInfoBuilder.setActions(0);
             HashSet<Integer> actionSet = new HashSet<Integer>();
             actionSet.add(0);
@@ -87,7 +121,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                                 mediaSession);
         assert mediaSessionObserver != null;
 
-        if (!isBraveTalk()) {
+        if (!shouldSuppressMediaPause()) {
             return mediaSessionObserver;
         }
         ((MediaSessionImpl) mediaSession).removeObserver(mediaSessionObserver);
