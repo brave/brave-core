@@ -18,20 +18,21 @@ namespace serp_metrics {
 
 namespace {
 
-// Returns a `TemplateURL` if `url` matches the search engine results page for
-// `prepopulated_engine`.
-std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
-    const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine,
-    const GURL& url) {
-  const auto template_url_data =
-      TemplateURLDataFromPrepopulatedEngine(prepopulated_engine);
-  auto template_url = std::make_unique<TemplateURL>(*template_url_data);
+constexpr auto kAllowList = base::MakeFixedFlatSet<SearchEngineType>(
+    base::sorted_unique,
+    {SEARCH_ENGINE_BING, SEARCH_ENGINE_GOOGLE, SEARCH_ENGINE_YAHOO,
+     SEARCH_ENGINE_DUCKDUCKGO, SEARCH_ENGINE_QWANT, SEARCH_ENGINE_ECOSIA,
+     SEARCH_ENGINE_BRAVE, SEARCH_ENGINE_STARTPAGE});
 
 // Returns a `TemplateURL` if `url` matches the search engine results page for
 // `prepopulated_engine`.
 std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
     const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine,
     const GURL& url) {
+  if (!kAllowList.contains(prepopulated_engine.type)) {
+    return nullptr;
+  }
+
   const auto template_url_data =
       TemplateURLDataFromPrepopulatedEngine(prepopulated_engine);
   auto template_url = std::make_unique<TemplateURL>(*template_url_data);

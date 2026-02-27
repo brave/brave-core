@@ -5,7 +5,11 @@
 
 #include "brave/components/serp_metrics/serp_classifier.h"
 
+#include <optional>
+
+#include "base/containers/fixed_flat_set.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -17,6 +21,12 @@ namespace serp_metrics {
 
 namespace {
 
+constexpr auto kAllowList = base::MakeFixedFlatSet<SearchEngineType>(
+    base::sorted_unique,
+    {SEARCH_ENGINE_BING, SEARCH_ENGINE_GOOGLE, SEARCH_ENGINE_YAHOO,
+     SEARCH_ENGINE_DUCKDUCKGO, SEARCH_ENGINE_QWANT, SEARCH_ENGINE_ECOSIA,
+     SEARCH_ENGINE_BRAVE, SEARCH_ENGINE_STARTPAGE});
+
 void VerifySerpClassifierExpectation(
     const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine) {
   const auto template_url_data =
@@ -27,7 +37,10 @@ void VerifySerpClassifierExpectation(
   ASSERT_TRUE(url.is_valid());
 
   SerpClassifier classifier;
-  EXPECT_TRUE(classifier.MaybeClassify(url));
+  if (std::optional<SearchEngineType> search_engine_type =
+          classifier.MaybeClassify(url)) {
+    EXPECT_TRUE(kAllowList.contains(*search_engine_type));
+  }
 }
 
 }  // namespace
@@ -63,7 +76,7 @@ TEST(SerpClassifierTest, IsNotSameSearchQueryWithInvalidUrl) {
       GURL(R"(https://www.qwant.com/?q=foobar)"), GURL("foobar")));
 }
 
-TEST(SerpClassifierTest, ClassifySearchEngines) {
+TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {
   for (const auto* prepopulated_engine :
        TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
     VerifySerpClassifierExpectation(*prepopulated_engine);
