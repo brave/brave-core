@@ -108,6 +108,42 @@ TEST_F(RewardsRequestSignerTest, GetSignedHeaders) {
   EXPECT_EQ(headers[2], "accept: application/json");
 }
 
+TEST_F(RewardsRequestSignerTest, SignRequestIncludesQueryString) {
+  auto signer = RequestSigner::FromRewardsWallet(rewards_wallet_);
+  ASSERT_TRUE(signer);
+
+  // Sign a request without a query string.
+  mojom::UrlRequest request_no_query;
+  request_no_query.url = "https://example.com/v1/api/path";
+  request_no_query.method = mojom::UrlMethod::GET;
+  request_no_query.content = "hello world";
+  ASSERT_TRUE(signer->SignRequest(request_no_query));
+
+  // Sign a request with a query string.
+  mojom::UrlRequest request_with_query;
+  request_with_query.url = "https://example.com/v1/api/path?limit=10";
+  request_with_query.method = mojom::UrlMethod::GET;
+  request_with_query.content = "hello world";
+  ASSERT_TRUE(signer->SignRequest(request_with_query));
+
+  // The digest should be the same (same content), but the signature must
+  // differ because the signed request-target now includes "?limit=10".
+  EXPECT_EQ(request_no_query.headers[0], request_with_query.headers[0]);
+  EXPECT_NE(request_no_query.headers[1], request_with_query.headers[1]);
+
+  // Verify via GetSignedHeaders that the query string is part of the
+  // request-target used for signing.
+  auto headers_with_query =
+      signer->GetSignedHeaders("get /v1/api/path?limit=10", "hello world");
+  auto headers_without_query =
+      signer->GetSignedHeaders("get /v1/api/path", "hello world");
+  EXPECT_NE(headers_with_query[1], headers_without_query[1]);
+
+  // The SignRequest result for the query URL must match the manually
+  // constructed request-target that includes the query string.
+  EXPECT_EQ(request_with_query.headers[1], headers_with_query[1]);
+}
+
 TEST_F(RewardsRequestSignerTest, SignHeaders) {
   auto signer = RequestSigner::FromRewardsWallet(rewards_wallet_);
   ASSERT_TRUE(signer);
