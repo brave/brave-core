@@ -18,6 +18,10 @@ class TreeTabNodeTabCollection;
 // A class that represents metadata about a tree tab node.
 class TreeTabNode {
  public:
+  // Returns the empty tree tab node. This is used when a tree tab node is not
+  // associated with a tab in tests.
+  static const TreeTabNode& GetEmptyTreeTabNode();
+
   TreeTabNode(TreeTabNodeTabCollection& collection,
               const tree_tab::TreeTabNodeId& id);
   TreeTabNode(const TreeTabNode&) = delete;

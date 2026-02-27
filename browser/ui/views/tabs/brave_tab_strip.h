@@ -43,6 +43,9 @@ class BraveTabStrip : public TabStrip {
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
   bool ShouldAlwaysHideCloseButton() const override;
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
+  const tabs::TreeTabNode& GetTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const override;
   bool IsVerticalTabsFloating() const override;
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;

@@ -8,6 +8,14 @@
 
 #include "ui/base/models/image_model.h"
 
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
+
+namespace tree_tab {
+class TreeTabNodeId;
+}  // namespace tree_tab
+
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.
 #define ShouldCompactLeadingEdge()      \
@@ -42,8 +50,17 @@
   virtual bool CanCloseTabViaMiddleButtonClick() const = 0;                    \
   virtual bool CanPaintThrobberToLayer()
 
+// Add a method to TabSlotController to get the height of the tree tab node for
+// the given tab.
+#define ShiftGroupRight(...)                                              \
+  ShiftGroupRight(__VA_ARGS__) = 0;                                       \
+  virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0; \
+  virtual const tabs::TreeTabNode& GetTreeTabNode(                        \
+      const tree_tab::TreeTabNodeId& id) const
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

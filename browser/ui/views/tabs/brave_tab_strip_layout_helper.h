@@ -32,6 +32,9 @@ inline constexpr int kVerticalTabsSpacing = 4;
 inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 inline constexpr int kPinnedUnpinnedSeparatorHeight = 1;
 
+// The base offset per level for vertical tabs in tree tabs
+inline constexpr int kBaseOffsetPerLevel = 20;
+
 int GetTabCornerRadius(const Tab& tab);
 
 void CalculatePinnedTabsBoundsInGrid(

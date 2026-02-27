@@ -35,6 +35,21 @@ BraveBrowserTabStripController::BraveBrowserTabStripController(
 
 BraveBrowserTabStripController::~BraveBrowserTabStripController() = default;
 
+int BraveBrowserTabStripController::GetTreeHeight(
+    const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveTabStripModel*>(model_.get())
+      ->tree_model()
+      ->GetTreeHeight(id);
+}
+
+const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  const auto* node =
+      static_cast<BraveTabStripModel*>(model_.get())->tree_model()->GetNode(id);
+  CHECK(node);
+  return *node;
+}
+
 bool BraveBrowserTabStripController::IsCommandEnabledForTab(
     TabStripModel::ContextMenuCommand command_id,
     const Tab* tab) {

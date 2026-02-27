@@ -42,8 +42,18 @@
   bool CanCloseTabViaMiddleButtonClick() const override;                   \
   bool CanPaintThrobberToLayer()
 
+// Add a method to TabSlotController to get the height of the tree tab node for
+// the given tab.
+#define ShiftGroupRight(...)                                                 \
+  ShiftGroupRight_Unused();                                                  \
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
+  const tabs::TreeTabNode& GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
+      const override;                                                        \
+  void ShiftGroupRight(__VA_ARGS__)
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge

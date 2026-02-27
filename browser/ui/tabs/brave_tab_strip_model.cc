@@ -170,6 +170,9 @@ void BraveTabStripModel::FlattenTreeTabs() {
   }
 
   contents_data()->SetDelegate(nullptr);
+  tree_tab_node_will_be_destroyed_subscription_.reset();
+  tree_tab_node_created_subscription_.reset();
+  tree_tab_model_.reset();
 }
 
 void BraveTabStripModel::NotifyTreeTabNodeCreated(
