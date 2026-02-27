@@ -267,12 +267,15 @@ void OAIAPIClient::PerformRequest(
 
   // Reject non-HTTPS endpoints when an API key is configured to prevent
   // sending the Bearer token in cleartext over the network.
+  // Allow plain HTTP only on localhost (for local model servers).
   if (!model_options.api_key.empty() &&
       !model_options.endpoint.SchemeIs(url::kHttpsScheme) &&
-      !net::IsLocalhost(model_options.endpoint)) {
+      !(model_options.endpoint.SchemeIs(url::kHttpScheme) &&
+        net::IsLocalhost(model_options.endpoint))) {
     VLOG(1) << "Refusing to send API key to non-HTTPS endpoint: "
             << model_options.endpoint.scheme();
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::InvalidEndpointURL));
     return;
   }
 
