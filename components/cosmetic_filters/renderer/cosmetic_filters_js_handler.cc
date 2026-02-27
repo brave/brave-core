@@ -773,7 +773,7 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
           ? nullptr
           : resources_dict.FindList("hide_selectors");
 
-  std::string stylesheet = "";
+  std::string stylesheet;
 
   if (hide_selectors_list && !hide_selectors_list->empty()) {
     // treat `hide_selectors` the same as `force_hide_selectors` if aggressive
@@ -781,7 +781,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     if (enabled_1st_party_cf_) {
       for (auto& selector : *hide_selectors_list) {
         if (selector.is_string()) {
-          stylesheet += selector.GetString() + "{display:none !important}";
+          stylesheet.append(selector.GetString());
+          stylesheet.append("{display:none !important}");
         }
       }
     } else {
@@ -806,7 +807,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
   if (force_hide_selectors_list) {
     for (auto& selector : *force_hide_selectors_list) {
       if (selector.is_string()) {
-        stylesheet += selector.GetString() + "{display:none !important}";
+        stylesheet.append(selector.GetString());
+        stylesheet.append("{display:none !important}");
       }
     }
   }
@@ -838,10 +840,11 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
       result.FindList("force_hide_selectors");
 
   if (force_hide_selectors && force_hide_selectors->size() != 0) {
-    std::string stylesheet = "";
+    std::string stylesheet;
     for (auto& selector : *force_hide_selectors) {
       if (selector.is_string()) {
-        stylesheet += selector.GetString() + "{display:none !important}";
+        stylesheet.append(selector.GetString());
+        stylesheet.append("{display:none !important}");
       }
     }
     InjectStylesheet(stylesheet);
@@ -853,10 +856,11 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
     return;
 
   if (enabled_1st_party_cf_) {
-    std::string stylesheet = "";
+    std::string stylesheet;
     for (auto& selector : *hide_selectors) {
       if (selector.is_string()) {
-        stylesheet += selector.GetString() + "{display:none !important}";
+        stylesheet.append(selector.GetString());
+        stylesheet.append("{display:none !important}");
       }
     }
     InjectStylesheet(stylesheet);
