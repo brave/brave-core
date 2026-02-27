@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
-index c8ba568169cc1616fef1ce587fb7b218f8216185..52aeee3c1241a1fcc67f09f3b8fccbeaf6ae7ae7 100644
+index c8ba568169cc1616fef1ce587fb7b218f8216185..cdf8cafa7c4f158b981ebede1c4e4b813b4ef6f0 100644
 --- a/chrome/browser/ui/views/page_action/page_action_model.h
 +++ b/chrome/browser/ui/views/page_action/page_action_model.h
 @@ -33,6 +33,16 @@ class PageActionModelInterface {
@@ -43,3 +43,12 @@ index c8ba568169cc1616fef1ce587fb7b218f8216185..52aeee3c1241a1fcc67f09f3b8fccbea
    void AddObserver(PageActionModelObserver* observer) override;
    void RemoveObserver(PageActionModelObserver* observer) override;
  
+@@ -200,6 +227,8 @@ class PageActionModel : public PageActionModelInterface {
+   // per-property reentrancy checks.
+   enum class Property {
+     kShowRequested,
++    kAlwaysShowLabel,
++    kOverrideChipColors,
+     kShouldShowSuggestionChip,
+     kSuggestionChipConfig,
+     kTabActive,

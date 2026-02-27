@@ -39,3 +39,10 @@ replace = '''\1
   bool always_show_label_ = false;
 
  public:'''
+
+[[substitution]]
+description = 'Adding Property types for NotifyChange for the 2 set methods added above'
+re_pattern = '(\s+kShowRequested,)'
+replace = '''\1
+    kAlwaysShowLabel,
+    kOverrideChipColors,'''
