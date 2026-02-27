@@ -435,6 +435,10 @@ namespace swap_responses {
 
   enum Gate3ErrorKind {
     INSUFFICIENT_LIQUIDITY,
+    AMOUNT_TOO_LOW,
+    UNSUPPORTED_NETWORK,
+    UNSUPPORTED_TOKENS,
+    INVALID_REQUEST,
     UNKNOWN
   };
 
