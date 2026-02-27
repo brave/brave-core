@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/checked_math.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -420,19 +421,19 @@ bool BitcoinTransaction::IsSigned() const {
 }
 
 uint64_t BitcoinTransaction::TotalInputsAmount() const {
-  uint64_t result = 0;
+  base::CheckedNumeric<uint64_t> result = 0;
   for (auto& input : inputs_) {
     result += input.utxo_value;
   }
-  return result;
+  return result.ValueOrDie();
 }
 
 uint64_t BitcoinTransaction::TotalOutputsAmount() const {
-  uint64_t result = 0;
+  base::CheckedNumeric<uint64_t> result = 0;
   for (auto& output : outputs_) {
     result += output.amount;
   }
-  return result;
+  return result.ValueOrDie();
 }
 
 bool BitcoinTransaction::AmountsAreValid(uint64_t min_fee) const {
