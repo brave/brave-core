@@ -114,13 +114,17 @@ void ContentAgentToolProvider::OnGenerationCompleteWithNoToolsToHandle() {
 void ContentAgentToolProvider::PauseAllTasks() {
   // When user asks to pause the task, we can return control to the tabs.
   if (!task_id_.is_null()) {
-    actor_service_->GetTask(task_id_)->Pause(false);
+    if (auto* task = actor_service_->GetTask(task_id_)) {
+      task->Pause(false);
+    }
   }
 }
 
 void ContentAgentToolProvider::ResumeAllTasks() {
   if (!task_id_.is_null()) {
-    actor_service_->GetTask(task_id_)->Resume();
+    if (auto* task = actor_service_->GetTask(task_id_)) {
+      task->Resume();
+    }
   }
 }
 
@@ -167,11 +171,19 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
       observer.OnContentTaskStarted(task_tab_handle_.raw_value());
     }
   }
-  actor_service_->GetTask(task_id_)->AddTab(
+  auto* task = actor_service_->GetTask(task_id_);
+  if (!task) {
+    // Task was removed (e.g. stopped between generation
+    // completing and tool execution). Still call the callback
+    // to avoid hanging the tool chain.
+    std::move(callback).Run(task_tab_handle_);
+    return;
+  }
+  task->AddTab(
       task_tab_handle_,
       base::BindOnce(&ContentAgentToolProvider::TabAddedToTask,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-  actor_service_->GetTask(task_id_)->Resume();
+  task->Resume();
 }
 
 void ContentAgentToolProvider::TabAddedToTask(
