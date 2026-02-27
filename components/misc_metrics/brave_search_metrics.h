@@ -43,8 +43,6 @@ class BraveSearchMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void RecordBraveQuery();
-
   void MaybeRecordBraveQuery(const GURL& previous_url, const GURL& current_url);
   void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
   void MaybeRecordNTPSearch(int64_t engine_prepopulate_id);

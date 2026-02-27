@@ -46,7 +46,7 @@ constexpr auto kDailyQueriesHistogramMap =
         {SEARCH_ENGINE_YAHOO, kSearchDailyQueriesYahooDefaultHistogramName},
     });
 
-void RecordSearchPercentage(const base::Value::Dict& counts,
+void RecordSearchPercentage(const base::DictValue& counts,
                             int primary_queries,
                             std::string_view count_key,
                             const char* histogram_name) {
