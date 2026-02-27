@@ -100,7 +100,7 @@ export default function createConversationApi(
             // an event for updating the state. Not neccessary
             // though as "temporary" can only be for a single UI
             // view, by the nature of the "temporary" feature.
-            api.getState.update({ temporary: !isTemporary })
+            api.getState.update({ temporary: isTemporary })
           },
         },
       }),
