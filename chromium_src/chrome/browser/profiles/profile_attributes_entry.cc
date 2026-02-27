@@ -5,8 +5,18 @@
 
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 
+#include <string_view>
+#include <utility>
+
 #include "base/check.h"
+#include "base/values.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
+
+namespace {
+
+constexpr std::string_view kSerpMetricsKey = "serp_metrics";
+
+}  // namespace
 
 void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {
   // Run our migrations
@@ -34,6 +44,20 @@ void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {
     SetAvatarIconIndex(kPlaceholderAvatarIndex);
   }
 #endif
+}
+
+// Retrieves a SERP metrics from profile attributes.
+const base::DictValue* ProfileAttributesEntry::GetSerpMetrics() const {
+  const base::Value* serp_metrics = GetValue(kSerpMetricsKey.data());
+  if (!serp_metrics) {
+    return nullptr;
+  }
+  return serp_metrics->GetIfDict();
+}
+
+// Stores a SERP metrics in profile attributes.
+void ProfileAttributesEntry::SetSerpMetrics(base::DictValue serp_metrics) {
+  SetValue(kSerpMetricsKey.data(), base::Value(std::move(serp_metrics)));
 }
 
 #define BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES \
