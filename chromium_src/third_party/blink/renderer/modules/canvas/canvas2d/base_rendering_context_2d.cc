@@ -15,11 +15,35 @@ namespace {
 
 bool IsGoogleMaps(const blink::KURL& url) {
   const auto host = url.Host().ToString();
-  if (!host.StartsWith("google.") && !host.Contains(".google.")) {
+  // Find "google." in the hostname. It must be either at position 0
+  // (bare "google.<tld>") or preceded by a dot (subdomain like
+  // "maps.google.<tld>").
+  int pos = host.ReverseFind("google.");
+  if (pos == WTF::kNotFound) {
     return false;
   }
-  const auto path = url.GetPath();
-  return path == "/maps" || path.ToString().StartsWith("/maps/");
+  if (pos > 0 && host[pos - 1] != '.') {
+    return false;
+  }
+  // Validate that the part after "google." is a legitimate TLD, not another
+  // registrable domain. The previous check using Contains(".google.") was
+  // bypassable by hostnames like "maps.google.evil.com".
+  // Google operates on: single TLDs (com, de, fr, ...) and compound TLDs
+  // (co.uk, com.au, com.br, ...).
+  WTF::String tld = host.Substring(pos + 7);  // skip "google."
+  unsigned tld_len = tld.length();
+  // Single-component TLD: 2-3 lowercase letters (e.g., "com", "de")
+  if (tld_len >= 2 && tld_len <= 3) {
+    const auto path = url.GetPath();
+    return path == "/maps" || path.ToString().StartsWith("/maps/");
+  }
+  // Compound TLD: "co.xx" or "com.xx" (e.g., "co.uk", "com.au")
+  if ((tld.StartsWith("co.") && tld_len == 5) ||
+      (tld.StartsWith("com.") && tld_len == 6)) {
+    const auto path = url.GetPath();
+    return path == "/maps" || path.ToString().StartsWith("/maps/");
+  }
+  return false;
 }
 
 }  // namespace
