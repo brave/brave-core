@@ -212,7 +212,7 @@ base::DictValue AdBlockService::UrlCosmeticResources(const std::string& url,
     base::ListValue* default_hide_selectors =
         resources.FindList("hide_selectors");
     if (default_hide_selectors) {
-      std::erase_if(*default_hide_selectors, [](const base::Value& val) {
+      default_hide_selectors->EraseIf([](const base::Value& val) {
         DCHECK(val.is_string());
         return val.GetString().find(":has(") != std::string::npos;
       });
@@ -564,7 +564,7 @@ void AdBlockService::StripProceduralFilters(base::DictValue& resources) {
   base::ListValue* procedural_actions =
       resources.FindList(kCosmeticResourcesProceduralActions);
   if (procedural_actions) {
-    std::erase_if(*procedural_actions, [](const base::Value& item) {
+    procedural_actions->EraseIf([](const base::Value& item) {
       DCHECK(item.is_string());
       auto* pfilter_str = item.GetIfString();
       if (pfilter_str == nullptr) {
