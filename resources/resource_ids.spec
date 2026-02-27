@@ -240,13 +240,6 @@
   "brave/components/resources/brave_components_scaled_resources.grd": {
     "structures": [54100],
   },
-  "brave/components/psst/resources/brave_psst_static_resources.grd": {
-    "includes": [54120],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_psst_dialog/brave_psst_dialog.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [54130],
-  },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the
   # ids got expanded for the build.

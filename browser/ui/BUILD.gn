@@ -932,16 +932,6 @@ source_set("ui") {
     "//url",
   ]
 
-  if (enable_psst) {
-    deps += [
-      "//brave/components/psst/browser/core",
-      "//brave/components/psst/buildflags",
-      "//brave/components/psst/common",
-      "//brave/components/psst/resources",
-      "//brave/components/psst/resources:psst_dialog_generated_resources",
-    ]
-  }
-
   if (enable_brave_vpn) {
     deps += [
       "//brave/browser/brave_vpn",

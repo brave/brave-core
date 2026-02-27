@@ -1,4 +1,0 @@
-include_rules = [
-  "+brave/components/psst",
-  "+brave/components/psst/resources/grit"
-]

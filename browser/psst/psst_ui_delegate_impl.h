@@ -52,7 +52,6 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
   PsstUiDelegateImpl& operator=(const PsstUiDelegateImpl&) = delete;
 
-  psst::mojom::SettingCardDataPtr GetShowDialogData();
   void OnUserAcceptedPsstSettings(const url::Origin& origin,
                                   base::ListValue urls_to_skip);
 
