@@ -585,7 +585,7 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
   } else {
     std::string command = "SETCONF ";
     for (const auto& bridge : bridges) {
-      base::StrAppend(&command, {"Bridge=\"", bridge, "\""});
+      base::StrAppend(&command, {"Bridge=\"", bridge, "\" "});
     }
     base::StrAppend(&command, {"UseBridges=1"});
     DoCmd(std::move(command), base::DoNothing(),

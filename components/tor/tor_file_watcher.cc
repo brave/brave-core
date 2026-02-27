@@ -209,7 +209,7 @@ bool TorFileWatcher::EatControlCookie(std::vector<uint8_t>& cookie,
 
   // Success!
   cookie.assign(buf, UNSAFE_TODO(buf + nread));
-  mtime = info.last_accessed;
+  mtime = info.last_modified;
   VLOG(3) << "Control cookie " << base::HexEncode(buf, nread) << ", mtime "
           << mtime;
   return true;
