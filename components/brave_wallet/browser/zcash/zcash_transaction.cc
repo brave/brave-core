@@ -107,7 +107,7 @@ std::optional<ZCashTransaction::Outpoint> ZCashTransaction::Outpoint::FromValue(
   }
 
   auto index_value = value.FindInt("index");
-  if (!index_value) {
+  if (!index_value || *index_value < 0) {
     return std::nullopt;
   }
   result.index = *index_value;
