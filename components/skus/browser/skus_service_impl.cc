@@ -184,10 +184,10 @@ void SkusServiceImpl::GetValueFromStore(
     rust::cxxbridge1::Box<skus::StorageGetContext> ctx) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const auto& state = prefs_->GetDict(prefs::kSkusState);
-  const base::Value* value = state.Find(key);
+  const std::string* str = state.FindString(key);
   std::string result;
-  if (value && value->is_string()) {
-    result = value->GetString();
+  if (str) {
+    result = *str;
   }
 
   sdk_task_runner_->PostTask(
