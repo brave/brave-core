@@ -33,10 +33,12 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "components/grit/brave_components_strings.h"
+#include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 
@@ -259,6 +261,17 @@ void OAIAPIClient::PerformRequest(
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
   if (!model_options.endpoint.is_valid()) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
+  // Reject non-HTTPS endpoints when an API key is configured to prevent
+  // sending the Bearer token in cleartext over the network.
+  if (!model_options.api_key.empty() &&
+      !model_options.endpoint.SchemeIs(url::kHttpsScheme) &&
+      !net::IsLocalhost(model_options.endpoint)) {
+    VLOG(1) << "Refusing to send API key to non-HTTPS endpoint: "
+            << model_options.endpoint.scheme();
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
