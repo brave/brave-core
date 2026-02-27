@@ -13,7 +13,7 @@ void PageActionModel::SetAlwaysShowLabel(base::PassKey<PageActionController>,
     return;
   }
   always_show_label_ = always_show;
-  NotifyChange();
+  NotifyChange(Property::kAlwaysShowLabel);
 }
 
 bool PageActionModel::GetAlwaysShowLabel() const {
@@ -30,7 +30,7 @@ void PageActionModel::SetOverrideChipColors(
   }
   override_background_color_ = override_background_color;
   override_foreground_color_ = override_foreground_color;
-  NotifyChange();
+  NotifyChange(Property::kOverrideChipColors);
 }
 
 std::optional<SkColor> PageActionModel::GetOverrideBackgroundColor() const {
