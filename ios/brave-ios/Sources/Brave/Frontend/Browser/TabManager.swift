@@ -273,6 +273,10 @@ class TabManager: NSObject {
   private(set) static var privateConfiguration = getNewConfiguration(isPrivate: true)
 
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
+    assert(
+      !FeatureList.kUseProfileWebViewConfiguration.enabled,
+      "Creating a web view configuration with this flag enabled is not valid"
+    )
     let configuration: WKWebViewConfiguration = .init()
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
     configuration.userContentController = WKUserContentController()
@@ -281,8 +285,10 @@ class TabManager: NSObject {
   }
 
   func reset() {
-    Self.defaultConfiguration = Self.getNewConfiguration(isPrivate: false)
-    Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      Self.defaultConfiguration = Self.getNewConfiguration(isPrivate: false)
+      Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
+    }
     for tab in allTabs {
       if tab.isWebViewCreated {
         tab.deleteWebView()
@@ -512,7 +518,10 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     let tabId = id ?? UUID()
-    let initialConfiguration = isPrivate ? Self.privateConfiguration : Self.defaultConfiguration
+    var initialConfiguration: WKWebViewConfiguration?
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      initialConfiguration = isPrivate ? Self.privateConfiguration : Self.defaultConfiguration
+    }
     let tab = tabCreationFactory(
       .init(
         id: tabId,
