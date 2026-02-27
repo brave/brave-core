@@ -73,7 +73,7 @@ void NavigationSourceMetrics::ReportAllMetrics() {
     return;
   }
 
-  const base::Value::Dict& counts =
+  const base::DictValue& counts =
       local_state_->GetDict(kMiscMetricsNavSourceCounts);
   int total = counts.FindInt(kTotalCountKey).value_or(0);
 
