@@ -7,7 +7,7 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 
 assert(enable_psst)
 
-source_set("psst") {
+static_library("psst") {
   sources = [
     "brave_psst_dialog_handler.cc",
     "brave_psst_dialog_handler.h",
@@ -19,6 +19,18 @@ source_set("psst") {
     "//brave/browser/psst",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/psst/browser/content",
+    "//brave/components/psst/common",
     "//brave/components/psst/common:mojom",
+    "//brave/components/psst/resources:psst_dialog_generated_resources_grit",
+    "//brave/components/psst/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs",
+    "//chrome/browser/ui/webui",
+    "//chrome/browser/ui/webui/top_chrome",
+    "//components/constrained_window",
+    "//components/web_modal",
+    "//ui/web_dialogs",
   ]
 }

@@ -137,10 +137,6 @@ source_set("ui") {
     ]
   }
 
-  if (enable_psst) {
-    deps += [ "//brave/browser/ui/webui/psst" ]
-  }
-
   if (enable_brave_rewards) {
     deps += [ "//brave/browser/brave_rewards" ]
 
