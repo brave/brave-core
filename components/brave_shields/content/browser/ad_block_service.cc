@@ -573,6 +573,7 @@ void AdBlockService::StripProceduralFilters(base::DictValue& resources) {
       DCHECK(it->is_string());
       auto* pfilter_str = it->GetIfString();
       if (pfilter_str == nullptr) {
+        ++it;
         continue;
       }
       auto val = base::JSONReader::ReadDict(*pfilter_str, base::JSON_PARSE_RFC);
