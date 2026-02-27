@@ -605,7 +605,7 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
         "chat-llama-4-scout",
         "chat-pixtral-large",
         "chat-deepseek-v3-1",
-        "near-deepseek-v3-1",
+        "chat-near-deepseek-v3-1",
     };
 
     if (auto* default_model_value =
