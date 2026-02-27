@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_
 
 #include <concepts>
 #include <optional>
@@ -13,7 +13,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // Concept that checks whether `T` defines a static, accessible member
 // function `FromValue()` such that:
@@ -27,6 +27,6 @@ concept IsResponseBody = requires(const base::Value& value) {
   { T::FromValue(value) } -> std::same_as<std::optional<T>>;
 };
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_

@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_
 
 #include <type_traits>
 
-#include "brave/components/brave_account/endpoint_client/is_request.h"
-#include "brave/components/brave_account/endpoint_client/is_response.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/with_headers.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // Primary template: leaves types unchanged unless
 // matched by the partial specialization below.
@@ -30,6 +30,6 @@ struct MaybeStripWithHeadersImpl<WithHeaders<T>> : std::type_identity<T> {};
 template <typename T>
 using MaybeStripWithHeaders = typename MaybeStripWithHeadersImpl<T>::type;
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_

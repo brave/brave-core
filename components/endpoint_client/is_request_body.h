@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_
 
 #include <concepts>
 #include <type_traits>
 
 #include "base/values.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 // Concept that checks whether `T` defines a non-static, accessible member
 // function `ToValue()` such that:
@@ -27,6 +27,6 @@ concept IsRequestBody = requires(T t) {
   { t.ToValue() } -> std::same_as<base::DictValue>;
 } && std::is_member_function_pointer_v<decltype(&T::ToValue)>;
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_

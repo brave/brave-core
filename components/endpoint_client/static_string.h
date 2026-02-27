@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_STATIC_STRING_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_STATIC_STRING_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_STATIC_STRING_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_STATIC_STRING_H_
 
 #include <algorithm>
 #include <cstddef>
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 template <std::size_t N>
 struct StaticString {
@@ -23,6 +23,6 @@ struct StaticString {
   char value[N]{};
 };
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_STATIC_STRING_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_STATIC_STRING_H_

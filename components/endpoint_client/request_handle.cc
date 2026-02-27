@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/endpoint_client/request_handle.h"
 
 #include <utility>
 
@@ -13,7 +13,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace endpoint_client::detail {
 
 RequestHandleDeleter::RequestHandleDeleter() = default;
 
@@ -36,4 +36,4 @@ RequestHandleDeleter::RequestHandleDeleter(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : task_runner_(std::move(task_runner)) {}
 
-}  // namespace brave_account::endpoint_client::detail
+}  // namespace endpoint_client::detail

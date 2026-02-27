@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/endpoint_client/client.h"
+#include "brave/components/endpoint_client/client.h"
 
 #include <optional>
 #include <string>
@@ -29,11 +29,11 @@
 #include "base/types/expected.h"
 #include "base/types/is_instantiation.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoint_client/static_string.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/endpoint_client/request_handle.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
+#include "brave/components/endpoint_client/static_string.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
@@ -52,7 +52,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
-namespace brave_account::endpoint_client {
+namespace endpoint_client {
 
 template <typename T, typename E>
 bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
@@ -485,4 +485,4 @@ INSTANTIATE_TEST_SUITE_P(CancelableRequest,
                                       : "different_sequence";
                          });
 
-}  // namespace brave_account::endpoint_client
+}  // namespace endpoint_client
