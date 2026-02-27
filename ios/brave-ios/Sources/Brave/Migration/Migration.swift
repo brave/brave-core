@@ -163,7 +163,7 @@ public class Migration {
 
     var sessionWindows = SessionWindow.all()
     var activeWindow = sessionWindows.first(where: { $0.isSelected })
-    if activeWindow == nil {
+    if activeWindow == nil, !sessionWindows.isEmpty {
       activeWindow = sessionWindows.removeFirst()
     }
 
