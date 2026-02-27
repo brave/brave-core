@@ -279,6 +279,12 @@ describe('createInterfaceApi', () => {
   })
 
   it('gets array data from a query with placeholder', async () => {
+    // Allow the test to control return timing
+    let resolveGetList: Function = () => {}
+    const canReturnGetList = new Promise((resolve) => {
+      resolveGetList = resolve
+    })
+
     const api = createInterfaceApi({
       actions: {},
       endpoints: {
@@ -288,8 +294,9 @@ describe('createInterfaceApi', () => {
           },
         },
         getList: {
-          query: () => {
-            return Promise.resolve([{ id: '1' }, { id: '2' }])
+          query: async () => {
+            await canReturnGetList
+            return [{ id: '1' }, { id: '2' }]
           },
           placeholderData: [] as { id: string }[],
         },
@@ -303,11 +310,16 @@ describe('createInterfaceApi', () => {
       return api.useGetList().getListData
     }
 
+    // Verify placeholder data is returned before query finishes
     let hookResult = await act(async () => renderHook(useTestQueryData))
     expect(hookResult.result.current).toEqual([])
+    expect(api.getList.current()).toEqual([])
+
+    // Verify real data
+    resolveGetList()
+    await new Promise((resolve) => setTimeout(resolve, 0))
 
     expect(api.getList.current()).toEqual([{ id: '1' }, { id: '2' }])
-
     await act(() => hookResult.rerender())
     expect(hookResult.result.current).toEqual([{ id: '1' }, { id: '2' }])
   })
