@@ -65,7 +65,7 @@ void BraveSyncServiceImpl::Initialize(
 
   // P3A ping for those who have sync disabled
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
-    base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
+    base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 4);
   }
 }
 
@@ -191,7 +191,7 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
       // Send updated status here, because OnDeviceInfoChange is not triggered
       // when device leaves the chain by `Leave Sync Chain` button
       // 0 means disabled or 1 device
-      base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
+      base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 4);
     }
   }
 }
