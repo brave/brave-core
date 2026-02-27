@@ -126,7 +126,7 @@ void CodeExecutionTool::ResolveRequest(
     UseToolCallback callback,
     std::string output) {
   requests_.erase(request_it);
-  std::move(callback).Run(CreateContentBlocksForText(output));
+  std::move(callback).Run(CreateContentBlocksForText(output), {});
 }
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
@@ -195,8 +195,10 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
   auto input_dict = base::JSONReader::ReadDict(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!input_dict.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Error: Invalid JSON input, input must be a JSON object"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Error: Invalid JSON input, input must be a JSON object"),
+        {});
     return;
   }
 
@@ -204,7 +206,8 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
 
   if (!script || script->empty()) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: Missing or empty 'script' field"));
+        CreateContentBlocksForText("Error: Missing or empty 'script' field"),
+        {});
     return;
   }
 

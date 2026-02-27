@@ -188,7 +188,8 @@ void ContentAgentToolProvider::ExecuteActions(
   if (!requests.has_value()) {
     DLOG(ERROR) << "Action Failed to convert BrowserAction to ToolRequests.";
     std::move(callback).Run(CreateContentBlocksForText(
-        "Error: action failed - incorrect parameters"));
+                                "Error: action failed - incorrect parameters"),
+                            {});
     return;
   }
 
@@ -242,7 +243,7 @@ void ContentAgentToolProvider::OnActionsFinished(
     // closed.
     if (!task_tab_handle_.Get() || !task_tab_handle_.Get()->GetContents()) {
       std::move(callback).Run(
-          CreateContentBlocksForText("Error: tab is no longer open"));
+          CreateContentBlocksForText("Error: tab is no longer open"), {});
       return;
     }
 
@@ -254,11 +255,13 @@ void ContentAgentToolProvider::OnActionsFinished(
              actor::mojom::ActionResultCode::kEmptyActionSequence) {
     DLOG(ERROR) << "Actions were empty";
     std::move(callback).Run(CreateContentBlocksForText(
-        "Error: action failed - no actions specified"));
+                                "Error: action failed - no actions specified"),
+                            {});
   } else {
     DLOG(ERROR) << "Action failed, see actor.mojom for result code meaning: "
                 << result_code;
-    std::move(callback).Run(CreateContentBlocksForText("Error: action failed"));
+    std::move(callback).Run(CreateContentBlocksForText("Error: action failed"),
+                            {});
   }
 }
 
@@ -268,7 +271,7 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
   if (!content.has_value()) {
     DLOG(ERROR) << "Error getting page content";
     std::move(callback).Run(
-        CreateContentBlocksForText("Error: could not get page content"));
+        CreateContentBlocksForText("Error: could not get page content"), {});
     return;
   }
 
@@ -276,7 +279,7 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
 
   if (!apc.has_root_node()) {
     DLOG(ERROR) << "No root node";
-    std::move(callback).Run(CreateContentBlocksForText("No root node"));
+    std::move(callback).Run(CreateContentBlocksForText("No root node"), {});
     return;
   }
 
@@ -284,7 +287,7 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
   content_blocks.insert(
       content_blocks.begin(),
       std::move(CreateContentBlocksForText("Action successful")[0]));
-  std::move(callback).Run(std::move(content_blocks));
+  std::move(callback).Run(std::move(content_blocks), {});
 }
 
 }  // namespace ai_chat

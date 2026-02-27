@@ -38,14 +38,16 @@ std::string ExtractText(const std::vector<mojom::ContentBlockPtr>& blocks) {
 }
 
 std::string RunTool(TabManagementTool* tool, const std::string& json) {
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
+  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>,
+                         std::vector<mojom::ToolArtifactPtr>>
+      future;
   tool->UseTool(json, future.GetCallback());
-  return ExtractText(future.Get());
+  return ExtractText(future.Get<std::vector<mojom::ContentBlockPtr>>());
 }
 
 mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& json) {
   return mojom::ToolUseEvent::New(mojom::kTabManagementToolName, "1", json,
-                                  std::nullopt, nullptr, false);
+                                  std::nullopt, std::nullopt, nullptr, false);
 }
 
 }  // namespace

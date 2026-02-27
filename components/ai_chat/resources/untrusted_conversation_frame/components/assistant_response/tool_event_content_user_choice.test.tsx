@@ -42,13 +42,17 @@ describe('ToolEventContentUserChoice', () => {
     expect(screen.getByTestId('tool-choice-text-2').textContent).toBe('third')
 
     fireEvent.click(screen.getByTestId('tool-choice-text-0'))
-    expect(mockRespondToToolUseRequest).toHaveBeenCalledWith('123', [
-      {
-        textContentBlock: {
-          text: 'first',
+    expect(mockRespondToToolUseRequest).toHaveBeenCalledWith(
+      '123',
+      [
+        {
+          textContentBlock: {
+            text: 'first',
+          },
         },
-      },
-    ])
+      ],
+      [],
+    )
   })
 
   it('should render disabled choices when not active', () => {
