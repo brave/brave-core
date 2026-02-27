@@ -1,0 +1,18 @@
+diff --git a/PRESUBMIT.py b/PRESUBMIT.py
+index 00f85840ae075b43d7503f386a221f7037f40503..601fd627028fbd62463633c930be135c318d7cbc 100644
+--- a/PRESUBMIT.py
++++ b/PRESUBMIT.py
+@@ -8207,10 +8207,12 @@ def CheckSettingsChanges(input_api, output_api):
+     relevant_files_found = False
+     registry_content = ''
+     registry_full_path = input_api.os_path.join(input_api.PresubmitLocalPath(),
++                                                "chrome", "android",
+                                                 registry_path)
+ 
+     try:
+-        registry_content = input_api.ReadFile(registry_full_path)
++        import gclient_utils
++        registry_content = gclient_utils.FileRead(registry_full_path, 'r')
+     except IOError:
+         # If the registry cannot be read (e.g., file has been moved), we default
+         # to an empty string. It is better to skip the registration check than
