@@ -63,7 +63,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
         &url_loader_factory_, network_manager_.get());
 
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_,
+        *keyring_service_, *network_manager_, &profile_prefs_,
         url_loader_factory_.GetSafeWeakWrapper());
 
     tx_service_ = std::make_unique<TxService>(

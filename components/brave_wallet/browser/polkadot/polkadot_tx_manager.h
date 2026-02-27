@@ -11,7 +11,7 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

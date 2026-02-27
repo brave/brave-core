@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
 #include "base/containers/to_vector.h"
+#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"

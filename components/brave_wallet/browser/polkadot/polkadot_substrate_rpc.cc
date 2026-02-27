@@ -12,6 +12,7 @@
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"  // IWYU pragma: export
 #include "base/strings/string_number_conversions.h"
@@ -574,6 +575,51 @@ void PolkadotSubstrateRpc::OnGetRuntimeVersion(
   version.transaction_version = transaction_version.ValueOrDie();
 
   return std::move(callback).Run(version, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::GetMetadata(std::string_view chain_id,
+                                       GetMetadataCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+  LOG(ERROR) << "XXXZZZ rpc state_getMetadata request chain_id=" << chain_id
+             << " url=" << url;
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getMetadata", base::ListValue()));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetMetadata(GetMetadataCallback callback,
+                                         APIRequestResult api_result) {
+  LOG(ERROR) << "XXXZZZ rpc state_getMetadata response_code="
+             << api_result.response_code()
+             << " net_error=" << api_result.error_code()
+             << " is_2xx="
+             << (api_result.Is2XXResponseCode() ? "true" : "false")
+             << " final_url=" << api_result.final_url().spec();
+
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotMetadataResponse>(
+          api_result);
+
+  if (!res.has_value()) {
+    LOG(ERROR) << "XXXZZZ rpc state_getMetadata failed err=" << res.error();
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(*res->result, std::nullopt);
 }
 
 void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,

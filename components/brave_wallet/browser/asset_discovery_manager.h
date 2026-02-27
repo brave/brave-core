@@ -82,7 +82,7 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   raw_ref<JsonRpcService> json_rpc_service_;
   raw_ref<KeyringService> keyring_service_;
   raw_ref<SimpleHashClient> simple_hash_client_;
-  raw_ptr<PrefService> prefs_;
+  raw_ptr<::PrefService> prefs_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
   base::WeakPtrFactory<AssetDiscoveryManager> weak_ptr_factory_;

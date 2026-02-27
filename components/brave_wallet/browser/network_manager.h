@@ -79,6 +79,7 @@ class NetworkManager {
                          std::string_view chain_id);
 
   void SetNetworkURLForTesting(const std::string& chain_id, GURL url);
+  PrefService* GetPrefs() const { return prefs_; }
 
  private:
   raw_ptr<PrefService> prefs_ = nullptr;

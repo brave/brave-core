@@ -112,11 +112,18 @@ rust_static_library("polkadot_extrinsic_rs") {
   crate_name = "polkadot_extrinsic"
   crate_root = "polkadot_extrinsic.rs"
   allow_unsafe = true
-  sources = [ "polkadot_extrinsic.rs" ]
-  cxx_bindings = [ "polkadot_extrinsic.rs" ]
+  sources = [
+    "polkadot_chain_metadata.rs",
+    "polkadot_extrinsic.rs",
+  ]
+  cxx_bindings = [
+    "polkadot_chain_metadata.rs",
+    "polkadot_extrinsic.rs",
+  ]
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/hex/v0_4:lib",
     "//brave/third_party/rust/parity_scale_codec/v3:lib",
   ]
 }

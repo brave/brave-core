@@ -586,9 +586,7 @@ GURL CardanoTestnetRpcUrl() {
 }
 
 GURL PolkadotMainnetRpcUrl() {
-  auto switch_url =
-      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kPolkadotMainnetRpcUrl));
+  auto switch_url = GURL("https://westend-rpc.polkadot.io/");
   if (switch_url.is_valid()) {
     return switch_url;
   }
@@ -596,9 +594,7 @@ GURL PolkadotMainnetRpcUrl() {
 }
 
 GURL PolkadotTestnetRpcUrl() {
-  auto switch_url =
-      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kPolkadotTestnetRpcUrl));
+  auto switch_url = GURL("https://polkadot.api.onfinality.io/public");
   if (switch_url.is_valid()) {
     return switch_url;
   }

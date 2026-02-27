@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SIGNED_TRANSFER_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SIGNED_TRANSFER_TASK_H_
 
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

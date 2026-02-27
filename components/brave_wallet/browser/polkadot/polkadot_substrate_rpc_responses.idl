@@ -103,6 +103,18 @@ namespace polkadot_substrate_rpc_responses {
     Error? error;
   };
 
+  // state_getMetadata's RPC structure is described here:
+  // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
+  //
+  // The result is a hex-encoded SCALE metadata blob.
+  dictionary PolkadotMetadataResponse {
+    DOMString jsonrpc;
+    long id;
+
+    DOMString? result;
+    Error? error;
+  };
+
   // author_submitExtrinsic's RPC structure is described here:
   // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#182-author_submitextrinsic
 
