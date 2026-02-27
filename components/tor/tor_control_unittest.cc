@@ -377,4 +377,74 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
   base::RunLoop().RunUntilIdle();
 }
 
+TEST(TorControlTest, SetupBridgesCommand) {
+  content::BrowserTaskEnvironment task_environment;
+  scoped_refptr<base::SequencedTaskRunner> io_task_runner =
+      content::GetIOThreadTaskRunner({});
+
+  MockTorControlDelegate delegate;
+  std::unique_ptr<TorControl> control =
+      std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
+
+  // Single bridge: expect space separator before UseBridges=1.
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(delegate, OnTorRawCmd("SETCONF Bridge=\"obfs4 1.2.3.4:443\" "
+                                      "UseBridges=1"))
+        .WillOnce(
+            testing::InvokeWithoutArgs([&run_loop]() { run_loop.Quit(); }));
+
+    io_task_runner->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](std::unique_ptr<TorControl> control) {
+                         control->SetupBridges({"obfs4 1.2.3.4:443"},
+                                               base::DoNothing());
+                       },
+                       std::move(control)));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(&delegate);
+  }
+
+  // Two bridges: each bridge entry should be separated by a space.
+  control = std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(delegate,
+                OnTorRawCmd("SETCONF Bridge=\"obfs4 1.2.3.4:443\" "
+                            "Bridge=\"obfs4 5.6.7.8:9001\" UseBridges=1"))
+        .WillOnce(
+            testing::InvokeWithoutArgs([&run_loop]() { run_loop.Quit(); }));
+
+    io_task_runner->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](std::unique_ptr<TorControl> control) {
+                         control->SetupBridges(
+                             {"obfs4 1.2.3.4:443", "obfs4 5.6.7.8:9001"},
+                             base::DoNothing());
+                       },
+                       std::move(control)));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(&delegate);
+  }
+
+  // Empty bridges: should send RESETCONF, not SETCONF.
+  control = std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(
+        delegate,
+        OnTorRawCmd("RESETCONF UseBridges Bridge ClientTransportPlugin"))
+        .WillOnce(
+            testing::InvokeWithoutArgs([&run_loop]() { run_loop.Quit(); }));
+
+    io_task_runner->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](std::unique_ptr<TorControl> control) {
+                         control->SetupBridges({}, base::DoNothing());
+                       },
+                       std::move(control)));
+    run_loop.Run();
+  }
+}
+
 }  // namespace tor
