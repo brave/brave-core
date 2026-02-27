@@ -142,13 +142,17 @@ constexpr char kSnsDomainPattern[] = R"(^(?:[a-z0-9-]+\.)+sol$)";
 // Then one of fixed suffixes(should match `supportedUDExtensions` array from
 // domain-extensions.ts).
 constexpr char kUDPattern[] =
-    "(?:[a-z0-9-]+)\\.(?:altimist|anime|ask|austin|bald|basenji|bay|benji|"
-    "binanceus|bitcoin|bitget|bitscrunch|blockchain|boomer|brave|calicoin|caw|"
-    "chomp|clay|crypto|dao|dfz|doga|donut|dream|emir|ethermail|farms|grow|her|"
-    "kingdom|klever|kresus|kryptic|lfg|ltc|manga|metropolis|miku|ministry|moon|"
-    "mumu|nft|nibi|npc|onchain|pastor|podcast|pog|polygon|privacy|propykeys|"
-    "pudgy|quantum|rad|raiin|secret|smobler|south|stepn|tball|tea|tribe|u|ubu|"
-    "unstoppable|wallet|wifi|witg|wrkx|x|xec|xmr|zil)";
+    "(?:[a-z0-9-]+)\\.(?:agent|ai4|altimist|amped|anime|anyone|arculus|ask|ath|"
+    "austin|bald|basenji|bay|bch|benji|binanceus|bitcoin|bitget|bitscrunch|"
+    "blockchain|boomer|brave|bunni|calicoin|carbon|caw|cgai|chip|chomp|clay|"
+    "collect|crypto|dao|dejay|depin|derad|dfz|digibyte|doga|donut|dream|dsci|"
+    "emir|ethermail|farms|goblin|gotchi|grow|her|hub|imtoken|kingdom|klever|"
+    "kresus|kryptic|learn|lfg|ltc|lunar|manga|marketer|metropolis|miku|ministry|"
+    "mobix|moon|mooncat|mumu|mycircle|nft|nibi|npc|ohm|onchain|pack|pastor|"
+    "pbdx|pendle|pilot|podcast|pog|pokt|polygon|presearch|privacy|propykeys|"
+    "pudgy|pundi|quantum|rad|raiin|secret|smobler|south|spend|stepn|supernova|tball|"
+    "tea|tribe|twin|u|ubu|unstoppable|wallet|web3|wifi|witg|wrkx|x|xec|xmr|xyo|"
+    "zano|zil)";
 
 constexpr auto kUnstoppableDomainsProxyReaderContractAddresses =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
