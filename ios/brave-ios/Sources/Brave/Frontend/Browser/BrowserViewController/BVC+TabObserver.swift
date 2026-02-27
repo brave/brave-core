@@ -133,6 +133,15 @@ extension BrowserViewController: TabObserver {
           tab.walletSolProvider = provider
           tab.walletSolProvider?.initialize(eventsListener: browserData)
         }
+        if WalletConstants.isCardanoDAppSupportEnabled,
+          let provider = profileController.braveWalletAPI.cardanoProvider(
+            with: browserData,
+            origin: committedOrigin,
+            isPrivateBrowsing: tab.isPrivate
+          )
+        {
+          tab.walletCardanoProvider = provider
+        }
       }
     }
 
@@ -460,6 +469,9 @@ extension BrowserViewController {
           EthereumProviderScriptHandler(),
           SolanaProviderScriptHandler(),
         ]
+      }
+      if WalletConstants.isCardanoDAppSupportEnabled {
+        injectedScripts.append(CardanoProviderScriptHandler())
       }
     }
 
