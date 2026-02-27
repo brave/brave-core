@@ -42,7 +42,7 @@ class SerpMetricsTabHelper final
   bool IsSameSerpAsLastRecorded(const GURL& url) const;
 
   void MaybeClassifyAndRecordSearchEngineForUrl(const GURL& url);
-  void RecordSearchEngine(SearchEngineType search_engine_type);
+  void RecordSearchEngine(SearchEngineType search_engine_type, const GURL& url);
 
   // content::WebContentsObserver:
   void DidFinishNavigation(

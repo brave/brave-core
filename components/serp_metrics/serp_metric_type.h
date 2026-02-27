@@ -13,6 +13,7 @@ enum class SerpMetricType {
   kBrave,
   kGoogle,
   kOther,
+  kYouTube,
 };
 
 }  // namespace serp_metrics

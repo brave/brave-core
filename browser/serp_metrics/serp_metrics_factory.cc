@@ -28,7 +28,7 @@ constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
     {.type = SerpMetricType::kBrave, .metric_name = "brave_search_engine"},
     {.type = SerpMetricType::kGoogle, .metric_name = "google_search_engine"},
     {.type = SerpMetricType::kOther, .metric_name = "other_search_engine"},
-};
+    {.type = SerpMetricType::kYouTube, .metric_name = "youtube_search_engine"}};
 
 TimePeriodStorages BuildTimePeriodStorages(
     const base::FilePath& profile_path,
