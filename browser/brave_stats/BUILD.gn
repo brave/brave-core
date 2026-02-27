@@ -38,7 +38,6 @@ source_set("brave_stats") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
-    "//brave/components/rpill/common",
     "//brave/components/serp_metrics",
     "//brave/components/version_info",
     "//chrome/browser:browser_process",

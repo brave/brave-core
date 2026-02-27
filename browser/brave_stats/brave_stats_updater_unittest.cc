@@ -14,7 +14,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_split.h"
-#include "base/system/sys_info.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
@@ -104,7 +103,7 @@ class BraveStatsUpdaterTest : public testing::Test {
   std::unique_ptr<brave_stats::BraveStatsUpdaterParams> BuildUpdaterParams(
       serp_metrics::SerpMetrics* serp_metrics) {
     return std::make_unique<brave_stats::BraveStatsUpdaterParams>(
-        GetLocalState(), serp_metrics, brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), serp_metrics);
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -155,7 +154,7 @@ TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedYesterday) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDailyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -167,7 +166,7 @@ TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedToday) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDailyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -179,7 +178,7 @@ TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedTomorrow) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDailyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -191,7 +190,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededLastCheckedLastWeek) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetWeeklyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -203,7 +202,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededLastCheckedThisWeek) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetWeeklyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -215,7 +214,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededLastCheckedNextWeek) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetWeeklyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -227,7 +226,7 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedLastMonth) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetMonthlyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -239,7 +238,7 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedThisMonth) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetMonthlyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -251,7 +250,7 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetMonthlyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -262,7 +261,7 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
 TEST_F(BraveStatsUpdaterTest, HasAdsDisabled) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   SetEnableAds(false);
   EXPECT_EQ(brave_stats_updater_params.GetAdsEnabledParam(), "false");
 }
@@ -270,33 +269,11 @@ TEST_F(BraveStatsUpdaterTest, HasAdsDisabled) {
 TEST_F(BraveStatsUpdaterTest, HasAdsEnabled) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   SetEnableAds(true);
   EXPECT_EQ(brave_stats_updater_params.GetAdsEnabledParam(), "true");
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-TEST_F(BraveStatsUpdaterTest, HasArchSkip) {
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(brave_stats_updater_params.GetProcessArchParam(), "");
-}
-
-TEST_F(BraveStatsUpdaterTest, HasArchVirt) {
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchVirt, kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(brave_stats_updater_params.GetProcessArchParam(), "virt");
-}
-
-TEST_F(BraveStatsUpdaterTest, HasArchMetal) {
-  auto arch = base::SysInfo::OperatingSystemArchitecture();
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchMetal, kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(brave_stats_updater_params.GetProcessArchParam(), arch);
-}
 
 TEST_F(BraveStatsUpdaterTest, HasDateOfInstallationFirstRun) {
   base::Time::Exploded exploded;
@@ -317,7 +294,7 @@ TEST_F(BraveStatsUpdaterTest, HasDateOfInstallationFirstRun) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
             "2018-11-04");
 }
@@ -344,7 +321,7 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetention) {
   SetCurrentTimeForTest(dtoi_time);
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   SetCurrentTimeForTest(current_time);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
             "2018-11-04");
@@ -362,7 +339,7 @@ TEST_F(BraveStatsUpdaterTest, GetUpdateURLHasFirstAndDtoi) {
   SetCurrentTimeForTest(install_time);
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   SetCurrentTimeForTest(current_time);
 
   GURL response = brave_stats_updater_params.GetUpdateURL(
@@ -370,8 +347,6 @@ TEST_F(BraveStatsUpdaterTest, GetUpdateURLHasFirstAndDtoi) {
       "full brave version here");
 
   base::StringPairs kv_pairs;
-  // this will return `false` because at least one argument has no value
-  // ex: `arch` will have an empty value (because of kArchSkip).
   base::SplitStringIntoKeyValuePairsUsingSubstr(response.query(), '=', "&",
                                                 &kv_pairs);
   EXPECT_FALSE(kv_pairs.empty());
@@ -422,7 +397,7 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetentionExpiration) {
   SetCurrentTimeForTest(dtoi_time);
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   SetCurrentTimeForTest(current_time);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(), "null");
 }
@@ -451,8 +426,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     SetCurrentTimeForTest(current_time);
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-        brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr);
 
     // Make sure that the weekly param was set to true, since this is
     // a new ISO week (#44)
@@ -472,8 +446,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     SetCurrentTimeForTest(current_time);
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-        brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr);
 
     // Make sure that the weekly param was set to true, since this is
     // a new ISO week (#45)
@@ -493,8 +466,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     SetCurrentTimeForTest(current_time);
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-        brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr);
 
     // Make sure that the weekly param was set to false, since this is
     // still the same ISO week (#45)
@@ -526,8 +498,7 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
 
     // Make sure that week of installation is previous Monday
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-        brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr);
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-18");
   }
@@ -549,8 +520,7 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
     // Make sure that week of installation is today, since today is a
     // Monday
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-        brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr);
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-25");
   }
@@ -571,8 +541,7 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
 
     // Make sure that week of installation is previous Monday
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-        brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr);
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-25");
   }
@@ -616,7 +585,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringDaily) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
 
   EXPECT_EQ(0b001, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
@@ -631,7 +600,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
 
   EXPECT_EQ(0b011, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
@@ -646,7 +615,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthlySameWeek) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(0b101, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -660,7 +629,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthlyDiffWeek) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(0b111, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -674,7 +643,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(0b000, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -685,7 +654,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringNeverUsed) {
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), /*serp_metrics::SerpMetrics=*/nullptr,
-      brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek, kThisMonth);
+      kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(0b000, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }

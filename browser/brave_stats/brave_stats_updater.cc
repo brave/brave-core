@@ -18,7 +18,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
-#include "base/system/sys_info.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/buildflags.h"
@@ -28,14 +27,12 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
-#include "brave/components/rpill/common/rpill.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
@@ -55,10 +52,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -288,14 +281,6 @@ bool BraveStatsUpdater::IsReferralInitialized() {
          pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
 }
 
-bool BraveStatsUpdater::IsAdsEnabled() {
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  return pref_service_->GetBoolean(brave_ads::prefs::kEnabledForLastProfile);
-#else
-  return false;
-#endif
-}
-
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
   general_browser_usage_p3a_->ReportProfileCount(
       g_browser_process->profile_manager()->GetNumberOfProfiles());
@@ -303,16 +288,12 @@ void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
 
 void BraveStatsUpdater::QueueServerPing() {
   const bool referrals_initialized = IsReferralInitialized();
-  const bool ads_enabled = IsAdsEnabled();
   int num_closures = 0;
 
   // Note: We don't have the callbacks here because otherwise there is a race
   // condition whereby the callback completes before the barrier has been
   // initialized.
   if (!referrals_initialized) {
-    ++num_closures;
-  }
-  if (ads_enabled) {
     ++num_closures;
   }
 
@@ -329,32 +310,10 @@ void BraveStatsUpdater::QueueServerPing() {
         base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
                             base::Unretained(this)));
   }
-
-  if (ads_enabled) {
-    DetectUncertainFuture();
-  }
-}
-
-void BraveStatsUpdater::DetectUncertainFuture() {
-  brave_rpill::DetectUncertainFuture(
-      base::BindOnce(&BraveStatsUpdater::OnDetectUncertainFuture,
-                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveStatsUpdater::OnReferralInitialization() {
   pref_change_registrar_ = nullptr;
-  if (stats_preconditions_barrier_) {
-    stats_preconditions_barrier_.Run();
-  }
-}
-
-void BraveStatsUpdater::OnDetectUncertainFuture(
-    const bool is_uncertain_future) {
-  if (is_uncertain_future) {
-    arch_ = ProcessArch::kArchVirt;
-  } else {
-    arch_ = ProcessArch::kArchMetal;
-  }
   if (stats_preconditions_barrier_) {
     stats_preconditions_barrier_.Run();
   }
@@ -375,7 +334,7 @@ void BraveStatsUpdater::SendServerPing() {
 
   auto stats_updater_params =
       std::make_unique<brave_stats::BraveStatsUpdaterParams>(
-          pref_service_, GetSerpMetrics(profile_manager_), arch_);
+          pref_service_, GetSerpMetrics(profile_manager_));
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;

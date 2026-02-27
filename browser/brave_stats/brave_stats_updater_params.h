@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 class BraveStatsUpdaterTest;
 class GURL;
@@ -33,11 +32,9 @@ bool IsHeadlessOrAutomationMode();
 class BraveStatsUpdaterParams {
  public:
   explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                                   serp_metrics::SerpMetrics* serp_metrics,
-                                   const ProcessArch arch);
+                                   serp_metrics::SerpMetrics* serp_metrics);
   BraveStatsUpdaterParams(PrefService* stats_pref_service,
                           serp_metrics::SerpMetrics* serp_metrics,
-                          const ProcessArch arch,
                           const std::string& ymd,
                           int woy,
                           int month);
@@ -55,7 +52,6 @@ class BraveStatsUpdaterParams {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   std::string GetAdsEnabledParam() const;
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-  std::string GetProcessArchParam() const;
   GURL GetUpdateURL(const GURL& base_update_url,
                     std::string_view platform_id,
                     std::string_view channel_name,
@@ -68,7 +64,6 @@ class BraveStatsUpdaterParams {
 
   raw_ptr<PrefService> stats_pref_service_ = nullptr;
   const raw_ptr<serp_metrics::SerpMetrics> serp_metrics_;
-  ProcessArch arch_;
   std::string ymd_;
   int woy_;
   int month_;
