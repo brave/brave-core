@@ -132,7 +132,11 @@
     Global Settings
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Button that shows all blocked elements">
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_ELEMENTS" desc="Label for block elements section." formatter_data="webui=BraveShields">
+    Block elements
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Button that shows all blocked elements" formatter_data="webui=BraveShields">
     Clear all blocked elements
   </message>
 
@@ -168,31 +172,31 @@
     Enable HTTPS
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option." formatter_data="webui=BraveShields">
     Block scripts
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN" desc="A label for scripts Scripts blocked option which is overridden by rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN" desc="A label for scripts Scripts blocked option which is overridden by rule." formatter_data="webui=BraveShields">
     (enforced)
   </message>
 
-   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule.">
+   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule." formatter_data="webui=BraveShields">
     (enforced by extension)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_POLICY" desc="A label for scripts Scripts blocked option which is overridden by a policy rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_POLICY" desc="A label for scripts Scripts blocked option which is overridden by a policy rule." formatter_data="webui=BraveShields">
     (enforced by policy)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_ALLOWLIST" desc="A label for scripts Scripts blocked option which is overridden by a allowlist built into the browser's WebUI.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_ALLOWLIST" desc="A label for scripts Scripts blocked option which is overridden by a allowlist built into the browser's WebUI." formatter_data="webui=BraveShields">
     (enforced by allowlist)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR" desc="A label for scripts Scripts blocked option which is overridden by a supervisor rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR" desc="A label for scripts Scripts blocked option which is overridden by a supervisor rule." formatter_data="webui=BraveShields">
     (enforced by supervisor)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_PWA" desc="A label for scripts Scripts blocked option which is overridden by a PWA.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_PWA" desc="A label for scripts Scripts blocked option which is overridden by a PWA." formatter_data="webui=BraveShields">
     (enforced by PWA)
   </message>
 
@@ -204,23 +208,23 @@
     Trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_STD" desc="Menu option that would block some trackers and advertisement website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_STD" desc="Menu option that would block some trackers and advertisement website scripts." formatter_data="webui=BraveShields">
     Block trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_AGG" desc="Menu option that would block all trackers and advertisement website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_AGG" desc="Menu option that would block all trackers and advertisement website scripts." formatter_data="webui=BraveShields">
     Aggressively block trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL" desc="Menu option that would stop blocking all trackers and advertisement website scripts">
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL" desc="Menu option that would stop blocking all trackers and advertisement website scripts" formatter_data="webui=BraveShields">
     Allow all trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_THIRD_PARTY_COOKIES_BLOCKED" desc="Menu option that would block third-party cookies.">
+  <message name="IDS_BRAVE_SHIELDS_THIRD_PARTY_COOKIES_BLOCKED" desc="Menu option that would block third-party cookies." formatter_data="webui=BraveShields">
     Block third-party cookies
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled.">
+  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled." formatter_data="webui=BraveShields">
     Forget me when I close this site
   </message>
 
@@ -244,11 +248,11 @@
     Enables the Shields Block Elements feature in private windows. Note that elements blocked in private windows will also be blocked in non-private windows.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies." formatter_data="webui=BraveShields">
     Block all cookies
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_COOKIES_ALLOWED_ALL" desc="Menu option that would allow all cookies on the current website.">
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_ALLOWED_ALL" desc="Menu option that would allow all cookies on the current website." formatter_data="webui=BraveShields">
     Allow all cookies
   </message>
 
@@ -256,27 +260,27 @@
     Fingerprinting blocked
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD" desc="Menu option that would block some fingerprinting website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD" desc="Menu option that would block some fingerprinting website scripts." formatter_data="webui=BraveShields">
     Block fingerprinting
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG" desc="Menu option that would block all fingerprinting website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG" desc="Menu option that would block all fingerprinting website scripts." formatter_data="webui=BraveShields">
     Aggressively block fingerprinting
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL" desc="Menu option that would stop blocking all fingerprinting website scripts.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL" desc="Menu option that would stop blocking all fingerprinting website scripts." formatter_data="webui=BraveShields">
     Allow fingerprinting
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_DISABLED" desc="Menu option that doesn't upgrade HTTP connections.">
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_DISABLED" desc="Menu option that doesn't upgrade HTTP connections." formatter_data="webui=BraveShields">
     Don't upgrade HTTP connections
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STANDARD" desc="Menu option that prefers to use HTTPS whenever possible.">
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STANDARD" desc="Menu option that prefers to use HTTPS whenever possible." formatter_data="webui=BraveShields">
     Upgrade connections to HTTPS
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STRICT" desc="Menu option that requires HTTPS on all connections.">
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STRICT" desc="Menu option that requires HTTPS on all connections." formatter_data="webui=BraveShields">
     Only connect with HTTPS
   </message>
 
