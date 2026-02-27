@@ -6,15 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SCRYPT_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SCRYPT_UTILS_H_
 
-#include <array>
 #include <optional>
 #include <string_view>
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "crypto/kdf.h"
-#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 

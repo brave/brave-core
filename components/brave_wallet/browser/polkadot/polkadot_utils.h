@@ -65,9 +65,8 @@ std::optional<std::string> EncodePrivateKeyForExport(
     base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key,
     std::string_view address,
     std::string_view password,
-    const std::array<uint8_t, kScryptSaltSize>* salt_for_testing = nullptr,
-    const std::array<uint8_t, kSecretboxNonceSize>* nonce_for_testing =
-        nullptr);
+    std::span<const uint8_t, kScryptSaltSize> salt,
+    std::span<const uint8_t, kSecretboxNonceSize> nonce);
 
 // Decodes a JSON-encoded private key export (Polkadot.js format) and returns
 // the PKCS#8 secret key. Returns std::nullopt on invalid JSON, wrong password,

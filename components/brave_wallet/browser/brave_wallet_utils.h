@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "crypto/process_bound_string.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
@@ -23,6 +24,7 @@ class GURL;
 namespace brave_wallet {
 
 class CardanoAddress;
+using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 // Returns true if Brave Wallet is allowed (not disabled by policy).
 bool IsAllowed(PrefService* prefs);

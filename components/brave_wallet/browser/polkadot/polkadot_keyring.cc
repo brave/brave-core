@@ -11,6 +11,7 @@
 #include "base/containers/span_writer.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
@@ -135,16 +136,22 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     std::string_view password) {
   auto pkcs8_key = EnsureKeyPair(account_index).GetExportKeyPkcs8();
   std::string address = GetAddress(account_index, kSubstratePrefix);
-  const std::array<uint8_t, kScryptSaltSize>* salt_for_testing = nullptr;
-  const std::array<uint8_t, kSecretboxNonceSize>* nonce_for_testing = nullptr;
+
+  std::array<uint8_t, kScryptSaltSize> salt;
+  std::array<uint8_t, kSecretboxNonceSize> nonce;
+
   if (rand_salt_bytes_for_testing_.has_value()) {
-    salt_for_testing = &*rand_salt_bytes_for_testing_;
+    base::span(salt).copy_from_nonoverlapping(*rand_salt_bytes_for_testing_);
+  } else {
+    base::RandBytes(base::span(salt));
   }
   if (rand_nonce_bytes_for_testing_.has_value()) {
-    nonce_for_testing = &*rand_nonce_bytes_for_testing_;
+    base::span(nonce).copy_from_nonoverlapping(*rand_nonce_bytes_for_testing_);
+  } else {
+    base::RandBytes(base::span(nonce));
   }
-  return ::brave_wallet::EncodePrivateKeyForExport(
-      pkcs8_key, address, password, salt_for_testing, nonce_for_testing);
+  return ::brave_wallet::EncodePrivateKeyForExport(pkcs8_key, address, password,
+                                                   salt, nonce);
 }
 
 }  // namespace brave_wallet

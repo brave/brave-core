@@ -285,7 +285,8 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     value_network = ValueToNetworkInfo(data_value);
     EXPECT_EQ(value_network->coin, mojom::CoinType::DOT);
     EXPECT_THAT(value_network->supported_keyrings,
-                ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+                ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                  mojom::KeyringId::kPolkadotImportTestnet}));
 
     static_assert(AllCoinsTested<7>());
   }

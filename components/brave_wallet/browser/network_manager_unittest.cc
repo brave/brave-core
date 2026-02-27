@@ -377,9 +377,11 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   EXPECT_EQ(polkadot_chains[0]->decimals, 123);
   EXPECT_EQ(polkadot_chains[1]->chain_id, mojom::kPolkadotTestnet);
   EXPECT_THAT(polkadot_chains[0]->supported_keyrings,
-              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet}));
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
+                                mojom::KeyringId::kPolkadotImport}));
   EXPECT_THAT(polkadot_chains[1]->supported_keyrings,
-              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
 
   static_assert(AllCoinsTested<7>());
 
@@ -620,7 +622,8 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
       mojom::kPolkadotMainnet, "Polkadot Mainnet",
       {"https://polkadot.statescan.io/"}, {}, 0,
       {GURL("https://polkadot-mainnet.wallet.brave.com/")}, "DOT", "Polkadot",
-      10, mojom::CoinType::DOT, {mojom::KeyringId::kPolkadotMainnet});
+      10, mojom::CoinType::DOT,
+      {mojom::KeyringId::kPolkadotMainnet, mojom::KeyringId::kPolkadotImport});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::DOT));
   EXPECT_EQ(
       network_manager()->GetChain("polkadot_mainnet", mojom::CoinType::DOT),

@@ -46,12 +46,12 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
                                mojom::KeyringId::kPolkadotMainnet);
     PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
 
-    EXPECT_TRUE(
+    ASSERT_TRUE(
         import_keyring.AddAccount(0, hd_keyring.GetPkcs8KeyForTesting(0)));
     EXPECT_EQ(import_keyring.GetAccountAddress(0).value(), kMainnetAddress0);
     EXPECT_EQ(import_keyring.GetAddress(0, 0u).value(), kMainnetAddress0);
 
-    EXPECT_TRUE(
+    ASSERT_TRUE(
         import_keyring.AddAccount(1, hd_keyring.GetPkcs8KeyForTesting(1)));
     EXPECT_EQ(import_keyring.GetAccountAddress(1).value(), kMainnetAddress1);
     EXPECT_EQ(import_keyring.GetAddress(1, 0u).value(), kMainnetAddress1);
@@ -64,7 +64,7 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
     PolkadotImportKeyring import_keyring(
         mojom::KeyringId::kPolkadotImportTestnet);
 
-    EXPECT_TRUE(
+    ASSERT_TRUE(
         import_keyring.AddAccount(0, hd_keyring.GetPkcs8KeyForTesting(0)));
     EXPECT_EQ(import_keyring.GetAccountAddress(0).value(), kTestnetAddress0);
     EXPECT_EQ(import_keyring.GetAddress(0, 42u).value(), kTestnetAddress0);
@@ -83,7 +83,7 @@ TEST(PolkadotImportKeyringTest, AddAccountFails) {
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
-  EXPECT_TRUE(keyring.AddAccount(0, pkcs8));
+  ASSERT_TRUE(keyring.AddAccount(0, pkcs8));
   EXPECT_FALSE(keyring.AddAccount(0, pkcs8));
 
   std::array<uint8_t, kSr25519Pkcs8Size> invalid_pkcs8 = {};
@@ -97,10 +97,10 @@ TEST(PolkadotImportKeyringTest, RemoveAccount) {
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
-  EXPECT_TRUE(keyring.AddAccount(0, pkcs8));
+  ASSERT_TRUE(keyring.AddAccount(0, pkcs8));
   EXPECT_TRUE(keyring.GetAddress(0, kSubstratePrefix).has_value());
 
-  EXPECT_TRUE(keyring.RemoveAccount(0));
+  ASSERT_TRUE(keyring.RemoveAccount(0));
   EXPECT_FALSE(keyring.GetAddress(0, kSubstratePrefix).has_value());
 
   EXPECT_FALSE(keyring.RemoveAccount(0));
@@ -113,7 +113,7 @@ TEST(PolkadotImportKeyringTest, GetPublicKey) {
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
-  EXPECT_TRUE(import_keyring.AddAccount(0, pkcs8));
+  ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
   auto hd_pubkey = hd_keyring.GetPublicKey(0);
   auto import_pubkey = import_keyring.GetPublicKey(0);
@@ -130,7 +130,7 @@ TEST(PolkadotImportKeyringTest, SignMessage) {
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
-  EXPECT_TRUE(import_keyring.AddAccount(0, pkcs8));
+  ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
   auto message = base::byte_span_from_cstring("hello, polkadot import");
   auto signature = import_keyring.SignMessage(message, 0);
@@ -147,7 +147,7 @@ TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
-  EXPECT_TRUE(import_keyring.AddAccount(0, pkcs8));
+  ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
   const std::string kPassword = "export_password_123";
   auto encoded = import_keyring.EncodePrivateKeyForExport(0, kPassword);

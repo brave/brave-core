@@ -25,9 +25,9 @@ namespace {
 
 // Allowed scrypt parameters matching Polkadot.js wallet standards.
 struct AllowedScryptParams {
-  uint32_t n;
-  uint32_t p;
-  uint32_t r;
+  uint32_t n = 0;
+  uint32_t p = 0;
+  uint32_t r = 0;
 };
 
 // List of allowed scrypt params defined in Polkadot-js:
@@ -165,8 +165,8 @@ std::optional<std::string> EncodePrivateKeyForExport(
     base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key,
     std::string_view address,
     std::string_view password,
-    const std::array<uint8_t, kScryptSaltSize>* salt_for_testing,
-    const std::array<uint8_t, kSecretboxNonceSize>* nonce_for_testing) {
+    std::span<const uint8_t, kScryptSaltSize> salt,
+    std::span<const uint8_t, kSecretboxNonceSize> nonce) {
   if (password.empty()) {
     return std::nullopt;
   }
@@ -180,21 +180,7 @@ std::optional<std::string> EncodePrivateKeyForExport(
       .max_memory_bytes = 64 * 1024 * 1024,
   };
 
-  std::array<uint8_t, kScryptSaltSize> salt_bytes;
-  if (salt_for_testing) {
-    base::span(salt_bytes).copy_from_nonoverlapping(*salt_for_testing);
-  } else {
-    crypto::RandBytes(salt_bytes);
-  }
-
-  std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
-  if (nonce_for_testing) {
-    base::span(nonce_bytes).copy_from_nonoverlapping(*nonce_for_testing);
-  } else {
-    crypto::RandBytes(base::span(nonce_bytes));
-  }
-
-  auto derived_key = ScryptDeriveKey(password, salt_bytes, scrypt_params);
+  auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
   if (!derived_key.has_value()) {
     return std::nullopt;
   }
@@ -203,7 +189,7 @@ std::optional<std::string> EncodePrivateKeyForExport(
 
   auto encrypt_result = XSalsaPolyEncrypt(
       base::as_byte_span(pkcs8_key_secure),
-      base::span(*derived_key).first<kScryptKeyBytes>(), nonce_bytes);
+      base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
   crypto::internal::SecureZeroBuffer(*derived_key);
 
   if (!encrypt_result.has_value()) {
@@ -214,11 +200,11 @@ std::optional<std::string> EncodePrivateKeyForExport(
       kScryptSaltSize + 4 * 3 + kSecretboxNonceSize + encrypt_result->size(),
       0);
   auto encoded_bytes_span_writer = base::SpanWriter(base::span(encoded_bytes));
-  encoded_bytes_span_writer.Write(salt_bytes);
+  encoded_bytes_span_writer.Write(salt);
   encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.cost);
   encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.parallelization);
   encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.block_size);
-  encoded_bytes_span_writer.Write(nonce_bytes);
+  encoded_bytes_span_writer.Write(nonce);
   encoded_bytes_span_writer.Write(*encrypt_result);
   CHECK_EQ(encoded_bytes_span_writer.remaining(), 0u);
 

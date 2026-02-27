@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
@@ -131,17 +131,15 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
     std::string address = keyring.GetAddress(0, kSubstratePrefix);
     auto private_key_0 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
-                                                   &salt_bytes, &nonce_bytes);
-    std::optional<base::Value> json_value =
-        base::JSONReader::Read(*private_key_0, 5);
+                                                   salt_bytes, nonce_bytes);
+    auto json_value =
+        base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
         R"({
             "address":"5Fc3qszVcAXHAmjjm61KcxqvV1kh91jpydE476NjjnJneNdP",
             "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgJwZYie6q9xdZXp0Tp0awNekjcrjm4Ge+Vh5Lwh9XlJ3sEQ6F4cJUGsR6Kx5IcNP7LBci3ArjzqlJ7/qOSQzS/rJ45+1kPakLVG2YZXQWW3LAzdc6CkDXzrzYnrUF3DyhY6sm59VLHwd6azVzFxqAMd+NJYVWxAxUlESkQlJafdg/4z3wmY",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    std::optional<base::Value> expected_json_value =
-        base::JSONReader::Read(kExpectedJson, 5);
-    EXPECT_EQ(*json_value, *expected_json_value);
+    EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
   }
 
   // Test account 1
@@ -149,17 +147,15 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(1);
     std::string address = keyring.GetAddress(1, kSubstratePrefix);
     auto private_key_1 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
-                                                   &salt_bytes, &nonce_bytes);
-    std::optional<base::Value> json_value_1 =
-        base::JSONReader::Read(*private_key_1, 5);
+                                                   salt_bytes, nonce_bytes);
+    auto json_value_1 =
+        base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
         R"({
             "address":"5FUag6Xjkr2TMgejpdsvQo3c1FSrZqEeZoHh173StGbME4XF",
             "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgI35vhV4Hb3Cr04X+unU7qckjcrjm4Ge+Vh5Lwh9XlJ3tSn4/Z3n+oAn5X+MByi6HOHjolX4w2S+vHn7qX2ExTqqMqygndQ5qbu68HgGm326rq2dZ8nZ9n6VnS1dX88/MQ6sm59VLuGiKa4uQ4KX1JrUFoTxhgvl83I4WrM1y+1/nbb1yyn",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    std::optional<base::Value> expected_json_value_1 =
-        base::JSONReader::Read(kExpectedJsonAccount1, 5);
-    EXPECT_EQ(*json_value_1, *expected_json_value_1);
+    EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
   }
 
   // Empty password (should fail)
@@ -167,7 +163,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
     std::string address = keyring.GetAddress(0, kSubstratePrefix);
     EXPECT_FALSE(
-        EncodePrivateKeyForExport(pkcs8, address, "", nullptr, nullptr));
+        EncodePrivateKeyForExport(pkcs8, address, "", salt_bytes, nonce_bytes));
   }
 }
 
@@ -188,17 +184,15 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
     std::string address = keyring.GetAddress(0, kSubstratePrefix);
     auto private_key_0 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
-                                                   &salt_bytes, &nonce_bytes);
-    std::optional<base::Value> json_value =
-        base::JSONReader::Read(*private_key_0, 5);
+                                                   salt_bytes, nonce_bytes);
+    auto json_value =
+        base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
         R"({
             "address":"5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx",
             "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgK8fiV6lGVSFewy6uxsU1C4kjcrjm4Ge+Vh5Lwh9XlJ3vAbQs+/0vSBKGe71ik2n/owjXKi9/fBCOIbIDIttGbopozlHDAyPEOrftWc4aiMZfTHRTh/Hb0kJ4C79LBJ84Y6sm59VMs51zUalbzBwa9c75OqlTCtqRouH8891IU51jczQkHY",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    std::optional<base::Value> expected_json_value =
-        base::JSONReader::Read(kExpectedJson, 5);
-    EXPECT_EQ(*json_value, *expected_json_value);
+    EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
   }
 
   // Test account 1
@@ -206,17 +200,15 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(1);
     std::string address = keyring.GetAddress(1, kSubstratePrefix);
     auto private_key_1 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
-                                                   &salt_bytes, &nonce_bytes);
-    std::optional<base::Value> json_value_1 =
-        base::JSONReader::Read(*private_key_1, 5);
+                                                   salt_bytes, nonce_bytes);
+    auto json_value_1 =
+        base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
         R"({
             "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
             "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
-    std::optional<base::Value> expected_json_value_1 =
-        base::JSONReader::Read(kExpectedJsonAccount1, 5);
-    EXPECT_EQ(*json_value_1, *expected_json_value_1);
+    EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
   }
 
   // Empty password (should fail)
@@ -224,7 +216,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
     std::string address = keyring.GetAddress(0, kSubstratePrefix);
     EXPECT_FALSE(
-        EncodePrivateKeyForExport(pkcs8, address, "", nullptr, nullptr));
+        EncodePrivateKeyForExport(pkcs8, address, "", salt_bytes, nonce_bytes));
   }
 }
 
@@ -331,8 +323,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
   auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(valid_json.has_value());
 
-  auto valid_dict = base::JSONReader::ReadDict(*valid_json, 0);
-  ASSERT_TRUE(valid_dict.has_value());
+  auto valid_dict = base::test::ParseJsonDict(*valid_json);
 
   auto dict_to_json = [](const base::DictValue& dict) -> std::string {
     std::string json_string;
@@ -342,7 +333,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing pkcs8 in content.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     auto* content_list = encoding_dict->FindList("content");
@@ -355,7 +346,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing sr25519 in content.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     auto* content_list = encoding_dict->FindList("content");
@@ -368,7 +359,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing scrypt in type.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     auto* type_list = encoding_dict->FindList("type");
@@ -381,7 +372,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing xsalsa20-poly1305 in type.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     auto* type_list = encoding_dict->FindList("type");
@@ -394,7 +385,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Version mismatch.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     encoding_dict->Set("version", "2");
@@ -404,7 +395,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing content.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     encoding_dict->Remove("content");
@@ -414,7 +405,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing encoding.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     test_dict.Remove("encoding");
     EXPECT_FALSE(
         DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
@@ -422,7 +413,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing type.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     auto* encoding_dict = test_dict.FindDict("encoding");
     ASSERT_TRUE(encoding_dict);
     encoding_dict->Remove("type");
@@ -432,7 +423,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Missing encoded.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     test_dict.Remove("encoded");
     EXPECT_FALSE(
         DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
@@ -440,7 +431,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Corrupted encoded - invalid base64.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     test_dict.Set(
         "encoded",
         "00EBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAg"
@@ -454,7 +445,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
 
   // Corrupted encoded - wrong length.
   {
-    auto test_dict = valid_dict->Clone();
+    auto test_dict = valid_dict.Clone();
     const std::string* original_encoded = test_dict.FindString("encoded");
     ASSERT_TRUE(original_encoded);
     std::string shortened_encoded =
