@@ -570,7 +570,6 @@ void AdBlockService::StripProceduralFilters(base::DictValue& resources) {
   if (procedural_actions) {
     base::ListValue::iterator it = procedural_actions->begin();
     while (it < procedural_actions->end()) {
-      DCHECK(it->is_string());
       auto* pfilter_str = it->GetIfString();
       if (pfilter_str == nullptr) {
         ++it;
