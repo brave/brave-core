@@ -339,7 +339,7 @@ JNI_BraveSyncWorker_GetSeedHexFromWords(
     DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
     sync_code_hex = base::HexEncode(&bytes.at(0), bytes.size());
   } else {
-    VLOG(1) << __func__ << " PassphraseToBytes32 failed for " << str_seed_words;
+    VLOG(1) << __func__ << " PassphraseToBytes32 failed";
   }
 
   return ConvertUTF8ToJavaString(env, sync_code_hex);
@@ -355,15 +355,14 @@ std::string GetWordsFromSeedHex(const std::string& str_seed_hex) {
     if (bytes.size() == SEED_BYTES_COUNT) {
       sync_code_words = brave_sync::crypto::PassphraseFromBytes32(bytes);
       if (sync_code_words.empty()) {
-        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "
-                << str_seed_hex;
+        VLOG(1) << __func__ << " PassphraseFromBytes32 failed";
       }
     } else {
       LOG(ERROR) << "wrong seed bytes " << bytes.size();
     }
     DCHECK_NE(sync_code_words, "");
   } else {
-    VLOG(1) << __func__ << " HexStringToBytes failed for " << str_seed_hex;
+    VLOG(1) << __func__ << " HexStringToBytes failed for seed hex";
   }
 
   return sync_code_words;

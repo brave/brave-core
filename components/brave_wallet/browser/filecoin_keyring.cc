@@ -116,8 +116,7 @@ bool FilecoinKeyring::DecodeImportPayload(
       key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
-    VLOG(1) << "Invalid payload, could not parse JSON, JSON is: "
-            << key_payload;
+    VLOG(1) << "Invalid payload, could not parse JSON";
     return false;
   }
 
