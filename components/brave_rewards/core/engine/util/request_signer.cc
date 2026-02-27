@@ -35,7 +35,8 @@ std::string GetRequestTarget(const mojom::UrlRequest& request) {
   if (!url.is_valid()) {
     return "";
   }
-  return base::StrCat({GetMethodString(request.method), " ", url.path()});
+  return base::StrCat(
+      {GetMethodString(request.method), " ", url.PathForRequest()});
 }
 
 }  // namespace
