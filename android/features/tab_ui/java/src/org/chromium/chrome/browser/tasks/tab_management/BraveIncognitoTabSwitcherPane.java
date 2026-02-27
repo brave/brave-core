@@ -8,12 +8,13 @@ package org.chromium.chrome.browser.tasks.tab_management;
 import android.content.Context;
 import android.view.View.OnClickListener;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
@@ -25,20 +26,19 @@ import org.chromium.chrome.tab_ui.R;
 import java.util.function.DoubleConsumer;
 import java.util.function.Supplier;
 
-@NullMarked
 public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
 
     public BraveIncognitoTabSwitcherPane(
-            Context context,
-            TabSwitcherPaneCoordinatorFactory factory,
-            Supplier<TabGroupModelFilter> incognitoTabGroupModelFilterSupplier,
-            OnClickListener newTabButtonClickListener,
+            @NonNull Context context,
+            @NonNull TabSwitcherPaneCoordinatorFactory factory,
+            @NonNull Supplier<TabGroupModelFilter> incognitoTabGroupModelFilterSupplier,
+            @NonNull OnClickListener newTabButtonClickListener,
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
-            DoubleConsumer onToolbarAlphaChange,
-            UserEducationHelper userEducationHelper,
-            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
-            MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
-            TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
+            @NonNull DoubleConsumer onToolbarAlphaChange,
+            @NonNull UserEducationHelper userEducationHelper,
+            @NonNull MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            @NonNull MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
+            @NonNull TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 context,

@@ -9,8 +9,6 @@ import android.content.Context;
 import android.view.View;
 
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -22,10 +20,9 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 
-@NullMarked
 class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
     // Overridden Chromium's BookmarkToolbarCoordinator.mToolbar
-    private @Nullable BookmarkToolbar mToolbar;
+    private BookmarkToolbar mToolbar;
 
     BraveBookmarkToolbarCoordinator(
             Context context,
@@ -64,7 +61,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 snackbarManager,
                 nextFocusableView);
 
-        if (mToolbar != null && mToolbar instanceof BraveBookmarkToolbar) {
+        if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);
         }
     }

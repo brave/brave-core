@@ -5,9 +5,6 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
-import static org.chromium.build.NullUtil.assertNonNull;
-import static org.chromium.build.NullUtil.assumeNonNull;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -27,9 +24,6 @@ import org.chromium.base.PathUtils;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.build.annotations.MonotonicNonNull;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -53,16 +47,15 @@ import java.io.InputStream;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-@NullMarked
 class BraveBookmarkManagerMediator extends BookmarkManagerMediator
         implements BraveBookmarkDelegate {
-    private @MonotonicNonNull ActivityWindowAndroid mWindowAndroid;
+    private ActivityWindowAndroid mWindowAndroid;
 
     // Overridden Chromium's BookmarkManagerMediator.mBookmarkModel
-    private @Nullable BookmarkModel mBookmarkModel;
+    private BookmarkModel mBookmarkModel;
 
     // Overridden Chromium's BookmarkManagerMediator.mContext
-    private @Nullable Context mContext;
+    private Context mContext;
     private static final String TAG = "BraveBookmarkManager";
     private static final String IMPORTED_BOOKMARKS_TEMP_FILENAME = "ImportedBookmarks";
 
@@ -152,25 +145,19 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("text/html");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        assertNonNull(mWindowAndroid);
-        assertNonNull(mContext);
-
         if (mWindowAndroid.showIntent(
                 Intent.createChooser(
                         intent,
                         mContext.getResources().getString(R.string.import_bookmarks_select_file)),
                 new WindowAndroid.IntentCallback() {
                     @Override
-                    public void onIntentCompleted(int resultCode, @Nullable Intent results) {
+                    public void onIntentCompleted(int resultCode, Intent results) {
                         if (resultCode == Activity.RESULT_OK
                                 && results != null
                                 && results.getData() != null) {
                             PostTask.postTask(
                                     TaskTraits.USER_VISIBLE_MAY_BLOCK,
                                     () -> {
-                                        assumeNonNull(results);
-                                        assumeNonNull(results.getData());
                                         importFileSelected(results.getData());
                                     });
                         }
@@ -183,13 +170,10 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
 
     private void importFileSelected(Uri resultData) {
         try {
-            assertNonNull(mContext);
-            assertNonNull(mWindowAndroid);
             File file = new File(mContext.getFilesDir(), IMPORTED_BOOKMARKS_TEMP_FILENAME);
             try (InputStream inputStream =
                             mContext.getContentResolver().openInputStream(resultData);
                     FileOutputStream outputStream = new FileOutputStream(file)) {
-                assertNonNull(inputStream);
                 int maxBufferSize = 1 * 1024 * 1024;
                 int bytesAvailable = inputStream.available();
                 int bufferSize = Math.min(bytesAvailable, maxBufferSize);
@@ -198,10 +182,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 while ((byteRead = inputStream.read(buffers)) != -1) {
                     outputStream.write(buffers, 0, byteRead);
                 }
-                AppCompatActivity activity = (AppCompatActivity) mWindowAndroid.getContext().get();
-                assertNonNull(activity);
-                activity.runOnUiThread(
-                        new Runnable() {
+                ((AppCompatActivity) mWindowAndroid.getContext().get())
+                        .runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (mBookmarkModel instanceof BraveBookmarkModel) {
@@ -297,18 +279,16 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
     }
 
     private void doExportBookmarksOnUI(File file) {
-        assertNonNull(mWindowAndroid);
-        AppCompatActivity activity = (AppCompatActivity) mWindowAndroid.getContext().get();
-        assertNonNull(activity);
-        activity.runOnUiThread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mBookmarkModel instanceof BraveBookmarkModel) {
-                            ((BraveBookmarkModel) mBookmarkModel)
-                                    .exportBookmarks(mWindowAndroid, file.getPath());
-                        }
-                    }
-                });
+        ((AppCompatActivity) mWindowAndroid.getContext().get())
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mBookmarkModel instanceof BraveBookmarkModel) {
+                                    ((BraveBookmarkModel) mBookmarkModel)
+                                            .exportBookmarks(mWindowAndroid, file.getPath());
+                                }
+                            }
+                        });
     }
 }

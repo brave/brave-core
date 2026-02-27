@@ -7,9 +7,10 @@ package org.chromium.chrome.browser.tasks.tab_management;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
-import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
@@ -19,7 +20,6 @@ import org.chromium.chrome.browser.user_education.UserEducationHelper;
 
 import java.util.function.DoubleConsumer;
 
-@NullMarked
 public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     BraveTabSwitcherPaneBase(
             @PaneId int paneId,
@@ -46,8 +46,8 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     }
 
     @Override
-    public HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
-            HubContainerView hubContainerView) {
+    public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
+            @NonNull HubContainerView hubContainerView) {
         if (getTabSwitcherPaneCoordinator() == null && getCurrentTab() != null) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set

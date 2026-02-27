@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import static org.chromium.build.NullUtil.assertNonNull;
-
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,9 +26,6 @@ import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
-import org.chromium.build.annotations.Initializer;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -52,11 +47,12 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.omnibox.OmniboxFocusReason;
 
+import java.util.function.Supplier;
+
 /**
  * The root coordinator for the bottom toolbar. It has two sub-components: the browsing mode bottom
  * toolbar and the tab switcher mode bottom toolbar.
  */
-@NullMarked
 class BottomToolbarCoordinator implements View.OnLongClickListener {
     private static final String TAG = "BottomToolbar";
 
@@ -64,7 +60,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
 
     /** The tab switcher mode bottom toolbar component */
-    private @Nullable TabSwitcherBottomToolbarCoordinator mTabSwitcherModeCoordinator;
+    private TabSwitcherBottomToolbarCoordinator mTabSwitcherModeCoordinator;
 
     /** The tab switcher mode bottom toolbar stub that will be inflated when native is ready. */
     private final ViewStub mTabSwitcherModeStub;
@@ -72,8 +68,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     /** A provider that notifies components when the theme color changes. */
     private final ThemeColorProvider mThemeColorProvider;
 
-    private LayoutStateProvider.@Nullable LayoutStateObserver mLayoutStateObserver;
-    private @Nullable LayoutStateProvider mLayoutStateProvider;
+    private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
+    private LayoutStateProvider mLayoutStateProvider;
 
     private final SettableMonotonicObservableSupplier<OnClickListener>
             mShareButtonListenerSupplier = ObservableSuppliers.createMonotonic();
@@ -81,9 +77,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     MonotonicObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private final Runnable mOriginalHomeButtonRunnable;
     private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
-    private @Nullable HomeButton mHomeButton;
-    private @Nullable BookmarksButton mBookmarksButton;
-    private @Nullable MaterialButton mNewTabButton;
+    private HomeButton mHomeButton;
+    private BookmarksButton mBookmarksButton;
+    private MaterialButton mNewTabButton;
     private final View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
     private final NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
@@ -163,7 +159,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
      * @param topToolbarRoot The root {@link ViewGroup} of the top toolbar.
      * @param closeAllTabsAction The runnable that closes all tabs in the current tab model.
      */
-    @Initializer
     void initializeWithNative(
             OnClickListener tabSwitcherListener,
             OnClickListener newTabClickListener,
@@ -312,10 +307,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         }
 
         if (mScrollingBottomView != null && activity != null) {
-            CompositorViewHolder viewHolder = activity.getCompositorViewHolderSupplier().get();
-            assertNonNull(viewHolder);
-
-            LayoutManagerImpl layoutManager = viewHolder.getLayoutManager();
+            Supplier<CompositorViewHolder> cvh = activity.getCompositorViewHolderSupplier();
+            LayoutManagerImpl layoutManager = cvh.get().getLayoutManager();
             if (layoutManager != null) {
                 mScrollingBottomView.setSwipeDetector(layoutManager.getToolbarSwipeHandler());
             }
@@ -342,7 +335,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mTabSwitcherModeCoordinator = null;
         }
         if (mLayoutStateProvider != null) {
-            assertNonNull(mLayoutStateObserver);
             mLayoutStateProvider.removeObserver(mLayoutStateObserver);
             mLayoutStateProvider = null;
         }
@@ -352,7 +344,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
         assert mLayoutStateProvider == null : "the mLayoutStateProvider should set at most once.";
 
-        assertNonNull(mLayoutStateObserver);
         mLayoutStateProvider = layoutStateProvider;
         mLayoutStateProvider.addObserver(mLayoutStateObserver);
         // Set layout state provider for browsing mode coordinator to detect tab overview mode

@@ -5,19 +5,16 @@
 
 package org.chromium.chrome.browser.feed;
 
-import static org.chromium.build.NullUtil.assertNonNull;
-
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -32,11 +29,10 @@ import org.chromium.ui.base.WindowAndroid;
 
 import java.util.function.Supplier;
 
-@NullMarked
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     // To delete in bytecode, members from parent class will be used instead.
-    private @Nullable View mNtpHeader;
-    private @Nullable FrameLayout mRootView;
+    private View mNtpHeader;
+    private FrameLayout mRootView;
 
     // Own members.
     private @Nullable FrameLayout mFrameLayoutForPolicy;
@@ -52,7 +48,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             FeedSurfaceDelegate delegate,
             Profile profile,
             BottomSheetController bottomSheetController,
-            Supplier<@Nullable ShareDelegate> shareDelegateSupplier,
+            Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
             @NewTabPageLaunchOrigin int launchOrigin,
             PrivacyPreferencesManagerImpl privacyPreferencesManager,
@@ -91,7 +87,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
 
     public void createFrameLayoutForPolicy() {
         assert mFrameLayoutForPolicy == null : "mFrameLayoutForPolicy should be created only once!";
-        assertNonNull(mRootView);
 
         // Remove all previously added views.
         mRootView.removeAllViews();
@@ -118,7 +113,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mRootView.addView(mFrameLayoutForPolicy);
     }
 
-    public @Nullable FrameLayout getFrameLayoutForPolicy() {
+    public FrameLayout getFrameLayoutForPolicy() {
         return mFrameLayoutForPolicy;
     }
 }

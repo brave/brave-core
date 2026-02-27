@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.ntp;
 
 import static org.chromium.base.ThreadUtils.runOnUiThread;
-import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
@@ -35,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
@@ -57,8 +57,6 @@ import org.chromium.brave_news.mojom.Feed;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedPage;
 import org.chromium.brave_news.mojom.FeedPageItem;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
@@ -93,7 +91,6 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
@@ -117,7 +114,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
-@NullMarked
 public class BraveNewTabPageLayout extends NewTabPageLayout
         implements ConnectionErrorHandler, OnBraveNtpListener {
     private static final String TAG = "BraveNewTabPage";
@@ -135,64 +131,64 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // Own members.
     private WindowAndroid mWindowAndroid;
 
-    private @Nullable ImageView mBgImageView;
-    private @Nullable SponsoredRichMediaWebView mSponsoredRichMediaWebView;
-    private @Nullable FrameLayout mBackgroundSponsoredRichMediaView;
+    private ImageView mBgImageView;
+    private SponsoredRichMediaWebView mSponsoredRichMediaWebView;
+    private FrameLayout mBackgroundSponsoredRichMediaView;
 
     // To be removed in bytecode, parent variable will be used instead.
-    private @Nullable Profile mProfile;
+    private Profile mProfile;
+    private SponsoredTab mSponsoredTab;
 
-    private @Nullable SponsoredTab mSponsoredTab;
-    private @Nullable BitmapDrawable mImageDrawable;
+    private BitmapDrawable mImageDrawable;
 
-    private @Nullable FetchWallpaperWorkerTask mWorkerTask;
+    private FetchWallpaperWorkerTask mWorkerTask;
     private boolean mIsFromBottomSheet;
     // Whether to show sponsored image on NTP based on experiment variant
     private boolean mShouldShowSponsoredImage;
-    private @Nullable NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private @Nullable ViewGroup mMainLayout;
+    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private ViewGroup mMainLayout;
     private final DatabaseHelper mDatabaseHelper;
 
-    private @Nullable LottieAnimationView mBadgeAnimationView;
+    private LottieAnimationView mBadgeAnimationView;
 
-    private @Nullable Tab mTab;
+    private Tab mTab;
     private Activity mActivity;
 
-    private @Nullable BraveNtpAdapter mNtpAdapter;
-    private @Nullable Bitmap mSponsoredLogo;
-    private @Nullable Wallpaper mWallpaper;
+    private BraveNtpAdapter mNtpAdapter;
+    private Bitmap mSponsoredLogo;
+    private Wallpaper mWallpaper;
 
-    private @Nullable BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
+    private BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
 
     private CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCard =
             new CopyOnWriteArrayList<FeedItemsCard>();
-    private @Nullable RecyclerView mRecyclerView;
-    private @Nullable LinearLayout mNewsSettingsBar;
-    private @Nullable LinearLayout mNewContentLayout;
-    private @Nullable TextView mNewContentText;
-    private @Nullable ProgressBar mNewContentProgressBar;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mNewsSettingsBar;
+    private LinearLayout mNewContentLayout;
+    private TextView mNewContentText;
+    private ProgressBar mNewContentProgressBar;
 
-    private @Nullable NTPImage mNtpImageGlobal;
-    private @Nullable BraveNewsController mBraveNewsController;
+    private NTPImage mNtpImageGlobal;
+    private BraveNewsController mBraveNewsController;
 
     private long mStartCardViewTime;
     private long mEndCardViewTime;
-    private @Nullable String mCreativeInstanceId;
-    private @Nullable String mUuid;
-    // @TODO alex make an enum
-    private @Nullable String mCardType;
+    private String mCreativeInstanceId;
+    private String mUuid;
+    //@TODO alex make an enum
+    private String mCardType;
     private int mItemPosition;
     private int mPrevVisibleNewsCardPosition = -1;
     private int mNewsSessionCardViews;
-    private @Nullable FeedItemsCard mVisibleCard;
+    private FeedItemsCard mVisibleCard;
     private String mFeedHash;
-    private SharedPreferences.@Nullable OnSharedPreferenceChangeListener mPreferenceListener;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener;
     private boolean mIsTopSitesEnabled;
     private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private long mNewsFeedLastViewTime;
-    private ViewTreeObserver.@Nullable OnGlobalLayoutListener mBgImageViewOnGlobalLayoutListener;
+    private ViewTreeObserver.OnGlobalLayoutListener mBgImageViewOnGlobalLayoutListener;
 
     private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
@@ -251,7 +247,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                         new Handler(Looper.getMainLooper())
                                                 .post(
                                                         () -> {
-                                                            assertNonNull(mNtpAdapter);
                                                             mNtpAdapter.notifyItemRangeChanged(
                                                                     mNtpAdapter.getStatsCount(),
                                                                     mNtpAdapter.getNewContentCount()
@@ -317,7 +312,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                     new GestureDetector.SimpleOnGestureListener() {
                                         @Override
                                         public boolean onDoubleTap(MotionEvent e) {
-                                            assertNonNull(mRecyclerView);
                                             mRecyclerView.smoothScrollToPosition(0);
                                             return super.onDoubleTap(e);
                                         }
@@ -358,8 +352,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     private void setNtpRecyclerView(LinearLayoutManager linearLayoutManager) {
-        assertNonNull(mRecyclerView);
-
         mIsTopSitesEnabled = NtpUtil.shouldDisplayTopSites();
         mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
 
@@ -436,7 +428,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mPrevVisibleNewsCardPosition = firstNewsFeedPosition() - 1;
 
-        assertNonNull(mRecyclerView);
         mRecyclerView.addOnItemTouchListener(
                 new OnItemTouchListener() {
                     @Override
@@ -460,7 +451,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mRecyclerView.addOnScrollListener(
                 new RecyclerView.OnScrollListener() {
                     @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    public void onScrollStateChanged(
+                            @NonNull RecyclerView recyclerView, int newState) {
                         super.onScrollStateChanged(recyclerView, newState);
 
                         int firstVisibleItemPosition =
@@ -475,7 +467,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             Log.e(TAG, "onScrollStateChanged " + e);
                         }
                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            assertNonNull(mRecyclerView);
                             if (tabId != -1 && mRecyclerView.getChildCount() > 0) {
                                 View firstChild = mRecyclerView.getChildAt(0);
                                 if (firstChild != null) {
@@ -516,8 +507,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                         // send viewed cards events
                                         if (mCardType.equals("promo")
                                                 && !mCardType.equals("displayad")) {
-                                            if (!TextUtils.isEmpty(mUuid)
-                                                    && !TextUtils.isEmpty(mCreativeInstanceId)) {
+                                            if (!mUuid.equals("")
+                                                    && !mCreativeInstanceId.equals("")) {
                                                 mVisibleCard.setViewStatSent(true);
                                                 if (mBraveNewsController != null) {
                                                     mBraveNewsController.onPromotedItemView(
@@ -593,7 +584,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                 }
 
                                 Rect rvRect = new Rect();
-                                assertNonNull(mRecyclerView);
                                 mRecyclerView.getGlobalVisibleRect(rvRect);
 
                                 int visiblePercentage = 0;
@@ -693,8 +683,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                                                                     && visiblePercentageFinal
                                                                                             > MINIMUM_VISIBLE_HEIGHT_THRESHOLD
                                                                                     && mBraveNewsController
-                                                                                            != null
-                                                                                    && mVisibleCard
                                                                                             != null) {
                                                                                 mVisibleCard
                                                                                         .setViewStatSent(
@@ -731,11 +719,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     }
 
                     @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        assertNonNull(mNtpAdapter);
-                        assertNonNull(mNewsSettingsBar);
-                        assertNonNull(mNewContentLayout);
-
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
 
                         if (mIsDisplayNewsFeed) {
@@ -802,7 +786,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 new Handler(Looper.getMainLooper())
                         .postDelayed(
                                 () -> {
-                                    assertNonNull(mRecyclerView);
                                     if (mNtpAdapter != null
                                             && mNtpAdapter.getItemCount() > itemPosition) {
                                         RecyclerView.LayoutManager manager =
@@ -857,7 +840,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mIsDisplayNewsOptin = false;
         mIsDisplayNewsFeed = isOptin;
-        assertNonNull(mNtpAdapter);
         mNtpAdapter.removeNewsOptin();
         mNtpAdapter.setImageCreditAlpha(1f);
         mNtpAdapter.setDisplayNewsFeed(mIsDisplayNewsFeed);
@@ -870,7 +852,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void initPreferenceObserver() {
         mPreferenceListener =
                 (prefs, key) -> {
-                    assertNonNull(mNtpAdapter);
                     if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE)) {
                         if (ChromeSharedPreferences.getInstance()
                                 .readBoolean(BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, false)) {
@@ -906,8 +887,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     @Override
     protected void onDetachedFromWindow() {
-        assertNonNull(mRecyclerView);
-
         if (mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
             mWorkerTask.cancel(true);
             mWorkerTask = null;
@@ -971,16 +950,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             super.onConfigurationChanged(newConfig);
             showNTPImage(ntpImage);
 
-            new Handler(Looper.getMainLooper())
-                    .postDelayed(
-                            () -> {
-                                assertNonNull(mRecyclerView);
-                                if (mNtpAdapter != null) {
-                                    mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
-                                }
-                                keepPosition();
-                            },
-                            10);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (mNtpAdapter != null) {
+                    mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
+                }
+                keepPosition();
+            }, 10);
         } else {
             super.onConfigurationChanged(newConfig);
         }
@@ -988,11 +963,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     @Override
     public void loadNewContent() {
-        assertNonNull(mNtpAdapter);
-        assertNonNull(mNewContentText);
-        assertNonNull(mNewContentProgressBar);
-        assertNonNull(mNewContentLayout);
-
         mNtpAdapter.setNewContentLoading(true);
         mNewContentText.setVisibility(View.GONE);
         mNewContentProgressBar.setVisibility(View.VISIBLE);
@@ -1006,7 +976,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     @Override
     public void getFeed(boolean isNewContent) {
         if (!isNewContent) {
-            assertNonNull(mNtpAdapter);
             mNtpAdapter.setImageCreditAlpha(1f);
             mNtpAdapter.setNewsLoading(true);
         }
@@ -1034,16 +1003,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mFeedHash = feed.hash;
         int newsItemsFeedCardSize = mNewsItemsFeedCard.size();
-        new Handler(Looper.getMainLooper())
-                .post(
-                        () -> {
-                            assertNonNull(mNtpAdapter);
-                            mNtpAdapter.notifyItemRangeRemoved(
-                                    mNtpAdapter.getStatsCount()
-                                            + mNtpAdapter.getTopSitesCount()
-                                            + 1,
-                                    newsItemsFeedCardSize);
-                        });
+        new Handler(Looper.getMainLooper()).post(() -> {
+            mNtpAdapter.notifyItemRangeRemoved(
+                    mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
+                    newsItemsFeedCardSize);
+        });
 
         mNewsItemsFeedCard.clear();
         BraveNewsUtils.initCurrentAds();
@@ -1127,9 +1091,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     private void refreshFeed() {
-        assertNonNull(mNtpAdapter);
-        assertNonNull(mNewsSettingsBar);
-
         boolean isShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
         mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed(mProfile);
         if (!isShowNewsOn) {
@@ -1156,50 +1117,35 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     private void processFeed(boolean isNewContent) {
-        new Handler(Looper.getMainLooper())
-                .post(
-                        () -> {
-                            assertNonNull(mNtpAdapter);
-                            mNtpAdapter.setNewsLoading(false);
-                            if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
-                                mNtpAdapter.notifyItemRangeChanged(
-                                        mNtpAdapter.getStatsCount()
-                                                + mNtpAdapter.getTopSitesCount(),
-                                        mNtpAdapter.getItemCount()
-                                                - mNtpAdapter.getStatsCount()
-                                                - mNtpAdapter.getTopSitesCount());
-                            }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            mNtpAdapter.setNewsLoading(false);
+            if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
+                mNtpAdapter.notifyItemRangeChanged(
+                        mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount(),
+                        mNtpAdapter.getItemCount() - mNtpAdapter.getStatsCount()
+                                - mNtpAdapter.getTopSitesCount());
+            }
 
-                            if (isNewContent) {
-                                mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition - 1;
-                                setNewContentChanges(false);
-                                assertNonNull(mRecyclerView);
-                                RecyclerView.LayoutManager manager =
-                                        mRecyclerView.getLayoutManager();
-                                if (manager instanceof LinearLayoutManager) {
-                                    LinearLayoutManager linearLayoutManager =
-                                            (LinearLayoutManager) manager;
-                                    linearLayoutManager.scrollToPositionWithOffset(
-                                            mNtpAdapter.getStatsCount()
-                                                    + mNtpAdapter.getTopSitesCount()
-                                                    + 1,
-                                            dpToPx(mActivity, 60));
-                                }
-                            }
-                            try {
-                                BraveActivity.getBraveActivity().setComesFromNewTab(false);
-                            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "processFeed " + e);
-                            }
-                        });
+            if (isNewContent) {
+                mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition - 1;
+                setNewContentChanges(false);
+                RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+                if (manager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
+                    linearLayoutManager.scrollToPositionWithOffset(
+                            mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
+                            dpToPx(mActivity, 60));
+                }
+            }
+            try {
+                BraveActivity.getBraveActivity().setComesFromNewTab(false);
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "processFeed " + e);
+            }
+        });
     }
 
     private void setNewContentChanges(boolean isNewContent) {
-        assertNonNull(mNewContentLayout);
-        assertNonNull(mNewContentProgressBar);
-        assertNonNull(mNewContentText);
-        assertNonNull(mRecyclerView);
-
         if (isNewContent) {
             if (mNtpAdapter != null) {
                 mNtpAdapter.setNewContent(true);
@@ -1242,7 +1188,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             WindowAndroid windowAndroid,
             ActivityResultTracker activityResultTracker,
             BottomSheetController bottomSheetController,
-            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
             SnackbarManager snackbarManager,
             boolean isTablet,
             Supplier<Integer> tabStripHeightSupplier,
@@ -1303,7 +1249,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
-    public void setTabProvider(Supplier<@Nullable Tab> unused_tabProvider) {}
+    public void setTabProvider(Supplier<Tab> unused_tabProvider) {}
 
     private void showNTPImage(NTPImage ntpImage) {
         Display display = mActivity.getWindowManager().getDefaultDisplay();
@@ -1331,16 +1277,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             }
         }
 
-        assertNonNull(mProfile);
         if (wasWallpaperShown
                 && ntpImage instanceof Wallpaper
                 && getTab() != null
                 && mNewTabTakeoverInfobar == null) {
             mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            if (getTab().getWebContents() != null) {
-                mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
-                        mActivity, getTab().getWebContents());
-            }
+            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
+                    mActivity, getTab().getWebContents());
         }
     }
 
@@ -1380,7 +1323,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
                         @Override
                         public void onGlobalLayout() {
-                            assertNonNull(mBgImageView);
                             int currentWidth = mBgImageView.getMeasuredWidth();
                             int currentHeight = mBgImageView.getMeasuredHeight();
 
@@ -1424,7 +1366,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     private void checkAndShowNTPImage(boolean isReset) {
-        assertNonNull(mSponsoredTab);
         NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset, mShouldShowSponsoredImage);
         if (ntpImage == null) {
             mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
@@ -1486,7 +1427,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 });
     }
 
-    private void initBraveNewsController(final @Nullable Runnable action) {
+    private void initBraveNewsController(final Runnable action) {
         ThreadUtils.assertOnUiThread();
         if (mBraveNewsController != null) {
             if (action != null) {
@@ -1496,7 +1437,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             return;
         }
 
-        assertNonNull(mProfile);
         BraveNewsControllerFactory.getInstance()
                 .getForProfile(mProfile, this)
                 .then(
@@ -1572,10 +1512,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         // On cold start, tabs are restored asynchronously, so we need to wait
         // for them to be fully loaded before searching for the last active tab.
         BraveActivity braveActivity = (BraveActivity) mActivity;
-        TabModelSelector tabModelSelector = braveActivity.getTabModelSelectorSupplier().get();
-        assertNonNull(tabModelSelector);
         TabModelUtils.runOnTabStateInitialized(
-                tabModelSelector,
+                braveActivity.getTabModelSelectorSupplier().get(),
                 (selector) -> {
                     BraveRecentTabsSnackbarHelper snackbarHelper =
                             new BraveRecentTabsSnackbarHelper();

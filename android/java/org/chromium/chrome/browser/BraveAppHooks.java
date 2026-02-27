@@ -6,16 +6,13 @@
 package org.chromium.chrome.browser;
 
 import org.chromium.base.Callback;
-import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmark;
 
-@NullMarked
 public class BraveAppHooks extends AppHooks {
     /** Async fetch the iterator of partner bookmarks (or null if not available). */
     @Override
     public void requestPartnerBookmarkIterator(
-            Callback<PartnerBookmark.@Nullable BookmarkIterator> callback) {
+            Callback<PartnerBookmark.BookmarkIterator> callback) {
         callback.onResult(null);
     }
 }

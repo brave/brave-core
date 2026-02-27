@@ -8,8 +8,9 @@ package org.chromium.chrome.browser.bookmarks;
 import android.app.Activity;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
