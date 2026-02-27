@@ -348,7 +348,7 @@ public class BraveNewsUtils {
     public static void getBraveNewsSettingsData(
             BraveNewsController braveNewsController,
             @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
-            final Runnable postAction) {
+            final @Nullable Runnable postAction) {
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT,
                 () -> {
@@ -468,7 +468,7 @@ public class BraveNewsUtils {
     public static void getSuggestionsSources(
             BraveNewsController braveNewsController,
             @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
-            final Runnable postAction) {
+            final @Nullable Runnable postAction) {
         braveNewsController.getSuggestedPublisherIds(
                 (publisherIds) -> {
                     setSuggestionsIds(Arrays.asList(publisherIds));

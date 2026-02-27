@@ -8,21 +8,22 @@ package org.chromium.chrome.browser.feed;
 import android.content.Context;
 import android.widget.FrameLayout;
 
-import androidx.annotation.Nullable;
-
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.feed.componentinterfaces.SurfaceCoordinator;
 import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
+@NullMarked
 public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
     // Own members.
     private final Profile mProfile;
 
     // To delete in bytecode, members from parent class will be used instead.
-    private FeedSurfaceCoordinator mCoordinator;
-    private SnapScrollHelper mSnapScrollHelper;
+    private @Nullable FeedSurfaceCoordinator mCoordinator;
+    private @Nullable SnapScrollHelper mSnapScrollHelper;
 
     BraveFeedSurfaceMediator(
             FeedSurfaceCoordinator coordinator,
@@ -67,7 +68,7 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
         destroyPropertiesForStream();
         ((BraveFeedSurfaceCoordinator) mCoordinator).createFrameLayoutForPolicy();
         view = ((BraveFeedSurfaceCoordinator) mCoordinator).getFrameLayoutForPolicy();
-        if (mSnapScrollHelper != null) {
+        if (mSnapScrollHelper != null && view != null) {
             mSnapScrollHelper.setView(view);
             view.getViewTreeObserver().addOnScrollChangedListener(mSnapScrollHelper::handleScroll);
         }
