@@ -7,8 +7,8 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import LineChart, { ChartData } from './line_chart'
 
-function parseChartData(): ChartData | null {
-  const encodedData = window.location.search.replace('?', '')
+function parseChartData(search: string): ChartData | null {
+  const encodedData = search.replace('?', '')
   if (!encodedData) {
     return null
   }
@@ -21,8 +21,8 @@ function parseChartData(): ChartData | null {
   }
 }
 
-function App() {
-  const chartData = parseChartData()
+export function App({ searchQuery }: { searchQuery?: string }) {
+  const chartData = parseChartData(searchQuery ?? window.location.search)
 
   if (!chartData?.data || chartData.data.length === 0) {
     return null
