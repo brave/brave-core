@@ -350,8 +350,12 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   std::optional<std::string> mnemonic = std::nullopt;
   std::optional<int> number_of_accounts = std::nullopt;
   for (const auto& keyring_listed : *keyrings) {
-    DCHECK(keyring_listed.is_dict());
-    const auto& keyring = *keyring_listed.GetIfDict();
+    if (!keyring_listed.is_dict()) {
+      VLOG(0) << "keyring entry is not a dict";
+      std::move(callback).Run(base::unexpected(ImportError::kJsonError));
+      return;
+    }
+    const auto& keyring = keyring_listed.GetDict();
     const auto* type = keyring.FindString("type");
     if (!type) {
       VLOG(0) << "keyring.type is missing";
