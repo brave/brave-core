@@ -8,6 +8,10 @@
 
 #include "build/build_config.h"
 
+namespace base {
+class Value;
+}  // namespace base
+
 #if BUILDFLAG(IS_WIN)
 // To avoid conflicts with the macro from the Windows SDK...
 #undef GetUserName
@@ -17,9 +21,11 @@
   BraveMigrateObsoleteProfileAttributes(); \
   void MigrateObsoleteProfileAttributes
 
-#define RecordAccountNamesMetric              \
-  RecordAccountNamesMetric_UnUsed() {}        \
-  friend class ProfileAttributeMigrationTest; \
+#define RecordAccountNamesMetric                                    \
+  RecordAccountNamesMetric_UnUsed() {}                              \
+  const base::Value* GetMetric(std::string_view metric_name) const; \
+  void SetMetric(std::string_view metric_name, base::Value metric); \
+  friend class ProfileAttributeMigrationTest;                       \
   void RecordAccountNamesMetric
 
 #include <chrome/browser/profiles/profile_attributes_entry.h>  // IWYU pragma: export

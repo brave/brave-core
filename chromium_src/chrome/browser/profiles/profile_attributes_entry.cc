@@ -5,8 +5,26 @@
 
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 
+#include <utility>
+
 #include "base/check.h"
+#include "base/values.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/scoped_user_pref_update.h"
+
+namespace {
+
+// Key for the Brave-specific per-profile metrics dictionary in the profile
+// attributes storage. The metrics dictionary has the following structure:
+// "metrics": {
+//   "metric_name_1": value1,
+//   "metric_name_2": value2,
+//   ...
+// }
+constexpr std::string_view kMetricsKey = "metrics";
+
+}  // namespace
 
 void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {
   // Run our migrations
@@ -34,6 +52,29 @@ void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {
     SetAvatarIconIndex(kPlaceholderAvatarIndex);
   }
 #endif
+}
+
+// Retrieves a metric value by name from the Brave-specific per-profile metrics
+// dictionary.
+const base::Value* ProfileAttributesEntry::GetMetric(
+    std::string_view metric_name) const {
+  const base::Value* metrics_value = GetValue(kMetricsKey.data());
+  if (!metrics_value || !metrics_value->is_dict()) {
+    return nullptr;
+  }
+  return metrics_value->GetDict().Find(metric_name);
+}
+
+// Stores a metric value by name in the Brave-specific per-profile metrics
+// dictionary.
+void ProfileAttributesEntry::SetMetric(std::string_view metric_name,
+                                       base::Value metric) {
+  ScopedDictPrefUpdate update(prefs_, prefs::kProfileAttributes);
+  base::DictValue& attributes_dict = update.Get();
+  base::DictValue* entry = attributes_dict.EnsureDict(storage_key_);
+
+  base::DictValue* metrics_dict = entry->EnsureDict(kMetricsKey);
+  metrics_dict->Set(metric_name, std::move(metric));
 }
 
 #define BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES \

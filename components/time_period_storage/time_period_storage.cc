@@ -14,6 +14,8 @@
 #include "base/time/clock.h"
 #include "base/time/default_clock.h"
 #include "base/values.h"
+#include "brave/components/time_period_storage/pref_time_period_store.h"
+#include "brave/components/time_period_storage/time_period_store.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -22,6 +24,17 @@ namespace {
 // method arguments not matching up with stored time values.
 constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
 }  // namespace
+
+TimePeriodStorage::TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
+                                     size_t period_days,
+                                     bool should_offset_dst)
+    : clock_(std::make_unique<base::DefaultClock>()),
+      store_(std::move(store)),
+      period_days_(period_days),
+      should_offset_dst_(should_offset_dst) {
+  CHECK(store_);
+  Load();
+}
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
@@ -39,9 +52,7 @@ TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      size_t period_days,
                                      bool should_offset_dst)
     : clock_(std::make_unique<base::DefaultClock>()),
-      prefs_(prefs),
-      pref_name_(pref_name),
-      dict_key_(dict_key),
+      store_(std::make_unique<PrefTimePeriodStore>(prefs, pref_name, dict_key)),
       period_days_(period_days),
       should_offset_dst_(should_offset_dst) {
   DCHECK(pref_name);
@@ -57,9 +68,7 @@ TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      std::unique_ptr<base::Clock> clock,
                                      bool should_offset_dst)
     : clock_(std::move(clock)),
-      prefs_(prefs),
-      pref_name_(pref_name),
-      dict_key_(dict_key),
+      store_(std::make_unique<PrefTimePeriodStore>(prefs, pref_name, dict_key)),
       period_days_(period_days),
       should_offset_dst_(should_offset_dst) {
   DCHECK(prefs);
@@ -169,7 +178,7 @@ bool TimePeriodStorage::IsOnePeriodPassed() const {
 
 void TimePeriodStorage::Clear() {
   daily_values_.clear();
-  prefs_->ClearPref(pref_name_);
+  store_->Clear();
 }
 
 void TimePeriodStorage::FilterToPeriod() {
@@ -209,14 +218,7 @@ void TimePeriodStorage::FilterToPeriod() {
 
 void TimePeriodStorage::Load() {
   DCHECK(daily_values_.empty());
-  const auto& pref_value = prefs_->GetValue(pref_name_);
-
-  const base::ListValue* list;
-  if (dict_key_) {
-    list = pref_value.GetDict().FindList(dict_key_);
-  } else {
-    list = pref_value.GetIfList();
-  }
+  const base::ListValue* list = store_->Get();
   if (!list) {
     return;
   }
@@ -249,10 +251,5 @@ void TimePeriodStorage::Save() {
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }
-  if (dict_key_) {
-    ScopedDictPrefUpdate update(prefs_, pref_name_);
-    update->Set(dict_key_, std::move(list));
-  } else {
-    prefs_->SetList(pref_name_, std::move(list));
-  }
+  store_->Set(std::move(list));
 }

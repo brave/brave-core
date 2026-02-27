@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("time_period_storage") {
+  public = [ "profile_attributes_time_period_store.h" ]
+
+  sources = [ "profile_attributes_time_period_store.cc" ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/time_period_storage",
+  ]
+
+  deps = [ "//chrome/browser/profiles:profile_util" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "profile_attributes_time_period_store_unittest.cc" ]
+
+  deps = [
+    ":time_period_storage",
+    "//base",
+    "//chrome/browser/profiles:profile_util",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
