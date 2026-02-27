@@ -168,12 +168,18 @@ std::vector<DirectFeed> BraveNewsPrefManager::GetDirectFeeds() {
       continue;
     }
 
+    const auto* source =
+        value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeySource);
+    const auto* title =
+        value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeyTitle);
+    if (!source || !title) {
+      continue;
+    }
+
     result.push_back({
         .id = key,
-        .url = GURL(
-            *value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeySource)),
-        .title =
-            *value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeyTitle),
+        .url = GURL(*source),
+        .title = *title,
     });
   }
   return result;

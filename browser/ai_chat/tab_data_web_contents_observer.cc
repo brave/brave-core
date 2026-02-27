@@ -25,8 +25,8 @@ namespace {
 mojom::TabDataPtr CreateTabDataFromWebContents(
     content::WebContents* web_contents) {
   auto tab = mojom::TabData::New();
-  tab->content_id =
-      web_contents->GetController().GetLastCommittedEntry()->GetUniqueID();
+  auto* entry = web_contents->GetController().GetLastCommittedEntry();
+  tab->content_id = entry ? entry->GetUniqueID() : 0;
   tab->title = base::UTF16ToUTF8(web_contents->GetTitle());
   tab->url = web_contents->GetLastCommittedURL();
   return tab;
