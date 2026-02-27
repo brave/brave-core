@@ -809,6 +809,11 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_PSST)
+  registry.ForWebUI<psst::BravePsstDialogUI>()
+      .Add<psst::mojom::PsstConsentFactory>();
+#endif
 }
 
 void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
@@ -1015,11 +1020,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindIAPSubscription));
   }
 #endif
-#endif
-
-#if BUILDFLAG(ENABLE_PSST)
-  content::RegisterWebUIControllerInterfaceBinder<
-      psst::mojom::PsstConsentFactory, psst::BravePsstDialogUI>(map);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
