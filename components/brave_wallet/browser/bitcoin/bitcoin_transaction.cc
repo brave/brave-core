@@ -21,7 +21,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kChangeOuputType[] = "change";
+constexpr char kChangeOutputType[] = "change";
 constexpr char kTargetOutputType[] = "target";
 
 bool ReadStringTo(const base::DictValue& dict,
@@ -300,7 +300,7 @@ base::DictValue BitcoinTransaction::TxOutput::ToValue() const {
   base::DictValue dict;
 
   dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
-                                                 : kChangeOuputType);
+                                                 : kChangeOutputType);
   dict.Set("address", address);
   dict.Set("script_pubkey", base::HexEncode(script_pubkey));
   dict.Set("amount", base::NumberToString(amount));
@@ -315,7 +315,7 @@ BitcoinTransaction::TxOutput::FromValue(const base::DictValue& value) {
 
   std::string type_string;
   if (!ReadStringTo(value, "type", type_string) ||
-      (type_string != kChangeOuputType && type_string != kTargetOutputType)) {
+      (type_string != kChangeOutputType && type_string != kTargetOutputType)) {
     return std::nullopt;
   }
   result.type = type_string == kTargetOutputType ? TxOutputType::kTarget
