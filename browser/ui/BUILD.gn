@@ -138,18 +138,7 @@ source_set("ui") {
   }
 
   if (enable_psst) {
-    sources += [
-      "webui/psst/brave_psst_dialog_handler.cc",
-      "webui/psst/brave_psst_dialog_handler.h",
-      "webui/psst/brave_psst_dialog_ui.cc",
-      "webui/psst/brave_psst_dialog_ui.h",
-    ]
-    deps += [
-      "//brave/browser/psst",
-      "//brave/browser/ui/tabs:tabs_public",
-      "//brave/components/psst/browser/content",
-      "//brave/components/psst/common:mojom",
-    ]
+    deps += [ "//brave/browser/ui/webui/psst" ]
   }
 
   if (enable_brave_rewards) {

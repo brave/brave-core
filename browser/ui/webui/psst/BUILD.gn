@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/psst/buildflags/buildflags.gni")
+
+assert(enable_psst)
+
+source_set("psst") {
+  sources = [
+    "brave_psst_dialog_handler.cc",
+    "brave_psst_dialog_handler.h",
+    "brave_psst_dialog_ui.cc",
+    "brave_psst_dialog_ui.h",
+  ]
+
+  deps = [
+    "//brave/browser/psst",
+    "//brave/browser/ui/tabs:tabs_public",
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/common:mojom",
+  ]
+}
