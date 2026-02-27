@@ -102,7 +102,7 @@ class BraveNewsFeedGenerationInfoTest : public testing::Test {
     return info.article_infos_.has_value();
   }
 
-  absl::flat_hash_map<std::string, size_t>& GetAvailableCounts(
+  absl::flat_hash_map<NameId, size_t>& GetAvailableCounts(
       FeedGenerationInfo& info) {
     return info.available_counts_;
   }
@@ -132,8 +132,12 @@ TEST_F(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
   // There are only 3 items because PublisherTwo is not explicitly subscribed.
   EXPECT_EQ(3u, content_groups.size());
 
-  auto has_group = [&content_groups](const std::string& group) {
-    return std::ranges::contains(content_groups, group,
+  auto has_group = [&content_groups, &info](const std::string& name) {
+    auto name_id = info.name_table().Find(name);
+    if (!name_id) {
+      return false;
+    }
+    return std::ranges::contains(content_groups, name_id,
                                  [](const auto& other) { return other.first; });
   };
   EXPECT_TRUE(has_group(kTopNewsChannel));
@@ -181,10 +185,12 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   EXPECT_EQ(2u, info.EligibleChannels().size());
 
   // Pick top news
+  const NameId top_news_id = info.name_table().Find(kTopNewsChannel);
+  ASSERT_FALSE(top_news_id.is_null());
   auto pick_top_news =
-      [](const ArticleInfos& articles) -> std::optional<size_t> {
+      [top_news_id](const ArticleInfos& articles) -> std::optional<size_t> {
     for (size_t i = 0; i < articles.size(); ++i) {
-      if (std::get<1>(articles[i]).channels.contains(kTopNewsChannel)) {
+      if (std::get<1>(articles[i]).channels.contains(top_news_id)) {
         return std::make_optional(i);
       }
     }
@@ -195,7 +201,9 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
 
   auto channels = info.EligibleChannels();
   EXPECT_EQ(1u, channels.size());
-  EXPECT_TRUE(std::ranges::contains(channels, kFooChannel));
+  const NameId foo_channel_id = info.name_table().Find(kFooChannel);
+  ASSERT_FALSE(foo_channel_id.is_null());
+  EXPECT_TRUE(std::ranges::contains(channels, foo_channel_id));
 }
 
 TEST(BraveNewsFeedSampling, GetArticleInfosSkipsNull) {

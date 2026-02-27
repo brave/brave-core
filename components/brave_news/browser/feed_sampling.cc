@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/feed_sampling.h"
 
 #include <algorithm>
+#include <memory>
 #include <numeric>
 #include <optional>
 #include <string>
@@ -15,6 +16,38 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
+
+NameTable::NameTable() = default;
+NameTable::~NameTable() = default;
+NameTable::NameTable(NameTable&&) = default;
+NameTable& NameTable::operator=(NameTable&&) = default;
+
+NameId NameTable::Add(std::string_view s) {
+  const auto it = map_.find(s);
+  if (it != map_.end()) {
+    return it->second;
+  }
+  strings_.emplace_back(std::make_unique<std::string>(s));
+  const NameId id(strings_.size());
+  map_[*strings_.back()] = id;
+  return id;
+}
+
+NameId NameTable::Find(std::string_view s) const {
+  const auto it = map_.find(s);
+  return it != map_.end() ? it->second : NameId();
+}
+
+std::optional<std::string> NameTable::GetString(NameId id) const {
+  if (!id) {
+    return std::nullopt;
+  }
+  const size_t index = id.value() - 1;
+  if (index >= strings_.size()) {
+    return std::nullopt;
+  }
+  return *strings_[index];
+}
 
 ArticleMetadata::ArticleMetadata() = default;
 ArticleMetadata::~ArticleMetadata() = default;
@@ -103,11 +136,11 @@ std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
 }
 
 std::optional<size_t> PickChannelRoulette(const ArticleInfos& articles,
-                                          const std::string& channel) {
+                                          NameId channel_id) {
   return PickRouletteWithWeighting(
-      articles, [&channel](const mojom::FeedItemMetadataPtr& metadata,
-                           const ArticleMetadata& meta) {
-        return meta.channels.contains(channel) ? meta.weighting : 0.0;
+      articles, [channel_id](const mojom::FeedItemMetadataPtr& metadata,
+                             const ArticleMetadata& meta) {
+        return meta.channels.contains(channel_id) ? meta.weighting : 0.0;
       });
 }
 
@@ -129,7 +162,7 @@ std::optional<size_t> PickContentGroupRoulette(
     bool require_image) {
   const auto& [group_id, is_channel] = content_group;
   return PickRouletteWithWeighting(
-      articles, [&group_id, is_channel, &publisher_channels, require_image](
+      articles, [group_id, is_channel, &publisher_channels, require_image](
                     const mojom::FeedItemMetadataPtr& article,
                     const ArticleMetadata& meta) {
         if (require_image) {
@@ -142,14 +175,14 @@ std::optional<size_t> PickContentGroupRoulette(
         }
 
         if (is_channel) {
-          auto it = publisher_channels.find(article->publisher_id);
+          const auto it = publisher_channels.find(meta.publisher_id);
           if (it != publisher_channels.end() && it->second.contains(group_id)) {
             return meta.weighting;
           }
           return 0.0;
         }
 
-        return article->publisher_id == group_id ? meta.weighting : 0.0;
+        return meta.publisher_id == group_id ? meta.weighting : 0.0;
       });
 }
 
