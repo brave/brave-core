@@ -76,8 +76,7 @@ bool AddRule(
       base::FindOrNull(kWebcompatNamesToType, exception_string);
   if (webcompat_type_ptr) {
     const auto webcompat_type = *webcompat_type_ptr;
-    auto [it, inserted] = patterns_by_webcompat_type.try_emplace(
-        webcompat_type, kEmptyPatternVector);
+    auto it = patterns_by_webcompat_type.try_emplace(webcompat_type).first;
     it->second.push_back(pattern);
     return true;
   }
