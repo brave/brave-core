@@ -13,7 +13,9 @@ static_library("content") {
 
   deps = [
     "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:mojom",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
     "//ui/base",
     "//url",
@@ -27,7 +29,9 @@ source_set("unit_tests") {
   deps = [
     ":content",
     "//base/test:test_support",
+    "//brave/components/local_ai/core:mojom",
     "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
     "//testing/gmock",
     "//testing/gtest",
     "//url",

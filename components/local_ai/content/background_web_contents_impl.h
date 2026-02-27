@@ -7,12 +7,17 @@
 #define BRAVE_COMPONENTS_LOCAL_AI_CONTENT_BACKGROUND_WEB_CONTENTS_IMPL_H_
 
 #include <memory>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
+#include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -25,12 +30,11 @@ namespace local_ai {
 // WebContents that runs in the background without any visible UI, modeled
 // after chrome/browser/background/background_contents.h.
 //
-// The WebContents is created with is_never_composited=true and navigated
-// to the provided URL. Lifecycle events are forwarded to the Delegate.
-//
-// The destructor suppresses delegate callbacks during teardown, so
-// the owner can simply destroy this object without additional cleanup.
+// Also implements mojom::PassageEmbedder as a proxy: consumer receivers
+// are held in a ReceiverSet, and GenerateEmbeddings() calls are forwarded
+// to the renderer's worker_remote_.
 class BackgroundWebContentsImpl : public BackgroundWebContents,
+                                  public mojom::PassageEmbedder,
                                   public content::WebContentsDelegate,
                                   public content::WebContentsObserver {
  public:
@@ -54,7 +58,16 @@ class BackgroundWebContentsImpl : public BackgroundWebContents,
 
   content::WebContents* web_contents() const { return web_contents_.get(); }
 
+  // BackgroundWebContents:
+  void SetWorkerRemote(
+      mojo::PendingRemote<mojom::PassageEmbedder> remote) override;
+  mojo::PendingRemote<mojom::PassageEmbedder> BindNewPassageEmbedder() override;
+
  private:
+  // mojom::PassageEmbedder:
+  void GenerateEmbeddings(const std::string& text,
+                          GenerateEmbeddingsCallback callback) override;
+
   // content::WebContentsDelegate:
   void CloseContents(content::WebContents* source) override;
   bool ShouldSuppressDialogs(content::WebContents* source) override;
@@ -83,10 +96,20 @@ class BackgroundWebContentsImpl : public BackgroundWebContents,
       base::TerminationStatus status) override;
 
   void NotifyDestroyed(DestroyReason reason);
+  void BindPendingReceivers();
 
   raw_ptr<Delegate> delegate_;
   GURL expected_url_;
   std::unique_ptr<content::WebContents> web_contents_;
+
+  // Renderer's PassageEmbedder implementation.
+  mojo::Remote<mojom::PassageEmbedder> worker_remote_;
+
+  // Consumer-facing receivers. Each GetPassageEmbedder() call adds one.
+  mojo::ReceiverSet<mojom::PassageEmbedder> passage_embedder_receivers_;
+
+  // Receivers waiting for the worker to connect.
+  std::vector<mojo::PendingReceiver<mojom::PassageEmbedder>> pending_receivers_;
 };
 
 }  // namespace local_ai

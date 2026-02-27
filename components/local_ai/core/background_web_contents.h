@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_CORE_BACKGROUND_WEB_CONTENTS_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_BACKGROUND_WEB_CONTENTS_H_
 
+#include "brave/components/local_ai/core/local_ai.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+
 namespace local_ai {
 
 // Abstract interface for a background web environment that runs local AI
@@ -38,6 +41,17 @@ class BackgroundWebContents {
   };
 
   virtual ~BackgroundWebContents() = default;
+
+  // Stores the renderer's PassageEmbedder implementation and binds any
+  // pending consumer receivers.
+  virtual void SetWorkerRemote(
+      mojo::PendingRemote<mojom::PassageEmbedder> remote) = 0;
+
+  // Creates a new Mojo pipe and returns the consumer end. If the worker
+  // is already connected, the receiver is bound immediately; otherwise
+  // it is held until SetWorkerRemote() is called.
+  virtual mojo::PendingRemote<mojom::PassageEmbedder>
+  BindNewPassageEmbedder() = 0;
 };
 
 }  // namespace local_ai

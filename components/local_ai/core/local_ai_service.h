@@ -7,8 +7,6 @@
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_AI_SERVICE_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -18,17 +16,16 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
 
 namespace local_ai {
 
-// LocalAIService provides on-device machine learning capabilities.
+// LocalAIService manages the lifecycle of background model workers.
 //
-// This service manages:
-// - A BackgroundWebContents that owns the ML model worker
-// - Communication between the browser process and the renderer via Mojo
-// - Request queueing while the model initializes
-// - Cleanup on shutdown and renderer crash
+// Consumers call GetPassageEmbedder() to obtain a PassageEmbedder remote
+// bound directly to the content layer (BackgroundWebContentsImpl). The
+// service itself does not proxy inference calls — it only manages
+// creation/teardown of the background WebContents and forwards the
+// renderer's PassageEmbedder registration to it.
 class LocalAIService : public KeyedService,
                        public mojom::LocalAIService,
                        public BackgroundWebContents::Delegate {
@@ -50,10 +47,9 @@ class LocalAIService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::LocalAIService> receiver);
 
   // mojom::LocalAIService:
-  void RegisterOnDeviceModelWorker(
-      mojo::PendingRemote<mojom::OnDeviceModelWorker> worker) override;
-  void GenerateEmbeddings(const std::string& text,
-                          GenerateEmbeddingsCallback callback) override;
+  void RegisterPassageEmbedder(
+      mojo::PendingRemote<mojom::PassageEmbedder> embedder) override;
+  void GetPassageEmbedder(GetPassageEmbedderCallback callback) override;
 
  private:
   // KeyedService:
@@ -64,36 +60,12 @@ class LocalAIService : public KeyedService,
   void OnBackgroundContentsDestroyed(
       BackgroundWebContents::DestroyReason reason) override;
 
-  void CancelPendingRequests();
   void MaybeCreateBackgroundContents();
   void CloseBackgroundContents();
 
-  // Background web contents that owns the model worker page
   std::unique_ptr<BackgroundWebContents> background_web_contents_;
-
   BackgroundWebContentsFactory background_web_contents_factory_;
-
   mojo::ReceiverSet<mojom::LocalAIService> receivers_;
-
-  // Single model worker remote (shared by all callers)
-  mojo::Remote<mojom::OnDeviceModelWorker> model_worker_remote_;
-
-  // Holds a GenerateEmbeddings() call that arrived before the model was
-  // ready. Requests are drained in FIFO order once the model is
-  // initialized.
-  struct PendingRequest {
-    PendingRequest();
-    PendingRequest(std::string text, GenerateEmbeddingsCallback callback);
-    ~PendingRequest();
-    PendingRequest(PendingRequest&&);
-    PendingRequest& operator=(PendingRequest&&);
-
-    std::string text;
-    GenerateEmbeddingsCallback callback;
-  };
-  std::vector<PendingRequest> pending_requests_;
-
-  void ProcessPendingRequests();
 
   base::WeakPtrFactory<LocalAIService> weak_ptr_factory_{this};
 };

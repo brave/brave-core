@@ -5,23 +5,25 @@
 
 module local_ai.mojom;
 
-// Browser-side service that manages on-device ML model lifecycle and
-// dispatches inference requests. Implemented by LocalAIService in the
-// browser process; called by the model worker page in the renderer.
-interface LocalAIService {
-  // Receives the renderer-side OnDeviceModelWorker implementation
-  // so the browser can forward inference requests to the model.
-  RegisterOnDeviceModelWorker(
-      pending_remote<OnDeviceModelWorker> worker);
-
-  // Generates a dense embedding vector for the given text.
+// Shared embedding interface used by both consumers (browser features)
+// and producers (renderer model workers). Consumers call
+// GenerateEmbeddings() via a Remote; the renderer implements it.
+interface PassageEmbedder {
+  // Produces a dense embedding vector for the given input text.
   GenerateEmbeddings(string text) => (array<double> embedding);
 };
 
-// Renderer-side interface implemented by the model worker page.
-// Performs actual model inference using an ML framework compiled
-// to WebAssembly.
-interface OnDeviceModelWorker {
-  // Produces a dense embedding vector for the given input text.
-  GenerateEmbeddings(string input) => (array<double> output);
+// Browser-side service that manages on-device ML model lifecycle.
+// Consumers call GetPassageEmbedder() to obtain a PassageEmbedder
+// remote bound to the background model worker. The renderer calls
+// RegisterPassageEmbedder() to register its implementation.
+interface LocalAIService {
+  // Called by the renderer model worker page to register its
+  // PassageEmbedder implementation.
+  RegisterPassageEmbedder(pending_remote<PassageEmbedder> embedder);
+
+  // Returns a PassageEmbedder bound to the background model worker.
+  // Creates the background WebContents if needed. Calls are buffered
+  // by the Mojo pipe until the model is ready.
+  GetPassageEmbedder() => (pending_remote<PassageEmbedder> embedder);
 };

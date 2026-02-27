@@ -44,11 +44,11 @@ static_library("core") {
 
   public_deps = [
     ":features",
+    ":mojom",
     "//base",
   ]
 
   deps = [
-    ":mojom",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/resources:strings_grit",
     "//components/component_updater",

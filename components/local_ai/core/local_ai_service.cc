@@ -14,16 +14,6 @@
 
 namespace local_ai {
 
-LocalAIService::PendingRequest::PendingRequest() = default;
-LocalAIService::PendingRequest::PendingRequest(
-    std::string text,
-    GenerateEmbeddingsCallback callback)
-    : text(std::move(text)), callback(std::move(callback)) {}
-LocalAIService::PendingRequest::~PendingRequest() = default;
-LocalAIService::PendingRequest::PendingRequest(PendingRequest&&) = default;
-LocalAIService::PendingRequest& LocalAIService::PendingRequest::operator=(
-    PendingRequest&&) = default;
-
 LocalAIService::LocalAIService(BackgroundWebContentsFactory factory)
     : background_web_contents_factory_(std::move(factory)) {
   CHECK(base::FeatureList::IsEnabled(features::kLocalAIModels));
@@ -45,38 +35,18 @@ void LocalAIService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void LocalAIService::RegisterOnDeviceModelWorker(
-    mojo::PendingRemote<mojom::OnDeviceModelWorker> worker) {
-  if (model_worker_remote_.is_bound()) {
-    DVLOG(1) << "Model worker already bound, resetting";
-    model_worker_remote_.reset();
-  }
-  model_worker_remote_.Bind(std::move(worker));
-
-  model_worker_remote_.set_disconnect_handler(base::BindOnce(
-      [](LocalAIService* service) {
-        DVLOG(1) << "Model worker remote disconnected";
-        service->CloseBackgroundContents();
-      },
-      base::Unretained(this)));
-
-  DVLOG(3) << "RegisterOnDeviceModelWorker: Bound model worker";
-
-  ProcessPendingRequests();
-}
-
-void LocalAIService::GenerateEmbeddings(
-    const std::string& text,
-    GenerateEmbeddingsCallback callback) {
-  MaybeCreateBackgroundContents();
-
-  if (!model_worker_remote_.is_bound()) {
-    DVLOG(3) << "Model worker not ready yet, queuing request";
-    pending_requests_.emplace_back(text, std::move(callback));
+void LocalAIService::RegisterPassageEmbedder(
+    mojo::PendingRemote<mojom::PassageEmbedder> embedder) {
+  if (!background_web_contents_) {
+    DVLOG(1) << "RegisterPassageEmbedder: No background contents";
     return;
   }
+  background_web_contents_->SetWorkerRemote(std::move(embedder));
+}
 
-  model_worker_remote_->GenerateEmbeddings(text, std::move(callback));
+void LocalAIService::GetPassageEmbedder(GetPassageEmbedderCallback callback) {
+  MaybeCreateBackgroundContents();
+  std::move(callback).Run(background_web_contents_->BindNewPassageEmbedder());
 }
 
 void LocalAIService::OnBackgroundContentsReady() {
@@ -95,22 +65,6 @@ void LocalAIService::Shutdown() {
   CloseBackgroundContents();
 }
 
-void LocalAIService::ProcessPendingRequests() {
-  if (!model_worker_remote_.is_bound()) {
-    return;
-  }
-
-  DVLOG(3) << "Processing " << pending_requests_.size()
-           << " pending requests";
-
-  std::vector<PendingRequest> requests;
-  requests.swap(pending_requests_);
-  for (auto& request : requests) {
-    model_worker_remote_->GenerateEmbeddings(request.text,
-                                             std::move(request.callback));
-  }
-}
-
 void LocalAIService::MaybeCreateBackgroundContents() {
   if (background_web_contents_) {
     return;
@@ -120,19 +74,8 @@ void LocalAIService::MaybeCreateBackgroundContents() {
   background_web_contents_ = background_web_contents_factory_.Run(this);
 }
 
-void LocalAIService::CancelPendingRequests() {
-  std::vector<PendingRequest> requests;
-  requests.swap(pending_requests_);
-  for (auto& request : requests) {
-    std::move(request.callback).Run({});
-  }
-}
-
 void LocalAIService::CloseBackgroundContents() {
   DVLOG(3) << "LocalAIService: Closing background contents to free memory";
-
-  model_worker_remote_.reset();
-  CancelPendingRequests();
   background_web_contents_.reset();
 }
 
