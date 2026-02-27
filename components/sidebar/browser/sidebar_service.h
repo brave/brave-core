@@ -96,6 +96,10 @@ class SidebarService : public KeyedService {
   FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedScrollTest);
   FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest,
                            DisabledItemsTestWithGuestWindow);
+  // Parameterized test fixture friends (V1/V2 testing)
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTestV1AndV2,
+                           ItemAddedBubbleAnchorViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTestV1AndV2, ItemAddedScrollTest);
 
   static bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
 

@@ -25,6 +25,7 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
@@ -49,6 +50,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
@@ -350,14 +352,20 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
-    // Wrap chromium side panel with our sidebar container
-    auto original_side_panel =
-        RemoveChildViewT(contents_height_side_panel_.get());
-    sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(
-            browser_, SidePanelCoordinator::From(browser_),
-            std::move(original_side_panel)));
-    contents_height_side_panel_ = sidebar_container_view_->side_panel();
+    if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
+      sidebar_container_view_ =
+          AddChildView(std::make_unique<SidebarContainerView>(
+              browser_, SidePanelCoordinator::From(browser_), nullptr));
+    } else {
+      // V1: wrap chromium's side panel inside SidebarContainerView.
+      auto original_side_panel =
+          RemoveChildViewT(contents_height_side_panel_.get());
+      sidebar_container_view_ =
+          AddChildView(std::make_unique<SidebarContainerView>(
+              browser_, SidePanelCoordinator::From(browser_),
+              std::move(original_side_panel)));
+      contents_height_side_panel_ = sidebar_container_view_->side_panel();
+    }
 
     if (IsBraveWebViewRoundedCornersEnabled()) {
       sidebar_separator_view_ =
@@ -460,7 +468,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   if (multi_contents_view_ &&
       base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
     GetBraveMultiContentsView()->SetWebPanelWidth(
-        sidebar_container_view_->side_panel()->GetPreferredSize().width());
+        sidebar::kDefaultSidePanelWidth);
     GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
   }
 

@@ -160,6 +160,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   // Call this when want to hide and only want to consider show opton.
   void HideSidebarForShowOption();
 
+  bool IsSidePanelShowing() const;
   bool ShouldForceShowSidebar() const;
   void UpdateToolbarButtonVisibility();
 

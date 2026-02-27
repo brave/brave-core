@@ -512,8 +512,11 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateMarginsForSideBar() {
     // will have margins if needed.
     panel_margins.set_left_right(0, 0);
   }
-  views().sidebar_container->side_panel()->SetProperty(views::kMarginsKey,
-                                                       panel_margins);
+
+  // V1 wraps the side panel; set margins on it. V2 has no owned panel.
+  if (auto* panel = views().sidebar_container->side_panel()) {
+    panel->SetProperty(views::kMarginsKey, panel_margins);
+  }
 }
 
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {

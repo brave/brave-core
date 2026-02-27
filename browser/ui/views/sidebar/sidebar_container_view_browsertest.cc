@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -22,6 +24,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+// Base test fixture with common helper methods
 class SidebarContainerViewBrowserTest : public InProcessBrowserTest {
  public:
   SidebarContainerViewBrowserTest() = default;
@@ -52,7 +55,29 @@ class SidebarContainerViewBrowserTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
+// Parameterized test fixture to test both Sidebar V1 and V2.
+// Test parameter: bool - false = V1 (default), true = V2 (kSidebarV2 enabled)
+//
+// Back to SidebarContainerViewBrowserTest when V2 is enabled by default.
+class SidebarContainerViewBrowserTestV1AndV2
+    : public SidebarContainerViewBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  SidebarContainerViewBrowserTestV1AndV2() {
+    if (GetParam()) {  // true = Enable V2
+      scoped_features_.InitAndEnableFeature(sidebar::features::kSidebarV2);
+    } else {  // false = V1 (default behavior)
+      scoped_features_.InitAndDisableFeature(sidebar::features::kSidebarV2);
+    }
+  }
+  ~SidebarContainerViewBrowserTestV1AndV2() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+// Category A: Works in both V1 and V2 without changes
+IN_PROC_BROWSER_TEST_P(SidebarContainerViewBrowserTestV1AndV2,
                        ButtonIsShownByDefault) {
   EXPECT_LT(0u, GetService()->items().size());
   EXPECT_TRUE(sidebar());
@@ -62,7 +87,9 @@ IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
             toolbar_button()->height());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest, ButtonIsHiddenByPref) {
+// Category A: Works in both V1 and V2 without changes
+IN_PROC_BROWSER_TEST_P(SidebarContainerViewBrowserTestV1AndV2,
+                       ButtonIsHiddenByPref) {
   EXPECT_TRUE(toolbar_button()->GetVisible());
 
   // When the pref is false, the button should be hidden.
@@ -74,7 +101,8 @@ IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest, ButtonIsHiddenByPref) {
   EXPECT_TRUE(toolbar_button()->GetVisible());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
+// Category A: Works in both V1 and V2 without changes
+IN_PROC_BROWSER_TEST_P(SidebarContainerViewBrowserTestV1AndV2,
                        ButtonIsHiddenWithoutPanelItems) {
   EXPECT_TRUE(toolbar_button()->GetVisible());
 
@@ -92,3 +120,12 @@ IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
   EXPECT_EQ(1u, GetService()->items().size());
   EXPECT_TRUE(toolbar_button()->GetVisible());
 }
+
+// Instantiate parameterized tests for both V1 and V2
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarContainerViewBrowserTestV1AndV2,
+    ::testing::Bool(),  // false = V1, true = V2
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "V2" : "V1";
+    });
