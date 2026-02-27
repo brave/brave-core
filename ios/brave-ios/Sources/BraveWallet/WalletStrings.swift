@@ -3131,6 +3131,13 @@ extension Strings {
       value: "Default Solana Wallet",
       comment: "The title for the entry displaying the current preferred default Solana wallet is."
     )
+    public static let web3PreferencesDefaultCardanoWallet = NSLocalizedString(
+      "wallet.web3PreferencesDefaultCardanoWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Default Cardano Wallet",
+      comment: "The title for the entry displaying the current preferred default Cardano wallet is."
+    )
     public static let web3PreferencesAllowEthProviderAccess = NSLocalizedString(
       "wallet.web3PreferencesAllowEthProviderAccess",
       tableName: "BraveWallet",
@@ -3146,6 +3153,14 @@ extension Strings {
       value: "Sites Can Request Access to Your Solana Wallet",
       comment:
         "The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API."
+    )
+    public static let web3PreferencesAllowCardanoProviderAccess = NSLocalizedString(
+      "wallet.web3PreferencesAllowCardanoProviderAccess",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sites Can Request Access to Your Cardano Wallet",
+      comment:
+        "The title for the entry displaying the preferred option to allow web3 sites to access the Cardano provider API."
     )
     public static let web3PreferencesDisplayWeb3Notifications = NSLocalizedString(
       "wallet.web3PreferencesDisplayWeb3Notifications",

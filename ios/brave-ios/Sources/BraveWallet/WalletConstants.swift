@@ -140,7 +140,7 @@ public struct WalletConstants {
         result.append(.ada)
       }
     case .dapps:
-      return [.eth, .sol]
+      return isCardanoDAppSupportEnabled ? [.eth, .sol, .ada] : [.eth, .sol]
     }
     return result
   }

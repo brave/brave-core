@@ -42,6 +42,8 @@ public final class Domain: NSManagedObject, CRUD {
   @NSManaged public var zoom_level: NSNumber?
   // swift-format-ignore
   @NSManaged public var wallet_solanaPermittedAcccounts: String?
+  // swift-format-ignore
+  @NSManaged public var wallet_cardanoPermittedAcccounts: String?
 
   /// A string version of the shield shred level
   // swift-format-ignore
@@ -60,6 +62,9 @@ public final class Domain: NSManagedObject, CRUD {
   )
   private static let containsSolanaPermissionsPredicate = NSPredicate(
     format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''"
+  )
+  private static let containsCardanoPermissionsPredicate = NSPredicate(
+    format: "wallet_cardanoPermittedAcccounts != nil && wallet_cardanoPermittedAcccounts != ''"
   )
 
   /// A domain can be created in many places,
@@ -264,11 +269,9 @@ public final class Domain: NSManagedObject, CRUD {
       return domain.wallet_permittedAccounts?.split(separator: ",").map(String.init)
     case .sol:
       return domain.wallet_solanaPermittedAcccounts?.split(separator: ",").map(String.init)
-    case .fil:
-      return nil
-    case .btc:
-      return nil
-    case .zec:
+    case .ada:
+      return domain.wallet_cardanoPermittedAcccounts?.split(separator: ",").map(String.init)
+    case .fil, .btc, .zec, .dot:
       return nil
     @unknown default:
       return nil
@@ -285,11 +288,11 @@ public final class Domain: NSManagedObject, CRUD {
       if let permittedAccount = wallet_solanaPermittedAcccounts {
         return permittedAccount.components(separatedBy: ",").contains(account)
       }
-    case .fil:
-      break
-    case .btc:
-      break
-    case .zec:
+    case .ada:
+      if let permittedAccount = wallet_cardanoPermittedAcccounts {
+        return permittedAccount.components(separatedBy: ",").contains(account)
+      }
+    case .fil, .btc, .zec, .dot:
       break
     @unknown default:
       break
@@ -308,11 +311,10 @@ public final class Domain: NSManagedObject, CRUD {
     case .sol:
       let predicate = Domain.containsSolanaPermissionsPredicate
       return all(where: predicate, context: context ?? DataController.viewContext) ?? []
-    case .fil:
-      break
-    case .btc:
-      break
-    case .zec:
+    case .ada:
+      let predicate = Domain.containsCardanoPermissionsPredicate
+      return all(where: predicate, context: context ?? DataController.viewContext) ?? []
+    case .fil, .btc, .zec, .dot:
       break
     @unknown default:
       break
@@ -335,11 +337,9 @@ public final class Domain: NSManagedObject, CRUD {
             $0.wallet_permittedAccounts = nil
           case .sol:
             $0.wallet_solanaPermittedAcccounts = nil
-          case .fil:
-            break
-          case .btc:
-            break
-          case .zec:
+          case .ada:
+            $0.wallet_cardanoPermittedAcccounts = nil
+          case .fil, .btc, .zec, .dot:
             break
           @unknown default:
             break
@@ -505,11 +505,17 @@ extension Domain {
         } else {
           wallet_solanaPermittedAcccounts = account
         }
-      case .fil:
-        break
-      case .btc:
-        break
-      case .zec:
+      case .ada:
+        if let permittedAccounts = wallet_cardanoPermittedAcccounts {
+          // make sure stored `wallet_cardanoPermittedAcccounts` does not contain this `account`
+          // make sure this `account` does not contain any comma
+          if !permittedAccounts.contains(account), !account.contains(",") {
+            wallet_cardanoPermittedAcccounts = [permittedAccounts, account].joined(separator: ",")
+          }
+        } else {
+          wallet_cardanoPermittedAcccounts = account
+        }
+      case .fil, .btc, .zec, .dot:
         break
       @unknown default:
         break
@@ -530,11 +536,14 @@ extension Domain {
           accounts.remove(at: index)
           wallet_solanaPermittedAcccounts = accounts.joined(separator: ",")
         }
-      case .fil:
-        break
-      case .btc:
-        break
-      case .zec:
+      case .ada:
+        if var accounts = wallet_cardanoPermittedAcccounts?.components(separatedBy: ","),
+          let index = accounts.firstIndex(of: account)
+        {
+          accounts.remove(at: index)
+          wallet_cardanoPermittedAcccounts = accounts.joined(separator: ",")
+        }
+      case .fil, .btc, .zec, .dot:
         break
       @unknown default:
         break
