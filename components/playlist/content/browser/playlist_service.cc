@@ -473,6 +473,9 @@ std::vector<mojom::PlaylistPtr> PlaylistService::GetAllPlaylists() {
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
 
   for (const auto& id : prefs_->GetList(kPlaylistOrderPref)) {
+    if (!id.is_string()) {
+      continue;
+    }
     auto* playlist_value = playlists_dict.Find(id.GetString());
     if (!playlist_value || !playlist_value->is_dict()) {
       continue;
