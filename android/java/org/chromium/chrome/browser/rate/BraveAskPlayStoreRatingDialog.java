@@ -30,6 +30,7 @@ import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
@@ -111,7 +112,9 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
         rateNowButton.setOnClickListener(
                 (v) -> {
                     try {
-                        if (mIsFromSettings) {
+                        if (mIsFromSettings
+                                && !ChromeSharedPreferences.getInstance()
+                                        .readBoolean("qa_force_in_app_review", false)) {
                             RateUtils.getInstance().openPlaystore(mContext);
                         } else {
                             launchReviewFlow();
