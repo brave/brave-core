@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 
-#include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -14,14 +13,11 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
-#include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
-#include "ui/views/widget/widget.h"
 
 SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   // Locate image at center of the button.
-  SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
-  SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
+  SetHorizontalAlignment(gfx::ALIGN_CENTER);
 
   // In order to make use of margin collapsing sets the margin keys.
   // But at the same time, we want the sidebar buttons fill the entire width
@@ -39,19 +35,8 @@ SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
 
 SidebarButtonView::~SidebarButtonView() = default;
 
-gfx::ImageSkia SidebarButtonView::GetImage(ButtonState state) const {
-  if constexpr (views::PlatformStyle::kInactiveWidgetControlsAppearDisabled) {
-    const auto* widget = GetWidget();
-    if (widget && widget->ShouldViewsStyleFollowWidgetActivation() &&
-        !widget->ShouldPaintAsActive()) {
-      return ImageButton::GetImage(STATE_DISABLED);
-    }
-  }
-  return ImageButton::GetImage(state);
-}
-
 void SidebarButtonView::OnThemeChanged() {
-  ImageButton::OnThemeChanged();
+  LabelButton::OnThemeChanged();
 
   // Apply toolbar button's ink drop config.
   // Reset ink drop config as inkdrop has different config per themes.
@@ -65,35 +50,6 @@ void SidebarButtonView::OnThemeChanged() {
 gfx::Size SidebarButtonView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   return {kSidebarButtonSize + kMargin * 2, kSidebarButtonSize};
-}
-
-gfx::ImageSkia SidebarButtonView::GetImageToPaint() {
-  if constexpr (views::PlatformStyle::kInactiveWidgetControlsAppearDisabled) {
-    const auto* widget = GetWidget();
-    if (widget && widget->ShouldViewsStyleFollowWidgetActivation() &&
-        !widget->ShouldPaintAsActive()) {
-      auto img = images_[STATE_DISABLED].Rasterize(GetColorProvider());
-      if (!img.isNull()) {
-        return img;
-      }
-    }
-  }
-  return ImageButton::GetImageToPaint();
-}
-
-void SidebarButtonView::AddedToWidget() {
-  ImageButton::AddedToWidget();
-  if constexpr (views::PlatformStyle::kInactiveWidgetControlsAppearDisabled) {
-    paint_as_active_subscription_ =
-        GetWidget()->RegisterPaintAsActiveChangedCallback(
-            base::BindRepeating(&SidebarButtonView::SchedulePaint,
-                                weak_ptr_factory_.GetWeakPtr()));
-  }
-}
-
-void SidebarButtonView::RemovedFromWidget() {
-  paint_as_active_subscription_ = {};
-  ImageButton::RemovedFromWidget();
 }
 
 BEGIN_METADATA(SidebarButtonView)

@@ -8,12 +8,10 @@
 
 #include <string>
 
-#include "base/callback_list.h"
-#include "base/memory/weak_ptr.h"
-#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/button/label_button.h"
 
-class SidebarButtonView : public views::ImageButton {
-  METADATA_HEADER(SidebarButtonView, views::ImageButton)
+class SidebarButtonView : public views::LabelButton {
+  METADATA_HEADER(SidebarButtonView, views::LabelButton)
  public:
   // Value ought to follow TOOLBAR_BUTTON_HEIGHT in brave_layout_constants.cc
   static constexpr int kSidebarButtonSize = 28;
@@ -30,21 +28,10 @@ class SidebarButtonView : public views::ImageButton {
   SidebarButtonView(const SidebarButtonView&) = delete;
   SidebarButtonView operator=(const SidebarButtonView&) = delete;
 
-  // views::ImageButton overrides:
-  gfx::ImageSkia GetImage(ButtonState state) const override;
+  // views::LabelButton overrides:
   void OnThemeChanged() override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
-  void AddedToWidget() override;
-  void RemovedFromWidget() override;
-
- protected:
-  // views::ImageButton:
-  gfx::ImageSkia GetImageToPaint() override;
-
- private:
-  base::CallbackListSubscription paint_as_active_subscription_;
-  base::WeakPtrFactory<SidebarButtonView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_
