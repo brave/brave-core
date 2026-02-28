@@ -10,11 +10,11 @@
  * - Top level global string replacements, such as replacing Chromium with Brave
  */
 
-const path = require('path')
-const fs = require('fs')
-const chalk = require('chalk')
-const { JSDOM } = require('jsdom')
-const config = require('./config')
+import path from 'path'
+import fs from 'fs'
+import chalk from 'chalk'
+import { JSDOM } from 'jsdom'
+import config from './config.js'
 
 // Change to `true` for verbose console log output of GRD traversal
 const verboseLogFindGrd = false
@@ -469,4 +469,4 @@ const l10nUtil = {
   },
 } // const l10nUtil
 
-module.exports = l10nUtil
+export default l10nUtil

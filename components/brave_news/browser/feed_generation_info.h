@@ -48,7 +48,15 @@ class FeedGenerationInfo {
   const std::vector<ContentGroup>& GetEligibleContentGroups();
 
   // Get a list of subscribed channels containing at least one article.
-  std::vector<std::string> EligibleChannels();
+  std::vector<NameId> EligibleChannels();
+
+  // Returns the pre-computed interned publisher to channels map.
+  const PublisherChannels& publisher_channels() const {
+    return publisher_channels_;
+  }
+
+  NameTable& name_table() { return name_table_; }
+  const NameTable& name_table() const { return name_table_; }
 
   // Picks an article and decreases publisher/channel counts appropriately to
   // maintain the list of content groups.
@@ -90,9 +98,13 @@ class FeedGenerationInfo {
 
   TopicsResult topics_;
 
+  PublisherChannels publisher_channels_;
+
+  NameTable name_table_;
+
   std::optional<ArticleInfos> article_infos_;
   std::optional<std::vector<ContentGroup>> content_groups_;
-  absl::flat_hash_map<std::string, size_t> available_counts_;
+  absl::flat_hash_map<NameId, size_t> available_counts_;
 };
 
 ArticleInfos GetArticleInfosForTesting(const std::string& locale,

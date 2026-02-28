@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const config = require('./config')
-const fs = require('fs-extra')
-const l10nUtil = require('./l10nUtil')
-const util = require('./util')
-const Log = require('./logging')
+import path from 'path'
+import config from './config.js'
+import fs from 'fs-extra'
+import l10nUtil from './l10nUtil.js'
+import util from './util.js'
+import Log from './logging.js'
 
-exports.update = () => {
+const update = () => {
   Log.progressStart('update branding')
   const chromeComponentsDir = path.join(config.srcDir, 'components')
   const braveComponentsDir = path.join(config.braveCoreDir, 'components')
@@ -515,3 +515,5 @@ exports.update = () => {
   }
   Log.progressFinish('update branding')
 }
+
+export default { update }

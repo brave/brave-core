@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
-const EnvConfig = require('./envConfig')
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import EnvConfig from './envConfig.js'
 
 // Mock the logging module
-jest.mock('./logging', () => ({
+jest.mock('./logging.js', () => ({
   error: jest.fn(),
 }))
 
-const Log = require('./logging')
+import Log from './logging.js'
 
 describe('EnvConfig', () => {
   const configDir = '/path/to/config'

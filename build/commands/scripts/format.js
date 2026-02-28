@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const fs = require('fs-extra')
-const prettier = require('prettier')
-const program = require('commander')
-const { spawnSync } = require('child_process')
+import path from 'path'
+import fs from 'fs-extra'
+import prettier from 'prettier'
+import program from 'commander'
+import { spawnSync } from 'child_process'
 
-const config = require('../lib/config')
-const util = require('../lib/util')
-const Log = require('../lib/logging')
+import config from '../lib/config.js'
+import util from '../lib/util.js'
+import Log from '../lib/logging.js'
 
 program
   .description(
@@ -164,7 +164,7 @@ const handleDifference = async (file, dryRun, formatted) => {
   }
 }
 
-const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
+const runPrettierForFile = async (file, dryRun, ignorePath) => {
   const fileInfo = await prettier.getFileInfo(file, {
     ignorePath: ignorePath,
     withNodeModules: false,
@@ -174,6 +174,7 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
     return
   }
 
+  const options = await prettier.resolveConfig(file)
   const content = await fs.readFile(file, { encoding: 'utf-8' })
   const formatted = await prettier.format(content, {
     ...options,
@@ -187,7 +188,6 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
 
 const runPrettier = async (files, dryRun) => {
   console.log('run prettier for', files.length, 'files')
-  const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
     throw new Error(`${ignorePath} file not found`)
@@ -196,7 +196,7 @@ const runPrettier = async (files, dryRun) => {
   const prettierIssues = []
   for (const file of files) {
     try {
-      const issue = await runPrettierForFile(file, dryRun, options, ignorePath)
+      const issue = await runPrettierForFile(file, dryRun, ignorePath)
       if (issue) {
         prettierIssues.push(issue)
       }

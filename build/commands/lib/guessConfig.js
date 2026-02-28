@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const config = require('./config')
-const os = require('os')
-const path = require('path/posix')
-const fs = require('fs')
+import config from './config.js'
+import os from 'os'
+import path from 'path/posix'
+import fs from 'fs'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
@@ -69,4 +69,4 @@ if (fs.existsSync(outputPath)) {
 }
 
 const genPath = path.join(outputPath, 'gen')
-module.exports = { outputPath, genPath }
+export { outputPath, genPath }

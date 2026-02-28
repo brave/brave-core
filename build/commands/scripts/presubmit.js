@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-require('../lib/checkEnvironment')
+import '../lib/checkEnvironment.js'
 
-const program = require('commander')
-const config = require('../lib/config')
-const util = require('../lib/util')
+import program from 'commander'
+import config from '../lib/config.js'
+import util from '../lib/util.js'
 
 program
   .option('--base <base branch>', 'set the destination branch for the PR')
@@ -56,7 +56,7 @@ function runPresubmit(options) {
     }
   }
   if (options.files) {
-    args.push('--files', `"${options.files}"`)
+    args.push('--files', options.files)
   }
   if (options.verbose) {
     args.push(...Array(options.verbose).fill('--verbose'))

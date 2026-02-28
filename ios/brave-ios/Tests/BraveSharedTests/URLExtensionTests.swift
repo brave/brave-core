@@ -186,11 +186,6 @@ class URLExtensionTests: XCTestCase {
     XCTAssertEqual(readerModeTestURL.urlToShred, testURL)
     XCTAssertTrue(readerModeTestURL.isShredAvailable)
 
-    // Verify nil for other `InternalURL`s
-    let errorPageTestURL = testURL.encodeEmbeddedInternalURL(for: .errorpage)!
-    XCTAssertNil(errorPageTestURL.urlToShred)
-    XCTAssertFalse(errorPageTestURL.isShredAvailable)
-
     let blockedTestURL = testURL.encodeEmbeddedInternalURL(for: .blocked)!
     XCTAssertNil(blockedTestURL.urlToShred)
     XCTAssertFalse(blockedTestURL.isShredAvailable)

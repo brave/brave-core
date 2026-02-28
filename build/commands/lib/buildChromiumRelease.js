@@ -8,13 +8,13 @@
 // Designed to be used on CI, but should work locally too.
 // The script includes syncing; there is no need to run npm run sync before.
 
-const config = require('./config')
-const util = require('./util')
-const path = require('path')
-const fs = require('fs-extra')
-const depotTools = require('./depotTools')
-const syncUtil = require('./syncUtils')
-const Log = require('./logging')
+import config from './config.js'
+import util from './util.js'
+import path from 'path'
+import fs from 'fs-extra'
+import depotTools from './depotTools.js'
+import syncUtil from './syncUtils.js'
+import Log from './logging.js'
 
 // Use the same filename as for Brave archive.
 const getOutputFilename = () => {
@@ -212,4 +212,4 @@ function buildChromiumRelease(buildOptions = {}) {
   })
 }
 
-module.exports = buildChromiumRelease
+export default buildChromiumRelease

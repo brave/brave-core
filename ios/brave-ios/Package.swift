@@ -131,7 +131,6 @@ var package = Package(
         "Frontend/UserContent/UserScripts/Sandboxed",
       ],
       resources: [
-        .copy("Assets/About/Licenses.html"),
         .copy("Assets/About/AboutHome.html"),
         .copy("Assets/__firefox__.js"),
         .copy("Assets/AllFramesAtDocumentEnd.js"),
@@ -157,23 +156,11 @@ var package = Package(
         .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
         .copy("Assets/InterstitialPages/Pages/BlockedDomain.html"),
         .copy("Assets/InterstitialPages/Pages/HTTPBlocked.html"),
-        .copy("Assets/InterstitialPages/Pages/CertificateError.html"),
-        .copy("Assets/InterstitialPages/Pages/GenericError.html"),
-        .copy("Assets/InterstitialPages/Pages/NetworkError.html"),
         .copy("Assets/InterstitialPages/Pages/Web3Domain.html"),
-        .copy("Assets/InterstitialPages/Images/Carret.png"),
-        .copy("Assets/InterstitialPages/Images/Clock.svg"),
-        .copy("Assets/InterstitialPages/Images/Cloud.svg"),
-        .copy("Assets/InterstitialPages/Images/DarkWarning.svg"),
-        .copy("Assets/InterstitialPages/Images/Generic.svg"),
-        .copy("Assets/InterstitialPages/Images/Globe.svg"),
         .copy("Assets/InterstitialPages/Images/Info.svg"),
-        .copy("Assets/InterstitialPages/Images/Warning.svg"),
         .copy("Assets/InterstitialPages/Images/warning-triangle-outline.svg"),
         .copy("Assets/InterstitialPages/Styles/BlockedDomain.css"),
-        .copy("Assets/InterstitialPages/Styles/CertificateError.css"),
         .copy("Assets/InterstitialPages/Styles/InterstitialStyles.css"),
-        .copy("Assets/InterstitialPages/Styles/NetworkError.css"),
         .copy("Assets/InterstitialPages/Styles/Web3Domain.css"),
         .copy("Assets/Lottie/shred.json"),
         .copy("Assets/SearchPlugins"),
@@ -223,6 +210,9 @@ var package = Package(
         ),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletCardanoProviderScript.js"
         ),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"

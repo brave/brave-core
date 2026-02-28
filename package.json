@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.89.85",
+  "version": "1.89.88",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "docs": "node ./build/commands/scripts/commands.js docs",
     "test": "node ./build/commands/scripts/commands.js test",
     "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
-    "test:scripts": "tsc --project build/commands && jest build/commands",
+    "test:scripts": "node ./build/commands/scripts/testScripts.ts",
     "tslint": "npm run eslint",
     "eslint": "eslint --quiet .",
     "pep8": "pycodestyle --max-line-length 120 -r script",

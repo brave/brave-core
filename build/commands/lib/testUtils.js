@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const fs = require('fs-extra')
-const path = require('path')
+import fs from 'fs-extra'
+import path from 'path'
 
 // HACK: determines the executable path from the gn target name
 // Alternative: gn desc <buildDir> <target> outputs --format=json
@@ -108,7 +108,7 @@ const getApplicableFilters = (config, suite) => {
   return filterFilePaths
 }
 
-module.exports = {
+export {
   gnTargetToExecutableName,
   getTestBinary,
   getTestsToRun,

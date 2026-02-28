@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const { spawn, spawnSync } = require('child_process')
-const readline = require('readline')
-const os = require('os')
-const config = require('./config')
-const fs = require('fs-extra')
-const {glob, writeFile} = require('fs/promises')
-const crypto = require('crypto')
-const Log = require('./logging')
-const assert = require('assert')
-const updateChromeVersion = require('./updateChromeVersion')
-const ActionGuard = require('./actionGuard')
+import path from 'path'
+import { spawn, spawnSync } from 'child_process'
+import readline from 'readline'
+import os from 'os'
+import config from './config.js'
+import fs from 'fs-extra'
+import {glob, writeFile} from 'fs/promises'
+import crypto from 'crypto'
+import Log from './logging.js'
+import assert from 'assert'
+import updateChromeVersion from './updateChromeVersion.js'
+import ActionGuard from './actionGuard.js'
+import { GitPatcher } from './gitPatcher.js'
+
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
@@ -28,7 +30,6 @@ async function generateInstrumentationFile(instrumentationFile) {
 }
 
 async function applyPatches(printPatchFailuresInJson) {
-  const GitPatcher = require('./gitPatcher')
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
@@ -1004,4 +1005,4 @@ const util = {
   },
 }
 
-module.exports = util
+export default util
