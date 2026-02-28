@@ -79,6 +79,7 @@ bool PageMetricsTabHelper::IsRelevantNavigationEvent(
 
   if (browser_context_ && browser_context_->IsOffTheRecord() &&
       browser_context_->IsTor()) {
+    UMA_HISTOGRAM_BOOLEAN("Brave.Core.TorWindowUsed", true);
     return false;
   }
   return true;
