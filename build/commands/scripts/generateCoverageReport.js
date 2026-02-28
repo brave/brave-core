@@ -2,10 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-const { glob, rm } = require('fs/promises')
-const { writeJSON, mkdirp } = require('fs-extra')
-const utils = require('../lib/util')
-const config = require('../lib/config')
+import { glob, rm } from 'fs/promises'
+import fs from 'fs-extra'
+import utils from '../lib/util.js'
+import config from '../lib/config.js'
 
 const dedupe = (xs) => [...new Set(xs)]
 const getTestBinariesFromRecordingsPath = (outputDir) => {
@@ -16,7 +16,7 @@ const getTestBinariesFromRecordingsPath = (outputDir) => {
   }
 }
 
-module.exports = (program) =>
+export default (program) =>
   program
     .command('coverage_report')
     .description(
@@ -96,7 +96,7 @@ module.exports = (program) =>
       const cwd = config.outputDir
       const coverageToolPath = `${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
       // fetch coverage tools if not available
-      await mkdirp(distPath)
+      await fs.mkdirp(distPath)
 
       await utils.runAsync(
         `${coverageToolPath}/llvm-profdata`,
@@ -131,7 +131,7 @@ module.exports = (program) =>
 
       try {
         const summary = JSON.parse(output)
-        await writeJSON(`${distPath}/coverage.json`, summary)
+        await fs.writeJSON(`${distPath}/coverage.json`, summary)
         console.log(summary.data[0].totals)
       } catch (e) {
         console.error(e)

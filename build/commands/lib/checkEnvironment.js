@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const fs = require('fs')
-const path = require('path')
-const semver = require('semver')
-const Log = require('./logging')
+import fs from 'fs'
+import path from 'path'
+import semver from 'semver'
+import Log from './logging.js'
 
 checkNodeVersion()
 checkNpmVersion()

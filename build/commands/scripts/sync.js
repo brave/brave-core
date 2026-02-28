@@ -4,17 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Check environment before doing anything.
-require('../lib/checkEnvironment')
+import '../lib/checkEnvironment.js'
 
-const fs = require('fs')
-const program = require('commander')
-const path = require('path')
-const config = require('../lib/config')
-const util = require('../lib/util')
-const Log = require('../lib/logging')
-const depotTools = require('../lib/depotTools')
-const syncUtil = require('../lib/syncUtils')
-const sisoUtils = require('../lib/sisoUtils')
+import fs from 'fs'
+import program from 'commander'
+import path from 'path'
+import config from '../lib/config.js'
+import util from '../lib/util.js'
+import Log from '../lib/logging.js'
+import depotTools from '../lib/depotTools.js'
+import syncUtil from '../lib/syncUtils.js'
+import sisoUtils from '../lib/sisoUtils.js'
 
 program
   .version(process.env.npm_package_version)

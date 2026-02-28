@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const path = require('path')
-const config = require('../lib/config')
-const util = require('../lib/util')
-const l10nUtil = require('./l10nUtil')
+import path from 'path'
+import config from './config.js'
+import util from './util.js'
+import l10nUtil from './l10nUtil.js'
 
 const pushL10n = (options) => {
   const runOptions = { cwd: config.srcDir }
@@ -43,4 +43,4 @@ const pushL10n = (options) => {
   })
 }
 
-module.exports = pushL10n
+export default pushL10n

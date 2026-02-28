@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Check environment before doing anything.
-require('../lib/checkEnvironment')
+import '../lib/checkEnvironment.js'
 
-const program = require('commander')
-const config = require('../lib/config')
-const util = require('../lib/util')
+import program from 'commander'
+import config from '../lib/config.js'
+import util from '../lib/util.js'
 
 program
   .arguments('<gn_command> [build_config] [gn_args...]')

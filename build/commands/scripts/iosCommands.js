@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const program = require('commander')
-const path = require('path')
-const config = require('../lib/config')
-const util = require('../lib/util')
+import program from 'commander'
+import path from 'path'
+import config from '../lib/config.js'
+import util from '../lib/util.js'
 
 const bootstrap = (options = {}) => {
   const utilConfig = config.defaultOptions
