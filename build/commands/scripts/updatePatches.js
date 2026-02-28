@@ -71,6 +71,8 @@ module.exports = function RunCommand(filePaths, options) {
     'search_engines_data',
     'resources',
   )
+  const braveGnDir = path.join(config.braveCoreDir, 'third_party', 'gn')
+
   const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
   const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
@@ -86,6 +88,7 @@ module.exports = function RunCommand(filePaths, options) {
     'search_engines_data',
     'resources',
   )
+  const braveGnPatchDir = path.join(patchDir, 'brave', 'third_party', 'gn')
 
   Promise.all([
     // chromium
@@ -98,6 +101,8 @@ module.exports = function RunCommand(filePaths, options) {
     updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir, filePaths),
     // third_party/search_engines_data
     updatePatches(searchEngineDataDir, searchEngineDataPatchDir, filePaths),
+    // brave/third_party/gn
+    updatePatches(braveGnDir, braveGnPatchDir, filePaths),
   ])
     .then(() => {
       console.log('Done.')

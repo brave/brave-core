@@ -9,6 +9,7 @@ require('../lib/checkEnvironment')
 const program = require('commander')
 const config = require('../lib/config')
 const util = require('../lib/util')
+const gn = require('../lib/gn')
 
 program
   .arguments('<gn_command> [build_config] [gn_args...]')
@@ -26,6 +27,20 @@ program
 async function runGn(gnCommand, buildConfig, gnArgs, options) {
   config.buildConfig = buildConfig || config.defaultBuildConfig
   config.update(options)
+
+  switch (gnCommand) {
+    case 'gn_gen':
+      await gn.gen()
+      return
+    case 'gn_build':
+      await gn.build()
+      return
+    case 'gn_test':
+      await gn.test()
+      return
+    default:
+      break
+  }
 
   util.run(
     'gn',
