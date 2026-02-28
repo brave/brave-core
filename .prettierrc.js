@@ -26,4 +26,12 @@ module.exports = {
   'vueIndentScriptAndStyle': false,
   'singleAttributePerLine': true,
   'experimentalOperatorPosition': 'start',
+  'overrides': [
+    {
+      files: ['build/commands/tsconfig.json'],
+      options: {
+        parser: 'jsonc',
+      },
+    },
+  ],
 }

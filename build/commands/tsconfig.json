@@ -29,6 +29,14 @@
     // `obj[key]` returns `T | undefined` instead of `T`.
     "noUncheckedIndexedAccess": true,
     // Require explicit `break` or `return` in switch cases.
-    "noFallthroughCasesInSwitch": true
-  }
+    "noFallthroughCasesInSwitch": true,
+    // Issue an error if a function does not return a value.
+    "noImplicitReturns": true,
+    // Issue an error if a value is used as if it were `null` or `undefined`.
+    "strictNullChecks": true,
+    // Issue an error if a local variable is declared and not used.
+    "noUnusedLocals": true,
+    // Issue an error if a value is declared and not used.
+    "noUnusedParameters": true,
+  },
 }

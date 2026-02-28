@@ -25,14 +25,17 @@ function updateChromeVersion() {
   const versionLineRegex = /^(MAJOR|MINOR|BUILD|PATCH)=(\d+)$/
   for (let line = 0; line < 4; ++line) {
     assert(
+      // @ts-ignore
       versionLines[line].search(versionLineRegex) === 0,
       `${versionLines[line]} (${line}) doesn't match ${versionLineRegex}`,
     )
     if (line === 0) {
       // Keep MAJOR.
+      // @ts-ignore
       assert(versionLines[line].startsWith('MAJOR='))
     } else {
       // Set MINOR, BUILD, PATCH to Brave version.
+      // @ts-ignore
       versionLines[line] = versionLines[line].replace(
         versionLineRegex,
         `$1=${braveVersionParts[line - 1]}`,

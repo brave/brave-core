@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import assert from 'node:assert'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import EnvConfig from './envConfig.js'
+import Log from './logging.js'
 
 // Mock the logging module
 jest.mock('./logging.js', () => ({
   error: jest.fn(),
 }))
-
-import Log from './logging.js'
 
 describe('EnvConfig', () => {
   const configDir = '/path/to/config'
@@ -639,6 +639,7 @@ describe('EnvConfig', () => {
       const result = envConfig.getPath(['home_path'])
       const expected = path.join(os.homedir(), '.config/app')
       expect(result).toBe(expected)
+      assert(typeof result === 'string')
       expect(path.isAbsolute(result)).toBe(true)
     })
 
@@ -649,6 +650,7 @@ describe('EnvConfig', () => {
       const result = envConfig.getPath(['HOME', 'PATH'])
       const expected = path.join(os.homedir(), 'projects/brave')
       expect(result).toBe(expected)
+      assert(typeof result === 'string')
       expect(path.isAbsolute(result)).toBe(true)
     })
 

@@ -32,13 +32,14 @@ const unzip = (zipFile, outdir) => {
     }
     jszip.loadAsync(data).then((zip) => {
       // Sensitive
-      zip.forEach((relativePath, zipEntry) => {
+      zip.forEach((_, zipEntry) => {
         const resolvedPath = path.join(outdir, zipEntry.name)
         if (!zip.file(zipEntry.name)) {
           if (!fs.existsSync(resolvedPath)) {
             fs.mkdirSync(resolvedPath)
           }
         } else {
+          // @ts-ignore
           zip
             .file(zipEntry.name)
             .async('nodebuffer')

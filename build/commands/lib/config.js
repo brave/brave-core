@@ -18,6 +18,11 @@ const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
 const envConfig = new EnvConfig(braveCoreDir)
 
+/**
+ * @param {string[]} keyPath
+ * @param {any} defaultValue
+ * @returns {any}
+ */
 const getEnvConfig = (keyPath, defaultValue = undefined) => {
   return envConfig.get(keyPath, defaultValue)
 }
@@ -129,12 +134,14 @@ const Config = function () {
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
   this.depotToolsDir = envConfig.getPath(['projects', 'depot_tools', 'dir'])
+  assert(this.depotToolsDir, 'depot_tools dir must be set')
   this.depotToolsRepo = getEnvConfig([
     'projects',
     'depot_tools',
     'repository',
     'url',
   ])
+  assert(this.depotToolsRepo, 'depot_tools repository url must be set')
   this.gclientFile = path.join(this.rootDir, '.gclient')
   this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
   this.disableGclientConfigUpdate = getEnvConfig(
@@ -366,8 +373,10 @@ Config.prototype.getBraveLogoIconName = function () {
 
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
+  // @ts-ignore
   const versionParts = version.split('+')[0].split('.')
 
+  /** @type {Record<string, any>} */
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
     is_asan: this.isAsan(),
@@ -1111,10 +1120,12 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(
         20,
+        // @ts-ignore
         parseInt(env.NINJA_CORE_MULTIPLIER) || 20,
       ).toString()
       env.NINJA_CORE_LIMIT = Math.min(
         kRemoteLimit,
+        // @ts-ignore
         parseInt(env.NINJA_CORE_LIMIT) || kRemoteLimit,
       ).toString()
 
@@ -1139,6 +1150,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
         if (defaultValue === undefined) {
           return
         }
+        // @ts-ignore
         const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
         envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv).toString())
       })

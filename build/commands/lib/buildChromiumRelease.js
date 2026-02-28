@@ -210,6 +210,7 @@ function buildChromiumRelease(buildOptions = {}) {
   Log.progressScope('make archive', () => {
     chromiumConfig.processArtifacts()
   })
+  return 0
 }
 
 export default buildChromiumRelease

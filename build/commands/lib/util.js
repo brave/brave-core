@@ -207,7 +207,7 @@ const util = {
     let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail, ...options})
 
     if (prog.status !== 0) {
-      return null
+      return ''
     } else {
       return prog.stdout.toString().trim()
     }
@@ -388,6 +388,7 @@ const util = {
     }
 
     const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
+    // @ts-ignore
     const sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
     const additionalGen = getAdditionalGenLocation()
 
@@ -450,6 +451,7 @@ const util = {
         const cacheFileFilter = (file) => {
           return file.endsWith('.cache') || file.endsWith('.cache.sha256')
         }
+        // @ts-ignore
         for (const file of util.walkSync(reproxyCacheDir, cacheFileFilter)) {
           fs.rmSync(file)
         }
@@ -830,7 +832,7 @@ const util = {
       .split('\n')
   },
 
-  massRename: (options = {}) => {
+  massRename: () => {
     let cmdOptions = config.defaultOptions
     cmdOptions.cwd = config.braveCoreDir
     util.run(
@@ -858,6 +860,7 @@ const util = {
     fs.readdirSync(dir).forEach((file) => {
       if (fs.statSync(path.join(dir, file)).isDirectory()) {
         filelist = util.walkSync(path.join(dir, file), filter, filelist)
+        // @ts-ignore
       } else if (!filter || filter.call(null, file)) {
         filelist = filelist.concat(path.join(dir, file))
       }
@@ -896,6 +899,9 @@ const util = {
     // Returns the actual .git dir in case a worktree is used.
     const gitDir = util.runGit(repoDir, ['rev-parse', '--git-common-dir'],
                                false)
+    if (!gitDir) {
+      return null
+    }
     if (!path.isAbsolute(gitDir)) {
       return path.join(repoDir, gitDir)
     }

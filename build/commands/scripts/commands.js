@@ -48,6 +48,7 @@ function parseInteger(string) {
 
 const parsedArgs = program.parseOptions(process.argv)
 
+// @ts-ignore
 program.version(process.env.npm_package_version)
 
 program.command('versions').action(versions)
