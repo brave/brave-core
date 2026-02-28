@@ -30,7 +30,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
     private static final List<String> sBraveTalkHosts =
             Arrays.asList("talk.brave.com", "talk.bravesoftware.com", "talk.brave.software");
     private static final List<String> sYouTubeHosts =
-            Arrays.asList("www.youtube.com", "m.youtube.com", "youtube.com");
+            Arrays.asList("music.youtube.com", "www.youtube.com", "m.youtube.com", "youtube.com");
 
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
