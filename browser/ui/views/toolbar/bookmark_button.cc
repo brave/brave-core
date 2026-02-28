@@ -37,10 +37,9 @@ void BraveBookmarkButton::UpdateImageAndText() {
   SetImageModel(views::Button::STATE_NORMAL,
                 ui::ImageModel::FromVectorIcon(icon, kColorToolbarButtonIcon,
                                                GetIconSize()));
-  SetImageModel(
-      views::Button::STATE_DISABLED,
-      ui::ImageModel::FromVectorIcon(icon, kColorToolbarButtonIconInactive,
-                                     GetIconSize()));
+  SetImageModel(views::Button::STATE_DISABLED,
+                ui::ImageModel::FromVectorIcon(
+                    icon, kColorToolbarButtonIconInactive, GetIconSize()));
 
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
   SetTooltipText(l10n_util::GetStringUTF16(tooltip_id));

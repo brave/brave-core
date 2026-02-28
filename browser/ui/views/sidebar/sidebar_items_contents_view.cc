@@ -40,9 +40,9 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
@@ -580,8 +580,8 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     } else {
       color_id = kColorSidebarButtonBase;
     }
-    return ui::ImageModel::FromVectorIcon(
-        icon, color_id, SidebarButtonView::kDefaultIconSize);
+    return ui::ImageModel::FromVectorIcon(icon, color_id,
+                                          SidebarButtonView::kDefaultIconSize);
   };
 
   switch (type) {

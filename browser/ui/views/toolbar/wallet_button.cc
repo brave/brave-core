@@ -216,12 +216,11 @@ void WalletButton::UpdateImageAndText(bool activated) {
                   ui::ImageModel::FromVectorIcon(
                       kLeoProductBraveWalletIcon,
                       color_provider->GetColor(color_id), GetIconSize()));
-    SetImageModel(
-        views::Button::STATE_DISABLED,
-        ui::ImageModel::FromVectorIcon(
-            kLeoProductBraveWalletIcon,
-            color_provider->GetColor(kColorToolbarButtonIconInactive),
-            GetIconSize()));
+    SetImageModel(views::Button::STATE_DISABLED,
+                  ui::ImageModel::FromVectorIcon(
+                      kLeoProductBraveWalletIcon,
+                      color_provider->GetColor(kColorToolbarButtonIconInactive),
+                      GetIconSize()));
     return;
   }
 
