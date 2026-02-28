@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import util from './util.js'
-import config from './config.js'
-import path from 'node:path'
 import fs from 'node:fs'
+import path from 'node:path'
+import config from './config.js'
+import util from './util.js'
 
 const runPerfTests = (
   passthroughArgs,

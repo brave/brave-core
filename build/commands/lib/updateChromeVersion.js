@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import assert from 'node:assert'
-import config from './config.js'
 import fs from 'node:fs'
 import path from 'node:path'
+import config from './config.js'
 import Log from './logging.js'
 
 function updateChromeVersion() {

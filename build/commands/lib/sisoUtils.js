@@ -5,10 +5,10 @@
 
 'use strict'
 
-import Log from './logging.js'
-import config from './config.js'
 import fs from 'node:fs'
 import path from 'node:path'
+import config from './config.js'
+import Log from './logging.js'
 import util from './util.js'
 
 /**

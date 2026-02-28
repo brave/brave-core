@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import assert from 'node:assert'
 import fs from 'fs-extra'
+import assert from 'node:assert'
 import path from 'node:path'
 
 // This function is used to get the call stack of the guarded operation. It is

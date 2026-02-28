@@ -5,8 +5,8 @@
 
 import path from 'node:path'
 import config from './config.js'
-import util from './util.js'
 import l10nUtil from './l10nUtil.js'
+import util from './util.js'
 
 const pullL10n = (options) => {
   const cmdOptions = config.defaultOptions

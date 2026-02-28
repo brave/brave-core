@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'node:path'
 import fs from 'fs-extra'
 import os from 'node:os'
+import path from 'node:path'
 import calculateFileChecksum from './calculateFileChecksum.js'
 
 const dirPrefixTmp = 'brave-browser-test-calculate-file-checksum-'

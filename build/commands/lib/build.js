@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import config from './config.js'
-import util from './util.js'
-import path from 'node:path'
 import fs from 'fs-extra'
-import Log from './logging.js'
+import path from 'node:path'
 import branding from './branding.js'
+import config from './config.js'
+import Log from './logging.js'
+import util from './util.js'
 
 /**
  * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version

@@ -6,15 +6,15 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import fs from 'node:fs'
 import program from 'commander'
+import fs from 'node:fs'
 import path from 'node:path'
 import config from '../lib/config.js'
-import util from '../lib/util.js'
-import Log from '../lib/logging.js'
 import depotTools from '../lib/depotTools.js'
-import syncUtil from '../lib/syncUtils.js'
+import Log from '../lib/logging.js'
 import sisoUtils from '../lib/sisoUtils.js'
+import syncUtil from '../lib/syncUtils.js'
+import util from '../lib/util.js'
 
 program
   .version(process.env.npm_package_version)

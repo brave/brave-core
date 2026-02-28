@@ -109,9 +109,9 @@ const getApplicableFilters = (config, suite) => {
 }
 
 export {
-  gnTargetToExecutableName,
-  getTestBinary,
-  getTestsToRun,
   getApplicableFilters,
   getChromiumTestsSuites,
+  getTestBinary,
+  getTestsToRun,
+  gnTargetToExecutableName,
 }
