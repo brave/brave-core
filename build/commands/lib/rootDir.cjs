@@ -7,8 +7,8 @@
 // directory. The rest of the codebase is ESM, which would require
 // import.meta.dirname for this, but that isn't supported by Jest.
 
-const fs = require('fs')
-const path = require('path')
+const fs = require('node:fs')
+const path = require('node:path')
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).

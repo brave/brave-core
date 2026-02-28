@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import config from './config.js'
-import os from 'os'
-import path from 'path/posix'
-import fs from 'fs'
+import os from 'node:os'
+import path from 'node:path/posix'
+import fs from 'node:fs'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']

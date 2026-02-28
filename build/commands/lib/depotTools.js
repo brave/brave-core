@@ -5,8 +5,8 @@
 
 import ActionGuard from './actionGuard.js'
 import config from './config.js'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import Log from './logging.js'
 import util from './util.js'
 

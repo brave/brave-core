@@ -5,8 +5,8 @@
 
 import util from './util.js'
 import config from './config.js'
-import path from 'path'
-import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
 
 const runPerfTests = (
   passthroughArgs,

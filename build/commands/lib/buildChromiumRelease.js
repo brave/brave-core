@@ -10,7 +10,7 @@
 
 import config from './config.js'
 import util from './util.js'
-import path from 'path'
+import path from 'node:path'
 import fs from 'fs-extra'
 import depotTools from './depotTools.js'
 import syncUtil from './syncUtils.js'

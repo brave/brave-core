@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import crypto from 'crypto'
-import fs from 'fs'
+import crypto from 'node:crypto'
+import fs from 'node:fs'
 
 export default function calculateFileChecksum(filePath, algorithm = 'sha256') {
   return new Promise((resolve, reject) => {

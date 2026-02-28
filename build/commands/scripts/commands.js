@@ -7,7 +7,7 @@
 import '../lib/checkEnvironment.js'
 
 import program from 'commander'
-import path from 'path'
+import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.js'
 import util from '../lib/util.js'

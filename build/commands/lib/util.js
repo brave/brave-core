@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
-import { spawn, spawnSync } from 'child_process'
-import readline from 'readline'
-import os from 'os'
+import path from 'node:path'
+import { spawn, spawnSync } from 'node:child_process'
+import readline from 'node:readline'
+import os from 'node:os'
 import config from './config.js'
 import fs from 'fs-extra'
-import {glob, writeFile} from 'fs/promises'
-import crypto from 'crypto'
+import {glob, writeFile} from 'node:fs/promises'
+import crypto from 'node:crypto'
 import Log from './logging.js'
-import assert from 'assert'
+import assert from 'node:assert'
 import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
