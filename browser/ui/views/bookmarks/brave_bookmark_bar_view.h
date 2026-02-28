@@ -19,9 +19,6 @@ class BraveBookmarkBarView : public BookmarkBarView {
 
   // BookmarkBarView:
   bool UpdateOtherAndManagedButtonsVisibility() override;
-  void ConfigureButton(const bookmarks::BookmarkNode* node,
-                       views::LabelButton* button) override;
-  void UpdateAppearanceForTheme() override;
 
  private:
   // Note that so-called "Others button" is renamed to "All bookmarks button"

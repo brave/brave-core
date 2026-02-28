@@ -7,13 +7,9 @@
 
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/bookmarks/bookmark_utils.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "components/bookmarks/browser/bookmark_model.h"
-#include "components/bookmarks/browser/bookmark_node.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/views/controls/button/label_button.h"
 
 BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
                                            BrowserView* browser_view)
@@ -29,48 +25,6 @@ BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
 }
 
 BraveBookmarkBarView::~BraveBookmarkBarView() = default;
-
-void BraveBookmarkBarView::ConfigureButton(
-    const bookmarks::BookmarkNode* node,
-    views::LabelButton* button) {
-  BookmarkBarView::ConfigureButton(node, button);
-  if (node->is_folder()) {
-    button->SetImageModel(
-        views::Button::STATE_NORMAL,
-        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kNormal,
-                                      kColorToolbarButtonIcon));
-    button->SetImageModel(
-        views::Button::STATE_DISABLED,
-        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kNormal,
-                                      kColorToolbarButtonIconInactive));
-  }
-}
-
-void BraveBookmarkBarView::UpdateAppearanceForTheme() {
-  BookmarkBarView::UpdateAppearanceForTheme();
-
-  if (all_bookmarks_button_) {
-    all_bookmarks_button_->SetImageModel(
-        views::Button::STATE_NORMAL,
-        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kNormal,
-                                      kColorToolbarButtonIcon));
-    all_bookmarks_button_->SetImageModel(
-        views::Button::STATE_DISABLED,
-        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kNormal,
-                                      kColorToolbarButtonIconInactive));
-  }
-
-  if (managed_bookmarks_button_) {
-    managed_bookmarks_button_->SetImageModel(
-        views::Button::STATE_NORMAL,
-        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kManaged,
-                                      kColorToolbarButtonIcon));
-    managed_bookmarks_button_->SetImageModel(
-        views::Button::STATE_DISABLED,
-        chrome::GetBookmarkFolderIcon(chrome::BookmarkFolderIconType::kManaged,
-                                      kColorToolbarButtonIconInactive));
-  }
-}
 
 void BraveBookmarkBarView::MaybeUpdateOtherAndManagedButtonsVisibility() {
   if (bookmark_service_ && bookmark_service_->bookmark_model() &&
