@@ -60,8 +60,6 @@ std::string GetTabGroupColorString(tab_groups::TabGroupColorId color) {
       return "cyan";
     case tab_groups::TabGroupColorId::kOrange:
       return "orange";
-    default:
-      return "unknown";
   }
 }
 
