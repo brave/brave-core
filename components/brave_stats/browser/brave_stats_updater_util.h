@@ -9,18 +9,11 @@
 #include <string>
 #include <string_view>
 
-#include "base/system/sys_info.h"
 #include "base/time/time.h"
 
 class PrefService;
 
 namespace brave_stats {
-
-enum class ProcessArch {
-  kArchSkip,
-  kArchMetal,
-  kArchVirt,
-};
 
 std::string GetDateAsYMD(const base::Time& time);
 

@@ -14,6 +14,7 @@
 #include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/system/sys_info.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"

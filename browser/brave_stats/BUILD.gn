@@ -26,6 +26,8 @@ source_set("brave_stats") {
     "//brave/browser/brave_stats/switches.h",
   ]
 
+  public_deps = [ "//brave/components/brave_stats/browser" ]
+
   deps = [
     "//base",
     "//brave/browser:browser_process",
@@ -34,11 +36,9 @@ source_set("brave_stats") {
     "//brave/common",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_referrals/common",
-    "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
-    "//brave/components/rpill/common",
     "//brave/components/serp_metrics",
     "//brave/components/version_info",
     "//chrome/browser:browser_process",
