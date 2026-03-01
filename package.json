@@ -251,6 +251,7 @@
     "esbuild": "0.25.0",
     "js-yaml": "4.1.1",
     "prismjs": "1.30.0",
+    "serialize-javascript": "7.0.3",
     "tiny-secp256k1": "1.1.7"
   }
 }
