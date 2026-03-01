@@ -113,9 +113,15 @@ void PermissionRequestManager::AcceptDenyCancel(
 void PermissionRequestManager::OnTabActiveStateChanged(bool active) {
   tab_is_activated_ = active;
 
-  // OnVisibilityChanged() has logic for |tab_is_active_| state changes.
-  // Tab activation state could affect |tab_is_active_| state.
-  OnVisibilityChanged(web_contents()->GetVisibility());
+  // On desktop, OnVisibilityChanged() returns early when tab_subscriptions_ is
+  // not empty, so the BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
+  // macro (which calls UpdateTabIsHiddenWithTabActivationState()) is
+  // unreachable. Call UpdateTabIsHiddenWithTabActivationState() directly.
+  const bool prior_tab_is_active = tab_is_active_;
+  UpdateTabIsHiddenWithTabActivationState();
+  if (prior_tab_is_active != tab_is_active_) {
+    OnTabActiveChanged();
+  }
 }
 
 void PermissionRequestManager::UpdateTabIsHiddenWithTabActivationState() {
@@ -124,12 +130,10 @@ void PermissionRequestManager::UpdateTabIsHiddenWithTabActivationState() {
   }
 
   // In split view, permission manager can have invalid tab hidden state.
-  // If it's inactive split tab, permission manager should set false
-  // to |tab_is_active_| to prevent launching permission bubble from
-  // that inactive split tab. Otherwise, it launches permission bubble even
-  // it's inactive tab.
-  if (tab_is_active_ && !tab_is_activated_.value()) {
-    tab_is_active_ = false;
+  // Correct |tab_is_active_| to match the split view activation state set by
+  // BraveBrowserView::OnActiveTabChanged().
+  if (tab_is_active_ != tab_is_activated_.value()) {
+    tab_is_active_ = tab_is_activated_.value();
   }
 }
 
