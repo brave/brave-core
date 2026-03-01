@@ -35,6 +35,27 @@ namespace brave_wallet {
 
 namespace {
 
+// Waits for signMessageResult to be set to a string value. After
+// NotifySignMessageRequestProcessed() the result is delivered asynchronously
+// to the renderer via mojo, so we must poll rather than reading it immediately.
+constexpr char kWaitForSignMessageResult[] = R"(
+    new Promise((resolve, reject) => {
+      const deadline = Date.now() + 10000;
+      const check = () => {
+        if (typeof signMessageResult === 'string') {
+          const result = signMessageResult;
+          signMessageResult = undefined;
+          resolve(result);
+        } else if (Date.now() >= deadline) {
+          reject(new Error('Timeout: signMessageResult=' +
+                           signMessageResult));
+        } else {
+          setTimeout(check, 10);
+        }
+      };
+      check();
+    }))";
+
 bool WaitForWalletBubble(content::WebContents* web_contents) {
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
@@ -162,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, std::nullopt);
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
               "0x670651c072cac2a3f93cb862a17378f6849c66b4516e5d5a30210868a2840e"
               "2a6a345a"
               "4f84615c591c1a47260e798babe8f2f0cce03a09dac09df79c55d8e4401b");
@@ -190,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, std::nullopt);
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   }
 }
