@@ -16,6 +16,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/switches.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -149,6 +150,10 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
   bool on_standard_stats_updated_ = false;
 };
 
+// On Origin-branded Linux, stats reporting is disabled by policy (Origin is
+// free and always considered purchased), so the stats updater won't send pings.
+#if !(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && BUILDFLAG(IS_LINUX))
+
 // Run the stats updater and verify that it sets the first check preference
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterSetsFirstCheckPreference) {
@@ -233,3 +238,5 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterReferralCodeBrowserTest,
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
   EXPECT_EQ(query_value, referral_code());
 }
+
+#endif  // !(IS_BRAVE_ORIGIN_BRANDED && IS_LINUX)

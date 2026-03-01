@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -101,6 +102,9 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
 };
 
 // Tests bookmark/infobar/contents container layout with vertical tab.
+// On Origin-branded Linux, certain infobars may not show at first run due to
+// features being disabled by policy, causing test timeouts.
+#if !(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && BUILDFLAG(IS_LINUX))
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   ToggleVerticalTabStrip();
 
@@ -208,6 +212,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
 }
+#endif  // !(IS_BRAVE_ORIGIN_BRANDED && IS_LINUX)
 
 class BraveBrowserViewWithRoundedCornersTest
     : public BraveBrowserViewTest,

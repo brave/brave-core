@@ -10,6 +10,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -228,7 +229,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+// On Origin-branded Linux, P3A is disabled by policy (Origin is free and
+// always considered purchased), causing extra histogram samples.
+#if (BUILDFLAG(ENABLE_EXTENSIONS) ||            \
+     BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)) && \
+    !(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && BUILDFLAG(IS_LINUX))
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 1);
   histogram_tester_->ExpectUniqueSample(kWebDiscoveryDefaultEngineMetric,

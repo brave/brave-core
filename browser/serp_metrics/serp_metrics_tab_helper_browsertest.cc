@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
@@ -222,6 +223,9 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
+// On Origin-branded Linux, stats reporting is disabled by policy (Origin is
+// free and always considered purchased), so SERP metrics are not recorded.
+#if !(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && BUILDFLAG(IS_LINUX))
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        RecordBraveSearchEngineResultsPage) {
   content::NavigateToURLBlockUntilNavigationsComplete(
@@ -306,6 +310,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForHttp5xxResponse) {
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
+#endif  // !(IS_BRAVE_ORIGIN_BRANDED && IS_LINUX)
+
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordNonSearchUrl) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
@@ -318,6 +324,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordNonSearchUrl) {
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
+#if !(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && BUILDFLAG(IS_LINUX))
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        DoNotRecordSameSearchWhenConsecutive) {
   content::NavigateToURLBlockUntilNavigationsComplete(
@@ -662,6 +669,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordWithoutUserGesture) {
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
+#endif  // !(IS_BRAVE_ORIGIN_BRANDED && IS_LINUX)
+
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        DoNotRecordIfStatsReportingIsDisabled) {
   g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
@@ -687,7 +696,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID) && \
+    !(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED) && BUILDFLAG(IS_LINUX))
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
@@ -717,6 +727,6 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }
 
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID) && !(IS_BRAVE_ORIGIN_BRANDED && IS_LINUX)
 
 }  // namespace serp_metrics

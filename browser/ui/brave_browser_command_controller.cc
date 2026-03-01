@@ -23,6 +23,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -230,11 +231,13 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // to a normal window in this case.
   const bool is_guest_session = browser_->profile()->IsGuestSession();
   if (!is_guest_session) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     // If Rewards is not supported due to OFAC sanctions we still want to show
     // the menu item.
     if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveRewards();
     }
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveWallet();
@@ -360,9 +363,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_FORCE_PASTE, true);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_REWARDS, true);
 }
+#endif
 
 void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER, true);
