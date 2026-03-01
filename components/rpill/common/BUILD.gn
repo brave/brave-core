@@ -1,8 +1,0 @@
-source_set("common") {
-  deps = [ "//base" ]
-
-  sources = [
-    "rpill.cc",
-    "rpill.h",
-  ]
-}
