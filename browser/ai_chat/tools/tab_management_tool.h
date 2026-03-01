@@ -42,11 +42,13 @@ class TabManagementTool : public Tool {
 
   // Helper to generate tab list that can be reused by all handlers
   base::Value::Dict GenerateTabList() const;
-  // Profile with which to restrict all window and tab operations
-  raw_ptr<Profile> profile_ = nullptr;
 
   // Conversation-level permission state
   bool user_has_granted_permission_ = false;
+
+  // Profile with which to restrict all window and tab operations. Usually
+  // owns us via AIChatService as ProfileKeyedService.
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace ai_chat
