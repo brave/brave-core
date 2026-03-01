@@ -80,7 +80,6 @@ namespace {
 // Checks if the user previously had HTTPS-Only Mode enabled. If so,
 // set the HttpsUpgrade default setting to strict.
 void MigrateHttpsUpgradeSettings(Profile* profile) {
-  // If user flips the HTTPS by Default feature flag
   auto* prefs = profile->GetPrefs();
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
@@ -89,20 +88,28 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
     return;
   }
   if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
-    // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
+    // Only migrate once. Without this guard, the synced kHttpsOnlyModeEnabled
+    // pref can repeatedly overwrite the user's HTTPS upgrade choice.
+    // See https://github.com/brave/brave-browser/issues/31940
+    if (prefs->GetBoolean(kBraveHttpsUpgradeMigrationDone)) {
+      return;
+    }
     if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
       brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK,
                                                 GURL());
       prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
     }
+    prefs->SetBoolean(kBraveHttpsUpgradeMigrationDone, true);
   } else {
-    // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
+    // Backward migration when feature is disabled. Reset migration flag so
+    // re-enabling the feature will re-migrate.
     if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
         ControlType::BLOCK) {
       prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
       brave_shields::SetHttpsUpgradeControlType(
           map, ControlType::BLOCK_THIRD_PARTY, GURL());
     }
+    prefs->SetBoolean(kBraveHttpsUpgradeMigrationDone, false);
   }
 }
 

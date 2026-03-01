@@ -402,6 +402,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kTabsSearchShow, true);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 
+  registry->RegisterBooleanPref(kBraveHttpsUpgradeMigrationDone, false);
+
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);

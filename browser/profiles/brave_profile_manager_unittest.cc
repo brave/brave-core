@@ -12,23 +12,30 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
+#include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
+
+using brave_shields::ControlType;
 
 namespace {
 
@@ -66,6 +73,10 @@ class TestingBraveProfileManager : public BraveProfileManagerWithoutInit {
         base::BindOnce(base::IgnoreResult(&base::CreateDirectory), path));
 
     return BuildTestingProfile(path, this, Profile::CreateMode::kAsynchronous);
+  }
+
+  void RunDoFinalInitForServices(Profile* profile) {
+    DoFinalInitForServices(profile, /*go_off_the_record=*/false);
   }
 };
 
@@ -123,6 +134,148 @@ TEST_F(BraveProfileManagerTest, EnableMediaRouterOnRestartDefaultValue) {
   pref_service->SetBoolean(::prefs::kEnableMediaRouter, false);
   profile_manager->InitProfileUserPrefs(profile.get());
   EXPECT_FALSE(pref_service->GetBoolean(kEnableMediaRouterOnRestart));
+}
+
+class BraveProfileManagerHttpsUpgradeTest : public BraveProfileManagerTest {
+ protected:
+  void SetUp() override {
+    BraveProfileManagerTest::SetUp();
+    feature_list_.InitAndEnableFeature(net::features::kBraveHttpsByDefault);
+  }
+
+  TestingBraveProfileManager* GetTestingProfileManager() {
+    return static_cast<TestingBraveProfileManager*>(
+        g_browser_process->profile_manager());
+  }
+
+  std::unique_ptr<TestingProfile> CreateProfileForMigration() {
+    base::FilePath path = GetTempPath().AppendASCII("https_profile");
+    TestingProfile::Builder builder;
+    builder.SetPath(path);
+    builder.SetIsNewProfile(true);
+    return builder.Build();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BraveProfileManagerHttpsUpgradeTest,
+       MigrateHttpsUpgradeSettings_FirstRun) {
+  auto profile = CreateProfileForMigration();
+  auto* prefs = profile->GetTestingPrefService();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile.get());
+  ASSERT_TRUE(map);
+
+  // Simulate HTTPS-Only Mode was previously enabled (e.g. from upstream).
+  prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+  EXPECT_FALSE(prefs->GetBoolean(kBraveHttpsUpgradeMigrationDone));
+
+  GetTestingProfileManager()->RunDoFinalInitForServices(profile.get());
+
+  // Migration should set content setting to BLOCK (strict).
+  EXPECT_EQ(brave_shields::GetHttpsUpgradeControlType(map, GURL()),
+            ControlType::BLOCK);
+  // kHttpsOnlyModeEnabled should be cleared.
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
+  // Migration flag should be set.
+  EXPECT_TRUE(prefs->GetBoolean(kBraveHttpsUpgradeMigrationDone));
+}
+
+TEST_F(BraveProfileManagerHttpsUpgradeTest,
+       MigrateHttpsUpgradeSettings_SyncDoesNotOverwrite) {
+  auto profile = CreateProfileForMigration();
+  auto* prefs = profile->GetTestingPrefService();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile.get());
+  ASSERT_TRUE(map);
+
+  // First run: perform initial migration.
+  prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+  GetTestingProfileManager()->RunDoFinalInitForServices(profile.get());
+  EXPECT_EQ(brave_shields::GetHttpsUpgradeControlType(map, GURL()),
+            ControlType::BLOCK);
+  EXPECT_TRUE(prefs->GetBoolean(kBraveHttpsUpgradeMigrationDone));
+
+  // User changes setting to Standard (BLOCK_THIRD_PARTY).
+  brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK_THIRD_PARTY,
+                                            GURL());
+  EXPECT_EQ(brave_shields::GetHttpsUpgradeControlType(map, GURL()),
+            ControlType::BLOCK_THIRD_PARTY);
+
+  // Simulate sync pushing kHttpsOnlyModeEnabled = true again.
+  prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+
+  // Run migration again (as happens on restart).
+  GetTestingProfileManager()->RunDoFinalInitForServices(profile.get());
+
+  // User's choice of Standard should be preserved.
+  EXPECT_EQ(brave_shields::GetHttpsUpgradeControlType(map, GURL()),
+            ControlType::BLOCK_THIRD_PARTY);
+}
+
+TEST_F(BraveProfileManagerHttpsUpgradeTest,
+       MigrateHttpsUpgradeSettings_NoMigrationNeeded) {
+  auto profile = CreateProfileForMigration();
+  auto* prefs = profile->GetTestingPrefService();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile.get());
+  ASSERT_TRUE(map);
+
+  // kHttpsOnlyModeEnabled is false (no upstream HTTPS-Only Mode was set).
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
+
+  GetTestingProfileManager()->RunDoFinalInitForServices(profile.get());
+
+  // Content setting should remain at default (BLOCK_THIRD_PARTY).
+  EXPECT_EQ(brave_shields::GetHttpsUpgradeControlType(map, GURL()),
+            ControlType::BLOCK_THIRD_PARTY);
+  // Migration flag should still be set (migration ran, just had nothing to do).
+  EXPECT_TRUE(prefs->GetBoolean(kBraveHttpsUpgradeMigrationDone));
+}
+
+class BraveProfileManagerHttpsUpgradeBackwardTest
+    : public BraveProfileManagerTest {
+ protected:
+  void SetUp() override {
+    BraveProfileManagerTest::SetUp();
+    feature_list_.InitAndDisableFeature(net::features::kBraveHttpsByDefault);
+  }
+
+  TestingBraveProfileManager* GetTestingProfileManager() {
+    return static_cast<TestingBraveProfileManager*>(
+        g_browser_process->profile_manager());
+  }
+
+  std::unique_ptr<TestingProfile> CreateProfileForMigration() {
+    base::FilePath path = GetTempPath().AppendASCII("https_profile");
+    TestingProfile::Builder builder;
+    builder.SetPath(path);
+    builder.SetIsNewProfile(true);
+    return builder.Build();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BraveProfileManagerHttpsUpgradeBackwardTest,
+       MigrateHttpsUpgradeSettings_BackwardMigration) {
+  auto profile = CreateProfileForMigration();
+  auto* prefs = profile->GetTestingPrefService();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile.get());
+  ASSERT_TRUE(map);
+
+  // Simulate a profile that previously had strict HTTPS upgrade.
+  brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK, GURL());
+  prefs->SetBoolean(kBraveHttpsUpgradeMigrationDone, true);
+
+  GetTestingProfileManager()->RunDoFinalInitForServices(profile.get());
+
+  // Should revert to HTTPS-Only Mode pref and reset content setting.
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
+  EXPECT_EQ(brave_shields::GetHttpsUpgradeControlType(map, GURL()),
+            ControlType::BLOCK_THIRD_PARTY);
+  // Migration flag should be reset so re-enabling the feature re-migrates.
+  EXPECT_FALSE(prefs->GetBoolean(kBraveHttpsUpgradeMigrationDone));
 }
 
 TEST_F(BraveProfileManagerTest, EnableMediaRouterOnRestartNonDefaultValue) {

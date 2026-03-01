@@ -83,6 +83,8 @@ inline constexpr char kNewTabPageShowsOptions[] =
 inline constexpr char kBraveDarkMode[] = "brave.dark_mode";
 inline constexpr char kBraveShieldsSettingsVersion[] =
     "brave.shields_settings_version";
+inline constexpr char kBraveHttpsUpgradeMigrationDone[] =
+    "brave.https_upgrade_migration_done";
 inline constexpr char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
