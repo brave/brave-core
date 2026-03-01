@@ -10,6 +10,8 @@ import styles from './style.module.scss'
 import { useMemo } from 'react'
 import { FuzzyFinder, Match } from './fuzzy_finder'
 
+const MAX_RESULTS = 100
+
 export interface Props<T> {
   query: string | null
   isOpen: boolean
@@ -56,6 +58,10 @@ export function MatchedText(props: { text: string; match?: Match }) {
 
 export default function FilterMenu<T>(props: Props<T>) {
   const [filtered, lookup] = useMemo(() => {
+    // If the menu isn't open don't do any filtering.
+    if (!props.isOpen)
+      return [props.categories, new Map<T, Match | undefined>()]
+
     const lookup = new Map<T, Match | undefined>()
     return [
       !props.query
@@ -77,10 +83,11 @@ export default function FilterMenu<T>(props: Props<T>) {
                 .sort((a, b) => b[0]!.score - a[0]!.score)
                 .map(([_, entry]) => entry),
             }))
-            .filter((g) => g.entries.length > 0),
+            .filter((g) => g.entries.length > 0)
+            .slice(0, MAX_RESULTS),
       lookup,
     ]
-  }, [props.query, props.categories])
+  }, [props.query, props.categories, props.isOpen])
 
   React.useEffect(() => {
     props.onResultsChanged?.(filtered)
