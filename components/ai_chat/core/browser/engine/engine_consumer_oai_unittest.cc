@@ -1968,4 +1968,22 @@ TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
+TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics_EmptyTabs) {
+  engine_->GetSuggestedTopics(
+      {},
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+      }));
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs_EmptyTabs) {
+  engine_->GetFocusTabs(
+      {}, "topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+      }));
+}
+
 }  // namespace ai_chat

@@ -1255,6 +1255,11 @@ void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
     return;
   }
 
+  if (tabs.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   // First time engaging with tab focus, set up tab data observer.
   // tab_tracker_service_ can be nullptr in tests.
   if (tab_tracker_service_ && !tab_data_observer_receiver_.is_bound()) {
@@ -1272,6 +1277,11 @@ void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
 void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
                                  const std::string& topic,
                                  GetFocusTabsCallback callback) {
+  if (tabs.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   CreateTabOrganizationEngineIfNeeded();
   tab_organization_engine_->GetFocusTabs(
       tabs, topic,

@@ -282,6 +282,11 @@ void EngineConsumerOAIRemote::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
   auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
+  if (chunked_messages.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       chunked_messages.size(),
       base::BindOnce(&EngineConsumerOAIRemote::MergeSuggestTopicsResults,
@@ -297,6 +302,11 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
                                            const std::string& topic,
                                            GetFocusTabsCallback callback) {
   auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+  if (chunked_messages.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       chunked_messages.size(),
       base::BindOnce(

@@ -553,6 +553,11 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
 
   // Split tab into chunks of 75
   size_t num_chunks = (tabs.size() + kTabListChunkSize - 1) / kTabListChunkSize;
+  if (num_chunks == 0) {
+    std::move(merge_callback).Run({});
+    return;
+  }
+
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       num_chunks, std::move(merge_callback));
 

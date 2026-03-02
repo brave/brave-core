@@ -189,6 +189,11 @@ void EngineConsumerConversationAPIV2::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
   auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
+  if (chunked_messages.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       chunked_messages.size(),
       base::BindOnce(
@@ -208,6 +213,11 @@ void EngineConsumerConversationAPIV2::GetFocusTabs(
     const std::string& topic,
     EngineConsumer::GetFocusTabsCallback callback) {
   auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+  if (chunked_messages.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       chunked_messages.size(),
       base::BindOnce(
