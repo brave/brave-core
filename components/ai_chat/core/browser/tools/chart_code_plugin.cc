@@ -16,6 +16,9 @@ constexpr char kDataKey[] = "data";
 constexpr char kXKey[] = "x";
 constexpr char kLabelsKey[] = "labels";
 
+constexpr size_t kMaxDataPoints = 200;
+constexpr size_t kMaxSeries = 10;
+
 }  // namespace
 
 ChartCodePlugin::ChartCodePlugin() = default;
@@ -73,6 +76,10 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
     return "Chart has empty data array";
   }
 
+  if (data->size() > kMaxDataPoints) {
+    return "Chart data array exceeds maximum of 200 entries";
+  }
+
   for (const auto& data_entry : *data) {
     const auto* data_item = data_entry.GetIfDict();
     if (!data_item) {
@@ -85,6 +92,10 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
 
     if (data_item->size() < 2) {
       return "Chart data entry must have 'x' and at least one other field";
+    }
+
+    if (data_item->size() - 1 > kMaxSeries) {
+      return "Chart data entry exceeds maximum of 10 series";
     }
 
     for (const auto [key, value] : *data_item) {
@@ -103,6 +114,10 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
     const auto* labels_dict = labels->GetIfDict();
     if (!labels_dict) {
       return "Chart labels must be an object";
+    }
+
+    if (labels_dict->size() > kMaxSeries) {
+      return "Chart labels exceeds maximum of 10 entries";
     }
 
     for (const auto [key, value] : *labels_dict) {

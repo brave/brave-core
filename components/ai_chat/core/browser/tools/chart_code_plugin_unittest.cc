@@ -7,7 +7,9 @@
 
 #include <string_view>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -63,6 +65,62 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
     auto result = chart_plugin.ValidateArtifact(input);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), tc.expected_error);
+  }
+}
+
+TEST(ChartCodePluginTest, ValidateArtifact_SizeLimits) {
+  ChartCodePlugin chart_plugin;
+
+  // 11 series in a single data entry.
+  {
+    base::DictValue entry;
+    entry.Set("x", "Jan");
+    for (int i = 0; i < 11; ++i) {
+      entry.Set("s" + base::NumberToString(i), i);
+    }
+    base::DictValue chart;
+    base::ListValue data;
+    data.Append(std::move(entry));
+    chart.Set("data", std::move(data));
+    auto result = chart_plugin.ValidateArtifact(base::Value(std::move(chart)));
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), "Chart data entry exceeds maximum of 10 series");
+  }
+
+  // 201 data points.
+  {
+    base::ListValue data;
+    for (int i = 0; i < 201; ++i) {
+      base::DictValue entry;
+      entry.Set("x", base::NumberToString(i));
+      entry.Set("value", i);
+      data.Append(std::move(entry));
+    }
+    base::DictValue chart;
+    chart.Set("data", std::move(data));
+    auto result = chart_plugin.ValidateArtifact(base::Value(std::move(chart)));
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(),
+              "Chart data array exceeds maximum of 200 entries");
+  }
+
+  // 11 labels.
+  {
+    base::DictValue labels;
+    for (int i = 0; i < 11; ++i) {
+      labels.Set("s" + base::NumberToString(i), "Label");
+    }
+    base::DictValue entry;
+    entry.Set("x", "Jan");
+    entry.Set("s0", 1);
+    base::ListValue data;
+    data.Append(std::move(entry));
+    base::DictValue chart;
+    chart.Set("data", std::move(data));
+    chart.Set("labels", std::move(labels));
+    auto result = chart_plugin.ValidateArtifact(base::Value(std::move(chart)));
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), "Chart labels exceeds maximum of 10 entries");
   }
 }
 
