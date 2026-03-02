@@ -167,10 +167,6 @@ android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/And
 # mojo interfaces should be implemented directly by the underlying classes
 browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
 
-# Brave Account
-*brave_account* @szilardszaloki
-*BraveAccount* @szilardszaloki
-
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
 
