@@ -64,7 +64,6 @@ constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
 constexpr char kCustomModelItemApiKey[] = "api_key";
 constexpr char kCustomModelItemKey[] = "key";
 constexpr char kCustomModelVisionSupport[] = "vision_support";
-constexpr char kCustomModelSupportsTools[] = "supports_tools";
 
 // When adding new models, especially for display, make sure to add the UI
 // strings to ai_chat_ui_strings.grdp and ai_chat/core/constants.cc.
@@ -112,13 +111,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Automatic";
       model->vision_support = true;
       model->supports_tools = features::kAutomaticModelSupportsTools.Get();
-      model->supported_capabilities =
-          model->supports_tools
-              ? std::vector{mojom::ConversationCapability::CHAT,
-                            mojom::ConversationCapability::CONTENT_AGENT,
-                            mojom::ConversationCapability::DEEP_RESEARCH}
-              : std::vector{mojom::ConversationCapability::CHAT,
-                            mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
@@ -140,10 +132,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Claude Haiku";
       model->vision_support = true;
       model->supports_tools = true;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::CONTENT_AGENT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -166,10 +154,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Claude Sonnet";
       model->vision_support = true;
       model->supports_tools = true;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::CONTENT_AGENT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
@@ -194,9 +178,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Llama 3.1 8B";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -221,9 +202,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Qwen VL 30B";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
@@ -249,9 +227,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "GLM 4.7 Flash";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -277,9 +252,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Llama 4 Maverick";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -305,9 +277,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "GPT OSS 20B";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -331,9 +300,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "GPT OSS 120B";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -357,9 +323,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Mistral Large";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -383,9 +346,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Kimi K2.5";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -409,9 +369,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Qwen VL 235B";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -435,9 +392,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Deepseek V3.2";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -461,9 +415,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Qwen 3 Coder 480B";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -487,9 +438,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Claude Opus";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -515,9 +463,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Brave Ocelot";
       model->vision_support = true;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -541,9 +486,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "GLM-5";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = true;
       model->options =
@@ -602,7 +544,6 @@ base::DictValue GetModelDict(mojom::ModelPtr model) {
   model_dict.Set(kCustomModelItemKey, model->key);
   model_dict.Set(kCustomModelItemLabelKey, model->display_name);
   model_dict.Set(kCustomModelVisionSupport, model->vision_support);
-  model_dict.Set(kCustomModelSupportsTools, model->supports_tools);
   model_dict.Set(kCustomModelItemModelKey, options.model_request_name);
   model_dict.Set(kCustomModelItemEndpointUrlKey, options.endpoint.spec());
   model_dict.Set(kCustomModelItemApiKey, EncryptAPIKey(options.api_key));
@@ -1134,9 +1075,6 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
     model->display_name = *model_pref.FindString(kCustomModelItemLabelKey);
     model->vision_support =
         model_pref.FindBool(kCustomModelVisionSupport).value_or(false);
-    model->supports_tools =
-        model_pref.FindBool(kCustomModelSupportsTools).value_or(false);
-    model->supported_capabilities = {mojom::ConversationCapability::CHAT};
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         std::move(custom_model_opts));
 
