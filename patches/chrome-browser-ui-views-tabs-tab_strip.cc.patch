@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 5c7588e2be76fd4d023b616e720729b66a6a0495..ffccf1d7ff8457d09bc8df4f4b8b06375bc9642b 100644
+index be0b9d0b9d08a63f6a28c33457f6d0bdc9d6eddf..93c33a79d36331045d0492687ec3067750ace312 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -342,7 +342,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
@@ -19,7 +19,7 @@ index 5c7588e2be76fd4d023b616e720729b66a6a0495..ffccf1d7ff8457d09bc8df4f4b8b0637
      CHECK(!views.empty()) << "The views vector must not be empty.";
  
      std::vector<gfx::Rect> bounds;
-@@ -925,6 +926,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -934,6 +935,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  
@@ -27,12 +27,12 @@ index 5c7588e2be76fd4d023b616e720729b66a6a0495..ffccf1d7ff8457d09bc8df4f4b8b0637
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
-@@ -1481,7 +1483,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+@@ -1504,7 +1506,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,
        // automatically expand the group.
 -      if (IsGroupCollapsed(new_group)) {
 +      if (IsGroupCollapsed(new_group) && IsTabStripEditable()) {
-         ToggleTabGroupCollapsedState(
-             new_group, ToggleTabGroupCollapsedStateOrigin::kTabsSelected);
-       }
+         // If the group is being dragged, do not expand it.
+         if (drag_context_->GetDragController() &&
+             drag_context_->GetDragController()->group_header_id() ==
