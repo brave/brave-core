@@ -21,8 +21,7 @@ SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   SetFlipCanvasOnPaintForRTLUI(false);
 
   // Locate image at center of the button.
-  SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
-  SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
+  SetHorizontalAlignment(gfx::ALIGN_CENTER);
 
   // In order to make use of margin collapsing sets the margin keys.
   // But at the same time, we want the sidebar buttons fill the entire width
@@ -41,7 +40,7 @@ SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
 SidebarButtonView::~SidebarButtonView() = default;
 
 void SidebarButtonView::OnThemeChanged() {
-  ImageButton::OnThemeChanged();
+  LabelButton::OnThemeChanged();
 
   // Apply toolbar button's ink drop config.
   // Reset ink drop config as inkdrop has different config per themes.

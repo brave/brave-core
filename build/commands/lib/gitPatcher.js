@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
-const fs = require('fs-extra')
-const os = require('os')
-const util = require('../lib/util')
-const calculateFileChecksum = require('../lib/calculateFileChecksum')
+import path from 'path'
+import fs from 'fs-extra'
+import os from 'os'
+import util from './util.js'
+import calculateFileChecksum from './calculateFileChecksum.js'
 
 const extPatch = 'patch'
 const extPatchInfo = 'patchinfo'
@@ -17,7 +17,7 @@ const encodingPatchInfo = 'utf8'
 const patchInfoSchemaVersion = 1
 const applyArgs = ['--ignore-space-change', '--ignore-whitespace']
 
-const patchApplyReasons = {
+export const patchApplyReasons = {
   NO_PATCH_INFO: 0,
   PATCH_INFO_OUTDATED: 1,
   PATCH_CHANGED: 2,
@@ -26,7 +26,7 @@ const patchApplyReasons = {
   SRC_REMOVED: 5,
 }
 
-const patchApplyReasonMessages = [
+export const patchApplyReasonMessages = [
   `No corresponding .${extPatchInfo} file was found.`,
   `The corresponding .${extPatchInfo} file was unreadable or not in the correct schema version of ${patchInfoSchemaVersion}.`,
   `The .${extPatch} file was modified since last applied.`,
@@ -44,11 +44,11 @@ const patchApplyReasonsReverse = Object.fromEntries(
   Object.entries(patchApplyReasons).map(([key, value]) => [value, key]),
 )
 
-function getReasonName(value) {
+export function getReasonName(value) {
   return patchApplyReasonsReverse[value] || 'UNKNOWN_REASON'
 }
 
-module.exports = class GitPatcher {
+export class GitPatcher {
   constructor(patchDirPath, repoPath, logProgress = true) {
     this.patchDirPath = patchDirPath
     this.repoPath = repoPath
@@ -392,7 +392,3 @@ module.exports = class GitPatcher {
     })
   }
 }
-
-module.exports.patchApplyReasons = patchApplyReasons
-module.exports.patchApplyReasonMessages = patchApplyReasonMessages
-module.exports.getReasonName = getReasonName

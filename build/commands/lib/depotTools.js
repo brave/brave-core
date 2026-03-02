@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const ActionGuard = require('./actionGuard')
-const config = require('./config')
-const fs = require('fs')
-const path = require('path')
-const Log = require('./logging')
-const util = require('./util')
+import ActionGuard from './actionGuard.js'
+import config from './config.js'
+import fs from 'fs'
+import path from 'path'
+import Log from './logging.js'
+import util from './util.js'
 
 // The .disable_auto_update file in the depot_tools directory, regardless of
 // its content, disables auto-updates. If a specific depot_tools reference is
@@ -169,7 +169,7 @@ function optOutOfBuildTelemetry() {
   }
 }
 
-module.exports = {
+export default {
   installDepotTools,
   optOutOfBuildTelemetry,
 }

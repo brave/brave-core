@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const chalk = require('chalk')
-const config = require('./config')
-const fs = require('fs')
-const path = require('path')
-const Log = require('./logging')
-const util = require('./util')
+import chalk from 'chalk'
+import config from './config.js'
+import fs from 'fs'
+import path from 'path'
+import Log from './logging.js'
+import util from './util.js'
 
 function toGClientConfigItem(name, value, pretty = true) {
   if (value === undefined) {
@@ -299,7 +299,7 @@ async function checkInternalDepsEndpoint() {
   }
 }
 
-module.exports = {
+export default {
   writeGclientConfig,
   readGclientConfig,
   syncChromium,

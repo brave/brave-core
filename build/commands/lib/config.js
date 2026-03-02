@@ -5,25 +5,16 @@
 
 'use strict'
 
-const os = require('os')
-const path = require('path')
-const fs = require('fs')
-const assert = require('assert')
-const EnvConfig = require('./envConfig')
-const Log = require('./logging')
+import os from 'os'
+import path from 'path'
+import fs from 'fs'
+import assert from 'assert'
+import rootDir from './rootDir.cjs'
+import EnvConfig from './envConfig.js'
+import Log from './logging.js'
+import util from './util.js'
 
-let dirName = __dirname
-// Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
-if (process.platform === 'win32') {
-  dirName = fs.realpathSync.native(dirName)
-}
-const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
-
-if (rootDir.includes(' ')) {
-  Log.error(`Root directory contains spaces, this is not supported: ${rootDir}`)
-  process.exit(1)
-}
 
 const envConfig = new EnvConfig(braveCoreDir)
 
@@ -32,7 +23,6 @@ const getEnvConfig = (keyPath, defaultValue = undefined) => {
 }
 
 const readArgsGn = (srcDir, outputDir) => {
-  const util = require('./util')
   const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
 
   const script = `
@@ -1261,4 +1251,4 @@ Object.defineProperty(Config.prototype, 'outputDir', {
   },
 })
 
-module.exports = new Config()
+export default new Config()

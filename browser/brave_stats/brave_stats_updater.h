@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -84,15 +83,10 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   // Invoked after browser has initialized with referral server.
   void OnReferralInitialization();
 
-  // Invoked after brave ads initializes
-  void OnDetectUncertainFuture(const bool is_uncertain_future);
-
-  void DetectUncertainFuture();
   void StartServerPingStartupTimer();
   void QueueServerPing();
   void SendServerPing();
 
-  bool IsAdsEnabled();
   bool IsReferralInitialized();
 
   // ProfileManagerObserver:
@@ -102,7 +96,6 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   friend class ::BraveStatsUpdaterBrowserTest;
 
-  ProcessArch arch_ = ProcessArch::kArchSkip;
   bool stats_startup_complete_ = false;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<ProfileManager> profile_manager_ = nullptr;

@@ -3207,19 +3207,7 @@ extension BrowserViewController {
       return
     }
 
-    let getServerTrustForErrorPage = { () -> SecTrust? in
-      do {
-        if let url = tab.visibleURL {
-          return try ErrorPageHelper.serverTrust(from: url)
-        }
-      } catch {
-        Logger.module.error("\(error.localizedDescription)")
-      }
-
-      return nil
-    }
-
-    guard let trust = tab.serverTrust ?? getServerTrustForErrorPage() else {
+    guard let trust = tab.serverTrust else {
       return
     }
 

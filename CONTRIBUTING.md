@@ -9,6 +9,8 @@ Table of contents
 - [Getting started](#getting-started)
   - [Making changes](#making-changes)
   - [Pull requests](#pull-requests)
+    - [Contribution pace and volume](#contribution-pace-and-volume)
+    - [AI-assisted contributions](#ai-assisted-contributions)
     - [Considerations before submitting a pull request](#considerations-before-submitting-a-pull-request)
     - [Each pull request should include](#each-pull-request-should-include)
     - [Employees should](#employees-should)
@@ -114,10 +116,25 @@ An easier strategy might be to keep `origin` in sync and then create branches ba
 ### Pull requests
 After the changes are made in your branch, you're ready to submit a patch. Patches on GitHub are submitted in the format of a pull request.
 
+#### Contribution pace and volume
+Do not open large numbers of pull requests in short periods of time. Each PR requires maintainer time to triage, review, and test. Bulk submissions overwhelm limited staff and may result in all of your PRs being closed without review.
+
+New contributors should start with one or two pull requests, wait for them to be reviewed and merged, and scale up gradually over time. This helps you learn the codebase conventions, build trust with reviewers, and avoid repeating the same mistakes across many PRs.
+
+#### AI-assisted contributions
+AI tools (e.g., Copilot, Claude, ChatGPT) may be used to assist with contributions, but the human contributor is fully responsible for every PR they submit. This means:
+
+* You must understand the changes you are proposing — not just relay AI output
+* All changes must be manually built, tested, and verified by you on the relevant platform(s) before submitting a PR, exactly as any other contribution
+* Do not add AI-generated bot reviews (e.g., Copilot reviewer) to your PRs — code reviews are done by Brave maintainers
+* Be transparent about AI involvement when it played a significant role in identifying the issue or generating the fix
+
+Using AI does not change the expectations for quality, testing, or PR volume. AI makes it easy to generate many changes quickly, but the review burden still falls on Brave's team. Contributors are expected to be thoughtful about what they submit and to not externalize work onto maintainers.
+
 #### Considerations before submitting a pull request
 Some helpful things to consider before submitting your work
-* Did you manually test your new change?
-* Does your pull request fix multiple issues? If so, you may consider breaking into separate pull requests.
+* Did you manually test your new change? You must include evidence of manual testing in your PR (steps taken, screenshots, logs, or confirmation of the platforms tested).
+* Each pull request should address a single concern. Keep PRs as small and focused as possible to make them easier for reviewers. If your changes fix multiple issues, break them into separate pull requests.
 * Did you include tests? (we currently have unit tests, browser tests, and JavaScript unit tests)
 * If you made a design or layout change, was there a mock-up provided? Do your changes match it?
 * If your change affects session or preferences, did you include steps to test? You may also consider manually testing an upgrade.
@@ -127,6 +144,7 @@ Some helpful things to consider before submitting your work
 * a short summary of the changes
 * a reference to the issue that it fixes
 * steps to test the fix (if applicable)
+* evidence of manual testing (platforms tested, steps taken, screenshots or logs)
 * for design-related changes, it is helpful to include screenshots
 
 Once you submit a pull request, you should tag reviewers and add labels if needed. If you do not have the necessary GitHub permissions to do so, a Brave member will take care of this for you.

@@ -8,6 +8,7 @@ import * as React from 'react'
 import { MainCard } from './main_card'
 import { Footer } from './footer'
 import { AdvancedSettingsHeader } from './advanced_settings_header'
+import { AdvancedSettings } from './advanced_settings'
 import { useInitializedStatus } from './use_initialized_status'
 import { useCacheInvalidator } from './use_cache_invalidator'
 
@@ -61,6 +62,13 @@ function MainView(props: { showView: (view: AppView) => void }) {
     <main>
       <MainCard />
       <AdvancedSettingsHeader />
+      <AdvancedSettings
+        showAdsBlocked={() => props.showView('ads-blocked')}
+        showScriptsBlocked={() => props.showView('scripts-blocked')}
+        showFingerprintingDetails={() =>
+          props.showView('fingerprinting-details')
+        }
+      />
       <Footer />
     </main>
   )

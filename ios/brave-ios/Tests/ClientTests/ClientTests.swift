@@ -19,8 +19,7 @@ class ClientTests: XCTestCase {
     // TODO: Move this code into some module that is shared so it doesn't require AppDelegate/host application
 
     let responders: [(String, InternalSchemeResponse)] = [
-      (ErrorPageHandler.path, ErrorPageHandler()),
-      (ReaderModeHandler.path, ReaderModeHandler()),
+      (ReaderModeHandler.path, ReaderModeHandler())
     ]
 
     responders.forEach { (path, responder) in

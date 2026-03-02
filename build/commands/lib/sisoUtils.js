@@ -5,11 +5,11 @@
 
 'use strict'
 
-const Log = require('./logging')
-const config = require('./config')
-const fs = require('node:fs')
-const path = require('node:path')
-const util = require('./util')
+import Log from './logging.js'
+import config from './config.js'
+import fs from 'node:fs'
+import path from 'node:path'
+import util from './util.js'
 
 /**
  * Writes `.sisorc` configuration file. The `.sisorc` format is:
@@ -74,6 +74,6 @@ function writeSisoRc() {
   util.writeFileIfModified(sisoRcPath, sisoRcContent)
 }
 
-module.exports = {
+export default {
   writeSisoRc,
 }

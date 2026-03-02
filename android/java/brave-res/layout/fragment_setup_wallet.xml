@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
         <TextView
-            style="@style/HeadingH1Bold"
+            style="@style/HeadingH1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -63,7 +63,7 @@
                     android:layout_alignParentStart="true"/>
 
                 <TextView
-                    style="@style/HeadingH3Bold"
+                    style="@style/HeadingH3"
                     android:id="@+id/setup_crypto_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                     android:layout_alignParentStart="true"/>
 
                 <TextView
-                    style="@style/HeadingH3Bold"
+                    style="@style/HeadingH3"
                     android:id="@+id/restore_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

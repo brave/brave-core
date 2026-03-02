@@ -38,7 +38,9 @@ class WalletButton : public ToolbarButton {
   views::View* GetAsAnchorView();
 
  private:
+  // views::View:
   void AddedToWidget() override;
+
   std::string GetBadgeText();
   void OnWalletPressed(const ui::Event& event);
   void OnNotificationUpdate(bool show_suggest_badge, size_t counter);

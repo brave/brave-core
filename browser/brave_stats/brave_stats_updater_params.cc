@@ -10,7 +10,6 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/system/sys_info.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
@@ -46,11 +45,9 @@ bool IsHeadlessOrAutomationMode() {
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
-    serp_metrics::SerpMetrics* serp_metrics,
-    const ProcessArch arch)
+    serp_metrics::SerpMetrics* serp_metrics)
     : BraveStatsUpdaterParams(stats_pref_service,
                               serp_metrics,
-                              arch,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
                               GetCurrentMonth()) {}
@@ -58,13 +55,11 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
     serp_metrics::SerpMetrics* serp_metrics,
-    const ProcessArch arch,
     const std::string& ymd,
     int woy,
     int month)
     : stats_pref_service_(stats_pref_service),
       serp_metrics_(serp_metrics),
-      arch_(arch),
       ymd_(ymd),
       woy_(woy),
       month_(month) {
@@ -114,16 +109,6 @@ std::string BraveStatsUpdaterParams::GetAdsEnabledParam() const {
       brave_ads::prefs::kEnabledForLastProfile));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
-  if (arch_ == ProcessArch::kArchSkip) {
-    return "";
-  } else if (arch_ == ProcessArch::kArchMetal) {
-    return base::SysInfo::OperatingSystemArchitecture();
-  } else {
-    return "virt";
-  }
-}
 
 void BraveStatsUpdaterParams::LoadPrefs() {
   last_check_ymd_ = stats_pref_service_->GetString(kLastCheckYMD);
@@ -217,9 +202,6 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
   update_url =
       net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-  update_url =
-      net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
-
   if (serp_metrics_ && ymd_ != last_check_ymd_) {
     // If `kSerpMetricsFeature` is disabled, `serp_metrics_` will be null and
     // SERP metrics will not be reported.

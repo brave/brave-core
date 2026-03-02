@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const { getAffectedTests } = require('../lib/affectedTests')
-const config = require('../lib/config')
+import { getAffectedTests } from '../lib/affectedTests.js'
+import config from '../lib/config.js'
 
-module.exports = (program) =>
+export default (program) =>
   program
     .command('list_affected_tests')
     .description('prints the tests that need to be run given the file changes')

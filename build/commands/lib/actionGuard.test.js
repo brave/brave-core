@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const fs = require('fs-extra')
-const path = require('path')
-const ActionGuard = require('./actionGuard')
+import fs from 'fs-extra'
+import path from 'path'
+import ActionGuard from './actionGuard.js'
 
 describe('ActionGuard', () => {
   const guardFilePath = '/path/to/guard/file'

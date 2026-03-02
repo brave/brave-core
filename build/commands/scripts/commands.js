@@ -4,29 +4,29 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Check environment before doing anything.
-require('../lib/checkEnvironment')
+import '../lib/checkEnvironment.js'
 
-const program = require('commander')
-const path = require('path')
-const fs = require('fs-extra')
-const config = require('../lib/config')
-const util = require('../lib/util')
-const build = require('../lib/build')
-const buildChromiumRelease = require('../lib/buildChromiumRelease')
-const { buildFuzzer, runFuzzer } = require('../lib/fuzzer')
-const versions = require('../lib/versions')
-const start = require('../lib/start')
-const applyPatches = require('../lib/applyPatches')
-const updatePatches = require('./updatePatches')
-const pullL10n = require('../lib/pullL10n')
-const pushL10n = require('../lib/pushL10n')
-const chromiumRebaseL10n = require('../lib/chromiumRebaseL10n')
-const test = require('../lib/test')
-const gnCheck = require('../lib/gnCheck')
-const genGradle = require('../lib/genGradle')
-const perfTests = require('../lib/perfTests')
-const registerListAffectedTestsCommand = require('./listAffectedTests')
-const registerGenerateCoverageReportCommand = require('./generateCoverageReport')
+import program from 'commander'
+import path from 'path'
+import fs from 'fs-extra'
+import config from '../lib/config.js'
+import util from '../lib/util.js'
+import build from '../lib/build.js'
+import buildChromiumRelease from '../lib/buildChromiumRelease.js'
+import { buildFuzzer, runFuzzer } from '../lib/fuzzer.js'
+import versions from '../lib/versions.js'
+import start from '../lib/start.js'
+import applyPatches from '../lib/applyPatches.js'
+import updatePatches from './updatePatches.js'
+import pullL10n from '../lib/pullL10n.js'
+import pushL10n from '../lib/pushL10n.js'
+import chromiumRebaseL10n from '../lib/chromiumRebaseL10n.js'
+import test from '../lib/test.js'
+import gnCheck from '../lib/gnCheck.js'
+import genGradle from '../lib/genGradle.js'
+import perfTests from '../lib/perfTests.js'
+import registerListAffectedTestsCommand from './listAffectedTests.js'
+import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
 
 const collect = (value, accumulator) => {
   accumulator.push(value)

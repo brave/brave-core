@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const path = require('path')
-const fs = require('fs')
-const config = require('../lib/config')
-const util = require('../lib/util')
-const l10nUtil = require('./l10nUtil')
+import path from 'path'
+import fs from 'fs'
+import config from './config.js'
+import util from './util.js'
+import l10nUtil from './l10nUtil.js'
 
 const srcDir = config.srcDir
 
@@ -113,4 +113,4 @@ const chromiumRebaseL10n = async (options) => {
   copyBraveStringsToOrigin()
 }
 
-module.exports = chromiumRebaseL10n
+export default chromiumRebaseL10n

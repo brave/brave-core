@@ -870,7 +870,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void initPreferenceObserver() {
         mPreferenceListener =
                 (prefs, key) -> {
-                    assertNonNull(mNtpAdapter);
                     if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE)) {
                         if (ChromeSharedPreferences.getInstance()
                                 .readBoolean(BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, false)) {
@@ -894,10 +893,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                         10);
                     } else if (TextUtils.equals(
                             key, BackgroundImagesPreferences.PREF_SHOW_TOP_SITES)) {
+                        assertNonNull(mNtpAdapter);
                         mIsTopSitesEnabled = NtpUtil.shouldDisplayTopSites();
                         mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
                     } else if (TextUtils.equals(
                             key, BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS)) {
+                        assertNonNull(mNtpAdapter);
                         mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
                         mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
                     }

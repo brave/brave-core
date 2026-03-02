@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const config = require('../lib/config')
-const util = require('../lib/util')
-const path = require('path')
-const fs = require('fs-extra')
-const Log = require('../lib/logging')
-const branding = require('../lib/branding')
+import config from './config.js'
+import util from './util.js'
+import path from 'path'
+import fs from 'fs-extra'
+import Log from './logging.js'
+import branding from './branding.js'
 
 /**
  * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version
@@ -55,4 +55,4 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   }
 }
 
-module.exports = build
+export default build

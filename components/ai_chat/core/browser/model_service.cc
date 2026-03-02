@@ -210,11 +210,11 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Llama 4 Scout
+    // GLM 4.7 Flash
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Meta";
-      options->name = "llama-4-scout";
+      options->display_maker = "Z.ai";
+      options->name = "glm-4-7-flash";
       options->category = mojom::ModelCategory::CHAT;
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
@@ -223,10 +223,10 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
-      model->key = "chat-llama-4-scout";
-      model->display_name = "Llama 4 Scout";
+      model->key = "chat-glm-4-7-flash";
+      model->display_name = "GLM 4.7 Flash";
       model->vision_support = true;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -331,21 +331,21 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Pixtral Large
+    // Kimi K2.5
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Mistral";
-      options->name = "pixtral-large";
+      options->display_maker = "Moonshot AI";
+      options->name = "kimi-k2-5";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
-      model->key = "chat-pixtral-large";
-      model->display_name = "Pixtral Large";
-      model->vision_support = true;
-      model->supports_tools = false;
+      model->key = "chat-kimi-k2-5";
+      model->display_name = "Kimi K2.5";
+      model->vision_support = false;
+      model->supports_tools = true;
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -377,19 +377,19 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Deepseek V3.1
+    // Deepseek V3.2
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Deepseek";
-      options->name = "deepseek-v3-1";
+      options->name = "deepseek-v3-2";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
-      model->key = "chat-deepseek-v3-1";
-      model->display_name = "Deepseek V3.1";
+      model->key = "chat-deepseek-v3-2";
+      model->display_name = "Deepseek V3.2";
       model->vision_support = false;
       model->supports_tools = false;
       model->is_suggested_model = false;
@@ -471,19 +471,19 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // DeepSeek V3.1 (NEAR)
+    // GLM-5 (NEAR)
     if (features::IsNEARModelsEnabled()) {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "DeepSeek";
-      options->name = "near-deepseek-v3-1";
+      options->display_maker = "Z.ai";
+      options->name = "near-glm-5";
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
       options->max_associated_content_length = 128000;
       options->long_conversation_warning_character_limit = 128000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-near-deepseek-v3-1";
-      model->display_name = "DeepSeek V3.1";
+      model->key = "chat-near-glm-5";
+      model->display_name = "GLM-5";
       model->vision_support = false;
       model->supports_tools = false;
       model->is_suggested_model = true;
@@ -593,14 +593,19 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
   if (ai_chat::features::IsAIChatEnabled()) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
-    // Migrate old model keys to kChatAutomaticModelKey
-    constexpr std::array<const char*, 3> kOldModelKeys = {
+    // Migrate old model keys to "chat-automatic"
+    constexpr std::array<const char*, 7> kOldModelKeys = {
         // Added: June 6, 2024. Checks can be removed eventually
         "chat-default",
         // Added: May 28, 2025. Checks can be removed eventually
         "chat-leo-expanded",
         // Added: July 15, 2025. Checks can be removed eventually
         "chat-vision-basic",
+        // These 4 added Feb 26, 2026. Checks can be removed eventually
+        "chat-llama-4-scout",
+        "chat-pixtral-large",
+        "chat-deepseek-v3-1",
+        "chat-near-deepseek-v3-1",
     };
 
     if (auto* default_model_value =
@@ -769,15 +774,15 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-qwen") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
-      } else if (model->key == "chat-near-deepseek-v3-1") {
-        model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
-            IDS_CHAT_UI_CHAT_NEAR_DEEPSEEK_V3_1_SUBTITLE);
-      } else if (model->key == kChatAutomaticModelKey) {
+      } else if (model->key == "chat-near-glm-5") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE);
+      } else if (model->key == "chat-automatic") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
-      } else if (model->key == "chat-llama-4-scout") {
+      } else if (model->key == "chat-glm-4-7-flash") {
         model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LLAMA_4_SCOUT_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE);
       } else if (model->key == "chat-llama-4-maverick") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
             IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE);
@@ -790,15 +795,15 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-mistral-large") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE);
-      } else if (model->key == "chat-pixtral-large") {
+      } else if (model->key == "chat-kimi-k2-5") {
         model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_PIXTRAL_LARGE_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_KIMI_K2_5_SUBTITLE);
       } else if (model->key == "chat-qwen-3-235b") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE);
-      } else if (model->key == "chat-deepseek-v3-1") {
+      } else if (model->key == "chat-deepseek-v3-2") {
         model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_V3_1_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_V3_2_SUBTITLE);
       } else if (model->key == "chat-qwen-3-coder-480b") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
             IDS_CHAT_UI_CHAT_QWEN_3_CODER_480B_SUBTITLE);

@@ -46,7 +46,7 @@ void SidebarItemView::ClearHorizontalBorder() {
 }
 
 void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
-  ImageButton::OnPaintBorder(canvas);
+  SidebarButtonView::OnPaintBorder(canvas);
 
   const ui::ColorProvider* color_provider = GetColorProvider();
   if (draw_horizontal_border_ && color_provider) {

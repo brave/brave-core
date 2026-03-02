@@ -32,13 +32,14 @@ void BraveBookmarkButton::SetToggled(bool on) {
 }
 
 void BraveBookmarkButton::UpdateImageAndText() {
-  const ui::ColorProvider* color_provider = GetColorProvider();
-  SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
   const gfx::VectorIcon& icon = active_ ? omnibox::kStarActiveChromeRefreshIcon
                                         : omnibox::kStarChromeRefreshIcon;
-  SetImageModel(
-      views::Button::STATE_NORMAL,
-      ui::ImageModel::FromVectorIcon(icon, icon_color, GetIconSize()));
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromVectorIcon(icon, kColorToolbarButtonIcon,
+                                               GetIconSize()));
+  SetImageModel(views::Button::STATE_DISABLED,
+                ui::ImageModel::FromVectorIcon(
+                    icon, kColorToolbarButtonIconInactive, GetIconSize()));
 
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
   SetTooltipText(l10n_util::GetStringUTF16(tooltip_id));

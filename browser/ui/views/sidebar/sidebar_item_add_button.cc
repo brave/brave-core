@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -74,7 +75,7 @@ void SidebarItemAddButton::UpdateButtonImages() {
   SetImageModel(
       STATE_DISABLED,
       ui::ImageModel::FromVectorIcon(
-          kLeoPlusAddIcon, kColorSidebarAddButtonDisabled, kDefaultIconSize));
+          kLeoPlusAddIcon, kColorToolbarButtonIconInactive, kDefaultIconSize));
 }
 
 BEGIN_METADATA(SidebarItemAddButton)

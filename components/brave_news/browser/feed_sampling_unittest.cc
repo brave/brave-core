@@ -40,21 +40,21 @@ TEST(BraveNewsFeedSampling, CanPickRandomItem) {
 
 TEST(BraveNewsFeedSampling, CanSampleContentGroupEmpty) {
   std::vector<ContentGroup> groups;
-  auto [name, is_channel] = SampleContentGroup(groups);
-  EXPECT_EQ("", name);
+  const auto [id, is_channel] = SampleContentGroup(groups);
+  EXPECT_TRUE(id.is_null());
   EXPECT_FALSE(is_channel);
 }
 
 TEST(BraveNewsFeedSampling, CanSampleContentGroup) {
   constexpr int iterations = 100;
-  const auto groups = base::flat_set<ContentGroup>({{"channel_1", true},
-                                                    {"channel_2", true},
-                                                    {"publisher_1", false},
-                                                    {"publisher_2", false},
-                                                    {"publisher_3", false}});
+  const auto groups = base::flat_set<ContentGroup>({{NameId(1), true},
+                                                    {NameId(2), true},
+                                                    {NameId(3), false},
+                                                    {NameId(4), false},
+                                                    {NameId(5), false}});
 
   for (auto i = 0; i < iterations; ++i) {
-    auto sample = SampleContentGroup(groups);
+    const auto sample = SampleContentGroup(groups);
     EXPECT_TRUE(groups.contains(sample));
   }
 }

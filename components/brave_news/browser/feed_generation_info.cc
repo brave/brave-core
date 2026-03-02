@@ -17,6 +17,7 @@
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/logging.h"
+#include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
@@ -87,11 +88,11 @@ std::vector<mojom::Signal*> GetSignals(
   return result;
 }
 
-ArticleMetadata GetArticleMetadata(
-    const mojom::FeedItemMetadataPtr& article,
-    const std::vector<mojom::Signal*>& signals,
-    absl::flat_hash_set<std::string> publisher_channels,
-    const bool& discoverable) {
+ArticleMetadata GetArticleMetadata(const mojom::FeedItemMetadataPtr& article,
+                                   const std::vector<mojom::Signal*>& signals,
+                                   NameId publisher_id,
+                                   absl::flat_hash_set<NameId> channels,
+                                   bool discoverable) {
   // We should have at least one |Signal| from the |Publisher| for this source.
   CHECK(!signals.empty());
 
@@ -108,24 +109,34 @@ ArticleMetadata GetArticleMetadata(
   metadata.visited = signals.at(0)->visit_weight != 0;
   metadata.subscribed = subscribed_weight != 0,
   metadata.discoverable = discoverable;
-  metadata.channels = std::move(publisher_channels);
+  metadata.publisher_id = publisher_id;
+  metadata.channels = std::move(channels);
   return metadata;
 }
 
 ArticleInfos GetArticleInfos(const std::string& locale,
                              const FeedItems& feed_items,
                              const Publishers& publishers,
-                             const Signals& signals) {
+                             const Signals& signals,
+                             PublisherChannels& publisher_channels,
+                             NameTable& name_table) {
   ArticleInfos articles;
   absl::flat_hash_set<std::string> seen_articles;
   absl::flat_hash_set<std::string> non_discoverable_publishers;
 
   for (const auto& [publisher_id, publisher] : publishers) {
-    auto channels = GetChannelsForPublisher(locale, publisher);
-    if (std::ranges::any_of(kSensitiveChannels,
-                            [&](const std::string& channel) {
-                              return std::ranges::contains(channels, channel);
-                            })) {
+    // Populate the `publisher_channels` map, interning all publisher ID and
+    // channel ID strings for fast comparison.
+    const NameId publisher_name_id = name_table.Add(publisher_id);
+    auto& channel_name_ids = publisher_channels[publisher_name_id];
+    for (const auto& channel : GetChannelsForPublisher(locale, publisher)) {
+      channel_name_ids.insert(name_table.Add(channel));
+    }
+
+    if (std::ranges::any_of(
+            kSensitiveChannels, [&](const std::string& channel) {
+              return channel_name_ids.contains(name_table.Find(channel));
+            })) {
       non_discoverable_publishers.insert(publisher_id);
     }
   }
@@ -156,17 +167,16 @@ ArticleInfos GetArticleInfos(const std::string& locale,
         continue;
       }
 
+      const std::string& publisher_id = article->data->publisher_id;
+      const NameId publisher_name_id = name_table.Add(publisher_id);
+      const auto& channels = publisher_channels[publisher_name_id];
       const bool discoverable =
-          !non_discoverable_publishers.contains(article->data->publisher_id);
+          !non_discoverable_publishers.contains(publisher_id);
 
-      auto channels = GetChannelsForPublisher(
-          locale, publishers.at(article->data->publisher_id));
-      ArticleInfo pair =
-          std::tuple(article->data->Clone(),
-                     GetArticleMetadata(article->data, article_signals,
-                                        std::move(channels), discoverable));
+      auto meta = GetArticleMetadata(article->data, article_signals,
+                                     publisher_name_id, channels, discoverable);
 
-      articles.push_back(std::move(pair));
+      articles.push_back(std::tuple(article->data->Clone(), std::move(meta)));
     }
   }
 
@@ -221,8 +231,9 @@ FeedGenerationInfo::~FeedGenerationInfo() = default;
 
 const ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
   if (!article_infos_) {
-    article_infos_ = brave_news::GetArticleInfos(locale_, feed_items_,
-                                                 publishers_, signals_);
+    article_infos_ =
+        brave_news::GetArticleInfos(locale_, feed_items_, publishers_, signals_,
+                                    publisher_channels_, name_table_);
   }
   return article_infos_.value();
 }
@@ -234,8 +245,9 @@ FeedGenerationInfo::GetEligibleContentGroups() {
 
     std::vector<ContentGroup> content_groups;
     for (const auto& channel_id : channels_) {
-      if (available_counts_.contains(channel_id)) {
-        content_groups.emplace_back(channel_id, true);
+      const NameId name_id = name_table_.Find(channel_id);
+      if (name_id && available_counts_.contains(name_id)) {
+        content_groups.emplace_back(name_id, true);
         DVLOG(1) << "Subscribed to channel: " << channel_id;
       } else {
         DVLOG(1)
@@ -248,8 +260,9 @@ FeedGenerationInfo::GetEligibleContentGroups() {
     for (const auto& [publisher_id, publisher] : publishers_) {
       if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
           publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-        if (available_counts_.contains(publisher_id)) {
-          content_groups.emplace_back(publisher_id, false);
+        const NameId name_id = name_table_.Find(publisher_id);
+        if (name_id && available_counts_.contains(name_id)) {
+          content_groups.emplace_back(name_id, false);
           DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
         } else {
           DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name
@@ -263,8 +276,8 @@ FeedGenerationInfo::GetEligibleContentGroups() {
   return content_groups_.value();
 }
 
-std::vector<std::string> FeedGenerationInfo::EligibleChannels() {
-  std::vector<std::string> eligible_channels;
+std::vector<NameId> FeedGenerationInfo::EligibleChannels() {
+  std::vector<NameId> eligible_channels;
   for (auto& [group, is_channel] : GetEligibleContentGroups()) {
     if (!is_channel) {
       continue;
@@ -299,7 +312,7 @@ mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndConsume(
 void FeedGenerationInfo::GenerateAvailableCounts() {
   CHECK(available_counts_.empty());
   for (auto& [article, metadata] : GetArticleInfos()) {
-    available_counts_[article->publisher_id]++;
+    available_counts_[metadata.publisher_id]++;
     for (const auto& channel : metadata.channels) {
       available_counts_[channel]++;
     }
@@ -314,11 +327,11 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
   }
 
   // Decrease the publisher count for this article.
-  std::vector<std::string> remove_content_groups;
-  auto publisher_it = available_counts_.find(article->publisher_id);
+  std::vector<NameId> remove_content_groups;
+  auto publisher_it = available_counts_.find(meta.publisher_id);
   if (publisher_it != available_counts_.end()) {
     if (publisher_it->second <= 1) {
-      remove_content_groups.emplace_back(article->publisher_id);
+      remove_content_groups.push_back(meta.publisher_id);
       available_counts_.erase(publisher_it);
     } else {
       publisher_it->second--;
@@ -326,11 +339,11 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
   }
 
   // Decrease the channel counts for this article.
-  for (const auto& channel : meta.channels) {
+  for (NameId channel : meta.channels) {
     auto channel_it = available_counts_.find(channel);
     if (channel_it != available_counts_.end()) {
       if (channel_it->second <= 1) {
-        remove_content_groups.emplace_back(channel);
+        remove_content_groups.push_back(channel);
         available_counts_.erase(channel_it);
       } else {
         channel_it->second--;
@@ -339,12 +352,13 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
   }
 
   // Remove all the content groups that we've consumed all the articles from.
-  for (const auto& to_remove : remove_content_groups) {
-    DVLOG(1) << "Consumed the last article from " << to_remove
+  for (NameId to_remove : remove_content_groups) {
+    DVLOG(1) << "Consumed the last article from "
+             << name_table_.GetString(to_remove).value()
              << ". Removing it from the list of eligible content groups.";
     auto it = std::ranges::find_if(
         content_groups_.value(),
-        [&to_remove](const auto& group) { return group.first == to_remove; });
+        [to_remove](const auto& group) { return group.first == to_remove; });
 
     // We might not find a content_group for this entry because we might not be
     // directly subscribed (i.e. via a channel).
@@ -360,7 +374,10 @@ ArticleInfos GetArticleInfosForTesting(const std::string& locale,  // IN-TEST
                                        const FeedItems& feed_items,
                                        const Publishers& publishers,
                                        const Signals& signals) {
-  return GetArticleInfos(locale, feed_items, publishers, signals);
+  PublisherChannels publisher_channels;
+  NameTable name_table;
+  return GetArticleInfos(locale, feed_items, publishers, signals,
+                         publisher_channels, name_table);
 }
 
 }  // namespace brave_news

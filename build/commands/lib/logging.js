@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-const os = require('os')
-const chalk = require('chalk')
-const logUpdate = require('log-update')
-const tsm =
-  process.env.TEAMCITY_VERSION !== undefined
-    ? require('teamcity-service-messages')
-    : undefined
+import os from 'os'
+import chalk from 'chalk'
+import logUpdate from 'log-update'
+import { patchApplyReasonMessages, getReasonName } from './gitPatcher.js'
+import tsm from 'teamcity-service-messages'
+
+const isTeamcity = process.env.TEAMCITY_VERSION !== undefined
 
 let divider
 function setLineLength() {
@@ -30,7 +30,7 @@ const cmdArrowStyle = chalk.magenta
 // Track Teamcity progress scopes and finish them on unexpected exit.
 const progressScopes = []
 
-if (tsm) {
+if (isTeamcity) {
   tsm.autoFlowId = false
   // Ensure that the output is not buffered when using Teamcity Service
   // Messages. If it is buffered, console.log() output may not display in
@@ -53,7 +53,7 @@ if (tsm) {
 }
 
 function progressStart(message) {
-  if (tsm) {
+  if (isTeamcity) {
     tsm.blockOpened({ name: message })
     progressScopes.push(message)
   } else {
@@ -62,7 +62,7 @@ function progressStart(message) {
 }
 
 function progressFinish(message) {
-  if (tsm) {
+  if (isTeamcity) {
     progressScopes.pop()
     tsm.blockClosed({ name: message })
   } else {
@@ -89,7 +89,7 @@ async function progressScopeAsync(message, callable) {
 }
 
 function status(message, alreadyStyled = false) {
-  if (tsm) {
+  if (isTeamcity) {
     tsm.progressMessage(message)
   } else {
     console.log(alreadyStyled ? message : statusStyle(message))
@@ -97,7 +97,7 @@ function status(message, alreadyStyled = false) {
 }
 
 function error(message) {
-  if (tsm) {
+  if (isTeamcity) {
     tsm.message({ text: message, status: 'ERROR' })
   } else {
     console.error(errorStyle(message))
@@ -105,7 +105,7 @@ function error(message) {
 }
 
 function warn(message) {
-  if (tsm) {
+  if (isTeamcity) {
     tsm.message({ text: message, status: 'WARNING' })
   } else {
     console.error(warningStyle(message))
@@ -136,8 +136,6 @@ function printFailedPatchesInJsonFormat(allPatchStatus, bravePath) {
     return
   }
 
-  const GitPatcher = require('./gitPatcher')
-
   const patchFailuresOutput = failedPatches.map(
     ({ path, patchPath, reason }) => {
       return {
@@ -145,7 +143,7 @@ function printFailedPatchesInJsonFormat(allPatchStatus, bravePath) {
         // the first character to avoid the trailing slash from the absolute
         // path.
         patchPath: patchPath.replace(bravePath, '').substring(1),
-        reason: GitPatcher.getReasonName(reason),
+        reason: getReasonName(reason),
         path: path,
       }
     },
@@ -194,13 +192,10 @@ function allPatchStatus(allPatchStatus, patchGroupName) {
 }
 
 function logPatchStatus({ reason, path, patchPath, error, warning }) {
-  const GitPatcher = require('./gitPatcher')
   const success = !error
   const statusColor = success ? chalk.green : chalk.red
   console.log(statusColor.bold.underline(path || patchPath))
-  console.log(
-    `  - Patch applied because: ${GitPatcher.patchApplyReasonMessages[reason]}`,
-  )
+  console.log(`  - Patch applied because: ${patchApplyReasonMessages[reason]}`)
   if (error) {
     console.log(chalk.red(`  - Error - ${error.message}`))
   }
@@ -218,7 +213,7 @@ function logPatchStatus({ reason, path, patchPath, error, warning }) {
   console.log(divider)
 }
 
-module.exports = {
+export default {
   progressStart,
   progressFinish,
   progressScope,
