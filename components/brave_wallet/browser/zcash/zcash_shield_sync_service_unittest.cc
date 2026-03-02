@@ -11,6 +11,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
@@ -119,7 +120,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
         *keyring_service_, std::make_unique<testing::NiceMock<MockZCashRPC>>());
     zcash_wallet_service_->SetupSyncState(
-        base::SequencedTaskRunner::GetCurrentDefault(),
+        OrchardSyncState::CreateSyncStateSequence(),
         OrchardSyncState::CreateSyncState(temp_dir_.GetPath()));
 
     ResetSyncService();
@@ -133,10 +134,12 @@ class ZCashShieldSyncServiceTest : public testing::Test {
         mojom::ZCashAccountShieldBirthday::New(kAccountBirthday, "hash");
     OrchardFullViewKey fvk;
 
+    auto action_context =
+        zcash_wallet_service().CreateActionContext(zcash_account_);
+    action_context.account_internal_addr.emplace();
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
-        zcash_wallet_service(),
-        zcash_wallet_service().CreateActionContext(zcash_account_),
-        account_birthday, fvk, observer_->GetWeakPtr());
+        zcash_wallet_service(), std::move(action_context), account_birthday,
+        fvk, observer_->GetWeakPtr());
 
     // Ensure previous OrchardStorage is destroyed on background thread
     task_environment_.RunUntilIdle();
