@@ -8,6 +8,7 @@ import styles from './style.module.scss'
 import classnames from '$web-common/classnames'
 import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Input from '@brave/leo/react/input'
 import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
@@ -164,14 +165,55 @@ interface ConversationsListProps {
 
 export default function ConversationsList(props: ConversationsListProps) {
   const aiChatContext = useAIChat()
+  const [filterText, setFilterText] = React.useState('')
+
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(
     (c) => !c.temporary && c.hasContent,
   )
+
+  const filteredConversations = React.useMemo(() => {
+    if (!filterText) return startedNonTemporaryConversations
+    const lower = filterText.toLowerCase()
+    return startedNonTemporaryConversations.filter((c) => {
+      const title = c.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+      return title.toLowerCase().includes(lower)
+    })
+  }, [startedNonTemporaryConversations, filterText])
 
   return (
     <>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
+          {startedNonTemporaryConversations.length > 0 && (
+            <Input
+              className={styles.filterInput}
+              style={
+                filterText
+                  ? ''
+                  : '--leo-control-color: var(--leo-color-page-background)'
+              }
+              placeholder={getLocale(
+                S.AI_CHAT_CONVERSATION_LIST_FILTER_PLACEHOLDER,
+              )}
+              value={filterText}
+              onInput={(e) => setFilterText(e.value)}
+            >
+              <Icon
+                name='search'
+                slot='left-icon'
+              />
+              <Button
+                fab
+                kind='plain-faint'
+                size='small'
+                slot='right-icon'
+                style={`visibility: ${filterText ? 'visible' : 'hidden'}`}
+                onClick={() => setFilterText('')}
+              >
+                <Icon name='close' />
+              </Button>
+            </Input>
+          )}
           {!aiChatContext.isStoragePrefEnabled && (
             <Alert type='notice'>
               <Icon
@@ -209,9 +251,21 @@ export default function ConversationsList(props: ConversationsListProps) {
                 {getLocale(S.CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY)}
               </Alert>
             )}
-          {startedNonTemporaryConversations.length > 0 && (
+          {filterText && filteredConversations.length === 0 && (
+            <div className={styles.filterNoResults}>
+              <span>
+                {getLocale(S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS)}
+              </span>
+              <span>
+                {getLocale(
+                  S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS_SUBTITLE,
+                )}
+              </span>
+            </div>
+          )}
+          {filteredConversations.length > 0 && (
             <ol>
-              {startedNonTemporaryConversations.map((conversation) => (
+              {filteredConversations.map((conversation) => (
                 <ConversationItem
                   key={conversation.uuid}
                   {...props}
