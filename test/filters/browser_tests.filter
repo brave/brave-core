@@ -1624,6 +1624,13 @@
 -All/SoftNavigationTest.LayoutShift/*
 -AutoPictureInPictureTabHelperBrowserTest.CachedBoundsIgnoredWhenPermissionPromtIsVisible
 -AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
+
+# Known upstream flake: 10.5% flake rate over 30 days per LUCI Analysis.
+# Null pointer dereference in AutoPipSettingView::OnButtonPressed — widget
+# destroyed before test can interact with the bubble view.
+# Upstream Chromium test, no Brave modifications in this code path.
+-AutoPictureInPictureTabHelperBrowserTest.PromptResultRecorded_VideoConferencingAllowOnce
+
 -AutoPictureInPictureTabHelperBrowserTest.PromptResultRecorded_VideoConferencingAllowOnce
 -AutoPictureInPictureTabHelperBrowserTest.OverlaySettingViewIsShownForDocumentPip
 -AutoPictureInPictureTabHelperBrowserTest.RespectsAutoPictureInPictureContentSetting
