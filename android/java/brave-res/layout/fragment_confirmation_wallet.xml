@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/all_set_title"
-            style="@style/HeadingH3Bold"
+            style="@style/HeadingH3"
             android:gravity="center"
             android:layout_below="@+id/wallet_portfolio"
             android:layout_width="match_parent"
