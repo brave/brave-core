@@ -42,7 +42,14 @@ class VerticalTabStripWidget : public ThemeCopyingWidget {
   }
 
   // views::Widget:
-  bool ShouldViewsStyleFollowWidgetActivation() const override { return true; }
+  bool ShouldViewsStyleFollowWidgetActivation() const override {
+    // Want to make view consider widget activation state.
+    // Ex, some controls apply disabled state when its widget is inactive.
+    // As this widget is created as not-activatable,
+    // need to explicitely give true by overriding this method.
+    // Default impl is "return CanActivate()". So we need this override.
+    return true;
+  }
 
  private:
   raw_ptr<BrowserView> browser_view_;
