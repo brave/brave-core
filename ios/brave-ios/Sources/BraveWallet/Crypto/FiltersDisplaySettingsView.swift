@@ -331,7 +331,7 @@ struct FiltersDisplaySettingsView: View {
               AllSelectedView(title: Strings.Wallet.allAccountsLabel)
             } else if accounts.contains(where: { $0.isSelected }) {  // at least 1 selected
               MultipleAccountBlockiesView(
-                accountAddresses: accounts.filter(\.isSelected).map(\.model.address)
+                blockieSeeds: accounts.filter(\.isSelected).map(\.model.blockieSeed)
               )
             }
           }

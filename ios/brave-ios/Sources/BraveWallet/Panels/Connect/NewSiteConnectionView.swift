@@ -42,7 +42,11 @@ public struct NewSiteConnectionView: View {
 
   private var accountInfos: [BraveWallet.AccountInfo] {
     let allAccounts = keyringStore.allAccounts.filter { $0.coin == coin }
-    return allAccounts.filter { self.accounts.contains($0.address) }
+    return allAccounts.filter {
+      guard let dAppPermissionId = $0.dAppPermissionId
+      else { return false }
+      return self.accounts.contains(dAppPermissionId)
+    }
   }
 
   @ViewBuilder private func originAndFavicon(urlOrigin: URLOrigin) -> some View {
@@ -103,8 +107,8 @@ public struct NewSiteConnectionView: View {
                 } else {
                   selectedAccounts.insert(account.id)
                 }
-              case .sol:
-                // only allow selecting one Solana account at a time
+              case .sol, .ada:
+                // only allow selecting one Solana/Cardano account at a time
                 selectedAccounts = .init(arrayLiteral: account.id)
               default:
                 break  // not supported
@@ -240,7 +244,7 @@ public struct NewSiteConnectionView: View {
           let accounts =
             accountInfos
             .filter { selectedAccounts.contains($0.id) }
-            .map(\.address)
+            .compactMap(\.dAppPermissionId)
           onConnect(accounts)
         } label: {
           Text(Strings.Wallet.confirm)

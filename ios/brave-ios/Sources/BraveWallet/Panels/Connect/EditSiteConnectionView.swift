@@ -45,12 +45,15 @@ struct EditSiteConnectionView: View {
   }
 
   private func editAction(for account: BraveWallet.AccountInfo) -> EditAction {
-    if permittedAccounts.contains(account.address) {
+    guard let accountDAppPermissionId = account.dAppPermissionId else {
+      return .connect(coin)
+    }
+    if permittedAccounts.contains(accountDAppPermissionId) {
       if keyringStore.selectedAccount.id == account.id {
         // Disconnect - Connected and selected account
         return .disconnect(coin)
       } else {
-        if coin == .sol {
+        if coin == .sol || coin == .ada {
           return .disconnect(coin)
         }
         // Switch - Connected but not selected account (only for ethereum)
@@ -79,29 +82,33 @@ struct EditSiteConnectionView: View {
     Button {
       switch action {
       case .connect:
-        if let url = origin.url {
+        if let url = origin.url,
+          let accountDAppPermissionId = account.dAppPermissionId
+        {
           Domain.setWalletPermissions(
             forUrl: url,
             coin: coin,
-            accounts: [account.address],
+            accounts: [accountDAppPermissionId],
             grant: true
           )
+          permittedAccounts.append(accountDAppPermissionId)
         }
-        permittedAccounts.append(account.address)
 
         if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
           keyringStore.selectedAccount = account
         }
       case .disconnect:
-        if let url = origin.url {
+        if let url = origin.url,
+          let accountDAppPermissionId = account.dAppPermissionId
+        {
           Domain.setWalletPermissions(
             forUrl: url,
             coin: coin,
-            accounts: [account.address],
+            accounts: [accountDAppPermissionId],
             grant: false
           )
+          permittedAccounts.removeAll(where: { $0 == accountDAppPermissionId })
         }
-        permittedAccounts.removeAll(where: { $0 == account.address })
 
         if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
           if let firstAllowedAdd = permittedAccounts.first,

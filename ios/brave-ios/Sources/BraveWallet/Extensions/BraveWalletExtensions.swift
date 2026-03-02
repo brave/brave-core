@@ -199,7 +199,7 @@ extension BraveWallet.AccountInfo {
     switch coin {
     case .eth, .sol, .fil:
       return true
-    case .btc, .zec, .ada:
+    case .btc, .zec, .ada, .dot:
       return false
     @unknown default:
       return false
@@ -240,6 +240,18 @@ extension BraveWallet.AccountInfo {
       }
     }
     return parentOrder
+  }
+
+  // dApp permission id (only for .eth/.sol/.ada)
+  var dAppPermissionId: String? {
+    switch coin {
+    case .ada:
+      return accountId.uniqueKey
+    case .eth, .sol:
+      return accountId.address
+    default:
+      return nil
+    }
   }
 }
 
