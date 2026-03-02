@@ -85,7 +85,6 @@ function AssistantEvent(
   props: BaseProps & {
     event: Mojom.ConversationEntryEvent
     hasCompletionStarted: boolean
-    isDeepResearchResponse: boolean
   },
 ) {
   const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
@@ -94,19 +93,17 @@ function AssistantEvent(
   if (event.completionEvent) {
     const completion = event.completionEvent.completion
 
-    // Deep research uses inline URL citations (e.g. [Title](url)) rather
-    // than numbered reference-style links, so skip both the numbered prefix
-    // and the citation filtering that are designed for the [1], [2] pattern.
     const numberedLinks =
-      allowedLinks.length > 0 && !props.isDeepResearchResponse
+      allowedLinks.length > 0
         ? allowedLinks
             .map((url: string, index: number) => `[${index + 1}]: ${url}`)
             .join('\n') + '\n\n'
         : ''
 
-    const filteredCompletion = props.isDeepResearchResponse
-      ? completion
-      : removeCitationsWithMissingLinks(completion, allowedLinks)
+    const filteredCompletion = removeCitationsWithMissingLinks(
+      completion,
+      allowedLinks,
+    )
 
     const processedCompletion = normalizeCitationSpacing(filteredCompletion)
 
@@ -117,11 +114,7 @@ function AssistantEvent(
         shouldShowTextCursor={isEntryInProgress}
         text={fullText}
         allowedLinks={allowedLinks}
-        // Deep research uses inline URL citations ([Title](url)) rather than
-        // numbered references ([1]), so link restrictions must be disabled since
-        // the allowedLinks/citation filtering mechanism only handles numbered
-        // reference-style links.
-        disableLinkRestrictions={!isLeoModel || props.isDeepResearchResponse}
+        disableLinkRestrictions={!isLeoModel}
       />
     )
   }
@@ -180,17 +173,14 @@ export default function AssistantResponse(props: AssistantResponseProps) {
     (event) => event.searchQueriesEvent?.searchQueries ?? [],
   )
 
-  const deepResearch = extractDeepResearchEvents(props.events)
+  const deepResearch = React.useMemo(
+    () => extractDeepResearchEvents(props.events),
+    [props.events],
+  )
 
   const hasCompletionStarted =
     !props.isEntryInProgress
     || props.events.some((event) => event.completionEvent)
-
-  // Filter out deep research events from the main event rendering
-  // since we render them in a special progress component.
-  const nonDeepResearchEvents = props.events?.filter(
-    (event) => !event.deepResearchEvent,
-  )
 
   return (
     <AssistantResponseContextProvider events={props.events}>
@@ -201,13 +191,11 @@ export default function AssistantResponse(props: AssistantResponseProps) {
         />
       ))}
 
-      {/* Render LLM's initial response first (e.g., "I'll conduct research...") */}
-      {nonDeepResearchEvents?.map((event, i) => (
+      {props.events?.map((event, i) => (
         <AssistantEvent
           key={i}
           event={event}
           hasCompletionStarted={hasCompletionStarted}
-          isDeepResearchResponse={deepResearch.hasDeepResearchEvents}
           isEntryInProgress={props.isEntryInProgress}
           isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
           allowedLinks={props.allowedLinks}

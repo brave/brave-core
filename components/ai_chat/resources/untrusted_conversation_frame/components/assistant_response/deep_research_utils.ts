@@ -20,18 +20,29 @@ export interface ExtractedDeepResearchEvents {
   hasDeepResearchEvents: boolean
 }
 
-/** Extracts and deduplicates deep research events from conversation events. */
+/** Extracts and deduplicates deep research events from conversation events.
+ *  When multiple deep research tasks exist, only events after the last
+ *  deep research ToolUseEvent are considered. */
 export function extractDeepResearchEvents(
   events: Mojom.ConversationEntryEvent[] | undefined,
 ): ExtractedDeepResearchEvents {
+  // Find the index of the last deep research ToolUseEvent so we only
+  // consider events from the most recent deep research task.
+  let lastToolUseIndex = -1
+  events?.forEach((event, i) => {
+    if (event.toolUseEvent?.toolName === Mojom.DEEP_RESEARCH_TOOL_NAME) {
+      lastToolUseIndex = i
+    }
+  })
+  const hasDeepResearchToolUse = lastToolUseIndex >= 0
+
+  const relevantEvents =
+    lastToolUseIndex >= 0 ? events!.slice(lastToolUseIndex) : events
+
   const drEvents =
-    events
+    relevantEvents
       ?.filter((event) => event.deepResearchEvent)
       .map((event) => event.deepResearchEvent!) ?? []
-
-  const hasDeepResearchToolUse = events?.some(
-    (event) => event.toolUseEvent?.toolName === Mojom.DEEP_RESEARCH_TOOL_NAME,
-  )
 
   return {
     queriesEvent: drEvents.findLast((e) => e.queriesEvent)?.queriesEvent,

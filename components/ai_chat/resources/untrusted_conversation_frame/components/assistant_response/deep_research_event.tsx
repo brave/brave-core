@@ -38,10 +38,10 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
     && props.searchStatusEvent.status
       === mojom.DeepResearchSearchStatus.kStarted
   ) {
-    const e = props.searchStatusEvent
+    const search = props.searchStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_SEARCHING, {
-        $1: e.query,
+        $1: search.query,
       }),
       iconName: 'search',
     }
@@ -53,11 +53,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
     && props.analysisStatusEvent.chunksAnalyzed
       < props.analysisStatusEvent.chunksTotal
   ) {
-    const e = props.analysisStatusEvent
+    const analysis = props.analysisStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_ANALYZING_SOURCES, {
-        $1: String(e.chunksTotal),
-        $2: e.query,
+        $1: String(analysis.chunksTotal),
+        $2: analysis.query,
       }),
       iconName: 'file',
     }
@@ -65,11 +65,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 
   // Analyzing URLs (processing search results)
   if (props.analyzingEvent) {
-    const e = props.analyzingEvent
+    const analyzing = props.analyzingEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_PROCESSING_URLS, {
-        $1: String(e.newUrlCount),
-        $2: e.query,
+        $1: String(analyzing.newUrlCount),
+        $2: analyzing.query,
       }),
       iconName: 'search',
     }
@@ -81,11 +81,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
     && props.searchStatusEvent.status
       === mojom.DeepResearchSearchStatus.kCompleted
   ) {
-    const e = props.searchStatusEvent
+    const search = props.searchStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_FOUND_URLS, {
-        $1: String(e.urlsFound),
-        $2: e.query,
+        $1: String(search.urlsFound),
+        $2: search.query,
       }),
       iconName: 'search',
     }
@@ -93,11 +93,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 
   // URL fetching in progress
   if (props.fetchStatusEvent) {
-    const e = props.fetchStatusEvent
+    const fetch = props.fetchStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_FETCHING_URLS, {
-        $1: String(e.urlsFetched),
-        $2: String(e.urlsTotal),
+        $1: String(fetch.urlsFetched),
+        $2: String(fetch.urlsTotal),
       }),
       iconName: 'search',
     }
@@ -105,11 +105,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 
   // Thinking event = analysis complete for a query (lower priority - it accumulates)
   if (props.thinkingEvents && props.thinkingEvents.length > 0) {
-    const e = props.thinkingEvents[props.thinkingEvents.length - 1]
+    const thinking = props.thinkingEvents[props.thinkingEvents.length - 1]
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_ANALYZED_URLS, {
-        $1: String(e.urlsAnalyzed),
-        $2: e.query,
+        $1: String(thinking.urlsAnalyzed),
+        $2: thinking.query,
       }),
       iconName: 'file',
     }
@@ -128,11 +128,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 
   // Progress event = fallback showing overall stats
   if (props.progressEvent) {
-    const e = props.progressEvent
+    const progress = props.progressEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_PROGRESS, {
-        $1: String(e.urlsAnalyzed),
-        $2: String(e.queriesCount),
+        $1: String(progress.urlsAnalyzed),
+        $2: String(progress.queriesCount),
       }),
       iconName: 'search',
     }
@@ -221,7 +221,7 @@ function DeepResearchProgressLine(props: DeepResearchEventProps) {
   const eventQueueRef = React.useRef<LastEventInfo[]>([])
   const processingRef = React.useRef<boolean>(false)
 
-  // Memoize the description to detect changes
+  // Track the current description to detect changes
   const currentDescription = currentEventInfo?.description
 
   // Process the event queue
@@ -307,21 +307,7 @@ export default function DeepResearchEvent(props: DeepResearchEventProps) {
   return (
     <div className={styles.deepResearch}>
       {/* Single-line progress while active */}
-      {showProgress && (
-        <DeepResearchProgressLine
-          queriesEvent={props.queriesEvent}
-          thinkingEvents={props.thinkingEvents}
-          progressEvent={props.progressEvent}
-          completeEvent={props.completeEvent}
-          errorEvent={props.errorEvent}
-          searchStatusEvent={props.searchStatusEvent}
-          analysisStatusEvent={props.analysisStatusEvent}
-          iterationCompleteEvent={props.iterationCompleteEvent}
-          analyzingEvent={props.analyzingEvent}
-          fetchStatusEvent={props.fetchStatusEvent}
-          isActive={props.isActive}
-        />
-      )}
+      {showProgress && <DeepResearchProgressLine {...props} />}
 
       {/* Error message if any */}
       {errorEvent && <DeepResearchError errorEvent={errorEvent} />}
