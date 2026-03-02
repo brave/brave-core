@@ -127,7 +127,7 @@ class CustomBackgroundFileManager final {
         // Do percent encoding and compose it with base url so that it can
         // be used as webui data url.
         url::RawCanonOutputT<char> encoded;
-        url::EncodeURIComponent(value_, &encoded);
+        url::EncodeUriComponent(value_, &encoded);
         return GURL(base::StrCat(
             {ntp_background_images::kCustomWallpaperURL, encoded.view()}));
       } else {
