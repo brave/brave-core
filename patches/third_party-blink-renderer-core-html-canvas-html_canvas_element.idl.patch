@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index 36cc2acb1aeb6f9bdceea287a843a5016c1937a0..d8702d998a4eebed7ccfcd724a7ad9fc17589244 100644
+index 33612db4a5f92e45034386e0f28ed72562194bc0..286b42c4cb2d0153e3aee3581e7f780cb9896bcb 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-@@ -40,7 +40,7 @@
-     [RuntimeEnabled=CanvasDrawElement] attribute EventHandler onpaint;
+@@ -41,7 +41,7 @@
+     [RuntimeEnabled=CanvasDrawElement] void requestPaint();
      [RuntimeEnabled=CanvasDrawElement, RaisesException] DOMMatrix getElementTransform(Element element, DOMMatrix draw_transform);
  
 -    [MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);

@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index d74c1b94cc8cfa9e3638529086a8b45e5f6a5e85..8d5d046f0044bf1e5c56bd2ba09be097e370daac 100644
+index 5fe307d621193bf9d677eae6ed42378b51211c5f..c8b1b5a946ea1cf865f01ab4bfb9d0eedecd7c2d 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -215,6 +215,7 @@ class InfoBarDelegate {
-     STARTUP_LAUNCH_INFOBAR_DELEGATE = 131,
+@@ -216,6 +216,7 @@ class InfoBarDelegate {
      AUTOFILL_AI_SAVE_ENTITY_INFOBAR_DELEGATE_IOS = 132,
      JS_OPTIMIZATIONS_INFOBAR_DELEGATE = 133,
+     WEB_APP_BLOCKED_MIGRATION_INFOBAR_DELEGATE = 134,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/browser/enums.xml:InfoBarIdentifier)
