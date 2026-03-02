@@ -19,6 +19,7 @@ source_set("sidebar") {
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/views/side_panel",
     "//brave/components/sidebar/browser",
+    "//chrome/browser/ui/side_panel",
     "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//chrome/browser/ui/views/side_panel",
     "//components/prefs",
