@@ -523,13 +523,21 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_SITE_SEARCH_ADDITIONAL_SITES_BUTTON_LABEL" desc="Label for the 'Additional sites' button.">
         Additional sites
       </message>
-      <message name="IDS_SITE_SEARCH_DIALOG_TITLE_EDIT" desc="Title for the Edit Site Search dialog.">
-        Edit site search
-      </message>
       <message name="IDS_SITE_SEARCH_INACTIVE_SHORTCUTS_HEADER" desc="Header for 'Inactive Shortcuts' section">
         Inactive shortcuts
       </message>
-
+      <message name="IDS_SITE_SEARCH_EXTENSIONS_HEADER" desc="Header for 'Extensions' section">
+        Extensions
+      </message>
+      <message name="IDS_SITE_SEARCH_EXTENSIONS_DESCRIPTION" desc="Explanation for 'Extensions' section">
+        Some extensions can add search engines to Brave
+      </message>
+      <message name="IDS_SITE_SEARCH_DIALOG_TITLE_ADD" desc="Title for the Add Site Search dialog.">
+        Add site search
+      </message>
+      <message name="IDS_SITE_SEARCH_DIALOG_TITLE_EDIT" desc="Title for the Edit Site Search dialog.">
+        Edit site search
+      </message>
       <message name="IDS_SITE_SEARCH_DIALOG_HINT_NAME" desc="Hint for the name field in the Edit Site Search dialog.">
         Name
       </message>
@@ -538,6 +546,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_SITE_SEARCH_DIALOG_HINT_URL" desc="Hint for the URL field in the Edit Site Search dialog.">
         URL with <ph name="QUERY">%s</ph> in place of query
+      </message>
+      <message name="IDS_SITE_SEARCH_DIALOG_ADD" desc="Button label to add the changes in the Add Site Search dialog.">
+        Add
       </message>
       <message name="IDS_SITE_SEARCH_DIALOG_SAVE" desc="Button label to save the changes in the Edit Site Search dialog.">
         Save
@@ -690,6 +701,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Autofill services
+      </message>
+      <message name="IDS_AUTOFILL_SETTINGS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Autofill settings
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_CONFIRM_RESTART" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Restart Brave
@@ -3667,6 +3681,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_DEVICE_LOCK_CREATE_LOCK_BUTTON" desc="Text for the button that navigates the user to create a profile lock on the device.">
         Create a car profile lock
       </message>
+      <message name="IDS_SETTINGS_HEADING_WHEN_ON" desc="The header used above a bulleted section on a Settings page that explains the functionality of a setting.">
+        When on
+      </message>
+      <message name="IDS_SETTINGS_HEADING_CONSIDER" desc="The header used above a bulleted section on a Settings page that notes things the user might want to consider when turning this setting on or off.">
+        Things to consider
+      </message>
 
       <!-- Strings for a missing device lock. -->
       <message name="IDS_MISSING_DEVICE_LOCK_TITLE" desc="Title shown on the missing profile lock page if a user has removed a profile lock that used to be present on the device.">
@@ -3956,12 +3976,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NTP_LEARN_MORE_ABOUT_SUGGESTED_CONTENT" desc="Text in the footer of the New Tab Page. Part of the text is a link to a help center page where the user can learn more about suggested content.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph> about suggested content
       </message>
-      <message name="IDS_NTP_MANAGE_MY_ACTIVITY" desc="Content description to manage my activity from the feed header overflow menu.">
-        Manage activity
-      </message>
-      <message name="IDS_NTP_MANAGE_INTERESTS" desc="Content description to manage settings from the feed header overflow menu.">
-        Manage interests
-      </message>
       <message name="IDS_NTP_MANAGE_FEED" desc="Menu item to manage feed settings from the feed header overflow menu.">
         Manage
       </message>
@@ -4048,12 +4062,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_FEED_FOLLOW_NO_CONNECTION_ERROR" desc="Toast displayed when there is no network connection when the user tries to follow or unfollow a web feed.">
         No connection. Try again later.
-      </message>
-      <message name="IDS_NTP_TURN_OFF_FEED" desc="Content description to turn off the feed from the feed header overflow menu.">
-        Turn off
-      </message>
-      <message name="IDS_NTP_TURN_ON_FEED" desc="Content description to turn on the feed from the feed header overflow menu.">
-        Turn on
       </message>
       <message name="IDS_NTP_DISCOVER_ON" desc="Title in the feed header when the feed is turned on. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover
@@ -6080,6 +6088,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- In-Product Help strings -->
+      <message name="IDS_IPH_GLIC_PROMO_TEXT" desc="The in-product-help promotion message to try Glic.">
+        Try Gemini in Brave to get answers, key takeaways and more.
+      </message>
+      <message name="IDS_IPH_GLIC_PROMO_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to try Glic.">
+        Try Gemini in Brave to get answers, key takeaways and more from the More Options button.
+      </message>
       <message name="IDS_IPH_DOWNLOAD_PAGE_FOR_OFFLINE_USAGE_TEXT" desc="The in-product-help message after a successful navigation prompting user to download the pages to view offline.">
         Download pages to use them offline
       </message>
@@ -7477,6 +7491,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_POSITIVE_BUTTON_TEXT_LENS" desc="Button text for the Tips Promo bottom sheet to open Google Lens.">
         Open Google Lens
       </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_POSITIVE_BUTTON_TEXT_RECENT_TABS" desc="Button text for the Tips Promo bottom sheet to open the Recent Tabs page.">
+        View recent tabs
+      </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_POSITIVE_BUTTON_TEXT_TRY_NOW" desc="Button text for the Tips Promo bottom sheet to try out the feature now.">
         Try it now
       </message>
@@ -7524,6 +7541,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_TITLE_SIGNIN_SIGNED_IN" desc="Title of the Sign in feature tip main page promo when the user is already signed in. [CHAR_LIMIT=32]">
         You\u2019re already signed in
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_TITLE_RECENT_TABS" desc="Title of the Recent Tabs feature tip main page promo. [CHAR_LIMIT=32]">
+        Pick up where you left off
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_DESCRIPTION_RECENT_TABS" desc="Description of the Recent Tabs feature tip main page promo.">
+        You can reopen tabs that you\u2019ve recently closed from wherever you use Brave
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_FIRST_STEP_ESB" desc="Description of the Enhanced Safe Browsing feature tip first step detail page promo.">
         Open Brave menu &gt; Settings
@@ -7596,6 +7619,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_THIRD_STEP_CUSTOMIZE_MVT" desc="Description of the Customize MVT feature tip third step detail page promo.">
         Tap Pin this shortcut
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_FIRST_STEP_RECENT_TABS" desc="Description of the Recent tabs feature tip first step detail page promo.">
+        Open Brave menu
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_SECOND_STEP_RECENT_TABS" desc="Description of the Recent Tabs feature tip second step detail page promo.">
+        Tap Recent tabs
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_THIRD_STEP_RECENT_TABS" desc="Description of the Recent Tabs feature tip third step detail page promo.">
+        View recently opened tabs
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_TITLE_QUICK_DELETE_SHORT" desc="Title of the Quick Delete feature tip detail page promo. [CHAR_LIMIT=32]">
         Quickly delete browsing data

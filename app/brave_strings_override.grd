@@ -457,7 +457,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="not is_android">
         </if>
-
       <if expr="enable_glic">
         </if>
 
@@ -472,6 +471,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
 
       <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
         </if>
 
       </messages>
