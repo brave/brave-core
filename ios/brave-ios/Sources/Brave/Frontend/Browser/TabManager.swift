@@ -1557,22 +1557,27 @@ class TabManager: NSObject {
     }
   }
 
-  /// Function to add all the tabs to recently closed before the list is removed entirely by Close All Tabs
-  func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
+  /// Adds a list of tabs that are to be closed to the recently closed list
+  func addTabsToRecentlyClosed(_ tabs: [any TabState]) {
     var allRecentlyClosed: [SavedRecentlyClosed] = []
 
-    for tab in tabs(isPrivate: false) {
-      // Do not include the active tab for case isActiveTabIncluded is false
-      if !isActiveTabIncluded, let currentTab = selectedTab, currentTab.id == tab.id {
-        continue
-      }
-
+    for tab in tabs {
       if let savedItem = createRecentlyClosedFromActiveTab(tab) {
         allRecentlyClosed.append(savedItem)
       }
     }
 
     RecentlyClosed.insertAll(allRecentlyClosed)
+  }
+
+  /// Function to add all the tabs to recently closed before the list is removed entirely by
+  /// Close All Tabs
+  func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
+    var tabs = tabs(isPrivate: false)
+    if let selectedTab, !selectedTab.isPrivate, !isActiveTabIncluded {
+      tabs.removeAll(where: { $0.id == selectedTab.id })
+    }
+    addTabsToRecentlyClosed(tabs)
   }
 
   /// Function invoked when a Recently Closed item is selected
