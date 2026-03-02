@@ -1109,16 +1109,9 @@ void KeyringService::CreateWallet(const std::string& password,
 
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-          [](const std::string& mnemonic, const std::string& password,
-             KeyringService* keyring_service, CreateWalletCallback callback) {
-            if (keyring_service->CreateWalletInternal(mnemonic, password, false,
-                                                      false)) {
-              std::move(callback).Run(mnemonic);
-            } else {
-              std::move(callback).Run(std::nullopt);
-            }
-          },
-          *mnemonic, password, base::Unretained(this), std::move(callback)));
+          &KeyringService::OnCreateWalletRegisterComponentUpdater,
+          weak_ptr_factory_.GetWeakPtr(), *mnemonic, password,
+          std::move(callback)));
 }
 
 bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
@@ -1513,21 +1506,9 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    RestoreWalletCallback callback) {
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-          [](const std::string& mnemonic, const std::string& password,
-             bool is_legacy_eth_seed_format, RestoreWalletCallback callback,
-             KeyringService* keyring_service) {
-            bool is_valid_mnemonic = keyring_service->RestoreWalletSync(
-                mnemonic, password, is_legacy_eth_seed_format);
-
-            if (!is_valid_mnemonic) {
-              std::move(callback).Run(false);
-              return;
-            }
-
-            std::move(callback).Run(true);
-          },
-          mnemonic, password, is_legacy_eth_seed_format, std::move(callback),
-          base::Unretained(this)));
+          &KeyringService::OnRestoreWalletRegisterComponentUpdater,
+          weak_ptr_factory_.GetWeakPtr(), mnemonic, password,
+          is_legacy_eth_seed_format, std::move(callback)));
 }
 
 bool KeyringService::CanResumeWallet(const std::string& mnemonic,
@@ -3527,6 +3508,33 @@ void KeyringService::MaybeUnlockWithCommandLine() {
     Unlock(dev_wallet_password, base::DoNothing());
   }
 #endif  // !defined(OFFICIAL_BUILD)
+}
+
+void KeyringService::OnCreateWalletRegisterComponentUpdater(
+    const std::string& mnemonic,
+    const std::string& password,
+    CreateWalletCallback callback) {
+  if (CreateWalletInternal(mnemonic, password, false, false)) {
+    std::move(callback).Run(mnemonic);
+  } else {
+    std::move(callback).Run(std::nullopt);
+  }
+}
+
+void KeyringService::OnRestoreWalletRegisterComponentUpdater(
+    const std::string& mnemonic,
+    const std::string& password,
+    bool is_legacy_eth_seed_format,
+    RestoreWalletCallback callback) {
+  bool is_valid_mnemonic =
+      RestoreWalletSync(mnemonic, password, is_legacy_eth_seed_format);
+
+  if (!is_valid_mnemonic) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::move(callback).Run(true);
 }
 
 }  // namespace brave_wallet

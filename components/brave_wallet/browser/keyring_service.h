@@ -440,6 +440,13 @@ class KeyringService : public mojom::KeyringService {
       const std::string& password);
   bool CreateEncryptorAndValidatePasswordInternal(const std::string& password);
   void MaybeUnlockWithCommandLine();
+  void OnCreateWalletRegisterComponentUpdater(const std::string& mnemonic,
+                                              const std::string& password,
+                                              CreateWalletCallback callback);
+  void OnRestoreWalletRegisterComponentUpdater(const std::string& mnemonic,
+                                               const std::string& password,
+                                               bool is_legacy_eth_seed_format,
+                                               RestoreWalletCallback callback);
 
   std::unique_ptr<std::vector<mojom::AccountInfoPtr>> account_info_cache_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
@@ -479,6 +486,8 @@ class KeyringService : public mojom::KeyringService {
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
+
+  base::WeakPtrFactory<KeyringService> weak_ptr_factory_{this};
 
   KeyringService(const KeyringService&) = delete;
   KeyringService& operator=(const KeyringService&) = delete;
