@@ -45,8 +45,8 @@ void BraveAudioFarblingHelper::FarbleAudioChannel(base::span<float> dst) const {
 
 // Calculate values for RealtimeAnalyser::GetFloatTimeDomainData
 void BraveAudioFarblingHelper::FarbleFloatTimeDomainData(
-    const float* input_buffer,
-    float* destination,
+    const AudioFloatArray& input_buffer,
+    base::span<float>& destination,
     size_t len,
     unsigned write_index,
     unsigned fft_size,
@@ -56,26 +56,25 @@ void BraveAudioFarblingHelper::FarbleFloatTimeDomainData(
     for (size_t i = 0; i < len; ++i) {
       v = lfsr_next(v);
       float value = (v / maxUInt64AsDouble) / 10;
-      UNSAFE_TODO(destination[i]) = value;
+      destination[i] = value;
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
       // Buffer access is protected due to modulo operation.
       float value =
           fudge_factor_ *
-          UNSAFE_TODO(
-              input_buffer[(i + write_index - fft_size + input_buffer_size) %
-                           input_buffer_size]);
+          input_buffer[(i + write_index - fft_size + input_buffer_size) %
+                       input_buffer_size];
 
-      UNSAFE_TODO(destination[i]) = value;
+      destination[i] = value;
     }
   }
 }
 
 // Calculate values for RealtimeAnalyser::GetByteTimeDomainData
 void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
-    const float* input_buffer,
-    unsigned char* destination,
+    const AudioFloatArray& input_buffer,
+    base::span<unsigned char>& destination,
     size_t len,
     unsigned write_index,
     unsigned fft_size,
@@ -97,16 +96,15 @@ void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
         scaled_value = UCHAR_MAX;
       }
 
-      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
+      destination[i] = static_cast<unsigned char>(scaled_value);
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
       // Buffer access is protected due to modulo operation.
       float value =
           fudge_factor_ *
-          UNSAFE_TODO(
-              input_buffer[(i + write_index - fft_size + input_buffer_size) %
-                           input_buffer_size]);
+          input_buffer[(i + write_index - fft_size + input_buffer_size) %
+                       input_buffer_size];
 
       // Scale from nominal -1 -> +1 to unsigned byte.
       double scaled_value = 128 * (value + 1);
@@ -119,15 +117,15 @@ void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
         scaled_value = UCHAR_MAX;
       }
 
-      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
+      destination[i] = static_cast<unsigned char>(scaled_value);
     }
   }
 }
 
 // Calculate values for RealtimeAnalyser::ConvertToByteData
 void BraveAudioFarblingHelper::FarbleConvertToByteData(
-    const float* source,
-    unsigned char* destination,
+    const AudioFloatArray& source,
+    base::span<unsigned char>& destination,
     size_t len,
     double min_decibels,
     double range_scale_factor) const {
@@ -151,11 +149,11 @@ void BraveAudioFarblingHelper::FarbleConvertToByteData(
         scaled_value = UCHAR_MAX;
       }
 
-      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
+      destination[i] = static_cast<unsigned char>(scaled_value);
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
-      float linear_value = fudge_factor_ * UNSAFE_TODO(source[i]);
+      float linear_value = fudge_factor_ * source[i];
       double db_mag = audio_utilities::LinearToDecibels(linear_value);
 
       // The range m_minDecibels to m_maxDecibels will be scaled to byte values
@@ -171,28 +169,29 @@ void BraveAudioFarblingHelper::FarbleConvertToByteData(
         scaled_value = UCHAR_MAX;
       }
 
-      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
+      destination[i] = static_cast<unsigned char>(scaled_value);
     }
   }
 }
 
 // Calculate values for RealtimeAnalyser::ConvertFloatToDb
-void BraveAudioFarblingHelper::FarbleConvertFloatToDb(const float* source,
-                                                      float* destination,
-                                                      size_t len) const {
+void BraveAudioFarblingHelper::FarbleConvertFloatToDb(
+    const AudioFloatArray& source,
+    base::span<float>& destination,
+    size_t len) const {
   if (max_) {
     uint64_t v = seed_;
     for (size_t i = 0; i < len; ++i) {
       v = lfsr_next(v);
       float linear_value = (v / maxUInt64AsDouble) / 10;
       double db_mag = audio_utilities::LinearToDecibels(linear_value);
-      UNSAFE_TODO(destination[i]) = static_cast<float>(db_mag);
+      destination[i] = static_cast<float>(db_mag);
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
-      float linear_value = fudge_factor_ * UNSAFE_TODO(source[i]);
+      float linear_value = fudge_factor_ * source[i];
       double db_mag = audio_utilities::LinearToDecibels(linear_value);
-      UNSAFE_TODO(destination[i]) = static_cast<float>(db_mag);
+      destination[i] = static_cast<float>(db_mag);
     }
   }
 }
