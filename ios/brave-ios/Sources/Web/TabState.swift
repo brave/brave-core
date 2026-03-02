@@ -46,8 +46,8 @@ public class TabStateFactory {
   }
 
   public static func create(with params: CreateTabParams) -> any TabState {
-    let wkConfiguration = params.initialConfiguration ?? .init()
-    wkConfiguration.enablePageTopColorSampling()
+    let wkConfiguration = params.initialConfiguration
+    wkConfiguration?.enablePageTopColorSampling()
     let cwvConfiuration = BraveWebViewConfiguration(profile: params.profile)
     return ChromiumTabState(
       id: params.id,
