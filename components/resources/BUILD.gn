@@ -242,8 +242,9 @@ if (is_android) {
 
 action("about_credits") {
   script = "//brave/script/check_npm_licenses.py"
+  deps = [ "//brave/components/common:preprocess_package_json" ]
 
-  inputs = [ "//brave/package.json" ]
+  inputs = [ "$root_gen_dir/brave/components/common/package.json" ]
 
   outputs = [ "$root_gen_dir/npm_licenses.checked" ]
 
