@@ -354,16 +354,14 @@ TEST_F(WalletDataFilesInstallerUnitTest,
           FPL("ofac-sanctioned-digital-currency-addresses.json")),
       ofac_list_json));
 
-  base::RunLoop run_loop;
-  keyring_service()->RestoreWallet(
-      kMnemonicDivideCruise, kTestWalletPassword, false,
-      base::BindLambdaForTesting([&](bool success) {
-        // We treat sanctioned addresses as an invalid mnemonic.
-        ASSERT_FALSE(success);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
 
+  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   false, future.GetCallback());
+
+  // We treat sanctioned addresses as an invalid mnemonic.
+  auto success = future.Take();
+  EXPECT_FALSE(success);
   EXPECT_TRUE(keyring_service()->GetAllAccountInfos().empty());
 
   EXPECT_FALSE(registry()->IsEmptyForTesting());
