@@ -1092,6 +1092,13 @@ test("brave_browser_tests") {
     deps += [ "//ui/aura:test_support" ]
   }
 
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui/side_panel",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    ]
+  }
+
   if (enable_widevine) {
     deps += [ "//brave/browser/widevine:browser_tests" ]
   }
