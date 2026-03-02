@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"

@@ -86,6 +86,7 @@ void SidebarControlView::OnThemeChanged() {
 
   UpdateBackgroundAndBorder();
   UpdateItemAddButtonState();
+  UpdateSettingsButtonState();
 }
 
 void SidebarControlView::UpdateBackgroundAndBorder() {
@@ -243,7 +244,7 @@ void SidebarControlView::UpdateSettingsButtonState() {
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_DISABLED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
-                                     kColorSidebarAddButtonDisabled,
+                                     kColorToolbarButtonIconInactive,
                                      SidebarButtonView::kDefaultIconSize));
 }
 

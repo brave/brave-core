@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/button/label_button.h"
 
-class SidebarButtonView : public views::ImageButton {
-  METADATA_HEADER(SidebarButtonView, views::ImageButton)
+class SidebarButtonView : public views::LabelButton {
+  METADATA_HEADER(SidebarButtonView, views::LabelButton)
  public:
   // Value ought to follow TOOLBAR_BUTTON_HEIGHT in brave_layout_constants.cc
   static constexpr int kSidebarButtonSize = 28;
@@ -28,7 +28,7 @@ class SidebarButtonView : public views::ImageButton {
   SidebarButtonView(const SidebarButtonView&) = delete;
   SidebarButtonView operator=(const SidebarButtonView&) = delete;
 
-  // views::ImageButton overrides:
+  // views::LabelButton overrides:
   void OnThemeChanged() override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;

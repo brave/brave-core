@@ -22,6 +22,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -41,6 +42,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
@@ -403,11 +405,15 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
+  const auto resized = gfx::ImageSkiaOperations::CreateResizedImage(
+      image, skia::ImageOperations::RESIZE_BEST, kIconSize);
+  item_view->SetImageModel(views::Button::STATE_NORMAL,
+                           ui::ImageModel::FromImageSkia(resized));
   item_view->SetImageModel(
-      views::Button::STATE_NORMAL,
+      views::Button::STATE_DISABLED,
       ui::ImageModel::FromImageSkia(
-          gfx::ImageSkiaOperations::CreateResizedImage(
-              image, skia::ImageOperations::RESIZE_BEST, kIconSize)));
+          gfx::ImageSkiaOperations::CreateTransparentImage(
+              resized, kBraveDisabledControlAlpha / 255.0)));
 }
 
 void SidebarItemsContentsView::ClearDragIndicator() {
@@ -566,14 +572,16 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     views::Button::ButtonState state) const {
   const auto get_image_model = [](const gfx::VectorIcon& icon,
                                   views::Button::ButtonState state) {
-    return ui::ImageModel::FromVectorIcon(
-        icon,
-        state == views::Button::STATE_DISABLED
-            ? kColorSidebarArrowDisabled
-            : (state == views::Button::STATE_PRESSED
-                   ? kColorSidebarButtonPressed
-                   : kColorSidebarButtonBase),
-        SidebarButtonView::kDefaultIconSize);
+    ui::ColorId color_id;
+    if (state == views::Button::STATE_DISABLED) {
+      color_id = kColorToolbarButtonIconInactive;
+    } else if (state == views::Button::STATE_PRESSED) {
+      color_id = kColorSidebarButtonPressed;
+    } else {
+      color_id = kColorSidebarButtonBase;
+    }
+    return ui::ImageModel::FromVectorIcon(icon, color_id,
+                                          SidebarButtonView::kDefaultIconSize);
   };
 
   switch (type) {

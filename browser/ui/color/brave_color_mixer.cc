@@ -423,10 +423,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
 
-  mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
-      key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
-      SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
-
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x8A, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2))};
@@ -499,9 +495,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   if (!HasCustomToolbarColor(key)) {
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
-  mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
-      key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
-      SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x8A, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2))};
