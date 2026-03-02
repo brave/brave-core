@@ -55,12 +55,13 @@ class BraveTorStateProvider : public PrivateBaseStateProvider {
       : PrivateBaseStateProvider(profile, state_observer) {}
 
   // PrivateBaseStateProvider:
-  ui::ImageModel GetAvatarIcon(
+  std::pair<ui::ImageModel, AvatarIconType> GetAvatarIcon(
       int icon_size,
       SkColor icon_color,
       const ui::ColorProvider& color_provider) const override {
-    return ui::ImageModel::FromVectorIcon(
-        kLeoProductTorIcon, SkColorSetRGB(0x3C, 0x82, 0x3C), icon_size);
+    return {ui::ImageModel::FromVectorIcon(
+                kLeoProductTorIcon, SkColorSetRGB(0x3C, 0x82, 0x3C), icon_size),
+            AvatarIconType::kNonPlaceholder};
   }
 
   std::u16string GetText() const override {
@@ -76,12 +77,13 @@ class BraveIncognitoStateProvider : public IncognitoStateProvider {
       : IncognitoStateProvider(profile, state_observer) {}
 
   // IncognitoStateProvider:
-  ui::ImageModel GetAvatarIcon(
+  std::pair<ui::ImageModel, AvatarIconType> GetAvatarIcon(
       int icon_size,
       SkColor icon_color,
       const ui::ColorProvider& color_provider) const override {
-    return ui::ImageModel::FromVectorIcon(
-        kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), icon_size);
+    return {ui::ImageModel::FromVectorIcon(
+                kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), icon_size),
+            AvatarIconType::kNonPlaceholder};
   }
 };
 
@@ -93,12 +95,13 @@ class BraveGuestStateProvider : public GuestStateProvider {
       : GuestStateProvider(profile, state_observer) {}
 
   // GuestStateProvider:
-  ui::ImageModel GetAvatarIcon(
+  std::pair<ui::ImageModel, AvatarIconType> GetAvatarIcon(
       int icon_size,
       SkColor icon_color,
       const ui::ColorProvider& color_provider) const override {
-    return ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon, icon_color,
-                                          icon_size);
+    return {ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon, icon_color,
+                                           icon_size),
+            AvatarIconType::kNonPlaceholder};
   }
 };
 
