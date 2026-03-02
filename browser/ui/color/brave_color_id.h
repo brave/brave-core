@@ -67,7 +67,8 @@
     E_CPONLY(kColorSidebarPanelHeaderBackground)              \
     E_CPONLY(kColorSidebarPanelHeaderTitle)                   \
     E_CPONLY(kColorSidebarPanelHeaderButton)                  \
-    E_CPONLY(kColorSidebarPanelHeaderButtonHovered)
+    E_CPONLY(kColorSidebarPanelHeaderButtonHovered)           \
+    E_CPONLY(kColorSidebarPanelBackground)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #define BRAVE_SPEEDREADER_COLOR_IDS      \

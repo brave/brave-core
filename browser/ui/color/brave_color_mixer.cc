@@ -587,6 +587,7 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
+  mixer[kColorSidebarPanelBackground] = {nala::kColorContainerBackground};
   mixer[kColorSidebarAddBubbleBackground] = {nala::kColorContainerBackground};
 
   if (!HasCustomToolbarColor(key)) {
@@ -626,6 +627,7 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorPrimitiveNeutral90};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
       nala::kColorPrimitiveNeutral80};
+  mixer[kColorSidebarPanelBackground] = {nala::kColorContainerBackground};
 }
 
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,

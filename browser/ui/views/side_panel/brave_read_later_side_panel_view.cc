@@ -37,6 +37,8 @@ class ReadLaterSidePanelHeaderView : public views::View {
  public:
   explicit ReadLaterSidePanelHeaderView(SidePanelEntryScope& scope) {
     constexpr int kHeaderInteriorMargin = 16;
+    SetBackground(
+        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetInteriorMargin(gfx::Insets(kHeaderInteriorMargin))

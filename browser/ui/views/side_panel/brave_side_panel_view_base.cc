@@ -23,8 +23,7 @@ BraveSidePanelViewBase::BraveSidePanelViewBase() {
   // NOTE: If we use our own reading list page and it has loading spinner, maybe
   // we can set `true` here.
   SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(false);
-  SetBackground(
-      views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
+  SetBackground(views::CreateSolidBackground(kColorSidebarPanelBackground));
 }
 
 BraveSidePanelViewBase::~BraveSidePanelViewBase() = default;

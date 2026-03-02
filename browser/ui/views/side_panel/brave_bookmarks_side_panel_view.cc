@@ -46,6 +46,8 @@ class BookmarksSidePanelHeaderView : public views::View {
  public:
   explicit BookmarksSidePanelHeaderView(SidePanelEntryScope& scope) {
     constexpr int kHeaderInteriorMargin = 16;
+    SetBackground(
+        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetInteriorMargin(gfx::Insets(kHeaderInteriorMargin))
