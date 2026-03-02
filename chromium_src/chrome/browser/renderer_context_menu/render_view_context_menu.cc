@@ -172,6 +172,7 @@ bool HasAlreadyOpenedTorWindow(Profile* profile) {
 // Modified OnProfileCreated() in render_view_context_menu.cc
 // to handle additional |use_new_tab| param.
 void OnTorProfileCreated(const GURL& link_url,
+                         const url::Origin& initiator,
                          bool use_new_tab,
                          Browser* browser) {
   CHECK(browser);
@@ -194,6 +195,7 @@ void OnTorProfileCreated(const GURL& link_url,
   nav_params.referrer =
       content::Referrer(GURL(), network::mojom::ReferrerPolicy::kStrictOrigin);
   nav_params.window_action = NavigateParams::WindowAction::kShowWindow;
+  nav_params.initiator_origin = initiator;
   Navigate(&nav_params);
 }
 
@@ -467,7 +469,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       Browser* tor_browser =
           TorProfileManager::SwitchToTorProfile(GetProfile());
       if (tor_browser) {
-        OnTorProfileCreated(params_.link_url, has_tor_window, tor_browser);
+        OnTorProfileCreated(params_.link_url, params_.frame_origin,
+                                    has_tor_window, tor_browser);
       }
     } break;
 #endif
