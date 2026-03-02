@@ -470,7 +470,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           TorProfileManager::SwitchToTorProfile(GetProfile());
       if (tor_browser) {
         OnTorProfileCreated(params_.link_url, params_.frame_origin,
-                                    has_tor_window, tor_browser);
+                            has_tor_window, tor_browser);
       }
     } break;
 #endif

@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -24,8 +24,7 @@ namespace {
 
 constexpr char kSiteA[] = "a.test";
 constexpr char kSiteB[] = "b.test";
-constexpr char kSameSiteStrictCookie[] =
-    "strict_cookie=1; ; SameSite=Strict; Path=/";
+constexpr char kSameSiteStrictCookie[] = "strict_cookie=1; SameSite=Strict";
 
 std::unique_ptr<net::test_server::HttpResponse> HandleSetStrictCookie(
     const net::test_server::HttpRequest& request) {
@@ -92,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
     content::TestNavigationObserver observer(view_cookies_url);
     observer.StartWatchingNewWebContents();
     menu.ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKTOR, 0);
-    observer.WaitForNavigationFinished();
+    observer.Wait();
 
     auto* web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
     return content::EvalJs(web_contents, "document.body.textContent") == "None";
