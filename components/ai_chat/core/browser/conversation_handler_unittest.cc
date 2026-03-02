@@ -5830,207 +5830,8 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_EQ(history.size(), 2u);
   auto& assistant_entry = history.back();
   ASSERT_TRUE(assistant_entry->events.has_value());
-
-  // tool_use + sources + search_queries
-  ASSERT_EQ(assistant_entry->events->size(), 3u);
+  ASSERT_EQ(assistant_entry->events->size(), 1u);
   EXPECT_MOJOM_EQ(assistant_entry->events->at(0), expected_tool_event);
-  EXPECT_MOJOM_EQ(assistant_entry->events->at(1),
-                  mojom::ConversationEntryEvent::NewSourcesEvent(
-                      mojom::WebSourcesEvent::New(CreateWebSources(1),
-                                                  std::vector<std::string>())));
-  EXPECT_MOJOM_EQ(
-      assistant_entry->events->at(2),
-      mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-          mojom::SearchQueriesEvent::New(std::vector<std::string>{"weather"})));
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_EmptyHistory) {
-  // Empty history returns no events.
-  auto events =
-      conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-  EXPECT_TRUE(events.empty());
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_SearchToolWithOutput) {
-  // Assistant entry with a search tool that has web sources output
-  // returns sources and search queries events. Also tests scanning
-  // across multiple consecutive assistant entries.
-  auto entry1 = mojom::ConversationTurn::New();
-  entry1->character_type = mojom::CharacterType::ASSISTANT;
-  entry1->events = std::vector<mojom::ConversationEntryEventPtr>();
-  entry1->events->push_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "brave_web_search", "tool_id_1", "{\"query\":\"q1\"}",
-          CreateWebSourcesOutput(2, {"query one"}),
-          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
-
-  // Second assistant entry with another search tool result.
-  auto entry2 = mojom::ConversationTurn::New();
-  entry2->character_type = mojom::CharacterType::ASSISTANT;
-  entry2->events = std::vector<mojom::ConversationEntryEventPtr>();
-  entry2->events->push_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "brave_web_search", "tool_id_2", "{\"query\":\"q2\"}",
-          CreateWebSourcesOutput(1, {"query two"}),
-          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
-
-  conversation_handler_->chat_history_.push_back(std::move(entry1));
-  conversation_handler_->chat_history_.push_back(std::move(entry2));
-
-  auto events =
-      conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-
-  // Should have sources event and search queries event.
-  ASSERT_EQ(events.size(), 2u);
-
-  // Sources from both entries combined (2 + 1 = 3).
-  ASSERT_TRUE(events[0]->is_sources_event());
-  EXPECT_EQ(events[0]->get_sources_event()->sources.size(), 3u);
-
-  // Both queries collected.
-  ASSERT_TRUE(events[1]->is_search_queries_event());
-  auto& queries = events[1]->get_search_queries_event()->search_queries;
-  ASSERT_EQ(queries.size(), 2u);
-  // Scan is reverse (rbegin), so entry2's query comes first.
-  EXPECT_EQ(queries[0], "query two");
-  EXPECT_EQ(queries[1], "query one");
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_SkipsNonSearchTools) {
-  // Non-search tool events are ignored.
-  auto entry = mojom::ConversationTurn::New();
-  entry->character_type = mojom::CharacterType::ASSISTANT;
-  entry->events = std::vector<mojom::ConversationEntryEventPtr>();
-  entry->events->push_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "page_summary", "tool_id_1", "{}",
-          CreateWebSourcesOutput(1, {"query"}),
-          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
-  // Non-tool event is also ignored.
-  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("text")));
-
-  conversation_handler_->chat_history_.push_back(std::move(entry));
-
-  auto events =
-      conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-  EXPECT_TRUE(events.empty());
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_SkipsToolWithoutOutput) {
-  // Search tool without output (pending) is skipped.
-  auto entry = mojom::ConversationTurn::New();
-  entry->character_type = mojom::CharacterType::ASSISTANT;
-  entry->events = std::vector<mojom::ConversationEntryEventPtr>();
-  entry->events->push_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "brave_web_search", "tool_id_1", "{\"query\":\"test\"}", std::nullopt,
-          std::nullopt, nullptr, false)));
-
-  conversation_handler_->chat_history_.push_back(std::move(entry));
-
-  auto events =
-      conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-  EXPECT_TRUE(events.empty());
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_StopsAtUserEntry) {
-  // Search tool in an assistant entry before a user entry is not
-  // reached because the scan stops at the user entry.
-  auto early_assistant = mojom::ConversationTurn::New();
-  early_assistant->character_type = mojom::CharacterType::ASSISTANT;
-  early_assistant->events = std::vector<mojom::ConversationEntryEventPtr>();
-  early_assistant->events->push_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "brave_web_search", "tool_id_1", "{\"query\":\"old\"}",
-          CreateWebSourcesOutput(1, {"old query"}),
-          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
-
-  auto user_entry = mojom::ConversationTurn::New();
-  user_entry->character_type = mojom::CharacterType::HUMAN;
-
-  auto recent_assistant = mojom::ConversationTurn::New();
-  recent_assistant->character_type = mojom::CharacterType::ASSISTANT;
-  // No events on this entry.
-
-  conversation_handler_->chat_history_.push_back(std::move(early_assistant));
-  conversation_handler_->chat_history_.push_back(std::move(user_entry));
-  conversation_handler_->chat_history_.push_back(std::move(recent_assistant));
-
-  auto events =
-      conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-  // The recent assistant has no events, and the scan stops at the
-  // user entry, so the early assistant's sources are not reached.
-  EXPECT_TRUE(events.empty());
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_NoSearchQueriesEvent) {
-  // No search queries event should be emitted when queries are empty
-  // or contain only empty strings.
-  struct TestCase {
-    std::string description;
-    std::vector<std::string> queries;
-  };
-  TestCase cases[] = {
-      {"empty array", std::vector<std::string>{}},
-      {"all empty strings", std::vector<std::string>{"", ""}},
-  };
-  for (auto& [description, queries] : cases) {
-    SCOPED_TRACE(description);
-    conversation_handler_->chat_history_.clear();
-
-    auto entry = mojom::ConversationTurn::New();
-    entry->character_type = mojom::CharacterType::ASSISTANT;
-    entry->events = std::vector<mojom::ConversationEntryEventPtr>();
-    entry->events->push_back(
-        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-            "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-            CreateWebSourcesOutput(1, std::move(queries)),
-            std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
-
-    conversation_handler_->chat_history_.push_back(std::move(entry));
-
-    auto events =
-        conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-
-    ASSERT_EQ(events.size(), 1u);
-    EXPECT_TRUE(events[0]->is_sources_event());
-  }
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       ExtractSourcesFromRecentAssistantEntries_MultipleQueries) {
-  // A single WebSourcesContentBlock can carry multiple queries.
-  auto entry = mojom::ConversationTurn::New();
-  entry->character_type = mojom::CharacterType::ASSISTANT;
-  entry->events = std::vector<mojom::ConversationEntryEventPtr>();
-  entry->events->push_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
-          "brave_web_search", "tool_id_1", "{\"query\":\"test\"}",
-          CreateWebSourcesOutput(1, {"alpha", "beta", "gamma"}),
-          std::vector<mojom::ToolArtifactPtr>(), nullptr, true)));
-
-  conversation_handler_->chat_history_.push_back(std::move(entry));
-
-  auto events =
-      conversation_handler_->ExtractSourcesFromRecentAssistantEntries();
-
-  ASSERT_EQ(events.size(), 2u);
-  ASSERT_TRUE(events[0]->is_sources_event());
-  EXPECT_EQ(events[0]->get_sources_event()->sources.size(), 1u);
-
-  ASSERT_TRUE(events[1]->is_search_queries_event());
-  auto& queries = events[1]->get_search_queries_event()->search_queries;
-  ASSERT_EQ(queries.size(), 3u);
-  EXPECT_EQ(queries[0], "alpha");
-  EXPECT_EQ(queries[1], "beta");
-  EXPECT_EQ(queries[2], "gamma");
 }
 
 TEST_F(ConversationHandlerUnitTest,
@@ -6295,27 +6096,14 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_TRUE(tool_events[1]->is_tool_use_event());
   EXPECT_MOJOM_EQ(tool_events[1]->get_tool_use_event(), expected_client_tool);
 
-  // Entry 2: Assistant entry with completion from post-tool generation,
-  // plus extracted sources and search queries from the search tool.
+  // Entry 2: Assistant entry with completion from post-tool generation
   auto& completion_entry = history[2];
   ASSERT_TRUE(completion_entry->events.has_value());
   auto& completion_events = *completion_entry->events;
-  ASSERT_EQ(completion_events.size(), 3u);
-
+  ASSERT_EQ(completion_events.size(), 1u);
   ASSERT_TRUE(completion_events[0]->is_completion_event());
   EXPECT_EQ(completion_events[0]->get_completion_event()->completion,
             "NYC weather is 72F");
-
-  // SourcesEvent and SearchQueriesEvent extracted from search tool
-  ASSERT_TRUE(completion_events[1]->is_sources_event());
-  EXPECT_MOJOM_EQ(completion_events[1]->get_sources_event(),
-                  mojom::WebSourcesEvent::New(CreateWebSources(1),
-                                              std::vector<std::string>()));
-
-  ASSERT_TRUE(completion_events[2]->is_search_queries_event());
-  EXPECT_MOJOM_EQ(
-      completion_events[2]->get_search_queries_event(),
-      mojom::SearchQueriesEvent::New(std::vector<std::string>{"NYC weather"}));
 }
 
 }  // namespace ai_chat

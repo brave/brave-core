@@ -333,28 +333,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_EmptyHistory);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_SearchToolWithOutput);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_SkipsNonSearchTools);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_SkipsToolWithoutOutput);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_StopsAtUserEntry);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_NoSearchQueriesEvent);
-  FRIEND_TEST_ALL_PREFIXES(
-      ConversationHandlerUnitTest,
-      ExtractSourcesFromRecentAssistantEntries_MultipleQueries);
-
   void InitEngine();
 
   // Setup tools for the conversation. When a new user message is added, we
@@ -389,10 +367,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAutoScreenshotsTaken(
       base::OnceClosure callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
-
-  // Extract web sources from search tools in recent assistant entries
-  std::vector<mojom::ConversationEntryEventPtr>
-  ExtractSourcesFromRecentAssistantEntries();
 
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);

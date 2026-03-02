@@ -25,9 +25,19 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
 std::optional<mojom::ToolUseEventPtr> ParseToolCallRequest(
     const base::DictValue& tool_call);
 
-// Parse a single tool call dict with output_content (tool result)
-std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
+// Parse a single tool call dict with output_content (tool result).
+// Returns a vector of ConversationEntryEvents: always a ToolUseEvent,
+// optionally followed by WebSourcesEvent and SearchQueriesEvent if
+// the output contains web sources. Returns empty vector on failure.
+std::vector<mojom::ConversationEntryEventPtr> ParseToolCallResult(
     const base::DictValue& tool_call);
+
+// Extract WebSourcesEvent and SearchQueriesEvent from content
+// blocks (e.g. a tool's output). Collects sources, queries, and
+// rich_results across all WebSourcesContentBlocks. Returns empty
+// vector if no web sources are found.
+std::vector<mojom::ConversationEntryEventPtr> ExtractWebSourceEvents(
+    const std::vector<mojom::ContentBlockPtr>& content_blocks);
 
 // Parse a JSON dict into ContentBlock based on its "type" field.
 // Supports "text" and "brave-chat.webSources" types.

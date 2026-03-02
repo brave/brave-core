@@ -323,13 +323,16 @@ TEST(OaiParsingTest, ParseToolCallResult_ValidTextOutput) {
   })";
 
   auto tool_result = base::test::ParseJsonDict(kToolResultJson);
-  auto result = ParseToolCallResult(tool_result);
+  auto events = ParseToolCallResult(tool_result);
 
-  ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE((*result)->output.has_value());
-  ASSERT_EQ((*result)->output->size(), 1u);
-  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
-  EXPECT_EQ((*result)->output->at(0)->get_text_content_block()->text,
+  // Only ToolUseEvent, no sources/queries for plain text
+  ASSERT_EQ(events.size(), 1u);
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  const auto& tool = events[0]->get_tool_use_event();
+  ASSERT_TRUE(tool->output.has_value());
+  ASSERT_EQ(tool->output->size(), 1u);
+  ASSERT_TRUE(tool->output->at(0)->is_text_content_block());
+  EXPECT_EQ(tool->output->at(0)->get_text_content_block()->text,
             "The weather is sunny");
 }
 
@@ -344,9 +347,9 @@ TEST(OaiParsingTest, ParseToolCallResult_MissingId) {
   })";
 
   auto tool_result = base::test::ParseJsonDict(kToolResultJson);
-  auto result = ParseToolCallResult(tool_result);
+  auto events = ParseToolCallResult(tool_result);
 
-  EXPECT_FALSE(result.has_value());
+  EXPECT_TRUE(events.empty());
 }
 
 TEST(OaiParsingTest, ParseToolCallResult_MissingOutputContent) {
@@ -355,9 +358,9 @@ TEST(OaiParsingTest, ParseToolCallResult_MissingOutputContent) {
   })";
 
   auto tool_result = base::test::ParseJsonDict(kToolResultJson);
-  auto result = ParseToolCallResult(tool_result);
+  auto events = ParseToolCallResult(tool_result);
 
-  EXPECT_FALSE(result.has_value());
+  EXPECT_TRUE(events.empty());
 }
 
 TEST(OaiParsingTest, ParseToolCallResult_WebSourcesOutput) {
@@ -379,22 +382,32 @@ TEST(OaiParsingTest, ParseToolCallResult_WebSourcesOutput) {
   })";
 
   auto tool_result = base::test::ParseJsonDict(kToolResultJson);
-  auto result = ParseToolCallResult(tool_result);
+  auto events = ParseToolCallResult(tool_result);
 
-  ASSERT_TRUE(result.has_value());
-  EXPECT_EQ((*result)->id, "call_search");
-  ASSERT_TRUE((*result)->output.has_value());
-  ASSERT_EQ((*result)->output->size(), 1u);
-  ASSERT_TRUE((*result)->output->at(0)->is_web_sources_content_block());
+  // ToolUseEvent + WebSourcesEvent + SearchQueriesEvent
+  ASSERT_EQ(events.size(), 3u);
 
-  const auto& web_sources =
-      (*result)->output->at(0)->get_web_sources_content_block();
-  EXPECT_THAT(web_sources->queries, testing::ElementsAre("test search"));
-  ASSERT_EQ(web_sources->sources.size(), 1u);
-  EXPECT_EQ(web_sources->sources[0]->title, "Example Site");
-  EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/");
-  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
+  // First event: ToolUseEvent
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  const auto& tool = events[0]->get_tool_use_event();
+  EXPECT_EQ(tool->id, "call_search");
+  ASSERT_TRUE(tool->output.has_value());
+  ASSERT_EQ(tool->output->size(), 1u);
+  ASSERT_TRUE(tool->output->at(0)->is_web_sources_content_block());
+
+  // Second event: WebSourcesEvent
+  ASSERT_TRUE(events[1]->is_sources_event());
+  const auto& sources_event = events[1]->get_sources_event();
+  ASSERT_EQ(sources_event->sources.size(), 1u);
+  EXPECT_EQ(sources_event->sources[0]->title, "Example Site");
+  EXPECT_EQ(sources_event->sources[0]->url.spec(), "https://example.com/");
+  EXPECT_EQ(sources_event->sources[0]->favicon_url.spec(),
             "https://imgs.search.brave.com/icon.png");
+
+  // Third event: SearchQueriesEvent
+  ASSERT_TRUE(events[2]->is_search_queries_event());
+  EXPECT_THAT(events[2]->get_search_queries_event()->search_queries,
+              testing::ElementsAre("test search"));
 }
 
 TEST(OaiParsingTest, ParseToolCallResult_MixedOutputContent) {
@@ -422,28 +435,37 @@ TEST(OaiParsingTest, ParseToolCallResult_MixedOutputContent) {
   })";
 
   auto tool_result = base::test::ParseJsonDict(kToolResultJson);
-  auto result = ParseToolCallResult(tool_result);
+  auto events = ParseToolCallResult(tool_result);
 
-  ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE((*result)->output.has_value());
-  ASSERT_EQ((*result)->output->size(), 3u);
+  // ToolUseEvent + WebSourcesEvent (sources present,
+  // no queries so no SearchQueriesEvent)
+  ASSERT_EQ(events.size(), 2u);
 
-  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
-  EXPECT_EQ((*result)->output->at(0)->get_text_content_block()->text,
+  // First event: ToolUseEvent with all output blocks
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  const auto& tool = events[0]->get_tool_use_event();
+  ASSERT_TRUE(tool->output.has_value());
+  ASSERT_EQ(tool->output->size(), 3u);
+
+  ASSERT_TRUE(tool->output->at(0)->is_text_content_block());
+  EXPECT_EQ(tool->output->at(0)->get_text_content_block()->text,
             "Search results:");
 
-  ASSERT_TRUE((*result)->output->at(1)->is_web_sources_content_block());
+  ASSERT_TRUE(tool->output->at(1)->is_web_sources_content_block());
   const auto& web_sources =
-      (*result)->output->at(1)->get_web_sources_content_block();
+      tool->output->at(1)->get_web_sources_content_block();
   ASSERT_EQ(web_sources->sources.size(), 1u);
   EXPECT_EQ(web_sources->sources[0]->title, "Result 1");
   EXPECT_EQ(web_sources->sources[0]->url.spec(), "https://example.com/1");
   EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(), kDefaultFaviconUrl);
-  EXPECT_TRUE(web_sources->queries.empty());
 
-  ASSERT_TRUE((*result)->output->at(2)->is_text_content_block());
-  EXPECT_EQ((*result)->output->at(2)->get_text_content_block()->text,
-            "More text");
+  ASSERT_TRUE(tool->output->at(2)->is_text_content_block());
+  EXPECT_EQ(tool->output->at(2)->get_text_content_block()->text, "More text");
+
+  // Second event: WebSourcesEvent
+  ASSERT_TRUE(events[1]->is_sources_event());
+  ASSERT_EQ(events[1]->get_sources_event()->sources.size(), 1u);
+  EXPECT_EQ(events[1]->get_sources_event()->sources[0]->title, "Result 1");
 }
 
 TEST(OaiParsingTest, ParseToolCallResult_UnsupportedTypeSerializedAsText) {
@@ -458,15 +480,18 @@ TEST(OaiParsingTest, ParseToolCallResult_UnsupportedTypeSerializedAsText) {
   })";
 
   auto tool_result = base::test::ParseJsonDict(kToolResultJson);
-  auto result = ParseToolCallResult(tool_result);
+  auto events = ParseToolCallResult(tool_result);
 
-  ASSERT_TRUE(result.has_value());
-  ASSERT_TRUE((*result)->output.has_value());
-  ASSERT_EQ((*result)->output->size(), 1u);
+  // Only ToolUseEvent, no sources/queries
+  ASSERT_EQ(events.size(), 1u);
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  const auto& tool = events[0]->get_tool_use_event();
+  ASSERT_TRUE(tool->output.has_value());
+  ASSERT_EQ(tool->output->size(), 1u);
   // Unsupported types get serialized as JSON text
-  ASSERT_TRUE((*result)->output->at(0)->is_text_content_block());
+  ASSERT_TRUE(tool->output->at(0)->is_text_content_block());
   EXPECT_THAT(
-      (*result)->output->at(0)->get_text_content_block()->text,
+      tool->output->at(0)->get_text_content_block()->text,
       base::test::IsJson(R"({"type":"custom_type","data":"some value"})"));
 }
 

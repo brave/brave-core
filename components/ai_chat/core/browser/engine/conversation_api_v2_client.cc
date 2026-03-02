@@ -564,12 +564,14 @@ void ConversationAPIV2Client::OnQueryDataReceived(
         const auto& tool_call_dict = tool_call_value.GetDict();
 
         // Parse tool request or server tool result
-        std::optional<mojom::ToolUseEventPtr> tool_use_event;
-        if ((tool_use_event = ParseToolCallRequest(tool_call_dict)) ||
-            (tool_use_event = ParseToolCallResult(tool_call_dict))) {
+        if (auto tool_use_event = ParseToolCallRequest(tool_call_dict)) {
           auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
               std::move(*tool_use_event));
           callback.Run(GenerationResultData(std::move(tool_event), model_key));
+        } else {
+          for (auto& event : ParseToolCallResult(tool_call_dict)) {
+            callback.Run(GenerationResultData(std::move(event), model_key));
+          }
         }
       }
     }

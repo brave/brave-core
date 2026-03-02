@@ -2032,6 +2032,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallRequest) {
 TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
   // Test tool call result parsing (output_content present).
   // query can be either a string or an array of strings.
+  // ParseToolCallResult now returns separate events:
+  // ToolUseEvent + WebSourcesEvent + SearchQueriesEvent.
   struct TestCase {
     std::string description;
     std::string query_json;
@@ -2074,6 +2076,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
     })",
                                                            query_json));
 
+    // Build expected ToolUseEvent
     std::vector<mojom::WebSourcePtr> sources;
     sources.push_back(
         mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
@@ -2083,15 +2086,41 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolCallResult) {
     output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
         mojom::WebSourcesContentBlock::New(std::move(sources), expected_queries,
                                            std::vector<std::string>())));
-    auto expected_event =
+    auto expected_tool_event =
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
             "", "call_123", std::string(), std::move(output), std::nullopt,
             nullptr, true));
+
+    // Build expected WebSourcesEvent
+    std::vector<mojom::WebSourcePtr> expected_sources;
+    expected_sources.push_back(
+        mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
+                              GURL("https://imgs.search.brave.com/weather.ico"),
+                              std::nullopt, std::nullopt));
+    auto expected_sources_event =
+        mojom::ConversationEntryEvent::NewSourcesEvent(
+            mojom::WebSourcesEvent::New(std::move(expected_sources),
+                                        std::vector<std::string>()));
+
+    // Build expected SearchQueriesEvent
+    auto expected_queries_event =
+        mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+            mojom::SearchQueriesEvent::New(expected_queries));
+
+    // Expect 3 callback invocations in order
+    testing::InSequence seq;
     EXPECT_CALL(mock_callbacks,
                 OnDataReceived(testing::Field(
                     "event", &EngineConsumer::GenerationResultData::event,
-                    MojomEq(expected_event.get()))))
-        .Times(1);
+                    MojomEq(expected_tool_event.get()))));
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_sources_event.get()))));
+    EXPECT_CALL(mock_callbacks,
+                OnDataReceived(testing::Field(
+                    "event", &EngineConsumer::GenerationResultData::event,
+                    MojomEq(expected_queries_event.get()))));
 
     client_->OnQueryDataReceived(
         base::BindRepeating(&MockCallbacks::OnDataReceived,
