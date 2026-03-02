@@ -1,0 +1,31 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("de_amp") {
+  sources = [
+    "de_amp_javascript_feature.h",
+    "de_amp_javascript_feature.mm",
+  ]
+  deps = [
+    ":de_amp_js",
+    "//base",
+    "//brave/components/de_amp/common",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//url",
+  ]
+}
+
+optimize_ts("de_amp_js") {
+  visibility = [ ":de_amp" ]
+
+  sources = [ "resources/de_amp.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
+}
