@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 53e0027e9ed27edbffebcab198f26baad7a6148f..ccf1940f2218a5c60f373263e2914a0a35c4ce93 100644
+index 939f18bd0183926341cbedced249dd9f054018ad..984657a855b5f09880e8037ac85493b3562fe66c 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -343,6 +343,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -347,6 +347,7 @@ class CORE_EXPORT HTMLCanvasElement final
                                   DOMMatrix* draw_transform,
                                   ExceptionState&);
  

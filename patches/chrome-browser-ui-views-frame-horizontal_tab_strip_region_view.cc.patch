@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index ddeada6adbb56852a5c6f0b1f4b32a20ca4a2c25..50481c6c2e68e1c0f7e5afbcf790fc0da4794bff 100644
+index 467c0bbb942a3370947ad200a3c2b2398d946976..26be4a6f60e59964309d055d55d5a337ae88adf6 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 @@ -143,7 +143,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(

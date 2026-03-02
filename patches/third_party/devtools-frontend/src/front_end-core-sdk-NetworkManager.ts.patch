@@ -1,8 +1,8 @@
 diff --git a/front_end/core/sdk/NetworkManager.ts b/front_end/core/sdk/NetworkManager.ts
-index e6d2cdb6ec7a0f92c4b3f94d0c9d55cdd9e65e24..fbd8bf8f62e2c7629705dd6dbe99668f760c2bab 100644
+index dd185c45adcf06742ecef1fa9ea991552a3cc4a9..800bad912e5f07c819b153cf9969de2c2e5bd46e 100644
 --- a/front_end/core/sdk/NetworkManager.ts
 +++ b/front_end/core/sdk/NetworkManager.ts
-@@ -1561,6 +1561,7 @@ export class NetworkDispatcher implements ProtocolProxyApi.NetworkDispatcher {
+@@ -1608,6 +1608,7 @@ export class NetworkDispatcher implements ProtocolProxyApi.NetworkDispatcher {
      return `${host}:${port}`;
    }
  }

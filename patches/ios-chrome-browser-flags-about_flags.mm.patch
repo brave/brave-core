@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 87b05f59c5255cdc828bba0ae85633b3983c6f5d..4d0ef4274a2235be49d46b794b1dfc079ad0fe7a 100644
+index 05b48423c1abf9d576ed6534b16e8096e29df550..8c1cb7aa0644887fcf64faf1a3d1e2a412a64cd2 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1389,6 +1389,7 @@ const FeatureEntry::FeatureVariation kPageActionMenuIconVariations[] = {
