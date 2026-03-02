@@ -567,13 +567,11 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
   EXPECT_FALSE(VerifyElementState("task-state-actions", false));
 
   // After stopping, verify the tab is no longer controlled by a task
-  EXPECT_TRUE(GetActorService()
-                  ->GetTaskFromTab(*GetContentAgentTabHandle().Get())
-                  .is_null())
+  EXPECT_EQ(nullptr, GetActorService()->GetTaskFromTab(
+                         *GetContentAgentTabHandle().Get()))
       << "Actor task state: "
       << GetActorService()
-             ->GetTask(GetActorService()->GetTaskFromTab(
-                 *GetContentAgentTabHandle().Get()))
+             ->GetTaskFromTab(*GetContentAgentTabHandle().Get())
              ->GetState();
 
   // After stopping, submit a new human message to verify that the task can be
