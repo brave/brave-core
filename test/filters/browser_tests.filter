@@ -259,6 +259,7 @@
 -PasswordDialogViewTest.PopupAccountChooserWithMultipleCredentialsReturnEmpty
 -ProfilePickerViewBrowserTest.ShowScreen_*
 -RuntimeGetContextsApiTest.GetOffscreenDocumentContext
+-RuntimeGetContextsApiTest.GetServiceWorkerContext
 -SerialBlocklistTest.*
 -SerialTest.*
 -WebAppFileHandlingBrowserTest.*
