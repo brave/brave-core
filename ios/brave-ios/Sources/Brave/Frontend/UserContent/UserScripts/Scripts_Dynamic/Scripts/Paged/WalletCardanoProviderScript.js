@@ -29,6 +29,26 @@ if (window.isSecureContext) {
       })
     }));
   }
+  
+  // CIP-30 API object factory - creates the API returned by enable()
+  function createCardanoApi() {
+    const api = {};
+    $Object.defineProperties(api, {
+      getNetworkId: { value: $(function() { return post('getNetworkId', {}); }), writable: false, enumerable: true },
+      getUtxos: { value: $(function(amount, paginate) { return post('getUtxos', { amount, paginate }); }), writable: false, enumerable: true },
+      getBalance: { value: $(function() { return post('getBalance', {}); }), writable: false, enumerable: true },
+      getUsedAddresses: { value: $(function(paginate) { return post('getUsedAddresses', { paginate }); }), writable: false, enumerable: true },
+      getUnusedAddresses: { value: $(function() { return post('getUnusedAddresses', {}); }), writable: false, enumerable: true },
+      getChangeAddress: { value: $(function() { return post('getChangeAddress', {}); }), writable: false, enumerable: true },
+      getRewardAddresses: { value: $(function() { return post('getRewardAddresses', {}); }), writable: false, enumerable: true },
+      signTx: { value: $(function(tx, partialSign) { return post('signTx', { tx, partialSign }); }), writable: false, enumerable: true },
+      signData: { value: $(function(addr, payload) { return post('signData', { addr, payload }); }), writable: false, enumerable: true },
+      submitTx: { value: $(function(tx) { return post('submitTx', { tx }); }), writable: false, enumerable: true },
+      getCollateral: { value: $(function(params) { return post('getCollateral', params); }), writable: false, enumerable: true },
+      experimental: { value: {}, writable: false, enumerable: true },
+    });
+    return $Object.freeze(api);
+  }
 
   // CIP-30 Cardano Provider object
   const cardanoProvider = {};
@@ -62,7 +82,9 @@ if (window.isSecureContext) {
     },
     enable: {
       value: $(function() {
-        return post('enable', {});
+        return post('enable', {}).then(function() {
+          return createCardanoApi();
+        });
       }),
       writable: false,
       enumerable: true,
