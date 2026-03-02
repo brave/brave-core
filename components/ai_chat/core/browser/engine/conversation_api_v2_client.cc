@@ -552,7 +552,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     }
   } else if (base::StartsWith(*object_type, "brave-chat.deepResearch")) {
     if (auto event = ParseDeepResearchEvent(*object_type, result_params)) {
-      callback.Run(GenerationResultData(std::move(*event), model_key));
+      callback.Run(GenerationResultData(std::move(event), model_key));
     }
   }
 

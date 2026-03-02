@@ -69,11 +69,11 @@ constexpr char kTypeAnalysisStatus[] = "brave-chat.deepResearch.analysisStatus";
 constexpr char kTypeIterationComplete[] =
     "brave-chat.deepResearch.iterationComplete";
 
-std::optional<mojom::ConversationEntryEventPtr> ParseQueriesEvent(
+mojom::ConversationEntryEventPtr ParseQueriesEvent(
     const base::DictValue& params) {
   const base::ListValue* queries = params.FindList(kKeyQueries);
   if (!queries) {
-    return std::nullopt;
+    return nullptr;
   }
 
   auto event_data = mojom::DeepResearchQueriesEvent::New();
@@ -89,7 +89,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseQueriesEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseAnalyzingEvent(
+mojom::ConversationEntryEventPtr ParseAnalyzingEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchAnalyzingEvent::New();
   if (const std::string* query = params.FindString(kKeyQuery)) {
@@ -106,7 +106,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseAnalyzingEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseThinkingEvent(
+mojom::ConversationEntryEventPtr ParseThinkingEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchThinkingEvent::New();
   if (const std::string* query = params.FindString(kKeyQuery)) {
@@ -150,7 +150,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseThinkingEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseProgressEvent(
+mojom::ConversationEntryEventPtr ParseProgressEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchProgressEvent::New();
   event_data->elapsed_seconds =
@@ -170,7 +170,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseProgressEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseBlindspotsEvent(
+mojom::ConversationEntryEventPtr ParseBlindspotsEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchBlindspotsEvent::New();
   if (const base::ListValue* blindspots = params.FindList(kKeyBlindspots)) {
@@ -187,7 +187,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseBlindspotsEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseCompleteEvent(
+mojom::ConversationEntryEventPtr ParseCompleteEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchCompleteEvent::New();
   if (const std::string* reason = params.FindString(kKeyReason)) {
@@ -200,7 +200,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseCompleteEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseErrorEvent(
+mojom::ConversationEntryEventPtr ParseErrorEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchErrorEvent::New();
   if (const std::string* error = params.FindString(kKeyError)) {
@@ -213,7 +213,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseErrorEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseSearchStatusEvent(
+mojom::ConversationEntryEventPtr ParseSearchStatusEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchSearchStatusEvent::New();
   if (const std::string* status = params.FindString(kKeyStatus)) {
@@ -223,7 +223,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseSearchStatusEvent(
       event_data->status = mojom::DeepResearchSearchStatus::kStarted;
     } else {
       VLOG(1) << "Unknown search status: " << *status;
-      return std::nullopt;
+      return nullptr;
     }
   }
   if (const std::string* query = params.FindString(kKeyQuery)) {
@@ -244,7 +244,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseSearchStatusEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseFetchStatusEvent(
+mojom::ConversationEntryEventPtr ParseFetchStatusEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchFetchStatusEvent::New();
   if (const std::string* query = params.FindString(kKeyQuery)) {
@@ -261,7 +261,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseFetchStatusEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseAnalysisStatusEvent(
+mojom::ConversationEntryEventPtr ParseAnalysisStatusEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchAnalysisStatusEvent::New();
   if (const std::string* status = params.FindString(kKeyStatus)) {
@@ -271,7 +271,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseAnalysisStatusEvent(
       event_data->status = mojom::DeepResearchAnalysisStatus::kStarted;
     } else {
       VLOG(1) << "Unknown analysis status: " << *status;
-      return std::nullopt;
+      return nullptr;
     }
   }
   if (const std::string* query = params.FindString(kKeyQuery)) {
@@ -288,7 +288,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseAnalysisStatusEvent(
       std::move(dr_event));
 }
 
-std::optional<mojom::ConversationEntryEventPtr> ParseIterationCompleteEvent(
+mojom::ConversationEntryEventPtr ParseIterationCompleteEvent(
     const base::DictValue& params) {
   auto event_data = mojom::DeepResearchIterationCompleteEvent::New();
   event_data->iteration =
@@ -310,7 +310,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseIterationCompleteEvent(
 
 }  // namespace
 
-std::optional<mojom::ConversationEntryEventPtr> ParseDeepResearchEvent(
+mojom::ConversationEntryEventPtr ParseDeepResearchEvent(
     const std::string& object_type,
     const base::DictValue& params) {
   if (object_type == kTypeQueries) {
@@ -348,7 +348,7 @@ std::optional<mojom::ConversationEntryEventPtr> ParseDeepResearchEvent(
   }
 
   VLOG(1) << "Unknown deep research event type: " << object_type;
-  return std::nullopt;
+  return nullptr;
 }
 
 }  // namespace ai_chat
