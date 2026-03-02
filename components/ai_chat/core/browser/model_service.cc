@@ -226,7 +226,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-glm-4-7-flash";
       model->display_name = "GLM 4.7 Flash";
       model->vision_support = true;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -345,7 +345,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-kimi-k2-5";
       model->display_name = "Kimi K2.5";
       model->vision_support = false;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
