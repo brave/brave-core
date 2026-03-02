@@ -16,6 +16,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/string_view_util.h"
 #include "base/strings/utf_string_conversion_utils.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
@@ -94,8 +95,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   size_t character_count = 0;
   for (size_t i = 0; i < salt_str->size(); ++i) {
     base_icu::UChar32 code_point;
-    if (base::ReadUnicodeCharacter(salt_str->data(), salt_str->size(), &i,
-                                   &code_point)) {
+    if (base::ReadUnicodeCharacter(*salt_str, &i, &code_point)) {
       ++character_count;
     }
   }
@@ -122,9 +122,8 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   // https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L547
   for (size_t i = 0; i < sub_key.size(); ++i) {
     base_icu::UChar32 code_point;
-    if (!base::ReadUnicodeCharacter(
-            reinterpret_cast<const char*>(sub_key.data()), sub_key.size(), &i,
-            &code_point) ||
+    if (!base::ReadUnicodeCharacter(base::as_string_view(sub_key), &i,
+                                    &code_point) ||
         !base::IsValidCodepoint(code_point)) {
       code_point = 0xfffd;
     }
