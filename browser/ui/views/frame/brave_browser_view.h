@@ -110,9 +110,6 @@ class BraveBrowserView : public BrowserView,
   views::View* GetWalletButtonAnchorView();
 #endif
 
-  // Triggers layout of web modal dialogs
-  void NotifyDialogPositionRequiresUpdate();
-
   // BrowserView overrides:
   void Layout(PassKey) override;
   void StartTabCycling() override;

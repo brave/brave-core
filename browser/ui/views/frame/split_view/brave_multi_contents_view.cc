@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
@@ -41,12 +40,6 @@ BraveMultiContentsView::BraveMultiContentsView(
 }
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
-
-void BraveMultiContentsView::Layout(PassKey) {
-  LayoutSuperclass<MultiContentsView>(this);
-
-  BraveBrowserView::From(browser_view_)->NotifyDialogPositionRequiresUpdate();
-}
 
 void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
   if (!contents_container_view_for_web_panel_) {

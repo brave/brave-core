@@ -10,7 +10,6 @@
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
-#include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -49,7 +48,6 @@
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -721,86 +719,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
 #endif
-}
-
-// Only flaky(time out) on macOS.
-// https://github.com/brave/brave-browser/issues/48804
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView \
-  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
-#else
-#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView \
-  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
-#endif
-
-IN_PROC_BROWSER_TEST_F(
-    SplitViewCommonBrowserTest,
-    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
-  NewSplitTab();
-  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
-  ASSERT_TRUE(IsSplitWebContents(active_contents));
-  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
-      active_contents, active_contents, u"title",
-      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
-      base::DoNothing(), base::DoNothing());
-  ASSERT_TRUE(dialog);
-  auto* widget = dialog->GetWidget();
-  ASSERT_TRUE(widget);
-
-#if BUILDFLAG(IS_MAC)
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    const auto dialog_bounds = widget->GetWindowBoundsInScreen();
-    auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
-    views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
-    return web_view_bounds.CenterPoint().x() == dialog_bounds.CenterPoint().x();
-  }));
-#else
-  // On macOS, this check is flaky. It seems widget position is not updated
-  // immediately. So, used loop like above on macOS.
-  // Why not using above checking in loop on all platform?
-  // Above checking in loop causes another weird |Widget::native_widget_|
-  // invalidation in the loop on other platforms(win/linux). Not sure why.
-  // Fortunately, below checking works well. So, testing differently on macOS
-  // and others.
-  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
-  auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
-  views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
-  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
-#endif
-}
-
-// This test can be flaky depending on the screen size. Our macOS CI doesn't
-// seem to have a large enough screen to run this test.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
-  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
-#else
-#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
-  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
-#endif
-
-IN_PROC_BROWSER_TEST_F(
-    SplitViewCommonBrowserTest,
-    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
-  brave::ToggleVerticalTabStrip(browser());
-  NewSplitTab();
-  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
-  ASSERT_TRUE(IsSplitWebContents(active_contents));
-
-  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
-      active_contents, active_contents, u"title",
-      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
-      base::DoNothing(), base::DoNothing());
-  ASSERT_TRUE(dialog);
-  auto* widget = dialog->GetWidget();
-  ASSERT_TRUE(widget);
-
-  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
-
-  auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
-  views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
-
-  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {

@@ -664,10 +664,6 @@ views::View* BraveBrowserView::GetWalletButtonAnchorView() {
 }
 #endif
 
-void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
-  GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
-}
-
 void BraveBrowserView::OnAcceleratorsChanged(
     const commands::AcceleratorPrefManager::Accelerators& changed) {
   DCHECK(base::FeatureList::IsEnabled(commands::features::kBraveCommands));

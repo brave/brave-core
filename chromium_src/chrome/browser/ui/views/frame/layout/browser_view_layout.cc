@@ -12,7 +12,3 @@
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.cc>
 
 #undef BrowserViewTabbedLayoutImpl
-
-void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {
-  dialog_host_->NotifyPositionRequiresUpdate();
-}

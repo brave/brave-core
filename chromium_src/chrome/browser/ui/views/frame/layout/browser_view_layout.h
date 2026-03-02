@@ -17,13 +17,6 @@ class SidebarContainerView;
   friend class BraveBrowserViewLayout; \
   bool ShouldDisplayVerticalTabs
 
-// Add a new method: NotifyDialogPositionRequiresUpdate(). This is needed for
-// split view to update the dialog position when the split view is resized.
-#define set_webui_tab_strip                  \
-  set_webui_tab_strip_unused();              \
-  void NotifyDialogPositionRequiresUpdate(); \
-  void set_webui_tab_strip
-
 // Add new members to BrowserViewLayoutViews for Brave specific layout changes.
 #define top_container_separator                              \
   top_container_separator;                                   \
@@ -53,6 +46,5 @@ class SidebarContainerView;
 #undef set_side_panel_animation_content
 #undef top_container_separator
 #undef ShouldDisplayVerticalTabs
-#undef set_webui_tab_strip
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_H_
