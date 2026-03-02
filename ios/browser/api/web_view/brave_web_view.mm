@@ -5,8 +5,11 @@
 
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 
+#include <Foundation/Foundation.h>
+
 #include <memory>
 
+#include "base/apple/foundation_util.h"
 #include "base/notreached.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
@@ -50,6 +53,7 @@
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/passwords/web_view_password_manager_client.h"
 #include "ios/web_view/public/cwv_autofill_controller.h"
+#include "net/http/http_status_code.h"
 
 @interface BraveNavigationAction ()
 - (instancetype)initWithRequest:(NSURLRequest*)request
@@ -100,6 +104,34 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
                                  }
                                }];
       return;
+    }
+    std::move(callback).Run(
+        web::WebStatePolicyDecider::PolicyDecision::Allow());
+  }
+
+  void ShouldAllowResponse(NSURLResponse* response,
+                           ResponseInfo response_info,
+                           PolicyDecisionCallback callback) override {
+    if (@available(iOS 26.2, *)) {
+      // On iOS 26.2 and up, requests to pages that respond with a 204 or 205
+      // status code will abort without calling any further delegate methods.
+      // Due to a bug in Chromium's handling of the frame load interruption
+      // error code (https://crbug.com/488310974) we have to handle these
+      // responses in Brave as a workaround.
+      if (auto http_response =
+              base::apple::ObjCCast<NSHTTPURLResponse>(response)) {
+        auto status_code = net::TryToGetHttpStatusCode(http_response.statusCode)
+                               .value_or(net::HTTP_STATUS_CODE_MAX);
+        if (status_code == net::HTTP_NO_CONTENT ||
+            status_code == net::HTTP_RESET_CONTENT) {
+          // Instead of allowing WebKit to abort this navigation, we'll just
+          // respond with a cancellation so that the navigation doesnt fail
+          // automatically with a frame load interruption error.
+          std::move(callback).Run(
+              web::WebStatePolicyDecider::PolicyDecision::Cancel());
+          return;
+        }
+      }
     }
     std::move(callback).Run(
         web::WebStatePolicyDecider::PolicyDecision::Allow());
