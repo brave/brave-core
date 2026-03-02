@@ -197,7 +197,8 @@ browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
 third_party/rust @brave/3p-rust
 
 # include_rules
-DEPS @brave/deps-reviewers
+/DEPS @brave/deps-reviewers
+chromium_src/**/DEPS @brave/deps-reviewers
 
 docs/gni_sources.md @brave/sources-gni-reviewers
 
