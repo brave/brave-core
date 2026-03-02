@@ -56,6 +56,7 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   contentReceiptEvent: undefined,
   toolUseEvent: undefined,
   inlineSearchEvent: undefined,
+  deepResearchEvent: undefined,
 }
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
