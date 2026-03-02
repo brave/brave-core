@@ -46,9 +46,8 @@ void ClearWalletStoragePartition(content::BrowserContext* context,
                                  const GURL& url) {
   CHECK(context);
   auto* partition = context->GetDefaultStoragePartition();
-  partition->ClearDataForOrigin(
-      StoragePartition::REMOVE_DATA_MASK_ALL,
-      StoragePartition::QUOTA_MANAGED_STORAGE_MASK_ALL, url, base::DoNothing());
+  partition->ClearDataForOrigin(StoragePartition::REMOVE_DATA_MASK_ALL, url,
+                                base::DoNothing());
 }
 
 }  // namespace
