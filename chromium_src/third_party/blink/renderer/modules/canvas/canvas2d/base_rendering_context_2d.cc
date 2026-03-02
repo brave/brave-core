@@ -15,11 +15,11 @@ namespace {
 
 bool IsGoogleMaps(const blink::KURL& url) {
   const auto host = url.Host().ToString();
-  if (!host.StartsWith("google.") && !host.contains(".google.")) {
+  if (!host.starts_with("google.") && !host.contains(".google.")) {
     return false;
   }
   const auto path = url.GetPath();
-  return path == "/maps" || path.ToString().StartsWith("/maps/");
+  return path == "/maps" || path.ToString().starts_with("/maps/");
 }
 
 }  // namespace
