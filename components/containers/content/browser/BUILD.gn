@@ -7,6 +7,9 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 
 assert(enable_containers)
 
+# Storage partition and session serialization utilities for Containers. This
+# target does NOT depend on //components/sessions and is safe to use from
+# sessions code (e.g. content_serialized_navigation_driver.cc).
 component("browser") {
   defines = [ "IS_CONTAINERS_CONTENT_BROWSER_IMPL" ]
 
@@ -27,18 +30,43 @@ component("browser") {
   ]
 }
 
+# Tab restore utilities that depend on //components/sessions. Separated from
+# :browser to avoid a circular dependency (sessions -> :browser -> sessions).
+component("tab_restore") {
+  defines = [ "IS_CONTAINERS_CONTENT_BROWSER_TAB_RESTORE_IMPL" ]
+
+  sources = [
+    "tab_restore_utils.cc",
+    "tab_restore_utils.h",
+  ]
+
+  public_deps = [ "//brave/components/containers/buildflags" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/containers/core/common",
+    "//components/sessions",
+    "//content/public/browser",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "session_utils_unittest.cc",
     "storage_partition_utils_unittest.cc",
+    "tab_restore_utils_unittest.cc",
   ]
 
   deps = [
     ":browser",
+    ":tab_restore",
     "//base",
     "//base/test:test_support",
     "//brave/components/containers/core/common",
+    "//components/sessions",
+    "//content/public/browser",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",

@@ -3,6 +3,9 @@ include_rules = [
 ]
 
 specific_include_rules = {
+    "tab_restore_utils.*": [
+        "+components/sessions/core",
+    ],
     ".*test.cc": [
         "+content/public/test",
         "+content/test",
