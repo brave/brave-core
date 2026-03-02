@@ -1103,7 +1103,7 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
 
   for (const GraphNode* succ : successors) {
     ItemName item_name = succ->GetItemName();
-    if (item_name.StartsWith("resource #")) {
+    if (item_name.starts_with("resource #")) {
       for (const GraphEdge* edge : succ->GetInEdges()) {
         String reportItem(edge->GetItemDesc() +
                           "\r\n\r\nby: " + edge->GetOutNode()->GetItemDesc());
