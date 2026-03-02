@@ -54,6 +54,8 @@ component("tab_restore") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "containers_content_serialized_navigation_builder_unittest.cc",
+    "containers_content_serialized_navigation_driver_unittest.cc",
     "session_utils_unittest.cc",
     "storage_partition_utils_unittest.cc",
     "tab_restore_utils_unittest.cc",
