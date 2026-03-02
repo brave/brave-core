@@ -6,13 +6,15 @@
 #include "brave/components/time_period_storage/iso_weekly_storage.h"
 
 #include "base/time/clock.h"
+#include "brave/components/time_period_storage/pref_time_period_store.h"
 
 namespace {
 constexpr size_t kRecordPeriodDays = 14;
 }  // namespace
 
 ISOWeeklyStorage::ISOWeeklyStorage(PrefService* prefs, const char* pref_name)
-    : TimePeriodStorage(prefs, pref_name, kRecordPeriodDays) {}
+    : TimePeriodStorage(std::make_unique<PrefTimePeriodStore>(prefs, pref_name),
+                        kRecordPeriodDays) {}
 
 uint64_t ISOWeeklyStorage::GetLastISOWeekSum() const {
   return GetPeriodSumInTimeRange(GetLastMondayTime(1),

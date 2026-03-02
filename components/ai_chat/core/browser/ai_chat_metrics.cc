@@ -27,6 +27,7 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/sidebar/common/features.h"
+#include "brave/components/time_period_storage/pref_time_period_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -198,12 +199,14 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state,
       rate_limit_storage_(local_state, prefs::kBraveChatP3ARateLimitStops),
       context_limit_storage_(local_state, prefs::kBraveChatP3AContextLimits),
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-      omnibox_open_storage_(local_state,
-                            prefs::kBraveChatP3AOmniboxOpenWeeklyStorage,
+      omnibox_open_storage_(std::make_unique<PrefTimePeriodStore>(
+                                local_state,
+                                prefs::kBraveChatP3AOmniboxOpenWeeklyStorage),
                             14),
       omnibox_autocomplete_storage_(
-          local_state,
-          prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
+          std::make_unique<PrefTimePeriodStore>(
+              local_state,
+              prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage),
           14),
       sidebar_usage_storage_(local_state, prefs::kBraveChatP3ASidebarUsages),
       full_page_switch_storage_(local_state,

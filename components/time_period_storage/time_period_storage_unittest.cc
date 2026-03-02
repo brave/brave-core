@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/simple_test_clock.h"
 #include "base/time/time.h"
+#include "brave/components/time_period_storage/pref_time_period_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -40,7 +41,9 @@ class TimePeriodStorageTest : public ::testing::Test {
 
     const char* pref_name = dict_key ? kDictPrefName : kListPrefName;
     state_ = std::make_unique<TimePeriodStorage>(
-        &pref_service_, pref_name, dict_key, days, std::move(clock));
+        std::make_unique<PrefTimePeriodStore>(&pref_service_, pref_name,
+                                              dict_key),
+        days, std::move(clock), /*should_offset_dst=*/true);
   }
 
  protected:

@@ -14,6 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
+#include "brave/components/time_period_storage/pref_time_period_store.h"
 #include "components/prefs/pref_service.h"
 
 namespace serp_metrics {
@@ -39,7 +40,8 @@ BuildTimePeriodStorages(PrefService* prefs) {
   for (const auto& [type, dict_key] : kTimePeriodStorages) {
     time_period_storages.emplace(
         type, std::make_unique<TimePeriodStorage>(
-                  prefs, prefs::kSerpMetricsTimePeriodStorage, dict_key,
+                  std::make_unique<PrefTimePeriodStore>(
+                      prefs, prefs::kSerpMetricsTimePeriodStorage, dict_key),
                   kSerpMetricsTimePeriodInDays.Get(),
                   /*should_offset_dst=*/false));
   }

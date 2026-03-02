@@ -17,6 +17,7 @@ class ListValue;
 
 // Implementation of TimePeriodStore that uses PrefService for storage.
 // Supports both direct list prefs and dictionary-based list prefs.
+// |pref_name| must be already registered.
 class PrefTimePeriodStore : public TimePeriodStore {
  public:
   // Constructor for direct list pref store.

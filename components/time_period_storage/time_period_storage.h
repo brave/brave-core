@@ -15,43 +15,22 @@ namespace base {
 class Clock;
 }
 
-class PrefService;
 class TimePeriodStore;
 
 // Mostly used by various P3A recorders - allows to track a sum of some
 // values added from time to time via |AddDelta| over the last predefined time
 // period.
-// When using deprecated constructors, |pref_name| must be already registered.
 class TimePeriodStorage {
  public:
-  // Will use a TimePeriodStore for storage.
   TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
                     size_t period_days,
                     bool should_offset_dst = true);
 
-  // Will use a list pref for storage. This is a deprecated constructor for
-  // backward compatibility. Use constructor with TimePeriodStore instead.
-  TimePeriodStorage(PrefService* prefs,
-                    const char* pref_name,
-                    size_t period_days,
-                    bool should_offset_dst = true);
-  // Will use a list within a dictionary pref for storage. This is a deprecated
-  // constructor for backward compatibility. Use constructor with
-  // TimePeriodStore instead.
-  TimePeriodStorage(PrefService* prefs,
-                    const char* pref_name,
-                    const char* dict_key,
-                    size_t period_days,
-                    bool should_offset_dst = true);
-
-  // For tests only. Deprecated constructor for backward compatibility. Use
-  // constructor with TimePeriodStore instead.
-  TimePeriodStorage(PrefService* prefs,
-                    const char* pref_name,
-                    const char* dict_key,
+  // This constructor is for tests and internal use only.
+  TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
                     size_t period_days,
                     std::unique_ptr<base::Clock> clock,
-                    bool should_offset_dst = true);
+                    bool should_offset_dst);
   ~TimePeriodStorage();
 
   TimePeriodStorage(const TimePeriodStorage&) = delete;

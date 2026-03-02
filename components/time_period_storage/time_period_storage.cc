@@ -28,51 +28,21 @@ constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
 TimePeriodStorage::TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
                                      size_t period_days,
                                      bool should_offset_dst)
-    : clock_(std::make_unique<base::DefaultClock>()),
-      store_(std::move(store)),
-      period_days_(period_days),
-      should_offset_dst_(should_offset_dst) {
-  CHECK(store_);
-  Load();
-}
-
-TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
-                                     const char* pref_name,
-                                     size_t period_days,
-                                     bool should_offset_dst)
-    : TimePeriodStorage(prefs,
-                        pref_name,
-                        nullptr,
+    : TimePeriodStorage(std::move(store),
                         period_days,
+                        std::make_unique<base::DefaultClock>(),
                         should_offset_dst) {}
 
-TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
-                                     const char* pref_name,
-                                     const char* dict_key,
-                                     size_t period_days,
-                                     bool should_offset_dst)
-    : clock_(std::make_unique<base::DefaultClock>()),
-      store_(std::make_unique<PrefTimePeriodStore>(prefs, pref_name, dict_key)),
-      period_days_(period_days),
-      should_offset_dst_(should_offset_dst) {
-  DCHECK(pref_name);
-  if (prefs) {
-    Load();
-  }
-}
-
-TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
-                                     const char* pref_name,
-                                     const char* dict_key,
+TimePeriodStorage::TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
                                      size_t period_days,
                                      std::unique_ptr<base::Clock> clock,
                                      bool should_offset_dst)
     : clock_(std::move(clock)),
-      store_(std::make_unique<PrefTimePeriodStore>(prefs, pref_name, dict_key)),
+      store_(std::move(store)),
       period_days_(period_days),
       should_offset_dst_(should_offset_dst) {
-  DCHECK(prefs);
-  DCHECK(pref_name);
+  CHECK(clock_);
+  CHECK(store_);
   Load();
 }
 
