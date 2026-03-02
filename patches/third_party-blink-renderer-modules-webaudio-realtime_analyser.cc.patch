@@ -1,36 +1,36 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index dc68f422ce8af76e4304167385989bb01f7cb2f5..36306322616fa1eef269341e17d7e82177c3ce00 100644
+index 9f2c3f443f4188f40c7562a98ffc536b55ba040b..a1a60bb1c5275517e61f2d56a710daf2e9da6b6d 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -115,6 +115,7 @@ void RealtimeAnalyser::GetFloatFrequencyData(DOMFloat32Array* destination_array,
-     const float* source = magnitude_buffer_.Data();
-     float* destination = destination_array->Data();
- 
+@@ -114,6 +114,7 @@ void RealtimeAnalyser::GetFloatFrequencyData(DOMFloat32Array* destination_array,
+   const size_t len = std::min(source_length, destination_array->length());
+   if (len > 0) {
+     base::span<float> destination = destination_array->AsSpan();
 +    BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
      for (unsigned i = 0; i < len; ++i) {
-       const float linear_value = UNSAFE_TODO(source[i]);
+       const float linear_value = magnitude_buffer_[i];
        const double db_mag = audio_utilities::LinearToDecibels(linear_value);
-@@ -150,6 +151,7 @@ void RealtimeAnalyser::GetByteFrequencyData(DOMUint8Array* destination_array,
-     const float* source = magnitude_buffer_.Data();
-     unsigned char* destination = destination_array->Data();
+@@ -147,6 +148,7 @@ void RealtimeAnalyser::GetByteFrequencyData(DOMUint8Array* destination_array,
+     const double min_decibels = min_decibels_;
  
+     base::span<unsigned char> destination = destination_array->AsSpan();
 +    BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
      for (unsigned i = 0; i < len; ++i) {
-       const float linear_value = UNSAFE_TODO(source[i]);
+       const float linear_value = magnitude_buffer_[i];
        const double db_mag = audio_utilities::LinearToDecibels(linear_value);
-@@ -183,6 +185,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
- 
+@@ -178,6 +180,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
      const unsigned write_index = GetWriteIndex();
  
+     base::span<float> destination = destination_array->AsSpan();
 +    BRAVE_REALTIMEANALYSER_GETFLOATTIMEDOMAINDATA
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
-       float value = UNSAFE_TODO(
-@@ -210,6 +213,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
- 
+       float value =
+@@ -203,6 +206,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
      const unsigned write_index = GetWriteIndex();
  
+     base::span<unsigned char> destination = destination_array->AsSpan();
 +    BRAVE_REALTIMEANALYSER_GETBYTETIMEDOMAINDATA
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
-       const float value = UNSAFE_TODO(
+       const float value =
