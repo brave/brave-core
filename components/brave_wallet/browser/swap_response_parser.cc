@@ -1077,8 +1077,14 @@ mojom::Gate3SwapRouteStepPtr ParseRouteStep(
     const swap_responses::Gate3SwapRouteStep& value) {
   auto result = mojom::Gate3SwapRouteStep::New();
   result->source_token = ParseStepToken(value.source_token);
+  if (!result->source_token) {
+    return nullptr;
+  }
   result->source_amount = value.source_amount;
   result->destination_token = ParseStepToken(value.destination_token);
+  if (!result->destination_token) {
+    return nullptr;
+  }
   result->destination_amount = value.destination_amount;
   result->tool = ParseTool(value.tool);
   result->percent = value.percent;
