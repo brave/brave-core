@@ -42,10 +42,27 @@
 
 .aside {
   --navigation-width: 340px;
-  width: var(--navigation-width);
+  --animation-duration: 200ms;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
   height: 100%;
   overflow: hidden;
   background: var(--leo-color-page-background);
+  padding-top: var(--top-padding);
+
+  &.open {
+    width: var(--navigation-width);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.animated {
+    transition:
+      width var(--animation-duration) cubic-bezier(0.77, 0, 0.175, 1),
+      opacity var(--animation-duration) cubic-bezier(0.77, 0, 0.175, 1),
+      visibility var(--animation-duration) allow-discrete;
+  }
 
   @media (max-width: 1024px) {
     position: fixed;
@@ -56,8 +73,6 @@
       0px var(--leo-elevation-xs, 4px) var(--leo-elevation-xs, 16px) -2px
         var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.1));
   }
-
-  padding-top: var(--top-padding);
 }
 
 .nav {

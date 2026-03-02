@@ -39,7 +39,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     string | null
   >(null)
   const isSmall = useIsSmall()
-  const [showSidebar, setShowSidebar] = React.useState(isSmall)
+  const [showSidebar, setShowSidebar] = React.useState(!isSmall)
   const [skillDialog, setSkillDialog] = React.useState<Mojom.Skill | null>(null)
 
   const { getConversationsData, isPlaceholderData: isConversationsLoading } =
