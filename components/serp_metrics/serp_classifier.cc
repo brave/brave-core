@@ -38,11 +38,6 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
       TemplateURLDataFromPrepopulatedEngine(prepopulated_engine);
   auto template_url = std::make_unique<TemplateURL>(*template_url_data);
 
-  if (template_url->type() != TemplateURL::NORMAL) {
-    // Ignore non-standard search engines (e.g. extension/omnibox).
-    return nullptr;
-  }
-
   if (!template_url->IsSearchURL(url, SearchTermsData())) {
     return nullptr;
   }
