@@ -98,7 +98,7 @@ source_set("browser_tests") {
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
       "//chrome/browser",
-      "//chrome/browser/promos:utils",
+      "//chrome/browser/desktop_to_mobile_promos:utils",
       "//chrome/browser/ui",
       "//chrome/common:non_code_constants",
       "//chrome/test",
