@@ -34,11 +34,16 @@ class LinkPreviewViewController: UIViewController {
 
     let isPrivate = parentTab?.isPrivate ?? false
     let originalProfile = browserController.profileController.profile
+    var initialConfiguration: WKWebViewConfiguration?
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      initialConfiguration =
+        isPrivate
+        ? TabManager.privateConfiguration : TabManager.defaultConfiguration
+    }
     let tab = TabStateFactory.create(
       with: .init(
         profile: isPrivate ? originalProfile.offTheRecordProfile : originalProfile,
-        initialConfiguration: isPrivate
-          ? TabManager.privateConfiguration : TabManager.defaultConfiguration
+        initialConfiguration: initialConfiguration
       )
     )
     tab.miscDelegate = browserController

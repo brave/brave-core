@@ -52,7 +52,7 @@ public class TabStateFactory {
     return ChromiumTabState(
       id: params.id,
       configuration: cwvConfiuration,
-      wkConfiguration: FeatureList.kUseProfileWebViewConfiguration.enabled ? nil : wkConfiguration
+      wkConfiguration: wkConfiguration
     )
   }
 }
