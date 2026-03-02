@@ -5,7 +5,7 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
-import prettier from 'prettier'
+import { default as prettier } from 'prettier'
 import program from 'commander'
 import { spawnSync } from 'node:child_process'
 

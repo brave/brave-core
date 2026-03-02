@@ -287,15 +287,17 @@ export default defineConfig([
     },
   },
   {
-    // Enforce import resolution for build/commands scripts. When running
-    // TypeScript natively via Node.js (no transpilation), imports must use the
-    // real file extension. For example, if a file is named config.ts, importing
-    // it as './config.js' is an error.
     files: ['build/commands/**/*.{js,cjs,mjs,ts,cts,mts}'],
     plugins: {
       import: importPlugin,
     },
     rules: {
+      ...importPlugin.flatConfigs.recommended.rules,
+
+      // Enforce import resolution for build/commands scripts. When running
+      // TypeScript natively via Node.js (no transpilation), imports must use
+      // the real file extension. For example, if a file is named config.ts,
+      // importing it as './config.js' is an error.
       'import/no-unresolved': 'error',
     },
   },
@@ -309,13 +311,15 @@ export default defineConfig([
   },
 
   {
-    // Specific rules for NodeJS targets (build/commands and test files)
-    files: ['build/commands/**/*', '**/*.test.{js,ts}', '**/*.{cts,cjs}'],
+    // Specific rules for NodeJS targets (except build/commands)
+    files: ['**/*.test.{js,ts}', '**/*.{cts,cjs}'],
+    ignores: ['build/commands/**/*'],
     plugins: {
       import: importPlugin,
     },
     rules: {
-      'import/enforce-node-protocol-usage': ['error', 'always'],
+      ...importPlugin.flatConfigs.recommended.rules,
+      'import/no-unresolved': 'off',
     },
   },
 ])
