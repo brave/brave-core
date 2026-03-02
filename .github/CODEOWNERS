@@ -2,7 +2,6 @@ build/commands/ @brave/build-commands-reviewers
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
 script/audit_deps.py @brave/sec-team
-script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
@@ -21,9 +20,6 @@ browser/brave_browser_process.h @brave/brave-core-owners
 # Deprecated - do not use
 BraveNewsUtils.java @bridiver
 
-# New WebUI should use RegisterChromeWebUIConfigs
-browser/ui/webui/brave_web_uicontroller_factory.cc @bridiver @petemill
-
 # BraveComponent is deprecated
 components/brave_component_updater/browser/brave_component.h @bridiver @antonok-edm
 components/brave_component_updater/browser/local_data_files_observer.h @bridiver @antonok-edm
@@ -37,10 +33,6 @@ browser/android/preferences/brave_pref_service_bridge.cc @bridiver
 browser/brave_rewards/ @brave/rewards-client
 browser/extensions/api/brave_rewards_api.cc @brave/rewards-client
 browser/extensions/api/brave_rewards_api.h @brave/rewards-client
-browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards-client
-browser/ui/webui/brave_rewards_page_ui.h @brave/rewards-client
-browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
-browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
 components/brave_rewards/ @brave/rewards-client
 components/services/bat_rewards/ @brave/rewards-client
 components/brave_rewards/core/engine/util/signer.cc @brave/sec-team
@@ -68,10 +60,6 @@ brave/components/brave_ads/core/internal/privacy/**/*.mm @brave/ads-client
 brave/components/brave_ads/core/internal/security/**/*.cc @brave/ads-client
 brave/components/brave_ads/core/internal/security/**/*.h @brave/ads-client
 brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
-
-# Brave l10n components are deprecated. Use Chromium's functionality
-# unless no equivalent is available.
-brave/components/l10n/ @tmancey @bridiver
 
 # Network
 browser/net/ @brave/brave-core-owners
@@ -143,9 +131,6 @@ patches/*.java.patch @brave/java-patch-reviewers
 
 # Bitcoin-core
 third_party/bitcoin-core/BUILD.gn @brave/sec-team
-
-# Boost imports (i.e. config, multiprecision)
-third_party/boost @brave/deps-reviewers
 
 # Network auditor
 browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
