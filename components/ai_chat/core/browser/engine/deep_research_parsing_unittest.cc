@@ -56,8 +56,7 @@ TEST(DeepResearchParsingTest, ParseAnalyzingEvent) {
   ASSERT_TRUE(result->is_deep_research_event());
   ASSERT_TRUE(result->get_deep_research_event()->is_analyzing_event());
 
-  const auto& event =
-      result->get_deep_research_event()->get_analyzing_event();
+  const auto& event = result->get_deep_research_event()->get_analyzing_event();
   EXPECT_EQ(event->query, "test query");
   EXPECT_EQ(event->url_count, 10u);
   EXPECT_EQ(event->new_url_count, 3u);
@@ -82,8 +81,7 @@ TEST(DeepResearchParsingTest, ParseThinkingEvent) {
   ASSERT_TRUE(result->is_deep_research_event());
   ASSERT_TRUE(result->get_deep_research_event()->is_thinking_event());
 
-  const auto& event =
-      result->get_deep_research_event()->get_thinking_event();
+  const auto& event = result->get_deep_research_event()->get_thinking_event();
   EXPECT_EQ(event->query, "deep thinking");
   EXPECT_EQ(event->chunks_analyzed, 12u);
   EXPECT_EQ(event->chunks_selected, 4u);
@@ -111,8 +109,7 @@ TEST(DeepResearchParsingTest, ParseProgressEvent) {
   ASSERT_TRUE(result->is_deep_research_event());
   ASSERT_TRUE(result->get_deep_research_event()->is_progress_event());
 
-  const auto& event =
-      result->get_deep_research_event()->get_progress_event();
+  const auto& event = result->get_deep_research_event()->get_progress_event();
   EXPECT_DOUBLE_EQ(event->elapsed_seconds, 45.5);
   EXPECT_EQ(event->iteration_count, 2u);
   EXPECT_EQ(event->queries_count, 5u);
@@ -263,8 +260,7 @@ TEST(DeepResearchParsingTest, ParseIterationCompleteEvent) {
 
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->is_deep_research_event());
-  ASSERT_TRUE(
-      result->get_deep_research_event()->is_iteration_complete_event());
+  ASSERT_TRUE(result->get_deep_research_event()->is_iteration_complete_event());
 
   const auto& event =
       result->get_deep_research_event()->get_iteration_complete_event();
@@ -287,8 +283,7 @@ TEST(DeepResearchParsingTest, ParseBlindspotsEvent) {
   ASSERT_TRUE(result->is_deep_research_event());
   ASSERT_TRUE(result->get_deep_research_event()->is_blindspots_event());
 
-  const auto& event =
-      result->get_deep_research_event()->get_blindspots_event();
+  const auto& event = result->get_deep_research_event()->get_blindspots_event();
   ASSERT_EQ(event->blindspots.size(), 3u);
   EXPECT_EQ(event->blindspots[0], "topic A");
   EXPECT_EQ(event->blindspots[1], "topic B");
@@ -336,8 +331,7 @@ TEST(DeepResearchParsingTest, DefaultValues) {
   ASSERT_TRUE(result->is_deep_research_event());
   ASSERT_TRUE(result->get_deep_research_event()->is_analyzing_event());
 
-  const auto& event =
-      result->get_deep_research_event()->get_analyzing_event();
+  const auto& event = result->get_deep_research_event()->get_analyzing_event();
   EXPECT_EQ(event->query, "");
   EXPECT_EQ(event->url_count, 0u);
   EXPECT_EQ(event->new_url_count, 0u);
