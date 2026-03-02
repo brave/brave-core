@@ -13,7 +13,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
-#include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/side_panel_resize_widget.h"
@@ -149,7 +149,7 @@ void SidePanel::UpdateBorder() {
 
     shadow_ = BraveContentsViewUtil::CreateShadow(this);
     SetBackground(
-        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
+        views::CreateSolidBackground(nala::kColorPageBackground));
 
     return;
   }

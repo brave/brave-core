@@ -581,13 +581,10 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorIconBase] = {nala::kColorIconDefault};
   mixer[kColorBookmarkBarInstructionsLink] = {nala::kColorTextInteractive};
   mixer[kColorSearchConversionBannerTypeBackground] = {nala::kColorBlue10};
-  mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorDividerSubtle};
   mixer[kColorSearchConversionCloseButton] = {nala::kColorIconDefault};
-  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPageBackground};
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
-  mixer[kColorSidebarPanelBackground] = {nala::kColorContainerBackground};
   mixer[kColorSidebarAddBubbleBackground] = {nala::kColorContainerBackground};
 
   if (!HasCustomToolbarColor(key)) {
@@ -621,13 +618,10 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonActivated] = {nala::kColorPrimitivePrivateWindow80};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
-  mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorPrimitiveNeutral20};
-  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPageBackground};
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorPrimitiveNeutral90};
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorPrimitiveNeutral90};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
       nala::kColorPrimitiveNeutral80};
-  mixer[kColorSidebarPanelBackground] = {nala::kColorContainerBackground};
 }
 
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
