@@ -343,7 +343,7 @@ extension BrowserViewController: TabObserver {
     // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
     // is still an internal URL even though a request may be pending for a web page.
     if tab === tabManager.selectedTab, let url = tab.visibleURL,
-      !url.isNewTabURL, !InternalURL.isValid(url: url), tab.estimatedProgress > 0
+      !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading, tab.estimatedProgress > 0
     {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
     }
@@ -357,7 +357,7 @@ extension BrowserViewController: TabObserver {
 
   public func tabDidChangeLoadProgress(_ tab: some TabState) {
     guard tab === tabManager.selectedTab else { return }
-    if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url) {
+    if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
     } else {
       topToolbar.hideProgressBar()
