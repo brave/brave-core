@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/restore_title"
-        style="@style/HeadingH3Bold"
+        style="@style/HeadingH3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"

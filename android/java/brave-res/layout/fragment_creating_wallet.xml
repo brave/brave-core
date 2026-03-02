@@ -23,7 +23,7 @@
             android:layout_gravity="center_horizontal" />
 
         <TextView
-            style="@style/HeadingH3Bold"
+            style="@style/HeadingH3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

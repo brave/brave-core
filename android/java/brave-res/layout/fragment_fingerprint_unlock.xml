@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/fingerprint_unlock_title"
-            style="@style/HeadingH3Bold"
+            style="@style/HeadingH3"
             android:gravity="center"
             android:layout_below="@+id/ellipse"
             android:layout_width="match_parent"
