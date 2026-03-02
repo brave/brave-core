@@ -395,6 +395,12 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     return;
   }
 
+  const auto* next_url =
+      script_result_dict.FindString(kPolicyScriptResultNextUrlPropName);
+  if (!next_url || next_url->empty()) {
+    return;
+  }
+
   const auto script_result_parsed = PolicyScriptResult::FromValue(*psst);
   if (!script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
@@ -406,13 +412,12 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
                             is_done.value() ? mojom::PsstStatus::kCompleted
                                             : mojom::PsstStatus::kInProgress);
 
-  const auto* next_url =
-      script_result_dict.FindString(kPolicyScriptResultNextUrlPropName);
-  if (next_url && !next_url->empty()) {
+  auto url_to_load = GURL(*next_url);
+  if (url_to_load.is_valid()) {
     // Go to next URL
-    web_contents()->GetController().LoadURL(
-        GURL(*next_url), content::Referrer(), ui::PAGE_TRANSITION_LINK,
-        std::string());
+    web_contents()->GetController().LoadURL(url_to_load, content::Referrer(),
+                                            ui::PAGE_TRANSITION_LINK,
+                                            std::string());
   }
 }
 

@@ -949,6 +949,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   auto policy_script_result = base::Value(
       base::DictValue()
           .Set("result", false)
+          .Set("next_url", "https://example1.com/next")
           .Set("psst",
                base::DictValue()
                    .Set("progress", progress)
