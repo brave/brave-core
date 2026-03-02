@@ -184,53 +184,57 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
   return (
     <AssistantResponseContextProvider events={props.events}>
-      {allRichResults.map((r) => (
-        <RichSearchWidget
-          key={r}
-          jsonData={r}
-        />
-      ))}
+      <div className={styles.assistantResponse}>
+        {allRichResults.map((r) => (
+          <RichSearchWidget
+            key={r}
+            jsonData={r}
+          />
+        ))}
 
-      {props.events?.map((event, i) => (
-        <AssistantEvent
-          key={i}
-          event={event}
-          hasCompletionStarted={hasCompletionStarted}
-          isEntryInProgress={props.isEntryInProgress}
-          isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
-          allowedLinks={props.allowedLinks}
-          isLeoModel={props.isLeoModel}
-        />
-      ))}
+        {props.events?.map((event, i) => (
+          <AssistantEvent
+            key={i}
+            event={event}
+            hasCompletionStarted={hasCompletionStarted}
+            isEntryInProgress={props.isEntryInProgress}
+            isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
+            allowedLinks={props.allowedLinks}
+            isLeoModel={props.isLeoModel}
+          />
+        ))}
 
-      {/* Render deep research progress while research is active.
+        {/* Render deep research progress while research is active.
           Hide once the synthesis answer starts streaming in. Keep visible
           during the synthesis phase (after completeEvent but before the
           final completionEvent arrives), ignoring any pre-tool completion
           text the LLM may have emitted before calling deep_research. */}
-      {deepResearch.hasDeepResearchEvents
-        && props.isEntryInProgress
-        && !deepResearch.hasSynthesisCompletion && (
-          <DeepResearchEvent
-            deepResearch={deepResearch}
-            isActive={props.isEntryInProgress}
-          />
-        )}
+        {deepResearch.hasDeepResearchEvents
+          && props.isEntryInProgress
+          && !deepResearch.hasSynthesisCompletion && (
+            <DeepResearchEvent
+              deepResearch={deepResearch}
+              isActive={props.isEntryInProgress}
+            />
+          )}
 
-      {!props.isEntryInProgress && allSources.length > 0 && (
-        <WebSourcesEvent sources={allSources} />
-      )}
-      {props.toolArtifacts
-        ?.filter((artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE)
-        .map((artifact, i) => (
-          <Chart
-            key={i}
-            artifact={artifact}
-          />
-        ))}
-      {!props.isEntryInProgress && allSearchQueries.length > 0 && (
-        <SearchSummary searchQueries={allSearchQueries} />
-      )}
+        {!props.isEntryInProgress && allSources.length > 0 && (
+          <WebSourcesEvent sources={allSources} />
+        )}
+        {props.toolArtifacts
+          ?.filter(
+            (artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE,
+          )
+          .map((artifact, i) => (
+            <Chart
+              key={i}
+              artifact={artifact}
+            />
+          ))}
+        {!props.isEntryInProgress && allSearchQueries.length > 0 && (
+          <SearchSummary searchQueries={allSearchQueries} />
+        )}
+      </div>
     </AssistantResponseContextProvider>
   )
 }
