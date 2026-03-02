@@ -37,6 +37,12 @@ class PassageEmbedderFactoryImpl {
     const bound = new PassageEmbedderReceiver(impl)
     bound.$.bindHandle(receiver.handle)
     this.boundEmbedders.push(bound)
+    bound.onConnectionError.addListener(() => {
+      this.boundEmbedders = this.boundEmbedders.filter((r) => r !== bound)
+      if (this.boundEmbedders.length === 0) {
+        localAIService.notifyPassageEmbedderIdle()
+      }
+    })
   }
 
   getPendingRemote() {
