@@ -583,7 +583,7 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSearchConversionBannerTypeBackground] = {nala::kColorBlue10};
   mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorDividerSubtle};
   mixer[kColorSearchConversionCloseButton] = {nala::kColorIconDefault};
-  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorContainerBackground};
+  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPageBackground};
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
@@ -621,7 +621,7 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
   mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorPrimitiveNeutral20};
-  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPrimitiveNeutral5};
+  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPageBackground};
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorPrimitiveNeutral90};
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorPrimitiveNeutral90};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {

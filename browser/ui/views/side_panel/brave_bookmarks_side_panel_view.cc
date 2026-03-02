@@ -12,7 +12,6 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -29,12 +28,10 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/image_button.h"
-#include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/flex_layout.h"
@@ -55,22 +52,14 @@ class BookmarksSidePanelHeaderView : public views::View {
         .SetMainAxisAlignment(views::LayoutAlignment::kStart)
         .SetCrossAxisAlignment(views::LayoutAlignment::kCenter);
 
-    ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
-    auto* header_image = AddChildView(
-        std::make_unique<views::ImageView>(ui::ImageModel::FromImageSkia(
-            *rb.GetImageSkiaNamed(IDR_SIDEBAR_BOOKMARKS_PANEL_HEADER))));
-    constexpr int kSpacingBetweenHeaderImageAndLabel = 8;
-    header_image->SetProperty(
-        views::kMarginsKey,
-        gfx::Insets::TLBR(0, 0, 0, kSpacingBetweenHeaderImageAndLabel));
-    header_image->SetProperty(
-        views::kFlexBehaviorKey,
-        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
-                                 views::MaximumFlexSizeRule::kPreferred));
-
     auto* header_label = AddChildView(std::make_unique<views::Label>(
         l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_TITLE)));
-    header_label->SetFontList(gfx::FontList("Poppins, Semi-Bold 16px"));
+    const int size_delta =
+        16 - views::Label::GetDefaultFontList().GetFontSize();
+    header_label->SetFontList(
+        views::Label::GetDefaultFontList()
+            .DeriveWithSizeDelta(size_delta)
+            .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD));
     header_label->SetEnabledColor(kColorSidebarPanelHeaderTitle);
     header_label->SetAutoColorReadabilityEnabled(false);
     auto* spacer = AddChildView(std::make_unique<views::View>());
@@ -154,8 +143,6 @@ BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   AddChildView(std::make_unique<BookmarksSidePanelHeaderView>(scope));
-  AddChildView(std::make_unique<views::Separator>())
-      ->SetColorId(kColorSidebarPanelHeaderSeparator);
 
   // Reuse upstream's bookmarks panel webui.
   auto* web_view = AddChildView(scope.GetBrowserWindowInterface()

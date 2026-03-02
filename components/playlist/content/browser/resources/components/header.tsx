@@ -49,17 +49,6 @@ const iconSize = css`
   --leo-icon-size: 20px;
 `
 
-const GradientIcon = styled(Icon)`
-  --leo-icon-color: linear-gradient(
-    314.42deg,
-    #fa7250 8.49%,
-    #ff1893 43.72%,
-    #a78aff 99.51%
-  );
-  ${iconSize}
-  margin-right: calc(-1 * (${spacing.l} - ${spacing.m}));
-`
-
 const ColoredIcon = styled(Icon)<{ color: string }>`
   color: ${(p) => p.color};
   ${iconSize}
@@ -78,8 +67,8 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 1px solid ${color.divider.subtle};
-  background-color: ${color.container.background};
+  background-color: ${color.page.background};
+  min-height: 60px;
   height: 100%;
   width: 100vw;
   box-sizing: border-box;
@@ -411,7 +400,6 @@ function CloseButton () {
 function PlaylistsCatalogHeader () {
   return (
     <>
-      <GradientIcon name='product-playlist-bold-add-color' />
       <ProductNameContainer>
         <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
       </ProductNameContainer>
