@@ -29,10 +29,12 @@ class CommandUtilsBrowserTest : public InProcessBrowserTest {
  public:
   CommandUtilsBrowserTest() {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-    // Expect a browser relaunch late in browser shutdown.
+    // Override the browser relaunch callback to prevent an actual relaunch
+    // when IDC_EXIT runs. The callback may or may not fire before test
+    // teardown depending on how far shutdown progresses.
     mock_relaunch_callback_ = std::make_unique<::testing::StrictMock<
         base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>>();
-    EXPECT_CALL(*mock_relaunch_callback_, Run);
+    EXPECT_CALL(*mock_relaunch_callback_, Run).Times(testing::AtMost(1));
     relaunch_chrome_override_ =
         std::make_unique<upgrade_util::ScopedRelaunchChromeBrowserOverride>(
             mock_relaunch_callback_->Get());
@@ -56,70 +58,39 @@ class CommandUtilsBrowserTest : public InProcessBrowserTest {
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 };
 
-// This test is currently flaky on all Desktop platforms. On Windows it
-// occasionally crashes, on Linux it fails an expectation in pref observer, and
-// on MacOS it times out. Disabling on all platforms until further
-// investigation can be done.
 // This test is a sanity check - if commands fail here but work when testing
 // things manually there's probably a conflict with some of the other commands,
 // in which case we can just add it to the ignored commands list.
 IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
-                       DISABLED_AllCommandsShouldBeExecutableWithoutCrash) {
-  ui_test_utils::BrowserCreatedObserver browser_created_observer;
-  // Some commands, particularly those that create dialogs introduce some test
-  // flakes, so we disable them.
-  static constexpr auto kKnownGoodCommandsThatSometimesBreakTest =
-      base::MakeFixedFlatSet<int>({IDC_PRINT,
-                                   IDC_BASIC_PRINT,
-                                   IDC_OPEN_FILE,
-                                   IDC_SAVE_PAGE,
-                                   IDC_SHOW_AVATAR_MENU,
-                                   IDC_SHOW_MANAGEMENT_PAGE,
+                       AllCommandsShouldBeExecutableWithoutCrash) {
+  // Commands that are excluded from this test because they create dialogs,
+  // close/destroy the test browser, or otherwise cause test infrastructure
+  // issues. These are known-good commands that sometimes break the test
+  // environment.
+  static constexpr auto kExcludedCommands = base::MakeFixedFlatSet<int>(
+      {IDC_PRINT, IDC_BASIC_PRINT, IDC_OPEN_FILE, IDC_SAVE_PAGE,
+       IDC_SHOW_AVATAR_MENU, IDC_SHOW_MANAGEMENT_PAGE,
+       // Closing the last tab or window would
+       // destroy the test browser, causing the
+       // test to exit prematurely.
+       IDC_CLOSE_TAB, IDC_CLOSE_WINDOW,
 #if BUILDFLAG(IS_MAC)
-                                   IDC_FOCUS_THIS_TAB,
-                                   IDC_FOCUS_TOOLBAR,
-                                   IDC_FOCUS_LOCATION,
-                                   IDC_FOCUS_SEARCH,
-                                   IDC_FOCUS_MENU_BAR,
-                                   IDC_FOCUS_NEXT_PANE,
-                                   IDC_FOCUS_PREVIOUS_PANE,
-                                   IDC_FOCUS_BOOKMARKS,
-                                   IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY,
-                                   IDC_FOCUS_WEB_CONTENTS_PANE,
-                                   IDC_TOGGLE_FULLSCREEN_TOOLBAR,
-                                   IDC_CONTENT_CONTEXT_EXIT_FULLSCREEN,
-                                   IDC_FULLSCREEN,
-                                   IDC_TOGGLE_VERTICAL_TABS,
-                                   IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
+       IDC_FOCUS_THIS_TAB, IDC_FOCUS_TOOLBAR, IDC_FOCUS_LOCATION,
+       IDC_FOCUS_SEARCH, IDC_FOCUS_MENU_BAR, IDC_FOCUS_NEXT_PANE,
+       IDC_FOCUS_PREVIOUS_PANE, IDC_FOCUS_BOOKMARKS,
+       IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY, IDC_FOCUS_WEB_CONTENTS_PANE,
+       IDC_TOGGLE_FULLSCREEN_TOOLBAR, IDC_CONTENT_CONTEXT_EXIT_FULLSCREEN,
+       IDC_FULLSCREEN, IDC_TOGGLE_VERTICAL_TABS,
+       IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
 #endif
-
-                                   IDC_EXIT});
+       IDC_EXIT});
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
   const auto& commands = commands::GetCommands();
   for (const auto& command : commands) {
-    if (kKnownGoodCommandsThatSometimesBreakTest.contains(command)) {
+    if (kExcludedCommands.contains(command)) {
       continue;
     }
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-    if (command == IDC_CLOSE_TAB) {
-      // If this is the only tab the browser will exit, so add a new tab
-      // before executing the command
-      SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
-      chrome::ExecuteCommand(browser(), IDC_NEW_TAB);
-      base::RunLoop().RunUntilIdle();
-    } else if (command == IDC_CLOSE_WINDOW) {
-      // If this is the only window the browser will exit, so add a new window
-      // before executing the command
-      SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
-      chrome::ExecuteCommand(browser(), IDC_NEW_WINDOW);
-      base::RunLoop().RunUntilIdle();
-    }
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-
-    // Use the first browser instance for each command.
-    SetBrowser(browser_created_observer.Wait());
 
     SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
     LOG(INFO) << command << ": " << commands::GetCommandName(command);
