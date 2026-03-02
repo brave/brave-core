@@ -26,10 +26,11 @@ namespace net {
 // in the run-time. This function is the only function which looks up entries
 // in the public suffix list, so we add our special case handling here to avoid
 // patching effective_tld_names.gperf directly.
-std::optional<int> LookupSuffixInReversedSet(base::span<const uint8_t> graph,
-                                             bool include_private,
-                                             std::string_view host,
-                                             size_t* suffix_length) {
+std::optional<DomainRuleTags> LookupSuffixInReversedSet(
+    base::span<const uint8_t> graph,
+    bool include_private,
+    std::string_view host,
+    size_t* suffix_length) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Recognize .crypto(and other ud suffixes) and .eth as known TLDs for
   // decentralized DNS support. With this, when users type *.crypto or *.eth in
