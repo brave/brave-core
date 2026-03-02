@@ -435,14 +435,14 @@ extension BrowserViewController {
       injectedScripts.append(contentBlocker)
     }
 
-    if profileController.profile.prefs.isPlaylistAvailable {
+    if tab.profile.prefs.isPlaylistAvailable {
       injectedScripts.append(contentsOf: [
         PlaylistScriptHandler(tab: tab),
         PlaylistFolderSharingScriptHandler(),
       ])
     }
 
-    if profileController.profile.prefs.isBraveTalkAvailable {
+    if tab.profile.prefs.isBraveTalkAvailable {
       injectedScripts.append(
         BraveTalkScriptHandler(
           rewards: rewards,
@@ -460,7 +460,7 @@ extension BrowserViewController {
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
     if !tab.isPrivate {
       injectedScripts += [
-        LoginsScriptHandler(profile: profile, passwordAPI: profileController.passwordAPI),
+        LoginsScriptHandler(passwordAPI: profileController.passwordAPI),
         BraveSearchResultAdScriptHandler(),
       ]
       if profileController.braveWalletAPI.isAllowed {

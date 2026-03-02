@@ -23,7 +23,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
-    if profileController.profile.prefs.isPlaylistAvailable {
+    if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab)
     }
     tab.youtubeQualityTabHelper = .init(tab: tab)
@@ -69,11 +69,9 @@ extension BrowserViewController: TabManagerDelegate {
         self?.showOnboarding(isNewWallet)
       }
     )
-    let profile =
-      tab.isPrivate ? profileController.profile.offTheRecordProfile : profileController.profile
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
       tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile)
+      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
     )
     tab.braveShieldsHelper = braveShieldsHelper
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
