@@ -441,7 +441,7 @@ class TabManager: NSObject {
   ) -> any TabState {
     let popup = tabCreationFactory(
       .init(
-        profile: parentTab.isPrivate ? profile.offTheRecordProfile : profile,
+        profile: parentTab.profile,
         initialConfiguration: parentTab.configuration
       )
     )
