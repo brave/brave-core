@@ -9,6 +9,9 @@ import * as Mojom from '../../../common/mojom'
 import {
   createConversationTurnWithDefaults,
   getCompletionEvent,
+  getSearchQueriesEvent,
+  getToolUseEvent,
+  getWebSourcesEvent,
 } from '../../../common/test_data_utils'
 import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantTask from './assistant_task'
@@ -453,5 +456,149 @@ describe('AssistantTask', () => {
         testTabId,
       )
     })
+  })
+})
+
+describe('AssistantTask web sources', () => {
+  // Simulates the scenario where a server search tool
+  // emits sources in an earlier entry and the completion
+  // arrives in a later entry.
+  // Entry A: ToolUseEvents + WebSourcesEvent
+  // Entry B: CompletionEvent
+  const entriesWithSourcesInEarlierEntry: Mojom.ConversationTurn[] = [
+    createConversationTurnWithDefaults({
+      uuid: 'entry-a',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        getToolUseEvent({
+          toolName: 'search_web',
+          input: '{"query":"test"}',
+        }),
+        getToolUseEvent({
+          toolName: 'get_page',
+          input: '{"url":"https://example.com"}',
+        }),
+        getWebSourcesEvent([
+          {
+            title: 'Source 1',
+            faviconUrl: {
+              url: 'https://example.com/fav1.ico',
+            },
+            url: {
+              url: 'https://example.com/page1',
+            },
+          },
+          {
+            title: 'Source 2',
+            faviconUrl: {
+              url: 'https://example.com/fav2.ico',
+            },
+            url: {
+              url: 'https://example.com/page2',
+            },
+          },
+        ]),
+        getSearchQueriesEvent(['test query']),
+      ],
+    }),
+    createConversationTurnWithDefaults({
+      uuid: 'entry-b',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [getCompletionEvent('Here is the answer.')],
+    }),
+  ]
+
+  test('Progress view shows web sources from earlier entries', () => {
+    const { container } = render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithSourcesInEarlierEntry}
+          isActiveTask={false}
+          isLeoModel={true}
+        />
+      </MockContext>,
+    )
+
+    expect(
+      container.querySelector('[data-test-id="web-sources-event"]'),
+    ).toBeInTheDocument()
+  })
+
+  test('Progress view shows search summary', () => {
+    const { container } = render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithSourcesInEarlierEntry}
+          isActiveTask={false}
+          isLeoModel={true}
+        />
+      </MockContext>,
+    )
+
+    expect(
+      container.querySelector('[data-test-id="search-summary"]'),
+    ).toBeInTheDocument()
+  })
+
+  test('Steps view shows web sources with completion step', () => {
+    const { container } = render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithSourcesInEarlierEntry}
+          isActiveTask={false}
+          isLeoModel={true}
+        />
+      </MockContext>,
+    )
+
+    // Switch to Steps tab via shadowRoot click
+    const stepsTab = container.querySelector('leo-tabitem[value="steps"]')
+    expect(stepsTab).toBeTruthy()
+    act(() => {
+      stepsTab?.shadowRoot?.querySelector('button')?.click()
+    })
+
+    // Verify sources appear in the Steps view
+    expect(
+      container.querySelector('[data-test-id="web-sources-event"]'),
+    ).toBeInTheDocument()
+
+    // Sources should be in the last step (with the
+    // completion), not the first step (tools only).
+    const steps = container.querySelectorAll('[class*="taskStep"]')
+    expect(steps.length).toBe(2)
+    expect(
+      steps[0].querySelector('[data-test-id="web-sources-event"]'),
+    ).toBeNull()
+    expect(
+      steps[1].querySelector('[data-test-id="web-sources-event"]'),
+    ).toBeInTheDocument()
+  })
+
+  test('Steps view shows search summary with completion step', () => {
+    const { container } = render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithSourcesInEarlierEntry}
+          isActiveTask={false}
+          isLeoModel={true}
+        />
+      </MockContext>,
+    )
+
+    // Switch to Steps tab
+    const stepsTab = container.querySelector('leo-tabitem[value="steps"]')
+    expect(stepsTab).toBeTruthy()
+    act(() => {
+      stepsTab?.shadowRoot?.querySelector('button')?.click()
+    })
+
+    // Search summary should be in the last step
+    const steps = container.querySelectorAll('[class*="taskStep"]')
+    expect(steps.length).toBe(2)
+    expect(steps[0].querySelector('[data-test-id="search-summary"]')).toBeNull()
+    expect(
+      steps[1].querySelector('[data-test-id="search-summary"]'),
+    ).toBeInTheDocument()
   })
 })
