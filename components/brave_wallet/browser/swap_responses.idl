@@ -352,7 +352,7 @@ namespace swap_responses {
     DOMString chainId;
     any contractAddress;
     DOMString symbol;
-    DOMString decimals;
+    // DOMString decimals;  // Unused in parsing; kept for reference.
     any logo;
   };
 

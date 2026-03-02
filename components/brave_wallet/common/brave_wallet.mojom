@@ -637,7 +637,6 @@ struct Gate3SwapStepToken {
   string chain_id;
   string contract_address;
   string symbol;
-  int32 decimals;
   string logo;
 };
 

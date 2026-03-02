@@ -118,7 +118,7 @@ const Gate3StepSource = ({
         symbol: step.destinationToken.symbol,
         name: step.destinationToken.symbol,
         logo: step.destinationToken.logo,
-        decimals: step.destinationToken.decimals,
+        decimals: 0, // decimals is not essential, so we set it to 0
         coin: step.destinationToken.coin,
         contractAddress: step.destinationToken.contractAddress ?? '',
         chainId: step.destinationToken.chainId ?? '',

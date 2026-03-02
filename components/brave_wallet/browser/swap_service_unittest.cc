@@ -1811,7 +1811,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   source_token->chain_id = "0x1";
   source_token->contract_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
   source_token->symbol = "USDC";
-  source_token->decimals = 6;
   source_token->logo = "";
   expected_step->source_token = std::move(source_token);
   expected_step->source_amount = "1000000";
@@ -1821,7 +1820,6 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   destination_token->contract_address =
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   destination_token->symbol = "USDC";
-  destination_token->decimals = 6;
   destination_token->logo = "";
   expected_step->destination_token = std::move(destination_token);
   expected_step->destination_amount = "714488";

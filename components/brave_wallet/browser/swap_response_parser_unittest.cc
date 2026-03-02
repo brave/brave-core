@@ -2016,7 +2016,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   EXPECT_EQ(step->source_token->contract_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
   EXPECT_EQ(step->source_token->symbol, "USDC");
-  EXPECT_EQ(step->source_token->decimals, 6);
   EXPECT_EQ(step->source_token->logo, "");
 
   // Verify destination token
@@ -2025,7 +2024,6 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   EXPECT_EQ(step->destination_token->contract_address,
             "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
   EXPECT_EQ(step->destination_token->symbol, "USDC");
-  EXPECT_EQ(step->destination_token->decimals, 6);
   EXPECT_EQ(step->destination_token->logo, "");
 
   // Verify tool
