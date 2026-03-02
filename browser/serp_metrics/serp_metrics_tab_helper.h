@@ -6,10 +6,10 @@
 #ifndef BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 #define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 
-#include <memory>
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/serp_metrics/serp_classifier.h"
 #include "components/search_engines/search_engine_type.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -21,7 +21,6 @@ class WebContents;
 
 namespace serp_metrics {
 
-class SerpClassifier;
 class SerpMetrics;
 
 class SerpMetricsTabHelper final
@@ -50,7 +49,7 @@ class SerpMetricsTabHelper final
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  std::unique_ptr<SerpClassifier> serp_classifier_;
+  SerpClassifier serp_classifier_;
 
   raw_ptr<SerpMetrics> serp_metrics_ = nullptr;  // Not owned.
 
