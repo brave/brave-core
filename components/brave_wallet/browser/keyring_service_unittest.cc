@@ -2349,9 +2349,8 @@ TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_OfacSanctionedAddress) {
   const std::string address_to_sanction = first_import->address;
 
   // Remove the account first.
-  keyring_service.RemoveAccount(first_import->account_id.Clone(), "brave",
-                                base::DoNothing());
-  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(RemoveAccount(&keyring_service, first_import->account_id.Clone(),
+                            "brave"));
 
   // Update OFAC list with the address.
   registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
@@ -2392,9 +2391,8 @@ TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_OfacSanctionedAddress) {
   const std::string address_to_sanction = first_import->address;
 
   // Remove the account first.
-  keyring_service.RemoveAccount(first_import->account_id.Clone(), "brave",
-                                base::DoNothing());
-  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(RemoveAccount(&keyring_service, first_import->account_id.Clone(),
+                            "brave"));
 
   // Update OFAC list with the address
   registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
@@ -2431,9 +2429,8 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_OfacSanctionedAddress) {
   const std::string address_to_sanction = first_import->address;
 
   // Remove the account first.
-  keyring_service.RemoveAccount(first_import->account_id.Clone(), "brave",
-                                base::DoNothing());
-  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(RemoveAccount(&keyring_service, first_import->account_id.Clone(),
+                            "brave"));
 
   // Update OFAC list with the address.
   registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
