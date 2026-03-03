@@ -5,7 +5,7 @@
 
 .header {
   padding: var(--leo-spacing-m) var(--leo-spacing-xl);
-  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-page-background);
   display: flex;
   align-items: center;
   justify-content: start;
@@ -28,14 +28,6 @@
 }
 
 .logo {
-  --leo-icon-size: 20px;
-  --leo-icon-color: linear-gradient(
-    314.42deg,
-    #fa7250 8.49%,
-    #ff1893 43.72%,
-    #a78aff 99.51%
-  );
-
   display: flex;
   align-items: center;
   gap: var(--leo-spacing-m);
@@ -46,8 +38,6 @@
 .logoTitle {
   font: var(--leo-font-heading-h4);
   color: var(--leo-color-text-primary);
-  font-size: 19px;
-  line-height: 1;
 }
 
 .badgePremium {

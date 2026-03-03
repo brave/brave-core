@@ -10,6 +10,14 @@
  * #include=toolbar-chromium
  * #css_wrapper_metadata_end */
 
+.sp-card {
+  max-width: none;
+}
+
+#pinningSelectionCard {
+  max-width: none;
+}
+
 #heading {
   height: 60px;
 }

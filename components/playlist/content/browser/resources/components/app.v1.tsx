@@ -26,7 +26,7 @@ import { color, spacing } from '@brave/leo/tokens/css/variables'
 
 const AppContainer = styled.div<{ isPlaylistPlayerPage: boolean }>`
   --header-height: ${({ isPlaylistPlayerPage }) =>
-    isPlaylistPlayerPage ? '74px' : '56px'};
+    isPlaylistPlayerPage ? '74px' : '60px'};
 `
 
 const StickyArea = styled.div<{ position: 'top' | 'bottom' }>`

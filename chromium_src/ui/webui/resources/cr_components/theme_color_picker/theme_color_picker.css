@@ -10,6 +10,17 @@
  * #include=theme-color-picker-chromium
  * #css_wrapper_metadata_end */
 
+cr-grid {
+  --cr-grid-columns: auto-fill !important;
+  --cr-column-width: minmax(75px, 80px);
+  --cr-grid-width: 100%;
+  --cr-grid-justify-content: center;
+}
+
+cr-theme-color {
+  max-width: 75px;
+}
+
 /* when we remove the element entirely, we'll get regression from it.
   so Instead of removing the element, just hides it. */
 #defaultColor {

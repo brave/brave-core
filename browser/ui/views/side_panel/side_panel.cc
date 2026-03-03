@@ -13,12 +13,12 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
-#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/side_panel_resize_widget.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -148,8 +148,7 @@ void SidePanel::UpdateBorder() {
     SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
 
     shadow_ = BraveContentsViewUtil::CreateShadow(this);
-    SetBackground(
-        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
+    SetBackground(views::CreateSolidBackground(nala::kColorPageBackground));
 
     return;
   }

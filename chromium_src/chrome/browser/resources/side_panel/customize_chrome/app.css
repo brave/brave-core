@@ -53,6 +53,17 @@ sp-heading h2[slot='heading'] {
   line-height: var(--leo-typography-line-height-button-small);
 }
 
+.sp-card,
+customize-chrome-appearance,
+customize-chrome-shortcuts,
+customize-chrome-cards,
+customize-chrome-categories,
+customize-chrome-themes,
+customize-chrome-wallpaper-search,
+customize-chrome-toolbar {
+  max-width: none;
+}
+
 #shortcuts {
   display: none;
 }
