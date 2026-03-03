@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
@@ -24,6 +25,7 @@
 #include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/clipboard/test/clipboard_test_util.h"
@@ -108,7 +110,12 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
   auto* brave_omnibox_view =
       static_cast<BraveOmniboxViewViews*>(omnibox_view());
   SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"Brave browser");
-  EXPECT_TRUE(brave_omnibox_view->GetClipboardTextForPasteAndSearch());
+  {
+    base::test::TestFuture<std::u16string> future;
+    brave_omnibox_view->GetClipboardTextForPasteAndSearch(future.GetCallback());
+    auto clipboard_text = future.Take();
+    EXPECT_NE(std::u16string(), clipboard_text);
+  }
 
   auto* service =
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
@@ -123,10 +130,13 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
   service->SetUserSelectedDefaultSearchProvider(test_url.get());
 
   // Paste and search for normal window.
-  brave_omnibox_view->ExecuteCommand(IDC_PASTE_AND_GO, ui::EF_NONE);
   TabStripModel* tab_strip = browser()->tab_strip_model();
   auto* active_web_contents = tab_strip->GetActiveWebContents();
-  content::WaitForLoadStop(active_web_contents);
+  {
+    content::TestNavigationObserver observer(active_web_contents);
+    brave_omnibox_view->ExecuteCommand(IDC_PASTE_AND_GO, ui::EF_NONE);
+    observer.Wait();
+  }
 
   // Check loaded url's host and search provider's url host are same in normal
   // window.
@@ -154,13 +164,22 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
       private_browser_view->toolbar()->location_bar_view()->omnibox_view());
 
   SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"Brave browser");
-  EXPECT_TRUE(private_brave_omnibox_view->GetClipboardTextForPasteAndSearch());
+  {
+    base::test::TestFuture<std::u16string> future;
+    private_brave_omnibox_view->GetClipboardTextForPasteAndSearch(
+        future.GetCallback());
+    auto clipboard_text = future.Take();
+    EXPECT_NE(std::u16string(), clipboard_text);
+  }
 
   // Paste and search for private window
-  private_brave_omnibox_view->ExecuteCommand(IDC_PASTE_AND_GO, ui::EF_NONE);
   TabStripModel* private_tab_strip = private_browser->tab_strip_model();
   auto* private_active_web_contents = private_tab_strip->GetActiveWebContents();
-  content::WaitForLoadStop(private_active_web_contents);
+  {
+    content::TestNavigationObserver observer(private_active_web_contents);
+    private_brave_omnibox_view->ExecuteCommand(IDC_PASTE_AND_GO, ui::EF_NONE);
+    observer.Wait();
+  }
 
   // Check loaded url's host and search provider's url host are same in private
   // window.
