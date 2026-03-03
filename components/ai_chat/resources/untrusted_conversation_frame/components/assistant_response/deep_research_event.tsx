@@ -141,38 +141,14 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   return null
 }
 
-function ElapsedTimeCounter(props: {
-  deepResearch: ExtractedDeepResearchEvents
-}) {
+function ElapsedTimeCounter() {
   const [elapsed, setElapsed] = React.useState(0)
-  const startTimeRef = React.useRef<number | null>(null)
-
-  // Recalibrate start time whenever a new progressEvent arrives so the
-  // timer stays accurate across UI re-mounts (sidebar toggle, move to
-  // new tab, page reload). Falls back to Date.now() only when no
-  // progressEvent has been received yet.
-  React.useEffect(() => {
-    if (props.deepResearch.progressEvent) {
-      startTimeRef.current =
-        Date.now() - props.deepResearch.progressEvent.elapsedSeconds * 1000
-    } else if (!startTimeRef.current) {
-      startTimeRef.current = Date.now()
-    }
-  }, [props.deepResearch.progressEvent])
 
   React.useEffect(() => {
-    const updateElapsed = () => {
-      if (startTimeRef.current) {
-        const elapsedSeconds = Math.floor(
-          (Date.now() - startTimeRef.current) / 1000,
-        )
-        setElapsed(elapsedSeconds)
-      }
-    }
-
-    updateElapsed()
-    const interval = setInterval(updateElapsed, 1000)
-
+    const startTime = Date.now()
+    const interval = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - startTime) / 1000))
+    }, 1000)
     return () => clearInterval(interval)
   }, [])
 
@@ -288,7 +264,7 @@ function DeepResearchProgressLine(props: DeepResearchEventProps) {
       >
         {displayedInfo.description}
       </span>
-      <ElapsedTimeCounter deepResearch={props.deepResearch} />
+      <ElapsedTimeCounter />
     </div>
   )
 }
