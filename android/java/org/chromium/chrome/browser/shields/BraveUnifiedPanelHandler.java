@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.chromium.base.BraveFeatureList;
@@ -31,6 +33,8 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
@@ -395,7 +399,11 @@ public class BraveUnifiedPanelHandler {
 
         View shredDataItem = mAdvancedOptionsContent.findViewById(R.id.shred_data_item);
         if (shredDataItem != null) {
-            shredDataItem.setOnClickListener(v -> showShredPanel());
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+                shredDataItem.setOnClickListener(v -> showShredPanel());
+            } else {
+                shredDataItem.setVisibility(View.GONE);
+            }
         }
 
         View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
@@ -644,13 +652,472 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
-    private void showMainPanel() {}
+    private void showMainPanel() {
+        if (mMainPanelContainer == null) {
+            return;
+        }
 
-    private void showHttpsUpgradePanel() {}
+        mHttpsPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.GONE);
+        if (mShredPanelContainer != null) {
+            mShredPanelContainer.setVisibility(View.GONE);
+        }
+        if (mReportBrokenSitePanelContainer != null) {
+            mReportBrokenSitePanelContainer.setVisibility(View.GONE);
+        }
+        mMainPanelContainer.setVisibility(View.VISIBLE);
 
-    private void showTrackersAdsPanel() {}
+        if (mIsAdvancedOptionsExpanded
+                && mAdvancedOptionsContent != null
+                && mAdvancedOptionsArrow != null) {
+            mAdvancedOptionsContent.setVisibility(View.VISIBLE);
+            mAdvancedOptionsArrow.setRotation(180f);
+        }
+    }
 
-    private void showCookiesPanel() {}
+    private void showHttpsUpgradePanel() {
+        if (mMainPanelContainer == null || mHttpsPanelContainer == null) {
+            return;
+        }
 
-    private void showShredPanel() {}
+        if (mHttpsPanelContainer instanceof android.widget.ScrollView) {
+            android.widget.ScrollView scrollView = (android.widget.ScrollView) mHttpsPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View httpsPanel = scrollView.getChildAt(0);
+                setupHttpsUpgradePanel(httpsPanel);
+            }
+        }
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mHttpsPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupHttpsUpgradePanel(View panel) {
+        if (mUrl == null || mProfile == null) return;
+
+        ImageView backButton = panel.findViewById(R.id.https_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        androidx.appcompat.widget.AppCompatRadioButton strictRadio =
+                panel.findViewById(R.id.https_strict_radio);
+        androidx.appcompat.widget.AppCompatRadioButton defaultRadio =
+                panel.findViewById(R.id.https_default_radio);
+        androidx.appcompat.widget.AppCompatRadioButton disabledRadio =
+                panel.findViewById(R.id.https_disabled_radio);
+
+        if (strictRadio == null || defaultRadio == null || disabledRadio == null) {
+            return;
+        }
+
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
+
+        if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+            strictRadio.setChecked(true);
+        } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+            disabledRadio.setChecked(true);
+        } else {
+            defaultRadio.setChecked(true);
+        }
+
+        View strictOption = panel.findViewById(R.id.https_strict_option);
+        View defaultOption = panel.findViewById(R.id.https_default_option);
+        View disabledOption = panel.findViewById(R.id.https_disabled_option);
+
+        if (strictOption != null) {
+            strictOption.setOnClickListener(
+                    v -> {
+                        strictRadio.setChecked(true);
+                        setHttpsUpgradeSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (defaultOption != null) {
+            defaultOption.setOnClickListener(
+                    v -> {
+                        defaultRadio.setChecked(true);
+                        setHttpsUpgradeSetting(BraveShieldsContentSettings.DEFAULT);
+                    });
+        }
+
+        if (disabledOption != null) {
+            disabledOption.setOnClickListener(
+                    v -> {
+                        disabledRadio.setChecked(true);
+                        setHttpsUpgradeSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setHttpsUpgradeSetting(String value) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE,
+                value,
+                false);
+    }
+
+    private void showTrackersAdsPanel() {
+        if (mMainPanelContainer == null || mTrackersPanelContainer == null) {
+            return;
+        }
+
+        if (mTrackersPanelContainer instanceof android.widget.ScrollView) {
+            android.widget.ScrollView scrollView =
+                    (android.widget.ScrollView) mTrackersPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View trackersPanel = scrollView.getChildAt(0);
+                setupTrackersAdsPanel(trackersPanel);
+            }
+        }
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupTrackersAdsPanel(View panel) {
+        if (mUrl == null || mProfile == null) return;
+
+        ImageView backButton = panel.findViewById(R.id.trackers_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        androidx.appcompat.widget.AppCompatRadioButton aggressiveRadio =
+                panel.findViewById(R.id.trackers_aggressive_radio);
+        androidx.appcompat.widget.AppCompatRadioButton standardRadio =
+                panel.findViewById(R.id.trackers_standard_radio);
+        androidx.appcompat.widget.AppCompatRadioButton allowRadio =
+                panel.findViewById(R.id.trackers_allow_radio);
+
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+
+        if (aggressiveRadio != null && standardRadio != null && allowRadio != null) {
+            if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                aggressiveRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.DEFAULT)
+                    || currentSetting.equals(
+                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                standardRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                allowRadio.setChecked(true);
+            } else {
+                standardRadio.setChecked(true);
+            }
+        }
+
+        View aggressiveOption = panel.findViewById(R.id.trackers_aggressive_option);
+        View standardOption = panel.findViewById(R.id.trackers_standard_option);
+        View allowOption = panel.findViewById(R.id.trackers_allow_option);
+
+        if (aggressiveOption != null && aggressiveRadio != null) {
+            aggressiveOption.setOnClickListener(
+                    v -> {
+                        aggressiveRadio.setChecked(true);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (standardOption != null && standardRadio != null) {
+            standardOption.setOnClickListener(
+                    v -> {
+                        standardRadio.setChecked(true);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.DEFAULT);
+                    });
+        }
+
+        if (allowOption != null && allowRadio != null) {
+            allowOption.setOnClickListener(
+                    v -> {
+                        allowRadio.setChecked(true);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setTrackersAdsSetting(String value) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                value,
+                false);
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(
+                    !value.equals(BraveShieldsContentSettings.ALLOW_RESOURCE), false);
+        }
+    }
+
+    private void showCookiesPanel() {
+        if (mMainPanelContainer == null || mCookiesPanelContainer == null) {
+            return;
+        }
+
+        if (mCookiesPanelContainer instanceof android.widget.ScrollView) {
+            android.widget.ScrollView scrollView =
+                    (android.widget.ScrollView) mCookiesPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View cookiesPanel = scrollView.getChildAt(0);
+                setupCookiesPanel(cookiesPanel);
+            }
+        }
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupCookiesPanel(View panel) {
+        if (mUrl == null || mProfile == null) return;
+
+        ImageView backButton = panel.findViewById(R.id.cookies_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        androidx.appcompat.widget.AppCompatRadioButton blockAllRadio =
+                panel.findViewById(R.id.cookies_block_all_radio);
+        androidx.appcompat.widget.AppCompatRadioButton blockThirdPartyRadio =
+                panel.findViewById(R.id.cookies_block_third_party_radio);
+        androidx.appcompat.widget.AppCompatRadioButton allowRadio =
+                panel.findViewById(R.id.cookies_allow_radio);
+
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
+
+        if (blockAllRadio != null && blockThirdPartyRadio != null && allowRadio != null) {
+            if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                blockAllRadio.setChecked(true);
+            } else if (currentSetting.equals(
+                    BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                blockThirdPartyRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                allowRadio.setChecked(true);
+            } else {
+                blockThirdPartyRadio.setChecked(true);
+            }
+        }
+
+        View blockAllOption = panel.findViewById(R.id.cookies_block_all_option);
+        View blockThirdPartyOption = panel.findViewById(R.id.cookies_block_third_party_option);
+        View allowOption = panel.findViewById(R.id.cookies_allow_option);
+
+        if (blockAllOption != null && blockAllRadio != null) {
+            blockAllOption.setOnClickListener(
+                    v -> {
+                        blockAllRadio.setChecked(true);
+                        setCookiesSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (blockThirdPartyOption != null && blockThirdPartyRadio != null) {
+            blockThirdPartyOption.setOnClickListener(
+                    v -> {
+                        blockThirdPartyRadio.setChecked(true);
+                        setCookiesSetting(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                    });
+        }
+
+        if (allowOption != null && allowRadio != null) {
+            allowOption.setOnClickListener(
+                    v -> {
+                        allowRadio.setChecked(true);
+                        setCookiesSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setCookiesSetting(String value) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES,
+                value,
+                false);
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(
+                    !value.equals(BraveShieldsContentSettings.ALLOW_RESOURCE), false);
+        }
+    }
+
+    private void showShredPanel() {
+        if (mMainPanelContainer == null || mShredPanelContainer == null || mContext == null) {
+            return;
+        }
+
+        setupShredPanel();
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mShredPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupShredPanel() {
+        if (mShredPanelContainer == null) {
+            return;
+        }
+
+        View backButton = mShredPanelContainer.findViewById(R.id.shred_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        TextView siteLabel = mShredPanelContainer.findViewById(R.id.shred_site_label);
+        if (siteLabel != null && mUrl != null) {
+            String siteName =
+                    UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(mUrl);
+            siteLabel.setText(siteName.toUpperCase(java.util.Locale.ROOT));
+        }
+
+        updateShredModeDisplay();
+
+        View autoShredItem = mShredPanelContainer.findViewById(R.id.auto_shred_item);
+        if (autoShredItem != null) {
+            autoShredItem.setOnClickListener(v -> showAutoShredModeDialog());
+        }
+
+        View shredNowItem = mShredPanelContainer.findViewById(R.id.shred_now_item);
+        if (shredNowItem != null) {
+            shredNowItem.setOnClickListener(v -> onShredNowClicked());
+        }
+    }
+
+    private void onShredNowClicked() {
+        if (mContext == null || mCurrentTab == null || mUrl == null) {
+            return;
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.brave_shred_data_confirmation, null);
+
+        TextView confirmationTextView =
+                view.findViewById(R.id.brave_shred_data_confirmation_dialog);
+        if (confirmationTextView != null) {
+            confirmationTextView.setText(
+                    mContext.getString(
+                            R.string.brave_shred_data_confirmation, mUrl.getOrigin().getSpec()));
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(R.string.brave_shred_data_dialog_title)
+                .setView(view)
+                .setPositiveButton(
+                        R.string.brave_shred_data_dialog_ok_button_text,
+                        (dialog, which) -> {
+                            FirstPartyStorageCleanerAnimationFragment.show(mContext);
+                            if (mCurrentTab != null) {
+                                BraveFirstPartyStorageCleanerUtils.cleanupTLDFirstPartyStorage(
+                                        mCurrentTab);
+                            }
+                            if (mPopupWindow != null) {
+                                mPopupWindow.dismiss();
+                            }
+                        })
+                .setNegativeButton(R.string.brave_cancel, null);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void updateShredModeDisplay() {
+        TextView autoShredValue = mShredPanelContainer.findViewById(R.id.auto_shred_value);
+        if (autoShredValue == null || mUrl == null || mProfile == null) {
+            return;
+        }
+
+        String currentMode =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA);
+
+        int stringResId;
+        if (BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED.equals(currentMode)) {
+            stringResId = R.string.shred_option_site_tabs_closed;
+        } else if (BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT.equals(currentMode)) {
+            stringResId = R.string.shred_option_app_exit;
+        } else {
+            stringResId = R.string.brave_shields_auto_shred_never_mode_text;
+        }
+
+        autoShredValue.setText(stringResId);
+    }
+
+    private void showAutoShredModeDialog() {
+        if (mContext == null || mUrl == null || mProfile == null) {
+            return;
+        }
+
+        String currentMode =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA);
+
+        int selectedIndex = 0;
+        if (BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED.equals(currentMode)) {
+            selectedIndex = 1;
+        } else if (BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT.equals(currentMode)) {
+            selectedIndex = 2;
+        }
+
+        String[] options = {
+            mContext.getString(R.string.brave_shields_auto_shred_never_mode_text),
+            mContext.getString(R.string.shred_option_site_tabs_closed),
+            mContext.getString(R.string.shred_option_app_exit)
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(R.string.shred_auto_shred)
+                .setSingleChoiceItems(
+                        options,
+                        selectedIndex,
+                        (dialog, which) -> {
+                            setAutoShredMode(which);
+                            dialog.dismiss();
+                        })
+                .setNegativeButton(android.R.string.cancel, null);
+
+        builder.create().show();
+    }
+
+    private void setAutoShredMode(int mode) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA,
+                String.valueOf(mode),
+                false);
+        updateShredModeDisplay();
+    }
 }
