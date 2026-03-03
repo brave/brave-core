@@ -154,7 +154,7 @@ public class TxFragment extends Fragment {
         editGasFee.setVisibility(isEditTxEnabled(mTxNetwork) ? View.VISIBLE : View.INVISIBLE);
         editGasFee.setOnClickListener(
                 v -> {
-                    final Dialog dialog = new Dialog(getActivity());
+                    final Dialog dialog = new Dialog(requireContext());
                     dialog.setContentView(R.layout.brave_wallet_edit_gas);
                     dialog.show();
                     mPreviousCheckedPriorityId = mCheckedPriorityId;
