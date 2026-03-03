@@ -422,7 +422,7 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
           // In our case, signature type is 0x01 (sr25519) and our dummy
           // signature is all 0x01.
 
-          CHECK(params_list->size() == 2);
+          CHECK_EQ(params_list->size(), 2u);
           const auto& extrinsic = (*params_list)[1].GetString();
           EXPECT_NE(extrinsic.find(base::HexEncodeLower(
                         std::vector<uint8_t>(1 + 64, 0x01))),
