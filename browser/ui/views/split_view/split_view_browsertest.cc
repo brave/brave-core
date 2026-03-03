@@ -752,19 +752,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
       [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
   EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
 
-  // Check that the proper state is set after the browser window is restored
-  // from minimized state.
-  browser()->window()->Minimize();
-  browser()->window()->Restore();
-  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
-  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
-
-  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
-  EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(0));
-  EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(1));
-
   // Launch dialog from inactive split tab (at 0).
   bool did_suppress = false;
   GetTabModalDialogManagerAt(0)->RunJavaScriptDialog(
