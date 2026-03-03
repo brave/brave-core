@@ -254,6 +254,11 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
         DecodePrivateKeyFromExport(*encoded_json, kPassword);
     ASSERT_TRUE(decoded_pkcs8_key.has_value());
     EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+
+    auto decoded_keypair =
+        HDKeySr25519::CreateFromPkcs8(base::span(*decoded_pkcs8_key));
+    ASSERT_TRUE(decoded_keypair.has_value());
+    EXPECT_EQ(decoded_keypair->GetPublicKey(), keyring.GetPublicKey(1));
   }
 }
 
