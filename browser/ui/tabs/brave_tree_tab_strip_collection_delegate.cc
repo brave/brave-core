@@ -27,7 +27,8 @@ BraveTreeTabStripCollectionDelegate::BraveTreeTabStripCollectionDelegate(
   tabs::TreeTabNodeTabCollection::BuildTreeTabs(
       *unpinned_collection,
       base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
-      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_));
+      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
+      base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
 }
 
 BraveTreeTabStripCollectionDelegate::~BraveTreeTabStripCollectionDelegate() {
@@ -168,7 +169,8 @@ void BraveTreeTabStripCollectionDelegate::AddTabAsTreeNodeToCollection(
 #endif
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab),
-      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_));
+      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
+      base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   auto* tree_tab_node_ptr = tree_tab_node.get();
 
   target_collection->AddCollection(std::move(tree_tab_node), target_index);
@@ -208,7 +210,8 @@ void BraveTreeTabStripCollectionDelegate::AddTabToUnpinnedCollectionAsTreeNode(
   CHECK(detached_tab);
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab),
-      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_));
+      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
+      base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   auto* tree_tab_node_ptr = tree_tab_node.get();
   unpinned_tab_collection->AddCollection(std::move(tree_tab_node),
                                          *target_index);

@@ -7,6 +7,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
@@ -24,6 +26,20 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+
+tree_tab::TreeTabNodeId GetTreeTabNodeIdForTab(tabs::TabInterface* tab) {
+  const tabs::TabCollection* parent = tab->GetParentCollection();
+  CHECK(parent);
+  CHECK_EQ(parent->type(), tabs::TabCollection::Type::TREE_NODE);
+
+  return static_cast<const tabs::TreeTabNodeTabCollection*>(parent)
+      ->node()
+      .id();
+}
+
+}  // namespace
 
 class TreeTabsBrowserTest : public InProcessBrowserTest {
  protected:
@@ -1035,4 +1051,234 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), tab1);
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), tab2);
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), tab0);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       SetCollapsed_DoesBelongToCollapsedNode_UpdatesCache) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Initial tab at index 0; add a child tab so we have parent (tree node of
+  // tab 0) and child (tree node containing the new tab).
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* child_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+  tree_tab::TreeTabNodeId parent_node_id = GetTreeTabNodeIdForTab(parent_tab);
+  tree_tab::TreeTabNodeId child_node_id = GetTreeTabNodeIdForTab(child_tab);
+  ASSERT_FALSE(parent_node_id.is_empty());
+  ASSERT_FALSE(child_node_id.is_empty());
+
+  TreeTabModel* model = tab_strip_model().tree_model();
+
+  // Initially neither is under a collapsed node.
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(parent_node_id));
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(child_node_id));
+
+  // Collapse parent: child should belong to collapsed node, parent should not.
+  model->SetCollapsed(parent_node_id, true);
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(parent_node_id));
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(child_node_id));
+
+  // Uncollapse: child should no longer belong to a collapsed node.
+  model->SetCollapsed(parent_node_id, false);
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(parent_node_id));
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(child_node_id));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       DoesBelongToCollapsedNode_UnknownNodeId_ReturnsFalse) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  EXPECT_FALSE(tab_strip_model().tree_model()->DoesBelongToCollapsedNode(
+      tree_tab::TreeTabNodeId::CreateEmpty()));
+  EXPECT_FALSE(tab_strip_model().tree_model()->DoesBelongToCollapsedNode(
+      tree_tab::TreeTabNodeId::GenerateNew()));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTab_OutOfCollapsedParent_UpdatesCache) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Parent tab at 0; add child tab (at index 1).
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  tree_tab::TreeTabNodeId parent_node_id = GetTreeTabNodeIdForTab(parent_tab);
+  tree_tab::TreeTabNodeId child_node_id = GetTreeTabNodeIdForTab(child_tab);
+  ASSERT_FALSE(child_node_id.is_empty());
+
+  TreeTabModel* model = tab_strip_model().tree_model();
+  model->SetCollapsed(parent_node_id, true);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(child_node_id));
+
+  // Move child tab to index 0 (before parent), reparenting its tree node from
+  // under parent to a direct child of unpinned. OnReparented triggers
+  // OnTreeTabNodeMoved which updates the cache.
+  tab_strip_model().MoveWebContentsAt(1, 0, false);
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(child_node_id));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabWithChildOut_CacheUpdatedForLeftBehindChild) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Build A (parent) -> B (child of A) -> C (child of B). Collapse A.
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto tab_c_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_c_interface->set_opener(tab_b);
+  tab_strip_model().AddTab(std::move(tab_c_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+  tree_tab::TreeTabNodeId node_a = GetTreeTabNodeIdForTab(tab_a);
+  tree_tab::TreeTabNodeId node_b = GetTreeTabNodeIdForTab(tab_b);
+  tree_tab::TreeTabNodeId node_c = GetTreeTabNodeIdForTab(tab_c);
+
+  TreeTabModel* model = tab_strip_model().tree_model();
+  model->SetCollapsed(node_a, true);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(node_b));
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(node_c));
+
+  // Move B out (to index 0). B's child C is no longer a child of B—it is
+  // promoted to A's level. OnTreeTabNodeMoved is invoked for both B and C;
+  // cache must reflect B not under collapsed and C still under collapsed A.
+  tab_strip_model().MoveWebContentsAt(1, 0, false);
+  EXPECT_EQ(3, tab_strip_model().count());
+
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(node_b));
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(node_c));
+
+  // C is no longer under B: C's tree node's parent should be A's collection.
+  tab_c = tab_strip_model().GetTabAtIndex(2);
+  const tabs::TabCollection* c_parent = tab_c->GetParentCollection();
+  ASSERT_EQ(c_parent->type(), tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(
+      static_cast<const tabs::TreeTabNodeTabCollection*>(c_parent)->node().id(),
+      node_c);
+  const tabs::TabCollection* c_grandparent = c_parent->GetParentCollection();
+  ASSERT_EQ(c_grandparent->type(), tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(static_cast<const tabs::TreeTabNodeTabCollection*>(c_grandparent)
+                ->node()
+                .id(),
+            node_a);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       RemoveCollapsedParent_UpdatesCacheForChildren) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Parent tab at 0; add child tab (at index 1).
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  tree_tab::TreeTabNodeId parent_node_id = GetTreeTabNodeIdForTab(parent_tab);
+  tree_tab::TreeTabNodeId child_node_id = GetTreeTabNodeIdForTab(child_tab);
+  ASSERT_FALSE(child_node_id.is_empty());
+
+  TreeTabModel* model = tab_strip_model().tree_model();
+  model->SetCollapsed(parent_node_id, true);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(child_node_id));
+
+  // Close the parent tab. RemoveTabAtIndexRecursive removes the parent's tree
+  // node and calls RemoveTreeTabNode(parent_node_id), which recomputes the
+  // cache for nodes that had the removed node as closest collapsed ancestor;
+  // the child is no longer under any collapsed node.
+  tab_strip_model().CloseWebContentsAt(0, TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(1, tab_strip_model().count());
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(child_node_id));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveCollapsedParent_ChildRecalculatesCache) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Parent at 0, child at 1.
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  tree_tab::TreeTabNodeId parent_node_id = GetTreeTabNodeIdForTab(parent_tab);
+  tree_tab::TreeTabNodeId child_node_id = GetTreeTabNodeIdForTab(child_tab);
+  ASSERT_FALSE(child_node_id.is_empty());
+
+  TreeTabModel* model = tab_strip_model().tree_model();
+  model->SetCollapsed(parent_node_id, true);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(child_node_id));
+
+  // Move the collapsed parent tab to the end (index 1). The parent's tree
+  // node is moved; OnTreeTabNodeMoved(parent_node_id) recomputes the parent and
+  // its descendants. The child should no longer have the parent as closest
+  // collapsed ancestor.
+  tab_strip_model().MoveWebContentsAt(0, 1, false);
+  EXPECT_EQ(2, tab_strip_model().count());
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(child_node_id));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabIntoCollapsedParent_UpdatesCache) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Parent at 0, child at 1; collapse parent.
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  tree_tab::TreeTabNodeId parent_node_id = GetTreeTabNodeIdForTab(parent_tab);
+  TreeTabModel* model = tab_strip_model().tree_model();
+  model->SetCollapsed(parent_node_id, true);
+
+  // Add a top-level tab (no opener) so it is not under the collapsed parent.
+  auto standalone_tab =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(standalone_tab), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_to_move = tab_strip_model().GetTabAtIndex(2);
+  tree_tab::TreeTabNodeId tab_to_move_node_id =
+      GetTreeTabNodeIdForTab(tab_to_move);
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(tab_to_move_node_id));
+
+  // The tab is reparented under the parent's tree node; OnTreeTabNodeMoved
+  // updates the cache so it is now under a collapsed node.
+  // OnTreeTabNodeMoved updates the cache so it is now under a collapsed node.
+  tab_strip_model().MoveWebContentsAt(2, 1, false);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(tab_to_move_node_id));
 }

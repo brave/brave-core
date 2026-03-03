@@ -30,13 +30,26 @@ class TreeTabModel {
   // node does not exist or has no associated height information.
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
 
+  // Sets the collapsed state of the node identified by |id| to |collapsed|.
+  // Updates the internal cache for DoesBelongToCollapsedNode. No-op if no node
+  // exists for |id|.
+  void SetCollapsed(const tree_tab::TreeTabNodeId& id, bool collapsed);
+
+  // Returns true if the node identified by |id| is under a collapsed ancestor
+  // (and thus its tab should be hidden). O(1) from cache.
+  bool DoesBelongToCollapsedNode(const tree_tab::TreeTabNodeId& id) const;
+
   // Adds |node| to the model so it can be accessed via its TreeTabNodeId.
   // May trigger callbacks registered via RegisterAddTreeTabNodeCallback.
-  void AddTreeTabNode(const tabs::TreeTabNode& node);
+  void AddTreeTabNode(tabs::TreeTabNode& node);
 
   // Removes the node identified by |id| from the model, if it exists.
   // May trigger callbacks registered via RegisterRemoveTreeTabNodeCallback.
   void RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id);
+
+  // Called when a node is reparented (moved to another parent). Updates the
+  // collapsed cache for that node and its descendants.
+  void OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id);
 
   base::WeakPtr<TreeTabModel> GetWeakPtr();
 
@@ -47,8 +60,12 @@ class TreeTabModel {
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
 
  private:
-  std::map<tree_tab::TreeTabNodeId, raw_ptr<const tabs::TreeTabNode>>
-      tree_tab_nodes_;
+  std::map<tree_tab::TreeTabNodeId, raw_ptr<tabs::TreeTabNode>> tree_tab_nodes_;
+
+  // For each node id that is under a collapsed ancestor, maps to the id of that
+  // closest collapsed ancestor. Used for O(1) DoesBelongToCollapsedNode.
+  std::map<tree_tab::TreeTabNodeId, tree_tab::TreeTabNodeId>
+      closest_collapsed_ancestor_;
 
   base::RepeatingCallbackList<void(const tabs::TreeTabNode&)>
       add_tree_tab_node_callback_list_;

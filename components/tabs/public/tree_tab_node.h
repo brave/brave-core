@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
 #define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
 
+#include <optional>
+#include <vector>
+
 #include "base/memory/raw_ref.h"
 #include "base/types/pass_key.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
@@ -43,6 +46,18 @@ class TreeTabNode {
   // Returns the tab associated with this tree tab node, or nullptr if this
   // node does not currently have an associated tab
   const TabInterface* GetTab() const;
+
+  // Returns the id of the closest ancestor that is collapsed, or nullopt if
+  // no ancestor is collapsed.
+  std::optional<tree_tab::TreeTabNodeId> GetClosestCollapsedAncestorId() const;
+
+  // Returns true if any ancestor of this node is collapsed (so this node's
+  // tab should be hidden).
+  bool IsUnderCollapsedAncestor() const;
+
+  // Appends the ids of all descendant tree tab nodes to |out|. Requires
+  // non-const because it uses GetTreeNodeChildren() on the collection.
+  void CollectDescendantIds(std::vector<tree_tab::TreeTabNodeId>& out);
 
   // Exposes the calculation of level and height to TreeTabNodeTabCollection.
   int CalculateLevelAndHeightRecursively(
