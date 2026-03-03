@@ -87,7 +87,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
-  func createDefaultAccounts(
+  func createDefaultAccountsForSelectedNetworks(
     accountArgs: [BraveWallet.AddAccountArgs],
     completion: @escaping ([BraveWallet.AccountInfo]?) -> Void
   ) {
