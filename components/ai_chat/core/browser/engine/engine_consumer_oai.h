@@ -92,6 +92,10 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
+  void DedupeTopics(
+      base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+      GetSuggestedTopicsCallback callback) override;
+
   std::unique_ptr<OAIAPIClient> api_ = nullptr;
   mojom::CustomModelOptions model_options_;
 

@@ -1757,6 +1757,24 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics_EmptyTabs) {
+  engine_->GetSuggestedTopics(
+      {},
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+      }));
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs_EmptyTabs) {
+  engine_->GetFocusTabs(
+      {}, "topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+      }));
+}
+
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   PageContent page_content("Sample page content.", false);
   PageContent video_content("Sample video content.", true);

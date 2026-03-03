@@ -553,6 +553,11 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
 
   // Split tab into chunks of 75
   size_t num_chunks = (tabs.size() + kTabListChunkSize - 1) / kTabListChunkSize;
+  if (num_chunks == 0) {
+    std::move(merge_callback).Run({});
+    return;
+  }
+
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       num_chunks, std::move(merge_callback));
 
@@ -578,21 +583,6 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }
-}
-
-void EngineConsumerConversationAPI::MergeSuggestTopicsResults(
-    GetSuggestedTopicsCallback callback,
-    std::vector<GenerationResult> results) {
-  if (results.size() == 1) {
-    // No need to dedupe topics if there is only one result.
-    std::move(callback).Run(
-        EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
-    return;
-  }
-
-  // Merge the result and send another request to dedupe topics.
-  DedupeTopics(GetStrArrFromTabOrganizationResponses(results),
-               std::move(callback));
 }
 
 void EngineConsumerConversationAPI::GetSuggestedTopics(

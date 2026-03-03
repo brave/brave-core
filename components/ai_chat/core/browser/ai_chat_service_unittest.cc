@@ -369,16 +369,17 @@ class AIChatServiceUnitTest : public testing::Test,
 
   void TestGetSuggestedTopics(
       base::expected<std::vector<std::string>, mojom::APIError> expected_result,
+      const std::vector<Tab>& tabs = {{"id", "title", url::Origin()}},
       const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
     base::RunLoop run_loop;
     ai_chat_service_->GetSuggestedTopics(
-        {}, base::BindLambdaForTesting(
-                [&](base::expected<std::vector<std::string>, mojom::APIError>
-                        result) {
-                  EXPECT_EQ(result, expected_result);
-                  run_loop.Quit();
-                }));
+        tabs, base::BindLambdaForTesting(
+                  [&](base::expected<std::vector<std::string>, mojom::APIError>
+                          result) {
+                    EXPECT_EQ(result, expected_result);
+                    run_loop.Quit();
+                  }));
     run_loop.Run();
   }
 
@@ -1347,6 +1348,30 @@ TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_CacheTopics) {
   TestGetSuggestedTopics(topics1);
   ai_chat_service_->TabDataChanged({});
   TestGetSuggestedTopics(topics2);
+}
+
+TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_EmptyTabs) {
+  base::RunLoop run_loop;
+  ai_chat_service_->GetSuggestedTopics(
+      {},
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+}
+
+TEST_P(AIChatServiceUnitTest, GetFocusTabs_EmptyTabs) {
+  base::RunLoop run_loop;
+  ai_chat_service_->GetFocusTabs(
+      {}, "topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+        run_loop.Quit();
+      }));
+  run_loop.Run();
 }
 
 TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {

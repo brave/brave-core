@@ -68,6 +68,11 @@ class MockEngineConsumer : public EngineConsumer {
                const std::string&,
                GetFocusTabsCallback),
               (override));
+  MOCK_METHOD(void,
+              DedupeTopics,
+              ((base::expected<std::vector<std::string>, mojom::APIError>),
+               GetSuggestedTopicsCallback),
+              (override));
   MOCK_METHOD(const std::string&, GetModelName, (), (const, override));
 
   MOCK_METHOD(bool, RequiresClientSideTitleGeneration, (), (const, override));

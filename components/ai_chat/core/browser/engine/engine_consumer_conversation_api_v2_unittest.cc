@@ -4071,6 +4071,24 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics_EmptyTabs) {
+  engine_->GetSuggestedTopics(
+      {},
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+      }));
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs_EmptyTabs) {
+  engine_->GetFocusTabs(
+      {}, "topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
+      }));
+}
+
 TEST_F(EngineConsumerConversationAPIV2UnitTest,
        ModelNameNotOverriddenWithToolCalls) {
   base::test::TestFuture<EngineConsumer::GenerationResult> future;

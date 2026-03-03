@@ -225,11 +225,15 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest,
           base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic}))
       .WillOnce(
           base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic2}));
-  TestGetSuggestedTopics({kTopic}, nullptr);
 
   AppendTabWithTitle(
       browser(), https_server()->GetURL("foo.com", "/simple.html"),
       kFooDotComTitle1, ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  TestGetSuggestedTopics({kTopic}, nullptr);
+
+  AppendTabWithTitle(
+      browser(), https_server()->GetURL("bar.com", "/simple.html"),
+      kBarDotComTitle1, ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   TestGetSuggestedTopics({kTopic2}, nullptr);
   // Cached topics should be returned when nothing changed.
   TestGetSuggestedTopics({kTopic2}, nullptr);
