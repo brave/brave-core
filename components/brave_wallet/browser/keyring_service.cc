@@ -1562,6 +1562,11 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   return account;
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/53346): We should aim to
+// reify this function with CreateDefaultAccounts(). Right now the behavior is
+// subtly different between each function and should be unified under a commmon
+// routine where we can also simplify resetting the wallet if a sanctioned
+// address is produced.
 void KeyringService::CreateDefaultAccountsForSelectedNetworks(
     std::vector<mojom::AddAccountArgsPtr> account_args,
     CreateDefaultAccountsForSelectedNetworksCallback callback) {
