@@ -589,7 +589,7 @@
     Model changes dynamically to use the best one for the task
   </message>
   <message name="IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE" desc="A description for glm-4-7-flash model" formatter_data="webui=AiChat">
-    Fast • Search • Tools
+    Fast • Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE" desc="A description for llama-4-maverick model" formatter_data="webui=AiChat">
     Search • Vision
@@ -604,7 +604,7 @@
     Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_KIMI_K2_5_SUBTITLE" desc="A description for kimi-k2-5 model" formatter_data="webui=AiChat">
-    Search • Tools
+    Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE" desc="A description for qwen-3-235b model" formatter_data="webui=AiChat">
     Search • Vision
