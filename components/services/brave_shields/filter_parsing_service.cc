@@ -60,13 +60,13 @@ void FilterParsingService::ParseFilters(
 
   std::vector<adblock_filter_list_parser::mojom::FilterListMetadataPtr>
       metadata;
-  for (const auto& filter_list : filters) {
-    base::span<const uint8_t> filter_data = filter_list->filters;
-    std::vector<uint8_t> filter_vec(filter_data.begin(), filter_data.end());
+  for (auto& filter_list : filters) {
+    auto filter_vec = base::ToVector(filter_list->filters.byte_span());
 
-    auto this_metadata = (*filter_set)
-                             ->add_filter_list_with_permissions(
-                                 filter_vec, filter_list->permission_mask);
+    auto this_metadata =
+        (*filter_set)
+            ->add_filter_list_with_permissions(std::move(filter_vec),
+                                               filter_list->permission_mask);
     auto mojom_metadata =
         adblock_filter_list_parser::mojom::FilterListMetadata::New();
     if (this_metadata.result_kind == adblock::ResultKind::Success) {
