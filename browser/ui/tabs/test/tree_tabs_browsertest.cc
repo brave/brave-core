@@ -1278,7 +1278,6 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // The tab is reparented under the parent's tree node; OnTreeTabNodeMoved
   // updates the cache so it is now under a collapsed node.
-  // OnTreeTabNodeMoved updates the cache so it is now under a collapsed node.
   tab_strip_model().MoveWebContentsAt(2, 1, false);
   EXPECT_TRUE(model->DoesBelongToCollapsedNode(tab_to_move_node_id));
 }
