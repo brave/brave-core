@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 467c0bbb942a3370947ad200a3c2b2398d946976..26be4a6f60e59964309d055d55d5a337ae88adf6 100644
+index 05f72f711d19a097cd0698c29bec3ac8752b8367..0e71e13a4a65d6d4b443011d3aa3343ea732e77e 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-@@ -143,7 +143,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(
+@@ -138,7 +138,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(
    std::unique_ptr<TabHoverCardController> hover_card_controller(
        std::make_unique<TabHoverCardController>(tab_strip_region_view,
                                                 browser_view->browser()));

@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_text_util.cc b/components/omnibox/browser/omnibox_text_util.cc
-index 5e2bb7aa71940318ada9477adfd4504e551c78d4..de40b3f0383a0d39ea3b8275abe71c17a841b5fc 100644
+index 67865669203bb123983d324bfeca40c28f3fecb2..56567f1471984ceab8b9eededa57a29735897bb3 100644
 --- a/components/omnibox/browser/omnibox_text_util.cc
 +++ b/components/omnibox/browser/omnibox_text_util.cc
 @@ -153,6 +153,7 @@ void AdjustTextForCopy(int sel_min,

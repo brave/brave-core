@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index bd1b62344c9efa90c3332ea754eb0f3ea4b09235..75db3bad767b24efccb4c61b7ff6b5be12503a10 100644
+index 7850fdec32f6d2dc7613aadf94a90ccd35824a03..b7f6ee1bb23e67ebc8aa2b4cf0e4ac5102059b51 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -629,6 +629,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
+@@ -628,6 +628,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
    DCHECK(src);
    DCHECK(dst);
    DCHECK(point);
@@ -10,7 +10,7 @@ index bd1b62344c9efa90c3332ea754eb0f3ea4b09235..75db3bad767b24efccb4c61b7ff6b5be
    views::View::ConvertPointToTarget(src, dst, point);
    return dst->HitTestPoint(*point);
  }
-@@ -1941,6 +1942,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+@@ -1936,6 +1937,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
        !browser_->tab_strip_model()->closing_all() && GetWidget()->IsActive() &&
        GetWidget()->IsVisible() && !tab_change_in_split_view;
  #endif
