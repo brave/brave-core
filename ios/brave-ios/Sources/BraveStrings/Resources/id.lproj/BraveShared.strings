@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Batalkan pendaftaran";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Alamat email";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Memulai";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Maaf, sepertinya telah terjadi kesalahan";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "File kontak tidak dapat dibaca. File mungkin rusak atau dalam format yang tidak didukung.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Tidak dapat Membuka Kontak";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versi %1$@ (%2$@)";
