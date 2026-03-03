@@ -18,6 +18,8 @@ export interface ExtractedDeepResearchEvents {
   analyzingEvent?: Mojom.DeepResearchAnalyzingEvent
   fetchStatusEvent?: Mojom.DeepResearchFetchStatusEvent
   hasDeepResearchEvents: boolean
+  /** Whether the synthesis answer (completionEvent after the tool call) has arrived. */
+  hasSynthesisCompletion: boolean
 }
 
 /** Extracts and deduplicates deep research events from conversation events.
@@ -62,5 +64,7 @@ export function extractDeepResearchEvents(
     fetchStatusEvent: drEvents.findLast((e) => e.fetchStatusEvent)
       ?.fetchStatusEvent,
     hasDeepResearchEvents: !!hasDeepResearchToolUse || drEvents.length > 0,
+    hasSynthesisCompletion:
+      relevantEvents?.some((e) => e.completionEvent) ?? false,
   }
 }

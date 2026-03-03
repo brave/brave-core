@@ -204,11 +204,13 @@ export default function AssistantResponse(props: AssistantResponseProps) {
       ))}
 
       {/* Render deep research progress while research is active.
-          Hide once research completes - the final answer streams in
-          as standard completion events rendered above. */}
+          Hide once the synthesis answer starts streaming in. Keep visible
+          during the synthesis phase (after completeEvent but before the
+          final completionEvent arrives), ignoring any pre-tool completion
+          text the LLM may have emitted before calling deep_research. */}
       {deepResearch.hasDeepResearchEvents
         && props.isEntryInProgress
-        && !deepResearch.completeEvent && (
+        && !deepResearch.hasSynthesisCompletion && (
           <DeepResearchEvent
             queriesEvent={deepResearch.queriesEvent}
             thinkingEvents={deepResearch.thinkingEvents}
