@@ -39,6 +39,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/page_info/core/features.h"
+#include "components/passage_embeddings/core/passage_embeddings_features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
 #include "components/plus_addresses/core/common/features.h"
@@ -120,6 +121,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kParakeet,
       &blink::features::kPermissionElement,
       &blink::features::kPrerender2,
+      &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
@@ -224,6 +226,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kStarterPackExpansion,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationHints,
+      &passage_embeddings::kPassageEmbedder,
       &permissions::features::kCpssUseTfliteSignatureRunner,
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
