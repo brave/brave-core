@@ -26,10 +26,10 @@ namespace {
 // tuple argument. Intended for compatibility with `BarrierCallback`.
 void LoadFiltersTuple(
     base::RepeatingCallback<void(
-        std::tuple<std::vector<unsigned char>,
+        std::tuple<mojo_base::BigBuffer,
                    uint8_t,
                    base::OnceCallback<void(adblock::FilterListMetadata)>>)> cb,
-    std::vector<unsigned char> filter_buffer,
+    mojo_base::BigBuffer filter_buffer,
     uint8_t permission_mask,
     base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata) {
   cb.Run(std::tuple(std::move(filter_buffer), permission_mask,
@@ -87,7 +87,7 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
 void AdBlockFiltersProviderManager::LoadFilters(
     base::OnceCallback<void(
-        std::vector<unsigned char> filter_buffer,
+        mojo_base::BigBuffer filter_buffer,
         uint8_t permission_mask,
         base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>) {
   NOTREACHED();
@@ -95,8 +95,7 @@ void AdBlockFiltersProviderManager::LoadFilters(
 
 void AdBlockFiltersProviderManager::LoadFiltersForEngine(
     bool is_for_default_engine,
-    base::OnceCallback<
-        void(const std::vector<unsigned char> verified_engine_dat)> cb) {
+    base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb) {
   const uint64_t flow_id = base::RandUint64();
   TRACE_EVENT("brave.adblock",
               "AdBlockFiltersProviderManager::LoadFiltersForEngine",
@@ -106,7 +105,7 @@ void AdBlockFiltersProviderManager::LoadFiltersForEngine(
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
   auto collect_and_merge = base::BarrierCallback<
-      std::tuple<std::vector<unsigned char>, uint8_t,
+      std::tuple<mojo_base::BigBuffer, uint8_t,
                  base::OnceCallback<void(adblock::FilterListMetadata)>>>(
       filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
@@ -121,11 +120,10 @@ void AdBlockFiltersProviderManager::LoadFiltersForEngine(
 }
 
 void AdBlockFiltersProviderManager::FinishCombinating(
-    base::OnceCallback<
-        void(const std::vector<unsigned char> verified_engine_dat)> cb,
+    base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
     uint64_t flow_id,
     std::vector<
-        std::tuple<std::vector<unsigned char>,
+        std::tuple<mojo_base::BigBuffer,
                    uint8_t,
                    base::OnceCallback<void(adblock::FilterListMetadata)>>>
         results) {

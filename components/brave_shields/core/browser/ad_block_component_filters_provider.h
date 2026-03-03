@@ -62,7 +62,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   void LoadFilters(
       base::OnceCallback<void(
-          std::vector<unsigned char> filter_buffer,
+          mojo_base::BigBuffer filter_buffer,
           uint8_t permission_mask,
           base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
       override;

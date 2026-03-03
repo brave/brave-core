@@ -43,7 +43,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   void LoadFilters(
       base::OnceCallback<void(
-          std::vector<unsigned char> filter_buffer,
+          mojo_base::BigBuffer filter_buffer,
           uint8_t permission_mask,
           base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
       override;
@@ -74,7 +74,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
       uint64_t flow_id,
       std::vector<
-          std::tuple<std::vector<unsigned char>,
+          std::tuple<mojo_base::BigBuffer,
                      uint8_t,
                      base::OnceCallback<void(adblock::FilterListMetadata)>>>
           results);

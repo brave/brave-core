@@ -241,13 +241,13 @@ base::ListValue AdBlockEngine::HiddenClassIdSelectors(
 }
 
 void AdBlockEngine::Load(bool deserialize,
-                         const DATFileDataBuffer& dat_buf,
+                         DATFileDataBuffer dat_buf,
                          const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (deserialize) {
-    OnDATLoaded(dat_buf, storage);
+    OnDATLoaded(std::move(dat_buf), storage);
   } else {
-    OnListSourceLoaded(dat_buf, storage);
+    OnListSourceLoaded(std::move(dat_buf), storage);
   }
 }
 
@@ -310,7 +310,7 @@ void AdBlockEngine::OnFilterSetLoaded(
 }
 
 void AdBlockEngine::OnListSourceLoaded(
-    const DATFileDataBuffer& filters,
+    DATFileDataBuffer filters,
     const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -318,7 +318,9 @@ void AdBlockEngine::OnListSourceLoaded(
   TRACE_EVENT_BEGIN("brave.adblock", "MakeEngineWithRules", "size",
                     filters.size(), "is_default_engine", is_default_engine_);
 
-  auto result = adblock::engine_with_rules(filters);
+  base::span<const uint8_t> filters_span = filters;
+  std::vector<uint8_t> filters_vec(filters_span.begin(), filters_span.end());
+  auto result = adblock::engine_with_rules(filters_vec);
 
   TRACE_EVENT_END("brave.adblock");
   if (is_default_engine_) {
@@ -338,12 +340,12 @@ void AdBlockEngine::OnListSourceLoaded(
 }
 
 void AdBlockEngine::OnDATLoaded(
-    const DATFileDataBuffer& dat_buf,
+    DATFileDataBuffer dat_buf,
     const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // An empty buffer will not load successfully.
-  if (dat_buf.empty()) {
+  if (dat_buf.size() == 0) {
     return;
   }
 
@@ -352,7 +354,9 @@ void AdBlockEngine::OnDATLoaded(
                     dat_buf.size(), "is_default_engine", is_default_engine_);
 
   auto client = adblock::new_engine();
-  const auto result = client->deserialize(dat_buf);
+  base::span<const uint8_t> dat_span = dat_buf;
+  std::vector<uint8_t> dat_vec(dat_span.begin(), dat_span.end());
+  const auto result = client->deserialize(dat_vec);
 
   TRACE_EVENT_END("brave.adblock");
   if (is_default_engine_) {

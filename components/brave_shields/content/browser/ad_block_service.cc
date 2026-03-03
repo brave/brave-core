@@ -83,7 +83,7 @@ void AdBlockService::SourceProviderObserver::OnDATCreated(
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
-  if (pending_dat_.empty()) {
+  if (pending_dat_.size() == 0) {
     task_runner_->PostTask(
         FROM_HERE, base::BindOnce(
                        [](base::WeakPtr<AdBlockEngine> engine,
@@ -99,8 +99,7 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
            mojo_base::BigBuffer dat_buffer,
            AdblockResourceStorageBox storage) {
           if (engine) {
-            // BigBuffer can be implicitly converted to span<const uint8_t>
-            engine->Load(true, dat_buffer, *storage);
+            engine->Load(true, std::move(dat_buffer), *storage);
           }
         },
         adblock_engine_->AsWeakPtr(), std::move(pending_dat_),

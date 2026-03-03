@@ -92,10 +92,7 @@ void FilterParsingService::ParseFilters(
   }
 
   const auto dat = e.value->serialize();
-  std::vector<unsigned char> output_dat = base::ToVector(dat);
-
-  // Convert vector to BigBuffer for return
-  mojo_base::BigBuffer output_buffer(output_dat);
+  mojo_base::BigBuffer output_buffer(base::as_byte_span(dat));
 
   std::move(callback).Run(std::move(output_buffer), std::move(metadata));
 }

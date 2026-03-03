@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 
 #include <string>
-#include <vector>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 namespace brave_shields {
 
@@ -31,7 +31,7 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   void LoadFilters(
       base::OnceCallback<void(
-          std::vector<unsigned char> filter_buffer,
+          mojo_base::BigBuffer filter_buffer,
           uint8_t permission_mask,
           base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
       override;

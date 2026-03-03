@@ -14,6 +14,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -44,7 +45,7 @@ class AdBlockFiltersProvider {
 
   virtual void LoadFilters(
       base::OnceCallback<
-          void(std::vector<unsigned char> filter_buffer,
+          void(mojo_base::BigBuffer filter_buffer,
                uint8_t permission_mask,
                base::OnceCallback<void(adblock::FilterListMetadata)>
                    on_metadata)>) = 0;

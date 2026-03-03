@@ -5,17 +5,15 @@
 
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 
-#include <string>
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
-
-using brave_component_updater::DATFileDataBuffer;
+#include "mojo/public/cpp/base/big_buffer.h"
 
 namespace brave_shields {
 
@@ -52,12 +50,13 @@ std::string TestFiltersProvider::GetNameForDebugging() {
 
 void TestFiltersProvider::LoadFilters(
     base::OnceCallback<
-        void(std::vector<unsigned char> filter_buffer,
+        void(mojo_base::BigBuffer filter_buffer,
              uint8_t permission_mask,
              base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
         cb) {
-  auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
-  std::move(cb).Run(std::move(buffer), permission_mask_, base::DoNothing());
+  std::vector<uint8_t> buffer(rules_.begin(), rules_.end());
+  mojo_base::BigBuffer big_buffer(buffer);
+  std::move(cb).Run(std::move(big_buffer), permission_mask_, base::DoNothing());
 }
 
 void TestFiltersProvider::Initialize() {

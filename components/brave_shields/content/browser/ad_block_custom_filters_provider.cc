@@ -110,7 +110,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
 
 void AdBlockCustomFiltersProvider::LoadFilters(
     base::OnceCallback<
-        void(std::vector<unsigned char> filter_buffer,
+        void(mojo_base::BigBuffer filter_buffer,
              uint8_t permission_mask,
              base::OnceCallback<void(adblock::FilterListMetadata)>)> cb) {
   const uint64_t flow_id = base::RandUint64();
@@ -120,7 +120,7 @@ void AdBlockCustomFiltersProvider::LoadFilters(
   auto custom_filters = GetCustomFilters();
 
   auto buffer =
-      std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
+      mojo_base::BigBuffer(base::as_bytes(base::span(custom_filters)));
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(

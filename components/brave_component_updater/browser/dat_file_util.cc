@@ -23,7 +23,7 @@ void GetDATFileData(const base::FilePath& file_path,
   }
 
   if (auto bytes = base::ReadFileToBytes(file_path)) {
-    *buffer = std::move(*bytes);
+    *buffer = mojo_base::BigBuffer(std::move(*bytes));
   } else {
     LOG(ERROR) << "GetDATFileData: cannot "
                << "read dat file " << file_path;

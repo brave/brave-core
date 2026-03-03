@@ -6,17 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_
 
-#include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "base/component_export.h"
 #include "base/files/file_path.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 namespace brave_component_updater {
 
-using DATFileDataBuffer = std::vector<unsigned char>;
+using DATFileDataBuffer = mojo_base::BigBuffer;
 
 COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 std::string GetDATFileAsString(const base::FilePath& file_path);

@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 constexpr char kListFile[] = "list.txt";
 
@@ -29,7 +30,7 @@ namespace {
 // static
 void OnReadDATFileData(
     base::OnceCallback<void(
-        std::vector<unsigned char> filter_buffer,
+        mojo_base::BigBuffer filter_buffer,
         uint8_t permission_mask,
         base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)> cb,
     uint8_t permission_mask,
@@ -121,7 +122,7 @@ base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
 
 void AdBlockComponentFiltersProvider::LoadFilters(
     base::OnceCallback<
-        void(std::vector<unsigned char> filter_buffer,
+        void(mojo_base::BigBuffer filter_buffer,
              uint8_t permission_mask,
              base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
         cb) {
@@ -134,7 +135,7 @@ void AdBlockComponentFiltersProvider::LoadFilters(
   if (list_file_path.empty()) {
     // If the path is not ready yet, provide an empty list immediately. An
     // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(std::vector<unsigned char>(), permission_mask_,
+    std::move(cb).Run(mojo_base::BigBuffer(), permission_mask_,
                       base::DoNothing());
     return;
   }
