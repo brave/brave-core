@@ -71,9 +71,9 @@ RegisterStyleOverride(
       cr-drawer settings-menu::part(header) {
         display: none;
       }
-      .cr-container-shadow {
+      .cr-scrollable-top-shadow {
         display: none !important;
-     }
+      }
       #container {
         /* menu and content next to each other in the horizontal center */
       }
