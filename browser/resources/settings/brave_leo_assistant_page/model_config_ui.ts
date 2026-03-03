@@ -133,9 +133,6 @@ export class ModelConfigUI extends ModelConfigUIBase {
       return
     }
 
-    const mojomUrl = { url: '' }
-    mojomUrl.url = this.endpointUrl
-
     // Send empty string if adding new model
     const modelKey = this.isEditing_ ? this.modelItem?.key : ''
 
@@ -154,7 +151,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
           // Determined at runtime based on contextSize
           longConversationWarningCharacterLimit: -1,
           modelSystemPrompt: this.modelSystemPrompt,
-          endpoint: mojomUrl.toString(),
+          endpoint: this.endpointUrl,
           apiKey: this.apiKey
         }
       },
