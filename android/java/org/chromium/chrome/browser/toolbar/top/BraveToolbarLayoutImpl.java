@@ -326,7 +326,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
         mUnifiedPanelHandler = new BraveUnifiedPanelHandler(getContext());
-        mBraveShieldsHandler.addObserver(
+        BraveShieldsMenuObserver shieldsObserver =
                 new BraveShieldsMenuObserver() {
                     @Override
                     public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
@@ -346,31 +346,38 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             mBraveShieldsHandler.updateValues(0, 0, 0);
                         }
                     }
-                });
-        mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
-            @Override
-            public void blockEvent(int tabId, String blockType, String subresource) {
-                mBraveShieldsHandler.addStat(tabId, blockType, subresource);
-                Tab currentTab = getToolbarDataProvider().getTab();
-                if (currentTab == null || currentTab.getId() != tabId) {
-                    return;
-                }
-                mBraveShieldsHandler.updateValues(tabId);
-                if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                        && (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
-                                || blockType.equals(BraveShieldsContentSettings
-                                                            .RESOURCE_IDENTIFIER_TRACKERS))) {
-                    addStatsToDb(blockType, subresource, currentTab.getUrl().getSpec());
-                }
-            }
+                };
+        mBraveShieldsHandler.addObserver(shieldsObserver);
+        mUnifiedPanelHandler.addObserver(shieldsObserver);
+        mBraveShieldsContentSettingsObserver =
+                new BraveShieldsContentSettingsObserver() {
+                    @Override
+                    public void blockEvent(int tabId, String blockType, String subresource) {
+                        mBraveShieldsHandler.addStat(tabId, blockType, subresource);
+                        Tab currentTab = getToolbarDataProvider().getTab();
+                        if (currentTab == null || currentTab.getId() != tabId) {
+                            return;
+                        }
+                        mBraveShieldsHandler.updateValues(tabId);
+                        if (!isIncognito()
+                                && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+                                && (blockType.equals(
+                                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+                                        || blockType.equals(
+                                                BraveShieldsContentSettings
+                                                        .RESOURCE_IDENTIFIER_TRACKERS))) {
+                            addStatsToDb(blockType, subresource, currentTab.getUrl().getSpec());
+                        }
+                    }
 
-            @Override
-            public void savedBandwidth(long savings) {
-                if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                    addSavedBandwidthToDb(savings);
-                }
-            }
-        };
+                    @Override
+                    public void savedBandwidth(long savings) {
+                        if (!isIncognito()
+                                && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                            addSavedBandwidthToDb(savings);
+                        }
+                    }
+                };
         // Initially show shields off image. Shields button state will be updated when tab is
         // shown and loading state is changed.
         updateBraveShieldsButtonState(null);
