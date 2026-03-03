@@ -206,6 +206,14 @@ function Progress(props: Props & TabProps) {
       && !props.taskData.importantToolUseEvents.includes(event.toolUseEvent),
   )
 
+  // Collect source/query events from all entries so web sources render
+  // with the completion in the Progress view. These events may be in
+  // earlier entries when server search results arrive before the final
+  // completion entry.
+  const allSourceEvents = props.assistantEntries
+    .flatMap((entry) => entry.events ?? [])
+    .filter((ev) => ev.sourcesEvent || ev.searchQueriesEvent)
+
   return (
     <div className={styles.progress}>
       {props.taskData.importantToolUseEvents.map((event, index) => (
@@ -219,10 +227,10 @@ function Progress(props: Props & TabProps) {
       {currentCompletionEvent && (
         <div className={styles.progressText}>
           <AssistantResponse
-            events={[currentCompletionEvent]}
+            events={[...allSourceEvents, currentCompletionEvent]}
             isEntryInteractivityAllowed={false}
             isEntryInProgress={props.isGenerating}
-            allowedLinks={[]}
+            allowedLinks={props.taskData.allowedLinks}
             isLeoModel={props.isLeoModel}
           />
         </div>
@@ -244,6 +252,16 @@ function Steps(props: Props & TabProps) {
   // Render every event in the task, split by completion event
   // so that the LLM tells a story of the task by it's own progress
   // description.
+
+  // Collect source/query events from non-last taskItems so they can
+  // be shown with the last (completion) step. These events may be in
+  // earlier entries when server search results arrive before the
+  // final completion entry.
+  const nonLastSourceEvents = props.taskData.taskItems
+    .slice(0, -1)
+    .flat()
+    .filter((ev) => ev.sourcesEvent || ev.searchQueriesEvent)
+
   return props.taskData.taskItems.map((taskItem, index) => {
     // Can we interact or run any pending tools?
     const isRunnable =
@@ -262,6 +280,14 @@ function Steps(props: Props & TabProps) {
 
     const isThinking = isRunnable && props.isThinking
 
+    // Non-last steps: strip source/query events (they belong with
+    // the completion). Last step: prepend earlier source/query events
+    // and keep its own.
+    const isLastItem = index === props.taskData.taskItems.length - 1
+    const events = isLastItem
+      ? [...nonLastSourceEvents, ...taskItem]
+      : taskItem.filter((ev) => !ev.sourcesEvent && !ev.searchQueriesEvent)
+
     return (
       <div
         key={index}
@@ -279,7 +305,7 @@ function Steps(props: Props & TabProps) {
           )}
         </div>
         <AssistantResponse
-          events={taskItem}
+          events={events}
           isEntryInteractivityAllowed={isRunnable}
           isEntryInProgress={isActive}
           allowedLinks={props.taskData.allowedLinks}

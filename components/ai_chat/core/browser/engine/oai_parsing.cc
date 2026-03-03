@@ -200,17 +200,17 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
   return std::nullopt;
 }
 
-std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
+std::vector<mojom::ConversationEntryEventPtr> ParseToolCallResult(
     const base::DictValue& tool_call) {
   const base::ListValue* output_content = tool_call.FindList("output_content");
   if (!output_content) {
-    return std::nullopt;
+    return {};
   }
 
   const std::string* id = tool_call.FindString("id");
   if (!id) {
     DVLOG(1) << "Tool result missing required id field.";
-    return std::nullopt;
+    return {};
   }
 
   mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New(
@@ -236,7 +236,53 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallResult(
     }
   }
 
-  return tool_use_event;
+  // Build result: ToolUseEvent first, then any source/query
+  // events extracted from the output content blocks.
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  auto source_events = ExtractWebSourceEvents(*tool_use_event->output);
+  events.push_back(mojom::ConversationEntryEvent::NewToolUseEvent(
+      std::move(tool_use_event)));
+  for (auto& source_event : source_events) {
+    events.push_back(std::move(source_event));
+  }
+  return events;
+}
+
+std::vector<mojom::ConversationEntryEventPtr> ExtractWebSourceEvents(
+    const std::vector<mojom::ContentBlockPtr>& content_blocks) {
+  std::vector<mojom::WebSourcePtr> all_sources;
+  std::vector<std::string> all_queries;
+  std::vector<std::string> all_rich_results;
+
+  for (const auto& block : content_blocks) {
+    if (!block->is_web_sources_content_block()) {
+      continue;
+    }
+    const auto& ws = block->get_web_sources_content_block();
+    for (const auto& s : ws->sources) {
+      all_sources.push_back(s.Clone());
+    }
+    for (const auto& q : ws->queries) {
+      if (!q.empty()) {
+        all_queries.push_back(q);
+      }
+    }
+    for (const auto& r : ws->rich_results) {
+      all_rich_results.push_back(r);
+    }
+  }
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  if (!all_sources.empty()) {
+    events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
+        mojom::WebSourcesEvent::New(std::move(all_sources),
+                                    std::move(all_rich_results))));
+  }
+  if (!all_queries.empty()) {
+    events.push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+        mojom::SearchQueriesEvent::New(std::move(all_queries))));
+  }
+  return events;
 }
 
 std::optional<base::ListValue> ToolApiDefinitionsFromTools(

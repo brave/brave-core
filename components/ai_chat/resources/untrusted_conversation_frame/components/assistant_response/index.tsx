@@ -159,29 +159,31 @@ export type AssistantResponseProps = BaseProps & {
 }
 
 export default function AssistantResponse(props: AssistantResponseProps) {
-  // Extract certain events which need to render at specific locations (e.g. end of the events)
-  const searchQueriesEvent = props.events?.find(
-    (event) => event.searchQueriesEvent,
-  )?.searchQueriesEvent
-  const sourcesEvent = props.events?.find(
-    (event) => !!event.sourcesEvent,
-  )?.sourcesEvent
+  // Aggregate sources/queries across all events since
+  // multiple tool results each emit their own event.
+  const allSources = props.events.flatMap(
+    (event) => event.sourcesEvent?.sources ?? [],
+  )
+  const allRichResults = props.events.flatMap(
+    (event) => event.sourcesEvent?.richResults?.filter((r) => !!r) ?? [],
+  )
+  const allSearchQueries = props.events.flatMap(
+    (event) => event.searchQueriesEvent?.searchQueries ?? [],
+  )
 
   const hasCompletionStarted =
     !props.isEntryInProgress
-    || (props.events?.some((event) => event.completionEvent) ?? false)
+    || props.events.some((event) => event.completionEvent)
 
   return (
     <AssistantResponseContextProvider events={props.events}>
-      {sourcesEvent?.richResults
-        .filter((r) => r)
-        .map((r) => (
-          <RichSearchWidget
-            key={r}
-            jsonData={r}
-          />
-        ))}
-      {props.events?.map((event, i) => (
+      {allRichResults.map((r) => (
+        <RichSearchWidget
+          key={r}
+          jsonData={r}
+        />
+      ))}
+      {props.events.map((event, i) => (
         <AssistantEvent
           key={i}
           event={event}
@@ -195,9 +197,9 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
       {!props.isEntryInProgress && (
         <>
-          {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
-          {searchQueriesEvent && (
-            <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
+          {allSources.length > 0 && <WebSourcesEvent sources={allSources} />}
+          {allSearchQueries.length > 0 && (
+            <SearchSummary searchQueries={allSearchQueries} />
           )}
         </>
       )}

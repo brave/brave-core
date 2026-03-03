@@ -69,19 +69,6 @@ using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
 
-bool HasPendingToolsInEntry(const mojom::ConversationTurn& entry) {
-  if (!entry.events.has_value()) {
-    return false;
-  }
-  for (const auto& event : *entry.events) {
-    if (event->is_tool_use_event() &&
-        !event->get_tool_use_event()->output.has_value()) {
-      return true;
-    }
-  }
-  return false;
-}
-
 }  // namespace
 
 ConversationHandler::Suggestion::Suggestion(std::string title)
@@ -1606,73 +1593,6 @@ void ConversationHandler::OnGeneratePageContentComplete(
   OnAssociatedContentUpdated();
 }
 
-std::vector<mojom::ConversationEntryEventPtr>
-ConversationHandler::ExtractSourcesFromRecentAssistantEntries() {
-  // When client-side tools are involved, we end up with multiple consecutive
-  // assistant entries (see PerformAssistantGenerationWithPossibleContent which
-  // sets needs_new_entry_ = true). The search tool results may be in an earlier
-  // entry, so scan backwards through all recent assistant entries until we hit
-  // a non-assistant (user) entry.
-  std::vector<mojom::WebSourcePtr> all_sources;
-  std::vector<std::string> all_queries;
-  std::vector<std::string> all_rich_results;
-
-  for (const auto& entry : base::Reversed(chat_history_)) {
-    if (entry->character_type != CharacterType::ASSISTANT) {
-      break;
-    }
-
-    if (!entry->events.has_value()) {
-      continue;
-    }
-
-    for (const auto& event : *entry->events) {
-      if (!event->is_tool_use_event()) {
-        continue;
-      }
-
-      const auto& tool = event->get_tool_use_event();
-
-      // Only process search tools with output
-      if (!IsBraveSearchTool(tool->tool_name) || !tool->output.has_value()) {
-        continue;
-      }
-
-      for (const auto& content_block : *tool->output) {
-        if (!content_block->is_web_sources_content_block()) {
-          continue;
-        }
-        const auto& web_sources =
-            content_block->get_web_sources_content_block();
-        for (const auto& source : web_sources->sources) {
-          all_sources.push_back(source.Clone());
-        }
-        for (const auto& q : web_sources->queries) {
-          if (!q.empty()) {
-            all_queries.push_back(q);
-          }
-        }
-        for (const auto& rich_result : web_sources->rich_results) {
-          all_rich_results.push_back(rich_result);
-        }
-      }
-    }
-  }
-
-  std::vector<mojom::ConversationEntryEventPtr> events;
-  if (!all_sources.empty()) {
-    events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
-        mojom::WebSourcesEvent::New(std::move(all_sources),
-                                    std::move(all_rich_results))));
-  }
-  if (!all_queries.empty()) {
-    events.push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-        mojom::SearchQueriesEvent::New(std::move(all_queries))));
-  }
-
-  return events;
-}
-
 void ConversationHandler::OnEngineCompletionDataReceived(
     EngineConsumer::GenerationResultData result) {
   UpdateOrCreateLastAssistantEntry(std::move(result));
@@ -1716,17 +1636,6 @@ void ConversationHandler::OnEngineCompletionComplete(
       SetAPIError(mojom::APIError::ConnectionIssue);
       CompleteGeneration(false);
       return;
-    }
-  }
-
-  // Extract web sources from server-side search tools and add to last entry.
-  // Skip if there are pending client tools - next generation will handle it.
-  // Also a null check before accessing chat_history_.back()->events just for
-  // safety, it's unlikely to happen in regular flows.
-  if (chat_history_.back()->events &&
-      !HasPendingToolsInEntry(*chat_history_.back())) {
-    for (auto& event : ExtractSourcesFromRecentAssistantEntries()) {
-      chat_history_.back()->events->push_back(std::move(event));
     }
   }
 

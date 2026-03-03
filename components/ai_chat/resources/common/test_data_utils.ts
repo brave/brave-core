@@ -58,6 +58,15 @@ export function getWebSourcesEvent(
   }
 }
 
+export function getSearchQueriesEvent(
+  queries: string[],
+): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    searchQueriesEvent: { searchQueries: queries },
+  }
+}
+
 /**
  * Creates a conversation turn filling in any optional properties as undefined
  * and basic defaults for other properties.

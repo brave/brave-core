@@ -25,6 +25,7 @@ import userEvent from '@testing-library/user-event'
 import * as Mojom from '../../../common/mojom'
 import {
   getCompletionEvent,
+  getSearchQueriesEvent,
   getWebSourcesEvent,
 } from '../../../common/test_data_utils'
 import { createTextContentBlock } from '../../../common/content_block'
@@ -272,4 +273,69 @@ test('AssistantResponse should render iframe when richResults has data', () => {
   // Should render iframes for each richResult
   const iframes = container.querySelectorAll('iframe')
   expect(iframes).toHaveLength(2)
+})
+
+test('AssistantResponse should aggregate sources from multiple events', async () => {
+  const events = [
+    getCompletionEvent('test completion'),
+    getWebSourcesEvent([
+      {
+        title: 'Source 1',
+        faviconUrl: { url: 'https://imgs.example.com/favicon1.ico' },
+        url: { url: 'https://1.example.com/path' },
+      },
+      {
+        title: 'Source 2',
+        faviconUrl: { url: 'https://imgs.example.com/favicon2.ico' },
+        url: { url: 'https://2.example.com/path' },
+      },
+    ]),
+    getWebSourcesEvent([
+      {
+        title: 'Source 3',
+        faviconUrl: { url: 'https://imgs.example.com/favicon3.ico' },
+        url: { url: 'https://3.example.com/path' },
+      },
+      {
+        title: 'Source 4',
+        faviconUrl: { url: 'https://imgs.example.com/favicon4.ico' },
+        url: { url: 'https://4.example.com/path' },
+      },
+    ]),
+  ]
+
+  render(
+    <AssistantResponse
+      events={events}
+      isEntryInteractivityAllowed={false}
+      isLeoModel={true}
+      isEntryInProgress={false}
+      allowedLinks={[]}
+    />,
+  )
+
+  // All 4 sources from both events should be rendered
+  const buttons = screen.getAllByRole('button')
+  expect(buttons).toHaveLength(4)
+})
+
+test('AssistantResponse should aggregate search queries from multiple events', () => {
+  const events = [
+    getCompletionEvent('test completion'),
+    getSearchQueriesEvent(['query one']),
+    getSearchQueriesEvent(['query two']),
+  ]
+
+  const { container } = render(
+    <AssistantResponse
+      events={events}
+      isEntryInteractivityAllowed={false}
+      isLeoModel={true}
+      isEntryInProgress={false}
+      allowedLinks={[]}
+    />,
+  )
+
+  const summary = container.querySelector('[data-test-id="search-summary"]')
+  expect(summary).toBeInTheDocument()
 })
