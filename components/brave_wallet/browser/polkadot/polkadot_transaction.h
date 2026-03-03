@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_
 
-#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
@@ -37,9 +36,11 @@ struct PolkadotTransaction {
   bool transfer_all() const { return transfer_all_; }
   void set_transfer_all(bool transfer_all) { transfer_all_ = transfer_all; }
 
-  base::optional_ref<PolkadotExtrinsicMetadata> extrinsic_metadata() {
-    return extrinsic_metadata_;
+  const PolkadotExtrinsicMetadata* extrinsic_metadata() const {
+    return extrinsic_metadata_.has_value() ? &extrinsic_metadata_.value()
+                                           : nullptr;
   }
+
   void set_extrinsic_metadata(PolkadotExtrinsicMetadata metadata) {
     extrinsic_metadata_ = std::move(metadata);
   }

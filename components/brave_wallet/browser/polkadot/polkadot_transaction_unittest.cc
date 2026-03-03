@@ -22,7 +22,7 @@ TEST(PolkadotTransaction, JsonSerde) {
   EXPECT_EQ(polkadot_tx.amount(), uint128_t{0});
   EXPECT_EQ(polkadot_tx.fee(), uint128_t{0});
   EXPECT_EQ(polkadot_tx.transfer_all(), false);
-  EXPECT_EQ(polkadot_tx.extrinsic_metadata(), std::nullopt);
+  EXPECT_EQ(polkadot_tx.extrinsic_metadata(), nullptr);
 
   const char empty_tx_json[] = R"({
     "amount": "00000000000000000000000000000000",
@@ -66,7 +66,7 @@ TEST(PolkadotTransaction, JsonSerde) {
   EXPECT_EQ(tx->recipient().ToString(),
             "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
   EXPECT_EQ(tx->transfer_all(), true);
-  EXPECT_EQ(tx->extrinsic_metadata(), std::nullopt);
+  EXPECT_EQ(tx->extrinsic_metadata(), nullptr);
 
   // Test (de)serializing a transaction that has extrinsic metadata attached to
   // it. This would represent a signed transaction that's been submitted and
