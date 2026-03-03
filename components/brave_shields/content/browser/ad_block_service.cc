@@ -95,8 +95,7 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
                        adblock_engine_->AsWeakPtr(), std::move(storage)));
   } else {
     auto engine_load_callback = base::BindOnce(
-        [](base::WeakPtr<AdBlockEngine> engine,
-           mojo_base::BigBuffer dat_buffer,
+        [](base::WeakPtr<AdBlockEngine> engine, mojo_base::BigBuffer dat_buffer,
            AdblockResourceStorageBox storage) {
           if (engine) {
             engine->Load(true, std::move(dat_buffer), *storage);

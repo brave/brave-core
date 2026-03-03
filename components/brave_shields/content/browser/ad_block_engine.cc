@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
@@ -354,8 +355,7 @@ void AdBlockEngine::OnDATLoaded(
                     dat_buf.size(), "is_default_engine", is_default_engine_);
 
   auto client = adblock::new_engine();
-  base::span<const uint8_t> dat_span = dat_buf;
-  std::vector<uint8_t> dat_vec(dat_span.begin(), dat_span.end());
+  auto dat_vec = base::ToVector(dat_buf.byte_span());
   const auto result = client->deserialize(dat_vec);
 
   TRACE_EVENT_END("brave.adblock");
