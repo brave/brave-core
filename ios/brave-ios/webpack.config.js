@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const glob = require("glob");
-const path = require("path");
-const TerserPlugin = require('terser-webpack-plugin');
+import glob from "glob";
+import path from "path";
+import { fileURLToPath } from "url";
+import TerserPlugin from 'terser-webpack-plugin';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const __firefox__ = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/__firefox__.js")[0];
 
@@ -19,7 +23,7 @@ const MainFrameAtDocumentEnd = glob.sync("./ios/brave-ios/Sources/Brave/Frontend
 const MainFrameAtDocumentStartSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/MainFrame/AtDocumentStart/*.js");
 const MainFrameAtDocumentEndSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/MainFrame/AtDocumentEnd/*.js");
 
-module.exports = {
+export default {
   mode: "production",
   entry: {
     "__firefox__": __firefox__,
@@ -51,7 +55,12 @@ module.exports = {
     ],
   },
   module: {
-    rules: []
+    rules: [
+      {
+        test: /\.js$/,
+        type: "javascript/auto"
+      }
+    ]
   },
   plugins: []
 };
