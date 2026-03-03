@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
@@ -256,11 +257,10 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
   auto sender_pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
   CHECK(sender_pubkey);
 
-  auto extrinsic = make_signed_extrinsic(
+  extrinsic_ = base::ToVector(make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
-      signature, signing_header_->block_number, account_info_->nonce);
+      signature, signing_header_->block_number, account_info_->nonce));
 
-  extrinsic_ = std::vector(extrinsic.begin(), extrinsic.end());
   std::move(callback_).Run(base::ok(GetMetadata()));
 }
 
