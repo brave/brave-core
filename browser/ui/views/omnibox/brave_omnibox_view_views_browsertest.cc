@@ -26,6 +26,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/clipboard/test/clipboard_test_util.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "url/gurl.h"
@@ -177,14 +178,15 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
   omnibox_view()->ExecuteCommand(
       std::to_underlying(ui::TouchEditable::MenuCommands::kCopy), 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(test_url, text_from_clipboard);
 
 #if BUILDFLAG(IS_LINUX)
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kSelection,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kSelection,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(test_url, text_from_clipboard);
 #endif
 }
@@ -202,9 +204,9 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyCleanURLToClipboardTest) {
   omnibox_view()->SelectAll(true);
   omnibox_view()->ExecuteCommand(IDC_COPY_CLEAN_LINK, 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(text_from_clipboard,
             "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
@@ -225,9 +227,9 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   omnibox_view()->ExecuteCommand(
       std::to_underlying(ui::TouchEditable::MenuCommands::kCopy), 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(text_from_clipboard,
             "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&d&"
@@ -251,9 +253,9 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsEnabledFeatureTest,
   textfield->AcceleratorPressed(
       ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR));
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(text_from_clipboard,
             "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
@@ -272,9 +274,9 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, DoNotSanitizeInternalURLS) {
   omnibox_view()->ExecuteCommand(
       std::to_underlying(ui::TouchEditable::MenuCommands::kCopy), 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(text_from_clipboard, "brave://settings/?utm_ad=1");
 }
 
@@ -295,9 +297,9 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsDisabledFeatureTest,
   textfield->AcceleratorPressed(
       ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR));
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(text_from_clipboard,
             "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
@@ -319,8 +321,8 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyTextToClipboardByHotkey) {
   textfield->AcceleratorPressed(
       ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR));
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
+  std::string text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(text_from_clipboard, test_text);
 }

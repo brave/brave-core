@@ -18,5 +18,6 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base/clipboard:clipboard_test_support",
   ]
 }

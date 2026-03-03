@@ -1139,21 +1139,27 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
   }
 
   std::u16string result;
-  auto data = std::make_unique<ui::DataTransferEndpoint>(
+  std::optional<ui::DataTransferEndpoint> data = ui::DataTransferEndpoint(
       frame->GetMainFrame()->GetLastCommittedURL(),
       ui::DataTransferEndpointOptions{
           .notify_if_restricted = true,
           .off_the_record = frame->GetBrowserContext()->IsOffTheRecord()});
+
   ui::Clipboard::GetForCurrentThread()->ReadText(
-      ui::ClipboardBuffer::kCopyPaste, data.get(), &result);
+      ui::ClipboardBuffer::kCopyPaste, data,
+      base::BindOnce(
+          [](base::WeakPtr<content::WebContents> web_contents,
+             std::u16string result) {
+            // If there's no text in the clipboard don't do anything.
+            if (!web_contents || result.empty()) {
+              return;
+            }
 
-  // If there's no text in the clipboard don't do anything.
-  if (result.empty()) {
-    return;
-  }
-
-  // Replace works just like Paste, but it doesn't trigger onpaste handlers
-  web_contents->Replace(result);
+            // Replace works just like Paste, but it doesn't trigger onpaste
+            // handlers
+            web_contents->Replace(result);
+          },
+          web_contents->GetWeakPtr()));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
