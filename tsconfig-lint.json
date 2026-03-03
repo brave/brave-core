@@ -4,6 +4,7 @@
     "./components/**/*",
     "./chromium_src/**/*",
     "./build/commands/**/*",
+    "./ios/**/*",
     "./*.js",
     "./*.ts",
     "./*.mjs",
