@@ -13,6 +13,7 @@ import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import { getToolArtifacts } from '../conversation_entries/conversation_entries_utils'
 import AssistantResponse from '../assistant_response'
 import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
@@ -45,6 +46,9 @@ interface TabProps {
   toolUseTaskState: Mojom.TaskState
 
   taskData: TaskData
+
+  // Tool call artifacts to pass to AssistantResponse
+  toolArtifacts: Mojom.ToolArtifact[] | null
 }
 
 /**
@@ -103,12 +107,19 @@ export default function AssistantTask(props: Props) {
     && !conversationContext.isToolExecuting
     && conversationContext.toolUseTaskState === Mojom.TaskState.kRunning
 
+  const shouldOmitArtifacts =
+    props.isActiveTask && conversationContext.isGenerating
+  const toolArtifacts = !shouldOmitArtifacts
+    ? getToolArtifacts(props.assistantEntries)
+    : null
+
   const tabProps: TabProps = {
     isGenerating: conversationContext.isGenerating,
     isToolExecuting: conversationContext.isToolExecuting,
     toolUseTaskState: conversationContext.toolUseTaskState,
     isThinking: isThinking,
     taskData: taskData,
+    toolArtifacts: toolArtifacts,
   }
 
   return (
@@ -139,6 +150,7 @@ export default function AssistantTask(props: Props) {
             <Progress
               {...props}
               {...tabProps}
+              toolArtifacts={toolArtifacts}
             />
           )}
 
@@ -232,6 +244,7 @@ function Progress(props: Props & TabProps) {
             isEntryInProgress={props.isGenerating}
             allowedLinks={props.taskData.allowedLinks}
             isLeoModel={props.isLeoModel}
+            toolArtifacts={props.toolArtifacts}
           />
         </div>
       )}

@@ -15,8 +15,11 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/code_plugin.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -66,7 +69,10 @@ class MockCodePlugin : public CodePlugin {
 
 class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
  public:
-  AIChatCodeExecutionToolBrowserTest() = default;
+  AIChatCodeExecutionToolBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kCodeExecutionTool, {{"charts", "true"}});
+  }
   ~AIChatCodeExecutionToolBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -125,6 +131,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<CodeExecutionTool> tool_;
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<net::test_server::HttpResponse> HandleTestRequest(
       const net::test_server::HttpRequest& request) {
     if (request.relative_url == "/test") {
@@ -295,6 +302,57 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
       &output, &artifacts);
 
   EXPECT_THAT(output, HasSubstr("Error: content must be a number"));
+  EXPECT_TRUE(artifacts.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
+  std::string script = R"(
+    const data = [
+      {x: 'Jan', sales: 100, profit: 30},
+      {x: 'Feb', sales: 150, profit: 45},
+      {x: 'Mar', sales: 120, profit: 35}
+    ];
+    const labels = {sales: 'Sales ($)', profit: 'Profit ($)'};
+    chartUtil.createLineChart(data, labels);
+    console.log('Chart created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_EQ(output, "Chart created");
+  ASSERT_EQ(artifacts.size(), 1u);
+
+  const auto& artifact = artifacts[0];
+  EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
+  EXPECT_THAT(artifact->content_json, base::test::IsJson(R"json({
+                "data": [
+                  {"x": "Jan", "sales": 100, "profit": 30},
+                  {"x": "Feb", "sales": 150, "profit": 45},
+                  {"x": "Mar", "sales": 120, "profit": 35}
+                ],
+                "labels": {"sales": "Sales ($)", "profit": "Profit ($)"}
+              })json"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       UnsupportedArtifactType) {
+  std::string script = R"(
+    codeExecArtifacts.push({
+      type: 'unsupported_type',
+      content: {data: 'some data'}
+    });
+    console.log('Artifact created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_THAT(
+      output,
+      HasSubstr("Error: Artifact type 'unsupported_type' is not supported"));
   EXPECT_TRUE(artifacts.empty());
 }
 
