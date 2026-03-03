@@ -7,16 +7,19 @@
 
 BraveRenderViewContextMenuViews::BraveRenderViewContextMenuViews(
     content::RenderFrameHost& render_frame_host,
-    const content::ContextMenuParams& params)
-    : RenderViewContextMenuViews(render_frame_host, params) {}
+    const content::ContextMenuParams& params,
+    bool is_paste_enabled)
+    : RenderViewContextMenuViews(render_frame_host, params, is_paste_enabled) {}
 
 BraveRenderViewContextMenuViews::~BraveRenderViewContextMenuViews() = default;
 
 // static
 RenderViewContextMenuViews* BraveRenderViewContextMenuViews::Create(
     content::RenderFrameHost& render_frame_host,
-    const content::ContextMenuParams& params) {
-  return new BraveRenderViewContextMenuViews(render_frame_host, params);
+    const content::ContextMenuParams& params,
+    bool is_paste_enabled) {
+  return new BraveRenderViewContextMenuViews(render_frame_host, params,
+                                             is_paste_enabled);
 }
 
 void BraveRenderViewContextMenuViews::Show() {

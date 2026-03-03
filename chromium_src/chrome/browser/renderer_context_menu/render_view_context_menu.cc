@@ -326,8 +326,11 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
-    const content::ContextMenuParams& params)
-    : RenderViewContextMenu_Chromium(render_frame_host, params)
+    const content::ContextMenuParams& params,
+    bool is_paste_enabled)
+    : RenderViewContextMenu_Chromium(render_frame_host,
+                                     params,
+                                     is_paste_enabled)
 #if BUILDFLAG(ENABLE_AI_CHAT)
       ,
       ai_chat_submenu_model_(this),
