@@ -22,16 +22,14 @@
         android:paddingVertical="18dp">
 
         <!-- Back button -->
-        <ImageView
+        <ImageButton
             android:id="@+id/trackers_back_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_small_down"
             android:rotation="90"
-            android:clickable="true"
-            android:focusable="true"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/block_trackers_ads_title"/>
+            android:contentDescription="@string/back"/>
 
         <!-- Title -->
         <TextView
@@ -41,7 +39,7 @@
             android:layout_marginStart="16dp"
             android:text="@string/block_trackers_ads_title"
             android:textSize="20sp"
-            android:textColor="@color/shield_text_color"
+            android:textColor="@color/text_primary"
             android:fontFamily="sans-serif"
             android:maxLines="1"
             android:ellipsize="end"/>
@@ -65,20 +63,20 @@
 
             <!-- Description -->
             <TextView
+                style="@style/DefaultRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/trackers_ads_description"
-                android:textSize="14sp"
-                android:textColor="@color/shield_text_color"
+                android:textColor="@color/text_primary"
                 android:paddingHorizontal="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="24dp"/>
 
             <!-- Radio options -->
-            <RadioGroup
-                android:id="@+id/trackers_ads_radio_group"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <!-- Option 1: Aggressive -->
                 <LinearLayout
@@ -94,12 +92,12 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <TextView
+                        style="@style/LargeRegular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/block_trackers_ads_option_1"
-                        android:textSize="16sp"
-                        android:textColor="@color/shield_text_color"
+                        android:textColor="@color/text_primary"
                         android:layout_marginEnd="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -125,12 +123,12 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <TextView
+                        style="@style/LargeRegular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/block_trackers_ads_option_2"
-                        android:textSize="16sp"
-                        android:textColor="@color/shield_text_color"
+                        android:textColor="@color/text_primary"
                         android:layout_marginEnd="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -156,12 +154,12 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <TextView
+                        style="@style/LargeRegular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/block_trackers_ads_option_3"
-                        android:textSize="16sp"
-                        android:textColor="@color/shield_text_color"
+                        android:textColor="@color/text_primary"
                         android:layout_marginEnd="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -173,7 +171,7 @@
 
                 </LinearLayout>
 
-            </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
 
