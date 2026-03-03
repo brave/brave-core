@@ -61,6 +61,7 @@ public class TxFragment extends Fragment {
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
     private final long mSolanaEstimatedTxFee;
+    @Nullable private Dialog mEditGasDialog;
 
     // mUpdateTxObjectManually is used to detect do we need to update dialog values
     // manually after we change gas for example or do we have it updated automatically
@@ -154,7 +155,17 @@ public class TxFragment extends Fragment {
         editGasFee.setVisibility(isEditTxEnabled(mTxNetwork) ? View.VISIBLE : View.INVISIBLE);
         editGasFee.setOnClickListener(
                 v -> {
-                    final Dialog dialog = new Dialog(requireContext());
+                    if (!canShowDialog()) return;
+                    dismissEditGasDialog();
+                    mEditGasDialog = new Dialog(requireContext());
+                    final Dialog dialog = mEditGasDialog;
+                    dialog.setOnDismissListener(
+                            unused -> {
+                                if (mEditGasDialog == dialog) {
+                                    mEditGasDialog = null;
+                                }
+                                filterEIP1559TextWatcher.clearDialog();
+                            });
                     dialog.setContentView(R.layout.brave_wallet_edit_gas);
                     dialog.show();
                     mPreviousCheckedPriorityId = mCheckedPriorityId;
@@ -440,6 +451,18 @@ public class TxFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStop() {
+        dismissEditGasDialog();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        dismissEditGasDialog();
+        super.onDestroyView();
+    }
+
     private final TextWatcherImpl filterEIP1559TextWatcher = new TextWatcherImpl();
 
     private class TextWatcherImpl implements TextWatcher {
@@ -450,6 +473,11 @@ public class TxFragment extends Fragment {
         public void setDialog(Dialog dialog, String baseFeePerGas) {
             mDialog = dialog;
             mBaseFeePerGas = baseFeePerGas;
+            mIgnoreChange = false;
+        }
+
+        public void clearDialog() {
+            mDialog = null;
             mIgnoreChange = false;
         }
 
@@ -623,5 +651,20 @@ public class TxFragment extends Fragment {
 
     private boolean isAdvanceSettingEnabled(NetworkInfo txNetwork) {
         return isEditTxEnabled(txNetwork);
+    }
+
+    private boolean canShowDialog() {
+        Activity activity = getActivity();
+        return isAdded() && activity != null && !activity.isFinishing() && !activity.isDestroyed();
+    }
+
+    private void dismissEditGasDialog() {
+        if (mEditGasDialog == null) return;
+        if (mEditGasDialog.isShowing()) {
+            mEditGasDialog.dismiss();
+        } else {
+            filterEIP1559TextWatcher.clearDialog();
+            mEditGasDialog = null;
+        }
     }
 }
