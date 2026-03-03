@@ -1295,7 +1295,7 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
       AddNode<NodeDOMRoot>(node_id, local_tag_name, is_frame_attached);
   auto url = document->Url();
   dom_root->SetURL(url);
-  if (!source_url_ && url.IsValid() && url.ProtocolIsInHTTPFamily()) {
+  if (!source_url_ && url.IsValid() && url.ProtocolIsInHttpFamily()) {
     source_url_ = url;
   }
 
