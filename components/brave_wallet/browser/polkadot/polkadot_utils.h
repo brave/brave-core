@@ -58,15 +58,13 @@ std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
                                                     uint16_t ss58_prefix);
 
 // Encodes a Polkadot sr25519 private key for export in Polkadot.js JSON format.
-// Uses scrypt + xsalsa20-poly1305. Optional salt_for_testing and
-// nonce_for_testing allow deterministic output in tests; pass nullptr to use
-// random bytes.
+// Uses scrypt + xsalsa20-poly1305.
 std::optional<std::string> EncodePrivateKeyForExport(
     base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key,
     std::string_view address,
     std::string_view password,
-    std::span<const uint8_t, kScryptSaltSize> salt,
-    std::span<const uint8_t, kSecretboxNonceSize> nonce);
+    base::span<const uint8_t, kScryptSaltSize> salt,
+    base::span<const uint8_t, kSecretboxNonceSize> nonce);
 
 // Decodes a JSON-encoded private key export (Polkadot.js format) and returns
 // the PKCS#8 secret key. Returns std::nullopt on invalid JSON, wrong password,

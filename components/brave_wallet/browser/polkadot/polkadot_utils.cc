@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "crypto/kdf.h"
 #include "crypto/process_bound_string.h"
-#include "crypto/random.h"
 
 namespace brave_wallet {
 
@@ -165,8 +164,8 @@ std::optional<std::string> EncodePrivateKeyForExport(
     base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key,
     std::string_view address,
     std::string_view password,
-    std::span<const uint8_t, kScryptSaltSize> salt,
-    std::span<const uint8_t, kSecretboxNonceSize> nonce) {
+    base::span<const uint8_t, kScryptSaltSize> salt,
+    base::span<const uint8_t, kSecretboxNonceSize> nonce) {
   if (password.empty()) {
     return std::nullopt;
   }

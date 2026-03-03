@@ -134,24 +134,50 @@ void PolkadotKeyring::SetSignatureRngForTesting() {
 std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     uint32_t account_index,
     std::string_view password) {
-  auto pkcs8_key = EnsureKeyPair(account_index).GetExportKeyPkcs8();
-  std::string address = GetAddress(account_index, kSubstratePrefix);
+  return PolkadotKeyring::EncodePrivateKeyForExport(
+      EnsureKeyPair(account_index), password, rand_salt_bytes_for_testing_,
+      rand_nonce_bytes_for_testing_);
+}
 
-  std::array<uint8_t, kScryptSaltSize> salt;
-  std::array<uint8_t, kSecretboxNonceSize> nonce;
+// static
+std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
+    const HDKeySr25519& keypair,
+    std::string_view password,
+    const std::optional<std::array<uint8_t, kScryptSaltSize>>& salt_for_testing,
+    const std::optional<std::array<uint8_t, kSecretboxNonceSize>>&
+        nonce_for_testing) {
+  auto pkcs8_key = keypair.GetExportKeyPkcs8();
 
-  if (rand_salt_bytes_for_testing_.has_value()) {
-    base::span(salt).copy_from_nonoverlapping(*rand_salt_bytes_for_testing_);
+  Ss58Address addr;
+  addr.prefix = kSubstratePrefix;
+  base::span(addr.public_key)
+      .copy_from_nonoverlapping(
+          base::span<uint8_t const>(keypair.GetPublicKey()));
+  auto address = addr.Encode();
+  if (!address) {
+    crypto::internal::SecureZeroBuffer(pkcs8_key);
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, kScryptSaltSize> salt = {};
+  std::array<uint8_t, kSecretboxNonceSize> nonce = {};
+  if (salt_for_testing.has_value()) {
+    CHECK_IS_TEST();
+    base::span(salt).copy_from_nonoverlapping(*salt_for_testing);
   } else {
     base::RandBytes(base::span(salt));
   }
-  if (rand_nonce_bytes_for_testing_.has_value()) {
-    base::span(nonce).copy_from_nonoverlapping(*rand_nonce_bytes_for_testing_);
+  if (nonce_for_testing.has_value()) {
+    CHECK_IS_TEST();
+    base::span(nonce).copy_from_nonoverlapping(*nonce_for_testing);
   } else {
     base::RandBytes(base::span(nonce));
   }
-  return ::brave_wallet::EncodePrivateKeyForExport(pkcs8_key, address, password,
-                                                   salt, nonce);
+
+  auto result = ::brave_wallet::EncodePrivateKeyForExport(
+      pkcs8_key, *address, password, salt, nonce);
+  crypto::internal::SecureZeroBuffer(pkcs8_key);
+  return result;
 }
 
 }  // namespace brave_wallet
