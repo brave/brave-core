@@ -235,7 +235,7 @@ TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
   commands.ExecuteCommand(DownloadCommands::COPY_DOWNLOAD_LINK);
 
   std::u16string clipboard_text;
-  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste, nullptr,
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste, std::nullopt,
                       &clipboard_text);
 
   EXPECT_EQ(base::UTF8ToUTF16(model_.GetURL().spec()), clipboard_text);
