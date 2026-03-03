@@ -68,11 +68,10 @@
 
                 <TextView
                     android:id="@+id/shields_status_text"
+                    style="@style/LargeRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     tools:text="Shields up for this site"/>
@@ -132,11 +131,10 @@
 
             <TextView
                 android:id="@+id/block_count_text"
+                style="@style/DefaultRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"
-                android:lineHeight="20sp"
                 android:includeFontPadding="false"
                 android:textColor="@color/text_secondary"
                 tools:text="Trackers, ads, and more blocked"/>
@@ -159,12 +157,12 @@
         android:visibility="gone">
 
         <TextView
+            style="@style/LargeRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/report_broken_site_prompt"
-            android:textSize="16sp"
-            android:textColor="@color/shield_text_color"/>
+            android:textColor="@color/text_primary"/>
 
         <Button
             android:id="@+id/report_broken_site_button"
@@ -207,12 +205,11 @@
 
             <TextView
                 android:id="@+id/advanced_options_text"
+                style="@style/LargeRegular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/advanced_controls"
-                android:textSize="16sp"
-                android:lineHeight="24sp"
                 android:textColor="@color/text_interactive"/>
 
             <ImageView
@@ -253,12 +250,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/https_upgrade_title"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -286,12 +282,11 @@
                 android:paddingVertical="12dp">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/brave_shields_blocks_scripts_switch"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -325,12 +320,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/shred_site_data"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -362,12 +356,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/block_trackers_ads_title"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -399,12 +392,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/block_cookies"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -432,12 +424,11 @@
                 android:paddingVertical="12dp">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/block_fingerprinting"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -471,12 +462,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/brave_shields_block_element_text"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"/>
 
                 <ImageView
@@ -496,6 +486,7 @@
             <!-- 8. Reset to defaults button -->
             <TextView
                 android:id="@+id/reset_shields_button"
+                style="@style/LargeRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/reset_shields_defaults"
@@ -525,12 +516,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/brave_shields_global_settings_title"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_interactive"/>
 
                 <ImageView
@@ -557,21 +547,19 @@
 
         <TextView
             android:id="@+id/shields_warning_text_line1"
+            style="@style/SmallRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/site_broken_text"
-            android:textSize="12sp"
-            android:lineHeight="16sp"
             android:textColor="@color/text_tertiary"
             android:gravity="center"/>
 
         <TextView
             android:id="@+id/shields_warning_text_line2"
+            style="@style/SmallRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/shields_warning_line2"
-            android:textSize="12sp"
-            android:lineHeight="16sp"
             android:textColor="@color/text_tertiary"
             android:gravity="center"/>
 
