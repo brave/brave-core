@@ -615,5 +615,7 @@ async function createDefaultAccounts({
       return accountArgs
     })
 
-  return await keyringService.createDefaultAccounts(addAccountArgs)
+  return await keyringService.createDefaultAccountsForSelectedNetworks(
+    addAccountArgs,
+  )
 }

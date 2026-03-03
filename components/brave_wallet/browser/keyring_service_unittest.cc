@@ -2449,6 +2449,47 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_OfacSanctionedAddress) {
   registry->UpdateOfacAddressesList({});
 }
 
+TEST_F(KeyringServiceUnitTest, CreateDefaultAccountsForSelectedNetworks) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  AccountUtils(&service).CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
+  EXPECT_FALSE(service.IsLockedSync());
+
+  base::test::TestFuture<std::optional<std::vector<mojom::AccountInfoPtr>>>
+      future;
+
+  std::vector<mojom::AddAccountArgsPtr> account_args;
+  service.CreateDefaultAccountsForSelectedNetworks(std::move(account_args),
+                                                   future.GetCallback());
+  auto account_infos = future.Take();
+  ASSERT_TRUE(account_infos.has_value());
+  EXPECT_TRUE(account_infos->empty());
+
+  account_args.clear();
+  account_args.push_back(mojom::AddAccountArgs::New(
+      mojom::CoinType::FIL, mojom::KeyringId::kFilecoin, "Filecoin Account 1"));
+  account_args.push_back(mojom::AddAccountArgs::New(
+      mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
+      "Polkadot Mainnet Account 1"));
+
+  EXPECT_EQ(service.GetAllAccountInfos().size(), 2u);
+
+  service.CreateDefaultAccountsForSelectedNetworks(std::move(account_args),
+                                                   future.GetCallback());
+  account_infos = future.Take();
+  ASSERT_TRUE(account_infos.has_value());
+  EXPECT_EQ(account_infos->size(), 2u);
+
+  // 2 defaults (ETH, SOL) + our 2 added accounts.
+  EXPECT_EQ(service.GetAllAccountInfos().size(), 4u);
+
+  for (const auto& account_info : account_infos.value()) {
+    EXPECT_TRUE(service.FindAccount(account_info->account_id));
+  }
+}
+
 TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_OfacSanctionedAddress) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};
@@ -2469,6 +2510,54 @@ TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_OfacSanctionedAddress) {
                           mojom::KeyringId::kFilecoin, "Account 1"));
   EXPECT_FALSE(AddAccount(&service, mojom::CoinType::DOT,
                           mojom::KeyringId::kPolkadotMainnet, "Account 1"));
+
+  registry->UpdateOfacAddressesList({});
+}
+
+TEST_F(KeyringServiceUnitTest,
+       CreateDefaultAccountsForSelectedNetworks_OfacSanctionedAddress) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateOfacAddressesList(
+      {base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
+       base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  AccountUtils(&service).CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
+  EXPECT_FALSE(service.IsLockedSync());
+
+  base::test::TestFuture<std::optional<std::vector<mojom::AccountInfoPtr>>>
+      future;
+
+  std::vector<mojom::AddAccountArgsPtr> account_args;
+  service.CreateDefaultAccountsForSelectedNetworks(std::move(account_args),
+                                                   future.GetCallback());
+  auto account_infos = future.Take();
+  ASSERT_TRUE(account_infos.has_value());
+  EXPECT_TRUE(account_infos->empty());
+
+  account_args.clear();
+  account_args.push_back(mojom::AddAccountArgs::New(
+      mojom::CoinType::FIL, mojom::KeyringId::kFilecoin, "Filecoin Account 1"));
+  account_args.push_back(mojom::AddAccountArgs::New(
+      mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
+      "Polkadot Mainnet Account 1"));
+
+  EXPECT_EQ(service.GetAllAccountInfos().size(), 2u);
+
+  service.CreateDefaultAccountsForSelectedNetworks(std::move(account_args),
+                                                   future.GetCallback());
+  account_infos = future.Take();
+  ASSERT_FALSE(account_infos.has_value());
+
+  // Should be entirely cleared as the keyring itself should be reset.
+  EXPECT_TRUE(service.GetAllAccountInfos().empty());
+  EXPECT_CALL(observer, WalletReset());
+  observer.WaitAndVerify();
 
   registry->UpdateOfacAddressesList({});
 }

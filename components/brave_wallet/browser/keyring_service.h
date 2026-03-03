@@ -103,8 +103,9 @@ class KeyringService : public mojom::KeyringService {
                                        mojom::KeyringId keyring_id,
                                        const std::string& account_name);
 
-  void CreateDefaultAccounts(std::vector<mojom::AddAccountArgsPtr> account_args,
-                             CreateDefaultAccountsCallback callback) override;
+  void CreateDefaultAccountsForSelectedNetworks(
+      std::vector<mojom::AddAccountArgsPtr> account_args,
+      CreateDefaultAccountsForSelectedNetworksCallback callback) override;
 
   void EncodePrivateKeyForExport(
       mojom::AccountIdPtr account_id,

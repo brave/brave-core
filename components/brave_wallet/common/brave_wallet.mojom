@@ -1404,7 +1404,8 @@ interface KeyringService {
       => (AccountInfo? account_info);
 
   // Adds accounts to the keyring in bulk during wallet creation/restoration.
-  CreateDefaultAccounts(array<AddAccountArgs> account_args)
+  CreateDefaultAccountsForSelectedNetworks(
+      array<AddAccountArgs> account_args)
       => (array<AccountInfo>? account_infos);
 
   // Encodes the private key for exporting.

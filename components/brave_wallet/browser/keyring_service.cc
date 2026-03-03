@@ -1562,11 +1562,11 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   return account;
 }
 
-void KeyringService::CreateDefaultAccounts(
+void KeyringService::CreateDefaultAccountsForSelectedNetworks(
     std::vector<mojom::AddAccountArgsPtr> account_args,
-    CreateDefaultAccountsCallback callback) {
+    CreateDefaultAccountsForSelectedNetworksCallback callback) {
   if (account_args.empty()) {
-    return std::move(callback).Run({});
+    return std::move(callback).Run(std::vector<mojom::AccountInfoPtr>{});
   }
 
   std::vector<mojom::AccountInfoPtr> account_infos;
@@ -1587,7 +1587,7 @@ void KeyringService::CreateDefaultAccounts(
 
   NotifyAccountsChanged();
 
-  SetSelectedAccountInternal(*account_infos.front());
+  SetSelectedAccountInternal(*account_infos.back());
   NotifyAccountsAdded(account_infos);
 
   std::move(callback).Run(std::move(account_infos));
@@ -3529,12 +3529,7 @@ void KeyringService::OnRestoreWalletRegisterComponentUpdater(
   bool is_valid_mnemonic =
       RestoreWalletSync(mnemonic, password, is_legacy_eth_seed_format);
 
-  if (!is_valid_mnemonic) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  std::move(callback).Run(true);
+  std::move(callback).Run(is_valid_mnemonic);
 }
 
 }  // namespace brave_wallet
