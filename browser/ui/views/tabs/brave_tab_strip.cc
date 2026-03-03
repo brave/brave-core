@@ -20,6 +20,8 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_color_palette.h"
+#include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
@@ -44,6 +46,7 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
@@ -315,13 +318,29 @@ bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
 #endif
 }
 
-std::optional<SkColor> BraveTabStrip::GetTabAccentColor(const Tab* tab) const {
+std::optional<TabAccentColors> BraveTabStrip::GetTabAccentColors(
+    const Tab* tab) const {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   auto container_model = GetContainerModelForTab(tab);
   if (!container_model.has_value()) {
     return std::nullopt;
   }
-  return container_model->background_color();
+
+  const bool is_dark =
+      GetWidget() &&
+      GetWidget()->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
+  return accent_color::GetTabAccentColors(
+      {
+          .container_color = container_model->background_color(),
+          .is_dark = is_dark,
+          .is_pinned = tab->data().pinned,
+          .state = tab->IsActive()
+                       ? accent_color::TabAccentColorsParams::State::kActive
+                   : tab->mouse_hovered()
+                       ? accent_color::TabAccentColorsParams::State::kHovered
+                       : accent_color::TabAccentColorsParams::State::kInactive,
+      },
+      GetColorProvider());
 #else
   return std::nullopt;
 #endif
@@ -329,6 +348,11 @@ std::optional<SkColor> BraveTabStrip::GetTabAccentColor(const Tab* tab) const {
 
 ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
 #if BUILDFLAG(ENABLE_CONTAINERS)
+  auto accent_colors = GetTabAccentColors(tab);
+  if (!accent_colors.has_value()) {
+    return ui::ImageModel();
+  }
+
   auto container_model = GetContainerModelForTab(tab);
   if (!container_model.has_value()) {
     return ui::ImageModel();
@@ -336,7 +360,7 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
 
   auto& icon =
       containers::GetVectorIconFromIconType(container_model->container()->icon);
-  return ui::ImageModel::FromVectorIcon(icon, SK_ColorWHITE, 16);
+  return ui::ImageModel::FromVectorIcon(icon, accent_colors->icon_color, 16);
 #else
   return ui::ImageModel();
 #endif

@@ -323,8 +323,8 @@ bool BraveTab::ShouldPaintTabAccent() const {
   return controller_->ShouldPaintTabAccent(this);
 }
 
-std::optional<SkColor> BraveTab::GetTabAccentColor() const {
-  return controller_->GetTabAccentColor(this);
+std::optional<TabAccentColors> BraveTab::GetTabAccentColors() const {
+  return controller_->GetTabAccentColors(this);
 }
 
 ui::ImageModel BraveTab::GetTabAccentIcon() const {

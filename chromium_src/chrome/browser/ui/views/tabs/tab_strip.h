@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_H_
 
+#include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
@@ -29,7 +30,8 @@ class BraveTabHoverCardController;
   bool IsVerticalTabsFloating() const override;                              \
   bool IsVerticalTabsAnimatingButNotFinalState() const override;             \
   bool ShouldPaintTabAccent(const Tab* tab) const override;                  \
-  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override;   \
+  std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab)          \
+      const override;                                                        \
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;            \
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
   const tabs::TreeTabNode& GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \

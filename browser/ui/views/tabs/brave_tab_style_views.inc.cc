@@ -477,8 +477,8 @@ void BraveVerticalTabStyle::PaintTabAccentBackground(
   const auto* brave_tab = static_cast<const BraveTab*>(tab());
   CHECK(brave_tab);
 
-  auto accent_color = brave_tab->GetTabAccentColor();
-  if (!accent_color.has_value()) {
+  auto accent_colors = brave_tab->GetTabAccentColors();
+  if (!accent_colors.has_value()) {
     return;
   }
 
@@ -498,7 +498,7 @@ void BraveVerticalTabStyle::PaintTabAccentBackground(
 
   cc::PaintFlags fill_flags;
   fill_flags.setAntiAlias(true);
-  fill_flags.setColor(accent_color.value());
+  fill_flags.setColor(accent_colors->background_color);
   fill_flags.setStyle(cc::PaintFlags::kFill_Style);
   canvas->DrawPath(inverse_path, fill_flags);
 }
@@ -507,8 +507,8 @@ void BraveVerticalTabStyle::PaintTabAccentBorder(gfx::Canvas* canvas) const {
   const auto* brave_tab = static_cast<const BraveTab*>(tab());
   CHECK(brave_tab);
 
-  auto accent_color = brave_tab->GetTabAccentColor();
-  if (!accent_color.has_value()) {
+  auto accent_colors = brave_tab->GetTabAccentColors();
+  if (!accent_colors.has_value()) {
     return;
   }
 
@@ -520,7 +520,7 @@ void BraveVerticalTabStyle::PaintTabAccentBorder(gfx::Canvas* canvas) const {
 
   cc::PaintFlags border_flags;
   border_flags.setAntiAlias(true);
-  border_flags.setColor(accent_color.value());
+  border_flags.setColor(accent_colors->border_color);
   border_flags.setStyle(cc::PaintFlags::kStroke_Style);
 
   canvas->DrawPath(border_path, border_flags);
@@ -541,11 +541,11 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
     constexpr auto circle_size = 16;
     int center_x = bounds.x() + circle_size / 2;
     int center_y = bounds.bottom() - circle_size / 2;
-    if (auto background_color = brave_tab->GetTabAccentColor();
-        background_color.has_value()) {
+    if (auto accent_colors = brave_tab->GetTabAccentColors();
+        accent_colors.has_value()) {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
-      flags.setColor(background_color.value());
+      flags.setColor(accent_colors->background_color);
       flags.setStyle(cc::PaintFlags::kFill_Style);
       canvas->DrawCircle(gfx::PointF(center_x, center_y), 8, flags);
     }

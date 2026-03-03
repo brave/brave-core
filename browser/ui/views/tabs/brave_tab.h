@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
 
@@ -65,10 +66,10 @@ class BraveTab : public Tab {
   // the tab.
   bool ShouldShowLargeAccentIcon() const;
 
-  // Returns the accent color for this tab if it should have an accent.
-  // Returns nullopt if the tab should not have an accent or color cannot be
-  // determined.
-  std::optional<SkColor> GetTabAccentColor() const;
+  // Returns the accent colors (border, background) for this tab if it should
+  // have an accent. Returns nullopt if the tab should not have an accent or
+  // colors cannot be determined.
+  std::optional<TabAccentColors> GetTabAccentColors() const;
 
   // Returns the accent icon for this tab if it should have an accent.
   // Returns an empty ImageModel if the tab should not have an accent or icon

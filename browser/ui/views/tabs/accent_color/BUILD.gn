@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("accent_color") {
+  sources = [
+    "brave_tab_accent_color_palette.cc",
+    "brave_tab_accent_color_palette.h",
+    "brave_tab_accent_types.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/ui/color:nala_color_id",
+    "//skia",
+    "//ui/color:color_headers",
+    "//ui/gfx:color_utils",
+  ]
+}
