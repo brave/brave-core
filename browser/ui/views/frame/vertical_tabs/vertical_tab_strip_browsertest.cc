@@ -32,6 +32,7 @@
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -924,6 +925,70 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, RichAnimationIsDisabled) {
   auto* model = browser()->tab_strip_model();
   model->CloseWebContentsAt(model->count() - 1,
                             TabCloseTypes::CLOSE_USER_GESTURE);
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       PinnedTabVisibilityAfterRestore) {
+  // Regression test: newly inserted pinned tabs must be visible after
+  // SetTabVisibility() runs following tab restoration in vertical tab mode.
+  ToggleVerticalTabStrip();
+
+  auto* model = browser()->tab_strip_model();
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
+
+  // Navigate to a real URL so the first tab is restorable (about:blank tabs
+  // are not saved by TabRestoreService).
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://version/")));
+
+  // Create 3 tabs total.
+  AppendTab(browser());
+  AppendTab(browser());
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(3, model->count());
+
+  // Pin the first two tabs.
+  model->SetTabPinned(0, true);
+  model->SetTabPinned(1, true);
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  // Step 1: verify pinned state and visibility of all three tabs.
+  EXPECT_TRUE(tab_strip->tab_at(0)->data().pinned);
+  EXPECT_TRUE(tab_strip->tab_at(1)->data().pinned);
+  EXPECT_FALSE(tab_strip->tab_at(2)->data().pinned);
+  EXPECT_TRUE(tab_strip->tab_at(0)->GetVisible());
+  EXPECT_TRUE(tab_strip->tab_at(1)->GetVisible());
+  EXPECT_TRUE(tab_strip->tab_at(2)->GetVisible());
+
+  // Step 2: close the first pinned tab.
+  model->CloseWebContentsAt(0, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(2, model->count());
+
+  // Step 3: restore the closed pinned tab and wait for it to land.
+  ui_test_utils::TabAddedWaiter tab_added_waiter(browser());
+  chrome::RestoreTab(browser());
+  tab_added_waiter.Wait();
+
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(3, model->count());
+
+  // All three tabs must be visible after restoration.
+  EXPECT_TRUE(tab_strip->tab_at(0)->GetVisible())
+      << "Restored pinned tab should be visible";
+  EXPECT_TRUE(tab_strip->tab_at(1)->GetVisible())
+      << "Second pinned tab should be visible";
+  EXPECT_TRUE(tab_strip->tab_at(2)->GetVisible())
+      << "Unpinned tab should be visible";
+
+  // Pinned state must be preserved.
+  EXPECT_TRUE(tab_strip->tab_at(0)->data().pinned);
+  EXPECT_TRUE(tab_strip->tab_at(1)->data().pinned);
+  EXPECT_FALSE(tab_strip->tab_at(2)->data().pinned);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,

@@ -253,7 +253,7 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
 
     // Handle pinned tabs in vertical tabs mode - pinned tabs should always be
     // visible
-    if (tab->data().pinned) {
+    if (IsPinned(tab)) {
       return true;
     }
 
@@ -286,9 +286,8 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   auto* new_tab = GetTabAtModelIndex(model_index);
   gfx::Rect bounds = new_tab->bounds();
   bounds.set_height(tabs::kVerticalTabHeight);
-  const auto tab_width = new_tab->data().pinned
-                             ? tabs::kVerticalTabMinWidth
-                             : tab_style_->GetStandardWidth(true);
+  const auto tab_width = IsPinned(new_tab) ? tabs::kVerticalTabMinWidth
+                                           : tab_style_->GetStandardWidth(true);
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)
@@ -1495,6 +1494,25 @@ void BraveTabContainer::UpdatePinnedUnpinnedSeparator() {
       gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
   separator_->SetBoundsRect(separator_bounds);
   separator_->SetVisible(true);
+}
+
+bool BraveTabContainer::IsPinned(const Tab* tab) const {
+  CHECK(tab);
+
+  if (tab->data().pinned) {
+    return true;
+  }
+
+  // Fallback: during tab insertion (StartInsertTabAnimation), SetData() has
+  // not been called yet, so data().pinned is always false for newly inserted
+  // tabs. Use layout_helper_'s pinned count + view model index instead.
+  // This is safe because AddTabs() adds tabs to tabs_view_model_ (via
+  // AddTabToViewModel -> layout_helper_->InsertTabAt) before calling
+  // StartInsertTabAnimation, so GetIndexOfView(tab) returns the correct index
+  // and GetPinnedTabCount() is already accurate when IsPinned() is called.
+  const auto pinned_tab_count = layout_helper_->GetPinnedTabCount();
+  auto tab_index = tabs_view_model_.GetIndexOfView(tab);
+  return tab_index && *tab_index < pinned_tab_count;
 }
 
 BEGIN_METADATA(BraveTabContainer)

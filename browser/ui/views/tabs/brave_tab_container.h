@@ -225,6 +225,7 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Checks if the vertical tabs should be shown
   bool ShouldShowVerticalTabs() const;
+  bool IsPinned(const Tab* tab) const;
 
   base::flat_set<Tab*> closing_tabs_;
 
