@@ -85,7 +85,7 @@ struct PolkadotSignedTransferTask {
 
   void Start(GenerateSignedTransferExtrinsicCallback callback);
 
-  PolkadotExtrinsicMetadata GetMetadata();
+  PolkadotExtrinsicMetadata GetMetadata() const;
 
  private:
   void StopWithError(std::string error_string);

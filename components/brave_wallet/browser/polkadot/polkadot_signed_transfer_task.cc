@@ -264,7 +264,7 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
   std::move(callback_).Run(base::ok(GetMetadata()));
 }
 
-PolkadotExtrinsicMetadata PolkadotSignedTransferTask::GetMetadata() {
+PolkadotExtrinsicMetadata PolkadotSignedTransferTask::GetMetadata() const {
   CHECK(!extrinsic_.empty());
 
   PolkadotExtrinsicMetadata metadata;
