@@ -1286,7 +1286,7 @@
 "wallet.providerListTotal" = "Insgesamt";
 
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
-"wallet.providerSelectionButtonTitle" = "Kaufen mit %@";
+"wallet.providerSelectionButtonTitle" = "Kaufe mit %@";
 
 /* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
 "wallet.providerSelectionScreenTitle" = "Kaufmethode auswählen";
@@ -2285,7 +2285,7 @@
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Füge NFTs, die du besitzt, mithilfe von Drittanbieter-APS automatisch zu deinem Wallet hinzu. [Mehr erfahren](%@)";
 
 /* A description of an ZCash account, displayed in Accounts tab. */
-"wallet.zecAccountDescription" = "ZCash";
+"wallet.zecAccountDescription" = "Zcash";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z bis A";

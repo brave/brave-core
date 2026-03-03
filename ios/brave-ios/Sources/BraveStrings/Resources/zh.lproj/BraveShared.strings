@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "取消注册";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "电子邮件地址";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "开始使用";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "抱歉，出错了";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "无法读取联系人文件。它可能已损坏或格式不受支持。";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "无法打开联系人";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "%1$@ 版 (%2$@)";

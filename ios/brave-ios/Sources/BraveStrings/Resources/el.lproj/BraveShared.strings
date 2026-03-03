@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Ακύρωση εγγραφής";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Διεύθυνση email";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Έναρξη";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Δυστυχώς, παρουσιάστηκε πρόβλημα";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Δεν ήταν δυνατή η ανάγνωση του αρχείου επαφής. Ενδέχεται να είναι κατεστραμμένο ή σε μη υποστηριζόμενη μορφή.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Δεν είναι δυνατό το άνοιγμα της επαφής";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Έκδοση %1$@ (%2$@)";

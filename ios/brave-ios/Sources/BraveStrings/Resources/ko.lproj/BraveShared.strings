@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "등록 취소";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "이메일 주소";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "시작하기";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "문제가 발생했습니다.";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "연락처 파일을 읽을 수 없습니다. 파일이 손상되었거나 지원되지 않는 형식일 수 있습니다.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "연락처를 열 수 없음";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "버전 %1$@(%2$@)";

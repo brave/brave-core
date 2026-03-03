@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Отменить регистрацию";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Адрес электронной почты";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Начать";
 
@@ -203,10 +206,10 @@
 "BraveShieldsAdvancedControls" = "Дополнительные настройки";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields & Конфиденциальность";
+"BraveShieldsAndPrivacy" = "Защита Brave и конфиденциальность";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Brave Shields & Конфиденциальность";
+"BraveShieldsAndPrivacyTitle" = "Защита и конфиденциальность";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Заблокированные рекламные объявления и вредоносные элементы";
@@ -230,13 +233,13 @@
 "BraveShieldsSiteBroken" = "Проблемы с сайтом? Попробуйте выключить щиты.";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Защита Brave";
+"BraveShieldsStatusTitle" = "Щиты Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "выкл";
+"BraveShieldsStatusValueDown" = "выключены";
 
 /* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "вкл";
+"BraveShieldsStatusValueUp" = "включены";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Произошла ошибка";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Не удалось прочитать файл контакта. Он может быть повреждён или в неподдерживаемом формате.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Не удалось открыть контакт";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Версия %1$@ (%2$@)";
