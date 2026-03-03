@@ -315,15 +315,15 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
 bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
   const auto original_visible = Browser::IsWebContentsVisible(web_contents);
   auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
-  if (!tab || !tab->IsSplit()) {
+  if (!tab) {
     return original_visible;
   }
 
-  // In split view, use tab activation state as the source of truth.
-  // platform_util::IsVisible() can be temporarily incorrect during window
-  // state transitions (e.g., restore from minimize), which would prevent
-  // web modal dialogs from being shown on the active split tab.
-  return tab->IsActivated();
+  if (original_visible && !tab->IsActivated()) {
+    return false;
+  }
+
+  return original_visible;
 }
 
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,
