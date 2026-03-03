@@ -53,7 +53,6 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(
         base::BindRepeating(&HandleSetStrictCookie));
     net::test_server::RegisterDefaultHandlers(https_server_.get());
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     ASSERT_TRUE(https_server_->Start());
 
     net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
