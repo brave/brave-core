@@ -140,6 +140,12 @@ public struct WalletConstants {
         result.append(.ada)
       }
     case .dapps:
+      #if DEBUG
+      // enable cardana coin type in unit tests
+      if isUnitTesting {
+        return [.eth, .sol, .ada]
+      }
+      #endif
       return isCardanoDAppSupportEnabled ? [.eth, .sol, .ada] : [.eth, .sol]
     }
     return result

@@ -44,6 +44,14 @@ class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
     self.keyringStore = keyringStore
   }
 
+  #if DEBUG
+  func fetchAllAccountsForUnitTesting(completion: @escaping () -> Void) {
+    keyringStore.updateInfo {
+      completion()
+    }
+  }
+  #endif
+
   /// Fetch all site connections with 1+ accounts connected
   func fetchSiteConnections() {
     var connections = [SiteConnection]()
