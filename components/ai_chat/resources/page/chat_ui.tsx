@@ -36,7 +36,27 @@ const api = getAPI()
 function App() {
   // <if expr="is_ios">
   useIOSOneTapFix()
+
+  // When the iframe calls dismissMenus() (user tapped/clicked there), trigger a
+  // click in the parent so Leo's clickOutside closes any open menus.
+  // Uses conversationEntriesFrameObserver directly
+  // (1.88-compatible; no api.useDismissMenus).
+  React.useEffect(() => {
+    const observer = api.conversationEntriesFrameObserver as {
+      dismissMenus?: { addListener(cb: () => void): number }
+      removeListener(id: number): void
+    }
+    const listenerId = observer.dismissMenus?.addListener(() =>
+      document.body.click(),
+    )
+    return () => {
+      if (listenerId !== undefined) {
+        observer.removeListener(listenerId)
+      }
+    }
+  }, [])
   // </if>
+
   React.useEffect(() => {
     document.getElementById('mountPoint')?.classList.add('loaded')
   }, [])

@@ -86,6 +86,20 @@ export default function FullScreen() {
     }
   }, [aiChatContext.editingConversationId, isNavigationCollapsed])
 
+  // On iOS, close the sidebar when the delete-conversation dialog opens.
+  // The sidebar overlaps the dialog and intercepts touch events, requiring
+  // a double-tap to reach buttons inside the dialog. Uses toggleSidebar()
+  // (not toggleAside()) so showSidebar stays in sync with the visual state;
+  // the showSidebar effect above then drives the actual animation.
+  // <if expr="is_ios">
+  React.useEffect(() => {
+    const isClosed = asideAnimationRef.current?.playbackRate === 1
+    if (aiChatContext.deletingConversationId && !isClosed) {
+      aiChatContext.toggleSidebar()
+    }
+  }, [aiChatContext.deletingConversationId])
+  // </if>
+
   React.useEffect(() => {
     const isOpen = asideAnimationRef.current?.playbackRate === 1
 
@@ -111,7 +125,19 @@ export default function FullScreen() {
   React.useEffect(() => {
     if (aiChatContext.showSidebar || !isSmall) return
     const handleClick = (e: MouseEvent) => {
-      if (!e.composedPath().includes(asideRef.current!)) {
+      const path = e.composedPath()
+      // On iOS, the one-tap fix dispatches synthetic clicks at (0,0).
+      // Without this guard, those clicks land outside the sidebar and
+      // this handler calls stopPropagation, preventing the click from
+      // reaching buttons inside a dialog (e.g. delete confirmation).
+      // <if expr="is_ios">
+      if (
+        path.some((n) => n instanceof Element && n.tagName === 'LEO-DIALOG')
+      ) {
+        return
+      }
+      // </if>
+      if (!path.includes(asideRef.current!)) {
         aiChatContext.toggleSidebar()
         e.stopPropagation()
       }
