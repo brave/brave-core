@@ -541,6 +541,10 @@ BraveBrowserProcessImpl::process_misc_metrics() {
   if (!process_misc_metrics_) {
     process_misc_metrics_ =
         std::make_unique<misc_metrics::ProcessMiscMetrics>(local_state());
+    if (p3a_service_) {
+      p3a_service_->SetDefaultBrowserMonitor(
+          process_misc_metrics_->default_browser_monitor());
+    }
   }
   return process_misc_metrics_.get();
 }

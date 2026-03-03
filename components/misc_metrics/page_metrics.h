@@ -85,7 +85,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
   void ReportBraveQuery();
 
   // DefaultBrowserMonitor::Observer:
-  void OnDefaultBrowserStatusChanged() override;
+  void OnDefaultBrowserStatusChanged(bool is_default) override;
 
  private:
   void InitStorage();

@@ -43,6 +43,11 @@ namespace {
 // should be refactored in better times.
 const uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
+#if BUILDFLAG(IS_IOS)
+constexpr std::string_view kIsLikelyDefaultHistogramName =
+    "Brave.IOS.IsLikelyDefault";
+#endif  // BUILDFLAG(IS_IOS)
+
 bool IsSuspendedMetric(std::string_view metric_name, uint64_t value_or_bucket) {
   return value_or_bucket == kSuspendedMetricBucket;
 }
@@ -116,6 +121,9 @@ void P3AService::InitCallbacks() {
 }
 
 void P3AService::StartTeardown() {
+#if !BUILDFLAG(IS_IOS)
+  default_browser_observation_.Reset();
+#endif  // !BUILDFLAG(IS_IOS)
   dynamic_metric_sample_callbacks_.clear();
   pref_change_registrar_.RemoveAll();
 }
@@ -318,10 +326,30 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
                                 histogram_name, bucket));
 }
 
+#if !BUILDFLAG(IS_IOS)
+void P3AService::SetDefaultBrowserMonitor(
+    misc_metrics::DefaultBrowserMonitor* monitor) {
+  default_browser_observation_.Observe(monitor);
+  auto cached_status = monitor->GetCachedDefaultStatus();
+  if (cached_status.has_value()) {
+    message_manager_->SetIsBrowserDefault(*cached_status);
+  }
+}
+
+void P3AService::OnDefaultBrowserStatusChanged(bool is_default) {
+  message_manager_->SetIsBrowserDefault(is_default);
+}
+#endif  // !BUILDFLAG(IS_IOS)
+
 void P3AService::HandleHistogramChange(std::string_view histogram_name,
                                        size_t bucket) {
   VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << bucket;
+#if BUILDFLAG(IS_IOS)
+  if (histogram_name == kIsLikelyDefaultHistogramName) {
+    message_manager_->SetIsBrowserDefault(bucket == 2);
+  }
+#endif  // BUILDFLAG(IS_IOS)
   if (!initialized_) {
     // Will handle it later when ready.
     histogram_values_[histogram_name] = bucket;
