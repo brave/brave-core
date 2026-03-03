@@ -25,6 +25,7 @@ source_set("page_action") {
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/views/page_action",
       "//components/tabs:public",
+      "//components/user_prefs",
     ]
   }
 }

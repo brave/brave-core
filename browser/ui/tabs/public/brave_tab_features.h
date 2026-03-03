@@ -45,13 +45,6 @@ class BraveTabFeatures : public TabFeatures {
 
   void Init(TabInterface& tab, Profile* profile) override;
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  page_actions::PartitionedStoragePageActionController*
-  partitioned_storage_page_action_controller() {
-    return partitioned_storage_page_action_controller_.get();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_PSST)
   psst::PsstTabWebContentsObserver* psst_web_contents_observer() {
     return psst_web_contents_observer_.get();

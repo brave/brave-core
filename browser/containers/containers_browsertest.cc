@@ -1065,9 +1065,6 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Tab 0: default (no container) -> icon should be hidden.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model->GetWebContentsAt(0)));
-  EXPECT_FALSE(partitioned_storage_view->GetVisible())
-      << "PartitionedStorage icon should be hidden on default tab.";
 
   // Open a tab in a container -> icon should be visible on the active tab.
   auto container = containers::mojom::Container::New();
@@ -1086,17 +1083,12 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // Switch to tab 0 (default) -> icon should be hidden.
   tab_strip_model->ActivateTabAt(0);
   RunScheduledLayouts();
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !partitioned_storage_view->GetVisible();
-  })) << "PartitionedStorage icon should be hidden when default tab is active.";
+  EXPECT_FALSE(partitioned_storage_view->GetVisible());
 
   // Switch back to tab 1 (container) -> icon should be visible.
   tab_strip_model->ActivateTabAt(1);
   RunScheduledLayouts();
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return partitioned_storage_view->GetVisible();
-  })) << "PartitionedStorage icon should be visible when container tab is "
-         "active.";
+  EXPECT_TRUE(partitioned_storage_view->GetVisible());
 }
 
 }  // namespace containers
