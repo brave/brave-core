@@ -113,6 +113,9 @@ void DayZeroBrowserUIExptManager::OnProfileAdded(Profile* profile) {
 }
 
 void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
+  // Unsubscribe the pref callback before resetting the observation to ensure
+  // OnP3AEnabledChanged() can't fire after the ProfileManager is gone.
+  p3a_enabled_.Destroy();
   if (observation_.IsObserving()) {
     observation_.Reset();
   }
@@ -134,8 +137,11 @@ void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
 
 void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
   CHECK(observation_.IsObserving());
-  observation_.Reset();
-
+  // Don't reset observation_ here. Previously it was reset when P3A was
+  // disabled, but that caused a CHECK crash if P3A was toggled off->on->off
+  // because the observation was never re-established. It's safe to keep
+  // observing because OnProfileAdded() already guards on IsP3AEnabled(),
+  // making it a no-op when P3A is off.
   // Reset all currently active normal profiles.
   for (auto* profile : profile_manager_->GetLoadedProfiles()) {
     if (!profile->IsRegularProfile()) {
