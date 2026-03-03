@@ -235,9 +235,7 @@ public class WindowProtection {
     }
 
     lockedViewController.unlockButton.isHidden = true
-    if viewType == .external {
-      isCancellable = false
-    }
+    isCancellable = viewType != .external
 
     context.evaluatePolicy(
       .deviceOwnerAuthentication,
@@ -257,7 +255,7 @@ public class WindowProtection {
             }
           )
         } else {
-          lockedViewController.unlockButton.isHidden = viewType == .general
+          lockedViewController.unlockButton.isHidden = false
 
           let errorPolicy = error as? LAError
           completion?(false, errorPolicy?.code)
