@@ -288,9 +288,7 @@ are declared in tools/grit/grit_args.gni.
       <part file="bookmarks_strings.grdp" />
 
       <!-- Glic specific strings -->
-      <if expr="enable_glic">
-        <part file="glic_strings.grdp" />
-      </if>
+      <part file="glic_strings.grdp" />
 
       <!-- Global Media Controls specific strings -->
       <part file="gmc_strings.grdp" />
@@ -19403,7 +19401,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Brave-specific PDF strings -->
-    <if expr="enable_glic and enable_pdf">
+    <if expr="enable_pdf">
       <message name="IDS_PDF_GLIC_SUMMARIZE" desc="Button label for the button to summarize PDFs.">
         Summarize
       </message>
@@ -19505,7 +19503,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Autofill your passwords
     </message>
     <message name="IDS_TIPS_NOTIFICATIONS_PASSWORD_AUTOFILL_SUBTITLE" desc="Subtitle for the password autofill tip notification.">
-      Create, save, and manage your passwords so you can easily sign in to sites and apps using Brave
+      Create, save, and manage your passwords so you can easily sign in
     </message>
     <message name="IDS_TIPS_NOTIFICATIONS_SIGNIN_TITLE" desc="Title for the sign-in tip notification. [CHAR_LIMIT=32]">
       Make Brave your own

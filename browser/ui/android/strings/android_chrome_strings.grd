@@ -514,6 +514,12 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_SITE_SEARCH_LIST_MENU_MAKE_DEFAULT" desc="Option in site search list menu. User can click the 'Make default' option to make the selected option the default search engine.">
         Make default
       </message>
+      <message name="IDS_SITE_SEARCH_LIST_MENU_ACTIVATE" desc="Option in site search list menu. User can click the 'Activate' option to activate the selected option.">
+        Activate
+      </message>
+      <message name="IDS_SITE_SEARCH_LIST_MENU_DEACTIVATE" desc="Option in site search list menu. User can click the 'Deactivate' option to deactivate the search engine.">
+        Deactivate
+      </message>
       <message name="IDS_SITE_SEARCH_LIST_MENU_DELETE" desc="Option in site search list menu. User can click the 'Delete' option to remove the search engine.">
         Delete
       </message>
@@ -555,6 +561,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_SITE_SEARCH_DIALOG_CANCEL" desc="Button label to cancel the changes in the Edit Site Search dialog.">
         Cancel
+      </message>
+      <message name="IDS_SITE_SEARCH_DIALOG_INPUT_NOT_VALID_ERROR" desc="Error message shown when a required field is not valid in the Edit Site Search dialog.">
+        Not valid
       </message>
 
 
@@ -995,26 +1004,6 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
       <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that removes an ad interest for the Topics API of the Privacy Sandbox.">
         Remove <ph name="INTEREST">%1$s<ex>Acting and Theater</ex></ph>
-      </message>
-
-      <!-- Privacy Sandbox v4 - Consent & Notice Flow -->
-      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_BULLET_2" desc="* This is 2 of 2 bullets that site beneath the sentence: 'We’re launching new ways to limit what sites can learn about you when they show you personalized ads, for example:' * 'ad measurement' is the name of a new setting we're launching and that appears on the Ad privacy page of Brave settings.  * 'limited types of data': This setting helps an advertiser associate a user's actions on one site with their actions on another. For example, a user sees an ad on one site and then later buys that product from the company that sells the product. The ad measurement setting allows Brave to help a company make the association between the two sites so that the first site can be fairly compensated for showing an ad. Compared with third-party cookies, very little info is shared between sites to support this functionality.  **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** CONTEXT EEA NOTICE **** 1) This screen provides notice to Brave users in the European Economic Area (EEA). It follows guidelines established by the GDPR.  2) This screen is the second of 2 screens. This second screen describes 2 settings: “Site-suggested ads” and “Ad measurement”. The first screen describes the “Ad topics” setting. ">
-        With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as whether you made a purchase after visiting a site.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_DESCRIPTION_3" desc="A paragraph on the 'Enhanced ad privacy in Brave' page that provides notice to Brave users outside of the EEA. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** CONTEXT ROW NOTICE **** 1) This screen provides notice to Brave users outside of the European Economic Area (EEA) (we typically refer to this screen as “Rest of World” or “ROW”). It follows guidelines established by the GDPR.  2) We’re using similar but distinct content for EEA / ROW because legal requirements differ. For ROW, we can provide notice for all 3 settings, and so all 3 settings can appear on a single screen. ">
-        To measure the performance of an ad, limited types of data are shared between sites, such as whether you made a purchase after visiting a site.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_RESTRICTED_DESCRIPTION_1_ANDROID" desc="First description in the restricted notice which applies to Android only">
-        We’re launching a new ad privacy feature called ad measurement. Brave shares only very limited information among sites and apps, such as when an ad was shown to you, to help measure the performance of ads.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_RESTRICTED_DESCRIPTION_ANDROID" desc="Special description in the restricted notice which applies to Android only">
-        Your Android device may include a similar setting. If this setting is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across websites you visit and apps you use.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_DESCRIPTION_ANDROID" desc="As part of Privacy Sandbox (see details below), both Brave and Android devices will have a new setting called 'Ad measurement'. Some details are different, but these settings essentially do the same thing. The Brave setting allows sites you visit to ask Brave for information that helps them measure the performance of their ads, linking 1) an ad for site B the user sees on site A, with 2) a purchase or other action the user might take on site B. On Android, it's essentially the same story only it's between apps and not sites. The challenge is that on Android, Brave is a browser but it's also an App. This paragraph helps the user understand that, if both settings are on, information about the user's actions on a site might be connected with actions the user takes in an app. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
-        Your Android device may include a similar setting. If ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_ANDROID" desc="As part of Privacy Sandbox (see details below), both Brave and Android devices will have a new setting called 'Ad measurement'. Some details are different, but these settings essentially do the same thing. The Brave setting allows sites you visit to ask Brave for information that helps them measure the performance of their ads, linking 1) an ad for site B the user sees on site A, with 2) a purchase or other action the user might take on site B. On Android, it's essentially the same story only it's between apps and not sites. The challenge is that on Android, Brave is a browser but it's also an App. This paragraph helps the user understand that, if both settings are on, information about the user's actions on a site might be connected with actions the user takes in an app. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
-        Your Android device may include a similar setting. If ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
       </message>
 
       <!-- Privacy Sandbox v4 - Ad Privacy Page -->
@@ -7531,7 +7520,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Autofill your passwords
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_DESCRIPTION_PASSWORD_AUTOFILL" desc="Description of the Password Autofill feature tip main page promo.">
-        Create, save, and manage your passwords so you can easily sign in to sites and apps using Brave
+        Create, save, and manage your passwords so you can easily sign in
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_TITLE_CUSTOMIZE_MVT" desc="Title of the Customize MVT feature tip main page promo. [CHAR_LIMIT=32]">
         Customize your shortcuts
@@ -7591,7 +7580,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Brave will offer to save your password
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_THIRD_STEP_PASSWORD_AUTOFILL" desc="Description of the Password Autofill feature tip third step detail page promo.">
-        Tap Save to easily access this password the next time you sign in
+        Tap save
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_FIRST_STEP_SIGNIN" desc="Description of the Sign in feature tip first step detail page promo.">
         Tap profile in top right
@@ -7609,7 +7598,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Drag and drop one tab over another
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_THIRD_STEP_CREATE_TAB_GROUPS" desc="Description of the Create Tab Groups feature tip third step detail page promo.">
-        Customize tab group and hit Done
+        Customize tab group and hit done
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_FIRST_STEP_CUSTOMIZE_MVT" desc="Description of the Customize MVT feature tip first step detail page promo.">
         Open a new tab page
@@ -7618,7 +7607,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Long press on website and open menu
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_THIRD_STEP_CUSTOMIZE_MVT" desc="Description of the Customize MVT feature tip third step detail page promo.">
-        Tap Pin this shortcut
+        Tap pin this shortcut
       </message>
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_FIRST_STEP_RECENT_TABS" desc="Description of the Recent tabs feature tip first step detail page promo.">
         Open Brave menu

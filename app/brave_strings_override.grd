@@ -457,9 +457,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="not is_android">
         </if>
-      <if expr="enable_glic">
-        </if>
-
       <if expr="enable_extensions">
         </if>
 
