@@ -12,6 +12,7 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/widget/widget.h"
 
 namespace tab_groups {
 
