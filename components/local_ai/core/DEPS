@@ -1,6 +1,8 @@
 include_rules = [
   "!content/public",
   "+components/component_updater",
+  "+components/keyed_service/core",
   "+components/update_client",
   "+crypto",
+  "+mojo/public/cpp/bindings",
 ]

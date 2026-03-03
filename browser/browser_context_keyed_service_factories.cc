@@ -16,6 +16,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -37,6 +38,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -141,6 +143,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
+  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
+    local_ai::LocalAIServiceFactory::GetInstance();
+  }
 #if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::GetInstance();
 #endif
