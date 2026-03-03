@@ -8,6 +8,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/map_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 
@@ -16,8 +17,13 @@ TreeTabModel::~TreeTabModel() = default;
 
 const tabs::TreeTabNode* TreeTabModel::GetNode(
     const tree_tab::TreeTabNodeId& id) const {
-  auto iter = tree_tab_nodes_.find(id);
-  return iter == tree_tab_nodes_.end() ? nullptr : iter->second;
+  const auto* entry = base::FindOrNull(tree_tab_nodes_, id);
+  return entry ? entry->get() : nullptr;
+}
+
+tabs::TreeTabNode* TreeTabModel::GetNode(const tree_tab::TreeTabNodeId& id) {
+  auto* entry = base::FindOrNull(tree_tab_nodes_, id);
+  return entry ? entry->get() : nullptr;
 }
 
 int TreeTabModel::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
@@ -31,11 +37,10 @@ int TreeTabModel::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
 
 void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
                                 bool collapsed) {
-  auto iter = tree_tab_nodes_.find(id);
-  if (iter == tree_tab_nodes_.end()) {
+  tabs::TreeTabNode* node = GetNode(id);
+  if (!node) {
     return;
   }
-  tabs::TreeTabNode* node = iter->second;
   node->set_collapsed(collapsed);
 
   if (collapsed) {
@@ -52,13 +57,13 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
       }
     }
     for (const auto& node_id : to_recompute) {
-      auto node_iter = tree_tab_nodes_.find(node_id);
-      if (node_iter == tree_tab_nodes_.end()) {
+      const tabs::TreeTabNode* node_to_recompute = GetNode(node_id);
+      if (!node_to_recompute) {
         closest_collapsed_ancestor_.erase(node_id);
         continue;
       }
       std::optional<tree_tab::TreeTabNodeId> new_ancestor =
-          node_iter->second->GetClosestCollapsedAncestorId();
+          node_to_recompute->GetClosestCollapsedAncestorId();
       if (new_ancestor.has_value()) {
         closest_collapsed_ancestor_.insert_or_assign(node_id, *new_ancestor);
       } else {
@@ -91,11 +96,9 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
       return;
     }
 
-    auto iter = model->tree_tab_nodes_.find(id);
-    if (iter == model->tree_tab_nodes_.end()) {
-      return;
+    if (const tabs::TreeTabNode* node = model->GetNode(id)) {
+      model->add_tree_tab_node_callback_list_.Notify(*node);
     }
-    model->add_tree_tab_node_callback_list_.Notify(*iter->second);
   };
 
   // Defer notification to make sure the tab creation operation is completed
@@ -106,27 +109,25 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
 }
 
 void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
-  auto iter = tree_tab_nodes_.find(id);
-  if (iter == tree_tab_nodes_.end()) {
+  tabs::TreeTabNode* moving_node = GetNode(id);
+  if (!moving_node) {
     // As this callback is called whenever reparenting a node, it is possible
     // that the node is still in the middle of creation, so AddTreeTabNode
     // hasn't been called yet.
     return;
   }
 
-  tabs::TreeTabNode* node = iter->second;
-
   // The moving node and its descendants should recalculate their closest
   // collapsed ancestor.
   std::vector<tree_tab::TreeTabNodeId> to_update = {id};
-  node->CollectDescendantIds(to_update);
+  moving_node->CollectDescendantIds(to_update);
 
   for (const auto& node_id : to_update) {
-    auto node_it = tree_tab_nodes_.find(node_id);
-    CHECK(node_it != tree_tab_nodes_.end());
+    const tabs::TreeTabNode* node_to_update = GetNode(node_id);
+    CHECK(node_to_update);
 
     if (std::optional<tree_tab::TreeTabNodeId> closest =
-            node_it->second->GetClosestCollapsedAncestorId()) {
+            node_to_update->GetClosestCollapsedAncestorId()) {
       closest_collapsed_ancestor_.insert_or_assign(node_id, *closest);
     } else {
       closest_collapsed_ancestor_.erase(node_id);
@@ -135,8 +136,7 @@ void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
 }
 
 void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
-  auto iter = tree_tab_nodes_.find(id);
-  if (iter == tree_tab_nodes_.end()) {
+  if (!GetNode(id)) {
     return;
   }
 
@@ -165,7 +165,7 @@ void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
 
   will_remove_tree_tab_node_callback_list_.Notify(id);
 
-  tree_tab_nodes_.erase(iter);
+  tree_tab_nodes_.erase(id);
 }
 
 base::WeakPtr<TreeTabModel> TreeTabModel::GetWeakPtr() {

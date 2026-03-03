@@ -24,6 +24,7 @@ class TreeTabModel {
   // Returns the TreeTabNode associated with the given |id|.
   // Returns nullptr if no node with the specified |id| exists in the model.
   const tabs::TreeTabNode* GetNode(const tree_tab::TreeTabNodeId& id) const;
+  tabs::TreeTabNode* GetNode(const tree_tab::TreeTabNodeId& id);
 
   // Returns the tree height value associated with the node identified by |id|.
   // The returned height is implementation-defined and is typically 0 if the
