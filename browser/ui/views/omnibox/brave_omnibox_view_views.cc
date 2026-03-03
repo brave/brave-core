@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/functional/callback.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -39,14 +40,16 @@ void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
   menu_contents->InsertItemWithStringIdAt(
       copy_position.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
 }
-
-std::u16string GetClipboardText() {
-  return ui::Clipboard::GetForCurrentThread()
-                 ->IsMarkedByOriginatorAsConfidential()
-             ? std::u16string()
-             : ::GetClipboardText(/*notify_if_restricted=*/false);
-}
 }  // namespace
+
+BraveOmniboxViewViews::BraveOmniboxViewViews(bool popup_window_mode,
+                                             OmniboxController* controller,
+                                             LocationBarView* location_bar_view,
+                                             const gfx::FontList& font_list)
+    : OmniboxViewViews(popup_window_mode,
+                       controller,
+                       location_bar_view,
+                       font_list) {}
 
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 
@@ -144,26 +147,38 @@ void BraveOmniboxViewViews::ExecuteCommand(int command_id, int event_flags) {
   // OmniboxEditModel::PasteAndGo(). In OmniboxEditModel, only normal
   // profile's search provider is used because same AutocompleteClassifier is
   // shared between normal and private profile.
-  if (command_id != IDC_PASTE_AND_GO) {
+  // Also, early return if |location_bar_view_| is null as it would be needed to
+  // get Browser instance pointer. It could be null in unit test.
+  if (command_id != IDC_PASTE_AND_GO || !location_bar_view_) {
     return OmniboxViewViews::ExecuteCommand(command_id, event_flags);
   }
 
-  // Early return if |location_bar_view_| is null as it's used to get Browser
-  // instance pointer. It could be null in unit test.
-  auto clipboard_text = GetClipboardTextForPasteAndSearch();
-  if (!location_bar_view_ || !clipboard_text) {
-    return OmniboxViewViews::ExecuteCommand(command_id, event_flags);
+  GetClipboardTextForPasteAndSearch(base::BindOnce(
+      &BraveOmniboxViewViews::OnClipboardTextForPasteAndSearchRetrieved,
+      weak_factory_.GetWeakPtr(), command_id, event_flags));
+}
+
+void BraveOmniboxViewViews::OnClipboardTextForPasteAndSearchRetrieved(
+    int command_id,
+    int event_flags,
+    std::u16string clipboard_text) {
+  DCHECK(location_bar_view_);
+
+  if (clipboard_text.empty()) {
+    OmniboxViewViews::ExecuteCommand(command_id, event_flags);
+    return;
   }
 
   constexpr size_t kMaxSelectionTextLength = 50;
   std::u16string selection_text = gfx::TruncateString(
-      *clipboard_text, kMaxSelectionTextLength, gfx::WORD_BREAK);
+      clipboard_text, kMaxSelectionTextLength, gfx::WORD_BREAK);
 
   const auto* service = controller()->client()->GetTemplateURLService();
   const auto url =
       service->GenerateSearchURLForDefaultSearchProvider(selection_text);
   if (!url.is_valid()) {
-    return OmniboxViewViews::ExecuteCommand(command_id, event_flags);
+    OmniboxViewViews::ExecuteCommand(command_id, event_flags);
+    return;
   }
 
   NavigateParams params(location_bar_view_->browser(), url,
@@ -172,20 +187,33 @@ void BraveOmniboxViewViews::ExecuteCommand(int command_id, int event_flags) {
   Navigate(&params);
 }
 
-std::optional<std::u16string>
-BraveOmniboxViewViews::GetClipboardTextForPasteAndSearch() {
-  std::u16string clipboard_text = GetClipboardText();
-  if (clipboard_text.empty()) {
-    return std::nullopt;
+void BraveOmniboxViewViews::GetClipboardTextForPasteAndSearch(
+    base::OnceCallback<void(std::u16string)> callback) {
+  if (ui::Clipboard::GetForCurrentThread()
+          ->IsMarkedByOriginatorAsConfidential()) {
+    std::move(callback).Run(std::u16string());
+    return;
   }
 
-  AutocompleteMatch match;
-  controller()->edit_model()->ClassifyString(clipboard_text, &match, nullptr);
-  if (!AutocompleteMatch::IsSearchType(match.type)) {
-    return std::nullopt;
-  }
-
-  return clipboard_text;
+  GetClipboardText(
+      /*notify_if_restricted=*/false,
+      base::BindOnce(
+          [](base::WeakPtr<BraveOmniboxViewViews> self,
+             base::OnceCallback<void(std::u16string)> callback,
+             std::u16string clipboard_text) {
+            if (self) {
+              if (!clipboard_text.empty()) {
+                AutocompleteMatch match;
+                self->controller()->edit_model()->ClassifyString(
+                    clipboard_text, &match, nullptr);
+                if (!AutocompleteMatch::IsSearchType(match.type)) {
+                  clipboard_text = std::u16string();
+                }
+              }
+              std::move(callback).Run(clipboard_text);
+            }
+          },
+          weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveOmniboxViewViews::UpdateContextMenu(
