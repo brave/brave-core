@@ -22,54 +22,18 @@ extension TabDataValues {
 
 /// Value types representing a page's metadata
 struct PageMetadata: Decodable {
-  let siteURL: String
-  let mediaURL: String?
-  let title: String?
-  let description: String?
-  let type: String?
-  let providerName: String?
-  let faviconURL: String?
-  let largeIconURL: String?
-  let keywords: Set<String>?
   let search: Link?
   let feeds: [Link]
 
   enum CodingKeys: String, CodingKey {
-    case mediaURL = "image"
-    case siteURL = "url"
-    case title
-    case description
-    case type
-    case providerName = "provider"
-    case faviconURL = "icon"
-    case largeIconURL = "largeIcon"
-    case keywords
     case search
     case feeds
   }
 
   init(
-    siteURL: String,
-    mediaURL: String?,
-    title: String?,
-    description: String?,
-    type: String?,
-    providerName: String?,
-    faviconURL: String? = nil,
-    largeIconURL: String? = nil,
-    keywords: Set<String>? = nil,
     search: Link? = nil,
     feeds: [Link] = []
   ) {
-    self.siteURL = siteURL
-    self.mediaURL = mediaURL
-    self.title = title
-    self.description = description
-    self.type = type
-    self.providerName = providerName
-    self.faviconURL = faviconURL
-    self.largeIconURL = largeIconURL
-    self.keywords = keywords
     self.search = search
     self.feeds = feeds
   }
