@@ -61,7 +61,6 @@ class BraveMultiContentsView : public MultiContentsView {
                            WebPanelTest);
 
   // MultiContentsView:
-  void Layout(PassKey) override;
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
   void ResetResizeArea() override;

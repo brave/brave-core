@@ -559,8 +559,6 @@ source_set("ui") {
       "views/bookmarks/brave_bookmark_context_menu.h",
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.cc",
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
-      "views/brave_javascript_tab_modal_dialog_view_views.cc",
-      "views/brave_javascript_tab_modal_dialog_view_views.h",
       "views/brave_tab_search_bubble_host.cc",
       "views/brave_tab_search_bubble_host.h",
       "views/commands/default_accelerators_views.cc",
