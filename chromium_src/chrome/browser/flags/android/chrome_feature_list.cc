@@ -17,6 +17,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/common/features.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -104,7 +105,8 @@
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_shields::features::kBraveShredFeature,                              \
-    &brave_origin::features::kBraveOrigin
+    &brave_origin::features::kBraveOrigin,                                     \
+    &email_aliases::features::kEmailAliases
 
 // clang-format on
 

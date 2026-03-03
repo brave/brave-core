@@ -19,6 +19,7 @@ import androidx.preference.PreferenceGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
@@ -30,6 +31,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -79,7 +81,15 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         setupTogglePreference(PREF_REWARDS_SWITCH);
         setupTogglePreference(PREF_CRASH_REPORTS_SWITCH);
         setupTogglePreference(PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH);
-        setupTogglePreference(PREF_EMAIL_ALIASES_SWITCH);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
+            setupTogglePreference(PREF_EMAIL_ALIASES_SWITCH);
+        } else {
+            ChromeSwitchPreference emailAliasesPref =
+                    (ChromeSwitchPreference) findPreference(PREF_EMAIL_ALIASES_SWITCH);
+            if (emailAliasesPref != null) {
+                emailAliasesPref.setVisible(false);
+            }
+        }
         setupTogglePreference(PREF_LEO_AI_SWITCH);
         setupTogglePreference(PREF_NEWS_SWITCH);
         setupTogglePreference(PREF_STATISTICS_REPORTING_SWITCH);
