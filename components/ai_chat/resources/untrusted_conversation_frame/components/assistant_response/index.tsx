@@ -212,16 +212,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
         && props.isEntryInProgress
         && !deepResearch.hasSynthesisCompletion && (
           <DeepResearchEvent
-            queriesEvent={deepResearch.queriesEvent}
-            thinkingEvents={deepResearch.thinkingEvents}
-            progressEvent={deepResearch.progressEvent}
-            completeEvent={deepResearch.completeEvent}
-            errorEvent={deepResearch.errorEvent}
-            searchStatusEvent={deepResearch.searchStatusEvent}
-            analysisStatusEvent={deepResearch.analysisStatusEvent}
-            iterationCompleteEvent={deepResearch.iterationCompleteEvent}
-            analyzingEvent={deepResearch.analyzingEvent}
-            fetchStatusEvent={deepResearch.fetchStatusEvent}
+            deepResearch={deepResearch}
             isActive={props.isEntryInProgress}
           />
         )}

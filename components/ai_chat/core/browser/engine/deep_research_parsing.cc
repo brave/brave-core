@@ -9,7 +9,6 @@
 
 #include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -123,7 +122,10 @@ mojom::ConversationEntryEventPtr ParseThinkingEvent(
           params.FindList(kKeyUrlsSelected)) {
     for (const auto& url : *urls_selected) {
       if (url.is_string()) {
-        event_data->urls_selected.push_back(GURL(url.GetString()));
+        GURL parsed_url(url.GetString());
+        if (parsed_url.is_valid()) {
+          event_data->urls_selected.push_back(std::move(parsed_url));
+        }
       }
     }
   }
@@ -134,10 +136,16 @@ mojom::ConversationEntryEventPtr ParseThinkingEvent(
         const base::DictValue& info_dict = info.GetDict();
         auto url_info = mojom::DeepResearchUrlInfo::New();
         if (const std::string* url = info_dict.FindString(kKeyUrl)) {
-          url_info->url = GURL(*url);
+          GURL parsed_url(*url);
+          if (parsed_url.is_valid()) {
+            url_info->url = std::move(parsed_url);
+          }
         }
         if (const std::string* favicon = info_dict.FindString(kKeyFavicon)) {
-          url_info->favicon = GURL(*favicon);
+          GURL parsed_favicon(*favicon);
+          if (parsed_favicon.is_valid()) {
+            url_info->favicon = std::move(parsed_favicon);
+          }
         }
         event_data->urls_info.push_back(std::move(url_info));
       }

@@ -6,39 +6,32 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { getLocale, formatLocale } from '$web-common/locale'
+import { IconName } from '@brave/leo/icons/meta'
 import * as mojom from '../../../common/mojom'
+import { ExtractedDeepResearchEvents } from './deep_research_utils'
 import styles from './deep_research_event.module.scss'
 
 interface DeepResearchEventProps {
-  queriesEvent?: mojom.DeepResearchQueriesEvent
-  thinkingEvents: mojom.DeepResearchThinkingEvent[]
-  progressEvent?: mojom.DeepResearchProgressEvent
-  completeEvent?: mojom.DeepResearchCompleteEvent
-  errorEvent?: mojom.DeepResearchErrorEvent
-  searchStatusEvent?: mojom.DeepResearchSearchStatusEvent
-  analysisStatusEvent?: mojom.DeepResearchAnalysisStatusEvent
-  iterationCompleteEvent?: mojom.DeepResearchIterationCompleteEvent
-  analyzingEvent?: mojom.DeepResearchAnalyzingEvent
-  fetchStatusEvent?: mojom.DeepResearchFetchStatusEvent
+  deepResearch: ExtractedDeepResearchEvents
   isActive: boolean
 }
 
 interface LastEventInfo {
   description: string
-  iconName: string
+  iconName: IconName
 }
 
 function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
+  const dr = props.deepResearch
   // Priority order: Active/in-progress events first, then completed events
   // Events are checked for "active" status to avoid stale events dominating
 
   // Search in progress (not completed yet)
   if (
-    props.searchStatusEvent
-    && props.searchStatusEvent.status
-      === mojom.DeepResearchSearchStatus.kStarted
+    dr.searchStatusEvent
+    && dr.searchStatusEvent.status === mojom.DeepResearchSearchStatus.kStarted
   ) {
-    const search = props.searchStatusEvent
+    const search = dr.searchStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_SEARCHING, {
         $1: search.query,
@@ -49,11 +42,11 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 
   // LLM analysis in progress - only show if actively analyzing (not completed)
   if (
-    props.analysisStatusEvent
-    && props.analysisStatusEvent.chunksAnalyzed
-      < props.analysisStatusEvent.chunksTotal
+    dr.analysisStatusEvent
+    && dr.analysisStatusEvent.chunksAnalyzed
+      < dr.analysisStatusEvent.chunksTotal
   ) {
-    const analysis = props.analysisStatusEvent
+    const analysis = dr.analysisStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_ANALYZING_SOURCES, {
         $1: String(analysis.chunksTotal),
@@ -64,8 +57,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   }
 
   // Analyzing URLs (processing search results)
-  if (props.analyzingEvent) {
-    const analyzing = props.analyzingEvent
+  if (dr.analyzingEvent) {
+    const analyzing = dr.analyzingEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_PROCESSING_URLS, {
         $1: String(analyzing.newUrlCount),
@@ -77,11 +70,10 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 
   // Search completed - shows URLs found
   if (
-    props.searchStatusEvent
-    && props.searchStatusEvent.status
-      === mojom.DeepResearchSearchStatus.kCompleted
+    dr.searchStatusEvent
+    && dr.searchStatusEvent.status === mojom.DeepResearchSearchStatus.kCompleted
   ) {
-    const search = props.searchStatusEvent
+    const search = dr.searchStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_FOUND_URLS, {
         $1: String(search.urlsFound),
@@ -92,8 +84,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   }
 
   // URL fetching in progress
-  if (props.fetchStatusEvent) {
-    const fetch = props.fetchStatusEvent
+  if (dr.fetchStatusEvent) {
+    const fetch = dr.fetchStatusEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_FETCHING_URLS, {
         $1: String(fetch.urlsFetched),
@@ -104,8 +96,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   }
 
   // Thinking event = analysis complete for a query (lower priority - it accumulates)
-  if (props.thinkingEvents && props.thinkingEvents.length > 0) {
-    const thinking = props.thinkingEvents[props.thinkingEvents.length - 1]
+  if (dr.thinkingEvents && dr.thinkingEvents.length > 0) {
+    const thinking = dr.thinkingEvents[dr.thinkingEvents.length - 1]
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_ANALYZED_URLS, {
         $1: String(thinking.urlsAnalyzed),
@@ -116,8 +108,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   }
 
   // Queries event = search queries generated
-  if (props.queriesEvent && props.queriesEvent.queries.length > 0) {
-    const queries = props.queriesEvent.queries
+  if (dr.queriesEvent && dr.queriesEvent.queries.length > 0) {
+    const queries = dr.queriesEvent.queries
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_SEARCHING_QUERIES, {
         $1: String(queries.length),
@@ -127,8 +119,8 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   }
 
   // Progress event = fallback showing overall stats
-  if (props.progressEvent) {
-    const progress = props.progressEvent
+  if (dr.progressEvent) {
+    const progress = dr.progressEvent
     return {
       description: formatLocale(S.CHAT_UI_DEEP_RESEARCH_PROGRESS, {
         $1: String(progress.urlsAnalyzed),
@@ -139,7 +131,7 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
   }
 
   // Complete event = research finished
-  if (props.completeEvent) {
+  if (dr.completeEvent) {
     return {
       description: getLocale(S.CHAT_UI_DEEP_RESEARCH_COMPLETE),
       iconName: 'check-circle-filled',
@@ -150,20 +142,25 @@ function getLastEventInfo(props: DeepResearchEventProps): LastEventInfo | null {
 }
 
 function ElapsedTimeCounter(props: {
-  progressEvent?: mojom.DeepResearchProgressEvent
+  deepResearch: ExtractedDeepResearchEvents
 }) {
   const [elapsed, setElapsed] = React.useState(0)
   const startTimeRef = React.useRef<number | null>(null)
 
-  // Calculate start time from progressEvent.elapsedSeconds when available
+  // Calculate start time from progressEvent.elapsedSeconds when available.
+  // TODO(petemill): The elapsed timer restarts from 0 when the UI
+  // re-renders (e.g. conversation reload, sidebar toggle). Consider
+  // tracking start time in C++ ConversationHandler or adding
+  // time_started to ToolUseEvent for accuracy across re-renders.
   React.useEffect(() => {
-    if (props.progressEvent && !startTimeRef.current) {
-      startTimeRef.current =
-        Date.now() - props.progressEvent.elapsedSeconds * 1000
-    } else if (!startTimeRef.current) {
+    if (!startTimeRef.current) {
       startTimeRef.current = Date.now()
+      if (props.deepResearch.progressEvent) {
+        startTimeRef.current -=
+          props.deepResearch.progressEvent.elapsedSeconds * 1000
+      }
     }
-  }, [props.progressEvent])
+  }, [props.deepResearch.progressEvent])
 
   React.useEffect(() => {
     const updateElapsed = () => {
@@ -293,13 +290,14 @@ function DeepResearchProgressLine(props: DeepResearchEventProps) {
       >
         {displayedInfo.description}
       </span>
-      <ElapsedTimeCounter progressEvent={props.progressEvent} />
+      <ElapsedTimeCounter deepResearch={props.deepResearch} />
     </div>
   )
 }
 
 export default function DeepResearchEvent(props: DeepResearchEventProps) {
-  const { completeEvent, errorEvent, isActive } = props
+  const { completeEvent, errorEvent } = props.deepResearch
+  const { isActive } = props
 
   // Show progress line if active OR if we have ongoing events but no completion yet
   const showProgress = isActive || (!completeEvent && !errorEvent)
