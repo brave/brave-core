@@ -195,8 +195,13 @@ if (enable_ai_chat) {
     "brave_leo_assistant_page/model_config_ui.ts",
     "brave_leo_assistant_page/personalization.ts",
   ]
-  brave_settings_ts_files +=
-      [ "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts" ]
+  brave_settings_ts_files += [
+    "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
+    "brave_leo_assistant_page/model_selector.html.ts",
+    "brave_leo_assistant_page/model_selector.ts",
+  ]
+  brave_settings_local_css_files +=
+      [ "brave_leo_assistant_page/model_selector.css" ]
 }
 
 brave_settings_ts_definitions =

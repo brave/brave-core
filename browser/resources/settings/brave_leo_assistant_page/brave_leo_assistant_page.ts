@@ -13,7 +13,9 @@ import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
-import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess, Model}
+import {BraveLeoAssistantBrowserProxy,
+  BraveLeoAssistantBrowserProxyImpl, PremiumStatus,
+  PremiumInfo}
   from './brave_leo_assistant_browser_proxy.js'
 
 const BraveLeoAssistantPageBase =
@@ -48,12 +50,18 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           type: Boolean,
           value: () => loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
         },
+        isTabOrganizationFeatureEnabled_: {
+          type: Boolean,
+          value: () => loadTimeData.getBoolean(
+            'isTabOrganizationFeatureEnabled')
+        },
       }
     }
 
     private declare isPremiumUser_: boolean
 
     declare isHistoryFeatureEnabled_: boolean
+    declare isTabOrganizationFeatureEnabled_: boolean
     declare leoAssistantShowOnToolbarPref_: boolean
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =

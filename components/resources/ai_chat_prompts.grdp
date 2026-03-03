@@ -269,19 +269,19 @@ Sure, here is the rewritten version of the excerpt: &lt;response&gt;
 </message>
 
 <message name="IDS_AI_CHAT_TAB_FOCUS_REDUCE_TOPICS" translateable="false">
-  Here is a list of browser topics: <ph name="TOPICS">$1</ph>. Please return an array, delimited by "[" and "]" containing the 5 most unusual or interesting topics. Prepend each topic string with a single relevant emoji. Try to choose unrelated topics. Make sure to return only an array of strings enclosed in quotes.
+  Here is a list of browser topics: <ph name="TOPICS">$1</ph>. Please return a valid JSON array containing the 5 most unusual or interesting topics. Prepend each topic string with a single relevant emoji. Try to choose unrelated topics. Return only a JSON array of strings using double quotes, for example: ["🔬 Science", "🎵 Music"].
 </message>
 
 <message name="IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS_WITH_EMOJI" translateable="false">
-  Here is a list of browser tabs with their titles and domains: <ph name="TABS">$1</ph>. Please return an array, delimited by "[" and "]" of up to 5 topics that the user might be working on or researching. Ensure that the topics are diverse and unrelated. Prepend each topic string with a single relevant emoji. Make sure to return only an array of strings enclosed in quotes.
+  Here is a list of browser tabs with their titles and domains: <ph name="TABS">$1</ph>. Please return a valid JSON array of up to 5 topics that the user might be working on or researching. Ensure that the topics are diverse and unrelated. Prepend each topic string with a single relevant emoji. Return only a JSON array of strings using double quotes, for example: ["🔬 Science", "🎵 Music"].
 </message>
 
 <message name="IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS" translateable="false">
-  Here is a list of browser tabs with their titles and domains: <ph name="TABS">$1</ph>. Please return an array, delimited by "[" and "]" of up to 5 topics that the user might be working on or researching. Try to make the topics more detailed. Make sure to return only an array of strings enclosed in quotes.
+  Here is a list of browser tabs with their titles and domains: <ph name="TABS">$1</ph>. Please return a valid JSON array of up to 5 topics that the user might be working on or researching. Try to make the topics more detailed. Return only a JSON array of strings using double quotes, for example: ["Web Development", "Machine Learning"].
 </message>
 
 <message name="IDS_AI_CHAT_TAB_FOCUS_FILTER_TABS" translateable="false">
-  Here is a list of browser tabs with their titles and domains: <ph name="TABS">$1</ph>. Please return an array, delimited by "[" and "]" of the tabIds for tabs that are a close match for the following topic: <ph name="TOPIC">$2</ph>. Make sure to return only an array of strings enclosed in quotes.
+  Here is a list of browser tabs with their titles and domains: <ph name="TABS">$1</ph>. Please return a valid JSON array of the tabIds for tabs that are a close match for the following topic: <ph name="TOPIC">$2</ph>. Return only a JSON array of strings using double quotes, for example: ["1", "5", "12"].
 </message>
 
 </grit-part>

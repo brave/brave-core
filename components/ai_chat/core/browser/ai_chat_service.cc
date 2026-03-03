@@ -158,6 +158,10 @@ AIChatService::AIChatService(
       prefs::kBraveAIChatSkills,
       base::BindRepeating(&AIChatService::OnSkillsChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatTabOrganizationModelKey,
+      base::BindRepeating(&AIChatService::OnTabOrganizationModelPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 
@@ -1314,9 +1318,20 @@ AIChatService::CreateToolProvidersForNewConversation() {
 }
 
 void AIChatService::CreateTabOrganizationEngineIfNeeded() {
-  if (!tab_organization_engine_) {
-    tab_organization_engine_ = GetEngineForModel(kChatAutomaticModelKey);
+  if (tab_organization_engine_) {
+    return;
   }
+
+  std::string target_key =
+      profile_prefs_->GetString(prefs::kBraveAIChatTabOrganizationModelKey);
+  if (!model_service_->GetModel(target_key)) {
+    target_key = kChatAutomaticModelKey;
+  }
+  tab_organization_engine_ = GetEngineForModel(target_key);
+}
+
+void AIChatService::OnTabOrganizationModelPrefChanged() {
+  tab_organization_engine_.reset();
 }
 
 void AIChatService::OnSuggestedTopicsReceived(

@@ -117,6 +117,8 @@ inline constexpr char kObseleteBraveChatAutoGenerateQuestions[] =
 
 inline constexpr char kBraveAIChatTabOrganizationEnabled[] =
     "brave.ai_chat.tab_organization_enabled";
+inline constexpr char kBraveAIChatTabOrganizationModelKey[] =
+    "brave.ai_chat.tab_organization_model_key";
 
 inline constexpr char kBraveAIChatUserCustomizationEnabled[] =
     "brave.ai_chat.user_customization_enabled";

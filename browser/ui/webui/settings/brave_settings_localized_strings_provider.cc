@@ -54,6 +54,7 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -564,6 +565,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC},
       {"braveLeoAssistantTabOrganizationLabel",
        IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL},
+      {"braveLeoAssistantTabOrganizationModelLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL},
       {"braveLeoAssistantHistoryPreferenceLabel",
        IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_LABEL},
       {"braveLeoAssistantHistoryPreferenceConfirm",
@@ -1100,6 +1103,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddString("braveLeoAssistantTabOrganizationLearnMoreURL",
                          kTabOrganizationLearnMoreURL);
+
+  html_source->AddBoolean("isTabOrganizationFeatureEnabled",
+                          ai_chat::features::IsTabOrganizationEnabled());
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
