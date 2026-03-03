@@ -373,6 +373,41 @@ const base::DictValue* GetOAIContentContainer(const base::DictValue& response) {
   return content_container;
 }
 
+std::vector<EngineConsumer::GenerationResultData> ParseToolCallsFromOAIResponse(
+    const base::DictValue& response,
+    std::optional<std::string> model_key) {
+  std::vector<EngineConsumer::GenerationResultData> results;
+  const base::DictValue* content_container = GetOAIContentContainer(response);
+  if (!content_container) {
+    return results;
+  }
+
+  const base::ListValue* tool_calls = content_container->FindList("tool_calls");
+  if (!tool_calls) {
+    return results;
+  }
+
+  for (const auto& tool_call_value : *tool_calls) {
+    if (!tool_call_value.is_dict()) {
+      continue;
+    }
+    const auto& tool_call_dict = tool_call_value.GetDict();
+
+    // Parse tool request or server tool result
+    if (auto tool_use_event = ParseToolCallRequest(tool_call_dict)) {
+      auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(*tool_use_event));
+      results.emplace_back(std::move(tool_event), model_key);
+    } else {
+      for (auto& event : ParseToolCallResult(tool_call_dict)) {
+        results.emplace_back(std::move(event), model_key);
+      }
+    }
+  }
+
+  return results;
+}
+
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     const base::DictValue& response,
     std::optional<std::string> model_key) {

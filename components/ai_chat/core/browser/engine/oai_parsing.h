@@ -53,6 +53,13 @@ std::optional<base::ListValue> ToolApiDefinitionsFromTools(
 // Returns nullptr if the response doesn't follow OpenAI format.
 const base::DictValue* GetOAIContentContainer(const base::DictValue& response);
 
+// Parse tool calls from an OAI-format streaming or non-streaming response.
+// Handles both tool requests (with function) and server tool results
+// (with output_content). Returns a vector of GenerationResultData entries.
+std::vector<EngineConsumer::GenerationResultData> ParseToolCallsFromOAIResponse(
+    const base::DictValue& response,
+    std::optional<std::string> model_key);
+
 // Parse OpenAI-format completion response for both streaming and
 // non-streaming requests. Response can have either delta.content (streaming)
 // or message.content (non-streaming).
