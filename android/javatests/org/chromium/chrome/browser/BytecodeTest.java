@@ -560,7 +560,8 @@ public class BytecodeTest {
                         boolean.class,
                         Activity.class,
                         WindowAndroid.class,
-                        Tracker.class));
+                        Tracker.class,
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
