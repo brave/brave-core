@@ -54,8 +54,7 @@ void TestFiltersProvider::LoadFilters(
              uint8_t permission_mask,
              base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
         cb) {
-  std::vector<uint8_t> buffer(rules_.begin(), rules_.end());
-  mojo_base::BigBuffer big_buffer(buffer);
+  mojo_base::BigBuffer big_buffer(base::as_byte_span(rules_));
   std::move(cb).Run(std::move(big_buffer), permission_mask_, base::DoNothing());
 }
 
