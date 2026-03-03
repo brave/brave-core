@@ -1260,6 +1260,7 @@ test("brave_browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
       "//chrome/browser/ui/views/bubble",
+      "//ui/base/clipboard:clipboard_test_support",
     ]
 
     if (enable_brave_rewards) {

@@ -16,6 +16,7 @@
 #include "content/public/test/test_web_ui.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
+#include "ui/base/clipboard/test/clipboard_test_util.h"
 #include "ui/base/clipboard/test/test_clipboard.h"
 
 using ui::Clipboard;
@@ -84,9 +85,9 @@ TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
   args.Append(base::Value(kSyncCodeExample));
   CallHandleCopySyncCodeToClipboard(args);
 
-  std::string ascii_text;
-  clipboard().ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                            /* data_dst = */ std::nullopt, &ascii_text);
+  std::string ascii_text = ui::clipboard_test_util::ReadAsciiText(
+      &clipboard(), ui::ClipboardBuffer::kCopyPaste,
+      /* data_dst = */ nullptr);
   EXPECT_EQ(ascii_text, kSyncCodeExample);
 
 #if BUILDFLAG(IS_MAC)
