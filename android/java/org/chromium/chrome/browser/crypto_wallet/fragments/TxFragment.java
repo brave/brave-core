@@ -164,7 +164,7 @@ public class TxFragment extends Fragment {
                                 if (mEditGasDialog == dialog) {
                                     mEditGasDialog = null;
                                 }
-                                filterEIP1559TextWatcher.clearDialog();
+                                mFilterEIP1559TextWatcher.clearDialog();
                             });
                     dialog.setContentView(R.layout.brave_wallet_edit_gas);
                     dialog.show();
@@ -297,7 +297,7 @@ public class TxFragment extends Fragment {
                                                                     "%.0f",
                                                                     Utils.fromHexWei(
                                                                             maxFeePerGas, 9)));
-                                                    filterEIP1559TextWatcher.setDialog(
+                                                    mFilterEIP1559TextWatcher.setDialog(
                                                             dialog,
                                                             String.format(
                                                                     Locale.getDefault(),
@@ -309,11 +309,11 @@ public class TxFragment extends Fragment {
                                                                                     .baseFeePerGas,
                                                                             9)));
                                                     gasAmountLimitEdit.addTextChangedListener(
-                                                            filterEIP1559TextWatcher);
+                                                            mFilterEIP1559TextWatcher);
                                                     perGasTipLimitEdit.addTextChangedListener(
-                                                            filterEIP1559TextWatcher);
+                                                            mFilterEIP1559TextWatcher);
                                                     perGasPriceLimitEdit.addTextChangedListener(
-                                                            filterEIP1559TextWatcher);
+                                                            mFilterEIP1559TextWatcher);
                                                 }
                                                 fillMaxFee(
                                                         dialog.findViewById(R.id.maximum_fee_msg),
@@ -463,7 +463,7 @@ public class TxFragment extends Fragment {
         super.onDestroyView();
     }
 
-    private final TextWatcherImpl filterEIP1559TextWatcher = new TextWatcherImpl();
+    private final TextWatcherImpl mFilterEIP1559TextWatcher = new TextWatcherImpl();
 
     private class TextWatcherImpl implements TextWatcher {
         @Nullable Dialog mDialog;
@@ -663,7 +663,7 @@ public class TxFragment extends Fragment {
         if (mEditGasDialog.isShowing()) {
             mEditGasDialog.dismiss();
         } else {
-            filterEIP1559TextWatcher.clearDialog();
+            mFilterEIP1559TextWatcher.clearDialog();
             mEditGasDialog = null;
         }
     }
