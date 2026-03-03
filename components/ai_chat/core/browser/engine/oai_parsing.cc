@@ -115,10 +115,11 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
         }
 
         GURL url(*url_str);
-        GURL favicon_url = favicon_str ? GURL(*favicon_str)
-                                       : GURL(
-                                             "chrome-untrusted://resources/"
-                                             "brave-icons/globe.svg");
+        GURL favicon_url = (favicon_str && !favicon_str->empty())
+                               ? GURL(*favicon_str)
+                               : GURL(
+                                     "chrome-untrusted://resources/"
+                                     "brave-icons/globe.svg");
 
         if (!url.is_valid() || !favicon_url.is_valid()) {
           DVLOG(2) << "Invalid URL in webSource";
@@ -126,7 +127,7 @@ std::optional<mojom::ContentBlockPtr> ParseContentBlockFromDict(
         }
 
         // Validate favicon is from allowed source
-        if (favicon_str &&
+        if (favicon_str && !favicon_str->empty() &&
             (!favicon_url.SchemeIs(url::kHttpsScheme) ||
              base::CompareCaseInsensitiveASCII(
                  favicon_url.host(), kAllowedWebSourceFaviconHost) != 0)) {
