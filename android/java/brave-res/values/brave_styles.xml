@@ -687,4 +687,9 @@
     <style name="PreferenceCategory.NoTitle" parent="Preference.Category">
         <item name="android:layout">@layout/preference_category_no_title</item>
     </style>
+
+    <style name="TextAppearance.BraveBlockedItemIcon" parent="TextAppearance.TextSmall">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/schemes_on_surface</item>
+    </style>
 </resources>

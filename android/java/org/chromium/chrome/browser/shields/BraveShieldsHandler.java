@@ -91,6 +91,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             mScriptsBlocked = 0;
             mFingerprintsBlocked = 0;
             mBlockerNames = new ArrayList<String>();
+            mBlockedUrls = new ArrayList<String>();
         }
 
         public int mAdsBlocked;
@@ -98,6 +99,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         public int mScriptsBlocked;
         public int mFingerprintsBlocked;
         public final ArrayList<String> mBlockerNames;
+        public final ArrayList<String> mBlockedUrls;
     }
 
     public static class CategorySpinnerItem {
@@ -236,8 +238,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
         if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
             blockersInfo.mAdsBlocked++;
+            if (subResource != null
+                    && !subResource.isEmpty()
+                    && blockersInfo.mBlockedUrls.size() < 50) {
+                blockersInfo.mBlockedUrls.add(subResource);
+            }
         } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
             blockersInfo.mTrackersBlocked++;
+            if (subResource != null
+                    && !subResource.isEmpty()
+                    && blockersInfo.mBlockedUrls.size() < 50) {
+                blockersInfo.mBlockedUrls.add(subResource);
+            }
         } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             blockersInfo.mScriptsBlocked++;
         } else if (blockType.equals(
@@ -449,6 +461,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mTrackersBlocked;
     }
 
+    public int getTotalBlockedCount(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return 0;
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mAdsBlocked
+                + blockersInfo.mTrackersBlocked
+                + blockersInfo.mScriptsBlocked
+                + blockersInfo.mFingerprintsBlocked;
+    }
+
     public ArrayList<String> getBlockerNamesList(int tabId) {
         if (!mTabsStat.containsKey(tabId)) {
             return new ArrayList<String>();
@@ -456,6 +480,15 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
         return blockersInfo.mBlockerNames;
+    }
+
+    public ArrayList<String> getBlockedUrls(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return new ArrayList<String>();
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mBlockedUrls;
     }
 
     public void updateValues(int adsAndTrackers, int scriptsBlocked, int fingerprintsBlocked) {

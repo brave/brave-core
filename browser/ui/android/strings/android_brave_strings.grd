@@ -620,6 +620,90 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_SUMMARY" desc="Shields panel toggle summary that would allow element blocker in private mode.">
         Enables the Shields Block Elements feature in private windows. Note that elements blocked in private windows will also be blocked in non-private windows.
       </message>
+
+      <!-- Unified Shields Panel -->
+      <message name="IDS_SHIELDS_WARNING_LINE2" desc="Warning shown when shields are disabled for a site.">
+        Note: this may reduce Brave's privacy protections.
+      </message>
+      <message name="IDS_SHIELDS_UP_STATUS" desc="Status text when shields are enabled for a site.">
+        Shields up for this site
+      </message>
+      <message name="IDS_SHIELDS_DOWN_STATUS" desc="Status text when shields are disabled for a site.">
+        Shields down for this site
+      </message>
+      <message name="IDS_TRACKERS_BLOCKED_TEXT" desc="Text shown below the block count in the shields panel.">
+        Trackers, ads, and more blocked.
+      </message>
+      <message name="IDS_TRACKERS_ADS_DESCRIPTION" desc="Description for the trackers and ads sub-panel.">
+        Choose how to handle trackers and ads
+      </message>
+      <message name="IDS_COOKIES_DESCRIPTION" desc="Description for the cookies sub-panel.">
+        Choose how to handle cookies
+      </message>
+      <message name="IDS_SHRED_SITE_DATA" desc="Label for the shred site data option in shields advanced settings.">
+        Shred site's data
+      </message>
+      <message name="IDS_RESET_SHIELDS_DEFAULTS" desc="Label for the reset shields defaults option.">
+        Reset this site to Shields defaults
+      </message>
+      <message name="IDS_RESET_SHIELDS_DEFAULTS_CONFIRMATION" desc="Toast confirmation after resetting shields defaults.">
+        Site reset to Shields defaults
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_GLOBAL_SETTINGS_TITLE" desc="Label for the global shields settings link.">
+        Shields global settings
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PROMPT" desc="Prompt asking the user to report a broken site.">
+        Tell us if the site wasn't working properly with Shields up.
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_BUTTON" desc="Button label to initiate a broken site report.">
+        Report
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_TITLE" desc="Title of the broken site report panel.">
+        Report a broken site
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_DESC1" desc="First description paragraph in the broken site report panel.">
+        Let Brave's developers know that this site doesn't work properly with this site.
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_DESC2" desc="Second description paragraph in the broken site report panel.">
+        Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site.
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_DETAILS_HINT" desc="Hint text for the details input field in the broken site report.">
+        What is not working on this site?
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_CONTACT_LABEL" desc="Label for the contact field in the broken site report.">
+        Contact me at (optional)
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_CONTACT_HINT" desc="Hint text for the contact input field.">
+        Email, X username, and more
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_CONTACT_INFO" desc="Info text about contact data storage.">
+        If you provide contact info, it will be stored for future reports
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_SUBMIT" desc="Submit button label for the broken site report.">
+        Submit
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_VIEW_SCREENSHOT" desc="Link text to view the screenshot attached to a broken site report.">
+        View screenshot
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_PANEL_SUBMITTED" desc="Confirmation message after submitting a broken site report.">
+        Report submitted. Thank you!
+      </message>
+      <message name="IDS_SHRED_SITE_DATA_TITLE" desc="Title of the shred site data sub-panel.">
+        Shred site data
+      </message>
+      <message name="IDS_SHRED_AUTO_SHRED" desc="Label for the auto shred option.">
+        Auto shred
+      </message>
+      <message name="IDS_SHRED_OPTION_SITE_TABS_CLOSED" desc="Auto shred option: when site tabs are closed.">
+        When site tabs are closed
+      </message>
+      <message name="IDS_SHRED_OPTION_APP_EXIT" desc="Auto shred option: when app exits.">
+        When app exits
+      </message>
+      <message name="IDS_SHRED_SITE_DATA_NOW" desc="Button label to shred site data immediately.">
+        Shred site data now
+      </message>
+
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>
