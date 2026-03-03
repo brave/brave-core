@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
@@ -100,6 +101,13 @@ template("brave_extra_paks") {
       sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak" ]
 
       deps += [ "//brave/components/brave_rewards/resources" ]
+    }
+
+    if (is_brave_origin_branded) {
+      sources += [ "$root_gen_dir/brave/brave_origin_startup_resources.pak" ]
+
+      deps +=
+          [ "//brave/browser/resources/brave_origin_startup:resources_grit" ]
     }
 
     if (enable_tor) {

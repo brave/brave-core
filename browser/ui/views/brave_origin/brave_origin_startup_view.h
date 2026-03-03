@@ -1,0 +1,110 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ORIGIN_BRAVE_ORIGIN_STARTUP_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_ORIGIN_BRAVE_ORIGIN_STARTUP_VIEW_H_
+
+#include <memory>
+
+#include "base/functional/callback.h"
+#include "base/memory/weak_ptr.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
+#include "content/public/browser/web_contents_delegate.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
+#include "ui/views/widget/widget_delegate.h"
+
+class Profile;
+class ScopedProfileKeepAlive;
+
+namespace content {
+class WebContents;
+}  // namespace content
+
+namespace views {
+class WebView;
+}  // namespace views
+
+// Standalone modal window that shows the Brave Origin startup dialog.
+// Appears before the profile picker on is_brave_origin_branded builds,
+// gating browser access until the user buys or restores a purchase.
+class BraveOriginStartupView : public views::WidgetDelegateView,
+                               public content::WebContentsDelegate,
+                               public content::WebContentsObserver {
+  METADATA_HEADER(BraveOriginStartupView, views::WidgetDelegateView)
+
+ public:
+  // Shows the startup dialog. |on_complete| is called when the user has
+  // been validated and the dialog closes, to continue the startup flow.
+  static void Show(base::OnceClosure on_complete);
+  static void Hide();
+  static bool IsShowing();
+
+  BraveOriginStartupView(const BraveOriginStartupView&) = delete;
+  BraveOriginStartupView& operator=(const BraveOriginStartupView&) = delete;
+
+ private:
+  explicit BraveOriginStartupView(base::OnceClosure on_complete);
+  ~BraveOriginStartupView() override;
+
+  void Display();
+  void OnSystemProfileCreated(Profile* profile);
+  void OnDefaultProfileCreated(Profile* profile);
+  void MaybeInit();
+  void Init(Profile* system_profile);
+  void BuildLayout();
+  void SetupWebUICallbacks();
+
+  // Called by the WebUI handler when the user wants to open the buy window.
+  void OpenBuyWindow();
+
+  // Called by the WebUI handler when purchase is validated.
+  void CloseAndProceed();
+
+  // views::WidgetDelegateView:
+  void WindowClosing() override;
+  std::u16string GetAccessibleWindowTitle() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
+
+  // content::WebContentsDelegate:
+  content::WebContents* OpenURLFromTab(
+      content::WebContents* source,
+      const content::OpenURLParams& params,
+      base::OnceCallback<void(content::NavigationHandle&)>
+          navigation_handle_callback) override;
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
+  bool HandleKeyboardEvent(content::WebContents* source,
+                           const input::NativeWebKeyboardEvent& event) override;
+
+  // content::WebContentsObserver:
+  void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
+
+  ScopedKeepAlive keep_alive_;
+  std::unique_ptr<ScopedProfileKeepAlive> profile_keep_alive_;
+  std::unique_ptr<content::WebContents> contents_;
+  raw_ptr<views::WebView> web_view_ = nullptr;
+
+  raw_ptr<Profile> system_profile_ = nullptr;
+  raw_ptr<Profile> default_profile_ = nullptr;
+  int profiles_loaded_count_ = 0;
+
+  bool validated_ = false;
+  base::OnceClosure on_complete_;
+
+  views::UnhandledKeyboardEventHandler unhandled_keyboard_event_handler_;
+
+  base::WeakPtrFactory<BraveOriginStartupView> weak_ptr_factory_{this};
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ORIGIN_BRAVE_ORIGIN_STARTUP_VIEW_H_

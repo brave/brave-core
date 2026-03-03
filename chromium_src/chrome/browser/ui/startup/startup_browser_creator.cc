@@ -7,12 +7,50 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
+#endif
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#include "base/json/json_reader.h"
+#include "brave/browser/ui/views/brave_origin/brave_origin_startup_view.h"
+#include "brave/components/brave_origin/pref_names.h"
+#include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "chrome/browser/browser_process.h"
+#include "components/prefs/pref_service.h"
+
+namespace {
+
+bool HasOriginSkuCredentials(PrefService* local_state) {
+  const auto& skus_state = local_state->GetDict(skus::prefs::kSkusState);
+  for (const auto [env_key, env_value] : skus_state) {
+    if (!env_value.is_string()) {
+      continue;
+    }
+    auto parsed =
+        base::JSONReader::ReadDict(env_value.GetString(), base::JSON_PARSE_RFC);
+    if (!parsed) {
+      continue;
+    }
+    const auto* credentials = parsed->FindDict("credentials");
+    if (!credentials) {
+      continue;
+    }
+    const auto* items = credentials->FindDict("items");
+    if (items && !items->empty()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+}  // namespace
 #endif
 
 #ifdef LaunchModeRecorder
@@ -85,5 +123,42 @@ void BraveStartupBrowserCreatorImpl::Launch(
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
+#define Start Start_ChromiumImpl
 #include <chrome/browser/ui/startup/startup_browser_creator.cc>
+#undef Start
 #undef StartupBrowserCreatorImpl
+
+// For Brave Origin branded builds, intercept Start() to show a purchase
+// validation dialog before any browser window or profile picker opens. Start()
+// is only called externally from chrome_browser_main.cc, so the #define above
+// only renames the definition (not external callers). When the dialog closes
+// with a successful validation, the callback invokes Start_ChromiumImpl() to
+// continue the normal startup flow.
+bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
+                                  const base::FilePath& cur_dir,
+                                  StartupProfileInfo profile_info,
+                                  const Profiles& last_opened_profiles) {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  auto* local_state = g_browser_process->local_state();
+  if (!local_state->GetBoolean(brave_origin::kOriginPurchaseValidated) ||
+      !HasOriginSkuCredentials(local_state)) {
+    // Capture first_run_tabs_ by value because `this` (the
+    // StartupBrowserCreator) is destroyed by chrome_browser_main.cc
+    // (browser_creator_.reset()) right after Start() returns.
+    BraveOriginStartupView::Show(base::BindOnce(
+        [](std::vector<GURL> first_run_tabs, const base::CommandLine& cmd_line,
+           const base::FilePath& cur_dir, StartupProfileInfo profile_info,
+           const Profiles& last_opened_profiles) {
+          StartupBrowserCreator browser_creator;
+          browser_creator.AddFirstRunTabs(first_run_tabs);
+          browser_creator.Start_ChromiumImpl(
+              cmd_line, cur_dir, std::move(profile_info), last_opened_profiles);
+        },
+        std::move(first_run_tabs_), cmd_line, cur_dir, std::move(profile_info),
+        last_opened_profiles));
+    return true;
+  }
+#endif
+  return Start_ChromiumImpl(cmd_line, cur_dir, std::move(profile_info),
+                            last_opened_profiles);
+}

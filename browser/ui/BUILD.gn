@@ -11,6 +11,7 @@ import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -239,6 +240,21 @@ source_set("ui") {
 
   if (enable_brave_education) {
     deps += [ "webui/brave_education" ]
+  }
+
+  if (is_brave_origin_branded) {
+    sources += [
+      "views/brave_origin/brave_origin_buy_window.cc",
+      "views/brave_origin/brave_origin_buy_window.h",
+      "views/brave_origin/brave_origin_startup_view.cc",
+      "views/brave_origin/brave_origin_startup_view.h",
+    ]
+    deps += [
+      "//brave/brave_domains",
+      "//brave/browser/ui/webui/brave_origin_startup",
+      "//chrome/browser/profiles/keep_alive",
+      "//components/keep_alive_registry",
+    ]
   }
 
   if (!is_android) {

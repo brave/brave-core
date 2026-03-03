@@ -16,6 +16,11 @@ namespace brave_origin {
 // Base key for all profile-scoped BraveOrigin policy preferences in local state
 inline constexpr char kBraveOriginPolicies[] = "brave.brave_origin.policies";
 
+// Whether the user has validated their Brave Origin purchase at startup.
+// Stored in local state so the startup dialog doesn't re-show every launch.
+inline constexpr char kOriginPurchaseValidated[] =
+    "brave.origin.purchase_validated";
+
 namespace prefs {
 
 #if BUILDFLAG(IS_ANDROID)

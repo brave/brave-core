@@ -202,6 +202,10 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [53920],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/brave_origin_startup/resources.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [53930],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-new_tab_takeover/new_tab_takeover.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [53940],
