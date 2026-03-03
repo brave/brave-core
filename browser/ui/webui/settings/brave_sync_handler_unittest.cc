@@ -86,7 +86,7 @@ TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
 
   std::string ascii_text;
   clipboard().ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                            /* data_dst = */ nullptr, &ascii_text);
+                            /* data_dst = */ std::nullopt, &ascii_text);
   EXPECT_EQ(ascii_text, kSyncCodeExample);
 
 #if BUILDFLAG(IS_MAC)
