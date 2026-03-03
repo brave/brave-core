@@ -16,6 +16,21 @@ BraveMultiContentsViewDelegateImpl::BraveMultiContentsViewDelegateImpl(
 BraveMultiContentsViewDelegateImpl::~BraveMultiContentsViewDelegateImpl() =
     default;
 
+void BraveMultiContentsViewDelegateImpl::WebContentsFocused(
+    content::WebContents* contents) {
+  // https://github.com/brave/brave-browser/issues/53121
+  // On macOS, closing a split view detaches a web contents native view, which
+  // can synchronously trigger a focus change (via AppKit first responder
+  // transfer). This focus event propagates to ActivateTabAt(), but if we're
+  // already inside CloseAllTabs(), the TabStripModel reentrancy guard fires.
+  // Skip the activation when tabs are being closed.
+  if (tab_strip_model_->closing_all()) {
+    return;
+  }
+
+  MultiContentsViewDelegateImpl::WebContentsFocused(contents);
+}
+
 void BraveMultiContentsViewDelegateImpl::ResizeWebContents(double ratio,
                                                            bool done_resizing) {
   // Upstream assumes active tab is split tab when resizing happens.
