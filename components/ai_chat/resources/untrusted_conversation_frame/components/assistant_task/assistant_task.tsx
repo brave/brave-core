@@ -253,11 +253,12 @@ function Steps(props: Props & TabProps) {
   // so that the LLM tells a story of the task by it's own progress
   // description.
 
-  // Collect source/query events from all taskItems so they can be shown
-  // with the last (completion) step. These events may be in earlier
-  // entries when server search results arrive before the final
-  // completion entry.
-  const allSourceEvents = props.taskData.taskItems
+  // Collect source/query events from non-last taskItems so they can
+  // be shown with the last (completion) step. These events may be in
+  // earlier entries when server search results arrive before the
+  // final completion entry.
+  const nonLastSourceEvents = props.taskData.taskItems
+    .slice(0, -1)
     .flat()
     .filter((ev) => ev.sourcesEvent || ev.searchQueriesEvent)
 
@@ -279,17 +280,15 @@ function Steps(props: Props & TabProps) {
 
     const isThinking = isRunnable && props.isThinking
 
-    // Non-last steps: strip source/query events (they belong with the
-    // completion). Last step: prepend all collected source/query events.
+    // Non-last steps: strip source/query events (they belong with
+    // the completion). Last step: prepend earlier source/query events
+    // and keep its own.
     const isLastItem = index === props.taskData.taskItems.length - 1
     const events = isLastItem
-      ? [
-          ...allSourceEvents,
-          ...taskItem.filter(
-            (ev) => !ev.sourcesEvent && !ev.searchQueriesEvent,
-          ),
-        ]
-      : taskItem.filter((ev) => !ev.sourcesEvent && !ev.searchQueriesEvent)
+      ? [...nonLastSourceEvents, ...taskItem]
+      : taskItem.filter(
+          (ev) => !ev.sourcesEvent && !ev.searchQueriesEvent,
+        )
 
     return (
       <div

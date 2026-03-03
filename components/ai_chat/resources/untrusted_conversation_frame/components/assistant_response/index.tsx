@@ -161,21 +161,20 @@ export type AssistantResponseProps = BaseProps & {
 export default function AssistantResponse(props: AssistantResponseProps) {
   // Aggregate sources/queries across all events since
   // multiple tool results each emit their own event.
-  const allSources =
-    props.events?.flatMap((event) => event.sourcesEvent?.sources ?? []) ?? []
-  const allRichResults =
-    props.events?.flatMap(
-      (event) =>
-        event.sourcesEvent?.richResults?.filter((r): r is string => !!r) ?? [],
-    ) ?? []
-  const allSearchQueries =
-    props.events?.flatMap(
-      (event) => event.searchQueriesEvent?.searchQueries ?? [],
-    ) ?? []
+  const allSources = props.events.flatMap(
+    (event) => event.sourcesEvent?.sources ?? [],
+  )
+  const allRichResults = props.events.flatMap(
+    (event) =>
+      event.sourcesEvent?.richResults?.filter((r) => !!r) ?? [],
+  )
+  const allSearchQueries = props.events.flatMap(
+    (event) => event.searchQueriesEvent?.searchQueries ?? [],
+  )
 
   const hasCompletionStarted =
     !props.isEntryInProgress
-    || (props.events?.some((event) => event.completionEvent) ?? false)
+    || props.events.some((event) => event.completionEvent)
 
   return (
     <AssistantResponseContextProvider events={props.events}>
@@ -185,7 +184,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           jsonData={r}
         />
       ))}
-      {props.events?.map((event, i) => (
+      {props.events.map((event, i) => (
         <AssistantEvent
           key={i}
           event={event}
