@@ -160,18 +160,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Збалансована швидкість і розум";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі DeepSeek R1, створеної компанією DeepSeek для виконання завдань глибокого аналізу. Brave розміщує DeepSeek R1 на власній безпечній інфраструктурі.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Модель міркувань";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageGemmaMessageDescription" = "Привіт, я — Leo, вбудований AI-асистент від Brave. Я працюю на базі моделі Gemma 3 12B, створеної компанією Google DeepMind для ефективної роботи й застосування в багатьох сценаріях використання. Brave розміщує Gemma на власній безпечній інфраструктурі.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageGemmaPurposeDescription" = "Розуміння тексту та зображень загального призначення";
-
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Вітаю, я Leo. Я помічник на базі від Brave і працюю на базі %@. Запитайте в мене будь-що, а я спробую відповісти якомога точніше.";
 
@@ -182,7 +170,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Загальний чат";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Мене створено на базі моделі Qwen 14B від Alibaba Cloud для високої продуктивності та широкого спектру застосування. Brave розміщує Qwen на власній захищеній інфраструктурі.";
+"aichat.introMessageQwenMessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Мене створено на базі моделі Qwen VL 30B від Alibaba Cloud для високої продуктивності та широкого спектру застосування. Brave розміщує Qwen на власній захищеній інфраструктурі.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Чат для різних задач, програмування та іншого";

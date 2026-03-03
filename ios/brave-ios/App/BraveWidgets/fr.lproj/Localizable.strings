@@ -32,7 +32,7 @@
 "widgets.newsClusteringWidgetDescription" = "Gardez un œil sur les dernières actualités.";
 
 /* Title for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetTitle" = "L'essentiel de l'actu";
+"widgets.newsClusteringWidgetTitle" = "L’essentiel de l’actu";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Ouvrez Brave pour afficher vos favoris ici";

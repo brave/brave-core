@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Peruuta rekisteröinti";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Sähköpostiosoite";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Aloitusopas";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Pahoittelut, jokin meni vikaan";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Yhteystiedostoa ei voitu lukea. Se saattaa olla vioittunut tai ei-tuettu muoto.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Yhteystiedon avaaminen ei onnistu";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versio %1$@ (%2$@)";

@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Hủy đăng ký";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Địa chỉ email";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Get Started";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Xin lỗi, đã xảy ra sự cố";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Không thể đọc tệp liên hệ. Tệp có thể bị hỏng hoặc ở định dạng không được hỗ trợ.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Không thể Mở Liên hệ";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Phiên bản %1$@ (%2$@)";

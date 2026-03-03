@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Avbryt registrering";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "E-postadresse";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Kom i gang";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Beklager, noe gikk galt";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Kontaktfilen kunne ikke leses. Den kan være ødelagt eller i et format som ikke støttes.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Kan ikke åpne kontakt";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versjon %1$@ (%2$@)";
