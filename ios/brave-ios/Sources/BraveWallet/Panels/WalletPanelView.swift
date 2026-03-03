@@ -426,7 +426,7 @@ struct WalletPanelView: View {
       return true
     case .ada:
       for domain in Domain.allDomainsWithWalletPermissions(for: .ada) {
-        if let accounts = domain.wallet_cardanoPermittedAcccounts, !accounts.isEmpty {
+        if let accounts = domain.wallet_cardanoPermittedAccounts, !accounts.isEmpty {
           return false
         }
       }

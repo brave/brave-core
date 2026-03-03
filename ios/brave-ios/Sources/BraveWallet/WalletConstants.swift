@@ -141,7 +141,7 @@ public struct WalletConstants {
       }
     case .dapps:
       #if DEBUG
-      // enable cardana coin type in unit tests
+      // enable cardano coin type in unit tests
       if isUnitTesting {
         return [.eth, .sol, .ada]
       }
