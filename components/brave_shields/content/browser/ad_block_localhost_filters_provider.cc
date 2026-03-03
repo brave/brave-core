@@ -53,7 +53,7 @@ void AdBlockLocalhostFiltersProvider::LoadFilters(
   std::string_view filters_view(kLocalhostBadfilters,
                                 sizeof(kLocalhostBadfilters) - 1);
   std::vector<uint8_t> filters_vec(filters_view.begin(), filters_view.end());
-  auto buffer = mojo_base::BigBuffer(filters_vec);
+  auto buffer = mojo_base::BigBuffer(std::move(filters_vec));
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
