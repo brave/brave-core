@@ -783,6 +783,13 @@
 -ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
 -ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
 
+# We added our own page action view but this made metrics code related to the
+# page action fails. In order to addressed that we scrubbed out metrics code and
+# upstream tests related to it fails
+# https://github.com/brave/brave-core/pull/34248
+-PageActionMetricsRecorderTest.*
+-PageActionControllerTest.NotifyActionClickedLogsHistogram
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
