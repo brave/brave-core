@@ -11,7 +11,6 @@
 #include "base/containers/span_writer.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/byte_conversions.h"
-#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
@@ -20,6 +19,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "crypto/process_bound_string.h"
+#include "crypto/random.h"
 
 namespace brave_wallet {
 
@@ -165,13 +165,13 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     CHECK_IS_TEST();
     base::span(salt).copy_from_nonoverlapping(*salt_for_testing);
   } else {
-    base::RandBytes(base::span(salt));
+    crypto::RandBytes(base::span(salt));
   }
   if (nonce_for_testing.has_value()) {
     CHECK_IS_TEST();
     base::span(nonce).copy_from_nonoverlapping(*nonce_for_testing);
   } else {
-    base::RandBytes(base::span(nonce));
+    crypto::RandBytes(base::span(nonce));
   }
 
   auto result = ::brave_wallet::EncodePrivateKeyForExport(
