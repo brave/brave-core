@@ -3,6 +3,33 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+source_set("page_action") {
+  # TODO(https://github.com/brave/brave-browser/issues/52829)
+  # Other page action icons sources should be added here, not from
+  # //b/b/ui/BUILD.gn
+  sources = []
+  deps = []
+
+  if (enable_containers) {
+    sources += [
+      "partitioned_storage_page_action_controller.cc",
+      "partitioned_storage_page_action_controller.h",
+    ]
+    deps += [
+      "//brave/browser/ui/containers",
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/common:features",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/views/page_action",
+      "//components/tabs:public",
+      "//components/user_prefs",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

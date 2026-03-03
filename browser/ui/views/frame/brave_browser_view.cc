@@ -23,7 +23,6 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
-#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"

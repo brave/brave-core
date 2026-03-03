@@ -24,7 +24,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"

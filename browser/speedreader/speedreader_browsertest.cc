@@ -21,7 +21,6 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
