@@ -121,7 +121,7 @@
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="brave_origin"
         android:order="14"
-        android:icon="@drawable/product_origin"
+        android:icon="@drawable/ic_product_origin"
         android:title="@string/menu_origin"/>
     <PreferenceCategory
         android:key="display_section"
