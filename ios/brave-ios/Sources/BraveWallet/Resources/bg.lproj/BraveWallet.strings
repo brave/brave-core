@@ -1418,7 +1418,7 @@
 "wallet.selectNetworksDescription" = "Избери мрежи, по които да се филтрира";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksTitle" = "Избор на мрежи";
+"wallet.selectNetworksTitle" = "Избери мрежи";
 
 /* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
 "wallet.selectTokenToSendNoTokens" = "Няма налични жетони";

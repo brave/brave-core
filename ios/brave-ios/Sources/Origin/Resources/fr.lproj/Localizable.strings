@@ -17,7 +17,7 @@
 "newsLabel" = "Actualités";
 
 /* A toggle label for Brave Playlist feature */
-"playlistLabel" = "Playlist";
+"playlistLabel" = "Liste de lecture";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Collecte analytique privée et sécurisée";

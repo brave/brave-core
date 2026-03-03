@@ -160,18 +160,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Velocidade e inteligência equilibradas";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Olá, o meu nome é Leo. Sou representado pela Brave. Para realizar tarefas de raciocínio profundo, utilizo o modelo DeepSeek R1, criado pela DeepSeek. O DeepSeek R1 é hospedado pela Brave através de nossa própria infraestrutura segura.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Modelo de raciocínio";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageGemmaMessageDescription" = "Olá, chamo-me Leo. Sou um assistente de IA alojado integralmente pelo Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Gemma 3 12B, criado pela Google DeepMind. O Gemma é hospedado pelo Brave através da nossa própria infraestrutura segura.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageGemmaPurposeDescription" = "Capacidade geral de interpretação de texto e imagem";
-
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Olá. Sou o Leo, o assistente de IA da Brave. Uso a tecnologia da %@. Pergunte-me o que quiser e darei o meu melhor para responder.";
 
@@ -182,7 +170,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat de utilização geral";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Olá, sou Leo. Sou o assistente de IA alojado integralmente pela Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Qwen 14B, criado pela Alibaba Cloud. O Qwen é hospedado pela Brave através de nossa própria infraestrutura segura.";
+"aichat.introMessageQwenMessageDescription" = "Olá, sou Leo. Sou o assistente de IA alojado integralmente pela Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Qwen VL 30B, criado pela Alibaba Cloud. O Qwen é hospedado pela Brave através de nossa própria infraestrutura segura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Conversa de carácter geral, codificação e muito mais";

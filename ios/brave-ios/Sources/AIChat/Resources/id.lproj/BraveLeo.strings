@@ -160,18 +160,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kecepatan yang seimbang dengan kecerdasan";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh DeepSeek R1, model yang diciptakan oleh DeepSeek untuk melakukan tugas-tugas penalaran mendalam. DeepSeek R1 dihost oleh Brave dalam infrastruktur kami yang aman.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model penalaran";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageGemmaMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Gemma 3 12B, model yang diciptakan oleh Google DeepMind agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Gemma dihost oleh Brave dalam infrastruktur kami yang aman.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageGemmaPurposeDescription" = "Pemahaman teks dan gambar untuk tujuan umum";
-
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hai, saya Leo. Saya asisten AI berdasarkan Brave. Saya didukung oleh %@. Tanyakan saya semua hal dan saya akan berusaha menjawab dengan sebaik mungkin.";
 
@@ -182,7 +170,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Obrolan umum";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.";
+"aichat.introMessageQwenMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Qwen VL 30B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Obrolan umum, koding, dan lainnya";
