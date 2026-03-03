@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/shield_bg_color">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="18dp">
+
+        <!-- Back button -->
+        <ImageView
+            android:id="@+id/report_back_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_small_down"
+            android:rotation="90"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/report_broken_site_panel_title"/>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="@string/report_broken_site_panel_title"
+            android:textSize="20sp"
+            android:lineHeight="26sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+    <!-- Items card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp"
+        android:background="@drawable/advanced_options_bg">
+
+            <!-- Site row: favicon + domain + chevron -->
+            <LinearLayout
+                android:id="@+id/report_site_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp">
+
+                <ImageView
+                    android:id="@+id/report_site_favicon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@null"/>
+
+                <TextView
+                    android:id="@+id/report_site_domain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
+                    android:lineHeight="24sp"
+                    android:textColor="@color/text_primary"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="example.com"/>
+
+            </LinearLayout>
+
+            <!-- Description text -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_broken_site_panel_desc1"
+                    android:textSize="14sp"
+                    android:lineHeight="20sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/report_description_learn_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:lineHeight="20sp"
+                    android:textColor="@color/text_primary"/>
+
+            </LinearLayout>
+
+            <!-- Text fields -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp">
+
+                <!-- Issue category dropdown -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/report_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/issue_category_spinner_text"
+                    app:placeholderText="@string/issue_category_placeholder"
+                    app:boxStrokeColor="@color/schemes_outline_variant"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:endIconMode="dropdown_menu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/report_category_dropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        tools:ignore="LabelFor"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Additional details field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/report_details_layout"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/report_broken_site_details_placeholder"
+                    app:placeholderText="@string/report_broken_site_panel_details_hint"
+                    app:boxStrokeColor="@color/schemes_outline_variant"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/report_details_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:importantForAutofill="no"
+                        android:textSize="16sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Contact field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/report_contact_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/report_broken_site_panel_contact_label"
+                    app:placeholderText="@string/report_broken_site_panel_contact_hint"
+                    app:boxStrokeColor="@color/schemes_outline_variant"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:helperTextEnabled="true"
+                    app:helperText="@string/report_broken_site_panel_contact_info"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/report_contact_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="254"
+                        android:maxLines="1"
+                        android:importantForAutofill="no"
+                        android:textSize="16sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Screenshot checkbox -->
+            <LinearLayout
+                android:id="@+id/report_screenshot_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <android.widget.CheckBox
+                    android:id="@+id/report_screenshot_checkbox"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:button="@drawable/brave_checkbox"
+                    android:clickable="false"
+                    android:focusable="false"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/report_broken_site_text_attach_screenshot_label"
+                    android:textSize="16sp"
+                    android:lineHeight="24sp"
+                    android:textColor="@color/text_primary"/>
+
+            </LinearLayout>
+
+            <!-- Divider above buttons -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_line_bg_color"/>
+
+            <!-- Button row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <!-- Cancel button (plain/faint) -->
+                <TextView
+                    android:id="@+id/report_cancel_button"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/brave_cancel"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.006"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="0dp"/>
+
+                <!-- Submit button (filled/primary) -->
+                <TextView
+                    android:id="@+id/report_submit_button"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/report_broken_site_panel_submit"
+                    android:textSize="14sp"
+                    android:textColor="@color/schemes_on_primary"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.006"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/report_submit_button_bg"/>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

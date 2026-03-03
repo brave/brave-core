@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Shields Panel Strings -->
+
+    <string name="shields_warning_line2">Note: this may reduce Brave\'s privacy protections.</string>
+
+    <string name="shields_up_status">Shields up for this site</string>
+    <string name="shields_down_status">Shields down for this site</string>
+    <string name="trackers_blocked_text">Trackers, ads, and more blocked.</string>
+
+    <!-- Advanced Options -->
+    <string name="trackers_ads_description">Choose how to handle trackers and ads</string>
+    <string name="cookies_description">Choose how to handle cookies</string>
+    <string name="shred_site_data">Shred site\'s data</string>
+    <string name="reset_shields_defaults">Reset this site to Shields defaults</string>
+    <string name="reset_shields_defaults_confirmation">Site reset to Shields defaults</string>
+    <string name="brave_shields_global_settings_title">Shields global settings</string>
+
+    <!-- Report Broken Site -->
+    <string name="report_broken_site_prompt">Tell us if the site wasn\'t working properly with Shields up.</string>
+    <string name="report_broken_site_button">Report</string>
+
+    <!-- Report Broken Site Panel -->
+    <string name="report_broken_site_panel_title">Report a broken site</string>
+    <string name="report_broken_site_panel_desc1">Let Brave\'s developers know that this site doesn\'t work properly with this site.</string>
+    <string name="report_broken_site_panel_desc2">Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site.</string>
+    <string name="report_broken_site_panel_details_hint">What is not working on this site?</string>
+    <string name="report_broken_site_panel_contact_label">Contact me at (optional)</string>
+    <string name="report_broken_site_panel_contact_hint">Email, X username, etc.</string>
+    <string name="report_broken_site_panel_contact_info">If you provide contact info it will be stored for future reports</string>
+    <string name="report_broken_site_panel_submit">Submit</string>
+    <string name="report_broken_site_panel_submitted">Report submitted. Thank you!</string>
+
+    <!-- Shred Site Data Panel -->
+    <string name="shred_site_data_title">Shred site data</string>
+    <string name="shred_auto_shred">Auto Shred</string>
+    <string name="shred_option_site_tabs_closed">When site tabs are closed</string>
+    <string name="shred_option_app_exit">When app exits</string>
+    <string name="shred_site_data_now">Shred site data now</string>
+</resources>

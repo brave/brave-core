@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/unified_panel_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="true"
+    android:clipToPadding="true"
+    android:background="@drawable/unified_panel_background"
+    android:outlineProvider="background">
+
+    <!-- Main Panel Content -->
+    <ScrollView
+        android:id="@+id/main_panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="true"
+        android:clipToPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="true"
+            android:clipToPadding="true"
+            android:orientation="vertical">
+
+            <!-- Shields Content -->
+            <include
+                android:id="@+id/shields_tab_content"
+                layout="@layout/brave_shields_tab_content"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- HTTPS Upgrade Panel -->
+    <ScrollView
+        android:id="@+id/https_panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <include layout="@layout/brave_https_upgrade_panel"/>
+
+    </ScrollView>
+
+    <!-- Trackers & Ads Panel -->
+    <ScrollView
+        android:id="@+id/trackers_panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <include layout="@layout/brave_trackers_ads_panel"/>
+
+    </ScrollView>
+
+    <!-- Cookies Panel -->
+    <ScrollView
+        android:id="@+id/cookies_panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <include layout="@layout/brave_cookies_panel"/>
+
+    </ScrollView>
+
+    <!-- Shred Site Data Panel -->
+    <include
+        android:id="@+id/shred_panel_container"
+        layout="@layout/brave_shred_data_panel"
+        android:visibility="gone"/>
+
+    <!-- Report Broken Site Panel -->
+    <ScrollView
+        android:id="@+id/report_broken_site_panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <include layout="@layout/brave_report_broken_site_panel"/>
+
+    </ScrollView>
+
+</FrameLayout>

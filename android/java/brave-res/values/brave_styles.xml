@@ -711,4 +711,9 @@
         <item name="buttonIconTint">@color/brave_checkbox_color_selector</item>
         <item name="android:textSize">@dimen/default_regular</item>
     </style>
+
+    <style name="TextAppearance.BraveBlockedItemIcon" parent="TextAppearance.TextSmall">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/schemes_on_surface</item>
+    </style>
 </resources>

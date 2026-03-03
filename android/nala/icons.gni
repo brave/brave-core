@@ -17,6 +17,8 @@ nala_icon_overrides = [
 nala_icons = [
   "ic_accessibility.xml",
   "ic_appearance.xml",
+  "ic_arrow_small_down.xml",
+  "ic_arrow_up_and_down.xml",
   "ic_bar_chart_search.xml",
   "ic_bar_chart.xml",
   "ic_browser_customizable_shortcut.xml",
@@ -27,6 +29,7 @@ nala_icons = [
   "ic_code.xml",
   "ic_credit_card.xml",
   "ic_brave_icon_search.xml",
+  "ic_disable_outline.xml",
   "ic_download.xml",
   "ic_edit_pencil.xml",
   "ic_email_shield.xml",

@@ -347,6 +347,7 @@
 
     <color name="schemes_on_surface">#1c1c1d</color>
     <color name="schemes_on_surface_variant">#464649</color>
+    <color name="schemes_outline">#78787c</color>
     <color name="schemes_outline_variant">#c9c9ca</color>
     <color name="schemes_primary">#434fcf</color>
     <color name="schemes_on_primary">#ffffff</color>
@@ -390,4 +391,9 @@
     <color name="material_tertiary_80">@color/primitive_tertiary_80</color>
     <color name="material_tertiary_40">@color/primitive_tertiary_40</color>
 
+    <!-- Shields Panel Colors -->
+    <color name="divider_line_bg_color">#e8e8eb</color>
+    <color name="shields_surface">#FAFAFB</color>
+    <color name="shields_container_background">#FFFFFF</color>
+    <color name="shields_text_warning">#745C00</color>
 </resources>
