@@ -165,8 +165,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
     (event) => event.sourcesEvent?.sources ?? [],
   )
   const allRichResults = props.events.flatMap(
-    (event) =>
-      event.sourcesEvent?.richResults?.filter((r) => !!r) ?? [],
+    (event) => event.sourcesEvent?.richResults?.filter((r) => !!r) ?? [],
   )
   const allSearchQueries = props.events.flatMap(
     (event) => event.searchQueriesEvent?.searchQueries ?? [],

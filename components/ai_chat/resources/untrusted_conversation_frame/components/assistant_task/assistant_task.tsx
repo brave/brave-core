@@ -286,9 +286,7 @@ function Steps(props: Props & TabProps) {
     const isLastItem = index === props.taskData.taskItems.length - 1
     const events = isLastItem
       ? [...nonLastSourceEvents, ...taskItem]
-      : taskItem.filter(
-          (ev) => !ev.sourcesEvent && !ev.searchQueriesEvent,
-        )
+      : taskItem.filter((ev) => !ev.sourcesEvent && !ev.searchQueriesEvent)
 
     return (
       <div
