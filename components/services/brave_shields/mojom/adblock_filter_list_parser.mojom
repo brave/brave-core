@@ -5,10 +5,11 @@
 
 module adblock_filter_list_parser.mojom;
 
+import "mojo/public/mojom/base/big_buffer.mojom";
 import "sandbox/policy/mojom/sandbox.mojom";
 
 struct FilterListInput {
-  array<uint8> filters;
+  mojo_base.mojom.BigBuffer filters;
   uint8 permission_mask;
 };
 
@@ -23,5 +24,5 @@ struct FilterListMetadata {
 [ServiceSandbox=sandbox.mojom.Sandbox.kService]
 interface AdblockFilterListParser {
   ParseFilters(array<FilterListInput> filters) =>
-    (array<uint8> verified_engine_dat, array<FilterListMetadata> metadata);
+    (mojo_base.mojom.BigBuffer verified_engine_dat, array<FilterListMetadata> metadata);
 };

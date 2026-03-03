@@ -26,6 +26,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 #include "url/gurl.h"
@@ -71,7 +72,7 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnDATCreated(std::vector<unsigned char> verified_engine_dat);
+    void OnDATCreated(mojo_base::BigBuffer verified_engine_dat);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged(bool is_default_engine) override;
@@ -79,7 +80,7 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
-    std::vector<unsigned char> pending_dat_;
+    mojo_base::BigBuffer pending_dat_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =

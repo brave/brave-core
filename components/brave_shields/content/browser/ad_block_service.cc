@@ -72,7 +72,7 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
 }
 
 void AdBlockService::SourceProviderObserver::OnDATCreated(
-    std::vector<unsigned char> verified_engine_dat) {
+    mojo_base::BigBuffer verified_engine_dat) {
   TRACE_EVENT("brave.adblock", "OnDATCreated");
   pending_dat_ = std::move(verified_engine_dat);
   // multiple AddObserver calls are ignored
@@ -96,9 +96,10 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
-           std::vector<unsigned char> dat_buffer,
+           mojo_base::BigBuffer dat_buffer,
            AdblockResourceStorageBox storage) {
           if (engine) {
+            // BigBuffer can be implicitly converted to span<const uint8_t>
             engine->Load(true, dat_buffer, *storage);
           }
         },

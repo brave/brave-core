@@ -13,6 +13,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/services/brave_shields/filter_parsing_service.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace brave_shields {
@@ -60,9 +61,12 @@ void FilterParsingService::ParseFilters(
   std::vector<adblock_filter_list_parser::mojom::FilterListMetadataPtr>
       metadata;
   for (const auto& filter_list : filters) {
+    base::span<const uint8_t> filter_data = filter_list->filters;
+    std::vector<uint8_t> filter_vec(filter_data.begin(), filter_data.end());
+
     auto this_metadata =
         (*filter_set)
-            ->add_filter_list_with_permissions(filter_list->filters,
+            ->add_filter_list_with_permissions(filter_vec,
                                                filter_list->permission_mask);
     auto mojom_metadata =
         adblock_filter_list_parser::mojom::FilterListMetadata::New();
@@ -90,7 +94,10 @@ void FilterParsingService::ParseFilters(
   const auto dat = e.value->serialize();
   std::vector<unsigned char> output_dat = base::ToVector(dat);
 
-  std::move(callback).Run(std::move(output_dat), std::move(metadata));
+  // Convert vector to BigBuffer for return
+  mojo_base::BigBuffer output_buffer(output_dat);
+
+  std::move(callback).Run(std::move(output_buffer), std::move(metadata));
 }
 
 }  // namespace brave_shields

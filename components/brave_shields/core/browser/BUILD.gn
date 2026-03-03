@@ -59,6 +59,7 @@ static_library("browser") {
     "//components/prefs",
     "//components/value_store",
     "//crypto",
+    "//mojo/public/cpp/base",
     "//url",
   ]
   public_deps = [

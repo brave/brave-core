@@ -153,11 +153,10 @@ void AdBlockFiltersProviderManager::FinishCombinating(
 }
 
 void AdBlockFiltersProviderManager::OnParseFilters(
-    base::OnceCallback<
-        void(const std::vector<unsigned char> verified_engine_dat)> cb,
+    base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
     std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
         on_metadata_cbs,
-    const std::vector<unsigned char>& verified_engine_dat,
+    mojo_base::BigBuffer verified_engine_dat,
     const std::vector<adblock_filter_list_parser::mojom::FilterListMetadataPtr>
         metadata) {
   DCHECK_EQ(on_metadata_cbs.size(), metadata.size());
@@ -177,7 +176,7 @@ void AdBlockFiltersProviderManager::OnParseFilters(
     }
     std::move(on_metadata_cbs[i]).Run(adblock_metadata);
   }
-  std::move(cb).Run(verified_engine_dat);
+  std::move(cb).Run(std::move(verified_engine_dat));
 }
 
 }  // namespace brave_shields

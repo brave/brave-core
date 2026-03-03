@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/services/brave_shields/filter_parsing_service.h"
 #include "brave/components/services/brave_shields/mojom/adblock_filter_list_parser.mojom.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -49,8 +50,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   void LoadFiltersForEngine(
       bool is_for_default_engine,
-      base::OnceCallback<
-          void(const std::vector<unsigned char> verified_engine_dat)>);
+      base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)>);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged(bool is_default_engine) override;
@@ -64,16 +64,14 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
  private:
   void OnParseFilters(
-      base::OnceCallback<
-          void(const std::vector<unsigned char> verified_engine_dat)> cb,
+      base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
       std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
           on_metadata_cbs,
-      const std::vector<unsigned char>& verified_engine_dat,
+      mojo_base::BigBuffer verified_engine_dat,
       const std::vector<
           adblock_filter_list_parser::mojom::FilterListMetadataPtr> metadata);
   void FinishCombinating(
-      base::OnceCallback<
-          void(const std::vector<unsigned char> verified_engine_dat)> cb,
+      base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
       uint64_t flow_id,
       std::vector<
           std::tuple<std::vector<unsigned char>,
