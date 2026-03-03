@@ -147,18 +147,16 @@ function ElapsedTimeCounter(props: {
   const [elapsed, setElapsed] = React.useState(0)
   const startTimeRef = React.useRef<number | null>(null)
 
-  // Calculate start time from progressEvent.elapsedSeconds when available.
-  // TODO(petemill): The elapsed timer restarts from 0 when the UI
-  // re-renders (e.g. conversation reload, sidebar toggle). Consider
-  // tracking start time in C++ ConversationHandler or adding
-  // time_started to ToolUseEvent for accuracy across re-renders.
+  // Recalibrate start time whenever a new progressEvent arrives so the
+  // timer stays accurate across UI re-mounts (sidebar toggle, move to
+  // new tab, page reload). Falls back to Date.now() only when no
+  // progressEvent has been received yet.
   React.useEffect(() => {
-    if (!startTimeRef.current) {
+    if (props.deepResearch.progressEvent) {
+      startTimeRef.current =
+        Date.now() - props.deepResearch.progressEvent.elapsedSeconds * 1000
+    } else if (!startTimeRef.current) {
       startTimeRef.current = Date.now()
-      if (props.deepResearch.progressEvent) {
-        startTimeRef.current -=
-          props.deepResearch.progressEvent.elapsedSeconds * 1000
-      }
     }
   }, [props.deepResearch.progressEvent])
 

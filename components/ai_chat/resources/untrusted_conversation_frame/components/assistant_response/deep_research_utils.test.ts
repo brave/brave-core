@@ -43,9 +43,7 @@ describe('extractDeepResearchEvents', () => {
   })
 
   it('should return empty results for events with no deep research', () => {
-    const events = [
-      getCompletionEvent('Hello'),
-    ]
+    const events = [getCompletionEvent('Hello')]
     const result = extractDeepResearchEvents(events)
 
     expect(result.hasDeepResearchEvents).toBe(false)
@@ -53,9 +51,7 @@ describe('extractDeepResearchEvents', () => {
   })
 
   it('should detect hasDeepResearchEvents from ToolUseEvent', () => {
-    const events = [
-      getDeepResearchToolUseEvent(),
-    ]
+    const events = [getDeepResearchToolUseEvent()]
     const result = extractDeepResearchEvents(events)
 
     expect(result.hasDeepResearchEvents).toBe(true)
