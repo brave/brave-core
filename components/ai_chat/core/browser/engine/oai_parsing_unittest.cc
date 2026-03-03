@@ -622,6 +622,32 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidFavicon) {
   EXPECT_EQ(web_sources->sources[0]->title, "Valid Source");
 }
 
+TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesEmptyFavicon) {
+  // Empty favicon string should use the default globe icon,
+  // not cause the source to be dropped.
+  constexpr char kBlockJson[] = R"({
+    "type": "brave-chat.webSources",
+    "sources": [
+      {
+        "title": "Empty Favicon",
+        "url": "https://example.com",
+        "favicon": ""
+      }
+    ]
+  })";
+
+  auto block = base::test::ParseJsonDict(kBlockJson);
+  auto result = ParseContentBlockFromDict(block);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE((*result)->is_web_sources_content_block());
+
+  const auto& web_sources = (*result)->get_web_sources_content_block();
+  ASSERT_EQ(web_sources->sources.size(), 1u);
+  EXPECT_EQ(web_sources->sources[0]->title, "Empty Favicon");
+  EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(), kDefaultFaviconUrl);
+}
+
 TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesEmptySources) {
   constexpr char kBlockJson[] = R"({
     "type": "brave-chat.webSources",
