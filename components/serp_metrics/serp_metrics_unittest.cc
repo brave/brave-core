@@ -12,9 +12,10 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/serp_metrics/pref_registry.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
+#include "brave/components/time_period_storage/time_period_storage.h"
+#include "brave/components/time_period_storage/time_period_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,14 +28,55 @@
 
 namespace serp_metrics {
 
+namespace {
+
+class FakeTimePeriodStore : public TimePeriodStore {
+ public:
+  FakeTimePeriodStore() = default;
+
+  FakeTimePeriodStore(const FakeTimePeriodStore&) = delete;
+  FakeTimePeriodStore& operator=(const FakeTimePeriodStore&) = delete;
+
+  ~FakeTimePeriodStore() override = default;
+
+  const base::ListValue* Get() override { return &list_; }
+
+  void Set(base::ListValue list) override { list_ = std::move(list); }
+
+  void Clear() override { list_.clear(); }
+
+ private:
+  base::ListValue list_;
+};
+
+TimePeriodStorages BuildFakeTimePeriodStorages() {
+  TimePeriodStorages time_period_storages;
+  time_period_storages.emplace(SerpMetricType::kBrave,
+                               std::make_unique<TimePeriodStorage>(
+                                   std::make_unique<FakeTimePeriodStore>(),
+                                   kSerpMetricsTimePeriodInDays.Get(),
+                                   /*should_offset_dst=*/false));
+  time_period_storages.emplace(SerpMetricType::kGoogle,
+                               std::make_unique<TimePeriodStorage>(
+                                   std::make_unique<FakeTimePeriodStore>(),
+                                   kSerpMetricsTimePeriodInDays.Get(),
+                                   /*should_offset_dst=*/false));
+  time_period_storages.emplace(SerpMetricType::kOther,
+                               std::make_unique<TimePeriodStorage>(
+                                   std::make_unique<FakeTimePeriodStore>(),
+                                   kSerpMetricsTimePeriodInDays.Get(),
+                                   /*should_offset_dst=*/false));
+  return time_period_storages;
+}
+
+}  // namespace
+
 class SerpMetricsTest : public testing::Test {
  public:
   SerpMetricsTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    RegisterProfilePrefs(prefs_.registry());
-
     // Register `kLastCheckYMD` pref (YYYY-MM-DD). This pref is part of the
     // daily usage ping and tracks the last reported day so we don't re-report
     // previously sent metrics.
@@ -44,7 +86,8 @@ class SerpMetricsTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         kSerpMetricsFeature, {{"time_period_in_days", "7"}});
 
-    serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_, &prefs_);
+    serp_metrics_ = std::make_unique<SerpMetrics>(
+        &local_state_, BuildFakeTimePeriodStorages());
   }
 
   // Advances the clock to one millisecond shy of a brand new day.
@@ -83,7 +126,6 @@ class SerpMetricsTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
 
   TestingPrefServiceSimple local_state_;
-  TestingPrefServiceSimple prefs_;
 
   std::unique_ptr<SerpMetrics> serp_metrics_;
 };

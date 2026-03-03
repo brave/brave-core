@@ -15,6 +15,7 @@ brave_browser_misc_metrics_sources = [
 brave_browser_misc_metrics_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
+  "//brave/browser/serp_metrics",
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/misc_metrics",
   "//brave/components/ntp_background_images/browser",
@@ -23,6 +24,7 @@ brave_browser_misc_metrics_deps = [
   "//brave/components/serp_metrics:features",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles",
+  "//chrome/browser/profiles:profile_util",
   "//components/keyed_service/content",
   "//components/keyed_service/core",
   "//content/public/browser",

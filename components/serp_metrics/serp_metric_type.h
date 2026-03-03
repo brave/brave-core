@@ -9,6 +9,7 @@
 namespace serp_metrics {
 
 enum class SerpMetricType {
+  kUndefined,
   kBrave,
   kGoogle,
   kOther,

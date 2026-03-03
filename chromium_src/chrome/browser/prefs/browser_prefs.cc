@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/check.h"
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
@@ -109,6 +111,12 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_migration.h"
 #endif
+
+namespace {
+// Deprecated 2026-03.
+constexpr std::string_view kDeprecatedSerpMetricsTimePeriodStorage =
+    "brave.stats.serp_metrics";
+}  // namespace
 
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
@@ -253,6 +261,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::MigrateObsoleteProfilePrefs(profile_prefs);
 #endif
+
+  // Added 2026-03
+  profile_prefs->ClearPref(kDeprecatedSerpMetricsTimePeriodStorage);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

@@ -5,12 +5,14 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
+#include "base/check_is_test.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
+#include "brave/browser/serp_metrics/serp_metrics_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
@@ -25,6 +27,8 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -46,7 +50,8 @@
 namespace misc_metrics {
 
 ProfileMiscMetricsService::ProfileMiscMetricsService(
-    content::BrowserContext* context) {
+    content::BrowserContext* context,
+    ProfileManager* profile_manager) {
   profile_prefs_ = user_prefs::UserPrefs::Get(context);
   auto* local_state = g_browser_process->local_state();
   if (profile_prefs_) {
@@ -111,10 +116,17 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         std::make_unique<AutofillMetrics>(personal_data_manager);
   }
 
-  if (local_state && profile_prefs_ &&
+  if (local_state &&
       base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
-    serp_metrics_ = std::make_unique<serp_metrics::SerpMetrics>(local_state,
-                                                                profile_prefs_);
+    if (!profile_manager) {
+      // `ProfileManager` can only be null in tests.
+      CHECK_IS_TEST();
+    } else {
+      ProfileAttributesStorage& profile_attributes_storage =
+          profile_manager->GetProfileAttributesStorage();
+      serp_metrics_ = serp_metrics::CreateSerpMetrics(
+          local_state, profile->GetPath(), profile_attributes_storage);
+    }
   }
 
   ReportSimpleMetrics();
