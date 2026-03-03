@@ -49,6 +49,7 @@ source_set("browser_tests") {
     "brave_tor_browsertest.cc",
     "onion_domain_throttle_browsertest.cc",
     "onion_location_navigation_throttle_browsertest.cc",
+    "samesite_strict_cookie_tor_browsertest.cc",
     "tor_profile_manager_browsertest.cc",
   ]
 
