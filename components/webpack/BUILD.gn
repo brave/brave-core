@@ -22,6 +22,7 @@ generated_file("build_flags_json") {
     is_mac = is_mac
     is_win = is_win
     is_desktop = is_linux || is_mac || is_win
+    is_storybook = false
   }
 
   output_conversion = "json"

@@ -4,8 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-
-import AIChatContexts from '../../context/ai_chat_context'
 import { useSearchState } from '../../context/search_context'
 import { usePersistedState } from '$web-common/usePersistedState'
 import { ChatInput } from './chat_input'
@@ -14,8 +12,31 @@ import { QueryModeToggle, QueryMode } from './query_mode_toggle'
 
 import { style } from './query_box.style'
 
+// <if expr="!is_storybook">
+import AIChatContext from '../../context/ai_chat_context'
+// </if>
+// <if expr="is_storybook">
+import { MockContext as AIChatContext } from '../../../../../components/ai_chat/resources/page/state/mock_context'
+// </if>
+
 interface Props {
   showSearchSettings: () => void
+}
+
+/**
+ * Don't render AIChatContext, creating mojom bindings and receiving state
+ * updates unneccessarily if we're not showing chat input. But do render it
+ * even when toggled to search when the AI Chat input is toggleable, so that
+ * we preserve any input text.
+ */
+function MaybeAIChatContext(
+  props: React.PropsWithChildren<{ shouldRenderContext: boolean }>,
+) {
+  if (!props.shouldRenderContext) {
+    return props.children
+  }
+
+  return <AIChatContext>{props.children}</AIChatContext>
 }
 
 export function QueryBox(props: Props) {
@@ -58,7 +79,7 @@ export function QueryBox(props: Props) {
     <div data-css-scope={style.scope}>
       <div className='query-container'>
         <div className='input-container'>
-          <AIChatContexts>
+          <MaybeAIChatContext shouldRenderContext={showChatInput}>
             {shouldShowSearch() ? (
               <SearchInput
                 showSearchSettings={props.showSearchSettings}
@@ -67,7 +88,7 @@ export function QueryBox(props: Props) {
             ) : (
               <ChatInput renderInputToggle={renderToggle} />
             )}
-          </AIChatContexts>
+          </MaybeAIChatContext>
         </div>
       </div>
     </div>

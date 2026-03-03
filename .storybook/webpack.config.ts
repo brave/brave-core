@@ -43,6 +43,8 @@ const pathMap = {
 }
 
 const buildFlags = JSON.parse(fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'))
+buildFlags.is_storybook = true
+
 /**
  * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
  * support for scheme prefixes (like chrome://)
