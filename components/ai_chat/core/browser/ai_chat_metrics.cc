@@ -65,6 +65,7 @@ constexpr char kCreateSocialMediaActionKey[] = "social";
 constexpr char kImproveActionKey[] = "improve";
 constexpr char kChangeToneActionKey[] = "tone";
 constexpr char kChangeLengthActionKey[] = "length";
+constexpr char kAnonymizeActionKey[] = "anonymize";
 
 constexpr char kOmniboxItemEntryPointKey[] = "omnibox_item";
 constexpr char kSidebarEntryPointKey[] = "sidebar";
@@ -83,7 +84,8 @@ constexpr auto kContextMenuActionKeys =
          {ContextMenuAction::kCreateSocialMedia, kCreateSocialMediaActionKey},
          {ContextMenuAction::kImprove, kImproveActionKey},
          {ContextMenuAction::kChangeTone, kChangeToneActionKey},
-         {ContextMenuAction::kChangeLength, kChangeLengthActionKey}});
+         {ContextMenuAction::kChangeLength, kChangeLengthActionKey},
+         {ContextMenuAction::kAnonymize, kAnonymizeActionKey}});
 
 constexpr auto kEntryPointKeys =
     base::MakeFixedFlatMap<EntryPoint, const char*>(

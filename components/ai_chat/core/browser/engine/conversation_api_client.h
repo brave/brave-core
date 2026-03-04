@@ -88,6 +88,7 @@ class ConversationAPIClient {
     kImprove,
     kShorten,
     kExpand,
+    kAnonymize,
     // TODO(petemill):
     // - Search in-progress?
     // - Sources?

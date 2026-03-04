@@ -220,10 +220,10 @@ struct AIChatRewriteData : public base::SupportsUserData::Data {
 bool IsRewriteCommand(int command) {
   static constexpr auto kRewriteCommands = base::MakeFixedFlatSet<int>(
       {IDC_AI_CHAT_CONTEXT_PARAPHRASE, IDC_AI_CHAT_CONTEXT_IMPROVE,
-       IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE,
-       IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE, IDC_AI_CHAT_CONTEXT_CASUALIZE,
-       IDC_AI_CHAT_CONTEXT_FUNNY_TONE, IDC_AI_CHAT_CONTEXT_SHORTEN,
-       IDC_AI_CHAT_CONTEXT_EXPAND});
+       IDC_AI_CHAT_CONTEXT_ANONYMIZE, IDC_AI_CHAT_CONTEXT_ACADEMICIZE,
+       IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE, IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE,
+       IDC_AI_CHAT_CONTEXT_CASUALIZE, IDC_AI_CHAT_CONTEXT_FUNNY_TONE,
+       IDC_AI_CHAT_CONTEXT_SHORTEN, IDC_AI_CHAT_CONTEXT_EXPAND});
 
   return kRewriteCommands.contains(command);
 }
@@ -253,6 +253,9 @@ GetActionTypeAndP3A(int command) {
        {IDC_AI_CHAT_CONTEXT_IMPROVE,
         {ai_chat::mojom::ActionType::IMPROVE,
          ai_chat::ContextMenuAction::kImprove}},
+       {IDC_AI_CHAT_CONTEXT_ANONYMIZE,
+        {ai_chat::mojom::ActionType::ANONYMIZE,
+         ai_chat::ContextMenuAction::kAnonymize}},
        {IDC_AI_CHAT_CONTEXT_ACADEMICIZE,
         {ai_chat::mojom::ActionType::ACADEMICIZE,
          ai_chat::ContextMenuAction::kChangeTone}},
@@ -416,6 +419,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
+    case IDC_AI_CHAT_CONTEXT_ANONYMIZE:
     case IDC_AI_CHAT_CONTEXT_CHANGE_TONE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
@@ -484,6 +488,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
+    case IDC_AI_CHAT_CONTEXT_ANONYMIZE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
     case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
@@ -647,6 +652,8 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
                                              IDS_AI_CHAT_CONTEXT_PARAPHRASE);
   ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_IMPROVE,
                                              IDS_AI_CHAT_CONTEXT_IMPROVE);
+  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_ANONYMIZE,
+                                             IDS_AI_CHAT_CONTEXT_ANONYMIZE);
 
   ai_chat_change_tone_submenu_model_.AddItemWithStringId(
       IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDS_AI_CHAT_CONTEXT_ACADEMICIZE);

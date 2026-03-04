@@ -696,6 +696,9 @@
   <message name="IDS_AI_CHAT_CONTEXT_IMPROVE" desc="The text label of context menu item to improve selected text" formatter_data="webui=AiChat">
     Improve
   </message>
+  <message name="IDS_AI_CHAT_CONTEXT_ANONYMIZE" desc="The text label of context menu item to anonymize writing style of selected text" formatter_data="webui=AiChat">
+    Anonymize
+  </message>
   <message name="IDS_AI_CHAT_CONTEXT_CHANGE_TONE" desc="The text label of submenu for changing the tone of selected text" formatter_data="webui=AiChat">
     Change tone
   </message>

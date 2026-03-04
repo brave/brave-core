@@ -92,7 +92,9 @@ GetActionTypeQuestionMap() {
             {mojom::ActionType::SHORTEN,
              l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN)},
             {mojom::ActionType::EXPAND,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)}});
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)},
+            {mojom::ActionType::ANONYMIZE,
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_ANONYMIZE)}});
   return *kMap;
 }
 

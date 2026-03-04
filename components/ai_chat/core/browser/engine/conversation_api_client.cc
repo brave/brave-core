@@ -125,7 +125,8 @@ base::ListValue ConversationEventsToList(
            {ConversationEventType::kParaphrase, "requestParaphrase"},
            {ConversationEventType::kImprove, "requestImprove"},
            {ConversationEventType::kShorten, "requestShorten"},
-           {ConversationEventType::kExpand, "requestExpand"}});
+           {ConversationEventType::kExpand, "requestExpand"},
+           {ConversationEventType::kAnonymize, "requestAnonymize"}});
 
   base::ListValue events;
   for (auto& event : conversation) {

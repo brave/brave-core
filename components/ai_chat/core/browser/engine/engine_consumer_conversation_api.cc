@@ -107,6 +107,9 @@ std::optional<ConversationEvent> ActionToRewriteEvent(
     case mojom::ActionType::EXPAND:
       event_type = ConversationEventType::kExpand;
       break;
+    case mojom::ActionType::ANONYMIZE:
+      event_type = ConversationEventType::kAnonymize;
+      break;
     default:
       return std::nullopt;
   }

@@ -109,7 +109,8 @@ enum class ContextMenuAction {
   kImprove = 5,
   kChangeTone = 6,
   kChangeLength = 7,
-  kMaxValue = kChangeLength
+  kAnonymize = 8,
+  kMaxValue = kAnonymize
 };
 
 enum class ContextSource {

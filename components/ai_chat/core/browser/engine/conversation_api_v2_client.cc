@@ -81,6 +81,7 @@ std::string_view GetContentBlockTypeString(
           {mojom::SimpleRequestType::kRequestSummary, "brave-request-summary"},
           {mojom::SimpleRequestType::kRequestQuestions,
            "brave-request-questions"},
+          {mojom::SimpleRequestType::kAnonymize, "brave-request-anonymize"},
       });
 
   static_assert(kSimpleRequestTypeMap.size() ==

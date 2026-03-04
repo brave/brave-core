@@ -50,6 +50,7 @@ enum ActionType {
   EXPAND,
   CONVERSATION_STARTER,
   SUGGESTION,
+  ANONYMIZE,
 };
 
 // When adding or modifying category names, associated UI strings must also
@@ -196,6 +197,7 @@ enum SimpleRequestType {
   kExpand,
   kRequestSummary,
   kRequestQuestions,
+  kAnonymize,
 
   // For validation use only, should always stay at the end of this enum.
   kCount,

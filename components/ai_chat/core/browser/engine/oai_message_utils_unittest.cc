@@ -154,6 +154,10 @@ INSTANTIATE_TEST_SUITE_P(
             mojom::ActionType::EXPAND,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
             mojom::SimpleRequestType::kExpand},
+        RewriteActionTestParam{
+            mojom::ActionType::ANONYMIZE,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kAnonymize},
         RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
                                ""}));
 

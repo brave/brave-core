@@ -474,6 +474,11 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
           mojom::SimpleRequestContentBlock::New(
               mojom::SimpleRequestType::kExpand)));
       break;
+    case mojom::ActionType::ANONYMIZE:
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kAnonymize)));
+      break;
     default:
       return std::nullopt;
   }
