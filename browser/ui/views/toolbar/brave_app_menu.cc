@@ -19,7 +19,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
-#include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -130,14 +130,13 @@ SidebarShowOptionInMenuButton::SidebarShowOptionInMenuButton(
 
 void SidebarShowOptionInMenuButton::PaintButtonContents(gfx::Canvas* canvas) {
   if (is_active_option_) {
-    // Draws highlight if this option is the chosen one.
     auto* cp = GetColorProvider();
     CHECK(cp);
 
     auto bounds = GetLocalBounds();
     bounds.Inset(2);
     cc::PaintFlags flags;
-    flags.setColor(cp->GetColor(kColorBraveAppMenuAccentColor));
+    flags.setColor(cp->GetColor(nala::kColorButtonBackground));
     flags.setStyle(cc::PaintFlags::kFill_Style);
     canvas->DrawRoundRect(bounds, /*radius*/ 2, flags);
   }
@@ -148,6 +147,10 @@ void SidebarShowOptionInMenuButton::PaintButtonContents(gfx::Canvas* canvas) {
 void SidebarShowOptionInMenuButton::OnShowSidebarOptionChanged(
     sidebar::SidebarService::ShowSidebarOption option) {
   is_active_option_ = option == show_option_;
+  SetEnabledTextColors(
+      is_active_option_
+          ? std::optional<ui::ColorVariant>(nala::kColorSchemesOnPrimary)
+          : std::nullopt);
   SchedulePaint();
 }
 
