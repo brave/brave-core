@@ -16,6 +16,13 @@ extension Strings {
     value: "Cancel",
     comment: ""
   )
+  public static let addButtonTitle = NSLocalizedString(
+    "addButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Add",
+    comment: "Add a new item to the current list"
+  )
   /// A confirmation title that appears in an alert to dismiss changes in a form or text input
   public static let dismissChangesConfirmationTitle = NSLocalizedString(
     "DismissChangesConfirmationTitle",
@@ -9348,6 +9355,102 @@ extension Strings {
       bundle: .module,
       value: "The contact file could not be read. It may be corrupted or in an unsupported format.",
       comment: "Message for error alert when a VCard contact file cannot be parsed or opened"
+    )
+  }
+}
+
+// MARK: - Autofill
+extension Strings {
+  public struct Autofill {
+    public static let settingsSectionTitle = NSLocalizedString(
+      "autofill.settings.title",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Autofill",
+      comment: "Settings autofill section title"
+    )
+    public static let managePasswordsTitle = NSLocalizedString(
+      "autofill.managePasswords.title",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Manage Passwords",
+      comment: "Title for navigation bar of the Manage Passwords screen"
+    )
+    public static let managePasswordsInstructions = NSLocalizedString(
+      "autofill.managePasswords.instructions",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Create, save and manage your passwords to easily sign in to sites and apps.",
+      comment:
+        "The message displayed on the manage passwords list screen, when there's at least one password, explain the feature"
+    )
+    public static let managePasswordsSavedListHeaderTitle = NSLocalizedString(
+      "autofill.managePasswords.headerTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Saved",
+      comment:
+        "Title for the section header in the Manage Passwords list screen, that lists the saved sites"
+    )
+    public static let managePasswordsListSearchWebsitesPrompt = NSLocalizedString(
+      "autofill.managePasswords.searchWebsitesPrompt",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Search Websites",
+      comment:
+        "Prompt that is diplayed in the search bar of the Manage Passwords list screen"
+    )
+    public static let managePasswordsOfferToSavePasswords = NSLocalizedString(
+      "autofill.managePasswords.offerToSavePasswords",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Offer to save passwords",
+      comment: "Display text for the option to offer to save passwords"
+    )
+    public static let managePasswordsNeverSavedListHeaderTitle =
+      NSLocalizedString(
+        "autofill.managePasswords.neverSavedListHeaderTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Never Saved",
+        comment: "The header title displayed over the never saved passwords list"
+      )
+    public static let managePasswordsDeleteCredentialButtonTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteManagePasswordButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Delete",
+      comment: "Label for the button used to delete the current login."
+    )
+    public static let managePasswordsDeleteCredentialsAlertTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteCredentialsAlertTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Are you sure?",
+      comment: "Prompt title when deleting passwords"
+    )
+    public static let managePasswordsUnknownDomainText = NSLocalizedString(
+      "autofill.managePasswords.UnknownDomainText",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Unknown",
+      comment: "Text to show when the origin of a managed password is not available"
+    )
+    public static let managePasswordsDeleteCredentialConfirmMessage = NSLocalizedString(
+      "autofill.managePasswords.deleteCredentialConfirmMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "This will remove the saved password(s) for %@ from your sync chain and your device.",
+      comment:
+        "Alert message warning the user that deleting non-synced passwords will permanently remove them"
+    )
+    public static let managePasswordMultipleAccounts = NSLocalizedString(
+      "autofill.managePassword.multipleAccounts",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Accounts",
+      comment:
+        "Label for account when indicating that a domain has multiple accounts"
     )
   }
 }
