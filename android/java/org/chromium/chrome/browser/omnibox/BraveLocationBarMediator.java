@@ -40,7 +40,6 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.permissions.PermissionCallback;
 
-import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -56,7 +55,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
-    private List<Runnable> mDeferredNativeRunnables;
     private AutocompleteCoordinator mAutocompleteCoordinator;
     private UrlBarCoordinator mUrlCoordinator;
 
@@ -265,7 +263,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (TextUtils.isEmpty(query)) return;
 
         if (!mNativeInitialized) {
-            mDeferredNativeRunnables.add(() -> setSearchQuery(query));
             return;
         }
 
