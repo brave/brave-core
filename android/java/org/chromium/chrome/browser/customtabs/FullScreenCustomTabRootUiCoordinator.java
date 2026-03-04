@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -72,7 +73,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull MonotonicObservableSupplier<LayoutManagerImpl> layoutManagerSupplier,
             @NonNull MenuOrKeyboardActionController menuOrKeyboardActionController,
             @NonNull Supplier<Integer> activityThemeColorSupplier,
-            @NonNull MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
+            @NonNull NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             @NonNull AppMenuBlocker appMenuBlocker,
             @NonNull BooleanSupplier supportsAppMenuSupplier,
             @NonNull BooleanSupplier supportsFindInPage,

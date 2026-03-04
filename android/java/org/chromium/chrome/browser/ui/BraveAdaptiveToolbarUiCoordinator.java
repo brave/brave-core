@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -26,8 +27,6 @@ import org.chromium.chrome.browser.toolbar.adaptive.BraveLeoButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.BraveWalletButtonController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
-import java.util.function.Supplier;
-
 /**
  * Brave-specific coordinator for adaptive toolbar UI components. Extends the base
  * AdaptiveToolbarUiCoordinator with Brave-specific functionality.
@@ -38,14 +37,14 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
     // instead.
     @Nullable private Context mContext;
     @Nullable private ActivityTabProvider mActivityTabProvider;
-    @Nullable private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
+    @Nullable private NonNullObservableSupplier<ModalDialogManager> mModalDialogManagerSupplier;
     @Nullable private MonotonicObservableSupplier<Profile> mProfileSupplier;
     @Nullable private AdaptiveToolbarButtonController mAdaptiveToolbarButtonController;
 
     public BraveAdaptiveToolbarUiCoordinator(
             Activity activity,
             ActivityTabProvider activityTabProvider,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier) {
+            NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier) {
         super(activity, activityTabProvider, modalDialogManagerSupplier);
     }
 
