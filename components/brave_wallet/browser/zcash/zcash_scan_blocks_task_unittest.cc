@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_scan_blocks_task.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -65,10 +66,10 @@ class ZCashScanBlocksTaskTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-    sync_state_.emplace(base::SequencedTaskRunner::GetCurrentDefault(),
-                        db_path.AppendASCII("orchard.db"));
+    sync_state_.emplace(
+        base::SequencedTaskRunner::GetCurrentDefault(),
+        std::make_unique<OrchardSyncState>(temp_dir_.GetPath()));
+
     account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                           mojom::KeyringId::kZCashMainnet,
                                           mojom::AccountKind::kDerived, 0);
@@ -219,7 +220,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
+  OrchardSyncState::SequenceBound sync_state_;
   mojom::AccountIdPtr account_id_;
   testing::NiceMock<MockZCashRPC> zcash_rpc_;
 };

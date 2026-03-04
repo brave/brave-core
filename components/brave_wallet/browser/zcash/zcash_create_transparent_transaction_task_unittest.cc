@@ -11,8 +11,6 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/task/thread_pool.h"
-#include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
@@ -24,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -47,14 +44,10 @@ class MockZCashRPC : public ZCashRpc {
                     GetLatestBlockCallback callback));
 };
 
-class MockZCashWalletService : public ZCashWalletService {
+class MockZCashWalletService : public TestingZCashWalletService {
  public:
-  MockZCashWalletService(base::FilePath zcash_data_path,
-                         KeyringService& keyring_service,
-                         std::unique_ptr<ZCashRpc> zcash_rpc)
-      : ZCashWalletService(zcash_data_path,
-                           keyring_service,
-                           std::move(zcash_rpc)) {}
+  using TestingZCashWalletService::TestingZCashWalletService;
+
   MOCK_METHOD2(GetUtxos,
                void(const mojom::AccountIdPtr& account_id, GetUtxosCallback));
 
@@ -71,8 +64,6 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
         features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "false"}});
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -84,40 +75,36 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
                                     false, base::DoNothing());
 
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
-        db_path, *keyring_service_,
-        std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
-
-    sync_state_ = base::SequenceBound<OrchardSyncState>(
-        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-        db_path);
-
-    zcash_rpc_ = std::make_unique<MockZCashRPC>();
+        *keyring_service_, std::make_unique<MockZCashRPC>());
+    zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        OrchardSyncState::CreateSyncState(temp_dir_.GetPath()));
 
     account_id_ = AccountUtils(keyring_service_.get())
                       .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0)
                       ->account_id.Clone();
   }
 
-  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
-
   MockZCashWalletService& zcash_wallet_service() {
     return *zcash_wallet_service_;
   }
 
   ZCashActionContext zcash_action_context() {
-    return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id_);
+    return zcash_wallet_service_->CreateActionContext(account_id());
   }
 
   ZCashActionContext zcash_action_context(
       const mojom::AccountIdPtr& account_id) {
-    return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id.Clone());
+    return zcash_wallet_service_->CreateActionContext(account_id);
   }
 
   base::PassKey<ZCashCreateTransparentTransactionTaskTest> pass_key() {
     return base::PassKey<ZCashCreateTransparentTransactionTaskTest>();
   }
 
-  MockZCashRPC& mock_zcash_rpc() { return *zcash_rpc_; }
+  MockZCashRPC& mock_zcash_rpc() {
+    return static_cast<MockZCashRPC&>(zcash_wallet_service().zcash_rpc());
+  }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
@@ -127,6 +114,7 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
 
  private:
   base::test::ScopedFeatureList feature_list_;
+  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -134,12 +122,7 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
   mojom::AccountIdPtr account_id_;
 
   std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
-
-  base::SequenceBound<OrchardSyncState> sync_state_;
-
-  base::test::TaskEnvironment task_environment_;
 };
 
 TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated) {
