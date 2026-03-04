@@ -125,6 +125,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
     params.source_contents = active_tab;
     params.disposition = WindowOpenDisposition::CURRENT_TAB;
   } else {
+    // We open in a new foreground tab so we don't start a new conversation.
     params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   }
 
