@@ -97,7 +97,7 @@ LocalAIService::LocalAIService(BackgroundWebContentsFactory factory,
                                LocalModelsUpdaterState* updater_state)
     : background_web_contents_factory_(std::move(factory)),
       updater_state_(updater_state) {
-  CHECK(base::FeatureList::IsEnabled(features::kLocalAIModels));
+  CHECK(base::FeatureList::IsEnabled(features::kBraveHistoryEmbeddings));
   CHECK(updater_state_);
   DVLOG(3) << "LocalAIService created";
 
@@ -122,10 +122,9 @@ void LocalAIService::Bind(
 
 void LocalAIService::RegisterPassageEmbedderFactory(
     mojo::PendingRemote<mojom::PassageEmbedderFactory> factory) {
-  if (!background_web_contents_) {
-    DVLOG(1) << "RegisterPassageEmbedderFactory: No background contents";
-    return;
-  }
+  // The renderer should only register a factory after we created the
+  // background WebContents that hosts it.
+  CHECK(background_web_contents_);
   factory_.Bind(std::move(factory));
   factory_.set_disconnect_handler(base::BindOnce(
       &LocalAIService::OnFactoryDisconnected, weak_ptr_factory_.GetWeakPtr()));
@@ -188,7 +187,6 @@ void LocalAIService::MaybeCreateBackgroundContents() {
 }
 
 void LocalAIService::LoadLocalModelFiles() {
-  // Get model file paths from LocalModelsUpdaterState
   base::FilePath weights_path = updater_state_->GetEmbeddingGemmaModel();
   base::FilePath weights_dense1_path =
       updater_state_->GetEmbeddingGemmaDense1();

@@ -149,7 +149,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
+  if (base::FeatureList::IsEnabled(
+          local_ai::features::kBraveHistoryEmbeddings)) {
     local_ai::LocalAIServiceFactory::GetInstance();
   }
 #if BUILDFLAG(ENABLE_TOR)

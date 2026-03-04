@@ -946,8 +946,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
-      base::FeatureList::IsEnabled(
+  if (base::FeatureList::IsEnabled(
           local_ai::features::kBraveHistoryEmbeddings)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);

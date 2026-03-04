@@ -38,7 +38,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
   LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    feature_list_.InitWithFeatures({features::kLocalAIModels}, {});
+    feature_list_.InitWithFeatures({features::kBraveHistoryEmbeddings}, {});
   }
 
   ~LocalModelsUpdaterUnitTest() override = default;
@@ -125,7 +125,7 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   EXPECT_TRUE(PathExists(install_dir_));
 
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(features::kLocalAIModels);
+  feature_list.InitAndDisableFeature(features::kBraveHistoryEmbeddings);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
@@ -138,7 +138,7 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
 // Tests that the component is not registered when the feature is disabled.
 TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(features::kLocalAIModels);
+  feature_list.InitAndDisableFeature(features::kBraveHistoryEmbeddings);
 
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
