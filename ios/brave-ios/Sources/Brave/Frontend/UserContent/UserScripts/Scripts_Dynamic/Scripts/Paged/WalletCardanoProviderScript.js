@@ -37,7 +37,7 @@ if (window.isSecureContext) {
       getNetworkId: { value: $(function() { return post('getNetworkId', {}); }), writable: false, enumerable: true },
       getUtxos: { value: $(function(amount, paginate) { return post('getUtxos', { amount, paginate }); }), writable: false, enumerable: true },
       getBalance: { value: $(function() { return post('getBalance', {}); }), writable: false, enumerable: true },
-      getUsedAddresses: { value: $(function(paginate) { return post('getUsedAddresses', { paginate }); }), writable: false, enumerable: true },
+      getUsedAddresses: { value: $(function() { return post('getUsedAddresses', {}); }), writable: false, enumerable: true },
       getUnusedAddresses: { value: $(function() { return post('getUnusedAddresses', {}); }), writable: false, enumerable: true },
       getChangeAddress: { value: $(function() { return post('getChangeAddress', {}); }), writable: false, enumerable: true },
       getRewardAddresses: { value: $(function() { return post('getRewardAddresses', {}); }), writable: false, enumerable: true },
