@@ -25,6 +25,7 @@ import {
 } from '../../../../utils/tx-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { getAddressLabel } from '../../../../utils/account-utils'
+import { openTab } from '../../../../utils/routes-utils'
 import Amount from '../../../../utils/amount'
 
 // Queries
@@ -412,7 +413,7 @@ export const TransactionIntent = (props: Props) => {
   const onExplorerClick = React.useCallback(() => {
     // Use swap explorer URL if provided
     if (swapStatus?.explorerUrl) {
-      window.open(swapStatus.explorerUrl, '_blank', 'noreferrer')
+      openTab(swapStatus.explorerUrl)
       return
     }
     // Fallback to existing block explorer logic
