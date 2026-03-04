@@ -12,11 +12,10 @@ import { QueryModeToggle, QueryMode } from './query_mode_toggle'
 
 import { style } from './query_box.style'
 
-// <if expr="!is_storybook">
-import AIChatContext from '../../context/ai_chat_context'
-// </if>
 // <if expr="is_storybook">
-import { MockContext as AIChatContext } from '../../../../../components/ai_chat/resources/page/state/mock_context'
+import { MockContext as MockAIChatContext } from '../../../../../components/ai_chat/resources/page/state/mock_context'
+// <else>
+import AIChatContext from '../../context/ai_chat_context'
 // </if>
 
 interface Props {
@@ -36,7 +35,18 @@ function MaybeAIChatContext(
     return props.children
   }
 
-  return <AIChatContext>{props.children}</AIChatContext>
+  // Since this is both lazy-loaded and conditionally-loaded, it isn't as easy
+  // as other stores to have the base app provide the correct API classes wired
+  // up to the contexts. But it's easy to import them directly here, and still
+  // ensure the mock contexts don't end up in the regular build.
+  let ContextProvider: (props: React.PropsWithChildren) => JSX.Element
+  // <if expr="is_storybook">
+  ContextProvider = MockAIChatContext
+  // <else>
+  ContextProvider = AIChatContext
+  // </if>
+
+  return <ContextProvider>{props.children}</ContextProvider>
 }
 
 export function QueryBox(props: Props) {
