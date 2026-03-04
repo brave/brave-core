@@ -16,6 +16,7 @@ import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 import org.json.JSONException;
 
+import org.chromium.base.BraveUrlConstants;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -120,9 +121,14 @@ public class BraveRewardsNativeWorker {
     }
 
     public void onNotifyFrontTabUrlChanged(int tabId, String url) {
-        boolean chromeUrl = url.startsWith(UrlConstants.CHROME_SCHEME);
+        // Check both chrome:// and brave:// schemes. brave:// URLs (e.g.
+        // brave://version) are not recognized by the publisher lookup and
+        // would leave a stale verified-publisher checkmark from a previous tab.
+        boolean internalUrl =
+                url.startsWith(UrlConstants.CHROME_SCHEME)
+                        || url.startsWith(BraveUrlConstants.BRAVE_SCHEME);
         boolean newUrl = (mFrontTabUrl == null || !mFrontTabUrl.equals(url));
-        if (chromeUrl) {
+        if (internalUrl) {
             // Don't query 'GetPublisherInfo' and post response now.
             sHandler.post(
                     new Runnable() {
