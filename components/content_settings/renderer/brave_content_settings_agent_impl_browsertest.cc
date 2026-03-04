@@ -423,6 +423,34 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       FarbleGetImageData) {
+  // Farbling should be balanced by default
+  NavigateToPageWithIframe();
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(contents(), kGetImageDataScript));
+
+  // The iframe should have the same result as the top frame because farbling is
+  // based on the top frame's session token.
+  NavigateIframe(cross_site_url());
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(child_frame(), kGetImageDataScript));
+
+  // Farbling should be off if shields is down
+  ShieldsDown();
+  NavigateToPageWithIframe();
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
+            content::EvalJs(contents(), kGetImageDataScript));
+
+  // Farbling should be off if shields is up but fingerprinting is allowed
+  // via content settings
+  ShieldsUp();
+  AllowFingerprinting();
+  NavigateToPageWithIframe();
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
+            content::EvalJs(contents(), kGetImageDataScript));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        CanvasIsPointInPath) {
   // Farbling level: maximum
   // Canvas isPointInPath(): blocked
