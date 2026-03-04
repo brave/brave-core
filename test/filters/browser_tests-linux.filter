@@ -70,6 +70,15 @@
 -WindowManagementTest.ScreenDetailedOnChange
 -WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
 
+# Chromium test: intermittent RunLoop timeout in DevTools paused debugger focus
+# mechanism. The test relies on an async chain (DebuggerPaused event → SourcesPanel
+# module loading → bringToFront IPC) that sometimes doesn't complete before the
+# test timeout. Already disabled upstream on Windows ASAN (crbug.com/337141755).
+# 0.2% upstream flake rate over 30 days per LUCI Analysis. No Brave-specific code
+# affects this path.
+# https://github.com/brave/brave-browser/issues/53358
+-DevToolsProcessPerSiteTest.PausedDebuggerFocus
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
