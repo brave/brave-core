@@ -898,6 +898,24 @@ bool BraveTabContainer::IsPointInTab(
 }
 
 void BraveTabContainer::AnimateToIdealBounds() {
+  if (GetScrollDirection() == views::LayoutOrientation::kVertical) {
+    // Pre-compute ideal bounds so we can snap expanding tabs before the base
+    // method sets up animations. When a collapsed group is expanded, its tabs
+    // go from height 0 to full height. Without this, BoundsAnimator animates
+    // that transition, making favicons appear to grow. By snapping first,
+    // AnimateTabSlotViewTo() sees they're already at target and skips them,
+    // while tabs below still animate smoothly into position.
+    UpdateIdealBounds();
+
+    for (int i = 0; i < GetTabCount(); ++i) {
+      Tab* tab = GetTabAtModelIndex(i);
+      if (tab->bounds().height() == 0 && tab->group().has_value() &&
+          !controller_->IsGroupCollapsed(*tab->group())) {
+        tab->SetBoundsRect(tabs_view_model_.ideal_bounds(i));
+      }
+    }
+  }
+
   TabContainerImpl::AnimateToIdealBounds();
 
   if (!GetScrollDirection()) {
