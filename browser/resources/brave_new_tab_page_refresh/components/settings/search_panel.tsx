@@ -27,27 +27,31 @@ export function SearchPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}</label>
-        <Toggle
-          size='small'
-          checked={showSearchBox}
-          onChange={({ checked }) => {
-            actions.setShowSearchBox(checked)
-          }}
-        />
-      </div>
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={showSearchBox}
+        onChange={({ checked }) => {
+          actions.setShowSearchBox(checked)
+        }}
+      >
+        <span className='label'>
+          {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
+        </span>
+      </Toggle>
       {aiChatInputEnabled && (
-        <div className='control-row'>
-          <label>{getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}</label>
-          <Toggle
-            size='small'
-            checked={showChatInput}
-            onChange={({ checked }) => {
-              actions.setShowChatInput(checked)
-            }}
-          />
-        </div>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={showChatInput}
+          onChange={({ checked }) => {
+            actions.setShowChatInput(checked)
+          }}
+        >
+          <span className='label'>
+            {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
+          </span>
+        </Toggle>
       )}
       {showSearchBox && (
         <div className='search-engines'>
