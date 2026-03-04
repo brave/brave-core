@@ -295,13 +295,13 @@ test('AssistantResponse should aggregate sources from multiple events', async ()
 
   render(
     <MockContext>
-    <AssistantResponse
-      events={events}
-      isEntryInteractivityAllowed={false}
-      isLeoModel={true}
-      isEntryInProgress={false}
-      allowedLinks={[]}
-    />
+      <AssistantResponse
+        events={events}
+        isEntryInteractivityAllowed={false}
+        isLeoModel={true}
+        isEntryInProgress={false}
+        allowedLinks={[]}
+      />
     </MockContext>,
   )
 
