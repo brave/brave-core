@@ -14,6 +14,7 @@
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
+class ProfileManager;
 
 namespace content {
 class BrowserContext;
@@ -49,7 +50,8 @@ inline constexpr char kSurveyPanelistEnabledHistogramName[] =
 
 class ProfileMiscMetricsService : public KeyedService {
  public:
-  explicit ProfileMiscMetricsService(content::BrowserContext* context);
+  ProfileMiscMetricsService(content::BrowserContext* context,
+                            ProfileManager* profile_manager);
   ~ProfileMiscMetricsService() override;
 
   ProfileMiscMetricsService(const ProfileMiscMetricsService&) = delete;

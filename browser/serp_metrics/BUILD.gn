@@ -5,11 +5,15 @@
 
 static_library("serp_metrics") {
   public = [
+    "serp_metrics_all_profiles_aggregator.h",
+    "serp_metrics_factory.h",
     "serp_metrics_tab_helper.h",
     "serp_metrics_time_period_store.h",
   ]
 
   sources = [
+    "serp_metrics_all_profiles_aggregator.cc",
+    "serp_metrics_factory.cc",
     "serp_metrics_tab_helper.cc",
     "serp_metrics_time_period_store.cc",
   ]
@@ -45,7 +49,9 @@ source_set("browser_tests") {
   deps = [
     ":serp_metrics",
     "//base",
+    "//base/test:test_support",
     "//brave/browser/misc_metrics",
+    "//brave/browser/serp_metrics",
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
@@ -77,15 +83,40 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "serp_metrics_time_period_store_unittest.cc" ]
+  sources = [
+    "serp_metrics_all_profiles_aggregator_unittest.cc",
+    "serp_metrics_time_period_store_unittest.cc",
+  ]
 
   deps = [
     ":serp_metrics",
     "//base",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
     "//chrome/browser/profiles:profile_util",
+    "//components/prefs",
     "//components/prefs:test_support",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  public = [ "serp_metrics_all_profiles_aggregator_mock.h" ]
+
+  sources = [ "serp_metrics_all_profiles_aggregator_mock.cc" ]
+
+  public_deps = [
+    ":serp_metrics",
+    "//brave/components/serp_metrics",
+    "//testing/gmock",
+  ]
+
+  deps = [
+    "//chrome/browser/profiles:profile_util",
+    "//components/prefs",
   ]
 }

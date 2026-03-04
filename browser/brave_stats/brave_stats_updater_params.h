@@ -20,7 +20,7 @@ class GURL;
 class PrefService;
 
 namespace serp_metrics {
-class SerpMetrics;
+class SerpMetricsAllProfilesAggregator;
 }  // namespace serp_metrics
 
 namespace brave_stats {
@@ -31,10 +31,8 @@ bool IsHeadlessOrAutomationMode();
 
 class BraveStatsUpdaterParams {
  public:
-  explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                                   serp_metrics::SerpMetrics* serp_metrics);
+  explicit BraveStatsUpdaterParams(PrefService* stats_pref_service);
   BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                          serp_metrics::SerpMetrics* serp_metrics,
                           const std::string& ymd,
                           int woy,
                           int month);
@@ -55,7 +53,9 @@ class BraveStatsUpdaterParams {
   GURL GetUpdateURL(const GURL& base_update_url,
                     std::string_view platform_id,
                     std::string_view channel_name,
-                    std::string_view full_brave_version) const;
+                    std::string_view full_brave_version,
+                    serp_metrics::SerpMetricsAllProfilesAggregator*
+                        serp_metrics_aggregator) const;
 
   void SavePrefs();
 
@@ -63,7 +63,6 @@ class BraveStatsUpdaterParams {
   friend class ::BraveStatsUpdaterTest;
 
   raw_ptr<PrefService> stats_pref_service_ = nullptr;
-  const raw_ptr<serp_metrics::SerpMetrics> serp_metrics_;
   std::string ymd_;
   int woy_;
   int month_;

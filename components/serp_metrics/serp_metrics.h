@@ -12,15 +12,18 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
-#include "brave/components/time_period_storage/time_period_storage.h"
 
 class PrefService;
+class TimePeriodStorage;
 
 namespace base {
 class Time;
 }  // namespace base
 
 namespace serp_metrics {
+
+using TimePeriodStorages =
+    base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>;
 
 // SerpMetrics records and aggregates search engine usage counts.
 //
@@ -31,21 +34,22 @@ namespace serp_metrics {
 //  - Stale period: searches older than yesterday (but still within the
 //    `TimePeriodStorage` retention window).
 
-class SerpMetrics {
+class SerpMetrics final {
  public:
-  SerpMetrics(PrefService* local_state, PrefService* prefs);
+  SerpMetrics(PrefService* local_state,
+              TimePeriodStorages time_period_storages);
 
   SerpMetrics(const SerpMetrics&) = delete;
   SerpMetrics& operator=(const SerpMetrics&) = delete;
 
-  virtual ~SerpMetrics();
+  ~SerpMetrics();
 
-  virtual void RecordSearch(SerpMetricType type);
-  virtual size_t GetSearchCountForYesterday(SerpMetricType type) const;
+  void RecordSearch(SerpMetricType type);
+  size_t GetSearchCountForYesterday(SerpMetricType type) const;
 
-  virtual size_t GetSearchCountForStalePeriod() const;
+  size_t GetSearchCountForStalePeriod() const;
 
-  virtual void ClearHistory();
+  void ClearHistory();
 
   // Test helpers to return the total search count stored in `TimePeriodStorage`
   // without filtering by time range or staleness.
@@ -62,8 +66,7 @@ class SerpMetrics {
 
   const raw_ptr<PrefService> local_state_;  // Not owned.
 
-  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
-      time_period_storages_;
+  TimePeriodStorages time_period_storages_;
 };
 
 }  // namespace serp_metrics
