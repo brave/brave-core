@@ -12,8 +12,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -22,9 +25,12 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -47,10 +53,18 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
+import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Handler for the unified Shields panel. Displays shields controls, advanced options, and
@@ -206,6 +220,7 @@ public class BraveUnifiedPanelHandler {
             int tabId = mCurrentTab.getId();
             int totalBlocked = mLegacyShieldsHandler.getTotalBlockedCount(tabId);
             mBlockCountNumber.setText(String.valueOf(totalBlocked));
+            displayBlockedItemFavicons(tabId);
         } else {
             mBlockCountNumber.setText("0");
             if (mBlockedItemsContainer != null) {
@@ -681,8 +696,8 @@ public class BraveUnifiedPanelHandler {
             return;
         }
 
-        if (mHttpsPanelContainer instanceof android.widget.ScrollView) {
-            android.widget.ScrollView scrollView = (android.widget.ScrollView) mHttpsPanelContainer;
+        if (mHttpsPanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mHttpsPanelContainer;
             if (scrollView.getChildCount() > 0) {
                 View httpsPanel = scrollView.getChildAt(0);
                 setupHttpsUpgradePanel(httpsPanel);
@@ -701,12 +716,9 @@ public class BraveUnifiedPanelHandler {
             backButton.setOnClickListener(v -> showMainPanel());
         }
 
-        androidx.appcompat.widget.AppCompatRadioButton strictRadio =
-                panel.findViewById(R.id.https_strict_radio);
-        androidx.appcompat.widget.AppCompatRadioButton defaultRadio =
-                panel.findViewById(R.id.https_default_radio);
-        androidx.appcompat.widget.AppCompatRadioButton disabledRadio =
-                panel.findViewById(R.id.https_disabled_radio);
+        AppCompatRadioButton strictRadio = panel.findViewById(R.id.https_strict_radio);
+        AppCompatRadioButton defaultRadio = panel.findViewById(R.id.https_default_radio);
+        AppCompatRadioButton disabledRadio = panel.findViewById(R.id.https_disabled_radio);
 
         if (strictRadio == null || defaultRadio == null || disabledRadio == null) {
             return;
@@ -773,9 +785,8 @@ public class BraveUnifiedPanelHandler {
             return;
         }
 
-        if (mTrackersPanelContainer instanceof android.widget.ScrollView) {
-            android.widget.ScrollView scrollView =
-                    (android.widget.ScrollView) mTrackersPanelContainer;
+        if (mTrackersPanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mTrackersPanelContainer;
             if (scrollView.getChildCount() > 0) {
                 View trackersPanel = scrollView.getChildAt(0);
                 setupTrackersAdsPanel(trackersPanel);
@@ -794,12 +805,9 @@ public class BraveUnifiedPanelHandler {
             backButton.setOnClickListener(v -> showMainPanel());
         }
 
-        androidx.appcompat.widget.AppCompatRadioButton aggressiveRadio =
-                panel.findViewById(R.id.trackers_aggressive_radio);
-        androidx.appcompat.widget.AppCompatRadioButton standardRadio =
-                panel.findViewById(R.id.trackers_standard_radio);
-        androidx.appcompat.widget.AppCompatRadioButton allowRadio =
-                panel.findViewById(R.id.trackers_allow_radio);
+        AppCompatRadioButton aggressiveRadio = panel.findViewById(R.id.trackers_aggressive_radio);
+        AppCompatRadioButton standardRadio = panel.findViewById(R.id.trackers_standard_radio);
+        AppCompatRadioButton allowRadio = panel.findViewById(R.id.trackers_allow_radio);
 
         String currentSetting =
                 BraveShieldsContentSettings.getShieldsValue(
@@ -873,9 +881,8 @@ public class BraveUnifiedPanelHandler {
             return;
         }
 
-        if (mCookiesPanelContainer instanceof android.widget.ScrollView) {
-            android.widget.ScrollView scrollView =
-                    (android.widget.ScrollView) mCookiesPanelContainer;
+        if (mCookiesPanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mCookiesPanelContainer;
             if (scrollView.getChildCount() > 0) {
                 View cookiesPanel = scrollView.getChildAt(0);
                 setupCookiesPanel(cookiesPanel);
@@ -894,12 +901,10 @@ public class BraveUnifiedPanelHandler {
             backButton.setOnClickListener(v -> showMainPanel());
         }
 
-        androidx.appcompat.widget.AppCompatRadioButton blockAllRadio =
-                panel.findViewById(R.id.cookies_block_all_radio);
-        androidx.appcompat.widget.AppCompatRadioButton blockThirdPartyRadio =
+        AppCompatRadioButton blockAllRadio = panel.findViewById(R.id.cookies_block_all_radio);
+        AppCompatRadioButton blockThirdPartyRadio =
                 panel.findViewById(R.id.cookies_block_third_party_radio);
-        androidx.appcompat.widget.AppCompatRadioButton allowRadio =
-                panel.findViewById(R.id.cookies_allow_radio);
+        AppCompatRadioButton allowRadio = panel.findViewById(R.id.cookies_allow_radio);
 
         String currentSetting =
                 BraveShieldsContentSettings.getShieldsValue(
@@ -992,7 +997,7 @@ public class BraveUnifiedPanelHandler {
         if (siteLabel != null && mUrl != null) {
             String siteName =
                     UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(mUrl);
-            siteLabel.setText(siteName.toUpperCase(java.util.Locale.ROOT));
+            siteLabel.setText(siteName.toUpperCase(Locale.ROOT));
         }
 
         updateShredModeDisplay();
@@ -1119,5 +1124,317 @@ public class BraveUnifiedPanelHandler {
                 String.valueOf(mode),
                 false);
         updateShredModeDisplay();
+    }
+
+    private static final int MAX_BLOCKED_ICONS = 3;
+    private static final int MAX_FAVICON_ATTEMPTS = 20;
+
+    private int mPendingFaviconLoads;
+    private int mFaviconIconSize;
+    private final List<Bitmap> mFaviconSuccessBitmaps = new ArrayList<>();
+    private final List<GURL> mFaviconFailedOrigins = new ArrayList<>();
+
+    private void displayBlockedItemFavicons(int tabId) {
+        if (mBlockedItemsContainer == null
+                || mLegacyShieldsHandler == null
+                || mProfile == null
+                || mContext == null
+                || mFaviconHelper == null) {
+            return;
+        }
+
+        mBlockedItemsContainer.removeAllViews();
+        mFaviconSuccessBitmaps.clear();
+        mFaviconFailedOrigins.clear();
+
+        ArrayList<String> blockedUrls = mLegacyShieldsHandler.getBlockedUrls(tabId);
+        if (blockedUrls == null || blockedUrls.isEmpty()) {
+            return;
+        }
+
+        Set<String> uniqueDomains = new HashSet<>();
+        List<GURL> originsToTry = new ArrayList<>();
+
+        for (String url : blockedUrls) {
+            if (url == null || url.isEmpty()) continue;
+
+            GURL gurl = new GURL(url);
+            if (!gurl.isValid()) continue;
+
+            String domain = gurl.getHost();
+            if (!domain.isEmpty() && uniqueDomains.add(domain)) {
+                originsToTry.add(gurl.getOrigin());
+                if (originsToTry.size() >= MAX_FAVICON_ATTEMPTS) break;
+            }
+        }
+
+        if (originsToTry.isEmpty()) return;
+
+        mFaviconIconSize = ViewUtils.dpToPx(mContext, 24);
+        mPendingFaviconLoads = originsToTry.size();
+
+        for (GURL origin : originsToTry) {
+            loadBlockedItemFavicon(origin);
+        }
+    }
+
+    private void onFaviconResult(GURL origin, @Nullable Bitmap bitmap) {
+        if (bitmap != null) {
+            mFaviconSuccessBitmaps.add(bitmap);
+        } else {
+            mFaviconFailedOrigins.add(origin);
+        }
+
+        mPendingFaviconLoads--;
+        if (mPendingFaviconLoads <= 0) {
+            populateBlockedItemsContainer();
+        }
+    }
+
+    private void populateBlockedItemsContainer() {
+        if (mBlockedItemsContainer == null || mContext == null) return;
+
+        mBlockedItemsContainer.removeAllViews();
+        int count = 0;
+
+        for (int i = 0; i < mFaviconSuccessBitmaps.size() && count < MAX_BLOCKED_ICONS; i++) {
+            addFaviconToContainer(mFaviconSuccessBitmaps.get(i), mFaviconIconSize);
+            count++;
+        }
+
+        for (int i = 0; i < mFaviconFailedOrigins.size() && count < MAX_BLOCKED_ICONS; i++) {
+            addDefaultIconToContainer(mFaviconFailedOrigins.get(i), mFaviconIconSize);
+            count++;
+        }
+    }
+
+    private void loadBlockedItemFavicon(GURL origin) {
+        if (mFaviconHelper == null
+                || mProfile == null
+                || mBlockedItemsContainer == null
+                || mContext == null) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        mFaviconHelper.getLocalFaviconImageForURL(
+                mProfile,
+                origin,
+                mFaviconIconSize,
+                (bitmap, iconUrl) -> {
+                    if (mBlockedItemsContainer == null || mContext == null) return;
+                    Activity activity = (Activity) mContext;
+                    if (activity.isFinishing() || activity.isDestroyed()) return;
+
+                    activity.runOnUiThread(
+                            () -> {
+                                if (bitmap != null) {
+                                    onFaviconResult(origin, bitmap);
+                                } else {
+                                    tryRegistrableDomainFavicon(origin);
+                                }
+                            });
+                });
+    }
+
+    private void tryRegistrableDomainFavicon(GURL origin) {
+        if (mFaviconHelper == null || mProfile == null) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        String registrableDomain =
+                UrlUtilities.getDomainAndRegistry(
+                        origin.getSpec(), /* includePrivateRegistries= */ false);
+        if (registrableDomain == null
+                || registrableDomain.isEmpty()
+                || registrableDomain.equals(origin.getHost())) {
+            tryAlternativeTldFavicon(origin, origin.getHost());
+            return;
+        }
+
+        GURL registrableOrigin = new GURL(origin.getScheme() + "://" + registrableDomain);
+        if (!registrableOrigin.isValid()) {
+            tryAlternativeTldFavicon(origin, registrableDomain);
+            return;
+        }
+
+        mFaviconHelper.getLocalFaviconImageForURL(
+                mProfile,
+                registrableOrigin,
+                mFaviconIconSize,
+                (bitmap, iconUrl) -> {
+                    if (mBlockedItemsContainer == null || mContext == null) return;
+                    Activity activity = (Activity) mContext;
+                    if (activity.isFinishing() || activity.isDestroyed()) return;
+
+                    activity.runOnUiThread(
+                            () -> {
+                                if (bitmap != null) {
+                                    onFaviconResult(origin, bitmap);
+                                } else {
+                                    tryAlternativeTldFavicon(origin, registrableDomain);
+                                }
+                            });
+                });
+    }
+
+    private void tryAlternativeTldFavicon(GURL origin, String registrableDomain) {
+        if (mFaviconHelper == null || mProfile == null || registrableDomain == null) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        int lastDot = registrableDomain.lastIndexOf('.');
+        if (lastDot <= 0) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        String baseName = registrableDomain.substring(0, lastDot);
+        String currentTld = registrableDomain.substring(lastDot);
+
+        String[] tldsToTry = {".com", ".net", ".org"};
+        List<GURL> candidates = new ArrayList<>();
+        for (String tld : tldsToTry) {
+            if (!tld.equals(currentTld)) {
+                GURL candidate = new GURL(origin.getScheme() + "://" + baseName + tld);
+                if (candidate.isValid()) {
+                    candidates.add(candidate);
+                }
+            }
+        }
+
+        if (candidates.isEmpty()) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        tryNextTldCandidate(origin, candidates, 0);
+    }
+
+    private void tryNextTldCandidate(GURL origin, List<GURL> candidates, int index) {
+        if (index >= candidates.size()
+                || mFaviconHelper == null
+                || mProfile == null
+                || mBlockedItemsContainer == null
+                || mContext == null) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        mFaviconHelper.getLocalFaviconImageForURL(
+                mProfile,
+                candidates.get(index),
+                mFaviconIconSize,
+                (bitmap, iconUrl) -> {
+                    if (mBlockedItemsContainer == null || mContext == null) return;
+                    Activity activity = (Activity) mContext;
+                    if (activity.isFinishing() || activity.isDestroyed()) return;
+
+                    activity.runOnUiThread(
+                            () -> {
+                                if (bitmap != null) {
+                                    onFaviconResult(origin, bitmap);
+                                } else {
+                                    tryNextTldCandidate(origin, candidates, index + 1);
+                                }
+                            });
+                });
+    }
+
+    private void addDefaultIconToContainer(GURL origin, int iconSize) {
+        if (mBlockedItemsContainer == null || mContext == null) return;
+
+        FrameLayout container = createBlockedItemContainer(iconSize);
+        if (container == null) return;
+
+        TextView textView = new TextView(mContext);
+        textView.setLayoutParams(new FrameLayout.LayoutParams(iconSize, iconSize));
+
+        String displayDomain =
+                UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(origin);
+        String letter =
+                displayDomain.isEmpty()
+                        ? "?"
+                        : displayDomain.substring(0, 1).toUpperCase(Locale.ROOT);
+
+        textView.setText(letter);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextAppearance(R.style.TextAppearance_BraveBlockedItemIcon);
+        textView.setBackgroundResource(R.drawable.blocked_item_default_bg);
+
+        container.addView(textView);
+        addBlockOverlay(container, iconSize);
+        mBlockedItemsContainer.addView(container);
+    }
+
+    private void addFaviconToContainer(Bitmap favicon, int iconSize) {
+        if (mBlockedItemsContainer == null || mContext == null || favicon == null) {
+            return;
+        }
+
+        FrameLayout container = createBlockedItemContainer(iconSize);
+        if (container == null) return;
+
+        int faviconSize = iconSize - ViewUtils.dpToPx(mContext, 6);
+        ImageView imageView = new ImageView(mContext);
+        FrameLayout.LayoutParams imgParams =
+                new FrameLayout.LayoutParams(faviconSize, faviconSize, Gravity.CENTER);
+        imageView.setLayoutParams(imgParams);
+        imageView.setImageBitmap(favicon);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setOutlineProvider(
+                new ViewOutlineProvider() {
+                    @Override
+                    public void getOutline(View view, Outline outline) {
+                        outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                    }
+                });
+        imageView.setClipToOutline(true);
+
+        container.addView(imageView);
+        addBlockOverlay(container, iconSize);
+        mBlockedItemsContainer.addView(container);
+    }
+
+    private @Nullable FrameLayout createBlockedItemContainer(int iconSize) {
+        if (mContext == null) return null;
+
+        FrameLayout frame = new FrameLayout(mContext);
+        int childCount = mBlockedItemsContainer.getChildCount();
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(iconSize, iconSize);
+        if (childCount > 0) {
+            params.setMarginStart(ViewUtils.dpToPx(mContext, -8));
+        }
+        frame.setLayoutParams(params);
+
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.OVAL);
+        bg.setColor(ContextCompat.getColor(mContext, R.color.shields_container_background));
+        frame.setBackground(bg);
+
+        frame.setOutlineProvider(
+                new ViewOutlineProvider() {
+                    @Override
+                    public void getOutline(View view, Outline outline) {
+                        outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                        outline.setAlpha(0f);
+                    }
+                });
+        frame.setClipToOutline(true);
+        frame.setTranslationZ(3 - childCount);
+
+        return frame;
+    }
+
+    private void addBlockOverlay(FrameLayout container, int iconSize) {
+        if (mContext == null) return;
+
+        ImageView overlay = new ImageView(mContext);
+        overlay.setLayoutParams(new FrameLayout.LayoutParams(iconSize, iconSize));
+        overlay.setImageResource(R.drawable.ic_disable_outline);
+        overlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        container.addView(overlay);
     }
 }
