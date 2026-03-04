@@ -26,11 +26,13 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // Builds the tree tabs structure starting from the root collection.
   // This will wrap all tabs in the tree with TreeTabNode. |on_create| is called
   // whenever a new TreeTabNode is created. |on_remove| is called when a
-  // TreeTabNode is destroyed.
+  // TreeTabNode is destroyed. |on_move| is called when a node is reparented
+  // (moved to another parent).
   static void BuildTreeTabs(
       TabCollection& root,
-      base::RepeatingCallback<void(const TreeTabNode& node)> on_create,
-      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove);
+      base::RepeatingCallback<void(TreeTabNode& node)> on_create,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
 
   // Flattens the tree tabs structure by moving all tabs from TreeTabNodes
   // to their parent collections and removing the TreeTabNodes themselves.
@@ -39,7 +41,8 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   TreeTabNodeTabCollection(
       const tree_tab::TreeTabNodeId& tree_tab_node_id,
       std::unique_ptr<tabs::TabInterface> current_tab,
-      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove);
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
   ~TreeTabNodeTabCollection() override;
 
   TreeTabNode& node() { return *node_; }
@@ -74,6 +77,10 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
 
   // Callback invoked when this TreeTabNode is destroyed.
   base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove_;
+
+  // Callback invoked when this TreeTabNode is reparented (moved to another
+  // parent).
+  base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move_;
 
   // A class that represents metadata about the tree tab node.
   std::unique_ptr<TreeTabNode> node_;
