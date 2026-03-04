@@ -63,7 +63,7 @@ void TreeTabNode::CollectDescendantIds(
   }
 }
 
-void TreeTabNode::CollectUncollapseDescendantIds(
+void TreeTabNode::CollectUncollapsedDescendantIds(
     std::vector<tree_tab::TreeTabNodeId>& out) {
   for (const auto& child : collection_->GetTreeNodeChildren()) {
     if (std::holds_alternative<tabs::TabCollection*>(child)) {
@@ -75,7 +75,7 @@ void TreeTabNode::CollectUncollapseDescendantIds(
       TreeTabNode& child_node = child_tree->node();
       out.push_back(child_node.id());
       if (!child_node.collapsed()) {
-        child_node.CollectUncollapseDescendantIds(out);
+        child_node.CollectUncollapsedDescendantIds(out);
       }
     }
   }

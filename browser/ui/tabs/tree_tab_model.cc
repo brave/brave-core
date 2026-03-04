@@ -51,7 +51,7 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
   if (collapsed) {
     // When collapsed, mark descendants as belonging to the collapsed node.
     std::vector<tree_tab::TreeTabNodeId> descendant_ids;
-    node->CollectUncollapseDescendantIds(descendant_ids);
+    node->CollectUncollapsedDescendantIds(descendant_ids);
     for (const auto& desc_id : descendant_ids) {
       closest_collapsed_ancestor_.insert_or_assign(desc_id, id);
       descendant_ids_by_collapsed_ancestor_[id].insert(desc_id);
