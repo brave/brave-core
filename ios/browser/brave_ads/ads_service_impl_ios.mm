@@ -30,6 +30,8 @@
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -46,12 +48,17 @@ AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      ads_client_notifier_(std::make_unique<AdsClientNotifier>()),
       new_tab_page_ad_prefetcher_(
           std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this)) {
   CHECK(prefs_);
 }
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
+
+AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
+  return ads_client_notifier_.get();
+}
 
 bool AdsServiceImplIOS::IsInitialized() const {
   return !!ads_;
@@ -374,82 +381,63 @@ void AdsServiceImplIOS::ToggleMarkAdAsInappropriate(
 }
 
 void AdsServiceImplIOS::NotifyTabTextContentDidChange(
-    int32_t /*tab_id*/,
-    const std::vector<GURL>& /*redirect_chain*/,
-    const std::string& /*text*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  ads_client_notifier_->NotifyTabTextContentDidChange(tab_id, redirect_chain,
+                                                      text);
 }
 
 void AdsServiceImplIOS::NotifyTabHtmlContentDidChange(
-    int32_t /*tab_id*/,
-    const std::vector<GURL>& /*redirect_chain*/,
-    const std::string& /*html*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  ads_client_notifier_->NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
+                                                      html);
 }
 
-void AdsServiceImplIOS::NotifyTabDidStartPlayingMedia(int32_t /*tab_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+void AdsServiceImplIOS::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
+  ads_client_notifier_->NotifyTabDidStartPlayingMedia(tab_id);
 }
 
-void AdsServiceImplIOS::NotifyTabDidStopPlayingMedia(int32_t /*tab_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+void AdsServiceImplIOS::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
+  ads_client_notifier_->NotifyTabDidStopPlayingMedia(tab_id);
 }
 
 void AdsServiceImplIOS::NotifyTabDidChange(
-    int32_t /*tab_id*/,
-    const std::vector<GURL>& /*redirect_chain*/,
-    bool /*is_new_navigation*/,
-    bool /*is_restoring*/,
-    bool /*is_visible*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    bool is_new_navigation,
+    bool is_restoring,
+    bool is_visible) {
+  ads_client_notifier_->NotifyTabDidChange(
+      tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible);
 }
 
-void AdsServiceImplIOS::NotifyTabDidLoad(int32_t /*tab_id*/,
-                                         int /*http_status_code*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+void AdsServiceImplIOS::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
+  ads_client_notifier_->NotifyTabDidLoad(tab_id, http_status_code);
 }
 
-void AdsServiceImplIOS::NotifyDidCloseTab(int32_t /*tab_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+void AdsServiceImplIOS::NotifyDidCloseTab(int32_t tab_id) {
+  ads_client_notifier_->NotifyDidCloseTab(tab_id);
 }
 
 void AdsServiceImplIOS::NotifyUserGestureEventTriggered(
-    int32_t /*page_transition*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+    int32_t page_transition) {
+  ads_client_notifier_->NotifyUserGestureEventTriggered(
+      static_cast<ui::PageTransition>(page_transition));
 }
 
 void AdsServiceImplIOS::NotifyBrowserDidBecomeActive() {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+  ads_client_notifier_->NotifyBrowserDidBecomeActive();
 }
 
 void AdsServiceImplIOS::NotifyBrowserDidResignActive() {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+  ads_client_notifier_->NotifyBrowserDidResignActive();
 }
 
 void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
-  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
-  // AdsClientNotifier in AdsServiceImplIOS
-  NOTIMPLEMENTED() << "Not used on iOS.";
+  ads_client_notifier_->NotifyDidSolveAdaptiveCaptcha();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
