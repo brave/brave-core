@@ -39,7 +39,7 @@ int TreeTabModel::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
 void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
                                 bool collapsed) {
   tabs::TreeTabNode* node = GetNode(id);
-  if (!node) {
+  if (!node || node->collapsed() == collapsed) {
     return;
   }
   node->set_collapsed(collapsed);
