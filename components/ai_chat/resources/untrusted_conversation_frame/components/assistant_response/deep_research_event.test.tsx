@@ -16,9 +16,13 @@
 import * as React from 'react'
 import '@testing-library/jest-dom'
 import { render, act } from '@testing-library/react'
-import * as mojom from '../../../common/mojom'
 import { ExtractedDeepResearchEvents } from './deep_research_utils'
 import DeepResearchEvent from './deep_research_event'
+
+// Define enum values locally to avoid dependency on generated mojom build
+// output, which may be stale or missing on CI/cross-platform environments.
+// Values must match common.mojom DeepResearchSearchStatus enum ordering.
+const DeepResearchSearchStatus = { kStarted: 0, kCompleted: 1 } as const
 
 function createDeepResearch(
   overrides: Partial<ExtractedDeepResearchEvents> = {},
@@ -46,7 +50,7 @@ describe('DeepResearchEvent', () => {
         <DeepResearchEvent
           deepResearch={createDeepResearch({
             searchStatusEvent: {
-              status: mojom.DeepResearchSearchStatus.kStarted,
+              status: DeepResearchSearchStatus.kStarted,
               query: 'test query',
               queryIndex: 0,
               totalQueries: 3,
@@ -135,7 +139,7 @@ describe('DeepResearchEvent', () => {
         <DeepResearchEvent
           deepResearch={createDeepResearch({
             searchStatusEvent: {
-              status: mojom.DeepResearchSearchStatus.kStarted,
+              status: DeepResearchSearchStatus.kStarted,
               query: 'initial query',
               queryIndex: 0,
               totalQueries: 3,
@@ -156,7 +160,7 @@ describe('DeepResearchEvent', () => {
         <DeepResearchEvent
           deepResearch={createDeepResearch({
             searchStatusEvent: {
-              status: mojom.DeepResearchSearchStatus.kStarted,
+              status: DeepResearchSearchStatus.kStarted,
               query: 'first query',
               queryIndex: 0,
               totalQueries: 3,
@@ -173,7 +177,7 @@ describe('DeepResearchEvent', () => {
         <DeepResearchEvent
           deepResearch={createDeepResearch({
             searchStatusEvent: {
-              status: mojom.DeepResearchSearchStatus.kCompleted,
+              status: DeepResearchSearchStatus.kCompleted,
               query: 'first query',
               queryIndex: 0,
               totalQueries: 3,
@@ -204,7 +208,7 @@ describe('DeepResearchEvent', () => {
         <DeepResearchEvent
           deepResearch={createDeepResearch({
             searchStatusEvent: {
-              status: mojom.DeepResearchSearchStatus.kStarted,
+              status: DeepResearchSearchStatus.kStarted,
               query: 'test',
               queryIndex: 0,
               totalQueries: 3,

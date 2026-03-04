@@ -11,6 +11,12 @@ import {
 } from '../../../common/test_data_utils'
 import { extractDeepResearchEvents } from './deep_research_utils'
 
+// Define enum values locally to avoid dependency on generated mojom build
+// output, which may be stale or missing on CI/cross-platform environments.
+// Values must match common.mojom enum ordering.
+const DeepResearchSearchStatus = { kStarted: 0, kCompleted: 1 } as const
+const DeepResearchAnalysisStatus = { kStarted: 0, kProgress: 1 } as const
+
 function getDeepResearchToolUseEvent(): Mojom.ConversationEntryEvent {
   return getToolUseEvent({
     toolName: Mojom.DEEP_RESEARCH_TOOL_NAME,
@@ -172,7 +178,7 @@ describe('extractDeepResearchEvents', () => {
       getDeepResearchToolUseEvent(),
       getDeepResearchEvent({
         searchStatusEvent: {
-          status: Mojom.DeepResearchSearchStatus.kStarted,
+          status: DeepResearchSearchStatus.kStarted,
           query: 'test',
           queryIndex: 0,
           totalQueries: 3,
@@ -192,7 +198,7 @@ describe('extractDeepResearchEvents', () => {
       getDeepResearchToolUseEvent(),
       getDeepResearchEvent({
         analysisStatusEvent: {
-          status: Mojom.DeepResearchAnalysisStatus.kProgress,
+          status: DeepResearchAnalysisStatus.kProgress,
           query: 'analysis query',
           chunksAnalyzed: 5,
           chunksTotal: 10,
