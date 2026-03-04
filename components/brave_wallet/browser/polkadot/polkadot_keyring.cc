@@ -59,10 +59,6 @@ bool PolkadotKeyring::IsTestnet() const {
   return keyring_id_ == mojom::KeyringId::kPolkadotTestnet;
 }
 
-std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
-  return GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
-}
-
 std::array<uint8_t, kSr25519PublicKeySize> PolkadotKeyring::GetPublicKey(
     uint32_t account_index) {
   auto const& keypair = EnsureKeyPair(account_index);

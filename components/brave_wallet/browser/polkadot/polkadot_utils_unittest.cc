@@ -21,6 +21,16 @@ namespace {
 constexpr const char kDevPhrase[] =
     "bottom drive obey lake curtain smoke basket hold race lonely fit walk";
 
+bool IsAddressAllowed(const std::string&) {
+  return true;
+}
+
+PolkadotKeyring MakePolkadotKeyring(mojom::KeyringId keyring) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  return PolkadotKeyring(base::span(seed).first<kPolkadotSeedSize>(), keyring,
+                         base::BindRepeating(IsAddressAllowed));
+}
+
 }  // namespace
 
 TEST(PolkadotUtils, DestinationAddressParsing) {
@@ -115,11 +125,9 @@ TEST(PolkadotUtils, Uint128MojomConversions) {
 // format).
 
 TEST(PolkadotUtils, EncodePrivateKeyForExport) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   std::array<uint8_t, kScryptSaltSize> salt_bytes;
   salt_bytes.fill(1);
   std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
@@ -168,11 +176,9 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
 }
 
 TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotTestnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
   std::array<uint8_t, kScryptSaltSize> salt_bytes;
   salt_bytes.fill(1);
   std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
@@ -221,11 +227,9 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
 
   // Account 0: encode then decode
   {
@@ -263,12 +267,10 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
   const std::string kWrongPassword = "wrong_password";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -278,11 +280,9 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -303,11 +303,9 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_InvalidJSON) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotTestnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -319,11 +317,9 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   const std::string kPassword = "test_password_123";
 
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotTestnet);
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
 
   auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(valid_json.has_value());

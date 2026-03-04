@@ -35,15 +35,22 @@ constexpr const char kTestnetAddress0[] =
 constexpr const char kTestnetAddress1[] =
     "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND";
 
+bool IsAddressAllowed(const std::string&) {
+  return true;
+}
+
+PolkadotKeyring MakePolkadotKeyring(mojom::KeyringId keyring) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  return PolkadotKeyring(base::span(seed).first<kPolkadotSeedSize>(), keyring,
+                         base::BindRepeating(IsAddressAllowed));
+}
+
 }  // namespace
 
 TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-
   // Mainnet: import keyring must produce same addresses as HD keyring.
   {
-    PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                               mojom::KeyringId::kPolkadotMainnet);
+    auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
     PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
 
     ASSERT_TRUE(
@@ -59,8 +66,7 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
 
   // Testnet: import keyring must produce same addresses as HD keyring.
   {
-    PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                               mojom::KeyringId::kPolkadotTestnet);
+    auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
     PolkadotImportKeyring import_keyring(
         mojom::KeyringId::kPolkadotImportTestnet);
 
@@ -77,9 +83,7 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
 }
 
 TEST(PolkadotImportKeyringTest, AddAccountFails) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                             mojom::KeyringId::kPolkadotMainnet);
+  auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
@@ -91,9 +95,7 @@ TEST(PolkadotImportKeyringTest, AddAccountFails) {
 }
 
 TEST(PolkadotImportKeyringTest, RemoveAccount) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                             mojom::KeyringId::kPolkadotMainnet);
+  auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
@@ -107,9 +109,7 @@ TEST(PolkadotImportKeyringTest, RemoveAccount) {
 }
 
 TEST(PolkadotImportKeyringTest, GetPublicKey) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                             mojom::KeyringId::kPolkadotMainnet);
+  auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
@@ -124,9 +124,7 @@ TEST(PolkadotImportKeyringTest, GetPublicKey) {
 }
 
 TEST(PolkadotImportKeyringTest, SignMessage) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                             mojom::KeyringId::kPolkadotMainnet);
+  auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
@@ -141,9 +139,7 @@ TEST(PolkadotImportKeyringTest, SignMessage) {
 }
 
 TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring hd_keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                             mojom::KeyringId::kPolkadotMainnet);
+  auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
