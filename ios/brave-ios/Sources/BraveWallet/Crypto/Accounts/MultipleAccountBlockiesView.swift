@@ -7,7 +7,7 @@ import BraveCore
 import SwiftUI
 
 struct MultipleAccountBlockiesView: View {
-  let accountAddresses: [String]
+  let blockieSeeds: [String]
   let maxBlockies = 3
   @ScaledMetric var blockieSize = 16.0
   var maxBlockieSize: CGFloat = 32
@@ -15,13 +15,13 @@ struct MultipleAccountBlockiesView: View {
 
   var body: some View {
     MultipleCircleIconView(
-      models: accountAddresses,
+      models: blockieSeeds,
       shape: .rectangle,
       iconSize: blockieSize,
       maxIconSize: maxBlockieSize,
       iconDotSize: blockieDotSize,
-      iconView: { address in
-        Blockie(address: address)
+      iconView: { blockieSeed in
+        Blockie(address: blockieSeed)
       }
     )
   }

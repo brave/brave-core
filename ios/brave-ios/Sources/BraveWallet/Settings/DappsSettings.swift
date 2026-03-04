@@ -206,8 +206,8 @@ private struct SiteRow: View {
     let accounts = Strings.Wallet.manageSiteConnectionsAccountPlural
     return String.localizedStringWithFormat(
       Strings.Wallet.manageSiteConnectionsAccount,
-      siteConnection.connectedAddresses.count,
-      siteConnection.connectedAddresses.count == 1 ? account : accounts
+      siteConnection.connectedAccounts.count,
+      siteConnection.connectedAccounts.count == 1 ? account : accounts
     )
   }
 
@@ -228,11 +228,11 @@ private struct SiteRow: View {
   }
 
   @ViewBuilder private var accountBlockies: some View {
-    if siteConnection.connectedAddresses.isEmpty {
+    if siteConnection.connectedAccounts.isEmpty {
       EmptyView()
     } else {
       MultipleAccountBlockiesView(
-        accountAddresses: siteConnection.connectedAddresses
+        blockieSeeds: siteConnection.connectedAccounts.map(\.blockieSeed)
       )
     }
   }
@@ -257,19 +257,21 @@ private struct SiteConnectionDetailView: View {
           )
         )
       ) {
-        ForEach(siteConnection.connectedAddresses, id: \.self) { address in
+        ForEach(siteConnection.connectedAccounts, id: \.self) { account in
           AccountView(
-            address: address,
-            seed: address,
-            name: siteConnectionStore.accountInfo(for: address)?.name ?? ""
+            address: account.address,
+            seed: account.blockieSeed,
+            name: account.name
           )
           .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
               withAnimation(.default) {
-                if let url = URL(string: siteConnection.url) {
+                if let url = URL(string: siteConnection.url),
+                  let dAppPermissionId = account.dAppPermissionId
+                {
                   siteConnectionStore.removePermissions(
                     for: siteConnection.coin,
-                    from: [address],
+                    from: [dAppPermissionId],
                     url: url
                   )
                 }
@@ -280,12 +282,12 @@ private struct SiteConnectionDetailView: View {
           }
         }
         .onDelete { indexSet in
-          let addressesToRemove = indexSet.map({ siteConnection.connectedAddresses[$0] })
+          let accountsToRemove = indexSet.map({ siteConnection.connectedAccounts[$0] })
           withAnimation(.default) {
             if let url = URL(string: siteConnection.url) {
               siteConnectionStore.removePermissions(
                 for: siteConnection.coin,
-                from: addressesToRemove,
+                from: accountsToRemove.compactMap(\.dAppPermissionId),
                 url: url
               )
             }

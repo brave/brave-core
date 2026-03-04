@@ -9,7 +9,7 @@ import Foundation
 
 struct SiteConnection: Equatable, Identifiable {
   let url: String
-  let connectedAddresses: [String]
+  let connectedAccounts: [BraveWallet.AccountInfo]
   let coin: BraveWallet.CoinType
 
   var id: String { url }
@@ -26,8 +26,8 @@ extension Array where Element == SiteConnection {
       let filterText = text.lowercased()
       return
         (siteConnections.url.contains(filterText)
-        || siteConnections.connectedAddresses.contains(where: {
-          $0.caseInsensitiveCompare(filterText) == .orderedSame
+        || siteConnections.connectedAccounts.contains(where: {
+          $0.dAppPermissionId?.caseInsensitiveCompare(filterText) == .orderedSame
         })) && siteConnections.coin == coin
     }
   }
@@ -44,6 +44,14 @@ class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
     self.keyringStore = keyringStore
   }
 
+  #if DEBUG
+  func fetchAllAccountsForUnitTesting(completion: @escaping () -> Void) {
+    keyringStore.updateInfo {
+      completion()
+    }
+  }
+  #endif
+
   /// Fetch all site connections with 1+ accounts connected
   func fetchSiteConnections() {
     var connections = [SiteConnection]()
@@ -52,16 +60,20 @@ class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
       let domains = Domain.allDomainsWithWalletPermissions(for: coin)
       connections.append(
         contentsOf: domains.map {
-          var connectedAddresses = [String]()
+          var connectedAccounts = [BraveWallet.AccountInfo]()
           if let urlString = $0.url,
             let url = URL(string: urlString),
             let addresses = Domain.walletPermissions(forUrl: url, coin: coin)
           {
-            connectedAddresses = addresses
+            connectedAccounts = keyringStore.allAccounts.filter({
+              guard let accountDAppPermissionId = $0.dAppPermissionId
+              else { return false }
+              return addresses.contains(accountDAppPermissionId)
+            })
           }
           return SiteConnection(
             url: $0.url ?? "",
-            connectedAddresses: connectedAddresses,
+            connectedAccounts: connectedAccounts,
             coin: coin
           )
         }
@@ -77,7 +89,7 @@ class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
       Domain.setWalletPermissions(
         forUrl: url,
         coin: siteConnection.coin,
-        accounts: siteConnection.connectedAddresses,
+        accounts: siteConnection.connectedAccounts.compactMap(\.dAppPermissionId),
         grant: false
       )
       if let index = self.siteConnections.firstIndex(where: {
@@ -96,26 +108,23 @@ class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
     }),
       let siteConnection = siteConnections[safe: index]
     {
-      let updatedConnectedAddresses = siteConnection.connectedAddresses.filter {
-        !accounts.contains($0)
+      let updatedConnectedAccounts = siteConnection.connectedAccounts.filter {
+        guard let accountDAppPermissionId = $0.dAppPermissionId else { return false }
+        return !accounts.contains(accountDAppPermissionId)
       }
       let updatedSiteConnection = SiteConnection(
         url: siteConnection.url,
-        connectedAddresses: updatedConnectedAddresses,
+        connectedAccounts: updatedConnectedAccounts,
         coin: coin
       )
 
       var updatedSiteConnections = siteConnections
       updatedSiteConnections.remove(at: index)
-      if !updatedConnectedAddresses.isEmpty {
+      if !updatedConnectedAccounts.isEmpty {
         updatedSiteConnections.insert(updatedSiteConnection, at: index)
       }
       self.siteConnections = updatedSiteConnections
     }
     Domain.setWalletPermissions(forUrl: url, coin: coin, accounts: accounts, grant: false)
-  }
-
-  func accountInfo(for address: String) -> BraveWallet.AccountInfo? {
-    keyringStore.allAccounts.first(where: { $0.address == address })
   }
 }

@@ -43,7 +43,7 @@ public final class Domain: NSManagedObject, CRUD {
   // swift-format-ignore
   @NSManaged public var wallet_solanaPermittedAcccounts: String?
   // swift-format-ignore
-  @NSManaged public var wallet_cardanoPermittedAcccounts: String?
+  @NSManaged public var wallet_cardanoPermittedAccounts: String?
 
   /// A string version of the shield shred level
   // swift-format-ignore
@@ -64,7 +64,7 @@ public final class Domain: NSManagedObject, CRUD {
     format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''"
   )
   private static let containsCardanoPermissionsPredicate = NSPredicate(
-    format: "wallet_cardanoPermittedAcccounts != nil && wallet_cardanoPermittedAcccounts != ''"
+    format: "wallet_cardanoPermittedAccounts != nil && wallet_cardanoPermittedAccounts != ''"
   )
 
   /// A domain can be created in many places,
@@ -270,7 +270,7 @@ public final class Domain: NSManagedObject, CRUD {
     case .sol:
       return domain.wallet_solanaPermittedAcccounts?.split(separator: ",").map(String.init)
     case .ada:
-      return domain.wallet_cardanoPermittedAcccounts?.split(separator: ",").map(String.init)
+      return domain.wallet_cardanoPermittedAccounts?.split(separator: ",").map(String.init)
     case .fil, .btc, .zec, .dot:
       return nil
     @unknown default:
@@ -289,7 +289,7 @@ public final class Domain: NSManagedObject, CRUD {
         return permittedAccount.components(separatedBy: ",").contains(account)
       }
     case .ada:
-      if let permittedAccount = wallet_cardanoPermittedAcccounts {
+      if let permittedAccount = wallet_cardanoPermittedAccounts {
         return permittedAccount.components(separatedBy: ",").contains(account)
       }
     case .fil, .btc, .zec, .dot:
@@ -338,7 +338,7 @@ public final class Domain: NSManagedObject, CRUD {
           case .sol:
             $0.wallet_solanaPermittedAcccounts = nil
           case .ada:
-            $0.wallet_cardanoPermittedAcccounts = nil
+            $0.wallet_cardanoPermittedAccounts = nil
           case .fil, .btc, .zec, .dot:
             break
           @unknown default:
@@ -506,14 +506,14 @@ extension Domain {
           wallet_solanaPermittedAcccounts = account
         }
       case .ada:
-        if let permittedAccounts = wallet_cardanoPermittedAcccounts {
-          // make sure stored `wallet_cardanoPermittedAcccounts` does not contain this `account`
+        if let permittedAccounts = wallet_cardanoPermittedAccounts {
+          // make sure stored `wallet_cardanoPermittedAccounts` does not contain this `account`
           // make sure this `account` does not contain any comma
           if !permittedAccounts.contains(account), !account.contains(",") {
-            wallet_cardanoPermittedAcccounts = [permittedAccounts, account].joined(separator: ",")
+            wallet_cardanoPermittedAccounts = [permittedAccounts, account].joined(separator: ",")
           }
         } else {
-          wallet_cardanoPermittedAcccounts = account
+          wallet_cardanoPermittedAccounts = account
         }
       case .fil, .btc, .zec, .dot:
         break
@@ -537,11 +537,11 @@ extension Domain {
           wallet_solanaPermittedAcccounts = accounts.joined(separator: ",")
         }
       case .ada:
-        if var accounts = wallet_cardanoPermittedAcccounts?.components(separatedBy: ","),
+        if var accounts = wallet_cardanoPermittedAccounts?.components(separatedBy: ","),
           let index = accounts.firstIndex(of: account)
         {
           accounts.remove(at: index)
-          wallet_cardanoPermittedAcccounts = accounts.joined(separator: ",")
+          wallet_cardanoPermittedAccounts = accounts.joined(separator: ",")
         }
       case .fil, .btc, .zec, .dot:
         break

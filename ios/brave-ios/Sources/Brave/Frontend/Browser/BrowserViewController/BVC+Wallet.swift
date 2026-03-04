@@ -268,7 +268,12 @@ extension TabBrowserData: BraveWalletProviderDelegate {
             completion(.internal, nil)
             return
           }
-        case .fil, .btc, .zec:
+        case .ada:
+          if !Preferences.Wallet.allowCardanoProviderAccess.value {
+            completion(.internal, nil)
+            return
+          }
+        case .fil, .btc, .zec, .dot:
           // not supported
           fallthrough
         @unknown default:
@@ -282,8 +287,8 @@ extension TabBrowserData: BraveWalletProviderDelegate {
         return
       }
       switch coinType {
-      case .eth, .sol:
-        break  // only eth/sol supported for DApps.
+      case .eth, .sol, .ada:
+        break  // only eth/sol/ada supported for DApps.
       default:
         completion(.internal, nil)
         return
@@ -381,7 +386,9 @@ extension TabBrowserData: BraveWalletProviderDelegate {
       return !Preferences.Wallet.allowEthProviderAccess.value
     case .sol:
       return !Preferences.Wallet.allowSolProviderAccess.value
-    case .fil, .btc, .zec:
+    case .ada:
+      return !Preferences.Wallet.allowCardanoProviderAccess.value
+    case .fil, .btc, .zec, .dot:
       return true
     @unknown default:
       return true

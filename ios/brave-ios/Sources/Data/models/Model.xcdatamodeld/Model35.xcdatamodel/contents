@@ -85,7 +85,7 @@
         <attribute name="topsite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="url" optional="YES" attributeType="String"/>
         <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="wallet_cardanoPermittedAcccounts" optional="YES" attributeType="String"/>
+        <attribute name="wallet_cardanoPermittedAccounts" optional="YES" attributeType="String" elementID="wallet_cardanoPermittedAcccounts"/>
         <attribute name="wallet_permittedAccounts" optional="YES" attributeType="String"/>
         <attribute name="wallet_solanaPermittedAcccounts" optional="YES" attributeType="String"/>
         <attribute name="zoom_level" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
