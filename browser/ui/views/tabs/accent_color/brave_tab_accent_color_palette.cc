@@ -217,6 +217,10 @@ GetColorIdsMap() {
 
 TabAccentColors GetTabAccentColors(const TabAccentColorsParams& params,
                                    const ui::ColorProvider* color_provider) {
+  if (!color_provider) {
+    return {};
+  }
+
   // This should be updated when nala token's colors are updated.
   // Do not remove the old values, as users could be using the old values by
   // the preference.
