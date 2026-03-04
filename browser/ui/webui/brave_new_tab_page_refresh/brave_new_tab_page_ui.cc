@@ -41,6 +41,7 @@
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/history_ui_handler.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #endif
@@ -208,6 +209,7 @@ BraveNewTabPageUI::GetContextualSessionHandle() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
   ai_chat_page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
       web_ui()->GetWebContents(), nullptr, Profile::FromWebUI(web_ui()),
       std::move(receiver));
@@ -215,6 +217,7 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
   auto* profile = Profile::FromWebUI(web_ui());
   auto* service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
   CHECK(service);
@@ -223,6 +226,7 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> pending_receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
   auto* profile = Profile::FromWebUI(web_ui());
   auto* service =
       ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile);
@@ -233,6 +237,7 @@ void BraveNewTabPageUI::BindInterface(
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
         pending_receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
   auto* profile = Profile::FromWebUI(web_ui());
   bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
       BookmarkModelFactory::GetForBrowserContext(profile),
@@ -241,6 +246,7 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
   auto* profile = Profile::FromWebUI(web_ui());
   history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
       std::move(pending_receiver),
