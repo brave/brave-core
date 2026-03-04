@@ -5,17 +5,13 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -124,9 +120,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                         return true;
                     });
         }
-
-        // Apply tinting to all preference icons for proper dark theme support
-        applyIconTinting(getPreferenceScreen(), null);
     }
 
     @Override
@@ -294,63 +287,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         } else {
             preference.setSummary(null);
         }
-    }
-
-    /**
-     * Recursively applies tinting to all preferences with icons.
-     *
-     * @param preferenceGroup The preference group to process
-     * @param tintList The color state list to apply (fetched once on first call)
-     */
-    private void applyIconTinting(
-            PreferenceGroup preferenceGroup, @Nullable ColorStateList tintList) {
-        // Fetch the tint list once on the first call
-        if (tintList == null) {
-            tintList =
-                    AppCompatResources.getColorStateList(
-                            requireContext(), R.color.default_icon_color_secondary_tint_list);
-            if (tintList == null) {
-                return;
-            }
-        }
-
-        // Process all preferences in this group
-        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
-            Preference preference = preferenceGroup.getPreference(i);
-
-            // Apply tinting if this preference has an icon
-            if (preference.getIcon() != null) {
-                applyTintToPreferenceIcon(preference, tintList);
-            }
-
-            // Recursively process nested preference groups
-            if (preference instanceof PreferenceGroup) {
-                applyIconTinting((PreferenceGroup) preference, tintList);
-            }
-        }
-    }
-
-    /**
-     * Applies the default icon tint to a preference's icon drawable. This ensures icons display
-     * correctly in both light and dark themes by using the default secondary icon color.
-     *
-     * @param preference The preference whose icon should be tinted
-     * @param tintList The color state list to apply to the icon
-     */
-    private void applyTintToPreferenceIcon(Preference preference, ColorStateList tintList) {
-        Drawable icon = preference.getIcon();
-        if (icon == null) {
-            return;
-        }
-
-        // Mutate the drawable to avoid affecting other instances
-        icon = icon.mutate();
-
-        // Apply the tint list
-        icon.setTintList(tintList);
-
-        // Set the tinted icon back to the preference
-        preference.setIcon(icon);
     }
 
     @Override

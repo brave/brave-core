@@ -14,7 +14,7 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="rewards_switch"
             android:title="@string/origin_rewards_toggle"
-            android:icon="@drawable/brave_menu_rewards"
+            android:icon="@drawable/ic_product_bat_outline"
             android:defaultValue="false" />
 
     </PreferenceCategory>
@@ -26,13 +26,13 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="crash_reports_switch"
             android:title="@string/origin_crash_reports_toggle"
-            android:icon="@drawable/bar_chart"
+            android:icon="@drawable/ic_bar_chart"
             android:defaultValue="false" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="privacy_preserving_analytics_switch"
             android:title="@string/origin_privacy_preserving_analytics_toggle"
-            android:icon="@drawable/bar_chart"
+            android:icon="@drawable/ic_bar_chart"
             android:defaultValue="false" />
 
     </PreferenceCategory>
@@ -44,7 +44,7 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="email_aliases_switch"
             android:title="@string/origin_email_aliases_toggle"
-            android:icon="@drawable/email_shield"
+            android:icon="@drawable/ic_email_shield"
             android:defaultValue="false" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
@@ -62,7 +62,7 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="statistics_reporting_switch"
             android:title="@string/origin_statistics_reporting_toggle"
-            android:icon="@drawable/bar_chart"
+            android:icon="@drawable/ic_bar_chart"
             android:defaultValue="false" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
@@ -80,7 +80,7 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="web_discovery_project_switch"
             android:title="@string/origin_web_discovery_project_toggle"
-            android:icon="@drawable/brave_icon_search"
+            android:icon="@drawable/ic_brave_icon_search"
             android:defaultValue="false" />
 
         <!-- Informational text about Brave Origin -->
