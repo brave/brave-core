@@ -119,7 +119,6 @@ import {
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
   useGetTransactionsQuery,
-  useGetTokenSpotPricesQuery,
   useStartShieldSyncMutation,
   useGetChainTipStatusQuery,
   useGetZCashAccountInfoQuery,
@@ -131,6 +130,9 @@ import {
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 import {
   useBalancesFetcher, //
 } from '../../../../common/hooks/use-balances-fetcher'
@@ -439,7 +441,7 @@ export const Account = () => {
   )
 
   const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
+    usePersistedTokenSpotPricesQuery(
       tokenPriceRequests.length && defaultFiatCurrency
         ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,

@@ -16,9 +16,11 @@ import Amount from '../../../../utils/amount'
 
 // Queries
 import {
-  useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery,
+  useGetDefaultFiatCurrencyQuery, //
 } from '../../../../common/slices/api.slice'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
@@ -100,7 +102,7 @@ export const ToAsset = (props: Props) => {
   )
 
   const { data: spotPrices = [], isFetching: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
+    usePersistedTokenSpotPricesQuery(
       tokenPriceRequests.length && defaultFiatCurrency
         ? {
             requests: tokenPriceRequests,

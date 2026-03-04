@@ -220,6 +220,41 @@ export const getPersistedNftCollectionNamesRegistry =
     }
   }
 
+const getSpotPriceLocalStorageKey = (
+  price: Pick<BraveWallet.AssetPrice, 'coin' | 'chainId' | 'address'>,
+) => `${price.coin}-${price.chainId}-${price.address.toLowerCase()}`
+
+export const getPersistedSpotPrices = (): BraveWallet.AssetPrice[] => {
+  try {
+    const map: Record<string, BraveWallet.AssetPrice> = JSON.parse(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_SPOT_PRICES) || '{}',
+    )
+    return Object.values(map)
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const mergeAndPersistSpotPrices = (
+  freshPrices: BraveWallet.AssetPrice[],
+) => {
+  try {
+    const existing: Record<string, BraveWallet.AssetPrice> = JSON.parse(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_SPOT_PRICES) || '{}',
+    )
+    for (const price of freshPrices) {
+      existing[getSpotPriceLocalStorageKey(price)] = price
+    }
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.TOKEN_SPOT_PRICES,
+      JSON.stringify(existing),
+    )
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const setPersistedNftCollectionNamesRegistry = (
   registry: AssetIdsByCollectionNameRegistry,
 ) => {
