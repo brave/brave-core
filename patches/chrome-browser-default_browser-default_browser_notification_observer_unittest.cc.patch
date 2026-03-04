@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/default_browser/default_browser_notification_observer_unittest.cc b/chrome/browser/default_browser/default_browser_notification_observer_unittest.cc
+index 374362bf318f35ab0587baf372b0680d5b3daee2..6939d963b86ae8ec884a6d5cb84d98484d189825 100644
+--- a/chrome/browser/default_browser/default_browser_notification_observer_unittest.cc
++++ b/chrome/browser/default_browser/default_browser_notification_observer_unittest.cc
+@@ -57,7 +57,6 @@ class DefaultBrowserNotificationObserverTest : public testing::Test {
+   }
+ 
+   void TearDown() override {
+-    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
+   }
+ 
+   DefaultBrowserManager& manager() {

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_default_browser_handler_unittest.cc b/chrome/browser/ui/webui/settings/settings_default_browser_handler_unittest.cc
+index 7a4bb053ee2c2d3cf1b503fd6c0679e467a62c46..6a6a610bc9b9499f6ba288e7aec957a7272a8c9a 100644
+--- a/chrome/browser/ui/webui/settings/settings_default_browser_handler_unittest.cc
++++ b/chrome/browser/ui/webui/settings/settings_default_browser_handler_unittest.cc
+@@ -91,7 +91,6 @@ class DefaultBrowserHandlerTest : public testing::Test {
+   }
+ 
+   void TearDown() override {
+-    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
+     handler_.reset();
+     test_web_ui_.reset();
+     test_web_contents_.reset();
