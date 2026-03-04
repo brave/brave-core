@@ -211,8 +211,13 @@ BraveWalletService::BraveWalletService(
 
   if (IsZCashEnabled()) {
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        delegate_->GetWalletBaseDirectory().AppendASCII(kZCashDataFolderName),
-        *keyring_service(), network_manager(), url_loader_factory);
+        *keyring_service(),
+        std::make_unique<ZCashRpc>(network_manager(), url_loader_factory));
+    zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        OrchardSyncState::CreateSyncState(
+            delegate_->GetWalletBaseDirectory().AppendASCII(
+                kZCashDataFolderName)));
   }
 
   if (IsCardanoEnabled()) {

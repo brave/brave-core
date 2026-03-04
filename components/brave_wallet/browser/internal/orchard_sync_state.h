@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/sequence_checker.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_types.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
@@ -29,6 +30,15 @@ inline constexpr uint32_t kZCashPublicAddressMinConfirmations = 10u;
 // commitment tree, which is used to sign notes for spending.
 class OrchardSyncState {
  public:
+  using SequenceBound = base::SequenceBound<std::unique_ptr<OrchardSyncState>>;
+
+  // Creates a new sequence for an instance of OrchardSyncState to be bound to.
+  static scoped_refptr<base::SequencedTaskRunner> CreateSyncStateSequence();
+
+  // Creates a new sync state with the given data path.
+  static std::unique_ptr<OrchardSyncState> CreateSyncState(
+      const base::FilePath& zcash_data_path);
+
   struct SpendableNotesBundle {
     SpendableNotesBundle();
     SpendableNotesBundle(const SpendableNotesBundle&) = delete;
@@ -41,7 +51,7 @@ class OrchardSyncState {
     std::optional<uint32_t> anchor_block_id;
   };
 
-  explicit OrchardSyncState(const base::FilePath& path_to_database);
+  explicit OrchardSyncState(const base::FilePath& path_to_database_folder);
   virtual ~OrchardSyncState();
 
   base::expected<OrchardStorage::Result, OrchardStorage::Error> RegisterAccount(

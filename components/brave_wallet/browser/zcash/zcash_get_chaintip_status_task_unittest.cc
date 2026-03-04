@@ -9,7 +9,6 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/task/thread_pool.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -20,9 +19,8 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -59,24 +57,6 @@ class MockOrchardSyncState : public OrchardSyncState {
                    const mojom::AccountIdPtr& account_id));
 };
 
-class MockOrchardSyncStateProxy : public OrchardSyncState {
- public:
-  MockOrchardSyncStateProxy(const base::FilePath& file_path,
-                            OrchardSyncState* instance)
-      : OrchardSyncState(file_path), instance_(instance) {}
-
-  ~MockOrchardSyncStateProxy() override {}
-
-  base::expected<std::optional<OrchardStorage::AccountMeta>,
-                 OrchardStorage::Error>
-  GetAccountMeta(const mojom::AccountIdPtr& account_id) override {
-    return instance_->GetAccountMeta(account_id);
-  }
-
- private:
-  raw_ptr<OrchardSyncState> instance_;
-};
-
 }  // namespace
 
 class ZCashGetChainTipStatusTaskTest : public testing::Test {
@@ -94,17 +74,10 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
         },
         {}  // disabled features
     );
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-
-    mocked_sync_state_ = std::make_unique<MockOrchardSyncState>(db_path);
-    sync_state_ = base::SequenceBound<MockOrchardSyncStateProxy>(
-        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-        db_path, mocked_sync_state_.get());
-
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
@@ -116,20 +89,25 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
                        .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
     account_id_ = account->account_id.Clone();
 
-    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        db_path, *keyring_service_,
-        std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
+    zcash_wallet_service_ = std::make_unique<TestingZCashWalletService>(
+        *keyring_service_, std::make_unique<testing::NiceMock<MockZCashRPC>>());
+    zcash_wallet_service_->SetupSyncState(
+        OrchardSyncState::CreateSyncStateSequence(),
+        std::make_unique<MockOrchardSyncState>(temp_dir_.GetPath()));
   }
-
-  void TearDown() override { sync_state_.SynchronouslyResetForTest(); }
 
   ZCashActionContext CreateContext() {
-    return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id_);
+    return zcash_wallet_service_->CreateActionContext(account_id());
   }
 
-  testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
+  MockZCashRPC& zcash_rpc() {
+    return static_cast<MockZCashRPC&>(zcash_wallet_service_->zcash_rpc());
+  }
 
-  MockOrchardSyncState& mocked_sync_state() { return *mocked_sync_state_; }
+  MockOrchardSyncState& mocked_sync_state() {
+    return static_cast<MockOrchardSyncState&>(
+        *zcash_wallet_service_->sync_state_ptr);
+  }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
@@ -149,14 +127,11 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
 
   base::ScopedTempDir temp_dir_;
   mojom::AccountIdPtr account_id_;
-  testing::NiceMock<MockZCashRPC> zcash_rpc_;
-  std::unique_ptr<MockOrchardSyncState> mocked_sync_state_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
+  std::unique_ptr<TestingZCashWalletService> zcash_wallet_service_;
 };
 
 TEST_F(ZCashGetChainTipStatusTaskTest, Success) {

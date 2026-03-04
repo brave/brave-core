@@ -26,9 +26,8 @@ class OrchardStorageTest : public testing::Test {
 
 void OrchardStorageTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-  base::FilePath db_path(
-      temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-  orchard_storage_ = std::make_unique<OrchardStorage>(db_path);
+  orchard_storage_ = std::make_unique<OrchardStorage>(
+      temp_dir_.GetPath().AppendASCII("orchard.db"));
   orchard_storage_->EnsureDbInit();
 }
 

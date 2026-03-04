@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
 namespace brave_wallet {
 
@@ -34,6 +35,32 @@ OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
   nullifier.fill(seed);
   nullifier[0] = account_id->account_index;
   return nullifier;
+}
+
+TestingZCashWalletService::~TestingZCashWalletService() {
+  sync_state_ptr = nullptr;
+  sync_state().SynchronouslyResetForTest();
+}
+
+void TestingZCashWalletService::SetupSyncState(
+    scoped_refptr<base::SequencedTaskRunner> sync_state_sequence,
+    std::unique_ptr<OrchardSyncState> sync_state) {
+  sync_state_ptr = sync_state.get();
+  ZCashWalletService::SetupSyncState(std::move(sync_state_sequence),
+                                     std::move(sync_state));
+}
+
+ZCashRpc& TestingZCashWalletService::zcash_rpc() {
+  return ZCashWalletService::zcash_rpc();
+}
+
+OrchardSyncState::SequenceBound& TestingZCashWalletService::sync_state() {
+  return ZCashWalletService::sync_state();
+}
+
+ZCashActionContext TestingZCashWalletService::CreateActionContext(
+    const mojom::AccountIdPtr& account_id) {
+  return ZCashWalletService::CreateActionContext(account_id);
 }
 
 OrchardNoteSpend GenerateMockNoteSpend(const mojom::AccountIdPtr& account_id,

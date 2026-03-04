@@ -11,11 +11,27 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
+#include "base/task/thread_pool.h"
 #include "base/types/expected_macros.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_types.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
+
+namespace {
+constexpr char kOrchardDatabaseName[] = "orchard.db";
+}
+
+// static
+scoped_refptr<base::SequencedTaskRunner>
+OrchardSyncState::CreateSyncStateSequence() {
+  return base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()});
+}
+
+// static
+std::unique_ptr<OrchardSyncState> OrchardSyncState::CreateSyncState(
+    const base::FilePath& zcash_data_path) {
+  return std::make_unique<OrchardSyncState>(zcash_data_path);
+}
 
 OrchardSyncState::SpendableNotesBundle::SpendableNotesBundle() = default;
 OrchardSyncState::SpendableNotesBundle::~SpendableNotesBundle() = default;
@@ -25,8 +41,13 @@ OrchardSyncState::SpendableNotesBundle&
 OrchardSyncState::SpendableNotesBundle::operator=(
     OrchardSyncState::SpendableNotesBundle&&) = default;
 
-OrchardSyncState::OrchardSyncState(const base::FilePath& path_to_database)
-    : storage_(OrchardStorage(path_to_database)) {}
+OrchardSyncState::OrchardSyncState(
+    const base::FilePath& path_to_database_folder)
+    : storage_(OrchardStorage(
+          path_to_database_folder.AppendASCII(kOrchardDatabaseName))) {
+  // Instantiated on default sequence. Operates on dedicated sequence.
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
 
 OrchardSyncState::~OrchardSyncState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
