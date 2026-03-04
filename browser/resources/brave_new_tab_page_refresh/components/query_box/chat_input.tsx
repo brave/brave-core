@@ -28,7 +28,9 @@ interface Props {
 export function ChatInput(props: Props) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-  const { conversationUuid, conversationHistory } = conversationContext
+  const { conversationUuid } = conversationContext.api.useGetStateData()
+  const conversationHistory =
+    conversationContext.api.useGetConversationHistoryData()
 
   const extractedQuery = useExtractedQuery(
     stringifyContent(conversationContext.inputText),
