@@ -1429,8 +1429,8 @@ class TabManager: NSObject {
           tab.browserData?.setScreenshot(savedTab.screenshot)
         }
 
-        // Do not select the private tab since we always restore to regular mode!
-        if savedTab.isSelected && !savedTab.isPrivate {
+        // Select the tab if it was selected and matches current mode (private vs regular)
+        if savedTab.isSelected && savedTab.isPrivate == privateBrowsingManager.isPrivateBrowsing {
           tabToSelect = tab
         }
       } else {
@@ -1446,8 +1446,8 @@ class TabManager: NSObject {
         tab.favicon = Favicon.default
         tab.browserData?.setScreenshot(savedTab.screenshot)
 
-        // Do not select the private tab since we always restore to regular mode!
-        if savedTab.isSelected && !savedTab.isPrivate {
+        // Select the tab if it was selected and matches current mode (private vs regular)
+        if savedTab.isSelected && savedTab.isPrivate == privateBrowsingManager.isPrivateBrowsing {
           tabToSelect = tab
         }
       }

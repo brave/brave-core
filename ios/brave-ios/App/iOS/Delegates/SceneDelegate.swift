@@ -808,13 +808,14 @@ extension SceneDelegate {
     let activeSession = UIApplication.shared.openSessions
       .compactMap({ BrowserState.getWindowId(from: $0) })
       .first(where: { $0 == activeWindow?.windowId.uuidString })
-    let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+    var isPrivate = Preferences.Privacy.privateBrowsingOnly.value
 
     if activeSession != nil {
       if !UIApplication.shared.supportsMultipleScenes {
         // iPhones should not create new windows
         if let activeWindow = activeWindow {
           // If there's no active window, fall through and create one
+          isPrivate = Self.shouldLaunchInPrivateMode(windowId: activeWindow.windowId) ?? isPrivate
           return (activeWindow.windowId, isPrivate, nil)
         }
       }
@@ -836,10 +837,36 @@ extension SceneDelegate {
       windowId = activeWindow?.windowId ?? UUID()
     }
 
+    // When "Keep private tabs" is enabled, launch in private mode if the restored window has persistent private tabs
+    if let shouldLaunchPrivate = Self.shouldLaunchInPrivateMode(windowId: windowId) {
+      isPrivate = shouldLaunchPrivate
+    }
+
     // Create a new session window if it does not already exist
     SessionWindow.createWindow(isSelected: true, uuid: windowId)
     Logger.module.info("[SCENE] - RESTORING ACTIVE WINDOW OR CREATING A NEW WINDOW")
     return (windowId, isPrivate, nil)
+  }
+
+  /// When "Keep private tabs" is enabled, returns whether the window should launch in Private mode.
+  /// Returns nil when the preference doesn't apply (e.g. no persistent private tabs to restore).
+  private static func shouldLaunchInPrivateMode(windowId: UUID) -> Bool? {
+    guard Preferences.Privacy.persistentPrivateBrowsing.value else {
+      return nil
+    }
+
+    let windowTabs = SessionTab.all().filter { $0.sessionWindow?.windowId == windowId }
+    let privateTabs = windowTabs.filter { $0.isPrivate }
+
+    guard !privateTabs.isEmpty else { return nil }
+
+    // Launch in private mode if the selected tab is private, or if the window has only private tabs.
+    // When no tab is marked selected (nil), selectedTabIsPrivate defaults to false; onlyPrivateTabs
+    // still correctly launches in private mode when all tabs are private.
+    let selectedTabIsPrivate = windowTabs.first(where: { $0.isSelected })?.isPrivate ?? false
+    let onlyPrivateTabs = privateTabs.count == windowTabs.count
+
+    return selectedTabIsPrivate || onlyPrivateTabs
   }
 }
 

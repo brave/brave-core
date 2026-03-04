@@ -1113,20 +1113,19 @@ public class BrowserViewController: UIViewController {
   }
 
   private func setupTabs() {
-    let isPrivate =
-      privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
     let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
 
     var tabToSelect: (any TabState)?
 
     if noTabsAdded {
-      // Two scenarios if there are no tabs in tabmanager:
-      // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
-      // 2. We are in private browsing mode and need to add a new private tab.
-      tabToSelect =
-        isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs
+      // Attempt to restore tabs first (includes persistent private tabs when "Keep private tabs" is enabled).
+      // If nothing to restore, restoreAllTabs adds a new tab.
+      tabToSelect = self.tabManager.restoreAllTabs
     } else {
-      if let selectedTab = tabManager.selectedTab, !selectedTab.isPrivate {
+      // Use selected tab when it matches current mode (private vs regular); otherwise use last tab
+      let isPrivate =
+        privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
+      if let selectedTab = tabManager.selectedTab, selectedTab.isPrivate == isPrivate {
         tabToSelect = selectedTab
       } else {
         tabToSelect = tabManager.tabsForCurrentMode.last
