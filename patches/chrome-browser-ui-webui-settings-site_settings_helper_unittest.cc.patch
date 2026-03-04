@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/webui/settings/site_settings_helper_unittest.cc b/chrome/browser/ui/webui/settings/site_settings_helper_unittest.cc
+index c316a9d4e6ab7fa4905e704888a1d92f03099b9c..23d6055a5c42a83c98edba1e9c0cac9a82e9e5ef 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_helper_unittest.cc
++++ b/chrome/browser/ui/webui/settings/site_settings_helper_unittest.cc
+@@ -101,7 +101,6 @@ class SiteSettingsHelperTest : public testing::Test {
+   }
+ 
+   void TearDown() override {
+-    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
+   }
+ 
+   void VerifySetting(const base::ListValue& exceptions,
+@@ -1122,7 +1121,6 @@ class SiteSettingsHelperChooserExceptionTest : public testing::Test {
+   }
+ 
+   void TearDown() override {
+-    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
+   }
+ 
+   // Sets up the UsbChooserContext with two devices and permissions for these
+@@ -1555,7 +1553,6 @@ class SiteSettingsHelperIsolatedWebAppTest : public testing::Test {
+   }
+ 
+   void TearDown() override {
+-    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
+   }
+ 
+   web_app::IsolatedWebAppUrlInfo InstallIsolatedWebApp(
