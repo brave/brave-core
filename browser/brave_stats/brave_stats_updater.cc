@@ -24,8 +24,7 @@
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_stats/switches.h"
-#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
-#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -33,7 +32,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
-#include "brave/components/serp_metrics/serp_metrics.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -75,11 +74,14 @@ static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 5 * 60;
 
 GURL GetUpdateURL(
     const GURL& base_update_url,
-    const brave_stats::BraveStatsUpdaterParams& stats_updater_params) {
+    const brave_stats::BraveStatsUpdaterParams& stats_updater_params,
+    std::unique_ptr<serp_metrics::SerpMetricsAllProfilesAggregator>
+        serp_metrics_aggregator) {
   return stats_updater_params.GetUpdateURL(
       base_update_url, brave_stats::GetPlatformIdentifier(),
       brave::GetChannelName(),
-      version_info::GetBraveVersionWithoutChromiumMajorVersion());
+      version_info::GetBraveVersionWithoutChromiumMajorVersion(),
+      serp_metrics_aggregator.get());
 }
 
 net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
@@ -104,34 +106,21 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
     })");
 }
 
-serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
+std::unique_ptr<serp_metrics::SerpMetricsAllProfilesAggregator>
+GetSerpMetricsAllProfilesAggregator(PrefService* local_state,
+                                    ProfileManager* profile_manager) {
   if (!profile_manager) {
     // `profile_manager` can only be null in tests.
     CHECK_IS_TEST();
     return nullptr;
   }
 
-  const base::FilePath initial_profile_dir =
-      profile_manager->GetInitialProfileDir();
-  Profile* profile = profile_manager->GetProfileByPath(
-      profile_manager->user_data_dir().Append(initial_profile_dir));
-  if (!profile) {
-    profile = profile_manager->GetLastUsedProfileIfLoaded();
-  }
-
-  if (!profile) {
-    // TODO(https://github.com/brave/brave-browser/issues/52492): Migrate SERP
-    // metrics to profile attributes and remove temporary invariant checks.
-    DUMP_WILL_BE_CHECK(profile);
+  if (!base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
     return nullptr;
   }
 
-  misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
-      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-          profile);
-  CHECK(profile_misc_metrics_service);
-
-  return profile_misc_metrics_service->GetSerpMetrics();
+  return std::make_unique<serp_metrics::SerpMetricsAllProfilesAggregator>(
+      local_state, profile_manager->GetProfileAttributesStorage());
 }
 
 }  // anonymous namespace
@@ -333,10 +322,11 @@ void BraveStatsUpdater::SendServerPing() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
   auto stats_updater_params =
-      std::make_unique<brave_stats::BraveStatsUpdaterParams>(
-          pref_service_, GetSerpMetrics(profile_manager_));
+      std::make_unique<brave_stats::BraveStatsUpdaterParams>(pref_service_);
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
-  resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
+  resource_request->url = GetUpdateURL(
+      endpoint, *stats_updater_params,
+      GetSerpMetricsAllProfilesAggregator(pref_service_, profile_manager_));
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
                                  net::LOAD_BYPASS_CACHE |

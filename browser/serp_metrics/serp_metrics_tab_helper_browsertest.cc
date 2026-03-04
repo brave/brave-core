@@ -13,8 +13,10 @@
 #include "absl/strings/str_format.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
@@ -22,6 +24,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/sessions/session_restore_test_utils.h"
@@ -44,6 +47,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
+#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -215,6 +219,22 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
     CHECK(profile_misc_metrics_service);
     return profile_misc_metrics_service->GetSerpMetrics();
   }
+
+  ProfileManager* profile_manager() {
+    return g_browser_process->profile_manager();
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  Browser* CreateProfileAndOpenBrowser() {
+    base::FilePath profile_path =
+        profile_manager()->GenerateNextProfileDirectoryPath();
+    base::test::TestFuture<Browser*> browser_future;
+    profiles::SwitchToProfile(profile_path, /*always_create=*/false,
+                              browser_future.GetCallback());
+    EXPECT_TRUE(browser_future.Wait());
+    return browser_future.Take();
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
@@ -715,6 +735,39 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
 
   EXPECT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
+}
+
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
+                       RecordSerpMetricsForMultipleProfiles) {
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("search.brave.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.google.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+
+  Browser* other_browser = CreateProfileAndOpenBrowser();
+  ASSERT_TRUE(other_browser);
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      other_browser->tab_strip_model()->GetActiveWebContents(),
+      https_server_->GetURL("search.brave.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      other_browser->tab_strip_model()->GetActiveWebContents(),
+      https_server_->GetURL("duckduckgo.com", "/?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+
+  SerpMetricsAllProfilesAggregator all_profiles_aggregator(
+      g_browser_process->local_state(),
+      profile_manager()->GetProfileAttributesStorage());
+  EXPECT_EQ(2U, all_profiles_aggregator.GetSearchCountForTesting(
+                    SerpMetricType::kBrave));
+  EXPECT_EQ(1U, all_profiles_aggregator.GetSearchCountForTesting(
+                    SerpMetricType::kGoogle));
+  EXPECT_EQ(1U, all_profiles_aggregator.GetSearchCountForTesting(
+                    SerpMetricType::kOther));
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)

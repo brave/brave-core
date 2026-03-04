@@ -7,45 +7,20 @@
 
 #include <algorithm>
 #include <string>
+#include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
+#include "brave/components/time_period_storage/time_period_storage.h"
 #include "components/prefs/pref_service.h"
 
 namespace serp_metrics {
 
 namespace {
-
-struct TimePeriodStorageInfo {
-  SerpMetricType type;
-  const char* dict_key;
-};
-
-constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
-    {.type = SerpMetricType::kBrave, .dict_key = "brave_search_engine"},
-    {.type = SerpMetricType::kGoogle, .dict_key = "google_search_engine"},
-    {.type = SerpMetricType::kOther, .dict_key = "other_search_engine"},
-};
-
-base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
-BuildTimePeriodStorages(PrefService* prefs) {
-  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
-      time_period_storages;
-
-  for (const auto& [type, dict_key] : kTimePeriodStorages) {
-    time_period_storages.emplace(
-        type, std::make_unique<TimePeriodStorage>(
-                  prefs, prefs::kSerpMetricsTimePeriodStorage, dict_key,
-                  kSerpMetricsTimePeriodInDays.Get(),
-                  /*should_offset_dst=*/false));
-  }
-
-  return time_period_storages;
-}
 
 // Returns the start of yesterday in local time (midnight at the beginning of
 // the previous calendar day). Subtracting 12 hours ensures we cross into the
@@ -94,9 +69,10 @@ size_t GetYesterdaySumAfterLastCheckedCutoff(
 
 }  // namespace
 
-SerpMetrics::SerpMetrics(PrefService* local_state, PrefService* prefs)
+SerpMetrics::SerpMetrics(PrefService* local_state,
+                         TimePeriodStorages time_period_storages)
     : local_state_(local_state),
-      time_period_storages_(BuildTimePeriodStorages(prefs)) {
+      time_period_storages_(std::move(time_period_storages)) {
   CHECK(local_state_);
   CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
 }
@@ -104,11 +80,13 @@ SerpMetrics::SerpMetrics(PrefService* local_state, PrefService* prefs)
 SerpMetrics::~SerpMetrics() = default;
 
 void SerpMetrics::RecordSearch(SerpMetricType type) {
+  CHECK_NE(SerpMetricType::kUndefined, type);
   CHECK(time_period_storages_.contains(type));
   time_period_storages_.at(type)->AddDelta(1);
 }
 
 size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
+  CHECK_NE(SerpMetricType::kUndefined, type);
   CHECK(time_period_storages_.contains(type));
   return GetYesterdaySumAfterLastCheckedCutoff(
       *time_period_storages_.at(type), GetStartOfYesterday(),
@@ -134,6 +112,7 @@ void SerpMetrics::ClearHistory() {
 }
 
 size_t SerpMetrics::GetSearchCountForTesting(SerpMetricType type) const {
+  CHECK_NE(SerpMetricType::kUndefined, type);
   CHECK(time_period_storages_.contains(type));
   return time_period_storages_.at(type)->GetPeriodSum();
 }

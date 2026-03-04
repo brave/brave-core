@@ -11,6 +11,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -62,7 +63,8 @@ ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
 std::unique_ptr<KeyedService>
 ProfileMiscMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<ProfileMiscMetricsService>(context);
+  return std::make_unique<ProfileMiscMetricsService>(
+      context, g_browser_process->profile_manager());
 }
 
 content::BrowserContext*

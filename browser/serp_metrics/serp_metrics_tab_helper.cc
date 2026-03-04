@@ -6,6 +6,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -45,7 +46,10 @@ SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents)
           profile);
   CHECK(profile_misc_metrics_service);
   serp_metrics_ = profile_misc_metrics_service->GetSerpMetrics();
-  CHECK(serp_metrics_);
+  if (!serp_metrics_) {
+    // `SerpMetrics` can be null in tests.
+    CHECK_IS_TEST();
+  }
 }
 
 // static
@@ -88,6 +92,12 @@ void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
 
 void SerpMetricsTabHelper::RecordSearchEngine(
     SearchEngineType search_engine_type) {
+  if (!serp_metrics_) {
+    // `SerpMetrics` can be null in tests.
+    CHECK_IS_TEST();
+    return;
+  }
+
   switch (search_engine_type) {
     case SEARCH_ENGINE_BRAVE: {
       serp_metrics_->RecordSearch(SerpMetricType::kBrave);
