@@ -122,8 +122,8 @@ void PolkadotTxManager::OnApprovePolkadotTransaction(
     tx_meta->set_submitted_time(base::Time::Now());
     tx_meta->set_tx_hash(tx_hash);
 
-    auto tx = tx_meta->tx();
-    CHECK(tx.has_value());
+    auto* tx = tx_meta->tx();
+    CHECK(tx);
 
     tx->set_extrinsic_metadata(extrinsic_metadata);
   }

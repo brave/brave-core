@@ -24,8 +24,8 @@ void PolkadotTxMeta::set_tx(PolkadotTransaction tx) {
   tx_.emplace(std::move(tx));
 }
 
-base::optional_ref<PolkadotTransaction> PolkadotTxMeta::tx() {
-  return tx_;
+PolkadotTransaction* PolkadotTxMeta::tx() {
+  return tx_.has_value() ? &tx_.value() : nullptr;
 }
 
 mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
