@@ -118,7 +118,7 @@ class FakeBackgroundWebContents : public BackgroundWebContents {
 class LocalAIServiceTest : public testing::Test {
  protected:
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(features::kLocalAIModels);
+    feature_list_.InitAndEnableFeature(features::kBraveHistoryEmbeddings);
     service_ = std::make_unique<LocalAIService>(base::BindRepeating(
         &LocalAIServiceTest::CreateFakeWebContents, base::Unretained(this)));
   }

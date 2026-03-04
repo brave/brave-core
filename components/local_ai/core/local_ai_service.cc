@@ -79,7 +79,7 @@ mojom::ModelFilesPtr LoadModelFilesFromDisk(
 
 LocalAIService::LocalAIService(BackgroundWebContentsFactory factory)
     : background_web_contents_factory_(std::move(factory)) {
-  CHECK(base::FeatureList::IsEnabled(features::kLocalAIModels));
+  CHECK(base::FeatureList::IsEnabled(features::kBraveHistoryEmbeddings));
   DVLOG(3) << "LocalAIService created";
 
   // Observe the component updater for model readiness

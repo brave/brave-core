@@ -702,15 +702,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_ADS_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_LOCAL_AI_MODELS                                 \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-local-ai-models",                                \
-      "Brave Local AI Models",                                \
-      "Enables local AI models to be downloaded",             \
-      kOsWin | kOsMac | kOsLinux,                             \
-      FEATURE_VALUE_TYPE(local_ai::features::kLocalAIModels), \
-  })
-
 #define BRAVE_HISTORY_EMBEDDINGS_FLAG                                  \
   EXPAND_FEATURE_ENTRIES({                                             \
       "brave-history-embeddings",                                      \
@@ -1365,7 +1356,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_ADS_FEATURE_ENTRIES                                                    \
-  BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
