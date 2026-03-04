@@ -58,6 +58,7 @@
 
             <TextView
                 android:id="@+id/title"
+                android:layout_marginTop="48dp"
                 android:textStyle="bold"
                 android:textSize="@dimen/new_tab_page_incognito_title_text_size"
                 android:layout_width="wrap_content"
@@ -180,6 +181,8 @@
                 android:layout_marginBottom="4dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textAlignment="viewStart"
                 android:text="@string/brave_new_tab_private_vpn"
                 android:textColor="@color/primitive_private_window_90"
                 app:layout_constraintTop_toBottomOf="@+id/tv_second_description"
@@ -194,6 +197,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:gravity="start"
+                android:textAlignment="viewStart"
                 android:text="@string/brave_new_tab_private_vpn_description"
                 android:textColor="@color/primitive_private_window_80"
                 app:layout_constraintTop_toBottomOf="@+id/tv_third_title"
@@ -207,10 +212,11 @@
                 style="@style/DefaultSemibold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textAlignment="viewStart"
                 android:text="@string/brave_new_tab_private_vpn_cta"
                 android:textColor="@color/primitive_private_window_60"
                 app:layout_constraintTop_toBottomOf="@+id/tv_third_description"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_third_title"
                 app:layout_constraintEnd_toEndOf="@id/tv_third_title"
                 />
