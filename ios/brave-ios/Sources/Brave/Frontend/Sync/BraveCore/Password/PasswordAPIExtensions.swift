@@ -28,7 +28,6 @@ extension PasswordForm {
   var displayURLString: String {
     return signOnRealm
   }
-
 }
 
 extension BravePasswordAPI {
