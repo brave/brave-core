@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
@@ -122,10 +121,11 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporarilyAllowed(
   if (!shields_settings_) {
     return false;
   }
-  bool allow = base::Contains(shields_settings_->origins_to_allow_scripts,
-                              url::Origin::Create(script_url).Serialize()) ||
-               base::Contains(shields_settings_->origins_to_allow_scripts,
-                              script_url.spec());
+  bool allow =
+      std::ranges::contains(shields_settings_->origins_to_allow_scripts,
+                            url::Origin::Create(script_url).Serialize()) ||
+      std::ranges::contains(shields_settings_->origins_to_allow_scripts,
+                            script_url.spec());
   if (!allow) {
     // Also check rules in the main frame, because this frame rules may be out
     // of sync.

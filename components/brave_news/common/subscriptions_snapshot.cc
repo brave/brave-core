@@ -11,8 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
-
 namespace brave_news {
 
 SubscriptionsDiff::SubscriptionsDiff() = default;
@@ -60,7 +58,7 @@ std::vector<std::string> SubscriptionsSnapshot::GetChannelLocales(
   std::vector<std::string> locales;
 
   for (const auto& [locale, locale_channels] : channels_) {
-    if (base::Contains(locale_channels, channel)) {
+    if (std::ranges::contains(locale_channels, channel)) {
       locales.push_back(locale);
     }
   }
@@ -76,7 +74,7 @@ bool SubscriptionsSnapshot::GetChannelSubscribed(
       continue;
     }
 
-    return base::Contains(value, channel);
+    return std::ranges::contains(value, channel);
   }
   return false;
 }

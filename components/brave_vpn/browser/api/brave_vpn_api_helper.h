@@ -12,19 +12,15 @@
 
 #include "base/values.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_vpn {
 
 struct Hostname;
 
 std::unique_ptr<Hostname> PickBestHostname(
     const std::vector<Hostname>& hostnames);
-std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);
+std::vector<Hostname> ParseHostnames(const base::ListValue& hostnames);
 std::string GetTimeZoneName();
-base::Value::Dict GetValueWithTicketInfos(
+base::DictValue GetValueWithTicketInfos(
     const std::string& email,
     const std::string& subject,
     const std::string& body,

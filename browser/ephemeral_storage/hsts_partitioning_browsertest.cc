@@ -174,14 +174,14 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     return true;
   }
 
-  base::Value::Dict NetworkContextGetHSTSState(const std::string& host) {
+  base::DictValue NetworkContextGetHSTSState(const std::string& host) {
     content::StoragePartition* partition =
         browser()->profile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
-    base::Value::Dict result;
+    base::DictValue result;
     partition->GetNetworkContext()->GetHSTSState(
         host, base::BindLambdaForTesting(
-                  [&run_loop, &result](base::Value::Dict sts_state) {
+                  [&run_loop, &result](base::DictValue sts_state) {
                     result = std::move(sts_state);
                     run_loop.Quit();
                   }));

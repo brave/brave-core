@@ -38,11 +38,11 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   DCHECK(!wallet->recovery_seed.empty());
 
-  base::Value::Dict denomination;
+  base::DictValue denomination;
   denomination.Set("amount", "0");
   denomination.Set("currency", "BAT");
 
-  base::Value::Dict body;
+  base::DictValue body;
   body.Set("denomination", std::move(denomination));
   body.Set("destination", address_);
 
@@ -70,11 +70,11 @@ std::optional<std::string> PostConnectUphold::Content() const {
     return std::nullopt;
   }
 
-  base::Value::Dict headers;
+  base::DictValue headers;
   headers.Set("digest", std::move(digest));
   headers.Set("signature", std::move(signature));
 
-  base::Value::Dict request;
+  base::DictValue request;
   request.Set("body", std::move(body));
   request.Set("headers", std::move(headers));
   request.Set("octets", std::move(octets));
@@ -85,7 +85,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
     return std::nullopt;
   }
 
-  base::Value::Dict content;
+  base::DictValue content;
   content.Set("signedLinkingRequest",
               base::Base64Encode(std::move(json_request)));
 

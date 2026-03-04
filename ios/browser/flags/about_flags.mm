@@ -39,9 +39,8 @@ const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
     {{"zcash_shielded_transactions_enabled", "true"}};
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
-     std::size(kZCashShieldedTransactionsDisabled), nullptr},
-    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
-     std::size(kZCashShieldedTransactionsEnabled), nullptr}};
+     nullptr},
+    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \

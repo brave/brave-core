@@ -22,9 +22,9 @@ namespace ai_chat {
 namespace {
 
 std::string SerializeTabsToJson(base::span<const Tab> tabs) {
-  base::Value::List tab_value_list;
+  base::ListValue tab_value_list;
   for (const auto& tab : tabs) {
-    tab_value_list.Append(base::Value::Dict()
+    tab_value_list.Append(base::DictValue()
                               .Set("id", tab.id)
                               .Set("title", tab.title)
                               .Set("url", tab.origin.Serialize()));
@@ -546,7 +546,7 @@ OAIMessage BuildOAISeedMessage(const std::string& text) {
 std::vector<OAIMessage> BuildOAIDedupeTopicsMessages(
     const std::vector<std::string>& topics) {
   // Serialize topics to JSON array
-  base::Value::List topic_list;
+  base::ListValue topic_list;
   for (const auto& topic : topics) {
     topic_list.Append(topic);
   }

@@ -17,7 +17,6 @@ class Profile;
 
 namespace base {
 class Time;
-class Value;
 }  //  namespace base
 
 namespace content {
@@ -53,19 +52,19 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
-  void HandleGetPreferences(const base::Value::List& args);
-  void HandleGetStats(const base::Value::List& args);
-  void HandleGetNewTabAdsData(const base::Value::List& args);
-  void HandleSaveNewTabPagePref(const base::Value::List& args);
-  void HandleRegisterNewTabPageView(const base::Value::List& args);
-  void HandleBrandedWallpaperLogoClicked(const base::Value::List& args);
-  void HandleGetWallpaperData(const base::Value::List& args);
-  void HandleCustomizeClicked(const base::Value::List& args);
+  void HandleGetPreferences(const base::ListValue& args);
+  void HandleGetStats(const base::ListValue& args);
+  void HandleGetNewTabAdsData(const base::ListValue& args);
+  void HandleSaveNewTabPagePref(const base::ListValue& args);
+  void HandleRegisterNewTabPageView(const base::ListValue& args);
+  void HandleBrandedWallpaperLogoClicked(const base::ListValue& args);
+  void HandleGetWallpaperData(const base::ListValue& args);
+  void HandleCustomizeClicked(const base::ListValue& args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();
 
-  base::Value::Dict GetAdsDataDictionary() const;
+  base::DictValue GetAdsDataDictionary() const;
 
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override {}

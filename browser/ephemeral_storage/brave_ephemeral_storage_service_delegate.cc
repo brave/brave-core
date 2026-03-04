@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -73,7 +72,7 @@ bool PrepareTabForFirstPartyStorageCleanup(
   }
   const auto tab_tld =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  if (tab_tld.empty() || !base::Contains(ephemeral_domains, tab_tld)) {
+  if (tab_tld.empty() || !std::ranges::contains(ephemeral_domains, tab_tld)) {
     return false;
   }
 

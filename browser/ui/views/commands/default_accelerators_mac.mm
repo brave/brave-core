@@ -7,12 +7,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include <algorithm>
 #include <optional>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
@@ -36,7 +36,7 @@ bool CanConvertToAcceleratorMapping(int command_id) {
     return false;
   }
 
-  return base::Contains(commands::GetCommands(), command_id);
+  return std::ranges::contains(commands::GetCommands(), command_id);
 }
 
 bool CanConvertToAcceleratorMapping(NSMenuItem* item) {

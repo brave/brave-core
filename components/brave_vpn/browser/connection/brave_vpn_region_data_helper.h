@@ -17,14 +17,14 @@ namespace brave_vpn {
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::RegionPtr>& region_list);
-base::Value::Dict GetValueFromRegionWithoutCity(const mojom::RegionPtr& region);
-base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region);
-bool IsValidRegionValue(const base::Value::Dict& value);
-mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value);
-mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value);
-bool ValidateCachedRegionData(const base::Value::List& region_value);
+base::DictValue GetValueFromRegionWithoutCity(const mojom::RegionPtr& region);
+base::DictValue GetValueFromRegion(const mojom::RegionPtr& region);
+bool IsValidRegionValue(const base::DictValue& value);
+mojom::RegionPtr GetRegionFromValueWithoutCity(const base::DictValue& value);
+mojom::RegionPtr GetRegionFromValue(const base::DictValue& value);
+bool ValidateCachedRegionData(const base::ListValue& region_value);
 std::vector<mojom::RegionPtr> ParseRegionList(
-    const base::Value::List& region_list);
+    const base::ListValue& region_list);
 
 }  // namespace brave_vpn
 

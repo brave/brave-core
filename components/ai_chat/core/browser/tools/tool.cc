@@ -17,7 +17,7 @@ std::string_view Tool::Type() const {
   return "function";
 }
 
-std::optional<base::Value::Dict> Tool::InputProperties() const {
+std::optional<base::DictValue> Tool::InputProperties() const {
   return std::nullopt;
 }
 
@@ -51,7 +51,7 @@ bool Tool::SupportsConversation(
   return true;
 }
 
-std::optional<base::Value::Dict> Tool::ExtraParams() const {
+std::optional<base::DictValue> Tool::ExtraParams() const {
   return std::nullopt;
 }
 

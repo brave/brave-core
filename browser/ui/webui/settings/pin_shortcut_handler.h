@@ -27,8 +27,8 @@ class PinShortcutHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void HandleCheckShortcutPinState(const base::Value::List& args);
-  void HandlePinShortcut(const base::Value::List& args);
+  void HandleCheckShortcutPinState(const base::ListValue& args);
+  void HandlePinShortcut(const base::ListValue& args);
   void NotifyShortcutPinStateChangeToPage(bool pinned);
 
   // |from_timer| is true when it's called for polling pinned state

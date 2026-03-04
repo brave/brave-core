@@ -23,7 +23,7 @@ namespace brave {
 
 namespace {
 std::optional<extensions::URLPatternSet> CreateURLPatternSetFromList(
-    const base::Value::List* value) {
+    const base::ListValue* value) {
   if (!value) {
     return std::nullopt;
   }
@@ -40,7 +40,7 @@ std::optional<extensions::URLPatternSet> CreateURLPatternSetFromList(
 }
 
 std::optional<base::flat_set<std::string>> CreateParamsList(
-    const base::Value::List* value) {
+    const base::ListValue* value) {
   if (!value) {
     return std::nullopt;
   }
@@ -61,7 +61,7 @@ URLSanitizerService::Config ParseConfig(
             << parsed_json.error().message;
     return {};
   }
-  const base::Value::List* list = parsed_json->GetIfList();
+  const base::ListValue* list = parsed_json->GetIfList();
   if (!list) {
     return {};
   }
@@ -69,7 +69,7 @@ URLSanitizerService::Config ParseConfig(
   URLSanitizerService::Config config;
   config.matchers.reserve(list->size());
   for (const auto& it : *list) {
-    const base::Value::Dict* items = it.GetIfDict();
+    const base::DictValue* items = it.GetIfDict();
     if (!items) {
       continue;
     }

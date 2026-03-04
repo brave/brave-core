@@ -128,7 +128,7 @@ void AIChatCredentialManager::OnCredentialSummary(
     return;
   }
 
-  std::optional<base::Value::Dict> records = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> records = base::JSONReader::ReadDict(
       summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
   if (!records) {
@@ -187,7 +187,7 @@ void AIChatCredentialManager::FetchPremiumCredential(
   // soonest. Also, remove any expired credentials as we go.
   ScopedDictPrefUpdate update(prefs_service_,
                               prefs::kBraveChatPremiumCredentialCache);
-  base::Value::Dict& dict = update.Get();
+  base::DictValue& dict = update.Get();
   base::Time now = base::Time::Now();
   CredentialCacheEntry valid_credential;
   bool found_valid_credential = false;
@@ -298,8 +298,7 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
       encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
-  std::string credential;
-  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+  std::string credential = base::UTF16ToUTF8(unescaped.view());
   if (credential.empty()) {
     // Not purchased.
     std::move(callback).Run(std::nullopt);
@@ -316,7 +315,7 @@ void AIChatCredentialManager::PutCredentialInCache(
     CredentialCacheEntry credential) {
   ScopedDictPrefUpdate update(prefs_service_,
                               prefs::kBraveChatPremiumCredentialCache);
-  base::Value::Dict& dict = update.Get();
+  base::DictValue& dict = update.Get();
   dict.Set(credential.credential, base::TimeToValue(credential.expires_at));
 }
 
@@ -335,7 +334,7 @@ void AIChatCredentialManager::CreateOrderFromReceipt(
   const std::string leo_sku_domain = brave_domains::GetServicesDomain(
       kLeoSkuHostnamePart, brave_domains::ServicesEnvironment::STAGING);
 
-  base::Value::Dict request;
+  base::DictValue request;
   request.Set("type", "android");
   request.Set("raw_receipt", purchase_token);
   request.Set("package", package);

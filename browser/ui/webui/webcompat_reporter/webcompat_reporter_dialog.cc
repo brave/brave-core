@@ -47,7 +47,7 @@ constexpr int kDialogWidth = 375;
 // A ui::WebDialogDelegate that specifies the webcompat reporter's appearance.
 class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
  public:
-  explicit WebcompatReporterDialogDelegate(base::Value::Dict params);
+  explicit WebcompatReporterDialogDelegate(base::DictValue params);
   WebcompatReporterDialogDelegate(const WebcompatReporterDialogDelegate&) =
       delete;
   WebcompatReporterDialogDelegate& operator=(
@@ -66,11 +66,11 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   bool ShouldShowDialogTitle() const override;
 
  private:
-  base::Value::Dict params_;
+  base::DictValue params_;
 };
 
 WebcompatReporterDialogDelegate::WebcompatReporterDialogDelegate(
-    base::Value::Dict params)
+    base::DictValue params)
     : params_(std::move(params)) {}
 
 WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() = default;
@@ -128,7 +128,7 @@ void PrepareParamsAndShowDialog(content::WebContents* initiator,
                                 const std::optional<std::string>& contact_info,
                                 const bool contact_info_save_flag,
                                 const std::vector<std::string>& components) {
-  base::Value::Dict params_dict;
+  base::DictValue params_dict;
   params_dict.Set(kSiteURLField, report_url);
   params_dict.Set(kShieldsEnabledField, shields_enabled);
   params_dict.Set(kAdBlockSettingField, adblock_mode);

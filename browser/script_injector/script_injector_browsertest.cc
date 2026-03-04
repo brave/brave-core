@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectedScriptReturnsDict) {
   const GURL url = https_server_.GetURL("a.com", "/");
   auto cb = base::BindLambdaForTesting([&](base::Value value) {
     EXPECT_TRUE(value.is_dict());
-    const base::Value::Dict& dict = value.GetDict();
+    const base::DictValue& dict = value.GetDict();
     auto val = dict.FindBool("ok");
     EXPECT_TRUE(*val);
     run_loop.Quit();

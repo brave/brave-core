@@ -51,10 +51,6 @@ class BraveTabStripModel : public TabStripModel {
       base::span<int> indices,
       uint32_t close_flags = TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 
-  // Sets the custom title for the tab at the specified index.
-  void SetCustomTitleForTab(int index,
-                            const std::optional<std::u16string>& title);
-
   // Can be null when tree tab feature is disabled via flag or pref.
   const TreeTabModel* tree_model() const { return tree_tab_model_.get(); }
   TreeTabModel* tree_model() { return tree_tab_model_.get(); }
@@ -62,7 +58,6 @@ class BraveTabStripModel : public TabStripModel {
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
-  void UpdateWebContentsStateAt(int index, TabChangeType change_type) override;
 
  private:
   friend class TreeTabsBrowserTest;

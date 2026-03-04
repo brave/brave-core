@@ -35,8 +35,9 @@ import org.robolectric.shadows.ShadowPackageManager;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRule;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Features.DisableFeatures;
@@ -118,8 +119,8 @@ import java.util.List;
     BraveFeatureList.BRAVE_PLAYLIST,
     ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
+    ChromeFeatureList.GLIC,
     ChromeFeatureList.NEW_TAB_PAGE_CUSTOMIZATION,
-    ChromeFeatureList.PROPAGATE_DEVICE_CONTENT_FILTERS_TO_SUPERVISED_USER,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
     BraveFeatureList.BRAVE_SHRED,
 })
@@ -172,10 +173,10 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             new OneshotSupplierImpl<>();
     private final OneshotSupplierImpl<IncognitoReauthController>
             mIncognitoReauthControllerSupplier = new OneshotSupplierImpl<>();
-    private final ObservableSupplierImpl<BookmarkModel> mBookmarkModelSupplier =
-            new ObservableSupplierImpl<>();
-    private final ObservableSupplierImpl<ReadAloudController> mReadAloudControllerSupplier =
-            new ObservableSupplierImpl<>();
+    private final SettableNullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier =
+            ObservableSuppliers.createNullable();
+    private final SettableNullableObservableSupplier<ReadAloudController>
+            mReadAloudControllerSupplier = ObservableSuppliers.createNullable();
     private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
@@ -267,7 +268,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mSnackbarManager,
                         mIncognitoReauthControllerSupplier,
                         mReadAloudControllerSupplier,
-                        mPageZoomManagerMock);
+                        mPageZoomManagerMock,
+                        /* openInAppMenuItemProvider= */ null);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);

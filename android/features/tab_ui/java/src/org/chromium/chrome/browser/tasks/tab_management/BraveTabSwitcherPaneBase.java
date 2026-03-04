@@ -8,9 +8,9 @@ package org.chromium.chrome.browser.tasks.tab_management;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
@@ -28,10 +28,10 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
             boolean isIncognito,
             DoubleConsumer onToolbarAlphaChange,
             UserEducationHelper userEducationHelper,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
-            ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
             TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
-            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
+            NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 paneId,
                 context,
@@ -48,7 +48,7 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     @Override
     public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
             @NonNull HubContainerView hubContainerView) {
-        if (getTabSwitcherPaneCoordinatorSupplier().get() == null && getCurrentTab() != null) {
+        if (getTabSwitcherPaneCoordinator() == null && getCurrentTab() != null) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set
             super.createTabSwitcherPaneCoordinator();

@@ -32,15 +32,13 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 
+import static org.chromium.base.test.transit.ViewFinder.waitForNoView;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.ARES_AT_OLYMP;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.DEIMOS_AT_OLYMP;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.GREEK_GODS;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.HADES_AT_UNDERWORLD;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.PHOBOS_AT_OLYMP;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.ZEUS_ON_EARTH;
-import static org.chromium.ui.test.util.ViewUtils.VIEW_GONE;
-import static org.chromium.ui.test.util.ViewUtils.VIEW_INVISIBLE;
-import static org.chromium.ui.test.util.ViewUtils.VIEW_NULL;
 import static org.chromium.ui.test.util.ViewUtils.onViewWaiting;
 
 import android.graphics.ColorFilter;
@@ -78,7 +76,6 @@ import org.chromium.chrome.browser.history.StubbedHistoryProvider;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.R;
-import org.chromium.ui.test.util.ViewUtils;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
@@ -337,9 +334,8 @@ public class PasswordSettingsSearchTest {
         onView(withSearchMenuIdOrText()).perform(click());
 
         onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
-        ViewUtils.waitForViewCheckingState(
-                withParent(withContentDescription(R.string.abc_action_menu_overflow_description)),
-                VIEW_INVISIBLE | VIEW_GONE | VIEW_NULL);
+        waitForNoView(
+                withParent(withContentDescription(R.string.abc_action_menu_overflow_description)));
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         if (menuInitiallyVisible.get()) { // If the overflow menu was there, it should be restored.
@@ -380,8 +376,7 @@ public class PasswordSettingsSearchTest {
 
         // Trigger search which shouldn't have the button yet.
         onView(withSearchMenuIdOrText()).perform(click());
-        ViewUtils.waitForViewCheckingState(
-                withId(R.id.search_close_btn), VIEW_INVISIBLE | VIEW_GONE | VIEW_NULL);
+        waitForNoView(withId(R.id.search_close_btn));
 
         // Type something and see the button appear.
         onView(withId(R.id.search_src_text))
@@ -391,8 +386,7 @@ public class PasswordSettingsSearchTest {
 
         // Clear the search which should hide the button again.
         onView(withId(R.id.search_close_btn)).perform(click()); // Clear search.
-        ViewUtils.waitForViewCheckingState(
-                withId(R.id.search_close_btn), VIEW_INVISIBLE | VIEW_GONE | VIEW_NULL);
+        waitForNoView(withId(R.id.search_close_btn));
     }
 
     /**

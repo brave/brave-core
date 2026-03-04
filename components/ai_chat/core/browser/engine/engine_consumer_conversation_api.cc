@@ -516,7 +516,7 @@ void EngineConsumerConversationAPI::DedupeTopics(
     return;
   }
 
-  base::Value::List topic_list;
+  base::ListValue topic_list;
   for (const auto& topic : *topics_result) {
     topic_list.Append(topic);
   }
@@ -557,10 +557,10 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
       num_chunks, std::move(merge_callback));
 
   for (size_t chunk = 0; chunk < num_chunks; ++chunk) {
-    base::Value::List tab_value_list;
+    base::ListValue tab_value_list;
     for (size_t i = chunk * kTabListChunkSize;
          i < std::min((chunk + 1) * kTabListChunkSize, tabs.size()); ++i) {
-      tab_value_list.Append(base::Value::Dict()
+      tab_value_list.Append(base::DictValue()
                                 .Set("id", tabs[i].id)
                                 .Set("title", tabs[i].title)
                                 .Set("url", tabs[i].origin.Serialize()));

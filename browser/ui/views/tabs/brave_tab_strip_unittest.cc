@@ -3,11 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
+
+using ::testing::NiceMock;
 
 class BraveTabStripUnitTest : public ChromeViewsTestBase {
  public:
@@ -23,22 +27,24 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
     ChromeViewsTestBase::SetUp();
 
     controller_ = new FakeBaseTabStripController;
-    auto unique_tab_strip = std::make_unique<TabStrip>(
-        std::unique_ptr<TabStripController>(controller_));
-    controller_->set_tab_strip(unique_tab_strip.get());
+    tab_strip_ =
+        new TabStrip(std::unique_ptr<TabStripController>(controller_),
+                     std::unique_ptr<NiceMock<BraveTabHoverCardController>>());
+    tab_strip_->Initialize();
+    controller_->set_tab_strip(tab_strip_);
     // Do this to force TabStrip to create the buttons.
     auto tab_strip_parent = std::make_unique<views::View>();
     views::FlexLayout* layout_manager = tab_strip_parent->SetLayoutManager(
         std::make_unique<views::FlexLayout>());
     // Scale the tabstrip between zero and its preferred width to match the
-    // context it operates in in TabStripRegionView (with tab scrolling off).
+    // context it operates in in HorizontalTabStripRegionView (with tab
+    // scrolling off).
     layout_manager->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetDefault(
             views::kFlexBehaviorKey,
             views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                      views::MaximumFlexSizeRule::kPreferred));
-    tab_strip_ = tab_strip_parent->AddChildView(std::move(unique_tab_strip));
-
+    tab_strip_parent->AddChildViewRaw(tab_strip_.get());
     // The tab strip is free to use all of the space in its parent view, since
     // there are no sibling controls such as the NTB in the test context.
     tab_strip_->SetAvailableWidthCallback(base::BindRepeating(

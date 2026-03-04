@@ -35,7 +35,7 @@ class BraveTreeTabStripCollectionDelegate
                          size_t destination_index,
                          std::optional<tab_groups::TabGroupId> new_group_id,
                          bool new_pinned_state,
-                         const std::set<tabs::TabCollection::Type>&
+                         const tabs::TabCollection::TypeEnumSet
                              retain_collection_types) const override;
 
  private:

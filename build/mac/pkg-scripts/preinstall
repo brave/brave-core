@@ -1,0 +1,4 @@
+#!/bin/bash
+# This preinstall script is run on macOS pkg installers
+
+exit 0

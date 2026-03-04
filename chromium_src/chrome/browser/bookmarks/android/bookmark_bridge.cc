@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/files/file_path.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
@@ -77,7 +76,7 @@ bool CanImportURL(const GURL& url) {
       }
     }
 
-    if (base::Contains(chrome::ChromeDebugURLs(), fixed_url.spec())) {
+    if (std::ranges::contains(chrome::ChromeDebugURLs(), fixed_url.spec())) {
       return true;
     }
 

@@ -304,7 +304,7 @@ TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
   service_->SetPolicyValue(kTestBrowserPolicyKey, true);
 
   // Verify it's stored in the correct location in kBraveOriginPolicies
-  const base::Value::Dict& policies_dict =
+  const base::DictValue& policies_dict =
       local_state_.GetDict(kBraveOriginPolicies);
 
   // Get the expected key from the policy manager
@@ -604,7 +604,7 @@ TEST_F(BraveOriginServiceDisabledTest, FeatureDisabled_NoSideEffects) {
   // Verify that attempting operations when disabled doesn't leave side effects
 
   // Initial state - no policies set
-  const base::Value::Dict& policies_dict =
+  const base::DictValue& policies_dict =
       local_state_.GetDict(kBraveOriginPolicies);
   EXPECT_TRUE(policies_dict.empty());
 

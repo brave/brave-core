@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/values.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -20,7 +19,7 @@ namespace brave_news {
 namespace {
 
 base::Value GetItem(std::string url) {
-  base::Value::Dict item;
+  base::DictValue item;
   item.Set("content_type", base::Value("article"));
   item.Set("url", base::Value(url));
   item.Set("padded_img", base::Value("https://example.com/img.jpg.pad"));
@@ -39,7 +38,7 @@ base::Value GetItem(std::string url) {
 TEST(BraveNewsCombinedFeedParsing, Success) {
   // Create an entry which should be valid as a Brave News item
   auto item = GetItem("https://www.hello.com");
-  base::Value::List list;
+  base::ListValue list;
   list.Append(std::move(item));
   base::Value json_value = base::Value(std::move(list));
 
@@ -51,14 +50,14 @@ TEST(BraveNewsCombinedFeedParsing, Success) {
 
 TEST(BraveNewsCombinedFeedParsing, GetItemWithChannels) {
   // Create an entry which should be valid as a Brave News item
-  auto channels_json = base::Value::List();
+  auto channels_json = base::ListValue();
   channels_json.Append("One");
   channels_json.Append("Two");
   channels_json.Append("Three");
 
   auto item = GetItem("https://www.hello.com");
   item.GetDict().Set("channels", std::move(channels_json));
-  base::Value::List list;
+  base::ListValue list;
   list.Append(std::move(item));
   base::Value json_value = base::Value(std::move(list));
 
@@ -69,16 +68,16 @@ TEST(BraveNewsCombinedFeedParsing, GetItemWithChannels) {
 
   auto channels = feed_items[0]->get_article()->data->channels;
   EXPECT_EQ(3u, channels.size());
-  EXPECT_TRUE(base::Contains(channels, "One"));
-  EXPECT_TRUE(base::Contains(channels, "Two"));
-  EXPECT_TRUE(base::Contains(channels, "Three"));
+  EXPECT_TRUE(std::ranges::contains(channels, "One"));
+  EXPECT_TRUE(std::ranges::contains(channels, "Two"));
+  EXPECT_TRUE(std::ranges::contains(channels, "Three"));
 }
 
 TEST(BraveNewsCombinedFeedParsing, FailBadProtocol) {
   // Create an entry which should be invalid as a Brave News item
   // A chrome: protocol should not be allowed
   auto item = GetItem("chrome://settings");
-  base::Value::List list;
+  base::ListValue list;
   list.Append(std::move(item));
   base::Value json_value = base::Value(std::move(list));
 

@@ -34,7 +34,7 @@ class BraveNTPCustomBackgroundService : public KeyedService {
     virtual bool ShouldUseRandomValue() const = 0;
 
     virtual bool HasPreferredBraveBackground() const = 0;
-    virtual base::Value::Dict GetPreferredBraveBackground() const = 0;
+    virtual base::DictValue GetPreferredBraveBackground() const = 0;
 
     virtual ~Delegate() = default;
   };
@@ -48,7 +48,7 @@ class BraveNTPCustomBackgroundService : public KeyedService {
       const BraveNTPCustomBackgroundService&) = delete;
 
   bool ShouldShowCustomBackground() const;
-  base::Value::Dict GetBackground() const;
+  base::DictValue GetBackground() const;
   base::FilePath GetImageFilePath(const GURL& url);
 
  private:

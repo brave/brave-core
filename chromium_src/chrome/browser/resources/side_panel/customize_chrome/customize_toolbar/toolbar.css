@@ -14,7 +14,7 @@
   height: 60px;
 }
 
-sp-heading h2[slot="heading"] {
+sp-heading h2[slot='heading'] {
   --leo-icon-color: var(--leo-gradient-icons-active);
 
   display: flex;
@@ -28,7 +28,8 @@ sp-heading h2[slot="heading"] {
   margin: 0;
 }
 
-.sp-cards-separator, hr.sp-hr {
+.sp-cards-separator,
+hr.sp-hr {
   display: none;
 }
 

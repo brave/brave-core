@@ -29,8 +29,6 @@ BASE_FEATURE(kBraveVerticalTabHideCompletely, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveTreeTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveRenamingTabs, base::FEATURE_DISABLED_BY_DEFAULT);
-
 bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
 }

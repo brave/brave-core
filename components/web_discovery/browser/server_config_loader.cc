@@ -85,7 +85,7 @@ constexpr auto kAllowedReportLocations =
          "dk", "es", "fi", "fr", "gb", "gr", "hu", "in", "it", "jp",
          "mx", "nl", "no", "pl", "ro", "ru", "se", "ua", "us"});
 
-KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
+KeyMap ParseKeys(const base::DictValue& encoded_keys) {
   KeyMap map;
   for (const auto [date, key_b64] : encoded_keys) {
     auto decoded_data = base::Base64Decode(key_b64.GetString());
@@ -98,7 +98,7 @@ KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
 }
 
 base::flat_map<std::string, std::unique_ptr<SourceMapActionConfig>>
-ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
+ParseSourceMapActionConfigs(const base::DictValue& configs_dict) {
   base::flat_map<std::string, std::unique_ptr<SourceMapActionConfig>> map;
   for (const auto [action, config_dict_val] : configs_dict) {
     auto* config_dict = config_dict_val.GetIfDict();

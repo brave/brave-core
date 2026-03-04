@@ -37,7 +37,7 @@ const Container = styled.div`
 // autocomplete result.
 const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent, searchEngine?: SearchEngineInfo) => {
   if (line === -1) {
-    handleOpenURLClick(match.destinationUrl.url, event)
+    handleOpenURLClick(match.destinationUrl, event)
     return
   }
 
@@ -64,9 +64,7 @@ const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
     validateScheme(url.toString())
 
     return {
-      destinationUrl: {
-        url: url.toString()
-      },
+      destinationUrl: url.toString(),
       contents: url.toString(),
       description: '',
       imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`,

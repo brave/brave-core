@@ -42,10 +42,7 @@ SidePanel::HorizontalAlignment GetHorizontalAlignment(
     SidePanelEntry::PanelType type) {
   bool is_right_aligned =
       pref_service->GetBoolean(prefs::kSidePanelHorizontalAlignment);
-  is_right_aligned = type == SidePanelEntry::PanelType::kToolbar &&
-                             features::kSidePanelRelativeAlignment.Get() ==
-                                 features::SidePanelRelativeAlignment::
-                                     kShowPanelsOnOppositeSides
+  is_right_aligned = type == SidePanelEntry::PanelType::kToolbar
                          ? !is_right_aligned
                          : is_right_aligned;
   return is_right_aligned ? SidePanel::HorizontalAlignment::kRight
@@ -307,6 +304,15 @@ void SidePanel::UpdateHorizontalAlignment() {
       GetHorizontalAlignment(browser_view_->GetProfile()->GetPrefs(), type_);
 
   InvalidateLayout();
+}
+
+void SidePanel::SetActiveEntryUsesDefaultHorizontalAlignment(
+    bool use_default_horizontal_alignment) {
+  if (use_default_horizontal_alignment_ == use_default_horizontal_alignment) {
+    return;
+  }
+  use_default_horizontal_alignment_ = use_default_horizontal_alignment;
+  UpdateHorizontalAlignment();
 }
 
 views::View* SidePanel::GetContentParentView() {

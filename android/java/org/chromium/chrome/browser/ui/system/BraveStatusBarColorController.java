@@ -10,7 +10,8 @@ import android.graphics.Color;
 
 import androidx.annotation.ColorInt;
 
-import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -31,13 +32,13 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             Activity activity,
             boolean isTablet,
             StatusBarColorProvider statusBarColorProvider,
-            ObservableSupplier<LayoutManager> layoutManagerSupplier,
+            MonotonicObservableSupplier<LayoutManager> layoutManagerSupplier,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             ActivityTabProvider tabProvider,
             TopUiThemeColorProvider topUiThemeColorProvider,
             EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            ObservableSupplier<Integer> overviewColorSupplier) {
+            NonNullObservableSupplier<Integer> overviewColorSupplier) {
         super(
                 activity,
                 isTablet,

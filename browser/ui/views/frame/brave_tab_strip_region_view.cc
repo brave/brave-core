@@ -11,6 +11,8 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -51,7 +53,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // correct amount of padding.
     if (new_tab_button_) {
       new_tab_button_->SetX(
-          tab_strip_container_->bounds().right() +
+          tab_strip_->bounds().right() +
           GetLayoutConstant(LayoutConstant::kTabStripPadding));
     }
     return;
@@ -59,7 +61,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 
   // in vertical tabs mode, we make tab strip's height is the same with this
   // view's height to avoid extra gaps.
-  tab_strip_container_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
+  tab_strip_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
 }
 
 void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
@@ -72,7 +74,7 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   // In horizontal mode, take the current right margin. It is required so that
   // the new tab button will not be covered by the frame grab handle.
   if (!vertical_tabs) {
-    if (auto* current = tab_strip_container_->GetProperty(views::kMarginsKey)) {
+    if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
       margins.set_right(current->right());
     }
   }
@@ -82,14 +84,22 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   // the frame edge so that the leftmost tab can be selected at the edge of the
   // screen.
   if (tabs::HorizontalTabsUpdateEnabled()) {
-    if (!tab_strip_->controller()->IsFrameCondensed() && !vertical_tabs) {
+    BrowserWindowInterface* browser_window_interface =
+        tab_strip_->GetBrowserWindowInterface();
+    BrowserView* browser_view =
+        BrowserView::GetBrowserViewForBrowser(browser_window_interface);
+    BrowserFrameView* browser_frame_view =
+        browser_view ? browser_view->browser_widget()->GetFrameView() : nullptr;
+    bool is_frame_condensed =
+        browser_frame_view && browser_frame_view->IsFrameCondensed();
+    if (!is_frame_condensed && !vertical_tabs) {
       margins.set_left(tabs::kHorizontalTabStripLeftMargin);
     } else {
       margins.set_left(0);
     }
   }
 
-  tab_strip_container_->SetProperty(views::kMarginsKey, margins);
+  tab_strip_->SetProperty(views::kMarginsKey, margins);
 }
 
 void BraveHorizontalTabStripRegionView::OnDragEntered(

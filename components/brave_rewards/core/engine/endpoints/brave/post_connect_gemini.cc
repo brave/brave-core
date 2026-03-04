@@ -34,7 +34,7 @@ std::optional<std::string> PostConnectGemini::Content() const {
     return std::nullopt;
   }
 
-  base::Value::Dict content;
+  base::DictValue content;
   content.Set("linking_info", linking_info_);
   content.Set("recipient_id", recipient_id_);
 

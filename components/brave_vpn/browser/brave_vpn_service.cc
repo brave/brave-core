@@ -501,7 +501,7 @@ void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
 void BraveVpnService::OnFetchRegionList(GetAllRegionsCallback callback,
                                         const std::string& region_list,
                                         bool success) {
-  std::optional<base::Value::List> value = base::JSONReader::ReadList(
+  std::optional<base::ListValue> value = base::JSONReader::ReadList(
       region_list, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (value) {
     auto new_regions = ParseRegionList(*value);
@@ -542,7 +542,7 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
         profile_prefs_->GetString(prefs::kBraveVPNProductIdAndroid);
   }
 
-  base::Value::Dict response;
+  base::DictValue response;
   response.Set("type", "android");
   response.Set("raw_receipt", purchase_token_string);
   response.Set("package", package_string);
@@ -659,7 +659,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
-  std::optional<base::Value::Dict> records = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> records = base::JSONReader::ReadDict(
       summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
   // Early return when summary is invalid or it's empty dict.
@@ -743,8 +743,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
       encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
-  std::string credential;
-  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+  std::string credential = base::UTF16ToUTF8(unescaped.view());
   if (credential.empty()) {
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;

@@ -76,7 +76,7 @@ class MockConversationAPIClient : public ConversationAPIClient {
   MOCK_METHOD(void,
               PerformRequest,
               (std::vector<ConversationEvent>,
-               std::optional<base::Value::List> oai_tool_definitions,
+               std::optional<base::ListValue> oai_tool_definitions,
                const std::optional<std::string>& preferred_tool_name,
                mojom::ConversationCapability conversation_capability,
                EngineConsumer::GenerationDataCallback,
@@ -89,7 +89,7 @@ class MockConversationAPIClient : public ConversationAPIClient {
         std::move(conversation), std::nullopt, std::nullopt,
         mojom::ConversationCapability::CHAT, std::nullopt, true);
     auto dict = base::test::ParseJsonDict(body);
-    base::Value::List* events = dict.FindList("events");
+    base::ListValue* events = dict.FindList("events");
     EXPECT_TRUE(events);
     std::string events_json;
     base::JSONWriter::WriteWithOptions(
@@ -184,7 +184,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -250,7 +250,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -305,7 +305,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -379,7 +379,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -446,7 +446,7 @@ TEST_P(EngineConsumerConversationAPIUnitTest_Rewrite, GenerateEvents) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -557,7 +557,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -673,7 +673,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -859,7 +859,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -927,7 +927,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1010,7 +1010,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1050,7 +1050,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1099,7 +1099,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1170,7 +1170,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1188,7 +1188,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1207,7 +1207,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1242,7 +1242,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1260,7 +1260,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1284,7 +1284,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1302,7 +1302,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1320,7 +1320,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1347,7 +1347,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1365,7 +1365,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1381,7 +1381,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1413,7 +1413,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1431,7 +1431,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1449,7 +1449,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1478,7 +1478,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillRepeatedly([&](std::vector<ConversationEvent> conversation,
-                          std::optional<base::Value::List> oai_tool_definitions,
+                          std::optional<base::ListValue> oai_tool_definitions,
                           const std::optional<std::string>& preferred_tool_name,
                           mojom::ConversationCapability conversation_capability,
                           EngineConsumer::GenerationDataCallback data_callback,
@@ -1517,7 +1517,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1566,7 +1566,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1583,7 +1583,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1629,7 +1629,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1646,7 +1646,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1677,7 +1677,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1691,7 +1691,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1714,7 +1714,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1728,7 +1728,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
             std::move(completion_event), std::nullopt)));
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -1770,7 +1770,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -1803,7 +1803,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -1828,7 +1828,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -1856,7 +1856,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -1886,7 +1886,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   {
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
 
-    base::Value::Dict customizations_dict;
+    base::DictValue customizations_dict;
     customizations_dict.Set("name", "John Doe");
     customizations_dict.Set("job", "Software Engineer");
     customizations_dict.Set("tone", "Professional");
@@ -1907,7 +1907,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -1954,7 +1954,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
 
-    base::Value::List memories;
+    base::ListValue memories;
     memories.Append("I prefer concise explanations");
     memories.Append("I work in the tech industry");
     prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
@@ -1975,7 +1975,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -2018,13 +2018,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
 
-    base::Value::Dict customizations_dict;
+    base::DictValue customizations_dict;
     customizations_dict.Set("name", "Alice");
     customizations_dict.Set("job", "Designer");
     prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
                    std::move(customizations_dict));
 
-    base::Value::List memories;
+    base::ListValue memories;
     memories.Append("I like creative solutions");
     prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
@@ -2041,7 +2041,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -2092,7 +2092,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -2138,7 +2138,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
     // Set empty customizations dict
-    base::Value::Dict empty_customizations_dict;
+    base::DictValue empty_customizations_dict;
     prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
                    std::move(empty_customizations_dict));
 
@@ -2150,7 +2150,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -2196,7 +2196,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
 
     // Set empty memories list
-    base::Value::List empty_memories;
+    base::ListValue empty_memories;
     prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(empty_memories));
 
     std::string expected_events = R"([
@@ -2207,7 +2207,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -2254,14 +2254,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   // Setup user memory to ensure it's available but should be excluded
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
-  base::Value::Dict customizations_dict;
+  base::DictValue customizations_dict;
   customizations_dict.Set("name", "John Doe");
   customizations_dict.Set("job", "Software Engineer");
   prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
                  std::move(customizations_dict));
 
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-  base::Value::List memories;
+  base::ListValue memories;
   memories.Append("I prefer concise explanations");
   memories.Append("I work in the tech industry");
   prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
@@ -2275,7 +2275,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2328,7 +2328,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                      testing::Eq(std::optional<std::string>(
                          model_service_->GetLeoModelNameByKey(kModelKey)))))
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2390,7 +2390,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
 
-  base::Value::Dict properties;
+  base::DictValue properties;
   properties.Set("location", StringProperty("The location to get weather for"));
   properties.Set("units", StringProperty("Temperature units"));
 
@@ -2513,7 +2513,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2615,7 +2615,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2691,7 +2691,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2764,7 +2764,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2820,7 +2820,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2877,7 +2877,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2933,7 +2933,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -2997,7 +2997,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -3107,7 +3107,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     base::RunLoop run_loop;
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::Value::List> oai_tool_definitions,
+                      std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
                       mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
@@ -3222,7 +3222,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // both skill definition message and the main user message
   EXPECT_CALL(*mock_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -3299,7 +3299,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
@@ -3341,7 +3341,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
-                    std::optional<base::Value::List> oai_tool_definitions,
+                    std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
                     mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,

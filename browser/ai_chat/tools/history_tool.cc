@@ -38,7 +38,7 @@ std::string_view HistoryTool::Description() const {
          "the browser's back or forward buttons.";
 }
 
-std::optional<base::Value::Dict> HistoryTool::InputProperties() const {
+std::optional<base::DictValue> HistoryTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameDirection,
         StringProperty(

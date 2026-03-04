@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
@@ -106,9 +105,9 @@ SubscriptionsSnapshot BraveNewsPrefManager::GetSubscriptions() {
 void BraveNewsPrefManager::SetPublisherSubscribed(
     const std::string& publisher_id,
     brave_news::mojom::UserEnabled enabled) {
-  bool is_direct_feed =
-      base::Contains(GetDirectFeeds(), publisher_id,
-                     [](const auto& direct_feed) { return direct_feed.id; });
+  bool is_direct_feed = std::ranges::contains(
+      GetDirectFeeds(), publisher_id,
+      [](const auto& direct_feed) { return direct_feed.id; });
 
   if (is_direct_feed && enabled == mojom::UserEnabled::DISABLED) {
     ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
@@ -140,7 +139,7 @@ std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
   // future customization on a feed. For now we just store a bool, and
   // remove the entire entry if a user unsubscribes from a user feed.
   ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
-  base::Value::Dict value;
+  base::DictValue value;
   value.Set(prefs::kBraveNewsDirectFeedsKeySource, url.spec());
   value.Set(prefs::kBraveNewsDirectFeedsKeyTitle, entry_title);
   update->SetByDottedPath(entry_id, std::move(value));

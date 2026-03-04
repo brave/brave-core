@@ -31,7 +31,7 @@ namespace {
 
 base::Value CreateResource(const std::string& name,
                            const std::string& content) {
-  base::Value::Dict resource;
+  base::DictValue resource;
   resource.Set("name", name);
   resource.Set("content", base::Base64Encode(content));
   resource.SetByDottedPath("kind.mime", "application/javascript");

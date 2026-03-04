@@ -225,12 +225,12 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
 MessageMetainfo::MessageMetainfo() = default;
 MessageMetainfo::~MessageMetainfo() = default;
 
-base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
-                                         uint64_t metric_value,
-                                         MetricLogType log_type,
-                                         const MessageMetainfo& meta,
-                                         const std::string& upload_type) {
-  base::Value::Dict result;
+base::DictValue GenerateP3AMessageDict(std::string_view metric_name,
+                                       uint64_t metric_value,
+                                       MetricLogType log_type,
+                                       const MessageMetainfo& meta,
+                                       const std::string& upload_type) {
+  base::DictValue result;
 
   // Fill basic meta.
   result.Set(kPlatformAttributeName, meta.platform());

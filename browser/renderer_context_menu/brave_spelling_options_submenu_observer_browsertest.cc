@@ -74,7 +74,7 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                                    enable_spellcheck);
     menu()->GetPrefs()->SetString(language::prefs::kAcceptLanguages,
                                   accept_languages);
-    base::Value::List list;
+    base::ListValue list;
     for (auto dictionary : dictionaries) {
       list.Append(dictionary);
     }

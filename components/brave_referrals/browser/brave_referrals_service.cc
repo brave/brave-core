@@ -453,7 +453,7 @@ void BraveReferralsService::MaybeDeletePromoCodePref() const {
 }
 
 std::string BraveReferralsService::BuildReferralInitPayload() const {
-  base::Value::Dict root;
+  base::DictValue root;
   root.Set("api_key", api_key_);
   root.Set("referral_code", promo_code_);
   root.Set("platform", platform_);
@@ -466,7 +466,7 @@ std::string BraveReferralsService::BuildReferralInitPayload() const {
 
 std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
     const {
-  base::Value::Dict root;
+  base::DictValue root;
   root.Set("api_key", api_key_);
   root.Set("download_id", pref_service_->GetString(kReferralDownloadID));
 

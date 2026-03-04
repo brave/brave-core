@@ -11,7 +11,7 @@
 #include "base/json/json_writer.h"
 #include "brave/browser/ai_chat/tools/content_agent_tool_base_test.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
-#include "chrome/browser/actor/browser_action_util.h"
+#include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tools/click_tool_request.h"
 #include "chrome/browser/actor/tools/page_tool_request.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
@@ -25,10 +25,10 @@ class ClickToolTest : public ContentAgentToolBaseTest {
     return std::make_unique<ClickTool>(mock_task_provider_.get());
   }
 
-  std::string CreateToolInputJson(const base::Value::Dict& target_dict,
+  std::string CreateToolInputJson(const base::DictValue& target_dict,
                                   const std::string& click_type = "left",
                                   const std::string& click_count = "single") {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("click_type", click_type);
     dict.Set("click_count", click_count);
     dict.Set("target", target_dict.Clone());
@@ -93,7 +93,7 @@ TEST_F(ClickToolTest, InvalidJson) {
 
 TEST_F(ClickToolTest, MissingClickType) {
   auto target_dict = target_test_util::GetContentNodeTargetDict();
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("target", target_dict.Clone());
   dict.Set("click_count", "single");
   // Note: No click_type intentionally
@@ -121,7 +121,7 @@ TEST_F(ClickToolTest, MissingTarget) {
 // fully tests target validation already
 TEST_F(ClickToolTest, InvalidTarget) {
   // Empty target value should fail
-  RunWithExpectedError(FROM_HERE, CreateToolInputJson(base::Value::Dict()));
+  RunWithExpectedError(FROM_HERE, CreateToolInputJson(base::DictValue()));
 }
 
 }  // namespace ai_chat

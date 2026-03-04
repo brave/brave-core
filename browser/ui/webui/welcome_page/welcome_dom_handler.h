@@ -31,18 +31,18 @@ class WelcomeDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
-  void HandleImportNowRequested(const base::Value::List& args);
-  void HandleRecordP3A(const base::Value::List& args);
-  void HandleGetDefaultBrowser(const base::Value::List& args);
+  void HandleImportNowRequested(const base::ListValue& args);
+  void HandleRecordP3A(const base::ListValue& args);
+  void HandleGetDefaultBrowser(const base::ListValue& args);
   void SetLocalStateBooleanEnabled(const std::string& path,
-                                   const base::Value::List& args);
+                                   const base::ListValue& args);
   void OnGetDefaultBrowser(shell_integration::DefaultWebClientState state,
                            const std::u16string& name);
-  void SetP3AEnabled(const base::Value::List& args);
-  void HandleOpenSettingsPage(const base::Value::List& args);
-  void HandleSetMetricsReportingEnabled(const base::Value::List& args);
-  void HandleEnableWebDiscovery(const base::Value::List& args);
-  void HandleGetWelcomeCompleteURL(const base::Value::List& args);
+  void SetP3AEnabled(const base::ListValue& args);
+  void HandleOpenSettingsPage(const base::ListValue& args);
+  void HandleSetMetricsReportingEnabled(const base::ListValue& args);
+  void HandleEnableWebDiscovery(const base::ListValue& args);
+  void HandleGetWelcomeCompleteURL(const base::ListValue& args);
 
   void OnGettingStartedServerCheck(const std::string& callback_id,
                                    bool available);

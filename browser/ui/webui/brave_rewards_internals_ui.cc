@@ -56,28 +56,28 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
-  void HandleGetRewardsInternalsInfo(const base::Value::List& args);
+  void HandleGetRewardsInternalsInfo(const base::ListValue& args);
   void OnGetRewardsInternalsInfo(
       brave_rewards::mojom::RewardsInternalsInfoPtr info);
-  void GetBalance(const base::Value::List& args);
+  void GetBalance(const base::ListValue& args);
   void OnGetBalance(brave_rewards::mojom::BalancePtr balance);
-  void GetContributions(const base::Value::List& args);
+  void GetContributions(const base::ListValue& args);
   void OnGetContributions(
       std::vector<brave_rewards::mojom::ContributionInfoPtr> contributions);
-  void GetPartialLog(const base::Value::List& args);
+  void GetPartialLog(const base::ListValue& args);
   void OnGetPartialLog(const std::string& log);
-  void GetFulllLog(const base::Value::List& args);
+  void GetFulllLog(const base::ListValue& args);
   void OnGetFulllLog(const std::string& log);
-  void ClearLog(const base::Value::List& args);
+  void ClearLog(const base::ListValue& args);
   void OnClearLog(const bool success);
-  void GetExternalWallet(const base::Value::List& args);
+  void GetExternalWallet(const base::ListValue& args);
   void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
-  void GetEventLogs(const base::Value::List& args);
+  void GetEventLogs(const base::ListValue& args);
   void OnGetEventLogs(std::vector<brave_rewards::mojom::EventLogPtr> logs);
-  void GetAdDiagnostics(const base::Value::List& args);
-  void OnGetAdDiagnostics(std::optional<base::Value::List> diagnostics);
-  void SetAdDiagnosticId(const base::Value::List& args);
-  void GetEnvironment(const base::Value::List& args);
+  void GetAdDiagnostics(const base::ListValue& args);
+  void OnGetAdDiagnostics(std::optional<base::ListValue> diagnostics);
+  void SetAdDiagnosticId(const base::ListValue& args);
+  void GetEnvironment(const base::ListValue& args);
   void OnGetEnvironment(brave_rewards::mojom::Environment environment);
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
@@ -156,7 +156,7 @@ void RewardsInternalsDOMHandler::OnJavascriptDisallowed() {
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -174,7 +174,7 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
     return;
   }
 
-  base::Value::Dict info_dict;
+  base::DictValue info_dict;
   if (info) {
     const auto* prefs = profile_->GetPrefs();
     const std::string declared_geo =
@@ -193,7 +193,7 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
                          info_dict);
 }
 
-void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetBalance(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -211,22 +211,21 @@ void RewardsInternalsDOMHandler::OnGetBalance(
     return;
   }
 
-  base::Value::Dict data;
+  base::DictValue data;
   if (balance) {
     data.Set("total", balance->total);
     data.Set("wallets",
-             base::Value::Dict(std::move_iterator(balance->wallets.begin()),
-                               std::move_iterator(balance->wallets.end())));
+             base::DictValue(std::move_iterator(balance->wallets.begin()),
+                             std::move_iterator(balance->wallets.end())));
   } else {
     data.Set("total", 0.0);
-    data.Set("wallets", base::Value::Dict());
+    data.Set("wallets", base::DictValue());
   }
 
   CallJavascriptFunction("brave_rewards_internals.balance", std::move(data));
 }
 
-void RewardsInternalsDOMHandler::GetContributions(
-    const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetContributions(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -244,9 +243,9 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     return;
   }
 
-  base::Value::List list;
+  base::ListValue list;
   for (const auto& item : contributions) {
-    base::Value::Dict contribution;
+    base::DictValue contribution;
     contribution.Set("id", item->contribution_id);
     contribution.Set("amount", item->amount);
     contribution.Set("type", static_cast<int>(item->type));
@@ -254,9 +253,9 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     contribution.Set("retryCount", item->retry_count);
     contribution.Set("createdAt", static_cast<double>(item->created_at));
     contribution.Set("processor", static_cast<int>(item->processor));
-    base::Value::List publishers;
+    base::ListValue publishers;
     for (const auto& publisher_item : item->publishers) {
-      base::Value::Dict publisher;
+      base::DictValue publisher;
       publisher.Set("contributionId", publisher_item->contribution_id);
       publisher.Set("publisherKey", publisher_item->publisher_key);
       publisher.Set("totalAmount", publisher_item->total_amount);
@@ -270,7 +269,7 @@ void RewardsInternalsDOMHandler::OnGetContributions(
   CallJavascriptFunction("brave_rewards_internals.contributions", list);
 }
 
-void RewardsInternalsDOMHandler::GetPartialLog(const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetPartialLog(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -292,7 +291,7 @@ void RewardsInternalsDOMHandler::OnGetPartialLog(const std::string& log) {
                          base::Value(log));
 }
 
-void RewardsInternalsDOMHandler::GetFulllLog(const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetFulllLog(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -312,7 +311,7 @@ void RewardsInternalsDOMHandler::OnGetFulllLog(const std::string& log) {
   CallJavascriptFunction("brave_rewards_internals.fullLog", base::Value(log));
 }
 
-void RewardsInternalsDOMHandler::ClearLog(const base::Value::List& args) {
+void RewardsInternalsDOMHandler::ClearLog(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -336,7 +335,7 @@ void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
 }
 
 void RewardsInternalsDOMHandler::GetExternalWallet(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -359,7 +358,7 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
     return;
   }
 
-  base::Value::Dict data;
+  base::DictValue data;
   data.Set("address", wallet->address);
   data.Set("memberId", wallet->member_id);
   data.Set("status", static_cast<int>(wallet->status));
@@ -368,7 +367,7 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
   CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet", data);
 }
 
-void RewardsInternalsDOMHandler::GetEventLogs(const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetEventLogs(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }
@@ -386,10 +385,10 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(
     return;
   }
 
-  base::Value::List data;
+  base::ListValue data;
 
   for (const auto& log : logs) {
-    base::Value::Dict item;
+    base::DictValue item;
     item.Set("id", log->event_log_id);
     item.Set("key", log->key);
     item.Set("value", log->value);
@@ -400,8 +399,7 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(
   CallJavascriptFunction("brave_rewards_internals.eventLogs", data);
 }
 
-void RewardsInternalsDOMHandler::GetAdDiagnostics(
-    const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetAdDiagnostics(const base::ListValue& args) {
   if (!ads_service_) {
     return;
   }
@@ -414,12 +412,12 @@ void RewardsInternalsDOMHandler::GetAdDiagnostics(
 }
 
 void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
-    std::optional<base::Value::List> diagnosticsEntries) {
+    std::optional<base::ListValue> diagnosticsEntries) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::Dict diagnostics;
+  base::DictValue diagnostics;
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   const PrefService* prefs = profile_->GetPrefs();
   const std::string& diagnostic_id =
@@ -445,7 +443,7 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
 }
 
 void RewardsInternalsDOMHandler::SetAdDiagnosticId(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (args.empty() || !args[0].is_string() ||
       args[0].GetString().size() > kAdDiagnosticIdMaxLength) {
     return;
@@ -457,7 +455,7 @@ void RewardsInternalsDOMHandler::SetAdDiagnosticId(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
-void RewardsInternalsDOMHandler::GetEnvironment(const base::Value::List& args) {
+void RewardsInternalsDOMHandler::GetEnvironment(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
   }

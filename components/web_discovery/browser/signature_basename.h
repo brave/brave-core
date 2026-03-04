@@ -41,7 +41,7 @@ struct BasenameResult {
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
     const ServerConfig& server_config,
-    const base::Value::Dict& payload);
+    const base::DictValue& payload);
 
 // Saves the count returned from `GenerateBasename` in the prefs.
 // This ensures that the count index cannot be used for future messages

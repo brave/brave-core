@@ -37,7 +37,7 @@ ParseMappings(std::string_view entities, bool discard_irrelevant) {
   auto& [entity_by_domain, entity_by_root_domain] = result;
 
   // Parse the JSON
-  std::optional<base::Value::List> document = base::JSONReader::ReadList(
+  std::optional<base::ListValue> document = base::JSONReader::ReadList(
       entities, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!document) {
     LOG(ERROR) << "Cannot parse the third-party entities list";

@@ -51,7 +51,7 @@ class DeAmpBodyHandler : public body_sniffer::BodyHandler {
   content::WebContents::Getter wc_getter_;
   GURL response_url_;
 
-  base::Value::List navigation_chain_;
+  base::ListValue navigation_chain_;
   size_t bytes_analyzed_ = 0;
 
   enum class State {

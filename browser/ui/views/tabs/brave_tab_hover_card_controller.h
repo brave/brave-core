@@ -8,7 +8,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 
-class Tab;
+class HoverCardAnchorTarget;
 
 class BraveTabHoverCardController : public TabHoverCardController {
  public:
@@ -23,7 +23,7 @@ class BraveTabHoverCardController : public TabHoverCardController {
   void OnHovercardImagesEnabledChanged() override;
 
   // TabHoverCardController:
-  void CreateHoverCard(Tab* tab) override;
+  void CreateHoverCard(HoverCardAnchorTarget* anchor_target) override;
 
   bool is_vertical_tabs_ = false;
 };

@@ -12,17 +12,17 @@
 
 namespace ai_chat {
 
-base::Value::Dict StringProperty(
+base::DictValue StringProperty(
     const std::string& description,
     const std::optional<std::vector<std::string>>& enum_values) {
-  base::Value::Dict property;
+  base::DictValue property;
   property.Set("type", "string");
   if (!description.empty()) {
     property.Set("description", description);
   }
 
   if (enum_values.has_value() && !enum_values->empty()) {
-    base::Value::List enum_list;
+    base::ListValue enum_list;
     for (const auto& value : enum_values.value()) {
       enum_list.Append(value);
     }
@@ -32,9 +32,9 @@ base::Value::Dict StringProperty(
   return property;
 }
 
-base::Value::Dict ArrayProperty(const std::string& description,
-                                base::Value::Dict items) {
-  base::Value::Dict property;
+base::DictValue ArrayProperty(const std::string& description,
+                              base::DictValue items) {
+  base::DictValue property;
   property.Set("type", "array");
   if (!description.empty()) {
     property.Set("description", description);
@@ -44,17 +44,17 @@ base::Value::Dict ArrayProperty(const std::string& description,
   return property;
 }
 
-base::Value::Dict ObjectProperty(
+base::DictValue ObjectProperty(
     const std::string& description,
-    std::initializer_list<std::pair<const std::string, base::Value::Dict>>
+    std::initializer_list<std::pair<const std::string, base::DictValue>>
         properties) {
-  base::Value::Dict property;
+  base::DictValue property;
   property.Set("type", "object");
   if (!description.empty()) {
     property.Set("description", description);
   }
 
-  base::Value::Dict properties_dict;
+  base::DictValue properties_dict;
   for (auto& [key, value] : properties) {
     properties_dict.Set(key, value.Clone());
   }
@@ -63,8 +63,8 @@ base::Value::Dict ObjectProperty(
   return property;
 }
 
-base::Value::Dict BooleanProperty(const std::string& description) {
-  base::Value::Dict property;
+base::DictValue BooleanProperty(const std::string& description) {
+  base::DictValue property;
   property.Set("type", "boolean");
   if (!description.empty()) {
     property.Set("description", description);
@@ -73,8 +73,8 @@ base::Value::Dict BooleanProperty(const std::string& description) {
   return property;
 }
 
-base::Value::Dict NumberProperty(const std::string& description) {
-  base::Value::Dict property;
+base::DictValue NumberProperty(const std::string& description) {
+  base::DictValue property;
   property.Set("type", "number");
   if (!description.empty()) {
     property.Set("description", description);
@@ -83,8 +83,8 @@ base::Value::Dict NumberProperty(const std::string& description) {
   return property;
 }
 
-base::Value::Dict IntegerProperty(const std::string& description) {
-  base::Value::Dict property;
+base::DictValue IntegerProperty(const std::string& description) {
+  base::DictValue property;
   property.Set("type", "integer");
   if (!description.empty()) {
     property.Set("description", description);
@@ -93,10 +93,10 @@ base::Value::Dict IntegerProperty(const std::string& description) {
   return property;
 }
 
-base::Value::Dict CreateInputProperties(
-    std::initializer_list<std::pair<const std::string, base::Value::Dict>>
+base::DictValue CreateInputProperties(
+    std::initializer_list<std::pair<const std::string, base::DictValue>>
         properties) {
-  base::Value::Dict input_properties;
+  base::DictValue input_properties;
   for (auto& [key, value] : properties) {
     input_properties.Set(key, value.Clone());
   }

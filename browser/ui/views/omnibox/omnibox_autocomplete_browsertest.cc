@@ -21,22 +21,24 @@
 
 class OmniboxAutocompleteTest : public InProcessBrowserTest {
  public:
-  LocationBarView* location_bar() {
+  LocationBarView* location_bar_view() {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    return browser_view->toolbar()->location_bar();
+    return browser_view->toolbar()->location_bar_view();
   }
-  OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
+  OmniboxViewViews* omnibox_view() {
+    return location_bar_view()->omnibox_view();
+  }
   OmniboxEditModel* edit_model() {
-    return location_bar()->GetOmniboxController()->edit_model();
+    return location_bar_view()->GetOmniboxController()->edit_model();
   }
   OmniboxController* controller() {
-    return location_bar()->GetOmniboxController();
+    return location_bar_view()->GetOmniboxController();
   }
 };
 
 IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   EXPECT_FALSE(controller()->IsPopupOpen());
-  EXPECT_TRUE(location_bar()
+  EXPECT_TRUE(location_bar_view()
                   ->GetOmniboxController()
                   ->autocomplete_controller()
                   ->result()
@@ -50,14 +52,14 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup is opened and results are not empty.
-  EXPECT_FALSE(location_bar()
+  EXPECT_FALSE(location_bar_view()
                    ->GetOmniboxController()
                    ->autocomplete_controller()
                    ->result()
                    .empty());
   EXPECT_TRUE(controller()->IsPopupOpen());
 
-  location_bar()->GetOmniboxController()->StopAutocomplete(
+  location_bar_view()->GetOmniboxController()->StopAutocomplete(
       /*clear_result=*/true);
 
   browser()->profile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
@@ -66,7 +68,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup isn't opened and result is empty.
-  EXPECT_TRUE(location_bar()
+  EXPECT_TRUE(location_bar_view()
                   ->GetOmniboxController()
                   ->autocomplete_controller()
                   ->result()

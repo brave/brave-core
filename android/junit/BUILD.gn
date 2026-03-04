@@ -120,7 +120,10 @@ if (is_android) {
       "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
     ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//brave/browser/ntp_customization:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.tasks") {

@@ -35,7 +35,7 @@ std::string_view NavigationTool::Description() const {
          "The content of the page will be returned as the tool result.";
 }
 
-std::optional<base::Value::Dict> NavigationTool::InputProperties() const {
+std::optional<base::DictValue> NavigationTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameWebsiteUrl,
         StringProperty(

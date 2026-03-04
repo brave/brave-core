@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..14e01e32520b87ef5cbc96a346326f07d5ddf853 100644
+index 6d913151bf11d366559d27e81f8e6b4dd27fe723..e3437d29501926f58cc4c2b4ead40b4a754423de 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -462,6 +462,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,

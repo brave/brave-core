@@ -44,7 +44,7 @@ std::unique_ptr<Hostname> PickBestHostname(
   return std::make_unique<Hostname>(filtered_hostnames[0]);
 }
 
-std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames_value) {
+std::vector<Hostname> ParseHostnames(const base::ListValue& hostnames_value) {
   std::vector<Hostname> hostnames;
   for (const auto& value : hostnames_value) {
     DCHECK(value.is_dict());
@@ -86,13 +86,13 @@ std::string GetTimeZoneName() {
   return current_time_zone;
 }
 
-base::Value::Dict GetValueWithTicketInfos(
+base::DictValue GetValueWithTicketInfos(
     const std::string& email,
     const std::string& subject,
     const std::string& body,
     const std::string& subscriber_credential,
     const std::string& timezone) {
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
 

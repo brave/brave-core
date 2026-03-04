@@ -110,7 +110,7 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
     extensions::ExtensionRegistrar::Get(profile)->AddExtension(extension);
     extensions::ExtensionPrefs::Get(profile)->OnExtensionInstalled(
         extension.get(), {}, {}, extensions::Extension::FROM_WEBSTORE, {},
-        base::Value::Dict());
+        base::DictValue());
 
     base::ScopedAllowBlockingForTesting allow_blocking;
     const auto count = GetImportableChromeExtensionsList(profile->GetPath())

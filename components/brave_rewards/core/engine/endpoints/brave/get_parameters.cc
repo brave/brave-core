@@ -150,7 +150,7 @@ GetParameters::ValueToWalletProviderRegions(const base::Value& value) {
     return std::nullopt;
   }
 
-  auto get_list = [](const std::string& name, const base::Value::Dict& dict) {
+  auto get_list = [](const std::string& name, const base::DictValue& dict) {
     std::vector<std::string> countries;
     if (auto* list = dict.FindList(name)) {
       for (auto& country : *list) {

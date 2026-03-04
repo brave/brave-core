@@ -45,7 +45,7 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, DomainBlock) {
 
   EXPECT_TRUE(IsShowingInterstitial());
 
-  const base::Value::Dict& notification =
+  const base::DictValue& notification =
       WaitForNotification("Network.requestAdblockInfoReceived", true);
   const auto* info = notification.FindDict("info");
   ASSERT_TRUE(info);
@@ -66,7 +66,7 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, ResourceBlock) {
   ASSERT_EQ(true, EvalJs(web_contents(),
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  const base::Value::Dict& notification =
+  const base::DictValue& notification =
       WaitForNotification("Network.requestAdblockInfoReceived", true);
 
   const auto* info = notification.FindDict("info");
@@ -90,7 +90,7 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, Exception) {
   ASSERT_EQ(true, EvalJs(web_contents(),
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('ad_banner.png')"));
-  const base::Value::Dict& notification =
+  const base::DictValue& notification =
       WaitForNotification("Network.requestAdblockInfoReceived", true);
 
   const auto* info = notification.FindDict("info");

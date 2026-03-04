@@ -107,8 +107,8 @@ std::string BraveDeviceInfo::GetDeviceTypeString() const {
   }
 }
 
-base::Value::Dict BraveDeviceInfo::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue BraveDeviceInfo::ToValue() const {
+  base::DictValue dict;
   dict.Set("name", client_name());
   dict.Set("id", public_id());
   dict.Set("os", GetOSString());

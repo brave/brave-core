@@ -89,7 +89,7 @@ TEST_F(LocalModelsUpdaterUnitTest, Register) {
 TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   LocalModelsComponentInstallerPolicy policy;
   policy.ComponentReady(base::Version("1.0.0"), install_dir_,
-                        base::Value::Dict());
+                        base::DictValue());
 
   auto* state = LocalModelsUpdaterState::GetInstance();
   ASSERT_TRUE(base::test::RunUntil(

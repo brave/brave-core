@@ -25,16 +25,9 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
 
   Browser* browser() const { return browser_view_->browser(); }
 
-  // Enters rename mode for the tab at the given index. This only affects UI
-  // side.
-  void EnterTabRenameModeAt(int index);
-
-  // Sets the custom title for the tab at the specified index.
-  void SetCustomTitleForTab(int index,
-                            const std::optional<std::u16string>& title);
-
   bool IsCommandEnabledForTab(TabStripModel::ContextMenuCommand command_id,
                               const Tab* tab);
+
   // BrowserTabStripController overrides:
   void OnTreeTabChanged(const TreeTabChange& change) override;
 

@@ -29,8 +29,8 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
 
   void OnPreferenceChanged(const std::string& pref_name);
-  void GetNewTabShowsOptionsList(const base::Value::List& args);
-  void ShouldShowNewTabDashboardSettings(const base::Value::List& args);
+  void GetNewTabShowsOptionsList(const base::ListValue& args);
+  void ShouldShowNewTabDashboardSettings(const base::ListValue& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   PrefChangeRegistrar profile_state_change_registrar_;

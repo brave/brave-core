@@ -56,7 +56,7 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 // <policy script, which uses parameters to apply PSST settings selected by the
 // user>;
 std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
-                                   base::Value::Dict params_dict) {
+                                   base::DictValue params_dict) {
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {

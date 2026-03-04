@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_test_util.h"
@@ -110,7 +109,7 @@ class CreativeAdMojomWebPageEntitiesConstructor final {
       std::vector<schema_org::mojom::PropertyPtr>* mojom_properties,
       const std::string& name,
       T value) {
-    if (!base::Contains(excluded_property_names_, name)) {
+    if (!std::ranges::contains(excluded_property_names_, name)) {
       AddMojomProperty<T>(mojom_properties, name, std::move(value));
     }
   }

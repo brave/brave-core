@@ -116,7 +116,7 @@ class EmailAliasesService : public KeyedService,
   // Fetch helper which uploads |body_value|. Specifically for POST/PUT/DELETE.
   void ApiFetch(const GURL& url,
                 const std::string_view method,
-                const base::Value::Dict& body_value,
+                const base::DictValue& body_value,
                 BodyAsStringCallback download_to_string_callback);
 
   // Shared implementation used by the two ApiFetch overloads to make a network

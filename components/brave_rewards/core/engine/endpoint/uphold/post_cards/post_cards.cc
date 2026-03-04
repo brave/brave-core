@@ -31,7 +31,7 @@ std::string PostCards::GetUrl() const {
 }
 
 std::string PostCards::GeneratePayload() const {
-  base::Value::Dict payload;
+  base::DictValue payload;
   payload.Set("label", internal::uphold::kCardName);
   payload.Set("currency", "BAT");
 
@@ -58,14 +58,14 @@ mojom::Result PostCards::ParseBody(const std::string& body,
                                    std::string* id) const {
   DCHECK(id);
 
-  std::optional<base::Value::Dict> value =
+  std::optional<base::DictValue> value =
       base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* id_str = dict.FindString("id");
   if (!id_str) {
     engine_->LogError(FROM_HERE) << "Missing id";

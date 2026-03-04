@@ -142,7 +142,7 @@ void SkusJSHandler::OnRefreshOrder(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  std::optional<base::Value::Dict> result_dict = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> result_dict = base::JSONReader::ReadDict(
       response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                              base::JSONParserOptions::JSON_PARSE_RFC);
   if (!result_dict) {
@@ -295,7 +295,7 @@ void SkusJSHandler::OnCredentialSummary(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  std::optional<base::Value::Dict> result_dict = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> result_dict = base::JSONReader::ReadDict(
       response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                              base::JSONParserOptions::JSON_PARSE_RFC);
   if (!result_dict) {

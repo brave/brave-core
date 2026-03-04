@@ -19,7 +19,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
-#include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
@@ -46,8 +45,11 @@
 #include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
 
-BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)) {
+BraveTabStrip::BraveTabStrip(
+    std::unique_ptr<TabStripController> tab_strip_controller,
+    std::unique_ptr<BraveTabHoverCardController> hover_card_controller)
+    : TabStrip(std::move(tab_strip_controller),
+               std::move(hover_card_controller)) {
   always_hide_close_button_.Init(
       brave_tabs::kAlwaysHideTabCloseButton,
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
@@ -180,45 +182,8 @@ void BraveTabStrip::AddedToWidget() {
   }
 }
 
-std::optional<int> BraveTabStrip::GetCustomBackgroundId(
-    BrowserFrameActiveState active_state) const {
-  if (!ShouldShowVerticalTabs()) {
-    return TabStrip::GetCustomBackgroundId(active_state);
-  }
-
-  // When vertical tab strip mode is enabled, the tab strip could be reattached
-  // to the original parent during destruction. In this case, theme changing
-  // could occur. But unfortunately, some of native widget's implementation
-  // doesn't check the validity of pointer, which causes crash.
-  // e.g. DesktopNativeWidgetAura's many methods desktop_tree_host without
-  //      checking it's validity.
-  // In order to avoid accessing invalid pointer, filters here.
-  if (auto* widget = GetWidget();
-      !widget || widget->IsClosed() || !widget->native_widget()) {
-    return {};
-  }
-
-  return TabStrip::GetCustomBackgroundId(active_state);
-}
-
-void BraveTabStrip::SetCustomTitleForTab(
-    Tab* tab,
-    const std::optional<std::u16string>& title) {
-  auto index = GetModelIndexOf(tab);
-  CHECK(index);
-
-  static_cast<BraveBrowserTabStripController*>(controller_.get())
-      ->SetCustomTitleForTab(*index, title);
-}
-
 bool BraveTabStrip::ShouldAlwaysHideCloseButton() const {
   return *always_hide_close_button_;
-}
-
-void BraveTabStrip::EnterTabRenameModeAt(int index) {
-  auto* tab = tab_at(index);
-  CHECK(tab);
-  static_cast<BraveTab*>(tab)->EnterRenameMode();
 }
 
 bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
@@ -290,7 +255,7 @@ void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
 }
 
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
-  return &tab_container_.get();  // IN-TEST
+  return tab_container_.get();  // IN-TEST
 }
 
 BEGIN_METADATA(BraveTabStrip)

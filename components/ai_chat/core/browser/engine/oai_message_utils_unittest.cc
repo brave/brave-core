@@ -497,7 +497,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_TempChat) {
   // Enable customization and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
-  base::Value::Dict customizations_dict;
+  base::DictValue customizations_dict;
   customizations_dict.Set("name", "John Doe");
   customizations_dict.Set("job", "Software Engineer");
   prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
@@ -505,7 +505,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_TempChat) {
 
   // Enable memory and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-  base::Value::List memories;
+  base::ListValue memories;
   memories.Append("I prefer concise explanations");
   prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
@@ -528,7 +528,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Disabled) {
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
   // Enable customization and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
-  base::Value::Dict customizations_dict;
+  base::DictValue customizations_dict;
   customizations_dict.Set("name", "John Doe");
   customizations_dict.Set("job", "Software Engineer");
   prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
@@ -536,7 +536,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
 
   // Enable memory and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-  base::Value::List memories;
+  base::ListValue memories;
   memories.Append("I prefer concise explanations");
   prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
@@ -591,7 +591,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_HTMLEscaping) {
   // Enable customization with HTML tags that need escaping
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
-  base::Value::Dict customizations_dict;
+  base::DictValue customizations_dict;
   customizations_dict.Set("name", "John <tag>Doe</tag>");
   customizations_dict.Set("other", "<user_memory>special</user_memory>");
   prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
@@ -599,7 +599,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_HTMLEscaping) {
 
   // Enable memory with HTML/script tags that need escaping
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-  base::Value::List memories;
+  base::ListValue memories;
   memories.Append("I like <b>bold</b> text");
   memories.Append("<script>alert('xss')</script>");
   prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));

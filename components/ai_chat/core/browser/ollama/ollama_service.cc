@@ -196,20 +196,20 @@ void OllamaService::OnModelDetailsComplete(
 
 std::optional<std::vector<std::string>> OllamaService::ParseModelsResponse(
     const std::string& response_body) {
-  std::optional<base::Value::Dict> json_dict = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> json_dict = base::JSONReader::ReadDict(
       response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
     return std::nullopt;
   }
 
-  const base::Value::List* models_list = json_dict->FindList("models");
+  const base::ListValue* models_list = json_dict->FindList("models");
   if (!models_list) {
     return std::nullopt;
   }
 
   std::vector<std::string> models;
   for (const auto& model : *models_list) {
-    const base::Value::Dict* model_dict = model.GetIfDict();
+    const base::DictValue* model_dict = model.GetIfDict();
     if (!model_dict) {
       continue;
     }
@@ -227,7 +227,7 @@ std::optional<std::vector<std::string>> OllamaService::ParseModelsResponse(
 
 std::optional<OllamaService::ModelDetails>
 OllamaService::ParseModelDetailsResponse(const std::string& response_body) {
-  std::optional<base::Value::Dict> json_dict = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> json_dict = base::JSONReader::ReadDict(
       response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
     return std::nullopt;
@@ -236,7 +236,7 @@ OllamaService::ParseModelDetailsResponse(const std::string& response_body) {
   ModelDetails details;
 
   // Extract context_length from model_info
-  const base::Value::Dict* model_info = json_dict->FindDict("model_info");
+  const base::DictValue* model_info = json_dict->FindDict("model_info");
   if (model_info) {
     for (const auto [key, value] : *model_info) {
       if (base::EndsWith(key, ".context_length") && value.is_int()) {
@@ -249,7 +249,7 @@ OllamaService::ParseModelDetailsResponse(const std::string& response_body) {
   // Check capabilities for vision support
   // See:
   // https://github.com/ollama/ollama/blob/main/docs/api.md#show-model-information
-  const base::Value::List* capabilities = json_dict->FindList("capabilities");
+  const base::ListValue* capabilities = json_dict->FindList("capabilities");
   if (capabilities) {
     for (const auto& capability : *capabilities) {
       if (capability.is_string() && capability.GetString() == "vision") {

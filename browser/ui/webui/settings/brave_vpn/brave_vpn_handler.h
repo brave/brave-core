@@ -25,13 +25,13 @@ class BraveVpnHandler : public settings::SettingsPageUIHandler,
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
 
-  void HandleIsWireguardServiceInstalled(const base::Value::List& args);
+  void HandleIsWireguardServiceInstalled(const base::ListValue& args);
   void OnWireguardServiceInstalled(const std::string& callback_id,
                                    bool success);
-  void HandleIsBraveVpnConnected(const base::Value::List& args);
+  void HandleIsBraveVpnConnected(const base::ListValue& args);
 #if BUILDFLAG(IS_WIN)
-  void HandleShowInSystemTray(const base::Value::List& args);
-  void SetShowInSystemTray(const base::Value::List& args);
+  void HandleShowInSystemTray(const base::ListValue& args);
+  void SetShowInSystemTray(const base::ListValue& args);
 #endif
 
   // brave_vpn::BraveVPNServiceObserver

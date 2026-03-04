@@ -62,7 +62,7 @@ void WebDiscoveryRetrieveBackupResultsFunction::HandleBackupResults(
     return;
   }
 
-  base::Value::Dict result_dict;
+  base::DictValue result_dict;
   result_dict.Set(kResponseCodeKey, results->final_status_code);
   result_dict.Set(kHtmlKey, std::move(results->html));
 

@@ -53,7 +53,7 @@ class Tool {
   // `ObjectProperty("Coordinates in the world", {{"lattitude",
   // StringProperty()},
   //  "longitude", StringProperty()}})`
-  virtual std::optional<base::Value::Dict> InputProperties() const;
+  virtual std::optional<base::DictValue> InputProperties() const;
 
   // A list of properties contained within GetInputSchemaJson that are required
   virtual std::optional<std::vector<std::string>> RequiredProperties() const;
@@ -64,7 +64,7 @@ class Tool {
   // needed, but for remote-defined tools, the description might need to be
   // built to include some extra parameters that only the client knows about,
   // e.g. location for a search tool, or screen size for a computer use tool.
-  virtual std::optional<base::Value::Dict> ExtraParams() const;
+  virtual std::optional<base::DictValue> ExtraParams() const;
 
   // If this tool is an agent tool, it will only be available to
   // conversations using the agent mode instead of the chat mode.

@@ -45,7 +45,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
  private:
   void OnUserAcceptedPsstSettings(const url::Origin& origin,
-                                  base::Value::List urls_to_skip);
+                                  base::ListValue urls_to_skip);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   std::optional<PsstWebsiteSettings> dialog_data_;

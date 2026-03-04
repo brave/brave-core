@@ -139,12 +139,8 @@ const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
 
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
-     std::size(kZCashShieldedTransactionsDisabled), nullptr},
-#if BUILDFLAG(ENABLE_ORCHARD)
-    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
-     std::size(kZCashShieldedTransactionsEnabled), nullptr}
-#endif  // BUILDFLAG(ENABLE_ORCHARD)
-};
+     nullptr},
+    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace {
@@ -484,13 +480,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables the Tree Tab feature",                                    \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                           \
-      },                                                                     \
-      {                                                                      \
-          "brave-renaming-tabs",                                             \
-          "Brave Renaming Tabs",                                             \
-          "Enables renaming tabs via tab context menu.",                     \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveRenamingTabs),                      \
       })
 
 #else

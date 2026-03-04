@@ -14,7 +14,7 @@
 namespace ai_chat {
 
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
-    const base::Value::List* tool_calls_api_response) {
+    const base::ListValue* tool_calls_api_response) {
   // https://platform.openai.com/docs/api-reference/chat/create#chat-create-tools
   // https://platform.openai.com/docs/api-reference/chat/object
   // choices -> message -> tool_calls
@@ -31,7 +31,7 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     // name are required for the completed event, we can't rely on them being
     // present for parsing.
 
-    const base::Value::Dict* function = tool_call.FindDict("function");
+    const base::DictValue* function = tool_call.FindDict("function");
     if (!function) {
       DLOG(ERROR) << "No function info found in tool call.";
       continue;
@@ -49,7 +49,7 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     }
 
     // Check for alignment_check within this tool call
-    if (const base::Value::Dict* alignment_dict =
+    if (const base::DictValue* alignment_dict =
             tool_call.FindDict("alignment_check")) {
       if (!alignment_dict->FindBool("allowed").value_or(true)) {
         const std::string* assessment = alignment_dict->FindString("reasoning");
@@ -65,12 +65,12 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
   return tool_use_events;
 }
 
-std::optional<base::Value::List> ToolApiDefinitionsFromTools(
+std::optional<base::ListValue> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools) {
   if (tools.empty()) {
     return std::nullopt;
   }
-  base::Value::List tools_list;
+  base::ListValue tools_list;
   for (const base::WeakPtr<Tool> tool : tools) {
     if (!tool) {
       DLOG(ERROR) << "Tool is null, skipping tool.";
@@ -82,13 +82,13 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
       continue;
     }
 
-    base::Value::Dict tool_dict;
+    base::DictValue tool_dict;
 
     bool type_is_funcion = tool->Type().empty() || tool->Type() == "function";
     tool_dict.Set("type", type_is_funcion ? "function" : tool->Type());
 
     if (type_is_funcion) {
-      base::Value::Dict function_dict;
+      base::DictValue function_dict;
       function_dict.Set("name", tool->Name());
 
       if (!tool->Description().empty()) {
@@ -98,7 +98,7 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
       if (input_schema) {
         // input_schema contains the properties dict from the tool.
         // Wrap it in a proper JSON Schema object format.
-        base::Value::Dict parameters;
+        base::DictValue parameters;
         parameters.Set("type", "object");
         parameters.Set("properties", std::move(input_schema.value()));
 
@@ -107,7 +107,7 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
         // fatal for the client.
         if (tool->RequiredProperties().has_value() &&
             !tool->RequiredProperties()->empty()) {
-          base::Value::List required_properties;
+          base::ListValue required_properties;
           const auto properties = tool->RequiredProperties().value();
           for (const auto& property : properties) {
             required_properties.Append(property);
@@ -134,18 +134,17 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
   return tools_list;
 }
 
-const base::Value::Dict* GetOAIContentContainer(
-    const base::Value::Dict& response) {
-  const base::Value::List* choices = response.FindList("choices");
+const base::DictValue* GetOAIContentContainer(const base::DictValue& response) {
+  const base::ListValue* choices = response.FindList("choices");
   if (!choices || choices->empty() || !choices->front().is_dict()) {
     VLOG(2) << "No choices list found in response, or it is empty.";
     return nullptr;
   }
 
-  const base::Value::Dict& choice = choices->front().GetDict();
+  const base::DictValue& choice = choices->front().GetDict();
 
   // Response can have either "delta" or "message" field
-  const base::Value::Dict* content_container = choice.FindDict("delta");
+  const base::DictValue* content_container = choice.FindDict("delta");
   if (!content_container) {
     content_container = choice.FindDict("message");
   }
@@ -154,9 +153,9 @@ const base::Value::Dict* GetOAIContentContainer(
 }
 
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
-    const base::Value::Dict& response,
+    const base::DictValue& response,
     std::optional<std::string> model_key) {
-  const base::Value::Dict* content_container = GetOAIContentContainer(response);
+  const base::DictValue* content_container = GetOAIContentContainer(response);
   if (!content_container) {
     VLOG(2) << "No delta or message info found in first completion choice.";
     return std::nullopt;

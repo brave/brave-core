@@ -18,6 +18,7 @@ inline constexpr char kExtensionScheme[] = "chrome-extension";
 
 #include <array>
 #include <optional>
+#include <string>
 
 #include "base/containers/fixed_flat_map.h"
 #include "extensions/common/extension_id.h"
@@ -78,6 +79,8 @@ inline constexpr auto kPreconfiguredManifestV2Extensions =
     internal::GetPreconfiguredManifestV2Extensions();
 
 static_assert(kPreconfiguredManifestV2Extensions.size() == kBraveHosted.size());
+
+EXTENSIONS_EXPORT std::string BuildBraveMV2ExceptionList();
 
 EXTENSIONS_EXPORT bool IsKnownBraveHostedExtension(
     const extensions::ExtensionId& id);

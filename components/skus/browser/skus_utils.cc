@@ -78,7 +78,7 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (!profile_prefs->HasPrefPath(prefs::kSkusState))
     return;
-  base::Value::Dict obsolete_pref =
+  base::DictValue obsolete_pref =
       profile_prefs->GetDict(prefs::kSkusState).Clone();
   if (local_prefs->GetBoolean(prefs::kSkusStateMigratedToLocalState)) {
     return;

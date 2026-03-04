@@ -276,7 +276,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         account_id->address));
   }
 
-  std::string Connect(std::optional<base::Value::Dict> arg,
+  std::string Connect(std::optional<base::DictValue> arg,
                       mojom::SolanaProviderError* error_out,
                       std::string* error_message_out) {
     std::string account;
@@ -314,7 +314,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         blob_msg, display_encoding,
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
-                                       base::Value::Dict result) {
+                                       base::DictValue result) {
           if (error_out) {
             *error_out = error;
           }
@@ -338,11 +338,11 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return signature_out;
   }
 
-  base::Value::Dict SignAndSendTransaction(
+  base::DictValue SignAndSendTransaction(
       const std::string& encoded_serialized_message,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::Value::Dict result_out;
+    base::DictValue result_out;
     base::RunLoop run_loop;
     provider_->SignAndSendTransaction(
         mojom::SolanaSignTransactionParam::New(
@@ -351,7 +351,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         std::nullopt,
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
-                                       base::Value::Dict result) {
+                                       base::DictValue result) {
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           result_out = std::move(result);
@@ -448,10 +448,10 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return result_out;
   }
 
-  base::Value::Dict Request(const std::string& json,
-                            mojom::SolanaProviderError expected_error,
-                            const std::string& expected_error_message) {
-    base::Value::Dict result_out;
+  base::DictValue Request(const std::string& json,
+                          mojom::SolanaProviderError expected_error,
+                          const std::string& expected_error_message) {
+    base::DictValue result_out;
     auto value =
         base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!value) {
@@ -462,7 +462,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         std::move(value).value(),
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
-                                       base::Value::Dict result) {
+                                       base::DictValue result) {
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           result_out = std::move(result);
@@ -601,7 +601,7 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   Navigate(GURL("https://brave.com"));
   mojom::SolanaProviderError error;
   std::string error_message;
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("onlyIfTrusted", true);
   // no permission will be rejected automatically
   std::string account = Connect(dict.Clone(), &error, &error_message);
@@ -784,7 +784,7 @@ TEST_F(SolanaProviderImplUnitTest, NoSelectedAccount) {
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
   EXPECT_FALSE(IsConnected());
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("onlyIfTrusted", true);
   // eagerly connect
   account = Connect(dict.Clone(), &error, &error_message);
@@ -957,7 +957,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
   auto value = SignAndSendTransaction(
       kEncodedSerializedMsg, mojom::SolanaProviderError::kUnauthorized,
       l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-  EXPECT_EQ(value, base::Value::Dict());
+  EXPECT_EQ(value, base::DictValue());
   auto signed_tx = SignTransaction(
       kEncodedSerializedMsg, mojom::SolanaProviderError::kUnauthorized,
       l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
@@ -975,7 +975,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
   value = SignAndSendTransaction(
       "", mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-  EXPECT_EQ(value, base::Value::Dict());
+  EXPECT_EQ(value, base::DictValue());
   signed_tx =
       SignTransaction("", mojom::SolanaProviderError::kInternalError,
                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1077,7 +1077,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
 
 TEST_F(SolanaProviderImplUnitTest, Request) {
   // no method
-  base::Value::Dict result =
+  base::DictValue result =
       Request(R"({params: {}})", mojom::SolanaProviderError::kParsingError,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   EXPECT_TRUE(result.empty());

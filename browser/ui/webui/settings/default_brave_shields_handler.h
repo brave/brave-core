@@ -50,33 +50,31 @@ class DefaultBraveShieldsHandler
   void OnThirdPartyCookieBlockingChanged(
       bool block_third_party_cookies) override;
 
-  void SetAdControlType(const base::Value::List& args);
-  void IsAdControlEnabled(const base::Value::List& args);
-  void SetCosmeticFilteringControlType(const base::Value::List& args);
-  void IsFirstPartyCosmeticFilteringEnabled(const base::Value::List& args);
-  void SetCookieControlType(const base::Value::List& args);
-  void GetCookieControlType(const base::Value::List& args);
-  void GetHideBlockAllCookieFlag(const base::Value::List& args);
-  void SetFingerprintingControlType(const base::Value::List& args);
-  void GetFingerprintingControlType(const base::Value::List& args);
-  void SetFingerprintingBlockEnabled(const base::Value::List& args);
-  void GetFingerprintingBlockEnabled(const base::Value::List& args);
-  void SetHttpsUpgradeControlType(const base::Value::List& args);
-  void GetHttpsUpgradeControlType(const base::Value::List& args);
-  void SetNoScriptControlType(const base::Value::List& args);
-  void GetNoScriptControlType(const base::Value::List& args);
-  void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);
-  void GetForgetFirstPartyStorageEnabled(const base::Value::List& args);
-  void SetContactInfoSaveFlag(const base::Value::List& args);
-  void GetContactInfo(const base::Value::List& args);
+  void SetAdControlType(const base::ListValue& args);
+  void IsAdControlEnabled(const base::ListValue& args);
+  void SetCosmeticFilteringControlType(const base::ListValue& args);
+  void IsFirstPartyCosmeticFilteringEnabled(const base::ListValue& args);
+  void SetCookieControlType(const base::ListValue& args);
+  void GetCookieControlType(const base::ListValue& args);
+  void GetHideBlockAllCookieFlag(const base::ListValue& args);
+  void SetFingerprintingControlType(const base::ListValue& args);
+  void GetFingerprintingControlType(const base::ListValue& args);
+  void SetFingerprintingBlockEnabled(const base::ListValue& args);
+  void GetFingerprintingBlockEnabled(const base::ListValue& args);
+  void SetHttpsUpgradeControlType(const base::ListValue& args);
+  void GetHttpsUpgradeControlType(const base::ListValue& args);
+  void SetNoScriptControlType(const base::ListValue& args);
+  void GetNoScriptControlType(const base::ListValue& args);
+  void SetForgetFirstPartyStorageEnabled(const base::ListValue& args);
+  void GetForgetFirstPartyStorageEnabled(const base::ListValue& args);
+  void SetContactInfoSaveFlag(const base::ListValue& args);
+  void GetContactInfo(const base::ListValue& args);
   void OnGetContactInfo(base::Value javascript_callback,
                         const std::optional<std::string>& contact_info,
                         const bool contact_info_save_flag,
                         const std::vector<std::string>& components);
-  void GetAllowElementBlockerInPrivateModeEnabled(
-      const base::Value::List& args);
-  void SetAllowElementBlockerInPrivateModeEnabled(
-      const base::Value::List& args);
+  void GetAllowElementBlockerInPrivateModeEnabled(const base::ListValue& args);
+  void SetAllowElementBlockerInPrivateModeEnabled(const base::ListValue& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =

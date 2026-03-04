@@ -119,7 +119,7 @@ void BatAdsImpl::MaybeGetNotificationAd(
                   return std::move(callback).Run(/*ad*/ std::nullopt);
                 }
 
-                std::optional<base::Value::Dict> dict =
+                std::optional<base::DictValue> dict =
                     brave_ads::NotificationAdToValue(*ad);
                 std::move(callback).Run(std::move(dict));
               },
@@ -140,7 +140,7 @@ void BatAdsImpl::TriggerNotificationAdEvent(
 }
 
 void BatAdsImpl::ParseAndSaveNewTabPageAds(
-    base::Value::Dict data,
+    base::DictValue data,
     ParseAndSaveNewTabPageAdsCallback callback) {
   GetAds()->ParseAndSaveNewTabPageAds(
       std::move(data), mojo::WrapCallbackWithDefaultInvokeIfNotRun(

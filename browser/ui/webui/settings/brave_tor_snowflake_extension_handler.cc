@@ -122,7 +122,7 @@ bool BraveTorSnowflakeExtensionHandler::IsTorAllowedByPolicy() {
 }
 
 void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionAllowed(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
 
   AllowJavascript();
@@ -130,7 +130,7 @@ void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionAllowed(
 }
 
 void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
 
   const bool is_allowed = IsTorAllowedByPolicy();
@@ -142,7 +142,7 @@ void BraveTorSnowflakeExtensionHandler::IsSnowflakeExtensionEnabled(
 }
 
 void BraveTorSnowflakeExtensionHandler::EnableSnowflakeExtension(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 2U);
 
   const bool enable = args[1].GetBool();

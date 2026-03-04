@@ -21,15 +21,15 @@ inline constexpr char kInnerPayloadKey[] = "payload";
 
 // Generates "query" messages using the payload generation rules
 // and scraped data for a given site.
-std::vector<base::Value::Dict> GenerateQueryPayloads(
+std::vector<base::DictValue> GenerateQueryPayloads(
     const ServerConfig& server_config,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result);
 
 // Generates an "alive" message to indicate an opted-in
 // status to the server.
-base::Value::Dict GenerateAlivePayload(const ServerConfig& server_config,
-                                       std::string date_hour);
+base::DictValue GenerateAlivePayload(const ServerConfig& server_config,
+                                     std::string date_hour);
 
 }  // namespace web_discovery
 

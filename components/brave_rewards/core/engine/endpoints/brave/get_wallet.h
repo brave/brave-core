@@ -58,7 +58,7 @@ struct GetWalletValue {
   std::string wallet_provider;
   std::string provider_id;
   bool linked = false;
-  base::Value::Dict self_custody_available;
+  base::DictValue self_custody_available;
 };
 
 class GetWallet;

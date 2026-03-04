@@ -65,11 +65,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 std::string CreateJSONRequestBody(
-    base::Value::List messages,
+    base::ListValue messages,
     const bool is_sse_enabled,
     const mojom::CustomModelOptions& model_options,
     const std::optional<std::vector<std::string>>& stop_sequences) {
-  base::Value::Dict dict;
+  base::DictValue dict;
 
   dict.Set("messages", std::move(messages));
   dict.Set("stream", is_sse_enabled);
@@ -77,7 +77,7 @@ std::string CreateJSONRequestBody(
   dict.Set("model", model_options.model_request_name);
 
   if (stop_sequences && !stop_sequences->empty()) {
-    base::Value::List stop_list;
+    base::ListValue stop_list;
     for (const auto& sequence : *stop_sequences) {
       stop_list.Append(sequence);
     }
@@ -92,16 +92,16 @@ std::string CreateJSONRequestBody(
 }  // namespace
 
 // static
-base::Value::List OAIAPIClient::SerializeOAIMessages(
+base::ListValue OAIAPIClient::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
-  base::Value::List serialized_messages;
+  base::ListValue serialized_messages;
   for (const auto& message : messages) {
-    base::Value::Dict message_dict;
+    base::DictValue message_dict;
     message_dict.Set("role", std::move(message.role));
 
-    base::Value::List content_list;
+    base::ListValue content_list;
     for (const auto& block : message.content) {
-      base::Value::Dict content_block_dict;
+      base::DictValue content_block_dict;
 
       switch (block->which()) {
         case mojom::ContentBlock::Tag::kTextContentBlock:
@@ -112,7 +112,7 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
         case mojom::ContentBlock::Tag::kImageContentBlock: {
           content_block_dict.Set("type", "image_url");
           const auto& image = block->get_image_content_block();
-          base::Value::Dict image_url;
+          base::DictValue image_url;
           image_url.Set("url", image->image_url.spec());
           content_block_dict.Set("image_url", std::move(image_url));
           break;
@@ -237,7 +237,7 @@ void OAIAPIClient::PerformRequestWithOAIMessages(
 
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
-    base::Value::List messages,
+    base::ListValue messages,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {

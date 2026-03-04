@@ -77,14 +77,14 @@ class ViewCounterService : public KeyedService,
       const std::string& target_url,
       brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
 
-  std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
-  std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay(
+  std::optional<base::DictValue> GetNextWallpaperForDisplay();
+  std::optional<base::DictValue> GetCurrentWallpaperForDisplay(
       bool allow_sponsored_image = true);
-  std::optional<base::Value::Dict> GetCurrentWallpaper() const;
-  std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
-  std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdsService()
+  std::optional<base::DictValue> GetCurrentWallpaper() const;
+  std::optional<base::DictValue> GetCurrentBrandedWallpaper() const;
+  std::optional<base::DictValue> GetCurrentBrandedWallpaperFromAdsService()
       const;
-  std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
+  std::optional<base::DictValue> GetCurrentBrandedWallpaperFromModel() const;
 
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
@@ -144,7 +144,7 @@ class ViewCounterService : public KeyedService,
   // NTPBackgroundImagesService::Observer:
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
-  void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
+  void OnSponsoredContentDidUpdate(const base::DictValue& data) override;
 
   void ParseAndSaveNewTabPageAdsCallback(bool success);
 

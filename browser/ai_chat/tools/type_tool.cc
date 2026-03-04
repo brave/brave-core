@@ -57,7 +57,7 @@ std::string_view TypeTool::Description() const {
          "]";
 }
 
-std::optional<base::Value::Dict> TypeTool::InputProperties() const {
+std::optional<base::DictValue> TypeTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameTarget,
         target_util::TargetProperty("Element to type into")},
@@ -120,7 +120,7 @@ void TypeTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
+  const base::DictValue* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Error: missing 'target' property"));

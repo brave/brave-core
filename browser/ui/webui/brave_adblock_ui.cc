@@ -57,16 +57,16 @@ class AdblockDOMHandler
   void OnJavascriptDisallowed() override;
 
  private:
-  void HandleEnableFilterList(const base::Value::List& args);
-  void HandleGetCustomFilters(const base::Value::List& args);
-  void HandleGetRegionalLists(const base::Value::List& args);
-  void HandleGetListSubscriptions(const base::Value::List& args);
-  void HandleUpdateCustomFilters(const base::Value::List& args);
-  void HandleSubmitNewSubscription(const base::Value::List& args);
-  void HandleSetSubscriptionEnabled(const base::Value::List& args);
-  void HandleDeleteSubscription(const base::Value::List& args);
-  void HandleRefreshSubscription(const base::Value::List& args);
-  void HandleViewSubscriptionSource(const base::Value::List& args);
+  void HandleEnableFilterList(const base::ListValue& args);
+  void HandleGetCustomFilters(const base::ListValue& args);
+  void HandleGetRegionalLists(const base::ListValue& args);
+  void HandleGetListSubscriptions(const base::ListValue& args);
+  void HandleUpdateCustomFilters(const base::ListValue& args);
+  void HandleSubmitNewSubscription(const base::ListValue& args);
+  void HandleSetSubscriptionEnabled(const base::ListValue& args);
+  void HandleDeleteSubscription(const base::ListValue& args);
+  void HandleRefreshSubscription(const base::ListValue& args);
+  void HandleViewSubscriptionSource(const base::ListValue& args);
 
   void RefreshSubscriptionsList();
 
@@ -139,7 +139,7 @@ void AdblockDOMHandler::OnServiceUpdateEvent() {
   RefreshSubscriptionsList();
 }
 
-void AdblockDOMHandler::HandleEnableFilterList(const base::Value::List& args) {
+void AdblockDOMHandler::HandleEnableFilterList(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 2U);
   if (!args[0].is_string() || !args[1].is_bool()) {
     return;
@@ -152,7 +152,7 @@ void AdblockDOMHandler::HandleEnableFilterList(const base::Value::List& args) {
       ->EnableFilterList(uuid, enabled);
 }
 
-void AdblockDOMHandler::HandleGetCustomFilters(const base::Value::List& args) {
+void AdblockDOMHandler::HandleGetCustomFilters(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
   const std::string custom_filters = g_brave_browser_process->ad_block_service()
@@ -162,7 +162,7 @@ void AdblockDOMHandler::HandleGetCustomFilters(const base::Value::List& args) {
                          base::Value(custom_filters));
 }
 
-void AdblockDOMHandler::HandleGetRegionalLists(const base::Value::List& args) {
+void AdblockDOMHandler::HandleGetRegionalLists(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
   auto regional_lists = g_brave_browser_process->ad_block_service()
@@ -172,14 +172,13 @@ void AdblockDOMHandler::HandleGetRegionalLists(const base::Value::List& args) {
 }
 
 void AdblockDOMHandler::HandleGetListSubscriptions(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
   RefreshSubscriptionsList();
 }
 
-void AdblockDOMHandler::HandleUpdateCustomFilters(
-    const base::Value::List& args) {
+void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 1U);
   if (!args[0].is_string()) {
     return;
@@ -193,7 +192,7 @@ void AdblockDOMHandler::HandleUpdateCustomFilters(
 }
 
 void AdblockDOMHandler::HandleSubmitNewSubscription(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   DCHECK_EQ(args.size(), 1U);
   AllowJavascript();
   if (!args[0].is_string()) {
@@ -213,7 +212,7 @@ void AdblockDOMHandler::HandleSubmitNewSubscription(
 }
 
 void AdblockDOMHandler::HandleSetSubscriptionEnabled(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   DCHECK_EQ(args.size(), 2U);
   AllowJavascript();
   if (!args[0].is_string() || !args[1].is_bool()) {
@@ -232,8 +231,7 @@ void AdblockDOMHandler::HandleSetSubscriptionEnabled(
   RefreshSubscriptionsList();
 }
 
-void AdblockDOMHandler::HandleDeleteSubscription(
-    const base::Value::List& args) {
+void AdblockDOMHandler::HandleDeleteSubscription(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 1U);
   AllowJavascript();
   if (!args[0].is_string()) {
@@ -251,8 +249,7 @@ void AdblockDOMHandler::HandleDeleteSubscription(
   RefreshSubscriptionsList();
 }
 
-void AdblockDOMHandler::HandleRefreshSubscription(
-    const base::Value::List& args) {
+void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue& args) {
   DCHECK_EQ(args.size(), 1U);
   // This handler does not call Javascript directly, but refreshing the
   // subscription will trigger the observer later, which will require it.
@@ -272,7 +269,7 @@ void AdblockDOMHandler::HandleRefreshSubscription(
 }
 
 void AdblockDOMHandler::HandleViewSubscriptionSource(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   DCHECK_EQ(args.size(), 1U);
   if (!args[0].is_string()) {
     return;
@@ -307,9 +304,9 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
   auto list_subscriptions = g_brave_browser_process->ad_block_service()
                                 ->subscription_service_manager()
                                 ->GetSubscriptions();
-  base::Value::List list_value;
+  base::ListValue list_value;
   for (const auto& subscription : list_subscriptions) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("subscription_url", subscription.subscription_url.spec());
     dict.Set("enabled", subscription.enabled);
     dict.Set("last_update_attempt",

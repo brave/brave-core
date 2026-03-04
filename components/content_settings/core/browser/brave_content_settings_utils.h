@@ -32,7 +32,7 @@ std::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
 std::string GetShieldsSettingUserPrefsPath(const std::string& name);
 
 content_settings::mojom::SessionModel GetSessionModelFromDictionary(
-    const base::Value::Dict& dict,
+    const base::DictValue& dict,
     const char* key);
 
 }  // namespace content_settings

@@ -36,7 +36,7 @@ class QrCodeData {
   QrCodeData();
   QrCodeData(const std::string& sync_code_hex, const base::Time& not_after);
 
-  base::Value::Dict ToValue() const;
+  base::DictValue ToValue() const;
 };
 
 }  // namespace brave_sync

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -45,7 +44,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   if (id.empty()) {
     id = GenerateRewardsNotificationID();
   } else if (only_once) {
-    if (base::Contains(rewards_notifications_displayed_, id)) {
+    if (std::ranges::contains(rewards_notifications_displayed_, id)) {
       return;
     }
   }
@@ -150,14 +149,14 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
     return;
   }
 
-  const base::Value::Dict& dict = parsed->GetDict();
+  const base::DictValue& dict = parsed->GetDict();
 
-  const base::Value::List* notifications = dict.FindList("notifications");
+  const base::ListValue* notifications = dict.FindList("notifications");
   if (notifications) {
     ReadRewardsNotifications(*notifications);
   }
 
-  const base::Value::List* displayed = dict.FindList("displayed");
+  const base::ListValue* displayed = dict.FindList("displayed");
   if (displayed) {
     for (const auto& item : *displayed) {
       DCHECK(item.is_string());
@@ -167,12 +166,12 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotifications(
-    const base::Value::List& root) {
+    const base::ListValue& root) {
   for (const auto& item : root) {
     if (!item.is_dict()) {
       continue;
     }
-    const base::Value::Dict& dict = item.GetDict();
+    const base::DictValue& dict = item.GetDict();
     std::string notification_id;
     const std::string* notification_id_opt = dict.FindString("id");
     if (notification_id_opt) {
@@ -196,7 +195,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
       notification_id = "rewards_notification_grant";
     }
 
-    const base::Value::List* args = dict.FindList("args");
+    const base::ListValue* args = dict.FindList("args");
     if (args) {
       for (const auto& arg : *args) {
         notification_args.push_back(arg.GetString());
@@ -212,15 +211,15 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
 }
 
 void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
-  base::Value::Dict root;
+  base::DictValue root;
 
-  base::Value::List notifications;
+  base::ListValue notifications;
   for (auto& item : rewards_notifications_) {
-    base::Value::Dict dict;
+    base::DictValue dict;
     dict.Set("id", item.second.id_);
     dict.Set("type", item.second.type_);
     dict.Set("timestamp", static_cast<double>(item.second.timestamp_));
-    base::Value::List args;
+    base::ListValue args;
     for (auto& arg : item.second.args_) {
       args.Append(arg);
     }
@@ -228,7 +227,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     notifications.Append(std::move(dict));
   }
 
-  base::Value::List displayed;
+  base::ListValue displayed;
   for (auto& item : rewards_notifications_displayed_) {
     displayed.Append(item);
   }

@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_value_converter.h"
 #include "base/logging.h"
@@ -26,7 +25,7 @@ bool GetComponentId(const base::Value* value, std::string* field) {
   if (value == nullptr || !value->is_dict()) {
     return false;
   } else {
-    const base::Value::Dict& dict = value->GetDict();
+    const base::DictValue& dict = value->GetDict();
     const auto* component_id = dict.FindString("component_id");
     if (component_id) {
       *field = *component_id;
@@ -41,7 +40,7 @@ bool GetBase64PublicKey(const base::Value* value, std::string* field) {
   if (value == nullptr || !value->is_dict()) {
     return false;
   } else {
-    const base::Value::Dict& dict = value->GetDict();
+    const base::DictValue& dict = value->GetDict();
     const auto* component_id = dict.FindString("base64_public_key");
     if (component_id) {
       *field = *component_id;
@@ -59,7 +58,7 @@ bool GetStringVector(const base::Value* value,
   if (value == nullptr || !value->is_list()) {
     return false;
   } else {
-    const base::Value::List& list = value->GetList();
+    const base::ListValue& list = value->GetList();
     for (const auto& list_value : list) {
       const auto* s = list_value.GetIfString();
       if (s) {
@@ -194,7 +193,7 @@ FindAdBlockFilterListsByLocale(
   std::copy_if(region_lists.begin(), region_lists.end(),
                std::back_inserter(output),
                [&adjusted_locale](const FilterListCatalogEntry& entry) {
-                 return base::Contains(entry.langs, adjusted_locale);
+                 return std::ranges::contains(entry.langs, adjusted_locale);
                });
 
   return output;
@@ -205,7 +204,7 @@ std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
   std::vector<FilterListCatalogEntry> catalog =
       std::vector<FilterListCatalogEntry>();
 
-  std::optional<base::Value::List> parsed_json = base::JSONReader::ReadList(
+  std::optional<base::ListValue> parsed_json = base::JSONReader::ReadList(
       catalog_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json) {
     LOG(ERROR) << "Could not load regional adblock catalog";

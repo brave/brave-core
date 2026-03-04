@@ -14,8 +14,9 @@ import androidx.annotation.DrawableRes;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.brave.browser.customize_menu.R;
@@ -40,7 +41,8 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
     private static final String MAIN_MENU_SECTION = "main_menu_section";
     private static final String PAGE_ACTIONS_SECTION = "page_actions_section";
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
     private int mIconSizePx;
 
     @Override
@@ -118,7 +120,7 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
+    public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
 

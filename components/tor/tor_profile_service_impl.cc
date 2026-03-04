@@ -145,7 +145,7 @@ constexpr const size_t kMaxBodySize = 4 * 1024;
 
 class BuiltinBridgesRequest {
  public:
-  using ResultCallback = base::OnceCallback<void(const base::Value::Dict&)>;
+  using ResultCallback = base::OnceCallback<void(const base::DictValue&)>;
 
   static std::unique_ptr<BuiltinBridgesRequest> MaybeUpdateBuiltinBridges(
       content::BrowserContext* browser_context,
@@ -187,14 +187,14 @@ class BuiltinBridgesRequest {
   void OnResponse(std::optional<std::string> response_body) {
     simple_url_loader_.reset();
     if (!response_body) {
-      return std::move(result_callback_).Run(base::Value::Dict());
+      return std::move(result_callback_).Run(base::DictValue());
     }
 
-    std::optional<base::Value::Dict> value =
+    std::optional<base::DictValue> value =
         base::JSONReader::ReadDict(*response_body, base::JSON_PARSE_RFC);
 
     if (!value.has_value()) {
-      return std::move(result_callback_).Run(base::Value::Dict());
+      return std::move(result_callback_).Run(base::DictValue());
     }
     std::move(result_callback_).Run(*value);
   }
@@ -318,7 +318,7 @@ void TorProfileServiceImpl::OnBridgesConfigChanged() {
 }
 
 void TorProfileServiceImpl::OnBuiltinBridgesResponse(
-    const base::Value::Dict& bridges) {
+    const base::DictValue& bridges) {
   if (!bridges.empty()) {
     auto config = tor::BridgesConfig::FromDict(
                       local_state_->GetDict(tor::prefs::kBridgesConfig))

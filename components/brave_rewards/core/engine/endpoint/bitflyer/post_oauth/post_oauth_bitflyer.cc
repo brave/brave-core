@@ -40,7 +40,7 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
-  base::Value::Dict dict;
+  base::DictValue dict;
   dict.Set("grant_type", "code");
   dict.Set("code", code);
   dict.Set("code_verifier", code_verifier);
@@ -74,14 +74,14 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
   DCHECK(address);
   DCHECK(linking_info);
 
-  std::optional<base::Value::Dict> value =
+  std::optional<base::DictValue> value =
       base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = *value;
+  const base::DictValue& dict = *value;
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     engine_->LogError(FROM_HERE) << "Missing access token";

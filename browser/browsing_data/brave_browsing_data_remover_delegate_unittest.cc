@@ -167,11 +167,11 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsCookiesClearing) {
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, FingerpintV2ClearBalancedPattern) {
   // Simulate sync updates pref directly.
-  base::Value::Dict value;
+  base::DictValue value;
   value.Set("expiration", "0");
   value.Set("last_modified", "13304670271801570");
   value.Set("setting", CONTENT_SETTING_BLOCK);
-  base::Value::Dict update;
+  base::DictValue update;
   update.Set("*,https://balanced/*", std::move(value));
 
   profile()->GetPrefs()->SetDict(
@@ -293,7 +293,7 @@ TEST_F(DataTypeContentSettings_Clearing, CheckAll) {
     const auto* content_setting = content_settings_registry->Get(type);
     if (!content_setting) {
       // Registered as WebsiteSetting only.
-      base::Value value(base::Value::Dict().Set("test", "value"));
+      base::Value value(base::DictValue().Set("test", "value"));
       map()->SetWebsiteSettingDefaultScope(url, GURL::EmptyGURL(), type,
                                            value.Clone());
       EXPECT_EQ(value, map()->GetWebsiteSetting(url, GURL::EmptyGURL(), type));

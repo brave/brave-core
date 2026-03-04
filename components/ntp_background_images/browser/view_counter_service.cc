@@ -160,16 +160,16 @@ NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
       supports_rich_media);
 }
 
-std::optional<base::Value::Dict>
+std::optional<base::DictValue>
 ViewCounterService::GetNextWallpaperForDisplay() {
   model_.RotateBackgroundWallpaperImageIndex();
   return GetCurrentWallpaper();
 }
 
-std::optional<base::Value::Dict>
+std::optional<base::DictValue>
 ViewCounterService::GetCurrentWallpaperForDisplay(bool allow_sponsored_image) {
   if (allow_sponsored_image && ShouldShowSponsoredImages()) {
-    if (std::optional<base::Value::Dict> dict = GetCurrentBrandedWallpaper()) {
+    if (std::optional<base::DictValue> dict = GetCurrentBrandedWallpaper()) {
       return dict;
     }
   }
@@ -179,8 +179,7 @@ ViewCounterService::GetCurrentWallpaperForDisplay(bool allow_sponsored_image) {
   return GetNextWallpaperForDisplay();
 }
 
-std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
-    const {
+std::optional<base::DictValue> ViewCounterService::GetCurrentWallpaper() const {
   if (!CanShowBackgroundImages()) {
     return std::nullopt;
   }
@@ -205,8 +204,8 @@ std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
       .Set(kWallpaperRandomKey, true);
 }
 
-std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentBrandedWallpaper() const {
+std::optional<base::DictValue> ViewCounterService::GetCurrentBrandedWallpaper()
+    const {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
     return std::nullopt;
@@ -215,7 +214,7 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
   return GetCurrentBrandedWallpaperFromAdsService();
 }
 
-std::optional<base::Value::Dict>
+std::optional<base::DictValue>
 ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   DCHECK(ads_service_);
 
@@ -232,7 +231,7 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
     return std::nullopt;
   }
 
-  std::optional<base::Value::Dict> background =
+  std::optional<base::DictValue> background =
       images_data->MaybeGetBackground(*ad);
   if (!background) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
@@ -248,7 +247,7 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   return background;
 }
 
-std::optional<base::Value::Dict>
+std::optional<base::DictValue>
 ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
   const auto [campaign_index, creative_index] =
       model_.GetCurrentBrandedImageIndex();
@@ -277,7 +276,7 @@ void ViewCounterService::OnSponsoredImagesDataDidUpdate(
 }
 
 void ViewCounterService::OnSponsoredContentDidUpdate(
-    const base::Value::Dict& data) {
+    const base::DictValue& data) {
   if (ads_service_) {
     // Since `data` contains small JSON from a CRX component, cloning it has no
     // performance impact.

@@ -47,8 +47,8 @@ std::unique_ptr<QrCodeData> QrCodeData::CreateWithActualDate(
       base::Time::Now() + base::Minutes(kMinutesFromNowForValidCode)));
 }
 
-base::Value::Dict QrCodeData::ToValue() const {
-  base::Value::Dict dict;
+base::DictValue QrCodeData::ToValue() const {
+  base::DictValue dict;
   dict.Set("version", base::NumberToString(version));
   dict.Set("sync_code_hex", sync_code_hex);
   dict.Set("not_after", base::NumberToString(ToEpochSeconds(not_after)));
@@ -70,7 +70,7 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
     const std::string& json_string) {
   auto qr_data = std::unique_ptr<QrCodeData>(new QrCodeData());
 
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+  std::optional<base::DictValue> value = base::JSONReader::ReadDict(
       json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     VLOG(1) << "Invalid JSON: " << *value;

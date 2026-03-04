@@ -37,30 +37,29 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void GetAutoLockMinutes(const base::Value::List& args);
-  void GetSolanaProviderOptions(const base::Value::List& args);
-  void GetCardanoProviderOptions(const base::Value::List& args);
-  void GetTransactionSimulationOptInStatusOptions(
-      const base::Value::List& args);
-  void RemoveChain(const base::Value::List& args);
-  void ResetChain(const base::Value::List& args);
-  void GetNetworksList(const base::Value::List& args);
-  void GetPrepopulatedNetworksList(const base::Value::List& args);
-  void AddChain(const base::Value::List& args);
-  void SetDefaultNetwork(const base::Value::List& args);
-  void AddHiddenNetwork(const base::Value::List& args);
-  void RemoveHiddenNetwork(const base::Value::List& args);
-  void IsBitcoinEnabled(const base::Value::List& args);
-  void IsZCashEnabled(const base::Value::List& args);
-  void IsZCashShieldedTxEnabled(const base::Value::List& args);
-  void IsCardanoEnabled(const base::Value::List& args);
-  void IsPolkadotEnabled(const base::Value::List& args);
-  void IsCardanoDAppSupportEnabled(const base::Value::List& args);
-  void IsTransactionSimulationsEnabled(const base::Value::List& args);
-  void SetWalletInPrivateWindowsEnabled(const base::Value::List& args);
-  void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);
-  void GetWeb3ProviderList(const base::Value::List& args);
-  void IsNativeWalletEnabled(const base::Value::List& args);
+  void GetAutoLockMinutes(const base::ListValue& args);
+  void GetSolanaProviderOptions(const base::ListValue& args);
+  void GetCardanoProviderOptions(const base::ListValue& args);
+  void GetTransactionSimulationOptInStatusOptions(const base::ListValue& args);
+  void RemoveChain(const base::ListValue& args);
+  void ResetChain(const base::ListValue& args);
+  void GetNetworksList(const base::ListValue& args);
+  void GetPrepopulatedNetworksList(const base::ListValue& args);
+  void AddChain(const base::ListValue& args);
+  void SetDefaultNetwork(const base::ListValue& args);
+  void AddHiddenNetwork(const base::ListValue& args);
+  void RemoveHiddenNetwork(const base::ListValue& args);
+  void IsBitcoinEnabled(const base::ListValue& args);
+  void IsZCashEnabled(const base::ListValue& args);
+  void IsZCashShieldedTxEnabled(const base::ListValue& args);
+  void IsCardanoEnabled(const base::ListValue& args);
+  void IsPolkadotEnabled(const base::ListValue& args);
+  void IsCardanoDAppSupportEnabled(const base::ListValue& args);
+  void IsTransactionSimulationsEnabled(const base::ListValue& args);
+  void SetWalletInPrivateWindowsEnabled(const base::ListValue& args);
+  void GetWalletInPrivateWindowsEnabled(const base::ListValue& args);
+  void GetWeb3ProviderList(const base::ListValue& args);
+  void IsNativeWalletEnabled(const base::ListValue& args);
 
   PrefService* GetPrefs();
   brave_wallet::NetworkManager* GetNetworkManager();

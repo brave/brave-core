@@ -87,12 +87,12 @@ void TopSitesMessageHandler::OnURLsAvailable(
   if (!most_visited_sites_)
     return;
 
-  base::Value::Dict result;
-  base::Value::List tiles;
+  base::DictValue result;
+  base::ListValue tiles;
   int tile_id = 1;
 
   for (auto& tile : sections.at(ntp_tiles::SectionType::PERSONALIZED)) {
-    base::Value::Dict tile_value;
+    base::DictValue tile_value;
     if (tile.title.empty()) {
       tile_value.Set("title", tile.url.spec());
       tile_value.Set("title_direction", base::i18n::LEFT_TO_RIGHT);
@@ -144,7 +144,7 @@ bool TopSitesMessageHandler::IsShortcutsVisible() const {
 }
 
 void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -155,7 +155,7 @@ void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
 }
 
 void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -177,7 +177,7 @@ void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
 }
 
 void TopSitesMessageHandler::HandleReorderMostVisitedTile(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -196,7 +196,7 @@ void TopSitesMessageHandler::HandleReorderMostVisitedTile(
 }
 
 void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -211,7 +211,7 @@ void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
 }
 
 void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -227,7 +227,7 @@ void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
 }
 
 void TopSitesMessageHandler::HandleSetMostVisitedSettings(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -256,7 +256,7 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
   }
 }
 
-void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
+void TopSitesMessageHandler::HandleEditTopSite(const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 
@@ -299,8 +299,7 @@ void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
   }
 }
 
-void TopSitesMessageHandler::HandleAddNewTopSite(
-    const base::Value::List& args) {
+void TopSitesMessageHandler::HandleAddNewTopSite(const base::ListValue& args) {
   if (!most_visited_sites_)
     return;
 

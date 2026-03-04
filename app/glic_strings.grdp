@@ -21,7 +21,7 @@
   <message name="IDS_GLIC_PROMO_BODY" desc="Text for a promo pointing to the Gemini icon in Brave.">
     Chat with voice or text to get answers, key takeaways, and more as you browse
   </message>
-  <if expr="is_win or is_linux or is_chromeos">
+  <if expr="is_win or is_linux or is_chromeos or is_android">
     <message name="IDS_GLIC_STATUS_ICON_MENU_CUSTOMIZE_KEYBOARD_SHORTCUT" desc="Menu text for the Gemini icon on the system try to open Brave settings and change the keyboard shortcut for opening Gemini in Brave.">
       Customize keyboard shortcut
     </message>
@@ -31,12 +31,12 @@
       Customize Keyboard Shortcut...
     </message>
   </if>
-  <if expr="is_win or is_linux or is_chromeos">
+  <if expr="is_win or is_linux or is_chromeos or is_android">
     <message name="IDS_GLIC_STATUS_ICON_MENU_EXIT" desc="This is the menu item for exiting Brave.">
       Exit
     </message>
   </if>
-  <if expr="is_win or is_linux or is_chromeos">
+  <if expr="is_win or is_linux or is_chromeos or is_android">
     <message name="IDS_GLIC_STATUS_ICON_MENU_SETTINGS" desc="This is the menu item for opening the Gemini status icon settings.">
       Settings
     </message>
@@ -111,16 +111,16 @@
   <message name="IDS_SETTINGS_GLIC_POLICY_DISABLED_MESSAGE" desc="Message shown when Gemini is disabled by enterprise policy.">
     This feature is disabled by your organization
   </message>
-  <message name="IDS_SETTINGS_GLIC_PREFERENCES_SECTION" desc="Heading on settings page for basic preferences.">
+  <message name="IDS_SETTINGS_GLIC_PREFERENCES_SECTION" desc="Heading on settings page for basic preferences." formatter_data="android_java">
     Preferences
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_SECTION" desc="Heading on settings page for permissions-related preferences.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_SECTION" desc="Heading on settings page for permissions-related preferences." formatter_data="android_java">
     Permissions
   </message>
-  <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the tabstrip.">
+  <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the tabstrip." formatter_data="android_java">
     Show Gemini at the top of the browser
   </message>
-  <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the tabstrip.">
+  <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the tabstrip." formatter_data="android_java">
     Quickly open Gemini whenever you need it
   </message>
   <if expr="is_macosx">
@@ -142,14 +142,26 @@
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT" desc="Name of the keyboard shortcut setting.">
     Keyboard shortcut
   </message>
+  <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_EDIT_LABEL" desc="Label of the edit keyboard shortcut setting button.">
+    Edit keyboard shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut that's used to globally invoke Gemini.">
     Open Gemini with a keyboard shortcut.
   </message>
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_LEARN_MORE_LABEL" desc="Label for the 'Learn more' link in the sublabel for Gemini in Brave settings.">
     Learn more
   </message>
+  <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_LEARN_MORE_ARIA_LABEL" desc="Aria label for the 'Learn more' link for the keyboard shortcut setting in Gemini in Brave settings.">
+    Learn more about the keyboard shortcut
+  </message>
+  <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_LEARN_MORE_ARIA_LABEL" desc="Aria label for the 'Learn more' link for the navigation shortcut setting in Gemini in Brave settings.">
+    Learn more about the navigation shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT" desc="Title for the navigation shortcut setting to leave and return to Gemini in Brave.">
     Navigation shortcut
+  </message>
+  <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_EDIT_LABEL" desc="Label of the edit navigation shortcut setting button.">
+    Edit navigation shortcut
   </message>
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut navigate between Brave and Gemini.">
     To leave or return to Gemini, use keyboard shortcut.
@@ -167,19 +179,19 @@
     Precise Location
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers">
-    Use your precise location for the most accurate Gemini results, instead of an estimated location based on your IP address.
+    When you share your precise location, Gemini can answer your questions more accurately
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers, but the user's data is not used to improve the model">
-    Use your precise location for the most accurate Gemini results, instead of an estimated location based on your IP address. Your data is not used to improve generative AI models
+    When you share your precise location, Gemini can answer your questions more accurately. Your data is not used to improve generative AI models.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE" desc="Name of the microphone setting.">
     Microphone
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE_SUBLABEL" desc="Sublabel describing that this setting will enable using the microphone to have a voice chat with Gemini">
-    Use your microphone to chat with Gemini. When you speak to Gemini, audio is stored in Gemini Apps Activity (if it's on)
+    Use your microphone to chat with Gemini. When you speak to Gemini, audio is stored in Gemini Apps Activity (if it’s on).
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable using the microphone to have a voice chat with Gemini, but the user's data is not used to improve the model">
-    Use your microphone to chat with Gemini. When you speak to Gemini, audio is stored in Gemini Apps Activity (if it's on). Your data is not used to improve generative AI models
+    Use your microphone to chat with Gemini. When you speak to Gemini, audio is stored in Gemini Apps Activity (if it’s on). Your data is not used to improve generative AI models.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_TOGGLE" desc="Name of the enable current tab access setting.">
     Page content sharing
@@ -357,15 +369,18 @@
   </message>
 
   <!-- Gemini tab strip button label -->
-  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_LABEL" desc="Label on the button used to open Gemini in Brave.">
+  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_LABEL" desc="Label on the button used to open Gemini in Brave." formatter_data="android_java">
     Gemini
   </message>
 
-  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_GEMINI_LABEL" desc="Label on the button used to open Gemini in Brave.">
+  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_GEMINI_LABEL" desc="Label on the button used to open Gemini in Brave." formatter_data="android_java">
     Ask Gemini
   </message>
   <message name="IDS_GLIC_BUTTON_ENTRYPOINT_BROWSE_LABEL" desc="Label on the button used to open Gemini in Brave.">
     Browse with AI
+  </message>
+  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_ABOUT_THIS_PAGE_LABEL" desc="Label on the button used to open Gemini in Brave.">
+    Ask about this page?
   </message>
 
   <!-- Content area context menu. -->

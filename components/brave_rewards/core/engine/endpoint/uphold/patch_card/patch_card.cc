@@ -29,11 +29,11 @@ std::string PatchCard::GetUrl(const std::string& address) const {
 }
 
 std::string PatchCard::GeneratePayload() const {
-  base::Value::Dict settings;
+  base::DictValue settings;
   settings.Set("position", 1);
   settings.Set("starred", true);
 
-  base::Value::Dict payload;
+  base::DictValue payload;
   payload.Set("settings", std::move(settings));
 
   std::string json;

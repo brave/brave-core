@@ -25,7 +25,7 @@ base::Value ContentBlocksToJson(const ConversationAPIClient::Content& content) {
     } else if (content_strings->size() == 1) {
       return base::Value(content_strings->front());
     } else {
-      base::Value::List content_list;
+      base::ListValue content_list;
       for (const auto& content_item : *content_strings) {
         content_list.Append(content_item);
       }
@@ -33,9 +33,9 @@ base::Value ContentBlocksToJson(const ConversationAPIClient::Content& content) {
     }
   } else if (auto* content_blocks =
                  std::get_if<std::vector<mojom::ContentBlockPtr>>(&content)) {
-    base::Value::List content_items;
+    base::ListValue content_items;
     for (const auto& content_block : *content_blocks) {
-      base::Value::Dict content_item;
+      base::DictValue content_item;
       switch (content_block->which()) {
         case mojom::ContentBlock::Tag::kImageContentBlock:
           content_item.Set("type", "image_url");

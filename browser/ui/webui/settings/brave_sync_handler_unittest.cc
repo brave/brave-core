@@ -58,7 +58,7 @@ class BraveSyncHandlerUnittest : public testing::Test {
   }
 
  protected:
-  void CallHandleCopySyncCodeToClipboard(const base::Value::List& args);
+  void CallHandleCopySyncCodeToClipboard(const base::ListValue& args);
   Clipboard& clipboard() { return *clipboard_; }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
 
@@ -73,12 +73,12 @@ class BraveSyncHandlerUnittest : public testing::Test {
 };
 
 void BraveSyncHandlerUnittest::CallHandleCopySyncCodeToClipboard(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   handler_->HandleCopySyncCodeToClipboard(args);
 }
 
 TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
-  base::Value::List args;
+  base::ListValue args;
   constexpr char kSyncCodeExample[] = "the sync code";
   args.Append(base::Value("id"));
   args.Append(base::Value(kSyncCodeExample));

@@ -36,7 +36,7 @@ std::string_view WaitTool::Description() const {
          "to complete. Time is specified in milliseconds.";
 }
 
-std::optional<base::Value::Dict> WaitTool::InputProperties() const {
+std::optional<base::DictValue> WaitTool::InputProperties() const {
   return CreateInputProperties(
       {{kPropertyNameWaitTimeMs,
         IntegerProperty("The amount of time to wait in milliseconds")}});

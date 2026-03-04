@@ -31,7 +31,7 @@ namespace {
 constexpr std::size_t kMaxRandomnessResponseSize = 131072;
 
 std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
-    const base::Value::List& list) {
+    const base::ListValue& list) {
   std::unique_ptr<rust::Vec<constellation::VecU8>> result =
       std::make_unique<rust::Vec<constellation::VecU8>>();
   for (const base::Value& list_entry : list) {
@@ -79,8 +79,8 @@ void StarRandomnessPoints::SendRandomnessRequest(
   url_loaders_[log_type] = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessServerInfoAnnotation());
 
-  base::Value::Dict payload_dict;
-  base::Value::List points_list;
+  base::DictValue payload_dict;
+  base::ListValue points_list;
   for (const auto& point_data : rand_req_points) {
     points_list.Append(base::Base64Encode(point_data.data));
   }
@@ -139,9 +139,9 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     std::move(callback).Run(nullptr, nullptr);
     return;
   }
-  const base::Value::Dict& root = parsed_body->GetDict();
-  const base::Value::List* points = root.FindList("points");
-  const base::Value::List* proofs = root.FindList("proofs");
+  const base::DictValue& root = parsed_body->GetDict();
+  const base::ListValue* points = root.FindList("points");
+  const base::ListValue* proofs = root.FindList("proofs");
   if (points == nullptr) {
     LOG(ERROR) << "StarRandomnessPoints: failed to find points list in "
                   "randomness response";

@@ -223,7 +223,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
         *last_turn->selected_text, max_associated_content_length_);
   }
 
-  base::Value::List messages = BuildMessages(
+  base::ListValue messages = BuildMessages(
       model_options_, page_contents, BuildUserMemoryMessage(is_temporary_chat),
       selected_text, conversation_history);
 
@@ -246,13 +246,13 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
   std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
 }
 
-base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
+base::ListValue EngineConsumerOAIRemote::BuildPageContentMessages(
     const PageContents& page_contents,
     uint32_t& max_associated_content_length,
     int video_message_id,
     int page_message_id,
     std::optional<uint32_t> max_per_content_length) {
-  base::Value::List messages;
+  base::ListValue messages;
   for (const auto& page_content : base::Reversed(page_contents)) {
     uint32_t effective_length_limit = max_associated_content_length;
     if (max_per_content_length.has_value()) {
@@ -270,7 +270,7 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
                                                              : page_message_id),
         {std::move(truncated_page_content)}, nullptr);
 
-    base::Value::Dict message;
+    base::DictValue message;
     message.Set("role", "user");
     message.Set("content", std::move(prompt));
     messages.Append(std::move(message));
@@ -285,10 +285,10 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
   return messages;
 }
 
-base::Value::List EngineConsumerOAIRemote::BuildMessages(
+base::ListValue EngineConsumerOAIRemote::BuildMessages(
     const mojom::CustomModelOptions& model_options,
     PageContentsMap& page_contents,
-    std::optional<base::Value::Dict> user_memory_message,
+    std::optional<base::DictValue> user_memory_message,
     const std::optional<std::string>& selected_text,
     const EngineConsumer::ConversationHistory& conversation_history) {
   uint32_t remaining_content_length = max_associated_content_length_;
@@ -299,7 +299,7 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
     remaining_content_length -= selected_text_length;
   }
 
-  base::flat_map<std::string, base::Value::List> page_contents_messages;
+  base::flat_map<std::string, base::ListValue> page_contents_messages;
 
   // We iterate over the page contents in reverse order so that the most recent
   // content is preferred.
@@ -321,7 +321,7 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
     }
   }
 
-  base::Value::List messages;
+  base::ListValue messages;
 
   // Append system message
   {
@@ -350,7 +350,7 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
       }
     }
 
-    base::Value::Dict message;
+    base::DictValue message;
     message.Set("role", "system");
     message.Set("content", system_message);
     messages.Append(std::move(message));
@@ -370,28 +370,28 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
     }
 
     if (turn->uploaded_files) {
-      base::Value::List content_uploaded_images;
-      base::Value::List content_screenshots;
-      base::Value::List content_uploaded_pdfs;
+      base::ListValue content_uploaded_images;
+      base::ListValue content_screenshots;
+      base::ListValue content_uploaded_pdfs;
 
       content_uploaded_images.Append(
-          base::Value::Dict()
+          base::DictValue()
               .Set("type", "text")
               .Set("text", "These images are uploaded by the user"));
       content_screenshots.Append(
-          base::Value::Dict()
+          base::DictValue()
               .Set("type", "text")
               .Set("text", "These images are screenshots"));
       content_uploaded_pdfs.Append(
-          base::Value::Dict()
+          base::DictValue()
               .Set("type", "text")
               .Set("text", "These PDFs are uploaded by the user"));
       for (const auto& uploaded_file : turn->uploaded_files.value()) {
         if (uploaded_file->type == mojom::UploadedFileType::kImage ||
             uploaded_file->type == mojom::UploadedFileType::kScreenshot) {
-          base::Value::Dict image;
+          base::DictValue image;
           image.Set("type", "image_url");
-          base::Value::Dict image_url_dict;
+          base::DictValue image_url_dict;
           image_url_dict.Set(
               "url", EngineConsumer::GetImageDataURL(uploaded_file->data));
           image.Set("image_url", std::move(image_url_dict));
@@ -401,9 +401,9 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
             content_screenshots.Append(std::move(image));
           }
         } else if (uploaded_file->type == mojom::UploadedFileType::kPdf) {
-          base::Value::Dict pdf_file;
+          base::DictValue pdf_file;
           pdf_file.Set("type", "file");
-          base::Value::Dict file_dict;
+          base::DictValue file_dict;
           file_dict.Set("filename", uploaded_file->filename.empty()
                                         ? "uploaded.pdf"
                                         : uploaded_file->filename);
@@ -415,23 +415,23 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
       }
       if (content_uploaded_images.size() > 1) {
         messages.Append(
-            base::Value::Dict()
+            base::DictValue()
                 .Set("role", "user")
                 .Set("content", std::move(content_uploaded_images)));
       }
       if (content_screenshots.size() > 1) {
-        messages.Append(base::Value::Dict()
+        messages.Append(base::DictValue()
                             .Set("role", "user")
                             .Set("content", std::move(content_screenshots)));
       }
       if (content_uploaded_pdfs.size() > 1) {
-        messages.Append(base::Value::Dict()
+        messages.Append(base::DictValue()
                             .Set("role", "user")
                             .Set("content", std::move(content_uploaded_pdfs)));
       }
     }
 
-    base::Value::Dict message;
+    base::DictValue message;
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
                             : "assistant");
@@ -440,16 +440,16 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
     if (turn->character_type == CharacterType::HUMAN && turn->skill) {
       std::string skill_definition = BuildSkillDefinitionMessage(turn->skill);
 
-      base::Value::List content_blocks;
+      base::ListValue content_blocks;
 
       // Add skill definition as first content block
-      base::Value::Dict skill_block;
+      base::DictValue skill_block;
       skill_block.Set("type", "text");
       skill_block.Set("text", skill_definition);
       content_blocks.Append(std::move(skill_block));
 
       // Add user message as second content block
-      base::Value::Dict user_message_block;
+      base::DictValue user_message_block;
       user_message_block.Set("type", "text");
       user_message_block.Set("text", GetPromptContentForEntry(turn));
       content_blocks.Append(std::move(user_message_block));
@@ -465,8 +465,8 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
   return messages;
 }
 
-std::optional<base::Value::Dict>
-EngineConsumerOAIRemote::BuildUserMemoryMessage(bool is_temporary_chat) {
+std::optional<base::DictValue> EngineConsumerOAIRemote::BuildUserMemoryMessage(
+    bool is_temporary_chat) {
   if (is_temporary_chat) {
     return std::nullopt;
   }
@@ -477,12 +477,12 @@ EngineConsumerOAIRemote::BuildUserMemoryMessage(bool is_temporary_chat) {
 
   // HTML-escape individual string values to avoid breaking HTML-style tags
   // in our prompts.
-  base::Value::Dict escaped_memories;
+  base::DictValue escaped_memories;
   for (const auto [key, value] : *memories) {
     if (value.is_string()) {
       escaped_memories.Set(key, base::EscapeForHTML(value.GetString()));
     } else if (value.is_list()) {
-      base::Value::List escaped_list;
+      base::ListValue escaped_list;
       for (const auto& item : value.GetList()) {
         if (item.is_string()) {
           escaped_list.Append(base::EscapeForHTML(item.GetString()));
@@ -502,7 +502,7 @@ EngineConsumerOAIRemote::BuildUserMemoryMessage(bool is_temporary_chat) {
           IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT),
       {*memories_json}, nullptr);
 
-  base::Value::Dict message;
+  base::DictValue message;
   message.Set("role", "user");
   message.Set("content", prompt);
   return message;

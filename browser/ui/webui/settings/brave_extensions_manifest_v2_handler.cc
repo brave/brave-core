@@ -36,7 +36,7 @@ struct ExtensionManifestV2 {
   bool enabled = false;
 
   base::Value ToValue() const {
-    base::Value::Dict v;
+    base::DictValue v;
     v.Set("id", id);
     v.Set("sources", sources);
     v.Set("name", name);
@@ -160,7 +160,7 @@ BraveExtensionsManifestV2Handler::GetExtensionRegistry() {
 }
 
 void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 3U);
 
   const std::string id = args[1].GetString();
@@ -208,7 +208,7 @@ void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
 }
 
 void BraveExtensionsManifestV2Handler::RemoveExtensionManifestV2(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 2U);
   const std::string id = args[1].GetString();
 
@@ -229,11 +229,11 @@ void BraveExtensionsManifestV2Handler::RemoveExtensionManifestV2(
 }
 
 void BraveExtensionsManifestV2Handler::GetExtensionsManifestV2(
-    const base::Value::List& args) {
+    const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-  base::Value::List result;
+  base::ListValue result;
   for (auto& e : extensions_) {
     e.installed =
         GetExtensionRegistry()->GetInstalledExtension(e.id) != nullptr;
