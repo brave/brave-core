@@ -31,7 +31,6 @@ static_library("common") {
   ]
 
   deps = [
-    ":mojom_js",
     "//base",
     "//components/pref_registry",
     "//components/prefs",

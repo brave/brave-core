@@ -84,7 +84,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                              PsstRuleRegistry* registry,
                              PrefService* prefs,
                              std::unique_ptr<PsstUiDelegate> ui_delegate,
-                             InjectScriptCallback inject_script_callback);
+                             InjectScriptCallback inject_script_callback,
+                             InjectScriptCallback inject_async_script_callback);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
@@ -92,12 +93,13 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
-  void OnPolicyScriptResult(const int id, base::Value script_result);
+  void OnPolicyScriptResult(int id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,
+                      bool is_async,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
-  void MaybeGetPolicyScriptResult(const int id,
+  void MaybeGetPolicyScriptResult(int id,
                                   std::optional<int> retry_counter,
                                   const base::DictValue& script_result);
 
@@ -116,6 +118,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
   InjectScriptCallback inject_script_callback_;
+  InjectScriptCallback inject_async_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
