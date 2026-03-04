@@ -128,6 +128,7 @@ describe('AssistantTask', () => {
   })
 
   test('should only display thumbnail for matching tabId', async () => {
+    const addTabToThumbnailTracker = jest.fn()
     const testTabId = 123
     const differentTabId = 456
     const testDataURI =
@@ -136,7 +137,10 @@ describe('AssistantTask', () => {
     const mockRef = React.createRef<MockContextRef>()
 
     render(
-      <MockContext ref={mockRef}>
+      <MockContext
+        ref={mockRef}
+        uiHandler={{ addTabToThumbnailTracker }}
+      >
         <AssistantTask
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
@@ -148,6 +152,11 @@ describe('AssistantTask', () => {
     // Set contentTaskTabId
     await act(async () => {
       mockRef.current!.api.emitEvent('contentTaskStarted', [testTabId])
+    })
+
+    // Wait for subscription to be set up before emitting thumbnail events
+    await waitFor(() => {
+      expect(addTabToThumbnailTracker).toHaveBeenCalledWith(testTabId)
     })
 
     // Simulate thumbnail update for different tab
