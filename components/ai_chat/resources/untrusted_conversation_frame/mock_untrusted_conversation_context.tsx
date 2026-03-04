@@ -108,7 +108,8 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
       if (deps.length) {
         untrustedApi.api.invalidateAll()
       }
-    }, [deps, untrustedApi.api])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, untrustedApi.api])
 
     React.useLayoutEffect(() => {
       if (initialState.conversationEntriesState) {
@@ -124,7 +125,8 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
         )
       }
     }, [
-      deps,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      ...deps,
       initialState.conversationEntriesState,
       initialState.conversationHistory,
       untrustedApi.api,

@@ -74,9 +74,6 @@ export default function createUntrustedConversationApi(
   let uiObserver: Mojom.UntrustedUIInterface
 
   const api = createInterfaceApi({
-    // Define the mojom actions we will expose to the UI.
-    // These are functions that are simply passed through
-    // with no caching or deduplicating.
     actions: {
       conversationHandler: conversationHandler as Pick<
         Mojom.UntrustedConversationHandlerInterface,
@@ -89,7 +86,6 @@ export default function createUntrustedConversationApi(
       >,
     },
 
-    // Define the data-retrieval and mutation functions we'll cache or mutate
     endpoints: {
       // General UI data
       ...endpointsFor(uiHandler, {
@@ -107,8 +103,6 @@ export default function createUntrustedConversationApi(
         },
       }),
 
-      // State is a special endpoint that doesn't fetch but is updated via events
-      // We'll initialize it via the bindUntrustedConversationUI call
       state: state<Mojom.ConversationEntriesState>({
         isGenerating: false,
         isToolExecuting: false,
@@ -135,8 +129,6 @@ export default function createUntrustedConversationApi(
           thumbnailUpdated(tabId, dataUri) {},
         },
         (observer) => {
-          // This function is synchronous, so ok to set here even when returning
-          // as a result of the whole API-client generating function.
           uiObserver = observer
         },
       ),
@@ -147,10 +139,8 @@ export default function createUntrustedConversationApi(
         {
           onConversationHistoryUpdate(entry) {
             if (!entry) {
-              // Force full update, getConversationHistory will be re-fetched
               api.getConversationHistory.invalidate()
             } else {
-              // Update with the new/modified entry
               api.getConversationHistory.update((old) =>
                 updateConversationHistory(old, entry),
               )

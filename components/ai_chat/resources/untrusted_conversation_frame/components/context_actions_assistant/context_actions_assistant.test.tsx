@@ -127,11 +127,15 @@ function renderAssistant(isSummaryResponse: boolean) {
         },
         { ...assistantSummaryTurn, uuid: 'turn-uuid' },
       ]
-  render(
+  return render(
     <MockContext
-      allModels={mockModels}
-      isPremiumUser={false}
-      conversationHistory={conversationHistory}
+      initialState={{
+        conversationEntriesState: {
+          allModels: mockModels,
+          isPremiumUser: false,
+        },
+        conversationHistory,
+      }}
     >
       <ContextActionsAssistant
         turnUuid='turn-uuid'
@@ -143,28 +147,23 @@ function renderAssistant(isSummaryResponse: boolean) {
 
 describe('ContextActionsAssistant', () => {
   it('hides summary model in regenerate dropdown for non-summary requests', async () => {
-    renderAssistant(false)
+    const renderResult = renderAssistant(false)
 
     const anchorButton = await getRegenerateAnchorButton()
     await clickRegenerateAnchor(anchorButton)
     await getOpenMenu()
 
-    const summaryOption = document.querySelector<HTMLElement>(
-      `leo-menu-item[data-key="${BRAVE_SUMMARY_MODEL_KEY}"]`,
-    )
+    const summaryOption = renderResult.queryByTestId(BRAVE_SUMMARY_MODEL_KEY)
     expect(summaryOption).toBeNull()
   })
 
   it('shows summary model in regenerate dropdown for summary requests', async () => {
-    renderAssistant(true)
+    const renderResult = renderAssistant(true)
 
     const anchorButton = await getRegenerateAnchorButton()
     await clickRegenerateAnchor(anchorButton)
     await getOpenMenu()
 
-    const summaryOption = document.querySelector<HTMLElement>(
-      `leo-menu-item[data-key="${BRAVE_SUMMARY_MODEL_KEY}"]`,
-    )
-    expect(summaryOption).toBeInTheDocument()
+    await renderResult.findByTestId(BRAVE_SUMMARY_MODEL_KEY)
   })
 })

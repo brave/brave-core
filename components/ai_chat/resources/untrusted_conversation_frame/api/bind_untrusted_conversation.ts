@@ -6,36 +6,35 @@
 import * as Mojom from '../../common/mojom'
 import createUntrustedConversationApi from './untrusted_conversation_api'
 
+/**
+ * Creates WebUi bindings to mojo interfaces for the active conversation with
+ * Conversation uuid found on the URL path. Returns the
+ * createUntrustedConversationApi result.
+ */
 export async function bindUntrustedConversation() {
-  // Create remotes
   const conversationHandler = new Mojom.UntrustedConversationHandlerRemote()
   const uiHandler = Mojom.UntrustedUIHandler.getRemote()
   const parentUIFrame = new Mojom.ParentUIFrameRemote()
 
-  // Get conversation ID from URL
+  // This frame gets the conversation ID from the URL
   const conversationId = window.location.pathname.split('/').pop() || ''
 
-  // Bind conversation handler
   uiHandler.bindConversationHandler(
     conversationId,
     conversationHandler.$.bindNewPipeAndPassReceiver(),
   )
 
-  // Set up communication with the parent frame
   uiHandler.bindParentPage(parentUIFrame.$.bindNewPipeAndPassReceiver())
 
-  // Create the API
   const conversationAPI = createUntrustedConversationApi(
     conversationHandler,
     uiHandler,
     parentUIFrame,
   )
 
-  // Bind UntrustedUI events
   const uiReceiver = new Mojom.UntrustedUIReceiver(conversationAPI.uiObserver)
   uiHandler.bindUntrustedUI(uiReceiver.$.bindNewPipeAndPassRemote())
 
-  // Bind the conversation observer and get initial state
   const conversationUIReceiver = new Mojom.UntrustedConversationUIReceiver(
     conversationAPI.conversationObserver,
   )
@@ -45,7 +44,7 @@ export async function bindUntrustedConversation() {
     )
 
   // Set initial state
-  // Emit the event instead of directly updating so that any custom
+  // Emit the event instead of directly updating the store so that any custom
   // handling (e.g. model filtering) happens and we don't need to duplicate
   // here.
   conversationAPI.api.emitEvent('onEntriesUIStateChanged', [

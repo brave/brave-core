@@ -10,8 +10,8 @@ import * as React from 'react'
  * Detects drag start events and notifies the parent frame via the provided callback.
  * Should be called early in module initialization.
  */
-export function useUntrustedFrameDragHandling(onDragStarted: Function): void {
-  return React.useEffect(() => {
+export function useUntrustedFrameDragHandling(onDragStarted: () => void): void {
+  React.useEffect(() => {
     const handleDragEnter = (e: DragEvent) => {
       if (e.dataTransfer?.types?.includes('Files')) {
         onDragStarted()

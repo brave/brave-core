@@ -294,13 +294,15 @@ test('AssistantResponse should aggregate sources from multiple events', async ()
   ]
 
   render(
+    <MockContext>
     <AssistantResponse
       events={events}
       isEntryInteractivityAllowed={false}
       isLeoModel={true}
       isEntryInProgress={false}
       allowedLinks={[]}
-    />,
+    />
+    </MockContext>,
   )
 
   // All 4 sources from both events should be rendered
@@ -316,13 +318,15 @@ test('AssistantResponse should aggregate search queries from multiple events', (
   ]
 
   const { container } = render(
-    <AssistantResponse
-      events={events}
-      isEntryInteractivityAllowed={false}
-      isLeoModel={true}
-      isEntryInProgress={false}
-      allowedLinks={[]}
-    />,
+    <MockContext>
+      <AssistantResponse
+        events={events}
+        isEntryInteractivityAllowed={false}
+        isLeoModel={true}
+        isEntryInProgress={false}
+        allowedLinks={[]}
+      />
+    </MockContext>,
   )
 
   const summary = container.querySelector('[data-test-id="search-summary"]')
