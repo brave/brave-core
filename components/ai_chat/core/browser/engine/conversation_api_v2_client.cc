@@ -19,8 +19,10 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/deep_research_parsing.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
@@ -546,6 +548,10 @@ void ConversationAPIV2Client::OnQueryDataReceived(
       base::JSONWriter::Write(*results, &results_json);
       auto event = mojom::ConversationEntryEvent::NewInlineSearchEvent(
           mojom::InlineSearchEvent::New(*query, std::move(results_json)));
+      callback.Run(GenerationResultData(std::move(event), model_key));
+    }
+  } else if (base::StartsWith(*object_type, "brave-chat.deepResearch")) {
+    if (auto event = ParseDeepResearchEvent(*object_type, result_params)) {
       callback.Run(GenerationResultData(std::move(event), model_key));
     }
   }

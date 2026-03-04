@@ -14,6 +14,8 @@ import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
 import Chart from './chart'
+import DeepResearchEvent from './deep_research_event'
+import { extractDeepResearchEvents } from './deep_research_utils'
 import styles from './style.module.scss'
 import {
   removeReasoning,
@@ -89,6 +91,8 @@ function AssistantEvent(
   const context = useUntrustedConversationContext()
 
   if (event.completionEvent) {
+    const completion = event.completionEvent.completion
+
     const numberedLinks =
       allowedLinks.length > 0
         ? allowedLinks
@@ -96,18 +100,14 @@ function AssistantEvent(
             .join('\n') + '\n\n'
         : ''
 
-    // Remove citations with missing links
-    const filteredOutCitationsWithMissingLinks =
-      removeCitationsWithMissingLinks(
-        event.completionEvent.completion,
-        allowedLinks,
-      )
-
-    const completion = normalizeCitationSpacing(
-      filteredOutCitationsWithMissingLinks,
+    const filteredCompletion = removeCitationsWithMissingLinks(
+      completion,
+      allowedLinks,
     )
 
-    const fullText = `${numberedLinks}${removeReasoning(completion)}`
+    const processedCompletion = normalizeCitationSpacing(filteredCompletion)
+
+    const fullText = `${numberedLinks}${removeReasoning(processedCompletion)}`
 
     return (
       <MarkdownRenderer
@@ -173,6 +173,11 @@ export default function AssistantResponse(props: AssistantResponseProps) {
     (event) => event.searchQueriesEvent?.searchQueries ?? [],
   )
 
+  const deepResearch = React.useMemo(
+    () => extractDeepResearchEvents(props.events),
+    [props.events],
+  )
+
   const hasCompletionStarted =
     !props.isEntryInProgress
     || props.events.some((event) => event.completionEvent)
@@ -185,7 +190,8 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           jsonData={r}
         />
       ))}
-      {props.events.map((event, i) => (
+
+      {props.events?.map((event, i) => (
         <AssistantEvent
           key={i}
           event={event}
@@ -196,6 +202,20 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           isLeoModel={props.isLeoModel}
         />
       ))}
+
+      {/* Render deep research progress while research is active.
+          Hide once the synthesis answer starts streaming in. Keep visible
+          during the synthesis phase (after completeEvent but before the
+          final completionEvent arrives), ignoring any pre-tool completion
+          text the LLM may have emitted before calling deep_research. */}
+      {deepResearch.hasDeepResearchEvents
+        && props.isEntryInProgress
+        && !deepResearch.hasSynthesisCompletion && (
+          <DeepResearchEvent
+            deepResearch={deepResearch}
+            isActive={props.isEntryInProgress}
+          />
+        )}
 
       {!props.isEntryInProgress && allSources.length > 0 && (
         <WebSourcesEvent sources={allSources} />
