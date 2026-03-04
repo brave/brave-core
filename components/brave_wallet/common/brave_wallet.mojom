@@ -1404,6 +1404,10 @@ interface KeyringService {
       => (AccountInfo? account_info);
 
   // Adds accounts to the keyring in bulk during wallet creation/restoration.
+  // Account creation can fail in certain cases, such as an account that is
+  // affected by OFAC sanctions. Because this method is intended to only be
+  // called during onboarding, it will return std::nullopt on failure and reset
+  // the keyring.
   CreateDefaultAccountsForSelectedNetworks(
       array<AddAccountArgs> account_args)
       => (array<AccountInfo>? account_infos);
