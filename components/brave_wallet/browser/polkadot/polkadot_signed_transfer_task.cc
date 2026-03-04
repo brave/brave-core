@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
@@ -256,12 +257,24 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
   auto sender_pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
   CHECK(sender_pubkey);
 
-  auto signed_extrinsic = make_signed_extrinsic(
+  extrinsic_ = base::ToVector(make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
-      signature, signing_header_->block_number, account_info_->nonce);
+      signature, signing_header_->block_number, account_info_->nonce));
 
-  std::move(callback_).Run(base::ok(
-      std::vector<uint8_t>(signed_extrinsic.begin(), signed_extrinsic.end())));
+  std::move(callback_).Run(base::ok(GetMetadata()));
+}
+
+PolkadotExtrinsicMetadata PolkadotSignedTransferTask::GetMetadata() const {
+  CHECK(!extrinsic_.empty());
+
+  PolkadotExtrinsicMetadata metadata;
+
+  metadata.set_extrinsic(extrinsic_);
+  metadata.set_block_hash(signing_block_hash_.value());
+  metadata.set_block_num(signing_header_->block_number);
+  metadata.set_mortality_period(64);
+
+  return metadata;
 }
 
 }  // namespace brave_wallet

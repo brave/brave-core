@@ -31,7 +31,7 @@ class PolkadotTxMeta : public TxMeta {
   mojom::CoinType GetCoinType() const override;
 
   void set_tx(PolkadotTransaction tx);
-  base::optional_ref<PolkadotTransaction> tx();
+  PolkadotTransaction* tx();
 
  private:
   std::optional<PolkadotTransaction> tx_;
