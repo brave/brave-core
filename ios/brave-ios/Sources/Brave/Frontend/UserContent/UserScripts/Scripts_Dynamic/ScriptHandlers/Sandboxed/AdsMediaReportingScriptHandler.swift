@@ -38,7 +38,7 @@ class AdsMediaReportingScriptHandler: TabContentScript {
       return
     }
 
-    if let isPlaying = body["data"] as? Bool {
+    if let isPlaying = body["data"]?["playing"] as? Bool {
       if isPlaying {
         rewards.reportMediaStarted(tabId: Int(tab.rewardsId ?? 0))
       } else {
