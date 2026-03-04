@@ -163,6 +163,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       displayName: this.label,
       visionSupport: this.hasVisionSupport,
       supportsTools: this.supportsTools,
+      supportedCapabilities: [mojom.ConversationCapability.CHAT],
       isSuggestedModel: false,
       isNearModel: false,
     };

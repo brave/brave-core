@@ -74,7 +74,9 @@ class Tool {
 
   // Implementor can check features of the model to determine if the tool is
   // supported.
-  virtual bool IsSupportedByModel(const mojom::Model& model) const;
+  virtual bool IsSupportedByModel(
+      const mojom::Model& model,
+      mojom::ConversationCapability conversation_capability) const;
 
   // Check if this tool requires user interaction before handling
   // Returns:

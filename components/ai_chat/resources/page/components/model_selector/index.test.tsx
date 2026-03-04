@@ -24,6 +24,10 @@ describe('ModelSelector', () => {
       isNearModel: false,
       visionSupport: true,
       supportsTools: true,
+      supportedCapabilities: [
+        Mojom.ConversationCapability.CHAT,
+        Mojom.ConversationCapability.CONTENT_AGENT,
+      ],
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
@@ -42,6 +46,10 @@ describe('ModelSelector', () => {
       isSuggestedModel: true,
       isNearModel: false,
       supportsTools: true,
+      supportedCapabilities: [
+        Mojom.ConversationCapability.CHAT,
+        Mojom.ConversationCapability.CONTENT_AGENT,
+      ],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -61,6 +69,7 @@ describe('ModelSelector', () => {
       isSuggestedModel: false,
       isNearModel: false,
       supportsTools: false,
+      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -80,6 +89,10 @@ describe('ModelSelector', () => {
       isSuggestedModel: true,
       isNearModel: true,
       supportsTools: true,
+      supportedCapabilities: [
+        Mojom.ConversationCapability.CHAT,
+        Mojom.ConversationCapability.CONTENT_AGENT,
+      ],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -99,6 +112,7 @@ describe('ModelSelector', () => {
       isSuggestedModel: false,
       isNearModel: false,
       supportsTools: false,
+      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -119,6 +133,7 @@ describe('ModelSelector', () => {
       isNearModel: false,
       visionSupport: true,
       supportsTools: false,
+      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
@@ -138,6 +153,7 @@ describe('ModelSelector', () => {
       isNearModel: false,
       visionSupport: false,
       supportsTools: false,
+      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       isSuggestedModel: false,
       options: {
         leoModelOptions: undefined,
@@ -354,10 +370,12 @@ describe('ModelSelector', () => {
       + 'agent mode',
     async () => {
       // Simulate the real context behavior: in agent mode,
-      // filter models by supportsTools. This mimics the logic
+      // filter models by supportedCapabilities. This mimics the logic
       // in Conversation Context.
-      const filteredModels = mockModels.filter(
-        (model) => model.supportsTools === true,
+      const filteredModels = mockModels.filter((model) =>
+        model.supportedCapabilities.includes(
+          Mojom.ConversationCapability.CONTENT_AGENT,
+        ),
       )
 
       renderModelSelector({
