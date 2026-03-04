@@ -658,13 +658,6 @@
 # created when the test profile is using the first-party NTP
 -NtpMicrosoftAuthResponseCaptureNavigationThrottleTest.*
 
-# These tests fail because we disable IsScreenAIOCREnabled and
-# features::IsScreenAIMainContentExtractionEnabled
--ScreenAIInstallStateTest.AddingObserverTriggersDownload
--ScreenAIInstallStateTest.ObservationAfterFailure
--ScreenAIServiceShutdownHandlerTest.CrashCountBeforeResume
--ScreenAIServiceShutdownHandlerTest.NotSuspendedAfterShutdown
-
 # These tests fail because we modify tab/strip dimentions
 -TabStripLayoutTest.*
 
