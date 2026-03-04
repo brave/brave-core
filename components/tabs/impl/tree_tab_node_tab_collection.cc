@@ -25,8 +25,9 @@ namespace tabs {
 // static
 void TreeTabNodeTabCollection::BuildTreeTabs(
     TabCollection& root,
-    base::RepeatingCallback<void(const TreeTabNode& node)> on_create,
-    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove) {
+    base::RepeatingCallback<void(TreeTabNode& node)> on_create,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move) {
   auto tabs = root.GetTabsRecursive();
 
   while (!tabs.empty()) {
@@ -44,7 +45,7 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
 
     auto tree_node = std::make_unique<TreeTabNodeTabCollection>(
         tree_tab::TreeTabNodeId::GenerateNew(), std::move(owned_tab_interface),
-        on_remove);
+        on_remove, on_move);
     on_create.Run(tree_node->node());
     parent_collection->AddCollection(std::move(tree_node), index);
   }
@@ -96,7 +97,8 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
     std::unique_ptr<tabs::TabInterface> current_tab,
-    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove)
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
     : TabCollection(TabCollection::Type::TREE_NODE,
                     /*supported_child_collections=*/
                     {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
@@ -104,6 +106,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                     /*supports_tabs=*/true),
       current_tab_(current_tab->GetWeakPtr()),
       on_remove_(std::move(on_remove)),
+      on_move_(std::move(on_move)),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
   CHECK(current_tab_);
@@ -191,6 +194,10 @@ void TreeTabNodeTabCollection::OnReparented(TabCollection* new_parent) {
       static_cast<TreeTabNodeTabCollection*>(old_parent)
           ->node_->OnChildHeightChanged({});
     }
+  }
+
+  if (!on_move_.is_null()) {
+    on_move_.Run(node_->id());
   }
 }
 

@@ -343,16 +343,21 @@ class TreeTabNode {
 ```cpp
 class TreeTabModel {
   // Registry pointing to TreeTabNodes (doesn't own them)
-  std::map<tree_tab::TreeTabNodeId, raw_ptr<const TreeTabNode>> tree_tab_nodes_;
-  
+  std::map<tree_tab::TreeTabNodeId, raw_ptr<TreeTabNode>> tree_tab_nodes_;
+  std::map<tree_tab::TreeTabNodeId, tree_tab::TreeTabNodeId> closest_collapsed_ancestor_;
+
   // Node lifecycle coordinated with TreeTabNodeTabCollection
-  void AddTreeTabNode(const TreeTabNode& node);
+  void AddTreeTabNode(TreeTabNode& node);
   void RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id);
-  
+
+  // UI entry point for collapse; updates cache for DoesBelongToCollapsedNode
+  void SetCollapsed(const tree_tab::TreeTabNodeId& id, bool collapsed);
+  bool DoesBelongToCollapsedNode(const tree_tab::TreeTabNodeId& id) const;
+
   // Tree queries for UI components
   const TreeTabNode* GetNode(const tree_tab::TreeTabNodeId& id) const;
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
-  
+
   // Callbacks for UI updates
   base::RepeatingCallbackList<void(const TreeTabNode&)> add_callbacks_;
   base::RepeatingCallbackList<void(const tree_tab::TreeTabNodeId&)> remove_callbacks_;
