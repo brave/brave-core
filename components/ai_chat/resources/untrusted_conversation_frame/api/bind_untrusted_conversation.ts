@@ -51,15 +51,6 @@ export async function bindUntrustedConversation() {
     conversationEntriesState,
   ])
 
-  // Set up document height communication with parent frame
-  const sendDocumentHeight = () => {
-    parentUIFrame.childHeightChanged(document.body.clientHeight)
-  }
-
-  window.addEventListener('resize', sendDocumentHeight)
-  new ResizeObserver(sendDocumentHeight).observe(document.body)
-  sendDocumentHeight()
-
   return {
     api: conversationAPI.api,
     close: () => {

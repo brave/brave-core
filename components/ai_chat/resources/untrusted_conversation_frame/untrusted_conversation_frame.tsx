@@ -46,6 +46,31 @@ function App(props: AppProps) {
 
   useUntrustedFrameDragHandling(onDrag)
 
+  const isConversationLoaded =
+    !api.useGetConversationHistory().isPlaceholderData
+
+  // Set up document height communication with parent frame only when
+  // ready to avoid layout flash.
+  React.useEffect(() => {
+    if (!isConversationLoaded) {
+      return
+    }
+
+    const sendDocumentHeight = () => {
+      api.parentUIFrame.childHeightChanged(document.body.clientHeight)
+    }
+
+    window.addEventListener('resize', sendDocumentHeight)
+    const observer = new ResizeObserver(sendDocumentHeight)
+    observer.observe(document.body)
+    sendDocumentHeight()
+
+    return () => {
+      window.removeEventListener('resize', sendDocumentHeight)
+      observer.disconnect()
+    }
+  }, [api, isConversationLoaded])
+
   return (
     <UntrustedConversationContextProvider api={api}>
       <ConversationEntries />
