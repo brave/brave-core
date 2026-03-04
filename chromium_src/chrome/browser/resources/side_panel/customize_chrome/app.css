@@ -12,6 +12,8 @@
 
 :host {
   --toolbar-button-height: 20px;
+  --cr-theme-color-max-width: 80px;
+  --cr-grid-justify-content: center;
 }
 
 #container {
