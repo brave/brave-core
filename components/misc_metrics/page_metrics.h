@@ -66,12 +66,6 @@ inline constexpr char kSearchBraveDailyHistogramName[] =
     "Brave.Search.BraveDaily.2";
 inline constexpr char kTorWindowUsedHistogramName[] =
     "Brave.Core.TorWindowUsed";
-inline constexpr char kSearchDailyQueriesBraveDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.BraveDefault";
-inline constexpr char kSearchDailyQueriesGoogleDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.GoogleDefault";
-inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.OtherDefault";
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
