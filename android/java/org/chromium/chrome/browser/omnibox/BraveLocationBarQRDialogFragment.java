@@ -138,7 +138,7 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     // QRCodeCameraManager.Callback implementation
     @Override
     public void onDetectedQrCode(Barcode barcode) {
-        if (barcode == null) {
+        if (barcode == null || !isHostValid()) {
             return;
         }
 
@@ -147,6 +147,10 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
         PostTask.postTask(
                 TaskTraits.UI_USER_VISIBLE,
                 () -> {
+                    if (!isHostValid()) {
+                        return;
+                    }
+
                     if (Patterns.WEB_URL.matcher(barcodeValue).matches()) {
                         mLocationBarMediator.setSearchQuery(barcodeValue);
                         // After cr146 update LocationBarMediator.setSearchQuery keeps
