@@ -11,5 +11,8 @@
  * #css_wrapper_metadata_end */
 
 #grid {
+  grid-template-columns: var(--cr-grid-template-columns,
+      repeat(var(--cr-grid-columns), var(--cr-column-width)));
+  width: var(--cr-grid-width-override, var(--cr-grid-width));
   justify-content: var(--cr-grid-justify-content, revert);
 }
