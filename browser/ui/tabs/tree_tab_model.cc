@@ -135,11 +135,9 @@ void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
 
     // Note that we copy the value of old_ancestor to another value as it could
     // be invalidated by the next operation: erasing.
+    const auto* found = base::FindOrNull(closest_collapsed_ancestor_, node_id);
     std::optional<tree_tab::TreeTabNodeId> old_ancestor =
-        closest_collapsed_ancestor_.contains(node_id)
-            ? std::optional<tree_tab::TreeTabNodeId>(
-                  closest_collapsed_ancestor_.at(node_id))
-            : std::nullopt;
+        found ? std::optional(*found) : std::nullopt;
 
     std::optional<tree_tab::TreeTabNodeId> closest =
         node_to_update->GetClosestCollapsedAncestorId();
