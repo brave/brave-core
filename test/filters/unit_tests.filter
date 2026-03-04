@@ -783,6 +783,9 @@
 -ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
 -ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
 
+# This test fails because we disable installing the Captcha Provider component
+-CaptchaProviderComponentInstallerPolicyTest.ComponentRegistered
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
