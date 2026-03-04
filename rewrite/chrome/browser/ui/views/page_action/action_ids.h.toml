@@ -4,6 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
-description = 'Increase array length and add kActionShowPartitionedStorage to the array'
-re_pattern = '(inline constexpr std::array<actions::ActionId, )25(> kActionIds [\s\S]*?kActionAiMode,)'
-replace = '\g<1>26\g<2>\n    kActionShowPartitionedStorage,'
+description = 'Add kActionShowPartitionedStorage to the array'
+re_pattern = '(inline constexpr auto kActionIds = std::to_array<actions::ActionId>\(\{\s+?kActionAiMode,)'
+replace = '\1\n    kActionShowPartitionedStorage,'
