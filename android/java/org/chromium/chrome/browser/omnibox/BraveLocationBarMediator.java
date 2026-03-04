@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Range;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -50,6 +52,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
+    private UrlBarCoordinator mUrlCoordinator;
 
     private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
             BrandedColorScheme.APP_DEFAULT;
@@ -236,5 +239,13 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         } else {
             setSearchQuery(query);
         }
+    }
+
+    // Expose UrlCoordinator.setUrlBarData to be used at
+    // BraveLocationBarQRDialogFragment.onDetectedQrCode to keep pre cr146
+    // behavior.
+    public boolean setUrlBarData(
+            UrlBarData data, @ScrollType int scrollType, Range<Integer> selection) {
+        return mUrlCoordinator.setUrlBarData(data, scrollType, selection);
     }
 }
