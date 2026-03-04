@@ -12,6 +12,7 @@ import {
   getSearchQueriesEvent,
   getToolUseEvent,
   getWebSourcesEvent,
+  getEventTemplate,
 } from '../../../common/test_data_utils'
 import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantTask from './assistant_task'
@@ -377,6 +378,57 @@ describe('AssistantTask', () => {
       expect(mockUIHandler.addTabToThumbnailTracker).toHaveBeenCalledWith(
         newTabId,
       )
+    })
+  })
+
+  test('should pass inline search events to AssistantResponse in Progress panel', async () => {
+    const searchQuery = 'brave browser'
+    const searchResultTitle = 'Brave Browser Result'
+    const searchResults = [
+      {
+        type: 'search_result',
+        title: searchResultTitle,
+        url: 'https://brave.com',
+        description: 'A privacy browser',
+        meta_url: {
+          favicon: 'https://brave.com/favicon.ico',
+          path: '/',
+          netloc: 'brave.com',
+        },
+      },
+    ]
+
+    const entriesWithInlineSearch: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent(`::search[${searchQuery}]{type=web}`),
+          {
+            ...getEventTemplate(),
+            inlineSearchEvent: {
+              query: searchQuery,
+              resultsJson: JSON.stringify(searchResults),
+            },
+          },
+        ],
+      }),
+    ]
+
+    render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithInlineSearch}
+          isActiveTask={false}
+          isGenerating={false}
+          isLeoModel={true}
+        />
+      </MockContext>,
+    )
+
+    // The search result title should be visible because the inline search event
+    // was passed to AssistantResponse alongside the completion event.
+    await waitFor(() => {
+      expect(screen.getByText(searchResultTitle)).toBeInTheDocument()
     })
   })
 

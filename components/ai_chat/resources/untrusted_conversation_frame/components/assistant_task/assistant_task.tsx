@@ -218,6 +218,10 @@ function Progress(props: Props & TabProps) {
       && !props.taskData.importantToolUseEvents.includes(event.toolUseEvent),
   )
 
+  // We need to include inline search events so the AssistantResponse knows
+  // what search results to display.
+  const inlineSearchEvents = lastTaskItem.filter((t) => t.inlineSearchEvent)
+
   // Collect source/query events from all entries so web sources render
   // with the completion in the Progress view. These events may be in
   // earlier entries when server search results arrive before the final
@@ -239,7 +243,11 @@ function Progress(props: Props & TabProps) {
       {currentCompletionEvent && (
         <div className={styles.progressText}>
           <AssistantResponse
-            events={[...allSourceEvents, currentCompletionEvent]}
+            events={[
+              ...allSourceEvents,
+              ...inlineSearchEvents,
+              currentCompletionEvent,
+            ]}
             isEntryInteractivityAllowed={false}
             isEntryInProgress={props.isGenerating}
             allowedLinks={props.taskData.allowedLinks}
