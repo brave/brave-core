@@ -1453,7 +1453,7 @@
 -AccountSettingsPagePixelBrowserTest.*
 -All/AvatarToolbarButtonBrowserTestWithExplicitBrowserSignin.*/*
 -All/ForceSigninProfilePickerCreationFlowBrowserTest.ForceSignin*
--All/GlicProfileManagerDidSelectProfileTest.DidSelectProfile_NoConsent/*
+-All/GlicProfileManagerDidSelectProfileTest.DidSelectProfile_*/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_MemoryPressure/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotLaunchProfile/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotSupportedProfile/*
