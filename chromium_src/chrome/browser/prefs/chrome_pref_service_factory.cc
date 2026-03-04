@@ -8,7 +8,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 
 #define BRAVE_TRACKED_PREFS_EXTEND                                  \
-  {1000, brave_shields::prefs::kAdBlockDeveloperMode,               \
+  {90, brave_shields::prefs::kAdBlockDeveloperMode,                 \
    EnforcementLevel::ENFORCE_ON_LOAD, PrefTrackingStrategy::ATOMIC, \
    ValueType::IMPERSONAL},
 
