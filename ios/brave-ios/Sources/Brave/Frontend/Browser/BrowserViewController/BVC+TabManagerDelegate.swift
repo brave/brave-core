@@ -257,6 +257,10 @@ extension BrowserViewController: TabManagerDelegate {
     updateTabsBarVisibility()
     tab.removeObserver(self)
     tab.removePolicyDecider(self)
+    
+    if let selectedTab = tabManager.selectedTab {
+      updateBackForwardActionStatus(for: selectedTab)
+    }
 
     if !privateBrowsingManager.isPrivateBrowsing {
       rewards.reportTabClosed(tabId: Int(tab.rewardsId ?? 0))

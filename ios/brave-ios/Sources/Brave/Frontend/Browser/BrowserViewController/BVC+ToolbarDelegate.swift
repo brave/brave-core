@@ -992,8 +992,17 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    tabManager.selectedTab?.goBack()
-    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
+    guard let tab = tabManager.selectedTab else { return }
+    
+    // close tab and go back to parent tab if there is no back history
+    if !tab.canGoBack, let parentTab = tab.opener ?? tab.data.orderingParent,
+      tabManager.allTabs.contains(where: { $0 === parentTab }) {
+      tabManager.selectTab(parentTab)
+      tabManager.removeTab(tab)
+    } else {
+      tab.goBack()
+      tab.browserData?.resetExternalAlertProperties()
+    }
     recordNavigationActionP3A(isNavigationActionForward: false)
   }
 

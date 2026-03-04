@@ -1794,8 +1794,9 @@ public class BrowserViewController: UIViewController {
     } else {
       navigationToolbar.updateForwardStatus(tab.canGoForward)
     }
-
-    navigationToolbar.updateBackStatus(tab.canGoBack)
+    let parentTab = tab.opener ?? tab.data.orderingParent
+    let hasLiveParent = parentTab != nil && tabManager.allTabs.contains(where: { $0 === parentTab })
+    navigationToolbar.updateBackStatus(tab.canGoBack || hasLiveParent)
   }
 
   func updateUIForReaderHomeStateForTab(_ tab: some TabState) {
