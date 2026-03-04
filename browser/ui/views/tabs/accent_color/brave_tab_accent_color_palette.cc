@@ -6,9 +6,8 @@
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_color_palette.h"
 
 #include <array>
-#include <unordered_map>
 
-#include "base/no_destructor.h"
+#include "base/containers/fixed_flat_map.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/color/color_id.h"
@@ -199,11 +198,9 @@ using ColorIdsByThemePinnedState = std::array<
                2>,
     2>;
 
-const std::unordered_map<ColorKey, ColorIdsByThemePinnedState>&
-GetColorIdsMap() {
-  static const base::NoDestructor<
-      std::unordered_map<ColorKey, ColorIdsByThemePinnedState>>
-      map({
+const auto& GetColorIdsMap() {
+  static constexpr auto kColorIdsMap =
+      base::MakeFixedFlatMap<ColorKey, ColorIdsByThemePinnedState>({
           {kRed, ColorIdsByThemePinnedState{COLOR_IDS_FOR(Red)}},
           {kOrange, ColorIdsByThemePinnedState{COLOR_IDS_FOR(Orange)}},
           {kYellow, ColorIdsByThemePinnedState{COLOR_IDS_FOR(Yellow)}},
@@ -213,7 +210,7 @@ GetColorIdsMap() {
           {kPurple, ColorIdsByThemePinnedState{COLOR_IDS_FOR(Purple)}},
           {kPink, ColorIdsByThemePinnedState{COLOR_IDS_FOR(Pink)}},
       });
-  return *map;
+  return kColorIdsMap;
 }
 
 }  // namespace
