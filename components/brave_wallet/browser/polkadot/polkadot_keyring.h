@@ -61,11 +61,15 @@ class PolkadotKeyring {
       uint32_t account_index,
       std::string_view password);
 
-  // Decodes a JSON-encoded private key export and extracts the secret key.
-  // Returns the 64-byte secret key array if successful.
-  static std::optional<std::array<uint8_t, kSr25519Pkcs8Size>>
-  DecodePrivateKeyFromExport(std::string_view json_export,
-                             std::string_view password);
+  // Encodes the provided Polkadot sr25519 keypair in Polkadot.js JSON export
+  // format using the Substrate address prefix.
+  static std::optional<std::string> EncodePrivateKeyForExport(
+      const HDKeySr25519& keypair,
+      std::string_view password,
+      const std::optional<std::array<uint8_t, kScryptSaltSize>>&
+          salt_for_testing = std::nullopt,
+      const std::optional<std::array<uint8_t, kSecretboxNonceSize>>&
+          nonce_for_testing = std::nullopt);
 
   // Sets random bytes for testing for private key export.
   void SetRandBytesForTesting(

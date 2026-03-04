@@ -286,7 +286,13 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id) {
 
 bool IsPolkadotKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kPolkadotMainnet ||
-         keyring_id == mojom::KeyringId::kPolkadotTestnet;
+         keyring_id == mojom::KeyringId::kPolkadotTestnet ||
+         IsPolkadotImportKeyring(keyring_id);
+}
+
+bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kPolkadotImport ||
+         keyring_id == mojom::KeyringId::kPolkadotImportTestnet;
 }
 
 bool IsPolkadotNetwork(std::string_view network_id) {
@@ -300,10 +306,12 @@ bool IsPolkadotAccount(const mojom::AccountIdPtr& account_id) {
 }
 
 std::string GetNetworkForPolkadotKeyring(const mojom::KeyringId& keyring_id) {
-  if (keyring_id == mojom::KeyringId::kPolkadotMainnet) {
+  if (keyring_id == mojom::KeyringId::kPolkadotMainnet ||
+      keyring_id == mojom::KeyringId::kPolkadotImport) {
     return mojom::kPolkadotMainnet;
   }
-  if (keyring_id == mojom::KeyringId::kPolkadotTestnet) {
+  if (keyring_id == mojom::KeyringId::kPolkadotTestnet ||
+      keyring_id == mojom::KeyringId::kPolkadotImportTestnet) {
     return mojom::kPolkadotTestnet;
   }
   NOTREACHED();
@@ -436,6 +444,8 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
   if (IsPolkadotEnabled()) {
     ids.push_back(mojom::KeyringId::kPolkadotMainnet);
     ids.push_back(mojom::KeyringId::kPolkadotTestnet);
+    ids.push_back(mojom::KeyringId::kPolkadotImport);
+    ids.push_back(mojom::KeyringId::kPolkadotImportTestnet);
   }
 
   DCHECK_GT(ids.size(), 0u);
@@ -489,9 +499,12 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
         return {mojom::KeyringId::kCardanoTestnet};
       }
     case mojom::CoinType::DOT:
-      return {(chain_id == mojom::kPolkadotMainnet
-                   ? mojom::KeyringId::kPolkadotMainnet
-                   : mojom::KeyringId::kPolkadotTestnet)};
+      if (chain_id == mojom::kPolkadotMainnet) {
+        return {mojom::KeyringId::kPolkadotMainnet,
+                mojom::KeyringId::kPolkadotImport};
+      }
+      return {mojom::KeyringId::kPolkadotTestnet,
+              mojom::KeyringId::kPolkadotImportTestnet};
   }
   NOTREACHED();
 }
@@ -545,7 +558,11 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
   }
   if (coin == mojom::CoinType::DOT) {
     DCHECK(IsPolkadotKeyring(keyring_id));
-    DCHECK_EQ(kind, mojom::AccountKind::kDerived);
+    if (IsPolkadotImportKeyring(keyring_id)) {
+      DCHECK_EQ(kind, mojom::AccountKind::kImported);
+    } else {
+      DCHECK_EQ(kind, mojom::AccountKind::kDerived);
+    }
   }
 #endif
 
