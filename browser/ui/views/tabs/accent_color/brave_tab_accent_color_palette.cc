@@ -193,8 +193,11 @@ enum ColorKey {
 
 // [theme: light=0, dark=1][pinned: unpinned=0, pinned=1][state: active=0,
 // inactive=1, hovered=2].
-using ColorIdsByThemePinnedState =
-    std::array<std::array<std::array<ColorIds, 3>, 2>, 2>;
+using ColorIdsByThemePinnedState = std::array<
+    std::array<std::array<ColorIds,
+                          static_cast<int>(TabAccentColorsParams::State::kNum)>,
+               2>,
+    2>;
 
 const std::unordered_map<ColorKey, ColorIdsByThemePinnedState>&
 GetColorIdsMap() {

@@ -21,7 +21,7 @@ struct TabAccentColorsParams {
     kActive = 0,
     kHovered,
     kInactive,
-    kNum = kInactive,
+    kNum,
   };
   State state = State::kInactive;
 
