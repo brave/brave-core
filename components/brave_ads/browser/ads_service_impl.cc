@@ -467,26 +467,20 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
   NotifyDidInitializeAdsService();
 }
 
-void AdsServiceImpl::NotifyDidInitializeAdsService() const {
+void AdsServiceImpl::NotifyDidInitializeAdsService() {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidInitializeAds();
   }
 
-  for (AdsServiceObserver& observer : observers_) {
-    observer.OnDidInitializeAdsService();
-  }
+  observers_.Notify(&AdsServiceObserver::OnDidInitializeAdsService);
 }
 
-void AdsServiceImpl::NotifyDidShutdownAdsService() const {
-  for (AdsServiceObserver& observer : observers_) {
-    observer.OnDidShutdownAdsService();
-  }
+void AdsServiceImpl::NotifyDidShutdownAdsService() {
+  observers_.Notify(&AdsServiceObserver::OnDidShutdownAdsService);
 }
 
-void AdsServiceImpl::NotifyDidClearAdsServiceData() const {
-  for (AdsServiceObserver& observer : observers_) {
-    observer.OnDidClearAdsServiceData();
-  }
+void AdsServiceImpl::NotifyDidClearAdsServiceData() {
+  observers_.Notify(&AdsServiceObserver::OnDidClearAdsServiceData);
 }
 
 void AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart(

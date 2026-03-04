@@ -65,8 +65,8 @@ class SiteVisit final : public BrowserManagerObserver,
   void LandedOnPageCallback(int32_t tab_id,
                             int http_status_code,
                             const AdInfo& ad,
-                            bool success) const;
-  void DidNotLandOnPage(int32_t tab_id, const AdInfo& ad) const;
+                            bool success);
+  void DidNotLandOnPage(int32_t tab_id, const AdInfo& ad);
   void MaybeCancelPageLand(int32_t tab_id);
   void CancelPageLand(int32_t tab_id);
   void StopPageLand(int32_t tab_id);
@@ -77,16 +77,14 @@ class SiteVisit final : public BrowserManagerObserver,
   void SuspendPageLand(int32_t tab_id);
   void ResumePageLand(int32_t tab_id);
 
-  void NotifyMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) const;
-  void NotifyDidSuspendPageLand(int32_t tab_id,
-                                base::TimeDelta remaining_time) const;
-  void NotifyDidResumePageLand(int32_t tab_id,
-                               base::TimeDelta remaining_time) const;
+  void NotifyMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after);
+  void NotifyDidSuspendPageLand(int32_t tab_id, base::TimeDelta remaining_time);
+  void NotifyDidResumePageLand(int32_t tab_id, base::TimeDelta remaining_time);
   void NotifyDidLandOnPage(int32_t tab_id,
                            int http_status_code,
-                           const AdInfo& ad) const;
-  void NotifyDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) const;
-  void NotifyCanceledPageLand(int32_t tab_id, const AdInfo& ad) const;
+                           const AdInfo& ad);
+  void NotifyDidNotLandOnPage(int32_t tab_id, const AdInfo& ad);
+  void NotifyCanceledPageLand(int32_t tab_id, const AdInfo& ad);
 
   // BrowserManagerObserver:
   void OnBrowserDidBecomeActive() override;

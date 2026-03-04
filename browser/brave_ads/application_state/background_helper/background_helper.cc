@@ -27,15 +27,11 @@ void BackgroundHelper::RemoveObserver(Observer* observer) {
 }
 
 void BackgroundHelper::TriggerOnForeground() {
-  for (auto& observer : observers_) {
-    observer.OnBrowserDidEnterForeground();
-  }
+  observers_.Notify(&Observer::OnBrowserDidEnterForeground);
 }
 
 void BackgroundHelper::TriggerOnBackground() {
-  for (auto& observer : observers_) {
-    observer.OnBrowserDidEnterBackground();
-  }
+  observers_.Notify(&Observer::OnBrowserDidEnterBackground);
 }
 
 // static

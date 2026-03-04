@@ -47,23 +47,22 @@ class AdHistoryManager final {
                        GetAdHistoryForUICallback callback);
 
   void Add(const NewTabPageAdInfo& ad,
-           mojom::ConfirmationType mojom_confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type);
   void Add(const NotificationAdInfo& ad,
-           mojom::ConfirmationType mojom_confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type);
   void Add(const SearchResultAdInfo& ad,
-           mojom::ConfirmationType mojom_confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type);
 
  private:
   void MaybeAdd(const AdInfo& ad,
                 mojom::ConfirmationType mojom_confirmation_type,
                 const std::string& title,
-                const std::string& description) const;
+                const std::string& description);
 
   static void GetForUICallback(GetAdHistoryForUICallback callback,
                                std::optional<AdHistoryList> ad_history);
 
-  void NotifyDidAddAdHistoryItem(
-      const AdHistoryItemInfo& ad_history_item) const;
+  void NotifyDidAddAdHistoryItem(const AdHistoryItemInfo& ad_history_item);
 
   base::ObserverList<AdHistoryManagerObserver> observers_;
 };

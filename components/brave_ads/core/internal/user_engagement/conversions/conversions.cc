@@ -239,17 +239,14 @@ void Conversions::ConvertCallback(
   NotifyDidConvertAd(conversion);
 }
 
-void Conversions::NotifyDidConvertAd(const ConversionInfo& conversion) const {
-  for (ConversionsObserver& observer : observers_) {
-    observer.OnDidConvertAd(conversion);
-  }
+void Conversions::NotifyDidConvertAd(const ConversionInfo& conversion) {
+  observers_.Notify(&ConversionsObserver::OnDidConvertAd, conversion);
 }
 
 void Conversions::NotifyFailedToConvertAd(
-    const std::string& creative_instance_id) const {
-  for (ConversionsObserver& observer : observers_) {
-    observer.OnFailedToConvertAd(creative_instance_id);
-  }
+    const std::string& creative_instance_id) {
+  observers_.Notify(&ConversionsObserver::OnFailedToConvertAd,
+                    creative_instance_id);
 }
 
 void Conversions::OnHtmlContentDidChange(

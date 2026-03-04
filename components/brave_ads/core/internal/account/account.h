@@ -50,7 +50,7 @@ class Account final : public AdsClientNotifierObserver,
                            const std::string& segment,
                            mojom::AdType mojom_ad_type,
                            mojom::ConfirmationType mojom_confirmation_type,
-                           base::DictValue user_data) const;
+                           base::DictValue user_data);
 
  private:
   void DepositCallback(const std::string& creative_instance_id,
@@ -59,27 +59,26 @@ class Account final : public AdsClientNotifierObserver,
                        mojom::ConfirmationType mojom_confirmation_type,
                        base::DictValue user_data,
                        bool success,
-                       double value) const;
+                       double value);
 
   void ProcessDeposit(const std::string& creative_instance_id,
                       const std::string& segment,
                       double value,
                       mojom::AdType mojom_ad_type,
                       mojom::ConfirmationType mojom_confirmation_type,
-                      base::DictValue user_data) const;
+                      base::DictValue user_data);
   void ProcessDepositCallback(const std::string& creative_instance_id,
                               mojom::AdType mojom_ad_type,
                               mojom::ConfirmationType mojom_confirmation_type,
                               base::DictValue user_data,
                               bool success,
-                              const TransactionInfo& transaction) const;
+                              const TransactionInfo& transaction);
 
   void SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
-                                    base::DictValue user_data) const;
-  void FailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      mojom::AdType mojom_ad_type,
-      mojom::ConfirmationType mojom_confirmation_type) const;
+                                    base::DictValue user_data);
+  void FailedToProcessDeposit(const std::string& creative_instance_id,
+                              mojom::AdType mojom_ad_type,
+                              mojom::ConfirmationType mojom_confirmation_type);
 
   void Initialize();
 
@@ -91,14 +90,14 @@ class Account final : public AdsClientNotifierObserver,
 
   void MaybeRefillConfirmationTokens();
 
-  void NotifyDidInitializeWallet(const WalletInfo& wallet) const;
-  void NotifyFailedToInitializeWallet() const;
+  void NotifyDidInitializeWallet(const WalletInfo& wallet);
+  void NotifyFailedToInitializeWallet();
 
-  void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
+  void NotifyDidProcessDeposit(const TransactionInfo& transaction);
   void NotifyFailedToProcessDeposit(
       const std::string& creative_instance_id,
       mojom::AdType mojom_ad_type,
-      mojom::ConfirmationType mojom_confirmation_type) const;
+      mojom::ConfirmationType mojom_confirmation_type);
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;

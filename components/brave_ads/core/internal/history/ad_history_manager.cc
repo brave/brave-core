@@ -65,21 +65,18 @@ void AdHistoryManager::GetForUI(base::Time from_time,
       base::BindOnce(&GetForUICallback, std::move(callback)));
 }
 
-void AdHistoryManager::Add(
-    const NewTabPageAdInfo& ad,
-    mojom::ConfirmationType mojom_confirmation_type) const {
+void AdHistoryManager::Add(const NewTabPageAdInfo& ad,
+                           mojom::ConfirmationType mojom_confirmation_type) {
   MaybeAdd(ad, mojom_confirmation_type, ad.company_name, ad.alt);
 }
 
-void AdHistoryManager::Add(
-    const NotificationAdInfo& ad,
-    mojom::ConfirmationType mojom_confirmation_type) const {
+void AdHistoryManager::Add(const NotificationAdInfo& ad,
+                           mojom::ConfirmationType mojom_confirmation_type) {
   MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.body);
 }
 
-void AdHistoryManager::Add(
-    const SearchResultAdInfo& ad,
-    mojom::ConfirmationType mojom_confirmation_type) const {
+void AdHistoryManager::Add(const SearchResultAdInfo& ad,
+                           mojom::ConfirmationType mojom_confirmation_type) {
   MaybeAdd(ad, mojom_confirmation_type, ad.headline_text, ad.description);
 }
 
@@ -88,7 +85,7 @@ void AdHistoryManager::Add(
 void AdHistoryManager::MaybeAdd(const AdInfo& ad,
                                 mojom::ConfirmationType mojom_confirmation_type,
                                 const std::string& title,
-                                const std::string& description) const {
+                                const std::string& description) {
   if (!UserHasJoinedBraveRewards()) {
     // User has not joined Brave Rewards, so we don't need to add history.
     return;
@@ -113,10 +110,9 @@ void AdHistoryManager::GetForUICallback(
 }
 
 void AdHistoryManager::NotifyDidAddAdHistoryItem(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidAddAdHistoryItem(ad_history_item);
-  }
+    const AdHistoryItemInfo& ad_history_item) {
+  observers_.Notify(&AdHistoryManagerObserver::OnDidAddAdHistoryItem,
+                    ad_history_item);
 }
 
 }  // namespace brave_ads

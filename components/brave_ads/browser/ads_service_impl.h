@@ -138,9 +138,9 @@ class AdsServiceImpl final : public AdsService,
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
-  void NotifyDidInitializeAdsService() const;
-  void NotifyDidShutdownAdsService() const;
-  void NotifyDidClearAdsServiceData() const;
+  void NotifyDidInitializeAdsService();
+  void NotifyDidShutdownAdsService();
+  void NotifyDidClearAdsServiceData();
 
   void ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
       ClearDataCallback callback,

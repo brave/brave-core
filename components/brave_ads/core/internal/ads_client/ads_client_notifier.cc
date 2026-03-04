@@ -46,9 +46,7 @@ void AdsClientNotifier::NotifyDidInitializeAds() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyDidInitializeAds();
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyDidInitializeAds);
 }
 
 void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
@@ -60,9 +58,8 @@ void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
         weak_factory_.GetWeakPtr(), payment_id, recovery_seed_base64));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyRewardsWalletDidUpdate(payment_id, recovery_seed_base64);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyRewardsWalletDidUpdate,
+                    payment_id, recovery_seed_base64);
 }
 
 void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) {
@@ -72,9 +69,7 @@ void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) {
                        weak_factory_.GetWeakPtr(), path));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyPrefDidChange(path);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyPrefDidChange, path);
 }
 
 void AdsClientNotifier::NotifyResourceComponentDidChange(
@@ -86,9 +81,9 @@ void AdsClientNotifier::NotifyResourceComponentDidChange(
                        weak_factory_.GetWeakPtr(), manifest_version, id));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyResourceComponentDidChange(manifest_version, id);
-  }
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyResourceComponentDidChange,
+      manifest_version, id);
 }
 
 void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
@@ -99,9 +94,8 @@ void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
                        weak_factory_.GetWeakPtr(), id));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyDidUnregisterResourceComponent(id);
-  }
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyDidUnregisterResourceComponent, id);
 }
 
 void AdsClientNotifier::NotifyTabTextContentDidChange(
@@ -114,9 +108,8 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
         weak_factory_.GetWeakPtr(), tab_id, redirect_chain, text));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyTabTextContentDidChange(tab_id, redirect_chain, text);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabTextContentDidChange,
+                    tab_id, redirect_chain, text);
 }
 
 void AdsClientNotifier::NotifyTabHtmlContentDidChange(
@@ -129,9 +122,8 @@ void AdsClientNotifier::NotifyTabHtmlContentDidChange(
         weak_factory_.GetWeakPtr(), tab_id, redirect_chain, html));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyTabHtmlContentDidChange(tab_id, redirect_chain, html);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabHtmlContentDidChange,
+                    tab_id, redirect_chain, html);
 }
 
 void AdsClientNotifier::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
@@ -141,9 +133,8 @@ void AdsClientNotifier::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
                        weak_factory_.GetWeakPtr(), tab_id));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyTabDidStartPlayingMedia(tab_id);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabDidStartPlayingMedia,
+                    tab_id);
 }
 
 void AdsClientNotifier::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
@@ -153,9 +144,8 @@ void AdsClientNotifier::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
                        weak_factory_.GetWeakPtr(), tab_id));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyTabDidStopPlayingMedia(tab_id);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabDidStopPlayingMedia,
+                    tab_id);
 }
 
 void AdsClientNotifier::NotifyTabDidChange(
@@ -170,10 +160,9 @@ void AdsClientNotifier::NotifyTabDidChange(
         tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyTabDidChange(tab_id, redirect_chain, is_new_navigation,
-                                  is_restoring, is_visible);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabDidChange, tab_id,
+                    redirect_chain, is_new_navigation, is_restoring,
+                    is_visible);
 }
 
 void AdsClientNotifier::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
@@ -183,9 +172,8 @@ void AdsClientNotifier::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
                                            http_status_code));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyTabDidLoad(tab_id, http_status_code);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabDidLoad, tab_id,
+                    http_status_code);
 }
 
 void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
@@ -195,9 +183,7 @@ void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
                        weak_factory_.GetWeakPtr(), tab_id));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyDidCloseTab(tab_id);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyDidCloseTab, tab_id);
 }
 
 void AdsClientNotifier::NotifyUserGestureEventTriggered(
@@ -208,9 +194,9 @@ void AdsClientNotifier::NotifyUserGestureEventTriggered(
                        weak_factory_.GetWeakPtr(), page_transition));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyUserGestureEventTriggered(page_transition);
-  }
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyUserGestureEventTriggered,
+      page_transition);
 }
 
 void AdsClientNotifier::NotifyUserDidBecomeIdle() {
@@ -220,9 +206,7 @@ void AdsClientNotifier::NotifyUserDidBecomeIdle() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyUserDidBecomeIdle();
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyUserDidBecomeIdle);
 }
 
 void AdsClientNotifier::NotifyUserDidBecomeActive(base::TimeDelta idle_time,
@@ -233,9 +217,8 @@ void AdsClientNotifier::NotifyUserDidBecomeActive(base::TimeDelta idle_time,
         weak_factory_.GetWeakPtr(), idle_time, screen_was_locked));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyUserDidBecomeActive(idle_time, screen_was_locked);
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyUserDidBecomeActive,
+                    idle_time, screen_was_locked);
 }
 
 void AdsClientNotifier::NotifyBrowserDidEnterForeground() {
@@ -245,9 +228,8 @@ void AdsClientNotifier::NotifyBrowserDidEnterForeground() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyBrowserDidEnterForeground();
-  }
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyBrowserDidEnterForeground);
 }
 
 void AdsClientNotifier::NotifyBrowserDidEnterBackground() {
@@ -257,9 +239,8 @@ void AdsClientNotifier::NotifyBrowserDidEnterBackground() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyBrowserDidEnterBackground();
-  }
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyBrowserDidEnterBackground);
 }
 
 void AdsClientNotifier::NotifyBrowserDidBecomeActive() {
@@ -269,9 +250,7 @@ void AdsClientNotifier::NotifyBrowserDidBecomeActive() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyBrowserDidBecomeActive();
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyBrowserDidBecomeActive);
 }
 
 void AdsClientNotifier::NotifyBrowserDidResignActive() {
@@ -281,9 +260,7 @@ void AdsClientNotifier::NotifyBrowserDidResignActive() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyBrowserDidResignActive();
-  }
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyBrowserDidResignActive);
 }
 
 void AdsClientNotifier::NotifyDidSolveAdaptiveCaptcha() {
@@ -293,9 +270,8 @@ void AdsClientNotifier::NotifyDidSolveAdaptiveCaptcha() {
                        weak_factory_.GetWeakPtr()));
   }
 
-  for (auto& observer : observers_) {
-    observer.OnNotifyDidSolveAdaptiveCaptcha();
-  }
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyDidSolveAdaptiveCaptcha);
 }
 
 }  // namespace brave_ads
