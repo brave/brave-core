@@ -1472,7 +1472,7 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         OneshotSupplier.class,
                         Supplier.class,
-                        Supplier.class,
+                        NonNullObservableSupplier.class,
                         StatusBarColorController.class,
                         AppMenuDelegate.class,
                         ActivityLifecycleDispatcher.class,
@@ -1553,7 +1553,7 @@ public class BytecodeTest {
                         Activity.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        Supplier.class,
+                        ModalDialogManager.class,
                         SnackbarManager.class,
                         ActivityLifecycleDispatcher.class,
                         TabModelSelector.class,
@@ -1905,7 +1905,7 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
                         Supplier.class,
-                        MonotonicObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         AppMenuBlocker.class,
                         BooleanSupplier.class,
                         BooleanSupplier.class,
@@ -2093,7 +2093,7 @@ public class BytecodeTest {
                         DeviceLockActivityLauncher.class,
                         MonotonicObservableSupplier.class,
                         BottomSheetController.class,
-                        Supplier.class,
+                        ModalDialogManager.class,
                         SnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -2256,7 +2256,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ui/BraveAdaptiveToolbarUiCoordinator",
                         Activity.class,
                         ActivityTabProvider.class,
-                        Supplier.class));
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior",
