@@ -345,6 +345,107 @@ struct ConversationTitleEvent {
   string title;
 };
 
+// Deep Research Events
+struct DeepResearchQueriesEvent {
+  array<string> queries;
+};
+
+struct DeepResearchAnalyzingEvent {
+  string query = "";
+  uint32 url_count = 0;
+  uint32 new_url_count = 0;
+};
+
+struct DeepResearchUrlInfo {
+  url.mojom.Url url;
+  url.mojom.Url favicon;
+};
+
+struct DeepResearchThinkingEvent {
+  string query = "";
+  uint32 chunks_analyzed = 0;
+  uint32 chunks_selected = 0;
+  uint32 urls_analyzed = 0;
+  array<url.mojom.Url> urls_selected;
+  array<DeepResearchUrlInfo> urls_info;
+};
+
+struct DeepResearchProgressEvent {
+  double elapsed_seconds = 0.0;
+  uint32 iteration_count = 0;
+  uint32 queries_count = 0;
+  uint32 urls_analyzed = 0;
+  uint32 snippets_analyzed = 0;
+};
+
+struct DeepResearchBlindspotsEvent {
+  array<string> blindspots;
+};
+
+struct DeepResearchCompleteEvent {
+  string reason = "";
+};
+
+struct DeepResearchErrorEvent {
+  string error = "";
+};
+
+// Granular progress events for UX improvement
+enum DeepResearchSearchStatus {
+  kStarted,
+  kCompleted,
+};
+
+enum DeepResearchAnalysisStatus {
+  kStarted,
+  kProgress,
+};
+
+struct DeepResearchSearchStatusEvent {
+  DeepResearchSearchStatus status = kStarted;
+  string query = "";
+  uint32 query_index = 0;
+  uint32 total_queries = 0;
+  uint32 urls_found = 0;  // only for completed
+  uint32 elapsed_ms = 0;  // only for completed
+};
+
+struct DeepResearchFetchStatusEvent {
+  string query = "";
+  uint32 urls_total = 0;
+  uint32 urls_fetched = 0;
+};
+
+struct DeepResearchAnalysisStatusEvent {
+  DeepResearchAnalysisStatus status = kStarted;
+  string query = "";
+  uint32 chunks_analyzed = 0;
+  uint32 chunks_total = 0;
+};
+
+struct DeepResearchIterationCompleteEvent {
+  uint32 iteration = 0;
+  uint32 total_iterations = 0;
+  uint32 queries_this_iteration = 0;
+  uint32 urls_analyzed = 0;
+  uint32 blindspots_identified = 0;
+};
+
+// All deep research event types consolidated into a single union
+union DeepResearchEvent {
+  DeepResearchQueriesEvent queries_event;
+  DeepResearchAnalyzingEvent analyzing_event;
+  DeepResearchThinkingEvent thinking_event;
+  DeepResearchProgressEvent progress_event;
+  DeepResearchBlindspotsEvent blindspots_event;
+  DeepResearchCompleteEvent complete_event;
+  DeepResearchErrorEvent error_event;
+  DeepResearchSearchStatusEvent search_status_event;
+  DeepResearchFetchStatusEvent fetch_status_event;
+  DeepResearchAnalysisStatusEvent analysis_status_event;
+  DeepResearchIterationCompleteEvent iteration_complete_event;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -353,6 +454,7 @@ union ConversationEntryEvent {
   WebSourcesEvent sources_event;
   ToolUseEvent tool_use_event;
   InlineSearchEvent inline_search_event;
+  DeepResearchEvent deep_research_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
