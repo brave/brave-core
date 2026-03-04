@@ -173,6 +173,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.OnboardingConversion.3", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.SolTransactionSent", {}},
     {"Brave.Wallet.ZecTransactionSent", {}},
+    {"Brave.Wallet.AdaTransactionSent", {}},
+    {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 
@@ -217,6 +219,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .record_activation_date = true,
     }},
     {"Brave.Core.PrivateWindowUsed", MetricConfig{.ephemeral = true}},
+    {"Brave.Core.TorWindowUsed", MetricConfig{.ephemeral = true}},
     {"Brave.Core.UsageDaily", {}},
     {"Brave.DayZero.Variant", MetricConfig{
       .ephemeral = true,
@@ -254,6 +257,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .record_activation_date = true
     }},
     {"Brave.Uptime.BrowserOpenTime.2", MetricConfig{.ephemeral = true}},
+    {"Brave.Wallet.UsageDaily", MetricConfig{.ephemeral = true}},
     {"Brave.Welcome.InteractionStatus.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kSubregion, MetricAttribute::kVersion},
     }},
