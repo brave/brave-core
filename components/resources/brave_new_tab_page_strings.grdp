@@ -106,7 +106,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_QUERY_TOGGLE_CHAT_LABEL" desc="Label for the Search querybox toggle option" formatter_data="webui=BraveNewTabPage">
-    Chat
+    Leo AI
   </message>
 
   <message name="IDS_NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL" desc="Label for the Search querybox toggle option" formatter_data="webui=BraveNewTabPage">

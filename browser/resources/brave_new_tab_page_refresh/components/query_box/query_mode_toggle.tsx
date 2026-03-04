@@ -5,10 +5,12 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-
+import SegmentedControl from '@brave/leo/react/segmentedControl'
+import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 import { getString } from '../../lib/strings'
 
 import { style } from './query_mode_toggle.style'
+import classnames from '$web-common/classnames'
 
 export type QueryMode = 'search' | 'chat'
 
@@ -19,36 +21,50 @@ interface Props {
 
 export function QueryModeToggle(props: Props) {
   return (
-    <div
+    <SegmentedControl
       data-css-scope={style.scope}
       data-test-id='query-mode-toggle'
+      size='small'
+      value={props.queryMode}
+      onChange={({ value }) => {
+        props.onChange(value === 'search' ? 'search' : 'chat')
+      }}
     >
-      <button
-        onClick={() => props.onChange('search')}
-        disabled={props.queryMode === 'search'}
-        data-test-id='query-mode-toggle-search'
-      >
-        <Icon
-          name='search'
-          slot='icon-before'
-        />
-        <span className='name'>
-          {getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
-        </span>
-      </button>
-      <button
-        onClick={() => props.onChange('chat')}
-        disabled={props.queryMode === 'chat'}
+      <SegmentedControlItem
+        value={'chat'}
+        className={classnames('item', props.queryMode === 'chat' && 'selected')}
         data-test-id='query-mode-toggle-chat'
       >
         <Icon
+          title={getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
+          slot={props.queryMode === 'chat' ? 'icon-before' : 'default'}
           name='product-brave-leo'
-          slot='icon-before'
-        />
-        <span className='name'>
-          {getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
-        </span>
-      </button>
-    </div>
+        ></Icon>
+        {props.queryMode === 'chat' && (
+          <span className='name'>
+            {getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
+          </span>
+        )}
+      </SegmentedControlItem>
+      <SegmentedControlItem
+        className={classnames(
+          'item',
+          props.queryMode === 'search' && 'selected',
+        )}
+        value={'search'}
+        data-test-id='query-mode-toggle-search'
+      >
+        <Icon
+          title={getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
+          slot={props.queryMode === 'search' ? 'icon-before' : 'default'}
+          name='search'
+        ></Icon>
+        {props.queryMode === 'search' && (
+          <span className='name'>
+            {getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
+          </span>
+        )}
+      </SegmentedControlItem>
+    </SegmentedControl>
   )
 }
