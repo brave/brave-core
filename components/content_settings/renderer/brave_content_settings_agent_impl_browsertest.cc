@@ -22,7 +22,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/google/core/common/google_switches.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"
@@ -33,13 +32,10 @@
 #include "net/http/http_request_headers.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
-#include "net/test/embedded_test_server/request_handler_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/origin.h"
 
 using brave_shields::ControlType;
-using net::test_server::HttpRequest;
-using net::test_server::HttpResponse;
 
 namespace {
 
@@ -77,7 +73,6 @@ constexpr char kImageScript[] = R"(
 
 constexpr int kExpectedImageDataHashFarblingBalanced = 208;
 constexpr int kExpectedImageDataHashFarblingOff = 0;
-constexpr int kExpectedImageDataHashFarblingBalancedGoogleCom = 212;
 
 constexpr char kEmptyCookie[] = "";
 
@@ -99,19 +94,6 @@ constexpr char kTitleScript[] = "document.title;";
 
 GURL GetOriginURL(const GURL& url) {
   return url::Origin::Create(url).GetURL();
-}
-
-// Remaps requests from /maps/simple.html to /simple.html
-std::unique_ptr<HttpResponse> HandleGoogleMapsFileRequest(
-    const base::FilePath& server_root,
-    const HttpRequest& request) {
-  HttpRequest new_request(request);
-  if (!new_request.relative_url.starts_with("/maps")) {
-    // This handler is only relevant for a Google Maps url.
-    return nullptr;
-  }
-  new_request.relative_url = new_request.relative_url.substr(5);
-  return HandleFileRequest(server_root, new_request);
 }
 
 }  // namespace
@@ -138,8 +120,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
-    https_server_.RegisterDefaultHandler(
-        base::BindRepeating(&HandleGoogleMapsFileRequest, test_data_dir));
     content::SetupCrossSiteRedirector(&https_server_);
     https_server_.RegisterRequestMonitor(base::BindRepeating(
         &BraveContentSettingsAgentImplBrowserTest::SaveReferrer,
@@ -162,16 +142,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.test/*");
     iframe_pattern_ = ContentSettingsPattern::FromString("https://b.test/*");
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // Since the HTTPS server only serves a valid cert for localhost,
-    // this is needed to load pages from "www.google.*" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-
-    // The production code only allows known ports (80 for http and 443 for
-    // https), but the test server runs on a random port.
-    command_line->AppendSwitch(switches::kIgnoreGooglePortNumbers);
   }
 
   void SaveReferrer(const net::test_server::HttpRequest& request) {
@@ -427,62 +397,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   base::ScopedTempDir temp_user_data_dir_;
   net::test_server::EmbeddedTestServer https_server_;
 };
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       FarbleGetImageData) {
-  // Farbling should be balanced by default
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // The iframe should have the same result as the top frame because farbling is
-  // based on the top frame's session token.
-  NavigateIframe(cross_site_url());
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
-            content::EvalJs(child_frame(), kGetImageDataScript));
-
-  // Farbling should be off if shields is down
-  ShieldsDown();
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should be off if shields is up but fingerprinting is allowed
-  // via content settings
-  ShieldsUp();
-  AllowFingerprinting();
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
-            content::EvalJs(contents(), kGetImageDataScript));
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       FarbleGetImageDataGoogleMapsException) {
-  // Farbling should be disabled on Google Maps
-  SetFingerprintingDefault();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server().GetURL("google.com", "/maps/simple.html")));
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should not be disabled on other Google things
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server().GetURL("google.com", "/simple.html")));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalancedGoogleCom,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should be disabled on google.co.uk maps
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server().GetURL("google.co.uk", "/maps/simple.html")));
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should be disabled on google.de maps
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server().GetURL("google.de", "/maps/simple.html")));
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
-            content::EvalJs(contents(), kGetImageDataScript));
-}
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        WebGLReadPixels) {
