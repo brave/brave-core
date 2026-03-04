@@ -54,7 +54,6 @@ import {
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
-  useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery,
   useGetAccountInfosRegistryQuery,
   useGetSwapSupportedNetworksQuery,
@@ -62,6 +61,9 @@ import {
 import {
   useGetCombinedTokensRegistryQuery, //
 } from '../../../../common/slices/api.slice.extra'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
@@ -370,7 +372,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     )
 
     const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
-      useGetTokenSpotPricesQuery(
+      usePersistedTokenSpotPricesQuery(
         shouldFetchModalData
           && !isLoadingBalances
           && tokenPriceRequests.length

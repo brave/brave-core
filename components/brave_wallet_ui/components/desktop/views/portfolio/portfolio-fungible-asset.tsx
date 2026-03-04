@@ -80,7 +80,6 @@ import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-cha
 import {
   useGetNetworkQuery,
   useGetTransactionsQuery,
-  useGetTokenSpotPricesQuery,
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
@@ -91,6 +90,9 @@ import {
   useAccountsQuery,
   useGetCombinedTokensRegistryQuery,
 } from '../../../../common/slices/api.slice.extra'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
@@ -277,7 +279,7 @@ export const PortfolioFungibleAsset = () => {
   const isLoadingGraphData =
     !selectedAssetFromParams || isFetchingPortfolioPriceHistory
 
-  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+  const { data: spotPrices = [] } = usePersistedTokenSpotPricesQuery(
     tokenPriceRequests.length && defaultFiat
       ? { requests: tokenPriceRequests, vsCurrency: defaultFiat }
       : skipToken,

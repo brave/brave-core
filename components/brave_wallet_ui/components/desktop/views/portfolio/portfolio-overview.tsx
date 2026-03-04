@@ -121,7 +121,6 @@ import {
 import {
   useGetVisibleNetworksQuery,
   useGetPricesHistoryQuery,
-  useGetTokenSpotPricesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
@@ -129,6 +128,9 @@ import {
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
@@ -342,7 +344,7 @@ export const PortfolioOverview = () => {
   )
 
   const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
+    usePersistedTokenSpotPricesQuery(
       !isCollectionView && tokenPriceRequests.length && defaultFiat
         ? { requests: tokenPriceRequests, vsCurrency: defaultFiat }
         : skipToken,

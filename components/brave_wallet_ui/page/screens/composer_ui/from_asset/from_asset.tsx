@@ -29,8 +29,10 @@ import {
 import {
   useGetBitcoinBalancesQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery,
 } from '../../../../common/slices/api.slice'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 import {
   querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
@@ -128,7 +130,7 @@ export const FromAsset = (props: Props) => {
   )
 
   const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
+    usePersistedTokenSpotPricesQuery(
       tokenPriceRequests.length
         && token
         && !token.isNft

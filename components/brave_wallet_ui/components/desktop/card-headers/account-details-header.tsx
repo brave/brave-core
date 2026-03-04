@@ -39,10 +39,12 @@ import Amount from '../../../utils/amount'
 
 // Queries
 import {
-  useGetTokenSpotPricesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetUserTokensRegistryQuery,
 } from '../../../common/slices/api.slice'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../common/hooks/use-persisted-spot-prices'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
 } from '../../../common/slices/entities/blockchain-token.entity'
@@ -132,7 +134,7 @@ export const AccountDetailsHeader = (props: Props) => {
   )
 
   const { data: spotPrices, isLoading: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
+    usePersistedTokenSpotPricesQuery(
       tokenPriceRequests.length && defaultFiatCurrency
         ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,
