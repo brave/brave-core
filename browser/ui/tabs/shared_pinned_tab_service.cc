@@ -304,14 +304,14 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
   }
 }
 
-void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
+bool SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
   DVLOG(2) << __FUNCTION__;
   Browser* browser = tab_strip_model->delegate()
                          ->GetBrowserWindowInterface()
                          ->GetBrowserForMigrationOnly();
   if (!browsers_.contains(browser)) {
     // In case this is called multiple times for the same browser
-    return;
+    return false;
   }
 
   browsers_.erase(browser);
@@ -333,6 +333,7 @@ void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
         }
       }
     }
+    return false;
   } else {
     CHECK(!profile_will_be_destroyed_);
 
@@ -352,6 +353,7 @@ void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
         pinned_tab_data.contents_owner_model = nullptr;
       }
     }
+    return tab_strip_model->empty();
   }
 }
 

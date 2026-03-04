@@ -59,7 +59,10 @@ class SharedPinnedTabService : public KeyedService,
 
   void TabDraggingEnded(Browser* browser);
 
-  void BrowserClosing(TabStripModel* tab_strip_model);
+  // Returns true if the browser will be closed by this method. If true,
+  // Browser::OnWindowClosing() should not proceed, as TabStrip::Empty() will
+  // be invoked again.
+  [[nodiscard]] bool BrowserClosing(TabStripModel* tab_strip_model);
 
   // KeyedService:
   void Shutdown() override;
