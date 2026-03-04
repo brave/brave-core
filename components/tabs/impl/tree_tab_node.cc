@@ -63,6 +63,24 @@ void TreeTabNode::CollectDescendantIds(
   }
 }
 
+void TreeTabNode::CollectUncollapseDescendantIds(
+    std::vector<tree_tab::TreeTabNodeId>& out) {
+  for (const auto& child : collection_->GetTreeNodeChildren()) {
+    if (std::holds_alternative<tabs::TabCollection*>(child)) {
+      TabCollection* collection = std::get<tabs::TabCollection*>(child);
+      if (collection->type() != TabCollection::Type::TREE_NODE) {
+        continue;
+      }
+      auto* child_tree = static_cast<TreeTabNodeTabCollection*>(collection);
+      TreeTabNode& child_node = child_tree->node();
+      out.push_back(child_node.id());
+      if (!child_node.collapsed()) {
+        child_node.CollectUncollapseDescendantIds(out);
+      }
+    }
+  }
+}
+
 int TreeTabNode::CalculateLevelAndHeightRecursively(
     base::PassKey<TreeTabNodeTabCollection> pass_key) {
   return CalculateLevelAndHeightRecursivelyImpl();

@@ -55,6 +55,12 @@ class TreeTabNode {
   // non-const because it uses GetTreeNodeChildren() on the collection.
   void CollectDescendantIds(std::vector<tree_tab::TreeTabNodeId>& out);
 
+  // Appends the ids of descendant tree tab nodes to |out| but does not recurse
+  // into collapsed nodes. Use when assigning this node as closest collapsed
+  // ancestor so nodes under a closer collapsed ancestor are not overwritten.
+  void CollectUncollapseDescendantIds(
+      std::vector<tree_tab::TreeTabNodeId>& out);
+
   // Exposes the calculation of level and height to TreeTabNodeTabCollection.
   int CalculateLevelAndHeightRecursively(
       base::PassKey<TreeTabNodeTabCollection> pass_key);

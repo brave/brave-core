@@ -1281,3 +1281,52 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   tab_strip_model().MoveWebContentsAt(2, 1, false);
   EXPECT_TRUE(model->DoesBelongToCollapsedNode(tab_to_move_node_id));
 }
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       NestedCollapse_LeafKeepsCloserAncestorAsClosest) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Build A (root) -> B -> C (leaf).
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto tab_c_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_c_interface->set_opener(tab_b);
+  tab_strip_model().AddTab(std::move(tab_c_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+  tree_tab::TreeTabNodeId node_a = GetTreeTabNodeIdForTab(tab_a);
+  tree_tab::TreeTabNodeId node_b = GetTreeTabNodeIdForTab(tab_b);
+  tree_tab::TreeTabNodeId node_c = GetTreeTabNodeIdForTab(tab_c);
+
+  TreeTabModel* model = tab_strip_model().tree_model();
+
+  // Collapse B first: C's closest collapsed ancestor is B.
+  model->SetCollapsed(node_b, true);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(node_c));
+
+  // Collapse A. C must still have B as closest (not A).
+  // CollectUncollapseDescendantIds stops at collapsed B, so C is not assigned
+  // A. After this, uncollapse A: only B is collapsed, so C should still be
+  // under collapsed (B).
+  model->SetCollapsed(node_a, true);
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(node_c));
+
+  model->SetCollapsed(node_a, false);
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(node_a));
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(
+      node_b));  // B is collapsed itself, no collapsed ancestor
+  EXPECT_TRUE(model->DoesBelongToCollapsedNode(node_c));
+
+  model->SetCollapsed(node_b, false);
+  EXPECT_FALSE(model->DoesBelongToCollapsedNode(node_c));
+}

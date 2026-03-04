@@ -46,7 +46,7 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
 
   if (collapsed) {
     std::vector<tree_tab::TreeTabNodeId> descendant_ids;
-    node->CollectDescendantIds(descendant_ids);
+    node->CollectUncollapseDescendantIds(descendant_ids);
     for (const auto& desc_id : descendant_ids) {
       closest_collapsed_ancestor_.insert_or_assign(desc_id, id);
       descendant_ids_by_collapsed_ancestor_[id].insert(desc_id);
@@ -131,7 +131,12 @@ void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
 
   for (const auto& node_id : to_update) {
     const tabs::TreeTabNode* node_to_update = GetNode(node_id);
-    CHECK(node_to_update);
+    if (!node_to_update) {
+      // Node was already removed (e.g. during teardown); RemoveTreeTabNode
+      // clears the cache. Defensively erase forward map in case it wasn't.
+      closest_collapsed_ancestor_.erase(node_id);
+      continue;
+    }
 
     // Note that we copy the value of old_ancestor to another value as it could
     // be invalidated by the next operation: erasing.
@@ -166,11 +171,24 @@ void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
     return;
   }
 
-  // Update closest collapsed ancestor cache before removing
-  // 1. drop this node's entry and
+  // Update closest collapsed ancestor cache before removing.
+  // 1. Remove this node from its (former) closest collapsed ancestor's set.
+  const auto* found = base::FindOrNull(closest_collapsed_ancestor_, id);
+  std::optional<tree_tab::TreeTabNodeId> old_ancestor =
+      found ? std::optional(*found) : std::nullopt;
   closest_collapsed_ancestor_.erase(id);
+  if (old_ancestor.has_value()) {
+    auto* descendants =
+        base::FindOrNull(descendant_ids_by_collapsed_ancestor_, *old_ancestor);
+    if (descendants) {
+      descendants->erase(id);
+      if (descendants->empty()) {
+        descendant_ids_by_collapsed_ancestor_.erase(*old_ancestor);
+      }
+    }
+  }
 
-  // 2. recompute nodes that had this node as their closest collapsed ancestor.
+  // 2. Recompute nodes that had this node as their closest collapsed ancestor.
   if (auto* descendants =
           base::FindOrNull(descendant_ids_by_collapsed_ancestor_, id)) {
     for (const auto& descendant_id : *descendants) {
