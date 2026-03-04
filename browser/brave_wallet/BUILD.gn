@@ -219,7 +219,10 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
   if (!is_android) {
-    sources = [ "brave_wallet_policy_browsertest.cc" ]
+    sources = [
+      "brave_wallet_policy_browsertest.cc",
+      "js_ethereum_provider_browsertest.cc",
+    ]
 
     deps = [
       ":brave_wallet",
@@ -227,6 +230,7 @@ source_set("browser_tests") {
       "//brave/app:command_ids",
       "//brave/browser",
       "//brave/browser/ui/sidebar",
+      "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
