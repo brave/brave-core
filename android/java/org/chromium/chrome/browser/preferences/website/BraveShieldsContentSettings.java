@@ -196,6 +196,15 @@ public class BraveShieldsContentSettings {
         return settings;
     }
 
+    public static void setAutoShredPref(String value) {
+        setShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA,
+                value,
+                false);
+    }
+
     public static void setFingerprintingPref(String value) {
         setShieldsValue(
                 ProfileManager.getLastUsedRegularProfile(),
@@ -278,6 +287,13 @@ public class BraveShieldsContentSettings {
                 ProfileManager.getLastUsedRegularProfile(),
                 "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+    }
+
+    public static String getAutoShredPref() {
+        return getShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA);
     }
 
     public static String getFingerprintingPref() {

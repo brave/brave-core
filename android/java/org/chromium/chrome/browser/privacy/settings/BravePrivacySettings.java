@@ -133,6 +133,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
+    private static final String PREF_AUTO_SHRED_STORAGE = "auto_shred_storage";
     private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
             "allow_elements_blocking_on_private_tabs";
 
@@ -154,6 +155,7 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SHIELDS_SAVE_CONTACT_INFO,
         PREF_CONTENT_FILTERING,
         PREF_FORGET_FIRST_PARTY_STORAGE,
+        PREF_AUTO_SHRED_STORAGE,
         PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS,
         PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
         PREF_CLEAR_ON_EXIT,
@@ -210,6 +212,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private BraveDialogPreference mRequestOtrPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mForgetFirstPartyStoragePref;
+    private BraveDialogPreference mAutoShredPref;
     private @Nullable ChromeSwitchPreference mAllowElementsBlockingOnPrivateTabsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private @Nullable ChromeSwitchPreference mSendP3A;
@@ -364,6 +367,10 @@ public class BravePrivacySettings extends PrivacySettings {
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE)
                         && !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);
         mForgetFirstPartyStoragePref.setVisible(forgetFirstPartyStorageIsEnabled);
+
+        mAutoShredPref = (BraveDialogPreference) findPreference(PREF_AUTO_SHRED_STORAGE);
+        mAutoShredPref.setOnPreferenceChangeListener(this);
+        mAutoShredPref.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED));
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)) {
             mAllowElementsBlockingOnPrivateTabsPref =
@@ -711,9 +718,41 @@ public class BravePrivacySettings extends PrivacySettings {
                         break;
                 }
             }
+        } else if (PREF_AUTO_SHRED_STORAGE.equals(key)) {
+            final String newStringValue = String.valueOf(newValue);
+            BraveShieldsContentSettings.setAutoShredPref(newStringValue);
+            updateAutoShredPref(newStringValue);
         }
 
         return true;
+    }
+
+    private void updateAutoShredPref(String newStringValue) {
+        switch (newStringValue) {
+            case BraveShieldsContentSettings.AUTO_SHRED_MODE_NEVER:
+                mAutoShredPref.setSummary(
+                        getActivity()
+                                .getResources()
+                                .getString(R.string.brave_shields_auto_shred_never_mode_text));
+                mAutoShredPref.setCheckedIndex(0);
+                break;
+            case BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED:
+                mAutoShredPref.setSummary(
+                        getActivity()
+                                .getResources()
+                                .getString(
+                                        R.string
+                                                .brave_shields_auto_shred_site_tab_closed_mode_text));
+                mAutoShredPref.setCheckedIndex(1);
+                break;
+            case BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT:
+                mAutoShredPref.setSummary(
+                        getActivity()
+                                .getResources()
+                                .getString(R.string.brave_shields_auto_shred_app_close_mode_text));
+                mAutoShredPref.setCheckedIndex(2);
+                break;
+        }
     }
 
     private void handleShieldsSaveContactInfo(boolean value) {
@@ -833,6 +872,10 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mForgetFirstPartyStoragePref.setChecked(
                 BraveShieldsContentSettings.getForgetFirstPartyStoragePref());
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+            updateAutoShredPref(BraveShieldsContentSettings.getAutoShredPref());
+        }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
                 && mAllowElementsBlockingOnPrivateTabsPref != null) {
