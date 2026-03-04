@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -36,6 +37,10 @@ std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   CHECK(profile);
   if (profile->IsOffTheRecord()) {
+    return nullptr;
+  }
+
+  if (!brave_rewards::IsSupported(profile->GetPrefs())) {
     return nullptr;
   }
 

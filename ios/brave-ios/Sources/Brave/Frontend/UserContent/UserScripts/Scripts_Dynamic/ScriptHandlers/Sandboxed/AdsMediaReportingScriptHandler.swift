@@ -5,17 +5,11 @@
 import BraveCore
 import Foundation
 import Shared
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import WebKit
 import os.log
 
 class AdsMediaReportingScriptHandler: TabContentScript {
-  let rewards: BraveRewards
-
-  init(rewards: BraveRewards) {
-    self.rewards = rewards
-  }
-
   static let scriptName = "AdsMediaReportingScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "adsMediaReporting"
@@ -38,11 +32,13 @@ class AdsMediaReportingScriptHandler: TabContentScript {
       return
     }
 
-    if let isPlaying = body["data"]?["playing"] as? Bool {
+    if let isPlaying = body["data"]?["playing"] as? Bool,
+      let webView = BraveWebView.from(tab: tab)
+    {
       if isPlaying {
-        rewards.reportMediaStarted(tabId: Int(tab.rewardsId ?? 0))
+        webView.notifyTabDidStartPlayingMedia()
       } else {
-        rewards.reportMediaStopped(tabId: Int(tab.rewardsId ?? 0))
+        webView.notifyTabDidStopPlayingMedia()
       }
     }
   }

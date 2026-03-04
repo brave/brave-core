@@ -122,6 +122,14 @@ CWV_EXPORT
 
 @end
 
+// Temporary methods for notifying that media started/stopped until
+// AdsReportingScript is converted to a Chromium JavaScriptFeature
+CWV_EXPORT
+@interface BraveWebView (AdsNotifier)
+- (void)notifyTabDidStartPlayingMedia;
+- (void)notifyTabDidStopPlayingMedia;
+@end
+
 CWV_EXPORT
 @interface BraveWebView (AIChatWebUI)
 /// A bridge for handling Leo AI WebUI page actions

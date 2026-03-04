@@ -20,6 +20,9 @@
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
@@ -271,6 +274,11 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     ai_chat::TabDataWebStateObserver::CreateForWebState(self.webState,
                                                         *tab_tracker_service);
   }
+
+  if (brave_ads::AdsServiceImplIOS* adsService =
+          brave_ads::AdsServiceFactoryIOS::GetForProfile(profile)) {
+    brave_ads::AdsTabHelper::CreateForWebState(self.webState, adsService);
+  }
 }
 
 - (void)updateForOnDownloadCreated {
@@ -394,6 +402,26 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
           respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
     [self.navigationDelegate webViewDidRedirectNavigation:self];
   }
+}
+
+@end
+
+@implementation BraveWebView (AdsNotifier)
+
+- (void)notifyTabDidStartPlayingMedia {
+  auto* adsTabHelper = brave_ads::AdsTabHelper::FromWebState(self.webState);
+  if (!adsTabHelper) {
+    return;
+  }
+  adsTabHelper->NotifyTabDidStartPlayingMedia();
+}
+
+- (void)notifyTabDidStopPlayingMedia {
+  auto* adsTabHelper = brave_ads::AdsTabHelper::FromWebState(self.webState);
+  if (!adsTabHelper) {
+    return;
+  }
+  adsTabHelper->NotifyTabDidStopPlayingMedia();
 }
 
 @end
