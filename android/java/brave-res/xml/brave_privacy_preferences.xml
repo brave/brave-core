@@ -78,6 +78,12 @@
             android:title="@string/brave_forget_first_party_storage_switch"
             android:summary="@string/brave_forget_first_party_storage_summary"
             android:defaultValue="false" />
+        <org.chromium.chrome.browser.settings.BraveDialogPreference
+            android:key="auto_shred_storage"
+            android:title="@string/brave_shields_auto_shred_sites_data_text"
+            android:summary="@string/brave_shields_auto_shred_never_mode_text"
+            app:dialog_entries="@array/autoShredTexts"
+            app:dialog_default_index="1" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="allow_elements_blocking_on_private_tabs"
             android:title="@string/brave_allow_element_blocker_in_private_label"
