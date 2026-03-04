@@ -23,16 +23,14 @@
         android:paddingVertical="18dp">
 
         <!-- Back button -->
-        <ImageView
+        <ImageButton
             android:id="@+id/report_back_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_small_down"
             android:rotation="90"
-            android:clickable="true"
-            android:focusable="true"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/report_broken_site_panel_title"/>
+            android:contentDescription="@string/back"/>
 
         <!-- Title -->
         <TextView
@@ -77,12 +75,11 @@
 
                 <TextView
                     android:id="@+id/report_site_domain"
+                    style="@style/LargeRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
-                    android:textSize="16sp"
-                    android:lineHeight="24sp"
                     android:textColor="@color/text_primary"
                     android:maxLines="1"
                     android:ellipsize="end"
@@ -99,20 +96,18 @@
                 android:paddingVertical="12dp">
 
                 <TextView
+                    style="@style/DefaultRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/report_broken_site_panel_desc1"
-                    android:textSize="14sp"
-                    android:lineHeight="20sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/report_description_learn_more"
+                    style="@style/DefaultRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:lineHeight="20sp"
                     android:textColor="@color/text_primary"/>
 
             </LinearLayout>
@@ -235,11 +230,10 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/LargeRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/report_broken_site_text_attach_screenshot_label"
-                        android:textSize="16sp"
-                        android:lineHeight="24sp"
                         android:textColor="@color/text_primary"/>
 
                     <TextView
