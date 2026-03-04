@@ -30,6 +30,8 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -2002,6 +2004,55 @@ TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs_EmptyTabs) {
                                                     mojom::APIError> result) {
         EXPECT_EQ(result, base::unexpected(mojom::APIError::InternalError));
       }));
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithTools) {
+  // Verify we're passing json-converted tool definitions.
+  // For more variation tests, see oai_parsing_unittest.cc
+  auto* client = GetClient();
+  base::RunLoop run_loop;
+
+  auto mock_tool = std::make_unique<MockTool>("test_tool", "A test tool");
+
+  std::string expected_tools_json = R"([
+    {
+      "type": "function",
+      "function": {
+        "description": "A test tool",
+        "name": "test_tool"
+      }
+    }
+  ])";
+
+  EXPECT_CALL(
+      *client,
+      PerformRequest(_, _,
+                     testing::Optional(base::test::IsJson(expected_tools_json)),
+                     _, _, _))
+      .WillOnce([&run_loop](const mojom::CustomModelOptions&,
+                            std::vector<OAIMessage>,
+                            std::optional<base::ListValue>,
+                            EngineConsumer::GenerationDataCallback,
+                            EngineConsumer::GenerationCompletedCallback,
+                            const std::optional<std::vector<std::string>>&) {
+        run_loop.Quit();
+      });
+
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "Test message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+      std::nullopt, nullptr));
+
+  engine_->GenerateAssistantResponse(
+      {}, history, false, {mock_tool->GetWeakPtr()}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
 }
 
 }  // namespace ai_chat

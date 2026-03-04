@@ -712,6 +712,129 @@ TEST_P(OAIAPIInvalidResponseTest,
   testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
 }
 
+TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
+  // Tests that tool definitions are included in the request body and that
+  // tool call responses are parsed and forwarded. For more variants
+  // see tests for `ParseToolCallsFromOAIResponse`.
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Build tool definitions
+  base::ListValue tool_defs;
+  base::DictValue tool_def;
+  tool_def.Set("type", "function");
+  base::DictValue function_def;
+  function_def.Set("name", "get_weather");
+  function_def.Set("description", "Get weather for a location");
+  tool_def.Set("function", std::move(function_def));
+  tool_defs.Append(std::move(tool_def));
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        // Verify tools are included in the request body
+        auto dict = base::test::ParseJsonDict(body);
+        base::ListValue* tools = dict.FindList("tools");
+        EXPECT_TRUE(tools);
+        EXPECT_EQ(tools->size(), 1u);
+        const base::DictValue* tool = (*tools)[0].GetIfDict();
+        EXPECT_TRUE(tool);
+        EXPECT_EQ(*tool->FindString("type"), "function");
+        const base::DictValue* func = tool->FindDict("function");
+        EXPECT_TRUE(func);
+        EXPECT_EQ(*func->FindString("name"), "get_weather");
+
+        // Send a tool call response chunk
+        auto chunk = base::test::ParseJson(R"({
+          "id": "chatcmpl-456",
+          "object": "chat.completion.chunk",
+          "choices": [{
+            "index": 0,
+            "delta": {
+              "content": "Let me check the weather.",
+              "tool_calls": [
+                {
+                  "id": "call_abc",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"location\":\"New York\"}"
+                  }
+                }
+              ]
+            }
+          }]
+        })");
+        data_received_callback.Run(base::ok(std::move(chunk)));
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  Sequence seq;
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "Let me check the weather.");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        auto& tool_event = result.event->get_tool_use_event();
+        EXPECT_EQ(tool_event->tool_name, "get_weather");
+        EXPECT_EQ(tool_event->id, "call_abc");
+        EXPECT_EQ(tool_event->arguments_json, R"({"location":"New York"})");
+        EXPECT_FALSE(tool_event->is_server_result);
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+      });
+
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("What's the weather in New York?")));
+  messages.push_back(std::move(user_msg));
+
+  client_->PerformRequest(
+      *model_options, std::move(messages), std::move(tool_defs),
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
+
 // A set of invalid responses that should not trigger any callbacks
 INSTANTIATE_TEST_SUITE_P(
     OAIAPIInvalidResponseScenarios,
