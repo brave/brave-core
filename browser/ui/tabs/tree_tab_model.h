@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_TABS_TREE_TAB_MODEL_H_
 
 #include <map>
+#include <set>
 
 #include "base/callback_list.h"
 #include "base/memory/weak_ptr.h"
@@ -67,6 +68,11 @@ class TreeTabModel {
   // closest collapsed ancestor. Used for O(1) DoesBelongToCollapsedNode.
   std::map<tree_tab::TreeTabNodeId, tree_tab::TreeTabNodeId>
       closest_collapsed_ancestor_;
+
+  // Reverse index: ancestor_id -> set of node_ids that have it as closest
+  // collapsed ancestor. Avoids O(n) scan when uncollapsing or removing a node.
+  std::map<tree_tab::TreeTabNodeId, std::set<tree_tab::TreeTabNodeId>>
+      descendant_ids_by_collapsed_ancestor_;
 
   base::RepeatingCallbackList<void(const tabs::TreeTabNode&)>
       add_tree_tab_node_callback_list_;

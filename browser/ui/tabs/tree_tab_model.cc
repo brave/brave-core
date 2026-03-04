@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 
+#include <cstddef>
 #include <optional>
 #include <vector>
 
@@ -48,14 +49,18 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
     node->CollectDescendantIds(descendant_ids);
     for (const auto& desc_id : descendant_ids) {
       closest_collapsed_ancestor_.insert_or_assign(desc_id, id);
+      descendant_ids_by_collapsed_ancestor_[id].insert(desc_id);
     }
   } else {
-    std::vector<tree_tab::TreeTabNodeId> to_recompute;
-    for (const auto& [node_id, ancestor_id] : closest_collapsed_ancestor_) {
-      if (ancestor_id == id) {
-        to_recompute.push_back(node_id);
-      }
+    auto* descendants =
+        base::FindOrNull(descendant_ids_by_collapsed_ancestor_, id);
+    if (!descendants) {
+      return;
     }
+
+    std::set<tree_tab::TreeTabNodeId> to_recompute = std::move(*descendants);
+    descendant_ids_by_collapsed_ancestor_.erase(id);
+
     for (const auto& node_id : to_recompute) {
       const tabs::TreeTabNode* node_to_recompute = GetNode(node_id);
       if (!node_to_recompute) {
@@ -66,6 +71,7 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
           node_to_recompute->GetClosestCollapsedAncestorId();
       if (new_ancestor.has_value()) {
         closest_collapsed_ancestor_.insert_or_assign(node_id, *new_ancestor);
+        descendant_ids_by_collapsed_ancestor_[*new_ancestor].insert(node_id);
       } else {
         closest_collapsed_ancestor_.erase(node_id);
       }
@@ -88,6 +94,7 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
   if (std::optional<tree_tab::TreeTabNodeId> closest =
           node.GetClosestCollapsedAncestorId()) {
     closest_collapsed_ancestor_.insert_or_assign(node.id(), *closest);
+    descendant_ids_by_collapsed_ancestor_[*closest].insert(node.id());
   }
 
   auto notification = [](base::WeakPtr<TreeTabModel> model,
@@ -126,11 +133,32 @@ void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
     const tabs::TreeTabNode* node_to_update = GetNode(node_id);
     CHECK(node_to_update);
 
-    if (std::optional<tree_tab::TreeTabNodeId> closest =
-            node_to_update->GetClosestCollapsedAncestorId()) {
+    // Note that we copy the value of old_ancestor to another value as it could
+    // be invalidated by the next operation: erasing.
+    std::optional<tree_tab::TreeTabNodeId> old_ancestor =
+        closest_collapsed_ancestor_.contains(node_id)
+            ? std::optional<tree_tab::TreeTabNodeId>(
+                  closest_collapsed_ancestor_.at(node_id))
+            : std::nullopt;
+
+    std::optional<tree_tab::TreeTabNodeId> closest =
+        node_to_update->GetClosestCollapsedAncestorId();
+    if (closest) {
       closest_collapsed_ancestor_.insert_or_assign(node_id, *closest);
+      descendant_ids_by_collapsed_ancestor_[*closest].insert(node_id);
     } else {
       closest_collapsed_ancestor_.erase(node_id);
+    }
+
+    if (old_ancestor.has_value() && old_ancestor != closest) {
+      auto* descendants = base::FindOrNull(
+          descendant_ids_by_collapsed_ancestor_, *old_ancestor);
+      if (descendants) {
+        descendants->erase(node_id);
+        if (descendants->empty()) {
+          descendant_ids_by_collapsed_ancestor_.erase(*old_ancestor);
+        }
+      }
     }
   }
 }
@@ -145,22 +173,31 @@ void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
   closest_collapsed_ancestor_.erase(id);
 
   // 2. recompute nodes that had this node as their closest collapsed ancestor.
-  std::vector<tree_tab::TreeTabNodeId> to_recompute;
-  for (const auto& [node_id, ancestor_id] : closest_collapsed_ancestor_) {
-    if (ancestor_id == id) {
-      to_recompute.push_back(node_id);
-    }
-  }
-  for (const auto& node_id : to_recompute) {
-    const tabs::TreeTabNode* node = GetNode(node_id);
-    CHECK(node);
+  if (auto* descendants =
+          base::FindOrNull(descendant_ids_by_collapsed_ancestor_, id)) {
+    for (const auto& descendant_id : *descendants) {
+      const tabs::TreeTabNode* node_to_update = GetNode(descendant_id);
+      if (!node_to_update) {
+        // The node didn't have any descendants, so we can just remove its entry
+        closest_collapsed_ancestor_.erase(descendant_id);
+        continue;
+      }
 
-    if (std::optional<tree_tab::TreeTabNodeId> new_ancestor =
-            node->GetClosestCollapsedAncestorId()) {
-      closest_collapsed_ancestor_.insert_or_assign(node_id, *new_ancestor);
-    } else {
-      closest_collapsed_ancestor_.erase(node_id);
+      if (std::optional<tree_tab::TreeTabNodeId> new_ancestor =
+              node_to_update->GetClosestCollapsedAncestorId()) {
+        closest_collapsed_ancestor_.insert_or_assign(descendant_id,
+                                                     *new_ancestor);
+        descendant_ids_by_collapsed_ancestor_[*new_ancestor].insert(
+            descendant_id);
+      } else {
+        closest_collapsed_ancestor_.erase(descendant_id);
+      }
     }
+
+    // Drop removed node's entry from the cache. Note that we should do this
+    // after recomputing the closest collapsed ancestor for the descendants,
+    // as erasing the entry will invalidate the |descendants|.
+    descendant_ids_by_collapsed_ancestor_.erase(id);
   }
 
   will_remove_tree_tab_node_callback_list_.Notify(id);
