@@ -65,6 +65,10 @@ export const buildExplorerUrl = (
   }
 
   if (isZecNet) {
+    if (type === 'address') {
+      const lastSlash = explorerURL.lastIndexOf('/')
+      return `${explorerURL.substring(0, lastSlash)}/address/${value}`
+    }
     return `${explorerURL}/${value}`
   }
 

@@ -14,6 +14,8 @@ import {
   mockSolanaTestnetNetwork,
   mockSolanaMainnetNetwork,
   mockBtcMainnetNetwork,
+  mockZecMainnetNetwork,
+  mockZecTestnetNetwork,
 } from '../common/constants/mocks'
 
 const ethereumTransactionId =
@@ -25,6 +27,9 @@ const solanaTransacitonId =
 const bitcoinTransactionId =
   '7b4c1acbb7e6510ee9473db0ecf8bf4a99eb246dad0b9aa1be4a991e0bd36fc2'
 const bitcoinAddress = 'bc1qlcqtaqx8qnacsgv4z3uv0dhlvrl066lh8secet'
+const zcashTransactionId =
+  '3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101'
+const zcashAddress = 't1UYsZVJkLPeMjxEtACvSxfWuNmddpWaqK7'
 
 it('ethereum explorer url', () => {
   const assertion = buildExplorerUrl(
@@ -117,5 +122,51 @@ it('btc mainnet explorer url for unsupported type', () => {
   )
   expect(assertion).toEqual(
     `https://www.blockchain.com/explorer/search?search=${bitcoinAddress}`,
+  )
+})
+
+it('zec mainnet explorer url for tx', () => {
+  const assertion = buildExplorerUrl(
+    mockZecMainnetNetwork,
+    'tx',
+    zcashTransactionId,
+    undefined,
+  )
+  expect(assertion).toEqual(
+    `https://3xpl.com/zcash/transaction/${zcashTransactionId}`,
+  )
+})
+
+it('zec mainnet explorer url for address', () => {
+  const assertion = buildExplorerUrl(
+    mockZecMainnetNetwork,
+    'address',
+    zcashAddress,
+    undefined,
+  )
+  expect(assertion).toEqual(`https://3xpl.com/zcash/address/${zcashAddress}`)
+})
+
+it('zec testnet explorer url for tx', () => {
+  const assertion = buildExplorerUrl(
+    mockZecTestnetNetwork,
+    'tx',
+    zcashTransactionId,
+    undefined,
+  )
+  expect(assertion).toEqual(
+    `https://blockexplorer.one/zcash/testnet/tx/${zcashTransactionId}`,
+  )
+})
+
+it('zec testnet explorer url for address', () => {
+  const assertion = buildExplorerUrl(
+    mockZecTestnetNetwork,
+    'address',
+    zcashAddress,
+    undefined,
+  )
+  expect(assertion).toEqual(
+    `https://blockexplorer.one/zcash/testnet/address/${zcashAddress}`,
   )
 })
