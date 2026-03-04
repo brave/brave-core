@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -90,6 +92,66 @@ TEST(OAISerializationUtilsTest, ImageContentBlockToDict) {
   const std::string* url = dict.FindString("url");
   ASSERT_TRUE(url);
   EXPECT_EQ(*url, "data:image/png;base64,xyz789");
+}
+
+TEST(OAISerializationUtilsTest, SerializeToolCallsOnMessageDict_Empty) {
+  OAIMessage message;
+  // No tool calls, empty tool_call_id
+  base::DictValue dict;
+  dict.Set("role", "assistant");
+  SerializeToolCallsOnMessageDict(message, dict);
+
+  // Dict should be unchanged - no tool_calls or tool_call_id added
+  EXPECT_FALSE(dict.FindList("tool_calls"));
+  EXPECT_FALSE(dict.FindString("tool_call_id"));
+  // Original key still present
+  EXPECT_TRUE(dict.FindString("role"));
+}
+
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_WithToolCallsAndToolCallId) {
+  OAIMessage message;
+  message.tool_calls.push_back(mojom::ToolUseEvent::New(
+      "brave_web_search", "call_1", R"({"query":"weather"})", std::nullopt,
+      std::nullopt, nullptr, false));
+  message.tool_calls.push_back(
+      mojom::ToolUseEvent::New("get_time", "call_2", R"({"tz":"UTC"})",
+                               std::nullopt, std::nullopt, nullptr, false));
+  message.tool_call_id = "call_0";
+
+  base::DictValue dict;
+  dict.Set("role", "tool");
+  SerializeToolCallsOnMessageDict(message, dict);
+
+  // Verify tool_calls list
+  const base::ListValue* tool_calls = dict.FindList("tool_calls");
+  ASSERT_TRUE(tool_calls);
+  ASSERT_EQ(tool_calls->size(), 2u);
+
+  // First tool call
+  const base::DictValue* tc0 = (*tool_calls)[0].GetIfDict();
+  ASSERT_TRUE(tc0);
+  EXPECT_EQ(*tc0->FindString("id"), "call_1");
+  EXPECT_EQ(*tc0->FindString("type"), "function");
+  const base::DictValue* fn0 = tc0->FindDict("function");
+  ASSERT_TRUE(fn0);
+  EXPECT_EQ(*fn0->FindString("name"), "brave_web_search");
+  EXPECT_EQ(*fn0->FindString("arguments"), R"({"query":"weather"})");
+
+  // Second tool call
+  const base::DictValue* tc1 = (*tool_calls)[1].GetIfDict();
+  ASSERT_TRUE(tc1);
+  EXPECT_EQ(*tc1->FindString("id"), "call_2");
+  EXPECT_EQ(*tc1->FindString("type"), "function");
+  const base::DictValue* fn1 = tc1->FindDict("function");
+  ASSERT_TRUE(fn1);
+  EXPECT_EQ(*fn1->FindString("name"), "get_time");
+  EXPECT_EQ(*fn1->FindString("arguments"), R"({"tz":"UTC"})");
+
+  // Verify tool_call_id
+  const std::string* tool_call_id = dict.FindString("tool_call_id");
+  ASSERT_TRUE(tool_call_id);
+  EXPECT_EQ(*tool_call_id, "call_0");
 }
 
 }  // namespace ai_chat
