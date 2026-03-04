@@ -15,6 +15,7 @@ class CardanoProviderScriptHandler: TabContentScript {
   fileprivate enum Keys: String {
     case code
     case info
+    case maxSize
   }
 
   static let scriptName = "WalletCardanoProviderScript"
@@ -64,6 +65,10 @@ class CardanoProviderScriptHandler: TabContentScript {
     }
   }
 
+  // MARK: - Argument Structures
+
+  /// Arguments for getUtxos. Both fields are optional per CIP-30 spec.
+  /// Uses `try?` for decoding since missing arguments should default to nil.
   private struct GetUtxosArgs: Decodable {
     struct Paginate: Decodable {
       var page: Int32
@@ -74,20 +79,28 @@ class CardanoProviderScriptHandler: TabContentScript {
     var paginate: Paginate?
   }
 
+  /// Arguments for signData. Both fields are required.
+  /// Uses `guard` for decoding to ensure validation before calling API.
   private struct SignDataArgs: Decodable {
     var addr: String
     var payload: String
   }
 
+  /// Arguments for signTx. Both fields are required.
+  /// Uses `guard` for decoding to ensure validation before calling API.
   private struct SignTxArgs: Decodable {
     var tx: String
     var partialSign: Bool
   }
 
+  /// Arguments for getCollateral. The amount field is required.
+  /// Uses `guard` for decoding to ensure validation before calling API.
   private struct CollateralArgs: Decodable {
     var amount: String
   }
 
+  /// Arguments for submitTx. The tx field is required.
+  /// Uses `guard` for decoding to ensure validation before calling API.
   private struct SubmitTxArgs: Decodable {
     var tx: String
   }
@@ -306,19 +319,45 @@ class CardanoProviderScriptHandler: TabContentScript {
     replyHandler(enabled, nil)
   }
 
+  /// Builds an error JSON response following CIP-30 error format.
+  ///
+  /// Error handling follows three cases per CIP-30 specification:
+  /// 1. Regular errors: Returns `{code: number, info: string}`
+  /// 2. Pagination errors: Returns `{code: number, info: string, maxSize: number}`
+  /// 3. Local validation errors: Uses hardcoded error codes when no backend error exists
+  ///
+  /// - Parameters:
+  ///   - code: Error code from CardanoProviderErrorBundle or hardcoded CardanoProviderError enum
+  ///   - errorMessage: Human-readable error message
+  ///   - paginationError: Optional pagination error payload containing maxSize when page limit exceeded
+  /// - Returns: JSON string representation of the error object
   private func buildErrorJson(
     code: Int32,
-    errorMessage: String
+    errorMessage: String,
+    paginationError: BraveWallet.CardanoProviderPaginationErrorPayload? = nil
   ) -> String? {
-    JSONSerialization.jsObject(
-      withNative: [
-        Keys.code.rawValue: code,
-        Keys.info.rawValue: errorMessage,
-      ] as [String: Any]
-    )
+    var fields: [String: Any] = [
+      Keys.code.rawValue: code,
+      Keys.info.rawValue: errorMessage,
+    ]
+    if let paginationError {
+      fields[Keys.maxSize.rawValue] = paginationError.payload
+    }
+    return JSONSerialization.jsObject(withNative: fields)
   }
 
-  /// Helper method to call API methods with error handling
+  /// Helper method to call CIP-30 API methods with unified error handling.
+  ///
+  /// This method handles all API calls after enable() succeeds and provides:
+  /// 1. API availability check (must call enable() first)
+  /// 2. Error handling with proper error codes from CardanoProviderErrorBundle
+  /// 3. Special handling for BaseValue dictionary results (signData method)
+  /// 4. Pagination error support when page limits are exceeded
+  ///
+  /// - Parameters:
+  ///   - tab: Current tab containing the CardanoApi instance
+  ///   - replyHandler: WebKit reply handler for sending response back to JavaScript
+  ///   - method: Async closure that calls the actual API method
   @MainActor private func callApiMethod<T>(
     tab: some TabState,
     replyHandler: @escaping (Any?, String?) -> Void,
@@ -344,7 +383,8 @@ class CardanoProviderScriptHandler: TabContentScript {
         nil,
         buildErrorJson(
           code: error.code,
-          errorMessage: error.errorMessage
+          errorMessage: error.errorMessage,
+          paginationError: error.paginationErrorPayload
         )
       )
       return
@@ -354,6 +394,8 @@ class CardanoProviderScriptHandler: TabContentScript {
       // Check if result is a BaseValue dictionary (from signData)
       if let dictResult = result as? [String: BaseValue] {
         // Convert BaseValue dictionary to String dictionary
+        // BaseValue objects from Mojo cannot be directly serialized, so we extract
+        // the stringValue from each BaseValue and create a plain String dictionary
         var stringDicResult: [String: String] = [:]
         for (key, value) in dictResult {
           if let stringValue = value.stringValue {
@@ -363,9 +405,11 @@ class CardanoProviderScriptHandler: TabContentScript {
         replyHandler(stringDicResult, nil)
       } else {
         // For all other types (String, [String], Int32), pass directly
+        // WebKit automatically converts these Swift types to JavaScript equivalents
         replyHandler(result, nil)
       }
     } else {
+      // API returned nil result with no error - this shouldn't happen
       replyHandler(
         nil,
         buildErrorJson(

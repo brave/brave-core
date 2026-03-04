@@ -44,7 +44,7 @@ if (window.isSecureContext) {
       signTx: { value: $(function(tx, partialSign) { return post('signTx', { tx, partialSign }); }), writable: false, enumerable: true },
       signData: { value: $(function(addr, payload) { return post('signData', { addr, payload }); }), writable: false, enumerable: true },
       submitTx: { value: $(function(tx) { return post('submitTx', { tx }); }), writable: false, enumerable: true },
-      getCollateral: { value: $(function(amount) { return post('getCollateral', amount); }), writable: false, enumerable: true },
+      getCollateral: { value: $(function(amount) { return post('getCollateral', { amount }); }), writable: false, enumerable: true },
     });
     return $Object.freeze(api);
   }
