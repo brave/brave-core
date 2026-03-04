@@ -35,11 +35,15 @@ export function QueryModeToggle(props: Props) {
         className={classnames('item', props.queryMode === 'chat' && 'selected')}
         data-test-id='query-mode-toggle-chat'
       >
-        <Icon
-          title={getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
+        <div
+          className='icon'
           slot={props.queryMode === 'chat' ? 'icon-before' : 'default'}
-          name='product-brave-leo'
-        ></Icon>
+        >
+          <Icon
+            title={getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
+            name='product-brave-leo'
+          ></Icon>
+        </div>
         {props.queryMode === 'chat' && (
           <span className='name'>
             {getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
@@ -54,11 +58,15 @@ export function QueryModeToggle(props: Props) {
         value={'search'}
         data-test-id='query-mode-toggle-search'
       >
-        <Icon
-          title={getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
+        <div
+          className='icon'
           slot={props.queryMode === 'search' ? 'icon-before' : 'default'}
-          name='search'
-        ></Icon>
+        >
+          <Icon
+            title={getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
+            name='search'
+          ></Icon>
+        </div>
         {props.queryMode === 'search' && (
           <span className='name'>
             {getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
