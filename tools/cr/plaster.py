@@ -76,7 +76,9 @@ class PathChecksumPair:
             return False  # No change detected
         logging.debug('Saving: %s', self.path)
         if not dry_run:
-            self.path.write_text(new_content, encoding='utf-8')
+            # On Windows we checkout files in Linux mode, so we should make
+            # sure not to use Windows newlines here.
+            self.path.write_text(new_content, encoding='utf-8', newline='\n')
             assert (new_checksum == self.calculate_file_checksum())
         self.checksum = new_checksum
         return True
