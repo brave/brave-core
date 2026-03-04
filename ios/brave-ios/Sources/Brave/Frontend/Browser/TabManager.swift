@@ -439,10 +439,14 @@ class TabManager: NSObject {
   @MainActor func addPopupForParentTab(
     _ parentTab: any TabState
   ) -> any TabState {
+    var wkConfiguration: WKWebViewConfiguration?
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      wkConfiguration = parentTab.configuration
+    }
     let popup = tabCreationFactory(
       .init(
         profile: parentTab.profile,
-        initialConfiguration: parentTab.configuration
+        initialConfiguration: wkConfiguration
       )
     )
     configureTab(
