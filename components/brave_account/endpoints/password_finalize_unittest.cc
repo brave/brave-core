@@ -15,11 +15,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const PasswordFinalize::Response::SuccessBody& lhs,
-                const PasswordFinalize::Response::SuccessBody& rhs) {
-  return true;
-}
-
 using PasswordFinalizeTestCase = EndpointTestCase<PasswordFinalize>;
 
 namespace {

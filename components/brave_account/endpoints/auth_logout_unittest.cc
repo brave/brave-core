@@ -14,16 +14,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const AuthLogout::Response::SuccessBody&,
-                const AuthLogout::Response::SuccessBody&) {
-  return true;
-}
-
-bool operator==(const AuthLogout::Response::ErrorBody&,
-                const AuthLogout::Response::ErrorBody&) {
-  return true;
-}
-
 namespace {
 
 using AuthLogoutTestCase = EndpointTestCase<AuthLogout>;
@@ -33,9 +23,10 @@ const AuthLogoutTestCase* Success() {
       {.test_name = "success",
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
-       .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = AuthLogout::Response::SuccessBody()}});
+       .expected_response = {
+           .net_error = net::OK,
+           .status_code = net::HTTP_NO_CONTENT,
+           .body = base::ok(AuthLogout::Response::SuccessBody())}});
 
   return kSuccess.get();
 }

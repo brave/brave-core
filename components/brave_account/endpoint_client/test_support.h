@@ -15,6 +15,7 @@
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
 
@@ -31,7 +32,7 @@ void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
                     return network::CreateURLResponseHead(
                         static_cast<net::HttpStatusCode>(status_code));
                   })
-                  .value_or(nullptr);
+                  .value_or(network::mojom::URLResponseHead::New());
 
   const auto body = base::WriteJson(response.body
                                         .transform([](const auto& body) {

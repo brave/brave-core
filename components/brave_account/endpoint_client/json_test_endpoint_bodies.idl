@@ -3,11 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/auth/logout request and response.
-namespace endpoints {
-  dictionary AuthLogoutRequestBody {};
+// Schemas for JSON bodies used by test endpoints.
+namespace endpoint_client {
+  dictionary JSONRequestBody {
+    DOMString request;
+  };
 
-  dictionary AuthLogoutSuccessBody {};
+  dictionary JSONSuccessBody {
+    DOMString success;
+  };
 
-  dictionary AuthLogoutErrorBody {};
+  dictionary JSONErrorBody {
+    DOMString error;
+  };
 };

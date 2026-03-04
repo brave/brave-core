@@ -6,9 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_REQUEST_H_
 
+#include <optional>
+#include <string>
 #include <string_view>
 
+#include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/is_request_body.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -29,11 +33,12 @@ enum class Method {
   kTrack
 };
 
-// Wrapper that binds an IsRequestBody to a specific HTTP method.
-// Inherits from T to expose its ToValue() interface, and
-// adds a static Method() accessor returning the canonical HTTP method string.
-template <IsRequestBody T, Method M>
-struct Request : T {
+// A request binds a request body type to a specific HTTP method and
+// provides access to the method, Content-Type, and serialized body.
+template <IsRequestBody RequestBody, Method M>
+struct Request {
+  using Body = RequestBody;
+
   static constexpr std::string_view Method() {
     if constexpr (M == Method::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;
@@ -60,8 +65,43 @@ struct Request : T {
     }
   }
 
+  static constexpr std::string_view ContentType() {
+    return ContentType<Body>();
+  }
+
+  std::optional<std::string> Serialize() const { return Serialize(body); }
+
+  Body body;
   net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
   base::TimeDelta timeout_duration;
+
+ private:
+  // Returns the Content-Type value for a JSON request body.
+  template <IsJSONRequestBody>
+  static constexpr std::string_view ContentType() {
+    return "application/json";
+  }
+
+  // Returns the Content-Type value for a Protobuf request body.
+  template <IsProtobufRequestBody>
+  static constexpr std::string_view ContentType() {
+    return "application/protobuf";
+  }
+
+  // Serializes a JSON request body to a JSON string.
+  // Returns std::nullopt if the request body produces an empty dictionary.
+  static auto Serialize(const IsJSONRequestBody auto& request_body) {
+    const base::DictValue dict = request_body.ToValue();
+    return !dict.empty() ? base::WriteJson(dict).value_or("")
+                         : std::optional<std::string>();
+  }
+
+  // Serializes a Protobuf request body to a binary string.
+  // Returns std::nullopt if the request body is empty (ByteSizeLong() == 0).
+  static auto Serialize(const IsProtobufRequestBody auto& request_body) {
+    return request_body.ByteSizeLong() ? request_body.SerializeAsString()
+                                       : std::optional<std::string>();
+  }
 };
 
 }  // namespace brave_account::endpoint_client::detail

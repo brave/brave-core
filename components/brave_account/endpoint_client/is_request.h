@@ -11,20 +11,29 @@
 
 namespace brave_account::endpoint_client::detail {
 
-// Primary template: a type does not satisfy IsRequest unless
-// matched by the partial specialization below.
 template <typename>
-inline constexpr bool kIsRequest = false;
+inline constexpr bool kIsJSONRequest = false;
 
-// Partial specialization: Request<T, M> satisfies IsRequest if
-// T satisfies IsRequestBody.
-template <IsRequestBody T, Method M>
-inline constexpr bool kIsRequest<Request<T, M>> = true;
+template <IsJSONRequestBody RequestBody, Method M>
+inline constexpr bool kIsJSONRequest<Request<RequestBody, M>> = true;
 
-// Concept: a type satisfies IsRequest if
-// its kIsRequest specialization evaluates to true.
-template <typename T>
-concept IsRequest = kIsRequest<T>;
+// A JSON request is a Request<> whose body is a JSON request body.
+template <typename Request>
+concept IsJSONRequest = kIsJSONRequest<Request>;
+
+template <typename>
+inline constexpr bool kIsProtobufRequest = false;
+
+template <IsProtobufRequestBody RequestBody, Method M>
+inline constexpr bool kIsProtobufRequest<Request<RequestBody, M>> = true;
+
+// A Protobuf request is a Request<> whose body is a Protobuf request body.
+template <typename Request>
+concept IsProtobufRequest = kIsProtobufRequest<Request>;
+
+// A request is either a JSON request or a Protobuf request.
+template <typename Request>
+concept IsRequest = IsJSONRequest<Request> || IsProtobufRequest<Request>;
 
 }  // namespace brave_account::endpoint_client::detail
 

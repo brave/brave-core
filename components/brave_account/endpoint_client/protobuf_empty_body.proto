@@ -1,0 +1,16 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package brave_account.endpoint_client;
+
+// Schema for the empty Protobuf body.
+// Used when no request body is sent or the response body is ignored.
+// Compatible with LITE_RUNTIME because it subclasses MessageLite
+// (unlike google::protobuf::Empty).
+message ProtobufEmptyBody {}

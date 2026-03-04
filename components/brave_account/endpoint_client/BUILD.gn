@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//third_party/protobuf/proto_library.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
 source_set("endpoint_client") {
   sources = [
     "brave_endpoint.h",
@@ -27,8 +30,26 @@ source_set("endpoint_client") {
     "//brave/brave_domains",
     "//net",
     "//services/network/public/cpp",
+    "//third_party/protobuf:protobuf_lite",
     "//url",
   ]
+
+  public_deps = [
+    "//brave/components/brave_account/endpoint_client:json_empty_body",
+    "//brave/components/brave_account/endpoint_client:protobuf_empty_body",
+  ]
+}
+
+generated_types("json_empty_body") {
+  sources = [ "json_empty_body.idl" ]
+
+  deps = [ "//base" ]
+
+  root_namespace = "brave_account::%(namespace)s"
+}
+
+proto_library("protobuf_empty_body") {
+  sources = [ "protobuf_empty_body.proto" ]
 }
 
 source_set("test_support") {
@@ -50,7 +71,6 @@ source_set("unit_tests") {
 
   sources = [
     "client_unittest.cc",
-    "concept_test.h",
     "is_endpoint_unittest.cc",
     "is_request_body_unittest.cc",
     "is_request_unittest.cc",
@@ -63,11 +83,30 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
+    "//brave/components/brave_account/endpoint_client:protobuf_test_endpoint_bodies",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//testing/gtest",
+    "//third_party/protobuf:protobuf_lite",
     "//url",
   ]
+}
+
+generated_types("json_test_endpoint_bodies") {
+  # testonly = true
+
+  sources = [ "json_test_endpoint_bodies.idl" ]
+
+  deps = [ "//base" ]
+
+  root_namespace = "brave_account::%(namespace)s"
+}
+
+proto_library("protobuf_test_endpoint_bodies") {
+  testonly = true
+
+  sources = [ "protobuf_test_endpoint_bodies.proto" ]
 }

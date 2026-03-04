@@ -13,11 +13,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const VerifyResend::Response::SuccessBody&,
-                const VerifyResend::Response::SuccessBody&) {
-  return true;
-}
-
 namespace {
 
 using VerifyResendTestCase = EndpointTestCase<VerifyResend>;

@@ -5,11 +5,8 @@
 
 #include "brave/components/brave_account/endpoint_client/is_request.h"
 
-#include <tuple>
-#include <type_traits>
-
-#include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/concept_test.h"
+#include "brave/components/brave_account/endpoint_client/json_test_endpoint_bodies.h"
+#include "brave/components/brave_account/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -17,36 +14,47 @@ namespace brave_account::endpoint_client::detail {
 
 namespace {
 
-struct ValidRequestBody {
-  base::DictValue ToValue() const;
+template <typename T, bool SatisfiesConcept>
+struct IsRequestTestCase {
+  using Type = T;
+  static constexpr bool kSatisfiesConcept = SatisfiesConcept;
 };
 
-template <typename T>
-using IsRequestConceptTest = ConceptTest::Fixture<T>;
+using IsRequestTestCases =
+    testing::Types<IsRequestTestCase<void*, false>,
+                   IsRequestTestCase<volatile int, false>,
+                   IsRequestTestCase<JSONRequestBody, false>,
+                   IsRequestTestCase<CONNECT<JSONRequestBody>, true>,
+                   IsRequestTestCase<DELETE<JSONRequestBody>, true>,
+                   IsRequestTestCase<GET<JSONRequestBody>, true>,
+                   IsRequestTestCase<HEAD<JSONRequestBody>, true>,
+                   IsRequestTestCase<OPTIONS<JSONRequestBody>, true>,
+                   IsRequestTestCase<PATCH<JSONRequestBody>, true>,
+                   IsRequestTestCase<POST<JSONRequestBody>, true>,
+                   IsRequestTestCase<PUT<JSONRequestBody>, true>,
+                   IsRequestTestCase<TRACE<JSONRequestBody>, true>,
+                   IsRequestTestCase<TRACK<JSONRequestBody>, true>,
+                   IsRequestTestCase<ProtobufRequestBody, false>,
+                   IsRequestTestCase<CONNECT<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<DELETE<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<GET<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<HEAD<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<OPTIONS<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<PATCH<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<POST<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<PUT<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<TRACE<ProtobufRequestBody>, true>,
+                   IsRequestTestCase<TRACK<ProtobufRequestBody>, true>>;
 
-using RequestTestTypes =
-    testing::Types<std::tuple<void*, std::false_type>,
-                   std::tuple<volatile int, std::false_type>,
-                   std::tuple<ValidRequestBody, std::false_type>,
-                   std::tuple<CONNECT<ValidRequestBody>, std::true_type>,
-                   std::tuple<DELETE<ValidRequestBody>, std::true_type>,
-                   std::tuple<GET<ValidRequestBody>, std::true_type>,
-                   std::tuple<HEAD<ValidRequestBody>, std::true_type>,
-                   std::tuple<OPTIONS<ValidRequestBody>, std::true_type>,
-                   std::tuple<PATCH<ValidRequestBody>, std::true_type>,
-                   std::tuple<POST<ValidRequestBody>, std::true_type>,
-                   std::tuple<PUT<ValidRequestBody>, std::true_type>,
-                   std::tuple<TRACE<ValidRequestBody>, std::true_type>,
-                   std::tuple<TRACK<ValidRequestBody>, std::true_type>>;
+template <typename>
+struct IsRequestTest : testing::Test {};
 
 }  // namespace
 
-TYPED_TEST_SUITE(IsRequestConceptTest, RequestTestTypes);
+TYPED_TEST_SUITE(IsRequestTest, IsRequestTestCases);
 
-TYPED_TEST(IsRequestConceptTest, SatisfyConcept) {
-  using TestType = typename TestFixture::TestType;
-  using ExpectedResult = typename TestFixture::ExpectedResult;
-  EXPECT_EQ(IsRequest<TestType>, ExpectedResult::value);
+TYPED_TEST(IsRequestTest, SatisfyConcept) {
+  EXPECT_EQ(IsRequest<typename TypeParam::Type>, TypeParam::kSatisfiesConcept);
 }
 
 }  // namespace brave_account::endpoint_client::detail
