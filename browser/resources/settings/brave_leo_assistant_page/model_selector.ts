@@ -20,20 +20,20 @@ export class LeoModelSelectorElement extends CrLitElement {
     return 'leo-model-selector'
   }
 
-  static override get properties() {
-    return {
-      selectedKey: {type: String},
-      models: {type: Array},
-      isPremiumUser: {type: Boolean},
-    }
-  }
-
   static override get styles() {
     return getCss()
   }
 
   override render() {
     return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      selectedKey: {type: String},
+      models: {type: Array},
+      isPremiumUser: {type: Boolean},
+    }
   }
 
   accessor selectedKey: string = ''
