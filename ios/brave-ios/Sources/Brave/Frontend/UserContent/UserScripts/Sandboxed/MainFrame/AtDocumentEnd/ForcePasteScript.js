@@ -15,9 +15,9 @@ window.__firefox__.includeOnce("ForcePasteScript", function() {
         return;
       }
       var element = document.activeElement;
-      if (element instanceof HTMLIFrameElement) {
-        // If the element is an iframe, grab its active element
-        element = element.contentWindow.document.activeElement;
+      while (element !== undefined && element.tagName === 'IFRAME') {
+        // If the element is an iframe, recurse into it to find the active element
+        element = element.contentDocument ? element.contentDocument.activeElement : undefined;
       }
       if (element === undefined) {
         return;
