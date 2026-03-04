@@ -757,7 +757,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_no_change.TargetOutput()->amount = 6000000 - 168537u;
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_no_change, epoch_parameters);
+        tx_no_change, epoch_parameters, false);
 
     EXPECT_EQ(found_tx->fee(), 168537u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -770,7 +770,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_no_change.TargetOutput()->amount = 6000000u - 168537u - 1u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_no_change, epoch_parameters));
+        tx_no_change, epoch_parameters, false));
   }
 
   // Some inputs, has change.
@@ -784,7 +784,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_with_change.TargetOutput()->amount = 1000000u;
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_with_change, epoch_parameters);
+        tx_with_change, epoch_parameters, false);
 
     EXPECT_EQ(found_tx->fee(), 171397u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -795,7 +795,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_with_change.TargetOutput()->amount = 1000000u + 123u;
 
     found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_with_change, epoch_parameters);
+        tx_with_change, epoch_parameters, false);
 
     EXPECT_EQ(found_tx->fee(), 171397u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -807,21 +807,21 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_with_change.TargetOutput()->amount = 10000000u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_with_change, epoch_parameters));
+        tx_with_change, epoch_parameters, false));
 
     // Adjust output so it is not possible to produce change large enough.
     tx_with_change.TargetOutput()->amount = 5500000u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_with_change, epoch_parameters));
+        tx_with_change, epoch_parameters, false));
   }
 
   // Sending max amount.
   {
     CardanoTransaction tx_max_send = base_tx;
-    tx_max_send.set_sending_max_amount(true);
+    // tx_max_send.set_sending_amount(std::nullopt);
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_max_send, epoch_parameters);
+        tx_max_send, epoch_parameters, true);
 
     EXPECT_EQ(found_tx->fee(), 168537u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -836,7 +836,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_max_send.AddInput(std::move(input4));
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_max_send, epoch_parameters));
+        tx_max_send, epoch_parameters, true));
 
     // Single input is not enough to produce output large enough.
     CardanoTransaction::TxInput input5;
@@ -845,7 +845,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     tx_max_send.AddInput(std::move(input5));
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-        tx_max_send, epoch_parameters));
+        tx_max_send, epoch_parameters, true));
   }
 }
 

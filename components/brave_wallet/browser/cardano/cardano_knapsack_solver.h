@@ -25,9 +25,7 @@ namespace brave_wallet {
 // this calculation to separate thread.
 class CardanoKnapsackSolver {
  public:
-  CardanoKnapsackSolver(CardanoTransaction base_transaction,
-                        CardanoAddress change_address,
-                        cardano_rpc::EpochParameters latest_epoch_parameters,
+  CardanoKnapsackSolver(TxBuilderParms builder_params,
                         std::vector<CardanoTransaction::TxInput> inputs);
   ~CardanoKnapsackSolver();
 
@@ -35,20 +33,31 @@ class CardanoKnapsackSolver {
   base::expected<CardanoTransaction, std::string> Solve();
 
  private:
-  // Initial transaction we are trying to find inputs for.
-  CardanoTransaction base_transaction_;
-  // Change address in case we need to send change.
-  CardanoAddress change_address_;
-  // Best transaction(lesser fee) found so far.
-  std::optional<CardanoTransaction> current_best_solution_;
-  // Current state of blockchain. Used to calculate fee.
-  cardano_rpc::EpochParameters latest_epoch_parameters_;
+  FRIEND_TEST_ALL_PREFIXES(CardanoKnapsackSolverUnitTest, SetupOutput);
+  FRIEND_TEST_ALL_PREFIXES(CardanoKnapsackSolverUnitTest, SortInputs);
+  // Setup target output. In case of lovelace transfer validate if amount fits
+  // min output limit. In case of token send also set min required lovelace
+  // amount.
+  static base::expected<void, std::string> SetupOutput(
+      CardanoTransaction& tx,
+      const TxBuilderParms& builder_params);
+
+  // Sort inputs by the token amount in descending order. If the token amount
+  // is the same, sort by the utxo value in descending order.
+  static void SortInputs(std::vector<CardanoTransaction::TxInput>& inputs,
+                         const TxBuilderParms& builder_params);
+
+  // Various params required to create transaction.
+  TxBuilderParms builder_params_;
+
   // Set of possible inputs to pick for transaction.
   std::vector<CardanoTransaction::TxInput> inputs_;
 
   // Runs solver algorithm for the `transaction`.
-  // Updates `current_best_solution_` when transaction with lesser fee is found.
-  void RunSolverForTransaction(const CardanoTransaction& transaction);
+  // Updates `current_best_solution` when transaction with lesser fee is found.
+  void RunSolverForTransaction(
+      const CardanoTransaction& transaction,
+      std::optional<CardanoTransaction>& current_best_solution);
 };
 
 }  // namespace brave_wallet

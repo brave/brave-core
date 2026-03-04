@@ -55,20 +55,6 @@ std::optional<uint64_t> ReadUint64String(const base::DictValue& dict,
   return result;
 }
 
-std::optional<uint32_t> ReadUint32String(const base::DictValue& dict,
-                                         std::string_view key) {
-  auto* str = dict.FindString(key);
-  if (!str) {
-    return std::nullopt;
-  }
-
-  uint32_t result = 0;
-  if (!base::StringToUint(*str, &result)) {
-    return std::nullopt;
-  }
-  return result;
-}
-
 template <class T>
 std::optional<T> ReadDict(const base::DictValue& dict, std::string_view key) {
   auto* key_dict = dict.FindDict(key);
@@ -155,7 +141,34 @@ std::optional<cardano_rpc::Tokens> TokensFromValue(
   return result;
 }
 
+// For each token do `from[token] -= tokens[token]` ensuring no overflows.
+bool SubtractTokens(cardano_rpc::Tokens& from,
+                    const cardano_rpc::Tokens& tokens) {
+  for (auto& token : tokens) {
+    auto from_token = from.find(token);
+    if (from_token == from.end()) {
+      return false;
+    }
+    if (!base::CheckSub<uint64_t>(from_token->second, token.second)
+             .AssignIfValid(&from_token->second)) {
+      return false;
+    }
+    if (from_token->second == 0u) {
+      from.erase(from_token);
+    }
+  }
+
+  return true;
+}
+
 }  // namespace
+
+TxBuilderParms::TxBuilderParms() = default;
+TxBuilderParms::~TxBuilderParms() = default;
+TxBuilderParms::TxBuilderParms(const TxBuilderParms&) = default;
+TxBuilderParms& TxBuilderParms::operator=(const TxBuilderParms&) = default;
+TxBuilderParms::TxBuilderParms(TxBuilderParms&&) = default;
+TxBuilderParms& TxBuilderParms::operator=(TxBuilderParms&&) = default;
 
 CardanoTransaction::CardanoTransaction() = default;
 CardanoTransaction::~CardanoTransaction() = default;
@@ -428,10 +441,7 @@ base::DictValue CardanoTransaction::ToValue() const {
   }
 
   dict.Set("invalid_after", base::NumberToString(invalid_after_));
-  dict.Set("to", to_.ToString());
-  dict.Set("amount", base::NumberToString(amount_));
   dict.Set("fee", base::NumberToString(fee_));
-  dict.Set("sending_max_amount", sending_max_amount_);
 
   return dict;
 }
@@ -486,17 +496,8 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
     result.witnesses_.push_back(std::move(*output_opt));
   }
 
-  if (!base::OptionalUnwrapTo(ReadUint32String(value, "invalid_after"),
+  if (!base::OptionalUnwrapTo(ReadUint64String(value, "invalid_after"),
                               result.invalid_after_)) {
-    return std::nullopt;
-  }
-
-  if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "to"), result.to_)) {
-    return std::nullopt;
-  }
-
-  if (!base::OptionalUnwrapTo(ReadUint64String(value, "amount"),
-                              result.amount_)) {
     return std::nullopt;
   }
 
@@ -508,10 +509,17 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
     }
   }
 
-  result.sending_max_amount_ =
-      value.FindBool("sending_max_amount").value_or(false);
-
   return result;
+}
+
+void CardanoTransaction::SetupTargetOutput(CardanoAddress target_address) {
+  CHECK(!TargetOutput());
+  CardanoTransaction::TxOutput target_output;
+  target_output.type = CardanoTransaction::TxOutputType::kTarget;
+  target_output.amount = 0;
+  target_output.address = std::move(target_address);
+
+  AddOutput(std::move(target_output));
 }
 
 void CardanoTransaction::SetupChangeOutput(CardanoAddress change_address) {
@@ -572,6 +580,22 @@ CardanoTransaction::GetTotalOutputTokensAmount() const {
     }
   }
   return result;
+}
+
+std::optional<CardanoAddress> CardanoTransaction::GetToAddress() const {
+  if (auto* target_output = TargetOutput()) {
+    return target_output->address;
+  }
+
+  return std::nullopt;
+}
+
+bool CardanoTransaction::IsSendTokenTransaction() const {
+  if (auto* target_output = TargetOutput()) {
+    return !target_output->tokens.empty();
+  }
+
+  return false;
 }
 
 void CardanoTransaction::AddInput(TxInput input) {
@@ -660,7 +684,16 @@ bool CardanoTransaction::EnsureTokensInChangeOutput() {
     return false;
   }
 
+  // We already assigned some input tokens to target output, should not move
+  // them to change.
+  CHECK(TargetOutput());
+  if (!SubtractTokens(*input_tokens, TargetOutput()->tokens)) {
+    return false;
+  }
+
+  // OK if there is no tokens which must be assigned to change.
   if (input_tokens->empty()) {
+    DCHECK(GetTotalInputTokensAmount() == GetTotalOutputTokensAmount());
     return true;
   }
 
@@ -672,20 +705,9 @@ bool CardanoTransaction::EnsureTokensInChangeOutput() {
 
   ChangeOutput()->tokens = std::move(*input_tokens);
 
+  DCHECK(GetTotalInputTokensAmount() == GetTotalOutputTokensAmount());
+
   return true;
-}
-
-void CardanoTransaction::ArrangeTransactionForTesting() {
-  std::sort(inputs_.begin(), inputs_.end(),
-            [](const auto& input1, const auto& input2) {
-              return input1.utxo_outpoint < input2.utxo_outpoint;
-            });
-
-  DCHECK_LE(outputs_.size(), 2u);
-  std::sort(outputs_.begin(), outputs_.end(),
-            [](const auto& output1, const auto& output2) {
-              return output1.type < output2.type;
-            });
 }
 
 std::optional<CardanoTxDecoder::SerializableTx>

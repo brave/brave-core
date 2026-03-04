@@ -21,6 +21,32 @@
 
 namespace brave_wallet {
 
+struct TxBuilderParms {
+  TxBuilderParms();
+  ~TxBuilderParms();
+  TxBuilderParms(const TxBuilderParms&);
+  TxBuilderParms& operator=(const TxBuilderParms&);
+  TxBuilderParms(TxBuilderParms&&);
+  TxBuilderParms& operator=(TxBuilderParms&&);
+
+  // Amount of a lovelaces or tokens being sent.
+  uint64_t amount = 0;
+  // True if exact amount was not specified but we are sending all possible
+  // amount of given token or lovelaces.
+  bool sending_max_amount = false;
+  // Token being sent if set, otherwise lovelaces are being sent.
+  std::optional<cardano_rpc::TokenId> token_to_send;
+
+  // Destination address for funds being sent.
+  CardanoAddress send_to_address;
+  // Change address in case we need to send change.
+  CardanoAddress change_address;
+  // Current state of blockchain. Used to calculate fee.
+  cardano_rpc::EpochParameters epoch_parameters;
+
+  uint64_t invalid_after = 0u;
+};
+
 // This class is used to make Cardano transactions for sending to blockchain.
 class CardanoTransaction {
  public:
@@ -113,9 +139,20 @@ class CardanoTransaction {
   CardanoTransaction& operator=(CardanoTransaction&& other);
   bool operator==(const CardanoTransaction& other) const;
 
+  uint64_t fee() const { return fee_; }
+  void set_fee(uint64_t fee) { fee_ = fee; }
+
+  uint64_t invalid_after() const { return invalid_after_; }
+  void set_invalid_after(uint64_t invalid_after) {
+    invalid_after_ = invalid_after;
+  }
+
   base::DictValue ToValue() const;
   static std::optional<CardanoTransaction> FromValue(
       const base::DictValue& value);
+
+  // Adds target output.
+  void SetupTargetOutput(CardanoAddress target_address);
 
   // Adds change output.
   void SetupChangeOutput(CardanoAddress change_address);
@@ -132,19 +169,9 @@ class CardanoTransaction {
   // Sum of all outputs' token amounts.
   std::optional<cardano_rpc::Tokens> GetTotalOutputTokensAmount() const;
 
-  const CardanoAddress& to() const { return to_; }
-  void set_to(CardanoAddress to) { to_ = std::move(to); }
+  std::optional<CardanoAddress> GetToAddress() const;
 
-  uint64_t amount() const { return amount_; }
-  void set_amount(uint64_t amount) { amount_ = amount; }
-
-  uint64_t fee() const { return fee_; }
-  void set_fee(uint64_t fee) { fee_ = fee; }
-
-  bool sending_max_amount() const { return sending_max_amount_; }
-  void set_sending_max_amount(bool sending_max_amount) {
-    sending_max_amount_ = sending_max_amount;
-  }
+  bool IsSendTokenTransaction() const;
 
   const std::vector<TxInput>& inputs() const { return inputs_; }
   void AddInput(TxInput input);
@@ -168,15 +195,6 @@ class CardanoTransaction {
   // Adjust change output so all input tokens are also sent to change output.
   bool EnsureTokensInChangeOutput();
 
-  uint32_t invalid_after() const { return invalid_after_; }
-  void set_invalid_after(uint32_t invalid_after) {
-    invalid_after_ = invalid_after;
-  }
-
-  // Arrange order of inputs and outputs so transaction binary form is suitable
-  // for testing.
-  void ArrangeTransactionForTesting();
-
   std::optional<CardanoTxDecoder::SerializableTx> ToSerializableTx() const;
 
  private:
@@ -187,11 +205,8 @@ class CardanoTransaction {
   std::vector<TxInput> inputs_;
   std::vector<TxOutput> outputs_;
   std::vector<TxWitness> witnesses_;
-  uint32_t invalid_after_ = 0;
-  CardanoAddress to_;
-  uint64_t amount_ = 0;
+  uint64_t invalid_after_ = 0;
   uint64_t fee_ = 0;
-  bool sending_max_amount_ = false;
 };
 
 }  // namespace brave_wallet

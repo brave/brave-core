@@ -25,6 +25,35 @@ const constexpr char* kInvalidUint32Values[] = {"", "1.1", "-1", "a",
 const constexpr char* kInvalidUint64Values[] = {"", "1.1", "-1", "a"};
 }  // namespace
 
+TEST(CardanoRpcSchema, TokenIdFromHex) {
+  EXPECT_EQ(GetMockTokenId("brave"),
+            TokenIdFromHex(base::HexEncodeLower(GetMockTokenId("brave"))));
+
+  EXPECT_FALSE(TokenIdFromHex(""));
+  EXPECT_FALSE(
+      TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                     "f264fb1f"));
+  EXPECT_EQ(29u,
+            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                           "f264fb1f42")
+                ->size());
+  EXPECT_EQ(34u,
+            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                           "f264fb1f425249434b53")
+                ->size());
+  EXPECT_EQ(60u,
+            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                           "f264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAABB"
+                           "CCDDEEFFAABBCCDDEEFFAABB")
+                ->size());
+  EXPECT_FALSE(
+      TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043"
+                     "ff264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAA"
+                     "BBCCDDEEFFAABBCCDDEEFFAABB00"));
+
+  EXPECT_FALSE(TokenIdFromHex("not hex"));
+}
+
 TEST(CardanoRpcSchema, EpochParameters) {
   EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(std::nullopt));
 

@@ -17,7 +17,12 @@ import {
 // utils
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
-import { getTransactionTypeName } from '../../../utils/tx-utils'
+import {
+  getTransactionTypeName,
+  isBitcoinTransaction,
+  isCardanoTransaction,
+  isZCashTransaction,
+} from '../../../utils/tx-utils'
 
 // components
 import {
@@ -39,6 +44,95 @@ export interface Props {
   instructions?: TypedSolanaInstructionWithParams[]
 }
 
+function BtcTransactionDetails({
+  btcTxData,
+}: {
+  btcTxData: BraveWallet.BtcTxData
+}) {
+  return (
+    <DetailColumn>
+      {btcTxData.inputs?.map((input, index) => (
+        <div key={'input' + index}>
+          <CodeDetailLine>{`Input: ${index}`}</CodeDetailLine>
+          <CodeDetailLine>{`Value: ${input.value}`}</CodeDetailLine>
+          <CodeDetailLine>{`Address: ${input.address}`}</CodeDetailLine>
+        </div>
+      ))}
+      {btcTxData.outputs?.map((output, index) => (
+        <div key={'output' + index}>
+          <CodeDetailLine>{`Output: ${index}`}</CodeDetailLine>
+          <CodeDetailLine>{`Value: ${output.value}`}</CodeDetailLine>
+          <CodeDetailLine>{`Address: ${output.address}`}</CodeDetailLine>
+        </div>
+      ))}
+    </DetailColumn>
+  )
+}
+
+function CardanoTransactionDetails({
+  cardanoTxData,
+}: {
+  cardanoTxData: BraveWallet.CardanoTxData
+}) {
+  return (
+    <DetailColumn>
+      {cardanoTxData.inputs?.map((input, index) => (
+        <div key={'input' + index}>
+          <CodeDetailLine>{`Input: ${index}`}</CodeDetailLine>
+          <CodeDetailLine>{`Value: ${input.value}`}</CodeDetailLine>
+          {input.tokens.map((token) => {
+            return (
+              <CodeDetailLine
+                key={token.tokenIdHex}
+              >{`Token: ${token.tokenIdHex}, Value: ${token.value}`}</CodeDetailLine>
+            )
+          })}
+          <CodeDetailLine>{`Address: ${input.address}`}</CodeDetailLine>
+        </div>
+      ))}
+      {cardanoTxData.outputs?.map((output, index) => (
+        <div key={'output' + index}>
+          <CodeDetailLine>{`Output: ${index}`}</CodeDetailLine>
+          <CodeDetailLine>{`Value: ${output.value}`}</CodeDetailLine>
+          {output.tokens.map((token) => {
+            return (
+              <CodeDetailLine
+                key={token.tokenIdHex}
+              >{`Token: ${token.tokenIdHex}, Value: ${token.value}`}</CodeDetailLine>
+            )
+          })}
+          <CodeDetailLine>{`Address: ${output.address}`}</CodeDetailLine>
+        </div>
+      ))}
+    </DetailColumn>
+  )
+}
+
+function ZecTransactionDetails({
+  zecTxData,
+}: {
+  zecTxData: BraveWallet.ZecTxData
+}) {
+  return (
+    <>
+      <DetailColumn>
+        {zecTxData.inputs?.map((input, index) => (
+          <CodeDetailLine
+            key={index}
+          >{`input-${input.value}-${input.address}`}</CodeDetailLine>
+        ))}
+      </DetailColumn>
+      <DetailColumn>
+        {zecTxData.outputs?.map((output, index) => (
+          <CodeDetailLine
+            key={index}
+          >{`output-${output.value}-${output.address}`}</CodeDetailLine>
+        ))}
+      </DetailColumn>
+    </>
+  )
+}
+
 export const TransactionDetailBox = ({
   transactionInfo,
   instructions,
@@ -48,91 +142,32 @@ export const TransactionDetailBox = ({
   const solData = txDataUnion.solanaTxData
   const sendOptions = solData?.sendOptions
 
-  const btcData = txDataUnion.btcTxData
-  const zecData = txDataUnion.zecTxData
-  const cardanoData = txDataUnion.cardanoTxData
   const dataArray = txDataUnion.ethTxData1559?.baseData.data || []
 
   // BTC
-  // TODO(apaymyshev): strings localization.
-  if (btcData) {
+  if (isBitcoinTransaction(transactionInfo)) {
     return (
-      <DetailColumn>
-        {btcData.inputs?.map((input, index) => {
-          return (
-            <div key={'input' + index}>
-              <CodeDetailLine>{`Input: ${index}`}</CodeDetailLine>
-              <CodeDetailLine>{`Value: ${input.value}`}</CodeDetailLine>
-              <CodeDetailLine>{`Address: ${
-                input.address //
-              }`}</CodeDetailLine>
-            </div>
-          )
-        })}
-        {btcData.outputs?.map((output, index) => {
-          return (
-            <div key={'output' + index}>
-              <CodeDetailLine>{`Output: ${index}`}</CodeDetailLine>
-              <CodeDetailLine>{`Value: ${output.value}`}</CodeDetailLine>
-              <CodeDetailLine>{`Address: ${output.address}`}</CodeDetailLine>
-            </div>
-          )
-        })}
-      </DetailColumn>
+      <BtcTransactionDetails
+        btcTxData={transactionInfo.txDataUnion.btcTxData}
+      />
     )
   }
 
-  if (cardanoData) {
+  // Cardano
+  if (isCardanoTransaction(transactionInfo)) {
     return (
-      <DetailColumn>
-        {cardanoData.inputs?.map((input, index) => {
-          return (
-            <div key={'input' + index}>
-              <CodeDetailLine>{`Input: ${index}`}</CodeDetailLine>
-              <CodeDetailLine>{`Value: ${input.value}`}</CodeDetailLine>
-              <CodeDetailLine>{`Address: ${
-                input.address //
-              }`}</CodeDetailLine>
-            </div>
-          )
-        })}
-        {cardanoData.outputs?.map((output, index) => {
-          return (
-            <div key={'output' + index}>
-              <CodeDetailLine>{`Output: ${index}`}</CodeDetailLine>
-              <CodeDetailLine>{`Value: ${output.value}`}</CodeDetailLine>
-              <CodeDetailLine>{`Address: ${output.address}`}</CodeDetailLine>
-            </div>
-          )
-        })}
-      </DetailColumn>
+      <CardanoTransactionDetails
+        cardanoTxData={transactionInfo.txDataUnion.cardanoTxData}
+      />
     )
   }
 
   // ZEC
-  if (zecData) {
+  if (isZCashTransaction(transactionInfo)) {
     return (
-      <>
-        <DetailColumn>
-          {zecData.inputs?.map((input, index) => {
-            return (
-              <CodeDetailLine
-                key={index}
-              >{`input-${input.value}-${input.address}`}</CodeDetailLine>
-            )
-          })}
-        </DetailColumn>
-
-        <DetailColumn>
-          {zecData.outputs?.map((output, index) => {
-            return (
-              <CodeDetailLine
-                key={index}
-              >{`output-${output.value}-${output.address}`}</CodeDetailLine>
-            )
-          })}
-        </DetailColumn>
-      </>
+      <ZecTransactionDetails
+        zecTxData={transactionInfo.txDataUnion.zecTxData}
+      />
     )
   }
 
