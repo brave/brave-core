@@ -9,6 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useSearchState, useSearchActions } from '../../context/search_context'
+import { useNewTabState } from '../../context/new_tab_context'
 import { getString } from '../../lib/strings'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
@@ -19,21 +20,39 @@ export function SearchPanel() {
   const actions = useSearchActions()
 
   const showSearchBox = useSearchState((s) => s.showSearchBox)
+  const showChatInput = useSearchState((s) => s.showChatInput)
   const searchEngines = useSearchState((s) => s.searchEngines)
   const enabledSearchEngines = useSearchState((s) => s.enabledSearchEngines)
+  const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}</label>
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={showSearchBox}
+        onChange={({ checked }) => {
+          actions.setShowSearchBox(checked)
+        }}
+      >
+        <span className='label'>
+          {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
+        </span>
+      </Toggle>
+      {aiChatInputEnabled && (
         <Toggle
+          className='toggle-row'
           size='small'
-          checked={showSearchBox}
+          checked={showChatInput}
           onChange={({ checked }) => {
-            actions.setShowSearchBox(checked)
+            actions.setShowChatInput(checked)
           }}
-        />
-      </div>
+        >
+          <span className='label'>
+            {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
+          </span>
+        </Toggle>
+      )}
       {showSearchBox && (
         <div className='search-engines'>
           <h4>{getString(S.NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL)}</h4>

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
@@ -52,8 +53,15 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
+
+    # Unconditional for gn check as the NTP WebUI always needs the mojom
+    # types since typescript cannnot yet conditionally import during typecheck.
+    # TODO(https://github.com/brave/brave-browser/issues/53190): remove when
+    # fixed.
+    "//brave/components/ai_chat/core/common/mojom",
 
     # Unconditional for gn check since the mojom-forward header is included
     # in brave_new_tab_page_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).
@@ -73,6 +81,7 @@ source_set("brave_new_tab_page_refresh") {
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/contextual_search",
+    "//chrome/browser/history",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/browser/themes",
@@ -92,6 +101,15 @@ source_set("brave_new_tab_page_refresh") {
     deps += [
       "//brave/browser/brave_rewards",
       "//brave/browser/brave_rewards:util",
+    ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/browser/ai_chat",
+      "//brave/browser/ui/webui/ai_chat",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
     ]
   }
 
@@ -135,6 +153,17 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    sources += [ "ntp_ai_chat_browsertest.cc" ]
+
+    deps += [
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/brave_search_conversion",
+      "//chrome/browser/profiles:profile",
+      "//components/prefs",
+    ]
+  }
 
   if (enable_brave_ads) {
     sources += [ "new_tab_takeover_browsertest.cc" ]

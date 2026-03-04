@@ -35,6 +35,7 @@ export interface SearchState {
   defaultSearchEngine: string
   searchFeatureEnabled: boolean
   showSearchBox: boolean
+  showChatInput: boolean
   searchEngines: SearchEngineInfo[]
   enabledSearchEngines: Set<string>
   lastUsedSearchEngine: string
@@ -53,6 +54,7 @@ export function defaultSearchStore(): SearchStore {
     defaultSearchEngine: braveSearchHost,
     searchFeatureEnabled: false,
     showSearchBox: false,
+    showChatInput: false,
     searchEngines: [],
     enabledSearchEngines: new Set(),
     lastUsedSearchEngine: '',
@@ -62,6 +64,7 @@ export function defaultSearchStore(): SearchStore {
     searchMatches: [],
     actions: {
       setShowSearchBox(showSearchBox) {},
+      setShowChatInput(showChatInput) {},
       setSearchSuggestionsEnabled(enabled) {},
       setSearchSuggestionsPromptDismissed(dismissed) {},
       setSearchEngineEnabled(engine, enabled) {},
@@ -89,6 +92,7 @@ export interface ClickEvent {
 
 export interface SearchActions {
   setShowSearchBox: (showSearchBox: boolean) => void
+  setShowChatInput: (showChatInput: boolean) => void
   setSearchSuggestionsEnabled: (enabled: boolean) => void
   setSearchSuggestionsPromptDismissed: (dismissed: boolean) => void
   setLastUsedSearchEngine: (engine: string) => void

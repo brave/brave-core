@@ -20,6 +20,11 @@ import useMediaQuery from '$web-common/useMediaQuery'
 
 import { style, threeColumnBreakpoint } from './app.style'
 
+// <if expr="enable_ai_chat">
+import { useNewTabState } from '../context/new_tab_context'
+import { LazyQueryBox } from './query_box/lazy_query_box'
+// </if>
+
 const threeColumnQuery = `(width > ${threeColumnBreakpoint})`
 
 export function App() {
@@ -64,7 +69,7 @@ export function App() {
         </div>
         <div className='searchbox-container'>
           {searchLayoutReady && (
-            <SearchBox showSearchSettings={() => setSettingsView('search')} />
+            <Search showSearchSettings={() => setSettingsView('search')} />
           )}
         </div>
         <div
@@ -116,4 +121,14 @@ export function App() {
       />
     </div>
   )
+}
+
+function Search(props: { showSearchSettings: () => void }) {
+  // <if expr="enable_ai_chat">
+  const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
+  if (aiChatInputEnabled) {
+    return <LazyQueryBox showSearchSettings={props.showSearchSettings} />
+  }
+  // </if>
+  return <SearchBox showSearchSettings={props.showSearchSettings} />
 }
