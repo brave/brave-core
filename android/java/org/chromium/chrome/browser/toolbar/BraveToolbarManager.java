@@ -136,7 +136,7 @@ public class BraveToolbarManager extends ToolbarManager
     private BottomSheetController mBottomSheetController;
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
-    private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
+    private NonNullObservableSupplier<ModalDialogManager> mModalDialogManagerSupplier;
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider mLayoutStateProvider;
     private MonotonicObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
@@ -196,7 +196,7 @@ public class BraveToolbarManager extends ToolbarManager
             WindowAndroid windowAndroid,
             OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
             Supplier<Boolean> isInOverviewModeSupplier,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             StatusBarColorController statusBarColorController,
             AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
