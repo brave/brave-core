@@ -21,6 +21,7 @@ import { makeSerializableTimeDelta } from '../../../utils/model-serialization-ut
 import { getPriceIdForToken } from '../../../utils/pricing-utils'
 import Amount from '../../../utils/amount'
 import { findTokenByAssetId } from '../../../utils/asset-utils'
+import { mergeAndPersistSpotPrices } from '../../../utils/local-storage-utils'
 
 interface GetTokenSpotPricesArg {
   requests: BraveWallet.AssetPriceRequest[]
@@ -101,6 +102,7 @@ export const pricingEndpoints = ({
           )
 
           if (success && values) {
+            mergeAndPersistSpotPrices(values)
             return {
               data: values,
             }

@@ -46,12 +46,14 @@ import {
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
-  useGetTokenSpotPricesQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
   useGetIsShieldingAvailableQuery,
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../../common/hooks/use-persisted-spot-prices'
 
 export const Accounts = () => {
   // routing
@@ -145,7 +147,7 @@ export const Accounts = () => {
   }, [userTokensRegistry])
 
   const { data: spotPrices, isLoading: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
+    usePersistedTokenSpotPricesQuery(
       tokenPriceRequests.length && defaultFiatCurrency
         ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,

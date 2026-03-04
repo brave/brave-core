@@ -41,9 +41,11 @@ import {
 
 // Queries
 import {
-  useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery,
+  useGetDefaultFiatCurrencyQuery, //
 } from '../../../common/slices/api.slice'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '../../../common/hooks/use-persisted-spot-prices'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Styled Components
@@ -119,7 +121,7 @@ export const PortfolioAccountItem = (props: Props) => {
   // Queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+  const { data: spotPrices = [] } = usePersistedTokenSpotPricesQuery(
     defaultFiatCurrency && tokenPriceRequests.length
       ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
