@@ -157,6 +157,7 @@ source_set("unit_tests") {
     "//components/optimization_guide/core",
     "//components/page_image_service",
     "//components/page_info/core",
+    "//components/passage_embeddings/core",
     "//components/performance_manager",
     "//components/permissions",
     "//components/plus_addresses/core/common:features",
