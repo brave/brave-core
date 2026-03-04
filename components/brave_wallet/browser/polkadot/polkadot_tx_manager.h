@@ -93,7 +93,8 @@ class PolkadotTxManager : public TxManager,
   void OnApprovePolkadotTransaction(
       std::unique_ptr<PolkadotTxMeta> tx_metadata,
       ApproveTransactionCallback callback,
-      base::expected<std::string, std::string> tx_hash);
+      base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
+                     std::string> tx_hash_metadata_pair);
 
   // PolkadotBlockTracker::Observer
   void OnLatestBlock(const std::string& chain_id, uint64_t block_num) override;

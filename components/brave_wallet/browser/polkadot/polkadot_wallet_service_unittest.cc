@@ -80,6 +80,10 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
     keyring_service_
         ->GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotTestnet)
         ->SetSignatureRngForTesting();
+
+    keyring_service_
+        ->GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotMainnet)
+        ->SetSignatureRngForTesting();
   }
 
   AccountUtils GetAccountUtils() {
@@ -574,7 +578,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
       ;
   // clang-format on
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -582,7 +586,13 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
       uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
-  EXPECT_EQ(base::HexEncodeLower(signed_extrinsic.value()), kExpectedExtrinsic);
+  ASSERT_TRUE(signed_extrinsic.has_value());
+  EXPECT_EQ(base::HexEncodeLower(signed_extrinsic->extrinsic()),
+            kExpectedExtrinsic);
+  EXPECT_EQ(base::HexEncodeLower(signed_extrinsic->block_hash()),
+            "46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21");
+  EXPECT_EQ(signed_extrinsic->block_num(), 0x1c06355u);
+  EXPECT_EQ(signed_extrinsic->mortality_period(), 64u);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
@@ -628,7 +638,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
 
   url_loader_factory_.ClearResponses();
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -723,7 +733,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -846,7 +856,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -1002,7 +1012,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -1141,7 +1151,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -1321,7 +1331,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -1549,7 +1559,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -1761,7 +1771,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   EXPECT_EQ(pubkey,
             "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
 
-  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
@@ -1793,7 +1803,9 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
-  base::test::TestFuture<base::expected<std::string, std::string>> future;
+  base::test::TestFuture<base::expected<
+      std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
+      future;
 
   std::string chain_id = mojom::kPolkadotMainnet;
 
@@ -1807,8 +1819,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
   EXPECT_EQ(
-      tx_hash.value(),
+      tx_hash->first,
       "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
+  EXPECT_EQ(
+      base::HexEncodeLower(tx_hash->second.extrinsic()),
+      R"(35028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a4743846016656520a0149abeb482feefc639ce3186ecdd0a45a0e953bdf8bd6dbcca8b55abc1e4e1e26c3b3ba1d1fb0a9e531f769eb293f6e7989fb5c65d65c191d82688055014400000500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a488543)");
 }
 
 TEST_F(PolkadotWalletServiceUnitTest,
@@ -1833,7 +1848,9 @@ TEST_F(PolkadotWalletServiceUnitTest,
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
-  base::test::TestFuture<base::expected<std::string, std::string>> future;
+  base::test::TestFuture<base::expected<
+      std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
+      future;
 
   std::string chain_id = mojom::kPolkadotMainnet;
 

@@ -29,10 +29,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       base::expected<PolkadotChainMetadata, std::string>)>;
 
   using GenerateSignedTransferExtrinsicCallback = base::OnceCallback<void(
-      base::expected<std::vector<uint8_t>, std::string>)>;
+      base::expected<PolkadotExtrinsicMetadata, std::string>)>;
 
-  using SignAndSendTransactionCallback =
-      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  using SignAndSendTransactionCallback = base::OnceCallback<void(
+      base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
+                     std::string>)>;
 
   PolkadotWalletService(
       KeyringService& keyring_service,
@@ -121,21 +122,23 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void OnGenerateSignedTransferExtrinsic(
       PolkadotSignedTransferTask* transaction_state,
       GenerateSignedTransferExtrinsicCallback callback,
-      base::expected<std::vector<uint8_t>, std::string> signed_extrinsic);
+      base::expected<PolkadotExtrinsicMetadata, std::string>
+          extrinsic_metadata);
 
-  void OnGenerateSignedTransfer(
-      std::string chain_id,
-      SignAndSendTransactionCallback callback,
-      base::expected<std::vector<uint8_t>, std::string> signed_extrinsic);
+  void OnGenerateSignedTransfer(std::string chain_id,
+                                SignAndSendTransactionCallback callback,
+                                base::expected<PolkadotExtrinsicMetadata,
+                                               std::string> extrinsic_metadata);
 
-  void OnSubmitSignedExtrinsic(SignAndSendTransactionCallback callback,
+  void OnSubmitSignedExtrinsic(PolkadotExtrinsicMetadata extrinsic_metadata,
+                               SignAndSendTransactionCallback callback,
                                std::optional<std::string>,
                                std::optional<std::string>);
 
-  void OnGenerateTransferForFee(
-      std::string chain_id,
-      GetFeeEstimateCallback callback,
-      base::expected<std::vector<uint8_t>, std::string> signed_extrinsic);
+  void OnGenerateTransferForFee(std::string chain_id,
+                                GetFeeEstimateCallback callback,
+                                base::expected<PolkadotExtrinsicMetadata,
+                                               std::string> extrinsic_metadata);
 
   void OnEstimatedFee(GetFeeEstimateCallback callback,
                       base::expected<uint128_t, std::string> partial_fee);

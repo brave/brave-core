@@ -109,14 +109,23 @@ void PolkadotTxManager::ApproveTransaction(
 void PolkadotTxManager::OnApprovePolkadotTransaction(
     std::unique_ptr<PolkadotTxMeta> tx_meta,
     ApproveTransactionCallback callback,
-    base::expected<std::string, std::string> tx_hash) {
+    base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
+                   std::string> tx_hash_metadata_pair) {
   CHECK(tx_meta);
-  if (!tx_hash.has_value()) {
+
+  if (!tx_hash_metadata_pair.has_value()) {
     tx_meta->set_status(mojom::TransactionStatus::Error);
   } else {
+    const auto& [tx_hash, extrinsic_metadata] = tx_hash_metadata_pair.value();
+
     tx_meta->set_status(mojom::TransactionStatus::Submitted);
     tx_meta->set_submitted_time(base::Time::Now());
-    tx_meta->set_tx_hash(tx_hash.value());
+    tx_meta->set_tx_hash(tx_hash);
+
+    auto* tx = tx_meta->tx();
+    CHECK(tx);
+
+    tx->set_extrinsic_metadata(extrinsic_metadata);
   }
 
   if (!tx_state_manager().AddOrUpdateTx(*tx_meta)) {
@@ -127,12 +136,12 @@ void PolkadotTxManager::OnApprovePolkadotTransaction(
         WalletInternalErrorMessage());
   }
 
-  if (!tx_hash.has_value()) {
+  if (!tx_hash_metadata_pair.has_value()) {
     return std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewPolkadotProviderError(
             mojom::PolkadotProviderError::kInternalError),
-        tx_hash.error());
+        tx_hash_metadata_pair.error());
   }
 
   UpdatePendingTransactions(tx_meta->chain_id());
@@ -141,7 +150,7 @@ void PolkadotTxManager::OnApprovePolkadotTransaction(
       true,
       mojom::ProviderErrorUnion::NewPolkadotProviderError(
           mojom::PolkadotProviderError::kSuccess),
-      tx_hash.value());
+      tx_meta->tx_hash());
 }
 
 void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
