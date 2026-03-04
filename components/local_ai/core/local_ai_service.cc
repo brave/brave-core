@@ -56,19 +56,21 @@ void LocalAIService::GetPassageEmbedder(GetPassageEmbedderCallback callback) {
   }
 }
 
+void LocalAIService::NotifyPassageEmbedderIdle() {
+  DVLOG(3) << "LocalAIService: PassageEmbedder idle";
+  CloseBackgroundContents();
+}
+
 void LocalAIService::OnBackgroundContentsDestroyed(
     BackgroundWebContents::DestroyReason reason) {
   DVLOG(1) << "LocalAIService: Background contents destroyed";
-  factory_.reset();
-  CancelPendingCallbacks();
   CloseBackgroundContents();
 }
 
 void LocalAIService::Shutdown() {
   DVLOG(3) << "LocalAIService: Shutting down";
   receivers_.Clear();
-  factory_.reset();
-  CancelPendingCallbacks();
+  weak_ptr_factory_.InvalidateWeakPtrs();
   CloseBackgroundContents();
 }
 
@@ -83,6 +85,8 @@ void LocalAIService::MaybeCreateBackgroundContents() {
 
 void LocalAIService::CloseBackgroundContents() {
   DVLOG(3) << "LocalAIService: Closing background contents to free memory";
+  factory_.reset();
+  CancelPendingCallbacks();
   background_web_contents_.reset();
 }
 
