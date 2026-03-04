@@ -16,12 +16,22 @@ import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewOutlineProvider;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -52,12 +62,17 @@ import org.chromium.chrome.browser.tab.TabFavicon;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
+import org.chromium.components.version_info.BraveVersionConstants;
+import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
+import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatCategoryItem;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import java.util.ArrayList;
@@ -378,7 +393,7 @@ public class BraveUnifiedPanelHandler {
         }
 
         if (mReportBrokenSiteButton != null) {
-            mReportBrokenSiteButton.setOnClickListener(v -> onReportBrokenSiteClicked());
+            mReportBrokenSiteButton.setOnClickListener(v -> showReportBrokenSitePanel());
         }
 
         mAdvancedOptionsButton.setOnClickListener(v -> toggleAdvancedOptions());
@@ -571,11 +586,247 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
-    private void onReportBrokenSiteClicked() {
-        showReportBrokenSitePanel();
+    private void showReportBrokenSitePanel() {
+        if (mMainPanelContainer == null || mReportBrokenSitePanelContainer == null) {
+            return;
+        }
+
+        setupReportBrokenSitePanel();
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mReportBrokenSitePanelContainer.setVisibility(View.VISIBLE);
     }
 
-    private void showReportBrokenSitePanel() {}
+    private void setupReportBrokenSitePanel() {
+        if (mReportBrokenSitePanelContainer == null || mContext == null) {
+            return;
+        }
+
+        View panel;
+        if (mReportBrokenSitePanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mReportBrokenSitePanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                panel = scrollView.getChildAt(0);
+            } else {
+                return;
+            }
+        } else {
+            panel = mReportBrokenSitePanelContainer;
+        }
+
+        ImageView backButton = panel.findViewById(R.id.report_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        TextView siteDomainText = panel.findViewById(R.id.report_site_domain);
+        if (siteDomainText != null && mUrl != null) {
+            siteDomainText.setText(
+                    UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(mUrl));
+        }
+
+        ImageView siteFavicon = panel.findViewById(R.id.report_site_favicon);
+        if (siteFavicon != null && mCurrentTab != null) {
+            Bitmap tabFavicon = TabFavicon.getBitmap(mCurrentTab);
+            if (tabFavicon == null && mUrl != null) {
+                FaviconHelper.DefaultFaviconHelper helper =
+                        new FaviconHelper.DefaultFaviconHelper();
+                tabFavicon =
+                        helper.getDefaultFaviconBitmap(
+                                mContext,
+                                mUrl,
+                                /* useDarkIcon= */ true,
+                                /* useIncognitoNtpIcon= */ false);
+            }
+            if (tabFavicon != null) {
+                siteFavicon.setImageBitmap(tabFavicon);
+            }
+        }
+
+        TextView descLearnMore = panel.findViewById(R.id.report_description_learn_more);
+        if (descLearnMore != null && mContext != null) {
+            String descText = mContext.getString(R.string.report_broken_site_panel_desc2);
+            String learnMoreText = mContext.getString(R.string.learn_more);
+            String fullText = descText + learnMoreText + ".";
+            SpannableString spannable = new SpannableString(fullText);
+            int learnMoreStart = descText.length();
+            int learnMoreEnd = learnMoreStart + learnMoreText.length();
+            spannable.setSpan(
+                    new ForegroundColorSpan(mContext.getColor(R.color.schemes_primary)),
+                    learnMoreStart,
+                    learnMoreEnd,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(
+                    new ClickableSpan() {
+                        @Override
+                        public void onClick(View widget) {
+                            if (mCurrentTab != null) {
+                                mCurrentTab.loadUrl(
+                                        new LoadUrlParams(
+                                                "https://community.brave.com/t/broken-site-report/"));
+                                hide();
+                            }
+                        }
+
+                        @Override
+                        public void updateDrawState(TextPaint ds) {
+                            super.updateDrawState(ds);
+                            ds.setUnderlineText(false);
+                        }
+                    },
+                    learnMoreStart,
+                    learnMoreEnd,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            descLearnMore.setText(spannable);
+            descLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+
+        mReportCategoryDropdown = panel.findViewById(R.id.report_category_dropdown);
+        mSelectedReportCategory = null;
+
+        mReportDetailsInput = panel.findViewById(R.id.report_details_input);
+        mReportContactInput = panel.findViewById(R.id.report_contact_input);
+
+        mReportScreenshotCheckbox = panel.findViewById(R.id.report_screenshot_checkbox);
+        LinearLayout screenshotRow = panel.findViewById(R.id.report_screenshot_row);
+        if (screenshotRow != null && mReportScreenshotCheckbox != null) {
+            CheckBox checkbox = mReportScreenshotCheckbox;
+            screenshotRow.setOnClickListener(
+                    v -> {
+                        checkbox.setChecked(!checkbox.isChecked());
+                        handleScreenshotCheckboxChanged(checkbox.isChecked());
+                    });
+        }
+
+        if (mWebcompatReporterHandler == null && mProfile != null) {
+            mWebcompatReporterHandler =
+                    WebcompatReporterServiceFactory.getInstance()
+                            .getWebcompatReporterHandler(mProfile, null);
+        }
+
+        if (mWebcompatReporterHandler != null && mReportContactInput != null) {
+            final TextInputEditText contactInput = mReportContactInput;
+            mWebcompatReporterHandler.getBrowserParams(
+                    (contactInfo, contactInfoSaveFlag, components) -> {
+                        if (contactInfo != null && !contactInfo.isEmpty()) {
+                            contactInput.setText(contactInfo);
+                        }
+                    });
+        }
+
+        if (mWebcompatReporterHandler != null
+                && mReportCategoryDropdown != null
+                && mContext != null) {
+            final AutoCompleteTextView dropdown = mReportCategoryDropdown;
+            mWebcompatReporterHandler.getWebcompatCategories(
+                    (categories) -> {
+                        if (categories == null || categories.length == 0 || mContext == null) {
+                            return;
+                        }
+                        List<String> displayNames = new ArrayList<>();
+                        List<String> categoryValues = new ArrayList<>();
+                        for (WebcompatCategoryItem cat : categories) {
+                            displayNames.add(cat.localizedTitle);
+                            categoryValues.add(cat.value);
+                        }
+                        ArrayAdapter<String> adapter =
+                                new ArrayAdapter<>(
+                                        mContext,
+                                        android.R.layout.simple_dropdown_item_1line,
+                                        displayNames);
+                        dropdown.setAdapter(adapter);
+                        dropdown.setOnItemClickListener(
+                                (parent, view, position, id) -> {
+                                    if (position >= 0 && position < categoryValues.size()) {
+                                        mSelectedReportCategory = categoryValues.get(position);
+                                    }
+                                });
+                    });
+        }
+
+        View cancelButton = panel.findViewById(R.id.report_cancel_button);
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        View submitButton = panel.findViewById(R.id.report_submit_button);
+        if (submitButton != null) {
+            submitButton.setOnClickListener(v -> submitBrokenSiteReport());
+        }
+    }
+
+    private void handleScreenshotCheckboxChanged(boolean isChecked) {
+        if (!isChecked) {
+            mReportScreenshotBytes = null;
+            return;
+        }
+
+        if (mContext == null) {
+            return;
+        }
+
+        mReportScreenshotBytes = null;
+        BraveShieldsScreenshotUtil screenshotUtil =
+                new BraveShieldsScreenshotUtil(
+                        mContext,
+                        (byte[] pngBytes) -> {
+                            if (pngBytes != null && pngBytes.length > 0) {
+                                mReportScreenshotBytes = pngBytes;
+                            }
+                            if (mReportScreenshotCheckbox != null) {
+                                mReportScreenshotCheckbox.setEnabled(true);
+                            }
+                        });
+        if (mReportScreenshotCheckbox != null) {
+            mReportScreenshotCheckbox.setEnabled(false);
+        }
+        screenshotUtil.capture();
+    }
+
+    private void submitBrokenSiteReport() {
+        if (mWebcompatReporterHandler == null || mUrl == null) {
+            return;
+        }
+
+        ReportInfo reportInfo = new ReportInfo();
+        reportInfo.channel = BraveVersionConstants.CHANNEL;
+        reportInfo.braveVersion = BraveVersionConstants.VERSION;
+        reportInfo.reportUrl =
+                Uri.parse(mUrl.getSpec())
+                        .buildUpon()
+                        .clearQuery()
+                        .fragment(null)
+                        .build()
+                        .toString();
+
+        if (mSelectedReportCategory != null) {
+            reportInfo.category = mSelectedReportCategory;
+        }
+        if (mReportDetailsInput != null && mReportDetailsInput.getText() != null) {
+            reportInfo.details = mReportDetailsInput.getText().toString();
+        }
+        if (mReportContactInput != null && mReportContactInput.getText() != null) {
+            reportInfo.contact = mReportContactInput.getText().toString();
+        }
+
+        if (mReportScreenshotCheckbox != null
+                && mReportScreenshotCheckbox.isChecked()
+                && mReportScreenshotBytes != null
+                && mReportScreenshotBytes.length > 0) {
+            reportInfo.screenshotPng = mReportScreenshotBytes;
+        }
+
+        mWebcompatReporterHandler.submitWebcompatReport(reportInfo);
+
+        if (mContext != null) {
+            Toast.makeText(
+                            mContext,
+                            mContext.getString(R.string.report_broken_site_panel_submitted),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+        showMainPanel();
+    }
 
     private void onBlockScriptsChanged(boolean isChecked) {
         if (mIsUpdatingSwitches || mUrl == null || mProfile == null) {
