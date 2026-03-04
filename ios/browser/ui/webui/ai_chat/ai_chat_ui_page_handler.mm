@@ -325,7 +325,7 @@ void AIChatUIPageHandler::CloseUI() {
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
-  std::move(callback).Run(ai_chat_tab_helper_ == nullptr);
+  std::move(callback).Run(true);  // Always run in standalone mode on iOS
 
   chat_ui_->OnNewDefaultConversation(
       ai_chat_tab_helper_
