@@ -22,6 +22,7 @@
 #include "components/search_engines/search_engine_utils.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 namespace serp_metrics {
@@ -131,10 +132,14 @@ void SerpMetricsTabHelper::DidFinishNavigation(
 
   const GURL& url = navigation_handle->GetURL();
 
-  if (!IsSameSearchQuery(url)) {
-    // Any navigation that doesn't match the previous search engine results page
-    // should reset it along with any user initiated navigation (omnibox,
-    // bookmarks, etc...) whether it matches or not.
+  const bool is_back_forward_navigation =
+      navigation_handle->GetPageTransition() & ui::PAGE_TRANSITION_FORWARD_BACK;
+
+  if (is_back_forward_navigation || !IsSameSearchQuery(url)) {
+    // Back/forward navigations always reset the last recorded SERP URL so that
+    // returning to a search page via history is counted as a new search. For
+    // all other navigations, reset when the URL doesn't match the previous
+    // search engine results page.
     last_recorded_serp_url_.reset();
   }
 
