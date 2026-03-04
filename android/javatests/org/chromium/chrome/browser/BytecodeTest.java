@@ -2579,10 +2579,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "mDeferredNativeRunnables"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                         "mAutocompleteCoordinator"));
         Assert.assertTrue(
                 fieldExists(
