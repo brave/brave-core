@@ -50,6 +50,7 @@ void ComponentInstaller::Register(
                                                // Regexes
           "bjbcblmdcnggnibecjikpoljcgkbgphl",  // WASM TTS Engine
           "ninodabcejpeglfjbkhdplaoglpcbffj",  // Actor Safety Lists
+          "pficcddpglkpaaihklmahepgjmefdnom",  // Captcha Provider
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
