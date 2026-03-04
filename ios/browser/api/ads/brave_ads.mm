@@ -36,7 +36,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
@@ -110,7 +109,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @end
 
 @interface BraveAds () <AdsClientBridge> {
-  std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
   std::unique_ptr<brave_ads::HttpClient> httpClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
@@ -154,8 +152,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
     [self initObservers];
 
-    adsClientNotifier = std::make_unique<brave_ads::AdsClientNotifier>();
-
     ProfileIOS* profile = [self getLastUsedProfile];
     CHECK(profile);
     virtualPrefProvider = std::make_unique<brave_ads::VirtualPrefProvider>(
@@ -184,13 +180,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   httpClient.reset();
 
-  [self deallocAdsClientNotifier];
-
   [self cleanupAdsService];
-}
-
-- (void)deallocAdsClientNotifier {
-  adsClientNotifier.reset();
 }
 
 - (void)cleanupAdsService {
@@ -204,8 +194,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (BOOL)isServiceRunning {
-  return adsClientNotifier != nil && adsService != nil &&
-         adsService->IsInitialized();
+  return adsService != nil && adsService->IsInitialized();
 }
 
 - (BOOL)shouldShowSponsoredImagesAndVideosSetting {
@@ -1630,47 +1619,47 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 #pragma mark - Ads client notifier
 
 - (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->AddObserver(observer);
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->AddObserver(observer);
   }
 }
 
 - (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->RemoveObserver(observer);
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->RemoveObserver(observer);
   }
 }
 
 - (void)notifyPendingObservers {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyPendingObservers();
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyPendingObservers();
   }
 }
 
 - (void)notifyDidInitializeAds {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyDidInitializeAds();
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyDidInitializeAds();
   }
 }
 
 - (void)notifyPrefDidChange:(const std::string&)path {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyPrefDidChange(path);
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyPrefDidChange(path);
   }
 }
 
 - (void)notifyResourceComponentDidChange:(NSString*)manifest_version
                                       id:(NSString*)id {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyResourceComponentDidChange(
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyResourceComponentDidChange(
         base::SysNSStringToUTF8(manifest_version), base::SysNSStringToUTF8(id));
   }
 }
 
 - (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
                           base64Seed:(NSString*)base64Seed {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyRewardsWalletDidUpdate(
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyRewardsWalletDidUpdate(
         base::SysNSStringToUTF8(paymentId),
         base::SysNSStringToUTF8(base64Seed));
   }
@@ -1679,40 +1668,38 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)notifyTabTextContentDidChange:(NSInteger)tabId
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  text:(NSString*)text {
-  if (adsClientNotifier == nil) {
+  if (!adsService) {
     return;
   }
 
   const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
-  adsClientNotifier->NotifyTabTextContentDidChange(
-      static_cast<int32_t>(tabId), urls, base::SysNSStringToUTF8(text));
+  adsService->NotifyTabTextContentDidChange(static_cast<int32_t>(tabId), urls,
+                                            base::SysNSStringToUTF8(text));
 }
 
 - (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  html:(NSString*)html {
-  if (adsClientNotifier == nil) {
+  if (!adsService) {
     return;
   }
 
   const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
-  adsClientNotifier->NotifyTabHtmlContentDidChange(
-      static_cast<int32_t>(tabId), urls, base::SysNSStringToUTF8(html));
+  adsService->NotifyTabHtmlContentDidChange(static_cast<int32_t>(tabId), urls,
+                                            base::SysNSStringToUTF8(html));
 }
 
 - (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyTabDidStartPlayingMedia(
-        static_cast<int32_t>(tabId));
+  if (adsService) {
+    adsService->NotifyTabDidStartPlayingMedia(static_cast<int32_t>(tabId));
   }
 }
 
 - (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyTabDidStopPlayingMedia(
-        static_cast<int32_t>(tabId));
+  if (adsService) {
+    adsService->NotifyTabDidStopPlayingMedia(static_cast<int32_t>(tabId));
   }
 }
 
@@ -1721,7 +1708,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
            isNewNavigation:(BOOL)isNewNavigation
                isRestoring:(BOOL)isRestoring
                 isSelected:(BOOL)isSelected {
-  if (adsClientNotifier == nil) {
+  if (!adsService) {
     return;
   }
 
@@ -1729,48 +1716,47 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   const bool isVisible = isSelected && [self isBrowserActive];
 
-  adsClientNotifier->NotifyTabDidChange(static_cast<int32_t>(tabId), urls,
-                                        isNewNavigation, isRestoring,
-                                        isVisible);
+  adsService->NotifyTabDidChange(static_cast<int32_t>(tabId), urls,
+                                 isNewNavigation, isRestoring, isVisible);
 }
 
 - (void)notifyTabDidLoad:(NSInteger)tabId
           httpStatusCode:(NSInteger)httpStatusCode {
-  if (adsClientNotifier == nil) {
+  if (!adsService) {
     return;
   }
 
-  adsClientNotifier->NotifyTabDidLoad(static_cast<int32_t>(tabId),
-                                      static_cast<int32_t>(httpStatusCode));
+  adsService->NotifyTabDidLoad(static_cast<int32_t>(tabId),
+                               static_cast<int32_t>(httpStatusCode));
 }
 
 - (void)notifyDidCloseTab:(NSInteger)tabId {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyDidCloseTab(static_cast<int32_t>(tabId));
+  if (adsService) {
+    adsService->NotifyDidCloseTab(static_cast<int32_t>(tabId));
   }
 }
 
 - (void)notifyBrowserDidEnterForeground {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyBrowserDidEnterForeground();
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyBrowserDidEnterForeground();
   }
 }
 
 - (void)notifyBrowserDidEnterBackground {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyBrowserDidEnterBackground();
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyBrowserDidEnterBackground();
   }
 }
 
 - (void)notifyBrowserDidBecomeActive {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyBrowserDidBecomeActive();
+  if (adsService) {
+    adsService->NotifyBrowserDidBecomeActive();
   }
 }
 
 - (void)notifyBrowserDidResignActive {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyBrowserDidResignActive();
+  if (adsService) {
+    adsService->NotifyBrowserDidResignActive();
   }
 }
 

@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 
 class PrefService;
@@ -33,6 +34,8 @@ class NewTabPageAdPrefetcher;
 class AdsServiceImplIOS : public AdsService {
  public:
   explicit AdsServiceImplIOS(PrefService* prefs);
+
+  AdsClientNotifier* GetAdsClientNotifier();
 
   AdsServiceImplIOS(const AdsServiceImplIOS&) = delete;
   AdsServiceImplIOS& operator=(const AdsServiceImplIOS&) = delete;
@@ -174,6 +177,8 @@ class AdsServiceImplIOS : public AdsService {
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
   OnceClosureTaskQueue task_queue_;
+
+  std::unique_ptr<AdsClientNotifier> ads_client_notifier_;
 
   base::FilePath storage_path_;
   std::unique_ptr<AdsClient> ads_client_;
