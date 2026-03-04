@@ -8,6 +8,10 @@
 
 #include "build/build_config.h"
 
+namespace base {
+class DictValue;
+}  // namespace base
+
 #if BUILDFLAG(IS_WIN)
 // To avoid conflicts with the macro from the Windows SDK...
 #undef GetUserName
@@ -17,9 +21,11 @@
   BraveMigrateObsoleteProfileAttributes(); \
   void MigrateObsoleteProfileAttributes
 
-#define RecordAccountNamesMetric              \
-  RecordAccountNamesMetric_UnUsed() {}        \
-  friend class ProfileAttributeMigrationTest; \
+#define RecordAccountNamesMetric                     \
+  RecordAccountNamesMetric_UnUsed() {}               \
+  const base::DictValue* GetSerpMetrics() const;     \
+  void SetSerpMetrics(base::DictValue serp_metrics); \
+  friend class ProfileAttributeMigrationTest;        \
   void RecordAccountNamesMetric
 
 #include <chrome/browser/profiles/profile_attributes_entry.h>  // IWYU pragma: export

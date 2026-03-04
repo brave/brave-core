@@ -4,12 +4,19 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("serp_metrics") {
-  public = [ "serp_metrics_tab_helper.h" ]
+  public = [
+    "serp_metrics_tab_helper.h",
+    "serp_metrics_time_period_store.h",
+  ]
 
-  sources = [ "serp_metrics_tab_helper.cc" ]
+  sources = [
+    "serp_metrics_tab_helper.cc",
+    "serp_metrics_time_period_store.cc",
+  ]
 
   public_deps = [
     "//base",
+    "//brave/components/time_period_storage",
     "//components/search_engines",
     "//content/public/browser",
   ]
@@ -22,6 +29,7 @@ static_library("serp_metrics") {
     "//brave/components/serp_metrics:features",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_util",
     "//chrome/browser/search_engines",
     "//components/prefs",
     "//net",
@@ -64,4 +72,20 @@ source_set("browser_tests") {
   }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "serp_metrics_time_period_store_unittest.cc" ]
+
+  deps = [
+    ":serp_metrics",
+    "//base",
+    "//chrome/browser/profiles:profile_util",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }
