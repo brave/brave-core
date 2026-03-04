@@ -41,6 +41,18 @@ class CardanoProviderScriptHandler: TabContentScript {
     enum Method: String, Decodable {
       case enable
       case isEnabled
+      // CIP-30 API methods
+      case getNetworkId
+      case getUsedAddresses
+      case getUnusedAddresses
+      case getChangeAddress
+      case getRewardAddresses
+      case getUtxos
+      case getBalance
+      case signTx
+      case signData
+      case submitTx
+      case getCollateral
     }
 
     var method: Method
@@ -50,6 +62,34 @@ class CardanoProviderScriptHandler: TabContentScript {
       case method
       case args
     }
+  }
+
+  private struct GetUtxosArgs: Decodable {
+    struct Paginate: Decodable {
+      var page: Int32
+      var limit: Int32
+    }
+
+    var amount: String?
+    var paginate: Paginate?
+  }
+
+  private struct SignDataArgs: Decodable {
+    var addr: String
+    var payload: String
+  }
+
+  private struct SignTxArgs: Decodable {
+    var tx: String
+    var partialSign: Bool
+  }
+
+  private struct CollateralArgs: Decodable {
+    var amount: String
+  }
+
+  private struct SubmitTxArgs: Decodable {
+    var tx: String
   }
 
   func tab(
@@ -96,6 +136,106 @@ class CardanoProviderScriptHandler: TabContentScript {
         }
       case .isEnabled:
         await isEnabled(tab: tab, replyHandler: replyHandler)
+      // CIP-30 API methods - require API to be enabled first
+      case .getNetworkId:
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.networkId()
+        }
+      case .getUsedAddresses:
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.usedAddresses()
+        }
+      case .getUnusedAddresses:
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.unusedAddresses()
+        }
+      case .getChangeAddress:
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.changeAddress()
+        }
+      case .getRewardAddresses:
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.rewardAddresses()
+        }
+      case .getUtxos:
+        let argsData = body.args.data(using: .utf8) ?? Data()
+        let args = try? JSONDecoder().decode(GetUtxosArgs.self, from: argsData)
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          let amount: String? = args?.amount
+          let paginate: BraveWallet.CardanoProviderPagination? =
+            args?.paginate.map { paginate in
+              BraveWallet.CardanoProviderPagination(
+                page: paginate.page,
+                limit: paginate.limit
+              )
+            }
+          return await api.utxos(amount: amount, paginate: paginate)
+        }
+      case .getBalance:
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.balance()
+        }
+      case .signTx:
+        let argsData = body.args.data(using: .utf8) ?? Data()
+        guard let args = try? JSONDecoder().decode(SignTxArgs.self, from: argsData) else {
+          replyHandler(
+            nil,
+            buildErrorJson(
+              code: Int32(BraveWallet.CardanoProviderError.internalError.rawValue),
+              errorMessage: "Invalid arguments for signTx"
+            )
+          )
+          return
+        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.signTx(txCbor: args.tx, partialSign: args.partialSign)
+        }
+      case .signData:
+        let argsData = body.args.data(using: .utf8) ?? Data()
+        guard let args = try? JSONDecoder().decode(SignDataArgs.self, from: argsData) else {
+          replyHandler(
+            nil,
+            buildErrorJson(
+              code: Int32(BraveWallet.CardanoProviderError.internalError.rawValue),
+              errorMessage: "Invalid arguments for signData"
+            )
+          )
+          return
+        }
+
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.signData(address: args.addr, payloadHex: args.payload)
+        }
+      case .submitTx:
+        let argsData = body.args.data(using: .utf8) ?? Data()
+        guard let args = try? JSONDecoder().decode(SubmitTxArgs.self, from: argsData) else {
+          replyHandler(
+            nil,
+            buildErrorJson(
+              code: Int32(BraveWallet.CardanoProviderError.internalError.rawValue),
+              errorMessage: "Invalid arguments for submitTx"
+            )
+          )
+          return
+        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.submitTx(signedTxCbor: args.tx)
+        }
+      case .getCollateral:
+        let argsData = body.args.data(using: .utf8) ?? Data()
+        guard let args = try? JSONDecoder().decode(CollateralArgs.self, from: argsData) else {
+          replyHandler(
+            nil,
+            buildErrorJson(
+              code: Int32(BraveWallet.CardanoProviderError.internalError.rawValue),
+              errorMessage: "Invalid arguments for getCollateral"
+            )
+          )
+          return
+        }
+        await callApiMethod(tab: tab, replyHandler: replyHandler) { api in
+          await api.collateral(amount: args.amount)
+        }
       }
     }
   }
@@ -107,7 +247,7 @@ class CardanoProviderScriptHandler: TabContentScript {
       return (
         nil,
         buildErrorJson(
-          status: .internalError,
+          code: Int32(BraveWallet.CardanoProviderError.internalError.rawValue),
           errorMessage: Strings.Wallet.internalErrorMessage
         )
       )
@@ -121,7 +261,11 @@ class CardanoProviderScriptHandler: TabContentScript {
           Logger.module.error("Cardano: Enable failed - \(error.errorMessage)")
           continuation.resume(
             returning: (
-              nil, self.buildErrorJson(status: .internalError, errorMessage: error.errorMessage)
+              nil,
+              self.buildErrorJson(
+                code: error.code,
+                errorMessage: error.errorMessage
+              )
             )
           )
           return
@@ -135,7 +279,13 @@ class CardanoProviderScriptHandler: TabContentScript {
         } else {
           Logger.module.error("Cardano: Enable returned nil API with no error")
           continuation.resume(
-            returning: (nil, self.buildErrorJson(status: .unknown, errorMessage: "No API returned"))
+            returning: (
+              nil,
+              self.buildErrorJson(
+                code: Int32(BraveWallet.CardanoProviderError.unknown.rawValue),
+                errorMessage: "No API returned"
+              )
+            )
           )
         }
       }
@@ -157,14 +307,72 @@ class CardanoProviderScriptHandler: TabContentScript {
   }
 
   private func buildErrorJson(
-    status: BraveWallet.CardanoProviderError,
+    code: Int32,
     errorMessage: String
   ) -> String? {
     JSONSerialization.jsObject(
       withNative: [
-        Keys.code.rawValue: status.rawValue,
+        Keys.code.rawValue: code,
         Keys.info.rawValue: errorMessage,
       ] as [String: Any]
     )
+  }
+
+  /// Helper method to call API methods with error handling
+  @MainActor private func callApiMethod<T>(
+    tab: some TabState,
+    replyHandler: @escaping (Any?, String?) -> Void,
+    method: @escaping (BraveWalletCardanoApi) async -> (T?, BraveWallet.CardanoProviderErrorBundle?)
+  ) async {
+    guard let api = tab.walletCardanoApi else {
+      Logger.module.error("Cardano: API is nil - must call enable() first")
+      replyHandler(
+        nil,
+        buildErrorJson(
+          code: Int32(BraveWallet.CardanoProviderError.internalError.rawValue),
+          errorMessage: "Not enabled - call enable() first"
+        )
+      )
+      return
+    }
+
+    let (result, error) = await method(api)
+
+    if let error = error {
+      Logger.module.error("Cardano: API call failed - \(error.errorMessage)")
+      replyHandler(
+        nil,
+        buildErrorJson(
+          code: error.code,
+          errorMessage: error.errorMessage
+        )
+      )
+      return
+    }
+
+    if let result = result {
+      // Check if result is a BaseValue dictionary (from signData)
+      if let dictResult = result as? [String: BaseValue] {
+        // Convert BaseValue dictionary to String dictionary
+        var stringDicResult: [String: String] = [:]
+        for (key, value) in dictResult {
+          if let stringValue = value.stringValue {
+            stringDicResult[key] = stringValue
+          }
+        }
+        replyHandler(stringDicResult, nil)
+      } else {
+        // For all other types (String, [String], Int32), pass directly
+        replyHandler(result, nil)
+      }
+    } else {
+      replyHandler(
+        nil,
+        buildErrorJson(
+          code: Int32(BraveWallet.CardanoProviderError.unknown.rawValue),
+          errorMessage: "No result returned"
+        )
+      )
+    }
   }
 }
