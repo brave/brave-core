@@ -211,7 +211,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getLayoutManagerSupplier(),
                         /* menuOrKeyboardActionController= */ this,
                         this::getActivityThemeColor,
-                        getModalDialogManagerSupplier(),
+                        getModalDialogManagerSupplier().asNonNull(),
                         /* appMenuBlocker= */ this,
                         this::supportsAppMenu,
                         this::supportsFindInPage,
