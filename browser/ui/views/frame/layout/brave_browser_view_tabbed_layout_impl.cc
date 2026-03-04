@@ -158,6 +158,34 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     }
   }
 
+  // Mirroring all views that affected by vertical tab alignment in RTL mode
+  // as vertical tab/sidebar follow user's setting for their alignment.
+  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  contents_layout->bounds =
+      views().browser_view->GetMirroredRect(contents_layout->bounds);
+  if (auto* bookmark_layout = layout.GetLayoutFor(views().bookmark_bar)) {
+    bookmark_layout->bounds =
+        views().browser_view->GetMirroredRect(bookmark_layout->bounds);
+  }
+  if (auto* infobar_layout = layout.GetLayoutFor(views().infobar_container)) {
+    infobar_layout->bounds =
+        views().browser_view->GetMirroredRect(infobar_layout->bounds);
+  }
+  if (auto* sidebar_layout = layout.GetLayoutFor(views().sidebar_container)) {
+    sidebar_layout->bounds =
+        views().browser_view->GetMirroredRect(sidebar_layout->bounds);
+  }
+  if (auto* sidebar_separator_layout =
+          layout.GetLayoutFor(views().sidebar_separator)) {
+    sidebar_separator_layout->bounds =
+        views().browser_view->GetMirroredRect(sidebar_separator_layout->bounds);
+  }
+  if (auto* vertical_tab_host_layout =
+          layout.GetLayoutFor(views().vertical_tab_strip_host)) {
+    vertical_tab_host_layout->bounds =
+        views().browser_view->GetMirroredRect(vertical_tab_host_layout->bounds);
+  }
+
   return layout;
 }
 
@@ -350,19 +378,12 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   }
 
   // Apply the updated contents bounds via ProposedLayout.
+  contents_layout->bounds = contents_bounds;
 
-  // Set mirrored rect so we'll see that the sidebar alignment follows its own
-  // settings order.
-  contents_layout->bounds =
-      views().browser_view->GetMirroredRect(contents_bounds);
-
-  // Update sidebar bounds via ProposedLayout.
-  const gfx::Rect mirrored_sidebar_bounds =
-      views().browser_view->GetMirroredRect(sidebar_bounds);
   // This is Brave specific view so the layout shouldn't be populated by
   // upstream's logic.
   CHECK(views().sidebar_container);
-  layout.AddChild(views().sidebar_container, mirrored_sidebar_bounds);
+  layout.AddChild(views().sidebar_container, sidebar_bounds);
 
   // Sidebar separator bounds/visibility via ProposedLayout. The separator could
   // be null when IsBraveWebViewRoundedCornersEnabled() is false.
@@ -375,9 +396,8 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
       layout.AddChild(views().sidebar_separator, gfx::Rect(),
                       /*visibility=*/false);
     } else {
-      layout.AddChild(views().sidebar_separator,
-                      views().browser_view->GetMirroredRect(separator_bounds),
-                      /*visibility=*/true);
+      layout.AddChild(views().sidebar_separator, separator_bounds,
+                      /*visibility=*/false);
     }
   }
 }

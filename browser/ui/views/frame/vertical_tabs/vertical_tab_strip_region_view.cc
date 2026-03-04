@@ -407,6 +407,9 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
+  // As we follow user's choice for vertical tab alignment,
+  // we don't need to mirror this view.
+  SetMirrored(false);
   SetNotifyEnterExitOnChild(true);
 
   // The default state is kExpanded, so reset animation state to 1.0.
