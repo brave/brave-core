@@ -206,7 +206,8 @@ void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
     for (const auto& descendant_id : *descendants) {
       const tabs::TreeTabNode* node_to_update = GetNode(descendant_id);
       if (!node_to_update) {
-        // The node didn't have any descendants, so we can just remove its entry
+        // Descendant no longer in model (already removed); clean up its cache
+        // entry
         closest_collapsed_ancestor_.erase(descendant_id);
         continue;
       }
