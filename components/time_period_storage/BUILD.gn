@@ -11,8 +11,11 @@ static_library("time_period_storage") {
     "iso_weekly_storage.h",
     "monthly_storage.cc",
     "monthly_storage.h",
+    "pref_time_period_store.cc",
+    "pref_time_period_store.h",
     "time_period_storage.cc",
     "time_period_storage.h",
+    "time_period_store.h",
     "weekly_event_storage.cc",
     "weekly_event_storage.h",
     "weekly_storage.cc",
@@ -30,6 +33,7 @@ source_set("unit_tests") {
 
   sources = [
     "daily_storage_unittest.cc",
+    "pref_time_period_store_unittest.cc",
     "time_period_storage_unittest.cc",
     "weekly_event_storage_unittest.cc",
   ]
@@ -39,6 +43,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//components/prefs:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
