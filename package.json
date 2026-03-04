@@ -180,7 +180,7 @@
     "sass-loader": "10.4.1",
     "semver": "7.6.2",
     "sinon": "7.5.0",
-    "storybook": "8.6.15",
+    "storybook": "8.6.17",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
     "style-loader": "2.0.0",
@@ -248,6 +248,7 @@
     "esbuild": "0.25.0",
     "js-yaml": "4.1.1",
     "prismjs": "1.30.0",
+    "serialize-javascript": "7.0.3",
     "tiny-secp256k1": "1.1.7"
   }
 }
