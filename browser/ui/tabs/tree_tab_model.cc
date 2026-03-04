@@ -44,7 +44,12 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
   }
   node->set_collapsed(collapsed);
 
+  if (!node->height()) {
+    return;
+  }
+
   if (collapsed) {
+    // When collapsed, mark descendants as belonging to the collapsed node.
     std::vector<tree_tab::TreeTabNodeId> descendant_ids;
     node->CollectUncollapseDescendantIds(descendant_ids);
     for (const auto& desc_id : descendant_ids) {
@@ -52,6 +57,9 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
       descendant_ids_by_collapsed_ancestor_[id].insert(desc_id);
     }
   } else {
+    // When uncollapsed, descendants pointing to this node as their closest
+    // collapsed ancestor are invalidated, so we need to recompute the closest
+    // collapsed ancestor for each descendant.
     auto* descendants =
         base::FindOrNull(descendant_ids_by_collapsed_ancestor_, id);
     if (!descendants) {
@@ -59,8 +67,12 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
     }
 
     std::set<tree_tab::TreeTabNodeId> to_recompute = std::move(*descendants);
+
+    // This node is no longer a collapsed ancestor, so remove its entry from the
+    // cache.
     descendant_ids_by_collapsed_ancestor_.erase(id);
 
+    // Recompute the closest collapsed ancestor for each descendant.
     for (const auto& node_id : to_recompute) {
       const tabs::TreeTabNode* node_to_recompute = GetNode(node_id);
       if (!node_to_recompute) {
