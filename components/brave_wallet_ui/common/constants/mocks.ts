@@ -206,6 +206,34 @@ export const mockBtcMainnetNetwork: BraveWallet.NetworkInfo = {
   supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
 }
 
+export const mockZecMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: BraveWallet.Z_CASH_MAINNET,
+  chainName: 'Zcash Mainnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://zec-mainnet.wallet.brave.com/' }],
+  blockExplorerUrls: ['https://3xpl.com/zcash/transaction'],
+  symbol: 'ZEC',
+  symbolName: 'Zcash',
+  decimals: 8,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.ZEC,
+  supportedKeyrings: [BraveWallet.KeyringId.kZCashMainnet],
+}
+
+export const mockZecTestnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: BraveWallet.Z_CASH_TESTNET,
+  chainName: 'Zcash Testnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://zec-testnet.wallet.brave.com/' }],
+  blockExplorerUrls: ['https://blockexplorer.one/zcash/testnet/tx'],
+  symbol: 'ZEC',
+  symbolName: 'Zcash',
+  decimals: 8,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.ZEC,
+  supportedKeyrings: [BraveWallet.KeyringId.kZCashTestnet],
+}
+
 export const mockAccount: BraveWallet.AccountInfo = {
   name: 'mockAccountName',
   address: '0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0',
