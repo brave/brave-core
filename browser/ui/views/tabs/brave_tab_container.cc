@@ -215,12 +215,6 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
 
   if (tab_count) {
-    if (Tab* last_tab = tabs_view_model_.view_at(tab_count - 1);
-        last_tab->group().has_value() &&
-        !controller_->IsGroupCollapsed(*last_tab->group())) {
-      height += BraveTabGroupHeader::kPaddingForGroup;
-    }
-
     height += tabs::kMarginForVerticalTabContainers;
   }
 
