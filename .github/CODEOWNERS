@@ -40,27 +40,6 @@ components/brave_rewards/core/engine/util/signer.h @brave/sec-team
 components/brave_rewards/core/engine/util/request_signer.cc @brave/sec-team
 components/brave_rewards/core/engine/util/request_signer.h @brave/sec-team
 
-# Ads
-browser/brave_ads/**/*.cc @brave/ads-client
-browser/brave_ads/**/*.h @brave/ads-client
-browser/brave_ads/**/*.java @brave/ads-client
-browser/brave_ads/**/*.mm @brave/ads-client
-browser/ui/brave_ads/**/*.cc @brave/ads-client
-browser/ui/brave_ads/**/*.h @brave/ads-client
-browser/ui/brave_ads/**/*.mm @brave/ads-client
-components/brave_ads/**/*.cc @brave/ads-client
-components/brave_ads/**/*.h @brave/ads-client
-components/brave_ads/**/*.mm @brave/ads-client
-components/services/bat_ads/**/*.cc @brave/ads-client
-components/services/bat_ads/**/*.h @brave/ads-client
-components/services/bat_ads/**/*.mm @brave/ads-client
-brave/components/brave_ads/core/internal/privacy/**/*.cc @brave/ads-client
-brave/components/brave_ads/core/internal/privacy/**/*.h @brave/ads-client
-brave/components/brave_ads/core/internal/privacy/**/*.mm @brave/ads-client
-brave/components/brave_ads/core/internal/security/**/*.cc @brave/ads-client
-brave/components/brave_ads/core/internal/security/**/*.h @brave/ads-client
-brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
-
 # Network
 browser/net/ @brave/brave-core-owners
 chromium_src/chrome/browser/net/profile_network_context_service.cc @brave/sec-team
