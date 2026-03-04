@@ -59,6 +59,10 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
       return "polkadot_mainnet";
     case mojom::KeyringId::kPolkadotTestnet:
       return "polkadot_testnet";
+    case mojom::KeyringId::kPolkadotImport:
+      return "polkadot_import";
+    case mojom::KeyringId::kPolkadotImportTestnet:
+      return "polkadot_import_testnet";
   }
   NOTREACHED();
 }
