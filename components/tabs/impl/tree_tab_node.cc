@@ -47,10 +47,6 @@ TreeTabNode::GetClosestCollapsedAncestorId() const {
   return std::nullopt;
 }
 
-bool TreeTabNode::IsUnderCollapsedAncestor() const {
-  return GetClosestCollapsedAncestorId().has_value();
-}
-
 void TreeTabNode::CollectDescendantIds(
     std::vector<tree_tab::TreeTabNodeId>& out) {
   for (const auto& child : collection_->GetTreeNodeChildren()) {

@@ -51,10 +51,6 @@ class TreeTabNode {
   // no ancestor is collapsed.
   std::optional<tree_tab::TreeTabNodeId> GetClosestCollapsedAncestorId() const;
 
-  // Returns true if any ancestor of this node is collapsed (so this node's
-  // tab should be hidden).
-  bool IsUnderCollapsedAncestor() const;
-
   // Appends the ids of all descendant tree tab nodes to |out|. Requires
   // non-const because it uses GetTreeNodeChildren() on the collection.
   void CollectDescendantIds(std::vector<tree_tab::TreeTabNodeId>& out);
