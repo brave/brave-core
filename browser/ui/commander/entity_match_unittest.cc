@@ -20,7 +20,6 @@
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "chrome/test/base/ui_test_utils.h"
 
 namespace commander {
 
@@ -28,7 +27,7 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
  public:
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
-    ui_test_utils::DeprecatedFakeActivateBrowser(browser());
+    BrowserList::GetInstance()->SetLastActive(browser());
   }
 
   // Creates and returns a browser with `title` as its user title.
@@ -41,7 +40,7 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
                                  true);
     auto browser = CreateBrowserWithTestWindowForParams(params);
     browser->SetWindowUserTitle(title);
-    ui_test_utils::DeprecatedFakeActivateBrowser(browser.get());
+    BrowserList::GetInstance()->SetLastActive(browser.get());
     return browser;
   }
 };
@@ -113,7 +112,7 @@ TEST_F(CommanderEntityMatchTest, WindowMRUOrderWithNoInput) {
   std::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
   EXPECT_EQ(matches.at(0).browser, browser2.get());
 
-  ui_test_utils::DeprecatedFakeActivateBrowser(browser1.get());
+  BrowserList::GetInstance()->SetLastActive(browser1.get());
   // Activating browser 1 should have brought it to the top.
   matches = WindowsMatchingInput(browser(), u"", true);
   ASSERT_EQ(matches.size(), 2u);
