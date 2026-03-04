@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 
 assert(!is_android)
@@ -15,11 +16,18 @@ transpile_web_ui("resources") {
   resource_name = "brave_new_tab_page_refresh"
   imports_from = [
     "//brave/browser/resources/brave_new_tab_page_refresh/",
+    "//brave/components/ai_chat/resources/",
     "//brave/components/brave_news/browser/resources/",
     "//brave/components/brave_rewards/resources/",
   ]
   deps = [
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
+
+    # Unconditional for gn check as typescript cannnot yet conditionally import
+    # during typecheck.
+    # TODO(https://github.com/brave/brave-browser/issues/53190): remove when
+    # fixed.
+    "//brave/components/ai_chat/core/common/mojom:mojom_js",
     "//brave/components/brave_ads/core/mojom:mojom_js",
     "//brave/components/brave_news/common:mojom_js",
     "//brave/components/brave_rewards/core/mojom:webui_js",

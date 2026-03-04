@@ -13,6 +13,7 @@ export function createSearchStore() {
 
     searchFeatureEnabled: true,
 
+    showChatInput: true,
     showSearchBox: true,
 
     searchSuggestionsEnabled: false,
@@ -109,6 +110,10 @@ export function createSearchStore() {
           },
         ],
       })
+    },
+
+    setShowChatInput(showChatInput) {
+      store.update({ showChatInput })
     },
 
     stopAutocomplete() {

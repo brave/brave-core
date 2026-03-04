@@ -648,6 +648,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables Conversation API V2 for AI Chat",                           \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-show-input-on-new-tab-page",                          \
+          "Show AI Chat input on the New Tab Page",                            \
+          "Show a Brave AI chat input on the New Tab Page.",                   \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(ai_chat::features::kShowAIChatInputOnNewTabPage), \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES

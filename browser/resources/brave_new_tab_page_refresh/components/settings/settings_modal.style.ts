@@ -60,19 +60,31 @@ style.passthrough.css`
     padding: 6px;
   }
 
-  .control-row {
+
+  .control-row,
+  .toggle-row {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 24px;
     border-bottom: solid 1px ${color.divider.subtle};
 
-    label {
+    label, .label {
       flex: 1 1 auto;
     }
 
     &:last-child {
       border-bottom: none;
     }
+  }
+
+  .toggle-row {
+    --leo-toggle-label-flex-direction: row-reverse;
+    /* Reset flex since it stops the label from growing. Remove when
+       we have converted all the rows to have their label and controls combined
+       (see uses of .toggle-row)
+       https://github.com/brave/brave-browser/issues/53357
+    */
+    display: block;
   }
 `

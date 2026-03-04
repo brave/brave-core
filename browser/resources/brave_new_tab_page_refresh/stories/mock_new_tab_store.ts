@@ -11,6 +11,7 @@ export function createNewTabStore() {
     initialized: true,
     showClock: true,
     showShieldsStats: true,
+
     shieldsStats: {
       adsBlocked: 3245,
       bandwidthSavedBytes: 1024 * 1024,
@@ -18,6 +19,7 @@ export function createNewTabStore() {
     showTalkWidget: true,
     talkFeatureEnabled: true,
     newsFeatureEnabled: false,
+    aiChatInputEnabled: true,
   })
 
   const actions: NewTabActions = {

@@ -90,6 +90,9 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void GetShowSearchBox(GetShowSearchBoxCallback callback) override;
   void SetShowSearchBox(bool show_search_box,
                         SetShowSearchBoxCallback callback) override;
+  void GetShowChatInput(GetShowChatInputCallback callback) override;
+  void SetShowChatInput(bool show_chat_input,
+                        SetShowChatInputCallback callback) override;
   void GetSearchSuggestionsEnabled(
       GetSearchSuggestionsEnabledCallback callback) override;
   void SetSearchSuggestionsEnabled(
