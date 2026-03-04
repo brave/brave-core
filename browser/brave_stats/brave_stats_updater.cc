@@ -40,10 +40,13 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engine_type.h"
+#include "components/search_engines/template_url_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -73,15 +76,6 @@ static constexpr int kUpdateServerStartupPingDelaySeconds = 3;
 // today.
 static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 5 * 60;
 
-GURL GetUpdateURL(
-    const GURL& base_update_url,
-    const brave_stats::BraveStatsUpdaterParams& stats_updater_params) {
-  return stats_updater_params.GetUpdateURL(
-      base_update_url, brave_stats::GetPlatformIdentifier(),
-      brave::GetChannelName(),
-      version_info::GetBraveVersionWithoutChromiumMajorVersion());
-}
-
 net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
   return net::DefineNetworkTrafficAnnotation("brave_stats_updater", R"(
     semantics {
@@ -104,7 +98,7 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
     })");
 }
 
-serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
+Profile* GetInitialOrLastUsedRegularProfile(ProfileManager* profile_manager) {
   if (!profile_manager) {
     // `profile_manager` can only be null in tests.
     CHECK_IS_TEST();
@@ -123,8 +117,47 @@ serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
     // TODO(https://github.com/brave/brave-browser/issues/52492): Migrate SERP
     // metrics to profile attributes and remove temporary invariant checks.
     DUMP_WILL_BE_CHECK(profile);
+  }
+
+  return profile;
+}
+
+std::string GetDefaultSearchEngine(ProfileManager* profile_manager) {
+  Profile* profile = GetInitialOrLastUsedRegularProfile(profile_manager);
+  if (!profile) {
+    return std::string();
+  }
+  CHECK(profile->IsRegularProfile());
+
+  const TemplateURLService* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  CHECK(template_url_service);
+
+  const TemplateURL* default_search_provider =
+      template_url_service->GetDefaultSearchProvider();
+  if (!default_search_provider) {
+    return std::string();
+  }
+
+  const SearchEngineType default_search_engine_type =
+      default_search_provider->GetEngineType(
+          template_url_service->search_terms_data());
+  switch (default_search_engine_type) {
+    case SEARCH_ENGINE_BRAVE:
+      return "Brave";
+    case SEARCH_ENGINE_GOOGLE:
+      return "Google";
+    default:
+      return "Other";
+  }
+}
+
+serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
+  Profile* profile = GetInitialOrLastUsedRegularProfile(profile_manager);
+  if (!profile) {
     return nullptr;
   }
+  CHECK(profile->IsRegularProfile());
 
   misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
@@ -132,6 +165,17 @@ serp_metrics::SerpMetrics* GetSerpMetrics(ProfileManager* profile_manager) {
   CHECK(profile_misc_metrics_service);
 
   return profile_misc_metrics_service->GetSerpMetrics();
+}
+
+GURL GetUpdateURL(
+    const GURL& base_update_url,
+    const brave_stats::BraveStatsUpdaterParams& stats_updater_params,
+    ProfileManager* profile_manager) {
+  return stats_updater_params.GetUpdateURL(
+      base_update_url, brave_stats::GetPlatformIdentifier(),
+      brave::GetChannelName(),
+      version_info::GetBraveVersionWithoutChromiumMajorVersion(),
+      GetDefaultSearchEngine(profile_manager));
 }
 
 }  // anonymous namespace
@@ -336,7 +380,8 @@ void BraveStatsUpdater::SendServerPing() {
       std::make_unique<brave_stats::BraveStatsUpdaterParams>(
           pref_service_, GetSerpMetrics(profile_manager_));
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
-  resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
+  resource_request->url =
+      GetUpdateURL(endpoint, *stats_updater_params, profile_manager_);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
                                  net::LOAD_BYPASS_CACHE |

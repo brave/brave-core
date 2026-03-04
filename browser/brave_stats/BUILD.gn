@@ -44,9 +44,11 @@ source_set("brave_stats") {
     "//chrome/browser:browser_process",
     "//chrome/browser/headless",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/common",
     "//components/prefs",
+    "//components/search_engines",
     "//net",
     "//services/network/public/cpp",
   ]
