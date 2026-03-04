@@ -33,7 +33,8 @@ enum class Action {
   kDuckDuckGo = 7,
   kQwant = 8,
   kStartpage = 9,
-  kOther = 10,
+  kBrave = 10,
+  kOther = 11,
   kMaxValue = kOther,
 };
 

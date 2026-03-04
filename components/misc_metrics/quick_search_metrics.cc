@@ -36,6 +36,7 @@ constexpr auto kActionKeys = base::MakeFixedFlatMap<Action, const char*>({
     {Action::kDuckDuckGo, "duckduckgo"},
     {Action::kQwant, "qwant"},
     {Action::kStartpage, "startpage"},
+    {Action::kBrave, "brave"},
     {Action::kOther, "other"},
 });
 
@@ -49,6 +50,7 @@ constexpr auto kKeywordToAction =
         {":dl", Action::kDuckDuckGo},
         {":q", Action::kQwant},
         {":sp", Action::kStartpage},
+        {":br", Action::kBrave},
     });
 
 }  // namespace
