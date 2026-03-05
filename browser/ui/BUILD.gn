@@ -1471,6 +1471,9 @@ source_set("ui") {
       "//brave/components/containers/core/common",
       "//brave/components/containers/core/mojom",
     ]
+
+    public_deps +=
+        [ "//brave/components/containers/content/browser:tab_restore" ]
   }
 }
 
