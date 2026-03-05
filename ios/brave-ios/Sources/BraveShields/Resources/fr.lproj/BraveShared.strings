@@ -2,7 +2,7 @@
 "AddCustomFilterListDescription" = "Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.";
 
 /* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Inscrivez-vous uniquement aux listes des entités auxquelles vous faites confiance**. Votre navigateur vérifiera régulièrement les mises à jour de liste à partir de l'URL que vous saisissez.";
+"AddCustomFilterListWarning" = "**Inscrivez-vous uniquement aux listes des entités auxquelles vous faites confiance**. Votre navigateur vérifiera régulièrement les mises à jour de liste à partir de l’URL que vous saisissez.";
 
 /* A title within a cell where a user can navigate to an add screen. */
 "AddFilterByURL" = "Ajouter un filtre par URL";
@@ -14,10 +14,10 @@
 "AntiAdBlockWarningConfirmationButton" = "Ajuster les boucliers pour moi";
 
 /* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie qu'il peut ne pas fonctionner correctement.";
+"AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie qu’il peut ne pas fonctionner correctement.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Brave peut ajuster vos paramètres de boucliers pour vous. Une fois qu'ils seront ajustés, vous pourrez essayer de regarder ce contenu dans le lecteur Brave.";
+"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Brave peut ajuster vos paramètres de boucliers pour vous. Une fois qu’ils seront ajustés, vous pourrez essayer de regarder ce contenu dans le lecteur Brave.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Conserver les paramètres actuels";
@@ -101,7 +101,7 @@
 "DomainBlockedPageMessage" = "Brave a empêché le site suivant de charger :";
 
 /* A title in the warning page that appears when a page was blocked */
-"DomainBlockedPageTitle" = "Ce site risque de vous pister lorsque vous consultez d'autres sites";
+"DomainBlockedPageTitle" = "Ce site risque de vous pister lorsque vous consultez d’autres sites";
 
 /* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
 "DomainBlockedProceedAction" = "Continuer";
@@ -119,7 +119,7 @@
 "ExternalFilterLists" = "Listes de filtres externes";
 
 /* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "L'URL saisie n'est pas valide";
+"FilterListAddInvalidURLError" = "L’URL saisie n’est pas valide";
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "Seules les URL sécurisées (HTTPS) sont autorisées pour les listes de filtres personnalisés";
@@ -128,7 +128,7 @@
 "FilterListsAdd" = "Ajouter";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l'activation d'un trop grand nombre de filtres risque de ralentir le chargement des pages.";
+"FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l’activation d’un trop grand nombre de filtres risque de ralentir le chargement des pages.";
 
 /* This is a generic error message when downloading a filter list fails. */
 "FilterListsDownloadFailed" = "Échec du téléchargement";
@@ -146,7 +146,7 @@
 "FilterListsLastUpdatedLabel" = "Dernière mise à jour %@";
 
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Saisissez l'URL de la liste de filtres ici";
+"FilterListURLTextFieldPlaceholder" = "Saisissez l’URL de la liste de filtres ici";
 
 /* A description of what the forget me toggle does */
 "ForgetMeDescription" = "Efface les cookies et autres données de site lorsque vous fermez un site";

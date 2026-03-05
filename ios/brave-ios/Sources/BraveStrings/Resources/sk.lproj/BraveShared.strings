@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Zrušiť registráciu";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Emailová adresa";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Začať";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Prepáčte, niečo sa pokazilo";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Súbor s kontaktom sa nepodarilo prečítať. Môže byť poškodený alebo v nepodporovanom formáte.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Nedá sa otvoriť kontakt";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Verzia %1$@ (%2$@)";

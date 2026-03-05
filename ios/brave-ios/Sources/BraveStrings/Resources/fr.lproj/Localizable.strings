@@ -2,16 +2,16 @@
 "altAppIcon.braveIconsHeader" = "Icônes Brave";
 
 /* The title for the screen that lets the user select a custom app icon */
-"altAppIcon.changeAppIcon" = "Changer l'icône de l'application";
+"altAppIcon.changeAppIcon" = "Changer l’icône de l’application";
 
 /* A label shown next to the default Brave app icon */
 "altAppIcon.defaultAppIcon" = "Par défaut";
 
 /* A title shown if some sort of error occurs while changing the app icon */
-"altAppIcon.errorTitle" = "Impossible de changer l'icône de l'application";
+"altAppIcon.errorTitle" = "Impossible de changer l’icône de l’application";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Retour en arrière";
+"BackTitle" = "Retour";
 
 /* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
 "BraveTranslate.availableVoiceOverAnnouncement" = "Traduction de la page disponible";
@@ -20,13 +20,13 @@
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Fermer tous les onglets";
 
 /* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseTabFromTabTrayKeyCodeTitle" = "Fermer l'onglet sélectionné";
+"CloseTabFromTabTrayKeyCodeTitle" = "Fermer l’onglet sélectionné";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "CloseTabTitle" = "Fermer l'onglet";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Rétablir";
+"ForwardTitle" = "Avancer";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nouvel onglet de navigation privée";
@@ -44,7 +44,7 @@
 "OpenNewTabFromTabTrayKeyCodeTitle" = "Ouvrir dans un nouvel onglet";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Ouvrir l'onglet sélectionné";
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Ouvrir l’onglet sélectionné";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Vous avez déjà acheté un abonnement sur brave.com ?";
@@ -71,7 +71,7 @@
 "paywall.redeemPromoCodeButtonTitle" = "Utiliser le code promo";
 
 /* Button action text for refreshing credentials from brave site. */
-"paywall.refreshCredentialsButtonTitle" = "Changer d'identifiant";
+"paywall.refreshCredentialsButtonTitle" = "Changer d’identifiant";
 
 /* Text shown above buttons that give the user the option to choose a checkout option */
 "paywall.startTrialSubtitle" = "Choisissez votre mode de paiement :";
@@ -80,7 +80,7 @@
 "paywall.startTrialTitle" = "Commencez votre essai gratuit de 7 jours";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
-"RecentlyClosedTabTitle" = "Rouvrir l'onglet fermé";
+"RecentlyClosedTabTitle" = "Rouvrir l’onglet fermé";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Recharger la page";
@@ -92,7 +92,7 @@
 "searchResultAdClickedInfoBarMessage" = "Merci de soutenir le moteur de recherche Brave en cliquant sur une annonce privée. Contrairement aux grandes entreprises de la tech, nous mesurons les performances des annonces de manière anonyme pour préserver votre vie privée.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Sélectionner la barre d'emplacement";
+"SelectLocationBarTitle" = "Sélectionner la barre d’emplacement";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "Masquer les raccourcis";
@@ -104,10 +104,10 @@
 "showBookmarksTitle" = "Afficher les favoris";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowNextTabTitle" = "Afficher l'onglet suivant";
+"ShowNextTabTitle" = "Afficher l’onglet suivant";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowPreviousTabTitle" = "Afficher l'onglet précédent";
+"ShowPreviousTabTitle" = "Afficher l’onglet précédent";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
 "showShieldsTitle" = "Ouvrir le panneau des boucliers Brave";
@@ -116,7 +116,7 @@
 "ShowTabTrayFromTabKeyCodeTitle" = "Afficher tous les onglets";
 
 /* The title of the label that shows the Application Version */
-"storekitReceiptViewer.applicationVersionTitle" = "Version de l'application";
+"storekitReceiptViewer.applicationVersionTitle" = "Version de l’application";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
 "storekitReceiptViewer.leoMonthlySubscriptionName" = "Abonnement mensuel à Leo";
@@ -131,10 +131,10 @@
 "storekitReceiptViewer.receiptCancellationDate" = "Date de résiliation";
 
 /* The title of the label that shows the date the receipt was created */
-"storekitReceiptViewer.receiptDateTitle" = "Date d'émission de la facture";
+"storekitReceiptViewer.receiptDateTitle" = "Date d’émission de la facture";
 
 /* The title of the label that shows the date when the product subscription expired */
-"storekitReceiptViewer.receiptExpirationDate" = "Date d'expiration";
+"storekitReceiptViewer.receiptExpirationDate" = "Date d’expiration";
 
 /* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
 "storekitReceiptViewer.receiptInvalidDate" = "S.O.";
@@ -146,10 +146,10 @@
 "storekitReceiptViewer.receiptOrderIDTitle" = "Référence de la commande";
 
 /* The title of the label that shows the date when the product subscription was first purchased */
-"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Date d'achat initiale";
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Date d’achat initiale";
 
 /* The title of the label that shows the date when the product subscription was recently purchased or renewed */
-"storekitReceiptViewer.receiptPurchaseDate" = "Date d'achat";
+"storekitReceiptViewer.receiptPurchaseDate" = "Date d’achat";
 
 /* The title of the label that shows the Transaction ID of the user's purchase */
 "storekitReceiptViewer.receiptTransactionIDTitle" = "Référence de la transaction";

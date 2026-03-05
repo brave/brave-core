@@ -1,5 +1,5 @@
 /* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
-"CredentialProvider.authenticationReason" = "Authentifier l'accès à vos mots de passe";
+"CredentialProvider.authenticationReason" = "Authentifier l’accès à vos mots de passe";
 
 /* A title for a button shown to a user to authenticate themselves to display their passwords */
 "CredentialProvider.authenticationUnlockButtonTitle" = "Déverrouiller";
@@ -38,7 +38,7 @@
 "CredentialProvider.onboardingViewFootnote" = "Pour obtenir vos mots de passe plus rapidement, désélectionnez iCloud Keychain";
 
 /* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
-"CredentialProvider.onboardingViewSubtitle" = "Vous pouvez utiliser les mots de passe enregistrés dans d'autres applications sur votre appareil";
+"CredentialProvider.onboardingViewSubtitle" = "Vous pouvez utiliser les mots de passe enregistrés dans d’autres applications sur votre appareil";
 
 /* The title on a screen shown when the user turns on Brave as a password autofill provider */
 "CredentialProvider.onboardingViewTitle" = "La saisie automatique est activée";
@@ -56,7 +56,7 @@
 "CredentialProvider.searchEmptyResults" = "Aucun résultat pour « %@ »";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"CredentialProvider.setPasscodeAlertMessage" = "Pour accéder à vos mots de passe, vous devez d'abord définir un code d'accès sur votre appareil.";
+"CredentialProvider.setPasscodeAlertMessage" = "Pour accéder à vos mots de passe, vous devez d’abord définir un code d’accès sur votre appareil.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "CredentialProvider.setPasscodeAlertTitle" = "Définir un code d'accès";
