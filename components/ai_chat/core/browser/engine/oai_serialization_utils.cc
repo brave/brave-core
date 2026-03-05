@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
@@ -37,6 +38,31 @@ base::DictValue ImageContentBlockToDict(const mojom::ImageContentBlock& block) {
   base::DictValue image_url;
   image_url.Set("url", block.image_url.spec());
   return image_url;
+}
+
+void SerializeToolCallsOnMessageDict(const OAIMessage& message,
+                                     base::DictValue& message_dict) {
+  if (!message.tool_calls.empty()) {
+    base::ListValue tool_call_dicts;
+    for (const auto& tool_event : message.tool_calls) {
+      base::DictValue tool_call_dict;
+      tool_call_dict.Set("id", tool_event->id);
+      tool_call_dict.Set("type", "function");
+
+      base::DictValue function_dict;
+      function_dict.Set("name", tool_event->tool_name);
+      function_dict.Set("arguments", tool_event->arguments_json);
+
+      tool_call_dict.Set("function", std::move(function_dict));
+      tool_call_dicts.Append(std::move(tool_call_dict));
+    }
+
+    message_dict.Set("tool_calls", std::move(tool_call_dicts));
+  }
+
+  if (!message.tool_call_id.empty()) {
+    message_dict.Set("tool_call_id", message.tool_call_id);
+  }
 }
 
 }  // namespace ai_chat

@@ -28,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -96,9 +97,10 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
   messages->push_back(BuildOAISeedMessage(
       "Here is the requested rewritten version of the excerpt "
       "in <response> tags:\n<response>"));
-  api_->PerformRequest(
-      model_options_, std::move(*messages), std::move(received_callback),
-      std::move(completed_callback), std::vector<std::string>{"</response>"});
+  api_->PerformRequest(model_options_, std::move(*messages), std::nullopt,
+                       std::move(received_callback),
+                       std::move(completed_callback),
+                       std::vector<std::string>{"</response>"});
 }
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
@@ -113,7 +115,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
       "in <question> tags:\n"));
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_, std::move(messages), std::nullopt, base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -177,7 +179,7 @@ void EngineConsumerOAIRemote::GenerateConversationTitle(
       "<title>"));
 
   api_->PerformRequest(
-      model_options_, std::move(*messages), base::NullCallback(),
+      model_options_, std::move(*messages), std::nullopt, base::NullCallback(),
       base::BindOnce(&EngineConsumerOAIRemote::OnConversationTitleGenerated,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(completed_callback)),
@@ -210,9 +212,9 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   messages.push_back(BuildSystemMessage(conversation_messages));
   std::ranges::move(conversation_messages, std::back_inserter(messages));
 
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(data_received_callback),
-                       std::move(completed_callback));
+  api_->PerformRequest(
+      model_options_, std::move(messages), ToolApiDefinitionsFromTools(tools),
+      std::move(data_received_callback), std::move(completed_callback));
 }
 
 OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
@@ -266,7 +268,7 @@ void EngineConsumerOAIRemote::DedupeTopics(
   auto messages = BuildOAIDedupeTopicsMessages(*topics_result);
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_, std::move(messages), std::nullopt, base::NullCallback(),
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback, GenerationResult result) {
             // Return deduped topics from the response.
@@ -293,7 +295,7 @@ void EngineConsumerOAIRemote::GetSuggestedTopics(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (auto& messages : chunked_messages) {
-    api_->PerformRequest(model_options_, std::move(messages),
+    api_->PerformRequest(model_options_, std::move(messages), std::nullopt,
                          base::NullCallback(), barrier_callback);
   }
 }
@@ -319,7 +321,7 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
           std::move(callback)));
 
   for (auto& messages : chunked_messages) {
-    api_->PerformRequest(model_options_, std::move(messages),
+    api_->PerformRequest(model_options_, std::move(messages), std::nullopt,
                          base::NullCallback(), barrier_callback);
   }
 }

@@ -10,6 +10,7 @@
 // base::DictValue.
 
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace ai_chat {
@@ -24,6 +25,10 @@ base::DictValue FileContentBlockToDict(const mojom::FileContentBlock& block);
 
 // Converts an ImageContentBlock to {"url": ...}.
 base::DictValue ImageContentBlockToDict(const mojom::ImageContentBlock& block);
+
+// Serializes tool_calls and tool_call_id from an OAIMessage onto message_dict.
+void SerializeToolCallsOnMessageDict(const OAIMessage& message,
+                                     base::DictValue& message_dict);
 
 }  // namespace ai_chat
 
