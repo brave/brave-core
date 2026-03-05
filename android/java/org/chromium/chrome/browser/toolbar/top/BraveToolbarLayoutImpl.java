@@ -618,6 +618,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
                         showYouTubePipIcon(tab);
+                        // Reset verified publisher checkmark immediately on tab
+                        // switch. The correct state will be restored asynchronously
+                        // by onFrontTabPublisherChanged once the publisher query
+                        // for the new tab completes.
+                        mIsPublisherVerified = false;
+                        mPublisherId = "";
+                        updateVerifiedPublisherMark();
                         if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
                             mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
