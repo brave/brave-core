@@ -27,10 +27,27 @@ struct PolkadotMockRpc {
   // the RPC calls we want to make.
 
   void UseInvalidChainMetadata();
+  void UseInvalidFinalizedBlockHash();
   void RejectExtrinsicSubmission();
   void RejectAccountInfoRequest();
   void SetSenderPubKey(
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey);
+  void SetFinalizedBlockHeader(std::string_view json_str);
+
+  // Used to map requests for a block hash given a block's number.
+  void SetBlockHashMap(base::flat_map<uint32_t, std::string> block_hash_map);
+
+  // Used to map requests for an entire block given its hash.
+  void SetBlockMap(base::flat_map<std::string, PolkadotBlock> block_map);
+
+  // Used to simulate a network failure request for chain_getBlock. Should match
+  // a key present in block_map_.
+  void SetBadBlockMapKey(std::string bad_block_map_key) {
+    bad_block_map_key_ = bad_block_map_key;
+  }
+
+  // Used to map block hashes to a series of events, as a hex string.
+  void SetEventsMap(base::flat_map<std::string, std::string> events_map);
 
   // Add individual request-response pairs for each phase in the RPC for
   // assembling the signing payload.
@@ -66,13 +83,29 @@ struct PolkadotMockRpc {
   bool HandlePaymentInfoRequest(const network::ResourceRequest& req,
                                 const base::DictValue& req_body);
 
+  bool HandleBlockHashRequest(const network::ResourceRequest& req,
+                              const base::DictValue& req_body);
+
+  bool HandleBlockRequest(const network::ResourceRequest& req,
+                          const base::DictValue& req_body);
+
+  bool HandleEventsRequest(const network::ResourceRequest& req,
+                           const base::DictValue& req_body);
+
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_pubkey_ = {};
   raw_ptr<network::TestURLLoaderFactory> url_loader_factory_ = nullptr;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
   base::flat_map<base::DictValue, std::string_view> req_res_pairs_;
   std::string testnet_url_;
   std::string mainnet_url_;
+  std::string finalized_block_header_json_;
+  base::flat_map<uint32_t, std::string> block_hash_map_;
+  base::flat_map<std::string, PolkadotBlock> block_map_;
+  std::string bad_block_map_key_;
+  base::flat_map<std::string, std::string> events_map_;
+
   bool use_invalid_metadata_ = false;
+  bool use_invalid_finalized_block_hash_ = false;
   bool reject_extrinsic_submission_ = false;
   bool reject_account_info_request_ = false;
 };

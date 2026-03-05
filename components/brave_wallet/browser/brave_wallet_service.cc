@@ -1858,7 +1858,8 @@ void BraveWalletService::GenerateReceiveAddress(
 
   if (account_id->coin == mojom::CoinType::ETH ||
       account_id->coin == mojom::CoinType::SOL ||
-      account_id->coin == mojom::CoinType::FIL) {
+      account_id->coin == mojom::CoinType::FIL ||
+      account_id->coin == mojom::CoinType::DOT) {
     const auto& accounts = keyring_service_->GetAllAccountInfos();
     for (auto& account : accounts) {
       if (account->account_id == account_id) {

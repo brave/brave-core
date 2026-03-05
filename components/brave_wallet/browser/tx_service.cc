@@ -232,6 +232,8 @@ void TxService::AddUnapprovedTransaction(
       << "Wallet UI must use AddUnapprovedZCashTransaction";
   CHECK_NE(from->coin, mojom::CoinType::ADA)
       << "Wallet UI must use AddUnapprovedCardanoTransaction";
+  CHECK_NE(from->coin, mojom::CoinType::DOT)
+      << "Wallet UI must use AddUnapprovedPolkadotTransaction";
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
                                      std::move(from), std::move(swap_info),
                                      std::nullopt, std::move(callback));

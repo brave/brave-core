@@ -11,13 +11,21 @@
 
 namespace brave_wallet {
 
-PolkadotBlockTracker::PolkadotBlockTracker() : weak_factory_(this) {}
+PolkadotBlockTracker::PolkadotBlockTracker(PolkadotSubstrateRpc& polkadot_rpc)
+    : polkadot_rpc_(polkadot_rpc) {}
 
 PolkadotBlockTracker::~PolkadotBlockTracker() = default;
 
 void PolkadotBlockTracker::Start(const std::string& chain_id,
                                  base::TimeDelta interval) {
-  NOTIMPLEMENTED_LOG_ONCE();
+  auto& timer = timers_[chain_id];
+  if (!timer) {
+    timer = std::make_unique<base::RepeatingTimer>();
+  }
+
+  timer->Start(FROM_HERE, interval,
+               base::BindRepeating(&PolkadotBlockTracker::GetLatestBlock,
+                                   weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
 void PolkadotBlockTracker::Stop(const std::string& chain_id) {
@@ -33,7 +41,20 @@ void PolkadotBlockTracker::RemoveObserver(Observer* observer) {
 }
 
 void PolkadotBlockTracker::GetLatestBlock(const std::string& chain_id) {
-  NOTIMPLEMENTED_LOG_ONCE();
+  polkadot_rpc_->GetFinalizedHead(
+      chain_id, base::BindOnce(&PolkadotBlockTracker::OnGetFinalizedHead,
+                               weak_ptr_factory_.GetWeakPtr(), chain_id));
+}
+
+void PolkadotBlockTracker::OnGetFinalizedHead(
+    std::string chain_id,
+    std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> block_hash,
+    std::optional<std::string>) {
+  CHECK(block_hash.has_value());
+
+  for (auto& observer : observers_) {
+    observer.OnLatestBlock(chain_id, 0);
+  }
 }
 
 void PolkadotBlockTracker::OnGetLatestBlock(const std::string& chain_id,

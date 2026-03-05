@@ -7,10 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

@@ -13,13 +13,16 @@
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
+class PolkadotSubstrateRpc;
+
 class PolkadotBlockTracker : public BlockTracker {
  public:
-  PolkadotBlockTracker();
+  explicit PolkadotBlockTracker(PolkadotSubstrateRpc& polkadot_rpc);
   ~PolkadotBlockTracker() override;
 
   PolkadotBlockTracker(const PolkadotBlockTracker&) = delete;
@@ -44,13 +47,19 @@ class PolkadotBlockTracker : public BlockTracker {
 
  private:
   void GetLatestBlock(const std::string& chain_id);
+  void OnGetFinalizedHead(
+      std::string chain_id,
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
+      std::optional<std::string>);
+  void OnGetFinalizedBlockHeader();
   void OnGetLatestBlock(const std::string& chain_id,
                         uint64_t block_num,
                         mojom::ProviderError error,
                         const std::string& error_message);
 
   base::ObserverList<Observer> observers_;
-  base::WeakPtrFactory<PolkadotBlockTracker> weak_factory_{this};
+  raw_ref<PolkadotSubstrateRpc> polkadot_rpc_;
+  base::WeakPtrFactory<PolkadotBlockTracker> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

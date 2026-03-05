@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/notimplemented.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
@@ -34,7 +34,8 @@ PolkadotTxManager::PolkadotTxManager(
     : TxManager(
           std::make_unique<PolkadotTxStateManager>(delegate,
                                                    account_resolver_delegate),
-          std::make_unique<PolkadotBlockTracker>(),
+          std::make_unique<PolkadotBlockTracker>(
+              *polkadot_wallet_service.GetPolkadotRpc()),
           tx_service,
           keyring_service),
       polkadot_wallet_service_(polkadot_wallet_service) {
@@ -281,12 +282,75 @@ mojom::CoinType PolkadotTxManager::GetCoinType() const {
 
 void PolkadotTxManager::UpdatePendingTransactions(
     const std::optional<std::string>& chain_id) {
-  NOTIMPLEMENTED_LOG_ONCE();
+  auto txs = tx_state_manager().GetTransactionsByStatus(
+      chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
+
+  std::set<std::string> pending_chain_ids;
+  for (auto& tx : txs) {
+    auto polkadot_tx =
+        base::WrapUnique(static_cast<PolkadotTxMeta*>(tx.release()));
+    if (!polkadot_tx->tx()) {
+      // Maybe we should treat this as an error?
+      continue;
+    }
+
+    const auto* extrinsic_metadata = polkadot_tx->tx()->extrinsic_metadata();
+    if (!extrinsic_metadata) {
+      continue;
+    }
+
+    pending_chain_ids.insert(polkadot_tx->chain_id());
+
+    auto task_ptr = std::make_unique<PolkadotTransactionStatusTask>(
+        *polkadot_wallet_service_, keyring_service(),
+        polkadot_tx->from()->Clone(), polkadot_tx->chain_id(),
+        extrinsic_metadata->extrinsic(), extrinsic_metadata->block_num(),
+        extrinsic_metadata->mortality_period());
+
+    auto* task = task_ptr.get();
+    polkadot_transaction_status_tasks_.insert(std::move(task_ptr));
+
+    task->Start(base::BindOnce(&PolkadotTxManager::OnUpdatePendingTransactions,
+                               weak_ptr_factory_.GetWeakPtr(), task,
+                               std::move(polkadot_tx)));
+  }
+
+  CheckIfBlockTrackerShouldRun(pending_chain_ids);
+}
+
+void PolkadotTxManager::OnUpdatePendingTransactions(
+    PolkadotTransactionStatusTask* task,
+    std::unique_ptr<PolkadotTxMeta> polkadot_tx,
+    base::expected<std::pair<PolkadotTransactionStatus, uint128_t>, std::string>
+        result) {
+  polkadot_transaction_status_tasks_.erase(task);
+
+  if (!result.has_value()) {
+    return;
+  }
+
+  auto [status, fee_paid] = result.value();
+
+  if (status == PolkadotTransactionStatus::kSuccess) {
+    polkadot_tx->set_status(mojom::TransactionStatus::Approved);
+  } else if (status == PolkadotTransactionStatus::kFailed) {
+    polkadot_tx->set_status(mojom::TransactionStatus::Rejected);
+  } else if (status == PolkadotTransactionStatus::kNotFound) {
+    polkadot_tx->set_status(mojom::TransactionStatus::Dropped);
+  } else {
+    CHECK_EQ(status, PolkadotTransactionStatus::kNotFinalized);
+    return;
+  }
+
+  CHECK(polkadot_tx->tx());
+  polkadot_tx->tx()->set_fee(fee_paid);
+
+  tx_state_manager().AddOrUpdateTx(*polkadot_tx);
 }
 
 void PolkadotTxManager::OnLatestBlock(const std::string& chain_id,
                                       uint64_t block_num) {
-  NOTIMPLEMENTED_LOG_ONCE();
+  UpdatePendingTransactions(chain_id);
 }
 
 void PolkadotTxManager::OnNewBlock(const std::string& chain_id,

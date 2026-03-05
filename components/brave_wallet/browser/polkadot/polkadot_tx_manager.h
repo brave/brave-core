@@ -12,9 +12,11 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -96,6 +98,12 @@ class PolkadotTxManager : public TxManager,
       base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
                      std::string> tx_hash_metadata_pair);
 
+  void OnUpdatePendingTransactions(
+      PolkadotTransactionStatusTask* task,
+      std::unique_ptr<PolkadotTxMeta> polkadot_tx,
+      base::expected<std::pair<PolkadotTransactionStatus, uint128_t>,
+                     std::string>);
+
   // PolkadotBlockTracker::Observer
   void OnLatestBlock(const std::string& chain_id, uint64_t block_num) override;
   void OnNewBlock(const std::string& chain_id, uint64_t block_num) override;
@@ -104,6 +112,8 @@ class PolkadotTxManager : public TxManager,
   PolkadotBlockTracker& GetPolkadotBlockTracker();
 
   raw_ref<PolkadotWalletService> polkadot_wallet_service_;
+  absl::flat_hash_set<std::unique_ptr<PolkadotTransactionStatusTask>>
+      polkadot_transaction_status_tasks_;
 
   base::WeakPtrFactory<PolkadotTxManager> weak_ptr_factory_{this};
 };
