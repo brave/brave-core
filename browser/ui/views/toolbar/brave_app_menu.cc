@@ -13,13 +13,13 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
-#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -27,7 +27,7 @@
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "cc/paint/paint_flags.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
@@ -37,7 +37,8 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/button_menu_item_model.h"
 #include "ui/base/models/menu_model.h"
-#include "ui/gfx/canvas.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/menu/menu_item_view.h"
@@ -89,16 +90,16 @@ class SidebarShowOptionInMenuButton : public views::LabelButton,
                                 int index);
   ~SidebarShowOptionInMenuButton() override = default;
 
-  // views::LabelButton:
-  void PaintButtonContents(gfx::Canvas* canvas) override;
-
   // sidebar::SidebarService::Observer:
   void OnShowSidebarOptionChanged(
       sidebar::SidebarService::ShowSidebarOption option) override;
 
  private:
+  void UpdateBackground();
+
   sidebar::SidebarService::ShowSidebarOption show_option_;
   bool is_active_option_ = false;
+  raw_ptr<BraveAppMenu> app_menu_;
 
   base::ScopedObservation<sidebar::SidebarService,
                           sidebar::SidebarService::Observer>
@@ -116,39 +117,35 @@ SidebarShowOptionInMenuButton::SidebarShowOptionInMenuButton(
                               index),
           model->GetLabelAt(index)),
       show_option_(BraveAppMenuModel::ConvertIDCToSidebarShowOptions(
-          model->GetCommandIdAt(index))) {
+          model->GetCommandIdAt(index))),
+      app_menu_(app_menu) {
   SetFocusBehavior(FocusBehavior::ALWAYS);
-  SetBackground(app_menu->CreateInMenuButtonBackgroundWithLeadingBorder());
 
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(
-      app_menu->browser()->profile());
+      app_menu_->browser()->profile());
   CHECK(service);
 
   sidebar_service_observation_.Observe(service);
   OnShowSidebarOptionChanged(service->GetSidebarShowOption());
 }
 
-void SidebarShowOptionInMenuButton::PaintButtonContents(gfx::Canvas* canvas) {
+void SidebarShowOptionInMenuButton::UpdateBackground() {
   if (is_active_option_) {
-    // Draws highlight if this option is the chosen one.
-    auto* cp = GetColorProvider();
-    CHECK(cp);
-
-    auto bounds = GetLocalBounds();
-    bounds.Inset(2);
-    cc::PaintFlags flags;
-    flags.setColor(cp->GetColor(kColorBraveAppMenuAccentColor));
-    flags.setStyle(cc::PaintFlags::kFill_Style);
-    canvas->DrawRoundRect(bounds, /*radius*/ 2, flags);
+    SetBackground(views::CreateRoundedRectBackground(
+        nala::kColorButtonBackground, gfx::RoundedCornersF(2.0f),
+        gfx::Insets(2)));
+  } else {
+    SetBackground(app_menu_->CreateInMenuButtonBackgroundWithLeadingBorder());
   }
-
-  views::LabelButton::PaintButtonContents(canvas);
 }
 
 void SidebarShowOptionInMenuButton::OnShowSidebarOptionChanged(
     sidebar::SidebarService::ShowSidebarOption option) {
   is_active_option_ = option == show_option_;
-  SchedulePaint();
+  SetEnabledTextColors(is_active_option_ ? std::optional<ui::ColorVariant>(
+                                               nala::kColorSchemesOnPrimary)
+                                         : std::nullopt);
+  UpdateBackground();
 }
 
 BEGIN_METADATA(SidebarShowOptionInMenuButton)

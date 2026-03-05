@@ -455,7 +455,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
 
-  mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0xDF, 0xE1, 0xFF)};
+  mixer[ui::kColorMenuButtonBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -527,7 +527,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.25 * 255)};
 
-  mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0x37, 0x2C, 0xBF)};
+  mixer[ui::kColorMenuButtonBackground] = {SK_ColorTRANSPARENT};
 
 #if defined(TOOLKIT_VIEWS)
   if (!base::FeatureList::IsEnabled(
