@@ -65,7 +65,7 @@ void BraveTabStripModel::SetTreeTabNodeCollapsed(
 
   auto* node = tree_tab_model_->GetNode(id);
   CHECK(node);
-  if (tree_tab_model_->GetNode(id)->collapsed() == collapsed) {
+  if (node->collapsed() == collapsed) {
     return;
   }
 
