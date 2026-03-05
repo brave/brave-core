@@ -20,10 +20,7 @@ import Main from '../components/main'
 import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
-import {
-  UntrustedConversationContext,
-  UntrustedConversationReactContext,
-} from '../../untrusted_conversation_frame/untrusted_conversation_context'
+import UntrustedMockContext from '../../untrusted_conversation_frame/mock_untrusted_conversation_context'
 import ErrorConnection from '../components/alerts/error_connection'
 import ErrorConversationEnd from '../components/alerts/error_conversation_end'
 import ErrorInvalidAPIKey from '../components/alerts/error_invalid_api_key'
@@ -1224,39 +1221,6 @@ function StoryContext(
         : HISTORY
       : []
 
-  // UntrustedConversationContext - still uses context object since not migrated
-  // to createInterfaceApi yet.
-  const conversationEntriesContext: UntrustedConversationContext = {
-    conversationHistory: getConversationHistory(),
-    conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
-    isGenerating: args.isGenerating,
-    isToolExecuting: args.isToolExecuting,
-    toolUseTaskState: Mojom.TaskState[args.toolUseTaskState],
-    isLeoModel: true,
-    contentUsedPercentage: args.shouldShowLongPageWarning ? 48 : 100,
-    visualContentUsedPercentage: args.shouldShowLongVisualContentWarning
-      ? 75
-      : undefined,
-    totalTokens: BigInt(args.totalTokens),
-    trimmedTokens: BigInt(args.trimmedTokens),
-    canSubmitUserEntries: currentError === Mojom.APIError.None,
-    isMobile: args.isMobile,
-    allModels: MODELS,
-    currentModelKey: currentModel?.key ?? '',
-    associatedContent: [getAssociatedContent()],
-    isPremiumUser: args.isPremiumUser,
-    uiHandler: {
-      hasMemory: (memory: string) => {
-        // Return false for the "undone" example to show undone state
-        if (memory === 'Likes cats') {
-          return Promise.resolve({ exists: false })
-        }
-        // Return true for others to show success state
-        return Promise.resolve({ exists: true })
-      },
-    } as unknown as Mojom.UntrustedUIHandlerRemote,
-  }
-
   return (
     <MockContext
       service={{
@@ -1374,11 +1338,50 @@ function StoryContext(
       deps={[...Object.values(args)]}
     >
       <ActiveChatContext.Provider value={activeChatContext}>
-        <UntrustedConversationReactContext.Provider
-          value={conversationEntriesContext}
+        <UntrustedMockContext
+          conversationHandler={{
+            getConversationHistory: () =>
+              Promise.resolve({
+                conversationHistory: getConversationHistory(),
+              }),
+          }}
+          uiHandler={{
+            hasMemory: (memory: string) => {
+              // Return false for the "undone" example to show undone state
+              if (memory === 'Likes cats') {
+                return Promise.resolve({ exists: false })
+              }
+              // Return true for others to show success state
+              return Promise.resolve({ exists: true })
+            },
+          }}
+          initialState={{
+            conversationEntriesState: {
+              isGenerating: args.isGenerating,
+              isToolExecuting: args.isToolExecuting,
+              toolUseTaskState: Mojom.TaskState[args.toolUseTaskState],
+              isLeoModel: true,
+              contentUsedPercentage: args.shouldShowLongPageWarning ? 48 : 100,
+              visualContentUsedPercentage:
+                args.shouldShowLongVisualContentWarning ? 75 : undefined,
+              totalTokens: BigInt(args.totalTokens),
+              trimmedTokens: BigInt(args.trimmedTokens),
+              canSubmitUserEntries: currentError === Mojom.APIError.None,
+              allModels: MODELS,
+              currentModelKey: currentModel?.key ?? '',
+              isPremiumUser: args.isPremiumUser,
+              conversationCapability:
+                Mojom.ConversationCapability.CONTENT_AGENT,
+            },
+          }}
+          overrides={{
+            isMobile: args.isMobile,
+            associatedContent: [getAssociatedContent()],
+          }}
+          deps={[...Object.values(args)]}
         >
           {props.children}
-        </UntrustedConversationReactContext.Provider>
+        </UntrustedMockContext>
       </ActiveChatContext.Provider>
     </MockContext>
   )
