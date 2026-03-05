@@ -6,14 +6,7 @@
 import * as React from 'react'
 import { CSSProperties } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts'
 
 // Types
 import type { TokenPriceHistory } from '../../constants/types'
@@ -121,15 +114,17 @@ export function LineChart({
   const toolTipYPosition =
     activeYPosition < viewBoxHeightHalf ? activeYPosition : activeYPosition - 58
 
+  const showAreaChart = viewBoxWidth > 0 && viewBoxHeight > 0
+  const showLoadingOverlay = !showAreaChart || isLoading
+
   // render
   return (
     <StyledWrapper style={customStyle}>
       <AreaWrapper ref={containerRef}>
-        <ResponsiveContainer
-          width='100%'
-          height='99%'
-        >
+        {showAreaChart && (
           <AreaChart
+            width={viewBoxWidth}
+            height={viewBoxHeight}
             data={chartData}
             margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
           >
@@ -207,9 +202,9 @@ export function LineChart({
               }
             />
           </AreaChart>
-        </ResponsiveContainer>
+        )}
       </AreaWrapper>
-      <LoadingOverlay isLoading={isLoading}>
+      <LoadingOverlay isLoading={showLoadingOverlay}>
         <LoadIcon />
       </LoadingOverlay>
     </StyledWrapper>
