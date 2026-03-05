@@ -30,7 +30,7 @@ class DefaultBrowserMonitor {
   class Observer : public base::CheckedObserver {
    public:
     // Called when the default browser status changes.
-    virtual void OnDefaultBrowserStatusChanged() = 0;
+    virtual void OnDefaultBrowserStatusChanged(bool is_default) = 0;
   };
 
 #if !BUILDFLAG(IS_ANDROID)

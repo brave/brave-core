@@ -29,6 +29,7 @@ constexpr auto kMetricAttributeMap =
         {"dtoi", MetricAttribute::kDateOfInstall},
         {"dtoa", MetricAttribute::kDateOfActivation},
         {"woa", MetricAttribute::kWeekOfActivation},
+        {"is_browser_default", MetricAttribute::kIsBrowserDefault},
     });
 
 bool GetMetricAttribute(const base::Value* value,

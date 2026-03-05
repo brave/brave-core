@@ -34,7 +34,8 @@ enum class MetricAttribute {
   kDateOfInstall,
   kWeekOfActivation,
   kDateOfActivation,
-  kMaxValue = kDateOfActivation,
+  kIsBrowserDefault,
+  kMaxValue = kIsBrowserDefault,
 };
 
 inline constexpr MetricAttribute kDefaultMetricAttributes[] = {

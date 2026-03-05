@@ -348,7 +348,7 @@ void PageMetrics::OnDomainDiversityResult(
   ReportDomainsLoadedWithStatus();
 }
 
-void PageMetrics::OnDefaultBrowserStatusChanged() {
+void PageMetrics::OnDefaultBrowserStatusChanged(bool is_default) {
   ReportDomainsLoadedWithStatus();
 
   if (has_pending_brave_query_) {

@@ -85,6 +85,7 @@ static_library("p3a") {
   } else {
     deps += [
       "//brave/components/brave_referrals/common",
+      "//brave/components/misc_metrics:default_browser_monitor",
       "//content/public/browser",
       "//content/public/common",
     ]
