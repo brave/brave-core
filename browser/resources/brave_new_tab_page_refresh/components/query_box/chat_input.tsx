@@ -98,3 +98,5 @@ export function ChatInput(props: Props) {
     </div>
   )
 }
+
+export default ChatInput

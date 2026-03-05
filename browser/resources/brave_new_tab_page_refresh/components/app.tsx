@@ -7,6 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { SearchBox } from './search/search_box'
+import { QueryBox } from './query_box/query_box'
 import { Background } from './background/background'
 import { BackgroundClickRegion } from './background/background_click_region'
 import { BackgroundCaption } from './background/background_caption'
@@ -17,13 +18,9 @@ import { LazyNewsFeed } from './news/lazy_news_feed'
 import { WidgetStack } from './widgets/widget_stack'
 import { useSearchLayoutReady, useWidgetLayoutReady } from './app_layout_ready'
 import useMediaQuery from '$web-common/useMediaQuery'
+import { useNewTabState } from '../context/new_tab_context'
 
 import { style, threeColumnBreakpoint } from './app.style'
-
-// <if expr="enable_ai_chat">
-import { useNewTabState } from '../context/new_tab_context'
-import { LazyQueryBox } from './query_box/lazy_query_box'
-// </if>
 
 const threeColumnQuery = `(width > ${threeColumnBreakpoint})`
 
@@ -124,11 +121,9 @@ export function App() {
 }
 
 function Search(props: { showSearchSettings: () => void }) {
-  // <if expr="enable_ai_chat">
   const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
   if (aiChatInputEnabled) {
-    return <LazyQueryBox showSearchSettings={props.showSearchSettings} />
+    return <QueryBox showSearchSettings={props.showSearchSettings} />
   }
-  // </if>
   return <SearchBox showSearchSettings={props.showSearchSettings} />
 }

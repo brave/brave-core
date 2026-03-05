@@ -6,47 +6,18 @@
 import * as React from 'react'
 import { useSearchState } from '../../context/search_context'
 import { usePersistedState } from '$web-common/usePersistedState'
-import { ChatInput } from './chat_input'
 import { SearchInput } from './search_input'
 import { QueryModeToggle, QueryMode } from './query_mode_toggle'
+import { MaybeAIChatContext } from '../../context/maybe_ai_chat_context'
 
 import { style } from './query_box.style'
 
-// <if expr="is_storybook">
-import { MockContext as MockAIChatContext } from '../../../../../components/ai_chat/resources/page/state/mock_context'
-// <else>
-import AIChatContext from '../../context/ai_chat_context'
-// </if>
+// ChatInput is lazy loaded to reduce JS bytes when the user has disabled the
+// chat input on the NTP.
+const ChatInput = React.lazy(() => import('./chat_input'))
 
 interface Props {
   showSearchSettings: () => void
-}
-
-/**
- * Don't render AIChatContext, creating mojom bindings and receiving state
- * updates unneccessarily if we're not showing chat input. But do render it
- * even when toggled to search when the AI Chat input is toggleable, so that
- * we preserve any input text.
- */
-function MaybeAIChatContext(
-  props: React.PropsWithChildren<{ shouldRenderContext: boolean }>,
-) {
-  if (!props.shouldRenderContext) {
-    return props.children
-  }
-
-  // Since this is both lazy-loaded and conditionally-loaded, it isn't as easy
-  // as other stores to have the base app provide the correct API classes wired
-  // up to the contexts. But it's easy to import them directly here, and still
-  // ensure the mock contexts don't end up in the regular build.
-  let ContextProvider: (props: React.PropsWithChildren) => JSX.Element
-  // <if expr="is_storybook">
-  ContextProvider = MockAIChatContext
-  // <else>
-  ContextProvider = AIChatContext
-  // </if>
-
-  return <ContextProvider>{props.children}</ContextProvider>
 }
 
 export function QueryBox(props: Props) {
@@ -89,14 +60,16 @@ export function QueryBox(props: Props) {
     <div data-css-scope={style.scope}>
       <div className='query-container'>
         <div className='input-container'>
-          <MaybeAIChatContext shouldRenderContext={showChatInput}>
+          <MaybeAIChatContext>
             {shouldShowSearch() ? (
               <SearchInput
                 showSearchSettings={props.showSearchSettings}
                 renderInputToggle={renderToggle}
               />
             ) : (
-              <ChatInput renderInputToggle={renderToggle} />
+              <React.Suspense>
+                <ChatInput renderInputToggle={renderToggle} />
+              </React.Suspense>
             )}
           </MaybeAIChatContext>
         </div>
@@ -104,5 +77,3 @@ export function QueryBox(props: Props) {
     </div>
   )
 }
-
-export default QueryBox
