@@ -73,9 +73,7 @@ void BraveTabStripModel::SetTreeTabNodeCollapsed(
 
   auto change =
       TreeTabChange(id, TreeTabChange::CollapsedStateChangedChange(*node));
-  for (auto& observer : observers_) {
-    observer.OnTreeTabChanged(change);
-  }
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
 }
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
