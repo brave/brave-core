@@ -294,6 +294,8 @@ export default defineConfig([
     rules: {
       ...importPlugin.flatConfigs.recommended.rules,
 
+      'import/enforce-node-protocol-usage': ['error', 'always'],
+
       // Enforce import resolution for build/commands scripts. When running
       // TypeScript natively via Node.js (no transpilation), imports must use
       // the real file extension. For example, if a file is named config.ts,
@@ -320,6 +322,7 @@ export default defineConfig([
     rules: {
       ...importPlugin.flatConfigs.recommended.rules,
       'import/no-unresolved': 'off',
+      'import/enforce-node-protocol-usage': ['error', 'always'],
     },
   },
 ])
