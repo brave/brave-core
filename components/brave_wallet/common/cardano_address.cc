@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <optional>
 #include <string_view>
+#include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -15,6 +16,7 @@
 #include "base/containers/span_rust.h"
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/lib.rs.h"
@@ -72,7 +74,6 @@ bool IsDelegationOnlyAddressType(CardanoAddress::AddressType address_type) {
 
 }  // namespace
 
-// CardanoAddress::CardanoAddress() = default;
 CardanoAddress::CardanoAddress(std::vector<uint8_t> bytes)
     : bytes_(std::move(bytes)) {}
 
@@ -126,19 +127,22 @@ std::optional<CardanoAddress> CardanoAddress::FromShellyPayload(
     base::span<const uint8_t> payload) {
   CHECK(address_type != AddressType::kByronAddress);
 
-  if (IsPaymentAndDelegationAddressType(address_type) &&
-      payload.size() != 2 * kCardanoKeyHashLength) {
-    return std::nullopt;
-  }
-  if ((IsPaymentOnlyAddressType(address_type) ||
-       IsDelegationOnlyAddressType(address_type)) &&
-      payload.size() != kCardanoKeyHashLength) {
-    return std::nullopt;
-  }
-  // Pointer part has varying length.
-  if (IsPaymentAndPointerAddressType(address_type) &&
-      payload.size() <= kCardanoKeyHashLength) {
-    return std::nullopt;
+  if (IsPaymentAndDelegationAddressType(address_type)) {
+    if (payload.size() != 2 * kCardanoKeyHashLength) {
+      return std::nullopt;
+    }
+  } else if ((IsPaymentOnlyAddressType(address_type) ||
+              IsDelegationOnlyAddressType(address_type))) {
+    if (payload.size() != kCardanoKeyHashLength) {
+      return std::nullopt;
+    }
+  } else if (IsPaymentAndPointerAddressType(address_type)) {
+    // Pointer part has varying length.
+    if (payload.size() <= kCardanoKeyHashLength) {
+      return std::nullopt;
+    }
+  } else {
+    NOTREACHED() << std::to_underlying(address_type);
   }
 
   std::vector<uint8_t> address_bytes(1 + payload.size());

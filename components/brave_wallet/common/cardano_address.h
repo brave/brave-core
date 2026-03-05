@@ -22,7 +22,7 @@ namespace brave_wallet {
 inline constexpr uint32_t kCardanoKeyHashLength = 28;
 
 // Cardano address wrapper based on
-// https://cips.cardano.org/cip/CIP-0019#shelley-addresses
+// https://cips.cardano.org/cip/CIP-0019
 class CardanoAddress {
  public:
   enum class AddressType : uint8_t {
