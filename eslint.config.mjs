@@ -298,6 +298,7 @@ export default defineConfig([
       import: importPlugin,
     },
     rules: {
+      'import/enforce-node-protocol-usage': ['error', 'always'],
       'import/no-unresolved': 'error',
     },
   },

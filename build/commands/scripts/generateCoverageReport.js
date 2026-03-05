@@ -2,10 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { glob, rm } from 'fs/promises'
 import fs from 'fs-extra'
-import utils from '../lib/util.js'
+import { glob, rm } from 'node:fs/promises'
 import config from '../lib/config.js'
+import utils from '../lib/util.js'
 
 const dedupe = (xs) => [...new Set(xs)]
 const getTestBinariesFromRecordingsPath = (outputDir) => {

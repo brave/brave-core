@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import config from './config.js'
-import util from './util.js'
 import Log from './logging.js'
+import util from './util.js'
 
 const genGradle = (
   passthroughArgs,

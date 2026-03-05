@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import config from '../lib/config.js'
-import path from 'path'
 import program from 'commander'
+import path from 'node:path'
+import config from '../lib/config.js'
 import util from '../lib/util.js'
 
 program

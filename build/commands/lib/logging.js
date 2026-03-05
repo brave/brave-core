@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import os from 'os'
 import chalk from 'chalk'
 import logUpdate from 'log-update'
-import { patchApplyReasonMessages, getReasonName } from './gitPatcher.js'
+import os from 'node:os'
 import tsm from 'teamcity-service-messages'
+import { getReasonName, patchApplyReasonMessages } from './gitPatcher.js'
 
 const isTeamcity = process.env.TEAMCITY_VERSION !== undefined
 

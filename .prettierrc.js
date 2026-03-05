@@ -19,6 +19,14 @@ module.exports = {
   'htmlWhitespaceSensitivity': 'css',
   'insertPragma': false,
   'plugins': [],
+  'overrides': [
+    {
+      'files': ['build/commands/**'],
+      'options': {
+        'plugins': ['prettier-plugin-organize-imports'],
+      },
+    },
+  ],
   'printWidth': 80,
   'proseWrap': 'always',
   'requirePragma': false,

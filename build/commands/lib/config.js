@@ -5,13 +5,13 @@
 
 'use strict'
 
-import os from 'os'
-import path from 'path'
-import fs from 'fs'
-import assert from 'assert'
-import rootDir from './rootDir.cjs'
+import assert from 'node:assert'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import EnvConfig from './envConfig.js'
 import Log from './logging.js'
+import rootDir from './rootDir.cjs'
 import util from './util.js'
 
 const braveCoreDir = path.join(rootDir, 'src', 'brave')

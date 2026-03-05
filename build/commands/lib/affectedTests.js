@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { promisify } from 'node:util'
-import { readFile, writeFile } from 'fs/promises'
-import child_process from 'node:child_process'
-import path from 'path'
-import config from './config.js'
 import fs from 'fs-extra'
-import { randomUUID } from 'crypto'
-import { tmpdir } from 'os'
+import child_process from 'node:child_process'
+import { randomUUID } from 'node:crypto'
+import { readFile, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
+import { promisify } from 'node:util'
+import config from './config.js'
 import {
   getApplicableFilters,
   getTestsToRun,

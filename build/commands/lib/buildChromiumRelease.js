@@ -8,13 +8,13 @@
 // Designed to be used on CI, but should work locally too.
 // The script includes syncing; there is no need to run npm run sync before.
 
-import config from './config.js'
-import util from './util.js'
-import path from 'path'
 import fs from 'fs-extra'
+import path from 'node:path'
+import config from './config.js'
 import depotTools from './depotTools.js'
-import syncUtil from './syncUtils.js'
 import Log from './logging.js'
+import syncUtil from './syncUtils.js'
+import util from './util.js'
 
 // Use the same filename as for Brave archive.
 const getOutputFilename = () => {

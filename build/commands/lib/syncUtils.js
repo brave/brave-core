@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import chalk from 'chalk'
+import fs from 'node:fs'
+import path from 'node:path'
 import config from './config.js'
-import fs from 'fs'
-import path from 'path'
 import Log from './logging.js'
 import util from './util.js'
 
