@@ -36,6 +36,11 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
+
+import java.util.Map;
 
 public class BraveLeoPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -219,4 +224,40 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         setModel();
         checkLinkPurchase();
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveLeoPreferences.class.getName(), R.xml.brave_leo_preferences) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, indexData, providerMap);
+                    // brave_main_preferences.xml is not processed by
+                    // MainSettings.SEARCH_INDEX_DATA_PROVIDER, so we add the brave_leo
+                    // entry and child-parent link manually so resolveIndex() does not treat
+                    // BraveLeoPreferences entries as orphans.
+                    indexData.addEntryForKey(
+                            "org.chromium.chrome.browser.settings.MainSettings",
+                            "brave_leo",
+                            R.string.menu_brave_leo,
+                            /* summaryId= */ 0,
+                            BraveLeoPreferences.class.getName());
+                }
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    String frag = BraveLeoPreferences.class.getName();
+                    // Subscription prefs are hidden by default and shown only at runtime based
+                    // on subscription state; exclude them from the search index.
+                    indexData.removeEntryForKey(frag, PREF_LINK_SUBSCRIPTION);
+                    indexData.removeEntryForKey(frag, PREF_MANAGE_SUBSCRIPTION);
+                    indexData.removeEntryForKey(frag, PREF_GO_PREMIUM);
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT_HISTORY)) {
+                        indexData.removeEntryForKey(frag, PREF_HISTORY);
+                    }
+                }
+            };
 }
