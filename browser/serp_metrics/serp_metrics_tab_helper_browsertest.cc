@@ -163,7 +163,8 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
     https_server_ =
         TestHttpsServerBuilder()
             .WithCertHostnames({"www.google.com", "search.brave.com",
-                                "duckduckgo.com", "plugh.xyzzy.com"})
+                                "duckduckgo.com", "www.startpage.com",
+                                "plugh.xyzzy.com"})
             .Build();
     ASSERT_TRUE(https_server_);
     ASSERT_TRUE(https_server_->Start());
@@ -251,6 +252,25 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       GetWebContents(), https_server_->GetURL("duckduckgo.com", "/?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
   EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+                    kOtherSearchEngineTimePeriodStorageDictKey));
+}
+
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
+                       RecordStartpageSearchEngineResultsPage) {
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.startpage.com", "/sp/search"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+                    kOtherSearchEngineTimePeriodStorageDictKey));
+
+  // For Startpage, we cannot determine whether two URLs represent the same
+  // search results page, so these pages are always classified.
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.startpage.com", "/sp/search"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kOtherSearchEngineTimePeriodStorageDictKey));
 }
 

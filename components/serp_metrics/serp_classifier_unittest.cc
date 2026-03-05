@@ -48,7 +48,6 @@ void VerifySerpClassifierExpectation(
 
 TEST(SerpClassifierTest, IsSameSearchQuery) {
   SerpClassifier classifier;
-
   EXPECT_TRUE(classifier.IsSameSearchQuery(
       GURL(R"(https://www.qwant.com/?q=foobar)"),
       GURL(R"(https://www.qwant.com/?q=foobar&t=web)")));
@@ -56,7 +55,6 @@ TEST(SerpClassifierTest, IsSameSearchQuery) {
 
 TEST(SerpClassifierTest, IsSameSearchQueryWithDifferentParamOrder) {
   SerpClassifier classifier;
-
   EXPECT_TRUE(classifier.IsSameSearchQuery(
       GURL(R"(https://www.qwant.com/?q=foobar)"),
       GURL(R"(https://www.qwant.com/?t=web&q=foobar)")));
@@ -64,7 +62,6 @@ TEST(SerpClassifierTest, IsSameSearchQueryWithDifferentParamOrder) {
 
 TEST(SerpClassifierTest, IsNotSameSearchQuery) {
   SerpClassifier classifier;
-
   EXPECT_FALSE(classifier.IsSameSearchQuery(
       GURL(R"(https://www.qwant.com/?q=foo&t=web)"),
       GURL(R"(https://www.qwant.com/?q=bar&t=web")")));
@@ -72,7 +69,6 @@ TEST(SerpClassifierTest, IsNotSameSearchQuery) {
 
 TEST(SerpClassifierTest, IsNotSameSearchQueryWithInvalidUrl) {
   SerpClassifier classifier;
-
   EXPECT_FALSE(classifier.IsSameSearchQuery(
       GURL(R"(https://www.qwant.com/?q=foobar)"), GURL("foobar")));
 }
@@ -87,6 +83,14 @@ TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {
        TemplateURLPrepopulateData::kBraveEngines) {
     VerifySerpClassifierExpectation(*prepopulated_engine);
   }
+}
+
+TEST(SerpClassifierTest, ClassifyStartpageSearchEngine) {
+  // Startpage uses a path-based SERP URL that Chromium's query-based detection
+  // does not support for real-world navigations to the results page.
+  SerpClassifier classifier;
+  EXPECT_TRUE(
+      classifier.MaybeClassify(GURL(R"(https://www.startpage.com/sp/search)")));
 }
 
 TEST(SerpClassifierTest, DoNotClassifyNonSearchEngine) {
