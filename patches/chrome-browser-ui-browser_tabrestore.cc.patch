@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
+index 08fd54ac9aae3897df33d7f98b984a4a31efd7bd..89aa4f350ac09d68170e040a21aeafd8341cf9a4 100644
+--- a/chrome/browser/ui/browser_tabrestore.cc
++++ b/chrome/browser/ui/browser_tabrestore.cc
+@@ -42,6 +42,12 @@
+ #include "chrome/browser/glic/glic_tab_restore_helper.h"
+ #endif
+ 
++#include "brave/components/containers/buildflags/buildflags.h"
++
++#if BUILDFLAG(ENABLE_CONTAINERS)
++#include "brave/components/containers/content/browser/tab_restore_utils.h"
++#endif  // BUILDFLAG(ENABLE_CONTAINERS)
++
+ using content::NavigationEntry;
+ using content::RestoreType;
+ using content::WebContents;
+@@ -75,7 +81,14 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+           browser->profile(), session_storage_namespace);
+   WebContents::CreateParams create_params(
+       browser->profile(),
+-      tab_util::GetSiteInstanceForNewTab(browser->profile(), restore_url));
++      tab_util::GetSiteInstanceForNewTab(
++          browser->profile(), restore_url
++#if BUILDFLAG(ENABLE_CONTAINERS)
++          ,
++          containers::GetStoragePartitionConfigToRestore(
++              browser->profile(), navigations, selected_navigation))
++#endif  // BUILDFLAG(ENABLE_CONTAINERS)
++  );
+   create_params.initially_hidden = initially_hidden;
+   create_params.desired_renderer_state =
+       WebContents::CreateParams::kNoRendererProcess;
