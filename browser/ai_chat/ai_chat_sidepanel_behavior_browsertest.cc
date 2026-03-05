@@ -15,13 +15,17 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "printing/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/mojom/window_features/window_features.mojom.h"
+#include "ui/views/controls/webview/webview.h"
 #include "url/gurl.h"
 
 // Tests sidepanel behavior for AI Chat scenarios
@@ -146,6 +150,53 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // Test that agent profile always uses global behavior regardless of flag
   // state
   EXPECT_TRUE(IsGlobalSidePanel(ai_chat_browser));
+}
+
+// Test that AddNewContents (triggered when a link is clicked in the AI Chat
+// panel) opens the URL in the current tab when the global side panel is
+// enabled, or in a new tab when it is disabled.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       AddNewContentsUsesCorrectDisposition) {
+  auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
+  ASSERT_TRUE(side_panel_coordinator);
+
+  side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
+
+  // GetWebContentsForTest calls entry->GetContent() which, after Show() has
+  // consumed the content view, invokes the factory again and returns a fresh
+  // unattached view. Its WebContents has no widget, so calling AddNewContents
+  // on it would crash. Instead, find the WebContents from the view that is
+  // actually attached to the browser window.
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* side_panel = browser_view->contents_height_side_panel();
+  ASSERT_TRUE(side_panel);
+  auto* view = side_panel->GetContentParentView()->GetViewByID(
+      SidePanelWebUIView::kSidePanelWebViewId);
+  ASSERT_TRUE(view);
+  auto* side_panel_web_contents =
+      static_cast<views::WebView*>(view)->web_contents();
+  ASSERT_TRUE(side_panel_web_contents);
+  content::WaitForLoadStop(side_panel_web_contents);
+
+  int initial_tab_count = browser()->tab_strip_model()->count();
+
+  blink::mojom::WindowFeatures window_features;
+  bool was_blocked = false;
+  side_panel_web_contents->GetDelegate()->AddNewContents(
+      side_panel_web_contents, nullptr, GURL("chrome://version/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB, window_features,
+      /*user_gesture=*/true, &was_blocked);
+
+  int final_tab_count = browser()->tab_strip_model()->count();
+
+  if (IsGlobalFlagEnabled()) {
+    // Global side panel enabled: link navigates the current tab, no new tab.
+    EXPECT_EQ(final_tab_count, initial_tab_count);
+  } else {
+    // Global side panel disabled: link opens in a new foreground tab.
+    EXPECT_EQ(final_tab_count, initial_tab_count + 1);
+  }
 }
 
 INSTANTIATE_TEST_SUITE_P(
