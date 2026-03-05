@@ -180,6 +180,8 @@ public class InAppPurchaseWrapper {
         return mYearlyProductDetailsVPN;
     }
 
+    private boolean mSuppressToasts;
+
     private InAppPurchaseWrapper() {}
 
     public static InAppPurchaseWrapper getInstance() {
@@ -905,7 +907,12 @@ public class InAppPurchaseWrapper {
         return null;
     }
 
+    public void setSuppressToasts(boolean suppress) {
+        mSuppressToasts = suppress;
+    }
+
     private void showToast(String message) {
+        if (mSuppressToasts) return;
         Context context = ContextUtils.getApplicationContext();
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
