@@ -39,6 +39,15 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
   auto template_url = std::make_unique<TemplateURL>(*template_url_data);
 
   if (!template_url->IsSearchURL(url, SearchTermsData())) {
+    if (prepopulated_engine.type == SEARCH_ENGINE_STARTPAGE &&
+        url.host() == "www.startpage.com" && url.path() == "/sp/search") {
+      // Startpage uses a path-based SERP URL. Chromium still checks the legacy
+      // query-based format and does not support the new one. Even if we update
+      // the search URL, `TemplateURL::IsSearchURL` still fails because it
+      // requires non-empty search terms.
+      return template_url;
+    }
+
     return nullptr;
   }
 
@@ -48,6 +57,12 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
 }  // namespace
 
 bool SerpClassifier::IsSameSearchQuery(const GURL& lhs, const GURL& rhs) const {
+  if (lhs.host() == "www.startpage.com") {
+    // For Startpage, we cannot determine whether two URLs represent the same
+    // search results page, so these pages are always classified.
+    return false;
+  }
+
   return NormalizeUrl(lhs) == NormalizeUrl(rhs);
 }
 
