@@ -152,19 +152,28 @@ export function BackgroundPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_SHOW_BACKGROUNDS_LABEL)}</label>
-        <Toggle
-          size='small'
-          checked={backgroundsEnabled}
-          onChange={({ checked }) => {
-            actions.setBackgroundsEnabled(checked)
-          }}
-        />
-      </div>
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={backgroundsEnabled}
+        onChange={({ checked }) => {
+          actions.setBackgroundsEnabled(checked)
+        }}
+      >
+        <span className='label'>
+          {getString(S.NEW_TAB_SHOW_BACKGROUNDS_LABEL)}
+        </span>
+      </Toggle>
       {backgroundsEnabled && rewardsFeatureEnabled && (
-        <div className='control-row'>
-          <label>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={sponsoredImagesEnabled}
+          onChange={({ checked }) => {
+            actions.setSponsoredImagesEnabled(checked)
+          }}
+        >
+          <span className='label'>
             {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
             <div className='subtext'>
               {!rewardsEnabled
@@ -182,15 +191,8 @@ export function BackgroundPanel() {
                   },
                 )}
             </div>
-          </label>
-          <Toggle
-            size='small'
-            checked={sponsoredImagesEnabled}
-            onChange={({ checked }) => {
-              actions.setSponsoredImagesEnabled(checked)
-            }}
-          />
-        </div>
+          </span>
+        </Toggle>
       )}
       {backgroundsEnabled && backgroundsCustomizable && (
         <>
