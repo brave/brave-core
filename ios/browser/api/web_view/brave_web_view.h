@@ -185,6 +185,17 @@ CWV_EXPORT
                           NSData* _Nullable data))completionHandler;
 @end
 
+CWV_EXPORT
+@interface BraveWebView (ReaderMode)
+/// Checks whether the current page is readable and returns the parsed result
+/// as a JSON string, or nil if the page is not readable or the call times out.
+- (void)checkReadability:(void (^)(NSString* _Nullable json))completionHandler;
+/// Updates the reader mode display style on the current page.
+- (void)setReaderModeTheme:(NSString*)theme
+                  fontType:(NSString*)fontType
+                  fontSize:(NSInteger)fontSize;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_
