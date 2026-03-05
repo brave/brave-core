@@ -22,6 +22,7 @@
 #include "components/search_engines/search_engine_utils.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 namespace serp_metrics {
@@ -124,14 +125,16 @@ void SerpMetricsTabHelper::DidFinishNavigation(
   }
 
   if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted() ||
-      navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+      !navigation_handle->HasCommitted()) {
     return;
   }
 
+  const bool is_new_navigation =
+      ui::PageTransitionIsNewNavigation(navigation_handle->GetPageTransition());
+
   const GURL& url = navigation_handle->GetURL();
 
-  if (!IsSameSearchQuery(url)) {
+  if (!is_new_navigation || !IsSameSearchQuery(url)) {
     // Any navigation that doesn't match the previous search engine results page
     // should reset it along with any user initiated navigation (omnibox,
     // bookmarks, etc...) whether it matches or not.
