@@ -18,6 +18,7 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
@@ -26,6 +27,7 @@
 class HostContentSettingsMap;
 class PrefRegistrySimple;
 class PrefService;
+class TemplateURLService;
 class WeeklyStorage;
 
 namespace browsing_data {
@@ -77,6 +79,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
               history::HistoryService* history_service,
               bookmarks::BookmarkModel* bookmark_model,
               DefaultBrowserMonitor* default_browser_monitor,
+              TemplateURLService* template_url_service,
               FirstRunTimeCallback first_run_time_callback);
   ~PageMetrics() override;
 
@@ -84,7 +87,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   void IncrementPagesLoadedCount(bool is_reload);
 
-  void ReportBraveQuery();
+  BraveSearchMetrics* brave_search_metrics() { return &brave_search_metrics_; }
 
   // DefaultBrowserMonitor::Observer:
   void OnDefaultBrowserStatusChanged(bool is_default) override;
@@ -140,12 +143,13 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
   base::Time first_run_time_;
 
   std::optional<int> current_domain_count_;
-  bool has_pending_brave_query_ = false;
 
   raw_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   base::ScopedObservation<DefaultBrowserMonitor,
                           DefaultBrowserMonitor::Observer>
       default_browser_observation_{this};
+
+  BraveSearchMetrics brave_search_metrics_;
 
   PrefChangeRegistrar pref_change_registrar_;
 
