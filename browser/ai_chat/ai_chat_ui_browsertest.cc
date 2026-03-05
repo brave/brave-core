@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -22,7 +23,6 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/pdf/pdf_extension_test_util.h"
@@ -46,14 +46,17 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
-#include "printing/buildflags/buildflags.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "services/screen_ai/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/compositor/compositor_switches.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-#include "chrome/browser/printing/test_print_preview_observer.h"
+#if BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS)
+#include "chrome/browser/screen_ai/screen_ai_install_state.h"
+#include "services/screen_ai/public/cpp/utilities.h"
+#include "ui/accessibility/accessibility_features.h"
+#include "ui/accessibility/ax_features.mojom-features.h"
 #endif
 
 namespace {
@@ -388,3 +391,178 @@ INSTANTIATE_TEST_SUITE_P(
     [](const testing::TestParamInfo<AIChatUIBrowserTest::ParamType>& info) {
       return info.param ? "ConversationAPIV2" : "ConversationAPIV1";
     });
+
+#if BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS) && !BUILDFLAG(USE_FAKE_SCREEN_AI)
+
+// Tests PDF OCR extraction for image-only PDFs via screen_ai searchify.
+// Uses PDFDocumentHelper::GetPageText() which returns OCR'd text after
+// searchify processes the PDF pages.
+class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
+ public:
+  AIChatPDFOCRBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitWithFeatures({::features::kScreenAITestMode,
+                                    ax::mojom::features::kScreenAIOCREnabled},
+                                   {});
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    screen_ai::ScreenAIInstallState::GetInstance()->SetComponentFolder(
+        screen_ai::GetComponentBinaryPathForTests().DirName());
+
+    base::FilePath test_data_dir =
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+    https_server_.ServeFilesFromDirectory(
+        test_data_dir.AppendASCII(kEmbeddedTestServerDirectory));
+    https_server_.StartAcceptingConnections();
+
+    // Serve upstream test data (e.g., pdf/accessibility/*.pdf)
+    embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(embedded_test_server()->Start());
+
+    chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+    ASSERT_TRUE(chat_tab_helper_);
+    ai_chat::SetUserOptedIn(prefs(), true);
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
+  PrefService* prefs() { return browser()->profile()->GetPrefs(); }
+
+  content::WebContents* GetActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  void NavigateURL(const GURL& url) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    ASSERT_TRUE(WaitForLoadStop(GetActiveWebContents()));
+  }
+
+  void TearDownOnMainThread() override {
+    chat_tab_helper_ = nullptr;
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
+  // Polls GetContent() until non-empty text is returned (OCR may be slow).
+  // Uses async callbacks delivered by RunUntil's message loop to avoid
+  // nested RunLoop DCHECKs.
+  void FetchPageContentWaitForOCR(const base::Location& location,
+                                  std::string_view expected_text) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    ASSERT_TRUE(
+        pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
+
+    std::string result;
+    bool got_result = false;
+
+    auto fetch = [&]() {
+      chat_tab_helper_->web_contents_content().GetContent(
+          base::BindLambdaForTesting([&](ai_chat::PageContent content) {
+            result = content.content;
+            got_result = true;
+          }));
+    };
+
+    fetch();
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      if (!got_result) {
+        return false;
+      }
+      if (result == expected_text) {
+        return true;
+      }
+      // OCR may not be done for all pages yet, retry.
+      got_result = false;
+      fetch();
+      return false;
+    }));
+  }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_;
+  net::test_server::EmbeddedTestServer https_server_;
+  raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
+
+ private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
+};
+
+// Disabled on Mac due to upstream searchify issue (crbug.com/406839385).
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_SinglePageImagePDF DISABLED_SinglePageImagePDF
+#else
+#define MAYBE_SinglePageImagePDF SinglePageImagePDF
+#endif
+IN_PROC_BROWSER_TEST_F(AIChatPDFOCRBrowserTest, MAYBE_SinglePageImagePDF) {
+  NavigateURL(embedded_test_server()->GetURL(
+      "/pdf/accessibility/hello-world-in-image.pdf"));
+  FetchPageContentWaitForOCR(FROM_HERE, "Hello, world!");
+}
+
+// Disabled on Mac due to upstream searchify issue (crbug.com/406839385).
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_MultiPageImagePDF DISABLED_MultiPageImagePDF
+#else
+#define MAYBE_MultiPageImagePDF MultiPageImagePDF
+#endif
+IN_PROC_BROWSER_TEST_F(AIChatPDFOCRBrowserTest, MAYBE_MultiPageImagePDF) {
+  NavigateURL(embedded_test_server()->GetURL(
+      "/pdf/accessibility/inaccessible-text-in-three-page.pdf"));
+  FetchPageContentWaitForOCR(FROM_HERE,
+                             "Hello, world!\n"
+                             "Paragraph 1 on Page 2Paragraph 2 on Page 2\n"
+                             "Paragraph 1 on Page 3Paragraph 2 on Page 3");
+}
+
+// Disabled on Mac due to upstream searchify issue (crbug.com/406839385).
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_SinglePageImagePDFWithBlank DISABLED_SinglePageImagePDFWithBlank
+#else
+#define MAYBE_SinglePageImagePDFWithBlank SinglePageImagePDFWithBlank
+#endif
+IN_PROC_BROWSER_TEST_F(AIChatPDFOCRBrowserTest,
+                       MAYBE_SinglePageImagePDFWithBlank) {
+  NavigateURL(
+      https_server_.GetURL("a.com", "/hello-world-in-image-has-blank.pdf"));
+  FetchPageContentWaitForOCR(FROM_HERE, "Hello, world!");
+}
+
+// Disabled on Mac due to upstream searchify issue (crbug.com/406839385).
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_MultiPageImagePDFWithBlank DISABLED_MultiPageImagePDFWithBlank
+#else
+#define MAYBE_MultiPageImagePDFWithBlank MultiPageImagePDFWithBlank
+#endif
+IN_PROC_BROWSER_TEST_F(AIChatPDFOCRBrowserTest,
+                       MAYBE_MultiPageImagePDFWithBlank) {
+  NavigateURL(https_server_.GetURL(
+      "a.com", "/inaccessible-text-in-three-page-has-blank.pdf"));
+  FetchPageContentWaitForOCR(FROM_HERE,
+                             "Hello, world!\n"
+                             "\n"
+                             "Paragraph 1 on Page 2Paragraph 2 on Page 2\n"
+                             "\n"
+                             "Paragraph 1 on Page 3Paragraph 2 on Page 3");
+}
+
+#endif  // BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS) &&
+        // !BUILDFLAG(USE_FAKE_SCREEN_AI)
