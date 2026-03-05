@@ -162,7 +162,8 @@ class EngineConsumerOAIUnitTest : public testing::Test {
   void TearDown() override {}
 
  protected:
-  base::test::TaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   TestingPrefServiceSimple pref_service_;
   mojom::ModelPtr model_;
   std::unique_ptr<EngineConsumerOAIRemote> engine_;
