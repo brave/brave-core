@@ -36,6 +36,8 @@ class TreeTabNode {
   int height() const { return height_; }
   int level() const { return level_; }
 
+  void set_height_for_test(int height) { height_ = height; }
+
   void set_collapsed(bool collapsed) { collapsed_ = collapsed; }
   bool collapsed() const { return collapsed_; }
 

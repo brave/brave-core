@@ -53,6 +53,11 @@ class TreeTabModel {
   // collapsed cache for that node and its descendants.
   void OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id);
 
+  // Returns the closest collapsed ancestor of the node identified by |id|.
+  // Returns nullptr if no collapsed ancestor exists.
+  const tree_tab::TreeTabNodeId* GetClosestCollapsedAncestor(
+      const tree_tab::TreeTabNodeId& id) const;
+
   base::WeakPtr<TreeTabModel> GetWeakPtr();
 
   // Callback registration methods.

@@ -178,6 +178,11 @@ void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
   }
 }
 
+const tree_tab::TreeTabNodeId* TreeTabModel::GetClosestCollapsedAncestor(
+    const tree_tab::TreeTabNodeId& id) const {
+  return base::FindOrNull(closest_collapsed_ancestor_, id);
+}
+
 void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
   if (!GetNode(id)) {
     return;

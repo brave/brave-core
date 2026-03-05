@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -24,10 +25,20 @@
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "components/vector_icons/vector_icons.h"
+#include "ui/base/models/image_model.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/view_class_properties.h"
+
+BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
+    : Tab(handle, controller) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
+    InitTreeToggleButton();
+  }
+}
 
 BraveTab::~BraveTab() = default;
 
@@ -75,6 +86,10 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
   if (close_button_->GetVisible()) {
     selectable_width -= close_button_->width();
+  }
+
+  if (tree_toggle_button_ && tree_toggle_button_->GetVisible()) {
+    selectable_width -= tree_toggle_button_->width();
   }
 
   return std::max(0, selectable_width);
@@ -183,12 +198,92 @@ void BraveTab::UpdateIconVisibility() {
     const bool can_enter_floating_mode =
         tabs::utils::IsFloatingVerticalTabsEnabled(
             controller()->GetBrowserWindowInterface());
+    const bool should_show_tree_toggle_button = tree_toggle_button_ &&
+                                                IsTreeNodeCollapsed() &&
+                                                HasTreeTabNodeDescendants();
+
     // When floating mode enabled, we don't show close button as the tab strip
     // will be expanded as soon as mouse hovers onto the tab.
     showing_close_button_ =
         !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
-    showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
+    showing_icon_ = !showing_alert_indicator_ && !showing_close_button_ &&
+                    !should_show_tree_toggle_button;
   }
+
+  if (tree_toggle_button_ && HasTreeTabNodeDescendants() &&
+      showing_close_button_) {
+    // We show tree toggle button instead of close button when there are
+    // descendants. We need to update the icon to show the correct collapsed
+    // state, here. The toggle button's visibility is updated in Layout().
+    UpdateTreeToggleButtonIcon();
+  }
+}
+
+bool BraveTab::HasTreeTabNodeDescendants() const {
+  if (auto* node = GetTreeTabNode()) {
+    return node->height() > 0;
+  }
+
+  return false;
+}
+
+void BraveTab::LayoutTreeToggleButton() {
+  if (!tree_toggle_button_) {
+    return;
+  }
+
+  auto* node = GetTreeTabNode();
+  if (!node) {
+    tree_toggle_button_->SetVisible(false);
+    return;
+  }
+
+  const bool has_descendants = HasTreeTabNodeDescendants();
+  if (showing_close_button_ && has_descendants) {
+    // In case of tree tab node has descendants, we show tree toggle button
+    // instead of close button.
+    tree_toggle_button_->SetBoundsRect(close_button_->bounds());
+    close_button_->SetVisible(false);
+    tree_toggle_button_->SetVisible(true);
+  } else if (has_descendants && node->collapsed()) {
+    // In this case, we always show tree toggle button in order to indicate that
+    // this tab has descendants hidden by collapsed state.
+    // Here, showing_close_button_ is false and the bounds of the close button
+    // is incorrect, as upstream code skips close button when
+    // showing_close_button_ is false. So we need to decide toggle button
+    // bounds manually. This routine is simplified version of upstream code.
+    // note that setting showing_close_button_ = true won't guarantee the
+    // boolean value of showing_close_button_ to be true, as we wrapped it in
+    // ControllableCloseButtonState, which considers the preference,
+    // active/hovered state and etc.
+    const gfx::Rect contents_rect = GetContentsBounds();
+    int close_button_visible_size =
+        GetLayoutConstant(LayoutConstant::kTabCloseButtonSize);
+    const gfx::Size close_button_actual_size =
+        close_button_->GetPreferredSize();
+    const int x = std::max(
+        contents_rect.right() - close_button_visible_size -
+            (close_button_actual_size.width() - close_button_visible_size) / 2,
+        contents_rect.CenterPoint().x() -
+            (close_button_actual_size.width() / 2));
+    const int y = contents_rect.CenterPoint().y() -
+                  (close_button_actual_size.height() / 2);
+    tree_toggle_button_->SetBoundsRect(
+        gfx::Rect(x, y, close_button_actual_size.width(),
+                  close_button_actual_size.height()));
+    tree_toggle_button_->SetVisible(true);
+  } else {
+    //  Otherwise, hide the button.
+    tree_toggle_button_->SetVisible(false);
+  }
+}
+
+bool BraveTab::IsTreeNodeCollapsed() const {
+  if (auto* node = GetTreeTabNode()) {
+    return node->collapsed();
+  }
+
+  return false;
 }
 
 void BraveTab::Layout(PassKey) {
@@ -212,6 +307,8 @@ void BraveTab::Layout(PassKey) {
       ink_drop->HostSizeChanged(close_button_->size());
     }
   }
+
+  LayoutTreeToggleButton();
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
@@ -319,6 +416,14 @@ TabNestingInfo BraveTab::GetTabNestingInfo() const {
   return {.tree_height = GetTreeHeight(), .level = GetTreeTabNode()->level()};
 }
 
+bool BraveTab::IsInCollapsedTreeTabNode() const {
+  if (!tree_tab_node().has_value()) {
+    return false;
+  }
+
+  return controller_->IsInCollapsedTreeTabNode(*tree_tab_node());
+}
+
 bool BraveTab::ShouldPaintTabAccent() const {
   return controller_->ShouldPaintTabAccent(this);
 }
@@ -329,6 +434,53 @@ std::optional<TabAccentColors> BraveTab::GetTabAccentColors() const {
 
 ui::ImageModel BraveTab::GetTabAccentIcon() const {
   return controller_->GetTabAccentIcon(this);
+}
+
+void BraveTab::InitTreeToggleButton() {
+  constexpr int kButtonPadding = 12;
+  const int icon_size = GetLayoutConstant(LayoutConstant::kTabCloseButtonSize);
+  const int button_size = icon_size + kButtonPadding;
+  auto tree_toggle = std::make_unique<views::ImageButton>(base::BindRepeating(
+      &BraveTab::OnTreeToggleButtonPressed, base::Unretained(this)));
+  tree_toggle->SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
+  tree_toggle->SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
+  tree_toggle->SetPreferredSize(gfx::Size(button_size, button_size));
+  tree_toggle->SetFocusBehavior(views::View::FocusBehavior::ACCESSIBLE_ONLY);
+  tree_toggle->SetVisible(false);
+  tree_toggle_button_ = AddChildView(std::move(tree_toggle));
+}
+
+void BraveTab::OnTreeToggleButtonPressed() {
+  if (!tree_tab_node().has_value()) {
+    return;
+  }
+  const tabs::TreeTabNode* node = GetTreeTabNode();
+  if (!node) {
+    return;
+  }
+  controller_->SetTreeTabNodeCollapsed(*tree_tab_node(), !node->collapsed());
+}
+
+void BraveTab::UpdateTreeToggleButtonIcon() {
+  if (!tree_toggle_button_ || !GetTreeTabNode()) {
+    return;
+  }
+
+  const int icon_size = GetLayoutConstant(LayoutConstant::kTabCloseButtonSize);
+  const SkColor icon_color =
+      tab_style_views()->CalculateTargetColors().foreground_color;
+  const bool collapsed = GetTreeTabNode()->collapsed();
+  const auto& icon = collapsed ? vector_icons::kSubmenuArrowChromeRefreshIcon
+                               : vector_icons::kExpandMoreIcon;
+  tree_toggle_button_->SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(icon, icon_color, icon_size));
+  tree_toggle_button_->SetImageModel(
+      views::Button::STATE_HOVERED,
+      ui::ImageModel::FromVectorIcon(icon, icon_color, icon_size));
+  tree_toggle_button_->SetImageModel(
+      views::Button::STATE_PRESSED,
+      ui::ImageModel::FromVectorIcon(icon, icon_color, icon_size));
 }
 
 BEGIN_METADATA(BraveTab)

@@ -46,10 +46,15 @@ class BraveTabStrip : public TabStrip {
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
   const tabs::TreeTabNode& GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const override;
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                               bool collapsed) override;
+  bool IsInCollapsedTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const override;
   bool IsVerticalTabsFloating() const override;
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
+  void SetSelection(const ui::ListSelectionModel& new_selection) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
@@ -89,6 +94,7 @@ class BraveTabStrip : public TabStrip {
 
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
+  bool ShouldShowTreeTabs() const;
 
   // Helper method to get the vertical tab strip region view if available.
   // Returns nullptr if vertical tabs are not shown or the view is not
@@ -96,6 +102,9 @@ class BraveTabStrip : public TabStrip {
   BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
+
+  // Expands all collapsed ancestors of the node identified by |id|.
+  void ExpandAllCollapsedAncestors(const ui::ListSelectionModel& new_selection);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

@@ -56,6 +56,28 @@ BraveTabStripModel::BraveTabStripModel(
 
 BraveTabStripModel::~BraveTabStripModel() = default;
 
+void BraveTabStripModel::SetTreeTabNodeCollapsed(
+    const tree_tab::TreeTabNodeId& id,
+    bool collapsed) {
+  if (!tree_tab_model_) {
+    return;
+  }
+
+  auto* node = tree_tab_model_->GetNode(id);
+  CHECK(node);
+  if (tree_tab_model_->GetNode(id)->collapsed() == collapsed) {
+    return;
+  }
+
+  tree_tab_model_->SetCollapsed(id, collapsed);
+
+  auto change =
+      TreeTabChange(id, TreeTabChange::CollapsedStateChangedChange(*node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
+}
+
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            TabStripUserGestureDetails detail) {
   if (count() == 0) {

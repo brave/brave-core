@@ -11,6 +11,7 @@
 #include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
+#include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
@@ -48,6 +49,28 @@ const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
       static_cast<BraveTabStripModel*>(model_.get())->tree_model()->GetNode(id);
   CHECK(node);
   return *node;
+}
+
+void BraveBrowserTabStripController::SetTreeTabNodeCollapsed(
+    const tree_tab::TreeTabNodeId& id,
+    bool collapsed) {
+  static_cast<BraveTabStripModel*>(model_.get())
+      ->SetTreeTabNodeCollapsed(id, collapsed);
+}
+
+bool BraveBrowserTabStripController::IsInCollapsedTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveTabStripModel*>(model_.get())
+      ->tree_model()
+      ->DoesBelongToCollapsedNode(id);
+}
+
+const tree_tab::TreeTabNodeId*
+BraveBrowserTabStripController::GetClosestCollapsedAncestor(
+    const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveTabStripModel*>(model_.get())
+      ->tree_model()
+      ->GetClosestCollapsedAncestor(id);
 }
 
 bool BraveBrowserTabStripController::IsCommandEnabledForTab(
@@ -215,6 +238,16 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
         tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
       }
       break;
+    }
+    case TreeTabChange::Type::kNodeCollapsedStateChanged: {
+      const auto& collapsed_state_changed_change =
+          change.GetCollapsedStateChangedChange();
+      auto index =
+          model_->GetIndexOfTab(collapsed_state_changed_change.node->GetTab());
+      CHECK_NE(index, TabStripModel::kNoTab);
+      static_cast<BraveTab*>(tabstrip_->tab_at(index))
+          ->UpdateTreeToggleButtonIcon();
+      tabstrip_->InvalidateLayout();
     }
   }
 }

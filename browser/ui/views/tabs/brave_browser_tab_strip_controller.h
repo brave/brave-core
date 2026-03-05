@@ -39,6 +39,12 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
   const tabs::TreeTabNode& GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const;
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                               bool collapsed);
+  bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id) const;
+
+  const tree_tab::TreeTabNodeId* GetClosestCollapsedAncestor(
+      const tree_tab::TreeTabNodeId& id) const;
 
   // BrowserTabStripController overrides:
   void OnTreeTabChanged(const TreeTabChange& change) override;
