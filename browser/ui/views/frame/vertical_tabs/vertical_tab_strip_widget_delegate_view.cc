@@ -216,16 +216,10 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
     widget_bounds.set_x(host_bounds.right() - widget_bounds.width());
   }
 
-  const bool need_to_call_layout =
-      widget->GetWindowBoundsInScreen().size() != widget_bounds.size();
   widget->SetBounds(widget_bounds);
 
   if (!widget->IsVisible()) {
     widget->Show();
-  }
-
-  if (need_to_call_layout) {
-    DeprecatedLayoutImmediately();
   }
 
 #if BUILDFLAG(IS_MAC)
