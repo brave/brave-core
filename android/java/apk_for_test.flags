@@ -589,6 +589,7 @@
     *** mContext;
     *** mBrandedColorScheme;
     *** mTemplateUrlServiceSupplier;
+    *** mUrlCoordinator;
     <init>(...);
     *** updateButtonVisibility(...);
     *** onPrimaryColorChanged(...);
