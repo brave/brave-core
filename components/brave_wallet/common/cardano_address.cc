@@ -142,7 +142,7 @@ std::optional<CardanoAddress> CardanoAddress::FromShellyPayload(
       return std::nullopt;
     }
   } else {
-    NOTREACHED() << std::to_underlying(address_type);
+    return std::nullopt;
   }
 
   std::vector<uint8_t> address_bytes(1 + payload.size());
