@@ -114,6 +114,7 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
           displayName: "Mixtral 8x7b",
           visionSupport: false,
           supportsTools: false,
+          supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false
         )
