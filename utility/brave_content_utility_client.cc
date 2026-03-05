@@ -67,8 +67,7 @@ auto RunBraveWalletUtilsService(
 #endif
 
 auto RunAdblockFilterListParserService(
-    mojo::PendingReceiver<
-        adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver) {
+    mojo::PendingReceiver<adblock::mojom::AdblockFilterListParser> receiver) {
   return std::make_unique<brave_shields::FilterParsingService>(
       std::move(receiver));
 }

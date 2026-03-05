@@ -12,35 +12,29 @@
 
 namespace brave_shields {
 
-class FilterParsingService
-    : public adblock_filter_list_parser::mojom::AdblockFilterListParser {
+class FilterParsingService : public adblock::mojom::AdblockFilterListParser {
  public:
   // For binding to an externally owned Receiver, like with
   // |mojo::MakeSelfOwnedReceiver()|.
   FilterParsingService();
   explicit FilterParsingService(
-      mojo::PendingReceiver<
-          adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver);
+      mojo::PendingReceiver<adblock::mojom::AdblockFilterListParser> receiver);
   FilterParsingService(const FilterParsingService&) = delete;
   FilterParsingService& operator=(const FilterParsingService&) = delete;
   ~FilterParsingService() override;
 
-  static mojo::PendingRemote<
-      adblock_filter_list_parser::mojom::AdblockFilterListParser>
+  static mojo::PendingRemote<adblock::mojom::AdblockFilterListParser>
   LaunchInProcessFilterParsingService();
 
  private:
-  void ParseFilters(
-      std::vector<adblock_filter_list_parser::mojom::FilterListInputPtr>
-          filters,
-      ParseFiltersCallback callback) override;
+  void ParseFilters(std::vector<adblock::mojom::FilterListInputPtr> filters,
+                    ParseFiltersCallback callback) override;
 
-  mojo::Receiver<adblock_filter_list_parser::mojom::AdblockFilterListParser>
-      receiver_{this};
+  mojo::Receiver<adblock::mojom::AdblockFilterListParser> receiver_{this};
 };
 
-using FilterParsingServiceFactory = base::RepeatingCallback<mojo::PendingRemote<
-    adblock_filter_list_parser::mojom::AdblockFilterListParser>()>;
+using FilterParsingServiceFactory = base::RepeatingCallback<
+    mojo::PendingRemote<adblock::mojom::AdblockFilterListParser>()>;
 
 }  // namespace brave_shields
 

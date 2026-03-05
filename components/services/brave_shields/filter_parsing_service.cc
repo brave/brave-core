@@ -21,17 +21,15 @@ namespace brave_shields {
 
 namespace {
 void BindInProcessFilterSetParser(
-    mojo::PendingReceiver<
-        adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver) {
+    mojo::PendingReceiver<adblock::mojom::AdblockFilterListParser> receiver) {
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_shields::FilterParsingService>(),
       std::move(receiver));
 }
 
-adblock_filter_list_parser::mojom::FilterListMetadataPtr
-ConvertToMojomFilterListMetadata(adblock::FilterListMetadataResult metadata) {
-  auto mojom_metadata =
-      adblock_filter_list_parser::mojom::FilterListMetadata::New();
+adblock::mojom::FilterListMetadataPtr ConvertToMojomFilterListMetadata(
+    adblock::FilterListMetadataResult metadata) {
+  auto mojom_metadata = adblock::mojom::FilterListMetadata::New();
   if (metadata.result_kind == adblock::ResultKind::Success) {
     if (metadata.value.title.has_value) {
       mojom_metadata->title = metadata.value.title.value.c_str();
@@ -49,11 +47,9 @@ ConvertToMojomFilterListMetadata(adblock::FilterListMetadataResult metadata) {
 }  // namespace
 
 // static
-mojo::PendingRemote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
+mojo::PendingRemote<adblock::mojom::AdblockFilterListParser>
 FilterParsingService::LaunchInProcessFilterParsingService() {
-  mojo::PendingRemote<
-      adblock_filter_list_parser::mojom::AdblockFilterListParser>
-      remote;
+  mojo::PendingRemote<adblock::mojom::AdblockFilterListParser> remote;
   base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})
@@ -66,20 +62,18 @@ FilterParsingService::LaunchInProcessFilterParsingService() {
 FilterParsingService::FilterParsingService() = default;
 
 FilterParsingService::FilterParsingService(
-    mojo::PendingReceiver<
-        adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver)
+    mojo::PendingReceiver<adblock::mojom::AdblockFilterListParser> receiver)
     : receiver_(this, std::move(receiver)) {}
 
 FilterParsingService::~FilterParsingService() = default;
 
 void FilterParsingService::ParseFilters(
-    std::vector<adblock_filter_list_parser::mojom::FilterListInputPtr> filters,
+    std::vector<adblock::mojom::FilterListInputPtr> filters,
     ParseFiltersCallback callback) {
   auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
       adblock::new_filter_set());
 
-  std::vector<adblock_filter_list_parser::mojom::FilterListMetadataPtr>
-      metadata;
+  std::vector<adblock::mojom::FilterListMetadataPtr> metadata;
   for (auto& filter_list : filters) {
     auto filter_vec = base::ToVector(filter_list->filters.byte_span());
 

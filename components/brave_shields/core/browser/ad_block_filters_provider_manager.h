@@ -68,8 +68,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
           on_metadata_cbs,
       mojo_base::BigBuffer verified_engine_dat,
-      const std::vector<
-          adblock_filter_list_parser::mojom::FilterListMetadataPtr> metadata);
+      const std::vector<adblock::mojom::FilterListMetadataPtr> metadata);
   void FinishCombinating(
       base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
       uint64_t flow_id,
@@ -84,8 +83,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   base::CancelableTaskTracker task_tracker_;
 
-  mojo::Remote<adblock_filter_list_parser::mojom::AdblockFilterListParser>
-      list_parser_service_;
+  mojo::Remote<adblock::mojom::AdblockFilterListParser> list_parser_service_;
 
   base::WeakPtrFactory<AdBlockFiltersProviderManager> weak_factory_{this};
 };

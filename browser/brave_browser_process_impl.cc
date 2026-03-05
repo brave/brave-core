@@ -322,11 +322,9 @@ brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
     brave_shields::FilterParsingServiceFactory filter_list_parser_factory =
         base::BindRepeating([]() {
-          mojo::PendingRemote<
-              adblock_filter_list_parser::mojom::AdblockFilterListParser>
-              remote;
+          mojo::PendingRemote<adblock::mojom::AdblockFilterListParser> remote;
           content::ServiceProcessHost::Launch<
-              adblock_filter_list_parser::mojom::AdblockFilterListParser>(
+              adblock::mojom::AdblockFilterListParser>(
               remote.InitWithNewPipeAndPassReceiver(),
               content::ServiceProcessHost::Options()
                   .WithDisplayName("Adblock Filter Parsing")

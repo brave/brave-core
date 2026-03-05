@@ -131,14 +131,14 @@ void AdBlockFiltersProviderManager::FinishCombinating(
               "AdBlockFiltersProviderManager::FinishCombinating",
               perfetto::TerminatingFlow::ProcessScoped(flow_id));
 
-  std::vector<adblock_filter_list_parser::mojom::FilterListInputPtr> inputs;
+  std::vector<adblock::mojom::FilterListInputPtr> inputs;
   inputs.reserve(results.size());
   std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
       on_metadata_cbs;
   on_metadata_cbs.reserve(results.size());
   for (auto& [filters, permission_mask, on_metadata_cb] : results) {
-    inputs.push_back(adblock_filter_list_parser::mojom::FilterListInput::New(
-        std::move(filters), permission_mask));
+    inputs.push_back(adblock::mojom::FilterListInput::New(std::move(filters),
+                                                          permission_mask));
     on_metadata_cbs.push_back(std::move(on_metadata_cb));
   }
   list_parser_service_->ParseFilters(
@@ -153,8 +153,7 @@ void AdBlockFiltersProviderManager::OnParseFilters(
     std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
         on_metadata_cbs,
     mojo_base::BigBuffer verified_engine_dat,
-    const std::vector<adblock_filter_list_parser::mojom::FilterListMetadataPtr>
-        metadata) {
+    const std::vector<adblock::mojom::FilterListMetadataPtr> metadata) {
   DCHECK_EQ(on_metadata_cbs.size(), metadata.size());
   for (size_t i = 0; i < metadata.size(); i++) {
     auto adblock_metadata = adblock::FilterListMetadata();
