@@ -56,7 +56,7 @@
 "playlist.accessibilityStepForwards" = "Avancer";
 
 /* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
-"playlist.accessibilityTapToToggleControls" = "Appuyer sur l'écran pour afficher les contrôles";
+"playlist.accessibilityTapToToggleControls" = "Appuyer sur l’écran pour afficher les contrôles";
 
 /* A button title that when tapped will create a new playlist */
 "playlist.createNewPlaylistButtonTitle" = "Créer";

@@ -62,7 +62,7 @@
 "paywall.braveAccountCheckoutOptionTitle" = "Brave 帳戶";
 
 /* Button action text which will bring user to Brave VPN web page for more information. */
-"paywall.braveVPNLearnMoreButtonTitle" = "深入瞭解 Brave VPN 的更多資訊";
+"paywall.braveVPNLearnMoreButtonTitle" = "深入瞭解 Brave VPN";
 
 /* Title label text for entering a promo code. */
 "paywall.havePromoCodeTitle" = "有優惠代碼嗎？";
